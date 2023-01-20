@@ -1,0 +1,34 @@
+{   
+    "deno.enable": true,
+    "deno.enablePaths": ["tools/"],
+    
+    "[typescript]": {
+        "editor.defaultFormatter": "denoland.vscode-deno",
+        "editor.formatOnSave": true
+    },
+
+    "[c]": {
+        "editor.wordBasedSuggestions": false,
+        "editor.suggest.insertMode": "replace",
+        "editor.semanticHighlighting.enabled": true,
+        "editor.formatOnSave": true
+    },
+
+    "C_Cpp.clang_format_fallbackStyle": "{ BasedOnStyle: Google, ColumnLimit: 120 }",
+    "files.exclude": {
+        "**/.git": true,
+        "**/.svn": true,
+        "**/.hg": true,
+        "**/CVS": true,
+        "**/.DS_Store": true,
+        "**/Thumbs.db": true,
+        "tools/agbcc": true,
+        "tools/binutils": true,
+        "*.sav": true,
+        "*.elf": true,
+        "*.sha1": true,
+        "**/*.o": true,
+        "rmz3.map": true,
+        "baserom.gba": true,
+    }
+}

@@ -1,0 +1,20 @@
+Text_Others: @ 0x08383794
+    .incbin "data/texts/13xx/1300.bin"
+    .incbin "data/texts/13xx/1301.bin"
+    z3str "今までのことをキロクしておくわね..\n  はい\n  いいえ"
+    .incbin "data/texts/13xx/1303.bin"
+    .incbin "data/texts/13xx/1304.bin"
+    .incbin "data/texts/13xx/1305.bin"
+    .incbin "data/texts/13xx/1306.bin"
+    .incbin "data/texts/13xx/1307.bin"
+    .incbin "data/texts/13xx/1308.bin"
+    .incbin "data/texts/13xx/1309.bin"
+    .incbin "data/texts/13xx/130A.bin"
+    .incbin "data/texts/13xx/130B.bin"
+    .incbin "data/texts/13xx/130C.bin"
+    .incbin "data/texts/13xx/130D.bin"
+    .incbin "data/texts/13xx/130E.bin"
+    .incbin "data/texts/13xx/130F.bin"
+
+    # ./tools/dumper/bin.ts ./baserom.gba 0x08383df3 0x083856f8 ./data/texts/13xx.bin
+    .incbin "data/texts/13xx.bin"

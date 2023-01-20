@@ -1,0 +1,20 @@
+diff --git a/gcc_arm/configure b/gcc_arm/configure
+index 05c0782..12128de 100755
+--- a/gcc_arm/configure
++++ b/gcc_arm/configure
+@@ -584,14 +584,7 @@ copy=cp
+ # - the path contains an element with a dot in it
+ echo $ac_n "checking LIBRARY_PATH variable""... $ac_c" 1>&6
+ echo "configure:587: checking LIBRARY_PATH variable" >&5
+-case ${LIBRARY_PATH} in
+-  [:\;]* | *[:\;] | *[:\;][:\;]* |  *[:\;]. | .[:\;]*| . | *[:\;].[:\;]* )
+-    library_path_setting="contains current directory"
+-    ;;
+-  *)
+-    library_path_setting="ok"
+-    ;;
+-esac
++library_path_setting="ok"
+ echo "$ac_t""$library_path_setting" 1>&6
+ if test "$library_path_setting" != "ok"; then
+ { echo "configure: error: 

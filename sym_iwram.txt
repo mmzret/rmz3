@@ -1,0 +1,12 @@
+. = 0x00000000; SoundMainRAM_Buffer = .;
+. = 0x00002ac0; PaletteBuffer = .;
+. = 0x000032e0; FieldFlag_030032e0 = .;
+. = 0x000032e1; FieldFlag_030032e1 = .;
+. = 0x000032e2; PauseFrame = .;
+. = 0x000032e3; u8_030032e3 = .;
+
+. = 0x000038e4; PTR_ARRAY_030038e4 = .;
+. = 0x000038e8; PTR_030038e8 = .;
+. = 0x000038ec; PTR_030038ec = .;
+. = 0x00003904; PTR_03003904 = .;
+. = 0x00003908; PTR_ARRAY_03003908 = .;
