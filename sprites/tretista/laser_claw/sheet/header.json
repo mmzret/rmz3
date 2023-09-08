@@ -1,0 +1,17 @@
+{
+  "data": [
+    {
+      "name": "0.png",
+      "ofs": 912,
+      "chunkSize": 864,
+      "props": [
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 7
+      }
+    }
+  ],
+  "label": "gGraphicHeader_Sprite_tretista_laser_claw"
+}

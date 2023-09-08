@@ -1,0 +1,863 @@
+{
+  "label": "gDialogGraphics",
+  "data": [
+    {
+      "name": "msgbox/0.lz.png",
+      "ofs": 0,
+      "chunkSize": 256,
+      "props": [
+        "lz77",
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 0
+      }
+    },
+    {
+      "name": "mugshot/zero.lz.png",
+      "ofs": 0,
+      "chunkSize": 0,
+      "props": [
+        "lz77"
+      ],
+      "palette": {
+        "color": 0,
+        "id": 0
+      },
+      "hdrOnly": true
+    },
+    {
+      "name": "mugshot/zero.lz.png",
+      "ofs": 0,
+      "chunkSize": 48,
+      "props": [
+        "lz77",
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 0
+      }
+    },
+    {
+      "name": "mugshot/blazin.lz.png",
+      "ofs": 0,
+      "chunkSize": 48,
+      "props": [
+        "lz77",
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 0
+      }
+    },
+    {
+      "name": "mugshot/childre.lz.png",
+      "ofs": 0,
+      "chunkSize": 48,
+      "props": [
+        "lz77",
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 0
+      }
+    },
+    {
+      "name": "mugshot/hellbat.lz.png",
+      "ofs": 0,
+      "chunkSize": 48,
+      "props": [
+        "lz77",
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 0
+      }
+    },
+    {
+      "name": "mugshot/deathtanz.lz.png",
+      "ofs": 0,
+      "chunkSize": 48,
+      "props": [
+        "lz77",
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 0
+      }
+    },
+    {
+      "name": "mugshot/cubit.lz.png",
+      "ofs": 0,
+      "chunkSize": 48,
+      "props": [
+        "lz77",
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 0
+      }
+    },
+    {
+      "name": "mugshot/glacierle.lz.png",
+      "ofs": 0,
+      "chunkSize": 48,
+      "props": [
+        "lz77",
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 0
+      }
+    },
+    {
+      "name": "mugshot/volteel.lz.png",
+      "ofs": 0,
+      "chunkSize": 48,
+      "props": [
+        "lz77",
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 0
+      }
+    },
+    {
+      "name": "mugshot/tretista.lz.png",
+      "ofs": 0,
+      "chunkSize": 48,
+      "props": [
+        "lz77",
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 0
+      }
+    },
+    {
+      "name": "mugshot/blazin_human.lz.png",
+      "ofs": 0,
+      "chunkSize": 48,
+      "props": [
+        "lz77",
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 0
+      }
+    },
+    {
+      "name": "mugshot/childre_human.lz.png",
+      "ofs": 0,
+      "chunkSize": 48,
+      "props": [
+        "lz77",
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 0
+      }
+    },
+    {
+      "name": "mugshot/hellbat_human.lz.png",
+      "ofs": 0,
+      "chunkSize": 48,
+      "props": [
+        "lz77",
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 0
+      }
+    },
+    {
+      "name": "mugshot/deathtanz_human.lz.png",
+      "ofs": 0,
+      "chunkSize": 48,
+      "props": [
+        "lz77",
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 0
+      }
+    },
+    {
+      "name": "mugshot/cubit_human.lz.png",
+      "ofs": 0,
+      "chunkSize": 48,
+      "props": [
+        "lz77",
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 0
+      }
+    },
+    {
+      "name": "mugshot/glacierle_human.lz.png",
+      "ofs": 0,
+      "chunkSize": 48,
+      "props": [
+        "lz77",
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 0
+      }
+    },
+    {
+      "name": "mugshot/volteel_human.lz.png",
+      "ofs": 0,
+      "chunkSize": 48,
+      "props": [
+        "lz77",
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 0
+      }
+    },
+    {
+      "name": "mugshot/tretista_human.lz.png",
+      "ofs": 0,
+      "chunkSize": 48,
+      "props": [
+        "lz77",
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 0
+      }
+    },
+    {
+      "name": "mugshot/anubis.lz.png",
+      "ofs": 0,
+      "chunkSize": 48,
+      "props": [
+        "lz77",
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 0
+      }
+    },
+    {
+      "name": "mugshot/hanumachine.lz.png",
+      "ofs": 0,
+      "chunkSize": 48,
+      "props": [
+        "lz77",
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 0
+      }
+    },
+    {
+      "name": "mugshot/blizzack.lz.png",
+      "ofs": 0,
+      "chunkSize": 48,
+      "props": [
+        "lz77",
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 0
+      }
+    },
+    {
+      "name": "mugshot/harpuia.lz.png",
+      "ofs": 0,
+      "chunkSize": 48,
+      "props": [
+        "lz77",
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 0
+      }
+    },
+    {
+      "name": "mugshot/leviathan.lz.png",
+      "ofs": 0,
+      "chunkSize": 48,
+      "props": [
+        "lz77",
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 0
+      }
+    },
+    {
+      "name": "mugshot/fefnir.lz.png",
+      "ofs": 0,
+      "chunkSize": 48,
+      "props": [
+        "lz77",
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 0
+      }
+    },
+    {
+      "name": "mugshot/phantom.lz.png",
+      "ofs": 0,
+      "chunkSize": 48,
+      "props": [
+        "lz77",
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 0
+      }
+    },
+    {
+      "name": "mugshot/x.lz.png",
+      "ofs": 0,
+      "chunkSize": 48,
+      "props": [
+        "lz77",
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 0
+      }
+    },
+    {
+      "name": "mugshot/copy_x.lz.png",
+      "ofs": 0,
+      "chunkSize": 48,
+      "props": [
+        "lz77",
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 0
+      }
+    },
+    {
+      "name": "mugshot/mother_elf.lz.png",
+      "ofs": 0,
+      "chunkSize": 48,
+      "props": [
+        "lz77",
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 0
+      }
+    },
+    {
+      "name": "mugshot/weil.lz.png",
+      "ofs": 0,
+      "chunkSize": 48,
+      "props": [
+        "lz77",
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 0
+      }
+    },
+    {
+      "name": "mugshot/omega_white.lz.png",
+      "ofs": 0,
+      "chunkSize": 48,
+      "props": [
+        "lz77",
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 0
+      }
+    },
+    {
+      "name": "mugshot/omega_gold.lz.png",
+      "ofs": 0,
+      "chunkSize": 48,
+      "props": [
+        "lz77",
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 0
+      }
+    },
+    {
+      "name": "mugshot/ciel.lz.png",
+      "ofs": 0,
+      "chunkSize": 48,
+      "props": [
+        "lz77",
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 0
+      }
+    },
+    {
+      "name": "mugshot/cerveau.lz.png",
+      "ofs": 0,
+      "chunkSize": 48,
+      "props": [
+        "lz77",
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 0
+      }
+    },
+    {
+      "name": "mugshot/alouette.lz.png",
+      "ofs": 0,
+      "chunkSize": 48,
+      "props": [
+        "lz77",
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 0
+      }
+    },
+    {
+      "name": "mugshot/andrew.lz.png",
+      "ofs": 0,
+      "chunkSize": 48,
+      "props": [
+        "lz77",
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 0
+      }
+    },
+    {
+      "name": "mugshot/hibou.lz.png",
+      "ofs": 0,
+      "chunkSize": 48,
+      "props": [
+        "lz77",
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 0
+      }
+    },
+    {
+      "name": "mugshot/rocinolle.lz.png",
+      "ofs": 0,
+      "chunkSize": 48,
+      "props": [
+        "lz77",
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 0
+      }
+    },
+    {
+      "name": "mugshot/perroquiet.lz.png",
+      "ofs": 0,
+      "chunkSize": 48,
+      "props": [
+        "lz77",
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 0
+      }
+    },
+    {
+      "name": "mugshot/menart.lz.png",
+      "ofs": 0,
+      "chunkSize": 48,
+      "props": [
+        "lz77",
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 0
+      }
+    },
+    {
+      "name": "mugshot/doigt.lz.png",
+      "ofs": 0,
+      "chunkSize": 48,
+      "props": [
+        "lz77",
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 0
+      }
+    },
+    {
+      "name": "mugshot/weil_monitor.lz.png",
+      "ofs": 0,
+      "chunkSize": 48,
+      "props": [
+        "lz77",
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 0
+      }
+    },
+    {
+      "name": "mugshot/autruche.lz.png",
+      "ofs": 0,
+      "chunkSize": 48,
+      "props": [
+        "lz77",
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 0
+      }
+    },
+    {
+      "name": "mugshot/pic.lz.png",
+      "ofs": 0,
+      "chunkSize": 48,
+      "props": [
+        "lz77",
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 0
+      }
+    },
+    {
+      "name": "mugshot/hirondelle.lz.png",
+      "ofs": 0,
+      "chunkSize": 48,
+      "props": [
+        "lz77",
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 0
+      }
+    },
+    {
+      "name": "mugshot/faucon.lz.png",
+      "ofs": 0,
+      "chunkSize": 48,
+      "props": [
+        "lz77",
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 0
+      }
+    },
+    {
+      "name": "mugshot/kiss.lz.png",
+      "ofs": 0,
+      "chunkSize": 48,
+      "props": [
+        "lz77",
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 0
+      }
+    },
+    {
+      "name": "mugshot/brain.lz.png",
+      "ofs": 0,
+      "chunkSize": 48,
+      "props": [
+        "lz77",
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 0
+      }
+    },
+    {
+      "name": "mugshot/joan.lz.png",
+      "ofs": 0,
+      "chunkSize": 48,
+      "props": [
+        "lz77",
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 0
+      }
+    },
+    {
+      "name": "mugshot/rouge.lz.png",
+      "ofs": 0,
+      "chunkSize": 48,
+      "props": [
+        "lz77",
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 0
+      }
+    },
+    {
+      "name": "mugshot/sound_only.lz.png",
+      "ofs": 0,
+      "chunkSize": 48,
+      "props": [
+        "lz77",
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 0
+      }
+    },
+    {
+      "name": "mugshot/crea.lz.png",
+      "ofs": 0,
+      "chunkSize": 48,
+      "props": [
+        "lz77",
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 0
+      }
+    },
+    {
+      "name": "mugshot/prea.lz.png",
+      "ofs": 0,
+      "chunkSize": 48,
+      "props": [
+        "lz77",
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 0
+      }
+    },
+    {
+      "name": "mugshot/sound_only2.lz.png",
+      "ofs": 0,
+      "chunkSize": 48,
+      "props": [
+        "lz77",
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 0
+      }
+    },
+    {
+      "name": "mugshot/colbor.lz.png",
+      "ofs": 0,
+      "chunkSize": 48,
+      "props": [
+        "lz77",
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 0
+      }
+    },
+    {
+      "name": "mugshot/copy_x_armor.lz.png",
+      "ofs": 0,
+      "chunkSize": 48,
+      "props": [
+        "lz77",
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 0
+      }
+    },
+    {
+      "name": "mugshot/ciel_blur.lz.png",
+      "ofs": 0,
+      "chunkSize": 48,
+      "props": [
+        "lz77",
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 0
+      }
+    },
+    {
+      "name": "mugshot/omega_zero.lz.png",
+      "ofs": 0,
+      "chunkSize": 48,
+      "props": [
+        "lz77",
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 0
+      }
+    },
+    {
+      "name": "msgbox/1.lz.png",
+      "ofs": 0,
+      "chunkSize": 256,
+      "props": [
+        "lz77",
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 0
+      }
+    },
+    {
+      "name": "msgbox/2.lz.png",
+      "ofs": 0,
+      "chunkSize": 256,
+      "props": [
+        "lz77",
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 0
+      }
+    },
+    {
+      "name": "msgbox/3.lz.png",
+      "ofs": 0,
+      "chunkSize": 256,
+      "props": [
+        "lz77",
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 0
+      }
+    },
+    {
+      "name": "msgbox/4.lz.png",
+      "ofs": 0,
+      "chunkSize": 256,
+      "props": [
+        "lz77",
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 0
+      }
+    },
+    {
+      "name": "msgbox/5.lz.png",
+      "ofs": 0,
+      "chunkSize": 256,
+      "props": [
+        "lz77",
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 0
+      }
+    },
+    {
+      "name": "msgbox/6.lz.png",
+      "ofs": 0,
+      "chunkSize": 256,
+      "props": [
+        "lz77",
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 0
+      }
+    },
+    {
+      "name": "msgbox/7.lz.png",
+      "ofs": 0,
+      "chunkSize": 256,
+      "props": [
+        "lz77",
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 0
+      }
+    },
+    {
+      "name": "msgbox/8.lz.png",
+      "ofs": 0,
+      "chunkSize": 256,
+      "props": [
+        "lz77",
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 0
+      }
+    }
+  ]
+}

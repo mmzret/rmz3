@@ -1,17 +1,16 @@
 #!/usr/bin/env -S deno run --allow-read --allow-write
 
-// 開始アドレス(start) から 終端アドレス(end-1)だけ、 バイナリファイルとして ダンプします。
+import { Command } from 'https://deno.land/x/cliffy@v0.25.4/command/mod.ts';
 
-import { Command } from "https://deno.land/x/cliffy@v0.25.4/command/mod.ts";
-import { loadU8 } from "../util/index.ts";
+const BASE = 0x0800_0000;
 
 const main = async () => {
   const { args } = await new Command()
-    .name("bin.ts")
-    .version("1.0.0")
-    .description("開始アドレス(start) から 終端アドレス(end-1)だけ、 バイナリファイルとして ダンプします。")
-    .arguments("<rom> <start> <end> <output>")
-    .usage("rmz3.gba 0x0863c7a8 0x08644cb4 output.bin")
+    .name('bin.ts')
+    .version('1.0.0')
+    .description('開始アドレス(start) から 終端アドレス(end-1)だけ、 バイナリファイルとして ダンプします。')
+    .arguments('<rom> <start> <end> <output>')
+    .usage('rmz3.gba 0x0863c7a8 0x08644cb4 output.bin')
     .parse(Deno.args);
 
   const [start, end] = [
@@ -23,8 +22,8 @@ const main = async () => {
   const length = end - start;
   const result = new Uint8Array(length);
   for (let i = 0; i < length; i++) {
-    const addr = start + i;
-    result[i] = loadU8(rom, addr);
+    const addr = start + i - BASE;
+    result[i] = rom[addr];
   }
 
   Deno.writeFileSync(args[3], result);

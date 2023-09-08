@@ -1,0 +1,17 @@
+    data/tilesets/offsets.o (.rodata);
+      data/tilesets/snow/header.o (.rodata);
+      data/tilesets/volcano/header.o (.rodata);
+      data/tilesets/waterside/header.o (.rodata);
+      data/tilesets/factory/header.o (.rodata);
+      data/tilesets/ruin/header.o (.rodata);
+      data/tilesets/missile/header.o (.rodata);
+      data/tilesets/desert/header.o (.rodata);
+      data/tilesets/forest/header.o (.rodata);
+      data/tilesets/antarctic/header.o (.rodata);
+      data/tilesets/area_x2/header.o (.rodata);
+      data/tilesets/plant/header.o (.rodata);
+      data/tilesets/giant_elevator/header.o (.rodata);
+      data/tilesets/sub_arcadia/header.o (.rodata);
+      data/tilesets/weil_labo/header.o (.rodata);
+      data/tilesets/resistance_base/header.o (.rodata);
+      data/tilesets/misc/header.o (.rodata);

@@ -1,11 +1,4 @@
-TOOL = $(DEVKITARM)/bin
-
-AS = tools/binutils/bin/arm-none-eabi-as
-LD = $(TOOL)/arm-none-eabi-ld
-OBJCOPY = $(TOOL)/arm-none-eabi-objcopy
-OBJDUMP := $(TOOL)/arm-none-eabi-objdump
-
-TEXTCOMP := ./tools/rmz-text-compiler
+# TODO: Refactor rule dependencies.
 
 ifeq ($(OS),Windows_NT)
 EXE := .exe
@@ -13,92 +6,128 @@ else
 EXE :=
 endif
 
-ASFILE := $(wildcard asm/*.s) src/libs/m4a_1.s src/analysis/analysis.s \
-	data/texts/texts.s data/string/string.s data/terrain/terrain.s data/data_085b5cd0/data_085b5cd0.s data/data_083856f8/data_083856f8.s data/data_08338de8/data_08338de8.s \
-	data/gfx/cutscene/cutscene.s data/gfx/dialog/dialog.s data/gfx/elf/elf.s data/gfx/tileset/tileset.s data/gfx/gfx_083b8c8c/gfx_083b8c8c.s data/gfx/gfx_085d78f8/gfx_085d78f8.s data/gfx/font/font.s \
-	data/sound/sound.s
+# Enabled by `make modern`
+MODERN ?= 0
 
-CFILE := $(wildcard src/*.c) $(wildcard src/*/*.c)
-ASOBJFILE := $(ASFILE:.s=.o)
-COBJFILE := $(CFILE:.c=.o)
-
+# Build target
 NAME := rmz3
 ROM := $(NAME).gba
-
 ELF := $(NAME).elf
 
-ARCH = -mcpu=arm7tdmi -march=armv4t -mthumb -mthumb-interwork
-ASFLAGS := $(ARCH) -g --agbasm-colon-defined-global-labels --agbasm-multiline-macros --agbasm-charmap --agbasm-no-gba-thumb-after-label-disasm-fix
+# Tools
+TOOL = $(DEVKITARM)/bin
+ifeq ($(MODERN),1)
+  AGBCC := $(TOOL)/arm-none-eabi-gcc
+else
+  AGBCC := tools/agbcc/bin/agbcc$(EXE)
+endif
+AS = tools/binutils/bin/arm-none-eabi-as
+LD = $(TOOL)/arm-none-eabi-ld
+OBJCOPY = $(TOOL)/arm-none-eabi-objcopy
+OBJDUMP := $(TOOL)/arm-none-eabi-objdump
 
-CC1             := tools/agbcc/bin/agbcc$(EXE)
-override CFLAGS += -mthumb-interwork -Wimplicit -Wparentheses -Werror -O2 -fhex-asm -fshort-enums
+# Flags
+ARCH := -mcpu=arm7tdmi -march=armv4t -mthumb 
+CFLAGS := -mthumb-interwork  -Wimplicit -Wparentheses -Werror -O2 -fshort-enums
+ASFLAGS := $(ARCH) -mthumb-interwork  -g --agbasm-colon-defined-global-labels --agbasm-multiline-macros --agbasm-charmap --agbasm-no-gba-thumb-after-label-disasm-fix
+ifeq ($(MODERN),1)
+	CPPFLAGS := -I $(DEVKITARM)/arm-none-eabi/include -iquote include -DMODERN=$(MODERN)
+	CFLAGS += $(ARCH) $(CPPFLAGS) -Wno-pointer-to-int-cast -fno-toplevel-reorder -fno-aggressive-loop-optimizations
+	LIBPATH := -L $(shell dirname $(shell $(AGBCC) --print-file-name=libgcc.a)) -L $(shell dirname $(shell $(AGBCC) --print-file-name=libc.a))
+else
+	CPPFLAGS := -I tools/agbcc -I tools/agbcc/include -iquote include -nostdinc -DMODERN=$(MODERN)
+	CFLAGS += -fhex-asm
+	LIBPATH := -L tools/agbcc/lib
+endif
+LDFLAGS := $(LIBPATH) -lgcc -lc
 
-CPPFLAGS := -I tools/agbcc -I tools/agbcc/include -iquote include -nostdinc
+ASFILE := $(wildcard asm/*.s) $(wildcard asm/*/*.s) $(shell find sound/songs -type f -name '*.s') src/libs/m4a_1.s data/tilesets/offsets.s sprites/table.s sprites/anim.s
+ASOBJFILE := $(ASFILE:.s=.o)
 
-SHA1SUM := sha1sum -c
+CFILE := $(shell find src -type f -name '*.c')
+COBJFILE := $(CFILE:.c=.o)
 
-GBAGFX := tools/gbagfx/gbagfx$(EXE)
-
+ifneq ($(MODERN),1)
 # Special configurations required for lib files
+src/mmbn4.o: CFLAGS += -mno-thumb-interwork
 src/libs/agb_sram.o: CFLAGS := -O -mthumb-interwork
-src/libs/m4a.o: CC1 := tools/agbcc/bin/old_agbcc$(EXE)
+src/libs/m4a.o: AGBCC := tools/agbcc/bin/old_agbcc$(EXE)
+endif
 
-.PHONY: all check compare clean tools check
+ifeq ($(MODERN),1)
+	LDSCRIPT := ld_script_modern.ld
+else
+	LDSCRIPT := ld_script.ld
+endif
 
-all: string texts mugshot elftypeicon elf-mugshot font $(ROM) clean compare
-check: string texts mugshot elftypeicon elf-mugshot font $(ROM) compare
+.PHONY: all check compare clean clean-code
+
+all: $(ROM) compare
+check: $(ROM) compare
+
+# This is a build method for romhacks and builds with gcc specified by the user.
+modern: ; @$(MAKE) $(ROM) -j8 MODERN=1
 
 compare: $(ROM)
-	$(SHA1SUM) $(NAME).sha1
+	@sha1sum -c $(NAME).sha1
 
-clean: clean-string clean-texts clean-mugshot clean-elftypeicon clean-elf-mugshot clean-font clean-src
+clean: clean-src clean-graphics
 	@rm -f $(ELF) $(ASOBJFILE) $(COBJFILE)
 
-decrypt:
-	@./tools/encryption/decrypt.ts ./baserom.gba src/gfx.encrypted.bin src/gfx.c
+clean-code: clean-src
+	@rm -f $(ELF) $(ASOBJFILE) $(COBJFILE) $(shell find asm -type f -name '*.o') $(shell find src -type f -name '*.o') $(shell find sound/songs -type f -name '*.o')
 
 $(ROM): $(ELF)
-	$(OBJCOPY) -O binary $< $@
+	@$(OBJCOPY) -O binary $< $@
 
-$(ELF): %.elf: $(ASOBJFILE) $(COBJFILE) ld_script.ld
-	$(LD) -T ld_script.ld -Map $*.map -o $@ $(ASOBJFILE) $(COBJFILE) -L tools/agbcc/lib -lgcc -lc
+$(ELF): %.elf: $(ASOBJFILE) $(COBJFILE) midi ld_script.ld $(STAGE_OBJ) $(GFX_HDR)
+	@$(LD) -T $(LDSCRIPT) -Map $*.map -o $@ $(ASOBJFILE) $(COBJFILE) $(GFX_HDR) $(LDFLAGS)
 
-# If you want to debug asmfile,
-# cc -E -I tools/agbcc -I tools/agbcc/include -iquote include -nostdinc src/TARGET | tools/agbcc/bin/agbcc -mthumb-interwork -Wimplicit -Wparentheses -Werror -O2 -fhex-asm -o tmp.s
-$(COBJFILE): %.o: %.c
-	$(CPP) $(CPPFLAGS) $< | $(CC1) $(CFLAGS) -o $(subst .c,.s,$<)
+$(COBJFILE): %.o: %.c graphics stage
+ifeq ($(MODERN),1)
+	@$(AGBCC) $(CFLAGS) $< -c -o $@
+else
+	@$(CPP) $(CPPFLAGS) $< | $(AGBCC) $(CFLAGS) -o $(subst .c,.s,$<)
 	@echo ".text\n\t.align\t2, 0\n" >> $(subst .c,.s,$<)
-	$(AS) $(ASFLAGS) $(subst .c,.s,$<) -o $@ 
+	@$(AS) $(ASFLAGS) $(subst .c,.s,$<) -o $@ 
+endif
 
-$(ASOBJFILE): %.o: %.s
-	$(AS) $(ASFLAGS) -o $@ $<
-
-%.bin: %.txt
-	$(TEXTCOMP) -f $< -o $@
-
-%.bin: %.zc
-	$(TEXTCOMP) -c --verbose -f $< -o $@
+$(ASOBJFILE): %.o: %.s string texts graphics sprite
+	@$(CPP) $(CPPFLAGS) $< | $(AS) $(ASFLAGS) -o $@ -
 
 include data/string/string.mk
 include data/texts/texts.mk
 include src/src.mk
 
-tools:
-	@$(MAKE) -C tools/gbagfx
-
 #### Graphics Rules ####
 
-GFX_OPTS :=
+GBAGFX := tools/gbagfx/gbagfx$(EXE)
+include graphics_file_rules.mk
 
-%.1bpp:   %.png  ; $(GBAGFX) $< $@ $(GFX_OPTS)
-%.4bpp:   %.png  ; $(GBAGFX) $< $@ $(GFX_OPTS)
-%.8bpp:   %.png  ; $(GBAGFX) $< $@ $(GFX_OPTS)
-%.gbapal: %.pal  ; $(GBAGFX) $< $@ $(GFX_OPTS)
-%.gbapal: %.png  ; $(GBAGFX) $< $@ $(GFX_OPTS)
-%.lz:     %      ; $(GBAGFX) $< $@ $(GFX_OPTS)
-%.rl:     %      ; $(GBAGFX) $< $@ $(GFX_OPTS)
+#### Graphic Headers Rules ####
 
-include data/gfx/dialog/mugshot/mugshot.mk
-include data/gfx/elf/type/type.mk
-include data/gfx/elf/mugshot/mugshot.mk
-include data/gfx/font/font.mk
+GFX_JSON_CONVERTER := ./tools/dev/graphic_header.ts
+include graphic_header_rules.mk
+
+#### Audio Rules ####
+
+MID := tools/mid2agb/mid2agb$(EXE)
+include songs.mk
+
+#### Text Rules ####
+
+TEXTCOMP := tools/rmz-text-compiler$(EXE)
+
+%.bin: %.txt ; @$(TEXTCOMP) -f $< -o $@
+%.bin: %.zc ;@$(TEXTCOMP) -c --verbose -f $< -o $@
+
+#### Sprite Rules ####
+
+METASPRITE_JSON_CONVERTER := ./tools/dev/metasprite.ts
+SEQUENCE_JSON_CONVERTER := ./tools/dev/sequence.ts
+include sprite_rules.mk
+
+#### Stage Rules ####
+
+STAGE_JSON_CONVERTER := ./tools/dev/stage.ts
+include stage_rules.mk

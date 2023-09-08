@@ -1,0 +1,47 @@
+{
+  "name": "Volcano",
+  "id": 2,
+  "tileset": "volcano",
+  "layers": [
+    {
+      "bg": 1,
+      "prio": 2,
+      "scrollPower": [
+        256,
+        256
+      ],
+      "scroll": [
+        0,
+        0
+      ]
+    },
+    {
+      "bg": 2,
+      "prio": 1,
+      "scrollPower": [
+        256,
+        256
+      ],
+      "scroll": [
+        0,
+        0
+      ]
+    },
+    {
+      "bg": 3,
+      "prio": 2,
+      "scrollPower": [
+        128,
+        128
+      ],
+      "scroll": [
+        120,
+        240
+      ]
+    }
+  ],
+  "unk_78": [
+    -256,
+    256
+  ]
+}

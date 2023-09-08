@@ -1,0 +1,53 @@
+{
+  "data": [
+    {
+      "name": "0.png",
+      "ofs": 156,
+      "chunkSize": 32,
+      "props": [
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 3
+      }
+    },
+    {
+      "name": "1.png",
+      "ofs": 156,
+      "chunkSize": 32,
+      "props": [
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 3
+      }
+    },
+    {
+      "name": "2.png",
+      "ofs": 156,
+      "chunkSize": 32,
+      "props": [
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 3
+      }
+    },
+    {
+      "name": "3.png",
+      "ofs": 156,
+      "chunkSize": 32,
+      "props": [
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 3
+      }
+    }
+  ],
+  "label": "gGraphicHeader_Sprite_cyberelf_particle"
+}

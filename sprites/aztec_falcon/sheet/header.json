@@ -1,0 +1,17 @@
+{
+  "data": [
+    {
+      "name": "0.png",
+      "ofs": 512,
+      "chunkSize": 712,
+      "props": [
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 6
+      }
+    }
+  ],
+  "label": "gGraphicHeader_Sprite_aztec_falcon"
+}

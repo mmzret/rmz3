@@ -2,46 +2,36 @@
 
 #include "gba/gba.h"
 
-extern struct KeyState Joypad[2];
-static void input_080031d8(struct KeyState *);
+static void resetKeyStates(void);
+static void readKeyInput(struct KeyState *j, s32 retry);
+static void resetKeyState(struct KeyState *j);
 
-void input_08003100(void);
-void pollKeyInput(void);
-void readKeyInput(struct KeyState *, s32);
-
-void initKeys(void) {
-  input_08003100();
+void InitInput(void) {
+  resetKeyStates();
   pollKeyInput();
-  return;
 }
 
-void input_08003100(void) {
-  int i;
-  struct KeyState *j;
-
+static void resetKeyStates(void) {
+  s32 i;
   for (i = 0; i < 2; i++) {
-    j = &Joypad[i];
-    input_080031d8(j);
-    j->field6_0x14 = 0x18;
+    struct KeyState *j = &gJoypad[i];
+    resetKeyState(j);
+    j->field6_0x14 = 24;
     j->field7_0x15 = 4;
   }
-  return;
 }
 
 void pollKeyInput(void) {
-  int retry;
-  struct KeyState *j;
+  s32 retry = 0;
+  struct KeyState *j = gJoypad;
 
-  retry = 0;
-  j = Joypad;
   for (retry = 0; retry < 2; retry++) {
     readKeyInput(j, retry);
     j = j + 1;
   }
-  return;
 }
 
-NAKED void readKeyInput(struct KeyState *s, s32 retry) {
+NAKED static void readKeyInput(struct KeyState *j, s32 retry) {
   asm(".syntax unified\n\
   push {r4, r5, r6, r7, lr}\n\
 	adds r4, r0, #0\n\
@@ -123,23 +113,12 @@ _080031D2:\n\
               .syntax divided\n");
 }
 
-NAKED static void input_080031d8(struct KeyState *p) {
-  asm(".syntax unified\n\
-  adds r1, r0, #0\n\
-	movs r0, #0\n\
-	strh r0, [r1, #8]\n\
-	strh r0, [r1, #6]\n\
-	strh r0, [r1, #4]\n\
-	strh r0, [r1, #2]\n\
-	strh r0, [r1]\n\
-	adds r3, r1, #0\n\
-	adds r3, #0xa\n\
-	adds r2, r1, #0\n\
-	adds r2, #0xe\n\
-	str r0, [r2]\n\
-	str r0, [r3]\n\
-	strh r0, [r1, #0x12]\n\
-	bx lr\n\
-                .syntax divided\n");
-  return;
+static void resetKeyState(struct KeyState *p) {
+  p->firstRead = 0;
+  p->field3_0x6 = 0;
+  p->pressed = 0;
+  p->last = 0;
+  p->input = 0;
+  *(u32 *)(&p->unk_0a[0]) = *(u32 *)(&p->unk_0a[4]) = 0;
+  *(u16 *)(&p->unk_0a[8]) = 0;
 }

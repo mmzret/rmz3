@@ -1,0 +1,37 @@
+{
+  "data": [
+    {
+      "name": "0.png",
+      "ofs": 0,
+      "chunkSize": 184,
+      "props": [
+        "4bpp"
+      ]
+    },
+    {
+      "name": "1.png",
+      "ofs": 0,
+      "chunkSize": 296,
+      "props": [
+        "4bpp"
+      ]
+    },
+    {
+      "name": "2.png",
+      "ofs": 0,
+      "chunkSize": 256,
+      "props": [
+        "4bpp"
+      ]
+    },
+    {
+      "name": "3.png",
+      "ofs": 0,
+      "chunkSize": 216,
+      "props": [
+        "4bpp"
+      ]
+    }
+  ],
+  "label": "gGraphicHeader_Sprite_zero_rod_charge_ladder"
+}

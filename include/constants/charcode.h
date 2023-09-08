@@ -1,0 +1,13 @@
+#ifndef GUARD_RMZ3_CHARCODE_H
+#define GUARD_RMZ3_CHARCODE_H
+
+#define CHAR_KANJI 0xF0
+#define CHAR_MUGSHOT 0xF3
+#define CHAR_INSERT 0xF9
+#define CHAR_LF 0xFC
+#define CHAR_NEXT 0xFD
+
+#define UNICODE_A 97
+#define UNICODE_NBSP 160
+
+#endif  // GUARD_RMZ3_CHARCODE_H

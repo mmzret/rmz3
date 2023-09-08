@@ -1,0 +1,17 @@
+{
+  "data": [
+    {
+      "name": "0.png",
+      "ofs": 896,
+      "chunkSize": 536,
+      "props": [
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 6
+      }
+    }
+  ],
+  "label": "gGraphicHeader_Sprite_hellbat_bat"
+}

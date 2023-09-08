@@ -3,6 +3,11 @@
 	.syntax unified
 	
 	.text
+
+.equiv ID_NUMBER, 0x68736d53
+.set SOUND_INFO_PTR, 0x03007FF0
+.set PCM_DMA_BUF_SIZE, 792
+.set o_SoundInfo_pcmBuffer, PCM_DMA_BUF_SIZE*2
 	
 	thumb_func_start umul3232H32
 umul3232H32: @ 0x080FC44C
@@ -17,9 +22,9 @@ sub_080FC450: @ 0x080FC450
 
 	thumb_func_start SoundMain
 SoundMain: @ 0x080FC45C
-	ldr r0, _080FC4C8 @ =0x03007FF0
+	ldr r0, lt_SOUND_INFO_PTR
 	ldr r0, [r0]
-	ldr r2, _080FC4CC @ =0x68736D53
+	ldr r2, _080FC4CC @ =ID_NUMBER
 	ldr r3, [r0]
 	cmp r2, r3
 	beq _080FC46A
@@ -70,16 +75,16 @@ _080FC49E:
 	adds r5, r5, r2
 _080FC4BE:
 	str r5, [sp, #8]
-	ldr r6, _080FC4DC @ =0x00000630
-	ldr r3, _080FC4D0 @ =0x03000001
+	ldr r6, lt_o_SoundInfo_pcmBuffer
+	ldr r3, lt_SoundMainRAM_Buffer
 	bx r3
 	.align 2, 0
-_080FC4C8: .4byte 0x03007FF0
-_080FC4CC: .4byte 0x68736D53
-_080FC4D0: .4byte 0x03000001
+lt_SOUND_INFO_PTR: .4byte SOUND_INFO_PTR
+_080FC4CC: .4byte ID_NUMBER
+lt_SoundMainRAM_Buffer: .4byte SoundMainRAM_Buffer+1
 _080FC4D4: .4byte 0x04000006
 _080FC4D8: .4byte 0x00000350
-_080FC4DC: .4byte 0x00000630
+lt_o_SoundInfo_pcmBuffer: .4byte o_SoundInfo_pcmBuffer
 
 	thumb_func_start SoundMainRAM
 SoundMainRAM: @ 0x080FC4E0
@@ -409,7 +414,7 @@ sub_080FC7EC: @ 0x080FC7EC
 	b _080FC554
 _080FC7F6:
 	ldr r0, [sp, #0x18]
-	ldr r3, _080FC80C @ =0x68736D53
+	ldr r3, _080FC80C @ =ID_NUMBER
 	str r3, [r0]
 	add sp, #0x1c
 	pop {r0, r1, r2, r3, r4, r5, r6, r7}
@@ -423,7 +428,7 @@ _080FC7F6:
 m4a_bxR3: @ 0x080FC80A
 	bx r3
 	.align 2, 0
-_080FC80C: .4byte 0x68736D53
+_080FC80C: .4byte ID_NUMBER
 
 	thumb_func_start SoundMainBTM
 SoundMainBTM: @ 0x080FC810
@@ -462,7 +467,9 @@ _080FC842:
 	str r1, [r0, #0x2c]
 _080FC846:
 	bx lr
-_080FC848:
+
+	thumb_func_start ply_fine
+ply_fine: @ 0x080fc848
 	push {r4, r5, lr}
 	adds r5, r1, #0
 	ldr r4, [r5, #0x20]
@@ -523,7 +530,7 @@ _080FC8A4:
 	pop {r0}
 	bx lr
 	.align 2, 0
-_080FC8A8: .4byte 0x0810E2CC
+_080FC8A8: .4byte gMPlayJumpTableTemplate
 
 	thumb_func_start FUN_080fc8ac
 FUN_080fc8ac: @ 0x080FC8AC
@@ -536,7 +543,9 @@ FUN_080fc8ae: @ 0x080FC8AE
 	ldrb r3, [r2]
 	b _080FC892
 	.align 2, 0
-_080FC8B8:
+
+	thumb_func_start ply_goto
+ply_goto:
 	push {lr}
 _080FC8BA:
 	ldr r2, [r1, #0x40]
@@ -567,9 +576,9 @@ ply_patt: @ 0x080FC8D8
 	ldrb r2, [r1, #2]
 	adds r2, #1
 	strb r2, [r1, #2]
-	b _080FC8B8
+	b ply_goto
 _080FC8F0:
-	b _080FC848
+	b ply_fine
 	.align 2, 0
 
 	thumb_func_start ply_pend
@@ -769,9 +778,9 @@ _080FCA38: .4byte 0x04000060
 
 	thumb_func_start m4aSoundVSync
 m4aSoundVSync: @ 0x080FCA3C
-	ldr r0, _080FCCD8 @ =0x03007FF0
+	ldr r0, _080FCCD8 @ =SOUND_INFO_PTR
 	ldr r0, [r0]
-	ldr r2, _080FCCDC @ =0x68736D53
+	ldr r2, _080FCCDC @ =ID_NUMBER
 	ldr r3, [r0]
 	subs r3, r3, r2
 	cmp r3, #1
@@ -803,7 +812,7 @@ _080FCA74: .4byte 0x84400004
 
 	thumb_func_start MPlayMain
 MPlayMain: @ 0x080FCA78
-	ldr r2, _080FCCDC @ =0x68736D53
+	ldr r2, _080FCCDC @ =ID_NUMBER
 	ldr r3, [r0, #0x34]
 	cmp r2, r3
 	beq _080FCA82
@@ -831,7 +840,7 @@ _080FCA94:
 	bge _080FCAAC
 	b _080FCCC0
 _080FCAAC:
-	ldr r0, _080FCCD8 @ =0x03007FF0
+	ldr r0, _080FCCD8 @ =SOUND_INFO_PTR
 	ldr r0, [r0]
 	mov r8, r0
 	adds r0, r7, #0
@@ -946,7 +955,7 @@ _080FCB60:
 	beq _080FCBE8
 	b _080FCB8C
 _080FCB82:
-	ldr r0, _080FCCD4 @ =0x0810E540
+	ldr r0, _080FCCD4 @ =gClockTable
 	subs r1, #0x80
 	adds r1, r1, r0
 	ldrb r0, [r1]
@@ -1122,7 +1131,7 @@ _080FCCB6:
 	adds r5, r5, r0
 	bgt _080FCC1C
 _080FCCC0:
-	ldr r0, _080FCCDC @ =0x68736D53
+	ldr r0, _080FCCDC @ =ID_NUMBER
 	str r0, [r7, #0x34]
 	pop {r0, r1, r2, r3, r4, r5, r6, r7}
 	mov r8, r0
@@ -1135,9 +1144,9 @@ _080FCCC0:
 call_r3: @ 0x080FCCD0
 	bx r3
 	.align 2, 0
-_080FCCD4: .4byte 0x0810E540
-_080FCCD8: .4byte 0x03007FF0
-_080FCCDC: .4byte 0x68736D53
+_080FCCD4: .4byte gClockTable
+_080FCCD8: .4byte SOUND_INFO_PTR
+_080FCCDC: .4byte ID_NUMBER
 
 	thumb_func_start TrackStop
 TrackStop: @ 0x080FCCE0
@@ -1159,7 +1168,7 @@ _080FCCF4:
 	movs r3, #7
 	ands r0, r3
 	beq _080FCD0C
-	ldr r3, _080FCD20 @ =0x03007FF0
+	ldr r3, _080FCD20 @ =SOUND_INFO_PTR
 	ldr r3, [r3]
 	ldr r3, [r3, #0x2c]
 	bl call_r3
@@ -1177,7 +1186,7 @@ _080FCD18:
 	pop {r0}
 	bx r0
 	.align 2, 0
-_080FCD20: .4byte 0x03007FF0
+_080FCD20: .4byte SOUND_INFO_PTR
 
 	thumb_func_start ChnVolSetAsm
 ChnVolSetAsm: @ 0x080FCD24
@@ -1219,10 +1228,10 @@ ply_note: @ 0x080FCD54
 	sub sp, #0x18
 	str r1, [sp]
 	adds r5, r2, #0
-	ldr r1, _080FCF4C @ =0x03007FF0
+	ldr r1, _080FCF4C @ =SOUND_INFO_PTR
 	ldr r1, [r1]
 	str r1, [sp, #4]
-	ldr r1, _080FCF50 @ =0x0810E540
+	ldr r1, _080FCF50 @ =gClockTable
 	adds r0, r0, r1
 	ldrb r0, [r0]
 	strb r0, [r5, #4]
@@ -1484,8 +1493,8 @@ _080FCF3A:
 	pop {r0}
 	bx r0
 	.align 2, 0
-_080FCF4C: .4byte 0x03007FF0
-_080FCF50: .4byte 0x0810E540
+_080FCF4C: .4byte SOUND_INFO_PTR
+_080FCF50: .4byte gClockTable
 
 	thumb_func_start ply_endtie
 ply_endtie: @ 0x080FCF54

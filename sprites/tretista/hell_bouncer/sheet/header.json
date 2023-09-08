@@ -1,0 +1,17 @@
+{
+  "data": [
+    {
+      "name": "0.png",
+      "ofs": 768,
+      "chunkSize": 2040,
+      "props": [
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 5
+      }
+    }
+  ],
+  "label": "gGraphicHeader_Sprite_tretista_hell_bouncer"
+}

@@ -1,4 +1,5 @@
 	.charmap " ", 0x00
+
 	.charmap "0", 0x01
 	.charmap "1", 0x02
 	.charmap "2", 0x03
@@ -9,6 +10,7 @@
 	.charmap "7", 0x08
 	.charmap "8", 0x09
 	.charmap "9", 0x0A
+
 	.charmap "A", 0x0B
 	.charmap "B", 0x0C
 	.charmap "C", 0x0D
@@ -35,6 +37,7 @@
 	.charmap "X", 0x22
 	.charmap "Y", 0x23
 	.charmap "Z", 0x24
+
     .charmap "ぁ", 0x25
     .charmap "あ", 0x26
     .charmap "ぃ", 0x27
@@ -116,6 +119,7 @@
     .charmap "わ", 0x73
     .charmap "を", 0x74
     .charmap "ん", 0x75
+    
     .charmap "ァ", 0x76
     .charmap "ア", 0x77
     .charmap "ィ", 0x78
@@ -198,6 +202,7 @@
     .charmap "ヴ", 0xc7
     .charmap "ヵ", 0xc8
     .charmap "ヶ", 0xc9
+
     .charmap "！", 0xca
     .charmap "↿", 0xcb
     .charmap "↾", 0xcc
@@ -237,6 +242,7 @@
     .charmap "\n", 0xFC
     .charmap "▼", 0xFD
     .charmap "✚", 0xDADC
+    
     .charmap "場所", 0xEEEF
     .charmap "場合", 0xEEF0A8
     .charmap "思", 0xF000

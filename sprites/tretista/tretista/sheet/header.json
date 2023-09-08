@@ -1,0 +1,113 @@
+{
+  "data": [
+    {
+      "name": "0.png",
+      "ofs": 512,
+      "chunkSize": 2040,
+      "props": [
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 4
+      }
+    },
+    {
+      "name": "1.png",
+      "ofs": 512,
+      "chunkSize": 1296,
+      "props": [
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 4
+      }
+    },
+    {
+      "name": "2.png",
+      "ofs": 512,
+      "chunkSize": 1816,
+      "props": [
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 4
+      }
+    },
+    {
+      "name": "3.png",
+      "ofs": 512,
+      "chunkSize": 1736,
+      "props": [
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 4
+      }
+    },
+    {
+      "name": "4.png",
+      "ofs": 512,
+      "chunkSize": 1768,
+      "props": [
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 4
+      }
+    },
+    {
+      "name": "5.png",
+      "ofs": 512,
+      "chunkSize": 1896,
+      "props": [
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 4
+      }
+    },
+    {
+      "name": "6.png",
+      "ofs": 512,
+      "chunkSize": 1920,
+      "props": [
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 4
+      }
+    },
+    {
+      "name": "7.png",
+      "ofs": 512,
+      "chunkSize": 1888,
+      "props": [
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 4
+      }
+    },
+    {
+      "name": "8.png",
+      "ofs": 512,
+      "chunkSize": 2040,
+      "props": [
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 4
+      }
+    }
+  ],
+  "label": "gGraphicHeader_Sprite_tretista_tretista"
+}

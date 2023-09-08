@@ -1,0 +1,353 @@
+{
+  "data": [
+    {
+      "name": "0.png",
+      "ofs": 512,
+      "chunkSize": 184,
+      "props": [
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 4
+      }
+    },
+    {
+      "name": "1.png",
+      "ofs": 512,
+      "chunkSize": 408,
+      "props": [
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 4
+      }
+    },
+    {
+      "name": "2.png",
+      "ofs": 512,
+      "chunkSize": 304,
+      "props": [
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 4
+      }
+    },
+    {
+      "name": "3.png",
+      "ofs": 512,
+      "chunkSize": 272,
+      "props": [
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 4
+      }
+    },
+    {
+      "name": "4.png",
+      "ofs": 512,
+      "chunkSize": 272,
+      "props": [
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 4
+      }
+    },
+    {
+      "name": "5.png",
+      "ofs": 512,
+      "chunkSize": 384,
+      "props": [
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 4
+      }
+    },
+    {
+      "name": "6.png",
+      "ofs": 512,
+      "chunkSize": 456,
+      "props": [
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 4
+      }
+    },
+    {
+      "name": "7.png",
+      "ofs": 512,
+      "chunkSize": 464,
+      "props": [
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 4
+      }
+    },
+    {
+      "name": "8.png",
+      "ofs": 512,
+      "chunkSize": 432,
+      "props": [
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 4
+      }
+    },
+    {
+      "name": "9.png",
+      "ofs": 512,
+      "chunkSize": 432,
+      "props": [
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 4
+      }
+    },
+    {
+      "name": "10.png",
+      "ofs": 512,
+      "chunkSize": 288,
+      "props": [
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 4
+      }
+    },
+    {
+      "name": "11.png",
+      "ofs": 512,
+      "chunkSize": 256,
+      "props": [
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 4
+      }
+    },
+    {
+      "name": "12.png",
+      "ofs": 512,
+      "chunkSize": 480,
+      "props": [
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 4
+      }
+    },
+    {
+      "name": "13.png",
+      "ofs": 512,
+      "chunkSize": 280,
+      "props": [
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 4
+      }
+    },
+    {
+      "name": "14.png",
+      "ofs": 512,
+      "chunkSize": 352,
+      "props": [
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 4
+      }
+    },
+    {
+      "name": "15.png",
+      "ofs": 512,
+      "chunkSize": 392,
+      "props": [
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 4
+      }
+    },
+    {
+      "name": "16.png",
+      "ofs": 512,
+      "chunkSize": 312,
+      "props": [
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 4
+      }
+    },
+    {
+      "name": "17.png",
+      "ofs": 512,
+      "chunkSize": 416,
+      "props": [
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 4
+      }
+    },
+    {
+      "name": "18.png",
+      "ofs": 512,
+      "chunkSize": 280,
+      "props": [
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 4
+      }
+    },
+    {
+      "name": "19.png",
+      "ofs": 512,
+      "chunkSize": 408,
+      "props": [
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 4
+      }
+    },
+    {
+      "name": "20.png",
+      "ofs": 512,
+      "chunkSize": 456,
+      "props": [
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 4
+      }
+    },
+    {
+      "name": "21.png",
+      "ofs": 512,
+      "chunkSize": 512,
+      "props": [
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 4
+      }
+    },
+    {
+      "name": "22.png",
+      "ofs": 512,
+      "chunkSize": 568,
+      "props": [
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 4
+      }
+    },
+    {
+      "name": "23.png",
+      "ofs": 512,
+      "chunkSize": 632,
+      "props": [
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 4
+      }
+    },
+    {
+      "name": "24.png",
+      "ofs": 512,
+      "chunkSize": 432,
+      "props": [
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 4
+      }
+    },
+    {
+      "name": "25.png",
+      "ofs": 512,
+      "chunkSize": 160,
+      "props": [
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 4
+      }
+    },
+    {
+      "name": "26.png",
+      "ofs": 512,
+      "chunkSize": 304,
+      "props": [
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 4
+      }
+    },
+    {
+      "name": "27.png",
+      "ofs": 512,
+      "chunkSize": 392,
+      "props": [
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 4
+      }
+    },
+    {
+      "name": "28.png",
+      "ofs": 512,
+      "chunkSize": 192,
+      "props": [
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 4
+      }
+    }
+  ],
+  "label": "gGraphicHeader_Sprite_leviathan"
+}

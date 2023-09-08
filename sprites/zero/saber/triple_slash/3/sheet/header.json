@@ -1,0 +1,85 @@
+{
+  "data": [
+    {
+      "name": "0.png",
+      "ofs": 0,
+      "chunkSize": 176,
+      "props": [
+        "4bpp"
+      ]
+    },
+    {
+      "name": "1.png",
+      "ofs": 0,
+      "chunkSize": 200,
+      "props": [
+        "4bpp"
+      ]
+    },
+    {
+      "name": "2.png",
+      "ofs": 0,
+      "chunkSize": 216,
+      "props": [
+        "4bpp"
+      ]
+    },
+    {
+      "name": "3.png",
+      "ofs": 0,
+      "chunkSize": 216,
+      "props": [
+        "4bpp"
+      ]
+    },
+    {
+      "name": "4.png",
+      "ofs": 0,
+      "chunkSize": 168,
+      "props": [
+        "4bpp"
+      ]
+    },
+    {
+      "name": "5.png",
+      "ofs": 0,
+      "chunkSize": 184,
+      "props": [
+        "4bpp"
+      ]
+    },
+    {
+      "name": "6.png",
+      "ofs": 0,
+      "chunkSize": 224,
+      "props": [
+        "4bpp"
+      ]
+    },
+    {
+      "name": "7.png",
+      "ofs": 0,
+      "chunkSize": 192,
+      "props": [
+        "4bpp"
+      ]
+    },
+    {
+      "name": "8.png",
+      "ofs": 0,
+      "chunkSize": 184,
+      "props": [
+        "4bpp"
+      ]
+    },
+    {
+      "name": "9.png",
+      "ofs": 0,
+      "chunkSize": 144,
+      "props": [
+        "4bpp"
+      ]
+    }
+  ],
+  "label": "gGraphicHeader_Sprite_zero_saber_triple_slash_3"
+}

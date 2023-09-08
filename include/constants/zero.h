@@ -1,0 +1,42 @@
+#ifndef GUARD_RMZ3_CONST_ZERO_H
+#define GUARD_RMZ3_CONST_ZERO_H
+
+// KEY_INPUT, z->inputHistory
+#define COMMAND_DASH (1 << 12)
+
+#define ZERO_COLOR_NEUTRAL 0
+#define ZERO_COLOR_LIGHT 1
+#define ZERO_COLOR_ABSORBER 2
+#define ZERO_COLOR_THUNDER 3
+#define ZERO_COLOR_FLAME 4
+#define ZERO_COLOR_ICE 5
+#define ZERO_COLOR_PROTO 6
+#define ZERO_COLOR_ULTIMATE 7
+#define ZERO_COLOR_OMEGA 8
+
+#define ZERO_INPUT_PRESS_JUMP (1 << 0)  // ジャンプボタンがOFF->ON
+#define ZERO_INPUT_JUMP (1 << 1)
+#define ZERO_INPUT_PRESS_DASH (1 << 2)
+#define ZERO_INPUT_DASH (1 << 3)
+#define ZERO_INPUT_DPAD_RIGHT (1 << 4)
+#define ZERO_INPUT_DPAD_LEFT (1 << 5)
+#define ZERO_INPUT_DPAD_UP (1 << 6)
+#define ZERO_INPUT_DPAD_DOWN (1 << 7)
+#define ZERO_INPUT_PRESS_DPAD_RIGHT (1 << 8)
+#define ZERO_INPUT_PRESS_DPAD_LEFT (1 << 9)
+#define ZERO_INPUT_PRESS_DPAD_UP (1 << 10)
+#define ZERO_INPUT_PRESS_DPAD_DOWN (1 << 11)
+#define ZERO_INPUT_PRESS_MAIN_WEAPON (1 << 12)
+#define ZERO_INPUT_MAIN_WEAPON (1 << 13)
+#define ZERO_INPUT_PRESS_SUB_WEAPON (1 << 14)
+#define ZERO_INPUT_SUB_WEAPON (1 << 15)
+
+#define DASH 1
+#define SHADOW 2
+
+#define X_FLIP (1 << 4)
+#define Y_FLIP (1 << 5)
+
+#define AUTO_RECOVER 1
+
+#endif  // GUARD_RMZ3_CONST_ZERO_H

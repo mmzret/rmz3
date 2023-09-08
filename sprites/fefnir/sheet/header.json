@@ -1,0 +1,161 @@
+{
+  "data": [
+    {
+      "name": "0.png",
+      "ofs": 0,
+      "chunkSize": 488,
+      "props": [
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 1
+      }
+    },
+    {
+      "name": "1.png",
+      "ofs": 0,
+      "chunkSize": 240,
+      "props": [
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 1
+      }
+    },
+    {
+      "name": "2.png",
+      "ofs": 0,
+      "chunkSize": 920,
+      "props": [
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 1
+      }
+    },
+    {
+      "name": "3.png",
+      "ofs": 0,
+      "chunkSize": 992,
+      "props": [
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 1
+      }
+    },
+    {
+      "name": "4.png",
+      "ofs": 0,
+      "chunkSize": 1008,
+      "props": [
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 1
+      }
+    },
+    {
+      "name": "5.png",
+      "ofs": 0,
+      "chunkSize": 720,
+      "props": [
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 1
+      }
+    },
+    {
+      "name": "6.png",
+      "ofs": 0,
+      "chunkSize": 712,
+      "props": [
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 1
+      }
+    },
+    {
+      "name": "7.png",
+      "ofs": 0,
+      "chunkSize": 832,
+      "props": [
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 1
+      }
+    },
+    {
+      "name": "8.png",
+      "ofs": 0,
+      "chunkSize": 616,
+      "props": [
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 1
+      }
+    },
+    {
+      "name": "9.png",
+      "ofs": 0,
+      "chunkSize": 1008,
+      "props": [
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 1
+      }
+    },
+    {
+      "name": "10.png",
+      "ofs": 0,
+      "chunkSize": 912,
+      "props": [
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 1
+      }
+    },
+    {
+      "name": "11.png",
+      "ofs": 0,
+      "chunkSize": 904,
+      "props": [
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 1
+      }
+    },
+    {
+      "name": "12.png",
+      "ofs": 0,
+      "chunkSize": 640,
+      "props": [
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 1
+      }
+    }
+  ],
+  "label": "gGraphicHeader_Sprite_fefnir"
+}

@@ -74,8 +74,7 @@ struct ToneData {
 #define SOUND_CHANNEL_SF_ENV_DECAY 0x02
 #define SOUND_CHANNEL_SF_ENV_SUSTAIN 0x01
 #define SOUND_CHANNEL_SF_ENV_RELEASE 0x00
-#define SOUND_CHANNEL_SF_ON \
-  (SOUND_CHANNEL_SF_START | SOUND_CHANNEL_SF_STOP | SOUND_CHANNEL_SF_IEC | SOUND_CHANNEL_SF_ENV)
+#define SOUND_CHANNEL_SF_ON (SOUND_CHANNEL_SF_START | SOUND_CHANNEL_SF_STOP | SOUND_CHANNEL_SF_IEC | SOUND_CHANNEL_SF_ENV)
 
 #define CGB_CHANNEL_MO_PIT 0x02
 #define CGB_CHANNEL_MO_VOL 0x01
@@ -338,8 +337,6 @@ extern const u16 gPcmSamplesPerVBlankTable[];
 extern const u8 gCgbScaleTable[];
 extern const s16 gCgbFreqTable[];
 extern const u8 gNoiseTable[];
-
-extern const struct ToneData voicegroup000;
 
 extern char gNumMusicPlayers[];
 extern char gMaxLines[];

@@ -1,0 +1,101 @@
+{
+  "data": [
+    {
+      "name": "0.png",
+      "ofs": 512,
+      "chunkSize": 936,
+      "props": [
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 4
+      }
+    },
+    {
+      "name": "1.png",
+      "ofs": 512,
+      "chunkSize": 600,
+      "props": [
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 4
+      }
+    },
+    {
+      "name": "2.png",
+      "ofs": 512,
+      "chunkSize": 912,
+      "props": [
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 4
+      }
+    },
+    {
+      "name": "3.png",
+      "ofs": 512,
+      "chunkSize": 896,
+      "props": [
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 4
+      }
+    },
+    {
+      "name": "4.png",
+      "ofs": 512,
+      "chunkSize": 1000,
+      "props": [
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 4
+      }
+    },
+    {
+      "name": "5.png",
+      "ofs": 512,
+      "chunkSize": 912,
+      "props": [
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 4
+      }
+    },
+    {
+      "name": "6.png",
+      "ofs": 512,
+      "chunkSize": 968,
+      "props": [
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 4
+      }
+    },
+    {
+      "name": "7.png",
+      "ofs": 512,
+      "chunkSize": 992,
+      "props": [
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 4
+      }
+    }
+  ],
+  "label": "gGraphicHeader_Sprite_childre"
+}

@@ -1,0 +1,17 @@
+{
+  "data": [
+    {
+      "name": "0.lz.png",
+      "ofs": 512,
+      "chunkSize": 168,
+      "props": [
+        "lz77",
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 4
+      }
+    }
+  ]
+}

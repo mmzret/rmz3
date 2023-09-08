@@ -1,0 +1,9 @@
+#ifndef GUARD_RMZ3_CONST_MOD_H
+#define GUARD_RMZ3_CONST_MOD_H
+
+// Buster Bullet
+#define BULLET_MOD_DEFAULT 0
+#define BULLET_MOD_BLACK 1
+#define BULLET_MOD_REALISTIC 2
+
+#endif  // GUARD_RMZ3_CONST_MOD_H

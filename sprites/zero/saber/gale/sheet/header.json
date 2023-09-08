@@ -1,0 +1,29 @@
+{
+  "data": [
+    {
+      "name": "0.png",
+      "ofs": 0,
+      "chunkSize": 312,
+      "props": [
+        "4bpp"
+      ]
+    },
+    {
+      "name": "1.png",
+      "ofs": 0,
+      "chunkSize": 224,
+      "props": [
+        "4bpp"
+      ]
+    },
+    {
+      "name": "2.png",
+      "ofs": 0,
+      "chunkSize": 136,
+      "props": [
+        "4bpp"
+      ]
+    }
+  ],
+  "label": "gGraphicHeader_Sprite_zero_saber_gale"
+}

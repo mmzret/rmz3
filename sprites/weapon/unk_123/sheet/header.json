@@ -1,0 +1,21 @@
+{
+  "data": [
+    {
+      "name": "0.png",
+      "ofs": 48,
+      "chunkSize": 144,
+      "props": [
+        "4bpp"
+      ]
+    },
+    {
+      "name": "1.png",
+      "ofs": 48,
+      "chunkSize": 56,
+      "props": [
+        "4bpp"
+      ]
+    }
+  ],
+  "label": "gGraphicHeader_Sprite_weapon_unk_123"
+}

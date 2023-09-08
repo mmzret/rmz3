@@ -1,0 +1,93 @@
+{
+  "data": [
+    {
+      "name": "0.notrim.png",
+      "ofs": 48,
+      "chunkSize": 8,
+      "props": [
+        "4bpp"
+      ]
+    },
+    {
+      "name": "1.png",
+      "ofs": 48,
+      "chunkSize": 16,
+      "props": [
+        "4bpp"
+      ]
+    },
+    {
+      "name": "2.png",
+      "ofs": 48,
+      "chunkSize": 360,
+      "props": [
+        "4bpp"
+      ]
+    },
+    {
+      "name": "3.png",
+      "ofs": 48,
+      "chunkSize": 368,
+      "props": [
+        "4bpp"
+      ]
+    },
+    {
+      "name": "4.png",
+      "ofs": 48,
+      "chunkSize": 312,
+      "props": [
+        "4bpp"
+      ]
+    },
+    {
+      "name": "5.png",
+      "ofs": 48,
+      "chunkSize": 320,
+      "props": [
+        "4bpp"
+      ]
+    },
+    {
+      "name": "6.png",
+      "ofs": 48,
+      "chunkSize": 264,
+      "props": [
+        "4bpp"
+      ]
+    },
+    {
+      "name": "7.png",
+      "ofs": 48,
+      "chunkSize": 208,
+      "props": [
+        "4bpp"
+      ]
+    },
+    {
+      "name": "8.png",
+      "ofs": 48,
+      "chunkSize": 208,
+      "props": [
+        "4bpp"
+      ]
+    },
+    {
+      "name": "9.png",
+      "ofs": 48,
+      "chunkSize": 208,
+      "props": [
+        "4bpp"
+      ]
+    },
+    {
+      "name": "10.png",
+      "ofs": 48,
+      "chunkSize": 224,
+      "props": [
+        "4bpp"
+      ]
+    }
+  ],
+  "label": "gGraphicHeader_Sprite_weapon_charge_saber_air_101"
+}

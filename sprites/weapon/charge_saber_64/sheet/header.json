@@ -1,0 +1,69 @@
+{
+  "data": [
+    {
+      "name": "0.png",
+      "ofs": 48,
+      "chunkSize": 48,
+      "props": [
+        "4bpp"
+      ]
+    },
+    {
+      "name": "1.png",
+      "ofs": 48,
+      "chunkSize": 656,
+      "props": [
+        "4bpp"
+      ]
+    },
+    {
+      "name": "2.png",
+      "ofs": 48,
+      "chunkSize": 576,
+      "props": [
+        "4bpp"
+      ]
+    },
+    {
+      "name": "3.png",
+      "ofs": 48,
+      "chunkSize": 536,
+      "props": [
+        "4bpp"
+      ]
+    },
+    {
+      "name": "4.png",
+      "ofs": 48,
+      "chunkSize": 552,
+      "props": [
+        "4bpp"
+      ]
+    },
+    {
+      "name": "5.png",
+      "ofs": 48,
+      "chunkSize": 432,
+      "props": [
+        "4bpp"
+      ]
+    },
+    {
+      "name": "6.png",
+      "ofs": 48,
+      "chunkSize": 320,
+      "props": [
+        "4bpp"
+      ]
+    },
+    {
+      "name": "7.png",
+      "ofs": 48,
+      "chunkSize": 232,
+      "props": [
+        "4bpp"
+      ]
+    }
+  ],
+  "label": "gGraphicHeader_Sprite_weapon_charge_saber_64"
+}

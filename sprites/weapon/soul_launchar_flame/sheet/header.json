@@ -1,0 +1,21 @@
+{
+  "data": [
+    {
+      "name": "0.png",
+      "ofs": 68,
+      "chunkSize": 160,
+      "props": [
+        "4bpp"
+      ]
+    },
+    {
+      "name": "1.png",
+      "ofs": 68,
+      "chunkSize": 48,
+      "props": [
+        "4bpp"
+      ]
+    }
+  ],
+  "label": "gGraphicHeader_Sprite_weapon_soul_launchar_flame"
+}

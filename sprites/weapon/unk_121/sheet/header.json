@@ -1,0 +1,29 @@
+{
+  "data": [
+    {
+      "name": "0.notrim.png",
+      "ofs": 48,
+      "chunkSize": 104,
+      "props": [
+        "4bpp"
+      ]
+    },
+    {
+      "name": "1.png",
+      "ofs": 48,
+      "chunkSize": 128,
+      "props": [
+        "4bpp"
+      ]
+    },
+    {
+      "name": "2.png",
+      "ofs": 48,
+      "chunkSize": 64,
+      "props": [
+        "4bpp"
+      ]
+    }
+  ],
+  "label": "gGraphicHeader_Sprite_weapon_unk_121"
+}

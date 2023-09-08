@@ -1,0 +1,17 @@
+{
+  "data": [
+    {
+      "name": "0.png",
+      "ofs": 380,
+      "chunkSize": 192,
+      "props": [
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 2
+      }
+    }
+  ],
+  "label": "gGraphicHeader_Sprite_old_residential_door"
+}

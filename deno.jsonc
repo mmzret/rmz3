@@ -1,0 +1,25 @@
+{
+  "compilerOptions": {
+    "lib": ["deno.window"],
+    "strict": true
+  },
+  "lint": {
+    "files": {
+      "include": ["tools"]
+    },
+    "rules": {
+      "tags": ["recommended"]
+    }
+  },
+  "fmt": {
+    "files": {
+      "include": ["deno.jsonc", "tools"]
+    },
+    "options": {
+      "useTabs": false,
+      "lineWidth": 1000, // I hate line wrapping
+      "indentWidth": 2,
+      "singleQuote": true
+    }
+  }
+}

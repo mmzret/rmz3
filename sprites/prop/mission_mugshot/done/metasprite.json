@@ -1,0 +1,20 @@
+{
+  "data": [
+    {
+      "sheetIdx": 0,
+      "subsprites": [
+        {
+          "tileNum": 0,
+          "xflip": false,
+          "yflip": false,
+          "size": [
+            64,
+            64
+          ],
+          "x": -24,
+          "y": -24
+        }
+      ]
+    }
+  ]
+}

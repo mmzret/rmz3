@@ -1,132 +1,78 @@
 #ifndef GUARD_RMZ3_STAGE_H
 #define GUARD_RMZ3_STAGE_H
 
-#include "gba/gba.h"
-#include "global.h"
+#include "common.h"
+#include "entity.h"
+#include "overworld_entity.h"
+#include "types.h"
 
-// 8x8タイルが2x2枚集まったもの(16x16px)
-typedef u16 TileBlock[4];
+typedef u32 (*AreaChecker)(struct Coord*);
 
-// タイルブロックを識別するためのID
-typedef u16 MapBlockID;
+extern const struct EntityTemplate gStage0Entity[2];
+extern const struct EntityTemplate gSpaceCraftEntity[26];
+extern const struct EntityTemplate gVolcanoEntity[51];
+extern const struct EntityTemplate gOceanEntity[31];
+extern const struct EntityTemplate gRepairFactoryEntity[38];
+extern const struct EntityTemplate gOldLifeSpaceEntity[37];
+extern const struct EntityTemplate gMissileFactoryEntity[35];
+extern const struct EntityTemplate gTwilightDesertEntity[31];
+extern const struct EntityTemplate gAnatreForestEntity[34];
+extern const struct EntityTemplate gIceBaseEntity[38];
+extern const struct EntityTemplate gAreaX2Entity[36];
+extern const struct EntityTemplate gEnergyFacilityEntity[51];
+extern const struct EntityTemplate gSnowyPlainsEntity[27];
+extern const struct EntityTemplate gSunkenLibraryEntity[37];
+extern const struct EntityTemplate gGiantElevatorEntity[41];
+extern const struct EntityTemplate gSubArcadiaEntity[36];
+extern const struct EntityTemplate gWeilLaboEntity[50];
+extern const struct EntityTemplate gResistanceBaseEntity[64];
 
-// TileBlock に対するプロパティ
-struct __attribute__((packed, aligned(2))) BlockAttr {
-  u8 unk_0;
+// --------------------------------------------
 
-  // bit2: 蟻地獄(どんどん沈んでいく)
-  u8 special;
-};
+extern const struct PreloadEntity sStage0StaticTemplate[1];
+extern const struct PreloadEntity gSpaceCraftStatic[8];
+extern const struct PreloadEntity gVolcanoStatic[20];
+extern const struct PreloadEntity gOceanStatic[17];
+extern const struct PreloadEntity gRepairFactoryStatic[13];
+extern const struct PreloadEntity gOldLifeSpaceStatic[15];
+extern const struct PreloadEntity gMissileFactoryStatic[14];
+extern const struct PreloadEntity gTwilightDesertStatic[13];
+extern const struct PreloadEntity gAnatreForestStatic[16];
+extern const struct PreloadEntity gIceBaseStatic[18];
+extern const struct PreloadEntity gAreaX2Static[13];
+extern const struct PreloadEntity gEnergyFacilityStatic[16];
+extern const struct PreloadEntity gSnowyPlainsStatic[13];
+extern const struct PreloadEntity gSunkenLibraryStatic[12];
+extern const struct PreloadEntity gGiantElevatorStatic[19];
+extern const struct PreloadEntity gSubArcadiaStatic[14];
+extern const struct PreloadEntity gWeilLaboStatic[13];
+extern const struct PreloadEntity gResistanceBaseStatic[41];
 
-typedef union {
-  struct BlockAttr;
-  u16 val;
-} BlockAttr_t;
+// --------------------------------------------
 
-// TileBlock(のID)を 15x10ブロック集めて画面全体のグラフィックを表すようにしたもの
-typedef u16 Screen[150];
+extern const struct EntityTemplateCoord gStage0EntityCoord[2];
+extern const struct EntityTemplateCoord gSpaceCraftEntityCoord[68];
+extern const struct EntityTemplateCoord gVolcanoEntityCoord[69];
+extern const struct EntityTemplateCoord gOceanEntityCoord[86];
+extern const struct EntityTemplateCoord gRepairFactoryEntityCoord[73];
+extern const struct EntityTemplateCoord gOldLifeSpaceEntityCoord[159];
+extern const struct EntityTemplateCoord gMissileFactoryEntityCoord[82];
+extern const struct EntityTemplateCoord gTwilightDesertEntityCoord[59];
+extern const struct EntityTemplateCoord gAnatreForestEntityCoord[56];
+extern const struct EntityTemplateCoord gIceBaseEntityCoord[107];
+extern const struct EntityTemplateCoord gAreaX2EntityCoord[88];
+extern const struct EntityTemplateCoord gEnergyFacilityEntityCoord[118];
+extern const struct EntityTemplateCoord gSnowyPlainsEntityCoord[78];
+extern const struct EntityTemplateCoord gSunkenLibraryEntityCoord[99];
+extern const struct EntityTemplateCoord gGiantElevatorEntityCoord[65];
+extern const struct EntityTemplateCoord gSubArcadiaEntityCoord[62];
+extern const struct EntityTemplateCoord gWeilLaboEntityCoord[68];
+extern const struct EntityTemplateCoord gResistanceBaseEntityCoord[241];
 
-/*
-  BlockMap(0x020029e4)に Screen をどう配置するかのデータ
-*/
-struct ScreenMap {
-  u8 realWidth;
-  u8 skip;    // そのステージでのSKIP値を格納する
-  u8 width;   // ステージの横幅が画面何枚分か
-  u8 height;  // ステージの縦幅が画面何枚分か
-};
+struct Entity* CreateStageEntity(u8 kind, u8 id);
+void DeleteStageEntity(struct CollidableEntity* e);
 
-// ステージの静的な情報
-struct Stage {
-  u32 id;  // ステージID
-  void *fn[4];
-  s32 *terrain;
-  struct ScreenMap *maps[3];
-  u8 unk_24[84];
-  void *unk_108;
-  void *unk_112;
-  void *unk_116;
-  u8 unk_120[8];
-};
-
-struct TerrainShift {
-  s16 x;      // ブロック単位
-  s16 y;      // ブロック単位
-  s16 block;  // 動かすブロックの数
-  s16 row;
-};
-
-// e.g. 0833ccf0
-struct TerrainPatch {
-  u16 w;  // パッチの横のブロック数
-  u16 h;  // パッチの縦のブロック数
-
-  /*
-    この後に
-    MapBlockID patchs[w*h];
-    が続いている
-  */
-};
-
-// 命名未定
-struct astruct_9 {
-  struct Coord c;
-  u16 bgofs[2];
-  void *terrain;
-  Screen *screens;
-  struct ScreenMap *map;
-};  // 24 bytes
-
-// ステージ中のBG(BG1 or BG2 or BG3)
-struct StageBg {
-  void *fn_00;
-  void *fn_04;
-  void *exit;
-  u16 unk_12;
-  u8 initalized;
-  u8 unk_15;
-  u32 unk_16;
-  struct astruct_9 unk_20;
-  struct Coord unk_44;
-  struct Coord screen;       // 現在の画面中央 >> 8
-  struct Coord prevScreen;   // 1フレーム?前の.screen
-  struct Coord scrollPower;  // .scroll の1単位ごとのスクロール度合い
-  struct Coord scroll;
-  struct Coord scrollCopy;
-  u32 unk_bg;  // bit4-8がbgcntのn(BGnか)
-  u32 bgcnt1;  // 参照: 0800d12a
-  u32 bgcnt2;
-  u32 frameCounter;  // 例: 壊れた宇宙船で背景の雲の流れと連動
-  u8 unk_108[28];
-};  // 136 bytes
-
-struct Terrain {
-  union BlockAttr_t *attrs;
-  TileBlock *blocks;
-  Screen *screens;
-  struct ScreenMap *map;
-};  // 16 bytes
-
-// 0x20029e0
-struct BlockMap {
-  u16 w;
-  u16 pad;
-  u16 map[89102];
-};  // 178208 bytes
-
-// 0x02002200
-struct CurStage {
-  u8 Unk02002200[24];
-  u8 unk_24[8];
-  struct StageBg bgs[3];
-  struct Terrain terrain;
-  struct Coord screen;
-  u16 id;              // ステージID
-  u8 blockings[1538];  // ステージで通り抜け不能なオブジェクト
-  u16 tilesets[2];
-  u16 enableBg;  // DISPCNTの bit8..11 つまり BGn有効フラグ
-  u16 savedBgCnt[3];
-  struct BlockMap bm;
-};  // 180224 bytes
+// clang-format off
+extern const AreaChecker gAreaCheckers[STAGE_COUNT];
 
 #endif  // GUARD_RMZ3_STAGE_H

@@ -16,7 +16,7 @@ echo "export DEVKITARM=$DEVKITARM" >> ~/.bashrc
 ## Installation
 
 ```sh
-> git clone https://github.com/pokemium/rmz3
+> git clone https://github.com/mmzret/rmz3
 
 # install agbcc
 > git clone https://github.com/pret/agbcc
@@ -36,9 +36,9 @@ echo "export DEVKITARM=$DEVKITARM" >> ~/.bashrc
 > cd ../rmz3/tools/gbagfx
 > make
 
-# install pokemium/rmz-text-compiler
+# install mmzret/rmz-text-compiler
 > cd ../../../
-> git clone https://github.com/pokemium/rmz-text-compiler
+> git clone https://github.com/mmzret/rmz-text-compiler
 > cd ./rmz-text-compiler
 > cargo build --release
 > cp ./target/release/rmz-text-compiler ../rmz3/tools/rmz-text-compiler

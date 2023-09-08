@@ -1,0 +1,19 @@
+.include "asm/macros.inc"
+ 
+
+.section .rodata
+.balign 4, 0
+
+se_omega1_growl_mml:
+  .byte 0xBC, 0x00, 0xBB, 0x32, 0xBD, 0x47, 0xBE, 0x6A, 0xBF, 0x40, 0xCF, 0x28, 0x7F, 0xB0, 0xB0, 0xCE, 0xB1, 0x00, 0x00, 0x00
+
+@;@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+
+se_omega1_growl:
+  .byte	1	@ NumTrks
+  .byte	0	@ NumBlks
+  .byte 0x14
+  .byte 0
+  .4byte voicegroup002
+  .4byte se_omega1_growl_mml+0
+

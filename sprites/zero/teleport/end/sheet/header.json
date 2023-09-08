@@ -1,0 +1,69 @@
+{
+  "data": [
+    {
+      "name": "0.png",
+      "ofs": 0,
+      "chunkSize": 208,
+      "props": [
+        "4bpp"
+      ]
+    },
+    {
+      "name": "1.notrim.png",
+      "ofs": 0,
+      "chunkSize": 128,
+      "props": [
+        "4bpp"
+      ]
+    },
+    {
+      "name": "2.png",
+      "ofs": 0,
+      "chunkSize": 192,
+      "props": [
+        "4bpp"
+      ]
+    },
+    {
+      "name": "3.png",
+      "ofs": 0,
+      "chunkSize": 336,
+      "props": [
+        "4bpp"
+      ]
+    },
+    {
+      "name": "4.png",
+      "ofs": 0,
+      "chunkSize": 384,
+      "props": [
+        "4bpp"
+      ]
+    },
+    {
+      "name": "5.png",
+      "ofs": 0,
+      "chunkSize": 232,
+      "props": [
+        "4bpp"
+      ]
+    },
+    {
+      "name": "6.png",
+      "ofs": 0,
+      "chunkSize": 216,
+      "props": [
+        "4bpp"
+      ]
+    },
+    {
+      "name": "7.png",
+      "ofs": 0,
+      "chunkSize": 328,
+      "props": [
+        "4bpp"
+      ]
+    }
+  ],
+  "label": "gGraphicHeader_Sprite_zero_teleport_end"
+}

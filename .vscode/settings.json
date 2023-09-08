@@ -1,9 +1,15 @@
 {   
     "deno.enable": true,
     "deno.enablePaths": ["tools/"],
+    "deno.config": "./deno.jsonc",
+    "editor.tabSize": 2,
     
     "[typescript]": {
         "editor.defaultFormatter": "denoland.vscode-deno",
+        "editor.formatOnSave": true
+    },
+    
+    "[json]": {
         "editor.formatOnSave": true
     },
 
@@ -11,10 +17,19 @@
         "editor.wordBasedSuggestions": false,
         "editor.suggest.insertMode": "replace",
         "editor.semanticHighlighting.enabled": true,
-        "editor.formatOnSave": true
+        "editor.formatOnSave": true,
+        "editor.insertSpaces": true,
+        "editor.detectIndentation":false
     },
 
-    "C_Cpp.clang_format_fallbackStyle": "{ BasedOnStyle: Google, ColumnLimit: 120 }",
+    "[linkerscript]": {
+        "editor.suggest.insertMode": "replace",
+        "editor.formatOnSave": true,
+        "editor.insertSpaces": true,
+        "editor.detectIndentation":false
+    },
+
+    "C_Cpp.clang_format_fallbackStyle": "{ BasedOnStyle: Google, ColumnLimit: 1000 }",
     "files.exclude": {
         "**/.git": true,
         "**/.svn": true,
@@ -26,9 +41,33 @@
         "tools/binutils": true,
         "*.sav": true,
         "*.elf": true,
+        "**/*.gfx": true,
+        "graphics/**/*.4bpp": true,
+        "sprites/**/*.4bpp": true,
+        "graphics/**/*.lz": true,
+        "sprites/**/*.lz": true,
+        "graphics/**/*.gbapal": true,
+        "sprites/**/*.gbapal": true,
+        "sprites/**/*.inc": true,
+        "sprites/*.s": true,
         "*.sha1": true,
         "**/*.o": true,
-        "rmz3.map": true,
         "baserom.gba": true,
+        "src/**/*.s": true,
+        "sound/songs/midi/*.s": false,
+        "src/libs": true,
+        "tools/gbagfx": true,
+    },
+    "files.associations": {
+        "*.ino": "cpp",
+        "*.tsx": "typescriptreact",
+        "*.s": "arm",
+        "*.inc": "arm",
+        "*.h": "c",
+        "hooks": "plaintext",
+        "bytereplacement": "plaintext",
+        "repoints": "plaintext",
+        "routinepointers": "plaintext",
+        "**/linker/*.txt": "linkerscript"
     }
 }

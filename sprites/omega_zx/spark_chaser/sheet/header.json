@@ -1,0 +1,17 @@
+{
+  "data": [
+    {
+      "name": "0.png",
+      "ofs": 729,
+      "chunkSize": 120,
+      "props": [
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 7
+      }
+    }
+  ],
+  "label": "gGraphicHeader_Sprite_omega_zx_spark_chaser"
+}

@@ -1,18 +1,16 @@
 #include "gba/m4a_internal.h"
 
-#define PLY_FINE 0x080fc848
-#define PLY_GOTO 0x080fc8b8
-
+// clang-format off
 void* const gMPlayJumpTableTemplate[] = {
-    (void*)(PLY_FINE + 1),
-    (void*)(PLY_GOTO + 1),
+    ply_fine,
+    ply_goto,
     ply_patt,
     ply_pend,
     ply_rept,
-    (void*)(PLY_FINE + 1),
-    (void*)(PLY_FINE + 1),
-    (void*)(PLY_FINE + 1),
-    (void*)(PLY_FINE + 1),
+    ply_fine,
+    ply_fine,
+    ply_fine,
+    ply_fine,
     ply_prio,
     ply_tempo,
     ply_keysh,
@@ -25,14 +23,14 @@ void* const gMPlayJumpTableTemplate[] = {
     ply_lfodl,
     ply_mod,
     ply_modt,
-    (void*)(PLY_FINE + 1),
-    (void*)(PLY_FINE + 1),
+    ply_fine,
+    ply_fine,
     ply_tune,
-    (void*)(PLY_FINE + 1),
-    (void*)(PLY_FINE + 1),
-    (void*)(PLY_FINE + 1),
+    ply_fine,
+    ply_fine,
+    ply_fine,
     ply_port,
-    (void*)(PLY_FINE + 1),
+    ply_fine,
     ply_endtie,
     SampleFreqSet,
     TrackStop,
@@ -99,3 +97,4 @@ const XcmdFunc gXcmdTable[] = {
     ply_xxx,   ply_xwave, ply_xtype, ply_xxx,   ply_xatta, ply_xdeca,
     ply_xsust, ply_xrele, ply_xiecv, ply_xiecl, ply_xleng, ply_xswee,
 };
+// clang-format on

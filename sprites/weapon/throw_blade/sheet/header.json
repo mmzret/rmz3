@@ -1,0 +1,21 @@
+{
+  "data": [
+    {
+      "name": "0.png",
+      "ofs": 48,
+      "chunkSize": 184,
+      "props": [
+        "4bpp"
+      ]
+    },
+    {
+      "name": "1.png",
+      "ofs": 48,
+      "chunkSize": 384,
+      "props": [
+        "4bpp"
+      ]
+    }
+  ],
+  "label": "gGraphicHeader_Sprite_weapon_throw_blade"
+}

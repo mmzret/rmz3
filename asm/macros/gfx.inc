@@ -16,8 +16,23 @@
         .set GFX_INC_IDX, GFX_INC_IDX+1
     .endm
 
+    .macro graphic_raw src:req, size:req, ofs:req, chunk_size:req, props:req
+        .4byte \src
+        .2byte \size
+        .2byte \ofs << 6
+        .2byte \chunk_size
+        .2byte \props
+    .endm
+
     .macro palette src:req, length:req, lz77:req, dst:req
         .4byte \src + (20*(GFX_INC_IDX-1)) + 12 - .
+        .2byte \length << 1
+        .byte \lz77
+        .byte \dst
+    .endm
+
+    .macro palette_raw src:req, length:req, lz77:req, dst:req
+        .4byte \src
         .2byte \length << 1
         .byte \lz77
         .byte \dst

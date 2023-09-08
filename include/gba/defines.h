@@ -7,16 +7,24 @@
 #define FALSE 0
 
 #define BSS_DATA __attribute__((section(".bss")))
+
 #define IWRAM_DATA __attribute__((section("iwram_data")))
 #define EWRAM_DATA __attribute__((section("ewram_data")))
-#define UNUSED __attribute__((unused))
+
 #define NAKED __attribute__((naked))
+#define UNUSED __attribute__((unused))
+#define PACKED __attribute__((packed))
+#define LONGCALL __attribute__((long_call))
+
+#if MODERN
+#define FALLTHROUGH __attribute__((fallthrough));
+#else
+#define FALLTHROUGH
+#endif
 
 #define ALIGNED(n) __attribute__((aligned(n)))
 
-#define SOUND_INFO_PTR (*(struct SoundInfo **)0x3007FF0)
-#define INTR_CHECK (*(u16 *)0x3007FF8)
-#define INTR_VECTOR (*(void **)0x3007FFC)
+extern struct SoundInfo *SOUND_INFO_PTR;
 
 #define EWRAM 0x2000000
 #define IWRAM 0x3000000
@@ -64,5 +72,16 @@
 #define RGB_WHITE RGB(31, 31, 31)
 
 #define WIN_RANGE(a, b) (((a) << 8) | (b))
+
+// Program logic is probably correct for NON_MATCH, but unknown for WIP.
+#if MODERN
+#define WIP
+#define NON_MATCH
+#define NORETURN __attribute__((noreturn))
+#else
+#define WIP __attribute__((naked))
+#define NON_MATCH __attribute__((naked))
+#define NORETURN
+#endif
 
 #endif  // GUARD_GBA_DEFINES

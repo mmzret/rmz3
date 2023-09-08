@@ -1,0 +1,37 @@
+{
+  "data": [
+    {
+      "name": "0.notrim.png",
+      "ofs": 80,
+      "chunkSize": 128,
+      "props": [
+        "4bpp"
+      ]
+    },
+    {
+      "name": "1.notrim.png",
+      "ofs": 80,
+      "chunkSize": 128,
+      "props": [
+        "4bpp"
+      ]
+    },
+    {
+      "name": "2.notrim.png",
+      "ofs": 80,
+      "chunkSize": 128,
+      "props": [
+        "4bpp"
+      ]
+    },
+    {
+      "name": "3.notrim.png",
+      "ofs": 80,
+      "chunkSize": 128,
+      "props": [
+        "4bpp"
+      ]
+    }
+  ],
+  "label": "gGraphicHeader_Sprite_weapon_unk_89"
+}

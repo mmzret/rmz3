@@ -3,252 +3,9 @@
 	.syntax unified
 	
 	.text
-	
-	thumb_func_start minigameScript
-minigameScript: @ 0x080F8D20
-	push {lr}
-	ldr r2, _080F8D34 @ =0x08386A8C
-	ldrb r1, [r0, #2]
-	lsls r1, r1, #2
-	adds r1, r1, r2
-	ldr r1, [r1]
-	bl _call_via_r1
-	pop {r0}
-	bx r0
-	.align 2, 0
-_080F8D34: .4byte 0x08386A8C
 
-	thumb_func_start initMinigame
-initMinigame: @ 0x080F8D38
-	push {r4, r5, r6, r7, lr}
-	mov r7, sl
-	mov r6, sb
-	mov r5, r8
-	push {r5, r6, r7}
-	adds r5, r0, #0
-	ldr r0, _080F8ED8 @ =0x00000DB8
-	adds r0, r0, r5
-	mov sl, r0
-	ldr r7, _080F8EDC @ =0x03002AC0
-	ldr r1, _080F8EE0 @ =0x00000402
-	adds r1, r1, r7
-	mov sb, r1
-	movs r2, #0
-	mov r8, r2
-	movs r0, #0x20
-	strb r0, [r1]
-	ldr r3, _080F8EE4 @ =0x00000401
-	adds r6, r7, r3
-	strb r0, [r6]
-	movs r1, #0x80
-	lsls r1, r1, #3
-	adds r4, r7, r1
-	strb r0, [r4]
-	movs r2, #0x81
-	lsls r2, r2, #3
-	adds r0, r7, r2
-	mov r3, r8
-	str r3, [r0]
-	bl clearBlinkings
-	ldr r0, _080F8EE8 @ =0x02002180
-	movs r2, #0
-	mov r1, r8
-	strh r1, [r0]
-	ldr r1, _080F8EEC @ =0x02002190
-	mov r3, r8
-	strh r3, [r1]
-	movs r0, #0xff
-	strb r0, [r1, #0xe]
-	ldr r0, _080F8EF0 @ =0x020021A0
-	strh r3, [r0]
-	strh r3, [r7]
-	mov r0, sb
-	strb r2, [r0]
-	strb r2, [r6]
-	strb r2, [r4]
-	ldr r2, _080F8EF4 @ =0x02002140
-	ldrh r1, [r2]
-	ldr r0, _080F8EF8 @ =0x0000FFF8
-	ands r0, r1
-	ldr r1, _080F8EFC @ =0x0000F0FF
-	ands r0, r1
-	movs r3, #0x80
-	lsls r3, r3, #1
-	adds r1, r3, #0
-	orrs r0, r1
-	strh r0, [r2]
-	ldr r4, _080F8F00 @ =0x00001ED8
-	adds r4, r4, r5
-	mov sb, r4
-	movs r6, #1
-	rsbs r6, r6, #0
-	str r6, [r4]
-	ldr r1, _080F8F04 @ =0x00001EDC
-	adds r0, r5, r1
-	mov r2, r8
-	strh r2, [r0]
-	ldr r3, _080F8F08 @ =0x00000DC4
-	adds r1, r5, r3
-	mov r0, sl
-	movs r2, #0
-	movs r3, #0
-	bl FUN_0800469c
-	movs r0, #0x9a
-	lsls r0, r0, #4
-	adds r4, r5, r0
-	adds r0, r4, #0
-	bl FUN_08004e14
-	adds r0, r4, #0
-	mov r1, sl
-	bl FUN_08004e4c
-	bl FUN_08007084
-	bl resetData_08016db4
-	ldr r1, _080F8F0C @ =0x0202F388
-	ldr r2, _080F8F10 @ =0x00006260
-	adds r0, r5, r2
-	ldrh r0, [r0]
-	str r0, [r1]
-	ldr r0, _080F8F14 @ =0x0202F334
-	str r6, [r0]
-	ldr r0, _080F8F18 @ =0x0202F384
-	mov r3, sb
-	str r3, [r0]
-	ldr r1, _080F8F1C @ =0x0202F340
-	ldr r4, _080F8F20 @ =0x000064AC
-	adds r0, r5, r4
-	ldr r0, [r0]
-	str r0, [r1]
-	movs r1, #0x81
-	lsls r1, r1, #4
-	adds r0, r5, r1
-	ldr r1, _080F8F24 @ =0x02037C60
-	movs r2, #1
-	bl initZeroStateHeader
-	ldr r2, _080F8F28 @ =0x00000838
-	adds r0, r5, r2
-	ldr r1, _080F8F2C @ =0x02038FD0
-	movs r2, #0x18
-	bl initWeaponHeader
-	ldr r3, _080F8F30 @ =0x00000888
-	adds r0, r5, r3
-	ldr r1, _080F8F34 @ =0x03004B80
-	movs r2, #0x12
-	bl initZakoHeader
-	movs r4, #0x8b
-	lsls r4, r4, #4
-	adds r0, r5, r4
-	ldr r1, _080F8F38 @ =0x03003920
-	movs r2, #0x18
-	bl initAtkStateHeader
-	ldr r1, _080F8F3C @ =0x000008D8
-	adds r0, r5, r1
-	ldr r1, _080F8F40 @ =0x03005950
-	movs r2, #0x40
-	bl initGhostHeader
-	movs r2, #0x90
-	lsls r2, r2, #4
-	adds r0, r5, r2
-	ldr r1, _080F8F44 @ =0x0203A5F0
-	movs r2, #0x16
-	bl initStaticHeader
-	ldr r3, _080F8F48 @ =0x00000928
-	adds r0, r5, r3
-	ldr r1, _080F8F4C @ =0x02037EF0
-	movs r2, #0xa
-	bl initMapItemHeader
-	ldr r0, _080F8F50 @ =0x02030B70
-	bl setBG0MaskPointer
-	movs r4, #0xe8
-	lsls r4, r4, #2
-	adds r4, r4, r7
-	mov ip, r4
-	movs r0, #0xe9
-	lsls r0, r0, #2
-	adds r0, r0, r7
-	mov sl, r0
-	movs r1, #0xea
-	lsls r1, r1, #2
-	adds r1, r1, r7
-	mov sb, r1
-	movs r2, #0xec
-	lsls r2, r2, #2
-	adds r3, r7, r2
-	movs r4, #0xed
-	lsls r4, r4, #2
-	adds r2, r7, r4
-	movs r0, #0xee
-	lsls r0, r0, #2
-	adds r1, r7, r0
-	adds r4, #8
-	adds r0, r7, r4
-	str r6, [r0]
-	str r6, [r1]
-	str r6, [r2]
-	str r6, [r3]
-	ldr r0, _080F8F54 @ =0x03002E6C
-	str r6, [r0]
-	mov r1, sb
-	str r6, [r1]
-	mov r2, sl
-	str r6, [r2]
-	mov r3, ip
-	str r6, [r3]
-	ldr r1, _080F8F58 @ =0x08386A98
-	ldrb r0, [r5, #1]
-	lsls r0, r0, #2
-	adds r0, r0, r1
-	ldr r1, [r0]
-	adds r0, r5, #0
-	bl _call_via_r1
-	mov r4, r8
-	strh r4, [r5, #4]
-	ldrb r0, [r5, #2]
-	adds r0, #1
-	strb r0, [r5, #2]
-	pop {r3, r4, r5}
-	mov r8, r3
-	mov sb, r4
-	mov sl, r5
-	pop {r4, r5, r6, r7}
-	pop {r0}
-	bx r0
-	.align 2, 0
-_080F8ED8: .4byte 0x00000DB8
-_080F8EDC: .4byte 0x03002AC0
-_080F8EE0: .4byte 0x00000402
-_080F8EE4: .4byte 0x00000401
-_080F8EE8: .4byte 0x02002180
-_080F8EEC: .4byte 0x02002190
-_080F8EF0: .4byte 0x020021A0
-_080F8EF4: .4byte 0x02002140
-_080F8EF8: .4byte 0x0000FFF8
-_080F8EFC: .4byte 0x0000F0FF
-_080F8F00: .4byte 0x00001ED8
-_080F8F04: .4byte 0x00001EDC
-_080F8F08: .4byte 0x00000DC4
-_080F8F0C: .4byte 0x0202F388
-_080F8F10: .4byte 0x00006260
-_080F8F14: .4byte 0x0202F334
-_080F8F18: .4byte 0x0202F384
-_080F8F1C: .4byte 0x0202F340
-_080F8F20: .4byte 0x000064AC
-_080F8F24: .4byte 0x02037C60
-_080F8F28: .4byte 0x00000838
-_080F8F2C: .4byte 0x02038FD0
-_080F8F30: .4byte 0x00000888
-_080F8F34: .4byte 0x03004B80
-_080F8F38: .4byte 0x03003920
-_080F8F3C: .4byte 0x000008D8
-_080F8F40: .4byte 0x03005950
-_080F8F44: .4byte 0x0203A5F0
-_080F8F48: .4byte 0x00000928
-_080F8F4C: .4byte 0x02037EF0
-_080F8F50: .4byte 0x02030B70
-_080F8F54: .4byte 0x03002E6C
-_080F8F58: .4byte 0x08386A98
-
-	thumb_func_start minigame_080f8f5c
-minigame_080f8f5c: @ 0x080F8F5C
+	thumb_func_start MinigameLoop_Main
+MinigameLoop_Main: @ 0x080F8F5C
 	push {r4, r5, r6, r7, lr}
 	mov r7, sl
 	mov r6, sb
@@ -264,21 +21,21 @@ minigame_080f8f5c: @ 0x080F8F5C
 	adds r0, #1
 	adds r1, r0, #0
 	strh r0, [r6, #4]
-	ldr r2, _080F8F88 @ =0x03002AC0
+	ldr r2, _080F8F88 @ =gPaletteManager
 	ldr r3, _080F8F8C @ =0x00000402
 	adds r0, r2, r3
 	strb r1, [r0]
 	movs r0, #0xff
 	b _080F8FA4
 	.align 2, 0
-_080F8F88: .4byte 0x03002AC0
+_080F8F88: .4byte gPaletteManager
 _080F8F8C: .4byte 0x00000402
 _080F8F90:
 	cmp r1, #0x20
 	ble _080F8FB4
 	subs r0, #1
 	strh r0, [r6, #4]
-	ldr r2, _080F9170 @ =0x03002AC0
+	ldr r2, _080F9170 @ =gPaletteManager
 	subs r0, #0x20
 	ldr r3, _080F9174 @ =0x00000402
 	adds r1, r2, r3
@@ -302,7 +59,7 @@ _080F8FB4:
 	movs r3, #0x9a
 	lsls r3, r3, #4
 	adds r0, r6, r3
-	bl FUN_08004f00
+	bl ClearTaskBuffer
 	ldr r1, _080F917C @ =0x0202F354
 	movs r0, #0
 	strb r0, [r1]
@@ -374,107 +131,107 @@ _080F904A:
 	mov r1, r8
 	strb r2, [r1]
 _080F9058:
-	ldr r5, _080F9194 @ =0x020302F0
+	ldr r5, _080F9194 @ =gSolidHeaderPtr
 	ldr r0, [r5]
-	bl FUN_08016e4c
-	ldr r7, _080F9198 @ =0x020302A8
+	bl UpdateBlockingEntities
+	ldr r7, _080F9198 @ =gZakoHeaderPtr
 	ldr r0, [r7]
-	bl FUN_08016e4c
+	bl UpdateBlockingEntities
 	ldr r3, _080F919C @ =0x0203029C
 	mov r8, r3
 	ldr r0, [r3]
-	bl runEntityFn
-	bl runGameStateFn
-	ldr r4, _080F91A0 @ =0x020302A0
+	bl UpdateEntities
+	bl UpdateProjectiles
+	ldr r4, _080F91A0 @ =gWeaponHeaderPtr
 	ldr r0, [r4]
-	bl runEntityFn
-	ldr r0, _080F91A4 @ =0x020302F4
+	bl UpdateEntities
+	ldr r0, _080F91A4 @ =gMapItemHeaderPtr
 	mov sb, r0
 	ldr r0, [r0]
-	bl runEntityFn
-	bl runGhostObjFns
-	bl clearUnkHitboxes
+	bl UpdateEntities
+	bl UpdateVFXs
+	bl ClearAllHitboxes
 	ldr r0, [r5]
-	bl FUN_08016e8c
+	bl RegisterHitboxes
 	ldr r0, [r7]
-	bl FUN_08016e8c
+	bl RegisterHitboxes
 	mov r1, r8
 	ldr r0, [r1]
-	bl FUN_08016e8c
-	ldr r2, _080F91A8 @ =0x020302B8
+	bl RegisterHitboxes
+	ldr r2, _080F91A8 @ =gProjectileHeaderPtr
 	mov sl, r2
 	ldr r0, [r2]
-	bl FUN_08016e8c
+	bl RegisterHitboxes
 	ldr r0, [r4]
-	bl FUN_08016e8c
+	bl RegisterHitboxes
 	mov r3, sb
 	ldr r0, [r3]
-	bl FUN_08016e8c
+	bl RegisterHitboxes
 	ldrb r0, [r6, #1]
 	cmp r0, #1
 	beq _080F90CA
 	ldr r1, _080F91AC @ =0x00000DC4
 	adds r0, r6, r1
-	bl runStageScript
+	bl UpdateStageLandscape
 _080F90CA:
-	bl decrementPauseFrame
+	bl CheckCollision
 	ldr r0, [r5]
-	bl runDamageEffect
+	bl RunDamageEffect
 	ldr r0, [r7]
-	bl runDamageEffect
+	bl RunDamageEffect
 	mov r2, r8
 	ldr r0, [r2]
-	bl runDamageEffect
+	bl RunDamageEffect
 	mov r3, sb
 	ldr r0, [r3]
-	bl runDamageEffect
+	bl RunDamageEffect
 	ldr r0, [r5]
 	movs r1, #0x9a
 	lsls r1, r1, #4
 	adds r4, r6, r1
 	adds r1, r4, #0
-	bl FUN_0801708c
+	bl DrawCollidableEntity
 	ldr r0, [r7]
 	adds r1, r4, #0
-	bl FUN_0801708c
+	bl DrawCollidableEntity
 	mov r2, r8
 	ldr r0, [r2]
 	adds r1, r4, #0
-	bl FUN_0801708c
+	bl DrawCollidableEntity
 	adds r0, r4, #0
-	bl FUN_08036c94
+	bl DrawWeapon
 	mov r3, sl
 	ldr r0, [r3]
 	adds r1, r4, #0
-	bl FUN_08016fa4
-	ldr r0, _080F91B0 @ =0x020302EC
+	bl DrawEntity
+	ldr r0, _080F91B0 @ =gVFXHeaderPtr
 	ldr r0, [r0]
 	adds r1, r4, #0
-	bl FUN_08016fa4
+	bl DrawEntity
 	mov r1, sb
 	ldr r0, [r1]
 	adds r1, r4, #0
-	bl FUN_0801708c
+	bl DrawCollidableEntity
 	ldrb r0, [r6, #1]
 	cmp r0, #1
 	beq _080F913A
 	adds r0, r4, #0
-	bl FUN_08008c34
+	bl DrawOverworld
 _080F913A:
 	adds r0, r4, #0
-	bl FUN_08004eb0
+	bl RunAllTasks
 	ldr r0, _080F91B4 @ =0x0202F330
 	ldrb r0, [r0]
 	cmp r0, #0
 	beq _080F915A
-	ldr r0, _080F91B8 @ =0x030032E0
+	ldr r0, _080F91B8 @ =gCollisionManager
 	ldrb r1, [r0, #1]
 	movs r0, #2
 	ands r0, r1
 	cmp r0, #0
 	bne _080F915A
 	movs r0, #0x29
-	bl playSound
+	bl PlaySound
 _080F915A:
 	ldr r1, _080F91B4 @ =0x0202F330
 	movs r0, #0
@@ -488,7 +245,7 @@ _080F915A:
 	pop {r0}
 	bx r0
 	.align 2, 0
-_080F9170: .4byte 0x03002AC0
+_080F9170: .4byte gPaletteManager
 _080F9174: .4byte 0x00000402
 _080F9178: .4byte 0x00001ED8
 _080F917C: .4byte 0x0202F354
@@ -497,19 +254,19 @@ _080F9184: .4byte 0x001FFFFF
 _080F9188: .4byte 0x01000008
 _080F918C: .4byte 0x08386AB4
 _080F9190: .4byte 0x020023D4
-_080F9194: .4byte 0x020302F0
-_080F9198: .4byte 0x020302A8
+_080F9194: .4byte gSolidHeaderPtr
+_080F9198: .4byte gZakoHeaderPtr
 _080F919C: .4byte 0x0203029C
-_080F91A0: .4byte 0x020302A0
-_080F91A4: .4byte 0x020302F4
-_080F91A8: .4byte 0x020302B8
+_080F91A0: .4byte gWeaponHeaderPtr
+_080F91A4: .4byte gMapItemHeaderPtr
+_080F91A8: .4byte gProjectileHeaderPtr
 _080F91AC: .4byte 0x00000DC4
-_080F91B0: .4byte 0x020302EC
+_080F91B0: .4byte gVFXHeaderPtr
 _080F91B4: .4byte 0x0202F330
-_080F91B8: .4byte 0x030032E0
+_080F91B8: .4byte gCollisionManager
 
-	thumb_func_start exitMinigame
-exitMinigame: @ 0x080F91BC
+	thumb_func_start MinigameLoop_ExitMinigame
+MinigameLoop_ExitMinigame: @ 0x080F91BC
 	push {lr}
 	ldr r2, _080F91E0 @ =0x08386AD0
 	ldrb r1, [r0, #1]
@@ -519,9 +276,9 @@ exitMinigame: @ 0x080F91BC
 	bl _call_via_r1
 	cmp r0, #0
 	bne _080F91DC
-	bl runStageExitScript
-	bl clearBlinkings
-	bl exitProcess
+	bl ExitStageLandscape
+	bl ClearBlinkings
+	bl ExitProcess
 _080F91DC:
 	pop {r0}
 	bx r0
@@ -547,11 +304,11 @@ initZeroMinigame: @ 0x080F91E4
 	lsls r0, r0, #8
 	str r0, [r1, #4]
 	movs r0, #3
-	bl stage_08008a54
+	bl ResetLandscape
 	ldr r4, _080F9390 @ =0x0000058C
-	ldr r1, _080F9394 @ =0x085D78F8
+	ldr r1, _080F9394 @ =gStaticMotionGraphics
 	adds r0, r4, r1
-	ldr r1, _080F9398 @ =0x0202F790
+	ldr r1, _080F9398 @ =wStaticGraphicTilenums
 	adds r1, #0x8e
 	ldrh r1, [r1]
 	ldrh r2, [r0, #6]
@@ -561,11 +318,11 @@ initZeroMinigame: @ 0x080F91E4
 	movs r2, #0x80
 	lsls r2, r2, #9
 	adds r1, r1, r2
-	bl loadGraphic
-	ldr r0, _080F939C @ =0x085D7904
+	bl LoadGraphic
+	ldr r0, _080F939C @ =gStaticMotionGraphics+12
 	mov r8, r0
 	add r4, r8
-	ldr r6, _080F93A0 @ =0x0202F590
+	ldr r6, _080F93A0 @ =wStaticMotionPalIDs
 	adds r0, r6, #0
 	adds r0, #0x8e
 	ldrh r1, [r0]
@@ -577,10 +334,10 @@ initZeroMinigame: @ 0x080F91E4
 	mov sb, r2
 	add r1, sb
 	adds r0, r4, #0
-	bl transferPalette
+	bl LoadPalette
 	movs r4, #0x9e
 	lsls r5, r4, #1
-	ldr r1, _080F9398 @ =0x0202F790
+	ldr r1, _080F9398 @ =wStaticGraphicTilenums
 	adds r0, r1, r5
 	movs r1, #0xe1
 	lsls r1, r1, #2
@@ -592,7 +349,7 @@ initZeroMinigame: @ 0x080F91E4
 	movs r2, #0x9e
 	lsls r2, r2, #2
 	adds r4, r4, r2
-	ldr r2, _080F9394 @ =0x085D78F8
+	ldr r2, _080F9394 @ =gStaticMotionGraphics
 	adds r0, r4, r2
 	ldrh r2, [r0, #6]
 	lsrs r2, r2, #6
@@ -601,7 +358,7 @@ initZeroMinigame: @ 0x080F91E4
 	movs r2, #0x80
 	lsls r2, r2, #9
 	adds r1, r1, r2
-	bl loadGraphic
+	bl LoadGraphic
 	add r4, r8
 	ldrh r1, [r5]
 	ldrb r0, [r4, #7]
@@ -609,13 +366,13 @@ initZeroMinigame: @ 0x080F91E4
 	lsls r1, r1, #5
 	add r1, sb
 	adds r0, r4, #0
-	bl transferPalette
+	bl LoadPalette
 	movs r1, #0xf0
-	ldr r0, _080F9398 @ =0x0202F790
+	ldr r0, _080F9398 @ =wStaticGraphicTilenums
 	strh r1, [r0]
 	movs r0, #0xe
 	strh r0, [r6]
-	ldr r2, _080F9394 @ =0x085D78F8
+	ldr r2, _080F9394 @ =gStaticMotionGraphics
 	ldrh r0, [r2, #6]
 	lsrs r0, r0, #6
 	subs r1, r1, r0
@@ -624,7 +381,7 @@ initZeroMinigame: @ 0x080F91E4
 	lsls r0, r0, #9
 	adds r1, r1, r0
 	adds r0, r2, #0
-	bl loadGraphic
+	bl LoadGraphic
 	ldrh r1, [r6]
 	mov r2, r8
 	ldrb r0, [r2, #7]
@@ -632,7 +389,7 @@ initZeroMinigame: @ 0x080F91E4
 	lsls r1, r1, #5
 	add r1, sb
 	mov r0, r8
-	bl transferPalette
+	bl LoadPalette
 	ldr r0, _080F938C @ =0x002E6800
 	str r0, [sp, #4]
 	movs r0, #0xb4
@@ -641,9 +398,9 @@ initZeroMinigame: @ 0x080F91E4
 	adds r0, r7, #0
 	add r1, sp, #4
 	movs r2, #0
-	bl FUN_08036358
+	bl CreateZeroMini
 	str r0, [r7, #0x14]
-	ldr r1, _080F93A4 @ =0x0202F340
+	ldr r1, _080F93A4 @ =pZero2
 	str r0, [r1]
 	movs r1, #0
 	add r6, sp, #4
@@ -680,7 +437,7 @@ _080F92E2:
 	movs r0, #0x60
 	mov r2, sl
 	strh r0, [r2, #6]
-	ldr r1, _080F93AC @ =0x02030B60
+	ldr r1, _080F93AC @ =gGameState
 	ldr r0, _080F93B0 @ =0x0000626C
 	adds r1, r1, r0
 	ldr r2, [r1]
@@ -714,7 +471,7 @@ _080F92E2:
 	strh r4, [r7, #0x28]
 	strh r4, [r7, #0x2a]
 	strh r4, [r1, #4]
-	ldr r0, _080F93BC @ =0x020021B0
+	ldr r0, _080F93BC @ =gSystemSavedataManager
 	ldr r0, [r0, #0x24]
 	str r0, [r7, #0x3c]
 	strh r4, [r7, #0x3a]
@@ -733,17 +490,17 @@ _080F9384: .4byte 0x00000DCC
 _080F9388: .4byte 0x00000DC4
 _080F938C: .4byte 0x002E6800
 _080F9390: .4byte 0x0000058C
-_080F9394: .4byte 0x085D78F8
-_080F9398: .4byte 0x0202F790
-_080F939C: .4byte 0x085D7904
-_080F93A0: .4byte 0x0202F590
-_080F93A4: .4byte 0x0202F340
+_080F9394: .4byte gStaticMotionGraphics
+_080F9398: .4byte wStaticGraphicTilenums
+_080F939C: .4byte gStaticMotionGraphics+12
+_080F93A0: .4byte wStaticMotionPalIDs
+_080F93A4: .4byte pZero2
 _080F93A8: .4byte 0x002ED800
-_080F93AC: .4byte 0x02030B60
+_080F93AC: .4byte gGameState
 _080F93B0: .4byte 0x0000626C
 _080F93B4: .4byte 0x41C64E6D
 _080F93B8: .4byte 0x00003039
-_080F93BC: .4byte 0x020021B0
+_080F93BC: .4byte gSystemSavedataManager
 
 	thumb_func_start zeroMinigame
 zeroMinigame: @ 0x080F93C0
@@ -805,10 +562,10 @@ _080F9418:
 	b _080F9452
 _080F942C:
 	movs r0, #0
-	bl FUN_080b56b4
+	bl CreateMissionAlert
 	str r0, [r5, #0x10]
 	movs r0, #0x1d
-	bl playSound
+	bl PlaySound
 	ldrh r0, [r5, #6]
 	adds r0, #1
 	strh r0, [r5, #6]
@@ -830,12 +587,12 @@ _080F9452:
 	mov r0, sp
 	movs r1, #1
 	movs r2, #0
-	bl printUnicodeString
+	bl PrintUnicodeString
 	ldrh r4, [r5, #0x38]
 	adds r0, r4, #0
 	movs r1, #0xa
 	movs r2, #0
-	bl FUN_080e9d04
+	bl minigame_str_080e9d04
 	ldr r0, [r5, #0x3c]
 	cmp r4, r0
 	bls _080F947A
@@ -849,12 +606,12 @@ _080F947A:
 	adds r0, r4, #0
 	movs r1, #0xf
 	movs r2, #0
-	bl printUnicodeString
+	bl PrintUnicodeString
 	ldr r4, [r5, #0x3c]
 	adds r0, r4, #0
 	movs r1, #0x1b
 	movs r2, #0
-	bl FUN_080e9d04
+	bl minigame_str_080e9d04
 	movs r0, #1
 	add sp, #0x14
 	pop {r4, r5}
@@ -926,7 +683,7 @@ _080F951E:
 	bl __modsi3
 	cmp r0, #0
 	bne _080F95C4
-	ldr r1, _080F9574 @ =0x02030B60
+	ldr r1, _080F9574 @ =gGameState
 	ldr r0, _080F9578 @ =0x0000626C
 	adds r1, r1, r0
 	ldr r2, [r1]
@@ -943,7 +700,7 @@ _080F951E:
 	ands r0, r1
 	cmp r0, #0
 	beq _080F958C
-	ldr r1, _080F9584 @ =0x08386AF8
+	ldr r1, _080F9584 @ =Coord_ARRAY_08386af8
 	movs r3, #8
 	ldrsh r0, [r4, r3]
 	lsls r0, r0, #3
@@ -963,14 +720,14 @@ _080F951E:
 	adds r0, r0, r1
 	b _080F95B0
 	.align 2, 0
-_080F9574: .4byte 0x02030B60
+_080F9574: .4byte gGameState
 _080F9578: .4byte 0x0000626C
 _080F957C: .4byte 0x41C64E6D
 _080F9580: .4byte 0x00003039
-_080F9584: .4byte 0x08386AF8
+_080F9584: .4byte Coord_ARRAY_08386af8
 _080F9588: .4byte 0x002EE000
 _080F958C:
-	ldr r1, _080F95BC @ =0x08386AF8
+	ldr r1, _080F95BC @ =Coord_ARRAY_08386af8
 	movs r2, #8
 	ldrsh r0, [r4, r2]
 	lsls r0, r0, #3
@@ -996,7 +753,7 @@ _080F95B0:
 	movs r3, #1
 	b _080F9654
 	.align 2, 0
-_080F95BC: .4byte 0x08386AF8
+_080F95BC: .4byte Coord_ARRAY_08386af8
 _080F95C0: .4byte 0x002DF000
 _080F95C4:
 	adds r0, r6, #0
@@ -1005,7 +762,7 @@ _080F95C4:
 	lsls r0, r0, #0x10
 	cmp r0, #0
 	beq _080F95EE
-	ldr r1, _080F960C @ =0x02030B60
+	ldr r1, _080F960C @ =gGameState
 	ldr r0, _080F9610 @ =0x0000626C
 	adds r1, r1, r0
 	ldr r2, [r1]
@@ -1024,7 +781,7 @@ _080F95EE:
 	ands r0, r1
 	cmp r0, #0
 	beq _080F9624
-	ldr r1, _080F961C @ =0x08386AF8
+	ldr r1, _080F961C @ =Coord_ARRAY_08386af8
 	movs r3, #8
 	ldrsh r0, [r4, r3]
 	lsls r0, r0, #3
@@ -1034,14 +791,14 @@ _080F95EE:
 	adds r0, r0, r2
 	b _080F9634
 	.align 2, 0
-_080F960C: .4byte 0x02030B60
+_080F960C: .4byte gGameState
 _080F9610: .4byte 0x0000626C
 _080F9614: .4byte 0x41C64E6D
 _080F9618: .4byte 0x00003039
-_080F961C: .4byte 0x08386AF8
+_080F961C: .4byte Coord_ARRAY_08386af8
 _080F9620: .4byte 0x002EE000
 _080F9624:
-	ldr r1, _080F9678 @ =0x08386AF8
+	ldr r1, _080F9678 @ =Coord_ARRAY_08386af8
 	movs r2, #8
 	ldrsh r0, [r4, r2]
 	lsls r0, r0, #3
@@ -1076,7 +833,7 @@ _080F9654:
 	ands r0, r1
 	cmp r0, #0
 	beq _080F9688
-	ldr r1, _080F9680 @ =0x08386B28
+	ldr r1, _080F9680 @ =Coord_ARRAY_08386b28
 	movs r3, #8
 	ldrsh r0, [r4, r3]
 	lsls r0, r0, #3
@@ -1085,12 +842,12 @@ _080F9654:
 	ldr r3, _080F9684 @ =0x002EE000
 	b _080F9696
 	.align 2, 0
-_080F9678: .4byte 0x08386AF8
+_080F9678: .4byte Coord_ARRAY_08386af8
 _080F967C: .4byte 0x002DF000
-_080F9680: .4byte 0x08386B28
+_080F9680: .4byte Coord_ARRAY_08386b28
 _080F9684: .4byte 0x002EE000
 _080F9688:
-	ldr r1, _080F96C0 @ =0x08386B28
+	ldr r1, _080F96C0 @ =Coord_ARRAY_08386b28
 	movs r3, #8
 	ldrsh r0, [r4, r3]
 	lsls r0, r0, #3
@@ -1120,7 +877,7 @@ _080F9696:
 	movs r0, #0x58
 	b _080F96D2
 	.align 2, 0
-_080F96C0: .4byte 0x08386B28
+_080F96C0: .4byte Coord_ARRAY_08386b28
 _080F96C4: .4byte 0x002DF000
 _080F96C8:
 	cmp r0, #0x27
@@ -1139,12 +896,12 @@ _080F96D4:
 	mov r0, sp
 	movs r1, #1
 	movs r2, #0
-	bl printUnicodeString
+	bl PrintUnicodeString
 	ldrh r4, [r5, #0x38]
 	adds r0, r4, #0
 	movs r1, #0xa
 	movs r2, #0
-	bl FUN_080e9d04
+	bl minigame_str_080e9d04
 	ldr r0, [r5, #0x3c]
 	cmp r4, r0
 	bls _080F970E
@@ -1156,7 +913,7 @@ _080F96D4:
 	strh r0, [r5, #0x3a]
 	movs r0, #0x9c
 	lsls r0, r0, #1
-	bl playSound
+	bl PlaySound
 _080F970E:
 	add r4, sp, #8
 	ldr r1, _080F974C @ =0x0810E250
@@ -1166,12 +923,12 @@ _080F970E:
 	adds r0, r4, #0
 	movs r1, #0xf
 	movs r2, #0
-	bl printUnicodeString
+	bl PrintUnicodeString
 	ldr r4, [r5, #0x3c]
 	adds r0, r4, #0
 	movs r1, #0x1b
 	movs r2, #0
-	bl FUN_080e9d04
+	bl minigame_str_080e9d04
 	ldrb r1, [r5, #0xc]
 	cmp r1, #0
 	bne _080F973E
@@ -1230,7 +987,7 @@ _080F9796:
 	b _080F97C0
 _080F97A4:
 	movs r0, #4
-	bl FUN_080b56b4
+	bl CreateMissionAlert
 	str r0, [r5, #0x10]
 	movs r0, #0xad
 	bl fadeoutBGM
@@ -1248,14 +1005,14 @@ _080F97C0:
 	strh r0, [r5, #6]
 	b _080F97EC
 _080F97C8:
-	ldr r1, _080F97E8 @ =0x02030B60
+	ldr r1, _080F97E8 @ =gGameState
 	movs r0, #0x40
 	strh r0, [r1, #4]
 	ldrh r0, [r5, #6]
 	adds r0, #1
 	strh r0, [r5, #6]
 _080F97D4:
-	ldr r0, _080F97E8 @ =0x02030B60
+	ldr r0, _080F97E8 @ =gGameState
 	movs r1, #4
 	ldrsh r0, [r0, r1]
 	cmp r0, #0x20
@@ -1265,7 +1022,7 @@ _080F97D4:
 	strh r0, [r5, #6]
 	b _080F9838
 	.align 2, 0
-_080F97E8: .4byte 0x02030B60
+_080F97E8: .4byte gGameState
 _080F97EC:
 	ldr r1, _080F9840 @ =0x0810E248
 	mov r0, sp
@@ -1274,12 +1031,12 @@ _080F97EC:
 	mov r0, sp
 	movs r1, #1
 	movs r2, #0
-	bl printUnicodeString
+	bl PrintUnicodeString
 	ldrh r4, [r5, #0x38]
 	adds r0, r4, #0
 	movs r1, #0xa
 	movs r2, #0
-	bl FUN_080e9d04
+	bl minigame_str_080e9d04
 	ldr r0, [r5, #0x3c]
 	cmp r4, r0
 	bls _080F9814
@@ -1293,12 +1050,12 @@ _080F9814:
 	adds r0, r4, #0
 	movs r1, #0xf
 	movs r2, #0
-	bl printUnicodeString
+	bl PrintUnicodeString
 	ldr r4, [r5, #0x3c]
 	adds r0, r4, #0
 	movs r1, #0x1b
 	movs r2, #0
-	bl FUN_080e9d04
+	bl minigame_str_080e9d04
 	movs r0, #1
 _080F9838:
 	add sp, #0x14
@@ -1340,18 +1097,18 @@ _080F9868:
 	cmp r0, #0
 	bgt _080F9898
 _080F9880:
-	ldr r2, _080F9894 @ =0x020021B0
+	ldr r2, _080F9894 @ =gSystemSavedataManager
 	ldr r1, [r1, #0x3c]
 	ldr r0, [r2, #0x24]
 	cmp r1, r0
 	bls _080F9890
 	str r1, [r2, #0x24]
-	bl saveSystemSavedata
+	bl SaveSystemData
 _080F9890:
 	movs r0, #0
 	b _080F989A
 	.align 2, 0
-_080F9894: .4byte 0x020021B0
+_080F9894: .4byte gSystemSavedataManager
 _080F9898:
 	movs r0, #1
 _080F989A:
@@ -1376,7 +1133,7 @@ initCielMinigame: @ 0x080F98A0
 	movs r0, #0xa0
 	lsls r0, r0, #7
 	str r0, [r1, #4]
-	ldr r2, _080F9BE4 @ =0x02002140
+	ldr r2, _080F9BE4 @ =gVideoRegBuffer
 	ldrh r1, [r2]
 	ldr r0, _080F9BE8 @ =0x0000FFF8
 	ands r0, r1
@@ -1402,13 +1159,13 @@ initCielMinigame: @ 0x080F98A0
 	ldr r0, _080F9BF8 @ =0x08547C80
 	movs r1, #0x80
 	lsls r1, r1, #7
-	bl loadGraphic
+	bl LoadGraphic
 	ldr r0, _080F9BFC @ =0x08547C8C
 	movs r1, #0
-	bl transferPalette
+	bl LoadPalette
 	ldr r4, _080F9C00 @ =0x00000ED8
 	adds r0, r7, r4
-	ldr r4, _080F9C04 @ =0x085222A0
+	ldr r4, _080F9C04 @ =gBgMapOffsets
 	movs r1, #0
 	str r1, [sp]
 	adds r1, r4, #0
@@ -1421,14 +1178,14 @@ initCielMinigame: @ 0x080F98A0
 	adds r1, r4, #0
 	movs r2, #0x81
 	movs r3, #0
-	bl loadBGMapIntoVram
+	bl LoadBgMap
 	ldr r5, _080F9C08 @ =0x00001234
-	ldr r3, _080F9C0C @ =0x085D78F8
+	ldr r3, _080F9C0C @ =gStaticMotionGraphics
 	mov sl, r3
 	adds r0, r5, r3
 	movs r4, #0xe9
 	lsls r4, r4, #1
-	ldr r2, _080F9C10 @ =0x0202F790
+	ldr r2, _080F9C10 @ =wStaticGraphicTilenums
 	adds r1, r2, r4
 	ldrh r1, [r1]
 	ldrh r2, [r0, #6]
@@ -1438,10 +1195,10 @@ initCielMinigame: @ 0x080F98A0
 	movs r3, #0x80
 	lsls r3, r3, #9
 	adds r1, r1, r3
-	bl loadGraphic
-	ldr r6, _080F9C14 @ =0x085D7904
+	bl LoadGraphic
+	ldr r6, _080F9C14 @ =gStaticMotionGraphics+12
 	adds r5, r5, r6
-	ldr r0, _080F9C18 @ =0x0202F590
+	ldr r0, _080F9C18 @ =wStaticMotionPalIDs
 	mov sb, r0
 	add r4, sb
 	ldrh r1, [r4]
@@ -1453,13 +1210,13 @@ initCielMinigame: @ 0x080F98A0
 	mov r8, r2
 	add r1, r8
 	adds r0, r5, #0
-	bl transferPalette
+	bl LoadPalette
 	ldr r5, _080F9C1C @ =0x00001248
 	mov r3, sl
 	adds r0, r5, r3
 	movs r4, #0xea
 	lsls r4, r4, #1
-	ldr r2, _080F9C10 @ =0x0202F790
+	ldr r2, _080F9C10 @ =wStaticGraphicTilenums
 	adds r1, r2, r4
 	ldrh r1, [r1]
 	ldrh r2, [r0, #6]
@@ -1469,7 +1226,7 @@ initCielMinigame: @ 0x080F98A0
 	movs r3, #0x80
 	lsls r3, r3, #9
 	adds r1, r1, r3
-	bl loadGraphic
+	bl LoadGraphic
 	adds r5, r5, r6
 	add r4, sb
 	ldrh r1, [r4]
@@ -1478,8 +1235,8 @@ initCielMinigame: @ 0x080F98A0
 	lsls r1, r1, #5
 	add r1, r8
 	adds r0, r5, #0
-	bl transferPalette
-	ldr r4, _080F9C10 @ =0x0202F790
+	bl LoadPalette
+	ldr r4, _080F9C10 @ =wStaticGraphicTilenums
 	ldrh r1, [r4]
 	mov r2, sl
 	ldrh r0, [r2, #6]
@@ -1490,7 +1247,7 @@ initCielMinigame: @ 0x080F98A0
 	lsls r3, r3, #9
 	adds r1, r1, r3
 	mov r0, sl
-	bl loadGraphic
+	bl LoadGraphic
 	mov r4, sb
 	ldrh r1, [r4]
 	ldrb r0, [r6, #7]
@@ -1498,7 +1255,7 @@ initCielMinigame: @ 0x080F98A0
 	lsls r1, r1, #5
 	add r1, r8
 	adds r0, r6, #0
-	bl transferPalette
+	bl LoadPalette
 	ldr r0, _080F9C20 @ =0x00000DCC
 	adds r1, r7, r0
 	mov r2, sp
@@ -1509,7 +1266,7 @@ initCielMinigame: @ 0x080F98A0
 	strb r3, [r1, #5]
 	movs r4, #0
 	str r4, [r1, #8]
-	ldr r0, _080F9C24 @ =0x020021B0
+	ldr r0, _080F9C24 @ =gSystemSavedataManager
 	ldr r0, [r0, #0x28]
 	str r0, [r1, #0xc]
 	strh r4, [r1, #6]
@@ -1699,11 +1456,11 @@ _080F9B1E:
 	movs r5, #1
 	str r5, [sp, #8]
 	movs r3, #0
-	bl FUN_080c8de8
+	bl CreateGhost79_1
 	ldr r4, _080F9C20 @ =0x00000DCC
 	adds r1, r7, r4
 	str r0, [r1]
-	ldr r0, _080F9C6C @ =0x020302A8
+	ldr r0, _080F9C6C @ =gZakoHeaderPtr
 	ldr r0, [r0]
 	ldrh r0, [r0, #0xa]
 	ldr r1, [sp, #0x20]
@@ -1728,8 +1485,8 @@ _080F9B1E:
 	strb r4, [r1]
 	movs r0, #0xd6
 	movs r1, #0
-	bl loadBlink
-	ldr r2, _080F9C70 @ =0x02002190
+	bl LoadBlink
+	ldr r2, _080F9C70 @ =gWindowRegBuffer
 	ldrh r0, [r2]
 	movs r3, #0x80
 	lsls r3, r3, #6
@@ -1748,7 +1505,7 @@ _080F9B1E:
 	strh r0, [r2, #8]
 	ldr r4, _080F9C00 @ =0x00000ED8
 	adds r0, r7, r4
-	ldr r1, _080F9C7C @ =0x02002146
+	ldr r1, _080F9C7C @ =gVideoRegBuffer+6
 	ldrh r2, [r1]
 	movs r1, #0xf8
 	lsls r1, r1, #5
@@ -1756,7 +1513,7 @@ _080F9B1E:
 	lsls r1, r1, #3
 	movs r2, #0x80
 	lsls r2, r2, #5
-	bl appendBgMapTask
+	bl RequestBgMapTransfer
 	add sp, #0x40
 	pop {r3, r4, r5}
 	mov r8, r3
@@ -1767,7 +1524,7 @@ _080F9B1E:
 	bx r0
 	.align 2, 0
 _080F9BE0: .4byte 0x00000DC4
-_080F9BE4: .4byte 0x02002140
+_080F9BE4: .4byte gVideoRegBuffer
 _080F9BE8: .4byte 0x0000FFF8
 _080F9BEC: .4byte 0x0000F0FF
 _080F9BF0: .4byte 0x00000206
@@ -1775,15 +1532,15 @@ _080F9BF4: .4byte 0x00000407
 _080F9BF8: .4byte 0x08547C80
 _080F9BFC: .4byte 0x08547C8C
 _080F9C00: .4byte 0x00000ED8
-_080F9C04: .4byte 0x085222A0
+_080F9C04: .4byte gBgMapOffsets
 _080F9C08: .4byte 0x00001234
-_080F9C0C: .4byte 0x085D78F8
-_080F9C10: .4byte 0x0202F790
-_080F9C14: .4byte 0x085D7904
-_080F9C18: .4byte 0x0202F590
+_080F9C0C: .4byte gStaticMotionGraphics
+_080F9C10: .4byte wStaticGraphicTilenums
+_080F9C14: .4byte gStaticMotionGraphics+12
+_080F9C18: .4byte wStaticMotionPalIDs
 _080F9C1C: .4byte 0x00001248
 _080F9C20: .4byte 0x00000DCC
-_080F9C24: .4byte 0x020021B0
+_080F9C24: .4byte gSystemSavedataManager
 _080F9C28: .4byte 0x00000DE4
 _080F9C2C: .4byte 0x00000DE9
 _080F9C30: .4byte 0x00000E04
@@ -1801,11 +1558,11 @@ _080F9C5C: .4byte 0x02036DCC
 _080F9C60: .4byte 0x41C64E6D
 _080F9C64: .4byte 0x00003039
 _080F9C68: .4byte 0x00000DD8
-_080F9C6C: .4byte 0x020302A8
-_080F9C70: .4byte 0x02002190
+_080F9C6C: .4byte gZakoHeaderPtr
+_080F9C70: .4byte gWindowRegBuffer
 _080F9C74: .4byte 0x0000D0E0
 _080F9C78: .4byte 0x00000838
-_080F9C7C: .4byte 0x02002146
+_080F9C7C: .4byte gVideoRegBuffer+6
 
 	thumb_func_start cielMinigame
 cielMinigame: @ 0x080F9C80
@@ -1828,7 +1585,7 @@ cielMinigame: @ 0x080F9C80
 	rsbs r0, r0, #0
 	strh r0, [r1, #2]
 	movs r0, #0xd6
-	bl FUN_08004068
+	bl GetBlinkMotionState
 	ldrb r0, [r4, #4]
 	cmp r0, #2
 	bhi _080F9CE0
@@ -1869,13 +1626,13 @@ _080F9CE0:
 	ldrb r0, [r4]
 	cmp r0, #0
 	bne _080F9D12
-	ldr r0, _080F9D4C @ =0x020021B0
+	ldr r0, _080F9D4C @ =gSystemSavedataManager
 	ldr r0, [r0, #0x28]
 	cmp r0, r1
 	bhs _080F9D12
 	movs r0, #0x9c
 	lsls r0, r0, #1
-	bl playSound
+	bl PlaySound
 	ldrb r0, [r4]
 	adds r0, #1
 	strb r0, [r4]
@@ -1893,7 +1650,7 @@ _080F9D12:
 	cmp r0, #0
 	bne _080F9D32
 	ldr r0, _080F9D54 @ =0x00000137
-	bl playSound
+	bl PlaySound
 _080F9D32:
 	ldr r4, _080F9D50 @ =0x00000DCC
 	adds r0, r6, r4
@@ -1909,7 +1666,7 @@ _080F9D3E:
 	mov pc, r0
 	.align 2, 0
 _080F9D48: .4byte 0x00000E16
-_080F9D4C: .4byte 0x020021B0
+_080F9D4C: .4byte gSystemSavedataManager
 _080F9D50: .4byte 0x00000DCC
 _080F9D54: .4byte 0x00000137
 _080F9D58: .4byte _080F9D5C
@@ -1952,7 +1709,7 @@ _080F9D98:
 	b _080FA1FC
 _080F9DB0:
 	movs r0, #0
-	bl FUN_080b56b4
+	bl CreateMissionAlert
 	movs r0, #0
 	strb r0, [r4]
 	ldrb r0, [r5, #4]
@@ -1994,7 +1751,7 @@ _080F9DF8:
 	cmp r0, #2
 	bls _080F9E74
 	movs r0, #4
-	bl FUN_080b56b4
+	bl CreateMissionAlert
 	movs r0, #0x9b
 	lsls r0, r0, #1
 	bl fadeoutBGM
@@ -2022,7 +1779,7 @@ _080F9E30:
 	lsrs r1, r1, #0x18
 	cmp r1, #0xa0
 	bls _080F9E74
-	ldr r1, _080F9E5C @ =0x02030B60
+	ldr r1, _080F9E5C @ =gGameState
 	movs r0, #0x40
 	strh r0, [r1, #4]
 	ldrb r0, [r3, #4]
@@ -2032,9 +1789,9 @@ _080F9E30:
 	.align 2, 0
 _080F9E54: .4byte 0x00000DCC
 _080F9E58: .4byte 0x00000E15
-_080F9E5C: .4byte 0x02030B60
+_080F9E5C: .4byte gGameState
 _080F9E60:
-	ldr r0, _080F9E70 @ =0x02030B60
+	ldr r0, _080F9E70 @ =gGameState
 	movs r2, #4
 	ldrsh r0, [r0, r2]
 	cmp r0, #0x20
@@ -2042,7 +1799,7 @@ _080F9E60:
 	movs r0, #0
 	b _080FA1FE
 	.align 2, 0
-_080F9E70: .4byte 0x02030B60
+_080F9E70: .4byte gGameState
 _080F9E74:
 	ldr r4, _080F9F54 @ =0x00000DCC
 	adds r3, r6, r4
@@ -2056,7 +1813,7 @@ _080F9E74:
 	bls _080F9E8A
 	strh r1, [r3, #0x10]
 _080F9E8A:
-	ldr r0, _080F9F58 @ =0x020302A8
+	ldr r0, _080F9F58 @ =gZakoHeaderPtr
 	ldr r1, [r0]
 	movs r2, #0xa
 	ldrsh r0, [r1, r2]
@@ -2094,7 +1851,7 @@ _080F9EC4:
 	beq _080F9ECE
 	b _080F9FE2
 _080F9ECE:
-	ldr r4, _080F9F6C @ =0x02030B60
+	ldr r4, _080F9F6C @ =gGameState
 	ldr r3, _080F9F70 @ =0x0000626C
 	adds r2, r4, r3
 	ldr r1, [r2]
@@ -2132,7 +1889,7 @@ _080F9EFA:
 	strb r0, [r4, #0x15]
 	ldrb r0, [r4, #0x17]
 	strb r0, [r4, #0x16]
-	ldr r3, _080F9F6C @ =0x02030B60
+	ldr r3, _080F9F6C @ =gGameState
 	ldr r0, _080F9F70 @ =0x0000626C
 	adds r2, r3, r0
 	ldr r1, [r2]
@@ -2160,12 +1917,12 @@ _080F9EFA:
 	b _080F9FCA
 	.align 2, 0
 _080F9F54: .4byte 0x00000DCC
-_080F9F58: .4byte 0x020302A8
+_080F9F58: .4byte gZakoHeaderPtr
 _080F9F5C: .4byte 0x00000E13
 _080F9F60: .4byte 0x00000E14
 _080F9F64: .4byte 0x00000E0F
 _080F9F68: .4byte 0x00000E12
-_080F9F6C: .4byte 0x02030B60
+_080F9F6C: .4byte gGameState
 _080F9F70: .4byte 0x0000626C
 _080F9F74: .4byte 0x41C64E6D
 _080F9F78: .4byte 0x00003039
@@ -2189,7 +1946,7 @@ _080F9F9C:
 	cmp r0, #3
 	bhi _080F9FCA
 	movs r0, #6
-	bl playSound
+	bl PlaySound
 	movs r0, #0x40
 	strh r0, [r5]
 	mov r2, r8
@@ -2227,7 +1984,7 @@ _080F9FE2:
 	ldrb r0, [r0, #4]
 	cmp r0, #3
 	bhi _080FA092
-	ldr r2, _080FA024 @ =0x02001EB0
+	ldr r2, _080FA024 @ =gJoypad
 	ldrh r1, [r2, #4]
 	movs r0, #3
 	ands r0, r1
@@ -2254,7 +2011,7 @@ _080F9FE2:
 	b _080FA034
 	.align 2, 0
 _080FA020: .4byte 0x00000DCC
-_080FA024: .4byte 0x02001EB0
+_080FA024: .4byte gJoypad
 _080FA028: .4byte 0x00000DEE
 _080FA02C: .4byte 0x00000E04
 _080FA030:
@@ -2262,7 +2019,7 @@ _080FA030:
 	strh r0, [r1]
 _080FA034:
 	movs r0, #5
-	bl playSound
+	bl PlaySound
 	b _080FA092
 _080FA03C:
 	movs r4, #0xff
@@ -2310,7 +2067,7 @@ _080FA06E:
 	cmp r3, r0
 	beq _080FA092
 	movs r0, #1
-	bl playSound
+	bl PlaySound
 _080FA092:
 	ldr r1, [sp, #4]
 	ldrb r0, [r1]
@@ -2323,7 +2080,7 @@ _080FA0A0:
 	ldr r3, [sp, #8]
 	strb r0, [r3]
 	movs r0, #4
-	bl playSound
+	bl PlaySound
 	ldr r4, [sp, #4]
 	ldrb r0, [r4]
 	cmp r0, #2
@@ -2473,7 +2230,7 @@ _080FA1E0:
 _080FA1E4:
 	ldr r4, _080FA250 @ =0x00000ED8
 	adds r0, r6, r4
-	ldr r1, _080FA254 @ =0x02002146
+	ldr r1, _080FA254 @ =gVideoRegBuffer+6
 	ldrh r2, [r1]
 	movs r1, #0xf8
 	lsls r1, r1, #5
@@ -2481,7 +2238,7 @@ _080FA1E4:
 	lsls r1, r1, #3
 	movs r2, #0x80
 	lsls r2, r2, #5
-	bl appendBgMapTask
+	bl RequestBgMapTransfer
 _080FA1FC:
 	movs r0, #1
 _080FA1FE:
@@ -2511,12 +2268,12 @@ _080FA244: .4byte 0x00001110
 _080FA248: .4byte 0x0000114E
 _080FA24C: .4byte 0x00001150
 _080FA250: .4byte 0x00000ED8
-_080FA254: .4byte 0x02002146
+_080FA254: .4byte gVideoRegBuffer+6
 
 	thumb_func_start exitCielMinigame
 exitCielMinigame: @ 0x080FA258
 	push {lr}
-	ldr r2, _080FA284 @ =0x020021B0
+	ldr r2, _080FA284 @ =gSystemSavedataManager
 	ldr r1, _080FA288 @ =0x00000DCC
 	adds r0, r0, r1
 	ldr r1, [r2, #0x28]
@@ -2524,22 +2281,22 @@ exitCielMinigame: @ 0x080FA258
 	cmp r1, r0
 	bhs _080FA26E
 	str r0, [r2, #0x28]
-	bl saveSystemSavedata
+	bl SaveSystemData
 _080FA26E:
-	ldr r2, _080FA28C @ =0x02002190
+	ldr r2, _080FA28C @ =gWindowRegBuffer
 	ldrh r1, [r2]
 	ldr r0, _080FA290 @ =0x0000DFFF
 	ands r0, r1
 	strh r0, [r2]
 	movs r0, #0xd6
-	bl clearBlink
+	bl ClearBlink
 	movs r0, #0
 	pop {r1}
 	bx r1
 	.align 2, 0
-_080FA284: .4byte 0x020021B0
+_080FA284: .4byte gSystemSavedataManager
 _080FA288: .4byte 0x00000DCC
-_080FA28C: .4byte 0x02002190
+_080FA28C: .4byte gWindowRegBuffer
 _080FA290: .4byte 0x0000DFFF
 
 	thumb_func_start initCopyXMinigame
@@ -2562,12 +2319,12 @@ initCopyXMinigame: @ 0x080FA294
 	lsls r0, r0, #8
 	str r0, [r1, #4]
 	movs r0, #4
-	bl stage_08008a54
+	bl ResetLandscape
 	movs r5, #0x8c
 	lsls r5, r5, #1
-	ldr r0, _080FA518 @ =0x085D78F8
+	ldr r0, _080FA518 @ =gStaticMotionGraphics
 	mov r8, r0
-	ldr r1, _080FA51C @ =0x0202F790
+	ldr r1, _080FA51C @ =wStaticGraphicTilenums
 	mov sb, r1
 	ldrh r1, [r1, #0x1c]
 	ldr r2, _080FA520 @ =0x085D7A10
@@ -2579,10 +2336,10 @@ initCopyXMinigame: @ 0x080FA294
 	lsls r0, r0, #9
 	adds r1, r1, r0
 	adds r0, r2, #0
-	bl loadGraphic
-	ldr r1, _080FA524 @ =0x085D7904
+	bl LoadGraphic
+	ldr r1, _080FA524 @ =gStaticMotionGraphics+12
 	adds r5, r5, r1
-	ldr r6, _080FA528 @ =0x0202F590
+	ldr r6, _080FA528 @ =wStaticMotionPalIDs
 	ldrh r1, [r6, #0x1c]
 	ldrb r0, [r5, #7]
 	subs r1, r1, r0
@@ -2592,7 +2349,7 @@ initCopyXMinigame: @ 0x080FA294
 	mov sl, r2
 	add r1, sl
 	adds r0, r5, #0
-	bl transferPalette
+	bl LoadPalette
 	ldr r4, _080FA52C @ =0x0000071C
 	mov r1, r8
 	adds r0, r4, r1
@@ -2606,8 +2363,8 @@ initCopyXMinigame: @ 0x080FA294
 	movs r2, #0x80
 	lsls r2, r2, #9
 	adds r1, r1, r2
-	bl loadGraphic
-	ldr r0, _080FA524 @ =0x085D7904
+	bl LoadGraphic
+	ldr r0, _080FA524 @ =gStaticMotionGraphics+12
 	adds r4, r4, r0
 	adds r0, r6, #0
 	adds r0, #0xb6
@@ -2617,7 +2374,7 @@ initCopyXMinigame: @ 0x080FA294
 	lsls r1, r1, #5
 	add r1, sl
 	adds r0, r4, #0
-	bl transferPalette
+	bl LoadPalette
 	movs r4, #0xe6
 	lsls r4, r4, #3
 	mov r1, r8
@@ -2632,8 +2389,8 @@ initCopyXMinigame: @ 0x080FA294
 	movs r2, #0x80
 	lsls r2, r2, #9
 	adds r1, r1, r2
-	bl loadGraphic
-	ldr r0, _080FA524 @ =0x085D7904
+	bl LoadGraphic
+	ldr r0, _080FA524 @ =gStaticMotionGraphics+12
 	adds r4, r4, r0
 	adds r0, r6, #0
 	adds r0, #0xb8
@@ -2643,7 +2400,7 @@ initCopyXMinigame: @ 0x080FA294
 	lsls r1, r1, #5
 	add r1, sl
 	adds r0, r4, #0
-	bl transferPalette
+	bl LoadPalette
 	ldr r4, _080FA530 @ =0x0000076C
 	mov r1, r8
 	adds r0, r4, r1
@@ -2657,8 +2414,8 @@ initCopyXMinigame: @ 0x080FA294
 	movs r2, #0x80
 	lsls r2, r2, #9
 	adds r1, r1, r2
-	bl loadGraphic
-	ldr r0, _080FA524 @ =0x085D7904
+	bl LoadGraphic
+	ldr r0, _080FA524 @ =gStaticMotionGraphics+12
 	adds r4, r4, r0
 	adds r0, r6, #0
 	adds r0, #0xbe
@@ -2668,7 +2425,7 @@ initCopyXMinigame: @ 0x080FA294
 	lsls r1, r1, #5
 	add r1, sl
 	adds r0, r4, #0
-	bl transferPalette
+	bl LoadPalette
 	movs r0, #0
 	mov r1, sb
 	strh r0, [r1, #0x1c]
@@ -2682,14 +2439,14 @@ initCopyXMinigame: @ 0x080FA294
 	lsls r0, r0, #9
 	subs r1, r0, r1
 	adds r0, r2, #0
-	bl loadGraphic
+	bl LoadGraphic
 	ldrh r1, [r6, #0x1c]
 	ldrb r0, [r5, #7]
 	subs r1, r1, r0
 	lsls r1, r1, #5
 	add r1, sl
 	adds r0, r5, #0
-	bl transferPalette
+	bl LoadPalette
 	ldr r5, _080FA534 @ =0x00001310
 	mov r1, r8
 	adds r0, r5, r1
@@ -2705,8 +2462,8 @@ initCopyXMinigame: @ 0x080FA294
 	movs r2, #0x80
 	lsls r2, r2, #9
 	adds r1, r1, r2
-	bl loadGraphic
-	ldr r0, _080FA524 @ =0x085D7904
+	bl LoadGraphic
+	ldr r0, _080FA524 @ =gStaticMotionGraphics+12
 	adds r5, r5, r0
 	adds r4, r6, r4
 	ldrh r1, [r4]
@@ -2715,10 +2472,10 @@ initCopyXMinigame: @ 0x080FA294
 	lsls r1, r1, #5
 	add r1, sl
 	adds r0, r5, #0
-	bl transferPalette
+	bl LoadPalette
 	add r0, sp, #4
 	movs r1, #0
-	bl FUN_080c8154
+	bl CreateMinigameIcon_1
 	movs r1, #0xb9
 	lsls r1, r1, #1
 	mov r2, sb
@@ -2734,15 +2491,15 @@ initCopyXMinigame: @ 0x080FA294
 	lsls r0, r0, #9
 	adds r1, r1, r0
 	mov r0, r8
-	bl loadGraphic
+	bl LoadGraphic
 	ldrh r1, [r6]
-	ldr r2, _080FA524 @ =0x085D7904
+	ldr r2, _080FA524 @ =gStaticMotionGraphics+12
 	ldrb r0, [r2, #7]
 	subs r1, r1, r0
 	lsls r1, r1, #5
 	add r1, sl
 	adds r0, r2, #0
-	bl transferPalette
+	bl LoadPalette
 	movs r4, #0x9f
 	lsls r0, r4, #1
 	add sb, r0
@@ -2767,8 +2524,8 @@ initCopyXMinigame: @ 0x080FA294
 	lsls r0, r0, #9
 	adds r1, r1, r0
 	mov r0, r8
-	bl loadGraphic
-	ldr r1, _080FA524 @ =0x085D7904
+	bl LoadGraphic
+	ldr r1, _080FA524 @ =gStaticMotionGraphics+12
 	adds r4, r4, r1
 	ldrh r1, [r6]
 	ldrb r0, [r4, #7]
@@ -2776,7 +2533,7 @@ initCopyXMinigame: @ 0x080FA294
 	lsls r1, r1, #5
 	add r1, sl
 	adds r0, r4, #0
-	bl transferPalette
+	bl LoadPalette
 	movs r0, #0x8c
 	lsls r0, r0, #9
 	str r0, [sp, #4]
@@ -2786,7 +2543,7 @@ initCopyXMinigame: @ 0x080FA294
 	adds r0, r7, #0
 	add r1, sp, #4
 	movs r2, #0
-	bl FUN_08035888
+	bl CreatePlayerCopyX
 	movs r1, #0
 	add r6, sp, #4
 	movs r5, #0x80
@@ -2826,7 +2583,7 @@ _080FA4A8:
 	strh r4, [r7, #6]
 	str r4, [r7, #0x18]
 	str r4, [r7, #0x1c]
-	ldr r0, _080FA538 @ =0x020021B0
+	ldr r0, _080FA538 @ =gSystemSavedataManager
 	ldr r0, [r0, #0x2c]
 	str r0, [r7, #0x24]
 	strh r4, [r7, #0xe]
@@ -2845,15 +2602,15 @@ _080FA4A8:
 	.align 2, 0
 _080FA510: .4byte 0x00000DCC
 _080FA514: .4byte 0x00000DC4
-_080FA518: .4byte 0x085D78F8
-_080FA51C: .4byte 0x0202F790
+_080FA518: .4byte gStaticMotionGraphics
+_080FA51C: .4byte wStaticGraphicTilenums
 _080FA520: .4byte 0x085D7A10
-_080FA524: .4byte 0x085D7904
-_080FA528: .4byte 0x0202F590
+_080FA524: .4byte gStaticMotionGraphics+12
+_080FA528: .4byte wStaticMotionPalIDs
 _080FA52C: .4byte 0x0000071C
 _080FA530: .4byte 0x0000076C
 _080FA534: .4byte 0x00001310
-_080FA538: .4byte 0x020021B0
+_080FA538: .4byte gSystemSavedataManager
 
 	thumb_func_start copyXMinigame
 copyXMinigame: @ 0x080FA53C
@@ -2915,10 +2672,10 @@ _080FA594:
 	b _080FA5CE
 _080FA5A8:
 	movs r0, #0
-	bl FUN_080b56b4
+	bl CreateMissionAlert
 	str r0, [r5, #0x10]
 	movs r0, #0x1d
-	bl playSound
+	bl PlaySound
 	ldrh r0, [r5, #6]
 	adds r0, #1
 	strh r0, [r5, #6]
@@ -2940,12 +2697,12 @@ _080FA5CE:
 	mov r0, sp
 	movs r1, #0x12
 	movs r2, #0
-	bl printUnicodeString
+	bl PrintUnicodeString
 	ldr r4, [r5, #0x1c]
 	adds r0, r4, #0
 	movs r1, #0x1b
 	movs r2, #0
-	bl FUN_080e9d04
+	bl minigame_str_080e9d04
 	ldr r0, [r5, #0x24]
 	cmp r4, r0
 	bls _080FA5F6
@@ -2959,12 +2716,12 @@ _080FA5F6:
 	adds r0, r4, #0
 	movs r1, #0xf
 	movs r2, #1
-	bl printUnicodeString
+	bl PrintUnicodeString
 	ldr r4, [r5, #0x24]
 	adds r0, r4, #0
 	movs r1, #0x1b
 	movs r2, #1
-	bl FUN_080e9d04
+	bl minigame_str_080e9d04
 	movs r0, #1
 	add sp, #0x14
 	pop {r4, r5}
@@ -2994,7 +2751,7 @@ copyx_minigame_080fa62c: @ 0x080FA62C
 	adds r4, r0, #0
 	cmp r4, #0
 	bne _080FA6E8
-	ldr r1, _080FA6B0 @ =0x02030B60
+	ldr r1, _080FA6B0 @ =gGameState
 	ldr r0, _080FA6B4 @ =0x0000626C
 	adds r1, r1, r0
 	ldr r0, [r1]
@@ -3039,7 +2796,7 @@ copyx_minigame_080fa62c: @ 0x080FA62C
 	b _080FA6E6
 	.align 2, 0
 _080FA6AC: .4byte 0x00000DCC
-_080FA6B0: .4byte 0x02030B60
+_080FA6B0: .4byte gGameState
 _080FA6B4: .4byte 0x0000626C
 _080FA6B8: .4byte 0x41C64E6D
 _080FA6BC: .4byte 0x00003039
@@ -3076,12 +2833,12 @@ _080FA6E8:
 	mov r0, sp
 	movs r1, #0x12
 	movs r2, #0
-	bl printUnicodeString
+	bl PrintUnicodeString
 	ldr r4, [r5, #0x1c]
 	adds r0, r4, #0
 	movs r1, #0x1b
 	movs r2, #0
-	bl FUN_080e9d04
+	bl minigame_str_080e9d04
 	ldr r0, [r5, #0x24]
 	cmp r4, r0
 	bls _080FA722
@@ -3093,7 +2850,7 @@ _080FA6E8:
 	strh r0, [r5, #0xe]
 	movs r0, #0x9c
 	lsls r0, r0, #1
-	bl playSound
+	bl PlaySound
 _080FA722:
 	add r4, sp, #8
 	ldr r1, _080FA760 @ =0x0810E264
@@ -3103,12 +2860,12 @@ _080FA722:
 	adds r0, r4, #0
 	movs r1, #0xf
 	movs r2, #1
-	bl printUnicodeString
+	bl PrintUnicodeString
 	ldr r4, [r5, #0x24]
 	adds r0, r4, #0
 	movs r1, #0x1b
 	movs r2, #1
-	bl FUN_080e9d04
+	bl minigame_str_080e9d04
 	ldrb r1, [r5, #0xc]
 	cmp r1, #0
 	bne _080FA752
@@ -3167,7 +2924,7 @@ _080FA7AA:
 	b _080FA7D4
 _080FA7B8:
 	movs r0, #4
-	bl FUN_080b56b4
+	bl CreateMissionAlert
 	str r0, [r5, #0x10]
 	movs r0, #0xb3
 	bl fadeoutBGM
@@ -3185,14 +2942,14 @@ _080FA7D4:
 	strh r0, [r5, #6]
 	b _080FA800
 _080FA7DC:
-	ldr r1, _080FA7FC @ =0x02030B60
+	ldr r1, _080FA7FC @ =gGameState
 	movs r0, #0x40
 	strh r0, [r1, #4]
 	ldrh r0, [r5, #6]
 	adds r0, #1
 	strh r0, [r5, #6]
 _080FA7E8:
-	ldr r0, _080FA7FC @ =0x02030B60
+	ldr r0, _080FA7FC @ =gGameState
 	movs r1, #4
 	ldrsh r0, [r0, r1]
 	cmp r0, #0x20
@@ -3202,7 +2959,7 @@ _080FA7E8:
 	strh r0, [r5, #6]
 	b _080FA84C
 	.align 2, 0
-_080FA7FC: .4byte 0x02030B60
+_080FA7FC: .4byte gGameState
 _080FA800:
 	ldr r1, _080FA854 @ =0x0810E25C
 	mov r0, sp
@@ -3211,12 +2968,12 @@ _080FA800:
 	mov r0, sp
 	movs r1, #0x12
 	movs r2, #0
-	bl printUnicodeString
+	bl PrintUnicodeString
 	ldr r4, [r5, #0x1c]
 	adds r0, r4, #0
 	movs r1, #0x1b
 	movs r2, #0
-	bl FUN_080e9d04
+	bl minigame_str_080e9d04
 	ldr r0, [r5, #0x24]
 	cmp r4, r0
 	bls _080FA828
@@ -3230,12 +2987,12 @@ _080FA828:
 	adds r0, r4, #0
 	movs r1, #0xf
 	movs r2, #1
-	bl printUnicodeString
+	bl PrintUnicodeString
 	ldr r4, [r5, #0x24]
 	adds r0, r4, #0
 	movs r1, #0x1b
 	movs r2, #1
-	bl FUN_080e9d04
+	bl minigame_str_080e9d04
 	movs r0, #1
 _080FA84C:
 	add sp, #0x14
@@ -3277,18 +3034,18 @@ _080FA87C:
 	cmp r0, #0
 	bgt _080FA8AC
 _080FA894:
-	ldr r2, _080FA8A8 @ =0x020021B0
+	ldr r2, _080FA8A8 @ =gSystemSavedataManager
 	ldr r1, [r1, #0x24]
 	ldr r0, [r2, #0x2c]
 	cmp r1, r0
 	bls _080FA8A4
 	str r1, [r2, #0x2c]
-	bl saveSystemSavedata
+	bl SaveSystemData
 _080FA8A4:
 	movs r0, #0
 	b _080FA8AE
 	.align 2, 0
-_080FA8A8: .4byte 0x020021B0
+_080FA8A8: .4byte gSystemSavedataManager
 _080FA8AC:
 	movs r0, #1
 _080FA8AE:
@@ -3316,17 +3073,17 @@ initHarpuiaMinigame: @ 0x080FA8B4
 	lsls r0, r0, #8
 	str r0, [r1, #4]
 	movs r0, #0xa
-	bl stage_08008a54
-	ldr r1, _080FAACC @ =0x0202F790
+	bl ResetLandscape
+	ldr r1, _080FAACC @ =wStaticGraphicTilenums
 	adds r1, #0x8e
 	movs r0, #0
 	strh r0, [r1]
-	ldr r5, _080FAAD0 @ =0x0202F590
+	ldr r5, _080FAAD0 @ =wStaticMotionPalIDs
 	adds r5, #0x8e
 	movs r0, #7
 	strh r0, [r5]
 	ldr r4, _080FAAD4 @ =0x0000058C
-	ldr r1, _080FAAD8 @ =0x085D78F8
+	ldr r1, _080FAAD8 @ =gStaticMotionGraphics
 	mov r8, r1
 	adds r0, r4, r1
 	ldrh r1, [r0, #6]
@@ -3336,8 +3093,8 @@ initHarpuiaMinigame: @ 0x080FA8B4
 	movs r2, #0x80
 	lsls r2, r2, #9
 	adds r1, r1, r2
-	bl loadGraphic
-	ldr r6, _080FAADC @ =0x085D7904
+	bl LoadGraphic
+	ldr r6, _080FAADC @ =gStaticMotionGraphics+12
 	adds r4, r4, r6
 	ldrh r1, [r5]
 	ldrb r0, [r4, #7]
@@ -3348,14 +3105,14 @@ initHarpuiaMinigame: @ 0x080FA8B4
 	mov sb, r0
 	add r1, sb
 	adds r0, r4, #0
-	bl transferPalette
+	bl LoadPalette
 	movs r4, #0xf3
 	lsls r5, r4, #1
-	ldr r1, _080FAACC @ =0x0202F790
+	ldr r1, _080FAACC @ =wStaticGraphicTilenums
 	adds r0, r1, r5
 	movs r1, #0xc8
 	strh r1, [r0]
-	ldr r2, _080FAAD0 @ =0x0202F590
+	ldr r2, _080FAAD0 @ =wStaticMotionPalIDs
 	adds r5, r2, r5
 	movs r0, #8
 	strh r0, [r5]
@@ -3372,7 +3129,7 @@ initHarpuiaMinigame: @ 0x080FA8B4
 	movs r2, #0x80
 	lsls r2, r2, #9
 	adds r1, r1, r2
-	bl loadGraphic
+	bl LoadGraphic
 	adds r4, r4, r6
 	ldrh r1, [r5]
 	ldrb r0, [r4, #7]
@@ -3380,15 +3137,15 @@ initHarpuiaMinigame: @ 0x080FA8B4
 	lsls r1, r1, #5
 	add r1, sb
 	adds r0, r4, #0
-	bl transferPalette
+	bl LoadPalette
 	movs r4, #0xa1
 	lsls r5, r4, #1
-	ldr r1, _080FAACC @ =0x0202F790
+	ldr r1, _080FAACC @ =wStaticGraphicTilenums
 	adds r0, r1, r5
 	movs r1, #0xf0
 	lsls r1, r1, #1
 	strh r1, [r0]
-	ldr r2, _080FAAD0 @ =0x0202F590
+	ldr r2, _080FAAD0 @ =wStaticMotionPalIDs
 	adds r5, r2, r5
 	movs r0, #9
 	strh r0, [r5]
@@ -3405,7 +3162,7 @@ initHarpuiaMinigame: @ 0x080FA8B4
 	movs r2, #0x80
 	lsls r2, r2, #9
 	adds r1, r1, r2
-	bl loadGraphic
+	bl LoadGraphic
 	adds r4, r4, r6
 	ldrh r1, [r5]
 	ldrb r0, [r4, #7]
@@ -3413,13 +3170,13 @@ initHarpuiaMinigame: @ 0x080FA8B4
 	lsls r1, r1, #5
 	add r1, sb
 	adds r0, r4, #0
-	bl transferPalette
+	bl LoadPalette
 	ldr r5, _080FAAE0 @ =0x00000D48
 	mov r1, r8
 	adds r0, r5, r1
 	movs r4, #0xaa
 	lsls r4, r4, #1
-	ldr r2, _080FAACC @ =0x0202F790
+	ldr r2, _080FAACC @ =wStaticGraphicTilenums
 	adds r1, r2, r4
 	ldrh r1, [r1]
 	ldrh r2, [r0, #6]
@@ -3429,9 +3186,9 @@ initHarpuiaMinigame: @ 0x080FA8B4
 	movs r2, #0x80
 	lsls r2, r2, #9
 	adds r1, r1, r2
-	bl loadGraphic
+	bl LoadGraphic
 	adds r5, r5, r6
-	ldr r0, _080FAAD0 @ =0x0202F590
+	ldr r0, _080FAAD0 @ =wStaticMotionPalIDs
 	adds r4, r0, r4
 	ldrh r1, [r4]
 	ldrb r0, [r5, #7]
@@ -3439,12 +3196,12 @@ initHarpuiaMinigame: @ 0x080FA8B4
 	lsls r1, r1, #5
 	add r1, sb
 	adds r0, r5, #0
-	bl transferPalette
+	bl LoadPalette
 	movs r1, #0xf0
-	ldr r2, _080FAACC @ =0x0202F790
+	ldr r2, _080FAACC @ =wStaticGraphicTilenums
 	strh r1, [r2]
 	movs r0, #0xe
-	ldr r2, _080FAAD0 @ =0x0202F590
+	ldr r2, _080FAAD0 @ =wStaticMotionPalIDs
 	strh r0, [r2]
 	mov r2, r8
 	ldrh r0, [r2, #6]
@@ -3455,15 +3212,15 @@ initHarpuiaMinigame: @ 0x080FA8B4
 	lsls r0, r0, #9
 	adds r1, r1, r0
 	mov r0, r8
-	bl loadGraphic
-	ldr r2, _080FAAD0 @ =0x0202F590
+	bl LoadGraphic
+	ldr r2, _080FAAD0 @ =wStaticMotionPalIDs
 	ldrh r1, [r2]
 	ldrb r0, [r6, #7]
 	subs r1, r1, r0
 	lsls r1, r1, #5
 	add r1, sb
 	adds r0, r6, #0
-	bl transferPalette
+	bl LoadPalette
 	movs r0, #0x96
 	lsls r0, r0, #9
 	str r0, [sp, #4]
@@ -3473,9 +3230,9 @@ initHarpuiaMinigame: @ 0x080FA8B4
 	adds r0, r7, #0
 	add r1, sp, #4
 	movs r2, #0
-	bl FUN_08034ff8
+	bl CreatePlayerHarpuia
 	str r0, [r7, #0x14]
-	ldr r1, _080FAAE4 @ =0x0202F340
+	ldr r1, _080FAAE4 @ =pZero2
 	str r0, [r1]
 	movs r1, #0
 	add r6, sp, #4
@@ -3533,7 +3290,7 @@ _080FAA3A:
 	str r4, [r7, #0x24]
 	strh r4, [r7, #0x28]
 	strh r4, [r7, #0x2a]
-	ldr r0, _080FAAE8 @ =0x020021B0
+	ldr r0, _080FAAE8 @ =gSystemSavedataManager
 	ldr r0, [r0, #0x30]
 	str r0, [r7, #0x3c]
 	strh r4, [r7, #0x3a]
@@ -3552,14 +3309,14 @@ _080FAA3A:
 	.align 2, 0
 _080FAAC4: .4byte 0x00000DCC
 _080FAAC8: .4byte 0x00000DC4
-_080FAACC: .4byte 0x0202F790
-_080FAAD0: .4byte 0x0202F590
+_080FAACC: .4byte wStaticGraphicTilenums
+_080FAAD0: .4byte wStaticMotionPalIDs
 _080FAAD4: .4byte 0x0000058C
-_080FAAD8: .4byte 0x085D78F8
-_080FAADC: .4byte 0x085D7904
+_080FAAD8: .4byte gStaticMotionGraphics
+_080FAADC: .4byte gStaticMotionGraphics+12
 _080FAAE0: .4byte 0x00000D48
-_080FAAE4: .4byte 0x0202F340
-_080FAAE8: .4byte 0x020021B0
+_080FAAE4: .4byte pZero2
+_080FAAE8: .4byte gSystemSavedataManager
 
 	thumb_func_start harpuiaMinigame
 harpuiaMinigame: @ 0x080FAAEC
@@ -3621,10 +3378,10 @@ _080FAB44:
 	b _080FAB7E
 _080FAB58:
 	movs r0, #0
-	bl FUN_080b56b4
+	bl CreateMissionAlert
 	str r0, [r5, #0x10]
 	movs r0, #0x1d
-	bl playSound
+	bl PlaySound
 	ldrh r0, [r5, #6]
 	adds r0, #1
 	strh r0, [r5, #6]
@@ -3646,7 +3403,7 @@ _080FAB7E:
 	mov r0, sp
 	movs r1, #1
 	movs r2, #0
-	bl printUnicodeString
+	bl PrintUnicodeString
 	ldrh r0, [r5, #0xe]
 	lsls r1, r0, #1
 	adds r1, r1, r0
@@ -3657,7 +3414,7 @@ _080FAB7E:
 	adds r0, r4, #0
 	movs r1, #0xa
 	movs r2, #0
-	bl FUN_080e9d04
+	bl minigame_str_080e9d04
 	ldr r0, [r5, #0x3c]
 	cmp r4, r0
 	bls _080FABB2
@@ -3671,12 +3428,12 @@ _080FABB2:
 	adds r0, r4, #0
 	movs r1, #0xf
 	movs r2, #0
-	bl printUnicodeString
+	bl PrintUnicodeString
 	ldr r4, [r5, #0x3c]
 	adds r0, r4, #0
 	movs r1, #0x1b
 	movs r2, #0
-	bl FUN_080e9d04
+	bl minigame_str_080e9d04
 	movs r0, #1
 	add sp, #0x14
 	pop {r4, r5}
@@ -3759,7 +3516,7 @@ _080FAC46:
 	ldr r0, _080FACFC @ =0x000365FF
 	cmp r1, r0
 	bgt _080FAD1C
-	ldr r5, _080FAD00 @ =0x02030B60
+	ldr r5, _080FAD00 @ =gGameState
 	ldr r0, _080FAD04 @ =0x0000626C
 	adds r5, r5, r0
 	ldr r0, [r5]
@@ -3776,7 +3533,7 @@ _080FAC46:
 	adds r0, #0x64
 	mov r2, sb
 	strh r0, [r2, #6]
-	ldr r0, _080FAD10 @ =0x0202F340
+	ldr r0, _080FAD10 @ =pZero2
 	ldr r0, [r0]
 	ldr r0, [r0, #0x54]
 	movs r3, #0xfa
@@ -3825,11 +3582,11 @@ _080FACCC:
 	b _080FAD1C
 	.align 2, 0
 _080FACFC: .4byte 0x000365FF
-_080FAD00: .4byte 0x02030B60
+_080FAD00: .4byte gGameState
 _080FAD04: .4byte 0x0000626C
 _080FAD08: .4byte 0x41C64E6D
 _080FAD0C: .4byte 0x00003039
-_080FAD10: .4byte 0x0202F340
+_080FAD10: .4byte pZero2
 _080FAD14:
 	adds r4, #4
 	adds r5, #1
@@ -3841,7 +3598,7 @@ _080FAD1C:
 	adds r3, r6, #0
 	adds r4, r7, #0
 	adds r4, #0x28
-	ldr r2, _080FAD3C @ =0x08365948
+	ldr r2, _080FAD3C @ =gEnemyFnTable
 	mov r8, r2
 _080FAD2A:
 	ldr r0, [r3]
@@ -3854,7 +3611,7 @@ _080FAD2A:
 	strh r5, [r4]
 	b _080FAD84
 	.align 2, 0
-_080FAD3C: .4byte 0x08365948
+_080FAD3C: .4byte gEnemyFnTable
 _080FAD40:
 	ldrh r0, [r4]
 	cmp r0, #0
@@ -3908,7 +3665,7 @@ _080FAD84:
 	lsls r0, r0, #0x10
 	cmp r0, #0
 	bne _080FADC4
-	ldr r0, _080FAEA0 @ =0x0202F340
+	ldr r0, _080FAEA0 @ =pZero2
 	ldr r0, [r0]
 	ldr r0, [r0, #0x54]
 	movs r1, #0x8c
@@ -3934,14 +3691,14 @@ _080FADC4:
 	lsls r0, r0, #0x10
 	cmp r0, #0
 	bne _080FAE18
-	ldr r0, _080FAEA0 @ =0x0202F340
+	ldr r0, _080FAEA0 @ =pZero2
 	ldr r0, [r0]
 	ldr r0, [r0, #0x54]
 	movs r3, #0x8c
 	lsls r3, r3, #9
 	adds r0, r0, r3
 	str r0, [sp, #0x24]
-	ldr r1, _080FAEA4 @ =0x02030B60
+	ldr r1, _080FAEA4 @ =gGameState
 	ldr r0, _080FAEA8 @ =0x0000626C
 	adds r1, r1, r0
 	ldr r2, [r1]
@@ -3971,7 +3728,7 @@ _080FAE18:
 	mov r0, sp
 	movs r1, #1
 	movs r2, #0
-	bl printUnicodeString
+	bl PrintUnicodeString
 	ldrh r0, [r7, #0xe]
 	lsls r1, r0, #1
 	adds r1, r1, r0
@@ -3982,7 +3739,7 @@ _080FAE18:
 	adds r0, r4, #0
 	movs r1, #0xa
 	movs r2, #0
-	bl FUN_080e9d04
+	bl minigame_str_080e9d04
 	ldr r0, [r7, #0x3c]
 	cmp r4, r0
 	bls _080FAE5E
@@ -3994,7 +3751,7 @@ _080FAE18:
 	strh r0, [r7, #0x3a]
 	movs r0, #0x9c
 	lsls r0, r0, #1
-	bl playSound
+	bl PlaySound
 _080FAE5E:
 	ldr r1, _080FAEB8 @ =0x0810E278
 	mov r0, sl
@@ -4003,12 +3760,12 @@ _080FAE5E:
 	mov r0, sl
 	movs r1, #0xf
 	movs r2, #0
-	bl printUnicodeString
+	bl PrintUnicodeString
 	ldr r4, [r7, #0x3c]
 	adds r0, r4, #0
 	movs r1, #0x1b
 	movs r2, #0
-	bl FUN_080e9d04
+	bl minigame_str_080e9d04
 	ldrb r1, [r7, #0xc]
 	cmp r1, #0
 	bne _080FAE8C
@@ -4027,8 +3784,8 @@ _080FAE8C:
 	pop {r1}
 	bx r1
 	.align 2, 0
-_080FAEA0: .4byte 0x0202F340
-_080FAEA4: .4byte 0x02030B60
+_080FAEA0: .4byte pZero2
+_080FAEA4: .4byte gGameState
 _080FAEA8: .4byte 0x0000626C
 _080FAEAC: .4byte 0x41C64E6D
 _080FAEB0: .4byte 0x00003039
@@ -4076,7 +3833,7 @@ _080FAF02:
 	b _080FAF2C
 _080FAF10:
 	movs r0, #4
-	bl FUN_080b56b4
+	bl CreateMissionAlert
 	str r0, [r5, #0x10]
 	movs r0, #0xb7
 	bl fadeoutBGM
@@ -4094,14 +3851,14 @@ _080FAF2C:
 	strh r0, [r5, #6]
 	b _080FAF58
 _080FAF34:
-	ldr r1, _080FAF54 @ =0x02030B60
+	ldr r1, _080FAF54 @ =gGameState
 	movs r0, #0x40
 	strh r0, [r1, #4]
 	ldrh r0, [r5, #6]
 	adds r0, #1
 	strh r0, [r5, #6]
 _080FAF40:
-	ldr r0, _080FAF54 @ =0x02030B60
+	ldr r0, _080FAF54 @ =gGameState
 	movs r1, #4
 	ldrsh r0, [r0, r1]
 	cmp r0, #0x20
@@ -4111,7 +3868,7 @@ _080FAF40:
 	strh r0, [r5, #6]
 	b _080FAFB0
 	.align 2, 0
-_080FAF54: .4byte 0x02030B60
+_080FAF54: .4byte gGameState
 _080FAF58:
 	ldr r1, _080FAFB8 @ =0x0810E270
 	mov r0, sp
@@ -4120,7 +3877,7 @@ _080FAF58:
 	mov r0, sp
 	movs r1, #1
 	movs r2, #0
-	bl printUnicodeString
+	bl PrintUnicodeString
 	ldrh r0, [r5, #0xe]
 	lsls r1, r0, #1
 	adds r1, r1, r0
@@ -4131,7 +3888,7 @@ _080FAF58:
 	adds r0, r4, #0
 	movs r1, #0xa
 	movs r2, #0
-	bl FUN_080e9d04
+	bl minigame_str_080e9d04
 	ldr r0, [r5, #0x3c]
 	cmp r4, r0
 	bls _080FAF8C
@@ -4145,12 +3902,12 @@ _080FAF8C:
 	adds r0, r4, #0
 	movs r1, #0xf
 	movs r2, #0
-	bl printUnicodeString
+	bl PrintUnicodeString
 	ldr r4, [r5, #0x3c]
 	adds r0, r4, #0
 	movs r1, #0x1b
 	movs r2, #0
-	bl FUN_080e9d04
+	bl minigame_str_080e9d04
 	movs r0, #1
 _080FAFB0:
 	add sp, #0x14
@@ -4192,18 +3949,18 @@ _080FAFE0:
 	cmp r0, #0
 	bgt _080FB010
 _080FAFF8:
-	ldr r2, _080FB00C @ =0x020021B0
+	ldr r2, _080FB00C @ =gSystemSavedataManager
 	ldr r1, [r1, #0x3c]
 	ldr r0, [r2, #0x30]
 	cmp r1, r0
 	bls _080FB008
 	str r1, [r2, #0x30]
-	bl saveSystemSavedata
+	bl SaveSystemData
 _080FB008:
 	movs r0, #0
 	b _080FB012
 	.align 2, 0
-_080FB00C: .4byte 0x020021B0
+_080FB00C: .4byte gSystemSavedataManager
 _080FB010:
 	movs r0, #1
 _080FB012:
@@ -4220,19 +3977,19 @@ fefnir_080fb018: @ 0x080FB018
 	ldr r0, _080FB054 @ =0x0810E284
 	movs r1, #1
 	movs r2, #0
-	bl printUnicodeString
+	bl PrintUnicodeString
 	ldr r0, [r4, #0x20]
 	movs r1, #0xc
 	movs r2, #0
-	bl FUN_080e9d04
+	bl minigame_str_080e9d04
 	ldr r0, _080FB058 @ =0x0810E28C
 	movs r1, #0xf
 	movs r2, #0
-	bl printUnicodeString
+	bl PrintUnicodeString
 	ldr r0, [r4, #0x28]
 	movs r1, #0x1c
 	movs r2, #0
-	bl FUN_080e9d04
+	bl minigame_str_080e9d04
 	pop {r4}
 	pop {r0}
 	bx r0
@@ -4259,9 +4016,9 @@ initFefnirMinigame: @ 0x080FB05C
 	lsls r2, r2, #0xa
 	str r2, [r1, #4]
 	movs r0, #7
-	bl stage_08008a54
-	ldr r6, _080FB210 @ =0x085D78F8
-	ldr r0, _080FB214 @ =0x0202F790
+	bl ResetLandscape
+	ldr r6, _080FB210 @ =gStaticMotionGraphics
+	ldr r0, _080FB214 @ =wStaticGraphicTilenums
 	mov sl, r0
 	ldrh r1, [r0]
 	ldrh r0, [r6, #6]
@@ -4272,10 +4029,10 @@ initFefnirMinigame: @ 0x080FB05C
 	lsls r2, r2, #9
 	adds r1, r1, r2
 	adds r0, r6, #0
-	bl loadGraphic
-	ldr r0, _080FB218 @ =0x085D7904
+	bl LoadGraphic
+	ldr r0, _080FB218 @ =gStaticMotionGraphics+12
 	mov r8, r0
-	ldr r7, _080FB21C @ =0x0202F590
+	ldr r7, _080FB21C @ =wStaticMotionPalIDs
 	ldrh r1, [r7]
 	ldrb r0, [r0, #7]
 	subs r1, r1, r0
@@ -4284,7 +4041,7 @@ initFefnirMinigame: @ 0x080FB05C
 	lsls r2, r2, #2
 	adds r1, r1, r2
 	mov r0, r8
-	bl transferPalette
+	bl LoadPalette
 	movs r4, #0xa5
 	lsls r4, r4, #2
 	adds r0, r4, r6
@@ -4298,7 +4055,7 @@ initFefnirMinigame: @ 0x080FB05C
 	movs r2, #0x80
 	lsls r2, r2, #9
 	adds r1, r1, r2
-	bl loadGraphic
+	bl LoadGraphic
 	add r4, r8
 	adds r0, r7, #0
 	adds r0, #0x42
@@ -4310,7 +4067,7 @@ initFefnirMinigame: @ 0x080FB05C
 	lsls r0, r0, #2
 	adds r1, r1, r0
 	adds r0, r4, #0
-	bl transferPalette
+	bl LoadPalette
 	movs r4, #0xaa
 	lsls r4, r4, #2
 	adds r0, r4, r6
@@ -4324,7 +4081,7 @@ initFefnirMinigame: @ 0x080FB05C
 	movs r2, #0x80
 	lsls r2, r2, #9
 	adds r1, r1, r2
-	bl loadGraphic
+	bl LoadGraphic
 	add r4, r8
 	adds r0, r7, #0
 	adds r0, #0x44
@@ -4336,7 +4093,7 @@ initFefnirMinigame: @ 0x080FB05C
 	lsls r0, r0, #2
 	adds r1, r1, r0
 	adds r0, r4, #0
-	bl transferPalette
+	bl LoadPalette
 	movs r4, #0xaf
 	lsls r4, r4, #2
 	adds r6, r4, r6
@@ -4351,7 +4108,7 @@ initFefnirMinigame: @ 0x080FB05C
 	lsls r2, r2, #9
 	adds r1, r1, r2
 	adds r0, r6, #0
-	bl loadGraphic
+	bl LoadGraphic
 	add r4, r8
 	adds r0, r7, #0
 	adds r0, #0x46
@@ -4363,12 +4120,12 @@ initFefnirMinigame: @ 0x080FB05C
 	lsls r0, r0, #2
 	adds r1, r1, r0
 	adds r0, r4, #0
-	bl transferPalette
+	bl LoadPalette
 	adds r0, r5, #0
 	ldr r1, _080FB20C @ =0x0026E800
 	movs r2, #0x88
 	lsls r2, r2, #0xa
-	bl FUN_080345f4
+	bl CreatePlayerFefnir
 	ldr r1, _080FB220 @ =0x00269700
 	adds r0, r5, #0
 	movs r2, #0x88
@@ -4393,7 +4150,7 @@ initFefnirMinigame: @ 0x080FB05C
 	lsls r2, r2, #0xa
 	bl FUN_08071508
 	str r0, [r5, #0x10]
-	ldr r2, _080FB230 @ =0x0202F388
+	ldr r2, _080FB230 @ =RNG_0202f388
 	ldr r1, [r2]
 	ldr r0, _080FB234 @ =0x000343FD
 	muls r0, r1, r0
@@ -4420,7 +4177,7 @@ initFefnirMinigame: @ 0x080FB05C
 	movs r0, #0
 	str r0, [r5, #0x20]
 	str r0, [r5, #0x24]
-	ldr r0, _080FB244 @ =0x020021B0
+	ldr r0, _080FB244 @ =gSystemSavedataManager
 	ldr r0, [r0, #0x34]
 	str r0, [r5, #0x28]
 	ldr r0, _080FB248 @ =0x00000DF8
@@ -4444,20 +4201,20 @@ initFefnirMinigame: @ 0x080FB05C
 _080FB204: .4byte 0x00000DCC
 _080FB208: .4byte 0x00000DC4
 _080FB20C: .4byte 0x0026E800
-_080FB210: .4byte 0x085D78F8
-_080FB214: .4byte 0x0202F790
-_080FB218: .4byte 0x085D7904
-_080FB21C: .4byte 0x0202F590
+_080FB210: .4byte gStaticMotionGraphics
+_080FB214: .4byte wStaticGraphicTilenums
+_080FB218: .4byte gStaticMotionGraphics+12
+_080FB21C: .4byte wStaticMotionPalIDs
 _080FB220: .4byte 0x00269700
 _080FB224: .4byte 0x0026CD00
 _080FB228: .4byte 0x00270300
 _080FB22C: .4byte 0x00273900
-_080FB230: .4byte 0x0202F388
+_080FB230: .4byte RNG_0202f388
 _080FB234: .4byte 0x000343FD
 _080FB238: .4byte 0x00269EC3
 _080FB23C: .4byte 0x00000DF9
 _080FB240: .4byte 0x00000DFA
-_080FB244: .4byte 0x020021B0
+_080FB244: .4byte gSystemSavedataManager
 _080FB248: .4byte 0x00000DF8
 _080FB24C: .4byte 0x00000DFB
 
@@ -4494,7 +4251,7 @@ _080FB274:
 	strb r0, [r1]
 	movs r0, #0x9c
 	lsls r0, r0, #1
-	bl playSound
+	bl PlaySound
 	b _080FB2AA
 	.align 2, 0
 _080FB294: .4byte 0x00000DCC
@@ -4503,7 +4260,7 @@ _080FB29C: .4byte 0x0001869F
 _080FB2A0: .4byte 0x00000DF8
 _080FB2A4:
 	ldr r0, _080FB2B0 @ =0x00000137
-	bl playSound
+	bl PlaySound
 _080FB2AA:
 	ldr r0, [r4, #0x20]
 	str r0, [r4, #0x28]
@@ -4515,7 +4272,7 @@ _080FB2B4:
 	cmp r0, r1
 	beq _080FB2C0
 	ldr r0, _080FB2D4 @ =0x00000137
-	bl playSound
+	bl PlaySound
 _080FB2C0:
 	ldr r0, [r4, #0x20]
 	str r0, [r4, #0x24]
@@ -4567,9 +4324,9 @@ _080FB308:
 	b _080FB344
 _080FB31A:
 	movs r0, #0x1d
-	bl playSound
+	bl PlaySound
 	movs r0, #0
-	bl FUN_080b56b4
+	bl CreateMissionAlert
 	str r0, [r4, #0x14]
 	ldrb r0, [r4, #1]
 	adds r0, #1
@@ -4605,7 +4362,7 @@ fefnir_minigame_080fb354: @ 0x080FB354
 	sub sp, #4
 	ldr r1, _080FB448 @ =0x00000DCC
 	adds r6, r0, r1
-	ldr r2, _080FB44C @ =0x02001EB0
+	ldr r2, _080FB44C @ =gJoypad
 	ldrh r1, [r2]
 	strh r1, [r6, #0x18]
 	ldrh r1, [r2, #4]
@@ -4654,7 +4411,7 @@ _080FB3B2:
 	mov r8, r0
 	cmp r1, #0
 	bne _080FB472
-	ldr r0, _080FB450 @ =0x0202F388
+	ldr r0, _080FB450 @ =RNG_0202f388
 	mov ip, r0
 	ldr r0, [r0]
 	ldr r3, _080FB454 @ =0x000343FD
@@ -4725,8 +4482,8 @@ _080FB40E:
 	b _080FB468
 	.align 2, 0
 _080FB448: .4byte 0x00000DCC
-_080FB44C: .4byte 0x02001EB0
-_080FB450: .4byte 0x0202F388
+_080FB44C: .4byte gJoypad
+_080FB450: .4byte RNG_0202f388
 _080FB454: .4byte 0x000343FD
 _080FB458: .4byte 0x00269EC3
 _080FB45C: .4byte 0x0026E800
@@ -4799,7 +4556,7 @@ _080FB4D8:
 	b _080FB4FA
 _080FB4E4:
 	movs r0, #4
-	bl FUN_080b56b4
+	bl CreateMissionAlert
 	str r0, [r4, #0x14]
 	ldrb r0, [r4, #1]
 	adds r0, #1
@@ -4815,7 +4572,7 @@ _080FB4FA:
 	strb r0, [r4, #1]
 	b _080FB528
 _080FB502:
-	ldr r1, _080FB524 @ =0x02030B60
+	ldr r1, _080FB524 @ =gGameState
 	movs r0, #0x40
 	strh r0, [r1, #4]
 	ldrb r0, [r4, #1]
@@ -4825,7 +4582,7 @@ _080FB50E:
 	ldr r0, [r4, #0x1c]
 	subs r0, #1
 	str r0, [r4, #0x1c]
-	ldr r0, _080FB524 @ =0x02030B60
+	ldr r0, _080FB524 @ =gGameState
 	movs r1, #4
 	ldrsh r0, [r0, r1]
 	cmp r0, #0x20
@@ -4833,7 +4590,7 @@ _080FB50E:
 	movs r0, #0
 	b _080FB52A
 	.align 2, 0
-_080FB524: .4byte 0x02030B60
+_080FB524: .4byte gGameState
 _080FB528:
 	movs r0, #1
 _080FB52A:
@@ -4846,16 +4603,16 @@ exitFefnirMinigame: @ 0x080FB530
 	push {lr}
 	ldr r1, _080FB548 @ =0x00000DCC
 	adds r0, r0, r1
-	ldr r1, _080FB54C @ =0x020021B0
+	ldr r1, _080FB54C @ =gSystemSavedataManager
 	ldr r0, [r0, #0x28]
 	str r0, [r1, #0x34]
-	bl saveSystemSavedata
+	bl SaveSystemData
 	movs r0, #0
 	pop {r1}
 	bx r1
 	.align 2, 0
 _080FB548: .4byte 0x00000DCC
-_080FB54C: .4byte 0x020021B0
+_080FB54C: .4byte gSystemSavedataManager
 
 	thumb_func_start leviathan_minigame_080fb550
 leviathan_minigame_080fb550: @ 0x080FB550
@@ -4866,19 +4623,19 @@ leviathan_minigame_080fb550: @ 0x080FB550
 	ldr r0, _080FB58C @ =0x0810E298
 	movs r1, #1
 	movs r2, #0
-	bl printUnicodeString
+	bl PrintUnicodeString
 	ldr r0, [r4, #0x24]
 	movs r1, #0xc
 	movs r2, #0
-	bl FUN_080e9d04
+	bl minigame_str_080e9d04
 	ldr r0, _080FB590 @ =0x0810E2A0
 	movs r1, #0xf
 	movs r2, #0
-	bl printUnicodeString
+	bl PrintUnicodeString
 	ldr r0, [r4, #0x2c]
 	movs r1, #0x1c
 	movs r2, #0
-	bl FUN_080e9d04
+	bl minigame_str_080e9d04
 	pop {r4}
 	pop {r0}
 	bx r0
@@ -4896,7 +4653,7 @@ leviathan_minigame_080fb594: @ 0x080FB594
 	ldr r0, _080FB5D8 @ =0x0810E2AC
 	movs r1, #0xa
 	movs r2, #0x13
-	bl printUnicodeString
+	bl PrintUnicodeString
 	ldr r0, [r4, #0x20]
 	movs r1, #0x3c
 	bl __divsi3
@@ -4904,14 +4661,14 @@ leviathan_minigame_080fb594: @ 0x080FB594
 	bl __modsi3
 	movs r1, #0x12
 	movs r2, #0x13
-	bl FUN_080e9d04
+	bl minigame_str_080e9d04
 	ldr r0, [r4, #0x20]
 	movs r1, #0xe1
 	lsls r1, r1, #4
 	bl __divsi3
 	movs r1, #0xf
 	movs r2, #0x13
-	bl FUN_080e9d04
+	bl minigame_str_080e9d04
 	pop {r4}
 	pop {r0}
 	bx r0
@@ -4934,7 +4691,7 @@ leviathan_minigame_080fb5dc: @ 0x080FB5DC
 	bne _080FB64E
 	ldrh r0, [r7, #0x14]
 	strh r0, [r7, #0x16]
-	ldr r4, _080FB65C @ =0x0202F388
+	ldr r4, _080FB65C @ =RNG_0202f388
 	mov r8, r4
 	ldr r0, [r4]
 	ldr r5, _080FB660 @ =0x000343FD
@@ -4984,7 +4741,7 @@ _080FB64E:
 	bx r0
 	.align 2, 0
 _080FB658: .4byte 0x00000DCC
-_080FB65C: .4byte 0x0202F388
+_080FB65C: .4byte RNG_0202f388
 _080FB660: .4byte 0x000343FD
 _080FB664: .4byte 0x00269EC3
 _080FB668: .4byte 0x08386BB0
@@ -5012,7 +4769,7 @@ leviathan_minigame_080fb66c: @ 0x080FB66C
 	bls _080FB6F4
 	movs r0, #0
 	strb r0, [r1]
-	ldr r4, _080FB6E4 @ =0x0202F388
+	ldr r4, _080FB6E4 @ =RNG_0202f388
 	ldr r0, [r4]
 	ldr r1, _080FB6E8 @ =0x000343FD
 	mov r8, r1
@@ -5047,12 +4804,12 @@ leviathan_minigame_080fb66c: @ 0x080FB66C
 	.align 2, 0
 _080FB6DC: .4byte 0x00000DCC
 _080FB6E0: .4byte 0x00000DFE
-_080FB6E4: .4byte 0x0202F388
+_080FB6E4: .4byte RNG_0202f388
 _080FB6E8: .4byte 0x000343FD
 _080FB6EC: .4byte 0x00269EC3
 _080FB6F0: .4byte 0x00042400
 _080FB6F4:
-	ldr r1, _080FB7AC @ =0x0202F388
+	ldr r1, _080FB7AC @ =RNG_0202f388
 	mov r8, r1
 	ldr r0, [r1]
 	ldr r5, _080FB7B0 @ =0x000343FD
@@ -5109,7 +4866,7 @@ _080FB74A:
 	bls _080FB7C0
 	movs r0, #0
 	strb r0, [r1]
-	ldr r4, _080FB7AC @ =0x0202F388
+	ldr r4, _080FB7AC @ =RNG_0202f388
 	ldr r0, [r4]
 	ldr r1, _080FB7B0 @ =0x000343FD
 	mov r8, r1
@@ -5142,13 +4899,13 @@ _080FB74A:
 	bl FUN_08099fb8
 	b _080FB804
 	.align 2, 0
-_080FB7AC: .4byte 0x0202F388
+_080FB7AC: .4byte RNG_0202f388
 _080FB7B0: .4byte 0x000343FD
 _080FB7B4: .4byte 0x00269EC3
 _080FB7B8: .4byte 0x08386BC0
 _080FB7BC: .4byte 0x00042400
 _080FB7C0:
-	ldr r4, _080FB810 @ =0x0202F388
+	ldr r4, _080FB810 @ =RNG_0202f388
 	ldr r0, [r4]
 	ldr r1, _080FB814 @ =0x000343FD
 	mov r8, r1
@@ -5187,7 +4944,7 @@ _080FB804:
 	pop {r0}
 	bx r0
 	.align 2, 0
-_080FB810: .4byte 0x0202F388
+_080FB810: .4byte RNG_0202f388
 _080FB814: .4byte 0x000343FD
 _080FB818: .4byte 0x00269EC3
 
@@ -5211,10 +4968,10 @@ initLeviathanMinigame: @ 0x080FB81C
 	lsls r0, r0, #0xb
 	str r0, [r1, #4]
 	movs r0, #9
-	bl stage_08008a54
-	ldr r1, _080FBAD0 @ =0x085D78F8
+	bl ResetLandscape
+	ldr r1, _080FBAD0 @ =gStaticMotionGraphics
 	mov sl, r1
-	ldr r2, _080FBAD4 @ =0x0202F790
+	ldr r2, _080FBAD4 @ =wStaticGraphicTilenums
 	ldrh r1, [r2]
 	mov r2, sl
 	ldrh r0, [r2, #6]
@@ -5225,11 +4982,11 @@ initLeviathanMinigame: @ 0x080FB81C
 	lsls r0, r0, #9
 	adds r1, r1, r0
 	mov r0, sl
-	bl loadGraphic
-	ldr r1, _080FBAD8 @ =0x0202F590
+	bl LoadGraphic
+	ldr r1, _080FBAD8 @ =wStaticMotionPalIDs
 	mov sb, r1
 	ldrh r1, [r1]
-	ldr r2, _080FBADC @ =0x085D7904
+	ldr r2, _080FBADC @ =gStaticMotionGraphics+12
 	ldrb r0, [r2, #7]
 	subs r1, r1, r0
 	lsls r1, r1, #5
@@ -5237,8 +4994,8 @@ initLeviathanMinigame: @ 0x080FB81C
 	lsls r0, r0, #2
 	adds r1, r1, r0
 	adds r0, r2, #0
-	bl transferPalette
-	ldr r1, _080FBAD4 @ =0x0202F790
+	bl LoadPalette
+	ldr r1, _080FBAD4 @ =wStaticGraphicTilenums
 	adds r1, #0x6a
 	ldr r0, _080FBAE0 @ =0x00000167
 	strh r0, [r1]
@@ -5257,8 +5014,8 @@ initLeviathanMinigame: @ 0x080FB81C
 	movs r2, #0x80
 	lsls r2, r2, #9
 	adds r1, r1, r2
-	bl loadGraphic
-	ldr r0, _080FBADC @ =0x085D7904
+	bl LoadGraphic
+	ldr r0, _080FBADC @ =gStaticMotionGraphics+12
 	adds r4, r4, r0
 	ldrh r1, [r5]
 	ldrb r0, [r4, #7]
@@ -5268,9 +5025,9 @@ initLeviathanMinigame: @ 0x080FB81C
 	lsls r2, r2, #2
 	adds r1, r1, r2
 	adds r0, r4, #0
-	bl transferPalette
+	bl LoadPalette
 	ldr r0, _080FBAE8 @ =0x00000195
-	ldr r1, _080FBAD4 @ =0x0202F790
+	ldr r1, _080FBAD4 @ =wStaticGraphicTilenums
 	strh r0, [r1, #0x30]
 	movs r0, #2
 	mov r2, sb
@@ -5279,7 +5036,7 @@ initLeviathanMinigame: @ 0x080FB81C
 	lsls r6, r6, #1
 	mov r1, sl
 	adds r0, r6, r1
-	ldr r2, _080FBAD4 @ =0x0202F790
+	ldr r2, _080FBAD4 @ =wStaticGraphicTilenums
 	ldrh r1, [r2, #0x30]
 	ldrh r2, [r0, #6]
 	lsrs r2, r2, #6
@@ -5288,8 +5045,8 @@ initLeviathanMinigame: @ 0x080FB81C
 	movs r2, #0x80
 	lsls r2, r2, #9
 	adds r1, r1, r2
-	bl loadGraphic
-	ldr r1, _080FBADC @ =0x085D7904
+	bl LoadGraphic
+	ldr r1, _080FBADC @ =gStaticMotionGraphics+12
 	adds r0, r6, r1
 	mov r2, sb
 	ldrh r1, [r2, #0x30]
@@ -5299,10 +5056,10 @@ initLeviathanMinigame: @ 0x080FB81C
 	movs r2, #0x80
 	lsls r2, r2, #2
 	adds r1, r1, r2
-	bl transferPalette
+	bl LoadPalette
 	movs r4, #0xef
 	lsls r5, r4, #1
-	ldr r1, _080FBAD4 @ =0x0202F790
+	ldr r1, _080FBAD4 @ =wStaticGraphicTilenums
 	adds r0, r1, r5
 	movs r1, #0xa0
 	lsls r1, r1, #2
@@ -5323,8 +5080,8 @@ initLeviathanMinigame: @ 0x080FB81C
 	movs r2, #0x80
 	lsls r2, r2, #9
 	adds r1, r1, r2
-	bl loadGraphic
-	ldr r0, _080FBADC @ =0x085D7904
+	bl LoadGraphic
+	ldr r0, _080FBADC @ =gStaticMotionGraphics+12
 	adds r4, r4, r0
 	ldrh r1, [r5]
 	ldrb r0, [r4, #7]
@@ -5334,8 +5091,8 @@ initLeviathanMinigame: @ 0x080FB81C
 	lsls r2, r2, #2
 	adds r1, r1, r2
 	adds r0, r4, #0
-	bl transferPalette
-	ldr r0, _080FBAD4 @ =0x0202F790
+	bl LoadPalette
+	ldr r0, _080FBAD4 @ =wStaticGraphicTilenums
 	adds r1, r0, r6
 	ldr r0, _080FBAEC @ =0x000002A7
 	strh r0, [r1]
@@ -5354,8 +5111,8 @@ initLeviathanMinigame: @ 0x080FB81C
 	movs r2, #0x80
 	lsls r2, r2, #9
 	adds r1, r1, r2
-	bl loadGraphic
-	ldr r0, _080FBADC @ =0x085D7904
+	bl LoadGraphic
+	ldr r0, _080FBADC @ =gStaticMotionGraphics+12
 	adds r4, r4, r0
 	ldrh r1, [r6]
 	ldrb r0, [r4, #7]
@@ -5365,10 +5122,10 @@ initLeviathanMinigame: @ 0x080FB81C
 	lsls r2, r2, #2
 	adds r1, r1, r2
 	adds r0, r4, #0
-	bl transferPalette
+	bl LoadPalette
 	movs r4, #0xf1
 	lsls r5, r4, #1
-	ldr r1, _080FBAD4 @ =0x0202F790
+	ldr r1, _080FBAD4 @ =wStaticGraphicTilenums
 	adds r0, r1, r5
 	movs r1, #0xb6
 	lsls r1, r1, #2
@@ -5389,8 +5146,8 @@ initLeviathanMinigame: @ 0x080FB81C
 	movs r2, #0x80
 	lsls r2, r2, #9
 	adds r1, r1, r2
-	bl loadGraphic
-	ldr r0, _080FBADC @ =0x085D7904
+	bl LoadGraphic
+	ldr r0, _080FBADC @ =gStaticMotionGraphics+12
 	adds r4, r4, r0
 	ldrh r1, [r5]
 	ldrb r0, [r4, #7]
@@ -5400,10 +5157,10 @@ initLeviathanMinigame: @ 0x080FB81C
 	lsls r2, r2, #2
 	adds r1, r1, r2
 	adds r0, r4, #0
-	bl transferPalette
+	bl LoadPalette
 	movs r4, #0xf2
 	lsls r0, r4, #1
-	ldr r1, _080FBAD4 @ =0x0202F790
+	ldr r1, _080FBAD4 @ =wStaticGraphicTilenums
 	adds r2, r1, r0
 	movs r1, #0xbb
 	lsls r1, r1, #2
@@ -5426,8 +5183,8 @@ initLeviathanMinigame: @ 0x080FB81C
 	lsls r0, r0, #9
 	adds r1, r1, r0
 	mov r0, sl
-	bl loadGraphic
-	ldr r1, _080FBADC @ =0x085D7904
+	bl LoadGraphic
+	ldr r1, _080FBADC @ =gStaticMotionGraphics+12
 	adds r4, r4, r1
 	mov r2, sb
 	ldrh r1, [r2]
@@ -5438,16 +5195,16 @@ initLeviathanMinigame: @ 0x080FB81C
 	lsls r0, r0, #2
 	adds r1, r1, r0
 	adds r0, r4, #0
-	bl transferPalette
+	bl LoadPalette
 	movs r2, #0xf7
 	lsls r2, r2, #0xa
 	mov r0, r8
 	movs r1, #0xb4
 	lsls r1, r1, #9
-	bl FUN_08035e98
+	bl CreatePlayerLeviathan
 	mov r1, r8
 	str r0, [r1, #4]
-	ldr r2, _080FBAF0 @ =0x0202F388
+	ldr r2, _080FBAF0 @ =RNG_0202f388
 	ldr r1, [r2]
 	ldr r0, _080FBAF4 @ =0x000343FD
 	muls r1, r0, r1
@@ -5494,7 +5251,7 @@ initLeviathanMinigame: @ 0x080FB81C
 	mov r0, r8
 	str r2, [r0, #0x24]
 	str r2, [r0, #0x28]
-	ldr r0, _080FBB04 @ =0x020021B0
+	ldr r0, _080FBB04 @ =gSystemSavedataManager
 	ldr r0, [r0, #0x38]
 	mov r1, r8
 	str r0, [r1, #0x2c]
@@ -5508,7 +5265,7 @@ initLeviathanMinigame: @ 0x080FB81C
 	movs r0, #0xb6
 	bl playBGM
 	movs r0, #0x32
-	bl playSound
+	bl PlaySound
 	pop {r3, r4, r5}
 	mov r8, r3
 	mov sb, r4
@@ -5519,20 +5276,20 @@ initLeviathanMinigame: @ 0x080FB81C
 	.align 2, 0
 _080FBAC8: .4byte 0x00000DCC
 _080FBACC: .4byte 0x00000DC4
-_080FBAD0: .4byte 0x085D78F8
-_080FBAD4: .4byte 0x0202F790
-_080FBAD8: .4byte 0x0202F590
-_080FBADC: .4byte 0x085D7904
+_080FBAD0: .4byte gStaticMotionGraphics
+_080FBAD4: .4byte wStaticGraphicTilenums
+_080FBAD8: .4byte wStaticMotionPalIDs
+_080FBADC: .4byte gStaticMotionGraphics+12
 _080FBAE0: .4byte 0x00000167
 _080FBAE4: .4byte 0x00000424
 _080FBAE8: .4byte 0x00000195
 _080FBAEC: .4byte 0x000002A7
-_080FBAF0: .4byte 0x0202F388
+_080FBAF0: .4byte RNG_0202f388
 _080FBAF4: .4byte 0x000343FD
 _080FBAF8: .4byte 0x00269EC3
 _080FBAFC: .4byte 0x00000DFD
 _080FBB00: .4byte 0x00000E01
-_080FBB04: .4byte 0x020021B0
+_080FBB04: .4byte gSystemSavedataManager
 _080FBB08: .4byte 0x00000DFC
 
 	thumb_func_start leviathanMinigame
@@ -5579,13 +5336,13 @@ _080FBB48:
 	strb r0, [r1]
 	movs r0, #0x9c
 	lsls r0, r0, #1
-	bl playSound
+	bl PlaySound
 	b _080FBB72
 	.align 2, 0
 _080FBB68: .4byte 0x0001869F
 _080FBB6C:
 	ldr r0, _080FBB78 @ =0x00000137
-	bl playSound
+	bl PlaySound
 _080FBB72:
 	ldr r0, [r4, #0x24]
 	str r0, [r4, #0x2c]
@@ -5597,7 +5354,7 @@ _080FBB7C:
 	cmp r0, r1
 	beq _080FBB88
 	ldr r0, _080FBB9C @ =0x00000137
-	bl playSound
+	bl PlaySound
 _080FBB88:
 	ldr r0, [r4, #0x24]
 	str r0, [r4, #0x28]
@@ -5657,9 +5414,9 @@ _080FBBD4:
 _080FBBEC: .4byte 0x00000DFF
 _080FBBF0:
 	movs r0, #0x1d
-	bl playSound
+	bl PlaySound
 	movs r0, #0
-	bl FUN_080b56b4
+	bl CreateMissionAlert
 	str r0, [r4, #8]
 	ldrb r0, [r4, #1]
 	adds r0, #1
@@ -5694,7 +5451,7 @@ leviathan_minigame_080fbc30: @ 0x080FBC30
 	adds r5, r0, #0
 	ldr r0, _080FBC54 @ =0x00000DCC
 	adds r4, r5, r0
-	ldr r0, _080FBC58 @ =0x02001EB0
+	ldr r0, _080FBC58 @ =gJoypad
 	ldrh r1, [r0]
 	strh r1, [r4, #0x10]
 	ldrh r0, [r0, #4]
@@ -5709,7 +5466,7 @@ leviathan_minigame_080fbc30: @ 0x080FBC30
 	b _080FBC92
 	.align 2, 0
 _080FBC54: .4byte 0x00000DCC
-_080FBC58: .4byte 0x02001EB0
+_080FBC58: .4byte gJoypad
 _080FBC5C: .4byte 0x00000DFD
 _080FBC60:
 	ldr r0, [r4, #0xc]
@@ -5719,7 +5476,7 @@ _080FBC60:
 	cmp r0, #1
 	bls _080FBC8C
 _080FBC6C:
-	ldr r2, _080FBCCC @ =0x0202F388
+	ldr r2, _080FBCCC @ =RNG_0202f388
 	ldr r1, [r2]
 	ldr r0, _080FBCD0 @ =0x000343FD
 	muls r1, r0, r1
@@ -5770,7 +5527,7 @@ _080FBCC2:
 	pop {r1}
 	bx r1
 	.align 2, 0
-_080FBCCC: .4byte 0x0202F388
+_080FBCCC: .4byte RNG_0202f388
 _080FBCD0: .4byte 0x000343FD
 _080FBCD4: .4byte 0x00269EC3
 _080FBCD8: .4byte 0x00002A30
@@ -5828,7 +5585,7 @@ _080FBD44:
 	movs r0, #0xb6
 	bl fadeoutBGM
 	movs r0, #0xf6
-	bl playSound
+	bl PlaySound
 	adds r1, r4, #0
 	adds r1, #0x33
 	movs r0, #0x3c
@@ -5848,7 +5605,7 @@ _080FBD5E:
 	b _080FBD86
 _080FBD70:
 	movs r0, #4
-	bl FUN_080b56b4
+	bl CreateMissionAlert
 	str r0, [r4, #8]
 	ldrb r0, [r4, #1]
 	adds r0, #1
@@ -5864,14 +5621,14 @@ _080FBD86:
 	strb r0, [r4, #1]
 	b _080FBDB4
 _080FBD8E:
-	ldr r1, _080FBDB0 @ =0x02030B60
+	ldr r1, _080FBDB0 @ =gGameState
 	movs r0, #0x40
 	strh r0, [r1, #4]
 	ldrb r0, [r4, #1]
 	adds r0, #1
 	strb r0, [r4, #1]
 _080FBD9A:
-	ldr r0, _080FBDB0 @ =0x02030B60
+	ldr r0, _080FBDB0 @ =gGameState
 	movs r1, #4
 	ldrsh r0, [r0, r1]
 	cmp r0, #0x20
@@ -5881,7 +5638,7 @@ _080FBD9A:
 	movs r0, #0
 	b _080FBDB6
 	.align 2, 0
-_080FBDB0: .4byte 0x02030B60
+_080FBDB0: .4byte gGameState
 _080FBDB4:
 	movs r0, #1
 _080FBDB6:
@@ -5894,16 +5651,16 @@ exitLeviathanMinigame: @ 0x080FBDBC
 	push {lr}
 	ldr r1, _080FBDD4 @ =0x00000DCC
 	adds r0, r0, r1
-	ldr r1, _080FBDD8 @ =0x020021B0
+	ldr r1, _080FBDD8 @ =gSystemSavedataManager
 	ldr r0, [r0, #0x2c]
 	str r0, [r1, #0x38]
-	bl saveSystemSavedata
+	bl SaveSystemData
 	movs r0, #0
 	pop {r1}
 	bx r1
 	.align 2, 0
 _080FBDD4: .4byte 0x00000DCC
-_080FBDD8: .4byte 0x020021B0
+_080FBDD8: .4byte gSystemSavedataManager
 
 	thumb_func_start phantomMinigame_080fbddc
 phantomMinigame_080fbddc: @ 0x080FBDDC
@@ -5914,19 +5671,19 @@ phantomMinigame_080fbddc: @ 0x080FBDDC
 	ldr r0, _080FBE18 @ =0x0810E2B8
 	movs r1, #1
 	movs r2, #0
-	bl printUnicodeString
+	bl PrintUnicodeString
 	ldr r0, [r4, #0x34]
 	movs r1, #0xc
 	movs r2, #0
-	bl FUN_080e9d04
+	bl minigame_str_080e9d04
 	ldr r0, _080FBE1C @ =0x0810E2C0
 	movs r1, #0xf
 	movs r2, #0
-	bl printUnicodeString
+	bl PrintUnicodeString
 	ldr r0, [r4, #0x3c]
 	movs r1, #0x1c
 	movs r2, #0
-	bl FUN_080e9d04
+	bl minigame_str_080e9d04
 	pop {r4}
 	pop {r0}
 	bx r0
@@ -5953,7 +5710,7 @@ initPhantomMinigame: @ 0x080FBE20
 	lsls r0, r0, #0xb
 	str r0, [r1, #4]
 	movs r0, #6
-	bl stage_08008a54
+	bl ResetLandscape
 	movs r2, #0
 	str r2, [r7, #0x14]
 	str r2, [r7, #4]
@@ -5982,7 +5739,7 @@ initPhantomMinigame: @ 0x080FBE20
 	strh r0, [r7, #0x2c]
 	str r2, [r7, #0x34]
 	str r2, [r7, #0x38]
-	ldr r0, _080FC064 @ =0x020021B0
+	ldr r0, _080FC064 @ =gSystemSavedataManager
 	ldr r0, [r0, #0x3c]
 	str r0, [r7, #0x3c]
 	str r2, [r7, #0x30]
@@ -6033,7 +5790,7 @@ _080FBED2:
 	movs r2, #1
 	movs r3, #0xa0
 	lsls r3, r3, #2
-	bl FUN_08004cd0
+	bl createPhantomIcon
 	adds r1, r7, #0
 	adds r1, #0xa4
 	adds r1, r1, r4
@@ -6068,8 +5825,8 @@ _080FBED2:
 	mov r2, r8
 	cmp r2, #2
 	ble _080FBED2
-	ldr r6, _080FC070 @ =0x085D78F8
-	ldr r0, _080FC074 @ =0x0202F790
+	ldr r6, _080FC070 @ =gStaticMotionGraphics
+	ldr r0, _080FC074 @ =wStaticGraphicTilenums
 	mov sb, r0
 	ldrh r1, [r0]
 	ldrh r0, [r6, #6]
@@ -6080,10 +5837,10 @@ _080FBED2:
 	lsls r2, r2, #9
 	adds r1, r1, r2
 	adds r0, r6, #0
-	bl loadGraphic
-	ldr r0, _080FC078 @ =0x085D7904
+	bl LoadGraphic
+	ldr r0, _080FC078 @ =gStaticMotionGraphics+12
 	mov sl, r0
-	ldr r1, _080FC07C @ =0x0202F590
+	ldr r1, _080FC07C @ =wStaticMotionPalIDs
 	mov r8, r1
 	ldrh r1, [r1]
 	ldrb r0, [r0, #7]
@@ -6093,7 +5850,7 @@ _080FBED2:
 	lsls r2, r2, #2
 	adds r1, r1, r2
 	mov r0, sl
-	bl transferPalette
+	bl LoadPalette
 	ldr r5, _080FC080 @ =0x00000A78
 	adds r0, r5, r6
 	movs r4, #0x86
@@ -6108,7 +5865,7 @@ _080FBED2:
 	movs r2, #0x80
 	lsls r2, r2, #9
 	adds r1, r1, r2
-	bl loadGraphic
+	bl LoadGraphic
 	add r5, sl
 	add r4, r8
 	ldrh r1, [r4]
@@ -6119,7 +5876,7 @@ _080FBED2:
 	lsls r0, r0, #2
 	adds r1, r1, r0
 	adds r0, r5, #0
-	bl transferPalette
+	bl LoadPalette
 	movs r4, #0xe1
 	lsls r4, r4, #2
 	adds r0, r4, r6
@@ -6133,7 +5890,7 @@ _080FBED2:
 	movs r2, #0x80
 	lsls r2, r2, #9
 	adds r1, r1, r2
-	bl loadGraphic
+	bl LoadGraphic
 	add r4, sl
 	mov r0, r8
 	adds r0, #0x5a
@@ -6145,7 +5902,7 @@ _080FBED2:
 	lsls r0, r0, #2
 	adds r1, r1, r0
 	adds r0, r4, #0
-	bl transferPalette
+	bl LoadPalette
 	movs r4, #0xc8
 	lsls r4, r4, #4
 	adds r6, r4, r6
@@ -6162,7 +5919,7 @@ _080FBED2:
 	lsls r0, r0, #9
 	adds r1, r1, r0
 	adds r0, r6, #0
-	bl loadGraphic
+	bl LoadGraphic
 	add r4, sl
 	add r8, r5
 	mov r2, r8
@@ -6174,13 +5931,13 @@ _080FBED2:
 	lsls r0, r0, #2
 	adds r1, r1, r0
 	adds r0, r4, #0
-	bl transferPalette
+	bl LoadPalette
 	ldr r4, _080FC060 @ =0x0009D800
 	movs r2, #0xbe
 	lsls r2, r2, #0xb
 	adds r0, r7, #0
 	adds r1, r4, #0
-	bl phantom_080349d0
+	bl CreatePlayerPhantom
 	str r0, [r7, #8]
 	movs r2, #0xbf
 	lsls r2, r2, #0xb
@@ -6212,13 +5969,13 @@ _080FBED2:
 _080FC058: .4byte 0x00000DCC
 _080FC05C: .4byte 0x00000DC4
 _080FC060: .4byte 0x0009D800
-_080FC064: .4byte 0x020021B0
+_080FC064: .4byte gSystemSavedataManager
 _080FC068: .4byte 0x00000EA1
 _080FC06C: .4byte 0x00000EA2
-_080FC070: .4byte 0x085D78F8
-_080FC074: .4byte 0x0202F790
-_080FC078: .4byte 0x085D7904
-_080FC07C: .4byte 0x0202F590
+_080FC070: .4byte gStaticMotionGraphics
+_080FC074: .4byte wStaticGraphicTilenums
+_080FC078: .4byte gStaticMotionGraphics+12
+_080FC07C: .4byte wStaticMotionPalIDs
 _080FC080: .4byte 0x00000A78
 
 	thumb_func_start phantomMinigame
@@ -6256,7 +6013,7 @@ _080FC0AC:
 	strb r0, [r1]
 	movs r0, #0x9c
 	lsls r0, r0, #1
-	bl playSound
+	bl PlaySound
 	b _080FC0E2
 	.align 2, 0
 _080FC0CC: .4byte 0x00000DCC
@@ -6265,7 +6022,7 @@ _080FC0D4: .4byte 0x0001869F
 _080FC0D8: .4byte 0x00000EA3
 _080FC0DC:
 	ldr r0, _080FC0E8 @ =0x00000137
-	bl playSound
+	bl PlaySound
 _080FC0E2:
 	ldr r0, [r6, #0x34]
 	str r0, [r6, #0x3c]
@@ -6277,7 +6034,7 @@ _080FC0EC:
 	cmp r0, r1
 	beq _080FC0F8
 	ldr r0, _080FC138 @ =0x00000137
-	bl playSound
+	bl PlaySound
 _080FC0F8:
 	ldr r0, [r6, #0x34]
 	str r0, [r6, #0x38]
@@ -6352,9 +6109,9 @@ _080FC16C:
 	b _080FC1A8
 _080FC17E:
 	movs r0, #0x1d
-	bl playSound
+	bl PlaySound
 	movs r0, #0
-	bl FUN_080b56b4
+	bl CreateMissionAlert
 	str r0, [r4, #0xc]
 	ldrb r0, [r4, #1]
 	adds r0, #1
@@ -6387,7 +6144,7 @@ phantomMinigame_080fc1b8: @ 0x080FC1B8
 	adds r6, r0, #0
 	ldr r0, _080FC2E4 @ =0x00000DCC
 	adds r5, r6, r0
-	ldr r1, _080FC2E8 @ =0x02001EB0
+	ldr r1, _080FC2E8 @ =gJoypad
 	ldrh r0, [r1]
 	movs r4, #0
 	strh r0, [r5, #0x10]
@@ -6440,7 +6197,7 @@ _080FC21E:
 	movs r0, #0xa7
 	lsls r0, r0, #0xc
 	adds r1, r1, r0
-	ldr r3, _080FC2F8 @ =0x0202F388
+	ldr r3, _080FC2F8 @ =RNG_0202f388
 	ldr r2, [r3]
 	ldr r0, _080FC2FC @ =0x000343FD
 	muls r2, r0, r2
@@ -6455,7 +6212,7 @@ _080FC21E:
 	lsls r0, r0, #0xb
 	adds r2, r2, r0
 	adds r0, r5, #0
-	bl FUN_080cbac8
+	bl CreateIronStar
 	str r4, [r5, #0x24]
 _080FC24A:
 	ldr r1, [r5, #0x1c]
@@ -6486,7 +6243,7 @@ _080FC278:
 	ldr r2, [r5, #0x18]
 	ldr r1, _080FC308 @ =0xFFFFE000
 	adds r2, r2, r1
-	ldr r3, _080FC2F8 @ =0x0202F388
+	ldr r3, _080FC2F8 @ =RNG_0202f388
 	ldr r1, [r3]
 	ldr r0, _080FC2FC @ =0x000343FD
 	muls r0, r1, r0
@@ -6539,11 +6296,11 @@ _080FC2CE:
 	b _080FC316
 	.align 2, 0
 _080FC2E4: .4byte 0x00000DCC
-_080FC2E8: .4byte 0x02001EB0
+_080FC2E8: .4byte gJoypad
 _080FC2EC: .4byte 0x00000DC4
 _080FC2F0: .4byte 0xFFFFFF00
 _080FC2F4: .4byte 0x00003BFF
-_080FC2F8: .4byte 0x0202F388
+_080FC2F8: .4byte RNG_0202f388
 _080FC2FC: .4byte 0x000343FD
 _080FC300: .4byte 0x00269EC3
 _080FC304: .4byte 0x00004FFF
@@ -6658,7 +6415,7 @@ _080FC3DC:
 	b _080FC3FE
 _080FC3E8:
 	movs r0, #4
-	bl FUN_080b56b4
+	bl CreateMissionAlert
 	str r0, [r4, #0xc]
 	ldrb r0, [r4, #1]
 	adds r0, #1
@@ -6674,14 +6431,14 @@ _080FC3FE:
 	strb r0, [r4, #1]
 	b _080FC424
 _080FC406:
-	ldr r1, _080FC420 @ =0x02030B60
+	ldr r1, _080FC420 @ =gGameState
 	movs r0, #0x40
 	strh r0, [r1, #4]
 	ldrb r0, [r4, #1]
 	adds r0, #1
 	strb r0, [r4, #1]
 _080FC412:
-	ldr r0, _080FC420 @ =0x02030B60
+	ldr r0, _080FC420 @ =gGameState
 	movs r1, #4
 	ldrsh r0, [r0, r1]
 	cmp r0, #0x20
@@ -6689,7 +6446,7 @@ _080FC412:
 	movs r0, #0
 	b _080FC426
 	.align 2, 0
-_080FC420: .4byte 0x02030B60
+_080FC420: .4byte gGameState
 _080FC424:
 	movs r0, #1
 _080FC426:
@@ -6702,13 +6459,13 @@ exitPhantomMinigame: @ 0x080FC42C
 	push {lr}
 	ldr r1, _080FC444 @ =0x00000DCC
 	adds r0, r0, r1
-	ldr r1, _080FC448 @ =0x020021B0
+	ldr r1, _080FC448 @ =gSystemSavedataManager
 	ldr r0, [r0, #0x3c]
 	str r0, [r1, #0x3c]
-	bl saveSystemSavedata
+	bl SaveSystemData
 	movs r0, #0
 	pop {r1}
 	bx r1
 	.align 2, 0
 _080FC444: .4byte 0x00000DCC
-_080FC448: .4byte 0x020021B0
+_080FC448: .4byte gSystemSavedataManager

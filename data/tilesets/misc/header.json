@@ -1,0 +1,2401 @@
+{
+  "label": "gMiscTilesetGraphics",
+  "data": [
+    {
+      "name": "0/tiles.4bpp",
+      "ofs": 302,
+      "chunkSize": 144,
+      "props": [
+        "4bpp",
+        "no_pal"
+      ],
+      "palette": {
+        "color": 0,
+        "id": 0
+      }
+    },
+    {
+      "name": "1/tiles.4bpp",
+      "ofs": 302,
+      "chunkSize": 144,
+      "props": [
+        "4bpp",
+        "no_pal"
+      ],
+      "palette": {
+        "color": 0,
+        "id": 0
+      }
+    },
+    {
+      "name": "2/tiles.4bpp",
+      "ofs": 302,
+      "chunkSize": 144,
+      "props": [
+        "4bpp",
+        "no_pal"
+      ],
+      "palette": {
+        "color": 0,
+        "id": 0
+      }
+    },
+    {
+      "name": "3/tiles.4bpp",
+      "ofs": 302,
+      "chunkSize": 144,
+      "props": [
+        "4bpp",
+        "no_pal"
+      ],
+      "palette": {
+        "color": 0,
+        "id": 0
+      }
+    },
+    {
+      "name": "4/tiles.4bpp",
+      "ofs": 302,
+      "chunkSize": 144,
+      "props": [
+        "4bpp",
+        "no_pal"
+      ],
+      "palette": {
+        "color": 0,
+        "id": 0
+      }
+    },
+    {
+      "name": "5/tiles.4bpp",
+      "ofs": 605,
+      "chunkSize": 96,
+      "props": [
+        "4bpp",
+        "no_pal",
+        "chunked"
+      ],
+      "palette": {
+        "color": 0,
+        "id": 0
+      }
+    },
+    {
+      "name": "6/tiles.4bpp",
+      "ofs": 605,
+      "chunkSize": 96,
+      "props": [
+        "4bpp",
+        "no_pal",
+        "chunked"
+      ],
+      "palette": {
+        "color": 0,
+        "id": 0
+      }
+    },
+    {
+      "name": "7/tiles.4bpp",
+      "ofs": 605,
+      "chunkSize": 96,
+      "props": [
+        "4bpp",
+        "no_pal",
+        "chunked"
+      ],
+      "palette": {
+        "color": 0,
+        "id": 0
+      }
+    },
+    {
+      "name": "8/tiles.4bpp",
+      "ofs": 605,
+      "chunkSize": 96,
+      "props": [
+        "4bpp",
+        "no_pal",
+        "chunked"
+      ],
+      "palette": {
+        "color": 0,
+        "id": 0
+      }
+    },
+    {
+      "name": "9/tiles.4bpp",
+      "ofs": 754,
+      "chunkSize": 96,
+      "props": [
+        "4bpp",
+        "no_pal"
+      ],
+      "palette": {
+        "color": 0,
+        "id": 0
+      }
+    },
+    {
+      "name": "10/tiles.4bpp",
+      "ofs": 754,
+      "chunkSize": 96,
+      "props": [
+        "4bpp",
+        "no_pal"
+      ],
+      "palette": {
+        "color": 0,
+        "id": 0
+      }
+    },
+    {
+      "name": "11/tiles.4bpp",
+      "ofs": 754,
+      "chunkSize": 96,
+      "props": [
+        "4bpp",
+        "no_pal"
+      ],
+      "palette": {
+        "color": 0,
+        "id": 0
+      }
+    },
+    {
+      "name": "12/tiles.4bpp",
+      "ofs": 754,
+      "chunkSize": 96,
+      "props": [
+        "4bpp",
+        "no_pal"
+      ],
+      "palette": {
+        "color": 0,
+        "id": 0
+      }
+    },
+    {
+      "name": "13/tiles.4bpp",
+      "ofs": 754,
+      "chunkSize": 96,
+      "props": [
+        "4bpp",
+        "no_pal"
+      ],
+      "palette": {
+        "color": 0,
+        "id": 0
+      }
+    },
+    {
+      "name": "14/tiles.4bpp",
+      "ofs": 624,
+      "chunkSize": 96,
+      "props": [
+        "4bpp",
+        "no_pal",
+        "chunked"
+      ],
+      "palette": {
+        "color": 0,
+        "id": 0
+      }
+    },
+    {
+      "name": "15/tiles.4bpp",
+      "ofs": 624,
+      "chunkSize": 96,
+      "props": [
+        "4bpp",
+        "no_pal",
+        "chunked"
+      ],
+      "palette": {
+        "color": 0,
+        "id": 0
+      }
+    },
+    {
+      "name": "16/tiles.4bpp",
+      "ofs": 624,
+      "chunkSize": 96,
+      "props": [
+        "4bpp",
+        "no_pal",
+        "chunked"
+      ],
+      "palette": {
+        "color": 0,
+        "id": 0
+      }
+    },
+    {
+      "name": "17/tiles.4bpp",
+      "ofs": 624,
+      "chunkSize": 96,
+      "props": [
+        "4bpp",
+        "no_pal",
+        "chunked"
+      ],
+      "palette": {
+        "color": 0,
+        "id": 0
+      }
+    },
+    {
+      "name": "18/tiles.4bpp",
+      "ofs": 704,
+      "chunkSize": 256,
+      "props": [
+        "4bpp",
+        "no_pal"
+      ],
+      "palette": {
+        "color": 0,
+        "id": 0
+      }
+    },
+    {
+      "name": "19/tiles.4bpp",
+      "ofs": 704,
+      "chunkSize": 256,
+      "props": [
+        "4bpp",
+        "no_pal"
+      ],
+      "palette": {
+        "color": 0,
+        "id": 0
+      }
+    },
+    {
+      "name": "20/tiles.4bpp",
+      "ofs": 704,
+      "chunkSize": 256,
+      "props": [
+        "4bpp",
+        "no_pal"
+      ],
+      "palette": {
+        "color": 0,
+        "id": 0
+      }
+    },
+    {
+      "name": "21/tiles.4bpp",
+      "ofs": 704,
+      "chunkSize": 256,
+      "props": [
+        "4bpp",
+        "no_pal"
+      ],
+      "palette": {
+        "color": 0,
+        "id": 0
+      }
+    },
+    {
+      "name": "22/tiles.4bpp",
+      "ofs": 704,
+      "chunkSize": 256,
+      "props": [
+        "4bpp",
+        "no_pal"
+      ],
+      "palette": {
+        "color": 0,
+        "id": 0
+      }
+    },
+    {
+      "name": "23/tiles.4bpp",
+      "ofs": 704,
+      "chunkSize": 256,
+      "props": [
+        "4bpp",
+        "no_pal"
+      ],
+      "palette": {
+        "color": 0,
+        "id": 0
+      }
+    },
+    {
+      "name": "24/tiles.4bpp",
+      "ofs": 704,
+      "chunkSize": 256,
+      "props": [
+        "4bpp",
+        "no_pal"
+      ],
+      "palette": {
+        "color": 0,
+        "id": 0
+      }
+    },
+    {
+      "name": "25/tiles.4bpp",
+      "ofs": 32,
+      "chunkSize": 512,
+      "props": [
+        "4bpp",
+        "no_pal",
+        "chunked"
+      ],
+      "palette": {
+        "color": 0,
+        "id": 0
+      }
+    },
+    {
+      "name": "26/tiles.4bpp",
+      "ofs": 32,
+      "chunkSize": 512,
+      "props": [
+        "4bpp",
+        "no_pal",
+        "chunked"
+      ],
+      "palette": {
+        "color": 0,
+        "id": 0
+      }
+    },
+    {
+      "name": "27/tiles.4bpp",
+      "ofs": 32,
+      "chunkSize": 512,
+      "props": [
+        "4bpp",
+        "no_pal",
+        "chunked"
+      ],
+      "palette": {
+        "color": 0,
+        "id": 0
+      }
+    },
+    {
+      "name": "28/tiles.4bpp",
+      "ofs": 32,
+      "chunkSize": 512,
+      "props": [
+        "4bpp",
+        "no_pal",
+        "chunked"
+      ],
+      "palette": {
+        "color": 0,
+        "id": 0
+      }
+    },
+    {
+      "name": "29/tiles.4bpp",
+      "ofs": 32,
+      "chunkSize": 0,
+      "props": [
+        "no_pal"
+      ],
+      "palette": {
+        "color": 0,
+        "id": 0
+      }
+    },
+    {
+      "name": "30/tiles.4bpp",
+      "ofs": 32,
+      "chunkSize": 0,
+      "props": [
+        "no_pal"
+      ],
+      "palette": {
+        "color": 0,
+        "id": 0
+      }
+    },
+    {
+      "name": "31/tiles.4bpp",
+      "ofs": 32,
+      "chunkSize": 0,
+      "props": [
+        "no_pal"
+      ],
+      "palette": {
+        "color": 0,
+        "id": 0
+      }
+    },
+    {
+      "name": "32/tiles.4bpp",
+      "ofs": 32,
+      "chunkSize": 0,
+      "props": [
+        "no_pal"
+      ],
+      "palette": {
+        "color": 0,
+        "id": 0
+      }
+    },
+    {
+      "name": "33/tiles.4bpp",
+      "ofs": 171,
+      "chunkSize": 64,
+      "props": [
+        "4bpp",
+        "no_pal"
+      ],
+      "palette": {
+        "color": 0,
+        "id": 0
+      }
+    },
+    {
+      "name": "34/tiles.4bpp",
+      "ofs": 171,
+      "chunkSize": 64,
+      "props": [
+        "4bpp",
+        "no_pal"
+      ],
+      "palette": {
+        "color": 0,
+        "id": 0
+      }
+    },
+    {
+      "name": "35/tiles.4bpp",
+      "ofs": 171,
+      "chunkSize": 64,
+      "props": [
+        "4bpp",
+        "no_pal"
+      ],
+      "palette": {
+        "color": 0,
+        "id": 0
+      }
+    },
+    {
+      "name": "36/tiles.4bpp",
+      "ofs": 171,
+      "chunkSize": 64,
+      "props": [
+        "4bpp",
+        "no_pal"
+      ],
+      "palette": {
+        "color": 0,
+        "id": 0
+      }
+    },
+    {
+      "name": "37/tiles.4bpp",
+      "ofs": 457,
+      "chunkSize": 192,
+      "props": [
+        "4bpp",
+        "no_pal"
+      ],
+      "palette": {
+        "color": 0,
+        "id": 0
+      }
+    },
+    {
+      "name": "38/tiles.4bpp",
+      "ofs": 457,
+      "chunkSize": 192,
+      "props": [
+        "4bpp",
+        "no_pal"
+      ],
+      "palette": {
+        "color": 0,
+        "id": 0
+      }
+    },
+    {
+      "name": "39/tiles.4bpp",
+      "ofs": 457,
+      "chunkSize": 192,
+      "props": [
+        "4bpp",
+        "no_pal"
+      ],
+      "palette": {
+        "color": 0,
+        "id": 0
+      }
+    },
+    {
+      "name": "40/tiles.4bpp",
+      "ofs": 457,
+      "chunkSize": 192,
+      "props": [
+        "4bpp",
+        "no_pal"
+      ],
+      "palette": {
+        "color": 0,
+        "id": 0
+      }
+    },
+    {
+      "name": "41/tiles.4bpp",
+      "ofs": 457,
+      "chunkSize": 192,
+      "props": [
+        "4bpp",
+        "no_pal"
+      ],
+      "palette": {
+        "color": 0,
+        "id": 0
+      }
+    },
+    {
+      "name": "42/tiles.4bpp",
+      "ofs": 66,
+      "chunkSize": 128,
+      "props": [
+        "4bpp",
+        "no_pal",
+        "chunked"
+      ],
+      "palette": {
+        "color": 0,
+        "id": 0
+      }
+    },
+    {
+      "name": "43/tiles.4bpp",
+      "ofs": 66,
+      "chunkSize": 128,
+      "props": [
+        "4bpp",
+        "no_pal",
+        "chunked"
+      ],
+      "palette": {
+        "color": 0,
+        "id": 0
+      }
+    },
+    {
+      "name": "44/tiles.4bpp",
+      "ofs": 66,
+      "chunkSize": 128,
+      "props": [
+        "4bpp",
+        "no_pal",
+        "chunked"
+      ],
+      "palette": {
+        "color": 0,
+        "id": 0
+      }
+    },
+    {
+      "name": "45/tiles.4bpp",
+      "ofs": 66,
+      "chunkSize": 128,
+      "props": [
+        "4bpp",
+        "no_pal",
+        "chunked"
+      ],
+      "palette": {
+        "color": 0,
+        "id": 0
+      }
+    },
+    {
+      "name": "46/tiles.4bpp",
+      "ofs": 66,
+      "chunkSize": 128,
+      "props": [
+        "4bpp",
+        "no_pal",
+        "chunked"
+      ],
+      "palette": {
+        "color": 0,
+        "id": 0
+      }
+    },
+    {
+      "name": "47/tiles.4bpp",
+      "ofs": 64,
+      "chunkSize": 64,
+      "props": [
+        "4bpp",
+        "no_pal",
+        "chunked"
+      ],
+      "palette": {
+        "color": 0,
+        "id": 0
+      }
+    },
+    {
+      "name": "48/tiles.4bpp",
+      "ofs": 64,
+      "chunkSize": 64,
+      "props": [
+        "4bpp",
+        "no_pal",
+        "chunked"
+      ],
+      "palette": {
+        "color": 0,
+        "id": 0
+      }
+    },
+    {
+      "name": "49/tiles.4bpp",
+      "ofs": 64,
+      "chunkSize": 64,
+      "props": [
+        "4bpp",
+        "no_pal",
+        "chunked"
+      ],
+      "palette": {
+        "color": 0,
+        "id": 0
+      }
+    },
+    {
+      "name": "50/tiles.4bpp",
+      "ofs": 64,
+      "chunkSize": 64,
+      "props": [
+        "4bpp",
+        "no_pal",
+        "chunked"
+      ],
+      "palette": {
+        "color": 0,
+        "id": 0
+      }
+    },
+    {
+      "name": "51/tiles.4bpp",
+      "ofs": 196,
+      "chunkSize": 64,
+      "props": [
+        "4bpp",
+        "no_pal",
+        "chunked"
+      ],
+      "palette": {
+        "color": 0,
+        "id": 0
+      }
+    },
+    {
+      "name": "52/tiles.4bpp",
+      "ofs": 196,
+      "chunkSize": 64,
+      "props": [
+        "4bpp",
+        "no_pal",
+        "chunked"
+      ],
+      "palette": {
+        "color": 0,
+        "id": 0
+      }
+    },
+    {
+      "name": "53/tiles.4bpp",
+      "ofs": 196,
+      "chunkSize": 64,
+      "props": [
+        "4bpp",
+        "no_pal",
+        "chunked"
+      ],
+      "palette": {
+        "color": 0,
+        "id": 0
+      }
+    },
+    {
+      "name": "54/tiles.4bpp",
+      "ofs": 196,
+      "chunkSize": 64,
+      "props": [
+        "4bpp",
+        "no_pal",
+        "chunked"
+      ],
+      "palette": {
+        "color": 0,
+        "id": 0
+      }
+    },
+    {
+      "name": "55/tiles.4bpp",
+      "ofs": 196,
+      "chunkSize": 64,
+      "props": [
+        "4bpp",
+        "no_pal",
+        "chunked"
+      ],
+      "palette": {
+        "color": 0,
+        "id": 0
+      }
+    },
+    {
+      "name": "56/tiles.4bpp",
+      "ofs": 320,
+      "chunkSize": 64,
+      "props": [
+        "4bpp",
+        "no_pal",
+        "chunked"
+      ],
+      "palette": {
+        "color": 0,
+        "id": 0
+      }
+    },
+    {
+      "name": "57/tiles.4bpp",
+      "ofs": 320,
+      "chunkSize": 64,
+      "props": [
+        "4bpp",
+        "no_pal",
+        "chunked"
+      ],
+      "palette": {
+        "color": 0,
+        "id": 0
+      }
+    },
+    {
+      "name": "58/tiles.4bpp",
+      "ofs": 192,
+      "chunkSize": 144,
+      "props": [
+        "4bpp",
+        "no_pal"
+      ],
+      "palette": {
+        "color": 0,
+        "id": 0
+      }
+    },
+    {
+      "name": "59/tiles.4bpp",
+      "ofs": 192,
+      "chunkSize": 144,
+      "props": [
+        "4bpp",
+        "no_pal"
+      ],
+      "palette": {
+        "color": 0,
+        "id": 0
+      }
+    },
+    {
+      "name": "60/tiles.4bpp",
+      "ofs": 192,
+      "chunkSize": 144,
+      "props": [
+        "4bpp",
+        "no_pal"
+      ],
+      "palette": {
+        "color": 0,
+        "id": 0
+      }
+    },
+    {
+      "name": "61/tiles.4bpp",
+      "ofs": 192,
+      "chunkSize": 144,
+      "props": [
+        "4bpp",
+        "no_pal"
+      ],
+      "palette": {
+        "color": 0,
+        "id": 0
+      }
+    },
+    {
+      "name": "62/tiles.4bpp",
+      "ofs": 192,
+      "chunkSize": 144,
+      "props": [
+        "4bpp",
+        "no_pal"
+      ],
+      "palette": {
+        "color": 0,
+        "id": 0
+      }
+    },
+    {
+      "name": "63/tiles.4bpp",
+      "ofs": 192,
+      "chunkSize": 144,
+      "props": [
+        "4bpp",
+        "no_pal"
+      ],
+      "palette": {
+        "color": 0,
+        "id": 0
+      }
+    },
+    {
+      "name": "64/tiles.4bpp",
+      "ofs": 192,
+      "chunkSize": 144,
+      "props": [
+        "4bpp",
+        "no_pal"
+      ],
+      "palette": {
+        "color": 0,
+        "id": 0
+      }
+    },
+    {
+      "name": "65/tiles.4bpp",
+      "ofs": 192,
+      "chunkSize": 144,
+      "props": [
+        "4bpp",
+        "no_pal"
+      ],
+      "palette": {
+        "color": 0,
+        "id": 0
+      }
+    },
+    {
+      "name": "66/tiles.4bpp",
+      "ofs": 532,
+      "chunkSize": 64,
+      "props": [
+        "4bpp",
+        "no_pal",
+        "chunked"
+      ],
+      "palette": {
+        "color": 0,
+        "id": 0
+      }
+    },
+    {
+      "name": "67/tiles.4bpp",
+      "ofs": 532,
+      "chunkSize": 64,
+      "props": [
+        "4bpp",
+        "no_pal",
+        "chunked"
+      ],
+      "palette": {
+        "color": 0,
+        "id": 0
+      }
+    },
+    {
+      "name": "68/tiles.4bpp",
+      "ofs": 532,
+      "chunkSize": 64,
+      "props": [
+        "4bpp",
+        "no_pal",
+        "chunked"
+      ],
+      "palette": {
+        "color": 0,
+        "id": 0
+      }
+    },
+    {
+      "name": "69/tiles.4bpp",
+      "ofs": 532,
+      "chunkSize": 64,
+      "props": [
+        "4bpp",
+        "no_pal",
+        "chunked"
+      ],
+      "palette": {
+        "color": 0,
+        "id": 0
+      }
+    },
+    {
+      "name": "70/tiles.4bpp",
+      "ofs": 532,
+      "chunkSize": 64,
+      "props": [
+        "4bpp",
+        "no_pal",
+        "chunked"
+      ],
+      "palette": {
+        "color": 0,
+        "id": 0
+      }
+    },
+    {
+      "name": "71/tiles.4bpp",
+      "ofs": 532,
+      "chunkSize": 64,
+      "props": [
+        "4bpp",
+        "no_pal",
+        "chunked"
+      ],
+      "palette": {
+        "color": 0,
+        "id": 0
+      }
+    },
+    {
+      "name": "72/tiles.4bpp",
+      "ofs": 320,
+      "chunkSize": 128,
+      "props": [
+        "4bpp",
+        "no_pal",
+        "chunked"
+      ],
+      "palette": {
+        "color": 0,
+        "id": 0
+      }
+    },
+    {
+      "name": "73/tiles.4bpp",
+      "ofs": 320,
+      "chunkSize": 128,
+      "props": [
+        "4bpp",
+        "no_pal",
+        "chunked"
+      ],
+      "palette": {
+        "color": 0,
+        "id": 0
+      }
+    },
+    {
+      "name": "74/tiles.4bpp",
+      "ofs": 320,
+      "chunkSize": 128,
+      "props": [
+        "4bpp",
+        "no_pal",
+        "chunked"
+      ],
+      "palette": {
+        "color": 0,
+        "id": 0
+      }
+    },
+    {
+      "name": "75/tiles.4bpp",
+      "ofs": 320,
+      "chunkSize": 128,
+      "props": [
+        "4bpp",
+        "no_pal",
+        "chunked"
+      ],
+      "palette": {
+        "color": 0,
+        "id": 0
+      }
+    },
+    {
+      "name": "76/tiles.4bpp",
+      "ofs": 320,
+      "chunkSize": 128,
+      "props": [
+        "4bpp",
+        "no_pal",
+        "chunked"
+      ],
+      "palette": {
+        "color": 0,
+        "id": 0
+      }
+    },
+    {
+      "name": "77/tiles.4bpp",
+      "ofs": 320,
+      "chunkSize": 128,
+      "props": [
+        "4bpp",
+        "no_pal",
+        "chunked"
+      ],
+      "palette": {
+        "color": 0,
+        "id": 0
+      }
+    },
+    {
+      "name": "78/tiles.4bpp",
+      "ofs": 334,
+      "chunkSize": 128,
+      "props": [
+        "4bpp",
+        "no_pal",
+        "chunked"
+      ],
+      "palette": {
+        "color": 0,
+        "id": 0
+      }
+    },
+    {
+      "name": "79/tiles.4bpp",
+      "ofs": 334,
+      "chunkSize": 128,
+      "props": [
+        "4bpp",
+        "no_pal",
+        "chunked"
+      ],
+      "palette": {
+        "color": 0,
+        "id": 0
+      }
+    },
+    {
+      "name": "80/tiles.4bpp",
+      "ofs": 334,
+      "chunkSize": 128,
+      "props": [
+        "4bpp",
+        "no_pal",
+        "chunked"
+      ],
+      "palette": {
+        "color": 0,
+        "id": 0
+      }
+    },
+    {
+      "name": "81/tiles.4bpp",
+      "ofs": 334,
+      "chunkSize": 128,
+      "props": [
+        "4bpp",
+        "no_pal",
+        "chunked"
+      ],
+      "palette": {
+        "color": 0,
+        "id": 0
+      }
+    },
+    {
+      "name": "82/tiles.4bpp",
+      "ofs": 334,
+      "chunkSize": 128,
+      "props": [
+        "4bpp",
+        "no_pal",
+        "chunked"
+      ],
+      "palette": {
+        "color": 0,
+        "id": 0
+      }
+    },
+    {
+      "name": "83/tiles.4bpp",
+      "ofs": 64,
+      "chunkSize": 512,
+      "props": [
+        "4bpp",
+        "no_pal",
+        "chunked"
+      ],
+      "palette": {
+        "color": 0,
+        "id": 0
+      }
+    },
+    {
+      "name": "84/tiles.4bpp",
+      "ofs": 64,
+      "chunkSize": 512,
+      "props": [
+        "4bpp",
+        "no_pal",
+        "chunked"
+      ],
+      "palette": {
+        "color": 0,
+        "id": 0
+      }
+    },
+    {
+      "name": "85/tiles.4bpp",
+      "ofs": 64,
+      "chunkSize": 512,
+      "props": [
+        "4bpp",
+        "no_pal",
+        "chunked"
+      ],
+      "palette": {
+        "color": 0,
+        "id": 0
+      }
+    },
+    {
+      "name": "86/tiles.4bpp",
+      "ofs": 64,
+      "chunkSize": 512,
+      "props": [
+        "4bpp",
+        "no_pal",
+        "chunked"
+      ],
+      "palette": {
+        "color": 0,
+        "id": 0
+      }
+    },
+    {
+      "name": "87/tiles.4bpp",
+      "ofs": 64,
+      "chunkSize": 512,
+      "props": [
+        "4bpp",
+        "no_pal",
+        "chunked"
+      ],
+      "palette": {
+        "color": 0,
+        "id": 0
+      }
+    },
+    {
+      "name": "88/tiles.4bpp",
+      "ofs": 528,
+      "chunkSize": 128,
+      "props": [
+        "4bpp",
+        "no_pal"
+      ],
+      "palette": {
+        "color": 0,
+        "id": 0
+      }
+    },
+    {
+      "name": "89/tiles.4bpp",
+      "ofs": 528,
+      "chunkSize": 128,
+      "props": [
+        "4bpp",
+        "no_pal"
+      ],
+      "palette": {
+        "color": 0,
+        "id": 0
+      }
+    },
+    {
+      "name": "90/tiles.4bpp",
+      "ofs": 528,
+      "chunkSize": 128,
+      "props": [
+        "4bpp",
+        "no_pal"
+      ],
+      "palette": {
+        "color": 0,
+        "id": 0
+      }
+    },
+    {
+      "name": "91/tiles.4bpp",
+      "ofs": 528,
+      "chunkSize": 128,
+      "props": [
+        "4bpp",
+        "no_pal"
+      ],
+      "palette": {
+        "color": 0,
+        "id": 0
+      }
+    },
+    {
+      "name": "92/tiles.4bpp",
+      "ofs": 1013,
+      "chunkSize": 80,
+      "props": [
+        "4bpp",
+        "no_pal"
+      ],
+      "palette": {
+        "color": 0,
+        "id": 0
+      }
+    },
+    {
+      "name": "93/tiles.4bpp",
+      "ofs": 588,
+      "chunkSize": 32,
+      "props": [
+        "4bpp",
+        "no_pal"
+      ],
+      "palette": {
+        "color": 0,
+        "id": 0
+      }
+    },
+    {
+      "name": "94/tiles.4bpp",
+      "ofs": 588,
+      "chunkSize": 32,
+      "props": [
+        "4bpp",
+        "no_pal"
+      ],
+      "palette": {
+        "color": 0,
+        "id": 0
+      }
+    },
+    {
+      "name": "95/tiles.4bpp",
+      "ofs": 588,
+      "chunkSize": 32,
+      "props": [
+        "4bpp",
+        "no_pal"
+      ],
+      "palette": {
+        "color": 0,
+        "id": 0
+      }
+    },
+    {
+      "name": "96/tiles.4bpp",
+      "ofs": 588,
+      "chunkSize": 32,
+      "props": [
+        "4bpp",
+        "no_pal"
+      ],
+      "palette": {
+        "color": 0,
+        "id": 0
+      }
+    },
+    {
+      "name": "97/tiles.4bpp",
+      "ofs": 588,
+      "chunkSize": 32,
+      "props": [
+        "4bpp",
+        "no_pal"
+      ],
+      "palette": {
+        "color": 0,
+        "id": 0
+      }
+    },
+    {
+      "name": "98/tiles.4bpp",
+      "ofs": 709,
+      "chunkSize": 64,
+      "props": [
+        "4bpp",
+        "no_pal"
+      ],
+      "palette": {
+        "color": 0,
+        "id": 0
+      }
+    },
+    {
+      "name": "99/tiles.4bpp",
+      "ofs": 709,
+      "chunkSize": 64,
+      "props": [
+        "4bpp",
+        "no_pal"
+      ],
+      "palette": {
+        "color": 0,
+        "id": 0
+      }
+    },
+    {
+      "name": "100/tiles.4bpp",
+      "ofs": 709,
+      "chunkSize": 64,
+      "props": [
+        "4bpp",
+        "no_pal"
+      ],
+      "palette": {
+        "color": 0,
+        "id": 0
+      }
+    },
+    {
+      "name": "101/tiles.4bpp",
+      "ofs": 991,
+      "chunkSize": 256,
+      "props": [
+        "4bpp",
+        "no_pal"
+      ],
+      "palette": {
+        "color": 0,
+        "id": 0
+      }
+    },
+    {
+      "name": "102/tiles.4bpp",
+      "ofs": 991,
+      "chunkSize": 256,
+      "props": [
+        "4bpp",
+        "no_pal"
+      ],
+      "palette": {
+        "color": 0,
+        "id": 0
+      }
+    },
+    {
+      "name": "103/tiles.4bpp",
+      "ofs": 991,
+      "chunkSize": 256,
+      "props": [
+        "4bpp",
+        "no_pal"
+      ],
+      "palette": {
+        "color": 0,
+        "id": 0
+      }
+    },
+    {
+      "name": "104/tiles.4bpp",
+      "ofs": 991,
+      "chunkSize": 256,
+      "props": [
+        "4bpp",
+        "no_pal"
+      ],
+      "palette": {
+        "color": 0,
+        "id": 0
+      }
+    },
+    {
+      "name": "105/tiles.4bpp",
+      "ofs": 991,
+      "chunkSize": 256,
+      "props": [
+        "4bpp",
+        "no_pal"
+      ],
+      "palette": {
+        "color": 0,
+        "id": 0
+      }
+    },
+    {
+      "name": "106/tiles.4bpp",
+      "ofs": 991,
+      "chunkSize": 256,
+      "props": [
+        "4bpp",
+        "no_pal"
+      ],
+      "palette": {
+        "color": 0,
+        "id": 0
+      }
+    },
+    {
+      "name": "107/tiles.4bpp",
+      "ofs": 991,
+      "chunkSize": 256,
+      "props": [
+        "4bpp",
+        "no_pal"
+      ],
+      "palette": {
+        "color": 0,
+        "id": 0
+      }
+    },
+    {
+      "name": "108/tiles.4bpp",
+      "ofs": 991,
+      "chunkSize": 256,
+      "props": [
+        "4bpp",
+        "no_pal"
+      ],
+      "palette": {
+        "color": 0,
+        "id": 0
+      }
+    },
+    {
+      "name": "109/tiles.4bpp",
+      "ofs": 991,
+      "chunkSize": 256,
+      "props": [
+        "4bpp",
+        "no_pal"
+      ],
+      "palette": {
+        "color": 0,
+        "id": 0
+      }
+    },
+    {
+      "name": "110/tiles.4bpp",
+      "ofs": 883,
+      "chunkSize": 256,
+      "props": [
+        "4bpp",
+        "no_pal"
+      ],
+      "palette": {
+        "color": 0,
+        "id": 0
+      }
+    },
+    {
+      "name": "111/tiles.4bpp",
+      "ofs": 883,
+      "chunkSize": 256,
+      "props": [
+        "4bpp",
+        "no_pal"
+      ],
+      "palette": {
+        "color": 0,
+        "id": 0
+      }
+    },
+    {
+      "name": "112/tiles.4bpp",
+      "ofs": 360,
+      "chunkSize": 32,
+      "props": [
+        "4bpp",
+        "no_pal"
+      ],
+      "palette": {
+        "color": 0,
+        "id": 0
+      }
+    },
+    {
+      "name": "113/tiles.4bpp",
+      "ofs": 360,
+      "chunkSize": 32,
+      "props": [
+        "4bpp",
+        "no_pal"
+      ],
+      "palette": {
+        "color": 0,
+        "id": 0
+      }
+    },
+    {
+      "name": "114/tiles.4bpp",
+      "ofs": 360,
+      "chunkSize": 32,
+      "props": [
+        "4bpp",
+        "no_pal"
+      ],
+      "palette": {
+        "color": 0,
+        "id": 0
+      }
+    },
+    {
+      "name": "115/tiles.4bpp",
+      "ofs": 360,
+      "chunkSize": 32,
+      "props": [
+        "4bpp",
+        "no_pal"
+      ],
+      "palette": {
+        "color": 0,
+        "id": 0
+      }
+    },
+    {
+      "name": "116/tiles.4bpp",
+      "ofs": 512,
+      "chunkSize": 128,
+      "props": [
+        "4bpp",
+        "no_pal"
+      ],
+      "palette": {
+        "color": 0,
+        "id": 0
+      }
+    },
+    {
+      "name": "117/tiles.4bpp",
+      "ofs": 512,
+      "chunkSize": 128,
+      "props": [
+        "4bpp",
+        "no_pal"
+      ],
+      "palette": {
+        "color": 0,
+        "id": 0
+      }
+    },
+    {
+      "name": "118/tiles.4bpp",
+      "ofs": 512,
+      "chunkSize": 128,
+      "props": [
+        "4bpp",
+        "no_pal"
+      ],
+      "palette": {
+        "color": 0,
+        "id": 0
+      }
+    },
+    {
+      "name": "119/tiles.4bpp",
+      "ofs": 512,
+      "chunkSize": 128,
+      "props": [
+        "4bpp",
+        "no_pal"
+      ],
+      "palette": {
+        "color": 0,
+        "id": 0
+      }
+    },
+    {
+      "name": "120/tiles.4bpp",
+      "ofs": 512,
+      "chunkSize": 128,
+      "props": [
+        "4bpp",
+        "no_pal"
+      ],
+      "palette": {
+        "color": 0,
+        "id": 0
+      }
+    },
+    {
+      "name": "121/tiles.4bpp",
+      "ofs": 512,
+      "chunkSize": 128,
+      "props": [
+        "4bpp",
+        "no_pal"
+      ],
+      "palette": {
+        "color": 0,
+        "id": 0
+      }
+    },
+    {
+      "name": "122/tiles.4bpp",
+      "ofs": 512,
+      "chunkSize": 128,
+      "props": [
+        "4bpp",
+        "no_pal"
+      ],
+      "palette": {
+        "color": 0,
+        "id": 0
+      }
+    },
+    {
+      "name": "123/tiles.4bpp",
+      "ofs": 512,
+      "chunkSize": 128,
+      "props": [
+        "4bpp",
+        "no_pal"
+      ],
+      "palette": {
+        "color": 0,
+        "id": 0
+      }
+    },
+    {
+      "name": "124/tiles.4bpp",
+      "ofs": 855,
+      "chunkSize": 144,
+      "props": [
+        "4bpp",
+        "no_pal"
+      ],
+      "palette": {
+        "color": 0,
+        "id": 0
+      }
+    },
+    {
+      "name": "125/tiles.4bpp",
+      "ofs": 855,
+      "chunkSize": 144,
+      "props": [
+        "4bpp",
+        "no_pal"
+      ],
+      "palette": {
+        "color": 0,
+        "id": 0
+      }
+    },
+    {
+      "name": "126/tiles.4bpp",
+      "ofs": 855,
+      "chunkSize": 144,
+      "props": [
+        "4bpp",
+        "no_pal"
+      ],
+      "palette": {
+        "color": 0,
+        "id": 0
+      }
+    },
+    {
+      "name": "127/tiles.4bpp",
+      "ofs": 855,
+      "chunkSize": 144,
+      "props": [
+        "4bpp",
+        "no_pal"
+      ],
+      "palette": {
+        "color": 0,
+        "id": 0
+      }
+    },
+    {
+      "name": "128/tiles.4bpp",
+      "ofs": 832,
+      "chunkSize": 512,
+      "props": [
+        "4bpp",
+        "no_pal",
+        "chunked"
+      ],
+      "palette": {
+        "color": 0,
+        "id": 0
+      }
+    },
+    {
+      "name": "129/tiles.4bpp",
+      "ofs": 832,
+      "chunkSize": 512,
+      "props": [
+        "4bpp",
+        "no_pal",
+        "chunked"
+      ],
+      "palette": {
+        "color": 0,
+        "id": 0
+      }
+    },
+    {
+      "name": "130/tiles.4bpp",
+      "ofs": 832,
+      "chunkSize": 512,
+      "props": [
+        "4bpp",
+        "no_pal",
+        "chunked"
+      ],
+      "palette": {
+        "color": 0,
+        "id": 0
+      }
+    },
+    {
+      "name": "131/tiles.4bpp",
+      "ofs": 832,
+      "chunkSize": 512,
+      "props": [
+        "4bpp",
+        "no_pal",
+        "chunked"
+      ],
+      "palette": {
+        "color": 0,
+        "id": 0
+      }
+    },
+    {
+      "name": "132/tiles.4bpp",
+      "ofs": 832,
+      "chunkSize": 512,
+      "props": [
+        "4bpp",
+        "no_pal",
+        "chunked"
+      ],
+      "palette": {
+        "color": 0,
+        "id": 0
+      }
+    },
+    {
+      "name": "133/tiles.4bpp",
+      "ofs": 832,
+      "chunkSize": 512,
+      "props": [
+        "4bpp",
+        "no_pal",
+        "chunked"
+      ],
+      "palette": {
+        "color": 0,
+        "id": 0
+      }
+    },
+    {
+      "name": "134/tiles.4bpp",
+      "ofs": 832,
+      "chunkSize": 512,
+      "props": [
+        "4bpp",
+        "no_pal",
+        "chunked"
+      ],
+      "palette": {
+        "color": 0,
+        "id": 0
+      }
+    },
+    {
+      "name": "135/tiles.4bpp",
+      "ofs": 832,
+      "chunkSize": 512,
+      "props": [
+        "4bpp",
+        "no_pal",
+        "chunked"
+      ],
+      "palette": {
+        "color": 0,
+        "id": 0
+      }
+    },
+    {
+      "name": "136/tiles.4bpp",
+      "ofs": 49,
+      "chunkSize": 320,
+      "props": [
+        "4bpp",
+        "no_pal",
+        "chunked"
+      ],
+      "palette": {
+        "color": 0,
+        "id": 0
+      }
+    },
+    {
+      "name": "137/tiles.4bpp",
+      "ofs": 49,
+      "chunkSize": 320,
+      "props": [
+        "4bpp",
+        "no_pal",
+        "chunked"
+      ],
+      "palette": {
+        "color": 0,
+        "id": 0
+      }
+    },
+    {
+      "name": "138/tiles.4bpp",
+      "ofs": 49,
+      "chunkSize": 320,
+      "props": [
+        "4bpp",
+        "no_pal",
+        "chunked"
+      ],
+      "palette": {
+        "color": 0,
+        "id": 0
+      }
+    },
+    {
+      "name": "139/tiles.4bpp",
+      "ofs": 49,
+      "chunkSize": 320,
+      "props": [
+        "4bpp",
+        "no_pal",
+        "chunked"
+      ],
+      "palette": {
+        "color": 0,
+        "id": 0
+      }
+    },
+    {
+      "name": "140/tiles.4bpp",
+      "ofs": 456,
+      "chunkSize": 384,
+      "props": [
+        "4bpp",
+        "no_pal",
+        "chunked"
+      ],
+      "palette": {
+        "color": 0,
+        "id": 0
+      }
+    },
+    {
+      "name": "141/tiles.4bpp",
+      "ofs": 456,
+      "chunkSize": 384,
+      "props": [
+        "4bpp",
+        "no_pal",
+        "chunked"
+      ],
+      "palette": {
+        "color": 0,
+        "id": 0
+      }
+    },
+    {
+      "name": "142/tiles.4bpp",
+      "ofs": 456,
+      "chunkSize": 384,
+      "props": [
+        "4bpp",
+        "no_pal",
+        "chunked"
+      ],
+      "palette": {
+        "color": 0,
+        "id": 0
+      }
+    },
+    {
+      "name": "143/tiles.4bpp",
+      "ofs": 456,
+      "chunkSize": 384,
+      "props": [
+        "4bpp",
+        "no_pal",
+        "chunked"
+      ],
+      "palette": {
+        "color": 0,
+        "id": 0
+      }
+    },
+    {
+      "name": "144/tiles.4bpp",
+      "ofs": 456,
+      "chunkSize": 384,
+      "props": [
+        "4bpp",
+        "no_pal",
+        "chunked"
+      ],
+      "palette": {
+        "color": 0,
+        "id": 0
+      }
+    },
+    {
+      "name": "145/tiles.4bpp",
+      "ofs": 456,
+      "chunkSize": 384,
+      "props": [
+        "4bpp",
+        "no_pal",
+        "chunked"
+      ],
+      "palette": {
+        "color": 0,
+        "id": 0
+      }
+    },
+    {
+      "name": "146/tiles.4bpp",
+      "ofs": 456,
+      "chunkSize": 384,
+      "props": [
+        "4bpp",
+        "no_pal",
+        "chunked"
+      ],
+      "palette": {
+        "color": 0,
+        "id": 0
+      }
+    },
+    {
+      "name": "147/tiles.4bpp",
+      "ofs": 456,
+      "chunkSize": 384,
+      "props": [
+        "4bpp",
+        "no_pal",
+        "chunked"
+      ],
+      "palette": {
+        "color": 0,
+        "id": 0
+      }
+    },
+    {
+      "name": "148/tiles.4bpp",
+      "ofs": 736,
+      "chunkSize": 1024,
+      "props": [
+        "4bpp",
+        "no_pal",
+        "chunked"
+      ],
+      "palette": {
+        "color": 0,
+        "id": 0
+      }
+    },
+    {
+      "name": "149/tiles.4bpp",
+      "ofs": 736,
+      "chunkSize": 1024,
+      "props": [
+        "4bpp",
+        "no_pal",
+        "chunked"
+      ],
+      "palette": {
+        "color": 0,
+        "id": 0
+      }
+    },
+    {
+      "name": "150/tiles.4bpp",
+      "ofs": 736,
+      "chunkSize": 1024,
+      "props": [
+        "4bpp",
+        "no_pal",
+        "chunked"
+      ],
+      "palette": {
+        "color": 0,
+        "id": 0
+      }
+    },
+    {
+      "name": "151/tiles.4bpp",
+      "ofs": 736,
+      "chunkSize": 1024,
+      "props": [
+        "4bpp",
+        "no_pal",
+        "chunked"
+      ],
+      "palette": {
+        "color": 0,
+        "id": 0
+      }
+    },
+    {
+      "name": "152/tiles.4bpp",
+      "ofs": 736,
+      "chunkSize": 1024,
+      "props": [
+        "4bpp",
+        "no_pal",
+        "chunked"
+      ],
+      "palette": {
+        "color": 0,
+        "id": 0
+      }
+    },
+    {
+      "name": "153/tiles.4bpp",
+      "ofs": 512,
+      "chunkSize": 320,
+      "props": [
+        "4bpp",
+        "no_pal",
+        "chunked"
+      ],
+      "palette": {
+        "color": 0,
+        "id": 0
+      }
+    },
+    {
+      "name": "154/tiles.4bpp",
+      "ofs": 512,
+      "chunkSize": 320,
+      "props": [
+        "4bpp",
+        "no_pal",
+        "chunked"
+      ],
+      "palette": {
+        "color": 0,
+        "id": 0
+      }
+    },
+    {
+      "name": "155/tiles.4bpp",
+      "ofs": 512,
+      "chunkSize": 320,
+      "props": [
+        "4bpp",
+        "no_pal",
+        "chunked"
+      ],
+      "palette": {
+        "color": 0,
+        "id": 0
+      }
+    },
+    {
+      "name": "156/tiles.4bpp",
+      "ofs": 512,
+      "chunkSize": 320,
+      "props": [
+        "4bpp",
+        "no_pal",
+        "chunked"
+      ],
+      "palette": {
+        "color": 0,
+        "id": 0
+      }
+    },
+    {
+      "name": "157/tiles.4bpp",
+      "ofs": 512,
+      "chunkSize": 320,
+      "props": [
+        "4bpp",
+        "no_pal",
+        "chunked"
+      ],
+      "palette": {
+        "color": 0,
+        "id": 0
+      }
+    },
+    {
+      "name": "158/tiles.4bpp",
+      "ofs": 213,
+      "chunkSize": 128,
+      "props": [
+        "4bpp",
+        "no_pal",
+        "chunked"
+      ],
+      "palette": {
+        "color": 0,
+        "id": 0
+      }
+    },
+    {
+      "name": "159/tiles.4bpp",
+      "ofs": 213,
+      "chunkSize": 128,
+      "props": [
+        "4bpp",
+        "no_pal",
+        "chunked"
+      ],
+      "palette": {
+        "color": 0,
+        "id": 0
+      }
+    },
+    {
+      "name": "160/tiles.4bpp",
+      "ofs": 213,
+      "chunkSize": 128,
+      "props": [
+        "4bpp",
+        "no_pal",
+        "chunked"
+      ],
+      "palette": {
+        "color": 0,
+        "id": 0
+      }
+    },
+    {
+      "name": "161/tiles.4bpp",
+      "ofs": 256,
+      "chunkSize": 384,
+      "props": [
+        "4bpp",
+        "no_pal",
+        "chunked"
+      ],
+      "palette": {
+        "color": 0,
+        "id": 0
+      }
+    },
+    {
+      "name": "162/tiles.4bpp",
+      "ofs": 256,
+      "chunkSize": 384,
+      "props": [
+        "4bpp",
+        "no_pal",
+        "chunked"
+      ],
+      "palette": {
+        "color": 0,
+        "id": 0
+      }
+    },
+    {
+      "name": "163/tiles.4bpp",
+      "ofs": 256,
+      "chunkSize": 384,
+      "props": [
+        "4bpp",
+        "no_pal",
+        "chunked"
+      ],
+      "palette": {
+        "color": 0,
+        "id": 0
+      }
+    },
+    {
+      "name": "164/tiles.4bpp",
+      "ofs": 256,
+      "chunkSize": 384,
+      "props": [
+        "4bpp",
+        "no_pal",
+        "chunked"
+      ],
+      "palette": {
+        "color": 0,
+        "id": 0
+      }
+    },
+    {
+      "name": "165/tiles.4bpp",
+      "ofs": 256,
+      "chunkSize": 384,
+      "props": [
+        "4bpp",
+        "no_pal",
+        "chunked"
+      ],
+      "palette": {
+        "color": 0,
+        "id": 0
+      }
+    },
+    {
+      "name": "166/tiles.4bpp",
+      "ofs": 256,
+      "chunkSize": 384,
+      "props": [
+        "4bpp",
+        "no_pal",
+        "chunked"
+      ],
+      "palette": {
+        "color": 0,
+        "id": 0
+      }
+    },
+    {
+      "name": "167/tiles.4bpp",
+      "ofs": 256,
+      "chunkSize": 384,
+      "props": [
+        "4bpp",
+        "no_pal",
+        "chunked"
+      ],
+      "palette": {
+        "color": 0,
+        "id": 0
+      }
+    },
+    {
+      "name": "168/tiles.4bpp",
+      "ofs": 256,
+      "chunkSize": 384,
+      "props": [
+        "4bpp",
+        "no_pal",
+        "chunked"
+      ],
+      "palette": {
+        "color": 0,
+        "id": 0
+      }
+    },
+    {
+      "name": "169/tiles.4bpp",
+      "ofs": 128,
+      "chunkSize": 128,
+      "props": [
+        "4bpp",
+        "no_pal",
+        "chunked"
+      ],
+      "palette": {
+        "color": 0,
+        "id": 0
+      }
+    },
+    {
+      "name": "170/tiles.4bpp",
+      "ofs": 128,
+      "chunkSize": 128,
+      "props": [
+        "4bpp",
+        "no_pal",
+        "chunked"
+      ],
+      "palette": {
+        "color": 0,
+        "id": 0
+      }
+    },
+    {
+      "name": "171/tiles.4bpp",
+      "ofs": 128,
+      "chunkSize": 128,
+      "props": [
+        "4bpp",
+        "no_pal",
+        "chunked"
+      ],
+      "palette": {
+        "color": 0,
+        "id": 0
+      }
+    },
+    {
+      "name": "172/tiles.4bpp",
+      "ofs": 16,
+      "chunkSize": 512,
+      "props": [
+        "4bpp",
+        "no_pal",
+        "chunked"
+      ],
+      "palette": {
+        "color": 0,
+        "id": 0
+      }
+    },
+    {
+      "name": "173/tiles.4bpp",
+      "ofs": 16,
+      "chunkSize": 512,
+      "props": [
+        "4bpp",
+        "no_pal",
+        "chunked"
+      ],
+      "palette": {
+        "color": 0,
+        "id": 0
+      }
+    },
+    {
+      "name": "174/tiles.4bpp",
+      "ofs": 16,
+      "chunkSize": 512,
+      "props": [
+        "4bpp",
+        "no_pal",
+        "chunked"
+      ],
+      "palette": {
+        "color": 0,
+        "id": 0
+      }
+    },
+    {
+      "name": "175/tiles.4bpp",
+      "ofs": 16,
+      "chunkSize": 512,
+      "props": [
+        "4bpp",
+        "no_pal",
+        "chunked"
+      ],
+      "palette": {
+        "color": 0,
+        "id": 0
+      }
+    },
+    {
+      "name": "176/tiles.4bpp",
+      "ofs": 16,
+      "chunkSize": 512,
+      "props": [
+        "4bpp",
+        "no_pal",
+        "chunked"
+      ],
+      "palette": {
+        "color": 0,
+        "id": 0
+      }
+    }
+  ]
+}

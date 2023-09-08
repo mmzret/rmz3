@@ -1,0 +1,88 @@
+{
+  "label": "gRuinTilesetGraphics",
+  "data": [
+    {
+      "name": "0/tiles.4bpp.lz",
+      "ofs": 0,
+      "chunkSize": 256,
+      "props": [
+        "4bpp",
+        "lz77"
+      ],
+      "palette": {
+        "color": 80,
+        "id": 2
+      },
+      "files": [
+        "0/tiles.4bpp.lz",
+        "0/02.pal",
+        "0/03.pal",
+        "0/04.pal",
+        "0/05.pal",
+        "0/06.pal"
+      ]
+    },
+    {
+      "name": "1/tiles.4bpp.lz",
+      "ofs": 512,
+      "chunkSize": 256,
+      "props": [
+        "4bpp",
+        "lz77"
+      ],
+      "palette": {
+        "color": 96,
+        "id": 9
+      },
+      "files": [
+        "1/tiles.4bpp.lz",
+        "1/09.pal",
+        "1/10.pal",
+        "1/11.pal",
+        "1/12.pal",
+        "1/13.pal",
+        "1/14.pal"
+      ]
+    },
+    {
+      "name": "2/tiles.4bpp.lz",
+      "ofs": 512,
+      "chunkSize": 256,
+      "props": [
+        "4bpp",
+        "lz77"
+      ],
+      "palette": {
+        "color": 80,
+        "id": 9
+      },
+      "files": [
+        "2/tiles.4bpp.lz",
+        "2/09.pal",
+        "2/10.pal",
+        "2/11.pal",
+        "2/12.pal",
+        "2/13.pal"
+      ]
+    },
+    {
+      "name": "3/tiles.4bpp.lz",
+      "ofs": 0,
+      "chunkSize": 256,
+      "props": [
+        "4bpp",
+        "lz77"
+      ],
+      "palette": {
+        "color": 48,
+        "id": 2
+      },
+      "files": [
+        "3/tiles.4bpp.lz",
+        "3/02.pal",
+        "3/03.pal",
+        "3/04.pal"
+      ]
+    }
+  ]
+}

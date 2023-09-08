@@ -1,0 +1,158 @@
+{
+  "label": "gWeilLaboTilesetGraphics",
+  "data": [
+    {
+      "name": "0/tiles.4bpp.lz",
+      "ofs": 0,
+      "chunkSize": 256,
+      "props": [
+        "lz77",
+        "4bpp"
+      ],
+      "palette": {
+        "color": 112,
+        "id": 2
+      },
+      "files": [
+        "0/tiles.4bpp.lz",
+        "0/02.pal",
+        "0/03.pal",
+        "0/04.pal",
+        "0/05.pal",
+        "0/06.pal",
+        "0/07.pal",
+        "0/08.pal"
+      ]
+    },
+    {
+      "name": "1/tiles.4bpp.lz",
+      "ofs": 512,
+      "chunkSize": 256,
+      "props": [
+        "lz77",
+        "4bpp"
+      ],
+      "palette": {
+        "color": 96,
+        "id": 9
+      },
+      "files": [
+        "1/tiles.4bpp.lz",
+        "1/09.pal",
+        "1/10.pal",
+        "1/11.pal",
+        "1/12.pal",
+        "1/13.pal",
+        "1/14.pal"
+      ]
+    },
+    {
+      "name": "2/tiles.4bpp.lz",
+      "ofs": 0,
+      "chunkSize": 256,
+      "props": [
+        "lz77",
+        "4bpp"
+      ],
+      "palette": {
+        "color": 80,
+        "id": 2
+      },
+      "files": [
+        "2/tiles.4bpp.lz",
+        "2/02.pal",
+        "2/03.pal",
+        "2/04.pal",
+        "2/05.pal",
+        "2/06.pal"
+      ]
+    },
+    {
+      "name": "3/tiles.4bpp.lz",
+      "ofs": 512,
+      "chunkSize": 256,
+      "props": [
+        "lz77",
+        "4bpp"
+      ],
+      "palette": {
+        "color": 112,
+        "id": 9
+      },
+      "files": [
+        "3/tiles.4bpp.lz",
+        "3/09.pal",
+        "3/10.pal",
+        "3/11.pal",
+        "3/12.pal",
+        "3/13.pal",
+        "3/14.pal",
+        "3/15.pal"
+      ]
+    },
+    {
+      "name": "4/tiles.4bpp.lz",
+      "ofs": 0,
+      "chunkSize": 256,
+      "props": [
+        "lz77",
+        "4bpp"
+      ],
+      "palette": {
+        "color": 48,
+        "id": 2
+      },
+      "files": [
+        "4/tiles.4bpp.lz",
+        "4/02.pal",
+        "4/03.pal",
+        "4/04.pal"
+      ]
+    },
+    {
+      "name": "5/tiles.4bpp.lz",
+      "ofs": 512,
+      "chunkSize": 256,
+      "props": [
+        "lz77",
+        "4bpp"
+      ],
+      "palette": {
+        "color": 96,
+        "id": 9
+      },
+      "files": [
+        "5/tiles.4bpp.lz",
+        "5/09.pal",
+        "5/10.pal",
+        "5/11.pal",
+        "5/12.pal",
+        "5/13.pal",
+        "5/14.pal"
+      ]
+    },
+    {
+      "name": "6/tiles.4bpp.lz",
+      "ofs": 0,
+      "chunkSize": 256,
+      "props": [
+        "lz77",
+        "4bpp"
+      ],
+      "palette": {
+        "color": 112,
+        "id": 2
+      },
+      "files": [
+        "6/tiles.4bpp.lz",
+        "6/02.pal",
+        "6/03.pal",
+        "6/04.pal",
+        "6/05.pal",
+        "6/06.pal",
+        "6/07.pal",
+        "6/08.pal"
+      ]
+    }
+  ]
+}

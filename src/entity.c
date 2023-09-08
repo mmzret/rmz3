@@ -1,190 +1,258 @@
 #include "entity.h"
 
-#include "gba/gba.h"
+#include "collision.h"
+#include "global.h"
+#include "motion.h"
+#include "overworld.h"
+#include "task.h"
 
-extern struct EntityHeader *pCurEntityHeader;
-
-// 0x08006ED0
-NAKED void initEntityHeader(struct EntityHeader *h, s16 type, struct Entity *s, s16 size, s16 count) {
-  asm(".syntax unified\n\
-    push {r4, r5, r6, r7, lr}\n\
-	adds r4, r0, #0\n\
-	adds r5, r2, #0\n\
-	ldr r0, [sp, #0x14]\n\
-	lsls r1, r1, #0x18\n\
-	lsls r3, r3, #0x10\n\
-	lsrs r6, r3, #0x10\n\
-	lsls r0, r0, #0x10\n\
-	lsrs r3, r0, #0x10\n\
-	str r5, [r4]\n\
-	lsrs r7, r1, #0x18\n\
-	asrs r1, r1, #0x18\n\
-	movs r2, #0\n\
-	strh r1, [r4, #4]\n\
-	strh r6, [r4, #6]\n\
-	strh r3, [r4, #8]\n\
-	adds r0, r4, #0\n\
-	adds r0, #0x14\n\
-	str r0, [r4, #0x18]\n\
-	str r0, [r4, #0x14]\n\
-	str r2, [r4, #0x10]\n\
-	strh r3, [r4, #0xa]\n\
-	lsls r1, r3, #0x10\n\
-	cmp r1, #0\n\
-	ble _08006F1A\n\
-	lsls r0, r6, #0x10\n\
-	asrs r3, r0, #0x10\n\
-_08006F06:\n\
-	str r2, [r5]\n\
-	adds r2, r5, #0\n\
-	strb r7, [r2, #8]\n\
-	adds r5, r2, r3\n\
-	ldr r0, _08006F20 @ =0xFFFF0000\n\
-	adds r1, r1, r0\n\
-	asrs r0, r1, #0x10\n\
-	cmp r0, #0\n\
-	bgt _08006F06\n\
-	str r2, [r4, #0x10]\n\
-_08006F1A:\n\
-	pop {r4, r5, r6, r7}\n\
-	pop {r0}\n\
-	bx r0\n\
-	.align 2, 0\n\
-_08006F20: .4byte 0xFFFF0000\n\
-                .syntax divided\n");
-}
-
-// 0x08006F24
-static void resetEntityHeader(struct EntityHeader *h) {
-  s8 t = h->type;
-  s16 size = h->size;
-  initEntityHeader(h, t, h->arr, size, h->length);
-  return;
-}
-
-// 0x08006F44
-void setCurProcessedEntityHeader(struct EntityHeader *h) {
-  struct Entity **next;
-  pCurEntityHeader = h;
-
-  next = (struct Entity **)((u8 *)h + 0x14);
-  h->done = next;
-  return;
-}
-
-// 処理してないfnを無視して最新のfnを指すようにする
-void ignoreEntityFn(struct EntityHeader *h) {
-  h->done = &h->next;
-  return;
-}
-
-// 0x08006f5c
-struct Entity *getNextEntity(struct EntityHeader *h) {
+/**
+ * @brief 引数の EntityHeader の示す fnを処理していく
+ * @note 0x08016e1c
+ */
+void UpdateEntities(struct EntityHeader *h) {
   struct Entity *p;
 
-  p = h->cur;
-  if (p != (struct Entity *)0x0) {
-    h->cur = p->next;
-    h->remaining = h->remaining + -1;
-    p->next = (struct Entity *)&h->next;
-    p->prev = h->prev;
-    h->prev->next = p;
-    h->prev = p;
-    *(u16 *)&p->flags = 0;
-    *(u32 *)&p->fnIdx = 0;
-    *(u32 *)&p->various = 0;
+  setCurProcessedEntityHeader(h);
+
+  // h->last->prev -> h->last->prev->prev -> h->last->prev->prev->prev -> ...
+  p = h->last->prev;
+  h->last = p;
+  while (p != (struct Entity *)&h->next) {
+    ((EntityFunc)p->onUpdate)(p);
+    p = h->last->prev;
+    h->last = p;
   }
-  return p;
 }
 
-// 0x08006f90
-// 新しいEntity割り当てのために用いる
-// EntityHeaderに対応するさまざまなEntityを返す
-// getNextEntity との違いは後で調べる
-struct Entity *getNextEntity2(struct EntityHeader *h) {
-  struct Entity *s;
+void UpdateBlockingEntities(struct EntityHeader *h) {
+  struct Entity *p;
 
-  s = h->cur;
-  if (s != (struct Entity *)0x0) {
-    h->cur = s->next;
-    h->remaining = h->remaining + -1;
-    s->prev = (struct Entity *)&h->next;
-    s->next = h->next;
-    h->next->prev = s;
-    h->next = s;
-    *(u16 *)&s->flags = 0;
-    *(u32 *)&s->fnIdx = 0;
-    *(u32 *)&s->various = 0;
+  setCurProcessedEntityHeader(h);
+  p = h->last = h->last->prev;
+  while (p != (struct Entity *)&h->next) {
+    ((EntityFunc)p->onUpdate)(p);
+    if (p->flags2 & ENTITY_HAZARD) {
+      AppendHazard((u16)p->uniqueID, p->hazardAttr, &p->coord, p->size);
+    }
+
+    p = h->last = h->last->prev;
   }
-  return s;
 }
 
-static struct Entity *entity_08006fc4(struct Entity *p) {
-  struct Entity *s;
-  struct EntityHeader *h;
+// EntityHeaderの全部のEntityのHitboxデータを CollisionManager に登録
+void RegisterHitboxes(struct EntityHeader *h) {
+  setCurProcessedEntityHeader(h);
 
-  h = pCurEntityHeader;
-  s = pCurEntityHeader->cur;
-  if (s != (struct Entity *)0x0) {
-    pCurEntityHeader->cur = s->next;
-    h->remaining = h->remaining + -1;
-    s->next = p->next;
-    s->prev = p;
-    p->next->prev = s;
-    p->next = s;
-    *(u16 *)&s->flags = 0;
-    *(u32 *)&s->fnIdx = 0;
-    *(u32 *)&s->various = 0;
+  while (TRUE) {
+    struct CollidableEntity *p;
+    h->last = h->last->prev;
+    p = (struct CollidableEntity *)h->last;
+    if (p == (struct CollidableEntity *)&h->next) {
+      break;
+    }
+
+    if ((p->s).flags & COLLIDABLE) {
+      struct Body *body = &p->body;
+      if ((p->s).flags & FLIPABLE) {
+        if ((p->s).flags & AFFINE) {
+          RegisterScalerotHitbox(body, ((p->s).flags & 0x30) >> 4, (p->s).angle);
+        } else {
+          RegisterFlipableHitbox(body, ((p->s).flags & 0x30) >> 4);
+        }
+      } else {
+        ResisterNonAffineHitbox(body);
+      }
+    }
   }
-  return s;
 }
 
-static struct Entity *entity_08006ffc(struct Entity *p) {
-  struct Entity *s;
-  struct EntityHeader *h;
+/**
+ * @brief 各EntityHeaderの持つEntityを見ていって、必要な場合は 無敵点滅処理 と ダメージSE を行う
+ * @note 0x08016EF4
+ */
+WIP void RunDamageEffect(struct EntityHeader *h) {
+#if MODERN
+  struct CollidableEntity *p;
 
-  h = pCurEntityHeader;
-  s = pCurEntityHeader->cur;
-  if (s != (struct Entity *)0x0) {
-    pCurEntityHeader->cur = s->next;
-    h->remaining = h->remaining + -1;
-    s->prev = p->prev;
-    s->next = p;
-    p->prev->next = s;
-    p->prev = s;
-    *(u16 *)&s->flags = 0;
-    *(u32 *)&s->fnIdx = 0;
-    *(u32 *)&s->various = 0;
+  setCurProcessedEntityHeader(h);
+  h->last = h->last->prev;
+  p = (struct CollidableEntity *)h->last;
+  while (p != (struct CollidableEntity *)&h->next) {
+    if (((p->s).flags & COLLIDABLE) && ((p->s).flags2 & ENTITY_FLAGS2_B4)) {
+      if (((p->body).status & BODY_STATUS_WHITE) || ((p->body).prevStatus & 1) || ((p->body).invincibleTime & 2)) {
+        gWhitePaintFlags[(p->s).invincibleID >> 5] |= (1 << ((p->s).invincibleID & 0x1F));
+      }
+
+      if ((wPauseFrame == 0) && ((p->body).status & BODY_STATUS_WHITE) && (((p->body).collisions)->layer != 0)) {
+        gIsPlayDamageSE = TRUE;
+      }
+    }
+
+    h->last = h->last->prev;
+    p = (struct CollidableEntity *)h->last;
   }
-  return s;
+#else
+  INCCODE("asm/wip/RunDamageEffect.inc");
+#endif
 }
 
-// EntityHeader の配列から不要なEntityを取り除く
-void removeEntity(struct Entity *p) {
-  struct EntityHeader *h;
+WIP void DrawEntity(struct EntityHeader *h, struct TaskManager *tm) {
+#if MODERN
+  struct Entity *p;
 
-  p->prev->next = p->next;
-  p->next->prev = p->prev;
-  h = pCurEntityHeader;
-  p->next = pCurEntityHeader->cur;
-  h->cur = p;
-  h->remaining = h->remaining + 1;
-  return;
+  setCurProcessedEntityHeader(h);
+  p = h->last->prev;
+  h->last = p;
+
+  while (p != (struct Entity *)&h->next) {
+    if (p->flags & DISPLAY) {
+      struct Sprite *spr = &p->spr;
+
+      if (p->flags & AFFINE) {
+        (spr->oam).matrixNum = gMatrixCount;
+        if (gMatrixCount < 31) {
+          gMatrixCount++;
+        }
+
+        if (p->flags2 & SCALEROT) {
+          if (p->flags2 & ENTITY_FLAG2_B1) {
+            ScalerotSprite(spr, p->angle);
+          } else {
+            ScalerotSprite(spr, p->angle);
+          }
+        } else {
+          RotateSprite(spr, p->angle);
+        }
+      }
+      if (p->flags & OAM_PRIO) {
+        AppendTask(tm, (struct Task *)spr, (spr->oam).priority, p->taskCol);
+      } else {
+        AppendTask(tm, (struct Task *)spr, 0, p->taskCol);
+      }
+    }
+    p = h->last->prev;
+    h->last = p;
+  }
+#else
+  INCCODE("asm/wip/DrawEntity.inc");
+#endif
 }
 
-/*
-  zをh.curの目の前に挿入し、現在のcurをzにする
+// gWhitePaintFlags を見て白塗りにするか以外は DrawEntity と同じ
+WIP void DrawCollidableEntity(struct EntityHeader *h, struct TaskManager *tm) {
+#if MODERN
+  struct Entity *p;
 
-   Before: Zprev -> Z -> Znext
-   After:
-     Zprev -> Znext
-     Z -> h.cur
-*/
-void prependZeroEntity(struct EntityHeader *h, struct Zero *z) {
-  ((z->s).prev)->next = (z->s).next;
-  ((z->s).next)->prev = (z->s).prev;
-  (z->s).next = h->cur;
-  h->cur = &z->s;
-  h->remaining = h->remaining + 1;
-  return;
+  setCurProcessedEntityHeader(h);
+  p = h->last->prev;
+  h->last = p;
+
+  while (p != (struct Entity *)&h->next) {
+    if (p->flags & DISPLAY) {
+      struct Sprite *spr = &p->spr;
+
+      if (p->flags & OAM_PRIO) {
+        if (gWhitePaintFlags[p->invincibleID >> 5] & (1 << (p->invincibleID & 0x1F))) {
+          (spr->oam).paletteNum = 13;
+        } else {
+          (spr->oam).paletteNum = p->savedPalID;
+        }
+
+        if (p->flags & AFFINE) {
+          (spr->oam).matrixNum = gMatrixCount;
+          if (gMatrixCount < 31) {
+            gMatrixCount++;
+          }
+          if (p->flags2 & SCALEROT) {
+            if (p->flags2 & ENTITY_FLAG2_B1) {
+              ScalerotSprite(spr, p->angle);
+            } else {
+              ScalerotSprite(spr, p->angle);
+            }
+          } else {
+            RotateSprite(spr, p->angle);
+          }
+        }
+        AppendTask(tm, (struct Task *)spr, (spr->oam).priority, p->taskCol);
+      } else {
+        AppendTask(tm, (struct Task *)spr, 0, p->taskCol);
+      }
+    }
+
+    p = h->last->prev;
+    h->last = p;
+  }
+#else
+  INCCODE("asm/wip/DrawCollidableEntity.inc");
+#endif
+}
+
+struct Entity *GetNearestEntity(struct EntityHeader *h, struct Coord *c) {
+  struct Entity *p;
+  struct Entity *result = NULL;
+  u32 min = 0xFFFFFFFF;
+  if (h->length == h->remaining) {
+    return result;
+  }
+
+  ignoreEntityFn(h);
+  p = h->last = h->last->prev;
+  while (p != (struct Entity *)&h->next) {
+    if ((p->flags & DISPLAY) && (p->flags & COLLIDABLE)) {
+      s32 x = ((p->coord).x - c->x) >> 8;
+      s32 y = ((p->coord).y - c->y) >> 8;
+      u32 d = (x * x) + (y * y);
+      if (d < min) {
+        min = d;
+        result = p;
+      }
+    }
+    p = h->last = h->last->prev;
+  }
+  return result;
+}
+
+u16 countSpecificEntities1(struct EntityHeader *h, u8 id) {
+  struct Entity *p;
+  struct Entity *last;
+  u16 val = 0;
+  if (h->length == h->remaining) return 0;
+
+  last = h->last;
+  ignoreEntityFn(h);
+  p = h->last->prev;
+  h->last = p;
+  while (p != (struct Entity *)&h->next) {
+    if (p->id == id) {
+      val++;
+    }
+    p = h->last->prev;
+    h->last = p;
+  }
+  h->last = last;
+  return val;
+}
+
+u16 countSpecificEntities2(struct EntityHeader *h, u8 id, u8 r2, u8 r3) {
+  struct Entity *p;
+  struct Entity *last;
+  u16 val = 0;
+  if (h->length == h->remaining) return 0;
+
+  last = h->last;
+  ignoreEntityFn(h);
+
+  h->last = h->last->prev;
+  p = h->last;
+
+  while (p != (struct Entity *)&h->next) {
+    if (((p->id == id) && (p->work[0] == r2)) && (p->work[1] == r3)) {
+      val++;
+    }
+    h->last = h->last->prev;
+    p = h->last;
+  }
+  h->last = last;
+  return val;
 }

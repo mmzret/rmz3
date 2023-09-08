@@ -5,6 +5,7 @@ agbcc
 binutils
 *.cfg
 *.sav
+*.cheats
 *.elf
 *.o
 *.memo.*
@@ -13,15 +14,28 @@ rmz-text-compiler
 data/string/**/*.bin
 tools/gbagfx/gbagfx
 data/texts/*/*.bin
-data/gfx/dialog/mugshot/**/*.bin
+graphics/dialog/mugshot/**/*.bin
+graphics/elf/type/**/*.bin
 tmp*.s
+tmp.txt
 *.tmp.*
-*.4bpp
-*.lz
+graphics/**/*.4bpp
+sprites/**/*.4bpp
+graphics/**/*.lz
+sprites/**/*.lz
+sprites/**/*.s
+sprites/**/metasprite.inc
+sprites/**/sequence.inc
+data/tilesets/*/header.s
+graphics/**/header.s
+data/stage/**/stage.h
+*.gfx
 tools/mgba
+tools/tmp
 
 src/**/*.s
+sound/songs/midi/*.s
 !src/libs/m4a_1.s
-!src/analysis/analysis.s
 
-src/gfx.c
+graphics/**/*.gbapal
+sprites/**/*.gbapal

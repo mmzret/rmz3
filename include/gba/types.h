@@ -3,6 +3,8 @@
 
 #include <stdint.h>
 
+typedef void (*VoidFunc)(void);
+
 typedef uint8_t u8;
 typedef uint16_t u16;
 typedef uint32_t u32;
@@ -28,7 +30,7 @@ typedef u8 bool8;
 typedef u16 bool16;
 typedef u32 bool32;
 
-struct BgCnt {
+struct __attribute__((packed, aligned(2))) BgCnt {
   u16 priority : 2;
   u16 charBaseBlock : 2;
   u16 dummy : 2;

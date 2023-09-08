@@ -1,0 +1,59 @@
+{
+  "label": "gAnimationSequence_boss_explosion",
+  "data": [
+    [
+      {
+        "frameIdx": 0,
+        "duration": 7
+      },
+      {
+        "frameIdx": 1,
+        "duration": 7
+      },
+      {
+        "frameIdx": 2,
+        "duration": 7
+      },
+      {
+        "frameIdx": 3,
+        "duration": 7
+      },
+      {
+        "frameIdx": 4,
+        "duration": 7
+      },
+      {
+        "frameIdx": 5,
+        "duration": 7
+      },
+      {
+        "frameIdx": 6,
+        "duration": 7
+      },
+      {
+        "frameIdx": 7,
+        "duration": 7
+      },
+      {
+        "frameIdx": 8,
+        "duration": 7
+      },
+      {
+        "frameIdx": 9,
+        "duration": 7
+      },
+      {
+        "frameIdx": 10,
+        "duration": 7
+      },
+      {
+        "frameIdx": 11,
+        "duration": 7
+      },
+      {
+        "frameIdx": 0,
+        "duration": 254
+      }
+    ]
+  ]
+}

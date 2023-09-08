@@ -1,0 +1,45 @@
+{
+  "data": [
+    {
+      "name": "0.png",
+      "ofs": 0,
+      "chunkSize": 160,
+      "props": [
+        "4bpp"
+      ]
+    },
+    {
+      "name": "1.png",
+      "ofs": 0,
+      "chunkSize": 160,
+      "props": [
+        "4bpp"
+      ]
+    },
+    {
+      "name": "2.png",
+      "ofs": 0,
+      "chunkSize": 216,
+      "props": [
+        "4bpp"
+      ]
+    },
+    {
+      "name": "3.png",
+      "ofs": 0,
+      "chunkSize": 168,
+      "props": [
+        "4bpp"
+      ]
+    },
+    {
+      "name": "4.png",
+      "ofs": 0,
+      "chunkSize": 168,
+      "props": [
+        "4bpp"
+      ]
+    }
+  ],
+  "label": "gGraphicHeader_Sprite_zero_saber_dash"
+}

@@ -1,0 +1,45 @@
+{
+  "data": [
+    {
+      "name": "0.png",
+      "ofs": 48,
+      "chunkSize": 368,
+      "props": [
+        "4bpp"
+      ]
+    },
+    {
+      "name": "1.png",
+      "ofs": 48,
+      "chunkSize": 296,
+      "props": [
+        "4bpp"
+      ]
+    },
+    {
+      "name": "2.png",
+      "ofs": 48,
+      "chunkSize": 176,
+      "props": [
+        "4bpp"
+      ]
+    },
+    {
+      "name": "3.png",
+      "ofs": 48,
+      "chunkSize": 184,
+      "props": [
+        "4bpp"
+      ]
+    },
+    {
+      "name": "4.png",
+      "ofs": 48,
+      "chunkSize": 256,
+      "props": [
+        "4bpp"
+      ]
+    }
+  ],
+  "label": "gGraphicHeader_Sprite_weapon_saber_smash"
+}

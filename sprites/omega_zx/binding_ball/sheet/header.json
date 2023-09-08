@@ -1,0 +1,17 @@
+{
+  "data": [
+    {
+      "name": "0.png",
+      "ofs": 729,
+      "chunkSize": 752,
+      "props": [
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 6
+      }
+    }
+  ],
+  "label": "gGraphicHeader_Sprite_omega_zx_binding_ball"
+}

@@ -2,8 +2,9 @@
 #include "gba/m4a_internal.h"
 
 extern const u8 gCgb3Vol[];
-extern ALIGNED(4) char SoundMainRAM_Buffer[896];
 extern struct SoundInfo gSoundInfo;
+
+__attribute__((section(".bss.code"))) ALIGNED(4) char SoundMainRAM_Buffer[896] = {0};
 
 u32 MidiKeyToFreq(struct WaveData *wav, u8 key, u8 fineAdjust) {
   u32 val1;
@@ -245,8 +246,7 @@ void Clear64byte(void *x) {
 void SoundInit(struct SoundInfo *soundInfo) {
   soundInfo->ident = 0;
 
-  if (REG_DMA1CNT & (DMA_REPEAT << 16))
-    REG_DMA1CNT = ((DMA_ENABLE | DMA_START_NOW | DMA_32BIT | DMA_SRC_INC | DMA_DEST_FIXED) << 16) | 4;
+  if (REG_DMA1CNT & (DMA_REPEAT << 16)) REG_DMA1CNT = ((DMA_ENABLE | DMA_START_NOW | DMA_32BIT | DMA_SRC_INC | DMA_DEST_FIXED) << 16) | 4;
 
   REG_DMA1CNT_H = DMA_32BIT;
   REG_SOUNDCNT_X = SOUND_MASTER_ENABLE | SOUND_4_ON | SOUND_3_ON | SOUND_2_ON | SOUND_1_ON;
@@ -397,8 +397,7 @@ void m4aSoundVSyncOff(void) {
   if (soundInfo->ident >= ID_NUMBER && soundInfo->ident <= ID_NUMBER + 1) {
     soundInfo->ident += 10;
 
-    if (REG_DMA1CNT & (DMA_REPEAT << 16))
-      REG_DMA1CNT = ((DMA_ENABLE | DMA_START_NOW | DMA_32BIT | DMA_SRC_INC | DMA_DEST_FIXED) << 16) | 4;
+    if (REG_DMA1CNT & (DMA_REPEAT << 16)) REG_DMA1CNT = ((DMA_ENABLE | DMA_START_NOW | DMA_32BIT | DMA_SRC_INC | DMA_DEST_FIXED) << 16) | 4;
 
     REG_DMA1CNT_H = DMA_32BIT;
 
@@ -467,10 +466,7 @@ void MPlayStart(struct MusicPlayerInfo *mplayInfo, struct SongHeader *songHeader
 
   unk_B = mplayInfo->unk_B;
 
-  if (!unk_B ||
-      ((!mplayInfo->songHeader || !(mplayInfo->tracks[0].flags & MPT_FLG_START)) &&
-       ((mplayInfo->status & MUSICPLAYER_STATUS_TRACK) == 0 || (mplayInfo->status & MUSICPLAYER_STATUS_PAUSE))) ||
-      (mplayInfo->priority <= songHeader->priority)) {
+  if (!unk_B || ((!mplayInfo->songHeader || !(mplayInfo->tracks[0].flags & MPT_FLG_START)) && ((mplayInfo->status & MUSICPLAYER_STATUS_TRACK) == 0 || (mplayInfo->status & MUSICPLAYER_STATUS_PAUSE))) || (mplayInfo->priority <= songHeader->priority)) {
     mplayInfo->ident++;
     mplayInfo->status = 0;
     mplayInfo->songHeader = songHeader;
@@ -1224,9 +1220,7 @@ void ply_xcmd(struct MusicPlayerInfo *mplayInfo, struct MusicPlayerTrack *track)
   gXcmdTable[n](mplayInfo, track);
 }
 
-void ply_xxx(struct MusicPlayerInfo *mplayInfo, struct MusicPlayerTrack *track) {
-  gMPlayJumpTable[0](mplayInfo, track);
-}
+void ply_xxx(struct MusicPlayerInfo *mplayInfo, struct MusicPlayerTrack *track) { gMPlayJumpTable[0](mplayInfo, track); }
 
 #define READ_XCMD_BYTE(var, n)     \
   {                                \

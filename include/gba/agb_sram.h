@@ -12,4 +12,3 @@ void WriteSram(const u8 *src, u8 *dest, u32 size);
 u32 VerifySram(const u8 *src, u8 *dst, u32 size);
 
 #endif  // GUARD_AGB_SRAM_H
-

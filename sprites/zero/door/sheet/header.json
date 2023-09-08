@@ -1,0 +1,59 @@
+{
+  "data": [
+    {
+      "name": "0.lz.png",
+      "ofs": 0,
+      "chunkSize": 288,
+      "props": [
+        "lz77",
+        "4bpp"
+      ]
+    },
+    {
+      "name": "1.lz.png",
+      "ofs": 0,
+      "chunkSize": 168,
+      "props": [
+        "lz77",
+        "4bpp"
+      ]
+    },
+    {
+      "name": "2.lz.png",
+      "ofs": 0,
+      "chunkSize": 200,
+      "props": [
+        "lz77",
+        "4bpp"
+      ]
+    },
+    {
+      "name": "3.lz.png",
+      "ofs": 0,
+      "chunkSize": 304,
+      "props": [
+        "lz77",
+        "4bpp"
+      ]
+    },
+    {
+      "name": "4.lz.png",
+      "ofs": 0,
+      "chunkSize": 160,
+      "props": [
+        "lz77",
+        "4bpp"
+      ]
+    },
+    {
+      "name": "5.lz.png",
+      "ofs": 0,
+      "chunkSize": 248,
+      "props": [
+        "lz77",
+        "4bpp"
+      ]
+    }
+  ],
+  "label": "gGraphicHeader_Sprite_zero_door"
+}

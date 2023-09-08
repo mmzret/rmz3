@@ -1,0 +1,41 @@
+{
+  "data": [
+    {
+      "name": "0.png",
+      "ofs": 618,
+      "chunkSize": 1888,
+      "props": [
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 5
+      }
+    },
+    {
+      "name": "1.png",
+      "ofs": 618,
+      "chunkSize": 1872,
+      "props": [
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 5
+      }
+    },
+    {
+      "name": "2.png",
+      "ofs": 618,
+      "chunkSize": 616,
+      "props": [
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 5
+      }
+    }
+  ],
+  "label": "gGraphicHeader_Sprite_cubit_flame"
+}

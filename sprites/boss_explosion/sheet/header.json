@@ -1,0 +1,149 @@
+{
+  "label": "gGraphicHeader_Sprite_boss_explosion",
+  "data": [
+    {
+      "name": "0.notrim.png",
+      "ofs": 378,
+      "chunkSize": 512,
+      "props": [
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 2
+      }
+    },
+    {
+      "name": "1.notrim.png",
+      "ofs": 378,
+      "chunkSize": 512,
+      "props": [
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 2
+      }
+    },
+    {
+      "name": "2.notrim.png",
+      "ofs": 378,
+      "chunkSize": 512,
+      "props": [
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 2
+      }
+    },
+    {
+      "name": "3.notrim.png",
+      "ofs": 378,
+      "chunkSize": 512,
+      "props": [
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 2
+      }
+    },
+    {
+      "name": "4.notrim.png",
+      "ofs": 378,
+      "chunkSize": 512,
+      "props": [
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 2
+      }
+    },
+    {
+      "name": "5.notrim.png",
+      "ofs": 378,
+      "chunkSize": 512,
+      "props": [
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 2
+      }
+    },
+    {
+      "name": "6.notrim.png",
+      "ofs": 378,
+      "chunkSize": 512,
+      "props": [
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 2
+      }
+    },
+    {
+      "name": "7.notrim.png",
+      "ofs": 378,
+      "chunkSize": 512,
+      "props": [
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 2
+      }
+    },
+    {
+      "name": "8.notrim.png",
+      "ofs": 378,
+      "chunkSize": 512,
+      "props": [
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 2
+      }
+    },
+    {
+      "name": "9.notrim.png",
+      "ofs": 378,
+      "chunkSize": 512,
+      "props": [
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 2
+      }
+    },
+    {
+      "name": "10.notrim.png",
+      "ofs": 378,
+      "chunkSize": 512,
+      "props": [
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 2
+      }
+    },
+    {
+      "name": "11.notrim.png",
+      "ofs": 378,
+      "chunkSize": 512,
+      "props": [
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 2
+      }
+    }
+  ]
+}

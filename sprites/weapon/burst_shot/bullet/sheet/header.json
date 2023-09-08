@@ -1,0 +1,21 @@
+{
+  "data": [
+    {
+      "name": "0.png",
+      "ofs": 65,
+      "chunkSize": 104,
+      "props": [
+        "4bpp"
+      ]
+    },
+    {
+      "name": "1.png",
+      "ofs": 65,
+      "chunkSize": 96,
+      "props": [
+        "4bpp"
+      ]
+    }
+  ],
+  "label": "gGraphicHeader_Sprite_weapon_burst_shot_bullet"
+}

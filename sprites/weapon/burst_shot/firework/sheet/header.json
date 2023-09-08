@@ -1,0 +1,13 @@
+{
+  "data": [
+    {
+      "name": "0.png",
+      "ofs": 79,
+      "chunkSize": 112,
+      "props": [
+        "4bpp"
+      ]
+    }
+  ],
+  "label": "gGraphicHeader_Sprite_weapon_burst_shot_firework"
+}

@@ -3,28 +3,32 @@
 
 #include "entity/entity.h"
 
-struct Weapon {
-  struct BaseGeneralEntity base;
-  struct Object *obj;
+struct Weapon_b4 {
   struct Zero *z;
-  struct Coord prevCoord;
-
   /*
-    08007224 の 引数4つ目
-    属性?
+    props[n][0]: 属性？
+    props[n][1]: 攻撃力？
+    props[n][2]: bit6: イレタスの効果が乗っているか
   */
-  u8 unk_c0;
-  u8 atk;
+  u8 props[2][8];
 
-  /*
-    08007224 の 引数5つ目
-      bit 1: ??
-      bit 6: イレタスの効果が乗っているか
-  */
-  u8 unk_c2;
+  u8 unk_c8[36];
+};
 
-  u8 unk_195;
-  u8 unk_196[40];
+struct Buster_b4 {
+  struct Zero *z;
+  struct Coord c;
+  u8 props[8];
+  u8 unk_c8[36];
+};
+
+struct Weapon {
+  struct Entity s;
+  struct Body body;
+  struct Weapon_b4 unk_b4;
 };  // 236 bytes
+
+typedef void (*WeaponFunc)(struct Weapon *);
+typedef WeaponFunc WeaponRoutine[5];
 
 #endif  // GUARD_RMZ3_ENTITY_WEAPON_H
