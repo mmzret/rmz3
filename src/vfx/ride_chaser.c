@@ -24,7 +24,7 @@ struct VFX* CreateRideChaser(struct Zero* z) {
     (vfx->s).palID = 6;
     (vfx->s).unk_28 = &z->s;
     (vfx->s).coord.x = (z->s).coord.x - PIXEL(72);
-    (vfx->s).coord.y = (z->s).coord.y - PIXEL(40);
+    (vfx->s).coord.y = (z->s).coord.y - PIXEL(44);
   }
 
   return vfx;
@@ -44,7 +44,7 @@ static void RideChaser_Init(struct VFX* vfx) {
 static void RideChaser_Update(struct VFX* vfx) {
   struct Zero* z = (struct Zero*)(vfx->s).unk_28;
 
-  (vfx->s).coord.y = (z->s).coord.y - PIXEL(40);
+  (vfx->s).coord.y = (z->s).coord.y - PIXEL(44);
   if ((z->s).flags & X_FLIP) {
     (vfx->s).coord.x = (z->s).coord.x + PIXEL(72);
     (vfx->s).spr.xflip = TRUE;
@@ -55,6 +55,10 @@ static void RideChaser_Update(struct VFX* vfx) {
     (vfx->s).spr.xflip = FALSE;
     (vfx->s).spr.oam.xflip = FALSE;
     (vfx->s).flags &= ~X_FLIP;
+  }
+
+  if (z->isAreaChange) {
+    RideChaser_Die(vfx);
   }
 }
 

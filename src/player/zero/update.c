@@ -2738,6 +2738,7 @@ static void zeroTeleport4(struct Zero* z) {
         (z->s).mode[2] = 0;
         (z->s).mode[3] = 0;
         (z->s).d.x = 0;
+        CreateRideChaser(z);
       }
       break;
     }

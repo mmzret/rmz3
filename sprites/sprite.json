@@ -316,6 +316,11 @@
       "path": "weapon/charge_saber_64"
     },
     {
+      "id": 65,
+      "name": "Zero Bike",
+      "path": "zero/bike"
+    },
+    {
       "id": 80,
       "name": "Semi Charge Buster Bullet",
       "path": "weapon/semi_buster"

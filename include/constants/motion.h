@@ -66,6 +66,7 @@
 #define DM063_OMEGA_ZERO 63  // オメガゼロ専用のいろんなモーション
 // Weapon
 #define DM064_SABER_CHARGE 64
+#define DM065_ZERO_BIKE 65
 #define DM080_SEMI_BUSTER 80
 #define DM081_BURST_SHOT 81
 #define DM082_BLIZZ_ARROW 82

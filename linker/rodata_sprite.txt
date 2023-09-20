@@ -63,6 +63,7 @@
       sprites/zero/rod/charge_ladder/sheet/header.o (.rodata);
       sprites/omega_zero/sheet/header.o (.rodata);
       sprites/weapon/charge_saber_64/sheet/header.o (.rodata);
+      sprites/zero/bike/sheet/header.o (.rodata);
       sprites/weapon/semi_buster/sheet/header.o (.rodata);
       sprites/weapon/burst_shot/bullet/sheet/header.o (.rodata);
       sprites/weapon/blizz_arrow/sheet/header.o (.rodata);

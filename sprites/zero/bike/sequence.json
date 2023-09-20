@@ -1,0 +1,15 @@
+{
+  "label": "gAnimationSequence_zero_bike",
+  "data": [
+    [
+      {
+        "frameIdx": 0,
+        "duration": 80
+      },
+      {
+        "frameIdx": 0,
+        "duration": 254
+      }
+    ]
+  ]
+}
