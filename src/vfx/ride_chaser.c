@@ -18,7 +18,7 @@ const VFXRoutine gRideChaserRoutine = {
 struct VFX* CreateRideChaser(struct Zero* z) {
   struct VFX* vfx = (struct VFX*)AllocEntityFirst(gVFXHeaderPtr);
   if (vfx != NULL) {
-    (vfx->s).taskCol = 1;
+    (vfx->s).taskCol = 24;  // behind Zero
     INIT_VFX_ROUTINE(vfx, VFX_RIDE_CHASER);
     (vfx->s).tileNum = 0;
     (vfx->s).palID = 6;
@@ -43,8 +43,19 @@ static void RideChaser_Init(struct VFX* vfx) {
 
 static void RideChaser_Update(struct VFX* vfx) {
   struct Zero* z = (struct Zero*)(vfx->s).unk_28;
-  (vfx->s).coord.x = (z->s).coord.x - PIXEL(72);
+
   (vfx->s).coord.y = (z->s).coord.y - PIXEL(40);
+  if ((z->s).flags & X_FLIP) {
+    (vfx->s).coord.x = (z->s).coord.x + PIXEL(72);
+    (vfx->s).spr.xflip = TRUE;
+    (vfx->s).spr.oam.xflip = TRUE;
+    (vfx->s).flags |= X_FLIP;
+  } else {
+    (vfx->s).coord.x = (z->s).coord.x - PIXEL(72);
+    (vfx->s).spr.xflip = FALSE;
+    (vfx->s).spr.oam.xflip = FALSE;
+    (vfx->s).flags &= ~X_FLIP;
+  }
 }
 
 static void RideChaser_Die(struct VFX* vfx) {
