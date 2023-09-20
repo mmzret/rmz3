@@ -1492,8 +1492,8 @@ static bool32 Cmd_force(struct VM* vm) {
         break;
       }
       case 14: {
-        (z->s).mode[1] = ZERO_BIKE;
-        (z->s).mode[2] = 0;
+        (z->s).mode[1] = ZERO_GROUND;
+        (z->s).mode[2] = 3;  // Bike
         (z->s).mode[3] = 0;
         gInTransport = FALSE;
         break;

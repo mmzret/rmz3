@@ -30,6 +30,7 @@ s16 GetSplitHeavenSpeed(struct Zero* z);
 static void zeroIdle_0802a30c(struct Zero* z);
 static void zeroStartWalk(struct Zero* z);
 static void zeroDash_0802a688(struct Zero* z);
+static void zeroBike(struct Zero* z);
 
 /*
   - ヘッドチップ、オートリカバリーの回復処理
@@ -40,6 +41,7 @@ void zeroNeutral2(struct Zero* z) {
       zeroIdle_0802a30c,  // idle
       zeroStartWalk,      // walk
       zeroDash_0802a688,  // dash
+      zeroBike,
   };
 
   u8* n;
@@ -409,6 +411,43 @@ WIP static void zero_dash_step1(struct Zero* z) {
 #else
   INCCODE("asm/wip/zero_dash_step1.inc");
 #endif
+}
+
+// --------------------------------------------
+
+static void zeroBike0(struct Zero* z);
+static void zeroBike1(struct Zero* z);
+
+static void zeroBike(struct Zero* z) {
+  static ZeroFunc const sSeq[] = {
+      zeroBike0,
+      zeroBike1,
+  };
+  (sSeq[(z->s).mode[3]])(z);
+}
+
+static void zeroBike0(struct Zero* z) {
+  struct Zero_b4* b4 = &(z->unk_b4);
+
+  SetMotion(&z->s, MOTION(DM065_ZERO_BIKE, 0x00));
+  CreateRideChaser(z);
+
+  if (b4->shadow != NULL) {
+    b4->shadow->work[1] = 1;
+    b4->shadow = NULL;
+  }
+
+  z->unk_b4.attackMode[0] = 0;
+  (z->s).mode[3]++;
+
+  (z->s).flags |= DISPLAY;
+  (z->s).coord.y = FUN_0800a05c((z->s).coord.x, (z->s).coord.y);
+  (z->s).d.x = PIXEL(2);
+}
+
+static void zeroBike1(struct Zero* z) {
+  (z->s).coord.x += (z->s).d.x;
+  return;
 }
 
 // ------------------------------------------------------------------------------------------------------------------------------------
@@ -3063,56 +3102,4 @@ _0802CFD0:\n\
 	pop {r0}\n\
 	bx r0\n\
  .syntax divided\n");
-}
-
-// ------------------------------------------------------------------------------------------------------------------------------------
-
-static void zeroBike0(struct Zero* z);
-static void zeroBike1(struct Zero* z);
-
-void zeroBike(struct Zero* z) {
-  static ZeroFunc const sSeq[] = {
-      zeroBike0,
-      zeroBike1,
-  };
-  (sSeq[(z->s).mode[2]])(z);
-}
-
-static void zeroBike0(struct Zero* z) {
-  struct Zero_b4* b4 = &(z->unk_b4);
-
-  SetMotion(&z->s, MOTION(DM065_ZERO_BIKE, 0x00));
-  CreateRideChaser(z);
-
-  if (b4->shadow != NULL) {
-    b4->shadow->work[1] = 1;
-    b4->shadow = NULL;
-  }
-
-  z->unk_b4.attackMode[0] = 0;
-  (z->s).mode[2]++;
-  (z->s).mode[3] = 0;
-}
-
-static void zeroBike1(struct Zero* z) {
-  u8* n;
-  switch ((z->s).mode[3]) {
-    case 0: {
-      (z->s).flags |= DISPLAY;
-      (z->s).coord.y = FUN_0800a05c((z->s).coord.x, (z->s).coord.y);
-      (z->s).d.x = PIXEL(2);
-      (z->s).mode[3]++;
-      break;
-    }
-    case 1: {
-      (z->s).coord.x += (z->s).d.x;
-
-      n = &z->posture;
-
-      PushoutWallX(z, &gZeroRanges[*n], 0);
-      PushoutWallX(z, &gZeroRanges[*n], 1);
-      PushoutByFloor(z, &gZeroRanges[*n], 0);
-      break;
-    }
-  }
 }

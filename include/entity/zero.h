@@ -19,7 +19,6 @@ enum {
   ZERO_TALK = 9,       // 仁王立ち(会話時)
   ZERO_TELEPORT = 10,  // 転送
   ZERO_CYBER = 11,     // サイバー空間のドア
-  ZERO_BIKE = 12,
   ZERO_ACTIONS,
 };
 

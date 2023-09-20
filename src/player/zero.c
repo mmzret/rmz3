@@ -440,7 +440,6 @@ static const ZeroFunc sHandlePlayerInputs[ZERO_ACTIONS] = {
     [ZERO_TALK] =      HandlePlayerInput_Talk,
     [ZERO_TELEPORT] =  HandlePlayerInput_Teleport,
     [ZERO_CYBER] =     HandlePlayerInput_Cyber,
-    [ZERO_BIKE] =      HandlePlayerInput_Bike,
 };
 // clang-format on
 
@@ -459,7 +458,6 @@ static const ZeroFunc sZeroUpdates[ZERO_ACTIONS] = {
     [ZERO_TALK] =      zeroTalk,
     [ZERO_TELEPORT] =  zeroTeleport,
     [ZERO_CYBER] =     zeroCyberDoor,
-    [ZERO_BIKE] =      zeroBike,
 };
 // clang-format on
 

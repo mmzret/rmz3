@@ -15,12 +15,14 @@ enum ZeroLadder {
 static void inIdle(struct Zero* z);
 static void inWalk(struct Zero* z);
 static void inDash(struct Zero* z);
+static void inBike(struct Zero* z);
 
 void HandlePlayerInput_Ground(struct Zero* z) {
   static ZeroFunc const gZeroMode0Actions1[] = {
       inIdle,
       inWalk,
       inDash,
+      inBike,
   };
   (gZeroMode0Actions1[(z->s).mode[2]])(z);
 }
@@ -224,6 +226,10 @@ static void inDash(struct Zero* z) {
     return;
   }
 }
+
+// --------------------------------------------
+
+static void inBike(struct Zero* z) {}
 
 // ------------------------------------------------------------------------------------------------------------------------------------
 

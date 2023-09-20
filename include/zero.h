@@ -147,7 +147,6 @@ void zeroFloat(struct Zero* z);
 void zeroTalk(struct Zero* z);
 void zeroTeleport(struct Zero* z);
 void zeroCyberDoor(struct Zero* z);
-void zeroBike(struct Zero* z);
 
 // ------------------------------------------------------------------------------------------------------------------------------------
 
