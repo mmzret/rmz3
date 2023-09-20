@@ -617,7 +617,7 @@ Script_InitSpaceCraftFreeRun:
   play_bgm BGM_BREAKOUT
   indicator 1, 0, 0
   wait 15*FRAME
-  force 6, 0, 0
+  force 14, 0, 0
   indicator 0, 0, 0
   release
   resume 0

@@ -3075,6 +3075,7 @@ void zeroBike(struct Zero* z) {
       zeroBike0,
       zeroBike1,
   };
+  (sSeq[(z->s).mode[2]])(z);
 }
 
 static void zeroBike0(struct Zero* z) {
@@ -3093,4 +3094,25 @@ static void zeroBike0(struct Zero* z) {
   (z->s).mode[3] = 0;
 }
 
-static void zeroBike1(struct Zero* z) { (z->s).d.x = PIXEL(1); }
+static void zeroBike1(struct Zero* z) {
+  u8* n;
+  switch ((z->s).mode[3]) {
+    case 0: {
+      (z->s).flags |= DISPLAY;
+      (z->s).coord.y = FUN_0800a05c((z->s).coord.x, (z->s).coord.y);
+      (z->s).d.x = PIXEL(2);
+      (z->s).mode[3]++;
+      break;
+    }
+    case 1: {
+      (z->s).coord.x += (z->s).d.x;
+
+      n = &z->posture;
+
+      PushoutWallX(z, &gZeroRanges[*n], 0);
+      PushoutWallX(z, &gZeroRanges[*n], 1);
+      PushoutByFloor(z, &gZeroRanges[*n], 0);
+      break;
+    }
+  }
+}
