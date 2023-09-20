@@ -416,7 +416,7 @@ static void onCollision(struct Body* body, struct Coord* r1 UNUSED, struct Coord
       return;
     }
   }
-  if (((body->hitboxFlags & BODY_STATUS_WHITE) && (mode = (z->s).mode[1], mode != ZERO_DOOR_2D)) && (mode != ZERO_CYBER)) {
+  if (((body->hitboxFlags & BODY_STATUS_WHITE) && (mode = (z->s).mode[1], mode != ZERO_DOOR_2D)) && (mode != ZERO_CYBER) && (!gOnBike)) {
     z->isRightDir = (enemy->coord).x > (z->s).coord.x;
     (z->s).mode[1] = ZERO_DAMAGED;
     (z->s).mode[2] = 0;

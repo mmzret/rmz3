@@ -1496,6 +1496,7 @@ static bool32 Cmd_force(struct VM* vm) {
         (z->s).mode[2] = 3;  // Bike
         (z->s).mode[3] = 0;
         gInTransport = FALSE;
+        gOnBike = TRUE;
         break;
       }
     }

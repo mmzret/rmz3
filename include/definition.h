@@ -84,6 +84,7 @@ extern u32 gECrystalGainAmount;
 extern u8 gInChat;
 extern bool8 gIsUsingDoor3D;
 extern bool8 gInTransport;
+extern bool8 gOnBike;
 extern u8 gMatrixCount;
 extern bool8 gPause;
 extern u16 gTimeElfTimer;

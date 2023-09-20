@@ -12,6 +12,7 @@ enum ZeroAirKind {
   WALL_JUMP,
   ROD_JUMP,
   SPLIT_HEAVENS_JUMP,
+  BIKE_JUMP,
 };
 
 s16 getZeroJumpingPower(struct Zero* z);
