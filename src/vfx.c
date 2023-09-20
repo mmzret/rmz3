@@ -90,6 +90,7 @@ const VFXRoutine* const gVFXFnTable[VFX_COUNT] = {
     [VFX_UNK_082] = &gGhost82Routine,
     [VFX_UNK_083] = &gGhost83Routine,
     [VFX_UNK_084] = &gGhost84Routine,
+    [VFX_RIDE_CHASER] = &gRideChaserRoutine,
 };
 // clang-format on
 

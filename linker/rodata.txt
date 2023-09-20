@@ -348,6 +348,7 @@
       src/vfx/unk_82.o (.rodata);
       src/vfx/unk_83.o (.rodata);
       src/vfx/unk_84.o (.rodata);
+      src/vfx/ride_chaser.o (.rodata);
 
 		src/solid.o (.rodata);
       src/solid/icebon.o (.rodata);

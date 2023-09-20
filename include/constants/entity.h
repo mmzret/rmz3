@@ -156,7 +156,8 @@
 #define VFX_UNK_082 82
 #define VFX_UNK_083 83
 #define VFX_UNK_084 84
-#define VFX_COUNT VFX_UNK_084 + 1
+#define VFX_RIDE_CHASER 85
+#define VFX_COUNT VFX_RIDE_CHASER + 1
 
 // MapItem.id
 #define ITEM_GENERAL 0

@@ -69,10 +69,10 @@ extern const struct MotionCmd **gStaticMotionCmdTable[STATIC_MOTION_COUNT];
 extern const struct MetaspriteHeader *gStaticMotionMetaspriteTable[STATIC_MOTION_COUNT];
 extern struct MetaspriteHeader gMetasprites_SM000[];
 extern struct MetaspriteHeader *gDynamicMotionMetaspriteTable[DYNAMIC_MOTION_COUNT];
-extern u16 wDynamicMotionPalIDs[DYNAMIC_MOTION_COUNT + 56];
+extern u16 wDynamicMotionPalIDs[DYNAMIC_MOTION_COUNT + 55];
 extern u16 wStaticMotionPalIDs[STATIC_MOTION_COUNT + 2];
 extern const u32 gDynamicMotionGraphicOffsets[DYNAMIC_MOTION_COUNT];
-extern u16 wDynamicGraphicTilenums[DYNAMIC_MOTION_COUNT + 56];
+extern u16 wDynamicGraphicTilenums[DYNAMIC_MOTION_COUNT + 55];
 
 void ResetMotion(struct Motion *p, const struct MotionCmd *const *const cmds);
 void setMotionStep(struct Motion *p, u8 step);

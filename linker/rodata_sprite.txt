@@ -163,3 +163,4 @@
       sprites/weil/sheet/header.o (.rodata);
       sprites/cyberspace_door/sheet/header.o (.rodata);
       sprites/boss_explosion/sheet/header.o (.rodata);
+      sprites/ride_chaser/sheet/header.o (.rodata);

@@ -266,6 +266,7 @@
 			src/vfx/unk_82.o (.text);
 			src/vfx/unk_83.o (.text);
 			src/vfx/unk_84.o (.text);
+			src/vfx/ride_chaser.o (.text);
 
 		src/solid.o (.text);
       src/solid/icebon.o (.text);

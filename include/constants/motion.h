@@ -169,8 +169,9 @@
 #define DM197_WEIL 197
 #define DM198_CYBERSPACE_DOOR 198
 #define DM199_BOSS_EXPLOSION 199
+#define DM200_RIDE_CHASER 200
 
-#define DYNAMIC_MOTION_COUNT 200
+#define DYNAMIC_MOTION_COUNT 201
 
 // Static Motion (SM, Motion has a single scene(= a single metasprite))
 

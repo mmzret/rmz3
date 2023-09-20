@@ -45,7 +45,7 @@
   }
 #endif
 
-extern const VFXRoutine *const gVFXFnTable[85];
+extern const VFXRoutine *const gVFXFnTable[VFX_COUNT];
 extern const VFXRoutine gSmokeRoutine;
 extern const VFXRoutine gSeaEnemyRoutine;
 extern const VFXRoutine gChargeEffectRoutine;
@@ -129,6 +129,7 @@ extern const VFXRoutine gSmallNumberRoutine;
 extern const VFXRoutine gGhost82Routine;
 extern const VFXRoutine gGhost83Routine;
 extern const VFXRoutine gGhost84Routine;
+extern const VFXRoutine gRideChaserRoutine;
 
 void DeleteVFX(struct VFX *p);
 

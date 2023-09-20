@@ -814,6 +814,11 @@
       "id": 199,
       "name": "Boss Explosion",
       "path": "boss_explosion"
+    },
+    {
+      "id": 200,
+      "name": "Ride Chaser",
+      "path": "ride_chaser"
     }
   ],
   "prop": [

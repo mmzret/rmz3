@@ -10,6 +10,8 @@
 #include "vfx.h"
 #include "weapon.h"
 
+struct VFX* CreateRideChaser(struct Zero* z);
+
 static const ZeroFunc sHandlePlayerInputs[12];
 static const ZeroFunc sZeroUpdates[12];
 static const ZeroFunc sZeroAttacks[4];
@@ -129,6 +131,8 @@ WIP void Zero_Init(struct Zero* z) {
   LoadZeroPalette(&z->s, GetZeroColor(z));
   setWramElement((b4->status).element);
   Zero_Update(z);
+
+  CreateRideChaser(z);
 #else
   INCCODE("asm/wip/Zero_Init.inc");
 #endif

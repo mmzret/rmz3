@@ -21,15 +21,15 @@ const VFXRoutine gSeaEnemyRoutine = {
 // clang-format on
 
 void CreateSeaEnemy(s32 x, s32 y, u8 kind) {
-  struct VFX* g = (struct VFX*)AllocEntityFirst(gVFXHeaderPtr);
-  if (g != NULL) {
-    (g->s).taskCol = 1;
-    INIT_VFX_ROUTINE(g, 1);
-    (g->s).tileNum = 0;
-    (g->s).palID = 0;
-    (g->s).work[0] = kind;
-    ((g->s).coord).x = x;
-    ((g->s).coord).y = y;
+  struct VFX* vfx = (struct VFX*)AllocEntityFirst(gVFXHeaderPtr);
+  if (vfx != NULL) {
+    (vfx->s).taskCol = 1;
+    INIT_VFX_ROUTINE(vfx, 1);
+    (vfx->s).tileNum = 0;
+    (vfx->s).palID = 0;
+    (vfx->s).work[0] = kind;
+    ((vfx->s).coord).x = x;
+    ((vfx->s).coord).y = y;
   }
 }
 
