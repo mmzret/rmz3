@@ -2738,7 +2738,6 @@ static void zeroTeleport4(struct Zero* z) {
         (z->s).mode[2] = 0;
         (z->s).mode[3] = 0;
         (z->s).d.x = 0;
-        CreateRideChaser(z);
       }
       break;
     }
@@ -3065,3 +3064,33 @@ _0802CFD0:\n\
 	bx r0\n\
  .syntax divided\n");
 }
+
+// ------------------------------------------------------------------------------------------------------------------------------------
+
+static void zeroBike0(struct Zero* z);
+static void zeroBike1(struct Zero* z);
+
+void zeroBike(struct Zero* z) {
+  static ZeroFunc const sSeq[] = {
+      zeroBike0,
+      zeroBike1,
+  };
+}
+
+static void zeroBike0(struct Zero* z) {
+  struct Zero_b4* b4 = &(z->unk_b4);
+
+  SetMotion(&z->s, MOTION(DM065_ZERO_BIKE, 0x00));
+  CreateRideChaser(z);
+
+  if (b4->shadow != NULL) {
+    b4->shadow->work[1] = 1;
+    b4->shadow = NULL;
+  }
+
+  z->unk_b4.attackMode[0] = 0;
+  (z->s).mode[2]++;
+  (z->s).mode[3] = 0;
+}
+
+static void zeroBike1(struct Zero* z) { (z->s).d.x = PIXEL(1); }

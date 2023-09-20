@@ -10,8 +10,8 @@
 #include "vfx.h"
 #include "weapon.h"
 
-static const ZeroFunc sHandlePlayerInputs[12];
-static const ZeroFunc sZeroUpdates[12];
+static const ZeroFunc sHandlePlayerInputs[ZERO_ACTIONS];
+static const ZeroFunc sZeroUpdates[ZERO_ACTIONS];
 static const ZeroFunc sZeroAttacks[4];
 static const ZeroRoutine gZeroRoutine;
 
@@ -427,7 +427,7 @@ static void onCollision(struct Body* body, struct Coord* r1 UNUSED, struct Coord
 
 // clang-format off
 // 01 xx nn nn
-static const ZeroFunc sHandlePlayerInputs[12] = {
+static const ZeroFunc sHandlePlayerInputs[ZERO_ACTIONS] = {
     [ZERO_GROUND] =    HandlePlayerInput_Ground,
     [ZERO_AIR] =       HandlePlayerInput_Air,
     [ZERO_WALL] =      HandlePlayerInput_Wall,
@@ -440,12 +440,13 @@ static const ZeroFunc sHandlePlayerInputs[12] = {
     [ZERO_TALK] =      HandlePlayerInput_Talk,
     [ZERO_TELEPORT] =  HandlePlayerInput_Teleport,
     [ZERO_CYBER] =     HandlePlayerInput_Cyber,
+    [ZERO_BIKE] =      HandlePlayerInput_Bike,
 };
 // clang-format on
 
 // clang-format off
 // 01 xx nn nn
-static const ZeroFunc sZeroUpdates[12] = {
+static const ZeroFunc sZeroUpdates[ZERO_ACTIONS] = {
     [ZERO_GROUND] =    zeroNeutral2,
     [ZERO_AIR] =       zeroAir2,
     [ZERO_WALL] =      zeroWall2,
@@ -458,6 +459,7 @@ static const ZeroFunc sZeroUpdates[12] = {
     [ZERO_TALK] =      zeroTalk,
     [ZERO_TELEPORT] =  zeroTeleport,
     [ZERO_CYBER] =     zeroCyberDoor,
+    [ZERO_BIKE] =      zeroBike,
 };
 // clang-format on
 

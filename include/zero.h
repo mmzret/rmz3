@@ -129,6 +129,7 @@ void HandlePlayerInput_Float(struct Zero* z);
 void HandlePlayerInput_Talk(struct Zero* z);
 void HandlePlayerInput_Teleport(struct Zero* z);
 void HandlePlayerInput_Cyber(struct Zero* z);
+void HandlePlayerInput_Bike(struct Zero* z);
 
 // ------------------------------------------------------------------------------------------------------------------------------------
 
@@ -146,6 +147,7 @@ void zeroFloat(struct Zero* z);
 void zeroTalk(struct Zero* z);
 void zeroTeleport(struct Zero* z);
 void zeroCyberDoor(struct Zero* z);
+void zeroBike(struct Zero* z);
 
 // ------------------------------------------------------------------------------------------------------------------------------------
 
