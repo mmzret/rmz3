@@ -271,6 +271,9 @@ void resetSateliteElfPosition(struct Zero *z) {
 
 // u16 = struct Action
 motion_t GetDefaultMotion(struct Zero *z) {
+  if (gOnBike) {
+    return MOTION(DM065_ZERO_BIKE, 0);
+  }
   if ((z->unk_b4).status.dying != 0) {
     return MOTION(DM001_ZERO_DYING, 0);
   }

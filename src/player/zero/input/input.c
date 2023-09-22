@@ -229,7 +229,15 @@ static void inDash(struct Zero* z) {
 
 // --------------------------------------------
 
-static void inBike(struct Zero* z) {}
+static void inBike(struct Zero* z) {
+  zero_input_t key;
+  key = z->zeroInput;
+  if (key & ZERO_INPUT_PRESS_JUMP) {
+    (z->s).mode[1] = ZERO_AIR;
+    (z->s).mode[2] = 0;
+    (z->s).mode[3] = BIKE_JUMP;
+  }
+}
 
 // ------------------------------------------------------------------------------------------------------------------------------------
 

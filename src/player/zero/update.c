@@ -6,15 +6,6 @@
 #include "weapon.h"
 #include "zero.h"
 
-enum ZeroAirKind {
-  NORMAL_JUMP,
-  DOUBLE_JUMP,
-  WALL_JUMP,
-  ROD_JUMP,
-  SPLIT_HEAVENS_JUMP,
-  BIKE_JUMP,
-};
-
 s16 getZeroJumpingPower(struct Zero* z);
 s16 getZeroRisingDy(struct Zero* z);
 void CreateDashDust(struct Coord* c, bool8 isRight);
@@ -580,6 +571,11 @@ WIP static void initZeroJump(struct Zero* z) {
       }
       break;
     }
+
+    case BIKE_JUMP: {
+      (z->s).d.y = -PIXEL(2);
+      break;
+    }
   }
   (z->s).mode[2] = 1;
   zeroJumpRise(z);
@@ -595,6 +591,7 @@ static void zeroDoubleJumpRise(struct Zero* z);
 static void zeroWallJumpRise(struct Zero* z);
 static void zeroRecoilJumpRise(struct Zero* z);
 static void zeroRyuenjinJumpRise(struct Zero* z);
+static void zeroBikeJumpRise(struct Zero* z);
 
 static void zeroJumpRise(struct Zero* z) {
   // clang-format off
@@ -604,6 +601,7 @@ static void zeroJumpRise(struct Zero* z) {
       [WALL_JUMP]          = zeroWallJumpRise,
       [ROD_JUMP]           = zeroRecoilJumpRise,
       [SPLIT_HEAVENS_JUMP] = zeroRyuenjinJumpRise,
+      [BIKE_JUMP]          = zeroBikeJumpRise,
   };
   // clang-format on
 
@@ -878,6 +876,26 @@ static void zeroRyuenjinJumpRise(struct Zero* z) {
   }
 }
 
+static void zeroBikeJumpRise(struct Zero* z) {
+  metatile_attr_t attr;
+  SetMotion(&z->s, MOTION(DM065_ZERO_BIKE, 0x00));
+
+  (z->s).coord.x += (z->s).d.x;
+  PushoutWallX(z, &gZeroRanges[z->posture], 0);
+  PushoutWallX(z, &gZeroRanges[z->posture], 1);
+  (z->s).coord.y += (z->s).d.y;
+  (z->s).d.y += getFallAcceleration(z);
+
+  attr = PushoutByCeiling(z, &gZeroRanges[z->posture], FALSE);
+  if (attr == 0) {
+    attr = zero_080264dc(z, &gZeroRanges[z->posture], TRUE);
+  }
+  if ((0 < (z->s).d.y) || (attr != 0)) {
+    (z->s).mode[2] = 2;
+    (z->s).mode[3] = 0;
+  }
+}
+
 // --------------------------------------------
 
 static void zeroJumpFallStep0(struct Zero* z);
@@ -899,13 +917,17 @@ static void zeroJumpFall(struct Zero* z) {
 
 static void zeroJumpFallStep0(struct Zero* z) {
   s32 old, dx;
-  if (z->airJumpped == 0) {
-    motion_t m = MOTION_VALUE(z);
-    if (m != MOTION(DM004_ZERO_AIR, 0x04)) {
-      SetMotion(&z->s, MOTION(DM004_ZERO_AIR, 0x04));
+  if (!gOnBike) {
+    if (z->airJumpped == 0) {
+      motion_t m = MOTION_VALUE(z);
+      if (m != MOTION(DM004_ZERO_AIR, 0x04)) {
+        SetMotion(&z->s, MOTION(DM004_ZERO_AIR, 0x04));
+      }
+    } else {
+      SetMotion(&z->s, MOTION(DM004_ZERO_AIR, 0x01));
     }
   } else {
-    SetMotion(&z->s, MOTION(DM004_ZERO_AIR, 0x01));
+    SetMotion(&z->s, MOTION(DM065_ZERO_BIKE, 0x00));
   }
 
   old = (z->s).d.x;
@@ -1100,7 +1122,11 @@ static void zeroJumpFallStep2(struct Zero* z) {
   // landing
   if (((!z->unk_b4.softPlatform) && (PushoutByFloor(z, &gZeroRanges[*n], 1) != 0)) && (zero_080264dc(z, &gZeroRanges[*n], 0) != 0)) {
     (z->s).mode[1] = ZERO_GROUND;
-    (z->s).mode[2] = 0;
+    if (gOnBike) {
+      (z->s).mode[2] = 3;  // Bike
+    } else {
+      (z->s).mode[2] = 0;
+    }
     (z->s).mode[3] = 0;
     z->unk_b4.attackMode[1] = 8;
     z->unk_b4.attackMode[2] = 0;
@@ -1188,7 +1214,11 @@ WIP static void zeroWallSeq1(struct Zero* z) {
   // Check landing
   if ((PushoutByFloor(z, &gZeroRanges[z->posture], TRUE) != 0) && (zero_080264dc(z, &gZeroRanges[z->posture], FALSE) != 0)) {
     (z->s).mode[1] = ZERO_GROUND;
-    (z->s).mode[2] = 0;  // idle
+    if (gOnBike) {
+      (z->s).mode[2] = 3;  // Bike
+    } else {
+      (z->s).mode[2] = 0;
+    }
     (z->s).mode[3] = 0;
     PlaySound(SE_WALK);
   }

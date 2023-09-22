@@ -7,6 +7,15 @@
 #include "gba/gba.h"
 #include "types.h"
 
+enum ZeroAirKind {
+  NORMAL_JUMP,
+  DOUBLE_JUMP,
+  WALL_JUMP,
+  ROD_JUMP,
+  SPLIT_HEAVENS_JUMP,
+  BIKE_JUMP,
+};
+
 #if MODERN
 #define SET_PLAYER_ROUTINE(player, routine)                                            \
   {                                                                                    \
