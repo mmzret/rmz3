@@ -397,7 +397,7 @@ const struct EntityTemplate gResistanceBaseEntity[64] = {
         {
             1,
             ENTITY_SOLID,
-            SOLID_UNK_049,
+            SOLID_GRAFFITI,
             0,
             0,
             0,
@@ -408,7 +408,7 @@ const struct EntityTemplate gResistanceBaseEntity[64] = {
         {
             1,
             ENTITY_SOLID,
-            SOLID_UNK_049,
+            SOLID_GRAFFITI,
             1,
             0,
             0,
@@ -419,7 +419,7 @@ const struct EntityTemplate gResistanceBaseEntity[64] = {
         {
             1,
             ENTITY_SOLID,
-            SOLID_UNK_049,
+            SOLID_GRAFFITI,
             2,
             0,
             0,
@@ -430,7 +430,7 @@ const struct EntityTemplate gResistanceBaseEntity[64] = {
         {
             1,
             ENTITY_SOLID,
-            SOLID_UNK_049,
+            SOLID_GRAFFITI,
             3,
             0,
             0,
@@ -441,7 +441,7 @@ const struct EntityTemplate gResistanceBaseEntity[64] = {
         {
             1,
             ENTITY_SOLID,
-            SOLID_UNK_049,
+            SOLID_GRAFFITI,
             4,
             0,
             0,

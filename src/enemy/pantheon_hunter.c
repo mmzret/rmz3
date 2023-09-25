@@ -1,8 +1,12 @@
 #include "collision.h"
-#include "entity.h"
-#include "vfx.h"
-#include "global.h"
 #include "enemy.h"
+#include "global.h"
+#include "vfx.h"
+
+static const EnemyFunc sUpdates[13];
+static const EnemyFunc sDeads[3];
+static const struct Collision sCollisions[3];
+static const struct SlashedEnemy sSlashedEnemies[4];
 
 INCASM("asm/enemy/pantheon_hunter.inc");
 
@@ -39,7 +43,7 @@ void phunter_08065218(struct Enemy* p);
 void phunter_080652e8(struct Enemy* p);
 
 // clang-format off
-const EnemyFunc sPantheonHunterUpdates[13] = {
+static const EnemyFunc sUpdates[13] = {
     FUN_08064c38,
     nop_08064ca8,
     phunter_08064cac,
@@ -62,7 +66,7 @@ void explodePHunter(struct Enemy* p);
 void slashPHunter(struct Enemy* p);
 void FUN_080656cc(struct Enemy* p);
 
-const EnemyFunc sPantheonHunterDeinitializers[3] = {
+static const EnemyFunc sDeads[3] = {
     explodePHunter,
     slashPHunter,
     FUN_080656cc,
@@ -70,7 +74,7 @@ const EnemyFunc sPantheonHunterDeinitializers[3] = {
 
 // --------------------------------------------
 
-static const struct Collision sPantheonHunterCollisions[3] = {
+static const struct Collision sCollisions[3] = {
     [0] = {
       kind : DDP,
       layer : 1,
@@ -121,7 +125,7 @@ static const struct Collision sPantheonHunterCollisions[3] = {
     },
 };
 
-static const struct SlashedEnemy SlashedEnemy_ARRAY_08365c14[4] = {
+static const struct SlashedEnemy sSlashedEnemies[4] = {
     [0] = {
       m : MOTION(SM019_PANTHEON_HUNTER, 0x06),
       unk_02 : {0xFF, 0x11},

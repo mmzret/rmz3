@@ -408,8 +408,8 @@ const struct Coord Coord_0836fc88 = {-0x10000000, 0x20001800};
 const u8 u8_ARRAY_0836fc90[2] = {1, 0};
 
 const motion_t motion_t_ARRAY_0836fc92[4] = {
-    MOTION(0x10, 0x03),
-    MOTION(0x10, 0x04),
-    MOTION(0x10, 0x05),
-    MOTION(0x10, 0x02),
+    MOTION(SM016_ICEBON, 3),
+    MOTION(SM016_ICEBON, 4),
+    MOTION(SM016_ICEBON, 5),
+    MOTION(SM016_ICEBON, 2),
 };

@@ -89,9 +89,9 @@ NO_RECOVER:
 
   PushoutWallX(z, &gZeroRanges[*n], 0);
   PushoutWallX(z, &gZeroRanges[*n], 1);
-  PushoutByFloor(z, &gZeroRanges[*n], 0);
+  PushoutByFloor1(z, &gZeroRanges[*n], 0);
 
-  attr = zero_080264dc(z, &gZeroRanges[*n], 0);
+  attr = PushoutByFloor2(z, &gZeroRanges[*n], FALSE);
   if (attr == 0) {
     if ((z->s).mode[2] == 1) {
       s16 tmp;
@@ -625,7 +625,7 @@ NON_MATCH static void zeroNormalJumpRise(struct Zero* z) {
 
   attr = PushoutByCeiling(z, &gZeroRanges[z->posture], FALSE);
   if (attr == 0) {
-    attr = zero_080264dc(z, &gZeroRanges[z->posture], TRUE);
+    attr = PushoutByFloor2(z, &gZeroRanges[z->posture], TRUE);
   }
   if (((z->s).d.y > 0) || (attr != 0)) {
     (z->s).mode[2] = 2;  // Fall
@@ -675,7 +675,7 @@ static void zeroDoubleJumpRise(struct Zero* z) {
 
   attr = PushoutByCeiling(z, &gZeroRanges[*n], 0);
   if (attr == 0) {
-    attr = zero_080264dc(z, &gZeroRanges[*n], 1);
+    attr = PushoutByFloor2(z, &gZeroRanges[*n], 1);
   }
 
   if ((0 < (z->s).d.y) || (attr != 0)) {
@@ -754,7 +754,7 @@ WIP static void zeroWallJumpRise(struct Zero* z) {
   (z->s).d.y += getFallAcceleration(z);
   attr = PushoutByCeiling(z, &gZeroRanges[z->posture], FALSE);
   if (attr == 0) {
-    attr = zero_080264dc(z, &gZeroRanges[z->posture], TRUE);
+    attr = PushoutByFloor2(z, &gZeroRanges[z->posture], TRUE);
   }
   if (((z->s).d.y > 0) || (attr != 0)) {
     (z->s).mode[2] = 2;
@@ -879,173 +879,50 @@ static void zeroJumpFallStep0(struct Zero* z) {
   zeroJumpFallStep1(z);
 }
 
-NAKED static void zeroJumpFallStep1(struct Zero* z) {
-  asm(".syntax unified\n\
-	push {r4, r5, r6, r7, lr}\n\
-	mov r7, r8\n\
-	push {r7}\n\
-	adds r4, r0, #0\n\
-	adds r0, #0xb4\n\
-	ldr r2, [r0, #0x54]\n\
-	cmp r2, #0\n\
-	beq _0802B392\n\
-	lsls r0, r2, #0x10\n\
-	lsrs r3, r0, #0x10\n\
-	b _0802B400\n\
-_0802B392:\n\
-	movs r1, #0x86\n\
-	lsls r1, r1, #2\n\
-	adds r0, r4, r1\n\
-	ldr r1, [r0]\n\
-	movs r0, #0x20\n\
-	ands r0, r1\n\
-	cmp r0, #0\n\
-	beq _0802B3CE\n\
-	ldr r0, [r4, #0x5c]\n\
-	cmp r0, #0\n\
-	bge _0802B3AA\n\
-	rsbs r0, r0, #0\n\
-_0802B3AA:\n\
-	rsbs r0, r0, #0\n\
-	lsls r0, r0, #0x10\n\
-	lsrs r3, r0, #0x10\n\
-	adds r0, r4, #0\n\
-	adds r0, #0x4c\n\
-	strb r2, [r0]\n\
-	adds r2, r4, #0\n\
-	adds r2, #0x4a\n\
-	ldrb r1, [r2]\n\
-	movs r0, #0x11\n\
-	rsbs r0, r0, #0\n\
-	ands r0, r1\n\
-	strb r0, [r2]\n\
-	ldrb r1, [r4, #0xa]\n\
-	movs r0, #0xef\n\
-	ands r0, r1\n\
-	strb r0, [r4, #0xa]\n\
-	b _0802B400\n\
-_0802B3CE:\n\
-	movs r0, #0x10\n\
-	ands r1, r0\n\
-	cmp r1, #0\n\
-	beq _0802B3FE\n\
-	ldr r0, [r4, #0x5c]\n\
-	cmp r0, #0\n\
-	bge _0802B3DE\n\
-	rsbs r0, r0, #0\n\
-_0802B3DE:\n\
-	lsls r0, r0, #0x10\n\
-	lsrs r3, r0, #0x10\n\
-	adds r1, r4, #0\n\
-	adds r1, #0x4c\n\
-	movs r0, #1\n\
-	strb r0, [r1]\n\
-	adds r2, r4, #0\n\
-	adds r2, #0x4a\n\
-	ldrb r0, [r2]\n\
-	movs r1, #0x10\n\
-	orrs r0, r1\n\
-	strb r0, [r2]\n\
-	ldrb r0, [r4, #0xa]\n\
-	orrs r1, r0\n\
-	strb r1, [r4, #0xa]\n\
-	b _0802B400\n\
-_0802B3FE:\n\
-	movs r3, #0\n\
-_0802B400:\n\
-	lsls r0, r3, #0x10\n\
-	asrs r0, r0, #0x10\n\
-	mov r8, r0\n\
-	ldr r0, [r4, #0x54]\n\
-	add r0, r8\n\
-	str r0, [r4, #0x54]\n\
-	ldr r0, _0802B488 @ =0x00000147\n\
-	adds r6, r4, r0\n\
-	ldrb r1, [r6]\n\
-	lsls r1, r1, #3\n\
-	ldr r7, _0802B48C @ =gZeroRanges\n\
-	adds r1, r1, r7\n\
-	adds r0, r4, #0\n\
-	movs r2, #0\n\
-	bl PushoutWallX\n\
-	ldrb r1, [r6]\n\
-	lsls r1, r1, #3\n\
-	adds r1, r1, r7\n\
-	adds r0, r4, #0\n\
-	movs r2, #1\n\
-	bl PushoutWallX\n\
-	ldr r0, [r4, #0x58]\n\
-	ldr r1, [r4, #0x60]\n\
-	adds r0, r0, r1\n\
-	str r0, [r4, #0x58]\n\
-	ldrb r1, [r6]\n\
-	lsls r1, r1, #3\n\
-	adds r1, r1, r7\n\
-	adds r0, r4, #0\n\
-	movs r2, #0\n\
-	bl PushoutByCeiling\n\
-	ldr r1, _0802B490 @ =0x00000113\n\
-	adds r0, r4, r1\n\
-	ldrb r5, [r0]\n\
-	cmp r5, #0\n\
-	bne _0802B494\n\
-	ldrb r1, [r6]\n\
-	lsls r1, r1, #3\n\
-	adds r1, r1, r7\n\
-	adds r0, r4, #0\n\
-	movs r2, #1\n\
-	bl PushoutByFloor\n\
-	lsls r0, r0, #0x10\n\
-	cmp r0, #0\n\
-	beq _0802B494\n\
-	ldrb r1, [r6]\n\
-	lsls r1, r1, #3\n\
-	adds r1, r1, r7\n\
-	adds r0, r4, #0\n\
-	movs r2, #0\n\
-	bl zero_080264dc\n\
-	lsls r0, r0, #0x10\n\
-	cmp r0, #0\n\
-	beq _0802B494\n\
-	strb r5, [r4, #0xd]\n\
-	strb r5, [r4, #0xe]\n\
-	strb r5, [r4, #0xf]\n\
-	mov r0, r8\n\
-	str r0, [r4, #0x5c]\n\
-	movs r0, #7\n\
-	bl PlaySound\n\
-	b _0802B4C0\n\
-	.align 2, 0\n\
-_0802B488: .4byte 0x00000147\n\
-_0802B48C: .4byte gZeroRanges\n\
-_0802B490: .4byte 0x00000113\n\
-_0802B494:\n\
-	adds r0, r4, #0\n\
-	bl getFallAcceleration\n\
-	lsls r0, r0, #0x10\n\
-	asrs r0, r0, #0x10\n\
-	ldr r1, [r4, #0x60]\n\
-	adds r1, r1, r0\n\
-	str r1, [r4, #0x60]\n\
-	adds r0, r4, #0\n\
-	bl calcMaxFallSpeed\n\
-	lsls r0, r0, #0x10\n\
-	asrs r0, r0, #0x10\n\
-	ldr r1, [r4, #0x60]\n\
-	cmp r1, r0\n\
-	ble _0802B4C0\n\
-	adds r0, r4, #0\n\
-	bl calcMaxFallSpeed\n\
-	lsls r0, r0, #0x10\n\
-	asrs r0, r0, #0x10\n\
-	str r0, [r4, #0x60]\n\
-_0802B4C0:\n\
-	pop {r3}\n\
-	mov r8, r3\n\
-	pop {r4, r5, r6, r7}\n\
-	pop {r0}\n\
-	bx r0\n\
- .syntax divided\n");
+static void zeroJumpFallStep1(struct Zero* z) {
+  s16 dx, dy;
+
+  if ((&z->unk_b4)->blownSpeed != 0) {
+    dx = (&z->unk_b4)->blownSpeed;
+
+  } else if (z->zeroInput & DPAD_LEFT) {
+    dx = -abs((z->s).d.x);
+    (z->s).spr.xflip = FALSE;
+    (z->s).spr.oam.xflip = FALSE;
+    (z->s).flags &= ~X_FLIP;
+
+  } else if (z->zeroInput & DPAD_RIGHT) {
+    dx = abs((z->s).d.x);
+    (z->s).spr.xflip = TRUE;
+    (z->s).spr.oam.xflip = TRUE;
+    (z->s).flags |= X_FLIP;
+
+  } else {
+    dx = 0;
+  }
+  (z->s).coord.x += dx;
+
+  PushoutWallX(z, &gZeroRanges[z->posture], 0);
+  PushoutWallX(z, &gZeroRanges[z->posture], 1);
+  (z->s).coord.y += (z->s).d.y;
+  PushoutByCeiling(z, &gZeroRanges[z->posture], 0);
+
+  // landing
+  if (((!z->unk_b4.softPlatform) && (PushoutByFloor1(z, &gZeroRanges[z->posture], 1) != 0)) && (PushoutByFloor2(z, &gZeroRanges[z->posture], 0) != 0)) {
+    (z->s).mode[1] = ZERO_GROUND;
+    (z->s).mode[2] = 0;
+    (z->s).mode[3] = 0;
+    (z->s).d.x = dx;
+    PlaySound(SE_WALK);
+    return;
+  }
+
+  (z->s).d.y += getFallAcceleration(z);
+
+  dy = calcMaxFallSpeed(z);
+  if ((z->s).d.y <= dy) return;
+  dy = calcMaxFallSpeed(z);
+  (z->s).d.y = dy;
 }
 
 // 着地処理 or 落下速度の更新
@@ -1058,7 +935,7 @@ static void zeroJumpFallStep2(struct Zero* z) {
   PushoutByCeiling(z, &gZeroRanges[*n], 0);
 
   // landing
-  if (((!z->unk_b4.softPlatform) && (PushoutByFloor(z, &gZeroRanges[*n], 1) != 0)) && (zero_080264dc(z, &gZeroRanges[*n], 0) != 0)) {
+  if (((!z->unk_b4.softPlatform) && (PushoutByFloor1(z, &gZeroRanges[*n], 1) != 0)) && (PushoutByFloor2(z, &gZeroRanges[*n], 0) != 0)) {
     (z->s).mode[1] = ZERO_GROUND;
     (z->s).mode[2] = 0;
     (z->s).mode[3] = 0;
@@ -1146,7 +1023,7 @@ WIP static void zeroWallSeq1(struct Zero* z) {
   }
 
   // Check landing
-  if ((PushoutByFloor(z, &gZeroRanges[z->posture], TRUE) != 0) && (zero_080264dc(z, &gZeroRanges[z->posture], FALSE) != 0)) {
+  if ((PushoutByFloor1(z, &gZeroRanges[z->posture], TRUE) != 0) && (PushoutByFloor2(z, &gZeroRanges[z->posture], FALSE) != 0)) {
     (z->s).mode[1] = ZERO_GROUND;
     (z->s).mode[2] = 0;  // idle
     (z->s).mode[3] = 0;
@@ -1230,7 +1107,7 @@ static void zeroLadderUpStep1(struct Zero* z) {
 
     if (z->zeroInput & DPAD_UP) {
       (z->s).coord.y += (z->s).d.y;
-      if (zero_08026358(z, &gZeroRanges[z->posture], TRUE) != 0) {
+      if (PushoutByCeilingOnLadder(z, &gZeroRanges[z->posture], TRUE) != 0) {
         GotoMotion(&z->s, MOTION_VALUE(z), (z->s).motion.cmdIdx, (z->s).motion.duration + 1);
         (z->s).coord.y -= (z->s).d.y;
       } else {
@@ -1374,7 +1251,7 @@ static void zeroLadderDownStep3(struct Zero* z) {
     if (m != MOTION(DM007_ZERO_LADDER, 0x05)) {
       SetMotion(&z->s, MOTION(DM007_ZERO_LADDER, 0x05));
       (z->s).coord.y = ((z->s).coord.y & 0xfffff000) + 0xfff;
-      PushoutByFloor(z, &gZeroRanges[z->posture], 1);
+      PushoutByFloor1(z, &gZeroRanges[z->posture], 1);
     }
 
     if ((z->s).motion.state == MOTION_END) {
@@ -1577,9 +1454,9 @@ void zeroKnockBack(struct Zero* z) {
 
   PushoutWallX(z, &gZeroRanges[*n], 0);
   PushoutWallX(z, &gZeroRanges[*n], 1);
-  PushoutByFloor(z, &gZeroRanges[*n], 0);
+  PushoutByFloor1(z, &gZeroRanges[*n], 0);
 
-  attr = zero_080264dc(z, &gZeroRanges[*n], 0);
+  attr = PushoutByFloor2(z, &gZeroRanges[*n], 0);
   if (attr == 0) {
     (z->s).mode[3] = 2;
   }
@@ -1604,7 +1481,7 @@ static void zeroAirKnockBack(struct Zero* z) {
   PushoutByCeiling(z, &gZeroRanges[z->posture], 0);
 
   // landing
-  if (((!(z->unk_b4).softPlatform) && (PushoutByFloor(z, &gZeroRanges[z->posture], 1) != 0)) && (zero_080264dc(z, &gZeroRanges[z->posture], 0) != 0)) {
+  if (((!(z->unk_b4).softPlatform) && (PushoutByFloor1(z, &gZeroRanges[z->posture], 1) != 0)) && (PushoutByFloor2(z, &gZeroRanges[z->posture], 0) != 0)) {
     (z->s).mode[3] = 1;
     return;
   }
@@ -1853,7 +1730,7 @@ static void zeroMode7Phase0(struct Zero* z) {
   d = &(z->s).d;
   d->x = d->y = 0;
 
-  attr = zero_080264dc(z, &gZeroRanges[z->posture], FALSE);
+  attr = PushoutByFloor2(z, &gZeroRanges[z->posture], FALSE);
   if (attr == 0) {
     (z->s).mode[2] = 2;
     (z->s).mode[3] = 0;
@@ -2012,13 +1889,13 @@ _0802C5CA:\n\
 	adds r1, r1, r4\n\
 	adds r0, r5, #0\n\
 	movs r2, #0\n\
-	bl PushoutByFloor\n\
+	bl PushoutByFloor1\n\
 	ldrb r1, [r6]\n\
 	lsls r1, r1, #3\n\
 	adds r1, r1, r4\n\
 	adds r0, r5, #0\n\
 	movs r2, #0\n\
-	bl zero_080264dc\n\
+	bl PushoutByFloor2\n\
 	lsls r0, r0, #0x10\n\
 	lsrs r1, r0, #0x10\n\
 	cmp r1, #0\n\
@@ -2198,7 +2075,7 @@ _0802C746:\n\
 	adds r1, r1, r7\n\
 	adds r0, r5, #0\n\
 	movs r2, #1\n\
-	bl PushoutByFloor\n\
+	bl PushoutByFloor1\n\
 	lsls r0, r0, #0x10\n\
 	cmp r0, #0\n\
 	beq _0802C794\n\
@@ -2207,7 +2084,7 @@ _0802C746:\n\
 	adds r1, r1, r7\n\
 	adds r0, r5, #0\n\
 	movs r2, #0\n\
-	bl zero_080264dc\n\
+	bl PushoutByFloor2\n\
 	lsls r0, r0, #0x10\n\
 	cmp r0, #0\n\
 	beq _0802C794\n\
@@ -2406,13 +2283,13 @@ _0802C962:\n\
 	adds r1, r1, r6\n\
 	adds r0, r4, #0\n\
 	movs r2, #1\n\
-	bl PushoutByFloor\n\
+	bl PushoutByFloor1\n\
 	ldrb r1, [r5]\n\
 	lsls r1, r1, #3\n\
 	adds r1, r1, r6\n\
 	adds r0, r4, #0\n\
 	movs r2, #1\n\
-	bl zero_080264dc\n\
+	bl PushoutByFloor2\n\
 	lsls r0, r0, #0x10\n\
 	cmp r0, #0\n\
 	beq _0802C996\n\

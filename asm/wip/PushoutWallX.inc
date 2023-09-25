@@ -13,7 +13,7 @@
 	mov sb, r0
 	adds r0, r7, #0
 	movs r2, #0
-	bl zero_08026e30
+	bl PushoutByBorder
 	ldrb r1, [r7, #0xa]
 	movs r0, #0x10
 	ands r0, r1

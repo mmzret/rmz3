@@ -116,7 +116,7 @@
       src/weapon/unk_13.o (.text);
       src/weapon/saber_smash_elec.o (.text);
       src/weapon/shield_sweep_elec.o (.text);
-      src/weapon/unk_16.o (.text);
+      src/weapon/minigame_rod.o (.text);
 
 		src/boss.o (.text);
       src/boss/megamilpa.o (.text);
@@ -317,7 +317,7 @@
       src/solid/unk_46.o (.text);
       src/solid/unk_47.o (.text);
       src/solid/ciel_computer.o (.text);
-      src/solid/unk_49.o (.text);
+      src/solid/graffiti.o (.text);
       src/solid/structural_steel.o (.text);
       src/solid/mod_elf.o (.text);
       src/solid/unk_52.o (.text);

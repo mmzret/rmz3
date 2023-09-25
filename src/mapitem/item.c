@@ -731,15 +731,15 @@ static void onCollision(struct Body *body, struct Coord *r1 UNUSED, struct Coord
 
 // clang-format off
 const motion_t gMapItemMotions[9] = {
-    MOTION(0xA7, 0x00),
-    MOTION(0xA7, 0x01),
-    MOTION(0xA7, 0x02),
-    MOTION(0xAA, 0x03),
-    MOTION(0xAA, 0x04),
-    MOTION(0xAD, 0x09),
-    MOTION(0xB0, 0x0B),
-    MOTION(0xE5, 0x00),
-    MOTION(0xE5, 0x00),
+    MOTION(SM167_LIFE_ENERGY, 0),
+    MOTION(SM167_LIFE_ENERGY, 1),
+    MOTION(SM167_LIFE_ENERGY, 2),
+    MOTION(SM170_ECRYSTAL, 3),
+    MOTION(SM170_ECRYSTAL, 4),
+    MOTION(SM173_EXLIFE, 9),
+    MOTION(SM176_RESULT_DISK, 11),
+    MOTION(SM229_SUBTANK, 0),
+    MOTION(SM229_SUBTANK, 0),
 };
 // clang-format on
 

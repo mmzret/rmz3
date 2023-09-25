@@ -73,7 +73,7 @@ void SetScript(struct VM *vm, const struct Command *script) {
   gStageRun.vm.active |= TRUE;
   wMOSAIC = 0;
   if (gTimeElfTimer != 0) {
-    gCurStory.s.elfFlags &= ~TIME_ELF_ENABLED;
+    CLEAR_FLAG(gCurStory.s.gameflags, TIME_ELF_ENABLED);
     TurnUpBGM();
     gTimeElfTimer = 0;
   }
@@ -165,7 +165,7 @@ void CreateScriptEntity(u8 n, struct ScriptEntityTemplate *template) {
         LoadZeroPalette(e, ((&((struct Zero *)e)->unk_b4)->status).body);
       }
       if (n == 1) {
-        gCurStory.s.elfFlags &= ~TIME_ELF_ENABLED;
+        CLEAR_FLAG(gCurStory.s.gameflags, TIME_ELF_ENABLED);
       }
     }
   }

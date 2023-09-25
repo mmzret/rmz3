@@ -25,67 +25,31 @@ static void air0(struct Zero* z) {
   air1(z);
 }
 
-NAKED static void air1(struct Zero* z) {
-  asm(".syntax unified\n\
-	push {r4, lr}\n\
-	adds r4, r0, #0\n\
-	movs r0, #0x94\n\
-	lsls r0, r0, #1\n\
-	adds r1, r4, r0\n\
-	adds r0, r4, #0\n\
-	bl IsAttackOK\n\
-	lsls r0, r0, #0x18\n\
-	lsrs r3, r0, #0x18\n\
-	cmp r3, #0\n\
-	beq _0802F410\n\
-	ldr r2, _0802F40C @ =0x0000012B\n\
-	adds r1, r4, r2\n\
-	movs r0, #0xff\n\
-	strb r0, [r1]\n\
-	adds r1, r4, #0\n\
-	adds r1, #0xec\n\
-	movs r2, #0\n\
-	movs r0, #3\n\
-	strb r0, [r1]\n\
-	adds r0, r4, #0\n\
-	adds r0, #0xed\n\
-	strb r2, [r0]\n\
-	b _0802F432\n\
-	.align 2, 0\n\
-_0802F40C: .4byte 0x0000012B\n\
-_0802F410:\n\
-	ldr r0, _0802F43C @ =0x0000012B\n\
-	adds r2, r4, r0\n\
-	ldrb r1, [r2]\n\
-	adds r0, r1, #0\n\
-	cmp r0, #0xff\n\
-	beq _0802F440\n\
-	movs r2, #0x94\n\
-	lsls r2, r2, #1\n\
-	adds r0, r4, r2\n\
-	strb r1, [r0]\n\
-	adds r1, r4, #0\n\
-	adds r1, #0xec\n\
-	movs r0, #3\n\
-	strb r0, [r1]\n\
-	adds r0, r4, #0\n\
-	adds r0, #0xed\n\
-	strb r3, [r0]\n\
-_0802F432:\n\
-	adds r0, r4, #0\n\
-	bl zeroAirAtk\n\
-	b _0802F446\n\
-	.align 2, 0\n\
-_0802F43C: .4byte 0x0000012B\n\
-_0802F440:\n\
-	movs r0, #0xff\n\
-	orrs r0, r1\n\
-	strb r0, [r2]\n\
-_0802F446:\n\
-	pop {r4}\n\
-	pop {r0}\n\
-	bx r0\n\
- .syntax divided\n");
+// 0x0802f3d8
+WIP static void air1(struct Zero* z) {
+#if MODERN
+  u8 w;
+  bool8 ok = IsAttackOK(z, &z->usingWeapon);
+  if (ok) {
+    z->forceWeapon = 0xFF;
+    (z->unk_b4).attackMode[0] = 3;
+    (z->unk_b4).attackMode[1] = 0;
+    zeroAirAtk(z);
+    return;
+  }
+
+  w = z->forceWeapon;
+  if (w != 0xFF) {
+    z->usingWeapon = w;
+    (z->unk_b4).attackMode[0] = 3;
+    (z->unk_b4).attackMode[1] = 0;
+    zeroAirAtk(z);
+    return;
+  }
+  z->forceWeapon = 0xFF;
+#else
+  INCCODE("asm/wip/zero_attack_air1.inc");
+#endif
 }
 
 static void nop_0802f44c(struct Zero* z) { return; }
@@ -190,84 +154,31 @@ static void buster_2(struct Zero* z) {
   }
 }
 
-NAKED static void buster_3(struct Zero* z) {
-  asm(".syntax unified\n\
-	push {r4, lr}\n\
-	adds r4, r0, #0\n\
-	ldrb r0, [r4, #0x1e]\n\
-	lsls r0, r0, #8\n\
-	adds r1, r4, #0\n\
-	adds r1, #0x70\n\
-	ldrb r1, [r1]\n\
-	orrs r1, r0\n\
-	ldr r2, _0802F634 @ =0x00000B01\n\
-	cmp r1, r2\n\
-	beq _0802F606\n\
-	ldr r1, _0802F638 @ =0x00000129\n\
-	adds r0, r4, r1\n\
-	ldrb r3, [r0]\n\
-	adds r0, r4, #0\n\
-	adds r1, r2, #0\n\
-	movs r2, #2\n\
-	bl GotoMotion\n\
-_0802F606:\n\
-	ldr r0, _0802F638 @ =0x00000129\n\
-	adds r1, r4, r0\n\
-	ldrb r0, [r1]\n\
-	subs r0, #1\n\
-	strb r0, [r1]\n\
-	lsls r0, r0, #0x18\n\
-	lsrs r0, r0, #0x18\n\
-	cmp r0, #0xff\n\
-	bne _0802F64C\n\
-	adds r0, r4, #0\n\
-	adds r0, #0xec\n\
-	movs r1, #0\n\
-	strb r1, [r0]\n\
-	ldrb r0, [r4, #0xe]\n\
-	cmp r0, #1\n\
-	bne _0802F640\n\
-	ldr r1, _0802F63C @ =0x00000403\n\
-	adds r0, r4, #0\n\
-	movs r2, #2\n\
-	movs r3, #1\n\
-	bl GotoMotion\n\
-	b _0802F64C\n\
-	.align 2, 0\n\
-_0802F634: .4byte 0x00000B01\n\
-_0802F638: .4byte 0x00000129\n\
-_0802F63C: .4byte 0x00000403\n\
-_0802F640:\n\
-	ldr r1, _0802F678 @ =0x00000404\n\
-	adds r0, r4, #0\n\
-	movs r2, #2\n\
-	movs r3, #1\n\
-	bl GotoMotion\n\
-_0802F64C:\n\
-	movs r0, #0x94\n\
-	lsls r0, r0, #1\n\
-	adds r1, r4, r0\n\
-	adds r0, r4, #0\n\
-	bl IsAttackOK\n\
-	lsls r0, r0, #0x18\n\
-	cmp r0, #0\n\
-	beq _0802F672\n\
-	adds r0, r4, #0\n\
-	adds r0, #0xec\n\
-	movs r2, #0\n\
-	movs r1, #3\n\
-	strb r1, [r0]\n\
-	adds r0, #1\n\
-	strb r2, [r0]\n\
-	adds r0, r4, #0\n\
-	bl zeroAirAtk\n\
-_0802F672:\n\
-	pop {r4}\n\
-	pop {r0}\n\
-	bx r0\n\
-	.align 2, 0\n\
-_0802F678: .4byte 0x00000404\n\
- .syntax divided\n");
+// 0x0802f5e0
+static void buster_3(struct Zero* z) {
+  bool8 ok;
+
+  motion_t m = MOTION_VALUE(z);
+  if (m != MOTION(DM011_ZERO_BUSTER_AIR, 1)) {
+    GotoMotion(&z->s, MOTION(DM011_ZERO_BUSTER_AIR, 1), 2, z->atkCooltime);
+  }
+
+  z->atkCooltime--;
+  if (z->atkCooltime == 0xFF) {
+    (z->unk_b4).attackMode[0] = 0;
+    if ((z->s).mode[2] == 1) {
+      GotoMotion(&z->s, MOTION(DM004_ZERO_AIR, 3), 2, 1);
+    } else {
+      GotoMotion(&z->s, MOTION(DM004_ZERO_AIR, 4), 2, 1);
+    }
+  }
+
+  ok = IsAttackOK(z, &z->usingWeapon);
+  if (ok != 0) {
+    (z->unk_b4).attackMode[0] = 3;
+    (z->unk_b4).attackMode[1] = 0;
+    zeroAirAtk(z);
+  }
 }
 
 // --------------------------------------------
@@ -677,6 +588,7 @@ static void rod_charge_up(struct Zero* z);
 static void rod_charge_down(struct Zero* z);
 static void recoil_jump(struct Zero* z);
 
+// 0x0802fb54
 static void onRod(struct Zero* z) {
   // clang-format off
   static ZeroFunc const routine[] = {
@@ -708,6 +620,7 @@ static void onRod(struct Zero* z) {
   (routine[(z->unk_b4).attackMode[1]])(z);
 }
 
+// 0x0802fb98
 NAKED static void handle_rod_input(struct Zero* z) {
   asm(".syntax unified\n\
 	push {r4, lr}\n\
@@ -914,6 +827,7 @@ static void rod_charge_down(struct Zero* z) {
   }
 }
 
+// 0x0802fdc8
 NAKED static void recoil_jump(struct Zero* z) {
   asm(".syntax unified\n\
 	push {r4, r5, lr}\n\

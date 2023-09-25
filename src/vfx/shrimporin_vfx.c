@@ -100,7 +100,7 @@ static void VFX24_Update(struct VFX *vfx) {
       FUN_080b9134,
   };
 
-  if (gCurStory.s.elfFlags & METTAUR_ENABLED) {
+  if (IS_METTAUR) {
     (vfx->s).flags &= ~DISPLAY;
     (vfx->s).flags &= ~FLIPABLE;
     SET_VFX_ROUTINE(vfx, ENTITY_DISAPPEAR);

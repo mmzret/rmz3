@@ -71,7 +71,7 @@ static const struct EntityTemplateCoord* const sStageEntityTemplateCoord[STAGE_C
 
 // --------------------------------------------
 
-static const struct PreloadEntity* const sStageStaticTemplate[STAGE_COUNT] = {
+static const struct PreloadEntity* const sStagePreloadEntities[STAGE_COUNT] = {
   [STAGE_NONE]            = sStage0StaticTemplate,
   [STAGE_SPACE_CRAFT]     = gSpaceCraftStatic,
   [STAGE_VOLCANO]         = gVolcanoStatic,
@@ -114,7 +114,7 @@ WIP void InitStageEntityManager(u8 stageID, bool8 missionDone) {
   manager->unk_22a = 0;
   ReleaseAllStageEntities();
   for (i = 0; i < 32; i++) {
-    manager->unk_000[i] = -1;
+    manager->entityEnabled[i] = -1;  // All enabled
   }
   manager->template = sStageEntityTemplate[stageID];
   manager->templateCoord = sStageEntityTemplateCoord[stageID];
@@ -1379,7 +1379,7 @@ void FUN_080186c8(u32 top, u32 bottom) {
       const s32 y = c[p->idx].y * 0x1000;
       if (y < gStageEntityManager.dynamicEntityRange[0] || y > gStageEntityManager.dynamicEntityRange[1]) {
         if (p->flag & 0x05) {
-          gStageEntityManager.unk_000[p->idx >> 5] |= 1 << (p->idx & 0x1F);
+          gStageEntityManager.entityEnabled[p->idx >> 5] |= 1 << (p->idx & 0x1F);
         }
         DeleteStageEntity(e);
         ReleaseStageEntity(p);
@@ -1447,7 +1447,7 @@ NAKED static void FUN_08018848(u8 stageID, u8 area) {
 	lsls r1, r1, #0x18\n\
 	lsrs r1, r1, #0x18\n\
 	str r1, [sp, #8]\n\
-	ldr r1, _08018AF0 @ =sStageStaticTemplate\n\
+	ldr r1, _08018AF0 @ =sStagePreloadEntities\n\
 	lsrs r0, r0, #0x16\n\
 	str r0, [sp, #0xc]\n\
 	adds r0, r0, r1\n\
@@ -1738,7 +1738,7 @@ _08018AB2:\n\
 	adds r1, r4, r0\n\
 	movs r0, #0\n\
 	strh r0, [r1]\n\
-	ldr r2, _08018AF0 @ =sStageStaticTemplate\n\
+	ldr r2, _08018AF0 @ =sStagePreloadEntities\n\
 	adds r0, r5, r2\n\
 	ldr r7, [r0]\n\
 	ldrb r0, [r7]\n\
@@ -1768,7 +1768,7 @@ _08018AD4:\n\
 	movs r0, #2\n\
 	b _08018B2C\n\
 	.align 2, 0\n\
-_08018AF0: .4byte sStageStaticTemplate\n\
+_08018AF0: .4byte sStagePreloadEntities\n\
 _08018AF4: .4byte 0x0202FDA1\n\
 _08018AF8: .4byte gStaticMotionGraphics\n\
 _08018AFC: .4byte wStaticGraphicTilenums\n\
@@ -1899,7 +1899,7 @@ WIP static void FUN_08018c00(u8 stageID, u8 area) {
 #if MODERN
   const struct PreloadEntity* t;
 
-  for (t = sStageStaticTemplate[stageID]; t->id != 0xFF; t = &t[1]) {
+  for (t = sStagePreloadEntities[stageID]; t->id != 0xFF; t = &t[1]) {
     if (((t->habitat >> area) & 1) && (t->unk_05 & (1 << 1))) {
       u32 val, mask;
       if (gStageEntityManager.unk_226[3] != 0) {
@@ -1930,7 +1930,7 @@ WIP static void FUN_08018d10(u8 stageID, u8 area) {
 #if MODERN
   const struct PreloadEntity* t;
 
-  for (t = sStageStaticTemplate[stageID]; t->id != 0xFF; t = &t[1]) {
+  for (t = sStagePreloadEntities[stageID]; t->id != 0xFF; t = &t[1]) {
     if ((t->habitat >> area) & 1) {
       u32 val, mask;
       if (gStageEntityManager.unk_226[1] != 0) {

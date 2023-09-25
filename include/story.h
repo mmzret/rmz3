@@ -17,40 +17,14 @@
 #define LATER4 0x7800
 #define SUB_ARCADIA 0x8000
 
-// Story.elfFlags
-#define PUTITE_ENABLED (1 << 0)     // 一撃死予防
-#define ARMOR_ELF_ENABLED (1 << 1)  // キーナイト系
-#define GIANT_ELF_ENABLED (1 << 2)  // ハンマーガ系
-#define TIME_ELF_ENABLED (1 << 3)   // ストパーラ系
-#define ELF_B4_ENABLED (1 << 4)
-#define DYLPHINA_ENABLED (1 << 5)
-#define METTAUR_ENABLED (1 << 6)
-#define BYSE_ENABLED (1 << 7)
+#define ENEMY_KILLCOUNT(n) (gCurStory.s.counts[29 + n])
 
-// Story.f0
-#define STORY_HARD (1 << 0)
-#define STORY_ULTIMATE (1 << 1)
-#define STORY_F0_B2 (1 << 2)
-#define STORY_F0_B3 (1 << 3)
-#define STORY_CYBER (1 << 4)
-#define STORY_CLEAR (1 << 5)
-#define STORY_DEMO (1 << 6)
+#define FLAG(gameflags, n) (gameflags[n >> 3] & (1 << (n & 7)))
+#define SET_FLAG(gameflags, n) (gameflags[n >> 3] |= (1 << (n & 7)))
+#define CLEAR_FLAG(gameflags, n) (gameflags[n >> 3] &= ~(1 << (n & 7)))
 
-// Story.f1
-#define STORY_F1_B3 (1 << 3)  // わかったわ...
-#define STORY_F1_B4 (1 << 4)  // じゃあせめて
-#define STORY_F1_B7 (1 << 7)
-
-// Story.f2
-#define NO_HARPUIA (1 << 0)
-#define SUNKEN_ANALYZE (1 << 2)  // ディスク解析中
-#define BRAIN_CONTROL (1 << 4)   // オメガによる洗脳
-#define WEIL_LABO (1 << 5)       // バイル研究所突撃
-
-#define ENEMY_KILLCOUNT(n) (gCurStory.s.flags[29 + n])
-
-#define IS_MISSION (!(gCurStory.s.f0 & STORY_CLEAR))
-#define IS_METTAUR (gCurStory.s.elfFlags & METTAUR_ENABLED)
+#define IS_MISSION (!FLAG(gCurStory.s.gameflags, IS_FREERUN))
+#define IS_METTAUR (FLAG(gCurStory.s.gameflags, METTAUR_ENABLED))
 
 // --------------------------------------------
 
@@ -91,57 +65,14 @@ struct PlayInfo {
 struct Story {
   u16 id;  // stage ID
   u16 pad_02;
-
-  /*
-    bit0: Hard mode
-    bit1: Ultimate mode
-    bit4: In Cyberspace
-    bit5: Is current stage already cleared?
-    bit6: Is Demo play?
-  */
-  u8 f0;
-
-  /*
-    シエルのチャットフラグ？
-      0x02: シミュレーションの結果が出るまで...
-      0x03: 待たせちゃったわねゼロ 準備はいい？
-      0x07: 平常時
-      0x08: わかったわ...
-      0x10: じゃあせめて
-  */
-  u8 f1;
-
-  /*
-    bit0: ハルピュイアいない時
-    bit2: ディスク解析中
-    bit4: シエルに話すと、ヨウセイ戦争のファイル -> バイル洗脳 -> アンダーアルカディア
-    bit5: バイル研究所突撃
-  */
-  u8 f2;
-
-  u8 bossRush;  // ボスラッシュ撃破フラグ
-  u8 elfFlags;
-
-  /*
-    .f5
-    bit0:    Rank A elf (エワーネ系エルフが働いている)
-    bit1..4: Ocean Button 0~3 is pressed (Bit1: Button 0, .. Bit 4: Button 3)
-  */
-  u8 unk_09;
-
-  /*
-    bit2: Buster only (今のところバスターのみ使用している)
-    bit3: Buster only (今のところセイバーのみ使用している)
-  */
-  u8 unk_0a;
-  u8 unk_0b;
+  u8 gameflags[8];
   /*
     0..28: 会話の進行度
     29..69: 雑魚敵の種類ごとの撃破数
     70..71: 火山のリコイルで動かす棺桶みたいなコンテナの移動量
   */
-  u8 flags[29 + 41 + 2];  // chatProgress[29] + zakoCounts[41] + volcanoCoffinX[2]
-};                        // 84 bytes
+  u8 counts[29 + 41 + 2];  // chatProgress[29] + zakoCounts[41] + volcanoCoffinX[2]
+};                         // 84 bytes
 
 // 0202fdc0
 struct Story96 {
@@ -160,7 +91,5 @@ void saveCurStory(struct Story* dst);
 void resetCurStory(u8 stageID, struct Story* src);
 void FUN_08019678(struct Story* p);
 void ClearPlayInfo(struct PlayInfo* p);
-
-static inline bool8 IsDemoplay() { return gCurStory.s.f0 & STORY_DEMO; }
 
 #endif  // GUARD_RMZ3_STORY_H

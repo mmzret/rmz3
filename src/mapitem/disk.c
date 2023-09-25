@@ -140,7 +140,7 @@ static void MapDisk_Init(struct MapItem *p) {
   }
 
   InitNonAffineMotion(&p->s);
-  m = MOTION(0xB0, 0x0B) + (((u16)gSystemSavedataManager.disk) << 8);
+  m = MOTION(SM176_RESULT_DISK, 11) + (((u16)gSystemSavedataManager.disk) << 8);
   SetMotion(&p->s, m);
   (p->s).flags |= DISPLAY;
   (p->s).flags |= FLIPABLE;

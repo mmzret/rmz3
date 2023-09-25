@@ -25,10 +25,10 @@ static void initTwilightDesert(struct Coord* _ UNUSED) {
 
 static void FUN_0800f8dc(struct Coord* c) {
   if (gOverworld.work.twilightDesert.unk_004 != 0) {
-    if (!(gCurStory.s.elfFlags & TIME_ELF_ENABLED) && !isSoundPlaying(SE_UNK_102)) {
+    if (!FLAG(gCurStory.s.gameflags, TIME_ELF_ENABLED) && !isSoundPlaying(SE_UNK_102)) {
       PlaySound(SE_UNK_102);
     }
-    if ((gOverworld.work.twilightDesert.unk_004 != 0) && !(gCurStory.s.elfFlags & TIME_ELF_ENABLED)) {
+    if ((gOverworld.work.twilightDesert.unk_004 != 0) && !FLAG(gCurStory.s.gameflags, TIME_ELF_ENABLED)) {
       goto _SKIP;
     }
   }

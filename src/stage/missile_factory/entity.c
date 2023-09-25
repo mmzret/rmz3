@@ -402,7 +402,7 @@ const struct PreloadEntity gMissileFactoryStatic[14] = {
         1,
     },
     {
-        20,
+        SM020_PANTHEON_GUARDIAN,
         1,
         529,
         5,
@@ -429,7 +429,7 @@ const struct PreloadEntity gMissileFactoryStatic[14] = {
         0,
     },
     {
-        56,
+        SM056_HEAVY_CANNON,
         1,
         781,
         8,
@@ -447,7 +447,7 @@ const struct PreloadEntity gMissileFactoryStatic[14] = {
         0,
     },
     {
-        19,
+        SM019_PANTHEON_HUNTER,
         2,
         512,
         4,
@@ -456,7 +456,7 @@ const struct PreloadEntity gMissileFactoryStatic[14] = {
         0,
     },
     {
-        42,
+        SM042_PURPLE_NERPLE,
         2,
         632,
         5,
@@ -465,7 +465,7 @@ const struct PreloadEntity gMissileFactoryStatic[14] = {
         0,
     },
     {
-        4,
+        SM004_SHOTCOUNTER,
         2,
         664,
         6,

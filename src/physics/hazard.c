@@ -1,8 +1,8 @@
 #include "global.h"
 #include "overworld.h"
 
-// Blocking領域内かチェックしてそうだとしたらBlocking領域のmetatile_attr_tを返す
-NAKED metatile_attr_t GetBlockingMetatileAttr(s32 x, s32 y) {
+// Hazard領域内かチェックしてそうだとしたら, Hazard領域のmetatile_attr_tを返す
+NAKED metatile_attr_t GetHazardMetatileAttr(s32 x, s32 y) {
   asm(".syntax unified\n\
 	push {r4, r5, r6, r7, lr}\n\
 	mov r7, sl\n\
@@ -315,6 +315,8 @@ _0800AF1E:\n\
 	bx r1\n\
  .syntax divided\n");
 }
+
+// ------------------------------------------------------------------------------------------------------------------------------------
 
 NAKED s32 FUN_0800af30(s32 x, s32 y, s32 r2) {
   asm(".syntax unified\n\

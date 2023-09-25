@@ -60,7 +60,7 @@ void gyrocannon_0806d32c(struct Enemy *p);
 void gyrocannon_0806d1b4(struct Enemy *p);
 
 static void GyroCannon_Update(struct Enemy *p) {
-  if (gCurStory.s.elfFlags & METTAUR_ENABLED) {
+  if (IS_METTAUR) {
     (p->s).flags &= ~DISPLAY;
     (p->s).flags &= ~FLIPABLE;
     (p->body).status = 0;
@@ -84,7 +84,7 @@ void FUN_0806d524(struct Enemy *p);
 void FUN_0806d470(struct Enemy *p);
 
 static void GyroCannon_Die(struct Enemy *p) {
-  if (gCurStory.s.elfFlags & METTAUR_ENABLED) {
+  if (IS_METTAUR) {
     (p->s).flags &= ~DISPLAY;
     (p->s).flags &= ~FLIPABLE;
     (p->body).status = 0;

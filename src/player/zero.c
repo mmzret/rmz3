@@ -109,7 +109,7 @@ WIP void Zero_Init(struct Zero* z) {
   z->isGround = FALSE;
   *((u32*)&z->horizontalSlide) = 0;
   z->globbed = FALSE;
-  if (gCurStory.s.f0 & STORY_CYBER) {
+  if (FLAG(gCurStory.s.gameflags, IN_CYBERSPACE)) {
     z->inCyberSpace = TRUE;
   } else {
     z->inCyberSpace = FALSE;
@@ -241,6 +241,7 @@ WIP void Zero_Update(struct Zero* z) {
   }
 
   if (z->unk_136 != 0) {
+    // z->unk_136 の bit7が立っていたら、bit7のみクリア(bit0..6はそのまま), そうでないなら z->unk_136 を 0にする
     u8 val = z->unk_136 & (1 << 7);
     if (z->unk_136 & (1 << 7)) {
       val = z->unk_136 ^ (1 << 7);
@@ -325,7 +326,7 @@ LAB_080296fe:
   }
 
   if (((z->s).mode[1] != ZERO_DOOR_2D) && ((z->s).mode[1] != ZERO_DOOR_3D) && ((z->s).mode[1] != ZERO_TELEPORT)) {
-    if (zero_08026e30(z, &gZeroRanges[z->posture], TRUE)) {
+    if (PushoutByBorder(z, &gZeroRanges[z->posture], TRUE)) {
       z->isRightDir = ((z->s).flags >> 4) & 1;
       (z->body).hp = 0;
       (z->s).mode[1] = ZERO_DAMAGED;

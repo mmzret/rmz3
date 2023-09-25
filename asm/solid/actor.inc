@@ -6162,8 +6162,8 @@ _080D4976:
 	pop {r0}
 	bx r0
 
-	thumb_func_start FUN_080d4980
-FUN_080d4980: @ 0x080D4980
+	thumb_func_start ActorOmegaZero40_Update
+ActorOmegaZero40_Update: @ 0x080D4980
 	push {r4, r5, r6, lr}
 	adds r6, r0, #0
 	ldrb r0, [r6, #0xd]
@@ -6845,8 +6845,8 @@ _080D4EFA:
 	.align 2, 0
 _080D4F00: .4byte gStageRun
 
-	thumb_func_start FUN_080d4f04
-FUN_080d4f04: @ 0x080D4F04
+	thumb_func_start Actor41_Update
+Actor41_Update: @ 0x080D4F04
 	push {r4, r5, r6, r7, lr}
 	mov r7, r8
 	push {r7}
@@ -7100,8 +7100,8 @@ _080D5110: .4byte 0x000343FD
 _080D5114: .4byte 0x00269EC3
 _080D5118: .4byte gSineTable
 
-	thumb_func_start FUN_080d511c
-FUN_080d511c: @ 0x080D511C
+	thumb_func_start ActorLastHarpuia_Update
+ActorLastHarpuia_Update: @ 0x080D511C
 	push {r4, r5, r6, lr}
 	adds r5, r0, #0
 	ldrb r0, [r5, #0xd]
@@ -7480,8 +7480,8 @@ _080D5438:
 	.align 2, 0
 _080D5440: .4byte gSineTable
 
-	thumb_func_start FUN_080d5444
-FUN_080d5444: @ 0x080D5444
+	thumb_func_start ActorLastFefnir_Update
+ActorLastFefnir_Update: @ 0x080D5444
 	push {r4, r5, r6, lr}
 	adds r6, r0, #0
 	ldrb r0, [r6, #0xd]
@@ -7639,8 +7639,8 @@ _080D55A2:
 	pop {r0}
 	bx r0
 
-	thumb_func_start FUN_080d55a8
-FUN_080d55a8: @ 0x080D55A8
+	thumb_func_start ActorLastFefnirFireball_Update
+ActorLastFefnirFireball_Update: @ 0x080D55A8
 	push {r4, r5, r6, lr}
 	adds r5, r0, #0
 	ldr r6, [r5, #0x28]
@@ -7771,8 +7771,8 @@ _080D56A4: .4byte 0xFFFFE200
 _080D56A8: .4byte 0x08370D28
 _080D56AC: .4byte gSolidFnTable
 
-	thumb_func_start FUN_080d56b0
-FUN_080d56b0: @ 0x080D56B0
+	thumb_func_start ActorLastLeviathan_Update
+ActorLastLeviathan_Update: @ 0x080D56B0
 	push {r4, r5, r6, lr}
 	sub sp, #8
 	adds r6, r0, #0
@@ -8143,8 +8143,8 @@ _080D59CC:
 	pop {r0}
 	bx r0
 
-	thumb_func_start FUN_080d59d4
-FUN_080d59d4: @ 0x080D59D4
+	thumb_func_start ActorLastX_Update
+ActorLastX_Update: @ 0x080D59D4
 	push {r4, r5, r6, r7, lr}
 	adds r6, r0, #0
 	ldrb r7, [r6, #0xd]
@@ -8286,8 +8286,8 @@ _080D5AE8:
 	.align 2, 0
 _080D5AF0: .4byte gSineTable
 
-	thumb_func_start FUN_080d5af4
-FUN_080d5af4: @ 0x080D5AF4
+	thumb_func_start Actor47_Update
+Actor47_Update: @ 0x080D5AF4
 	push {r4, r5, r6, lr}
 	adds r4, r0, #0
 	ldrb r0, [r4, #0xd]
@@ -8430,8 +8430,8 @@ _080D5C08:
 	bx r0
 	.align 2, 0
 
-	thumb_func_start FUN_080d5c10
-FUN_080d5c10: @ 0x080D5C10
+	thumb_func_start Actor48_Update
+Actor48_Update: @ 0x080D5C10
 	push {r4, lr}
 	adds r4, r0, #0
 	ldrb r0, [r4, #0xd]

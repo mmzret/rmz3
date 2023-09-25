@@ -199,7 +199,7 @@ _0802728E:
 	adds r0, r7, #0
 	adds r1, r5, #0
 	adds r2, r6, #0
-	bl GetHazardMetatileAttr
+	bl IsInHazard
 	lsls r0, r0, #0x10
 	cmp r0, #0
 	beq _080272E2
@@ -215,7 +215,7 @@ _080272D0:
 	adds r0, r7, #0
 	mov r1, sb
 	adds r2, r6, #0
-	bl GetHazardMetatileAttr
+	bl IsInHazard
 	lsls r0, r0, #0x10
 	cmp r0, #0
 	beq _080272E2
@@ -239,7 +239,7 @@ _080272E2:
 	adds r0, r7, #0
 	adds r1, r5, #0
 	adds r2, r6, #0
-	bl GetHazardMetatileAttr
+	bl IsInHazard
 	lsls r0, r0, #0x10
 	cmp r0, #0
 	beq _08027334
@@ -255,7 +255,7 @@ _08027322:
 	adds r0, r7, #0
 	mov r1, sb
 	adds r2, r6, #0
-	bl GetHazardMetatileAttr
+	bl IsInHazard
 	lsls r0, r0, #0x10
 	cmp r0, #0
 	beq _08027334

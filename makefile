@@ -80,7 +80,7 @@ clean-code: clean-src
 $(ROM): $(ELF)
 	@$(OBJCOPY) -O binary $< $@
 
-$(ELF): %.elf: $(ASOBJFILE) $(COBJFILE) midi ld_script.ld $(STAGE_OBJ) $(GFX_HDR)
+$(ELF): %.elf: $(ASOBJFILE) $(COBJFILE) midi ld_script.ld $(GFX_HDR)
 	@$(LD) -T $(LDSCRIPT) -Map $*.map -o $@ $(ASOBJFILE) $(COBJFILE) $(GFX_HDR) $(LDFLAGS)
 
 $(COBJFILE): %.o: %.c graphics stage
@@ -92,8 +92,8 @@ else
 	@$(AS) $(ASFLAGS) $(subst .c,.s,$<) -o $@ 
 endif
 
-$(ASOBJFILE): %.o: %.s string texts graphics sprite
-	@$(CPP) $(CPPFLAGS) $< | $(AS) $(ASFLAGS) -o $@ -
+$(ASOBJFILE): %.o: %.s string graphics sprite
+	$(CPP) $(CPPFLAGS) $< | $(AS) $(ASFLAGS) -o $@ -
 
 include data/string/string.mk
 include data/texts/texts.mk

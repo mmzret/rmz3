@@ -6,16 +6,16 @@
 void resetCurStory(u8 stageID, struct Story *src) {
   s16 i;
   gCurStory.s.id = stageID;
-  CpuFastCopy(src, &gCurStory.s.f0, 64);
-  CpuCopy32((u8 *)src + 64, (u8 *)&gCurStory.s.f0 + 64, 20);
-  gCurStory.s.f0 &= ~STORY_CYBER;
-  gCurStory.s.elfFlags &= ~ARMOR_ELF_ENABLED;
-  gCurStory.s.elfFlags &= ~GIANT_ELF_ENABLED;
-  gCurStory.s.elfFlags &= ~TIME_ELF_ENABLED;
-  gCurStory.s.elfFlags &= ~ELF_B4_ENABLED;
-  gCurStory.s.elfFlags &= ~DYLPHINA_ENABLED;
-  gCurStory.s.elfFlags &= ~METTAUR_ENABLED;
-  gCurStory.s.unk_0a &= ~(1 << 1);
+  CpuFastCopy(src, &gCurStory.s.gameflags[0], 64);
+  CpuCopy32((u8 *)src + 64, (u8 *)&gCurStory.s.gameflags[0] + 64, 20);
+  CLEAR_FLAG(gCurStory.s.gameflags, IN_CYBERSPACE);
+  CLEAR_FLAG(gCurStory.s.gameflags, ARMOR_ELF_ENABLED);
+  CLEAR_FLAG(gCurStory.s.gameflags, GIANT_ELF_ENABLED);
+  CLEAR_FLAG(gCurStory.s.gameflags, TIME_ELF_ENABLED);
+  CLEAR_FLAG(gCurStory.s.gameflags, ELF_B4_ENABLED);
+  CLEAR_FLAG(gCurStory.s.gameflags, DYLPHINA_ENABLED);
+  CLEAR_FLAG(gCurStory.s.gameflags, METTAUR_ENABLED);
+  CLEAR_FLAG(gCurStory.s.gameflags, FLAG_49);
   for (i = 29; i < 70; i++) {
     ENEMY_KILLCOUNT(i - 29) = 0;
   }
@@ -24,14 +24,14 @@ void resetCurStory(u8 stageID, struct Story *src) {
 
 void FUN_08019678(struct Story *p) {
   CpuFastFill(0, p, 64);
-  CpuFill32(0, &p->flags[52], 20);
-  p->f2 |= SUNKEN_ANALYZE;
-  p->f2 |= (1 << 3);
+  CpuFill32(0, &p->counts[52], 20);
+  SET_FLAG(p->gameflags, SUNKEN_ANALYZE);
+  SET_FLAG(p->gameflags, FLAG_19);
 }
 
 void saveCurStory(struct Story *dst) {
-  CpuFastCopy(&gCurStory.s.f0, dst, 64);
-  CpuCopy32((u8 *)&gCurStory.s.f0 + 64, (u8 *)dst + 64, 20);
+  CpuFastCopy(&gCurStory.s.gameflags[0], dst, 64);
+  CpuCopy32((u8 *)&gCurStory.s.gameflags[0] + 64, (u8 *)dst + 64, 20);
 }
 
 void ClearPlayInfo(struct PlayInfo *p) {

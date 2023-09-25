@@ -13,7 +13,7 @@ static metatile_attr_t AppendHazardID(struct Zero *z, s32 x, s32 y);
 static u16 AppendHazardID_2(struct Zero *z, s32 x, s32 y);
 static bool8 IsAgainstHazard(struct Zero *z, s32 x, s32 y);
 static u8 hazard_0802855c(struct Zero *z, s32 x, s32 y);
-static metatile_attr_t GetHazardMetatileAttr(struct Zero *z, s32 x, s32 y);
+static metatile_attr_t IsInHazard(struct Zero *z, s32 x, s32 y);
 static bool16 hazard_08028338(struct Zero *z, s32 x, s32 y);
 
 static metatile_attr_t _pushoutHazardX1(struct Zero *z, s32 x, s32 y, struct Coord *c);
@@ -285,7 +285,7 @@ WIP metatile_attr_t PushoutWallX(struct Zero *z, const struct Rect *p, u8 r2) {
   s32 y[3];
   s16 i, len;
   metatile_attr_t retval = 0;
-  zero_08026e30(z, p, 0);
+  PushoutByBorder(z, p, FALSE);
   if ((z->s).flags & X_FLIP) {
     x = (z->s).coord.x - p->x;
     if (r2) {
@@ -403,7 +403,7 @@ WIP metatile_attr_t PushoutWallX(struct Zero *z, const struct Rect *p, u8 r2) {
 #endif
 }
 
-NAKED metatile_attr_t PushoutByFloor(struct Zero *z, const struct Rect *p, bool8 r2) {
+NAKED metatile_attr_t PushoutByFloor1(struct Zero *z, const struct Rect *p, bool8 r2) {
   asm(".syntax unified\n\
 	push {r4, r5, r6, r7, lr}\n\
 	mov r7, sl\n\
@@ -766,14 +766,14 @@ _08025FF6:\n\
 	adds r5, r0, r3\n\
 	adds r0, r6, #0\n\
 	adds r2, r5, #0\n\
-	bl GetHazardMetatileAttr\n\
+	bl IsInHazard\n\
 	lsls r0, r0, #0x10\n\
 	cmp r0, #0\n\
 	bne _0802603A\n\
 	ldr r1, [sp, #8]\n\
 	adds r0, r6, #0\n\
 	adds r2, r5, #0\n\
-	bl GetHazardMetatileAttr\n\
+	bl IsInHazard\n\
 	lsls r0, r0, #0x10\n\
 	cmp r0, #0\n\
 	bne _0802603A\n\
@@ -1205,7 +1205,7 @@ _0802633E:\n\
  .syntax divided\n");
 }
 
-NAKED metatile_attr_t zero_08026358(struct Zero *z, const struct Rect *p, bool8 r2) {
+NAKED metatile_attr_t PushoutByCeilingOnLadder(struct Zero *z, const struct Rect *p, bool8 r2) {
   asm(".syntax unified\n\
 	push {r4, r5, r6, r7, lr}\n\
 	sub sp, #8\n\
@@ -1372,7 +1372,11 @@ NON_MATCH metatile_attr_t GetWallMetatileAttr(struct Zero *z, const struct Rect 
 #endif
 }
 
-NAKED metatile_attr_t zero_080264dc(struct Zero *z, const struct Rect *p, bool8 r2) {
+/*
+  r2 が TRUE の場合は、今のゼロが立っているところ(床)のMettaileAttrを返す(ただしすり抜け床のときは0)
+  r2 が FALSE の場合は、　床からの押し出し処理を行う
+*/
+NAKED metatile_attr_t PushoutByFloor2(struct Zero *z, const struct Rect *p, bool8 checkOnly) {
   asm(".syntax unified\n\
 	push {r4, r5, r6, r7, lr}\n\
 	mov r7, r8\n\
@@ -2066,7 +2070,7 @@ NON_MATCH u8 ladder_08026bb0(struct Zero *z, const struct Rect *range, bool8 _) 
 }
 
 /**
- * @return 0: fail, 1, 2: success
+ * @return 0: fail, 1: success(continue) 2: success(end)
  */
 u8 TryLadderUp(struct Zero *z, const struct Rect *range, bool8 _) {
   metatile_attr_t attr;
@@ -2075,10 +2079,10 @@ u8 TryLadderUp(struct Zero *z, const struct Rect *range, bool8 _) {
 
   // Check 1
   attr = GetMetatileAttr((z->s).coord.x, y);
-  if (attr == 0x800F) {
+  if (attr == METTAILE_LADDER) {
     return 1;
   }
-  if (attr == 0x800E) {
+  if (attr == METTAILE_LADDER_FLOOR) {
     return 2;
   }
 
@@ -2089,11 +2093,11 @@ u8 TryLadderUp(struct Zero *z, const struct Rect *range, bool8 _) {
     x = (z->s).coord.x - PIXEL(5);
   }
   attr = GetMetatileAttr(x, y);
-  if (attr == 0x800F) {
+  if (attr == METTAILE_LADDER) {
     (z->s).coord.x = x;
     return 1;
   }
-  if (attr == 0x800E) {
+  if (attr == METTAILE_LADDER_FLOOR) {
     (z->s).coord.x = x;
     return 2;
   }
@@ -2105,11 +2109,11 @@ u8 TryLadderUp(struct Zero *z, const struct Rect *range, bool8 _) {
     x = (z->s).coord.x + PIXEL(2);
   }
   attr = GetMetatileAttr(x, y);
-  if (attr == 0x800F) {
+  if (attr == METTAILE_LADDER) {
     (z->s).coord.x = x;
     return 1;
   }
-  if (attr == 0x800E) {
+  if (attr == METTAILE_LADDER_FLOOR) {
     (z->s).coord.x = x;
     return 2;
   }
@@ -2121,16 +2125,16 @@ u8 TryLadderUp(struct Zero *z, const struct Rect *range, bool8 _) {
 WIP u8 TryContinueLadderDown(struct Zero *z, const struct Rect *range, bool8 _) {
 #if MODERN
   metatile_attr_t attr = GetGroundMetatileAttr((z->s).coord.x, (z->s).coord.y + range->y + (range->h / 2) + 1);
-  if (attr != 0x800E) {
+  if (attr != METTAILE_LADDER_FLOOR) {
     if (((z->s).mode[1] == ZERO_LADDER) && (((attr & 0xF) - 1) < 0xD)) {
       return 3;
     }
 
     attr = GetMetatileAttr((z->s).coord.x, (z->s).coord.y + range->y);
-    if (attr == 0x800F) {
+    if (attr == METTAILE_LADDER) {
       return 1;
     }
-    if (attr != 0x800E) {
+    if (attr != METTAILE_LADDER_FLOOR) {
       return 0;
     }
   }
@@ -2154,7 +2158,7 @@ WIP u8 TryLadderDown(struct Zero *z, const struct Rect *range, bool8 _) {
   }
 
   attr = GetMetatileAttr((z->s).coord.x, y);
-  if (attr != 0x800E) {
+  if (attr != METTAILE_LADDER_FLOOR) {
     if ((z->s).flags & X_FLIP) {
       x = (z->s).coord.x + PIXEL(5);
     } else {
@@ -2162,7 +2166,7 @@ WIP u8 TryLadderDown(struct Zero *z, const struct Rect *range, bool8 _) {
     }
     attr = GetMetatileAttr(x, y);
 
-    if (attr != 0x800E) {
+    if (attr != METTAILE_LADDER_FLOOR) {
       if ((z->s).flags & X_FLIP) {
         x = (z->s).coord.x - PIXEL(2);
       } else {
@@ -2170,7 +2174,7 @@ WIP u8 TryLadderDown(struct Zero *z, const struct Rect *range, bool8 _) {
       }
       attr = GetMetatileAttr(x, y);
 
-      if (attr != 0x800E) {
+      if (attr != METTAILE_LADDER_FLOOR) {
         return 0;
       }
     }
@@ -2189,7 +2193,8 @@ void SetDisableArea(struct Zero *z, s32 left, s32 top, s32 right, s32 bottom) {
   (z->border).bottom = bottom;
 }
 
-WIP bool8 zero_08026e30(struct Zero *z, const struct Rect *range, bool8 r2) {
+// ゼロが border の外に行かないようにする
+WIP bool8 PushoutByBorder(struct Zero *z, const struct Rect *range, bool8 checkHazard) {
 #if MODERN
   if ((z->border).left < (z->border).right) {
     s32 x1, x2;
@@ -2202,34 +2207,41 @@ WIP bool8 zero_08026e30(struct Zero *z, const struct Rect *range, bool8 r2) {
     x1 = tmp - (range->w >> 1);
     x2 = tmp + (range->w >> 1);
 
+    // ゼロが border の左端より左に行かないようにする
     if ((z->s).coord.x < (z->border).left - x1) {
       (z->s).coord.x = ((z->border).left - x1) + 1;
     }
-    if (r2) {
+
+    if (checkHazard) {
       if ((z->s).coord.x < (z->border).left - x1 + 1) {
-        if ((AppendHazardID(z, (z->border).left + x2, (z->s).coord.y + range->y + (range->h >> 1))) == 0) {
-          if ((AppendHazardID(z, (z->s).coord.x + x2, (z->s).coord.y + range->y - (range->h >> 1))) == 0) {
-            return TRUE;
-          }
+        if ((AppendHazardID(z, (z->s).coord.x + x2, (z->s).coord.y + range->y + (range->h >> 1))) != 0) {
+          return TRUE;
+        }
+        if ((AppendHazardID(z, (z->s).coord.x + x2, (z->s).coord.y + range->y - (range->h >> 1))) != 0) {
+          return TRUE;
         }
       }
     }
 
+    // ゼロが border の右端より右に行かないようにする
     if ((z->border).right < (z->s).coord.x + x2) {
       (z->s).coord.x = ((z->border).right - x2) - 1;
     }
-    if (r2) {
+
+    if (checkHazard) {
       if ((z->s).coord.x > (z->border).right - x2 - 1) {
-        if ((AppendHazardID(z, (z->border).right + x1, (z->s).coord.y + range->y + (range->h >> 1))) == 0) {
-          if ((AppendHazardID(z, (z->s).coord.x + x1, (z->s).coord.y + range->y - (range->h >> 1))) == 0) {
-            return TRUE;
-          }
+        if ((AppendHazardID(z, (z->s).coord.x + x1, (z->s).coord.y + range->y + (range->h >> 1))) != 0) {
+          return TRUE;
+        }
+        if ((AppendHazardID(z, (z->s).coord.x + x1, (z->s).coord.y + range->y - (range->h >> 1))) != 0) {
+          return TRUE;
         }
       }
     }
   }
 
-  if (((z->border).top < (z->border).bottom) && ((z->s).coord.y < (z->border).top + range->h)) {
+  // ゼロが border の上端より上に行かないようにする
+  if (((z->border).top < (z->border).bottom) && ((z->s).coord.y - range->h < (z->border).top)) {
     (z->s).coord.y = (z->border).top + range->h;
     if ((z->s).mode[1] == ZERO_AIR && (z->s).mode[2] == 1) {
       (z->s).mode[2] = 2;
@@ -2238,7 +2250,7 @@ WIP bool8 zero_08026e30(struct Zero *z, const struct Rect *range, bool8 r2) {
   }
   return FALSE;
 #else
-  INCCODE("asm/wip/zero_08026e30.inc");
+  INCCODE("asm/wip/PushoutByBorder.inc");
 #endif
 }
 
@@ -2284,7 +2296,7 @@ u8 zero_08026f90(struct Zero *z, const struct Rect *range) {
 
 // ------------------------------------------------------------------------------------------------------------------------------------
 
-// ゼロと干渉するブロッキングオブジェクトのインデックスと個数をチェックする
+// ゼロと干渉するhazardオブジェクトのインデックスと個数をチェックする
 WIP void CheckZeroHazard(struct Zero *z) {
 #if MODERN
   u8 i;
@@ -2307,6 +2319,7 @@ WIP void CheckZeroHazard(struct Zero *z) {
 #endif
 }
 
+// Hazard となるEntity と プレイヤーが重なった時に、プレイヤーを弾き出す
 NAKED u8 RecoilFromHazards(struct Zero *z, const struct Rect *range) {
   // TODO
   INCCODE("asm/wip/RecoilFromHazards.inc");
@@ -2627,7 +2640,7 @@ _08027BDA:\n\
 	adds r2, r2, r0\n\
 	adds r0, r6, #0\n\
 	mov r1, sl\n\
-	bl GetHazardMetatileAttr\n\
+	bl IsInHazard\n\
 	lsls r0, r0, #0x10\n\
 	lsrs r0, r0, #0x10\n\
 	cmp r0, #0\n\
@@ -2659,7 +2672,7 @@ _08027BF4:\n\
 	adds r1, r1, r0\n\
 	ldr r2, [r6, #0x58]\n\
 	adds r0, r6, #0\n\
-	bl GetHazardMetatileAttr\n\
+	bl IsInHazard\n\
 	lsls r0, r0, #0x10\n\
 	lsrs r0, r0, #0x10\n\
 	cmp r0, #0\n\
@@ -2689,7 +2702,7 @@ _08027C36:\n\
 	adds r2, r2, r0\n\
 	adds r0, r6, #0\n\
 	mov r1, sl\n\
-	bl GetHazardMetatileAttr\n\
+	bl IsInHazard\n\
 	lsls r0, r0, #0x10\n\
 	lsrs r0, r0, #0x10\n\
 	cmp r0, #0\n\
@@ -2759,7 +2772,7 @@ _08027CB8:\n\
 	adds r2, r2, r0\n\
 	adds r0, r6, #0\n\
 	mov r1, sl\n\
-	bl GetHazardMetatileAttr\n\
+	bl IsInHazard\n\
 	lsls r0, r0, #0x10\n\
 	lsrs r0, r0, #0x10\n\
 	cmp r0, #0\n\
@@ -2792,7 +2805,7 @@ _08027CFC:\n\
 	adds r1, r1, r0\n\
 	ldr r2, [r6, #0x58]\n\
 	adds r0, r6, #0\n\
-	bl GetHazardMetatileAttr\n\
+	bl IsInHazard\n\
 	lsls r0, r0, #0x10\n\
 	lsrs r0, r0, #0x10\n\
 	cmp r0, #0\n\
@@ -2822,7 +2835,7 @@ _08027D40:\n\
 	adds r2, r2, r0\n\
 	adds r0, r6, #0\n\
 	mov r1, sl\n\
-	bl GetHazardMetatileAttr\n\
+	bl IsInHazard\n\
 	lsls r0, r0, #0x10\n\
 	lsrs r0, r0, #0x10\n\
 	cmp r0, #0\n\
@@ -3421,7 +3434,8 @@ _080283DC:\n\
  .syntax divided\n");
 }
 
-WIP static metatile_attr_t GetHazardMetatileAttr(struct Zero *z, s32 x, s32 y) {
+// ゼロが Hazard の中にいる(めり込んでいる)場合は、そのMetatileAttr、そうでないなら0を返す
+WIP static metatile_attr_t IsInHazard(struct Zero *z, s32 x, s32 y) {
 #if MODERN
   u8 i;
   for (i = 0; i < z->hazardCount; i++) {
@@ -3436,7 +3450,7 @@ WIP static metatile_attr_t GetHazardMetatileAttr(struct Zero *z, s32 x, s32 y) {
   }
   return 0;
 #else
-  INCCODE("asm/wip/GetHazardMetatileAttr.inc");
+  INCCODE("asm/wip/IsInHazard.inc");
 #endif
 }
 
@@ -3784,7 +3798,7 @@ _080287BE:\n\
 	ldr r2, [r4]\n\
 	adds r0, r5, #0\n\
 	str r3, [sp, #0x1c]\n\
-	bl GetHazardMetatileAttr\n\
+	bl IsInHazard\n\
 	movs r7, #0xf\n\
 	adds r1, r7, #0\n\
 	ands r1, r0\n\
@@ -3887,7 +3901,7 @@ _08028882:\n\
 	ldr r2, [r4]\n\
 	adds r0, r5, #0\n\
 	str r3, [sp, #0x1c]\n\
-	bl GetHazardMetatileAttr\n\
+	bl IsInHazard\n\
 	movs r7, #0xf\n\
 	adds r1, r7, #0\n\
 	ands r1, r0\n\
@@ -4219,7 +4233,7 @@ _08028B0C:\n\
 	ldr r1, [sp, #4]\n\
 	ldr r2, [sp, #0xc]\n\
 	adds r0, r5, #0\n\
-	bl GetHazardMetatileAttr\n\
+	bl IsInHazard\n\
 	movs r4, #0x80\n\
 	lsls r4, r4, #5\n\
 	adds r1, r4, #0\n\
@@ -4234,7 +4248,7 @@ _08028B2A:\n\
 	ldr r1, [sp, #8]\n\
 	ldr r2, [sp, #0xc]\n\
 	adds r0, r5, #0\n\
-	bl GetHazardMetatileAttr\n\
+	bl IsInHazard\n\
 	adds r1, r4, #0\n\
 	ands r1, r0\n\
 	cmp r1, #0\n\
@@ -4404,7 +4418,7 @@ _08028E58:\n\
 	adds r0, r7, #0\n\
 	mov r1, sb\n\
 	adds r2, r6, #0\n\
-	bl GetHazardMetatileAttr\n\
+	bl IsInHazard\n\
 	lsls r0, r0, #0x10\n\
 	cmp r0, #0\n\
 	bne _08028F58\n\
@@ -4439,7 +4453,7 @@ _08028E82:\n\
 	adds r0, r7, #0\n\
 	mov r1, sb\n\
 	adds r2, r6, #0\n\
-	bl GetHazardMetatileAttr\n\
+	bl IsInHazard\n\
 	lsls r0, r0, #0x10\n\
 	cmp r0, #0\n\
 	bne _08028F58\n\
@@ -4483,7 +4497,7 @@ _08028EDE:\n\
 	adds r0, r7, #0\n\
 	mov r1, r8\n\
 	adds r2, r6, #0\n\
-	bl GetHazardMetatileAttr\n\
+	bl IsInHazard\n\
 	lsls r0, r0, #0x10\n\
 	cmp r0, #0\n\
 	bne _08028F58\n\
@@ -4518,7 +4532,7 @@ _08028F28:\n\
 	adds r0, r7, #0\n\
 	adds r1, r4, #0\n\
 	adds r2, r6, #0\n\
-	bl GetHazardMetatileAttr\n\
+	bl IsInHazard\n\
 	lsls r0, r0, #0x10\n\
 	cmp r0, #0\n\
 	beq _08028F5C\n\

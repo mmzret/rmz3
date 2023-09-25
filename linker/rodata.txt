@@ -183,7 +183,7 @@
       src/weapon/unk_13.o (.rodata);
       src/weapon/saber_smash_elec.o (.rodata);
       src/weapon/shield_sweep_elec.o (.rodata);
-      src/weapon/unk_16.o (.rodata);
+      src/weapon/minigame_rod.o (.rodata);
 
 		src/boss.o (.rodata);
       src/boss/megamilpa.o (.rodata);
@@ -239,6 +239,9 @@
       src/enemy/shelluno.o (.rodata);
       src/enemy/deathtanz_rock.o (.rodata);
       src/enemy/heavy_cannon_ball.o (.rodata);
+      src/enemy/wormer_snow_ball.o (.rodata);
+      src/enemy/beetank.o (.rodata);
+      src/enemy/swordy.o (.rodata);
 
 		src/projectile.o (.rodata);
       src/projectile/lemon.o (.rodata);
@@ -399,7 +402,7 @@
       src/solid/unk_46.o (.rodata);
       src/solid/unk_47.o (.rodata);
       src/solid/ciel_computer.o (.rodata);
-      src/solid/unk_49.o (.rodata);
+      src/solid/graffiti.o (.rodata);
       src/solid/structural_steel.o (.rodata);
       src/solid/mod_elf.o (.rodata);
       src/solid/unk_52.o (.rodata);
@@ -412,38 +415,39 @@
       src/mapitem/disk.o (.rodata);
 
 		src/cyberelf.o (.rodata);
-		  src/cyberelf/unk_0.o (.rodata);
-		  src/cyberelf/unk_1.o (.rodata);
-		  src/cyberelf/nurse_b.o (.rodata);
-		  src/cyberelf/unk_3.o (.rodata);
-		  src/cyberelf/nurse_e.o (.rodata);
-		  src/cyberelf/unk_5.o (.rodata);
-		  src/cyberelf/unk_6.o (.rodata);
-		  src/cyberelf/unk_7.o (.rodata);
-		  src/cyberelf/follower.o (.rodata);
-		  src/cyberelf/sea_otter.o (.rodata);
-		  src/cyberelf/unk_10.o (.rodata);
-		  src/cyberelf/unk_11.o (.rodata);
-		  src/cyberelf/bird.o (.rodata);
+      src/cyberelf/unk_0.o (.rodata);
+      src/cyberelf/unk_1.o (.rodata);
+      src/cyberelf/nurse_b.o (.rodata);
+      src/cyberelf/unk_3.o (.rodata);
+      src/cyberelf/nurse_e.o (.rodata);
+      src/cyberelf/unk_5.o (.rodata);
+      src/cyberelf/unk_6.o (.rodata);
+      src/cyberelf/unk_7.o (.rodata);
+      src/cyberelf/follower.o (.rodata);
+      src/cyberelf/sea_otter.o (.rodata);
+      src/cyberelf/unk_10.o (.rodata);
+      src/cyberelf/unk_11.o (.rodata);
+      src/cyberelf/bird.o (.rodata);
 
 		src/widget.o (.rodata);
-		  src/widget/weapon_icon.o (.rodata);
-		  src/widget/unk_01.o (.rodata);
-		  src/widget/unk_02.o (.rodata);
-		  src/widget/subtank.o (.rodata);
-		  src/widget/hp.o (.rodata);
-		  src/widget/armor_icons.o (.rodata);
-		  src/widget/exskill.o (.rodata);
-		  src/widget/elf_menu_item.o (.rodata);
-		  src/widget/cursor.o (.rodata);
-		  src/widget/unk_09.o (.rodata);
-		  src/widget/disk_icon.o (.rodata);
-		  src/widget/elf_icon.o (.rodata);
-		  src/widget/disk_modal_border.o (.rodata);
-		  src/widget/unk_13.o (.rodata);
+      src/widget/weapon_icon.o (.rodata);
+      src/widget/unk_01.o (.rodata);
+      src/widget/unk_02.o (.rodata);
+      src/widget/subtank.o (.rodata);
+      src/widget/hp.o (.rodata);
+      src/widget/armor_icons.o (.rodata);
+      src/widget/exskill.o (.rodata);
+      src/widget/elf_menu_item.o (.rodata);
+      src/widget/cursor.o (.rodata);
+      src/widget/unk_09.o (.rodata);
+      src/widget/disk_icon.o (.rodata);
+      src/widget/elf_icon.o (.rodata);
+      src/widget/disk_modal_border.o (.rodata);
+      src/widget/unk_13.o (.rodata);
 
 		asm/string.o (.rodata);
 		src/bg0/text_window.o (.rodata);
+    asm/text.o (.rodata);
 		src/intro.o (.rodata);
 
 		src/game.o (.rodata);

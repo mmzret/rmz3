@@ -8,7 +8,7 @@
 	lsls r1, r1, #0x18
 	lsrs r1, r1, #0x18
 	mov sl, r1
-	ldr r1, _08018C58 @ =sStageStaticTemplate
+	ldr r1, _08018C58 @ =sStagePreloadEntities
 	lsrs r0, r0, #0x16
 	adds r0, r0, r1
 	ldr r6, [r0]
@@ -44,7 +44,7 @@ _08018C2E:
 	adds r0, r2, #0
 	b _08018C74
 	.align 2, 0
-_08018C58: .4byte sStageStaticTemplate
+_08018C58: .4byte sStagePreloadEntities
 _08018C5C: .4byte 0x0202FDBA
 _08018C60: .4byte wStaticGraphicTilenums
 _08018C64: .4byte wStaticMotionPalIDs

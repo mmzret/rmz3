@@ -70,7 +70,7 @@ extern const WeaponRoutine gWeapon13Routine;
 // ...
 extern const WeaponRoutine gSmashElecRoutine;
 extern const WeaponRoutine gElecShieldSweepRoutine;
-extern const WeaponRoutine gWeapon16Routine;
+extern const WeaponRoutine gMinigameRodRoutine;
 
 extern const struct Collision gSemiBulletCollisions[2];
 extern const struct Collision gFullBulletCollisions[2];

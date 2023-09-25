@@ -104,6 +104,6 @@ const WeaponRoutine* const gWeaponFnTable[WEAPON_MOVE_COUNT] = {
     [WEAPON_MOVE_13] =                &gWeapon13Routine,
     [WEAPON_MOVE_RAKUSAIGA] =         &gSmashElecRoutine,
     [WEAPON_MOVE_SHIELD_SWEEP_ELEC] = &gElecShieldSweepRoutine,
-    [WEAPON_MOVE_16] =                &gWeapon16Routine,
+    [WEAPON_MOVE_MINIGAME_ROD] =      &gMinigameRodRoutine,
 };
 // clang-format on

@@ -148,7 +148,7 @@ WIP bool32 OverworldUpdate(bool8 paused) {
     if (!failed) {
       if (!(gStageRun.vm.active & 1)) {
         const StageRunFunc* fn;
-        if (gCurStory.s.f0 & STORY_CLEAR) {
+        if (FLAG(gCurStory.s.gameflags, IS_FREERUN)) {
           fn = gFreerunUpdate;
         } else {
           fn = gMissionUpdate;
@@ -226,25 +226,25 @@ void UpdateStoryFlag(void) {
 
   if ((gStageRun.missionStatus & MISSION_FAIL) == 0) {
     if ((gMission.unk_00)->missionDones & SPACE_CRAFT) {
-      gCurStory.s.f0 |= (1 << 7);
+      SET_FLAG(gCurStory.s.gameflags, FLAG_7);
     }
     if (((gMission.unk_00)->missionDones & FIRST4) == FIRST4) {
-      gCurStory.s.f1 |= STORY_F1_B3;
+      SET_FLAG(gCurStory.s.gameflags, FLAG_11);
     }
     if ((gMission.unk_00)->missionDones & MISSILE_FACTORY) {
-      gCurStory.s.f1 |= STORY_F1_B4;
+      SET_FLAG(gCurStory.s.gameflags, FLAG_12);
     }
     if (((gMission.unk_00)->missionDones & MEDIUM3) == MEDIUM3) {
-      gCurStory.s.f1 |= STORY_F1_B7;
+      SET_FLAG(gCurStory.s.gameflags, FLAG_15);
     }
     if ((gMission.unk_00)->missionDones & AREA_X2) {
-      gCurStory.s.f2 |= NO_HARPUIA;
+      SET_FLAG(gCurStory.s.gameflags, NO_HARPUIA);
     }
     if (((gMission.unk_00)->missionDones & LATER4) == LATER4) {
-      gCurStory.s.f2 |= SUNKEN_ANALYZE;
+      SET_FLAG(gCurStory.s.gameflags, SUNKEN_ANALYZE);
     }
     if ((gMission.unk_00)->missionDones & SUB_ARCADIA) {
-      gCurStory.s.f2 |= WEIL_LABO;
+      SET_FLAG(gCurStory.s.gameflags, FLAG_WEIL_LABO);
     }
     saveCurStory(&gGameState.save.story);
   } else {
@@ -272,14 +272,14 @@ void ApplyGiantElf(struct StageRun* p) {
   struct Boss* boss = (struct Boss*)(p->vm).entities[1].entity;
   if (boss != NULL) {
     if (gTimeElfTimer != 0) {
-      gCurStory.s.elfFlags &= ~TIME_ELF_ENABLED;
+      CLEAR_FLAG(gCurStory.s.gameflags, TIME_ELF_ENABLED);
       TurnUpBGM();
       gTimeElfTimer = 0;
     }
     stopSound(SE_TIME_ELF);
     stopSound(SE_TIME_ELF_HURRY);
 
-    if ((gStageRun.missionStatus & MISSION_STAY) && !(gStageRun.vm.active & 1) && (gCurStory.s.elfFlags & GIANT_ELF_ENABLED)) {
+    if ((gStageRun.missionStatus & MISSION_STAY) && !(gStageRun.vm.active & 1) && FLAG(gCurStory.s.gameflags, GIANT_ELF_ENABLED)) {
       if ((boss->s).kind == ENTITY_BOSS) {
         const u8 id = (boss->s).id;
         if (id != BOSS_MEGAMILPA) {
@@ -291,11 +291,9 @@ void ApplyGiantElf(struct StageRun* p) {
                     if (id != BOSS_REACTOR_CORE) {
                       if (id != BOSS_UNK24) {
                         if ((boss->s).flags & COLLIDABLE) {
-                          struct Story* story;
                           (boss->body).hp = ((u16)(boss->body).hp + 1) >> 1;
-                          gCurStory.s.elfFlags &= ~GIANT_ELF_ENABLED;
-                          story = &gGameState.save.story;
-                          story->f0 &= ~STORY_F0_B2;
+                          CLEAR_FLAG(gCurStory.s.gameflags, GIANT_ELF_ENABLED);
+                          CLEAR_FLAG((&gGameState.save.story)->gameflags, FLAG_2);
                         }
                       }
                     }

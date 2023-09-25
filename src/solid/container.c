@@ -130,7 +130,7 @@ static void FUN_080dc524(struct Solid* p) {
   struct Coord c;
 
   if ((p->s).mode[2] == 0) {
-    SetMotion(&p->s, MOTION(0xe2, 0x02));
+    SetMotion(&p->s, MOTION(SM226_CRASH_CONTAINER, 2));
     (p->s).work[2] = 32;
     CreateSlashedEnemy(&(p->s).coord, &sSlashedEnemies[3], 0, 0);
     (p->s).mode[2]++;
@@ -187,7 +187,7 @@ static const struct Collision sCollision = {
 
 static const struct SlashedEnemy sSlashedEnemies[4] = {
     {
-      m : MOTION(0xE2, 0x03),
+      m : MOTION(SM226_CRASH_CONTAINER, 3),
       unk_02 : {0xFF, 0x51},
       c : {0, 0},
       d : {0x180, 0xFB00},
@@ -196,7 +196,7 @@ static const struct SlashedEnemy sSlashedEnemies[4] = {
       unk_14 : {0x400, 0x400},
     },
     {
-      m : MOTION(0xE2, 0x04),
+      m : MOTION(SM226_CRASH_CONTAINER, 4),
       unk_02 : {0xFF, 0x51},
       c : {0, 0},
       d : {0xFE80, 0xFB00},
@@ -205,7 +205,7 @@ static const struct SlashedEnemy sSlashedEnemies[4] = {
       unk_14 : {0x400, 0x400},
     },
     {
-      m : MOTION(0xE2, 0x05),
+      m : MOTION(SM226_CRASH_CONTAINER, 5),
       unk_02 : {0xFF, 0x51},
       c : {0, 0},
       d : {0x80, 0xFA00},
@@ -214,7 +214,7 @@ static const struct SlashedEnemy sSlashedEnemies[4] = {
       unk_14 : {0x400, 0x400},
     },
     {
-      m : MOTION(0xE2, 0x01),
+      m : MOTION(SM226_CRASH_CONTAINER, 1),
       unk_02 : {0x20, 0x60},
       c : {0, 0},
       d : {0x100, 0x80},

@@ -67,7 +67,7 @@ struct StageEntity {
   雑魚敵やNPCといった、画面内に存在する、画面外に生成されると消えるEntity(揮発性Entity)を管理する
 */
 struct StageEntityManager {
-  u32 unk_000[32];  // 1024個のbitfield
+  u32 entityEnabled[32];  // 1024個のbitfield
   void* unk_080;
   struct StageEntity unk_084[32];
   struct StageEntity* list;
@@ -79,7 +79,7 @@ struct StageEntityManager {
   u16 remaining;
   const struct EntityTemplate* template;            // 0x08347954 のテーブルのエントリのどれかが入る
   const struct EntityTemplateCoord* templateCoord;  // sStageEntityTemplateCoord のテーブルのエントリのどれかが入る
-  s32 dynamicEntityRange[2];                        // 0: StartY(top),  1: EndY(bottom) (for sStageStaticTemplate)
+  s32 dynamicEntityRange[2];                        // 0: StartY(top),  1: EndY(bottom) (for sStagePreloadEntities)
 
   /*
     EntityTemplateCoord のエントリで画面左端より左側(つまり左過ぎて画面外にあるもの)の個数

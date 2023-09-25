@@ -245,7 +245,7 @@ static void LayerUpdate_2(struct StageLayer* l, const struct Stage* stage) {
         (l->scrollPower).y = 0xe0;
         (l->scroll).x = 0xd2;
         (l->scroll).y = 0x3c;
-        if (gCurStory.s.f1 & STORY_F1_B4) {
+        if (FLAG(gCurStory.s.gameflags, FLAG_12)) {
           (l->scroll).x = 0x672;
         }
       } else {

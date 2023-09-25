@@ -183,7 +183,7 @@ _0802AD22:
 	adds r1, r1, r7
 	adds r0, r4, #0
 	movs r2, #1
-	bl zero_080264dc
+	bl PushoutByFloor2
 	lsls r0, r0, #0x10
 	lsrs r1, r0, #0x10
 _0802AD62:

@@ -91,7 +91,7 @@ void Ghost72_Update(struct VFX *p) {
       FUN_080c6c60,
       FUN_080c6dc4,
   };
-  if (gCurStory.s.elfFlags & METTAUR_ENABLED) {
+  if (IS_METTAUR) {
     (p->s).flags &= ~DISPLAY;
     (p->s).flags &= ~FLIPABLE;
     SET_VFX_ROUTINE(p, ENTITY_DISAPPEAR);
@@ -112,12 +112,12 @@ INCASM("asm/vfx/unk_72.inc");
 // --------------------------------------------
 
 const motion_t motion_t_ARRAY_0836f854[3] = {
-    MOTION(0xDB, 0x0B),
-    MOTION(0xDB, 0x0B),
-    MOTION(0xDB, 0x0C),
+    MOTION(SM219_SHELLCRAWLER, 0x0B),
+    MOTION(SM219_SHELLCRAWLER, 0x0B),
+    MOTION(SM219_SHELLCRAWLER, 0x0C),
 };
 
 const motion_t motion_t_ARRAY_0836f85a[2] = {
-    MOTION(0xDB, 0x06),
-    MOTION(0xDB, 0x07),
+    MOTION(SM219_SHELLCRAWLER, 0x06),
+    MOTION(SM219_SHELLCRAWLER, 0x07),
 };

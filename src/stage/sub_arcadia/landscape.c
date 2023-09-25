@@ -105,7 +105,7 @@ static void subAracadia_08014b48(struct Coord* _ UNUSED) {
   }
 
   if (gOverworld.work.subArcadia.unk_001 == 0) {
-    if (gCurStory.s.f0 & STORY_CYBER) {
+    if (FLAG(gCurStory.s.gameflags, IN_CYBERSPACE)) {
       gOverworld.work.subArcadia.unk_001 = 1;
       LoadScreenIntoMetatileMap(1, 6, 78);
     }
@@ -114,7 +114,7 @@ static void subAracadia_08014b48(struct Coord* _ UNUSED) {
     }
   }
 
-  if (!(gCurStory.s.f0 & STORY_CYBER)) {
+  if (!FLAG(gCurStory.s.gameflags, IN_CYBERSPACE)) {
     gOverworld.work.subArcadia.unk_001 = 1;
     LoadScreenIntoMetatileMap(1, 6, 23);
   }

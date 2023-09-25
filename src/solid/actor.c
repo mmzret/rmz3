@@ -52,8 +52,8 @@ static const SolidFunc sActorDeinitalizer[ACTOR_COUNT];
 
 // --------------------------------------------
 
-static void initGeneralActor(struct Solid* p);
-static void initGeneralActor2(struct Solid* p);
+static void initStaticActor(struct Solid* p);
+static void initDynamicActor(struct Solid* p);
 static void loadNeutralZeroColor(struct Solid* p);
 static void initActor8(struct Solid* p);
 void initActor21(struct Solid* p);
@@ -64,72 +64,72 @@ void initActor32(struct Solid* p);
 static void Actor_Init(struct Solid* p) {
   // clang-format off
   static SolidFunc const sInitializers[] = {
-      [0] =  initGeneralActor,
+      [0] =  initStaticActor,
       [1] =  loadNeutralZeroColor,
-      [2] =  initGeneralActor2,
-      [3] =  initGeneralActor,
-      [4] =  initGeneralActor2,
-      [5] =  initGeneralActor,
-      [6] =  initGeneralActor2,
-      [7] =  initGeneralActor,
+      [ACTOR_CIEL_WALK] =  initDynamicActor,
+      [3] =  initStaticActor,
+      [4] =  initDynamicActor,
+      [5] =  initStaticActor,
+      [6] =  initDynamicActor,
+      [7] =  initStaticActor,
       [8] =  initActor8,
-      [9] =  initGeneralActor,
-      [10] = initGeneralActor,
-      [11] = initGeneralActor2,
-      [12] = initGeneralActor2,
-      [13] = initGeneralActor,
-      [14] = initGeneralActor2,
-      [15] = initGeneralActor,
-      [16] = initGeneralActor,
-      [17] = initGeneralActor,
-      [18] = initGeneralActor2,
-      [19] = initGeneralActor2,
-      [20] = initGeneralActor2,
+      [9] =  initStaticActor,
+      [10] = initStaticActor,
+      [11] = initDynamicActor,
+      [12] = initDynamicActor,
+      [13] = initStaticActor,
+      [14] = initDynamicActor,
+      [15] = initStaticActor,
+      [16] = initStaticActor,
+      [17] = initStaticActor,
+      [18] = initDynamicActor,
+      [19] = initDynamicActor,
+      [20] = initDynamicActor,
       [21] = initActor21,
-      [22] = initGeneralActor,
+      [22] = initStaticActor,
       [23] = initActor23,
-      [24] = initGeneralActor,
-      [25] = initGeneralActor,
-      [26] = initGeneralActor,
-      [27] = initGeneralActor2,
+      [24] = initStaticActor,
+      [25] = initStaticActor,
+      [26] = initStaticActor,
+      [27] = initDynamicActor,
       [28] = initActor28,
-      [29] = initGeneralActor,
-      [30] = initGeneralActor,
-      [31] = initGeneralActor,
+      [29] = initStaticActor,
+      [30] = initStaticActor,
+      [31] = initStaticActor,
       [32] = initActor32,
-      [33] = initGeneralActor2,
-      [34] = initGeneralActor,
-      [35] = initGeneralActor2,
-      [36] = initGeneralActor,
-      [37] = initGeneralActor,
-      [38] = initGeneralActor,
-      [39] = initGeneralActor2,
-      [40] = initGeneralActor2,
-      [41] = initGeneralActor,
-      [42] = initGeneralActor2,
-      [43] = initGeneralActor2,
-      [44] = initGeneralActor,
-      [45] = initGeneralActor2,
-      [46] = initGeneralActor,
-      [47] = initGeneralActor2,
-      [48] = initGeneralActor2,
-      [49] = initGeneralActor2,
-      [50] = initGeneralActor2,
-      [51] = initGeneralActor2,
-      [52] = initGeneralActor,
-      [53] = initGeneralActor,
-      [54] = initGeneralActor,
-      [55] = initGeneralActor,
-      [56] = initGeneralActor2,
-      [57] = initGeneralActor,
-      [58] = initGeneralActor,
-      [59] = initGeneralActor,
-      [60] = initGeneralActor2,
-      [61] = initGeneralActor2,
-      [62] = initGeneralActor2,
-      [63] = initGeneralActor,
-      [64] = initGeneralActor,
-      [65] = initGeneralActor,
+      [33] = initDynamicActor,
+      [34] = initStaticActor,
+      [35] = initDynamicActor,
+      [36] = initStaticActor,
+      [37] = initStaticActor,
+      [38] = initStaticActor,
+      [39] = initDynamicActor,
+      [40] = initDynamicActor,
+      [41] = initStaticActor,
+      [42] = initDynamicActor,
+      [43] = initDynamicActor,
+      [44] = initStaticActor,
+      [45] = initDynamicActor,
+      [46] = initStaticActor,
+      [47] = initDynamicActor,
+      [48] = initDynamicActor,
+      [49] = initDynamicActor,
+      [50] = initDynamicActor,
+      [51] = initDynamicActor,
+      [52] = initStaticActor,
+      [53] = initStaticActor,
+      [54] = initStaticActor,
+      [55] = initStaticActor,
+      [56] = initDynamicActor,
+      [57] = initStaticActor,
+      [58] = initStaticActor,
+      [59] = initStaticActor,
+      [60] = initDynamicActor,
+      [61] = initDynamicActor,
+      [62] = initDynamicActor,
+      [63] = initStaticActor,
+      [64] = initStaticActor,
+      [65] = initStaticActor,
   };
   // clang-format on
   (sInitializers[(p->s).work[0]])(p);
@@ -178,7 +178,28 @@ void Actor36_Update(struct Solid* p);
 void Actor37_Update(struct Solid* p);
 void Actor38_Update(struct Solid* p);
 void Actor39_Update(struct Solid* p);
-// ...
+void ActorOmegaZero40_Update(struct Solid* p);
+void Actor41_Update(struct Solid* p);
+void ActorLastHarpuia_Update(struct Solid* p);
+void ActorLastFefnir_Update(struct Solid* p);
+void ActorLastFefnirFireball_Update(struct Solid* p);
+void ActorLastLeviathan_Update(struct Solid* p);
+void ActorLastX_Update(struct Solid* p);
+void Actor47_Update(struct Solid* p);
+void Actor48_Update(struct Solid* p);
+void FUN_080d5c5c(struct Solid* p);
+void FUN_080d5d20(struct Solid* p);
+void FUN_080d5e08(struct Solid* p);
+void omega1_080d5fc8(struct Solid* p);
+void FUN_080d6504(struct Solid* p);
+void FUN_080d6814(struct Solid* p);
+void FUN_080d6afc(struct Solid* p);
+void FUN_080d6c80(struct Solid* p);
+void FUN_080d6fa0(struct Solid* p);
+void FUN_080d724c(struct Solid* p);
+void FUN_080d740c(struct Solid* p);
+void FUN_080d751c(struct Solid* p);
+void FUN_080d7638(struct Solid* p);
 void Actor62_Update(struct Solid* p);
 void Actor63_Update(struct Solid* p);
 void Actor64_Update(struct Solid* p);
@@ -189,7 +210,7 @@ void Actor_Update(struct Solid* p) {
   static SolidFunc const sUpdates[] = {
       [0] =  ActorDummy_Update,
       [1] =  Actor1_Update,
-      [2] =  Actor2_Update,
+      [ACTOR_CIEL_WALK] =  Actor2_Update,
       [3] =  Actor3_Update,
       [4] =  Actor4_Update,
       [5] =  Actor5_Update,
@@ -227,28 +248,28 @@ void Actor_Update(struct Solid* p) {
       [37] = Actor37_Update,
       [38] = Actor38_Update,
       [39] = Actor39_Update,
-      [40] = (SolidFunc)0x080D4981,
-      [41] = (SolidFunc)0x080D4F05,
-      [42] = (SolidFunc)0x080D511D,
-      [43] = (SolidFunc)0x080D5445,
-      [44] = (SolidFunc)0x080D55A9,
-      [45] = (SolidFunc)0x080D56B1,
-      [46] = (SolidFunc)0x080D59D5,
-      [47] = (SolidFunc)0x080D5AF5,
-      [48] = (SolidFunc)0x080D5C11,
-      [49] = (SolidFunc)0x080D5C5D,
-      [50] = (SolidFunc)0x080D5D21,
-      [51] = (SolidFunc)0x080D5E09,
-      [52] = (SolidFunc)0x080D5FC9,
-      [53] = (SolidFunc)0x080D6505,
-      [54] = (SolidFunc)0x080D6815,
-      [55] = (SolidFunc)0x080D6AFD,
-      [56] = (SolidFunc)0x080D6C81,
-      [57] = (SolidFunc)0x080D6FA1,
-      [58] = (SolidFunc)0x080D724D,
-      [59] = (SolidFunc)0x080D740D,
-      [60] = (SolidFunc)0x080D751D,
-      [61] = (SolidFunc)0x080D7639,
+      [40] = ActorOmegaZero40_Update,
+      [41] = Actor41_Update,
+      [42] = ActorLastHarpuia_Update,
+      [43] = ActorLastFefnir_Update,
+      [44] = ActorLastFefnirFireball_Update,
+      [45] = ActorLastLeviathan_Update,
+      [46] = ActorLastX_Update,
+      [47] = Actor47_Update,
+      [48] = Actor48_Update,
+      [49] = FUN_080d5c5c,
+      [50] = FUN_080d5d20,
+      [51] = FUN_080d5e08,
+      [52] = omega1_080d5fc8,
+      [53] = FUN_080d6504,
+      [54] = FUN_080d6814,
+      [55] = FUN_080d6afc,
+      [56] = FUN_080d6c80,
+      [57] = FUN_080d6fa0,
+      [58] = FUN_080d724c,
+      [59] = FUN_080d740c,
+      [60] = FUN_080d751c,
+      [61] = FUN_080d7638,
       [62] = Actor62_Update,
       [63] = Actor63_Update,
       [64] = Actor64_Update,
@@ -268,7 +289,7 @@ void Actor_Die(struct Solid* p) {
   static SolidFunc const sDeinitalizer[] = {
       [0] =  deleteActor,
       [1] =  deleteActor,
-      [2] =  deleteActor,
+      [ACTOR_CIEL_WALK] =  deleteActor,
       [3] =  deleteActor,
       [4] =  deleteActor,
       [5] =  deleteActor,
@@ -491,7 +512,7 @@ WIP u16 FUN_080d0aa0(struct Entity* p, motion_t m, u8 r2) {
 
 // --------------------------------------------
 
-static void initGeneralActor(struct Solid* p) {
+static void initStaticActor(struct Solid* p) {
   (p->s).flags |= DISPLAY;
   (p->s).flags |= FLIPABLE;
   InitNonAffineMotion(&p->s);
@@ -499,7 +520,7 @@ static void initGeneralActor(struct Solid* p) {
   Actor_Update(p);
 }
 
-static void initGeneralActor2(struct Solid* p) {
+static void initDynamicActor(struct Solid* p) {
   (p->s).flags |= DISPLAY;
   (p->s).flags |= FLIPABLE;
   InitNonAffineMotion(&p->s);
@@ -530,14 +551,14 @@ static void deleteActor(struct Solid* p) {
 // --------------------------------------------
 
 static void loadNeutralZeroColor(struct Solid* p) {
-  if (gCurStory.s.f0 & STORY_HARD) {
+  if (FLAG(gCurStory.s.gameflags, FLAG_HARD)) {
     LoadZeroPalette(&p->s, BODY_CHIP_PROTO);
-  } else if (gCurStory.s.f0 & STORY_ULTIMATE) {
+  } else if (FLAG(gCurStory.s.gameflags, FLAG_ULTIMATE)) {
     LoadZeroPalette(&p->s, BODY_CHIP_ULTIMA);
   } else {
     LoadZeroPalette(&p->s, BODY_CHIP_NONE);
   }
-  initGeneralActor2(p);
+  initDynamicActor(p);
 }
 
 // --------------------------------------------
@@ -753,7 +774,7 @@ static void Actor2_Update(struct Solid* p) {
   switch ((p->s).mode[1]) {
     case 0: {
       (p->s).coord.y = FUN_08009f6c((p->s).coord.x + 0xF000, (p->s).coord.y);
-      SetMotion(&p->s, MOTION(0xC2, 0x0F));
+      SetMotion(&p->s, MOTION(DM194_CIEL, 15));
       (p->s).mode[1]++;
       FALLTHROUGH
     }
@@ -761,7 +782,7 @@ static void Actor2_Update(struct Solid* p) {
       UpdateMotionGraphic(&p->s);
       (p->s).coord.x += 0x50;
       if (((p->s).arr[9] & (1 << 0)) && ((p->s).motion.state == MOTION_NEXT)) {
-        SetMotion(&p->s, MOTION(0xC2, 0x11));
+        SetMotion(&p->s, MOTION(DM194_CIEL, 17));
         (p->s).mode[1]++;
       }
       break;
@@ -772,7 +793,7 @@ static void Actor2_Update(struct Solid* p) {
       if (((p->s).arr[9] & (1 << 1)) == 0) {
         return;
       }
-      SetMotion(&p->s, MOTION(0xC2, 0x13));
+      SetMotion(&p->s, MOTION(DM194_CIEL, 19));
       (p->s).mode[1]++;
       break;
     }
@@ -782,7 +803,7 @@ static void Actor2_Update(struct Solid* p) {
       if (((p->s).arr[9] & (1 << 2)) == 0) {
         return;
       }
-      SetMotion(&p->s, MOTION(0xC2, 0x11));
+      SetMotion(&p->s, MOTION(DM194_CIEL, 17));
       (p->s).mode[1]++;
       break;
     }

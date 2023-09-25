@@ -31,7 +31,9 @@ GRAPHICS_8BPP_PNGS := $(filter %.lz.8bpp.png, $(GRAPHICS_ALL_PNGS))
 GRAPHICS_4BPP := $(subst .png,.4bpp,$(GRAPHICS_PNGS)) $(subst .png,.gbapal,$(GRAPHICS_PNGS))
 GRAPHICS_LZ := $(subst .lz.png,.lz, $(GRAPHICS_LZ_PNGS)) $(subst .lz.png,.lz.gbapal,$(GRAPHICS_LZ_PNGS)) $(subst .lz.8bpp.png,.lz,$(GRAPHICS_8BPP_PNGS))
 
-graphics: font elf-mugshot $(GRAPHICS_4BPP) $(GRAPHICS_LZ)
+graphics: elf-mugshot $(GRAPHICS_4BPP) $(GRAPHICS_LZ)
+
+asm/font.o: asm/font.s font
 
 clean-graphics:
 	@rm -f graphics/*/*.{gbapal,lz,4bpp} graphics/*/*/*.{gbapal,lz,4bpp}  graphics/*/*/*.{gbapal,lz,4bpp} graphics/*/*/*/*.{gbapal,lz,4bpp} ${FONT_DIR}/*.4bpp

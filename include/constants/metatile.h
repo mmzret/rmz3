@@ -42,4 +42,12 @@
 // すり抜け床
 #define METATILE_SOFT_PLATFORM (1 << 15)
 
+// ----------------------------------------------------------------------------------------
+
+// はしご
+#define METTAILE_LADDER 0x800F
+
+// はしご床 (=はしごの上端)
+#define METTAILE_LADDER_FLOOR 0x800E
+
 #endif  // GUARD_RMZ3_CONST_METATILE_H

@@ -32,11 +32,10 @@ WIP static void PantheonGuardian_Init(struct Enemy* p) {
   InitNonAffineMotion(&p->s);
   (p->s).flags |= DISPLAY;
   (p->s).flags |= FLIPABLE;
-  if ((gSystemSavedataManager.mods[1] & (1 << 4)) && !IsDemoplay()) {
+  if ((gSystemSavedataManager.mods[1] & (1 << 4)) && !FLAG(gCurStory.s.gameflags, DEMO_PLAY)) {
     (p->s).flags |= COLLIDABLE;
     hp = 14;
   } else {
-    gCurStory.s.f0 = 0;
     (p->s).flags |= COLLIDABLE;
     hp = 10;
   }

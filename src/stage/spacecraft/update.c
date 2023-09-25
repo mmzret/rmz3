@@ -530,7 +530,7 @@ s16 SpaceCraft_FreeUpdate(struct StageRun* p) {
   struct Zero* z = (struct Zero*)(p->vm).entities[0].entity;
   if (p->stageEventPhase == 0) {
     gStageRun.missionStatus |= MISSION_STAY;
-    gCurStory.s.f0 &= ~STORY_F0_B2;
+    CLEAR_FLAG(gCurStory.s.gameflags, FLAG_2);
 
     if (gStageRun.checkpoint == 0) {
       SetScript(&gStageRun.vm, gStageScriptList[STAGE_SPACE_CRAFT][13]);

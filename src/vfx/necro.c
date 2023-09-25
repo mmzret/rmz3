@@ -355,7 +355,7 @@ static void Necro_Update(struct VFX *vfx) {
   };
   // clang-format on
 
-  if ((gCurStory.s.elfFlags & METTAUR_ENABLED) && (vfx->props).necro.unk_04 != 0) {
+  if (IS_METTAUR && (vfx->props).necro.unk_04 != 0) {
     (vfx->s).flags &= ~DISPLAY;
     (vfx->s).flags &= ~FLIPABLE;
     SET_VFX_ROUTINE(vfx, ENTITY_DISAPPEAR);

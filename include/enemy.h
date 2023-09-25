@@ -70,6 +70,9 @@ extern const EnemyRoutine gTileCannonRoutine;
 extern const EnemyRoutine gShellunoRoutine;
 extern const EnemyRoutine gDeathtanzRockRoutine;
 extern const EnemyRoutine gHeavyCannonBallRoutine;
+extern const EnemyRoutine gWormerSnowBallRoutine;
+extern const EnemyRoutine gBeetankRoutine;
+extern const EnemyRoutine gSwordyRoutine;
 
 // --------------------------------------------
 

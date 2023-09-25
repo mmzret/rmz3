@@ -22,7 +22,7 @@ void DeleteEnemy(struct Enemy* p) {
 
 bool32 isFrozen(struct Enemy* p) {
   bool32 result = FALSE;
-  if ((gCurStory.s.elfFlags & TIME_ELF_ENABLED) || ((p->s).flags2 & STOPPED)) {
+  if (FLAG(gCurStory.s.gameflags, TIME_ELF_ENABLED) || ((p->s).flags2 & STOPPED)) {
     result = TRUE;
   }
   return result;
@@ -115,9 +115,9 @@ const EnemyRoutine* const gEnemyFnTable[73] = {
   [ENEMY_SHELLUNO] = &gShellunoRoutine,
   [ENEMY_DEATHTANZ_ROCK] = &gDeathtanzRockRoutine,
   [ENEMY_HEAVY_CANNON_BALL] = &gHeavyCannonBallRoutine,
-  [29] = (const EnemyRoutine*)0x083677D4,
-  [30] = (const EnemyRoutine*)0x083679B0,
-  [31] = (const EnemyRoutine*)0x08367A24,
+  [ENEMY_WORMER_SNOW_BALL] = &gWormerSnowBallRoutine,
+  [ENEMY_BEETANK] = &gBeetankRoutine,
+  [ENEMY_SWORDY] = &gSwordyRoutine,
   [32] = (const EnemyRoutine*)0x08367AD8,
   [33] = (const EnemyRoutine*)0x08367B44,
   [34] = (const EnemyRoutine*)0x08367C68,

@@ -169,7 +169,7 @@ static void CyberSpaceDoor_Die(struct Solid* p) {
 static void CyberSpaceDoor_Disappear(struct Solid* p) {
   s32* border;
   s32 val;
-  if (((p->s).work[1] != 0) && (gCurStory.s.f0 & STORY_CYBER)) {
+  if (((p->s).work[1] != 0) && FLAG(gCurStory.s.gameflags, IN_CYBERSPACE)) {
     if ((gOverworld.unk_1c8.id & 0x7F) != STAGE_AREA_X2) {
       border = &gStageRun.vm.camera.right;
       val = 0x3c0000;

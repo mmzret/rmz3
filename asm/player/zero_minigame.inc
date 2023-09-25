@@ -792,7 +792,7 @@ _08036984:
 	movs r0, #1
 	ands r2, r0
 	adds r0, r5, #0
-	bl CreateWeapon16
+	bl CreateWeaponMinigameRod
 	ldr r1, _080369BC @ =0x0835ED48
 	ldrb r0, [r4]
 	lsls r0, r0, #1
@@ -922,7 +922,7 @@ _08036A7E:
 	movs r0, #1
 	ands r2, r0
 	adds r0, r5, #0
-	bl CreateWeapon16
+	bl CreateWeaponMinigameRod
 	ldr r1, _08036AD0 @ =0x0835ED48
 	ldrb r0, [r4]
 	adds r0, #1

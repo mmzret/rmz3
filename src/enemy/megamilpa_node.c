@@ -1,8 +1,8 @@
 #include "collision.h"
-#include "entity.h"
-#include "vfx.h"
-#include "global.h"
 #include "enemy.h"
+#include "entity.h"
+#include "global.h"
+#include "vfx.h"
 
 INCASM("asm/enemy/megamilpa_node.inc");
 
@@ -81,15 +81,15 @@ const u8 u8_ARRAY_08365cf0[2] = {0, 0};
 
 // clang-format off
 const motion_t sMegamilpaNodeMotions[10] = {
-    MOTION(0xA0, 0x00),
-    MOTION(0xA0, 0x01),
-    MOTION(0xA0, 0x02),
-    MOTION(0xA0, 0x03),
-    MOTION(0xA0, 0x04),
-    MOTION(0xA0, 0x06),
-    MOTION(0xA0, 0x07),
-    MOTION(0xA0, 0x08),
-    MOTION(0xA0, 0x09),
-    MOTION(0xA0, 0x0A),
+    MOTION(DM160_MEGAMILPA, 0x00),
+    MOTION(DM160_MEGAMILPA, 0x01),
+    MOTION(DM160_MEGAMILPA, 0x02),
+    MOTION(DM160_MEGAMILPA, 0x03),
+    MOTION(DM160_MEGAMILPA, 0x04),
+    MOTION(DM160_MEGAMILPA, 0x06),
+    MOTION(DM160_MEGAMILPA, 0x07),
+    MOTION(DM160_MEGAMILPA, 0x08),
+    MOTION(DM160_MEGAMILPA, 0x09),
+    MOTION(DM160_MEGAMILPA, 0x0A),
 };
 // clang-format on

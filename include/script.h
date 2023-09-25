@@ -24,6 +24,17 @@ struct Command {
   u32 work;  // コマンドハンドラ用の汎用データ コマンドによって用途が異なる
 };           // 8 bytes
 
+struct Command0D {
+  u8 cmd;  // コマンドID
+  u8 entityIdx;
+  union {
+    s16 idx;
+    u8 mask;
+    u8 pad;
+  } PACKED val;
+  u32 flags;
+};
+
 // For emotion layout
 struct Command12 {
   u8 cmd;  // コマンドID

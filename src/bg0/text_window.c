@@ -2250,5 +2250,3 @@ _080EB8B2:\n\
 	bx r0\n\
  .syntax divided\n");
 }
-
-INCDATA("asm/text.inc");

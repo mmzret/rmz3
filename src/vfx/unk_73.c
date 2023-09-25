@@ -1,5 +1,5 @@
-#include "vfx.h"
 #include "global.h"
+#include "vfx.h"
 
 void Ghost73_Init(struct VFX *p);
 void Ghost73_Update(struct VFX *p);
@@ -53,7 +53,7 @@ static const VFXFunc sUpdates[2] = {
 // --------------------------------------------
 
 const motion_t motion_t_ARRAY_0836f884[3] = {
-    MOTION(0xDC, 0x08),
-    MOTION(0xDC, 0x08),
-    MOTION(0xDC, 0x09),
+    MOTION(SM220_CANNON_HOPPER, 8),
+    MOTION(SM220_CANNON_HOPPER, 8),
+    MOTION(SM220_CANNON_HOPPER, 9),
 };

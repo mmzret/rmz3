@@ -1,7 +1,7 @@
 #include "entity.h"
-#include "vfx.h"
 #include "global.h"
 #include "story.h"
+#include "vfx.h"
 
 struct Ghost16 {
   struct Entity s;
@@ -225,7 +225,7 @@ static void SlashedEnemy_Update(struct Ghost16* p) {
       (VFXFunc)FUN_080b6744,
       (VFXFunc)FUN_080b6834,
   };
-  if (((p->data->unk_02[1] & 0x40) == 0) && (gCurStory.s.elfFlags & METTAUR_ENABLED)) {
+  if (((p->data->unk_02[1] & 0x40) == 0) && IS_METTAUR) {
     (p->s).flags &= ~DISPLAY;
     (p->s).flags &= ~FLIPABLE;
     SET_VFX_ROUTINE(p, ENTITY_DISAPPEAR);

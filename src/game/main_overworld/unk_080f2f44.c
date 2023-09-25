@@ -30,12 +30,12 @@ void OverworldLoop_080f2f44(struct GameState *g) {
       }
       if ((ans = handleWrapTwoChoice(g)) != 0) {
         if (ans > 0) {
-          gCurStory.s.f2 |= (1 << 1);
+          SET_FLAG(gCurStory.s.gameflags, FLAG_17);
           g->mode[3] = 0x70;
           break;
         }
         if (ans == -1) {
-          gCurStory.s.f2 |= (1 << 1);
+          SET_FLAG(gCurStory.s.gameflags, FLAG_17);
           g->mode[3] = 0x7C;
           break;
         }

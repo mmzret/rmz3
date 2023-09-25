@@ -55,5 +55,7 @@ texts-13xx: $(ZCS_BINS_13xx)
 
 texts: texts-00xx texts-02xx texts-04xx texts-05xx texts-06xx texts-09xx texts-0Axx texts-0Bxx texts-0Cxx texts-0Dxx texts-0Exx texts-10xx texts-13xx
 
+asm/text.o: asm/text.s texts
+
 clean-texts:
 	rm -f $(TEXTS_DIR)/*xx/*.bin

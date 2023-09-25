@@ -60,7 +60,7 @@ static void GrandCannonBomb_Update(struct Projectile* p) {
       _parabolaGrandcannonBomb,
   };
 
-  if (gCurStory.s.elfFlags & METTAUR_ENABLED) {
+  if (IS_METTAUR) {
     (p->s).flags &= ~DISPLAY;
     (p->s).flags &= ~FLIPABLE;
     (p->body).status = 0;

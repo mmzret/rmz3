@@ -10,6 +10,7 @@
 #include "constants/enemy.h"
 #include "constants/entity.h"
 #include "constants/exskill.h"
+#include "constants/flag.h"
 #include "constants/game.h"
 #include "constants/item.h"
 #include "constants/metatile.h"

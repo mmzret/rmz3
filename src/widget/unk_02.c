@@ -73,6 +73,6 @@ const WidgetRoutine gMenuComp2Routine = {
 // --------------------------------------------
 
 static const motion_t motion_t_ARRAY_08372044[2] = {
-    MOTION(0x0E, 0x0B),
-    MOTION(0x0E, 0x18),
+    MOTION(SM014_CHIPICON, 11),
+    MOTION(SM014_CHIPICON, 24),
 };

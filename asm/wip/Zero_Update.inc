@@ -702,7 +702,7 @@ _08029836:
 	adds r1, r1, r0
 	adds r0, r6, #0
 	movs r2, #1
-	bl zero_08026e30
+	bl PushoutByBorder
 	lsls r0, r0, #0x18
 	cmp r0, #0
 	beq _08029882

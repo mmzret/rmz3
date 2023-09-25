@@ -64,7 +64,7 @@ _08028C48:
 	adds r0, r7, #0
 	adds r1, r6, #0
 	adds r2, r5, #0
-	bl GetHazardMetatileAttr
+	bl IsInHazard
 	lsls r0, r0, #0x10
 	cmp r0, #0
 	beq _08028C5E
@@ -106,7 +106,7 @@ _08028C9C:
 	adds r0, r7, #0
 	adds r1, r6, #0
 	adds r2, r5, #0
-	bl GetHazardMetatileAttr
+	bl IsInHazard
 	lsls r0, r0, #0x10
 	cmp r0, #0
 	beq _08028CB2
@@ -172,7 +172,7 @@ _08028D1C:
 	adds r0, r7, #0
 	adds r1, r6, #0
 	adds r2, r5, #0
-	bl GetHazardMetatileAttr
+	bl IsInHazard
 	lsls r0, r0, #0x10
 	cmp r0, #0
 	beq _08028D32
@@ -214,7 +214,7 @@ _08028D70:
 	adds r0, r7, #0
 	adds r1, r6, #0
 	adds r2, r5, #0
-	bl GetHazardMetatileAttr
+	bl IsInHazard
 	lsls r0, r0, #0x10
 	cmp r0, #0
 	beq _08028D86

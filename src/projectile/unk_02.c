@@ -134,7 +134,7 @@ static void Projectile2_Update(struct Projectile* p) {
       updateProjectile2,
   };
 
-  if (gCurStory.s.elfFlags & METTAUR_ENABLED) {
+  if (IS_METTAUR) {
     (p->s).flags &= ~DISPLAY;
     (p->body).status = 0;
     (p->body).prevStatus = 0;

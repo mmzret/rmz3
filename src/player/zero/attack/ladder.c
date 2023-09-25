@@ -293,109 +293,42 @@ static void buster_2(struct Zero* z) {
 }
 
 // 0x08031170
-NAKED static void buster_3(struct Zero* z) {
-  asm(".syntax unified\n\
-	push {r4, lr}\n\
-	adds r4, r0, #0\n\
-	movs r0, #0x92\n\
-	lsls r0, r0, #1\n\
-	adds r2, r4, r0\n\
-	ldrb r0, [r2]\n\
-	movs r1, #1\n\
-	orrs r0, r1\n\
-	strb r0, [r2]\n\
-	ldrb r1, [r4, #0x1e]\n\
-	lsls r1, r1, #8\n\
-	adds r0, r4, #0\n\
-	adds r0, #0x70\n\
-	ldrb r0, [r0]\n\
-	orrs r0, r1\n\
-	ldr r1, _080311CC @ =0x00000D01\n\
-	cmp r0, r1\n\
-	beq _080311A2\n\
-	ldr r2, _080311D0 @ =0x00000129\n\
-	adds r0, r4, r2\n\
-	ldrb r3, [r0]\n\
-	adds r0, r4, #0\n\
-	movs r2, #2\n\
-	bl GotoMotion\n\
-_080311A2:\n\
-	ldr r0, _080311D0 @ =0x00000129\n\
-	adds r1, r4, r0\n\
-	ldrb r0, [r1]\n\
-	subs r0, #1\n\
-	strb r0, [r1]\n\
-	lsls r0, r0, #0x18\n\
-	lsrs r0, r0, #0x18\n\
-	cmp r0, #0xff\n\
-	bne _0803120C\n\
-	adds r0, r4, #0\n\
-	adds r0, #0xec\n\
-	movs r1, #0\n\
-	strb r1, [r0]\n\
-	ldrb r0, [r4, #0xe]\n\
-	cmp r0, #0\n\
-	bne _080311E8\n\
-	ldrb r0, [r4, #0xf]\n\
-	cmp r0, #2\n\
-	bne _080311D8\n\
-	ldr r1, _080311D4 @ =0x00000702\n\
-	b _080311F0\n\
-	.align 2, 0\n\
-_080311CC: .4byte 0x00000D01\n\
-_080311D0: .4byte 0x00000129\n\
-_080311D4: .4byte 0x00000702\n\
-_080311D8:\n\
-	ldr r1, _080311E4 @ =0x00000701\n\
-	adds r0, r4, #0\n\
-	bl SetMotion\n\
-	b _0803120C\n\
-	.align 2, 0\n\
-_080311E4: .4byte 0x00000701\n\
-_080311E8:\n\
-	ldrb r0, [r4, #0xf]\n\
-	cmp r0, #3\n\
-	bne _08031200\n\
-	ldr r1, _080311FC @ =0x00000705\n\
-_080311F0:\n\
-	adds r0, r4, #0\n\
-	movs r2, #1\n\
-	movs r3, #1\n\
-	bl GotoMotion\n\
-	b _0803120C\n\
-	.align 2, 0\n\
-_080311FC: .4byte 0x00000705\n\
-_08031200:\n\
-	ldr r1, _08031238 @ =0x00000704\n\
-	adds r0, r4, #0\n\
-	movs r2, #4\n\
-	movs r3, #1\n\
-	bl GotoMotion\n\
-_0803120C:\n\
-	movs r2, #0x94\n\
-	lsls r2, r2, #1\n\
-	adds r1, r4, r2\n\
-	adds r0, r4, #0\n\
-	bl IsAttackOK\n\
-	lsls r0, r0, #0x18\n\
-	cmp r0, #0\n\
-	beq _08031232\n\
-	adds r0, r4, #0\n\
-	adds r0, #0xec\n\
-	movs r2, #0\n\
-	movs r1, #3\n\
-	strb r1, [r0]\n\
-	adds r0, #1\n\
-	strb r2, [r0]\n\
-	adds r0, r4, #0\n\
-	bl zeroLadderAtk\n\
-_08031232:\n\
-	pop {r4}\n\
-	pop {r0}\n\
-	bx r0\n\
-	.align 2, 0\n\
-_08031238: .4byte 0x00000704\n\
- .syntax divided\n");
+static void buster_3(struct Zero* z) {
+  bool8 ok;
+  motion_t m, expected;
+
+  (z->restriction).move = TRUE;
+
+  m = MOTION_VALUE(z);
+  expected = MOTION(DM013_ZERO_BUSTER_LADDER, 0x01);
+  if (m != expected) {
+    GotoMotion(&z->s, expected, 2, z->atkCooltime);
+  }
+
+  z->atkCooltime--;
+  if (z->atkCooltime == 0xFF) {
+    (z->unk_b4).attackMode[0] = 0;
+    if ((z->s).mode[2] == 0) {
+      if ((z->s).mode[3] == 2) {
+        GotoMotion(&z->s, MOTION(DM007_ZERO_LADDER, 2), 1, 1);
+      } else {
+        SetMotion(&z->s, MOTION(DM007_ZERO_LADDER, 1));
+      }
+    } else {
+      if ((z->s).mode[3] == 3) {
+        GotoMotion(&z->s, MOTION(DM007_ZERO_LADDER, 5), 1, 1);
+      } else {
+        GotoMotion(&z->s, MOTION(DM007_ZERO_LADDER, 4), 4, 1);
+      }
+    }
+  }
+
+  ok = IsAttackOK(z, &z->usingWeapon);
+  if (ok) {
+    (z->unk_b4).attackMode[0] = 3;
+    (z->unk_b4).attackMode[1] = 0;
+    zeroLadderAtk(z);
+  }
 }
 
 // --------------------------------------------

@@ -11226,7 +11226,7 @@ _0807B1F6:
 	ldrb r0, [r2, #0x10]
 	strb r0, [r2, #0xd]
 	adds r0, r2, #0
-	bl killSnowBall
+	bl WormerSnowBall_Die
 	movs r0, #1
 _0807B214:
 	pop {r1}
@@ -11234,8 +11234,8 @@ _0807B214:
 	.align 2, 0
 _0807B218: .4byte gEnemyFnTable
 
-	thumb_func_start initSnowBall
-initSnowBall: @ 0x0807B21C
+	thumb_func_start WormerSnowBall_Init
+WormerSnowBall_Init: @ 0x0807B21C
 	push {r4, r5, r6, lr}
 	adds r5, r0, #0
 	ldr r1, _0807B270 @ =gEnemyFnTable
@@ -11300,7 +11300,7 @@ _0807B292:
 	ldr r0, _0807B2B0 @ =nop_0807b1dc
 	str r0, [r4, #0x24]
 	adds r0, r5, #0
-	bl snowBallAI
+	bl WormerSnowBall_Update
 	pop {r4, r5, r6}
 	pop {r0}
 	bx r0
@@ -11308,8 +11308,8 @@ _0807B292:
 _0807B2AC: .4byte 0x08367814
 _0807B2B0: .4byte nop_0807b1dc
 
-	thumb_func_start snowBallAI
-snowBallAI: @ 0x0807B2B4
+	thumb_func_start WormerSnowBall_Update
+WormerSnowBall_Update: @ 0x0807B2B4
 	push {r4, lr}
 	adds r4, r0, #0
 	bl FUN_0807b1e0
@@ -11338,8 +11338,8 @@ _0807B2E2:
 _0807B2E8: .4byte 0x083677E8
 _0807B2EC: .4byte 0x083677F8
 
-	thumb_func_start killSnowBall
-killSnowBall: @ 0x0807B2F0
+	thumb_func_start WormerSnowBall_Die
+WormerSnowBall_Die: @ 0x0807B2F0
 	push {lr}
 	ldr r2, _0807B304 @ =0x08367808
 	ldrb r1, [r0, #0xd]
@@ -11686,7 +11686,7 @@ _0807B56E:
 	ldrb r0, [r5, #0x10]
 	strb r0, [r5, #0xd]
 	adds r0, r5, #0
-	bl killSnowBall
+	bl WormerSnowBall_Die
 	b _0807B5B2
 	.align 2, 0
 _0807B598: .4byte pZero2
@@ -12091,8 +12091,8 @@ _0807B8AC:
 _0807B8B4: .4byte gZakoHeaderPtr
 _0807B8B8: .4byte gEnemyFnTable
 
-	thumb_func_start initZako30
-initZako30: @ 0x0807B8BC
+	thumb_func_start Beetank_Init
+Beetank_Init: @ 0x0807B8BC
 	push {r4, r5, r6, lr}
 	sub sp, #8
 	adds r6, r0, #0
@@ -12229,7 +12229,7 @@ _0807B972:
 	bl UpdateMotionGraphic
 _0807B9D6:
 	adds r0, r6, #0
-	bl zako30AI
+	bl Beetank_Update
 	add sp, #8
 	pop {r4, r5, r6}
 	pop {r0}
@@ -12239,8 +12239,8 @@ _0807B9E4: .4byte 0x083679EC
 _0807B9E8: .4byte nop_0807bea4
 _0807B9EC: .4byte gEnemyFnTable
 
-	thumb_func_start zako30AI
-zako30AI: @ 0x0807B9F0
+	thumb_func_start Beetank_Update
+Beetank_Update: @ 0x0807B9F0
 	push {r4, r5, r6, r7, lr}
 	mov r7, r8
 	push {r7}
@@ -12262,7 +12262,7 @@ zako30AI: @ 0x0807B9F0
 	ldr r0, [r0, #8]
 	str r0, [r5, #0x14]
 	adds r0, r5, #0
-	bl killZako30
+	bl Beetank_Die
 	b _0807BADA
 	.align 2, 0
 _0807BA20: .4byte gEnemyFnTable
@@ -12361,8 +12361,8 @@ _0807BADA:
 	.align 2, 0
 _0807BAE4: .4byte 0x083679D8
 
-	thumb_func_start killZako30
-killZako30: @ 0x0807BAE8
+	thumb_func_start Beetank_Die
+Beetank_Die: @ 0x0807BAE8
 	push {r4, r5, lr}
 	sub sp, #8
 	adds r4, r0, #0
@@ -12937,8 +12937,8 @@ _0807BEF4:
 _0807BEFC: .4byte gZakoHeaderPtr
 _0807BF00: .4byte gEnemyFnTable
 
-	thumb_func_start initZako31
-initZako31: @ 0x0807BF04
+	thumb_func_start Swordy_Init
+Swordy_Init: @ 0x0807BF04
 	push {r4, r5, r6, r7, lr}
 	adds r7, r0, #0
 	bl InitNonAffineMotion
@@ -13008,7 +13008,7 @@ initZako31: @ 0x0807BF04
 	bl UpdateMotionGraphic
 _0807BF94:
 	adds r0, r7, #0
-	bl zako31AI
+	bl Swordy_Update
 	pop {r4, r5, r6, r7}
 	pop {r0}
 	bx r0
@@ -13016,8 +13016,8 @@ _0807BF94:
 _0807BFA0: .4byte 0x08367A58
 _0807BFA4: .4byte gEnemyFnTable
 
-	thumb_func_start zako31AI
-zako31AI: @ 0x0807BFA8
+	thumb_func_start Swordy_Update
+Swordy_Update: @ 0x0807BFA8
 	push {r4, r5, r6, lr}
 	adds r4, r0, #0
 	adds r0, #0x8c
@@ -13037,7 +13037,7 @@ zako31AI: @ 0x0807BFA8
 	ldr r0, [r0, #8]
 	str r0, [r4, #0x14]
 	adds r0, r4, #0
-	bl killZako31
+	bl Swordy_Die
 	b _0807C030
 	.align 2, 0
 _0807BFD4: .4byte gEnemyFnTable
@@ -13089,8 +13089,8 @@ _0807C030:
 	.align 2, 0
 _0807C038: .4byte 0x08367A48
 
-	thumb_func_start killZako31
-killZako31: @ 0x0807C03C
+	thumb_func_start Swordy_Die
+Swordy_Die: @ 0x0807C03C
 	push {r4, r5, lr}
 	sub sp, #8
 	adds r4, r0, #0

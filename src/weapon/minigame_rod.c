@@ -9,7 +9,7 @@ static void Weapon16_Update(struct Weapon* w);
 void Weapon16_Die(struct Weapon* w);
 
 // clang-format off
-const WeaponRoutine gWeapon16Routine = {
+const WeaponRoutine gMinigameRodRoutine = {
     [ENTITY_INIT] =      Weapon16_Init,
     [ENTITY_MAIN] =      Weapon16_Update,
     [ENTITY_DIE] =       Weapon16_Die,
@@ -18,10 +18,10 @@ const WeaponRoutine gWeapon16Routine = {
 };
 // clang-format on
 
-struct Weapon* CreateWeapon16(struct Entity* p, u8 r1, u8 r2) {
+struct Weapon* CreateWeaponMinigameRod(struct Entity* p, u8 r1, u8 r2) {
   struct Weapon* w = (struct Weapon*)AllocEntityFirst(gWeaponHeaderPtr);
   if (w != NULL) {
-    INIT_WEAPON_ROUTINE(w, WEAPON_MOVE_16);
+    INIT_WEAPON_ROUTINE(w, WEAPON_MOVE_MINIGAME_ROD);
     (w->s).flags2 &= ~ENTITY_FLAGS2_B6;
     (w->s).taskCol = 16;
     (w->s).tileNum = gWeaponTileNum[0];
@@ -116,7 +116,7 @@ static void Weapon16_Update(struct Weapon* w) {
   (sUpdates[(w->s).mode[1]])(w);
 }
 
-INCASM("asm/weapon/unk_16.inc");
+INCASM("asm/weapon/minigame_rod.inc");
 
 const struct Collision gWeapon16Collisions[15] = {
     [0] = {

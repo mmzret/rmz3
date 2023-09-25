@@ -194,14 +194,14 @@ static const u8 sInitModes[4] = {0, 1, 2, 3};
 
 // clang-format off
 static const motion_t sMotions[8] = {
-    MOTION(0x24, 0x08),
-    MOTION(0x24, 0x07),
-    MOTION(0x24, 0x06),
-    MOTION(0x24, 0x05),
-    MOTION(0x24, 0x04),
-    MOTION(0x24, 0x0B),
-    MOTION(0x24, 0x0A),
-    MOTION(0x24, 0x09),
+    MOTION(SM036_UNK, 0x08),
+    MOTION(SM036_UNK, 0x07),
+    MOTION(SM036_UNK, 0x06),
+    MOTION(SM036_UNK, 0x05),
+    MOTION(SM036_UNK, 0x04),
+    MOTION(SM036_UNK, 0x0B),
+    MOTION(SM036_UNK, 0x0A),
+    MOTION(SM036_UNK, 0x09),
 };
 // clang-format on
 

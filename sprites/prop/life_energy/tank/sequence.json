@@ -1,0 +1,169 @@
+{
+  "label": "gMotionCmd_SM169",
+  "data": [
+    [
+      {
+        "frameIdx": 0,
+        "duration": 8
+      },
+      {
+        "frameIdx": 1,
+        "duration": 8
+      },
+      {
+        "frameIdx": 2,
+        "duration": 8
+      },
+      {
+        "frameIdx": 3,
+        "duration": 8
+      },
+      {
+        "frameIdx": 1,
+        "duration": 254
+      }
+    ],
+    [
+      {
+        "frameIdx": 4,
+        "duration": 8
+      },
+      {
+        "frameIdx": 5,
+        "duration": 8
+      },
+      {
+        "frameIdx": 6,
+        "duration": 8
+      },
+      {
+        "frameIdx": 7,
+        "duration": 8
+      },
+      {
+        "frameIdx": 1,
+        "duration": 254
+      }
+    ],
+    [
+      {
+        "frameIdx": 4,
+        "duration": 4
+      },
+      {
+        "frameIdx": 8,
+        "duration": 8
+      },
+      {
+        "frameIdx": 11,
+        "duration": 8
+      },
+      {
+        "frameIdx": 10,
+        "duration": 8
+      },
+      {
+        "frameIdx": 9,
+        "duration": 8
+      },
+      {
+        "frameIdx": 10,
+        "duration": 8
+      },
+      {
+        "frameIdx": 2,
+        "duration": 254
+      }
+    ],
+    [
+      {
+        "frameIdx": 0,
+        "duration": 1
+      },
+      {
+        "frameIdx": 0,
+        "duration": 255
+      }
+    ],
+    [
+      {
+        "frameIdx": 0,
+        "duration": 1
+      },
+      {
+        "frameIdx": 0,
+        "duration": 255
+      }
+    ],
+    [
+      {
+        "frameIdx": 0,
+        "duration": 1
+      },
+      {
+        "frameIdx": 0,
+        "duration": 255
+      }
+    ],
+    [
+      {
+        "frameIdx": 0,
+        "duration": 1
+      },
+      {
+        "frameIdx": 0,
+        "duration": 255
+      }
+    ],
+    [
+      {
+        "frameIdx": 0,
+        "duration": 1
+      },
+      {
+        "frameIdx": 0,
+        "duration": 255
+      }
+    ],
+    [
+      {
+        "frameIdx": 0,
+        "duration": 1
+      },
+      {
+        "frameIdx": 0,
+        "duration": 255
+      }
+    ],
+    [
+      {
+        "frameIdx": 0,
+        "duration": 1
+      },
+      {
+        "frameIdx": 0,
+        "duration": 255
+      }
+    ],
+    [
+      {
+        "frameIdx": 0,
+        "duration": 1
+      },
+      {
+        "frameIdx": 0,
+        "duration": 255
+      }
+    ],
+    [
+      {
+        "frameIdx": 0,
+        "duration": 1
+      },
+      {
+        "frameIdx": 0,
+        "duration": 255
+      }
+    ]
+  ]
+}

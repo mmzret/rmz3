@@ -359,244 +359,70 @@ void zero_08032724(struct Zero *z) {
   }
 }
 
-NAKED void setStageElfFlags(struct Zero *z) {
-  asm(".syntax unified\n\
-	push {r4, r5, r6, lr}\n\
-	adds r5, r0, #0\n\
-	ldr r0, _080327B8 @ =gUnlockedElfPtr\n\
-	ldr r1, [r0]\n\
-	adds r1, #0x28\n\
-	ldrb r2, [r1]\n\
-	movs r1, #1\n\
-	ands r1, r2\n\
-	adds r6, r0, #0\n\
-	cmp r1, #0\n\
-	beq _080327C8\n\
-	movs r0, #2\n\
-	ands r0, r2\n\
-	cmp r0, #0\n\
-	bne _0803279C\n\
-	adds r1, r5, #0\n\
-	adds r1, #0xb4\n\
-	ldr r2, _080327BC @ =0x00000231\n\
-	adds r0, r5, r2\n\
-	ldrb r0, [r0]\n\
-	cmp r0, #0\n\
-	bne _0803279C\n\
-	ldrb r0, [r1]\n\
-	cmp r0, #0x28\n\
-	beq _0803279C\n\
-	ldrb r0, [r1, #1]\n\
-	cmp r0, #0x28\n\
-	bne _080327C8\n\
-_0803279C:\n\
-	ldr r3, _080327C0 @ =gCurStory\n\
-	ldrb r0, [r3, #8]\n\
-	movs r2, #0x80\n\
-	orrs r0, r2\n\
-	strb r0, [r3, #8]\n\
-	ldr r1, _080327C4 @ =gGameState+25200\n\
-	ldrb r0, [r1, #4]\n\
-	orrs r0, r2\n\
-	strb r0, [r1, #4]\n\
-	adds r1, #0x54\n\
-	ldrb r0, [r1, #4]\n\
-	orrs r2, r0\n\
-	strb r2, [r1, #4]\n\
-	b _080327E8\n\
-	.align 2, 0\n\
-_080327B8: .4byte gUnlockedElfPtr\n\
-_080327BC: .4byte 0x00000231\n\
-_080327C0: .4byte gCurStory\n\
-_080327C4: .4byte gGameState+25200\n\
-_080327C8:\n\
-	ldr r4, _08032820 @ =gCurStory\n\
-	ldrb r2, [r4, #8]\n\
-	movs r1, #0x7f\n\
-	adds r0, r1, #0\n\
-	ands r0, r2\n\
-	strb r0, [r4, #8]\n\
-	ldr r2, _08032824 @ =gGameState+25200\n\
-	ldrb r3, [r2, #4]\n\
-	adds r0, r1, #0\n\
-	ands r0, r3\n\
-	strb r0, [r2, #4]\n\
-	adds r2, #0x54\n\
-	ldrb r0, [r2, #4]\n\
-	ands r1, r0\n\
-	strb r1, [r2, #4]\n\
-	adds r3, r4, #0\n\
-_080327E8:\n\
-	ldr r0, [r6]\n\
-	adds r0, #0x29\n\
-	ldrb r1, [r0]\n\
-	movs r0, #1\n\
-	ands r0, r1\n\
-	cmp r0, #0\n\
-	beq _0803282C\n\
-	movs r0, #2\n\
-	ands r0, r1\n\
-	cmp r0, #0\n\
-	bne _08032818\n\
-	adds r1, r5, #0\n\
-	adds r1, #0xb4\n\
-	ldr r2, _08032828 @ =0x00000231\n\
-	adds r0, r5, r2\n\
-	ldrb r0, [r0]\n\
-	cmp r0, #0\n\
-	bne _08032818\n\
-	ldrb r0, [r1]\n\
-	cmp r0, #0x29\n\
-	beq _08032818\n\
-	ldrb r0, [r1, #1]\n\
-	cmp r0, #0x29\n\
-	bne _0803282C\n\
-_08032818:\n\
-	ldrb r1, [r3, #8]\n\
-	movs r0, #0x20\n\
-	orrs r0, r1\n\
-	b _08032832\n\
-	.align 2, 0\n\
-_08032820: .4byte gCurStory\n\
-_08032824: .4byte gGameState+25200\n\
-_08032828: .4byte 0x00000231\n\
-_0803282C:\n\
-	ldrb r1, [r3, #8]\n\
-	movs r0, #0xdf\n\
-	ands r0, r1\n\
-_08032832:\n\
-	strb r0, [r3, #8]\n\
-	ldr r0, [r6]\n\
-	ldrb r1, [r0, #0x1b]\n\
-	movs r0, #1\n\
-	ands r0, r1\n\
-	cmp r0, #0\n\
-	beq _08032870\n\
-	movs r0, #2\n\
-	ands r0, r1\n\
-	cmp r0, #0\n\
-	bne _08032862\n\
-	adds r1, r5, #0\n\
-	adds r1, #0xb4\n\
-	ldr r2, _0803286C @ =0x00000231\n\
-	adds r0, r5, r2\n\
-	ldrb r0, [r0]\n\
-	cmp r0, #0\n\
-	bne _08032862\n\
-	ldrb r0, [r1]\n\
-	cmp r0, #0x1b\n\
-	beq _08032862\n\
-	ldrb r0, [r1, #1]\n\
-	cmp r0, #0x1b\n\
-	bne _08032870\n\
-_08032862:\n\
-	ldrb r1, [r3, #8]\n\
-	movs r0, #1\n\
-	orrs r0, r1\n\
-	b _08032876\n\
-	.align 2, 0\n\
-_0803286C: .4byte 0x00000231\n\
-_08032870:\n\
-	ldrb r1, [r3, #8]\n\
-	movs r0, #0xfe\n\
-	ands r0, r1\n\
-_08032876:\n\
-	strb r0, [r3, #8]\n\
-	pop {r4, r5, r6}\n\
-	pop {r0}\n\
-	bx r0\n\
- .syntax divided\n");
+WIP void setStageElfFlags(struct Zero *z) {
+#if MODERN
+  if (((*gUnlockedElfPtr)[ELF_BYSE] & ELF_AVABILITY_UNLOCKED) && (((*gUnlockedElfPtr)[ELF_BYSE] & ELF_AVABILITY_USED) || z->inCyberSpace || SATELITE_1 == ELF_BYSE || SATELITE_2 == ELF_BYSE)) {
+    SET_FLAG(gCurStory.s.gameflags, BYSE_ENABLED);
+    SET_FLAG(gGameState.save.story.gameflags, FLAG_7);
+    SET_FLAG(gGameState.save.savedStory.gameflags, FLAG_7);
+  } else {
+    CLEAR_FLAG(gCurStory.s.gameflags, BYSE_ENABLED);
+    CLEAR_FLAG(gGameState.save.story.gameflags, FLAG_7);
+    CLEAR_FLAG(gGameState.save.savedStory.gameflags, FLAG_7);
+  }
+
+  if (((*gUnlockedElfPtr)[ELF_DYLPHINA] & ELF_AVABILITY_UNLOCKED) && (((*gUnlockedElfPtr)[ELF_DYLPHINA] & ELF_AVABILITY_USED) || z->inCyberSpace || SATELITE_1 == ELF_DYLPHINA || SATELITE_2 == ELF_DYLPHINA)) {
+    SET_FLAG(gCurStory.s.gameflags, DYLPHINA_ENABLED);
+  } else {
+    CLEAR_FLAG(gCurStory.s.gameflags, DYLPHINA_ENABLED);
+  }
+
+  if (((*gUnlockedElfPtr)[ELF_PUTITE] & ELF_AVABILITY_UNLOCKED) && (((*gUnlockedElfPtr)[ELF_PUTITE] & ELF_AVABILITY_USED) || z->inCyberSpace || SATELITE_1 == ELF_PUTITE || SATELITE_2 == ELF_PUTITE)) {
+    SET_FLAG(gCurStory.s.gameflags, PUTITE_ENABLED);
+  } else {
+    CLEAR_FLAG(gCurStory.s.gameflags, PUTITE_ENABLED);
+  }
+#else
+  INCCODE("asm/wip/setStageElfFlags.inc");
+#endif
 }
 
-static const cyberelf_t gSatelitableElfIDs[23] = {
+static const cyberelf_t sSatelitableElfIDs[23] = {
     ELF_MARTINA, ELF_MILVY, ELF_ELPHY, ELF_SYLPHY, ELF_RILPHY, ELF_PUTITE, ELF_BALETTE, ELF_MAYA, ELF_KWAPPA, ELF_GAMBUL, ELF_BYSE, ELF_DYLPHINA, ELF_LIZETUS, ELF_COTTUS, ELF_SHUTHAS, ELF_MALTHAS, ELF_ILETHAS, ELF_ENETHAS, ELF_BUSRAS, ELF_SABRAS, ELF_RODERAS, ELF_BOOMERAS, ELF_CLOKKLE,
 };
 
-NAKED u8 FUN_08032880(struct Zero *z, u8 r1) {
-  asm(".syntax unified\n\
-	push {r4, r5, r6, r7, lr}\n\
-	lsls r1, r1, #0x18\n\
-	lsrs r5, r1, #0x18\n\
-	movs r4, #0\n\
-	cmp r5, #0xff\n\
-	bne _080328CC\n\
-	movs r3, #0\n\
-	ldr r0, _080328C0 @ =gUnlockedElfPtr\n\
-	ldr r2, [r0]\n\
-	ldr r5, _080328C4 @ =gSatelitableElfIDs\n\
-_08032894:\n\
-	adds r0, r3, r5\n\
-	ldrb r0, [r0]\n\
-	adds r0, r2, r0\n\
-	ldrb r1, [r0]\n\
-	movs r0, #1\n\
-	ands r0, r1\n\
-	cmp r0, #0\n\
-	beq _080328B2\n\
-	movs r0, #2\n\
-	ands r0, r1\n\
-	cmp r0, #0\n\
-	bne _080328B2\n\
-	adds r0, r4, #1\n\
-	lsls r0, r0, #0x18\n\
-	lsrs r4, r0, #0x18\n\
-_080328B2:\n\
-	adds r0, r3, #1\n\
-	lsls r0, r0, #0x18\n\
-	lsrs r3, r0, #0x18\n\
-	cmp r3, #0x16\n\
-	bls _08032894\n\
-	adds r0, r4, #0\n\
-	b _08032912\n\
-	.align 2, 0\n\
-_080328C0: .4byte gUnlockedElfPtr\n\
-_080328C4: .4byte gSatelitableElfIDs\n\
-_080328C8:\n\
-	movs r0, #1\n\
-	b _08032912\n\
-_080328CC:\n\
-	movs r3, #0\n\
-	ldr r7, _080328F8 @ =gSatelitableElfIDs\n\
-	ldr r0, _080328FC @ =gUnlockedElfPtr\n\
-	ldr r6, [r0]\n\
-_080328D4:\n\
-	adds r0, r3, r7\n\
-	ldrb r2, [r0]\n\
-	adds r0, r6, r2\n\
-	ldrb r1, [r0]\n\
-	movs r0, #3\n\
-	ands r0, r1\n\
-	cmp r0, #1\n\
-	bne _08032906\n\
-	cmp r4, r5\n\
-	bne _08032900\n\
-	adds r0, r2, #0\n\
-	cmp r0, #0x1a\n\
-	bls _08032910\n\
-	cmp r0, #0x27\n\
-	bls _080328C8\n\
-	movs r0, #2\n\
-	b _08032912\n\
-	.align 2, 0\n\
-_080328F8: .4byte gSatelitableElfIDs\n\
-_080328FC: .4byte gUnlockedElfPtr\n\
-_08032900:\n\
-	adds r0, r4, #1\n\
-	lsls r0, r0, #0x18\n\
-	lsrs r4, r0, #0x18\n\
-_08032906:\n\
-	adds r0, r3, #1\n\
-	lsls r0, r0, #0x18\n\
-	lsrs r3, r0, #0x18\n\
-	cmp r3, #0x16\n\
-	bls _080328D4\n\
-_08032910:\n\
-	movs r0, #0\n\
-_08032912:\n\
-	pop {r4, r5, r6, r7}\n\
-	pop {r1}\n\
-	bx r1\n\
- .syntax divided\n");
+u8 FUN_08032880(struct Zero *z, u8 r1) {
+  u8 i;
+  u8 *arr;
+  u8 ctr = 0;
+  if (r1 == 0xFF) {
+    for (i = 0; i < ARRAY_COUNT(sSatelitableElfIDs); i++) {
+      u8 id = sSatelitableElfIDs[i];
+      if ((*gUnlockedElfPtr)[id] & ELF_AVABILITY_UNLOCKED) {
+        if (((*gUnlockedElfPtr)[id] & ELF_AVABILITY_USED) == 0) {
+          ctr++;
+        }
+      }
+    }
+    return ctr;
+  }
+
+  for (i = 0; i < ARRAY_COUNT(sSatelitableElfIDs); i++) {
+    u8 id = sSatelitableElfIDs[i];
+    if (((*gUnlockedElfPtr)[id] & (ELF_AVABILITY_UNLOCKED | ELF_AVABILITY_USED)) == ELF_AVABILITY_UNLOCKED) {
+      if (ctr == r1) {
+        if (sSatelitableElfIDs[i] <= ELF_SLOPPE) {
+          return 0;
+        }
+        if (sSatelitableElfIDs[i] <= ELF_ARCHIL) {
+          return 1;
+        }
+        return 2;
+      }
+      ctr++;
+    }
+  }
+  return 0;
 }
 
 s16 getFallAcceleration(struct Zero *z) {

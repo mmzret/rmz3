@@ -121,7 +121,7 @@ _0802B6F6:
 	adds r1, r1, r6
 	adds r0, r4, #0
 	movs r2, #1
-	bl PushoutByFloor
+	bl PushoutByFloor1
 	lsls r0, r0, #0x10
 	cmp r0, #0
 	beq _0802B732
@@ -130,7 +130,7 @@ _0802B6F6:
 	adds r1, r1, r6
 	adds r0, r4, #0
 	movs r2, #0
-	bl zero_080264dc
+	bl PushoutByFloor2
 	lsls r0, r0, #0x10
 	cmp r0, #0
 	beq _0802B732

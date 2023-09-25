@@ -4,6 +4,7 @@
 #include "overworld.h"
 #include "task.h"
 
+// GetGroundMetatileAttr と似た処理だが、空中判定を受けた際に、Hazardチェックもする(GetGroundMetatileAttrより厳しい)
 WIP metatile_attr_t FUN_080098a4(s32 x, s32 y) {
 #if MODERN
   const s32 mx = METACOORD(x);
@@ -12,7 +13,7 @@ WIP metatile_attr_t FUN_080098a4(s32 x, s32 y) {
     u16* tm = gOverworld.unk_1c8.tilemap;
     metatile_attr_t attr = gOverworld.terrain.attrs[tm[my * tm[0] + mx + 2]];
     if ((gShapeCheckerUp[attr & 0xF])(x & 0xFFF, y & 0xFFF) == 0) {
-      return GetBlockingMetatileAttr(x, y);
+      return GetHazardMetatileAttr(x, y);
     }
     return attr;
   }
@@ -35,7 +36,7 @@ WIP metatile_attr_t GetGroundMetatileAttr(s32 x, s32 y) {
   if ((attr & 0x0F) == METATILE_GROUND) {
     return attr;  // ここで間違えて0を返すと、ゼロが床をすり抜けて落下死する
   }
-  if ((gShapeCheckerUp[attr & 0xF])(x & 0xFFF, y & 0xFFF) == 0) {
+  if ((gShapeCheckerUp[attr & 0xF])(x & 0xFFF, y & 0xFFF) == 0) {  // (坂道の)空中部分
     return 0;
   }
   return attr;
@@ -545,6 +546,8 @@ _08009F5E:\n\
 	bx r1\n\
  .syntax divided\n");
 }
+
+// ------------------------------------------------------------------------------------------------------------------------------------
 
 s32 FUN_0800af30(s32 x, s32 y, s32 r2);
 
@@ -1166,6 +1169,8 @@ _0800A408: .4byte 0x7FFFFFFF\n\
  .syntax divided\n");
 }
 
+// ------------------------------------------------------------------------------------------------------------------------------------
+
 NAKED s32 FUN_0800a40c(s32 x, s32 y) {
   asm(".syntax unified\n\
 	push {r4, r5, r6, r7, lr}\n\
@@ -1237,7 +1242,7 @@ _0800A494: .4byte 0x0002BE4C\n\
 _0800A498:\n\
 	adds r0, r5, #0\n\
 	adds r1, r6, #0\n\
-	bl GetBlockingMetatileAttr\n\
+	bl GetHazardMetatileAttr\n\
 	movs r1, #0x80\n\
 	lsls r1, r1, #6\n\
 	ands r1, r0\n\

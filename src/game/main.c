@@ -328,10 +328,10 @@ WIP static void GameLoop_Overworld(struct GameState *p) {
   gMatrixCount = 0;
   CpuFastFill(0, gWhitePaintFlags, 32);
 
-  if ((gCurStory.s.elfFlags & TIME_ELF_ENABLED) && (!isPaused) && (!gPause)) {
+  if (FLAG(gCurStory.s.gameflags, TIME_ELF_ENABLED) && (!isPaused) && (!gPause)) {
     if (gTimeElfTimer == 0) {
       TurnUpBGM();
-      gCurStory.s.elfFlags &= ~TIME_ELF_ENABLED;
+      CLEAR_FLAG(gCurStory.s.gameflags, TIME_ELF_ENABLED);
       if (isSoundPlaying(SE_TIME_ELF_HURRY)) {
         stopSound(SE_TIME_ELF_HURRY);
       }
@@ -490,7 +490,7 @@ WIP static void GameLoop_CloseMenu(struct GameState *p) {
     struct Zero_b4 *b4 = &p->z2->unk_b4;
     u8 color = (b4->status).body;
 
-    if (gCurStory.s.f0 & STORY_CYBER) {
+    if (FLAG(gCurStory.s.gameflags, IN_CYBERSPACE)) {
       ApplyCyberSpaceColorFilter();
     }
     RestoreGraphicState(p);
@@ -545,7 +545,7 @@ WIP static void GameLoop_CloseMenu(struct GameState *p) {
   gPaletteManager.filter[0] = gPaletteManager.filter[1] = gPaletteManager.filter[2] = p->frames;
   if (p->frames == 32) {
     p->inMenu = FALSE;
-    if ((gCurStory.s.elfFlags & TIME_ELF_ENABLED) == 0) {
+    if (FLAG(gCurStory.s.gameflags, TIME_ELF_ENABLED) == 0) {
       TurnUpBGM();
     } else {
       SetStageNoiseVolume(SE_TIME_ELF);
@@ -569,7 +569,7 @@ NAKED static void GameLoop_SwitchCyberSpace(struct GameState *p) { INCCODE("asm/
 WIP static void GameLoop_ChangeMap(struct GameState *p) {
 #if MODERN
   UpdateStoryFlag();
-  if (IsDemoplay()) {
+  if (FLAG(gCurStory.s.gameflags, DEMO_PLAY)) {
     ExitProcess();
     return;
   }
@@ -618,8 +618,8 @@ WIP static void GameLoop_ChangeMap(struct GameState *p) {
     return;
   }
 
-  if (gCurStory.s.f1 & STORY_F1_B3) {
-    if (!(gCurStory.s.f1 & STORY_F1_B4)) {
+  if (FLAG(gCurStory.s.gameflags, FLAG_11)) {
+    if (!FLAG(gCurStory.s.gameflags, FLAG_12)) {
       if ((p->save).stageID == STAGE_BASE) {
         (p->save).stageID = STAGE_MISSILE_FACTORY;
         InitStageRun(STAGE_MISSILE_FACTORY);
@@ -638,7 +638,7 @@ WIP static void GameLoop_ChangeMap(struct GameState *p) {
       return;
     }
 
-    if ((gCurStory.s.f1 & STORY_F1_B7) && (gCurStory.s.f2 & NO_HARPUIA)) {
+    if (FLAG(gCurStory.s.gameflags, FLAG_15) && FLAG(gCurStory.s.gameflags, NO_HARPUIA)) {
       if ((p->save).stageID == STAGE_AREA_X2) {
         (p->save).stageID = STAGE_BASE;
         LoadStageRun(STAGE_BASE, 15);
@@ -646,8 +646,8 @@ WIP static void GameLoop_ChangeMap(struct GameState *p) {
         return;
       }
 
-      if (gCurStory.s.f2 & SUNKEN_ANALYZE) {
-        if (gCurStory.s.f2 & WEIL_LABO) {
+      if (FLAG(gCurStory.s.gameflags, SUNKEN_ANALYZE)) {
+        if (FLAG(gCurStory.s.gameflags, FLAG_WEIL_LABO)) {
           if ((p->save).stageID == STAGE_SUB_ARCADIA) {
             (p->save).stageID = STAGE_BASE;
             LoadStageRun(STAGE_BASE, 7);
@@ -743,7 +743,7 @@ static void GameLoop_demoplay_080f033c(struct GameState *p) {
   clearUnlockedCyberElfData((p->save).elf);
   status = &(p->save).status;
   ClearZeroStatus(status);
-  gCurStory.s.f0 |= STORY_DEMO;
+  SET_FLAG(gCurStory.s.gameflags, DEMO_PLAY);
   *(u8 *)&(p->save).story.id = *(u8 *)&(p->save).story.id | 0x40;
 
   (status->keyMap).keys.jump = A_BUTTON;

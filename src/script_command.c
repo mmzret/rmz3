@@ -779,82 +779,28 @@ _08022ABE:\n\
  .syntax divided\n");
 }
 
-NAKED static bool32 Cmd_cmd0d(struct VM* vm) {
-  asm(".syntax unified\n\
-	push {r4, r5, lr}\n\
-	adds r3, r0, #0\n\
-	ldr r4, [r3, #0xc]\n\
-	ldr r1, [r4, #4]\n\
-	movs r0, #2\n\
-	ands r0, r1\n\
-	cmp r0, #0\n\
-	beq _08022B20\n\
-	movs r5, #1\n\
-	ands r1, r5\n\
-	cmp r1, #0\n\
-	beq _08022B00\n\
-	ldr r0, _08022AFC @ =gCurStory\n\
-	ldrh r3, [r4, #2]\n\
-	lsls r2, r3, #0x10\n\
-	asrs r2, r2, #0x13\n\
-	adds r0, #4\n\
-	adds r2, r2, r0\n\
-	movs r1, #7\n\
-	ands r1, r3\n\
-	adds r0, r5, #0\n\
-	lsls r0, r1\n\
-	ldrb r1, [r2]\n\
-	orrs r0, r1\n\
-	b _08022B18\n\
-	.align 2, 0\n\
-_08022AFC: .4byte gCurStory\n\
-_08022B00:\n\
-	ldr r0, _08022B1C @ =gCurStory\n\
-	ldrh r1, [r4, #2]\n\
-	lsls r2, r1, #0x10\n\
-	asrs r2, r2, #0x13\n\
-	adds r0, #4\n\
-	adds r2, r2, r0\n\
-	movs r0, #7\n\
-	ands r0, r1\n\
-	adds r1, r5, #0\n\
-	lsls r1, r0\n\
-	ldrb r0, [r2]\n\
-	bics r0, r1\n\
-_08022B18:\n\
-	strb r0, [r2]\n\
-	b _08022B48\n\
-	.align 2, 0\n\
-_08022B1C: .4byte gCurStory\n\
-_08022B20:\n\
-	ldrb r0, [r4, #1]\n\
-	lsls r2, r0, #4\n\
-	adds r0, r3, #0\n\
-	adds r0, #0x10\n\
-	adds r0, r0, r2\n\
-	ldr r0, [r0]\n\
-	cmp r0, #0\n\
-	beq _08022B48\n\
-	cmp r1, #0\n\
-	beq _08022B3E\n\
-	adds r2, r3, r2\n\
-	ldrb r1, [r4, #2]\n\
-	ldrb r0, [r2, #0x19]\n\
-	orrs r0, r1\n\
-	b _08022B46\n\
-_08022B3E:\n\
-	adds r2, r3, r2\n\
-	ldrb r1, [r4, #2]\n\
-	ldrb r0, [r2, #0x19]\n\
-	bics r0, r1\n\
-_08022B46:\n\
-	strb r0, [r2, #0x19]\n\
-_08022B48:\n\
-	movs r0, #0\n\
-	pop {r4, r5}\n\
-	pop {r1}\n\
-	bx r1\n\
- .syntax divided\n");
+WIP static bool32 Cmd_cmd0d(struct VM* vm) {
+#if MODERN
+  struct Command0D* c = (struct Command0D*)vm->pc;
+  if (c->flags & (1 << 1)) {
+    if (c->flags & (1 << 0)) {
+      SET_FLAG(gCurStory.s.gameflags, c->val.idx);
+    } else {
+      CLEAR_FLAG(gCurStory.s.gameflags, c->val.idx);
+    }
+  } else {
+    if (vm->entities[c->entityIdx].entity != NULL) {
+      if (c->flags) {
+        vm->entities[c->entityIdx].unk_09 |= c->val.mask;
+      } else {
+        vm->entities[c->entityIdx].unk_09 &= ~c->val.mask;
+      }
+    }
+  }
+  return FALSE;
+#else
+  INCCODE("asm/wip/Cmd_cmd0d.inc");
+#endif
 }
 
 static bool32 Cmd_cmd0e(struct VM* vm) {
@@ -1255,7 +1201,7 @@ static bool32 Cmd_message(struct VM* vm) {
       break;
     }
     case 1: {
-      if (gCurStory.s.f0 & STORY_DEMO) {
+      if (FLAG(gCurStory.s.gameflags, DEMO_PLAY)) {
         PrintTextWindow(*(TextID*)&vm->pc->work, 0x50);
         break;
       }
@@ -1584,7 +1530,7 @@ static bool32 Cmd_eventflag(struct VM* vm) {
   switch (pc->status) {
     case 0: {
       vm->unk_003 = pc->val2;
-      if (!IsDemoplay()) {
+      if (!FLAG(gCurStory.s.gameflags, DEMO_PLAY)) {
         s32 flags = gSystemSavedataManager.flags[vm->unk_003 >> 3];
         u8 idx = vm->unk_003 & 7;
         if ((flags >> idx) & 1) {
@@ -1652,15 +1598,15 @@ static bool32 Cmd_goodluck(struct VM* vm) {
     if (CielGoodluckTextIDs[(gMission.unk_00)->lastStage] != 0) {
       PrintNormalMessage(CielGoodluckTextIDs[(gMission.unk_00)->lastStage]);
     }
-  } else if ((gCurStory.s.f1 & STORY_F1_B3) == 0) {
+  } else if (FLAG(gCurStory.s.gameflags, FLAG_11) == 0) {
     PrintNormalMessage(0x4a);
-  } else if ((gCurStory.s.f1 & STORY_F1_B7) == 0) {
+  } else if (FLAG(gCurStory.s.gameflags, FLAG_15) == 0) {
     PrintNormalMessage(0x4b);
-  } else if ((gCurStory.s.f2 & NO_HARPUIA) == 0) {
+  } else if (FLAG(gCurStory.s.gameflags, NO_HARPUIA) == 0) {
     PrintNormalMessage(0x4c);
-  } else if ((gCurStory.s.f2 & SUNKEN_ANALYZE) == 0) {
+  } else if (FLAG(gCurStory.s.gameflags, SUNKEN_ANALYZE) == 0) {
     PrintNormalMessage(0x4d);
-  } else if ((gCurStory.s.f2 & WEIL_LABO) == 0) {
+  } else if (FLAG(gCurStory.s.gameflags, FLAG_WEIL_LABO) == 0) {
     PrintNormalMessage(0x4e);
   } else {
     PrintNormalMessage(0x4f);
@@ -1671,7 +1617,7 @@ static bool32 Cmd_goodluck(struct VM* vm) {
 // ストパーラ系のエルフの効果を強制終了する
 static bool32 Cmd_killtimeelf(struct VM* vm) {
   if (gTimeElfTimer != 0) {
-    gCurStory.s.elfFlags &= ~TIME_ELF_ENABLED;
+    CLEAR_FLAG(gCurStory.s.gameflags, TIME_ELF_ENABLED);
     TurnUpBGM();
     gTimeElfTimer = 0;
   }

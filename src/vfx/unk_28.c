@@ -182,7 +182,7 @@ static void Ghost28_Update(struct VFX *p) {
       FUN_080ba07c,
       FUN_080ba16c,
   };
-  if (gCurStory.s.elfFlags & METTAUR_ENABLED) {
+  if (IS_METTAUR) {
     SET_VFX_ROUTINE(p, ENTITY_DIE);
     Ghost28_Die(p);
     return;

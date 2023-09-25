@@ -1,7 +1,7 @@
 #include "entity.h"
-#include "vfx.h"
 #include "global.h"
 #include "story.h"
+#include "vfx.h"
 
 static void Ghost27_Init(struct VFX *p);
 static void Ghost27_Update(struct VFX *p);
@@ -114,7 +114,7 @@ static void Ghost27_Update(struct VFX *p) {
       FUN_080b9c50,
       FUN_080b9ca4,
   };
-  if (gCurStory.s.elfFlags & METTAUR_ENABLED) {
+  if (IS_METTAUR) {
     (p->s).flags &= ~DISPLAY;
     (p->s).flags &= ~FLIPABLE;
     SET_VFX_ROUTINE(p, ENTITY_DISAPPEAR);
@@ -133,7 +133,7 @@ static void Ghost27_Die(struct VFX *p) {
       FUN_080b9cf8,
       FUN_080b9db0,
   };
-  if (gCurStory.s.elfFlags & METTAUR_ENABLED) {
+  if (IS_METTAUR) {
     (p->s).flags &= ~DISPLAY;
     (p->s).flags &= ~FLIPABLE;
     SET_VFX_ROUTINE(p, ENTITY_DISAPPEAR);

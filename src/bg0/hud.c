@@ -26,7 +26,7 @@ void ResetHUD(void* p) {
 void DrawStatus(void) {
   gWindowRegBuffer.unk_0c[2] |= 1;
   if (gHUD.unk_02 == 0) {
-    if (!IsDemoplay()) {
+    if (!FLAG(gCurStory.s.gameflags, DEMO_PLAY)) {
       LoadGraphic(&gGraphic_085473D4, (void*)CHAR_BASE(0));
       LoadPalette(&gPalette_085473D4, 0);
       LoadGraphic(&gGraphic_HPGauge, (void*)CHAR_BASE(0));
@@ -38,7 +38,7 @@ void DrawStatus(void) {
     gHUD.unk_02 = 1;
   }
 
-  if (!IsDemoplay()) {
+  if (!FLAG(gCurStory.s.gameflags, DEMO_PLAY)) {
     drawZeroHPWeaponIcon(&gHUD.bg0);
     FUN_080ea3c8(&gHUD.bg0);
   } else {

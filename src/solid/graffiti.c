@@ -9,7 +9,7 @@ void Solid49_Update(struct Solid* p);
 void Solid49_Die(struct Solid* p);
 
 // clang-format off
-const SolidRoutine gSolid49Routine = {
+const SolidRoutine gGraffitiRoutine = {
     [ENTITY_INIT] =      Solid49_Init,
     [ENTITY_MAIN] =      Solid49_Update,
     [ENTITY_DIE] =       Solid49_Die,
@@ -20,11 +20,11 @@ const SolidRoutine gSolid49Routine = {
 
 // clang-format off
 static const motion_t sMotions[5] = {
-    MOTION(0xA2, 0x00),
-    MOTION(0xA3, 0x00),
-    MOTION(0xA4, 0x00),
-    MOTION(0xA5, 0x00),
-    MOTION(0xA6, 0x00),
+    MOTION(SM162_PAINTING_MMBN, 0),
+    MOTION(SM163_GRAFFITI_ZERO1, 0),
+    MOTION(SM164_GRAFFITI_CIEL, 0),
+    MOTION(SM165_GRAFFITI_ZERO2, 0),
+    MOTION(SM166_PAINTING_CIEL, 0),
 };
 // clang-format on
 

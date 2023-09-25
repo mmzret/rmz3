@@ -4181,9 +4181,31 @@ INC4BPP("graphics/sprite_prop/5a_icicle");
 INCLZ("graphics/sprite_prop/5b");
 
 // TODO: Dump remaining png images from sprite_prop.bin using tools/dumper/gfx.ts
-// ./tools/dumper/bin.ts baserom.gba 0x086013E8 0x0861F610 graphics/sprite_prop/sprite_prop.bin
+// ./tools/dumper/bin.ts baserom.gba 0x086013E8 0x0861B13C graphics/sprite_prop/sprite_prop.bin
 INCBIN("graphics/sprite_prop/sprite_prop.bin");
 
+INCLZ("sprites/prop/z_logo/sheet");
+INC4BPP("sprites/prop/missile_platform/sheet");
+INCBIN("sprites/prop/mother_elf/sheet.4bpp");
+INCBIN("sprites/prop/mother_elf/04.pal");
+INCBIN("sprites/prop/mother_elf/05.pal");
+INC4BPP("sprites/prop/volcano_coffin/sheet");
+INC4BPP("sprites/prop/giant_elevator_pier/sheet");
+INC4BPP("sprites/prop/giant_elevator_platform/sheet");
+INC4BPP("sprites/prop/156/sheet");
+INC4BPP("sprites/prop/smoke_157/sheet");
+INCLZ("sprites/prop/minigame/zero/sheet");
+INCLZ("sprites/prop/minigame/copy_x/sheet");
+INCLZ("sprites/prop/minigame/phantom/sheet");
+INCLZ("sprites/prop/minigame/harpuia/sheet");
+INC4BPP("sprites/prop/resistance_base/painting/mmbn/sheet");
+INC4BPP("sprites/prop/resistance_base/graffiti/zero1/sheet");
+INC4BPP("sprites/prop/resistance_base/graffiti/ciel/sheet");
+INC4BPP("sprites/prop/resistance_base/graffiti/zero2/sheet");
+INC4BPP("sprites/prop/resistance_base/painting/ciel/sheet");
+INCLZ("sprites/prop/life_energy/default/sheet");
+INCLZ("sprites/prop/life_energy/x/sheet");
+INCLZ("sprites/prop/life_energy/tank/sheet");
 INCLZ("sprites/prop/ecrystal/default/sheet");
 INCLZ("sprites/prop/ecrystal/ball/sheet");
 INCLZ("sprites/prop/ecrystal/green/sheet");

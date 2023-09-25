@@ -70,7 +70,7 @@ static void Solid10_Update(struct Solid* p) {
       (p->s).flags |= DISPLAY;
       (p->s).flags |= FLIPABLE;
       InitNonAffineMotion(&p->s);
-      SetMotion(&p->s, MOTION(0x44, 0x00) | (p->s).work[0]);
+      SetMotion(&p->s, MOTION(SM068_OLD_RESIDENTIAL_FALL_ROCK, 0) | (p->s).work[0]);
       SET_SOLID_ROUTINE(p, ENTITY_DIE);
       Solid10_Die(p);
     }

@@ -1,5 +1,5 @@
-#include "vfx.h"
 #include "global.h"
+#include "vfx.h"
 
 static const u8 sInitModes[2];
 static const motion_t sMotions[4];
@@ -239,8 +239,8 @@ _080BA7C4: .4byte gVFXFnTable\n\
 static const u8 sInitModes[2] = {0, 1};
 
 static const motion_t sMotions[4] = {
-    MOTION(0x25, 0x03),
-    MOTION(0x25, 0x04),
-    MOTION(0x25, 0x05),
-    MOTION(0x25, 0x05),
+    MOTION(SM037_EAR_SHOT, 3),
+    MOTION(SM037_EAR_SHOT, 4),
+    MOTION(SM037_EAR_SHOT, 5),
+    MOTION(SM037_EAR_SHOT, 5),
 };

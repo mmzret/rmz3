@@ -995,7 +995,7 @@ const WeaponFunc PTR_ARRAY_08386300[WEAPON_MOVE_COUNT] = {
     [WEAPON_MOVE_13] =                MenuExit_Weapon13, 
     [WEAPON_MOVE_RAKUSAIGA] =         MenuExit_SaberSmash, 
     [WEAPON_MOVE_SHIELD_SWEEP_ELEC] = MenuExit_ShieldSweepElec, 
-    [WEAPON_MOVE_16] =                NULL,
+    [WEAPON_MOVE_MINIGAME_ROD] =                NULL,
 };
 // clang-format on
 

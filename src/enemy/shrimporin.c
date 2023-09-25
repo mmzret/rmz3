@@ -364,7 +364,7 @@ static const EnemyFunc sUpdates2[8] = {
 
 static void Shrimporin_Update(struct Enemy* p) {
   if ((p->s).work[0] == 2) {
-    if (gCurStory.s.elfFlags & METTAUR_ENABLED) {
+    if (IS_METTAUR) {
       (p->s).flags &= ~DISPLAY;
       (p->s).flags &= ~FLIPABLE;
       (p->body).status = 0;
@@ -406,7 +406,7 @@ static void Shrimporin_Die(struct Enemy* p) {
       shrimporin_0806a4ec,
   };
 
-  if (gCurStory.s.elfFlags & METTAUR_ENABLED) {
+  if (IS_METTAUR) {
     (p->s).flags &= ~DISPLAY;
     (p->s).flags &= ~FLIPABLE;
     (p->body).status = 0;

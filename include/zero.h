@@ -57,6 +57,7 @@ typedef bool8 (*WeaponOKFunc)(struct Zero*);
 #define HEAD ((z->unk_b4).status.head)
 #define BODY ((z->unk_b4).status.body)
 #define FOOT ((z->unk_b4).status.foot)
+#define SATELITES (((&z->unk_b4)->status).asset.satelites)
 #define SATELITE_1 (((&z->unk_b4)->status).asset.satelites[0])
 #define SATELITE_2 (((&z->unk_b4)->status).asset.satelites[1])
 
@@ -175,9 +176,9 @@ void zeroLadderAtk(struct Zero* z);
 
 bool8 zero_08026f90(struct Zero* z, const struct Rect* p);
 s16 CalcDx(struct Zero* z);
-metatile_attr_t PushoutByFloor(struct Zero* z, const struct Rect* r1, bool8 r2);
+metatile_attr_t PushoutByFloor1(struct Zero* z, const struct Rect* r1, bool8 r2);
 metatile_attr_t PushoutByCeiling(struct Zero* z, const struct Rect* r1, bool8 r2);
-metatile_attr_t zero_08026358(struct Zero* z, const struct Rect* r1, bool8 r2);
+metatile_attr_t PushoutByCeilingOnLadder(struct Zero* z, const struct Rect* r1, bool8 r2);
 metatile_attr_t GetWallMetatileAttr(struct Zero* z, const struct Rect* r1, bool8 _ UNUSED);
 u8 ladder_08026bb0(struct Zero* z, const struct Rect* range, bool8 _);
 u8 TryLadderDown(struct Zero* z, const struct Rect* p, bool8 _);
@@ -188,13 +189,13 @@ s16 getFallAcceleration(struct Zero* z);
 s16 calcMaxFallSpeed(struct Zero* z);
 metatile_attr_t PushoutWallX(struct Zero* z, const struct Rect* p, bool8 r2);
 u8 TryContinueLadderDown(struct Zero* z, const struct Rect* p, bool8 r2);
-bool8 zero_08026e30(struct Zero* z, const struct Rect* p, bool8 r2);
+bool8 PushoutByBorder(struct Zero* z, const struct Rect* p, bool8 r2);
 bool8 CanWallSlide(struct Zero* z, const struct Rect* p, bool8 _);
 bool8 IsForwardPressed(struct Zero* z, const struct Rect* p, bool8 _);
 bool8 IsZeroAgainstWall(struct Zero* z, const struct Rect* p, bool8 _);
 u8 RecoilFromHazards(struct Zero* z, const struct Rect* range);
 u8 RecoilFromFloor(struct Zero* z, const struct Rect* range);
-metatile_attr_t zero_080264dc(struct Zero* z, const struct Rect* p, bool8 r2);
+metatile_attr_t PushoutByFloor2(struct Zero* z, const struct Rect* p, bool8 r2);
 bool8 IsElfUsed(struct Zero* z, cyberelf_t elfID);
 bool8 isElfUsed_2(struct Zero* z, cyberelf_t elfID);
 metatile_attr_t _pushoutHazardY(struct Zero* z, s32 x, s32 y, struct Coord* c);

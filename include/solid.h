@@ -95,7 +95,7 @@ extern const SolidRoutine gSolid45Routine;
 extern const SolidRoutine gSolid46Routine;
 extern const SolidRoutine gSolid47Routine;
 extern const SolidRoutine gCielComputerRoutine;
-extern const SolidRoutine gSolid49Routine;
+extern const SolidRoutine gGraffitiRoutine;
 extern const SolidRoutine gStructuralSteelRoutine;
 extern const SolidRoutine gModElfRoutine;
 extern const SolidRoutine gSolid52Routine;

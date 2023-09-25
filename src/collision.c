@@ -396,7 +396,7 @@ WIP u16 CalcDamage(struct Body *a, struct Body *d) {
     if (X != 9) {
       u16 damage = (X * a->atk) / 4;
       if (drp->special == HALFABLE) {
-        if ((gCurStory.s.elfFlags & PUTITE_ENABLED) && (a->atk == 254)) {
+        if (FLAG(gCurStory.s.gameflags, PUTITE_ENABLED) && (a->atk == 254)) {
           damage = 8;
         }
         if (gSystemSavedataManager.mods[2] & (1 << 3)) {

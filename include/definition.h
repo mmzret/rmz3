@@ -15,7 +15,7 @@ typedef s32 (*ShapeChecker)(s32 x, s32 y);
 struct Coord;
 
 void* Malloc(u32 bytesize);
-metatile_attr_t GetBlockingMetatileAttr(s32 x, s32 y);
+metatile_attr_t GetHazardMetatileAttr(s32 x, s32 y);
 s32 FUN_08009f6c(s32 x, s32 y);
 void CreateFirework(s32 x, s32 y, bool8 r2);
 void resetData_08016db4(void);

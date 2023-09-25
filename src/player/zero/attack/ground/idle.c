@@ -927,127 +927,46 @@ static void rod_charge_horizontal(struct Zero* z) {
 
 static void nop_0802dd84(struct Zero* _ UNUSED) { return; }
 
-NAKED static void rod_1000slash(struct Zero* z) {
-  asm(".syntax unified\n\
-	push {r4, r5, r6, r7, lr}\n\
-	sub sp, #4\n\
-	adds r4, r0, #0\n\
-	movs r0, #0x93\n\
-	lsls r0, r0, #1\n\
-	adds r1, r4, r0\n\
-	movs r7, #0\n\
-	movs r0, #0x15\n\
-	strb r0, [r1]\n\
-	movs r1, #0x92\n\
-	lsls r1, r1, #1\n\
-	adds r2, r4, r1\n\
-	ldrb r0, [r2]\n\
-	movs r1, #4\n\
-	orrs r0, r1\n\
-	strb r0, [r2]\n\
-	adds r6, r4, #0\n\
-	adds r6, #0xee\n\
-	ldrb r0, [r6]\n\
-	cmp r0, #0\n\
-	bne _0802DDD8\n\
-	ldr r1, _0802DDD0 @ =0x00001E02\n\
-	adds r0, r4, #0\n\
-	bl SetMotion\n\
-	ldr r1, _0802DDD4 @ =0x00000133\n\
-	adds r0, r4, r1\n\
-	strb r7, [r0]\n\
-	adds r0, r4, #0\n\
-	bl CreateWeaponRod\n\
-	ldrb r0, [r6]\n\
-	adds r0, #1\n\
-	strb r0, [r6]\n\
-	b _0802DE70\n\
-	.align 2, 0\n\
-_0802DDD0: .4byte 0x00001E02\n\
-_0802DDD4: .4byte 0x00000133\n\
-_0802DDD8:\n\
-	ldr r5, _0802DE24 @ =0x00001E02\n\
-	adds r0, r4, #0\n\
-	adds r1, r5, #0\n\
-	bl KeepMotion\n\
-	ldrb r0, [r4, #0x1e]\n\
-	lsls r0, r0, #8\n\
-	adds r1, r4, #0\n\
-	adds r1, #0x70\n\
-	ldrb r1, [r1]\n\
-	orrs r1, r0\n\
-	cmp r1, r5\n\
-	beq _0802DE08\n\
-	movs r1, #0xa0\n\
-	lsls r1, r1, #1\n\
-	adds r0, r4, r1\n\
-	ldrb r2, [r0]\n\
-	adds r1, #1\n\
-	adds r0, r4, r1\n\
-	ldrb r3, [r0]\n\
-	adds r0, r4, #0\n\
-	adds r1, r5, #0\n\
-	bl GotoMotion\n\
-_0802DE08:\n\
-	adds r0, r4, #0\n\
-	adds r0, #0x73\n\
-	ldrb r0, [r0]\n\
-	cmp r0, #3\n\
-	bne _0802DE50\n\
-	ldr r1, _0802DE28 @ =0x00000133\n\
-	adds r0, r4, r1\n\
-	ldrb r0, [r0]\n\
-	cmp r0, #0\n\
-	beq _0802DE2C\n\
-	cmp r0, #2\n\
-	bls _0802DE2C\n\
-	strb r7, [r6]\n\
-	b _0802DE70\n\
-	.align 2, 0\n\
-_0802DE24: .4byte 0x00001E02\n\
-_0802DE28: .4byte 0x00000133\n\
-_0802DE2C:\n\
-	adds r1, r4, #0\n\
-	adds r1, #0xec\n\
-	movs r0, #0\n\
-	strb r0, [r1]\n\
-	adds r0, r4, #0\n\
-	bl GetDefaultMotion\n\
-	adds r1, r0, #0\n\
-	lsls r1, r1, #0x10\n\
-	lsrs r1, r1, #0x10\n\
-	adds r0, r4, #0\n\
-	bl SetMotion\n\
-	movs r0, #0x93\n\
-	lsls r0, r0, #1\n\
-	adds r1, r4, r0\n\
-	movs r0, #0xff\n\
-	b _0802DE6E\n\
-_0802DE50:\n\
-	adds r0, r4, #0\n\
-	mov r1, sp\n\
-	bl IsAttackOK\n\
-	lsls r0, r0, #0x18\n\
-	cmp r0, #0\n\
-	beq _0802DE70\n\
-	mov r0, sp\n\
-	ldrb r0, [r0]\n\
-	cmp r0, #2\n\
-	bne _0802DE70\n\
-	ldr r0, _0802DE78 @ =0x00000133\n\
-	adds r1, r4, r0\n\
-	ldrb r0, [r1]\n\
-	adds r0, #1\n\
-_0802DE6E:\n\
-	strb r0, [r1]\n\
-_0802DE70:\n\
-	add sp, #4\n\
-	pop {r4, r5, r6, r7}\n\
-	pop {r0}\n\
-	bx r0\n\
-	.align 2, 0\n\
-_0802DE78: .4byte 0x00000133\n\
- .syntax divided\n");
+WIP static void rod_1000slash(struct Zero* z) {
+#if MODERN
+  motion_t m;
+  weapon_t w[4];
+
+  z->rodID = 21;
+  (z->restriction).shield = TRUE;
+
+  if ((z->unk_b4).attackMode[2] == 0) {
+    SetMotion(&z->s, MOTION(DM030_ZERO_ROD, 2));
+    z->unk_rod_133 = 0;
+    CreateWeaponRod(z);
+    (z->unk_b4).attackMode[2]++;
+    return;
+  }
+
+  KeepMotion(z, MOTION(DM030_ZERO_ROD, 2));
+  m = MOTION_VALUE(z);
+  if (m != MOTION(DM030_ZERO_ROD, 2)) {
+    GotoMotion(&z->s, MOTION(DM030_ZERO_ROD, 2), z->motionCmdIdx, z->motionDuration);
+  }
+
+  if ((z->s).motion.state == MOTION_END) {
+    if ((z->unk_rod_133 != 0) && (z->unk_rod_133 > 2)) {
+      (z->unk_b4).attackMode[2] = 0;
+      return;
+    }
+
+    (z->unk_b4).attackMode[0] = 0;
+    SetMotion(&z->s, GetDefaultMotion(z));
+    z->rodID = 0xFF;
+    return;
+  }
+
+  if (IsAttackOK(z, w) && w[0] == WEAPON_ROD) {
+    z->unk_rod_133++;
+  }
+#else
+  INCCODE("asm/wip/rod_1000slash.inc");
+#endif
 }
 
 // ------------------------------------------------------------------------------------------------------------------------------------

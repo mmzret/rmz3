@@ -149,7 +149,7 @@ WIP static void GrandCannon_Init(struct Enemy* p) {
   if ((p->s).work[0] == GRAND_CANNON_TURRET) {
     (p->s).coord.y = FUN_08009f6c((p->s).coord.x, (p->s).coord.y);
     (p->s).flags |= COLLIDABLE;
-    if (!(gSystemSavedataManager.mods[13] & (1 << 1)) || IsDemoplay()) {
+    if (!(gSystemSavedataManager.mods[13] & (1 << 1)) || FLAG(gCurStory.s.gameflags, DEMO_PLAY)) {
       InitBody(&p->body, sCollisions, &(p->s).coord, 8);
     } else {
       InitBody(&p->body, sCollisions, &(p->s).coord, 12);
@@ -173,7 +173,7 @@ WIP static void GrandCannon_Update(struct Enemy* p) {
 #if MODERN
   if ((p->s).work[0] == GRAND_CANNON_BATTERY) {
     struct Entity* turret = (p->s).unk_28;
-    if (!(gCurStory.s.elfFlags & METTAUR_ENABLED)) {
+    if (!IS_METTAUR) {
       if (turret->mode[0] != ENTITY_EXIT) {
         if (turret->mode[0] > ENTITY_MAIN) {
           SET_ZAKO_ROUTINE(p, ENTITY_DIE);
@@ -219,7 +219,7 @@ static void GrandCannon_Die(struct Enemy* p) {
       slashGrandCannon,
       FUN_080697bc,
   };
-  if (gCurStory.s.elfFlags & METTAUR_ENABLED) {
+  if (IS_METTAUR) {
     (p->s).flags &= ~DISPLAY;
     (p->s).flags &= ~FLIPABLE;
     (p->body).status = 0;
