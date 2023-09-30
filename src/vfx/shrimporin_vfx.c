@@ -45,14 +45,14 @@ void shrimporinIceCrash(s32 x, s32 y, u8 frame) {
       (vfx->s).coord.y = y;
 
       (vfx->s).d.x = 0x180;
-      RNG_0202f388 = (LCG(RNG_0202f388) << 1) >> 1;
+      RNG_0202f388 = LCG(RNG_0202f388);
       (vfx->s).d.x += ((RNG_0202f388 >> 16) & 0xFF);
       if ((i & 1) != 0) {
         (vfx->s).d.x = -(vfx->s).d.x;
       }
 
       (vfx->s).d.y = -0x180;
-      RNG_0202f388 = (LCG(RNG_0202f388) << 1) >> 1;
+      RNG_0202f388 = LCG(RNG_0202f388);
       (vfx->s).d.y -= (RNG_0202f388 >> 16) % 0x180;
 
       (vfx->s).work[0] = 1;

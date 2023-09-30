@@ -162,7 +162,6 @@ _080C925E:\n\
 
 NON_MATCH static void Snow_Update(struct VFX *p) {
 #if MODERN
-  u32 rand;
   UpdateMotionGraphic(&p->s);
   (p->s).coord.y += (p->s).d.y;
   (p->s).coord.x = gSineTable[(p->s).work[2]] * 8;
@@ -170,9 +169,8 @@ NON_MATCH static void Snow_Update(struct VFX *p) {
   (p->s).coord.x += (p->s).d.x;
   (p->s).work[2] += 3;
 
-  rand = LCG(RNG_0202f388);
-  RNG_0202f388 = (rand << 1) >> 1;
-  (p->s).d.x += 0x100 - ((rand * 0x80) >> 23);
+  RNG_0202f388 = LCG(RNG_0202f388);
+  (p->s).d.x += 0x100 - (RNG_0202f388 >> 16);
   if ((p->props).snow.unk_0-- == 0) {
     SET_VFX_ROUTINE(p, ENTITY_DIE);
     Snow_Die(p);

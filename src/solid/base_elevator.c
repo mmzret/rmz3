@@ -107,8 +107,6 @@ static void BaseElevator_Disappear(struct Solid* p) {
 
 WIP static void rBase_080cfd4c(struct Solid* p) {
 #if MODERN
-  struct Body* body;
-
   if (p->props.rbe.skin == ELEVATOR_DEFAULT) {
     LOAD_STATIC_GRAPHIC(115);
   }
@@ -128,13 +126,7 @@ WIP static void rBase_080cfd4c(struct Solid* p) {
   (p->s).flags2 |= ENTITY_HAZARD;
   (p->s).size = &Rect_08370728;
   (p->s).hazardAttr = 0x2001;
-  (p->s).flags |= COLLIDABLE;
-
-  body = &p->body;
-  InitBody(body, sCollisions, &(p->s).coord, 0);
-  body->parent = (struct CollidableEntity*)p;
-  body->fn = NULL;
-
+  INIT_BODY(p, sCollisions, 0, NULL);
   p->props.rbe.c.x = 0x65000;
   p->props.rbe.c.y = 0x26000;
   (p->s).coord.x = p->props.rbe.c.x;
@@ -162,7 +154,7 @@ INCASM("asm/solid/base_elevator.inc");
 static const struct Collision sCollisions[2] = {
     [0] = {
       kind : DDP,
-      layer : 1,
+      faction : FACTION_ENEMY,
       special : 0,
       damage : 255,
       unk_04 : 0x00,
@@ -178,7 +170,7 @@ static const struct Collision sCollisions[2] = {
     },
     [1] = {
       kind : DRP,
-      layer : 1,
+      faction : FACTION_ENEMY,
       special : 0,
       damage : 255,
       unk_04 : 0xFF,

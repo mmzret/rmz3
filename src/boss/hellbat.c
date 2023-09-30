@@ -1,19 +1,22 @@
 #include "boss.h"
 #include "collision.h"
 #include "global.h"
+#include "overworld.h"
 
 static const struct Collision sCollisions[29];
 
-void Hellbat_Init(struct Boss* p);
-void Hellbat_Update(struct Boss* p);
-void Hellbat_Die(struct Boss* p);
+void hellbat_0804cbe4(struct Boss* p);
+
+static void Hellbat_Init(struct Boss* p);
+static void Hellbat_Update(struct Boss* p);
+static void Hellbat_Die(struct Boss* p);
 
 // clang-format off
 const BossRoutine gHellbatRoutine = {
     [ENTITY_INIT] =      Hellbat_Init,
     [ENTITY_MAIN] =      Hellbat_Update,
     [ENTITY_DIE] =       Hellbat_Die,
-    [ENTITY_DISAPPEAR] = deleteBoss,
+    [ENTITY_DISAPPEAR] = DeleteBoss,
     [ENTITY_EXIT] =      (BossFunc)DeleteEntity,
 };
 // clang-format on
@@ -35,7 +38,139 @@ struct Boss* CreateHellbat(struct Coord* c, u8 n) {
   return p;
 }
 
-INCASM("asm/boss/hellbat.inc");
+NAKED static void Hellbat_Init(struct Boss* p) {
+  asm(".syntax unified\n\
+	push {r4, r5, r6, lr}\n\
+	adds r5, r0, #0\n\
+	bl InitNonAffineMotion\n\
+	adds r0, r5, #0\n\
+	adds r0, #0x24\n\
+	movs r4, #0\n\
+	strb r4, [r0]\n\
+	adds r1, r5, #0\n\
+	adds r1, #0x50\n\
+	movs r6, #0\n\
+	movs r0, #0x80\n\
+	lsls r0, r0, #1\n\
+	strh r0, [r1]\n\
+	adds r1, #2\n\
+	strh r0, [r1]\n\
+	adds r0, r5, #0\n\
+	bl ResetDynamicMotion\n\
+	ldrb r1, [r5, #0xa]\n\
+	movs r0, #0xfe\n\
+	ands r0, r1\n\
+	movs r1, #2\n\
+	orrs r0, r1\n\
+	strb r0, [r5, #0xa]\n\
+	adds r0, r5, #0\n\
+	adds r0, #0x4c\n\
+	strb r6, [r0]\n\
+	adds r2, r5, #0\n\
+	adds r2, #0x4a\n\
+	ldrb r1, [r2]\n\
+	movs r0, #0x11\n\
+	rsbs r0, r0, #0\n\
+	ands r0, r1\n\
+	strb r0, [r2]\n\
+	ldrb r1, [r5, #0xa]\n\
+	movs r0, #0xef\n\
+	ands r0, r1\n\
+	strb r0, [r5, #0xa]\n\
+	ldr r1, _0804B110 @ =sCollisions\n\
+	adds r0, r5, #0\n\
+	movs r2, #0x40\n\
+	bl ResetBossBody\n\
+	ldr r1, _0804B114 @ =hellbat_0804cc38\n\
+	adds r0, r5, #0\n\
+	adds r0, #0x74\n\
+	str r1, [r0, #0x24]\n\
+	adds r0, #0x40\n\
+	strb r6, [r0]\n\
+	adds r1, r5, #0\n\
+	adds r1, #0xb5\n\
+	movs r0, #0xff\n\
+	strb r0, [r1]\n\
+	adds r1, #1\n\
+	strb r0, [r1]\n\
+	adds r0, r5, #0\n\
+	adds r0, #0xc0\n\
+	str r4, [r0]\n\
+	subs r0, #9\n\
+	strb r6, [r0]\n\
+	ldr r0, [r5, #0x54]\n\
+	ldr r1, [r5, #0x58]\n\
+	bl FUN_08009f6c\n\
+	adds r1, r5, #0\n\
+	adds r1, #0xd4\n\
+	str r0, [r1]\n\
+	str r0, [r5, #0x58]\n\
+	ldr r0, _0804B118 @ =gStageRun+232\n\
+	ldr r1, [r0, #0x3c]\n\
+	ldr r0, _0804B11C @ =0xFFFFB000\n\
+	adds r1, r1, r0\n\
+	ldr r0, [r5, #0x54]\n\
+	bl FUN_0800a31c\n\
+	adds r1, r5, #0\n\
+	adds r1, #0xd0\n\
+	str r0, [r1]\n\
+	subs r1, #0x18\n\
+	ldr r0, [r5, #0x54]\n\
+	str r0, [r1]\n\
+	adds r1, #4\n\
+	ldr r0, [r5, #0x58]\n\
+	str r0, [r1]\n\
+	ldr r0, [r5, #0x58]\n\
+	movs r1, #0x80\n\
+	lsls r1, r1, #3\n\
+	adds r0, r0, r1\n\
+	str r0, [r5, #0x58]\n\
+	ldrb r0, [r5, #0x10]\n\
+	cmp r0, #0\n\
+	bne _0804B124\n\
+	ldr r1, _0804B120 @ =gBossFnTable\n\
+	ldrb r0, [r5, #9]\n\
+	lsls r0, r0, #2\n\
+	adds r0, r0, r1\n\
+	movs r1, #1\n\
+	str r1, [r5, #0xc]\n\
+	ldr r0, [r0]\n\
+	ldr r0, [r0, #4]\n\
+	str r0, [r5, #0x14]\n\
+	strb r6, [r5, #0xd]\n\
+	b _0804B13A\n\
+	.align 2, 0\n\
+_0804B110: .4byte sCollisions\n\
+_0804B114: .4byte hellbat_0804cc38\n\
+_0804B118: .4byte gStageRun+232\n\
+_0804B11C: .4byte 0xFFFFB000\n\
+_0804B120: .4byte gBossFnTable\n\
+_0804B124:\n\
+	ldr r1, _0804B150 @ =gBossFnTable\n\
+	ldrb r0, [r5, #9]\n\
+	lsls r0, r0, #2\n\
+	adds r0, r0, r1\n\
+	movs r1, #1\n\
+	str r1, [r5, #0xc]\n\
+	ldr r0, [r0]\n\
+	ldr r0, [r0, #4]\n\
+	str r0, [r5, #0x14]\n\
+	movs r0, #2\n\
+	strb r0, [r5, #0xd]\n\
+_0804B13A:\n\
+	strb r6, [r5, #0xe]\n\
+	strb r6, [r5, #0xf]\n\
+	movs r0, #0\n\
+	strb r0, [r5, #0x11]\n\
+	adds r0, r5, #0\n\
+	bl Hellbat_Update\n\
+	pop {r4, r5, r6}\n\
+	pop {r0}\n\
+	bx r0\n\
+	.align 2, 0\n\
+_0804B150: .4byte gBossFnTable\n\
+ .syntax divided\n");
+}
 
 void FUN_0804b520(struct Boss* p);
 void FUN_0804b56c(struct Boss* p);
@@ -97,18 +232,43 @@ static const BossFunc sUpdates2[12] = {
 };
 // clang-format on
 
+static void Hellbat_Update(struct Boss* p) {
+  if (((p->body).status & BODY_STATUS_DEAD) || ((p->body).hp == 0)) {
+    if (!(gStageRun.missionStatus & MISSION_FAIL)) {
+      SET_BOSS_ROUTINE(p, ENTITY_DIE);
+      PlaySound(SE_HELLBAT_DEATH);
+      if ((p->body).status & BODY_STATUS_SLASHED) {
+        (p->s).mode[3] = 1;
+      } else {
+        (p->s).mode[3] = 0;
+      }
+      Hellbat_Die(p);
+      return;
+    }
+  }
+
+  (sUpdates1[(p->s).mode[1]])(p);
+  hellbat_0804cbe4(p);
+  (sUpdates2[(p->s).mode[1]])(p);
+}
+
 void hellbatDeath0(struct Boss* p);
 void hellbatDeath1(struct Boss* p);
 
-static const BossFunc sDeads[2] = {
-    hellbatDeath0,
-    hellbatDeath1,
-};
+static void Hellbat_Die(struct Boss* p) {
+  static const BossFunc sDeads[2] = {
+      hellbatDeath0,
+      hellbatDeath1,
+  };
+  (sDeads[(p->s).mode[1]])(p);
+}
+
+INCASM("asm/boss/hellbat.inc");
 
 static const struct Collision sCollisions[29] = {
     [0] = {
       kind : DRP,
-      layer : 1,
+      faction : FACTION_ENEMY,
       special : 2,
       damage : 0,
       unk_04 : 0xFF,
@@ -124,7 +284,7 @@ static const struct Collision sCollisions[29] = {
     },
     [1] = {
       kind : DDP,
-      layer : 1,
+      faction : FACTION_ENEMY,
       special : 2,
       damage : 3,
       unk_04 : 0x00,
@@ -140,7 +300,7 @@ static const struct Collision sCollisions[29] = {
     },
     [2] = {
       kind : DDP,
-      layer : 1,
+      faction : FACTION_ENEMY,
       special : 2,
       damage : 3,
       unk_04 : 0x00,
@@ -156,7 +316,7 @@ static const struct Collision sCollisions[29] = {
     },
     [3] = {
       kind : DRP,
-      layer : 1,
+      faction : FACTION_ENEMY,
       special : 2,
       damage : 0,
       unk_04 : 0xFF,
@@ -172,7 +332,7 @@ static const struct Collision sCollisions[29] = {
     },
     [4] = {
       kind : DRP,
-      layer : 1,
+      faction : FACTION_ENEMY,
       special : 2,
       damage : 0,
       unk_04 : 0xFF,
@@ -188,7 +348,7 @@ static const struct Collision sCollisions[29] = {
     },
     [5] = {
       kind : DRP2,
-      layer : 1,
+      faction : FACTION_ENEMY,
       special : 0,
       damage : 0,
       unk_04 : 0xFF,
@@ -207,7 +367,7 @@ static const struct Collision sCollisions[29] = {
 
     [6] = {
       kind : DDP,
-      layer : LAYER_ENEMY,
+      faction : FACTION_ENEMY,
       special : 2,
       damage : 3,
       unk_04 : 0x00,
@@ -222,7 +382,7 @@ static const struct Collision sCollisions[29] = {
     },
     [7] = {
       kind : DDP,
-      layer : LAYER_ENEMY,
+      faction : FACTION_ENEMY,
       special : 2,
       damage : 3,
       unk_04 : 0x00,
@@ -237,7 +397,7 @@ static const struct Collision sCollisions[29] = {
     },
     [8] = {
       kind : DDP,
-      layer : LAYER_ENEMY,
+      faction : FACTION_ENEMY,
       special : 2,
       damage : 3,
       unk_04 : 0x00,
@@ -252,7 +412,7 @@ static const struct Collision sCollisions[29] = {
     },
     [9] = {
       kind : DDP,
-      layer : LAYER_ENEMY,
+      faction : FACTION_ENEMY,
       special : 2,
       damage : 3,
       unk_04 : 0x00,
@@ -267,7 +427,7 @@ static const struct Collision sCollisions[29] = {
     },
     [10] = {
       kind : DRP,
-      layer : LAYER_ENEMY,
+      faction : FACTION_ENEMY,
       special : 2,
       damage : 0,
       unk_04 : 0xFF,
@@ -282,7 +442,7 @@ static const struct Collision sCollisions[29] = {
     },
     [11] = {
       kind : DRP,
-      layer : LAYER_ENEMY,
+      faction : FACTION_ENEMY,
       special : 2,
       damage : 0,
       unk_04 : 0xFF,
@@ -297,7 +457,7 @@ static const struct Collision sCollisions[29] = {
     },
     [12] = {
       kind : DRP2,
-      layer : LAYER_ENEMY,
+      faction : FACTION_ENEMY,
       special : 0,
       damage : 0,
       unk_04 : 0xFF,
@@ -316,7 +476,7 @@ static const struct Collision sCollisions[29] = {
 
     [13] = {
       kind : DDP,
-      layer : 1,
+      faction : FACTION_ENEMY,
       special : 2,
       damage : 3,
       unk_04 : 0x00,
@@ -332,7 +492,7 @@ static const struct Collision sCollisions[29] = {
     },
     [14] = {
       kind : DDP,
-      layer : 1,
+      faction : FACTION_ENEMY,
       special : 2,
       damage : 3,
       unk_04 : 0x00,
@@ -348,7 +508,7 @@ static const struct Collision sCollisions[29] = {
     },
     [15] = {
       kind : DDP,
-      layer : 1,
+      faction : FACTION_ENEMY,
       special : 2,
       damage : 3,
       unk_04 : 0x00,
@@ -364,7 +524,7 @@ static const struct Collision sCollisions[29] = {
     },
     [16] = {
       kind : DDP,
-      layer : 1,
+      faction : FACTION_ENEMY,
       special : 2,
       damage : 3,
       unk_04 : 0x00,
@@ -380,7 +540,7 @@ static const struct Collision sCollisions[29] = {
     },
     [17] = {
       kind : DDP,
-      layer : 1,
+      faction : FACTION_ENEMY,
       special : 2,
       damage : 3,
       unk_04 : 0x00,
@@ -396,7 +556,7 @@ static const struct Collision sCollisions[29] = {
     },
     [18] = {
       kind : DDP,
-      layer : 1,
+      faction : FACTION_ENEMY,
       special : 2,
       damage : 3,
       unk_04 : 0x00,
@@ -412,7 +572,7 @@ static const struct Collision sCollisions[29] = {
     },
     [19] = {
       kind : DRP,
-      layer : 1,
+      faction : FACTION_ENEMY,
       special : 2,
       damage : 0,
       unk_04 : 0xFF,
@@ -428,7 +588,7 @@ static const struct Collision sCollisions[29] = {
     },
     [20] = {
       kind : DRP,
-      layer : 1,
+      faction : FACTION_ENEMY,
       special : 2,
       damage : 0,
       unk_04 : 0xFF,
@@ -444,7 +604,7 @@ static const struct Collision sCollisions[29] = {
     },
     [21] = {
       kind : DDP,
-      layer : 1,
+      faction : FACTION_ENEMY,
       special : 2,
       damage : 3,
       unk_04 : 0x00,
@@ -460,7 +620,7 @@ static const struct Collision sCollisions[29] = {
     },
     [22] = {
       kind : DDP,
-      layer : 1,
+      faction : FACTION_ENEMY,
       special : 2,
       damage : 3,
       unk_04 : 0x00,
@@ -476,7 +636,7 @@ static const struct Collision sCollisions[29] = {
     },
     [23] = {
       kind : DRP,
-      layer : 1,
+      faction : FACTION_ENEMY,
       special : 2,
       damage : 0,
       unk_04 : 0xFF,
@@ -492,7 +652,7 @@ static const struct Collision sCollisions[29] = {
     },
     [24] = {
       kind : DRP,
-      layer : 1,
+      faction : FACTION_ENEMY,
       special : 2,
       damage : 0,
       unk_04 : 0xFF,
@@ -508,7 +668,7 @@ static const struct Collision sCollisions[29] = {
     },
     [25] = {
       kind : DDP,
-      layer : 1,
+      faction : FACTION_ENEMY,
       special : 2,
       damage : 3,
       unk_04 : 0x00,
@@ -524,7 +684,7 @@ static const struct Collision sCollisions[29] = {
     },
     [26] = {
       kind : DDP,
-      layer : 1,
+      faction : FACTION_ENEMY,
       special : 2,
       damage : 3,
       unk_04 : 0x00,
@@ -540,7 +700,7 @@ static const struct Collision sCollisions[29] = {
     },
     [27] = {
       kind : DRP,
-      layer : 1,
+      faction : FACTION_ENEMY,
       special : 2,
       damage : 0,
       unk_04 : 0xFF,
@@ -556,7 +716,7 @@ static const struct Collision sCollisions[29] = {
     },
     [28] = {
       kind : DRP,
-      layer : 1,
+      faction : FACTION_ENEMY,
       special : 2,
       damage : 0,
       unk_04 : 0xFF,

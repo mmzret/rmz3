@@ -4,7 +4,10 @@
 
 static const struct Rect sSize;
 
-void Solid13_Init(struct Solid* p);
+static const struct Collision Collision_ARRAY_0837025c[2];
+static const struct Collision Collision_ARRAY_0837028c[2];
+
+static void Solid13_Init(struct Solid* p);
 void Solid13_Update(struct Solid* p);
 void Solid13_Die(struct Solid* p);
 
@@ -37,6 +40,23 @@ struct Solid* CreateSolid13(struct Entity* e, struct Coord* c, struct Coord* d, 
   return p;
 }
 
+static void Solid13_Init(struct Solid* p) {
+  (p->s).flags2 |= ENTITY_HAZARD;
+  (p->s).size = &sSize;
+  (p->s).hazardAttr = METATILE_GROUND;
+  (p->s).flags |= FLIPABLE;
+  (p->s).flags &= ~DISPLAY;
+  InitNonAffineMotion(&p->s);
+  INIT_BODY(p, &Collision_ARRAY_0837025c[0], 1, NULL);
+  INIT_BODY(p, &Collision_ARRAY_0837028c[0], 1, NULL);
+  (p->props).raw[12] = 0;
+  SET_SOLID_ROUTINE(p, ENTITY_MAIN);
+  (p->s).mode[1] = 0;
+  (p->s).mode[2] = 0;
+  (p->s).mode[3] = 0;
+  Solid13_Update(p);
+}
+
 INCASM("asm/solid/unk_13.inc");
 
 // --------------------------------------------
@@ -49,10 +69,10 @@ const SolidFunc sSolid13Updates[1] = {
 
 // --------------------------------------------
 
-const struct Collision Collision_ARRAY_0837025c[2] = {
+static const struct Collision Collision_ARRAY_0837025c[2] = {
     [0] = {
       kind : DRP,
-      layer : 1,
+      faction : FACTION_ENEMY,
       special : 0,
       damage : 0,
       unk_04 : 0xFF,
@@ -68,7 +88,7 @@ const struct Collision Collision_ARRAY_0837025c[2] = {
     },
     [1] = {
       kind : DRP,
-      layer : 1,
+      faction : FACTION_ENEMY,
       special : 2,
       damage : 0,
       unk_04 : 0xFF,
@@ -84,10 +104,10 @@ const struct Collision Collision_ARRAY_0837025c[2] = {
     },
 };
 
-const struct Collision Collision_ARRAY_0837028c[2] = {
+static const struct Collision Collision_ARRAY_0837028c[2] = {
     [0] = {
       kind : DDP,
-      layer : 1,
+      faction : FACTION_ENEMY,
       special : 2,
       damage : 5,
       unk_04 : 0x00,
@@ -103,7 +123,7 @@ const struct Collision Collision_ARRAY_0837028c[2] = {
     },
     [1] = {
       kind : DRP,
-      layer : 1,
+      faction : FACTION_ENEMY,
       special : 2,
       damage : 0,
       unk_04 : 0xFF,
@@ -119,4 +139,4 @@ const struct Collision Collision_ARRAY_0837028c[2] = {
     },
 };
 
-static const struct Rect sSize = {0x0000, -0x1E00, 0x3800, 0x3800};
+static const struct Rect sSize = {PIXEL(0), -PIXEL(30), PIXEL(56), PIXEL(56)};

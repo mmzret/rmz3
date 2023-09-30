@@ -45,8 +45,8 @@ static void FUN_0800e460(struct Coord* c) {
       LoadBlink(212, 0);
       gOverworld.work.missileFactory.unk_001 = 0;
     }
-    GetBlinkMotionState(211);
-    GetBlinkMotionState(212);
+    UpdateBlinkMotionState(211);
+    UpdateBlinkMotionState(212);
     gOverworld.work.missileFactory.unk_001++;
     if (gOverworld.work.missileFactory.unk_001 == 20) {
       gOverworld.work.missileFactory.unk_001 = 0;
@@ -63,7 +63,7 @@ static void FUN_0800e460(struct Coord* c) {
       gOverworld.work.missileFactory.unk_000 |= (1 << 1);
       LoadBlink(209, 0);
     }
-    GetBlinkMotionState(209);
+    UpdateBlinkMotionState(209);
 
   } else if (gOverworld.work.missileFactory.unk_000 & (1 << 1)) {
     gOverworld.work.missileFactory.unk_000 ^= (1 << 1);
@@ -75,7 +75,7 @@ static void FUN_0800e460(struct Coord* c) {
       gOverworld.work.missileFactory.unk_000 |= (1 << 2);
       LoadBlink(210, 0);
     }
-    GetBlinkMotionState(210);
+    UpdateBlinkMotionState(210);
 
   } else if (gOverworld.work.missileFactory.unk_000 & (1 << 2)) {
     gOverworld.work.missileFactory.unk_000 ^= (1 << 2);

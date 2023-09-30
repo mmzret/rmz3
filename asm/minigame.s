@@ -133,10 +133,10 @@ _080F904A:
 _080F9058:
 	ldr r5, _080F9194 @ =gSolidHeaderPtr
 	ldr r0, [r5]
-	bl UpdateBlockingEntities
+	bl UpdateHazardEntities
 	ldr r7, _080F9198 @ =gZakoHeaderPtr
 	ldr r0, [r7]
-	bl UpdateBlockingEntities
+	bl UpdateHazardEntities
 	ldr r3, _080F919C @ =0x0203029C
 	mov r8, r3
 	ldr r0, [r3]
@@ -1585,7 +1585,7 @@ cielMinigame: @ 0x080F9C80
 	rsbs r0, r0, #0
 	strh r0, [r1, #2]
 	movs r0, #0xd6
-	bl GetBlinkMotionState
+	bl UpdateBlinkMotionState
 	ldrb r0, [r4, #4]
 	cmp r0, #2
 	bhi _080F9CE0

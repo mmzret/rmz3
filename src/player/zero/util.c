@@ -628,7 +628,7 @@ const struct Rect gZeroRanges[6] = {
 const struct Collision gZeroCollisions[12] = {
     [0] = {
       kind : DRP,
-      layer : LAYER_ALLY,
+      faction : FACTION_ALLY,
       special : 1,
       damage : 0,
       unk_04 : 0xFF,
@@ -644,7 +644,7 @@ const struct Collision gZeroCollisions[12] = {
     },
     [1] = {
       kind : DRP,
-      layer : LAYER_ALLY,
+      faction : FACTION_ALLY,
       special : 1,
       damage : 0,
       unk_04 : 0xFF,
@@ -660,7 +660,7 @@ const struct Collision gZeroCollisions[12] = {
     },
     [2] = {
       kind : DRP,
-      layer : LAYER_ALLY,
+      faction : FACTION_ALLY,
       special : 1,
       damage : 0,
       unk_04 : 0xFF,
@@ -676,7 +676,7 @@ const struct Collision gZeroCollisions[12] = {
     },
     [3] = {
       kind : DRP,
-      layer : LAYER_ALLY,
+      faction : FACTION_ALLY,
       special : 1,
       damage : 0,
       unk_04 : 0xFF,
@@ -692,7 +692,7 @@ const struct Collision gZeroCollisions[12] = {
     },
     [4] = {
       kind : DRP,
-      layer : LAYER_ALLY,
+      faction : FACTION_ALLY,
       special : 1,
       damage : 0,
       unk_04 : 0xFF,
@@ -708,7 +708,7 @@ const struct Collision gZeroCollisions[12] = {
     },
     [5] = {
       kind : DRP,
-      layer : LAYER_ALLY,
+      faction : FACTION_ALLY,
       special : 1,
       damage : 0,
       unk_04 : 0xFF,
@@ -724,7 +724,7 @@ const struct Collision gZeroCollisions[12] = {
     },
     [6] = {
       kind : DRP,
-      layer : LAYER_ALLY,
+      faction : FACTION_ALLY,
       special : 1,
       damage : 0,
       unk_04 : 0xFF,
@@ -740,7 +740,7 @@ const struct Collision gZeroCollisions[12] = {
     },
     [7] = {
       kind : DRP,
-      layer : LAYER_ALLY,
+      faction : FACTION_ALLY,
       special : 1,
       damage : 0,
       unk_04 : 0xFF,
@@ -756,7 +756,7 @@ const struct Collision gZeroCollisions[12] = {
     },
     [8] = {
       kind : DRP,
-      layer : LAYER_ALLY,
+      faction : FACTION_ALLY,
       special : 1,
       damage : 0,
       unk_04 : 0xFF,
@@ -772,7 +772,7 @@ const struct Collision gZeroCollisions[12] = {
     },
     [9] = {
       kind : DRP,
-      layer : LAYER_ALLY,
+      faction : FACTION_ALLY,
       special : 1,
       damage : 0,
       unk_04 : 0xFF,
@@ -788,7 +788,7 @@ const struct Collision gZeroCollisions[12] = {
     },
     [10] = {
       kind : DRP,
-      layer : LAYER_ALLY,
+      faction : FACTION_ALLY,
       special : 1,
       damage : 0,
       unk_04 : 0xFF,
@@ -804,7 +804,7 @@ const struct Collision gZeroCollisions[12] = {
     },
     [11] = {
       kind : DRP,
-      layer : LAYER_ALLY,
+      faction : FACTION_ALLY,
       special : 1,
       damage : 0,
       unk_04 : 0xFF,

@@ -25,7 +25,6 @@ const SolidRoutine gContainerRoutine = {
 
 WIP static void Container_Init(struct Solid* p) {
 #if MODERN
-  struct Body* body;
   const s32 n = SM226_CRASH_CONTAINER + (p->s).work[0];
   LOAD_STATIC_GRAPHIC(n);
 
@@ -36,12 +35,7 @@ WIP static void Container_Init(struct Solid* p) {
   (p->s).flags &= ~X_FLIP;
   (p->s).spr.xflip = FALSE;
   (p->s).spr.oam.xflip = FALSE;
-  (p->s).flags |= COLLIDABLE;
-
-  body = &p->body;
-  InitBody(body, &sCollision, &(p->s).coord, 6);
-  body->parent = (struct CollidableEntity*)p;
-  body->fn = NULL;
+  INIT_BODY(p, &sCollision, 6, NULL);
   (p->s).flags2 |= ENTITY_HAZARD;
   (p->s).size = &sSize;
   (p->s).hazardAttr = METATILE_GROUND;
@@ -170,7 +164,7 @@ static void FUN_080dc524(struct Solid* p) {
 
 static const struct Collision sCollision = {
   kind : DRP,
-  layer : 1,
+  faction : FACTION_ENEMY,
   special : 0,
   damage : 0,
   unk_04 : 0xFF,

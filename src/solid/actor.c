@@ -1595,7 +1595,7 @@ INCASM("asm/solid/actor.inc");
 
 const struct Collision Collision_08370ab8 = {
   kind : DDP,
-  layer : 0,
+  faction : FACTION_ALLY,
   special : 0,
   damage : 1,
   unk_04 : 0x00,
@@ -1612,7 +1612,7 @@ const struct Collision Collision_08370ab8 = {
 
 const struct Collision Collision_08370ad0 = {
   kind : DRP,
-  layer : 1,
+  faction : FACTION_ENEMY,
   special : 0,
   damage : 0,
   unk_04 : 0xFF,
@@ -1648,7 +1648,7 @@ const u8 SlashedEnemy_ARRAY_08370b20[2 * sizeof(struct SlashedEnemy)] = {
 const struct Collision Collision_ARRAY_08370b58[11] = {
     [0] = {
       kind : DDP,
-      layer : 0,
+      faction : FACTION_ALLY,
       special : 0,
       damage : 1,
       unk_04 : 0x00,
@@ -1664,7 +1664,7 @@ const struct Collision Collision_ARRAY_08370b58[11] = {
     },
     [1] = {
       kind : DRP,
-      layer : 1,
+      faction : FACTION_ENEMY,
       special : 2,
       damage : 0,
       unk_04 : 0xFF,
@@ -1680,7 +1680,7 @@ const struct Collision Collision_ARRAY_08370b58[11] = {
     },
     [2] = {
       kind : DDP,
-      layer : 0,
+      faction : FACTION_ALLY,
       special : 0,
       damage : 1,
       unk_04 : 0x00,
@@ -1696,7 +1696,7 @@ const struct Collision Collision_ARRAY_08370b58[11] = {
     },
     [3] = {
       kind : DDP,
-      layer : 0,
+      faction : FACTION_ALLY,
       special : 0,
       damage : 1,
       unk_04 : 0x00,
@@ -1712,7 +1712,7 @@ const struct Collision Collision_ARRAY_08370b58[11] = {
     },
     [4] = {
       kind : DDP,
-      layer : 0,
+      faction : FACTION_ALLY,
       special : 0,
       damage : 1,
       unk_04 : 0x00,
@@ -1728,7 +1728,7 @@ const struct Collision Collision_ARRAY_08370b58[11] = {
     },
     [5] = {
       kind : DDP,
-      layer : 0,
+      faction : FACTION_ALLY,
       special : 0,
       damage : 1,
       unk_04 : 0x00,
@@ -1744,7 +1744,7 @@ const struct Collision Collision_ARRAY_08370b58[11] = {
     },
     [6] = {
       kind : DDP,
-      layer : 0,
+      faction : FACTION_ALLY,
       special : 0,
       damage : 1,
       unk_04 : 0x00,
@@ -1760,7 +1760,7 @@ const struct Collision Collision_ARRAY_08370b58[11] = {
     },
     [7] = {
       kind : DDP,
-      layer : 0,
+      faction : FACTION_ALLY,
       special : 0,
       damage : 1,
       unk_04 : 0x00,
@@ -1776,7 +1776,7 @@ const struct Collision Collision_ARRAY_08370b58[11] = {
     },
     [8] = {
       kind : DDP,
-      layer : 0,
+      faction : FACTION_ALLY,
       special : 0,
       damage : 1,
       unk_04 : 0x00,
@@ -1792,7 +1792,7 @@ const struct Collision Collision_ARRAY_08370b58[11] = {
     },
     [9] = {
       kind : DDP,
-      layer : 0,
+      faction : FACTION_ALLY,
       special : 0,
       damage : 1,
       unk_04 : 0x00,
@@ -1808,7 +1808,7 @@ const struct Collision Collision_ARRAY_08370b58[11] = {
     },
     [10] = {
       kind : DDP,
-      layer : 0,
+      faction : FACTION_ALLY,
       special : 0,
       damage : 1,
       unk_04 : 0x00,
@@ -1829,7 +1829,7 @@ const struct Rect Rect_08370c60 = {PIXEL(8), PIXEL(8), PIXEL(16), PIXEL(16)};
 const struct Collision Collision_ARRAY_08370c68[16] = {
     [0] = {
       kind : DRP,
-      layer : 0,
+      faction : FACTION_ALLY,
       special : 1,
       damage : 0,
       unk_04 : 0xFF,
@@ -1845,7 +1845,7 @@ const struct Collision Collision_ARRAY_08370c68[16] = {
     },
     [1] = {
       kind : DDP,
-      layer : 1,
+      faction : FACTION_ENEMY,
       special : 0,
       damage : 1,
       unk_04 : 0x00,
@@ -1861,7 +1861,7 @@ const struct Collision Collision_ARRAY_08370c68[16] = {
     },
     [2] = {
       kind : DRP,
-      layer : 0,
+      faction : FACTION_ALLY,
       special : 1,
       damage : 0,
       unk_04 : 0xFF,
@@ -1877,7 +1877,7 @@ const struct Collision Collision_ARRAY_08370c68[16] = {
     },
     [3] = {
       kind : DRP,
-      layer : 1,
+      faction : FACTION_ENEMY,
       special : 1,
       damage : 0,
       unk_04 : 0xFF,
@@ -1893,7 +1893,7 @@ const struct Collision Collision_ARRAY_08370c68[16] = {
     },
     [4] = {
       kind : DDP,
-      layer : 1,
+      faction : FACTION_ENEMY,
       special : 0,
       damage : 1,
       unk_04 : 0x00,
@@ -1909,7 +1909,7 @@ const struct Collision Collision_ARRAY_08370c68[16] = {
     },
     [5] = {
       kind : DDP,
-      layer : 1,
+      faction : FACTION_ENEMY,
       special : 0,
       damage : 1,
       unk_04 : 0x00,
@@ -1925,7 +1925,7 @@ const struct Collision Collision_ARRAY_08370c68[16] = {
     },
     [6] = {
       kind : DDP,
-      layer : 1,
+      faction : FACTION_ENEMY,
       special : 0,
       damage : 1,
       unk_04 : 0x00,
@@ -1941,7 +1941,7 @@ const struct Collision Collision_ARRAY_08370c68[16] = {
     },
     [7] = {
       kind : DRP,
-      layer : 0,
+      faction : FACTION_ALLY,
       special : 1,
       damage : 0,
       unk_04 : 0xFF,
@@ -1957,7 +1957,7 @@ const struct Collision Collision_ARRAY_08370c68[16] = {
     },
     [8] = {
       kind : DDP,
-      layer : 1,
+      faction : FACTION_ENEMY,
       special : 0,
       damage : 1,
       unk_04 : 0x00,
@@ -1973,7 +1973,7 @@ const struct Collision Collision_ARRAY_08370c68[16] = {
     },
     [9] = {
       kind : DDP,
-      layer : 1,
+      faction : FACTION_ENEMY,
       special : 0,
       damage : 1,
       unk_04 : 0x00,
@@ -1989,7 +1989,7 @@ const struct Collision Collision_ARRAY_08370c68[16] = {
     },
     [10] = {
       kind : DDP,
-      layer : 1,
+      faction : FACTION_ENEMY,
       special : 0,
       damage : 1,
       unk_04 : 0x00,
@@ -2005,7 +2005,7 @@ const struct Collision Collision_ARRAY_08370c68[16] = {
     },
     [11] = {
       kind : DDP,
-      layer : 1,
+      faction : FACTION_ENEMY,
       special : 0,
       damage : 1,
       unk_04 : 0x00,
@@ -2021,7 +2021,7 @@ const struct Collision Collision_ARRAY_08370c68[16] = {
     },
     [12] = {
       kind : DDP,
-      layer : 1,
+      faction : FACTION_ENEMY,
       special : 0,
       damage : 1,
       unk_04 : 0x00,
@@ -2037,7 +2037,7 @@ const struct Collision Collision_ARRAY_08370c68[16] = {
     },
     [13] = {
       kind : DDP,
-      layer : 1,
+      faction : FACTION_ENEMY,
       special : 0,
       damage : 1,
       unk_04 : 0x00,
@@ -2053,7 +2053,7 @@ const struct Collision Collision_ARRAY_08370c68[16] = {
     },
     [14] = {
       kind : DRP,
-      layer : 0,
+      faction : FACTION_ALLY,
       special : 1,
       damage : 0,
       unk_04 : 0xFF,
@@ -2069,7 +2069,7 @@ const struct Collision Collision_ARRAY_08370c68[16] = {
     },
     [15] = {
       kind : DRP,
-      layer : 2,
+      faction : FACTION_UNK2,
       special : 0,
       damage : 0,
       unk_04 : 0xFF,

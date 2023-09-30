@@ -59,7 +59,7 @@ static const ProjectileFunc sUpdates2[7] = {
 static const struct Collision sCollisions[5] = {
     {
       kind : DDP,
-      layer : LAYER_ENEMY,
+      faction : FACTION_ENEMY,
       special : 0,
       damage : 3,
       unk_04 : 0x00,
@@ -75,7 +75,7 @@ static const struct Collision sCollisions[5] = {
     },
     {
       kind : DDP,
-      layer : LAYER_ENEMY,
+      faction : FACTION_ENEMY,
       special : 0,
       damage : 255,
       unk_04 : 0x00,
@@ -91,7 +91,7 @@ static const struct Collision sCollisions[5] = {
     },
     {
       kind : DDP,
-      layer : LAYER_ENEMY,
+      faction : FACTION_ENEMY,
       special : 0,
       damage : 3,
       unk_04 : 0x00,
@@ -107,7 +107,7 @@ static const struct Collision sCollisions[5] = {
     },
     {
       kind : DDP,
-      layer : LAYER_ENEMY,
+      faction : FACTION_ENEMY,
       special : 0,
       damage : 3,
       unk_04 : 0x00,
@@ -123,7 +123,7 @@ static const struct Collision sCollisions[5] = {
     },
     {
       kind : DDP,
-      layer : LAYER_ENEMY,
+      faction : FACTION_ENEMY,
       special : 0,
       damage : 3,
       unk_04 : 0x00,

@@ -72,7 +72,7 @@ Hanumachine_Init: @ 0x0805B94C
 	ldr r1, _0805BA50 @ =0x08364E38
 	adds r0, r6, #0
 	movs r2, #0x40
-	bl resetBossData
+	bl ResetBossBody
 	ldr r1, _0805BA54 @ =FUN_0805d568
 	adds r0, r6, #0
 	adds r0, #0x74

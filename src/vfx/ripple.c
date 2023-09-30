@@ -1,7 +1,7 @@
 #include "entity.h"
-#include "vfx.h"
 #include "global.h"
 #include "overworld.h"
+#include "vfx.h"
 #include "zero.h"
 
 /*
@@ -25,32 +25,35 @@ const VFXRoutine gRippleRoutine = {
 
 // ------------------------------------------------------------------------------------------------------------------------------------
 
-WIP struct VFX* CreateRipple(struct Zero* z, bool8 outOfSea) {
+NON_MATCH struct VFX* CreateRipple(struct Zero* z, bool8 outOfSea) {
 #if MODERN
-  struct VFX* g = (struct VFX*)AllocEntityFirst(gVFXHeaderPtr);
-  if (g != NULL) {
-    (g->s).taskCol = 1;
-    INIT_VFX_ROUTINE(g, VFX_RIPPLE);
-    (g->s).tileNum = 0;
-    (g->s).palID = 0;
-    (g->s).unk_28 = &z->s;
+  bool8 yflip;
+  struct VFX* vfx = (struct VFX*)AllocEntityFirst(gVFXHeaderPtr);
+  if (vfx != NULL) {
+    (vfx->s).taskCol = 1;
+    INIT_VFX_ROUTINE(vfx, VFX_RIPPLE);
+    (vfx->s).tileNum = 0;
+    (vfx->s).palID = 0;
+    (vfx->s).unk_28 = &z->s;
     if (outOfSea) {
-      (g->s).flags |= Y_FLIP;
+      (vfx->s).flags |= Y_FLIP;
     } else {
-      (g->s).flags &= ~Y_FLIP;
+      (vfx->s).flags &= ~Y_FLIP;
     }
-    (g->s).spr.oam.yflip = (g->s).spr.yflip = outOfSea;
-    (g->s).work[0] = 0;
-    (g->s).work[1] = 0;
-    z->ripple = 1;
+    yflip = outOfSea & 1;
+    (vfx->s).spr.yflip = yflip;
+    (vfx->s).spr.oam.yflip = yflip;
+    (vfx->s).work[0] = 0;
+    (vfx->s).work[1] = 0;
+    z->ripple = TRUE;
   }
-  return g;
+  return vfx;
 #else
   INCCODE("asm/wip/CreateRipple.inc");
 #endif
 }
 
-WIP static void Ripple_Init(struct VFX* p) {
+NON_MATCH static void Ripple_Init(struct VFX* p) {
 #if MODERN
   struct Zero* z = (struct Zero*)(p->s).unk_28;
   InitNonAffineMotion(&p->s);

@@ -26,15 +26,16 @@ enum HitboxKind {
   DRP2,  // 喰らい判定その2
 };
 
-enum CollisionLayer {
-  LAYER_ALLY,   // 味方側の攻撃
-  LAYER_ENEMY,  // 敵側の攻撃(=ゼロにダメージがあるもの)
-  LAYER_UNK2,
+// Collision is occuring between different factions
+enum CollisionFaction {
+  FACTION_ALLY,   // 味方側の攻撃
+  FACTION_ENEMY,  // 敵側の攻撃(=ゼロにダメージがあるもの)
+  FACTION_UNK2,
 };
 
 struct Collision {
-  u8 kind;   // HitboxKind
-  u8 layer;  // 同じレイヤーに属するもの同士のコリジョンは発生し"無い"
+  u8 kind;     // HitboxKind
+  u8 faction;  // 同じレイヤーに属するもの同士のコリジョンは発生し"無い"
 
   /*
     bit 0: プチットやダメージ半減などの特殊処理の対象を示すフラグ
@@ -72,17 +73,17 @@ struct Hitbox {
 // 0x030032e0
 struct CollisionManager {
   /*
-    bit 0: ゼロ側のコリジョン関連の処理をスキップ(LAYER_ALLY)
-    bit 1: 敵側のコリジョン関連の処理をスキップ(LAYER_ENEMY)
-    bit 2: ???(LAYER_UNK2)
+    bit 0: ゼロ側のコリジョン関連の処理をスキップ(FACTION_ALLY)
+    bit 1: 敵側のコリジョン関連の処理をスキップ(FACTION_ENEMY)
+    bit 2: ???(FACTION_UNK2)
     bit 7: 全部スキップ
   */
   u8 disabled;
 
   /*
-    bit 0:    kill Zero(LAYER_ALLY)
-    bit 1:    kill All Enemies (Used for area change?)(LAYER_ENEMY)
-    bit 2:    ???(LAYER_UNK2)
+    bit 0:    kill Zero(FACTION_ALLY)
+    bit 1:    kill All Enemies (Used for area change?)(FACTION_ENEMY)
+    bit 2:    ???(FACTION_UNK2)
     bit 3..7: Unused
   */
   u8 sweep;

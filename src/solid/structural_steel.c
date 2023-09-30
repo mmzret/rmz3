@@ -58,7 +58,6 @@ static void FUN_080df5ac(struct Entity* e) {
 // --------------------------------------------
 
 static void Solid50_Init(struct Solid* p) {
-  struct Body* body;
   SET_SOLID_ROUTINE(p, ENTITY_MAIN);
   (p->s).mode[1] = sInitModes[(p->s).work[0]];
   (p->s).flags |= FLIPABLE;
@@ -68,11 +67,7 @@ static void Solid50_Init(struct Solid* p) {
   if ((p->s).work[0] != 2) {
     FUN_080df5ac(&p->s);
   } else {
-    (p->s).flags |= COLLIDABLE;
-    body = &p->body;
-    InitBody(body, &sCollision, &(p->s).coord, 1);
-    body->parent = (struct CollidableEntity*)p;
-    body->fn = NULL;
+    INIT_BODY(p, &sCollision, 1, NULL);
     (p->s).flags2 |= ENTITY_HAZARD;
     (p->s).size = &sSize;
     (p->s).hazardAttr = 0x2001;
@@ -114,7 +109,7 @@ INCASM("asm/solid/structural_steel.inc");
 
 static const struct Collision sCollision = {
   kind : DDP,
-  layer : 1,
+  faction : FACTION_ENEMY,
   special : 0,
   damage : 255,
   unk_04 : 0x00,

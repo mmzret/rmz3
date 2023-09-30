@@ -25,7 +25,7 @@ void UpdateEntities(struct EntityHeader *h) {
   }
 }
 
-void UpdateBlockingEntities(struct EntityHeader *h) {
+void UpdateHazardEntities(struct EntityHeader *h) {
   struct Entity *p;
 
   setCurProcessedEntityHeader(h);
@@ -84,7 +84,7 @@ WIP void RunDamageEffect(struct EntityHeader *h) {
         gWhitePaintFlags[(p->s).invincibleID >> 5] |= (1 << ((p->s).invincibleID & 0x1F));
       }
 
-      if ((wPauseFrame == 0) && ((p->body).status & BODY_STATUS_WHITE) && (((p->body).collisions)->layer != 0)) {
+      if ((wPauseFrame == 0) && ((p->body).status & BODY_STATUS_WHITE) && (((p->body).collisions)->faction != FACTION_ALLY)) {
         gIsPlayDamageSE = TRUE;
       }
     }

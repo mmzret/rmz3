@@ -69,7 +69,7 @@ const SolidFunc sAnubisCoffinUpdates2[3] = {
 const struct Collision sAnubisCoffinCollisions[2] = {
     [0] = {
       kind : DRP,
-      layer : 1,
+      faction : FACTION_ENEMY,
       special : 0,
       damage : 0,
       unk_04 : 0xFF,
@@ -85,7 +85,7 @@ const struct Collision sAnubisCoffinCollisions[2] = {
     },
     [1] = {
       kind : DDP,
-      layer : 1,
+      faction : FACTION_ENEMY,
       special : 0,
       damage : 4,
       unk_04 : 0x00,

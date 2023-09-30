@@ -344,7 +344,7 @@ WIP static void dash_saber(struct Zero* z) {
         (z->unk_b4).attackMode[2]++;
       }
     } else if ((z->s).motion.state == MOTION_END) {
-      z->restriction.move != FALSE;
+      z->restriction.move = FALSE;
       (z->s).mode[1] = ZERO_GROUND;
       (z->s).mode[2] = 0;
       (z->s).mode[3] = 0;

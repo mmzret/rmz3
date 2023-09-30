@@ -1001,27 +1001,27 @@ const WeaponFunc PTR_ARRAY_08386300[WEAPON_MOVE_COUNT] = {
 
 // --------------------------------------------
 
-void FUN_080e2510(struct Elf *p);
-void FUN_080e2b78(struct Elf *p);
-void FUN_080e4054(struct Elf *p);
-void FUN_080e453c(struct Elf *p);
-void FUN_080e4b88(struct Elf *p);
-void FUN_080e58bc(struct Elf *p);
+void FUN_080e2510(struct Elf *e);
+void FUN_080e2b78(struct Elf *e);
+void MenuExit_FollowerElf(struct Elf *e);
+void MenuExit_SeaOtterElf(struct Elf *e);
+void FUN_080e4b88(struct Elf *e);
+void FUN_080e58bc(struct Elf *e);
 
 // clang-format off
 const ElfFunc PTR_ARRAY_08386344[13] = {
-    NULL, 
-    NULL, 
-    FUN_080e2510, 
-    NULL, 
-    FUN_080e2b78, 
-    NULL, 
-    NULL, 
-    NULL, 
-    FUN_080e4054, 
-    FUN_080e453c, 
-    FUN_080e4b88, 
-    NULL, 
-    FUN_080e58bc,
+    [0]  = NULL, 
+    [1]  = NULL, 
+    [2]  = FUN_080e2510, 
+    [3]  = NULL, 
+    [4]  = FUN_080e2b78, 
+    [5]  = NULL, 
+    [6]  = NULL, 
+    [7]  = NULL, 
+    [8]  = MenuExit_FollowerElf, 
+    [9]  = MenuExit_SeaOtterElf, 
+    [10] = FUN_080e4b88, 
+    [11] = NULL, 
+    [12] = FUN_080e58bc,
 };
 // clang-format on

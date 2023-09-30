@@ -214,7 +214,7 @@ static void FUN_080b3a3c(struct VFX* p) {
     }
   }
 
-  RNG_0202f388 = (LCG(RNG_0202f388) << 1) >> 1;
+  RNG_0202f388 = LCG(RNG_0202f388);
   (p->s).coord.x += PIXEL(((RNG_0202f388 >> 16) & 4) - 2);
   InitNonAffineMotion(&p->s);
   (p->s).flags |= DISPLAY;
@@ -248,14 +248,14 @@ static void FUN_080b3b8c(struct VFX* p) {
   SetMotion(&p->s, MOTION(SM000_BATTLE_EFFECT, 0x0F));
 
   if ((p->s).flags & X_FLIP) {
-    RNG_0202f388 = (LCG(RNG_0202f388) << 1) >> 1;
+    RNG_0202f388 = LCG(RNG_0202f388);
     (p->s).d.x = (RNG_0202f388 >> 16) & 0x1FF;
   } else {
-    RNG_0202f388 = (LCG(RNG_0202f388) << 1) >> 1;
+    RNG_0202f388 = LCG(RNG_0202f388);
     (p->s).d.x = -((RNG_0202f388 >> 16) & 0x1FF);
   }
 
-  RNG_0202f388 = (LCG(RNG_0202f388) << 1) >> 1;
+  RNG_0202f388 = LCG(RNG_0202f388);
   (p->s).d.y = (((RNG_0202f388 >> 16) & 0xF) + 0xD) * -0x40;
 
   SET_VFX_ROUTINE(p, ENTITY_MAIN);
@@ -269,14 +269,14 @@ static void FUN_080b3c40(struct VFX* p) {
   SetMotion(&p->s, MOTION(SM000_BATTLE_EFFECT, 0x10));
 
   if ((p->s).flags & X_FLIP) {
-    RNG_0202f388 = (LCG(RNG_0202f388) << 1) >> 1;
+    RNG_0202f388 = LCG(RNG_0202f388);
     (p->s).d.x = (RNG_0202f388 >> 16) & 0x1FF;
   } else {
-    RNG_0202f388 = (LCG(RNG_0202f388) << 1) >> 1;
+    RNG_0202f388 = LCG(RNG_0202f388);
     (p->s).d.x = -((RNG_0202f388 >> 16) & 0x1FF);
   }
 
-  RNG_0202f388 = (LCG(RNG_0202f388) << 1) >> 1;
+  RNG_0202f388 = LCG(RNG_0202f388);
   (p->s).d.y = (((RNG_0202f388 >> 16) & 0xF) + 0xA) * -0x40;
 
   SET_VFX_ROUTINE(p, ENTITY_MAIN);

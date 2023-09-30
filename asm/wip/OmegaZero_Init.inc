@@ -33,7 +33,7 @@
 	ldr r1, _0805D8E0 @ =0x0836512C
 	adds r0, r7, #0
 	movs r2, #0x60
-	bl resetBossData
+	bl ResetBossBody
 	ldr r1, _0805D8E4 @ =onCollision
 	adds r0, r7, #0
 	adds r0, #0x74

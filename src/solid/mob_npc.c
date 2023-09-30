@@ -498,7 +498,7 @@ const motion_t sMobNPCMotions[27] = {
 const struct Collision sMobNPCCollisions[3] = {
     {
       kind : DDP,
-      layer : 1,
+      faction : FACTION_ENEMY,
       special : CHATABLE,
       damage : 255,
       unk_04 : 0x00,
@@ -514,7 +514,7 @@ const struct Collision sMobNPCCollisions[3] = {
     },
     {
       kind : DDP,
-      layer : 1,
+      faction : FACTION_ENEMY,
       special : CHATABLE,
       damage : 255,
       unk_04 : 0x00,
@@ -530,7 +530,7 @@ const struct Collision sMobNPCCollisions[3] = {
     },
     {
       kind : DDP,
-      layer : 1,
+      faction : FACTION_ENEMY,
       special : CHATABLE,
       damage : 255,
       unk_04 : 0x00,

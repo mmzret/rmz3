@@ -38,7 +38,7 @@ static void FUN_08011dd8(struct Coord* _ UNUSED) {
       gOverworld.work.energyFacility.unk_000[0] |= (1 << 0);
       LoadBlink(196, 0);
     }
-    GetBlinkMotionState(196);
+    UpdateBlinkMotionState(196);
 
   } else if ((gOverworld.work.energyFacility.unk_000[0] & (1 << 0))) {
     gOverworld.work.energyFacility.unk_000[0] ^= (1 << 0);
@@ -50,7 +50,7 @@ static void FUN_08011dd8(struct Coord* _ UNUSED) {
       gOverworld.work.energyFacility.unk_000[0] |= (1 << 1);
       LoadBlink(197, 0);
     }
-    GetBlinkMotionState(197);
+    UpdateBlinkMotionState(197);
     gOverworld.work.energyFacility.unk_00c[0]++;
     if (gOverworld.work.energyFacility.unk_00c[0] == 27) {
       gOverworld.work.energyFacility.unk_00c[0] = 0;
@@ -82,7 +82,7 @@ static void FUN_08011dd8(struct Coord* _ UNUSED) {
       } else if (gOverworld.work.energyFacility.unk_00e == 198) {
         LoadBlink(192, 0);
       }
-      GetBlinkMotionState(192);
+      UpdateBlinkMotionState(192);
     }
     if (gCurStory.unk_54 & (1 << 3)) {
       if (gOverworld.work.energyFacility.unk_012[0] < 64) {
@@ -113,8 +113,8 @@ static void FUN_08011dd8(struct Coord* _ UNUSED) {
         }
         gOverworld.work.energyFacility.unk_00c[1]++;
       }
-      GetBlinkMotionState(193);
-      GetBlinkMotionState(194);
+      UpdateBlinkMotionState(193);
+      UpdateBlinkMotionState(194);
     }
 
   } else if ((gOverworld.work.energyFacility.unk_000[0] & (1 << 2))) {
@@ -851,9 +851,9 @@ static void LayerUpdate_4(struct StageLayer* l, const struct Stage* _ UNUSED) {
     ClearBlink(195);
   }
 
-  GetBlinkMotionState(191);
-  GetBlinkMotionState(195);
-  GetBlinkMotionState(243);
+  UpdateBlinkMotionState(191);
+  UpdateBlinkMotionState(195);
+  UpdateBlinkMotionState(243);
 }
 
 static void LayerDraw_4(struct StageLayer* l, const struct Stage* _ UNUSED) {

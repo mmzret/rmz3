@@ -33,18 +33,11 @@ WIP static void PantheonGuardian_Init(struct Enemy* p) {
   (p->s).flags |= DISPLAY;
   (p->s).flags |= FLIPABLE;
   if ((gSystemSavedataManager.mods[1] & (1 << 4)) && !FLAG(gCurStory.s.gameflags, DEMO_PLAY)) {
-    (p->s).flags |= COLLIDABLE;
     hp = 14;
   } else {
-    (p->s).flags |= COLLIDABLE;
     hp = 10;
   }
-
-  body = &p->body;
-  InitBody(body, sCollisions, &(p->s).coord, hp);
-  body->parent = (struct CollidableEntity*)p;
-  body->fn = FUN_0806465c;
-
+  INIT_BODY(p, sCollisions, hp, FUN_0806465c);
   props = &p->props.pantheon;
   props->x = (p->s).coord.x;
   (p->s).coord.y = FUN_08009f6c((p->s).coord.x, (p->s).coord.y);
@@ -119,7 +112,7 @@ static const EnemyFunc sPantheonGuardianUpdates2[9] = {
 static const struct Collision sCollisions[7] = {
     [0] = {
       kind : DDP,
-      layer : 1,
+      faction : FACTION_ENEMY,
       special : 0,
       damage : 3,
       unk_04 : 0x00,
@@ -135,7 +128,7 @@ static const struct Collision sCollisions[7] = {
     },
     [1] = {
       kind : DRP,
-      layer : 1,
+      faction : FACTION_ENEMY,
       special : 0,
       damage : 0,
       unk_04 : 0xFF,
@@ -151,7 +144,7 @@ static const struct Collision sCollisions[7] = {
     },
     [2] = {
       kind : DDP,
-      layer : 1,
+      faction : FACTION_ENEMY,
       special : 0,
       damage : 3,
       unk_04 : 0x00,
@@ -167,7 +160,7 @@ static const struct Collision sCollisions[7] = {
     },
     [3] = {
       kind : DRP,
-      layer : 1,
+      faction : FACTION_ENEMY,
       special : 0,
       damage : 0,
       unk_04 : 0xFF,
@@ -183,7 +176,7 @@ static const struct Collision sCollisions[7] = {
     },
     [4] = {
       kind : DDP,
-      layer : 1,
+      faction : FACTION_ENEMY,
       special : 0,
       damage : 3,
       unk_04 : 0x00,
@@ -199,7 +192,7 @@ static const struct Collision sCollisions[7] = {
     },
     [5] = {
       kind : DRP,
-      layer : 1,
+      faction : FACTION_ENEMY,
       special : 0,
       damage : 0,
       unk_04 : 0xFF,
@@ -215,7 +208,7 @@ static const struct Collision sCollisions[7] = {
     },
     [6] = {
       kind : DDP,
-      layer : 2,
+      faction : FACTION_UNK2,
       special : 0,
       damage : 3,
       unk_04 : 0x00,

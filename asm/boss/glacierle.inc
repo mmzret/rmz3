@@ -246,7 +246,7 @@ Glacierle_Init: @ 0x08057AE4
 	ldr r1, _08057C6C @ =0x08363DCC
 	adds r0, r7, #0
 	movs r2, #0x40
-	bl resetBossData
+	bl ResetBossBody
 	ldr r1, _08057C70 @ =FUN_08057a38
 	adds r0, r7, #0
 	adds r0, #0x74

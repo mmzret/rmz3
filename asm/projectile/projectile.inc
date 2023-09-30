@@ -6555,7 +6555,7 @@ _080A12AA:
 	ldr r1, [r4, #0x54]
 	adds r1, r1, r0
 	adds r0, r5, #0
-	bl FUN_0807a4e8
+	bl CreateDeathtanzRock
 _080A12E6:
 	ldrb r1, [r4, #0xa]
 	movs r0, #0xfe
@@ -15836,7 +15836,7 @@ _080A5DA6:
 	strb r0, [r4, #0xe]
 _080A5DC8:
 	movs r0, #0x57
-	bl GetBlinkMotionState
+	bl UpdateBlinkMotionState
 	ldr r0, [r4, #0x54]
 	ldr r1, [r4, #0x5c]
 	adds r0, r0, r1
@@ -15891,7 +15891,7 @@ _080A5E10:
 	strb r0, [r4, #0xe]
 _080A5E34:
 	movs r0, #0x57
-	bl GetBlinkMotionState
+	bl UpdateBlinkMotionState
 	adds r0, r4, #0
 	bl UpdateMotionGraphic
 	ldrb r0, [r4, #0x13]

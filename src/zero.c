@@ -129,7 +129,7 @@ bool8 IsDoubleHP(struct Zero *z) {
 /**
  * @return Zero Max HP (affected by Nurse(+4) and Martina(x2))
  */
-WIP u8 GetMaxHP(struct Zero *z) {
+NON_MATCH u8 GetMaxHP(struct Zero *z) {
 #if MODERN
   const u8 *satelites;
   s32 i;

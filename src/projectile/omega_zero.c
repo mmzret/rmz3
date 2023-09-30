@@ -1159,7 +1159,7 @@ _080AED88: .4byte gProjectileFnTable\n\
 static const struct Collision gOmegaZeroProjectileCollisions_0836c9c0[41] = {
     {
       kind : DDP,
-      layer : 1,
+      faction : FACTION_ENEMY,
       special : 0,
       damage : 3,
       unk_04 : 0x00,
@@ -1175,7 +1175,7 @@ static const struct Collision gOmegaZeroProjectileCollisions_0836c9c0[41] = {
     },
     {
       kind : DDP,
-      layer : 1,
+      faction : FACTION_ENEMY,
       special : 0,
       damage : 3,
       unk_04 : 0x00,
@@ -1191,7 +1191,7 @@ static const struct Collision gOmegaZeroProjectileCollisions_0836c9c0[41] = {
     },
     {
       kind : DDP,
-      layer : 1,
+      faction : FACTION_ENEMY,
       special : 0,
       damage : 3,
       unk_04 : 0x00,
@@ -1207,7 +1207,7 @@ static const struct Collision gOmegaZeroProjectileCollisions_0836c9c0[41] = {
     },
     {
       kind : DDP,
-      layer : 1,
+      faction : FACTION_ENEMY,
       special : 0,
       damage : 3,
       unk_04 : 0x00,
@@ -1223,7 +1223,7 @@ static const struct Collision gOmegaZeroProjectileCollisions_0836c9c0[41] = {
     },
     {
       kind : DDP,
-      layer : 1,
+      faction : FACTION_ENEMY,
       special : 0,
       damage : 5,
       unk_04 : 0x00,
@@ -1239,7 +1239,7 @@ static const struct Collision gOmegaZeroProjectileCollisions_0836c9c0[41] = {
     },
     {
       kind : DDP,
-      layer : 1,
+      faction : FACTION_ENEMY,
       special : 0,
       damage : 3,
       unk_04 : 0x00,
@@ -1255,7 +1255,7 @@ static const struct Collision gOmegaZeroProjectileCollisions_0836c9c0[41] = {
     },
     {
       kind : DDP,
-      layer : 1,
+      faction : FACTION_ENEMY,
       special : 0,
       damage : 3,
       unk_04 : 0x00,
@@ -1271,7 +1271,7 @@ static const struct Collision gOmegaZeroProjectileCollisions_0836c9c0[41] = {
     },
     {
       kind : DDP,
-      layer : 1,
+      faction : FACTION_ENEMY,
       special : 0,
       damage : 3,
       unk_04 : 0x00,
@@ -1287,7 +1287,7 @@ static const struct Collision gOmegaZeroProjectileCollisions_0836c9c0[41] = {
     },
     {
       kind : DRP,
-      layer : 1,
+      faction : FACTION_ENEMY,
       special : 0,
       damage : 0,
       unk_04 : 0xFF,
@@ -1303,7 +1303,7 @@ static const struct Collision gOmegaZeroProjectileCollisions_0836c9c0[41] = {
     },
     {
       kind : DDP,
-      layer : 1,
+      faction : FACTION_ENEMY,
       special : 1,
       damage : 2,
       unk_04 : 0x01,
@@ -1319,7 +1319,7 @@ static const struct Collision gOmegaZeroProjectileCollisions_0836c9c0[41] = {
     },
     {
       kind : DDP,
-      layer : 1,
+      faction : FACTION_ENEMY,
       special : 1,
       damage : 2,
       unk_04 : 0x01,
@@ -1335,7 +1335,7 @@ static const struct Collision gOmegaZeroProjectileCollisions_0836c9c0[41] = {
     },
     {
       kind : DDP,
-      layer : 1,
+      faction : FACTION_ENEMY,
       special : 1,
       damage : 2,
       unk_04 : 0x01,
@@ -1351,7 +1351,7 @@ static const struct Collision gOmegaZeroProjectileCollisions_0836c9c0[41] = {
     },
     {
       kind : DDP,
-      layer : 1,
+      faction : FACTION_ENEMY,
       special : 1,
       damage : 1,
       unk_04 : 0x01,
@@ -1367,7 +1367,7 @@ static const struct Collision gOmegaZeroProjectileCollisions_0836c9c0[41] = {
     },
     {
       kind : DDP,
-      layer : 1,
+      faction : FACTION_ENEMY,
       special : 1,
       damage : 1,
       unk_04 : 0x01,
@@ -1383,7 +1383,7 @@ static const struct Collision gOmegaZeroProjectileCollisions_0836c9c0[41] = {
     },
     {
       kind : DDP,
-      layer : 1,
+      faction : FACTION_ENEMY,
       special : 1,
       damage : 1,
       unk_04 : 0x01,
@@ -1399,7 +1399,7 @@ static const struct Collision gOmegaZeroProjectileCollisions_0836c9c0[41] = {
     },
     {
       kind : DDP,
-      layer : 1,
+      faction : FACTION_ENEMY,
       special : 1,
       damage : 3,
       unk_04 : 0x01,
@@ -1415,7 +1415,7 @@ static const struct Collision gOmegaZeroProjectileCollisions_0836c9c0[41] = {
     },
     {
       kind : DDP,
-      layer : 1,
+      faction : FACTION_ENEMY,
       special : 1,
       damage : 3,
       unk_04 : 0x01,
@@ -1431,7 +1431,7 @@ static const struct Collision gOmegaZeroProjectileCollisions_0836c9c0[41] = {
     },
     {
       kind : DDP,
-      layer : 1,
+      faction : FACTION_ENEMY,
       special : 1,
       damage : 3,
       unk_04 : 0x01,
@@ -1447,7 +1447,7 @@ static const struct Collision gOmegaZeroProjectileCollisions_0836c9c0[41] = {
     },
     {
       kind : DDP,
-      layer : 1,
+      faction : FACTION_ENEMY,
       special : 1,
       damage : 3,
       unk_04 : 0x01,
@@ -1463,7 +1463,7 @@ static const struct Collision gOmegaZeroProjectileCollisions_0836c9c0[41] = {
     },
     {
       kind : DDP,
-      layer : 1,
+      faction : FACTION_ENEMY,
       special : 1,
       damage : 1,
       unk_04 : 0x01,
@@ -1479,7 +1479,7 @@ static const struct Collision gOmegaZeroProjectileCollisions_0836c9c0[41] = {
     },
     {
       kind : DDP,
-      layer : 1,
+      faction : FACTION_ENEMY,
       special : 1,
       damage : 1,
       unk_04 : 0x01,
@@ -1495,7 +1495,7 @@ static const struct Collision gOmegaZeroProjectileCollisions_0836c9c0[41] = {
     },
     {
       kind : DDP,
-      layer : 1,
+      faction : FACTION_ENEMY,
       special : 1,
       damage : 1,
       unk_04 : 0x01,
@@ -1511,7 +1511,7 @@ static const struct Collision gOmegaZeroProjectileCollisions_0836c9c0[41] = {
     },
     {
       kind : DDP,
-      layer : 1,
+      faction : FACTION_ENEMY,
       special : 1,
       damage : 1,
       unk_04 : 0x01,
@@ -1527,7 +1527,7 @@ static const struct Collision gOmegaZeroProjectileCollisions_0836c9c0[41] = {
     },
     {
       kind : DDP,
-      layer : 1,
+      faction : FACTION_ENEMY,
       special : 1,
       damage : 1,
       unk_04 : 0x01,
@@ -1543,7 +1543,7 @@ static const struct Collision gOmegaZeroProjectileCollisions_0836c9c0[41] = {
     },
     {
       kind : DDP,
-      layer : 1,
+      faction : FACTION_ENEMY,
       special : 1,
       damage : 1,
       unk_04 : 0x01,
@@ -1559,7 +1559,7 @@ static const struct Collision gOmegaZeroProjectileCollisions_0836c9c0[41] = {
     },
     {
       kind : DDP,
-      layer : 1,
+      faction : FACTION_ENEMY,
       special : 1,
       damage : 1,
       unk_04 : 0x01,
@@ -1575,7 +1575,7 @@ static const struct Collision gOmegaZeroProjectileCollisions_0836c9c0[41] = {
     },
     {
       kind : DDP,
-      layer : 1,
+      faction : FACTION_ENEMY,
       special : 1,
       damage : 1,
       unk_04 : 0x01,
@@ -1591,7 +1591,7 @@ static const struct Collision gOmegaZeroProjectileCollisions_0836c9c0[41] = {
     },
     {
       kind : DDP,
-      layer : 1,
+      faction : FACTION_ENEMY,
       special : 1,
       damage : 4,
       unk_04 : 0x01,
@@ -1607,7 +1607,7 @@ static const struct Collision gOmegaZeroProjectileCollisions_0836c9c0[41] = {
     },
     {
       kind : DDP,
-      layer : 1,
+      faction : FACTION_ENEMY,
       special : 1,
       damage : 4,
       unk_04 : 0x01,
@@ -1623,7 +1623,7 @@ static const struct Collision gOmegaZeroProjectileCollisions_0836c9c0[41] = {
     },
     {
       kind : DDP,
-      layer : 1,
+      faction : FACTION_ENEMY,
       special : 1,
       damage : 4,
       unk_04 : 0x01,
@@ -1639,7 +1639,7 @@ static const struct Collision gOmegaZeroProjectileCollisions_0836c9c0[41] = {
     },
     {
       kind : DDP,
-      layer : 1,
+      faction : FACTION_ENEMY,
       special : 1,
       damage : 4,
       unk_04 : 0x01,
@@ -1655,7 +1655,7 @@ static const struct Collision gOmegaZeroProjectileCollisions_0836c9c0[41] = {
     },
     {
       kind : DDP,
-      layer : 1,
+      faction : FACTION_ENEMY,
       special : 1,
       damage : 4,
       unk_04 : 0x01,
@@ -1671,7 +1671,7 @@ static const struct Collision gOmegaZeroProjectileCollisions_0836c9c0[41] = {
     },
     {
       kind : DDP,
-      layer : 1,
+      faction : FACTION_ENEMY,
       special : 1,
       damage : 4,
       unk_04 : 0x01,
@@ -1687,7 +1687,7 @@ static const struct Collision gOmegaZeroProjectileCollisions_0836c9c0[41] = {
     },
     {
       kind : DDP,
-      layer : 1,
+      faction : FACTION_ENEMY,
       special : 1,
       damage : 4,
       unk_04 : 0x01,
@@ -1703,7 +1703,7 @@ static const struct Collision gOmegaZeroProjectileCollisions_0836c9c0[41] = {
     },
     {
       kind : DDP,
-      layer : 1,
+      faction : FACTION_ENEMY,
       special : 1,
       damage : 1,
       unk_04 : 0x01,
@@ -1719,7 +1719,7 @@ static const struct Collision gOmegaZeroProjectileCollisions_0836c9c0[41] = {
     },
     {
       kind : DDP,
-      layer : 1,
+      faction : FACTION_ENEMY,
       special : 1,
       damage : 1,
       unk_04 : 0x01,
@@ -1735,7 +1735,7 @@ static const struct Collision gOmegaZeroProjectileCollisions_0836c9c0[41] = {
     },
     {
       kind : DDP,
-      layer : 1,
+      faction : FACTION_ENEMY,
       special : 1,
       damage : 1,
       unk_04 : 0x01,
@@ -1751,7 +1751,7 @@ static const struct Collision gOmegaZeroProjectileCollisions_0836c9c0[41] = {
     },
     {
       kind : DDP,
-      layer : 1,
+      faction : FACTION_ENEMY,
       special : 1,
       damage : 1,
       unk_04 : 0x01,
@@ -1767,7 +1767,7 @@ static const struct Collision gOmegaZeroProjectileCollisions_0836c9c0[41] = {
     },
     {
       kind : DDP,
-      layer : 1,
+      faction : FACTION_ENEMY,
       special : 1,
       damage : 1,
       unk_04 : 0x01,
@@ -1783,7 +1783,7 @@ static const struct Collision gOmegaZeroProjectileCollisions_0836c9c0[41] = {
     },
     {
       kind : DDP,
-      layer : 1,
+      faction : FACTION_ENEMY,
       special : 1,
       damage : 1,
       unk_04 : 0x01,
@@ -1799,7 +1799,7 @@ static const struct Collision gOmegaZeroProjectileCollisions_0836c9c0[41] = {
     },
     {
       kind : DDP,
-      layer : 1,
+      faction : FACTION_ENEMY,
       special : 1,
       damage : 1,
       unk_04 : 0x01,
@@ -1900,7 +1900,7 @@ const struct Collision *const PTR_ARRAY_0836ce58[11] = {
 const struct Collision gOmegaZeroProjectileCollisions_0836ce84[5] = {
     {
       kind : DDP,
-      layer : 1,
+      faction : FACTION_ENEMY,
       special : 1,
       damage : 3,
       unk_04 : 0x01,
@@ -1916,7 +1916,7 @@ const struct Collision gOmegaZeroProjectileCollisions_0836ce84[5] = {
     },
     {
       kind : DDP,
-      layer : 1,
+      faction : FACTION_ENEMY,
       special : 1,
       damage : 3,
       unk_04 : 0x01,
@@ -1932,7 +1932,7 @@ const struct Collision gOmegaZeroProjectileCollisions_0836ce84[5] = {
     },
     {
       kind : DDP,
-      layer : 1,
+      faction : FACTION_ENEMY,
       special : 1,
       damage : 3,
       unk_04 : 0x01,
@@ -1948,7 +1948,7 @@ const struct Collision gOmegaZeroProjectileCollisions_0836ce84[5] = {
     },
     {
       kind : DDP,
-      layer : 1,
+      faction : FACTION_ENEMY,
       special : 1,
       damage : 3,
       unk_04 : 0x01,
@@ -1964,7 +1964,7 @@ const struct Collision gOmegaZeroProjectileCollisions_0836ce84[5] = {
     },
     {
       kind : DDP,
-      layer : 1,
+      faction : FACTION_ENEMY,
       special : 1,
       damage : 3,
       unk_04 : 0x01,
@@ -2000,7 +2000,7 @@ const struct Collision *const PTR_ARRAY_0836cf14[2] = {
 const struct Collision gOmegaZeroProjectileCollisions_0836cf1c[12] = {
     {
       kind : DDP,
-      layer : 1,
+      faction : FACTION_ENEMY,
       special : 1,
       damage : 4,
       unk_04 : 0x01,
@@ -2016,7 +2016,7 @@ const struct Collision gOmegaZeroProjectileCollisions_0836cf1c[12] = {
     },
     {
       kind : DDP,
-      layer : 1,
+      faction : FACTION_ENEMY,
       special : 1,
       damage : 4,
       unk_04 : 0x01,
@@ -2032,7 +2032,7 @@ const struct Collision gOmegaZeroProjectileCollisions_0836cf1c[12] = {
     },
     {
       kind : DDP,
-      layer : 1,
+      faction : FACTION_ENEMY,
       special : 1,
       damage : 4,
       unk_04 : 0x01,
@@ -2048,7 +2048,7 @@ const struct Collision gOmegaZeroProjectileCollisions_0836cf1c[12] = {
     },
     {
       kind : DDP,
-      layer : 1,
+      faction : FACTION_ENEMY,
       special : 1,
       damage : 4,
       unk_04 : 0x01,
@@ -2064,7 +2064,7 @@ const struct Collision gOmegaZeroProjectileCollisions_0836cf1c[12] = {
     },
     {
       kind : DDP,
-      layer : 1,
+      faction : FACTION_ENEMY,
       special : 1,
       damage : 1,
       unk_04 : 0x01,
@@ -2080,7 +2080,7 @@ const struct Collision gOmegaZeroProjectileCollisions_0836cf1c[12] = {
     },
     {
       kind : DDP,
-      layer : 1,
+      faction : FACTION_ENEMY,
       special : 1,
       damage : 1,
       unk_04 : 0x01,
@@ -2096,7 +2096,7 @@ const struct Collision gOmegaZeroProjectileCollisions_0836cf1c[12] = {
     },
     {
       kind : DDP,
-      layer : 1,
+      faction : FACTION_ENEMY,
       special : 1,
       damage : 1,
       unk_04 : 0x01,
@@ -2112,7 +2112,7 @@ const struct Collision gOmegaZeroProjectileCollisions_0836cf1c[12] = {
     },
     {
       kind : DDP,
-      layer : 1,
+      faction : FACTION_ENEMY,
       special : 1,
       damage : 1,
       unk_04 : 0x01,
@@ -2128,7 +2128,7 @@ const struct Collision gOmegaZeroProjectileCollisions_0836cf1c[12] = {
     },
     {
       kind : DDP,
-      layer : 1,
+      faction : FACTION_ENEMY,
       special : 1,
       damage : 1,
       unk_04 : 0x01,
@@ -2144,7 +2144,7 @@ const struct Collision gOmegaZeroProjectileCollisions_0836cf1c[12] = {
     },
     {
       kind : DDP,
-      layer : 1,
+      faction : FACTION_ENEMY,
       special : 1,
       damage : 1,
       unk_04 : 0x01,
@@ -2160,7 +2160,7 @@ const struct Collision gOmegaZeroProjectileCollisions_0836cf1c[12] = {
     },
     {
       kind : DDP,
-      layer : 1,
+      faction : FACTION_ENEMY,
       special : 1,
       damage : 1,
       unk_04 : 0x00,
@@ -2176,7 +2176,7 @@ const struct Collision gOmegaZeroProjectileCollisions_0836cf1c[12] = {
     },
     {
       kind : DDP,
-      layer : 1,
+      faction : FACTION_ENEMY,
       special : 1,
       damage : 1,
       unk_04 : 0x01,
@@ -2232,7 +2232,7 @@ static const struct Collision *const PTR_ARRAY_0836d07c[8] = {
 static const struct Collision gOmegaZeroProjectileCollisions_0836d09c[4] = {
     {
       kind : DDP,
-      layer : 1,
+      faction : FACTION_ENEMY,
       special : 1,
       damage : 5,
       unk_04 : 0x01,
@@ -2248,7 +2248,7 @@ static const struct Collision gOmegaZeroProjectileCollisions_0836d09c[4] = {
     },
     {
       kind : DDP,
-      layer : 1,
+      faction : FACTION_ENEMY,
       special : 0,
       damage : 5,
       unk_04 : 0x01,
@@ -2264,7 +2264,7 @@ static const struct Collision gOmegaZeroProjectileCollisions_0836d09c[4] = {
     },
     {
       kind : DDP,
-      layer : 1,
+      faction : FACTION_ENEMY,
       special : 1,
       damage : 5,
       unk_04 : 0x01,
@@ -2280,7 +2280,7 @@ static const struct Collision gOmegaZeroProjectileCollisions_0836d09c[4] = {
     },
     {
       kind : DDP,
-      layer : 1,
+      faction : FACTION_ENEMY,
       special : 1,
       damage : 5,
       unk_04 : 0x01,
@@ -2314,7 +2314,7 @@ static const struct Collision *const PTR_ARRAY_0836d0fc[10] = {
 static const struct Collision gOmegaZeroProjectileCollisions_0836d124[11] = {
     {
       kind : DDP,
-      layer : 1,
+      faction : FACTION_ENEMY,
       special : 1,
       damage : 3,
       unk_04 : 0x01,
@@ -2330,7 +2330,7 @@ static const struct Collision gOmegaZeroProjectileCollisions_0836d124[11] = {
     },
     {
       kind : DDP,
-      layer : 1,
+      faction : FACTION_ENEMY,
       special : 1,
       damage : 3,
       unk_04 : 0x01,
@@ -2346,7 +2346,7 @@ static const struct Collision gOmegaZeroProjectileCollisions_0836d124[11] = {
     },
     {
       kind : DDP,
-      layer : 1,
+      faction : FACTION_ENEMY,
       special : 1,
       damage : 3,
       unk_04 : 0x01,
@@ -2362,7 +2362,7 @@ static const struct Collision gOmegaZeroProjectileCollisions_0836d124[11] = {
     },
     {
       kind : DDP,
-      layer : 1,
+      faction : FACTION_ENEMY,
       special : 1,
       damage : 3,
       unk_04 : 0x01,
@@ -2378,7 +2378,7 @@ static const struct Collision gOmegaZeroProjectileCollisions_0836d124[11] = {
     },
     {
       kind : DDP,
-      layer : 1,
+      faction : FACTION_ENEMY,
       special : 1,
       damage : 3,
       unk_04 : 0x01,
@@ -2394,7 +2394,7 @@ static const struct Collision gOmegaZeroProjectileCollisions_0836d124[11] = {
     },
     {
       kind : DDP,
-      layer : 1,
+      faction : FACTION_ENEMY,
       special : 1,
       damage : 3,
       unk_04 : 0x01,
@@ -2410,7 +2410,7 @@ static const struct Collision gOmegaZeroProjectileCollisions_0836d124[11] = {
     },
     {
       kind : DDP,
-      layer : 1,
+      faction : FACTION_ENEMY,
       special : 1,
       damage : 3,
       unk_04 : 0x01,
@@ -2426,7 +2426,7 @@ static const struct Collision gOmegaZeroProjectileCollisions_0836d124[11] = {
     },
     {
       kind : DDP,
-      layer : 1,
+      faction : FACTION_ENEMY,
       special : 1,
       damage : 3,
       unk_04 : 0x01,
@@ -2442,7 +2442,7 @@ static const struct Collision gOmegaZeroProjectileCollisions_0836d124[11] = {
     },
     {
       kind : DDP,
-      layer : 1,
+      faction : FACTION_ENEMY,
       special : 1,
       damage : 3,
       unk_04 : 0x01,
@@ -2458,7 +2458,7 @@ static const struct Collision gOmegaZeroProjectileCollisions_0836d124[11] = {
     },
     {
       kind : DDP,
-      layer : 1,
+      faction : FACTION_ENEMY,
       special : 1,
       damage : 3,
       unk_04 : 0x01,
@@ -2474,7 +2474,7 @@ static const struct Collision gOmegaZeroProjectileCollisions_0836d124[11] = {
     },
     {
       kind : DDP,
-      layer : 1,
+      faction : FACTION_ENEMY,
       special : 1,
       damage : 3,
       unk_04 : 0x01,

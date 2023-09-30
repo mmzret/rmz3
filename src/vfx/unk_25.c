@@ -131,7 +131,7 @@ static void VFX25_Init(struct VFX *vfx) {
     InitScalerotMotion1(&vfx->s);
     (vfx->s).flags |= DISPLAY;
     (vfx->s).flags |= FLIPABLE;
-    RNG_0202f388 = (LCG(RNG_0202f388) << 1) >> 1;  // & 0x7FFFFFFF
+    RNG_0202f388 = LCG(RNG_0202f388);
     (vfx->s).work[2] = ((RNG_0202f388 >> 16) & 0x7) + 60;
     SET_VFX_ROUTINE(vfx, ENTITY_MAIN);
     (vfx->s).mode[1] = 5;

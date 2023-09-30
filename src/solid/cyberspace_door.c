@@ -189,7 +189,7 @@ void FUN_080dbbd4(struct Solid* p);
 const struct Collision sCyberSpaceDoorCollisions[2] = {
     {
       kind : DDP,
-      layer : 1,
+      faction : FACTION_ENEMY,
       special : DOOR_3D,
       damage : 255,
       unk_04 : 0x00,
@@ -205,7 +205,7 @@ const struct Collision sCyberSpaceDoorCollisions[2] = {
     },
     {
       kind : DRP,
-      layer : 1,
+      faction : FACTION_ENEMY,
       special : DOOR_3D,
       damage : 255,
       unk_04 : 0xFF,

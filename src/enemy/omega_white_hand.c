@@ -104,7 +104,7 @@ static const EnemyFunc sDeinitializers[2] = {
 static const struct Collision sCollisions[7] = {
     {
       kind : DRP,
-      layer : 1,
+      faction : FACTION_ENEMY,
       special : 2,
       damage : 0,
       unk_04 : 0xFF,
@@ -120,7 +120,7 @@ static const struct Collision sCollisions[7] = {
     },
     {
       kind : DDP,
-      layer : 1,
+      faction : FACTION_ENEMY,
       special : 2,
       damage : 2,
       unk_04 : 0x00,
@@ -136,7 +136,7 @@ static const struct Collision sCollisions[7] = {
     },
     {
       kind : DRP,
-      layer : 1,
+      faction : FACTION_ENEMY,
       special : 2,
       damage : 0,
       unk_04 : 0xFF,
@@ -152,7 +152,7 @@ static const struct Collision sCollisions[7] = {
     },
     {
       kind : DDP,
-      layer : 1,
+      faction : FACTION_ENEMY,
       special : 2,
       damage : 2,
       unk_04 : 0x00,
@@ -168,7 +168,7 @@ static const struct Collision sCollisions[7] = {
     },
     {
       kind : DRP,
-      layer : 1,
+      faction : FACTION_ENEMY,
       special : 2,
       damage : 0,
       unk_04 : 0xFF,
@@ -184,7 +184,7 @@ static const struct Collision sCollisions[7] = {
     },
     {
       kind : DDP,
-      layer : 1,
+      faction : FACTION_ENEMY,
       special : 2,
       damage : 2,
       unk_04 : 0x00,
@@ -200,7 +200,7 @@ static const struct Collision sCollisions[7] = {
     },
     {
       kind : DRP,
-      layer : 1,
+      faction : FACTION_ENEMY,
       special : 2,
       damage : 0,
       unk_04 : 0xFF,

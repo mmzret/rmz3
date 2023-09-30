@@ -33,19 +33,12 @@ const SolidRoutine gSolid23Routine = {
 static void onCollision(struct Body* _ UNUSED, struct Coord* r1, struct Coord* r2) { return; }
 
 static void Solid23_Init(struct Solid* p) {
-  struct Body* body;
   SET_SOLID_ROUTINE(p, ENTITY_MAIN);
   (p->s).mode[1] = sInitMode[(p->s).work[0]];
   (p->s).flags |= FLIPABLE;
   (p->s).flags |= DISPLAY;
   InitNonAffineMotion(&p->s);
-  (p->s).flags |= COLLIDABLE;
-
-  body = &p->body;
-  InitBody(body, Collision_ARRAY_08370ea8, &(p->s).coord, 1);
-  body->parent = (struct CollidableEntity*)p;
-  body->fn = onCollision;
-
+  INIT_BODY(p, &Collision_ARRAY_08370ea8[0], 1, onCollision);
   (p->s).coord.y = SEA;
   Solid23_Update(p);
 }
@@ -374,7 +367,7 @@ _080D86B8: .4byte 0x0002C00C\n\
 static const struct Collision Collision_ARRAY_08370ea8[4] = {
     {
       kind : DDP,
-      layer : 1,
+      faction : FACTION_ENEMY,
       special : 0,
       damage : 3,
       unk_04 : 0x00,
@@ -390,7 +383,7 @@ static const struct Collision Collision_ARRAY_08370ea8[4] = {
     },
     {
       kind : DDP,
-      layer : 1,
+      faction : FACTION_ENEMY,
       special : 0,
       damage : 3,
       unk_04 : 0x00,
@@ -406,7 +399,7 @@ static const struct Collision Collision_ARRAY_08370ea8[4] = {
     },
     {
       kind : DDP,
-      layer : 1,
+      faction : FACTION_ENEMY,
       special : 0,
       damage : 3,
       unk_04 : 0x00,
@@ -422,7 +415,7 @@ static const struct Collision Collision_ARRAY_08370ea8[4] = {
     },
     {
       kind : DRP,
-      layer : 1,
+      faction : FACTION_ENEMY,
       special : 0,
       damage : 0,
       unk_04 : 0xFF,
@@ -441,7 +434,7 @@ static const struct Collision Collision_ARRAY_08370ea8[4] = {
 static const struct Collision Collision_ARRAY_08370f08[4] = {
     {
       kind : DDP,
-      layer : 1,
+      faction : FACTION_ENEMY,
       special : 0,
       damage : 3,
       unk_04 : 0x00,
@@ -457,7 +450,7 @@ static const struct Collision Collision_ARRAY_08370f08[4] = {
     },
     {
       kind : DDP,
-      layer : 1,
+      faction : FACTION_ENEMY,
       special : 0,
       damage : 3,
       unk_04 : 0x00,
@@ -473,7 +466,7 @@ static const struct Collision Collision_ARRAY_08370f08[4] = {
     },
     {
       kind : DDP,
-      layer : 1,
+      faction : FACTION_ENEMY,
       special : 0,
       damage : 3,
       unk_04 : 0x00,
@@ -489,7 +482,7 @@ static const struct Collision Collision_ARRAY_08370f08[4] = {
     },
     {
       kind : DRP,
-      layer : 1,
+      faction : FACTION_ENEMY,
       special : 0,
       damage : 0,
       unk_04 : 0xFF,
@@ -508,7 +501,7 @@ static const struct Collision Collision_ARRAY_08370f08[4] = {
 static const struct Collision Collision_ARRAY_08370f68[2] = {
     {
       kind : DDP,
-      layer : 1,
+      faction : FACTION_ENEMY,
       special : 0,
       damage : 3,
       unk_04 : 0x00,
@@ -524,7 +517,7 @@ static const struct Collision Collision_ARRAY_08370f68[2] = {
     },
     {
       kind : DDP,
-      layer : 1,
+      faction : FACTION_ENEMY,
       special : 0,
       damage : 3,
       unk_04 : 0x00,
@@ -543,7 +536,7 @@ static const struct Collision Collision_ARRAY_08370f68[2] = {
 static const struct Collision Collision_ARRAY_08370f98[2] = {
     {
       kind : DDP,
-      layer : 1,
+      faction : FACTION_ENEMY,
       special : 0,
       damage : 3,
       unk_04 : 0x00,
@@ -559,7 +552,7 @@ static const struct Collision Collision_ARRAY_08370f98[2] = {
     },
     {
       kind : DDP,
-      layer : 1,
+      faction : FACTION_ENEMY,
       special : 0,
       damage : 3,
       unk_04 : 0x00,
@@ -578,7 +571,7 @@ static const struct Collision Collision_ARRAY_08370f98[2] = {
 static const struct Collision Collision_ARRAY_08370fc8[3] = {
     {
       kind : DDP,
-      layer : 1,
+      faction : FACTION_ENEMY,
       special : 0,
       damage : 3,
       unk_04 : 0x00,
@@ -594,7 +587,7 @@ static const struct Collision Collision_ARRAY_08370fc8[3] = {
     },
     {
       kind : DDP,
-      layer : 1,
+      faction : FACTION_ENEMY,
       special : 0,
       damage : 3,
       unk_04 : 0x00,
@@ -610,7 +603,7 @@ static const struct Collision Collision_ARRAY_08370fc8[3] = {
     },
     {
       kind : DDP,
-      layer : 1,
+      faction : FACTION_ENEMY,
       special : 0,
       damage : 255,
       unk_04 : 0x00,

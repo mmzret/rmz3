@@ -830,7 +830,7 @@ _080CC492:
 	movs r0, #1
 	ands r2, r0
 	adds r0, r5, #0
-	bl FUN_0807aa8c
+	bl CreateHeavyCannonBall
 	ldr r1, _080CC4D8 @ =0x00003802
 	adds r0, r4, #0
 	bl SetMotion

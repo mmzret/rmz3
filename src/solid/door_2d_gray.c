@@ -153,15 +153,10 @@ _080D0474: .4byte gStageRun\n\
 }
 
 static void FUN_080d0478(struct Solid* p) {
-  struct Body* body;
   switch ((p->s).mode[2]) {
     case 0: {
       SetMotion(&p->s, MOTION(0x7a, 0x00));
-      (p->s).flags |= COLLIDABLE;
-      body = &p->body;
-      InitBody(body, sCollisions, &(p->s).coord, 0);
-      body->parent = (struct CollidableEntity*)p;
-      body->fn = onCollision;
+      INIT_BODY(p, &sCollisions[0], 0, onCollision);
       (p->s).mode[2]++;
       FALLTHROUGH;
     }
@@ -179,7 +174,7 @@ INCASM("asm/solid/unk_20.inc");
 static const struct Collision sCollisions[2] = {
     [0] = {
       kind : DDP,
-      layer : 1,
+      faction : FACTION_ENEMY,
       special : 0,
       damage : 255,
       unk_04 : 0x00,
@@ -195,7 +190,7 @@ static const struct Collision sCollisions[2] = {
     },
     [1] = {
       kind : DRP,
-      layer : 1,
+      faction : FACTION_ENEMY,
       special : 0,
       damage : 255,
       unk_04 : 0xFF,

@@ -54,7 +54,7 @@
 	ldr r0, _08001960 @ =wMOSAIC
 	strh r5, [r0]
 	strh r5, [r6]
-	bl stopAllMusics
+	bl StopAllMusics
 	bl text_080e9730
 	bl LoadKatakanaBold
 	subs r4, #4

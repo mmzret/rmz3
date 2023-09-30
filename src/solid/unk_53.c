@@ -20,7 +20,6 @@ const SolidRoutine gSolid53Routine = {
 // clang-format on
 
 static void Solid53_Init(struct Solid* p) {
-  struct Body* body;
   struct Coord* velocity;
 
   if (GetMetatileAttr((p->s).coord.x, (p->s).coord.y) == 0) {
@@ -34,11 +33,7 @@ static void Solid53_Init(struct Solid* p) {
     return;
   }
 
-  (p->s).flags |= COLLIDABLE;
-  body = &p->body;
-  InitBody(body, &sCollision, &(p->s).coord, 0);
-  body->parent = (struct CollidableEntity*)p;
-  body->fn = NULL;
+  INIT_BODY(p, &sCollision, 0, NULL);
   velocity = &(p->s).d;
   velocity->x = velocity->y = PIXEL(0);
   (p->s).coord.x += PIXEL(8);
@@ -68,7 +63,7 @@ INCASM("asm/solid/unk_53.inc");
 
 static const struct Collision sCollision = {
   kind : DRP,
-  layer : LAYER_ENEMY,
+  faction : FACTION_ENEMY,
   special : 0,
   damage : 0,
   unk_04 : 0x00,

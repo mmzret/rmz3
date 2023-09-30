@@ -274,7 +274,7 @@ _0809D222:\n\
 
 static const struct Collision sCollision = {
   kind : DDP,
-  layer : 1,
+  faction : FACTION_ENEMY,
   special : 0,
   damage : 4,
   unk_04 : 0x00,

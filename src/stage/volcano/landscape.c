@@ -37,8 +37,8 @@ static void volcano_0800be3c(struct Coord* c) {
       LoadBlink(50, 0);
       gOverworld.work.volcano.unk_001 = 0;
     }
-    GetBlinkMotionState(49);
-    GetBlinkMotionState(50);
+    UpdateBlinkMotionState(49);
+    UpdateBlinkMotionState(50);
     gOverworld.work.volcano.unk_001++;
     if (gOverworld.work.volcano.unk_001 == 45) {
       gOverworld.work.volcano.unk_001 = 0;
@@ -54,7 +54,7 @@ static void volcano_0800be3c(struct Coord* c) {
       gOverworld.work.volcano.unk_000 |= (1 << 1);
       LoadBlink(60, 0);
     }
-    GetBlinkMotionState(60);
+    UpdateBlinkMotionState(60);
   } else if (gOverworld.work.volcano.unk_000 & (1 << 1)) {
     gOverworld.work.volcano.unk_000 ^= (1 << 1);
     ClearBlink(60);
@@ -67,8 +67,8 @@ static void volcano_0800be3c(struct Coord* c) {
       LoadBlink(52, 0);
       gOverworld.work.volcano.unk_002 = 0;
     }
-    GetBlinkMotionState(51);
-    GetBlinkMotionState(52);
+    UpdateBlinkMotionState(51);
+    UpdateBlinkMotionState(52);
     gOverworld.work.volcano.unk_002++;
     if (gOverworld.work.volcano.unk_002 == 16) {
       gOverworld.work.volcano.unk_002 = 0;
@@ -90,12 +90,12 @@ static void volcano_0800be3c(struct Coord* c) {
       LoadBlink(57, 0);
       gOverworld.work.volcano.unk_001 = 0;
     }
-    GetBlinkMotionState(50);
-    GetBlinkMotionState(53);
-    GetBlinkMotionState(54);
-    GetBlinkMotionState(55);
-    GetBlinkMotionState(56);
-    GetBlinkMotionState(57);
+    UpdateBlinkMotionState(50);
+    UpdateBlinkMotionState(53);
+    UpdateBlinkMotionState(54);
+    UpdateBlinkMotionState(55);
+    UpdateBlinkMotionState(56);
+    UpdateBlinkMotionState(57);
     gOverworld.work.volcano.unk_001++;
     if (gOverworld.work.volcano.unk_001 == 45) {
       gOverworld.work.volcano.unk_001 = 0;
@@ -117,7 +117,7 @@ static void volcano_0800be3c(struct Coord* c) {
       gOverworld.work.volcano.unk_002 = 0;
       gOverworld.work.volcano.unk_003 = 0;
     }
-    GetBlinkMotionState(58);
+    UpdateBlinkMotionState(58);
     gOverworld.work.volcano.unk_002++;
     if (gOverworld.work.volcano.unk_002 == 45) {
       gOverworld.work.volcano.unk_002 = 0;
@@ -140,10 +140,10 @@ static void volcano_0800be3c(struct Coord* c) {
       LoadBlink(57, 0);
       gOverworld.work.volcano.unk_001 = 0;
     }
-    GetBlinkMotionState(53);
-    GetBlinkMotionState(54);
-    GetBlinkMotionState(56);
-    GetBlinkMotionState(57);
+    UpdateBlinkMotionState(53);
+    UpdateBlinkMotionState(54);
+    UpdateBlinkMotionState(56);
+    UpdateBlinkMotionState(57);
     gOverworld.work.volcano.unk_001++;
     if (gOverworld.work.volcano.unk_001 == 32) {
       gOverworld.work.volcano.unk_001 = 0;
@@ -161,7 +161,7 @@ static void volcano_0800be3c(struct Coord* c) {
       gOverworld.work.volcano.unk_000 |= (1 << 6);
       LoadBlink(59, 0);
     }
-    GetBlinkMotionState(59);
+    UpdateBlinkMotionState(59);
   } else if (gOverworld.work.volcano.unk_000 & (1 << 6)) {
     gOverworld.work.volcano.unk_000 ^= (1 << 6);
     ClearBlink(59);
@@ -379,9 +379,9 @@ WIP static void LayerUpdate_VolcanoEruption(struct StageLayer* l, const struct S
         }
         for (j = 0; j < 16; j++) {
           u8 a, b, temp;
-          RNG_0202f388 = (LCG(RNG_0202f388) << 1) >> 1;
+          RNG_0202f388 = LCG(RNG_0202f388);
           a = (RNG_0202f388 >> 16) % 7;
-          RNG_0202f388 = (LCG(RNG_0202f388) << 1) >> 1;
+          RNG_0202f388 = LCG(RNG_0202f388);
           b = (RNG_0202f388 >> 16) % 7;
           SWAP(arr[a], arr[b], temp);
         }
@@ -484,7 +484,7 @@ static void LayerUpdate_LavaRiver1(struct StageLayer* l, const struct Stage* _ U
     }
   }
 
-  GetBlinkMotionState(61);
+  UpdateBlinkMotionState(61);
 }
 
 static void LayerExit_Volcano_7(struct StageLayer* l, const struct Stage* _) {
@@ -527,7 +527,7 @@ static void LayerUpdate_LavaRiver2(struct StageLayer* l, const struct Stage* _ U
     CreateLavaRiverPlatform(coords[5].x, coords[5].y);
   }
 
-  GetBlinkMotionState(61);
+  UpdateBlinkMotionState(61);
 }
 
 static void LayerExit_Volcano_8(struct StageLayer* l, const struct Stage* _) {
@@ -537,7 +537,9 @@ static void LayerExit_Volcano_8(struct StageLayer* l, const struct Stage* _) {
 
 // ------------------------------------------------------------------------------------------------------------------------------------
 
-#include "../../../data/stage/volcano/stage.h"
+#include "../../../data/stage/volcano/layer.h"
+//
+#include "../../../data/stage/volcano/landscape.h"
 
 // clang-format off
 static const u8 u8_ARRAY_ARRAY_0833bf1c[18][2] = {

@@ -39,7 +39,7 @@
 
 // --------------------------------------------
 
-extern const EnemyRoutine *const gEnemyFnTable[73];
+extern const EnemyRoutine *const gEnemyFnTable[ENEMY_COUNT];
 
 extern const EnemyRoutine gPantheonGuardianRoutine;
 extern const EnemyRoutine gPantheonHunterRoutine;
@@ -73,6 +73,22 @@ extern const EnemyRoutine gHeavyCannonBallRoutine;
 extern const EnemyRoutine gWormerSnowBallRoutine;
 extern const EnemyRoutine gBeetankRoutine;
 extern const EnemyRoutine gSwordyRoutine;
+extern const EnemyRoutine gPuffyRoutine;
+extern const EnemyRoutine gCrossbyneRoutine;
+extern const EnemyRoutine gBurnableWoodRoutine;
+extern const EnemyRoutine gMellnetRoutine;
+extern const EnemyRoutine gHellBouncerRoutine;
+extern const EnemyRoutine gPantheonZombieRoutine;
+extern const EnemyRoutine gPantheonAquaModObjRoutine;
+extern const EnemyRoutine gGlacierleAtkArmRoutine;
+extern const EnemyRoutine gOmegaGoldHandRoutine;
+extern const EnemyRoutine gEyeCannonRoutine;
+extern const EnemyRoutine gEnemy42Routine;
+extern const EnemyRoutine gCapsuleCannonRoutine;
+extern const EnemyRoutine gPantheonBomberRoutine;
+extern const EnemyRoutine gHanumachineObjRoutine;
+extern const EnemyRoutine gGallisniRoutine;
+extern const EnemyRoutine gMothjiroRoutine;
 
 // --------------------------------------------
 

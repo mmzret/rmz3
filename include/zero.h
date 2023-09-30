@@ -55,7 +55,7 @@ enum ZeroGround {
 typedef bool8 (*WeaponOKFunc)(struct Zero*);
 
 #define HEAD ((z->unk_b4).status.head)
-#define BODY ((z->unk_b4).status.body)
+#define BODY(z) (((&z->unk_b4)->status).body)
 #define FOOT ((z->unk_b4).status.foot)
 #define SATELITES (((&z->unk_b4)->status).asset.satelites)
 #define SATELITE_1 (((&z->unk_b4)->status).asset.satelites[0])
@@ -164,14 +164,6 @@ void ZeroAttack_Air(struct Zero* z);
 void ZeroAttack_Wall(struct Zero* z);
 void ZeroAttack_Ladder(struct Zero* z);
 void zeroWallAtk(struct Zero* z);
-
-void FUN_08030ab8(struct Zero* z);
-void FUN_08030bfc(struct Zero* z);
-void FUN_08030c84(struct Zero* z);
-void FUN_08030d00(struct Zero* z);
-void FUN_08030d90(struct Zero* z);
-void FUN_08030e20(struct Zero* z);
-
 void zeroLadderAtk(struct Zero* z);
 
 bool8 zero_08026f90(struct Zero* z, const struct Rect* p);

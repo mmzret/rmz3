@@ -256,9 +256,9 @@ _080DF350: .4byte gGameState\n\
 _080DF354: .4byte 0x00060400\n\
 _080DF358:\n\
 	movs r0, #0xf1\n\
-	bl GetBlinkMotionState\n\
+	bl UpdateBlinkMotionState\n\
 	movs r0, #0xf2\n\
-	bl GetBlinkMotionState\n\
+	bl UpdateBlinkMotionState\n\
 	ldr r0, _080DF3F4 @ =gGameState\n\
 	ldrb r7, [r0, #2]\n\
 	cmp r7, #0\n\
@@ -358,7 +358,7 @@ static const motion_t sMotions[5] = {
 static const struct Collision sCollisions[2] = {
     {
       kind : DDP,
-      layer : LAYER_UNK2,
+      faction : FACTION_UNK2,
       special : CHATABLE,
       damage : 255,
       unk_04 : 0x00,
@@ -374,7 +374,7 @@ static const struct Collision sCollisions[2] = {
     },
     {
       kind : DRP,
-      layer : LAYER_UNK2,
+      faction : FACTION_UNK2,
       special : CHATABLE,
       damage : 255,
       unk_04 : 0xFF,

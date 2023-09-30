@@ -59,7 +59,7 @@ const SolidFunc sIcebonIceUpdates2[6] = {
 const struct Collision sIcebonIceCollisions[5] = {
     {
       kind : DRP,
-      layer : 1,
+      faction : FACTION_ENEMY,
       special : 0,
       damage : 0,
       unk_04 : 0xFF,
@@ -75,7 +75,7 @@ const struct Collision sIcebonIceCollisions[5] = {
     },
     {
       kind : DDP,
-      layer : 1,
+      faction : FACTION_ENEMY,
       special : 0,
       damage : 255,
       unk_04 : 0x00,
@@ -91,7 +91,7 @@ const struct Collision sIcebonIceCollisions[5] = {
     },
     {
       kind : DRP,
-      layer : 1,
+      faction : FACTION_ENEMY,
       special : 0,
       damage : 0,
       unk_04 : 0xFF,
@@ -107,7 +107,7 @@ const struct Collision sIcebonIceCollisions[5] = {
     },
     {
       kind : DDP,
-      layer : 1,
+      faction : FACTION_ENEMY,
       special : 0,
       damage : 4,
       unk_04 : 0x00,
@@ -123,7 +123,7 @@ const struct Collision sIcebonIceCollisions[5] = {
     },
     {
       kind : DRP,
-      layer : 1,
+      faction : FACTION_ENEMY,
       special : 0,
       damage : 0,
       unk_04 : 0xFF,

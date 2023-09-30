@@ -774,7 +774,7 @@ INCASM("asm/enemy/shotcounter.inc");
 static const struct Collision sShotcounterCollisions[12] = {
     [0] = {
       kind : DDP,
-      layer : 1,
+      faction : FACTION_ENEMY,
       special : 0,
       damage : 2,
       unk_04 : 0x00,
@@ -790,7 +790,7 @@ static const struct Collision sShotcounterCollisions[12] = {
     },
     [1] = {
       kind : DRP2,
-      layer : 1,
+      faction : FACTION_ENEMY,
       special : 0,
       damage : 0,
       unk_04 : 0xFF,
@@ -806,7 +806,7 @@ static const struct Collision sShotcounterCollisions[12] = {
     },
     [2] = {
       kind : DRP2,
-      layer : 1,
+      faction : FACTION_ENEMY,
       special : 0,
       damage : 0,
       unk_04 : 0xFF,
@@ -822,7 +822,7 @@ static const struct Collision sShotcounterCollisions[12] = {
     },
     [3] = {
       kind : DRP2,
-      layer : 1,
+      faction : FACTION_ENEMY,
       special : 0,
       damage : 0,
       unk_04 : 0xFF,
@@ -838,7 +838,7 @@ static const struct Collision sShotcounterCollisions[12] = {
     },
     [4] = {
       kind : DRP,
-      layer : 1,
+      faction : FACTION_ENEMY,
       special : 0,
       damage : 0,
       unk_04 : 0xFF,
@@ -854,7 +854,7 @@ static const struct Collision sShotcounterCollisions[12] = {
     },
     [5] = {
       kind : DDP,
-      layer : 1,
+      faction : FACTION_ENEMY,
       special : 0,
       damage : 2,
       unk_04 : 0x00,
@@ -870,7 +870,7 @@ static const struct Collision sShotcounterCollisions[12] = {
     },
     [6] = {
       kind : DRP,
-      layer : 1,
+      faction : FACTION_ENEMY,
       special : 0,
       damage : 0,
       unk_04 : 0xFF,
@@ -886,7 +886,7 @@ static const struct Collision sShotcounterCollisions[12] = {
     },
     [7] = {
       kind : DDP,
-      layer : 1,
+      faction : FACTION_ENEMY,
       special : 0,
       damage : 2,
       unk_04 : 0x00,
@@ -902,7 +902,7 @@ static const struct Collision sShotcounterCollisions[12] = {
     },
     [8] = {
       kind : DRP,
-      layer : 1,
+      faction : FACTION_ENEMY,
       special : 0,
       damage : 0,
       unk_04 : 0xFF,
@@ -918,7 +918,7 @@ static const struct Collision sShotcounterCollisions[12] = {
     },
     [9] = {
       kind : DRP,
-      layer : 1,
+      faction : FACTION_ENEMY,
       special : 0,
       damage : 0,
       unk_04 : 0xFF,
@@ -934,7 +934,7 @@ static const struct Collision sShotcounterCollisions[12] = {
     },
     [10] = {
       kind : DDP,
-      layer : 2,
+      faction : FACTION_UNK2,
       special : 0,
       damage : 2,
       unk_04 : 0x00,
@@ -950,7 +950,7 @@ static const struct Collision sShotcounterCollisions[12] = {
     },
     [11] = {
       kind : DRP,
-      layer : 2,
+      faction : FACTION_UNK2,
       special : 0,
       damage : 0,
       unk_04 : 0xFF,

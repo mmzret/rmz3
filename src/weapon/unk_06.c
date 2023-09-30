@@ -37,19 +37,13 @@ void CreateWeapon6(s32 x, s32 y) {
 static void onHit(struct Body* body UNUSED, struct Coord* r1 UNUSED, struct Coord* r2 UNUSED) { return; }
 
 static void Weapon6_Init(struct Weapon* w) {
-  struct Body* body;
   SET_WEAPON_ROUTINE(w, ENTITY_MAIN);
   (w->s).mode[1] = sInitModes[(w->s).work[0]];
   (w->s).flags |= FLIPABLE;
   (w->s).flags |= DISPLAY;
   InitNonAffineMotion(&w->s);
   ResetDynamicMotion(&w->s);
-  (w->s).flags |= COLLIDABLE;
-
-  body = &w->body;
-  InitBody(body, &sCollision, &(w->s).coord, 1);
-  body->parent = (struct CollidableEntity*)w;
-  body->fn = onHit;
+  INIT_BODY(w, &sCollision, 1, onHit);
   Weapon6_Update(w);
 }
 
@@ -110,7 +104,7 @@ static void updateWeapon6(struct Weapon* w) {
 
 static const struct Collision sCollision = {
   kind : DDP,
-  layer : 0,
+  faction : FACTION_ALLY,
   special : 1,
   damage : 1,
   unk_04 : 0x00,

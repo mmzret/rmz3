@@ -2157,7 +2157,7 @@ _08023C2C: .4byte gGraphic_Capcom+2512\n\
 _08023C30: .4byte 0x00000111\n\
 _08023C34:\n\
 	ldr r0, _08023C80 @ =0x00000111\n\
-	bl GetBlinkMotionState\n\
+	bl UpdateBlinkMotionState\n\
 	adds r0, r7, #0\n\
 	adds r0, #0xd0\n\
 	ldr r3, [r0]\n\

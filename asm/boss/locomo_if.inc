@@ -99,7 +99,7 @@ LocomoIF_Init: @ 0x080547AC
 	ldr r1, _0805480C @ =0x08363AF8
 	adds r0, r7, #0
 	movs r2, #0x30
-	bl resetBossData
+	bl ResetBossBody
 	b _0805481A
 	.align 2, 0
 _08054800: .4byte gBossFnTable
@@ -110,7 +110,7 @@ _08054810:
 	ldr r1, _08054A18 @ =0x08363AF8
 	adds r0, r7, #0
 	movs r2, #0x20
-	bl resetBossData
+	bl ResetBossBody
 _0805481A:
 	ldr r1, _08054A1C @ =nop_0805474c
 	adds r0, r7, #0

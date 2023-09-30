@@ -375,15 +375,15 @@ WIP static void GameLoop_Overworld(struct GameState *p) {
     }
     FUN_0802511c();
     if (!gPause) {
-      UpdateBlockingEntities(gSolidHeaderPtr);
-      UpdateBlockingEntities(gBossHeaderPtr);
-      UpdateBlockingEntities(gZakoHeaderPtr);
+      UpdateHazardEntities(gSolidHeaderPtr);
+      UpdateHazardEntities(gBossHeaderPtr);
+      UpdateHazardEntities(gZakoHeaderPtr);
       UpdateEntities(gZeroHeaderPtr);
       UpdateProjectiles();
       UpdateEntities(gWeaponHeaderPtr);
       UpdateEntities(gMapItemHeaderPtr);
     }
-    UpdateBlockingEntities(gElfHeaderPtr);
+    UpdateHazardEntities(gElfHeaderPtr);
     UpdateVFXs();
     ClearAllHitboxes();
     if (!gPause) {

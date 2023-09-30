@@ -61,7 +61,6 @@ struct Weapon* CreateWeaponShieldGuard(struct Zero* z, u8 n) {
 }
 
 static void ShieldGuard_Init(struct Weapon* w) {
-  struct Body* body;
   struct Weapon_b4* b4 = &(w->unk_b4);
   struct Zero* z = b4->z;
   SET_WEAPON_ROUTINE(w, ENTITY_MAIN);
@@ -79,12 +78,7 @@ static void ShieldGuard_Init(struct Weapon* w) {
 
   ((&w->unk_b4)->props)[1][1] = 0;
   ((&w->unk_b4)->props)[1][2] = 0;
-  (w->s).flags |= COLLIDABLE;
-
-  body = &w->body;
-  InitBody(body, &sShieldGuardCollisions[((&w->unk_b4)->props)[1][0]][(w->s).work[0]], &(w->s).coord, 1);
-  body->parent = (struct CollidableEntity*)w;
-  body->fn = onCollision;
+  INIT_BODY(w, &sShieldGuardCollisions[((&w->unk_b4)->props)[1][0]][(w->s).work[0]], 1, onCollision);
   ShieldGuard_Update(w);
 }
 
@@ -426,7 +420,7 @@ static const struct Collision sShieldGuardCollisions[2][5] = {
     {
         [0] = {
           kind : DRP2,
-          layer : 0,
+          faction : FACTION_ALLY,
           special : 0,
           damage : 0,
           unk_04 : 0xFF,
@@ -442,7 +436,7 @@ static const struct Collision sShieldGuardCollisions[2][5] = {
         },
         [1] = {
           kind : DRP2,
-          layer : 0,
+          faction : FACTION_ALLY,
           special : 0,
           damage : 0,
           unk_04 : 0xFF,
@@ -458,7 +452,7 @@ static const struct Collision sShieldGuardCollisions[2][5] = {
         },
         [2] = {
           kind : DRP2,
-          layer : 0,
+          faction : FACTION_ALLY,
           special : 0,
           damage : 0,
           unk_04 : 0xFF,
@@ -474,7 +468,7 @@ static const struct Collision sShieldGuardCollisions[2][5] = {
         },
         [3] = {
           kind : DRP2,
-          layer : 0,
+          faction : FACTION_ALLY,
           special : 0,
           damage : 0,
           unk_04 : 0xFF,
@@ -490,7 +484,7 @@ static const struct Collision sShieldGuardCollisions[2][5] = {
         },
         [4] = {
           kind : DRP2,
-          layer : 0,
+          faction : FACTION_ALLY,
           special : 0,
           damage : 0,
           unk_04 : 0xFF,
@@ -508,7 +502,7 @@ static const struct Collision sShieldGuardCollisions[2][5] = {
     {
         [0] = {
           kind : DRP2,
-          layer : 0,
+          faction : FACTION_ALLY,
           special : 0,
           damage : 0,
           unk_04 : 0xFF,
@@ -524,7 +518,7 @@ static const struct Collision sShieldGuardCollisions[2][5] = {
         },
         [1] = {
           kind : DRP2,
-          layer : 0,
+          faction : FACTION_ALLY,
           special : 0,
           damage : 0,
           unk_04 : 0xFF,
@@ -540,7 +534,7 @@ static const struct Collision sShieldGuardCollisions[2][5] = {
         },
         [2] = {
           kind : DRP2,
-          layer : 0,
+          faction : FACTION_ALLY,
           special : 0,
           damage : 0,
           unk_04 : 0xFF,
@@ -556,7 +550,7 @@ static const struct Collision sShieldGuardCollisions[2][5] = {
         },
         [3] = {
           kind : DRP2,
-          layer : 0,
+          faction : FACTION_ALLY,
           special : 0,
           damage : 0,
           unk_04 : 0xFF,
@@ -572,7 +566,7 @@ static const struct Collision sShieldGuardCollisions[2][5] = {
         },
         [4] = {
           kind : DRP2,
-          layer : 0,
+          faction : FACTION_ALLY,
           special : 0,
           damage : 0,
           unk_04 : 0xFF,

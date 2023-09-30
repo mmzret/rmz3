@@ -3835,7 +3835,7 @@ _08057544:
 	adds r0, r4, #0
 	bl UpdateMotionGraphic
 	movs r0, #0x62
-	bl GetBlinkMotionState
+	bl UpdateBlinkMotionState
 	adds r1, r4, #0
 	adds r1, #0x4c
 	movs r0, #0
@@ -3897,7 +3897,7 @@ _080575C0:
 	adds r0, r5, #0
 	bl UpdateMotionGraphic
 	movs r0, #0x63
-	bl GetBlinkMotionState
+	bl UpdateBlinkMotionState
 	ldrb r0, [r5, #0x12]
 	movs r1, #7
 	ands r1, r0
@@ -4018,7 +4018,7 @@ _080576B4:
 	cmp r0, #1
 	bhi _0805773C
 	movs r0, #0x64
-	bl GetBlinkMotionState
+	bl UpdateBlinkMotionState
 	ldrb r1, [r4, #0x13]
 	adds r0, r1, #4
 	cmp r0, #0xff

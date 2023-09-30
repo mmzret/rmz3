@@ -35,8 +35,8 @@ WIP static void updateSunkenLib(struct Coord* _ UNUSED) {
       LoadBlink(148, 0);
       LoadBlink(149, 0);
     }
-    GetBlinkMotionState(148);
-    GetBlinkMotionState(149);
+    UpdateBlinkMotionState(148);
+    UpdateBlinkMotionState(149);
 
   } else if ((STAGE.unk_000 & (1 << 0))) {
     STAGE.unk_000 ^= (1 << 0);
@@ -49,23 +49,23 @@ WIP static void updateSunkenLib(struct Coord* _ UNUSED) {
       STAGE.unk_000 |= (1 << 1);
       LoadBlink(153, 0);
     }
-    GetBlinkMotionState(153);
+    UpdateBlinkMotionState(153);
 
   } else if ((STAGE.unk_000 & (1 << 1))) {
     STAGE.unk_000 ^= (1 << 1);
     ClearBlink(153);
   }
 
-  GetBlinkMotionState(150);
+  UpdateBlinkMotionState(150);
 
   if (STAGE.unk_001 == 0) {
     if (STAGE.unk_002 == 0) {
-      STAGE.rng = (LCG(STAGE.rng) << 1) >> 1;
+      STAGE.rng = LCG(STAGE.rng);
       STAGE.unk_002 = ((STAGE.rng >> 16) & 1) + 1;
       STAGE.unk_001 = 8;
     } else {
       STAGE.unk_002 = 0;
-      STAGE.rng = (LCG(STAGE.rng) << 1) >> 1;
+      STAGE.rng = LCG(STAGE.rng);
       STAGE.unk_001 = (((STAGE.rng >> 16) % 58) & 0xF8) + 7;
     }
   }

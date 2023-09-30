@@ -4181,10 +4181,21 @@ INC4BPP("graphics/sprite_prop/5a_icicle");
 INCLZ("graphics/sprite_prop/5b");
 
 // TODO: Dump remaining png images from sprite_prop.bin using tools/dumper/gfx.ts
-// ./tools/dumper/bin.ts baserom.gba 0x086013E8 0x0861B13C graphics/sprite_prop/sprite_prop.bin
+// ./tools/dumper/bin.ts baserom.gba 0x086013E8 0x0861727C graphics/sprite_prop/sprite_prop.bin
 INCBIN("graphics/sprite_prop/sprite_prop.bin");
 
-INCLZ("sprites/prop/z_logo/sheet");
+INC4BPP("sprites/prop/resistance_base/elevator/wood/sheet");
+INC4BPP("sprites/prop/resistance_base/elevator/mmx/sheet");
+INCLZ("sprites/prop/energy_facility_btn/sheet");
+INCLZ("sprites/prop/resistance/mob/sheet");
+INC4BPP("sprites/prop/enemy/shotloid/sheet");
+INCLZ("sprites/prop/resistance_base/ciel_comp/0/sheet");
+INCLZ("sprites/prop/resistance_base/ciel_comp/1/sheet");
+INCLZ("sprites/prop/resistance_base/ciel_comp/2/sheet");
+INCLZ("sprites/prop/resistance_base/ciel_comp/3/sheet");
+INCLZ("sprites/prop/resistance_base/ciel_comp/4/sheet");
+INCLZ("sprites/prop/logo/megaman/sheet");
+INCLZ("sprites/prop/logo/z/sheet");
 INC4BPP("sprites/prop/missile_platform/sheet");
 INCBIN("sprites/prop/mother_elf/sheet.4bpp");
 INCBIN("sprites/prop/mother_elf/04.pal");

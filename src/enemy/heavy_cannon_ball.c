@@ -2,6 +2,8 @@
 #include "enemy.h"
 #include "global.h"
 
+INCASM("asm/enemy/heavy_cannon_ball.inc");
+
 void HeavyCannon_Init(struct Enemy* p);
 void HeavyCannon_Update(struct Enemy* p);
 void HeavyCannon_Die(struct Enemy* p);
@@ -37,7 +39,7 @@ static const EnemyFunc PTR_ARRAY_0836777c[2] = {
 static const struct Collision sCollisions[3] = {
     {
       kind : DRP,
-      layer : LAYER_ENEMY,
+      faction : FACTION_ENEMY,
       special : 0,
       damage : 0,
       unk_04 : 0xFF,
@@ -53,7 +55,7 @@ static const struct Collision sCollisions[3] = {
     },
     {
       kind : DDP,
-      layer : LAYER_UNK2,
+      faction : FACTION_UNK2,
       special : 0,
       damage : 4,
       unk_04 : 0x00,
@@ -69,7 +71,7 @@ static const struct Collision sCollisions[3] = {
     },
     {
       kind : DRP,
-      layer : LAYER_ENEMY,
+      faction : FACTION_ENEMY,
       special : 0,
       damage : 0,
       unk_04 : 0xFF,

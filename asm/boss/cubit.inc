@@ -83,7 +83,7 @@ Cubit_Init: @ 0x0805260C
 	ldr r1, _080526FC @ =0x083639D8
 	adds r0, r6, #0
 	movs r2, #0x40
-	bl resetBossData
+	bl ResetBossBody
 	ldr r1, _08052700 @ =FUN_08054530
 	adds r0, r6, #0
 	adds r0, #0x74

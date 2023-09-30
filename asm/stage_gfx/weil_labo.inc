@@ -57,7 +57,7 @@ _08015304:
 	subs r0, r0, r1
 	str r0, [r4, #0x50]
 	movs r0, #0xea
-	bl GetBlinkMotionState
+	bl UpdateBlinkMotionState
 	pop {r4, r5}
 	pop {r0}
 	bx r0
@@ -480,7 +480,7 @@ _08015664:
 	strb r0, [r6, #0xf]
 _0801567E:
 	ldr r0, _08015698 @ =0x0000010D
-	bl GetBlinkMotionState
+	bl UpdateBlinkMotionState
 	lsls r0, r0, #0x18
 	lsrs r0, r0, #0x18
 	cmp r0, #4
@@ -503,7 +503,7 @@ _0801569C:
 _080156B2:
 	movs r0, #0x87
 	lsls r0, r0, #1
-	bl GetBlinkMotionState
+	bl UpdateBlinkMotionState
 	ldr r0, _080156F0 @ =gOverworld
 	ldr r1, _080156F4 @ =0x0002D027
 	adds r0, r0, r1
@@ -526,7 +526,7 @@ _080156D6:
 	bne _080156FC
 	movs r0, #0x87
 	lsls r0, r0, #1
-	bl GetBlinkMotionState
+	bl UpdateBlinkMotionState
 	b _0801570A
 	.align 2, 0
 _080156EC: .4byte 0x0000010D

@@ -182,7 +182,7 @@ _080E73C8:\n\
 	cmp r0, #0\n\
 	bne _080E73D4\n\
 	movs r0, #0x5b\n\
-	bl GetBlinkMotionState\n\
+	bl UpdateBlinkMotionState\n\
 _080E73D4:\n\
 	ldr r0, [r4, #0x64]\n\
 	ldr r1, [r4, #0x68]\n\

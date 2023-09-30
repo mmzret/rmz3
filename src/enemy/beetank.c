@@ -2,6 +2,8 @@
 #include "enemy.h"
 #include "global.h"
 
+INCASM("asm/enemy/beetank.inc");
+
 void Beetank_Init(struct Enemy* p);
 void Beetank_Update(struct Enemy* p);
 void Beetank_Die(struct Enemy* p);
@@ -53,7 +55,7 @@ static const EnemyFunc PTR_ARRAY_083679d8[5] = {
 static const struct Collision sCollisions[2] = {
     {
       kind : DDP,
-      layer : LAYER_ENEMY,
+      faction : FACTION_ENEMY,
       special : 0,
       damage : 2,
       unk_04 : 0x00,
@@ -67,7 +69,7 @@ static const struct Collision sCollisions[2] = {
     },
     {
       kind : DRP,
-      layer : LAYER_ENEMY,
+      faction : FACTION_ENEMY,
       special : 0,
       unk_04 : 0xFF,
       element : 0xFF,

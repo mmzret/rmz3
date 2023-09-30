@@ -28,7 +28,7 @@ const SolidRoutine gModElfRoutine = {
 
 static const struct Collision sCollision = {
   kind : DDP,
-  layer : 1,
+  faction : FACTION_ENEMY,
   special : 3,
   damage : 255,
   unk_04 : 0x00,

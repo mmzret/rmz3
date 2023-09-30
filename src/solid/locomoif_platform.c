@@ -73,7 +73,7 @@ const SolidFunc sLocomoIFPlatformUpdates2[4] = {
 
 const struct Collision sLocomoIFPlatformCollision = {
   kind : DDP,
-  layer : 1,
+  faction : FACTION_ENEMY,
   special : 0,
   damage : 255,
   unk_04 : 0x00,

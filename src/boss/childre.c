@@ -12,7 +12,7 @@ const BossRoutine gChildreRoutine = {
     [ENTITY_INIT] =      Childre_Init,
     [ENTITY_MAIN] =      Childre_Main,
     [ENTITY_DIE] =       Childre_Die,
-    [ENTITY_DISAPPEAR] = deleteBoss,
+    [ENTITY_DISAPPEAR] = DeleteBoss,
     [ENTITY_EXIT] =      (BossFunc)DeleteEntity,
 };
 // clang-format on
@@ -208,7 +208,7 @@ const BossFunc sChildreDeathSeq[2] = {
 const struct Collision sChildreCollisions[16] = {
     [0] = {
       kind : DRP,
-      layer : 1,
+      faction : FACTION_ENEMY,
       special : 2,
       damage : 0,
       unk_04 : 0xFF,
@@ -224,7 +224,7 @@ const struct Collision sChildreCollisions[16] = {
     },
     [1] = {
       kind : DDP,
-      layer : 1,
+      faction : FACTION_ENEMY,
       special : 2,
       damage : 3,
       unk_04 : 0x00,
@@ -240,7 +240,7 @@ const struct Collision sChildreCollisions[16] = {
     },
     [2] = {
       kind : DRP,
-      layer : 1,
+      faction : FACTION_ENEMY,
       special : 2,
       damage : 0,
       unk_04 : 0xFF,
@@ -256,7 +256,7 @@ const struct Collision sChildreCollisions[16] = {
     },
     [3] = {
       kind : DDP,
-      layer : 1,
+      faction : FACTION_ENEMY,
       special : 2,
       damage : 3,
       unk_04 : 0x00,
@@ -272,7 +272,7 @@ const struct Collision sChildreCollisions[16] = {
     },
     [4] = {
       kind : DRP,
-      layer : 1,
+      faction : FACTION_ENEMY,
       special : 2,
       damage : 0,
       unk_04 : 0xFF,
@@ -288,7 +288,7 @@ const struct Collision sChildreCollisions[16] = {
     },
     [5] = {
       kind : DDP,
-      layer : 1,
+      faction : FACTION_ENEMY,
       special : 2,
       damage : 4,
       unk_04 : 0x00,
@@ -304,7 +304,7 @@ const struct Collision sChildreCollisions[16] = {
     },
     [6] = {
       kind : DRP,
-      layer : 1,
+      faction : FACTION_ENEMY,
       special : 2,
       damage : 0,
       unk_04 : 0xFF,
@@ -320,7 +320,7 @@ const struct Collision sChildreCollisions[16] = {
     },
     [7] = {
       kind : DDP,
-      layer : 1,
+      faction : FACTION_ENEMY,
       special : 2,
       damage : 3,
       unk_04 : 0x00,
@@ -336,7 +336,7 @@ const struct Collision sChildreCollisions[16] = {
     },
     [8] = {
       kind : DRP,
-      layer : 1,
+      faction : FACTION_ENEMY,
       special : 2,
       damage : 0,
       unk_04 : 0xFF,
@@ -352,7 +352,7 @@ const struct Collision sChildreCollisions[16] = {
     },
     [9] = {
       kind : DDP,
-      layer : 1,
+      faction : FACTION_ENEMY,
       special : 2,
       damage : 3,
       unk_04 : 0x00,
@@ -368,7 +368,7 @@ const struct Collision sChildreCollisions[16] = {
     },
     [10] = {
       kind : DDP,
-      layer : 1,
+      faction : FACTION_ENEMY,
       special : 2,
       damage : 3,
       unk_04 : 0x00,
@@ -384,7 +384,7 @@ const struct Collision sChildreCollisions[16] = {
     },
     [11] = {
       kind : DRP,
-      layer : 1,
+      faction : FACTION_ENEMY,
       special : 2,
       damage : 0,
       unk_04 : 0xFF,
@@ -400,7 +400,7 @@ const struct Collision sChildreCollisions[16] = {
     },
     [12] = {
       kind : DDP,
-      layer : 1,
+      faction : FACTION_ENEMY,
       special : 2,
       damage : 3,
       unk_04 : 0x00,
@@ -416,7 +416,7 @@ const struct Collision sChildreCollisions[16] = {
     },
     [13] = {
       kind : DDP,
-      layer : 1,
+      faction : FACTION_ENEMY,
       special : 2,
       damage : 3,
       unk_04 : 0x00,
@@ -432,7 +432,7 @@ const struct Collision sChildreCollisions[16] = {
     },
     [14] = {
       kind : DDP,
-      layer : 1,
+      faction : FACTION_ENEMY,
       special : 2,
       damage : 3,
       unk_04 : 0x00,
@@ -448,7 +448,7 @@ const struct Collision sChildreCollisions[16] = {
     },
     [15] = {
       kind : DRP,
-      layer : 1,
+      faction : FACTION_ENEMY,
       special : 2,
       damage : 0,
       unk_04 : 0xFF,

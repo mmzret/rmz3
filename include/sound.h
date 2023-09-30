@@ -35,7 +35,7 @@ extern const struct ToneData voicegroup001[128];
 extern const struct ToneData voicegroup002[122];
 
 void InitSound(void);
-void stopAllMusics(void);
+void StopAllMusics(void);
 void TurnDownBGM(void);
 void TurnUpBGM(void);
 void playBGM(SoundID n);

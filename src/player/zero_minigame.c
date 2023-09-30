@@ -74,7 +74,7 @@ const ZeroFunc sZeroMiniUpdates2[5] = {
 const struct Collision sZeroMiniCollisions[7] = {
     [0] = {
       kind : DRP,
-      layer : 0,
+      faction : FACTION_ALLY,
       special : 1,
       damage : 0,
       unk_04 : 0xFF,
@@ -90,7 +90,7 @@ const struct Collision sZeroMiniCollisions[7] = {
     },
     [1] = {
       kind : DDP,
-      layer : 0,
+      faction : FACTION_ALLY,
       special : 1,
       damage : 32,
       unk_04 : 0x00,
@@ -106,7 +106,7 @@ const struct Collision sZeroMiniCollisions[7] = {
     },
     [2] = {
       kind : DDP,
-      layer : 0,
+      faction : FACTION_ALLY,
       special : 1,
       damage : 32,
       unk_04 : 0x00,
@@ -122,7 +122,7 @@ const struct Collision sZeroMiniCollisions[7] = {
     },
     [3] = {
       kind : DRP,
-      layer : 0,
+      faction : FACTION_ALLY,
       special : 1,
       damage : 0,
       unk_04 : 0xFF,
@@ -138,7 +138,7 @@ const struct Collision sZeroMiniCollisions[7] = {
     },
     [4] = {
       kind : DDP,
-      layer : 0,
+      faction : FACTION_ALLY,
       special : 1,
       damage : 32,
       unk_04 : 0x00,
@@ -154,7 +154,7 @@ const struct Collision sZeroMiniCollisions[7] = {
     },
     [5] = {
       kind : DDP,
-      layer : 0,
+      faction : FACTION_ALLY,
       special : 1,
       damage : 32,
       unk_04 : 0x00,
@@ -170,7 +170,7 @@ const struct Collision sZeroMiniCollisions[7] = {
     },
     [6] = {
       kind : DRP,
-      layer : 0,
+      faction : FACTION_ALLY,
       special : 1,
       damage : 0,
       unk_04 : 0xFF,

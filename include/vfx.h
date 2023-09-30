@@ -144,5 +144,6 @@ struct VFX *CreateCopyXIcon(struct Zero *z, struct Coord *c, u8 n);
 struct VFX *CreateExlifeIndicator(u8 extraLife);
 struct VFX *CreateMissionAlert(u8 kind);
 struct VFX *CreateSlashedEnemy(struct Coord *c, const struct SlashedEnemy *data, u8 r2, u8 r3);
+struct VFX *FUN_080bfce8(struct Coord *c, u8 r1);
 
 #endif  // GUARD_RMZ3_VFX_H

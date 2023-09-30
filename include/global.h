@@ -74,7 +74,7 @@
 #define FREE_STAGE_COUNT 15  // フリーランできるステージの数
 #define STAGE_COUNT 18       // Stage0 + ベース含む
 
-#define LCG(s) (s * 0x343FD + 0x269EC3)
+#define LCG(s) (((s * 0x343FD + 0x269EC3) << 1) >> 1)
 #define HIHALF(n) (((n)&0xFFFF0000) >> 16)
 #define LOHALF(n) ((n)&0xFFFF)
 #define HI_NIBBLE(byte) (((u8)byte) >> 4)

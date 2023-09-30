@@ -913,7 +913,7 @@ _080BCBEA:
 	strb r0, [r4, #0xe]
 _080BCC12:
 	movs r0, #0x18
-	bl GetBlinkMotionState
+	bl UpdateBlinkMotionState
 	lsls r0, r0, #0x18
 	lsrs r0, r0, #0x18
 	cmp r0, #3
@@ -1035,7 +1035,7 @@ _080BCCE0:
 	cmp r0, #0
 	beq _080BCCFC
 	movs r0, #0x19
-	bl GetBlinkMotionState
+	bl UpdateBlinkMotionState
 _080BCCFC:
 	adds r0, r4, #0
 	bl UpdateMotionGraphic
@@ -1157,7 +1157,7 @@ _080BCDAC:
 	strb r0, [r4, #0xe]
 _080BCDE0:
 	movs r0, #0x1a
-	bl GetBlinkMotionState
+	bl UpdateBlinkMotionState
 	adds r0, r4, #0
 	bl UpdateMotionGraphic
 	ldrb r1, [r4, #0x12]

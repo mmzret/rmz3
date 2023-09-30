@@ -234,7 +234,7 @@ Deathtanz_Init: @ 0x08048ED0
 	ldr r1, _0804901C @ =0x083627DC
 	adds r0, r7, #0
 	movs r2, #0x40
-	bl resetBossData
+	bl ResetBossBody
 	ldr r1, _08049020 @ =FUN_08048e24
 	adds r0, r7, #0
 	adds r0, #0x74
@@ -693,7 +693,7 @@ _080492BC:
 	strb r0, [r4, #0x12]
 	movs r0, #0x2a
 _080492C4:
-	bl GetBlinkMotionState
+	bl UpdateBlinkMotionState
 	adds r0, r4, #0
 	bl UpdateMotionGraphic
 _080492CE:

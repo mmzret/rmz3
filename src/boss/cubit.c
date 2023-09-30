@@ -13,7 +13,7 @@ const BossRoutine gCubitRoutine = {
     [ENTITY_INIT] =      Cubit_Init,
     [ENTITY_MAIN] =      Cubit_Update,
     [ENTITY_DIE] =       Cubit_Die,
-    [ENTITY_DISAPPEAR] = deleteBoss,
+    [ENTITY_DISAPPEAR] = DeleteBoss,
     [ENTITY_EXIT] =      (BossFunc)DeleteEntity,
 };
 // clang-format on
@@ -95,7 +95,7 @@ static const BossFunc sDeads[2] = {
 static const struct Collision sCollisions[6] = {
     {
       kind : DRP,
-      layer : LAYER_ENEMY,
+      faction : FACTION_ENEMY,
       special : 2,
       damage : 0,
       unk_04 : 0xFF,
@@ -111,7 +111,7 @@ static const struct Collision sCollisions[6] = {
     },
     {
       kind : DDP,
-      layer : LAYER_ENEMY,
+      faction : FACTION_ENEMY,
       special : 2,
       damage : 3,
       unk_04 : 0x00,
@@ -127,7 +127,7 @@ static const struct Collision sCollisions[6] = {
     },
     {
       kind : DRP,
-      layer : LAYER_ENEMY,
+      faction : FACTION_ENEMY,
       special : 2,
       damage : 0,
       unk_04 : 0xFF,
@@ -143,7 +143,7 @@ static const struct Collision sCollisions[6] = {
     },
     {
       kind : DDP,
-      layer : LAYER_ENEMY,
+      faction : FACTION_ENEMY,
       special : 2,
       damage : 3,
       unk_04 : 0x00,
@@ -159,7 +159,7 @@ static const struct Collision sCollisions[6] = {
     },
     {
       kind : DRP,
-      layer : LAYER_ENEMY,
+      faction : FACTION_ENEMY,
       special : 2,
       damage : 0,
       unk_04 : 0xFF,
@@ -175,7 +175,7 @@ static const struct Collision sCollisions[6] = {
     },
     {
       kind : DDP,
-      layer : LAYER_ENEMY,
+      faction : FACTION_ENEMY,
       special : 2,
       damage : 3,
       unk_04 : 0x00,

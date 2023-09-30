@@ -313,7 +313,7 @@ _080EDCBC:
 	strb r0, [r5, #5]
 _080EDCC4:
 	movs r0, #0x40
-	bl GetBlinkMotionState
+	bl UpdateBlinkMotionState
 	mov r1, sb
 	lsls r4, r1, #0x10
 	asrs r1, r4, #0x10
@@ -563,7 +563,7 @@ _080EDEB0:
 	strb r0, [r6, #5]
 _080EDEB2:
 	movs r0, #0x40
-	bl GetBlinkMotionState
+	bl UpdateBlinkMotionState
 	ldr r5, _080EDEF4 @ =StringOfsTable
 	movs r1, #0x88
 	lsls r1, r1, #4

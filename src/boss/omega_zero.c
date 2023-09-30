@@ -8,39 +8,18 @@
 #include "weapon.h"
 #include "zero.h"
 
+static const u8 gOmegaZeroMode[48];
 static const u8 sInitModes[4];
 static const struct Collision sCollisions[6];
 
+void CreateOzChargeSaberRock(s32 x, u8 r1);
+void oz_080b3820(struct Coord *c, bool8 isRight);
 void oz_080c3b44(struct Boss *p);
 void oz_080c3b9c(struct Boss *p);
 struct Projectile *CreateOmegaZeroSaber(struct Boss *p, u8 kind);
 
-// Boss union
-struct OmegaZero {
-  struct Entity s;
-  struct Body body;
-
-  // b4~
-  u8 work[4];  // General purpose
-  s32 unk_b8;
-  void *vfx;
-  u8 oldMode_c0;
-  u8 unk_c1;
-  u16 unk_c2;
-  bool8 isRight;
-  u8 _[3];
-  void *unk_c8;
-  void *unk_cc;
-  SoundID se;
-  u8 unk_d2;
-  u8 unk_d3;
-  u32 unk_d4;
-  u8 unk_d8[12];
-};
-
 static const BossFunc gOmegaZeroMainRoutine1[24];
 static const BossFunc gOmegaZeroMainRoutine2[24];
-static const BossFunc gOmegaZeroDeathSeq[2];
 
 static void OmegaZero_Init(struct Boss *p);
 static void OmegaZero_Update(struct Boss *p);
@@ -51,125 +30,47 @@ const BossRoutine gOmegaZeroRoutine = {
     [ENTITY_INIT] =      OmegaZero_Init,
     [ENTITY_MAIN] =      OmegaZero_Update,
     [ENTITY_DIE] =       OmegaZero_Die,
-    [ENTITY_DISAPPEAR] = deleteBoss,
+    [ENTITY_DISAPPEAR] = DeleteBoss,
     [ENTITY_EXIT] =      (BossFunc)DeleteEntity,
 };
 // clang-format on
 
-NAKED void ozAI_0805d5d0(struct Boss *p) {
-  asm(".syntax unified\n\
-	push {r4, r5, r6, r7, lr}\n\
-	mov r7, sb\n\
-	mov r6, r8\n\
-	push {r6, r7}\n\
-	mov ip, r0\n\
-	ldr r0, _0805D5F8 @ =pZero2\n\
-	ldr r0, [r0]\n\
-	mov r2, ip\n\
-	ldr r1, [r2, #0x54]\n\
-	ldr r0, [r0, #0x54]\n\
-	subs r1, r1, r0\n\
-	cmp r1, #0\n\
-	bge _0805D5EC\n\
-	rsbs r1, r1, #0\n\
-_0805D5EC:\n\
-	ldr r0, _0805D5FC @ =0x00004FFF\n\
-	cmp r1, r0\n\
-	bgt _0805D600\n\
-	movs r1, #0\n\
-	b _0805D612\n\
-	.align 2, 0\n\
-_0805D5F8: .4byte pZero2\n\
-_0805D5FC: .4byte 0x00004FFF\n\
-_0805D600:\n\
-	ldr r0, _0805D60C @ =0x000077FF\n\
-	cmp r1, r0\n\
-	bgt _0805D610\n\
-	movs r1, #1\n\
-	b _0805D612\n\
-	.align 2, 0\n\
-_0805D60C: .4byte 0x000077FF\n\
-_0805D610:\n\
-	movs r1, #2\n\
-_0805D612:\n\
-	ldr r0, _0805D62C @ =RNG_0202f388\n\
-	mov r8, r0\n\
-	mov r5, ip\n\
-	adds r5, #0xc5\n\
-	ldr r2, _0805D630 @ =gOmegaZeroMode\n\
-	mov sb, r2\n\
-	lsls r7, r1, #4\n\
-	mov r4, ip\n\
-	adds r4, #0xc6\n\
-	mov r6, ip\n\
-	adds r6, #0xa4\n\
-	b _0805D638\n\
-	.align 2, 0\n\
-_0805D62C: .4byte RNG_0202f388\n\
-_0805D630: .4byte gOmegaZeroMode\n\
-_0805D634:\n\
-	cmp r2, #0x14\n\
-	bne _0805D66C\n\
-_0805D638:\n\
-	mov r0, r8\n\
-	ldr r1, [r0]\n\
-	ldr r0, _0805D680 @ =0x000343FD\n\
-	muls r0, r1, r0\n\
-	ldr r1, _0805D684 @ =0x00269EC3\n\
-	adds r0, r0, r1\n\
-	lsls r0, r0, #1\n\
-	lsrs r1, r0, #1\n\
-	mov r2, r8\n\
-	str r1, [r2]\n\
-	lsrs r3, r0, #0x11\n\
-	movs r0, #0xf\n\
-	ands r3, r0\n\
-	adds r0, r3, r7\n\
-	add r0, sb\n\
-	ldrb r1, [r5]\n\
-	ldrb r2, [r0]\n\
-	cmp r1, r2\n\
-	bne _0805D664\n\
-	ldrb r0, [r4]\n\
-	cmp r0, #0\n\
-	bne _0805D638\n\
-_0805D664:\n\
-	movs r1, #0\n\
-	ldrsh r0, [r6, r1]\n\
-	cmp r0, #0x20\n\
-	bgt _0805D634\n\
-_0805D66C:\n\
-	adds r0, r3, r7\n\
-	add r0, sb\n\
-	ldrb r1, [r0]\n\
-	ldrb r0, [r5]\n\
-	cmp r0, r1\n\
-	bne _0805D688\n\
-	ldrb r0, [r4]\n\
-	adds r0, #1\n\
-	b _0805D68C\n\
-	.align 2, 0\n\
-_0805D680: .4byte 0x000343FD\n\
-_0805D684: .4byte 0x00269EC3\n\
-_0805D688:\n\
-	movs r0, #0\n\
-	strb r1, [r5]\n\
-_0805D68C:\n\
-	strb r0, [r4]\n\
-	adds r0, r3, r7\n\
-	add r0, sb\n\
-	ldrb r0, [r0]\n\
-	movs r1, #0\n\
-	mov r2, ip\n\
-	strb r0, [r2, #0xd]\n\
-	strb r1, [r2, #0xe]\n\
-	pop {r3, r4}\n\
-	mov r8, r3\n\
-	mov sb, r4\n\
-	pop {r4, r5, r6, r7}\n\
-	pop {r0}\n\
-	bx r0\n\
- .syntax divided\n");
+NON_MATCH static void calcNextOmegaZeroAction(struct Boss *p) {
+#if MODERN
+  s32 d = abs((p->s).coord.x - (pZero2->s).coord.x);
+  if (d < PIXEL(80)) {
+    d = 0;  // 近距離ルーチン
+  } else if (d < PIXEL(120)) {
+    d = 1;  // 中距離ルーチン
+  } else {
+    d = 2;  // 遠距離ルーチン
+  }
+  d <<= 4;
+
+  while (TRUE) {
+    u32 rng;
+    RNG_0202f388 = LCG(RNG_0202f388);
+    rng = (RNG_0202f388 >> 16) & 0xF;
+
+    if ((p->props.oz).prevMode == gOmegaZeroMode[d + rng]) {
+      if ((p->props.oz).unk_c6 != 0) continue;
+    }
+
+    if ((p->body).hp < 33 || (gOmegaZeroMode[d + rng] != 20)) {
+      if ((p->props.oz).prevMode == gOmegaZeroMode[d + rng]) {
+        (p->props.oz).unk_c6++;
+      } else {
+        (p->props.oz).prevMode = gOmegaZeroMode[d + rng];
+        (p->props.oz).unk_c6 = 0;
+      }
+      (p->s).mode[1] = (p->props.oz).prevMode;
+      (p->s).mode[2] = 0;
+      return;
+    }
+  }
+#else
+  INCCODE("asm/wip/calcNextOmegaZeroAction.inc");
+#endif
 }
 
 static void oz_0805d6a8(struct Boss *p) {
@@ -191,10 +92,10 @@ static void oz_0805d6a8(struct Boss *p) {
 // 0x0805d6d8
 static void onCollision(struct Body *body, struct Coord *c1, struct Coord *c2) {
   struct Zero *z = (struct Zero *)body->enemy->parent;
-  struct OmegaZero *oz = (struct OmegaZero *)body->parent;
+  struct Boss *oz = (struct Boss *)body->parent;
 
   if (body->hitboxFlags & BODY_STATUS_WHITE) {
-    oz->isRight = (oz->s).coord.x < (z->s).coord.x;
+    (oz->props.oz).isRight = (oz->s).coord.x < (z->s).coord.x;
   }
 }
 
@@ -230,7 +131,7 @@ NON_MATCH static void OmegaZero_Init(struct Boss *p) {
   (p->s).flags |= DISPLAY;
   InitNonAffineMotion(&p->s);
   ResetDynamicMotion(&p->s);
-  resetBossData(p, sCollisions, 96);
+  ResetBossBody(p, sCollisions, 96);
   body = &p->body;
   body->fn = onCollision;
   (p->s).palID = 4;
@@ -242,7 +143,7 @@ NON_MATCH static void OmegaZero_Init(struct Boss *p) {
     p->props.oz.x = ((p->props.oz.x / 240) * PIXEL(240));
     p->props.oz.y = FUN_08009f6c((p->s).coord.x, (p->s).coord.y);
     p->props.oz.vfx = NULL;
-    p->props.oz.unk_c5 |= 0xFF;
+    p->props.oz.prevMode |= 0xFF;
     p->props.oz.unk_c6 = 0;
     (p->s).coord.y = p->props.oz.y;
     LoadZeroPalette(NULL, 8);
@@ -345,8 +246,15 @@ static void OmegaZero_Update(struct Boss *p) {
   }
 }
 
+static void ozDeath0(struct Boss *p);
+static void ozDeath1(struct Boss *p);
+
 static void OmegaZero_Die(struct Boss *p) {
-  (gOmegaZeroDeathSeq[(p->s).mode[1]])(p);
+  static const BossFunc sDeads[2] = {
+      ozDeath0,
+      ozDeath1,
+  };
+  (sDeads[(p->s).mode[1]])(p);
   return;
 }
 
@@ -360,127 +268,36 @@ static void oz_0805d954(struct Boss *p) {
 }
 
 // 01 00 -- --
-NAKED static void ozNeutral(struct Boss *p) {
-  asm(".syntax unified\n\
-	push {r4, lr}\n\
-	adds r4, r0, #0\n\
-	ldrb r0, [r4, #0xe]\n\
-	cmp r0, #0\n\
-	beq _0805D980\n\
-	cmp r0, #1\n\
-	beq _0805D9B2\n\
-	b _0805DA48\n\
-_0805D980:\n\
-	ldr r0, _0805D99C @ =pZero2\n\
-	ldr r0, [r0]\n\
-	ldr r0, [r0, #0x54]\n\
-	ldr r1, [r4, #0x54]\n\
-	subs r0, r0, r1\n\
-	movs r1, #0xd0\n\
-	lsls r1, r1, #8\n\
-	adds r0, r0, r1\n\
-	movs r1, #0xd0\n\
-	lsls r1, r1, #9\n\
-	cmp r0, r1\n\
-	bls _0805D9A0\n\
-	movs r0, #8\n\
-	b _0805D9A2\n\
-	.align 2, 0\n\
-_0805D99C: .4byte pZero2\n\
-_0805D9A0:\n\
-	movs r0, #0x18\n\
-_0805D9A2:\n\
-	strb r0, [r4, #0x12]\n\
-	adds r0, r4, #0\n\
-	movs r1, #0\n\
-	bl SetMotion\n\
-	ldrb r0, [r4, #0xe]\n\
-	adds r0, #1\n\
-	strb r0, [r4, #0xe]\n\
-_0805D9B2:\n\
-	adds r0, r4, #0\n\
-	adds r0, #0x74\n\
-	ldr r1, _0805DA00 @ =0x08365144\n\
-	bl SetDDP\n\
-	movs r3, #0\n\
-	ldr r0, _0805DA04 @ =pZero2\n\
-	ldr r2, [r0]\n\
-	ldr r1, [r4, #0x54]\n\
-	ldr r0, [r2, #0x54]\n\
-	cmp r1, r0\n\
-	bge _0805D9CC\n\
-	movs r3, #1\n\
-_0805D9CC:\n\
-	adds r0, r4, #0\n\
-	adds r0, #0x4c\n\
-	strb r3, [r0]\n\
-	movs r3, #0\n\
-	ldr r1, [r4, #0x54]\n\
-	ldr r0, [r2, #0x54]\n\
-	cmp r1, r0\n\
-	bge _0805D9DE\n\
-	movs r3, #1\n\
-_0805D9DE:\n\
-	movs r0, #0x4a\n\
-	adds r0, r0, r4\n\
-	mov ip, r0\n\
-	lsls r2, r3, #4\n\
-	ldrb r1, [r0]\n\
-	movs r0, #0x11\n\
-	rsbs r0, r0, #0\n\
-	ands r0, r1\n\
-	orrs r0, r2\n\
-	mov r1, ip\n\
-	strb r0, [r1]\n\
-	cmp r3, #0\n\
-	beq _0805DA08\n\
-	ldrb r0, [r4, #0xa]\n\
-	movs r1, #0x10\n\
-	orrs r0, r1\n\
-	b _0805DA0E\n\
-	.align 2, 0\n\
-_0805DA00: .4byte 0x08365144\n\
-_0805DA04: .4byte pZero2\n\
-_0805DA08:\n\
-	ldrb r1, [r4, #0xa]\n\
-	movs r0, #0xef\n\
-	ands r0, r1\n\
-_0805DA0E:\n\
-	strb r0, [r4, #0xa]\n\
-	ldrb r0, [r4, #0x12]\n\
-	subs r3, r0, #1\n\
-	strb r3, [r4, #0x12]\n\
-	ldr r0, _0805DA50 @ =pZero2\n\
-	ldr r2, [r0]\n\
-	adds r0, r2, #0\n\
-	adds r0, #0x8c\n\
-	ldr r0, [r0]\n\
-	movs r1, #0x80\n\
-	lsls r1, r1, #2\n\
-	ands r0, r1\n\
-	cmp r0, #0\n\
-	bne _0805DA42\n\
-	adds r0, r2, #0\n\
-	adds r0, #0xa4\n\
-	movs r1, #0\n\
-	ldrsh r0, [r0, r1]\n\
-	cmp r0, #0\n\
-	beq _0805DA42\n\
-	lsls r0, r3, #0x18\n\
-	cmp r0, #0\n\
-	bne _0805DA42\n\
-	adds r0, r4, #0\n\
-	bl ozAI_0805d5d0\n\
-_0805DA42:\n\
-	adds r0, r4, #0\n\
-	bl UpdateMotionGraphic\n\
-_0805DA48:\n\
-	pop {r4}\n\
-	pop {r0}\n\
-	bx r0\n\
-	.align 2, 0\n\
-_0805DA50: .4byte pZero2\n\
- .syntax divided\n");
+static void ozNeutral(struct Boss *p) {
+  switch ((p->s).mode[2]) {
+    case 0: {
+      if ((u32)((pZero2->s).coord.x - (p->s).coord.x) + PIXEL(208) > PIXEL(416)) {
+        (p->s).work[2] = 8;
+      } else {
+        (p->s).work[2] = 24;
+      }
+      SetMotion(&p->s, MOTION(DM000_ZERO_NEUTRAL, 0));
+      (p->s).mode[2]++;
+      FALLTHROUGH;
+    }
+    case 1: {
+      bool8 xflip;
+      SetDDP(&p->body, &sCollisions[1]);
+      (p->s).spr.xflip = (p->s).coord.x < (pZero2->s).coord.x;
+      xflip = (p->s).spr.oam.xflip = (p->s).coord.x < (pZero2->s).coord.x;
+      if (xflip) {
+        (p->s).flags |= X_FLIP;
+      } else {
+        (p->s).flags &= ~X_FLIP;
+      }
+      (p->s).work[2]--;
+      if (!((pZero2->body).status & BODY_STATUS_DEAD) && ((pZero2->body).hp != 0) && ((p->s).work[2] == 0)) {
+        calcNextOmegaZeroAction(p);
+      }
+      UpdateMotionGraphic(&p->s);
+      break;
+    }
+  }
 }
 
 // 01 01 xx --
@@ -1769,116 +1586,49 @@ _0805E45C: .4byte 0x00003F01\n\
 }
 
 // 01 10 xx --
-NAKED static void charge_saber(struct Boss *p) {
-  asm(".syntax unified\n\
-	push {r4, r5, lr}\n\
-	adds r5, r0, #0\n\
-	ldrb r0, [r5, #0xe]\n\
-	cmp r0, #1\n\
-	beq _0805E494\n\
-	cmp r0, #1\n\
-	bgt _0805E474\n\
-	cmp r0, #0\n\
-	beq _0805E47E\n\
-	b _0805E52A\n\
-_0805E474:\n\
-	cmp r0, #2\n\
-	beq _0805E4AE\n\
-	cmp r0, #3\n\
-	beq _0805E4D0\n\
-	b _0805E52A\n\
-_0805E47E:\n\
-	movs r0, #0x18\n\
-	strb r0, [r5, #0x12]\n\
-	adds r0, r5, #0\n\
-	bl oz_080c3b44\n\
-	adds r0, r5, #0\n\
-	bl oz_080c3b9c\n\
-	ldrb r0, [r5, #0xe]\n\
-	adds r0, #1\n\
-	strb r0, [r5, #0xe]\n\
-_0805E494:\n\
-	ldrb r0, [r5, #0x12]\n\
-	subs r0, #1\n\
-	strb r0, [r5, #0x12]\n\
-	lsls r0, r0, #0x18\n\
-	cmp r0, #0\n\
-	bne _0805E4A6\n\
-	ldrb r0, [r5, #0xe]\n\
-	adds r0, #1\n\
-	strb r0, [r5, #0xe]\n\
-_0805E4A6:\n\
-	adds r0, r5, #0\n\
-	bl UpdateMotionGraphic\n\
-	b _0805E52A\n\
-_0805E4AE:\n\
-	movs r0, #0\n\
-	strb r0, [r5, #0x12]\n\
-	movs r0, #0xee\n\
-	bl PlaySound\n\
-	adds r0, r5, #0\n\
-	movs r1, #7\n\
-	bl CreateOmegaZeroSaber\n\
-	movs r1, #0xa0\n\
-	lsls r1, r1, #5\n\
-	adds r0, r5, #0\n\
-	bl SetMotion\n\
-	ldrb r0, [r5, #0xe]\n\
-	adds r0, #1\n\
-	strb r0, [r5, #0xe]\n\
-_0805E4D0:\n\
-	adds r0, r5, #0\n\
-	bl UpdateMotionGraphic\n\
-	ldr r0, [r5, #0x70]\n\
-	ldr r1, _0805E530 @ =0x00FFFF00\n\
-	ands r0, r1\n\
-	ldr r1, _0805E534 @ =0x00010300\n\
-	cmp r0, r1\n\
-	bne _0805E51A\n\
-	ldr r3, [r5, #0x54]\n\
-	ldr r0, _0805E538 @ =0xFFFFD000\n\
-	adds r2, r3, r0\n\
-	ldrb r1, [r5, #0xa]\n\
-	movs r0, #0x10\n\
-	ands r0, r1\n\
-	cmp r0, #0\n\
-	beq _0805E4F8\n\
-	movs r0, #0xc0\n\
-	lsls r0, r0, #6\n\
-	adds r2, r3, r0\n\
-_0805E4F8:\n\
-	adds r0, r2, #0\n\
-	movs r1, #0\n\
-	bl oz_0808b538\n\
-	adds r4, r5, #0\n\
-	adds r4, #0x54\n\
-	ldrb r1, [r5, #0xa]\n\
-	lsrs r1, r1, #4\n\
-	movs r0, #1\n\
-	ands r1, r0\n\
-	adds r0, r4, #0\n\
-	bl oz_080b3820\n\
-	movs r0, #3\n\
-	adds r1, r4, #0\n\
-	bl AppendQuake\n\
-_0805E51A:\n\
-	adds r0, r5, #0\n\
-	adds r0, #0x73\n\
-	ldrb r0, [r0]\n\
-	cmp r0, #3\n\
-	bne _0805E52A\n\
-	movs r0, #0\n\
-	strb r0, [r5, #0xd]\n\
-	strb r0, [r5, #0xe]\n\
-_0805E52A:\n\
-	pop {r4, r5}\n\
-	pop {r0}\n\
-	bx r0\n\
-	.align 2, 0\n\
-_0805E530: .4byte 0x00FFFF00\n\
-_0805E534: .4byte 0x00010300\n\
-_0805E538: .4byte 0xFFFFD000\n\
- .syntax divided\n");
+static void charge_saber(struct Boss *p) {
+  switch ((p->s).mode[2]) {
+    case 0: {
+      (p->s).work[2] = 24;
+      oz_080c3b44(p);
+      oz_080c3b9c(p);
+      (p->s).mode[2]++;
+      FALLTHROUGH;
+    }
+    case 1: {
+      (p->s).work[2]--;
+      if ((p->s).work[2] == 0) {
+        (p->s).mode[2]++;
+      }
+      UpdateMotionGraphic(&p->s);
+      break;
+    }
+    case 2: {
+      (p->s).work[2] = 0;
+      PlaySound(SE_OMEGAZERO_CHARGE_SABER);
+      CreateOmegaZeroSaber(p, 7);
+      SetMotion(&p->s, MOTION(DM020_ZERO_SABER_CHARGE, 0));
+      (p->s).mode[2]++;
+      FALLTHROUGH;
+    }
+    case 3: {
+      UpdateMotionGraphic(&p->s);
+      if ((*(u32 *)&(p->s).motion.step & 0xffff00) == 0x10300) {
+        s32 x = (p->s).coord.x - PIXEL(48);
+        if ((p->s).flags & X_FLIP) {
+          x = (p->s).coord.x + PIXEL(48);
+        }
+        CreateOzChargeSaberRock(x, 0);
+        oz_080b3820(&(p->s).coord, (p->s).flags >> 4 & 1);
+        AppendQuake(3, &(p->s).coord);
+      }
+      if ((p->s).motion.state == MOTION_END) {
+        (p->s).mode[1] = 0;
+        (p->s).mode[2] = 0;
+      }
+      break;
+    }
+  }
 }
 
 // 01 11 xx --
@@ -2884,15 +2634,10 @@ _0805ECC4: .4byte gStageRun\n\
  .syntax divided\n");
 }
 
-static const BossFunc gOmegaZeroDeathSeq[2] = {
-    ozDeath0,
-    ozDeath1,
-};
-
 static const struct Collision sCollisions[6] = {
     {
       kind : DRP,
-      layer : 1,
+      faction : FACTION_ENEMY,
       special : 0,
       damage : 0,
       unk_04 : 0xFF,
@@ -2911,7 +2656,7 @@ static const struct Collision sCollisions[6] = {
 
     {
       kind : DDP,
-      layer : 1,
+      faction : FACTION_ENEMY,
       special : 2,
       damage : 3,
       unk_04 : 0x00,
@@ -2927,7 +2672,7 @@ static const struct Collision sCollisions[6] = {
     },
     {
       kind : DRP,
-      layer : 1,
+      faction : FACTION_ENEMY,
       special : 2,
       damage : 0,
       unk_04 : 0xFF,
@@ -2946,7 +2691,7 @@ static const struct Collision sCollisions[6] = {
 
     {
       kind : DDP,
-      layer : 1,
+      faction : FACTION_ENEMY,
       special : 2,
       damage : 3,
       unk_04 : 0x00,
@@ -2962,7 +2707,7 @@ static const struct Collision sCollisions[6] = {
     },
     {
       kind : DRP,
-      layer : 1,
+      faction : FACTION_ENEMY,
       special : 2,
       damage : 0,
       unk_04 : 0xFF,
@@ -2981,7 +2726,7 @@ static const struct Collision sCollisions[6] = {
 
     {
       kind : DDP,
-      layer : 1,
+      faction : FACTION_ENEMY,
       special : 2,
       damage : 3,
       unk_04 : 0x00,
@@ -2997,7 +2742,7 @@ static const struct Collision sCollisions[6] = {
     },
 };
 
-const u8 gOmegaZeroMode[48] = {
+static const u8 gOmegaZeroMode[48] = {
     5, 5, 5, 5, 5, 5, 11, 11, 15, 15, 15, 15, 16, 16, 16, 16, 8, 8, 8, 8, 11, 11, 20, 20, 14, 14, 14, 14, 17, 17, 17, 17, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 11, 11, 11, 11,
 };
 

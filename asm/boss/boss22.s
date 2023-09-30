@@ -74,7 +74,7 @@ initBoss22: @ 0x08060B40
 	ldr r1, _08060C0C @ =0x083655D4
 	adds r0, r5, #0
 	movs r2, #0x60
-	bl resetBossData
+	bl ResetBossBody
 	ldr r1, _08060C10 @ =FUN_080616b8
 	adds r0, r5, #0
 	adds r0, #0x74
@@ -304,7 +304,7 @@ FUN_08060d38: @ 0x08060D38
 	movs r0, #0xaa
 	bl ClearBlink
 	adds r0, r4, #0
-	bl deleteBoss
+	bl DeleteBoss
 	pop {r4}
 	pop {r0}
 	bx r0
@@ -363,13 +363,13 @@ _08060D9C:
 	strb r0, [r4, #0xe]
 _08060DBE:
 	movs r0, #0xa7
-	bl GetBlinkMotionState
+	bl UpdateBlinkMotionState
 	movs r0, #0xa8
-	bl GetBlinkMotionState
+	bl UpdateBlinkMotionState
 	movs r0, #0xa9
-	bl GetBlinkMotionState
+	bl UpdateBlinkMotionState
 	movs r0, #0xaa
-	bl GetBlinkMotionState
+	bl UpdateBlinkMotionState
 	ldrb r0, [r4, #0x12]
 	cmp r0, #0
 	beq _08060E0C
@@ -436,13 +436,13 @@ _08060E38:
 	strb r0, [r7, #0xe]
 _08060E4A:
 	movs r0, #0xa7
-	bl GetBlinkMotionState
+	bl UpdateBlinkMotionState
 	movs r0, #0xa8
-	bl GetBlinkMotionState
+	bl UpdateBlinkMotionState
 	movs r0, #0xa9
-	bl GetBlinkMotionState
+	bl UpdateBlinkMotionState
 	movs r0, #0xaa
-	bl GetBlinkMotionState
+	bl UpdateBlinkMotionState
 	ldr r0, [r7, #0x68]
 	adds r0, #8
 	str r0, [r7, #0x68]
@@ -1000,7 +1000,7 @@ _08061294:
 	adds r0, r4, #0
 	bl FUN_080616fc
 	movs r0, #0xa7
-	bl GetBlinkMotionState
+	bl UpdateBlinkMotionState
 	ldrb r0, [r4, #0x12]
 	cmp r0, #0
 	beq _080612CC
@@ -1080,7 +1080,7 @@ _08061308:
 	strb r0, [r4, #0xe]
 _08061340:
 	movs r0, #0xaa
-	bl GetBlinkMotionState
+	bl UpdateBlinkMotionState
 	ldrb r0, [r4, #0x12]
 	cmp r0, #0
 	beq _080613B0
@@ -1113,7 +1113,7 @@ _0806137C: .4byte 0xFFFFDD00
 _08061380: .4byte 0xFFFFAA00
 _08061384:
 	movs r0, #0xaa
-	bl GetBlinkMotionState
+	bl UpdateBlinkMotionState
 	adds r1, r4, #0
 	adds r1, #0xc4
 	ldr r0, [r1]
@@ -1224,7 +1224,7 @@ _08061464:
 	adds r0, r4, #0
 	bl FUN_080616fc
 	movs r0, #0xa8
-	bl GetBlinkMotionState
+	bl UpdateBlinkMotionState
 	adds r1, r4, #0
 	adds r1, #0xc4
 	ldr r0, [r1]
@@ -1347,7 +1347,7 @@ _08061524:
 	strb r0, [r4, #0xe]
 _08061560:
 	movs r0, #0xa9
-	bl GetBlinkMotionState
+	bl UpdateBlinkMotionState
 	ldrb r0, [r4, #0x12]
 	cmp r0, #0
 	beq _080615D0
@@ -1383,7 +1383,7 @@ _080615A2:
 	strb r0, [r4, #0xe]
 _080615AC:
 	movs r0, #0xa9
-	bl GetBlinkMotionState
+	bl UpdateBlinkMotionState
 	ldrb r0, [r4, #0x12]
 	cmp r0, #0
 	beq _080615D0
@@ -1442,7 +1442,7 @@ _0806161C:
 	adds r0, r4, #0
 	bl FUN_080616fc
 	movs r0, #0xa7
-	bl GetBlinkMotionState
+	bl UpdateBlinkMotionState
 	adds r0, r4, #0
 	adds r0, #0xcc
 	ldr r0, [r0]

@@ -739,9 +739,9 @@ _080F2BF6:\n\
 	strb r0, [r6, #3]\n\
 _080F2BF8:\n\
 	movs r0, #0x97\n\
-	bl GetBlinkMotionState\n\
+	bl UpdateBlinkMotionState\n\
 	movs r0, #0x98\n\
-	bl GetBlinkMotionState\n\
+	bl UpdateBlinkMotionState\n\
 	add sp, #0x20\n\
 	pop {r3, r4, r5}\n\
 	mov r8, r3\n\

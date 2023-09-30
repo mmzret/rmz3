@@ -17,7 +17,7 @@ const BossRoutine gVolteelRoutine = {
     [ENTITY_INIT] =      Volteel_Init,
     [ENTITY_MAIN] =      Volteel_Update,
     [ENTITY_DIE] =       Volteel_Die,
-    [ENTITY_DISAPPEAR] = deleteBoss,
+    [ENTITY_DISAPPEAR] = DeleteBoss,
     [ENTITY_EXIT] =      (BossFunc)DeleteEntity,
 };
 // clang-format on
@@ -83,7 +83,7 @@ NAKED static void Volteel_Init(struct Boss* p) {
 	ldr r1, _08043444 @ =0x08362330\n\
 	adds r0, r7, #0\n\
 	movs r2, #0x40\n\
-	bl resetBossData\n\
+	bl ResetBossBody\n\
 	adds r1, r7, #0\n\
 	adds r1, #0xc9\n\
 	movs r0, #0x40\n\
@@ -309,7 +309,7 @@ INCASM("asm/boss/volteel.inc");
 static const struct Collision sCollisions[24] = {
     [0] = {
       kind : DRP,
-      layer : 1,
+      faction : FACTION_ENEMY,
       special : 2,
       damage : 0,
       unk_04 : 0xFF,
@@ -325,7 +325,7 @@ static const struct Collision sCollisions[24] = {
     },
     [1] = {
       kind : DDP,
-      layer : 1,
+      faction : FACTION_ENEMY,
       special : 2,
       damage : 3,
       unk_04 : 0x00,
@@ -341,7 +341,7 @@ static const struct Collision sCollisions[24] = {
     },
     [2] = {
       kind : DRP,
-      layer : 1,
+      faction : FACTION_ENEMY,
       special : 2,
       damage : 0,
       unk_04 : 0xFF,
@@ -357,7 +357,7 @@ static const struct Collision sCollisions[24] = {
     },
     [3] = {
       kind : DDP,
-      layer : 1,
+      faction : FACTION_ENEMY,
       special : 2,
       damage : 3,
       unk_04 : 0x00,
@@ -373,7 +373,7 @@ static const struct Collision sCollisions[24] = {
     },
     [4] = {
       kind : DRP,
-      layer : 1,
+      faction : FACTION_ENEMY,
       special : 2,
       damage : 0,
       unk_04 : 0xFF,
@@ -389,7 +389,7 @@ static const struct Collision sCollisions[24] = {
     },
     [5] = {
       kind : DDP,
-      layer : 1,
+      faction : FACTION_ENEMY,
       special : 2,
       damage : 3,
       unk_04 : 0x00,
@@ -405,7 +405,7 @@ static const struct Collision sCollisions[24] = {
     },
     [6] = {
       kind : DDP,
-      layer : 1,
+      faction : FACTION_ENEMY,
       special : 2,
       damage : 3,
       unk_04 : 0x00,
@@ -421,7 +421,7 @@ static const struct Collision sCollisions[24] = {
     },
     [7] = {
       kind : DRP,
-      layer : 1,
+      faction : FACTION_ENEMY,
       special : 2,
       damage : 0,
       unk_04 : 0xFF,
@@ -437,7 +437,7 @@ static const struct Collision sCollisions[24] = {
     },
     [8] = {
       kind : DDP,
-      layer : 1,
+      faction : FACTION_ENEMY,
       special : 2,
       damage : 3,
       unk_04 : 0x00,
@@ -453,7 +453,7 @@ static const struct Collision sCollisions[24] = {
     },
     [9] = {
       kind : DDP,
-      layer : 1,
+      faction : FACTION_ENEMY,
       special : 2,
       damage : 3,
       unk_04 : 0x00,
@@ -469,7 +469,7 @@ static const struct Collision sCollisions[24] = {
     },
     [10] = {
       kind : DRP,
-      layer : 1,
+      faction : FACTION_ENEMY,
       special : 2,
       damage : 0,
       unk_04 : 0xFF,
@@ -485,7 +485,7 @@ static const struct Collision sCollisions[24] = {
     },
     [11] = {
       kind : DDP,
-      layer : 1,
+      faction : FACTION_ENEMY,
       special : 2,
       damage : 3,
       unk_04 : 0x00,
@@ -501,7 +501,7 @@ static const struct Collision sCollisions[24] = {
     },
     [12] = {
       kind : DRP,
-      layer : 1,
+      faction : FACTION_ENEMY,
       special : 2,
       damage : 0,
       unk_04 : 0xFF,
@@ -517,7 +517,7 @@ static const struct Collision sCollisions[24] = {
     },
     [13] = {
       kind : DDP,
-      layer : 1,
+      faction : FACTION_ENEMY,
       special : 2,
       damage : 3,
       unk_04 : 0x00,
@@ -533,7 +533,7 @@ static const struct Collision sCollisions[24] = {
     },
     [14] = {
       kind : DRP,
-      layer : 1,
+      faction : FACTION_ENEMY,
       special : 2,
       damage : 0,
       unk_04 : 0xFF,
@@ -549,7 +549,7 @@ static const struct Collision sCollisions[24] = {
     },
     [15] = {
       kind : DDP,
-      layer : 1,
+      faction : FACTION_ENEMY,
       special : 2,
       damage : 3,
       unk_04 : 0x00,
@@ -565,7 +565,7 @@ static const struct Collision sCollisions[24] = {
     },
     [16] = {
       kind : DRP,
-      layer : 1,
+      faction : FACTION_ENEMY,
       special : 2,
       damage : 0,
       unk_04 : 0xFF,
@@ -581,7 +581,7 @@ static const struct Collision sCollisions[24] = {
     },
     [17] = {
       kind : DDP,
-      layer : 1,
+      faction : FACTION_ENEMY,
       special : 2,
       damage : 3,
       unk_04 : 0x00,
@@ -597,7 +597,7 @@ static const struct Collision sCollisions[24] = {
     },
     [18] = {
       kind : DRP,
-      layer : 1,
+      faction : FACTION_ENEMY,
       special : 2,
       damage : 0,
       unk_04 : 0xFF,
@@ -613,7 +613,7 @@ static const struct Collision sCollisions[24] = {
     },
     [19] = {
       kind : DDP,
-      layer : 1,
+      faction : FACTION_ENEMY,
       special : 2,
       damage : 3,
       unk_04 : 0x00,
@@ -629,7 +629,7 @@ static const struct Collision sCollisions[24] = {
     },
     [20] = {
       kind : DRP,
-      layer : 1,
+      faction : FACTION_ENEMY,
       special : 2,
       damage : 0,
       unk_04 : 0xFF,
@@ -645,7 +645,7 @@ static const struct Collision sCollisions[24] = {
     },
     [21] = {
       kind : DDP,
-      layer : 1,
+      faction : FACTION_ENEMY,
       special : 2,
       damage : 3,
       unk_04 : 0x00,
@@ -661,7 +661,7 @@ static const struct Collision sCollisions[24] = {
     },
     [22] = {
       kind : DDP,
-      layer : 1,
+      faction : FACTION_ENEMY,
       special : 2,
       damage : 5,
       unk_04 : 0x00,
@@ -677,7 +677,7 @@ static const struct Collision sCollisions[24] = {
     },
     [23] = {
       kind : DRP,
-      layer : 1,
+      faction : FACTION_ENEMY,
       special : 2,
       damage : 0,
       unk_04 : 0xFF,

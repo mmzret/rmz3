@@ -24,7 +24,7 @@ static void updateSpaceCraft(struct Coord* _ UNUSED) {
       gOverworld.work.spacecraft.unk_00e |= 1;
       LoadBlink(5, 0);
     }
-    GetBlinkMotionState(5);
+    UpdateBlinkMotionState(5);
   } else if (gOverworld.work.spacecraft.unk_00e & 1) {
     gOverworld.work.spacecraft.unk_00e ^= 1;
     ClearBlink(5);
@@ -35,7 +35,7 @@ static void updateSpaceCraft(struct Coord* _ UNUSED) {
       gOverworld.work.spacecraft.unk_00e |= (1 << 1);
       LoadBlink(9, 0);
     }
-    GetBlinkMotionState(9);
+    UpdateBlinkMotionState(9);
   } else if (gOverworld.work.spacecraft.unk_00e & (1 << 1)) {
     gOverworld.work.spacecraft.unk_00e ^= (1 << 1);
     ClearBlink(9);
@@ -47,8 +47,8 @@ static void updateSpaceCraft(struct Coord* _ UNUSED) {
       LoadBlink(6, 0);
       LoadBlink(8, 0);
     }
-    GetBlinkMotionState(6);
-    GetBlinkMotionState(8);
+    UpdateBlinkMotionState(6);
+    UpdateBlinkMotionState(8);
   } else if (gOverworld.work.spacecraft.unk_00e & (1 << 2)) {
     gOverworld.work.spacecraft.unk_00e ^= (1 << 2);
     ClearBlink(6);
@@ -61,8 +61,8 @@ static void updateSpaceCraft(struct Coord* _ UNUSED) {
       LoadBlink(7, 0);
       LoadBlink(10, 0);
     }
-    GetBlinkMotionState(7);
-    GetBlinkMotionState(10);
+    UpdateBlinkMotionState(7);
+    UpdateBlinkMotionState(10);
   } else if (gOverworld.work.spacecraft.unk_00e & (1 << 3)) {
     gOverworld.work.spacecraft.unk_00e ^= (1 << 3);
     ClearBlink(7);
@@ -667,6 +667,7 @@ _0800B910: .4byte 0xFFFF0000\n\
  .syntax divided\n");
 }
 
+// 0x0800b914
 NAKED static void LayerUpdate_SpaceCraft_3(struct StageLayer* l, const struct Stage* _ UNUSED) {
   asm(".syntax unified\n\
 	push {r4, r5, r6, r7, lr}\n\
@@ -1000,6 +1001,8 @@ static const StageLayerRoutine sLayerRoutine[6] = {
 };
 // clang-format on
 
-#include "../../../data/stage/spacecraft/stage.h"
+#include "../../../data/stage/spacecraft/layer.h"
+// ...
+#include "../../../data/stage/spacecraft/landscape.h"
 
 static const u8 u8_ARRAY_0833b200[6] = {0, 1, 2, 3, 2, 1};

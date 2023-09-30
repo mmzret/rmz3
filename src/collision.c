@@ -48,20 +48,20 @@ void CheckCollision(void) {
   gCollisionManager.talkTo = NULL;
   gCollisionManager.door = NULL;
   gCollisionManager.teleportal = NULL;
-  checkOverlap1(gCollisionManager.list[DDP][LAYER_ALLY], gCollisionManager.list[DRP2][LAYER_ENEMY]);
-  checkOverlap1(gCollisionManager.list[DDP][LAYER_ALLY], gCollisionManager.list[DRP2][LAYER_UNK2]);
-  checkOverlap1(gCollisionManager.list[DDP][LAYER_ENEMY], gCollisionManager.list[DRP2][LAYER_ALLY]);
-  checkOverlap1(gCollisionManager.list[DDP][LAYER_ENEMY], gCollisionManager.list[DRP2][LAYER_UNK2]);
-  checkOverlap1(gCollisionManager.list[DDP][LAYER_UNK2], gCollisionManager.list[DRP2][LAYER_ENEMY]);
-  checkOverlap1(gCollisionManager.list[DDP][LAYER_UNK2], gCollisionManager.list[DRP2][LAYER_ALLY]);
-  checkOverlap1(gCollisionManager.list[DDP][LAYER_UNK2], gCollisionManager.list[DRP2][LAYER_UNK2]);
-  checkOverlap2(gCollisionManager.list[DDP][LAYER_ALLY], gCollisionManager.list[DRP][LAYER_ENEMY]);
-  checkOverlap2(gCollisionManager.list[DDP][LAYER_ALLY], gCollisionManager.list[DRP][LAYER_UNK2]);
-  checkOverlap2(gCollisionManager.list[DDP][LAYER_ENEMY], gCollisionManager.list[DRP][LAYER_ALLY]);
-  checkOverlap2(gCollisionManager.list[DDP][LAYER_ENEMY], gCollisionManager.list[DRP][LAYER_UNK2]);
-  checkOverlap2(gCollisionManager.list[DDP][LAYER_UNK2], gCollisionManager.list[DRP][LAYER_ENEMY]);
-  checkOverlap2(gCollisionManager.list[DDP][LAYER_UNK2], gCollisionManager.list[DRP][LAYER_ALLY]);
-  checkOverlap2(gCollisionManager.list[DDP][LAYER_UNK2], gCollisionManager.list[DRP][LAYER_UNK2]);
+  checkOverlap1(gCollisionManager.list[DDP][FACTION_ALLY], gCollisionManager.list[DRP2][FACTION_ENEMY]);
+  checkOverlap1(gCollisionManager.list[DDP][FACTION_ALLY], gCollisionManager.list[DRP2][FACTION_UNK2]);
+  checkOverlap1(gCollisionManager.list[DDP][FACTION_ENEMY], gCollisionManager.list[DRP2][FACTION_ALLY]);
+  checkOverlap1(gCollisionManager.list[DDP][FACTION_ENEMY], gCollisionManager.list[DRP2][FACTION_UNK2]);
+  checkOverlap1(gCollisionManager.list[DDP][FACTION_UNK2], gCollisionManager.list[DRP2][FACTION_ENEMY]);
+  checkOverlap1(gCollisionManager.list[DDP][FACTION_UNK2], gCollisionManager.list[DRP2][FACTION_ALLY]);
+  checkOverlap1(gCollisionManager.list[DDP][FACTION_UNK2], gCollisionManager.list[DRP2][FACTION_UNK2]);
+  checkOverlap2(gCollisionManager.list[DDP][FACTION_ALLY], gCollisionManager.list[DRP][FACTION_ENEMY]);
+  checkOverlap2(gCollisionManager.list[DDP][FACTION_ALLY], gCollisionManager.list[DRP][FACTION_UNK2]);
+  checkOverlap2(gCollisionManager.list[DDP][FACTION_ENEMY], gCollisionManager.list[DRP][FACTION_ALLY]);
+  checkOverlap2(gCollisionManager.list[DDP][FACTION_ENEMY], gCollisionManager.list[DRP][FACTION_UNK2]);
+  checkOverlap2(gCollisionManager.list[DDP][FACTION_UNK2], gCollisionManager.list[DRP][FACTION_ENEMY]);
+  checkOverlap2(gCollisionManager.list[DDP][FACTION_UNK2], gCollisionManager.list[DRP][FACTION_ALLY]);
+  checkOverlap2(gCollisionManager.list[DDP][FACTION_UNK2], gCollisionManager.list[DRP][FACTION_UNK2]);
 }
 
 void InitBody(struct Body *p, const struct Collision *collisions, struct Coord *coord, s16 hp) {
@@ -135,8 +135,8 @@ WIP void ResisterNonAffineHitbox(struct Body *body) {
         h->c.y = c->y + (collisions[0].range).y;
         h->w = (collisions[0].range).w;
         h->h = (collisions[0].range).h;
-        h->next = gCollisionManager.list[collisions[0].kind][collisions[0].layer];
-        gCollisionManager.list[collisions[0].kind][collisions[0].layer] = h;
+        h->next = gCollisionManager.list[collisions[0].kind][collisions[0].faction];
+        gCollisionManager.list[collisions[0].kind][collisions[0].faction] = h;
         if (collisions[0].remaining == 0) {
           break;
         }
@@ -178,8 +178,8 @@ WIP void RegisterFlipableHitbox(struct Body *body, u8 flip) {
         }
         h->w = (collisions[0].range).w;
         h->h = (collisions[0].range).h;
-        h->next = gCollisionManager.list[collisions[0].kind][collisions[0].layer];
-        gCollisionManager.list[collisions[0].kind][collisions[0].layer] = h;
+        h->next = gCollisionManager.list[collisions[0].kind][collisions[0].faction];
+        gCollisionManager.list[collisions[0].kind][collisions[0].faction] = h;
         if (collisions[0].remaining == 0) {
           break;
         }
@@ -444,7 +444,7 @@ WIP void hitbox_08007674(struct Body *a, struct Body *d) {
     gCollisionManager.teleportal = a;
   }
 
-  if (((gCollisionManager.disabled >> (d->drp)->layer)) & 1) {
+  if (((gCollisionManager.disabled >> (d->drp)->faction)) & 1) {
     return;
   }
   if (((a->drp)->unk_0a & ((1 << 5) | (1 << 0))) && ((d->drp)->unk_0a & (1 << 2))) {
@@ -700,10 +700,10 @@ u16 CalcPutitedSpikeDamage(struct Body *body, u8 damage) {
       .sweepフラグが立っていたら、フラグの種類に応じて対象のBodyを全部殺す
  */
 static void TrySweepBodies(void) {
-  s32 layer;
-  for (layer = 0; layer < 3; layer++) {
-    if ((gCollisionManager.sweep >> layer) & 1) {
-      struct Hitbox *hitbox = gCollisionManager.list[DRP][layer];
+  s32 faction;
+  for (faction = 0; faction < 3; faction++) {
+    if ((gCollisionManager.sweep >> faction) & 1) {
+      struct Hitbox *hitbox = gCollisionManager.list[DRP][faction];
       for (; hitbox != NULL; hitbox = hitbox->next) {
         struct Body *body;
         (hitbox->body)->elemented = 0;

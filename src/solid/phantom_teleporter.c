@@ -433,7 +433,7 @@ _080D8A3C: .4byte pZero2\n\
 static const struct Collision sCollisions[2] = {
     {
       kind : DDP,
-      layer : LAYER_ENEMY,
+      faction : FACTION_ENEMY,
       special : CS_TELEPORTAL,
       damage : 255,
       unk_04 : 0x00,
@@ -449,7 +449,7 @@ static const struct Collision sCollisions[2] = {
     },
     {
       kind : DRP,
-      layer : LAYER_ENEMY,
+      faction : FACTION_ENEMY,
       special : CS_TELEPORTAL,
       damage : 255,
       unk_04 : 0xFF,

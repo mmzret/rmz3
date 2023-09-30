@@ -123,9 +123,9 @@ static void ElfMenuLoop_Update(struct GameState* g) {
   u8 prev = g->mode[3];
   if ((g->mode[3] != 0) || (!TrySlideMenu(g))) {
     (ElfMenuFocusLoops[g->mode[3]])(g);
-    GetBlinkMotionState(81);
+    UpdateBlinkMotionState(81);
     if (ELF_MENU->blinkID != 0) {
-      GetBlinkMotionState(ELF_MENU->blinkID);
+      UpdateBlinkMotionState(ELF_MENU->blinkID);
     }
     gBlendRegBuffer.bldalpha = (ELF_MENU->unk_b & 0x1F) | ((0x10 - ELF_MENU->unk_b) << 8);
     if (tab != ELF_MENU->tab) {
@@ -269,7 +269,7 @@ _080F6A60:\n\
 	movs r1, #0\n\
 	bl LoadBlink\n\
 	ldrb r0, [r4, #0xc]\n\
-	bl GetBlinkMotionState\n\
+	bl UpdateBlinkMotionState\n\
 	movs r0, #2\n\
 	bl PlaySound\n\
 _080F6A76:\n\
@@ -293,7 +293,7 @@ NAKED static void ElfMenuFocusLoop_OpenTab(struct GameState* g) {
 	ldr r1, _080F6B20 @ =0x00000DFC\n\
 	adds r0, r5, r1\n\
 	ldrb r0, [r0, #0xc]\n\
-	bl GetBlinkMotionState\n\
+	bl UpdateBlinkMotionState\n\
 	ldr r3, _080F6B24 @ =0x00000E17\n\
 	adds r6, r5, r3\n\
 	ldrb r0, [r6]\n\
@@ -348,7 +348,7 @@ _080F6AEC:\n\
 	movs r1, #0\n\
 	bl LoadBlink\n\
 	ldrb r0, [r4, #0xc]\n\
-	bl GetBlinkMotionState\n\
+	bl UpdateBlinkMotionState\n\
 	movs r0, #3\n\
 	bl PlaySound\n\
 	b _080F6B7E\n\
@@ -432,7 +432,7 @@ NAKED static void ElfMenuFocusLoop_TabSelect(struct GameState* g) {
 	strb r0, [r6]\n\
 _080F6BB8:\n\
 	movs r0, #0x4f\n\
-	bl GetBlinkMotionState\n\
+	bl UpdateBlinkMotionState\n\
 	ldr r0, _080F6C04 @ =0x00000DFC\n\
 	adds r4, r7, r0\n\
 	ldrb r3, [r4, #0xd]\n\
@@ -485,7 +485,7 @@ _080F6C10:\n\
 	movs r1, #0\n\
 	bl LoadBlink\n\
 	ldrb r0, [r4, #0xc]\n\
-	bl GetBlinkMotionState\n\
+	bl UpdateBlinkMotionState\n\
 	strb r5, [r4, #8]\n\
 	ldr r2, _080F6C48 @ =gWindowRegBuffer\n\
 	ldrh r1, [r2]\n\
@@ -531,7 +531,7 @@ _080F6C7E:\n\
 	movs r1, #0\n\
 	bl LoadBlink\n\
 	movs r0, #0x4f\n\
-	bl GetBlinkMotionState\n\
+	bl UpdateBlinkMotionState\n\
 	ldrb r0, [r4, #8]\n\
 	strb r0, [r4, #0xa]\n\
 	strb r6, [r4, #6]\n\
@@ -575,7 +575,7 @@ NAKED static void ElfMenuFocusLoop_ElfSelect(struct GameState* g) {
 	movs r1, #0\n\
 	bl LoadBlink\n\
 	movs r0, #0x4f\n\
-	bl GetBlinkMotionState\n\
+	bl UpdateBlinkMotionState\n\
 	movs r0, #0x4f\n\
 	bl ClearBlink\n\
 	ldrb r0, [r4]\n\

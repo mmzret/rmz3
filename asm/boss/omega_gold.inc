@@ -159,7 +159,7 @@ OmegaGold_Init: @ 0x0805AFAC
 	ldr r1, _0805B110 @ =0x08364C74
 	adds r0, r7, #0
 	movs r2, #0x60
-	bl resetBossData
+	bl ResetBossBody
 	ldr r1, _0805B114 @ =FUN_0805b8e0
 	adds r0, r7, #0
 	adds r0, #0x74
@@ -323,7 +323,7 @@ _0805B1EC:
 	cmp r0, #6
 	beq _0805B1FC
 	movs r0, #0x66
-	bl GetBlinkMotionState
+	bl UpdateBlinkMotionState
 _0805B1FC:
 	ldr r1, _0805B224 @ =0x08364C2C
 	ldrb r0, [r4, #0xd]
@@ -374,7 +374,7 @@ OmegaGold_Disappear: @ 0x0805B244
 	ldr r0, _0805B26C @ =0x0000010F
 	bl ClearBlink
 	adds r0, r4, #0
-	bl deleteBoss
+	bl DeleteBoss
 	pop {r4}
 	pop {r0}
 	bx r0
@@ -960,7 +960,7 @@ _0805B698:
 	bl createGoldOmega1Laser
 _0805B6AE:
 	movs r0, #0xb
-	bl GetBlinkMotionState
+	bl UpdateBlinkMotionState
 	ldrb r0, [r4, #0xe]
 	adds r0, #1
 	strb r0, [r4, #0xe]
@@ -1009,13 +1009,13 @@ _0805B70A:
 	strb r0, [r4, #0xe]
 _0805B70C:
 	movs r0, #0xb
-	bl GetBlinkMotionState
+	bl UpdateBlinkMotionState
 	b _0805B738
 _0805B714:
 	adds r0, r4, #0
 	bl floatGoldOmega1
 	movs r0, #0xb
-	bl GetBlinkMotionState
+	bl UpdateBlinkMotionState
 	ldrb r0, [r4, #0x12]
 	cmp r0, #0
 	beq _0805B738
@@ -1103,7 +1103,7 @@ _0805B79A:
 	strb r0, [r4, #0xe]
 _0805B7B4:
 	movs r0, #0xb
-	bl GetBlinkMotionState
+	bl UpdateBlinkMotionState
 	adds r0, r4, #0
 	bl floatGoldOmega1
 	b _0805B7E6
@@ -1123,7 +1123,7 @@ _0805B7D2:
 	strb r1, [r4, #0xe]
 _0805B7DA:
 	movs r0, #0xb
-	bl GetBlinkMotionState
+	bl UpdateBlinkMotionState
 	adds r0, r4, #0
 	bl floatGoldOmega1
 _0805B7E6:
@@ -1195,7 +1195,7 @@ _0805B840:
 	b _0805B86C
 _0805B860:
 	movs r0, #0x67
-	bl GetBlinkMotionState
+	bl UpdateBlinkMotionState
 	adds r0, r4, #0
 	bl floatGoldOmega1
 _0805B86C:

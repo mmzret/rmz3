@@ -327,7 +327,7 @@ _08004064: .4byte gBlinkManager\n\
 /**
  * @note 0x08004068
  */
-u32 GetBlinkMotionState(u16 blinkID) {
+u32 UpdateBlinkMotionState(u16 blinkID) {
   struct Blink* b;
   s32 i;
 
@@ -338,7 +338,7 @@ u32 GetBlinkMotionState(u16 blinkID) {
     }
   }
   if (i == BLINK_LENGTH) {
-    return 3;
+    return MOTION_END;
   }
   b = &gBlinkManager.blinks[i];
   UpdateMotionState(&b->m);

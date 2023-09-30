@@ -266,10 +266,10 @@ _080EF1D2:
 	bl UpdateStageEntities
 	ldr r0, _080EF244 @ =gSolidHeaderPtr
 	ldr r0, [r0]
-	bl UpdateBlockingEntities
+	bl UpdateHazardEntities
 	ldr r0, _080EF248 @ =gZakoHeaderPtr
 	ldr r0, [r0]
-	bl UpdateBlockingEntities
+	bl UpdateHazardEntities
 	movs r0, #8
 	b _080EF25A
 	.align 2, 0
@@ -419,7 +419,7 @@ _080EF32C:
 	bl UpdateEntities
 	ldr r6, _080EF3E4 @ =gElfHeaderPtr
 	ldr r0, [r6]
-	bl UpdateBlockingEntities
+	bl UpdateHazardEntities
 	bl UpdateVFXs
 	ldr r0, _080EF3E8 @ =gSolidHeaderPtr
 	ldr r0, [r0]

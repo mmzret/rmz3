@@ -69,7 +69,7 @@ static const ProjectileFunc*const sUpdates[5] = {
 static const struct Collision sCollisions[9] = {
     {
       kind : DRP,
-      layer : LAYER_ENEMY,
+      faction : FACTION_ENEMY,
       special : 0,
       damage : 0,
       unk_04 : 0xFF,
@@ -85,7 +85,7 @@ static const struct Collision sCollisions[9] = {
     },
     {
       kind : DDP,
-      layer : LAYER_ENEMY,
+      faction : FACTION_ENEMY,
       special : 0,
       damage : 3,
       unk_04 : 0x00,
@@ -101,7 +101,7 @@ static const struct Collision sCollisions[9] = {
     },
     {
       kind : DDP,
-      layer : LAYER_ENEMY,
+      faction : FACTION_ENEMY,
       special : 2,
       damage : 3,
       unk_04 : 0x00,
@@ -117,7 +117,7 @@ static const struct Collision sCollisions[9] = {
     },
     {
       kind : DDP,
-      layer : LAYER_ENEMY,
+      faction : FACTION_ENEMY,
       special : 2,
       damage : 5,
       unk_04 : 0x00,
@@ -133,7 +133,7 @@ static const struct Collision sCollisions[9] = {
     },
     {
       kind : DDP,
-      layer : LAYER_ENEMY,
+      faction : FACTION_ENEMY,
       special : 2,
       damage : 5,
       unk_04 : 0x00,
@@ -149,7 +149,7 @@ static const struct Collision sCollisions[9] = {
     },
     {
       kind : DDP,
-      layer : LAYER_ENEMY,
+      faction : FACTION_ENEMY,
       special : 2,
       damage : 3,
       unk_04 : 0x00,
@@ -165,7 +165,7 @@ static const struct Collision sCollisions[9] = {
     },
     {
       kind : DDP,
-      layer : LAYER_ENEMY,
+      faction : FACTION_ENEMY,
       special : 2,
       damage : 3,
       unk_04 : 0x00,
@@ -181,7 +181,7 @@ static const struct Collision sCollisions[9] = {
     },
     {
       kind : DDP,
-      layer : LAYER_UNK2,
+      faction : FACTION_UNK2,
       special : 2,
       damage : 3,
       unk_04 : 0x00,
@@ -197,7 +197,7 @@ static const struct Collision sCollisions[9] = {
     },
     {
       kind : DDP,
-      layer : LAYER_UNK2,
+      faction : FACTION_UNK2,
       special : 2,
       damage : 3,
       unk_04 : 0x00,

@@ -371,7 +371,7 @@ _080C04F4:
 	movs r0, #0x57
 	bl LoadBlink
 	movs r0, #0x57
-	bl GetBlinkMotionState
+	bl UpdateBlinkMotionState
 	movs r0, #0x1e
 	strb r0, [r4, #0x12]
 	ldrb r0, [r4, #0xe]
@@ -589,7 +589,7 @@ _080C06A6:
 	movs r0, #0x57
 	bl LoadBlink
 	movs r0, #0x57
-	bl GetBlinkMotionState
+	bl UpdateBlinkMotionState
 	movs r0, #2
 	strb r0, [r4, #0x12]
 	ldr r0, [r5, #0x54]

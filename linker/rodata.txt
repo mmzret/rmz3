@@ -96,7 +96,8 @@
 		src/stage/snowy_plains/landscape.o (.rodata);
 		src/stage/sunken_library/landscape.o (.rodata);
 		src/stage/giant_elevator/landscape.o (.rodata);
-    /* ... */
+		src/stage/sub_arcadia/landscape.o (.rodata);
+		src/stage/weil_labo/landscape.o (.rodata);
 		src/stage/resistance_base/landscape.o (.rodata);
 
 		src/stage/entity.o (.rodata);
@@ -242,6 +243,22 @@
       src/enemy/wormer_snow_ball.o (.rodata);
       src/enemy/beetank.o (.rodata);
       src/enemy/swordy.o (.rodata);
+      src/enemy/puffy.o (.rodata);
+      src/enemy/crossbyne.o (.rodata);
+      src/enemy/burnable_wood.o (.rodata);
+      src/enemy/mellnet.o (.rodata);
+      src/enemy/hell_bouncer.o (.rodata);
+      src/enemy/pantheon_zombie.o (.rodata);
+      src/enemy/pantheon_aqua_mod_obj.o (.rodata);
+      src/enemy/glacierle_arm.o (.rodata);
+      src/enemy/omega_gold_hand.o (.rodata);
+      src/enemy/eye_cannon.o (.rodata);
+      src/enemy/unk_42.o (.rodata);
+      src/enemy/capsule_cannon.o (.rodata);
+      src/enemy/pantheon_bomber.o (.rodata);
+      src/enemy/hanumachine_obj.o (.rodata);
+      src/enemy/gallisni.o (.rodata);
+      src/enemy/mothjiro.o (.rodata);
 
 		src/projectile.o (.rodata);
       src/projectile/lemon.o (.rodata);
@@ -359,8 +376,8 @@
       src/solid/unk_03.o (.rodata);
       src/solid/iron_star.o (.rodata);
       src/solid/heavy_cannon.o (.rodata);
-      src/solid/unk_06.o (.rodata);
-      src/solid/unk_07.o (.rodata);
+      src/solid/lava_geyser_platform.o (.rodata);
+      src/solid/lava_geyser.o (.rodata);
       src/solid/lava_river_platform.o (.rodata);
       src/solid/door_3d.o (.rodata);
       src/solid/unk_10.o (.rodata);
@@ -385,7 +402,7 @@
       src/solid/mob_npc.o (.rodata);
       src/solid/main_npc.o (.rodata);
       src/solid/cyberspace_door.o (.rodata);
-      src/solid/unk_32.o (.rodata);
+      src/solid/light_switch.o (.rodata);
       src/solid/unk_33.o (.rodata);
       src/solid/unk_34.o (.rodata);
       src/solid/container.o (.rodata);
@@ -398,9 +415,9 @@
       src/solid/ciel_mg_obj.o (.rodata);
       src/solid/unk_43.o (.rodata);
       src/solid/unk_44.o (.rodata);
-      src/solid/unk_45.o (.rodata);
-      src/solid/unk_46.o (.rodata);
-      src/solid/unk_47.o (.rodata);
+      src/solid/giant_elevator_pier.o (.rodata);
+      src/solid/giant_elevator_platform.o (.rodata);
+      src/solid/anatre_cube.o (.rodata);
       src/solid/ciel_computer.o (.rodata);
       src/solid/graffiti.o (.rodata);
       src/solid/structural_steel.o (.rodata);

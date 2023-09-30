@@ -75,7 +75,7 @@ PantheonAquaMod_Init: @ 0x08051330
 	ldr r1, _08051390 @ =0x0836364C
 	adds r0, r7, #0
 	movs r2, #0x50
-	bl resetBossData
+	bl ResetBossBody
 	b _0805139E
 	.align 2, 0
 _08051384: .4byte gBossFnTable
@@ -86,7 +86,7 @@ _08051394:
 	ldr r1, _0805158C @ =0x0836364C
 	adds r0, r7, #0
 	movs r2, #0x40
-	bl resetBossData
+	bl ResetBossBody
 _0805139E:
 	ldr r1, _08051590 @ =onCollision
 	adds r0, r7, #0
@@ -567,7 +567,7 @@ _0805176E:
 	adds r0, r4, #0
 	bl paquam_080512f8
 	ldrb r0, [r6]
-	bl GetBlinkMotionState
+	bl UpdateBlinkMotionState
 	adds r0, r4, #0
 	bl UpdateMotionGraphic
 	b _08051794
@@ -1009,7 +1009,7 @@ _08051AE4:
 	adds r1, #0xb8
 	movs r0, #0x52
 	strb r0, [r1]
-	bl GetBlinkMotionState
+	bl UpdateBlinkMotionState
 	movs r0, #0x60
 	strb r0, [r4, #0x12]
 	ldrb r0, [r4, #0xe]
@@ -1064,7 +1064,7 @@ _08051B64:
 	adds r0, r4, #0
 	adds r0, #0xb8
 	ldrb r0, [r0]
-	bl GetBlinkMotionState
+	bl UpdateBlinkMotionState
 	lsls r0, r0, #0x18
 	lsrs r1, r0, #0x18
 	cmp r1, #3
@@ -1187,7 +1187,7 @@ _08051C4A:
 	strb r0, [r4, #0xe]
 _08051C5A:
 	ldrb r0, [r5]
-	bl GetBlinkMotionState
+	bl UpdateBlinkMotionState
 	adds r0, r4, #0
 	bl UpdateMotionGraphic
 	b _08051CD6
@@ -1240,7 +1240,7 @@ _08051CC6:
 	adds r0, r4, #0
 	adds r0, #0xb8
 	ldrb r0, [r0]
-	bl GetBlinkMotionState
+	bl UpdateBlinkMotionState
 	adds r0, r4, #0
 	bl UpdateMotionGraphic
 _08051CD6:
@@ -1324,7 +1324,7 @@ _08051D64:
 	adds r0, r4, #0
 	adds r0, #0xb8
 	ldrb r0, [r0]
-	bl GetBlinkMotionState
+	bl UpdateBlinkMotionState
 	adds r0, r4, #0
 	bl UpdateMotionGraphic
 	b _08051DB0
@@ -1351,7 +1351,7 @@ _08051D9A:
 	adds r0, r4, #0
 	adds r0, #0xb8
 	ldrb r0, [r0]
-	bl GetBlinkMotionState
+	bl UpdateBlinkMotionState
 	adds r0, r4, #0
 	bl UpdateMotionGraphic
 _08051DB0:
@@ -1486,7 +1486,7 @@ _08051FDA:
 	adds r0, r4, #0
 	adds r0, #0xb8
 	ldrb r0, [r0]
-	bl GetBlinkMotionState
+	bl UpdateBlinkMotionState
 	adds r0, r4, #0
 	bl UpdateMotionGraphic
 	b _080520A6
@@ -1574,7 +1574,7 @@ _08052096:
 	adds r0, r4, #0
 	adds r0, #0xb8
 	ldrb r0, [r0]
-	bl GetBlinkMotionState
+	bl UpdateBlinkMotionState
 	adds r0, r4, #0
 	bl UpdateMotionGraphic
 _080520A6:
@@ -1726,7 +1726,7 @@ _080521C8:
 	adds r0, r4, #0
 	adds r0, #0xb8
 	ldrb r0, [r0]
-	bl GetBlinkMotionState
+	bl UpdateBlinkMotionState
 	adds r0, r4, #0
 	bl UpdateMotionGraphic
 	b _08052236
@@ -1762,7 +1762,7 @@ _08052226:
 	adds r0, r4, #0
 	adds r0, #0xb8
 	ldrb r0, [r0]
-	bl GetBlinkMotionState
+	bl UpdateBlinkMotionState
 	adds r0, r4, #0
 	bl UpdateMotionGraphic
 _08052236:
@@ -1864,7 +1864,7 @@ _080523F4:
 	bl LoadBlink
 	movs r0, #0x54
 	strb r0, [r5]
-	bl GetBlinkMotionState
+	bl UpdateBlinkMotionState
 	ldr r3, _08052558 @ =gStageRun
 	ldrh r2, [r3, #8]
 	movs r4, #1

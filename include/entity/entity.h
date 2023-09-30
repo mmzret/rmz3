@@ -6,6 +6,16 @@
 #include "global.h"
 #include "motion.h"
 
+#define INIT_BODY(p, collisions, hp, onCollision)  \
+  {                                                \
+    struct Body *body;                             \
+    (p->s).flags |= COLLIDABLE;                    \
+    body = &p->body;                               \
+    InitBody(body, collisions, &(p->s).coord, hp); \
+    body->parent = (struct CollidableEntity *)p;   \
+    body->fn = onCollision;                        \
+  }
+
 struct EntityOamData {
   /*0x00*/ u32 y : 8;
   /*0x01*/ u32 affineMode : 2;  // 0x1, 0x2 = 0x3

@@ -23,6 +23,6 @@ struct KeyState {
 
 extern struct KeyState gJoypad[2];
 
-void pollKeyInput(void);
+void PollKeyInput(void);
 
 #endif  // GUARD_RMZ3_INPUT_H

@@ -172,9 +172,9 @@ NAKED static void ExMenuLoop_Update(struct GameState* g) {
 	b _080F7CD2\n\
 _080F7B46:\n\
 	movs r0, #0x3e\n\
-	bl GetBlinkMotionState\n\
+	bl UpdateBlinkMotionState\n\
 	movs r0, #0x3f\n\
-	bl GetBlinkMotionState\n\
+	bl UpdateBlinkMotionState\n\
 	movs r0, #0xdf\n\
 	lsls r0, r0, #4\n\
 	adds r4, r6, r0\n\

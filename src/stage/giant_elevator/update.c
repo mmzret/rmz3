@@ -370,9 +370,9 @@ _0801FB1A:\n\
 	b _080200D2\n\
 _0801FB1C:\n\
 	movs r0, #0\n\
-	bl CreateSolid46\n\
+	bl CreateGiantElevatorPlatform\n\
 	movs r0, #1\n\
-	bl CreateSolid46\n\
+	bl CreateGiantElevatorPlatform\n\
 	movs r7, #0xbf\n\
 	lsls r7, r7, #1\n\
 	adds r1, r5, r7\n\

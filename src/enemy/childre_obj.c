@@ -60,7 +60,7 @@ static const EnemyFunc PTR_ARRAY_08366d24[4] = {
 static const struct Collision sCollisions[2 * 4] = {
     {
       kind : DDP,
-      layer : LAYER_ENEMY,
+      faction : FACTION_ENEMY,
       special : 0,
       damage : 3,
       unk_04 : 0x00,
@@ -76,7 +76,7 @@ static const struct Collision sCollisions[2 * 4] = {
     },
     {
       kind : DRP,
-      layer : LAYER_ENEMY,
+      faction : FACTION_ENEMY,
       special : 0,
       damage : 0,
       unk_04 : 0xFF,
@@ -92,7 +92,7 @@ static const struct Collision sCollisions[2 * 4] = {
     },
     {
       kind : DDP,
-      layer : LAYER_ENEMY,
+      faction : FACTION_ENEMY,
       special : 0,
       damage : 3,
       unk_04 : 0x00,
@@ -108,7 +108,7 @@ static const struct Collision sCollisions[2 * 4] = {
     },
     {
       kind : DRP,
-      layer : LAYER_ENEMY,
+      faction : FACTION_ENEMY,
       special : 0,
       damage : 0,
       unk_04 : 0xFF,
@@ -124,7 +124,7 @@ static const struct Collision sCollisions[2 * 4] = {
     },
     {
       kind : DDP,
-      layer : LAYER_ENEMY,
+      faction : FACTION_ENEMY,
       special : 0,
       damage : 4,
       unk_04 : 0x00,
@@ -140,7 +140,7 @@ static const struct Collision sCollisions[2 * 4] = {
     },
     {
       kind : DRP,
-      layer : LAYER_ENEMY,
+      faction : FACTION_ENEMY,
       special : 0,
       damage : 0,
       unk_04 : 0xFF,
@@ -156,7 +156,7 @@ static const struct Collision sCollisions[2 * 4] = {
     },
     {
       kind : DDP,
-      layer : LAYER_ENEMY,
+      faction : FACTION_ENEMY,
       special : 0,
       damage : 3,
       unk_04 : 0x00,
@@ -172,7 +172,7 @@ static const struct Collision sCollisions[2 * 4] = {
     },
     {
       kind : DRP,
-      layer : LAYER_ENEMY,
+      faction : FACTION_ENEMY,
       special : 0,
       damage : 0,
       unk_04 : 0xFF,

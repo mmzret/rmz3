@@ -37,17 +37,12 @@ void CreateGrandCannonBomb(struct Coord* c, s32 amplitude, u8 angle) {
 // --------------------------------------------
 
 static void GrandCannonBomb_Init(struct Projectile* p) {
-  struct Body* body;
   SET_PROJECTILE_ROUTINE(p, ENTITY_MAIN);
   (p->s).mode[1] = 0;
   (p->s).flags |= FLIPABLE;
   (p->s).flags |= DISPLAY;
   InitNonAffineMotion(&p->s);
-  (p->s).flags |= COLLIDABLE;
-  body = &p->body;
-  InitBody(body, &sCollision, &(p->s).coord, 1);
-  body->parent = (struct CollidableEntity*)p;
-  body->fn = NULL;
+  INIT_BODY(p, &sCollision, 1, NULL);
   GrandCannonBomb_Update(p);
 }
 
@@ -159,7 +154,7 @@ _0809D42C: .4byte gProjectileFnTable\n\
 
 static const struct Collision sCollision = {
   kind : DDP,
-  layer : LAYER_UNK2,
+  faction : FACTION_UNK2,
   special : 0,
   damage : 3,
   unk_04 : 0x00,

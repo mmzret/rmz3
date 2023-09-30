@@ -120,7 +120,7 @@ _0806179C:
 	ldr r1, _080618F0 @ =0x083656B0
 	adds r0, r7, #0
 	movs r2, #1
-	bl resetBossData
+	bl ResetBossBody
 	ldr r0, [r7, #0x54]
 	ldr r1, [r7, #0x58]
 	bl FUN_08009f6c
@@ -200,9 +200,9 @@ reactorCoreAI: @ 0x080618F8
 	sub sp, #4
 	adds r7, r0, #0
 	movs r0, #0xcb
-	bl GetBlinkMotionState
+	bl UpdateBlinkMotionState
 	movs r0, #0xcc
-	bl GetBlinkMotionState
+	bl UpdateBlinkMotionState
 	ldr r2, _080619D8 @ =gStageRun
 	ldrb r1, [r2, #0x12]
 	movs r0, #1
@@ -342,9 +342,9 @@ killReactorCore: @ 0x08061A2C
 	push {r4, lr}
 	adds r4, r0, #0
 	movs r0, #0xcb
-	bl GetBlinkMotionState
+	bl UpdateBlinkMotionState
 	movs r0, #0xcc
-	bl GetBlinkMotionState
+	bl UpdateBlinkMotionState
 	ldr r1, _08061A54 @ =0x083656AC
 	ldrb r0, [r4, #0xd]
 	lsls r0, r0, #2
@@ -367,7 +367,7 @@ FUN_08061a58: @ 0x08061A58
 	movs r0, #0xcc
 	bl ClearBlink
 	adds r0, r4, #0
-	bl deleteBoss
+	bl DeleteBoss
 	pop {r4}
 	pop {r0}
 	bx r0

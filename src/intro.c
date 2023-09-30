@@ -554,7 +554,7 @@ _080EBC4A:\n\
 	strh r4, [r0]\n\
 	strh r4, [r5]\n\
 	bl text_080e9730\n\
-	bl stopAllMusics\n\
+	bl StopAllMusics\n\
 	ldrh r0, [r6, #0x12]\n\
 	adds r0, #1\n\
 	strh r0, [r6, #0x12]\n\
@@ -744,7 +744,7 @@ _080EBDFC:\n\
 	strh r4, [r0]\n\
 	strh r4, [r5]\n\
 	bl text_080e9730\n\
-	bl stopAllMusics\n\
+	bl StopAllMusics\n\
 	ldrh r0, [r7, #0x12]\n\
 	adds r0, #1\n\
 	strh r0, [r7, #0x12]\n\

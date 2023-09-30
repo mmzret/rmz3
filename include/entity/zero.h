@@ -213,11 +213,29 @@ struct Zero {
   u8 unk_23c[64];
 
   // For minigame
-  u8 unk_27c;
-  u8 unk_27d;
-  u8 unk_27e;
-  u8 unk_27f;
-  struct Entity* unk_280[3];
+  union {
+    u8 raw[16];
+    struct {
+      u8 unk_27c;
+      u8 unk_27d;
+      u8 unk_27e;
+      u8 unk_27f;
+      struct Entity* unk_280[3];
+    } copyx;
+    struct {
+      s32 x;
+      struct Enemy* enemy;
+      u8 unk_8;
+      u8 unk_9;
+      u8 unk_a;
+      u8 unk_b;
+      s32 y;
+    } harpuia;
+    struct {
+      s32 x;
+      u8 unk_4[12];
+    } leviathan;
+  } mg;
 };  // 652 bytes
 
 typedef void (*ZeroFunc)(struct Zero*);

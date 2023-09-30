@@ -19,7 +19,7 @@ const ProjectileRoutine gProjectile8Routine = {
 static const struct Collision sCollision[2] = {
     {
       kind : DDP,
-      layer : 1,
+      faction : FACTION_ENEMY,
       special : 0,
       damage : 2,
       unk_04 : 0x00,
@@ -35,7 +35,7 @@ static const struct Collision sCollision[2] = {
     },
     {
       kind : DDP,
-      layer : 1,
+      faction : FACTION_ENEMY,
       special : 0,
       damage : 2,
       unk_04 : 0x00,

@@ -145,7 +145,7 @@ const s16 s16_ARRAY_0836129c[8] = {
 const struct Collision Collision_ARRAY_083612ac[2] = {
     {
       kind : DDP,
-      layer : 0,
+      faction : FACTION_ALLY,
       special : 1,
       damage : 8,
       unk_04 : 0x03,
@@ -161,7 +161,7 @@ const struct Collision Collision_ARRAY_083612ac[2] = {
     },
     {
       kind : DRP,
-      layer : 0,
+      faction : FACTION_ALLY,
       special : 1,
       damage : 0,
       unk_04 : 0xFF,
@@ -180,7 +180,7 @@ const struct Collision Collision_ARRAY_083612ac[2] = {
 const struct Collision Collision_ARRAY_083612dc[2] = {
     {
       kind : DDP,
-      layer : 0,
+      faction : FACTION_ALLY,
       special : 1,
       damage : 8,
       unk_04 : 0x03,
@@ -196,7 +196,7 @@ const struct Collision Collision_ARRAY_083612dc[2] = {
     },
     {
       kind : DRP,
-      layer : 0,
+      faction : FACTION_ALLY,
       special : 1,
       damage : 0,
       unk_04 : 0xFF,

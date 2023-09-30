@@ -42,7 +42,7 @@ const SolidFunc sGlacierleArmUpdates2[2] = {
 const struct Collision sGlacierleArmCollisions[21] = {
     [0] = {
       kind : DRP,
-      layer : 1,
+      faction : FACTION_ENEMY,
       special : 0,
       damage : 0,
       unk_04 : 0xFF,
@@ -58,7 +58,7 @@ const struct Collision sGlacierleArmCollisions[21] = {
     },
     [1] = {
       kind : DDP,
-      layer : 1,
+      faction : FACTION_ENEMY,
       special : 0,
       damage : 3,
       unk_04 : 0x00,
@@ -74,7 +74,7 @@ const struct Collision sGlacierleArmCollisions[21] = {
     },
     [2] = {
       kind : DRP,
-      layer : 1,
+      faction : FACTION_ENEMY,
       special : 0,
       damage : 0,
       unk_04 : 0xFF,
@@ -90,7 +90,7 @@ const struct Collision sGlacierleArmCollisions[21] = {
     },
     [3] = {
       kind : DDP,
-      layer : 1,
+      faction : FACTION_ENEMY,
       special : 0,
       damage : 3,
       unk_04 : 0x00,
@@ -106,7 +106,7 @@ const struct Collision sGlacierleArmCollisions[21] = {
     },
     [4] = {
       kind : DRP,
-      layer : 1,
+      faction : FACTION_ENEMY,
       special : 0,
       damage : 0,
       unk_04 : 0xFF,
@@ -122,7 +122,7 @@ const struct Collision sGlacierleArmCollisions[21] = {
     },
     [5] = {
       kind : DDP,
-      layer : 1,
+      faction : FACTION_ENEMY,
       special : 0,
       damage : 3,
       unk_04 : 0x00,
@@ -138,7 +138,7 @@ const struct Collision sGlacierleArmCollisions[21] = {
     },
     [6] = {
       kind : DDP,
-      layer : 1,
+      faction : FACTION_ENEMY,
       special : 0,
       damage : 3,
       unk_04 : 0x00,
@@ -154,7 +154,7 @@ const struct Collision sGlacierleArmCollisions[21] = {
     },
     [7] = {
       kind : DRP,
-      layer : 1,
+      faction : FACTION_ENEMY,
       special : 0,
       damage : 0,
       unk_04 : 0xFF,
@@ -170,7 +170,7 @@ const struct Collision sGlacierleArmCollisions[21] = {
     },
     [8] = {
       kind : DRP,
-      layer : 1,
+      faction : FACTION_ENEMY,
       special : 0,
       damage : 0,
       unk_04 : 0xFF,
@@ -186,7 +186,7 @@ const struct Collision sGlacierleArmCollisions[21] = {
     },
     [9] = {
       kind : DDP,
-      layer : 1,
+      faction : FACTION_ENEMY,
       special : 0,
       damage : 3,
       unk_04 : 0x00,
@@ -202,7 +202,7 @@ const struct Collision sGlacierleArmCollisions[21] = {
     },
     [10] = {
       kind : DDP,
-      layer : 1,
+      faction : FACTION_ENEMY,
       special : 0,
       damage : 3,
       unk_04 : 0x00,
@@ -218,7 +218,7 @@ const struct Collision sGlacierleArmCollisions[21] = {
     },
     [11] = {
       kind : DRP,
-      layer : 1,
+      faction : FACTION_ENEMY,
       special : 0,
       damage : 0,
       unk_04 : 0xFF,
@@ -234,7 +234,7 @@ const struct Collision sGlacierleArmCollisions[21] = {
     },
     [12] = {
       kind : DRP,
-      layer : 1,
+      faction : FACTION_ENEMY,
       special : 0,
       damage : 0,
       unk_04 : 0xFF,
@@ -250,7 +250,7 @@ const struct Collision sGlacierleArmCollisions[21] = {
     },
     [13] = {
       kind : DDP,
-      layer : 1,
+      faction : FACTION_ENEMY,
       special : 0,
       damage : 3,
       unk_04 : 0x00,
@@ -266,7 +266,7 @@ const struct Collision sGlacierleArmCollisions[21] = {
     },
     [14] = {
       kind : DDP,
-      layer : 1,
+      faction : FACTION_ENEMY,
       special : 0,
       damage : 3,
       unk_04 : 0x00,
@@ -282,7 +282,7 @@ const struct Collision sGlacierleArmCollisions[21] = {
     },
     [15] = {
       kind : DRP,
-      layer : 1,
+      faction : FACTION_ENEMY,
       special : 0,
       damage : 0,
       unk_04 : 0xFF,
@@ -298,7 +298,7 @@ const struct Collision sGlacierleArmCollisions[21] = {
     },
     [16] = {
       kind : DRP,
-      layer : 1,
+      faction : FACTION_ENEMY,
       special : 0,
       damage : 0,
       unk_04 : 0xFF,
@@ -314,7 +314,7 @@ const struct Collision sGlacierleArmCollisions[21] = {
     },
     [17] = {
       kind : DDP,
-      layer : 1,
+      faction : FACTION_ENEMY,
       special : 0,
       damage : 3,
       unk_04 : 0x00,
@@ -330,7 +330,7 @@ const struct Collision sGlacierleArmCollisions[21] = {
     },
     [18] = {
       kind : DDP,
-      layer : 1,
+      faction : FACTION_ENEMY,
       special : 0,
       damage : 3,
       unk_04 : 0x00,
@@ -346,7 +346,7 @@ const struct Collision sGlacierleArmCollisions[21] = {
     },
     [19] = {
       kind : DRP,
-      layer : 1,
+      faction : FACTION_ENEMY,
       special : 0,
       damage : 0,
       unk_04 : 0xFF,
@@ -362,7 +362,7 @@ const struct Collision sGlacierleArmCollisions[21] = {
     },
     [20] = {
       kind : DRP,
-      layer : 1,
+      faction : FACTION_ENEMY,
       special : 0,
       damage : 0,
       unk_04 : 0xFF,

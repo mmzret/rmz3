@@ -45,28 +45,25 @@ void InitBossHeader(struct EntityHeader *h, struct Boss *p, s16 len) {
   gBossHeaderPtr = h;
 }
 
-void deleteBoss(struct Boss *p) {
+void DeleteBoss(struct Boss *p) {
   (p->s).flags &= ~DISPLAY;
   SET_BOSS_ROUTINE(p, ENTITY_EXIT);
 }
 
-struct Weapon *FUN_0803d120(struct Entity *p) {
+#if MODERN == 0
+static struct Weapon *unused_0803d120(struct Entity *p) {
   struct Weapon *w = (struct Weapon *)GetNearestEntity(gWeaponHeaderPtr, &p->coord);
   if (w == NULL) return NULL;
   return w;
 }
+#endif
 
-struct Coord *FUN_0803d13c(struct Entity *p) {
+#if MODERN == 0
+static struct Coord *unused_0803d13c(struct Entity *p) {
   struct Entity *w = GetNearestEntity(gWeaponHeaderPtr, &p->coord);
   if (w != NULL) return &w->coord;
   return NULL;
 }
+#endif
 
-void resetBossData(struct Boss *p, const struct Collision *collisions, s16 hp) {
-  struct Body *body;
-  (p->s).flags |= COLLIDABLE;
-  body = &p->body;
-  InitBody(body, collisions, &(p->s).coord, hp);
-  body->parent = (struct CollidableEntity *)p;
-  body->fn = NULL;
-}
+void ResetBossBody(struct Boss *p, const struct Collision *collisions, s16 hp) { INIT_BODY(p, &collisions[0], hp, NULL); }

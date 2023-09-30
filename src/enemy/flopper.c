@@ -22,15 +22,10 @@ const EnemyRoutine gFlopperRoutine = {
 // clang-format on
 
 static void Flopper_Init(struct Enemy *p) {
-  struct Body *body;
   SET_ZAKO_ROUTINE(p, ENTITY_MAIN);
   p->props.flopper.c.x = (p->s).coord.x;
   p->props.flopper.c.y = (p->s).coord.y;
-  (p->s).flags |= COLLIDABLE;
-  body = &p->body;
-  InitBody(body, sCollisions, &(p->s).coord, 1);
-  body->parent = (struct CollidableEntity *)p;
-  body->fn = Flopper_onCollision;
+  INIT_BODY(p, &sCollisions[0], 1, Flopper_onCollision);
   (p->s).flags |= FLIPABLE;
   (p->s).mode[1] = (p->s).work[0];
   InitNonAffineMotion(&p->s);
@@ -78,7 +73,7 @@ INCASM("asm/enemy/flopper.inc");
 static const struct Collision sCollisions[2] = {
     {
       kind : DDP,
-      layer : 1,
+      faction : FACTION_ENEMY,
       special : 0,
       damage : 3,
       unk_04 : 0x00,
@@ -94,7 +89,7 @@ static const struct Collision sCollisions[2] = {
     },
     {
       kind : DRP,
-      layer : 1,
+      faction : FACTION_ENEMY,
       special : 0,
       damage : 3,
       unk_04 : 0xFF,

@@ -180,7 +180,7 @@ _080425A6:
 	ldr r1, _080425D0 @ =0x083620F8
 	adds r0, r7, #0
 	movs r2, #0x50
-	bl resetBossData
+	bl ResetBossBody
 	b _080425DE
 	.align 2, 0
 _080425B4: .4byte 0x085D7DF8
@@ -195,7 +195,7 @@ _080425D4:
 	ldr r1, _08042640 @ =0x083620F8
 	adds r0, r7, #0
 	movs r2, #0x40
-	bl resetBossData
+	bl ResetBossBody
 _080425DE:
 	ldr r1, _08042644 @ =nop_080423e0
 	adds r0, r7, #0

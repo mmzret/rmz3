@@ -15,3 +15,5 @@ export const toHex = (val: number, maxLength: number, prefix = ''): string => {
 export const pad100 = (n: number): string => {
   return `${n < 100 ? '0' : ''}${n < 10 ? '0' : ''}${n}`;
 };
+
+export const camelToSnakeCase = (str: string) => str[0].toLowerCase() + str.slice(1, str.length).replace(/[A-Z]/g, (letter) => `_${letter.toLowerCase()}`);

@@ -339,7 +339,7 @@ _080F82BC:
 	strb r1, [r5, #0x12]
 _080F82CE:
 	movs r0, #0x40
-	bl GetBlinkMotionState
+	bl UpdateBlinkMotionState
 	ldr r0, _080F82F8 @ =0x00000DCC
 	add r0, sb
 	ldrb r0, [r0, #0xc]

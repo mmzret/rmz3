@@ -8,7 +8,7 @@ static void resetKeyState(struct KeyState *j);
 
 void InitInput(void) {
   resetKeyStates();
-  pollKeyInput();
+  PollKeyInput();
 }
 
 static void resetKeyStates(void) {
@@ -21,7 +21,7 @@ static void resetKeyStates(void) {
   }
 }
 
-void pollKeyInput(void) {
+void PollKeyInput(void) {
   s32 retry = 0;
   struct KeyState *j = gJoypad;
 

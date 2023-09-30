@@ -23,7 +23,7 @@ struct Elf* CreateElf7(struct Zero* z, u8 breed, u8 availability, u8 _) {
     INIT_ELF_ROUTINE(p, 7);
     (p->s).tileNum = 0;
     (p->s).palID = 0;
-    *(struct Zero**)(&p->work[0]) = z;
+    *(struct Zero**)(&(p->props.raw[0])) = z;
     (p->s).work[0] = breed;
     (p->s).work[1] = availability;
   }

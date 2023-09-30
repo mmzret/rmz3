@@ -818,7 +818,7 @@ static void FUN_080cd720(struct Door3D* p) {
 static const struct Collision sCollisions[6] = {
     [0] = {
       kind : DDP,
-      layer : 1,
+      faction : FACTION_ENEMY,
       special : DOOR_3D,
       damage : 255,
       unk_04 : 0x00,
@@ -834,7 +834,7 @@ static const struct Collision sCollisions[6] = {
     },
     [1] = {
       kind : DRP,
-      layer : 1,
+      faction : FACTION_ENEMY,
       special : DOOR_3D,
       damage : 255,
       unk_04 : 0xFF,
@@ -850,7 +850,7 @@ static const struct Collision sCollisions[6] = {
     },
     [2] = {
       kind : DDP,
-      layer : 1,
+      faction : FACTION_ENEMY,
       special : 0,
       damage : 255,
       unk_04 : 0x00,
@@ -866,7 +866,7 @@ static const struct Collision sCollisions[6] = {
     },
     [3] = {
       kind : DRP,
-      layer : 1,
+      faction : FACTION_ENEMY,
       special : 0,
       damage : 255,
       unk_04 : 0xFF,
@@ -882,7 +882,7 @@ static const struct Collision sCollisions[6] = {
     },
     [4] = {
       kind : DRP,
-      layer : 1,
+      faction : FACTION_ENEMY,
       special : 0,
       damage : 0,
       unk_04 : 0xFF,
@@ -898,7 +898,7 @@ static const struct Collision sCollisions[6] = {
     },
     [5] = {
       kind : DRP,
-      layer : 1,
+      faction : FACTION_ENEMY,
       special : 0,
       damage : 0,
       unk_04 : 0xFF,

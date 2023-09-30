@@ -1,6 +1,7 @@
 #include "cyberelf.h"
-#include "entity.h"
 #include "global.h"
+
+INCASM("asm/cyberelf/bird.inc");
 
 static const ElfFunc sUpdates[2];
 

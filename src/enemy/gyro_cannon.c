@@ -232,7 +232,7 @@ static const struct Coord sElementCoord = {PIXEL(0), PIXEL(0)};
 static const struct Collision sCollisions[5] = {
     {
       kind : DDP,
-      layer : LAYER_ENEMY,
+      faction : FACTION_ENEMY,
       special : 0,
       damage : 2,
       unk_04 : 0x00,
@@ -248,7 +248,7 @@ static const struct Collision sCollisions[5] = {
     },
     {
       kind : DRP,
-      layer : LAYER_ENEMY,
+      faction : FACTION_ENEMY,
       special : 0,
       damage : 0,
       unk_04 : 0xFF,
@@ -264,7 +264,7 @@ static const struct Collision sCollisions[5] = {
     },
     {
       kind : DDP,
-      layer : LAYER_ENEMY,
+      faction : FACTION_ENEMY,
       special : 0,
       damage : 2,
       unk_04 : 0x00,
@@ -280,7 +280,7 @@ static const struct Collision sCollisions[5] = {
     },
     {
       kind : DRP,
-      layer : LAYER_ENEMY,
+      faction : FACTION_ENEMY,
       special : 0,
       damage : 0,
       unk_04 : 0xFF,
@@ -296,7 +296,7 @@ static const struct Collision sCollisions[5] = {
     },
     {
       kind : DDP,
-      layer : LAYER_UNK2,
+      faction : FACTION_UNK2,
       special : 0,
       damage : 2,
       unk_04 : 0x00,

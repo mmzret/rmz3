@@ -46,7 +46,7 @@ INCASM("asm/weapon/soul_launcher.inc");
 static const struct Collision sCollisions[2] = {
     {
       kind : DDP,
-      layer : 0,
+      faction : FACTION_ALLY,
       special : 1,
       damage : 1,
       unk_04 : 0x0D,
@@ -62,7 +62,7 @@ static const struct Collision sCollisions[2] = {
     },
     {
       kind : DRP,
-      layer : 0,
+      faction : FACTION_ALLY,
       special : 1,
       damage : 0,
       unk_04 : 0xFF,

@@ -1,5 +1,5 @@
 {
-  "name": "SpaceCraft",
+  "name": "Spacecraft",
   "id": 1,
   "tileset": "snow",
   "layers": [
@@ -7,8 +7,8 @@
       "bg": 1,
       "prio": 3,
       "scrollPower": [
-        256,
-        256
+        1,
+        1
       ],
       "scroll": [
         0,
@@ -19,8 +19,8 @@
       "bg": 2,
       "prio": 1,
       "scrollPower": [
-        256,
-        256
+        1,
+        1
       ],
       "scroll": [
         0,
@@ -31,8 +31,8 @@
       "bg": 3,
       "prio": 3,
       "scrollPower": [
-        256,
-        256
+        1,
+        1
       ],
       "scroll": [
         0,

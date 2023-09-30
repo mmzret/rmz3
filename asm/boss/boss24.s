@@ -573,7 +573,7 @@ _08061FA2:
 	ldr r1, _0806208C @ =0x08365784
 	adds r0, r7, #0
 	movs r2, #0x60
-	bl resetBossData
+	bl ResetBossBody
 	ldr r1, _08062090 @ =FUN_08061d24
 	adds r0, r7, #0
 	adds r0, #0x74

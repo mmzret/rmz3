@@ -1124,7 +1124,7 @@ _0800F358: .4byte 0x0002D025
 _0800F35C: .4byte 0x00000121
 _0800F360:
 	movs r0, #0xd0
-	bl GetBlinkMotionState
+	bl UpdateBlinkMotionState
 	ldrh r0, [r6, #0x10]
 	adds r0, #1
 	strh r0, [r6, #0x10]
@@ -1179,7 +1179,7 @@ _0800F3D4: .4byte gOverworld
 _0800F3D8: .4byte 0x0002D025
 _0800F3DC:
 	movs r0, #0xd5
-	bl GetBlinkMotionState
+	bl UpdateBlinkMotionState
 	movs r0, #2
 	b _0800F530
 _0800F3E6:
@@ -1204,7 +1204,7 @@ _0800F408: .4byte gOverworld
 _0800F40C: .4byte 0x0002D025
 _0800F410:
 	movs r0, #0xcf
-	bl GetBlinkMotionState
+	bl UpdateBlinkMotionState
 	ldrh r0, [r6, #0x10]
 	movs r1, #9
 	bl __umodsi3
@@ -1288,7 +1288,7 @@ _0800F4A8:
 _0800F4C8: .4byte 0x00000121
 _0800F4CC:
 	movs r0, #0xd0
-	bl GetBlinkMotionState
+	bl UpdateBlinkMotionState
 	ldrh r0, [r6, #0x10]
 	adds r0, #1
 	strh r0, [r6, #0x10]

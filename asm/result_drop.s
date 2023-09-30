@@ -300,7 +300,7 @@ _0802416A:
 	strb r0, [r6]
 _0802417C:
 	movs r0, #0x40
-	bl GetBlinkMotionState
+	bl UpdateBlinkMotionState
 	ldr r0, _080241CC @ =gStageRun
 	movs r3, #0xaa
 	lsls r3, r3, #1
@@ -332,7 +332,7 @@ _080241CC: .4byte gStageRun
 _080241D0: .4byte gPaletteManager
 _080241D4:
 	movs r0, #0x40
-	bl GetBlinkMotionState
+	bl UpdateBlinkMotionState
 	adds r0, r6, #0
 	bl printPlayerAllScore
 	cmp r0, #1
@@ -344,7 +344,7 @@ _080241E6:
 	b _0802425A
 _080241EC:
 	movs r0, #0x40
-	bl GetBlinkMotionState
+	bl UpdateBlinkMotionState
 	adds r0, r6, #0
 	bl getStageRewardChip
 	cmp r0, #1
@@ -354,7 +354,7 @@ _080241EC:
 	b _0802425A
 _08024202:
 	movs r0, #0x40
-	bl GetBlinkMotionState
+	bl UpdateBlinkMotionState
 	adds r0, r6, #0
 	bl getStageRewardExSkill
 	cmp r0, #1
@@ -364,7 +364,7 @@ _08024202:
 	b _0802425A
 _08024218:
 	movs r0, #0x40
-	bl GetBlinkMotionState
+	bl UpdateBlinkMotionState
 	adds r0, r6, #0
 	bl FUN_080248f0
 	cmp r0, #1
@@ -374,7 +374,7 @@ _08024218:
 	b _0802425A
 _0802422E:
 	movs r0, #0x40
-	bl GetBlinkMotionState
+	bl UpdateBlinkMotionState
 	ldr r4, _08024264 @ =gStageRun
 	movs r0, #0xb4
 	lsls r0, r0, #1
@@ -403,7 +403,7 @@ _0802425A:
 _08024264: .4byte gStageRun
 _08024268:
 	movs r0, #0x40
-	bl GetBlinkMotionState
+	bl UpdateBlinkMotionState
 	ldr r0, _080242C4 @ =gStageRun
 	movs r3, #0xaa
 	lsls r3, r3, #1

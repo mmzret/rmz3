@@ -5,7 +5,7 @@
 static const struct Collision sNormalCollisions[2] = {
     {
       kind : DDP,
-      layer : LAYER_ALLY,
+      faction : FACTION_ALLY,
       special : 1,
       damage : 6,
       unk_04 : 0x0B,
@@ -20,7 +20,7 @@ static const struct Collision sNormalCollisions[2] = {
     },
     {
       kind : DRP,
-      layer : LAYER_ALLY,
+      faction : FACTION_ALLY,
       special : 1,
       damage : 0,
       unk_04 : 0xFF,
@@ -38,7 +38,7 @@ static const struct Collision sNormalCollisions[2] = {
 static const struct Collision sIceCollisions[2] = {
     {
       kind : DDP,
-      layer : LAYER_ALLY,
+      faction : FACTION_ALLY,
       special : 1,
       damage : 6,
       unk_04 : 0x0B,
@@ -53,7 +53,7 @@ static const struct Collision sIceCollisions[2] = {
     },
     {
       kind : DRP,
-      layer : LAYER_ALLY,
+      faction : FACTION_ALLY,
       special : 1,
       damage : 0,
       unk_04 : 0xFF,

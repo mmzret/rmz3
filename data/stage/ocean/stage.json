@@ -1,0 +1,47 @@
+{
+  "name": "Ocean",
+  "id": 3,
+  "tileset": "waterside",
+  "layers": [
+    {
+      "bg": 1,
+      "prio": 2,
+      "scrollPower": [
+        1,
+        1
+      ],
+      "scroll": [
+        0,
+        0
+      ]
+    },
+    {
+      "bg": 2,
+      "prio": 0,
+      "scrollPower": [
+        1,
+        1
+      ],
+      "scroll": [
+        0,
+        0
+      ]
+    },
+    {
+      "bg": 3,
+      "prio": 3,
+      "scrollPower": [
+        1,
+        1
+      ],
+      "scroll": [
+        0,
+        0
+      ]
+    }
+  ],
+  "unk_78": [
+    0,
+    0
+  ]
+}

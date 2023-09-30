@@ -1,6 +1,7 @@
 #include "cyberelf.h"
-#include "entity.h"
 #include "global.h"
+
+INCASM("asm/cyberelf/unk_10.inc");
 
 void Elf10_Init(struct Elf* p);
 void Elf10_Update(struct Elf* p);

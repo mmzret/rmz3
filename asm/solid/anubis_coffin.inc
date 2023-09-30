@@ -435,7 +435,7 @@ _080CE098:
 	strb r1, [r4, #0xe]
 _080CE0B8:
 	movs r0, #0x46
-	bl GetBlinkMotionState
+	bl UpdateBlinkMotionState
 	adds r0, r4, #0
 	bl UpdateMotionGraphic
 _080CE0C4:
@@ -510,7 +510,7 @@ _080CE13E:
 	strb r0, [r4, #0xe]
 _080CE150:
 	movs r0, #0x47
-	bl GetBlinkMotionState
+	bl UpdateBlinkMotionState
 	b _080CE1F2
 _080CE158:
 	movs r0, #0
@@ -586,7 +586,7 @@ _080CE1CC:
 	strb r1, [r4, #0xe]
 _080CE1E6:
 	movs r0, #0x47
-	bl GetBlinkMotionState
+	bl UpdateBlinkMotionState
 	adds r0, r4, #0
 	bl UpdateMotionGraphic
 _080CE1F2:
@@ -701,7 +701,7 @@ _080CE26C:
 _080CE2C4: .4byte gSolidFnTable
 _080CE2C8:
 	movs r0, #0x46
-	bl GetBlinkMotionState
+	bl UpdateBlinkMotionState
 	adds r0, r4, #0
 	bl UpdateMotionGraphic
 _080CE2D4:

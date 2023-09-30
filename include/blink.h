@@ -29,7 +29,7 @@ extern struct BlinkManager gBlinkManager;
 
 void ClearBlink(u16 n);
 void LoadBlink(u16 blinkID, u16 ofs);
-u32 GetBlinkMotionState(u16 blinkID);
+u32 UpdateBlinkMotionState(u16 blinkID);
 void ClearBlinkings(void);
 void ExecBlink(void);
 void PauseAllBlinks(void);

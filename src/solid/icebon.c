@@ -354,7 +354,7 @@ static const SolidFunc sIcebonDeathSeq[2] = {
 const struct Collision sIcebonCollisions[3] = {
     {
       kind : DRP,
-      layer : 1,
+      faction : FACTION_ENEMY,
       special : 0,
       damage : 0,
       unk_04 : 0xFF,
@@ -370,7 +370,7 @@ const struct Collision sIcebonCollisions[3] = {
     },
     {
       kind : DDP,
-      layer : 1,
+      faction : FACTION_ENEMY,
       special : 0,
       damage : 2,
       unk_04 : 0x00,
@@ -386,7 +386,7 @@ const struct Collision sIcebonCollisions[3] = {
     },
     {
       kind : DRP,
-      layer : 1,
+      faction : FACTION_ENEMY,
       special : 0,
       damage : 0,
       unk_04 : 0xFF,

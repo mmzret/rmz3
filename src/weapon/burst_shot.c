@@ -6,7 +6,7 @@
 
 static const struct Collision sCollision = {
   kind : DDP,
-  layer : LAYER_ALLY,
+  faction : FACTION_ALLY,
   special : HALFABLE,
   damage : 2,
   unk_04 : 0x06,

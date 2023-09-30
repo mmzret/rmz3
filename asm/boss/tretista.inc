@@ -9,13 +9,13 @@ FUN_0804d804: @ 0x0804D804
 	push {r4, r5, lr}
 	adds r4, r0, #0
 	movs r0, #0x49
-	bl GetBlinkMotionState
+	bl UpdateBlinkMotionState
 	movs r0, #0x4a
-	bl GetBlinkMotionState
+	bl UpdateBlinkMotionState
 	movs r0, #0x4b
-	bl GetBlinkMotionState
+	bl UpdateBlinkMotionState
 	movs r0, #0x4c
-	bl GetBlinkMotionState
+	bl UpdateBlinkMotionState
 	ldrb r0, [r4, #0xe]
 	cmp r0, #1
 	beq _0804D8AE
@@ -127,13 +127,13 @@ tretista_0804d8e8: @ 0x0804D8E8
 	sub sp, #0x18
 	adds r7, r0, #0
 	movs r0, #0x49
-	bl GetBlinkMotionState
+	bl UpdateBlinkMotionState
 	movs r0, #0x4a
-	bl GetBlinkMotionState
+	bl UpdateBlinkMotionState
 	movs r0, #0x4b
-	bl GetBlinkMotionState
+	bl UpdateBlinkMotionState
 	movs r0, #0x4c
-	bl GetBlinkMotionState
+	bl UpdateBlinkMotionState
 	ldrb r0, [r7, #0xe]
 	cmp r0, #0x19
 	bls _0804D912
@@ -3786,7 +3786,7 @@ _0804F658:
 	strb r0, [r5, #0xe]
 _0804F682:
 	movs r0, #0x4c
-	bl GetBlinkMotionState
+	bl UpdateBlinkMotionState
 	adds r0, r5, #0
 	bl UpdateMotionGraphic
 	ldrb r0, [r5, #0xf]
@@ -3871,7 +3871,7 @@ _0804F73C: .4byte 0xFFFFC000
 _0804F740: .4byte 0xFFFFD600
 _0804F744:
 	movs r0, #0x4c
-	bl GetBlinkMotionState
+	bl UpdateBlinkMotionState
 	adds r0, r5, #0
 	bl UpdateMotionGraphic
 	ldrb r0, [r5, #0x12]
@@ -3896,7 +3896,7 @@ _0804F762:
 	strb r0, [r5, #0xe]
 _0804F77A:
 	movs r0, #0x4c
-	bl GetBlinkMotionState
+	bl UpdateBlinkMotionState
 	adds r0, r5, #0
 	bl UpdateMotionGraphic
 	adds r0, r5, #0
@@ -3917,7 +3917,7 @@ _0804F79C: .4byte 0x0000AB1F
 _0804F7A0: .4byte 0x083633C8
 _0804F7A4:
 	movs r0, #0x4c
-	bl GetBlinkMotionState
+	bl UpdateBlinkMotionState
 	adds r0, r5, #0
 	bl UpdateMotionGraphic
 	ldrb r0, [r5, #0x12]
@@ -4294,11 +4294,11 @@ _0804FAE8:
 	cmp r0, #1
 	bne _0804FAF6
 	movs r0, #0x4a
-	bl GetBlinkMotionState
+	bl UpdateBlinkMotionState
 	b _0804FAFC
 _0804FAF6:
 	movs r0, #0x49
-	bl GetBlinkMotionState
+	bl UpdateBlinkMotionState
 _0804FAFC:
 	ldrb r0, [r5, #0x12]
 	cmp r0, #0x1e
@@ -4368,7 +4368,7 @@ _0804FB78:
 	adds r0, r0, r1
 	str r0, [r5, #0x64]
 	movs r0, #0x4a
-	bl GetBlinkMotionState
+	bl UpdateBlinkMotionState
 	ldr r0, [r5, #0x5c]
 	cmp r0, #0
 	ble _0804FB9A
@@ -4452,7 +4452,7 @@ _0804FBF4:
 	strb r0, [r5, #0xe]
 _0804FC2C:
 	movs r0, #0x4b
-	bl GetBlinkMotionState
+	bl UpdateBlinkMotionState
 	adds r0, r5, #0
 	bl UpdateMotionGraphic
 	adds r0, r5, #0

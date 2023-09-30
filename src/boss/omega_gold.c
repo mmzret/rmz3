@@ -82,7 +82,7 @@ static const BossFunc sDeads[2] = {
 static const struct Collision sCollisions[8] = {
     {
       kind : DRP,
-      layer : LAYER_ENEMY,
+      faction : FACTION_ENEMY,
       special : 2,
       damage : 0,
       unk_04 : 0xFF,
@@ -98,7 +98,7 @@ static const struct Collision sCollisions[8] = {
     },
     {
       kind : DDP,
-      layer : LAYER_ENEMY,
+      faction : FACTION_ENEMY,
       special : 2,
       damage : 2,
       unk_04 : 0x00,
@@ -114,7 +114,7 @@ static const struct Collision sCollisions[8] = {
     },
     {
       kind : DRP,
-      layer : LAYER_ENEMY,
+      faction : FACTION_ENEMY,
       special : 2,
       damage : 0,
       unk_04 : 0xFF,
@@ -130,7 +130,7 @@ static const struct Collision sCollisions[8] = {
     },
     {
       kind : DRP,
-      layer : LAYER_ENEMY,
+      faction : FACTION_ENEMY,
       special : 2,
       damage : 0,
       unk_04 : 0xFF,
@@ -146,7 +146,7 @@ static const struct Collision sCollisions[8] = {
     },
     {
       kind : DDP,
-      layer : LAYER_ENEMY,
+      faction : FACTION_ENEMY,
       special : 2,
       damage : 2,
       unk_04 : 0x00,
@@ -162,7 +162,7 @@ static const struct Collision sCollisions[8] = {
     },
     {
       kind : DRP,
-      layer : LAYER_ENEMY,
+      faction : FACTION_ENEMY,
       special : 2,
       damage : 0,
       unk_04 : 0xFF,
@@ -178,7 +178,7 @@ static const struct Collision sCollisions[8] = {
     },
     {
       kind : DDP,
-      layer : LAYER_ENEMY,
+      faction : FACTION_ENEMY,
       special : 2,
       damage : 2,
       unk_04 : 0x00,
@@ -194,7 +194,7 @@ static const struct Collision sCollisions[8] = {
     },
     {
       kind : DRP,
-      layer : LAYER_ENEMY,
+      faction : FACTION_ENEMY,
       special : 2,
       damage : 0,
       unk_04 : 0xFF,

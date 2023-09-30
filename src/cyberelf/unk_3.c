@@ -39,7 +39,7 @@ INCASM("asm/cyberelf/unk_3.inc");
 const struct Collision sElf3Collisions[2] = {
     {
       kind : DDP,
-      layer : 0,
+      faction : FACTION_ALLY,
       special : 0,
       damage : 255,
       unk_04 : 0x00,
@@ -55,7 +55,7 @@ const struct Collision sElf3Collisions[2] = {
     },
     {
       kind : DRP,
-      layer : 0,
+      faction : FACTION_ALLY,
       special : 0,
       damage : 0,
       unk_04 : 0xFF,

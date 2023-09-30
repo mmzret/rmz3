@@ -35,9 +35,9 @@ static void FUN_080101f0(struct Coord* _ UNUSED) {
       LoadBlink(219, 0);
       LoadBlink(220, 0);
     }
-    GetBlinkMotionState(218);
-    GetBlinkMotionState(219);
-    GetBlinkMotionState(220);
+    UpdateBlinkMotionState(218);
+    UpdateBlinkMotionState(219);
+    UpdateBlinkMotionState(220);
 
   } else if ((gOverworld.work.anatreForest.unk_00c & 1)) {
     gOverworld.work.anatreForest.unk_00c ^= 1;
@@ -51,7 +51,7 @@ static void FUN_080101f0(struct Coord* _ UNUSED) {
       gOverworld.work.anatreForest.unk_00c |= (1 << 1);
       LoadBlink(221, 0);
     }
-    GetBlinkMotionState(221);
+    UpdateBlinkMotionState(221);
 
   } else if ((gOverworld.work.anatreForest.unk_00c & (1 << 1))) {
     gOverworld.work.anatreForest.unk_00c ^= (1 << 1);
@@ -67,11 +67,11 @@ static void FUN_080101f0(struct Coord* _ UNUSED) {
       LoadBlink(225, 0);
       LoadBlink(226, 0);
     }
-    GetBlinkMotionState(222);
-    GetBlinkMotionState(223);
-    GetBlinkMotionState(224);
-    GetBlinkMotionState(225);
-    GetBlinkMotionState(226);
+    UpdateBlinkMotionState(222);
+    UpdateBlinkMotionState(223);
+    UpdateBlinkMotionState(224);
+    UpdateBlinkMotionState(225);
+    UpdateBlinkMotionState(226);
     gOverworld.work.anatreForest.unk_00d++;
     if (gOverworld.work.anatreForest.unk_00d == 190) {
       gOverworld.work.anatreForest.unk_00d = 0;
@@ -92,8 +92,8 @@ static void FUN_080101f0(struct Coord* _ UNUSED) {
       LoadBlink(227, 0);
       LoadBlink(228, 0);
     }
-    GetBlinkMotionState(227);
-    GetBlinkMotionState(228);
+    UpdateBlinkMotionState(227);
+    UpdateBlinkMotionState(228);
 
   } else if ((gOverworld.work.anatreForest.unk_00c & (1 << 3))) {
     gOverworld.work.anatreForest.unk_00c ^= (1 << 3);

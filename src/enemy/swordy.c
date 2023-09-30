@@ -2,6 +2,8 @@
 #include "enemy.h"
 #include "global.h"
 
+INCASM("asm/enemy/swordy.inc");
+
 void Swordy_Init(struct Enemy* p);
 void Swordy_Update(struct Enemy* p);
 void Swordy_Die(struct Enemy* p);
@@ -45,7 +47,7 @@ static const EnemyFunc PTR_ARRAY_08367a48[4] = {
 static const struct Collision sCollisions[5] = {
     {
       kind : DDP,
-      layer : LAYER_ENEMY,
+      faction : FACTION_ENEMY,
       special : 0,
       damage : 2,
       unk_04 : 0x00,
@@ -61,7 +63,7 @@ static const struct Collision sCollisions[5] = {
     },
     {
       kind : DRP,
-      layer : LAYER_ENEMY,
+      faction : FACTION_ENEMY,
       special : 0,
       damage : 0,
       unk_04 : 0xFF,
@@ -77,7 +79,7 @@ static const struct Collision sCollisions[5] = {
     },
     {
       kind : DDP,
-      layer : LAYER_ENEMY,
+      faction : FACTION_ENEMY,
       special : 0,
       damage : 2,
       unk_04 : 0x00,
@@ -93,7 +95,7 @@ static const struct Collision sCollisions[5] = {
     },
     {
       kind : DDP,
-      layer : LAYER_ENEMY,
+      faction : FACTION_ENEMY,
       special : 0,
       damage : 2,
       unk_04 : 0x00,
@@ -109,7 +111,7 @@ static const struct Collision sCollisions[5] = {
     },
     {
       kind : DRP,
-      layer : LAYER_ENEMY,
+      faction : FACTION_ENEMY,
       special : 0,
       damage : 0,
       unk_04 : 0xFF,
@@ -126,6 +128,3 @@ static const struct Collision sCollisions[5] = {
 };
 
 static const struct Coord sElementCoord = {PIXEL(0), -PIXEL(12)};
-
-// ./tools/dumper/bin.ts baserom.gba 0x08367ad8 0x0836a90c data/zako.bin
-INCBIN("data/zako.bin");

@@ -121,7 +121,7 @@ INCASM("asm/weapon/minigame_rod.inc");
 const struct Collision gWeapon16Collisions[15] = {
     [0] = {
       kind : DDP,
-      layer : 0,
+      faction : FACTION_ALLY,
       special : 1,
       damage : 8,
       unk_04 : 0x02,
@@ -137,7 +137,7 @@ const struct Collision gWeapon16Collisions[15] = {
     },
     [1] = {
       kind : DDP,
-      layer : 0,
+      faction : FACTION_ALLY,
       special : 1,
       damage : 8,
       unk_04 : 0x02,
@@ -153,7 +153,7 @@ const struct Collision gWeapon16Collisions[15] = {
     },
     [2] = {
       kind : DDP,
-      layer : 0,
+      faction : FACTION_ALLY,
       special : 1,
       damage : 8,
       unk_04 : 0x02,
@@ -169,7 +169,7 @@ const struct Collision gWeapon16Collisions[15] = {
     },
     [3] = {
       kind : DDP,
-      layer : 0,
+      faction : FACTION_ALLY,
       special : 1,
       damage : 8,
       unk_04 : 0x02,
@@ -185,7 +185,7 @@ const struct Collision gWeapon16Collisions[15] = {
     },
     [4] = {
       kind : DDP,
-      layer : 0,
+      faction : FACTION_ALLY,
       special : 1,
       damage : 8,
       unk_04 : 0x02,
@@ -201,7 +201,7 @@ const struct Collision gWeapon16Collisions[15] = {
     },
     [5] = {
       kind : DDP,
-      layer : 0,
+      faction : FACTION_ALLY,
       special : 1,
       damage : 8,
       unk_04 : 0x02,
@@ -217,7 +217,7 @@ const struct Collision gWeapon16Collisions[15] = {
     },
     [6] = {
       kind : DDP,
-      layer : 0,
+      faction : FACTION_ALLY,
       special : 1,
       damage : 8,
       unk_04 : 0x02,
@@ -233,7 +233,7 @@ const struct Collision gWeapon16Collisions[15] = {
     },
     [7] = {
       kind : DDP,
-      layer : 0,
+      faction : FACTION_ALLY,
       special : 1,
       damage : 8,
       unk_04 : 0x02,
@@ -249,7 +249,7 @@ const struct Collision gWeapon16Collisions[15] = {
     },
     [8] = {
       kind : DDP,
-      layer : 0,
+      faction : FACTION_ALLY,
       special : 1,
       damage : 8,
       unk_04 : 0x02,
@@ -265,7 +265,7 @@ const struct Collision gWeapon16Collisions[15] = {
     },
     [9] = {
       kind : DDP,
-      layer : 0,
+      faction : FACTION_ALLY,
       special : 1,
       damage : 8,
       unk_04 : 0x02,
@@ -281,7 +281,7 @@ const struct Collision gWeapon16Collisions[15] = {
     },
     [10] = {
       kind : DDP,
-      layer : 0,
+      faction : FACTION_ALLY,
       special : 1,
       damage : 8,
       unk_04 : 0x02,
@@ -297,7 +297,7 @@ const struct Collision gWeapon16Collisions[15] = {
     },
     [11] = {
       kind : DDP,
-      layer : 0,
+      faction : FACTION_ALLY,
       special : 1,
       damage : 8,
       unk_04 : 0x02,
@@ -313,7 +313,7 @@ const struct Collision gWeapon16Collisions[15] = {
     },
     [12] = {
       kind : DDP,
-      layer : 0,
+      faction : FACTION_ALLY,
       special : 1,
       damage : 8,
       unk_04 : 0x02,
@@ -329,7 +329,7 @@ const struct Collision gWeapon16Collisions[15] = {
     },
     [13] = {
       kind : DDP,
-      layer : 0,
+      faction : FACTION_ALLY,
       special : 1,
       damage : 8,
       unk_04 : 0x02,
@@ -345,7 +345,7 @@ const struct Collision gWeapon16Collisions[15] = {
     },
     [14] = {
       kind : DDP,
-      layer : 0,
+      faction : FACTION_ALLY,
       special : 1,
       damage : 8,
       unk_04 : 0x02,

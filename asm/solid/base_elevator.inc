@@ -184,7 +184,7 @@ _080D009E:
 	bl UpdateMotionGraphic
 _080D00A8:
 	ldrb r0, [r4, #0x12]
-	bl GetBlinkMotionState
+	bl UpdateBlinkMotionState
 	ldr r0, [r5, #0x54]
 	ldr r1, [r5, #0x58]
 	str r0, [r4, #0x54]

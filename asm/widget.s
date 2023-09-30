@@ -633,7 +633,7 @@ _080E88C0:
 	ldrb r0, [r1]
 	cmp r0, #0
 	beq _080E88CE
-	bl GetBlinkMotionState
+	bl UpdateBlinkMotionState
 _080E88CE:
 	ldrb r0, [r5, #2]
 	cmp r0, #2

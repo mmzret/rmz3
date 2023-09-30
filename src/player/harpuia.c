@@ -1,11 +1,13 @@
 #include "collision.h"
-#include "entity.h"
 #include "global.h"
+#include "overworld.h"
 #include "zero.h"
+
+struct Enemy* FUN_0809af20(struct Zero* z, struct Coord* c, u8 n);
 
 static const struct Collision sCollisions[7];
 
-void Harpuia_Init(struct Zero* z);
+static void Harpuia_Init(struct Zero* z);
 void Harpuia_Update(struct Zero* z);
 void Harpuia_Die(struct Zero* z);
 
@@ -31,36 +33,42 @@ struct Zero* CreatePlayerHarpuia(void* p, struct Coord* c, u8 n) {
   return z;
 }
 
-// static void Harpuia_Init(struct Zero* z) {
-//   struct Body* body;
-//   struct Coord c;
+static void Harpuia_Init(struct Zero* z) {
+  struct Coord c, *d, *uc;
+  s32 x, y;
 
-//   InitNonAffineMotion(&z->s);
-//   ResetDynamicMotion(&z->s);
-//   (z->s).flags |= DISPLAY;
-//   (z->s).flags |= FLIPABLE;
+  InitNonAffineMotion(&z->s);
+  ResetDynamicMotion(&z->s);
+  (z->s).flags |= DISPLAY;
+  (z->s).flags |= FLIPABLE;
 
-//   (z->s).spr.xflip = TRUE;
-//   (z->s).spr.oam.xflip = TRUE;
-//   (z->s).flags |= X_FLIP;
+  (z->s).spr.xflip = TRUE;
+  (z->s).spr.oam.xflip = TRUE;
+  (z->s).flags |= X_FLIP;
+  INIT_BODY(z, &sCollisions[0], 32, NULL);
+  (z->s).coord.y = FUN_0800a05c((z->s).coord.x, (z->s).coord.y);
+  SET_PLAYER_ROUTINE(z, ENTITY_MAIN);
+  (z->s).mode[1] = 0;
+  (z->s).mode[2] = 0;
+  (z->s).mode[3] = 0;
 
-//   (z->s).flags |= COLLIDABLE;
+  c = (z->s).coord;
+  (z->mg).harpuia.enemy = FUN_0809af20(z, &c, 0);
+  (z->mg).harpuia.unk_a = 0;
+  (z->mg).harpuia.x = (z->s).coord.x;
+  (z->mg).harpuia.y = (z->s).coord.y;
+  (z->mg).harpuia.unk_8 = 0;
+  (z->mg).harpuia.unk_9 = 0;
 
-//   body = &z->body;
-//   InitBody(body, sCollisions, &(z->s).coord, 32);
-//   body->parent = (struct CollidableEntity*)z;
-//   body->fn = NULL;
+  d = &(z->s).d;
+  d->x = d->y = 0;
+  uc = &(z->s).unk_coord;
+  uc->x = uc->y = 0;
 
-//   (z->s).coord.y = FUN_0800a05c((z->s).coord.x, (z->s).coord.y);
-//   SET_PLAYER_ROUTINE(z, ENTITY_MAIN);
-//   (z->s).mode[1] = 0;
-//   (z->s).mode[2] = 0;
-//   (z->s).mode[3] = 0;
+  (z->mg).harpuia.unk_b = 0;
 
-//   c = (z->s).coord;
-//   z->unk_280[0] = (struct Entity*)FUN_0809af20(z, &c, 0);
-//   Harpuia_Update(z);
-// }
+  Harpuia_Update(z);
+}
 
 INCASM("asm/player/harpuia.inc");
 
@@ -105,7 +113,7 @@ const ZeroFunc sHarpuiaUpdates2[5] = {
 static const struct Collision sCollisions[7] = {
     [0] = {
       kind : DRP,
-      layer : 0,
+      faction : FACTION_ALLY,
       special : 1,
       damage : 0,
       unk_04 : 0xFF,
@@ -121,7 +129,7 @@ static const struct Collision sCollisions[7] = {
     },
     [1] = {
       kind : DDP,
-      layer : 0,
+      faction : FACTION_ALLY,
       special : 1,
       damage : 32,
       unk_04 : 0x00,
@@ -137,7 +145,7 @@ static const struct Collision sCollisions[7] = {
     },
     [2] = {
       kind : DDP,
-      layer : 0,
+      faction : FACTION_ALLY,
       special : 1,
       damage : 32,
       unk_04 : 0x00,
@@ -153,7 +161,7 @@ static const struct Collision sCollisions[7] = {
     },
     [3] = {
       kind : DRP,
-      layer : 0,
+      faction : FACTION_ALLY,
       special : 1,
       damage : 0,
       unk_04 : 0xFF,
@@ -169,7 +177,7 @@ static const struct Collision sCollisions[7] = {
     },
     [4] = {
       kind : DDP,
-      layer : 0,
+      faction : FACTION_ALLY,
       special : 1,
       damage : 32,
       unk_04 : 0x00,
@@ -185,7 +193,7 @@ static const struct Collision sCollisions[7] = {
     },
     [5] = {
       kind : DDP,
-      layer : 0,
+      faction : FACTION_ALLY,
       special : 1,
       damage : 32,
       unk_04 : 0x00,
@@ -201,7 +209,7 @@ static const struct Collision sCollisions[7] = {
     },
     [6] = {
       kind : DRP,
-      layer : 0,
+      faction : FACTION_ALLY,
       special : 1,
       damage : 0,
       unk_04 : 0xFF,

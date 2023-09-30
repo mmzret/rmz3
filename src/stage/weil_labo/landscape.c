@@ -7,6 +7,13 @@ static void FUN_08015010(struct Coord* _ UNUSED);
 static void nop_08015244(struct Coord* _ UNUSED);
 static void exitWeilLabo(struct Coord* _ UNUSED);
 
+static const StageFunc sStageRoutine[4] = {
+    initWeilLabo,
+    FUN_08015010,
+    nop_08015244,
+    exitWeilLabo,
+};
+
 static void initWeilLabo(struct Coord* _ UNUSED) {
   gOverworld.work.weilLabo.unk_000 = 0;
   gOverworld.unk_1c8.work[2] = 0;
@@ -35,10 +42,10 @@ static void FUN_08015010(struct Coord* _ UNUSED) {
       LoadBlink(261, 0);
       LoadBlink(262, 0);
     }
-    GetBlinkMotionState(259);
-    GetBlinkMotionState(260);
-    GetBlinkMotionState(261);
-    GetBlinkMotionState(262);
+    UpdateBlinkMotionState(259);
+    UpdateBlinkMotionState(260);
+    UpdateBlinkMotionState(261);
+    UpdateBlinkMotionState(262);
   } else if (gOverworld.work.weilLabo.unk_000 & (1 << 0)) {
     gOverworld.work.weilLabo.unk_000 ^= (1 << 0);
     ClearBlink(259);
@@ -55,10 +62,10 @@ static void FUN_08015010(struct Coord* _ UNUSED) {
       LoadBlink(265, 0);
       LoadBlink(266, 0);
     }
-    GetBlinkMotionState(263);
-    GetBlinkMotionState(264);
-    GetBlinkMotionState(265);
-    GetBlinkMotionState(266);
+    UpdateBlinkMotionState(263);
+    UpdateBlinkMotionState(264);
+    UpdateBlinkMotionState(265);
+    UpdateBlinkMotionState(266);
   } else if (gOverworld.work.weilLabo.unk_000 & (1 << 1)) {
     gOverworld.work.weilLabo.unk_000 ^= (1 << 1);
     ClearBlink(263);
@@ -73,8 +80,8 @@ static void FUN_08015010(struct Coord* _ UNUSED) {
       LoadBlink(267, 0);
       LoadBlink(268, 0);
     }
-    GetBlinkMotionState(267);
-    GetBlinkMotionState(268);
+    UpdateBlinkMotionState(267);
+    UpdateBlinkMotionState(268);
   } else if (gOverworld.work.weilLabo.unk_000 & (1 << 2)) {
     gOverworld.work.weilLabo.unk_000 ^= (1 << 2);
     ClearBlink(267);
@@ -101,4 +108,117 @@ static void exitWeilLabo(struct Coord* _ UNUSED) {
   ClearBlink(0x10e);
 }
 
+// ------------------------------------------------------------------------------------------------------------------------------------
+
+void FUN_080152bc(struct StageLayer* l, const struct Stage* stage);
+void FUN_0801534c(struct StageLayer* l, const struct Stage* stage);
+void FUN_08015378(struct StageLayer* l, const struct Stage* stage);
+void FUN_08015390(struct StageLayer* l, const struct Stage* stage);
+void FUN_080153cc(struct StageLayer* l, const struct Stage* stage);
+void FUN_080153e8(struct StageLayer* l, const struct Stage* stage);
+void FUN_08015510(struct StageLayer* l, const struct Stage* stage);
+void weilLabo_08015564(struct StageLayer* l, const struct Stage* stage);
+void weilLabo_08015710(struct StageLayer* l, const struct Stage* stage);
+void FUN_080157b0(struct StageLayer* l, const struct Stage* stage);
+void weilLabo_080158a4(struct StageLayer* l, const struct Stage* stage);
+void FUN_08015c40(struct StageLayer* l, const struct Stage* stage);
+void FUN_08015c5c(struct StageLayer* l, const struct Stage* stage);
+void FUN_08015cf0(struct StageLayer* l, const struct Stage* stage);
+void weillabo_08015e34(struct StageLayer* l, const struct Stage* stage);
+void FUN_08015f7c(struct StageLayer* l, const struct Stage* stage);
+void FUN_08016018(struct StageLayer* l, const struct Stage* stage);
+
+// clang-format off
+static const StageLayerRoutine sLayerRoutine[11] = {
+    [0] = {
+      [LAYER_UPDATE] = NULL,
+      [LAYER_DRAW]   = NULL,
+      [LAYER_EXIT]   = NULL,
+    },
+    [1] = {
+      [LAYER_UPDATE] = NULL,
+      [LAYER_DRAW]   = DrawGeneralStageLayer,
+      [LAYER_EXIT]   = NULL,
+    },
+    [2] = {
+      [LAYER_UPDATE] = FUN_080152bc,
+      [LAYER_DRAW]   = DrawGeneralStageLayer,
+      [LAYER_EXIT]   = FUN_0801534c,
+    },
+    [3] = {
+      [LAYER_UPDATE] = FUN_08015378,
+      [LAYER_DRAW]   = DrawGeneralStageLayer,
+      [LAYER_EXIT]   = NULL,
+    },
+    [4] = {
+      [LAYER_UPDATE] = FUN_08015390,
+      [LAYER_DRAW]   = DrawGeneralStageLayer,
+      [LAYER_EXIT]   = NULL,
+    },
+    [5] = {
+      [LAYER_UPDATE] = FUN_080153cc,
+      [LAYER_DRAW]   = FUN_080153e8,
+      [LAYER_EXIT]   = NULL,
+    },
+    [6] = {
+      [LAYER_UPDATE] = FUN_08015510,
+      [LAYER_DRAW]   = DrawGeneralStageLayer,
+      [LAYER_EXIT]   = NULL,
+    },
+    [7] = {
+      [LAYER_UPDATE] = weilLabo_08015564,
+      [LAYER_DRAW]   = weilLabo_08015710,
+      [LAYER_EXIT]   = NULL,
+    },
+    [8] = {
+      [LAYER_UPDATE] = FUN_080157b0,
+      [LAYER_DRAW]   = weilLabo_080158a4,
+      [LAYER_EXIT]   = FUN_08015c40,
+    },
+    [9] = {
+      [LAYER_UPDATE] = FUN_08015c5c,
+      [LAYER_DRAW]   = FUN_08015cf0,
+      [LAYER_EXIT]   = NULL,
+    },
+    [10] = {
+      [LAYER_UPDATE] = weillabo_08015e34,
+      [LAYER_DRAW]   = FUN_08015f7c,
+      [LAYER_EXIT]   = FUN_08016018,
+    },
+};
+// clang-format on
+
 INCASM("asm/stage_gfx/weil_labo.inc");
+
+// ------------------------------------------------------------------------------------------------------------------------------------
+
+extern const struct ScreenLayout sScreenMap1;
+INCBIN_STATIC(sScreenMap1, "data/stage/weil_labo/layer1.bin");  // ./tools/dumper/bin.ts ./baserom.gba 0x08346ab0 0x08346c14 ./data/stage/weil_labo/layer1.bin
+
+extern const struct ScreenLayout sScreenMap2;
+INCBIN_STATIC(sScreenMap2, "data/stage/weil_labo/layer2.bin");  // ./tools/dumper/bin.ts ./baserom.gba 0x08346c14 0x08346d58 ./data/stage/weil_labo/layer2.bin
+
+extern const struct ScreenLayout sScreenMap3;
+INCBIN_STATIC(sScreenMap3, "data/stage/weil_labo/layer3.bin");  // ./tools/dumper/bin.ts ./baserom.gba 0x08346d58 0x08346e9c ./data/stage/weil_labo/layer3.bin
+
+extern const tileset_ofs_t sTilesetOffset[];
+INCBIN_STATIC(sTilesetOffset, "data/stage/weil_labo/tileset_offset.bin");  // ./tools/dumper/bin.ts ./baserom.gba 0x08346e9c 0x08346fe0 ./data/stage/weil_labo/tileset_offset.bin
+
+extern const u16 sScreenBehavior[];
+INCBIN_STATIC(sScreenBehavior, "data/stage/weil_labo/screen_behavior.bin");  // ./tools/dumper/bin.ts ./baserom.gba 0x08346fe0 0x08347268 ./data/stage/weil_labo/screen_behavior.bin
+
+const struct Stage gWeilLaboLandscape = {
+  id : STAGE_WEILS_LABO,
+  fn : sStageRoutine,
+  terrainHdr : &gStageTerrains[STAGE_WEILS_LABO],
+  maps : {&sScreenMap1, &sScreenMap2, &sScreenMap3},
+  bgIdx : {USE_BG1, USE_BG2, USE_BG3},
+  prio : {3, 3, 3},
+  screenBase : {BGMAP_BLOCK(2), BGMAP_BLOCK(4), BGMAP_BLOCK(6)},
+  scrollPower : {{0x100, 0x100}, {0x100, 0x100}, {0x100, 0x100}},
+  scroll : {{0, 0}, {0, 0}, {0, 0}},
+  tilesetOffset : sTilesetOffset,
+  bgFns : sLayerRoutine,
+  behavior : sScreenBehavior,
+  unk_78 : {0x0, 0x0},
+};

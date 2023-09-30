@@ -98,7 +98,7 @@ struct Entity *AllocEntityFirst(struct EntityHeader *h);
 void DeleteEntity(struct Entity *p);
 void DeletePlayer(struct EntityHeader *h, struct Zero *z);
 void UpdateEntities(struct EntityHeader *h);
-void UpdateBlockingEntities(struct EntityHeader *h);
+void UpdateHazardEntities(struct EntityHeader *h);
 void ignoreEntityFn(struct EntityHeader *h);
 void RunDamageEffect(struct EntityHeader *h);
 void RegisterHitboxes(struct EntityHeader *h);

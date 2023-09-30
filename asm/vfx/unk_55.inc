@@ -313,9 +313,9 @@ FUN_080c1328: @ 0x080C1328
 	movs r0, #0x60
 	bl LoadBlink
 	movs r0, #0x65
-	bl GetBlinkMotionState
+	bl UpdateBlinkMotionState
 	movs r0, #0x60
-	bl GetBlinkMotionState
+	bl UpdateBlinkMotionState
 	movs r0, #0x8d
 	lsls r0, r0, #1
 	bl PlaySound
@@ -327,9 +327,9 @@ _080C137E:
 	adds r0, r4, #0
 	bl UpdateMotionGraphic
 	movs r0, #0x65
-	bl GetBlinkMotionState
+	bl UpdateBlinkMotionState
 	movs r0, #0x60
-	bl GetBlinkMotionState
+	bl UpdateBlinkMotionState
 	adds r0, r4, #0
 	adds r0, #0x73
 	ldrb r0, [r0]
@@ -364,7 +364,7 @@ FUN_080c13c8: @ 0x080C13C8
 	ldr r5, [r4, #0x28]
 	bl UpdateMotionGraphic
 	movs r0, #0x61
-	bl GetBlinkMotionState
+	bl UpdateBlinkMotionState
 	ldrb r0, [r4, #0x12]
 	adds r0, #1
 	strb r0, [r4, #0x12]
@@ -424,7 +424,7 @@ FUN_080c143c: @ 0x080C143C
 	ldr r5, [r4, #0x28]
 	bl UpdateMotionGraphic
 	movs r0, #0x61
-	bl GetBlinkMotionState
+	bl UpdateBlinkMotionState
 	ldrb r0, [r5, #0xa]
 	lsrs r2, r0, #4
 	movs r0, #1

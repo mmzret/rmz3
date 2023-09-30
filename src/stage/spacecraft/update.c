@@ -553,7 +553,7 @@ s16 SpaceCraft_FreeUpdate(struct StageRun* p) {
 
   } else if (p->stageEventPhase == 2 && ((z->s).coord.y < PIXEL(320))) {
     if ((z->s).coord.x >= PIXEL(3584)) {
-      gCollisionManager.sweep |= (1 << LAYER_ENEMY);
+      gCollisionManager.sweep |= (1 << FACTION_ENEMY);
     }
     if ((z->s).coord.x >= PIXEL(3616)) {
       gCollisionManager.sweep = 0;

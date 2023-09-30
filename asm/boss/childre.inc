@@ -135,7 +135,7 @@ Childre_Init: @ 0x08040590
 	ldr r1, _08040704 @ =0x08361EAC
 	adds r0, r7, #0
 	movs r2, #0x40
-	bl resetBossData
+	bl ResetBossBody
 	ldr r1, _08040708 @ =FUN_080404e4
 	adds r0, r7, #0
 	adds r0, #0x74

@@ -12,7 +12,7 @@ const BossRoutine gMegamilpaRoutine = {
     [ENTITY_INIT] =      Megamilpa_Init,
     [ENTITY_MAIN] =      Megamilpa_Update,
     [ENTITY_DIE] =       Megamilpa_Die,
-    [ENTITY_DISAPPEAR] = deleteBoss,
+    [ENTITY_DISAPPEAR] = DeleteBoss,
     [ENTITY_EXIT] =      (BossFunc)DeleteEntity,
 };
 // clang-format on
@@ -106,7 +106,7 @@ _0803D234:\n\
 	ldr r1, _0803D264 @ =gMegamilpaCoreHitbox\n\
 	adds r0, r6, #0\n\
 	movs r2, #0x50\n\
-	bl resetBossData\n\
+	bl ResetBossBody\n\
 	b _0803D272\n\
 	.align 2, 0\n\
 _0803D254: .4byte gBossFnTable\n\
@@ -118,7 +118,7 @@ _0803D268:\n\
 	ldr r1, _0803D2AC @ =gMegamilpaCoreHitbox\n\
 	adds r0, r6, #0\n\
 	movs r2, #0x40\n\
-	bl resetBossData\n\
+	bl ResetBossBody\n\
 _0803D272:\n\
 	ldr r0, _0803D2B0 @ =0x085D795C\n\
 	ldr r1, _0803D2B4 @ =wStaticGraphicTilenums\n\
@@ -189,7 +189,7 @@ const struct Collision Collision_ARRAY_ARRAY_083619c8[3][3] = {
     {
         {
           kind : DDP,
-          layer : 1,
+          faction : FACTION_ENEMY,
           special : 2,
           damage : 4,
           unk_04 : 0,
@@ -205,7 +205,7 @@ const struct Collision Collision_ARRAY_ARRAY_083619c8[3][3] = {
         },
         {
           kind : DRP,
-          layer : 1,
+          faction : FACTION_ENEMY,
           special : 2,
           damage : 0,
           unk_04 : 0xFF,
@@ -221,7 +221,7 @@ const struct Collision Collision_ARRAY_ARRAY_083619c8[3][3] = {
         },
         {
           kind : DRP,
-          layer : 1,
+          faction : FACTION_ENEMY,
           special : 2,
           damage : 0,
           unk_04 : 0xFF,
@@ -241,7 +241,7 @@ const struct Collision Collision_ARRAY_ARRAY_083619c8[3][3] = {
     {
         {
           kind : DDP,
-          layer : 1,
+          faction : FACTION_ENEMY,
           special : 2,
           damage : 4,
           unk_04 : 0,
@@ -257,7 +257,7 @@ const struct Collision Collision_ARRAY_ARRAY_083619c8[3][3] = {
         },
         {
           kind : DRP,
-          layer : 1,
+          faction : FACTION_ENEMY,
           special : 2,
           damage : 0,
           unk_04 : 0xFF,
@@ -273,7 +273,7 @@ const struct Collision Collision_ARRAY_ARRAY_083619c8[3][3] = {
         },
         {
           kind : DRP,
-          layer : 1,
+          faction : FACTION_ENEMY,
           special : 2,
           damage : 0,
           unk_04 : 0xFF,
@@ -293,7 +293,7 @@ const struct Collision Collision_ARRAY_ARRAY_083619c8[3][3] = {
     {
         {
           kind : DDP,
-          layer : 1,
+          faction : FACTION_ENEMY,
           special : 2,
           damage : 4,
           unk_04 : 0,
@@ -309,7 +309,7 @@ const struct Collision Collision_ARRAY_ARRAY_083619c8[3][3] = {
         },
         {
           kind : DRP,
-          layer : 1,
+          faction : FACTION_ENEMY,
           special : 2,
           damage : 0,
           unk_04 : 0xFF,
@@ -325,7 +325,7 @@ const struct Collision Collision_ARRAY_ARRAY_083619c8[3][3] = {
         },
         {
           kind : DRP,
-          layer : 1,
+          faction : FACTION_ENEMY,
           special : 2,
           damage : 0,
           unk_04 : 0xFF,
@@ -344,7 +344,7 @@ const struct Collision Collision_ARRAY_ARRAY_083619c8[3][3] = {
 
 const struct Collision gMegamilpaCoreHitbox = {
   kind : DRP,
-  layer : 1,
+  faction : FACTION_ENEMY,
   special : 2,
   damage : 0,
   unk_04 : 0xFF,

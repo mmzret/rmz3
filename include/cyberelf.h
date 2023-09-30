@@ -71,7 +71,7 @@ struct Elf *CreateElf0(struct Zero *z, u8 breed, u8 availability, u8 _);
 struct Elf *CreateNurseBElf(struct Zero *z, u8 r1, u8 r2, u8 isSatelite2);
 struct Elf *CreateElf3(struct Entity *r0, void *r1);
 struct Elf *CreateNurseEElf(struct Zero *z, u8 r1, u8 r2, u8 isSatelite2);
-struct Elf *CreateFollowerElf(struct Zero *z, u8 breed, u8 availability, u8 _);
+struct Elf *CreateFollowerElf(struct Zero *z, u8 breed, u8 availability, bool8 isSatelite1);
 struct Elf *CreateSeaotterElf(struct Zero *z, u8 breed, u8 availability, u8 _);
 // ...
 struct Elf *CreateBirdElf(struct Zero *z, u8 r1, u8 r2, u8 isSatelite2);

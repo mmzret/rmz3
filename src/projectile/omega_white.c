@@ -178,7 +178,7 @@ INCASM("asm/projectile/omega_white.inc");
 static const struct Collision sCollisions[2] = {
     {
       kind : DRP,
-      layer : 1,
+      faction : FACTION_ENEMY,
       special : 0,
       damage : 0,
       unk_04 : 0xFF,
@@ -194,7 +194,7 @@ static const struct Collision sCollisions[2] = {
     },
     {
       kind : DDP,
-      layer : 1,
+      faction : FACTION_ENEMY,
       special : 0,
       damage : 3,
       unk_04 : 0x00,

@@ -126,7 +126,7 @@ static void updateMissionXXX(struct VFX* vfx) {
     }
 
     case 1: {
-      GetBlinkMotionState(u8_ARRAY_0836e810[(vfx->s).work[0]]);
+      UpdateBlinkMotionState(u8_ARRAY_0836e810[(vfx->s).work[0]]);
       (vfx->s).work[2]--;
       if ((vfx->s).work[2] == 0xFF) {
         if ((vfx->s).work[0] != 0) {
@@ -139,7 +139,7 @@ static void updateMissionXXX(struct VFX* vfx) {
     }
 
     case 2: {
-      GetBlinkMotionState(u8_ARRAY_0836e810[(vfx->s).work[0]]);
+      UpdateBlinkMotionState(u8_ARRAY_0836e810[(vfx->s).work[0]]);
       (vfx->s).work[2]--;
       if ((vfx->s).work[2] == 0xFF) {
         (vfx->s).mode[2]++;
@@ -149,7 +149,7 @@ static void updateMissionXXX(struct VFX* vfx) {
     }
 
     case 3: {
-      GetBlinkMotionState(u8_ARRAY_0836e810[(vfx->s).work[0]]);
+      UpdateBlinkMotionState(u8_ARRAY_0836e810[(vfx->s).work[0]]);
       (vfx->s).work[2]++;
       if ((vfx->s).work[2] == 33) {
         ClearBlink(u8_ARRAY_0836e810[(vfx->s).work[0]]);

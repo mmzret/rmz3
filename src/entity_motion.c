@@ -1,6 +1,5 @@
 #include "collision.h"
 #include "entity.h"
-#include "gba/gba.h"
 #include "gfx.h"
 #include "global.h"
 #include "motion.h"

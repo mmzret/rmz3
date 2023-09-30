@@ -13,7 +13,7 @@ NON_MATCH void InitSound(void) {
 #endif
 }
 
-void stopAllMusics(void) {
+void StopAllMusics(void) {
   m4aMPlayAllStop();
   SoundID1 = MUS_DUMMY;
   SoundID2 = MUS_DUMMY;

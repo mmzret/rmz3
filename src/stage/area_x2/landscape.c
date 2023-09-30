@@ -43,12 +43,12 @@ static void FUN_080115b8(struct Coord* _ UNUSED) {
       LoadBlink(40, 0);
       LoadBlink(142, 0);
     }
-    GetBlinkMotionState(32);
-    GetBlinkMotionState(33);
-    GetBlinkMotionState(38);
-    GetBlinkMotionState(39);
-    GetBlinkMotionState(40);
-    GetBlinkMotionState(142);
+    UpdateBlinkMotionState(32);
+    UpdateBlinkMotionState(33);
+    UpdateBlinkMotionState(38);
+    UpdateBlinkMotionState(39);
+    UpdateBlinkMotionState(40);
+    UpdateBlinkMotionState(142);
 
   } else if ((gOverworld.work.areaX2.unk_000 & (1 << 0))) {
     gOverworld.work.areaX2.unk_000 ^= (1 << 0);
@@ -65,7 +65,7 @@ static void FUN_080115b8(struct Coord* _ UNUSED) {
       gOverworld.work.areaX2.unk_000 |= (1 << 1);
       LoadBlink(147, 0);
     }
-    GetBlinkMotionState(147);
+    UpdateBlinkMotionState(147);
 
   } else if ((gOverworld.work.areaX2.unk_000 & (1 << 1))) {
     gOverworld.work.areaX2.unk_000 ^= (1 << 1);
@@ -78,8 +78,8 @@ static void FUN_080115b8(struct Coord* _ UNUSED) {
       LoadBlink(145, 0);
       LoadBlink(146, 0);
     }
-    GetBlinkMotionState(145);
-    GetBlinkMotionState(146);
+    UpdateBlinkMotionState(145);
+    UpdateBlinkMotionState(146);
 
   } else if ((gOverworld.work.areaX2.unk_000 & (1 << 2))) {
     gOverworld.work.areaX2.unk_000 ^= (1 << 2);
@@ -87,12 +87,12 @@ static void FUN_080115b8(struct Coord* _ UNUSED) {
     ClearBlink(146);
   }
 
-  GetBlinkMotionState(34);
-  GetBlinkMotionState(35);
-  GetBlinkMotionState(36);
-  GetBlinkMotionState(37);
-  GetBlinkMotionState(143);
-  GetBlinkMotionState(144);
+  UpdateBlinkMotionState(34);
+  UpdateBlinkMotionState(35);
+  UpdateBlinkMotionState(36);
+  UpdateBlinkMotionState(37);
+  UpdateBlinkMotionState(143);
+  UpdateBlinkMotionState(144);
 }
 
 static void nop_0801179c(struct Coord* _ UNUSED) {

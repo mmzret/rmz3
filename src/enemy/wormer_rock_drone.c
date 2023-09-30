@@ -2,6 +2,8 @@
 #include "enemy.h"
 #include "global.h"
 
+INCASM("asm/enemy/wormer_rock_drone.inc");
+
 void WormerRockDrone_Init(struct Enemy* p);
 void WormerRockDrone_Update(struct Enemy* p);
 void WormerRockDrone_Die(struct Enemy* p);
@@ -43,7 +45,7 @@ static const EnemyFunc sDeads[1] = {
 static const struct Collision sCollisions[2] = {
     {
       kind : DDP,
-      layer : LAYER_ENEMY,
+      faction : FACTION_ENEMY,
       special : 0,
       damage : 2,
       unk_04 : 0x00,
@@ -59,7 +61,7 @@ static const struct Collision sCollisions[2] = {
     },
     {
       kind : DRP,
-      layer : LAYER_ENEMY,
+      faction : FACTION_ENEMY,
       special : 0,
       damage : 0,
       unk_04 : 0xFF,

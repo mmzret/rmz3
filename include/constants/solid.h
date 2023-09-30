@@ -7,8 +7,8 @@
 #define SOLID_UNK_003 3
 #define SOLID_UNK_004 4
 #define SOLID_HEAVY_CANNON 5
-#define SOLID_UNK_006 6
-#define SOLID_UNK_007 7
+#define SOLID_LAVA_GEYSER_PLATFORM 6
+#define SOLID_LAVA_GEYSER 7
 #define SOLID_LAVA_RIVER_PLATFORM 8
 #define SOLID_DOOR_3D 9
 #define SOLID_UNK_010 10
@@ -33,7 +33,7 @@
 #define SOLID_MOB_NPC 29
 #define SOLID_MAIN_NPC 30
 #define SOLID_CYBERSPACE_DOOR 31
-#define SOLID_UNK_032 32
+#define SOLID_LIGHT_SWITCH 32  // In energy facility
 #define SOLID_UNK_033 33
 #define SOLID_UNK_034 34
 #define SOLID_CONTAINER 35
@@ -46,9 +46,9 @@
 #define SOLID_UNK_042 42
 #define SOLID_UNK_043 43
 #define SOLID_UNK_044 44
-#define SOLID_UNK_045 45
-#define SOLID_UNK_046 46
-#define SOLID_UNK_047 47
+#define SOLID_GE_PIER 45  // 巨大エレベータのエレベータにのるための桟橋
+#define SOLID_GE_PLATFORM 46
+#define SOLID_ANATRE_CUBE 47  // アナトレーの森でリコイルロッドで押せるキューブ
 #define SOLID_CIEL_COMPUTER 48
 #define SOLID_GRAFFITI 49
 #define SOLID_STRUCTURAL_STEEL 50

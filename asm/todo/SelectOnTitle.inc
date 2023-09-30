@@ -748,7 +748,7 @@ _080EC95C:
 	strb r0, [r7, #6]
 _080EC95E:
 	movs r0, #0xf0
-	bl GetBlinkMotionState
+	bl UpdateBlinkMotionState
 	ldr r2, _080EC99C @ =0x00000235
 	adds r0, r7, r2
 	ldrb r1, [r0]

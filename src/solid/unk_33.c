@@ -23,7 +23,6 @@ const SolidRoutine gSolid33Routine = {
 // clang-format on
 
 static void Solid33_Init(struct Solid* p) {
-  struct Body* body;
   struct Coord* d;
 
   (p->s).flags |= DISPLAY;
@@ -31,13 +30,7 @@ static void Solid33_Init(struct Solid* p) {
   InitNonAffineMotion(&p->s);
   SetMotion(&p->s, MOTION(0x7D, 0x00));
   UpdateMotionGraphic(&p->s);
-  (p->s).flags |= COLLIDABLE;
-
-  body = &p->body;
-  InitBody(body, sCollisions, &(p->s).coord, 0);
-  body->parent = (struct CollidableEntity*)p;
-  body->fn = NULL;
-
+  INIT_BODY(p, &sCollisions[0], 0, NULL);
   (p->s).flags2 |= ENTITY_HAZARD;
   (p->s).size = &sSize;
   (p->s).hazardAttr = 0x2001;
@@ -63,7 +56,7 @@ static void Solid33_Die(struct Solid* p) { return; }
 static const struct Collision sCollisions[2] = {
     {
       kind : DDP,
-      layer : 1,
+      faction : FACTION_ENEMY,
       special : 0,
       damage : 255,
       unk_04 : 0x00,
@@ -79,7 +72,7 @@ static const struct Collision sCollisions[2] = {
     },
     {
       kind : DDP,
-      layer : 1,
+      faction : FACTION_ENEMY,
       special : 0,
       damage : 2,
       unk_04 : 0x00,

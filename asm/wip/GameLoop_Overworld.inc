@@ -197,13 +197,13 @@ _080EEA04:
 	bne _080EEA42
 	ldr r0, _080EEAA8 @ =gSolidHeaderPtr
 	ldr r0, [r0]
-	bl UpdateBlockingEntities
+	bl UpdateHazardEntities
 	ldr r0, _080EEAAC @ =gBossHeaderPtr
 	ldr r0, [r0]
-	bl UpdateBlockingEntities
+	bl UpdateHazardEntities
 	ldr r0, _080EEAB0 @ =gZakoHeaderPtr
 	ldr r0, [r0]
-	bl UpdateBlockingEntities
+	bl UpdateHazardEntities
 	ldr r0, _080EEAB4 @ =0x0203029C
 	ldr r0, [r0]
 	bl UpdateEntities
@@ -217,7 +217,7 @@ _080EEA04:
 _080EEA42:
 	ldr r4, _080EEAC0 @ =gElfHeaderPtr
 	ldr r0, [r4]
-	bl UpdateBlockingEntities
+	bl UpdateHazardEntities
 	bl UpdateVFXs
 	bl ClearAllHitboxes
 	mov r2, sl

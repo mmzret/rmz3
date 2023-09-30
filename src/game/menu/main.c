@@ -818,7 +818,7 @@ _080F4378:\n\
 	bl LoadBlink\n\
 	ldrb r0, [r4, #0x10]\n\
 	adds r0, #0xab\n\
-	bl GetBlinkMotionState\n\
+	bl UpdateBlinkMotionState\n\
 	ldrb r0, [r4, #0x10]\n\
 	adds r0, #0xab\n\
 	bl ClearBlink\n\
@@ -1191,7 +1191,7 @@ NAKED static void MainMenuLoop_Update(struct GameState* m) {
 	bl menu_080f54a0\n\
 _080F46A2:\n\
 	movs r0, #4\n\
-	bl GetBlinkMotionState\n\
+	bl UpdateBlinkMotionState\n\
 	ldrb r2, [r4, #0x10]\n\
 	adds r1, r2, #0\n\
 	cmp r1, #5\n\
@@ -1218,7 +1218,7 @@ _080F46D4:\n\
 	ldr r1, _080F4718 @ =0x00000DCC\n\
 	adds r5, r6, r1\n\
 	ldrb r0, [r5, #0x11]\n\
-	bl GetBlinkMotionState\n\
+	bl UpdateBlinkMotionState\n\
 	lsls r0, r0, #0x18\n\
 	lsrs r0, r0, #0x18\n\
 	cmp r0, #3\n\
@@ -1238,7 +1238,7 @@ _080F46D4:\n\
 	movs r1, #0\n\
 	bl LoadBlink\n\
 	ldrb r0, [r5, #0x11]\n\
-	bl GetBlinkMotionState\n\
+	bl UpdateBlinkMotionState\n\
 	b _080F473E\n\
 	.align 2, 0\n\
 _080F4710: .4byte 0x000064AC\n\
@@ -1255,7 +1255,7 @@ _080F471C:\n\
 	movs r1, #0\n\
 	bl LoadBlink\n\
 	ldrb r0, [r5, #0x11]\n\
-	bl GetBlinkMotionState\n\
+	bl UpdateBlinkMotionState\n\
 	ldrb r0, [r5, #0x11]\n\
 	bl ClearBlink\n\
 	strb r4, [r5, #0x11]\n\
@@ -3103,7 +3103,7 @@ _080F54DE:\n\
 	movs r1, #0\n\
 	bl LoadBlink\n\
 	movs r0, #3\n\
-	bl GetBlinkMotionState\n\
+	bl UpdateBlinkMotionState\n\
 	movs r0, #3\n\
 	bl ClearBlink\n\
 	ldrb r0, [r4]\n\
@@ -3116,7 +3116,7 @@ _080F5510:\n\
 	ldr r1, _080F551C @ =0x00000DCC\n\
 	adds r0, r6, r1\n\
 	ldrb r0, [r0, #3]\n\
-	bl GetBlinkMotionState\n\
+	bl UpdateBlinkMotionState\n\
 	b _080F5546\n\
 	.align 2, 0\n\
 _080F551C: .4byte 0x00000DCC\n\
@@ -3131,7 +3131,7 @@ _080F5520:\n\
 	movs r1, #0\n\
 	bl LoadBlink\n\
 	movs r0, #3\n\
-	bl GetBlinkMotionState\n\
+	bl UpdateBlinkMotionState\n\
 	movs r0, #3\n\
 	bl ClearBlink\n\
 	movs r0, #0xff\n\

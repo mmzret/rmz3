@@ -128,11 +128,11 @@ const u8 gScreenX[3072] = {
 // 0x0833a2e8
 const struct Stage* const gStageLandscape[STAGE_COUNT] = {
     &gStage0Landscape,
-    &gSpaceCraftLandscape,
+    &gSpacecraftLandscape,
     &gVolcanoLandscape,
     &gOceanLandscape,
     &gRepairFactoryLandscape,
-    &gOldLifeSpaceLandscape,
+    &gOldResidentialLandscape,
     &gMissileFactoryLandscape,
     &gTwilightDesertLandscape,
     &gAnatreForestLandscape,
@@ -141,9 +141,9 @@ const struct Stage* const gStageLandscape[STAGE_COUNT] = {
     &gEnergyFacilityLandscape,
     &gSnowyPlainsLandscape,
     &gSunkenLibraryLandscape, 
-    (struct Stage*)0x08345834, 
-    (struct Stage*)0x0834699C, 
-    (struct Stage*)0x08347268, 
+    &gGiantElevatorLandscape, 
+    &gSubArcadiaLandscape, 
+    &gWeilLaboLandscape, 
     &gResistanceBaseLandscape,
 };
 

@@ -1,8 +1,8 @@
 #include "collision.h"
 #include "entity.h"
-#include "vfx.h"
 #include "global.h"
 #include "overworld.h"
+#include "vfx.h"
 #include "zero.h"
 
 static const struct Collision sCollision;
@@ -34,7 +34,6 @@ struct Zero* CreatePlayerCopyX(void* p, struct Coord* c, u8 n) {
 }
 
 static void CopyXMini_Init(struct Zero* z) {
-  struct Body* body;
   struct Coord c;
 
   InitNonAffineMotion(&z->s);
@@ -45,14 +44,7 @@ static void CopyXMini_Init(struct Zero* z) {
   (z->s).spr.xflip = TRUE;
   (z->s).spr.oam.xflip = TRUE;
   (z->s).flags |= X_FLIP;
-
-  (z->s).flags |= COLLIDABLE;
-
-  body = &z->body;
-  InitBody(body, &sCollision, &(z->s).coord, 32);
-  body->parent = (struct CollidableEntity*)z;
-  body->fn = NULL;
-
+  INIT_BODY(z, &sCollision, 32, NULL);
   (z->s).coord.y = FUN_0800a05c((z->s).coord.x, (z->s).coord.y);
   SET_PLAYER_ROUTINE(z, ENTITY_MAIN);
   (z->s).mode[1] = 0;
@@ -60,10 +52,10 @@ static void CopyXMini_Init(struct Zero* z) {
   (z->s).mode[3] = 0;
 
   c = (z->s).coord;
-  z->unk_280[1] = (struct Entity*)CreateCopyXIcon(z, &c, 0);
-  z->unk_280[0] = (struct Entity*)CreateCopyXIcon(z, &c, 1);
-  z->unk_280[2] = (struct Entity*)CreateCopyXIcon(z, &c, 2);
-  z->unk_27d = 3;
+  (z->mg).copyx.unk_280[1] = (struct Entity*)CreateCopyXIcon(z, &c, 0);
+  (z->mg).copyx.unk_280[0] = (struct Entity*)CreateCopyXIcon(z, &c, 1);
+  (z->mg).copyx.unk_280[2] = (struct Entity*)CreateCopyXIcon(z, &c, 2);
+  (z->mg).copyx.unk_27d = 3;
   CopyXMini_Update(z);
 }
 
@@ -99,7 +91,7 @@ const ZeroFunc sCopyXMiniUpdates2[4] = {
 
 static const struct Collision sCollision = {
   kind : DRP,
-  layer : 0,
+  faction : FACTION_ALLY,
   special : 0,
   damage : 0,
   unk_04 : 0xFF,

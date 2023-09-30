@@ -81,7 +81,7 @@ const u8 u8_ARRAY_08360460[12] = {
 const struct Collision gRodCollisions[123] = {
     [0] = {
       kind : DDP,
-      layer : 0,
+      faction : FACTION_ALLY,
       special : 1,
       damage : 3,
       unk_04 : 0x02,
@@ -97,7 +97,7 @@ const struct Collision gRodCollisions[123] = {
     },
     [1] = {
       kind : DRP,
-      layer : 0,
+      faction : FACTION_ALLY,
       special : 1,
       damage : 0,
       unk_04 : 0xFF,
@@ -113,7 +113,7 @@ const struct Collision gRodCollisions[123] = {
     },
     [2] = {
       kind : DDP,
-      layer : 0,
+      faction : FACTION_ALLY,
       special : 1,
       damage : 3,
       unk_04 : 0x02,
@@ -129,7 +129,7 @@ const struct Collision gRodCollisions[123] = {
     },
     [3] = {
       kind : DRP,
-      layer : 0,
+      faction : FACTION_ALLY,
       special : 1,
       damage : 0,
       unk_04 : 0xFF,
@@ -145,7 +145,7 @@ const struct Collision gRodCollisions[123] = {
     },
     [4] = {
       kind : DDP,
-      layer : 0,
+      faction : FACTION_ALLY,
       special : 1,
       damage : 3,
       unk_04 : 0x02,
@@ -161,7 +161,7 @@ const struct Collision gRodCollisions[123] = {
     },
     [5] = {
       kind : DRP,
-      layer : 0,
+      faction : FACTION_ALLY,
       special : 1,
       damage : 0,
       unk_04 : 0xFF,
@@ -177,7 +177,7 @@ const struct Collision gRodCollisions[123] = {
     },
     [6] = {
       kind : DDP,
-      layer : 0,
+      faction : FACTION_ALLY,
       special : 1,
       damage : 3,
       unk_04 : 0x02,
@@ -193,7 +193,7 @@ const struct Collision gRodCollisions[123] = {
     },
     [7] = {
       kind : DRP,
-      layer : 0,
+      faction : FACTION_ALLY,
       special : 1,
       damage : 0,
       unk_04 : 0xFF,
@@ -209,7 +209,7 @@ const struct Collision gRodCollisions[123] = {
     },
     [8] = {
       kind : DDP,
-      layer : 0,
+      faction : FACTION_ALLY,
       special : 1,
       damage : 3,
       unk_04 : 0x02,
@@ -225,7 +225,7 @@ const struct Collision gRodCollisions[123] = {
     },
     [9] = {
       kind : DRP,
-      layer : 0,
+      faction : FACTION_ALLY,
       special : 1,
       damage : 0,
       unk_04 : 0xFF,
@@ -241,7 +241,7 @@ const struct Collision gRodCollisions[123] = {
     },
     [10] = {
       kind : DDP,
-      layer : 0,
+      faction : FACTION_ALLY,
       special : 1,
       damage : 3,
       unk_04 : 0x02,
@@ -257,7 +257,7 @@ const struct Collision gRodCollisions[123] = {
     },
     [11] = {
       kind : DRP,
-      layer : 0,
+      faction : FACTION_ALLY,
       special : 1,
       damage : 0,
       unk_04 : 0xFF,
@@ -273,7 +273,7 @@ const struct Collision gRodCollisions[123] = {
     },
     [12] = {
       kind : DDP,
-      layer : 0,
+      faction : FACTION_ALLY,
       special : 1,
       damage : 3,
       unk_04 : 0x02,
@@ -289,7 +289,7 @@ const struct Collision gRodCollisions[123] = {
     },
     [13] = {
       kind : DRP,
-      layer : 0,
+      faction : FACTION_ALLY,
       special : 1,
       damage : 0,
       unk_04 : 0xFF,
@@ -305,7 +305,7 @@ const struct Collision gRodCollisions[123] = {
     },
     [14] = {
       kind : DDP,
-      layer : 0,
+      faction : FACTION_ALLY,
       special : 1,
       damage : 3,
       unk_04 : 0x02,
@@ -321,7 +321,7 @@ const struct Collision gRodCollisions[123] = {
     },
     [15] = {
       kind : DRP,
-      layer : 0,
+      faction : FACTION_ALLY,
       special : 1,
       damage : 0,
       unk_04 : 0xFF,
@@ -337,7 +337,7 @@ const struct Collision gRodCollisions[123] = {
     },
     [16] = {
       kind : DDP,
-      layer : 0,
+      faction : FACTION_ALLY,
       special : 1,
       damage : 3,
       unk_04 : 0x02,
@@ -353,7 +353,7 @@ const struct Collision gRodCollisions[123] = {
     },
     [17] = {
       kind : DRP,
-      layer : 0,
+      faction : FACTION_ALLY,
       special : 1,
       damage : 0,
       unk_04 : 0xFF,
@@ -369,7 +369,7 @@ const struct Collision gRodCollisions[123] = {
     },
     [18] = {
       kind : DDP,
-      layer : 0,
+      faction : FACTION_ALLY,
       special : 1,
       damage : 3,
       unk_04 : 0x02,
@@ -385,7 +385,7 @@ const struct Collision gRodCollisions[123] = {
     },
     [19] = {
       kind : DRP,
-      layer : 0,
+      faction : FACTION_ALLY,
       special : 1,
       damage : 0,
       unk_04 : 0xFF,
@@ -401,7 +401,7 @@ const struct Collision gRodCollisions[123] = {
     },
     [20] = {
       kind : DDP,
-      layer : 0,
+      faction : FACTION_ALLY,
       special : 1,
       damage : 3,
       unk_04 : 0x02,
@@ -417,7 +417,7 @@ const struct Collision gRodCollisions[123] = {
     },
     [21] = {
       kind : DRP,
-      layer : 0,
+      faction : FACTION_ALLY,
       special : 1,
       damage : 0,
       unk_04 : 0xFF,
@@ -433,7 +433,7 @@ const struct Collision gRodCollisions[123] = {
     },
     [22] = {
       kind : DDP,
-      layer : 0,
+      faction : FACTION_ALLY,
       special : 1,
       damage : 3,
       unk_04 : 0x02,
@@ -449,7 +449,7 @@ const struct Collision gRodCollisions[123] = {
     },
     [23] = {
       kind : DRP,
-      layer : 0,
+      faction : FACTION_ALLY,
       special : 1,
       damage : 0,
       unk_04 : 0xFF,
@@ -465,7 +465,7 @@ const struct Collision gRodCollisions[123] = {
     },
     [24] = {
       kind : DDP,
-      layer : 0,
+      faction : FACTION_ALLY,
       special : 1,
       damage : 3,
       unk_04 : 0x02,
@@ -481,7 +481,7 @@ const struct Collision gRodCollisions[123] = {
     },
     [25] = {
       kind : DRP,
-      layer : 0,
+      faction : FACTION_ALLY,
       special : 1,
       damage : 0,
       unk_04 : 0xFF,
@@ -497,7 +497,7 @@ const struct Collision gRodCollisions[123] = {
     },
     [26] = {
       kind : DDP,
-      layer : 0,
+      faction : FACTION_ALLY,
       special : 1,
       damage : 3,
       unk_04 : 0x02,
@@ -513,7 +513,7 @@ const struct Collision gRodCollisions[123] = {
     },
     [27] = {
       kind : DRP,
-      layer : 0,
+      faction : FACTION_ALLY,
       special : 1,
       damage : 0,
       unk_04 : 0xFF,
@@ -529,7 +529,7 @@ const struct Collision gRodCollisions[123] = {
     },
     [28] = {
       kind : DDP,
-      layer : 0,
+      faction : FACTION_ALLY,
       special : 1,
       damage : 3,
       unk_04 : 0x02,
@@ -545,7 +545,7 @@ const struct Collision gRodCollisions[123] = {
     },
     [29] = {
       kind : DRP,
-      layer : 0,
+      faction : FACTION_ALLY,
       special : 1,
       damage : 0,
       unk_04 : 0xFF,
@@ -561,7 +561,7 @@ const struct Collision gRodCollisions[123] = {
     },
     [30] = {
       kind : DDP,
-      layer : 0,
+      faction : FACTION_ALLY,
       special : 1,
       damage : 3,
       unk_04 : 0x02,
@@ -577,7 +577,7 @@ const struct Collision gRodCollisions[123] = {
     },
     [31] = {
       kind : DRP,
-      layer : 0,
+      faction : FACTION_ALLY,
       special : 1,
       damage : 0,
       unk_04 : 0xFF,
@@ -593,7 +593,7 @@ const struct Collision gRodCollisions[123] = {
     },
     [32] = {
       kind : DDP,
-      layer : 0,
+      faction : FACTION_ALLY,
       special : 1,
       damage : 3,
       unk_04 : 0x02,
@@ -609,7 +609,7 @@ const struct Collision gRodCollisions[123] = {
     },
     [33] = {
       kind : DRP,
-      layer : 0,
+      faction : FACTION_ALLY,
       special : 1,
       damage : 0,
       unk_04 : 0xFF,
@@ -625,7 +625,7 @@ const struct Collision gRodCollisions[123] = {
     },
     [34] = {
       kind : DDP,
-      layer : 0,
+      faction : FACTION_ALLY,
       special : 1,
       damage : 3,
       unk_04 : 0x02,
@@ -641,7 +641,7 @@ const struct Collision gRodCollisions[123] = {
     },
     [35] = {
       kind : DRP,
-      layer : 0,
+      faction : FACTION_ALLY,
       special : 1,
       damage : 0,
       unk_04 : 0xFF,
@@ -657,7 +657,7 @@ const struct Collision gRodCollisions[123] = {
     },
     [36] = {
       kind : DDP,
-      layer : 0,
+      faction : FACTION_ALLY,
       special : 1,
       damage : 3,
       unk_04 : 0x02,
@@ -673,7 +673,7 @@ const struct Collision gRodCollisions[123] = {
     },
     [37] = {
       kind : DRP,
-      layer : 0,
+      faction : FACTION_ALLY,
       special : 1,
       damage : 0,
       unk_04 : 0xFF,
@@ -689,7 +689,7 @@ const struct Collision gRodCollisions[123] = {
     },
     [38] = {
       kind : DDP,
-      layer : 0,
+      faction : FACTION_ALLY,
       special : 1,
       damage : 3,
       unk_04 : 0x02,
@@ -705,7 +705,7 @@ const struct Collision gRodCollisions[123] = {
     },
     [39] = {
       kind : DRP,
-      layer : 0,
+      faction : FACTION_ALLY,
       special : 1,
       damage : 0,
       unk_04 : 0xFF,
@@ -721,7 +721,7 @@ const struct Collision gRodCollisions[123] = {
     },
     [40] = {
       kind : DDP,
-      layer : 0,
+      faction : FACTION_ALLY,
       special : 1,
       damage : 3,
       unk_04 : 0x02,
@@ -737,7 +737,7 @@ const struct Collision gRodCollisions[123] = {
     },
     [41] = {
       kind : DRP,
-      layer : 0,
+      faction : FACTION_ALLY,
       special : 1,
       damage : 0,
       unk_04 : 0xFF,
@@ -753,7 +753,7 @@ const struct Collision gRodCollisions[123] = {
     },
     [42] = {
       kind : DDP,
-      layer : 0,
+      faction : FACTION_ALLY,
       special : 1,
       damage : 3,
       unk_04 : 0x02,
@@ -769,7 +769,7 @@ const struct Collision gRodCollisions[123] = {
     },
     [43] = {
       kind : DRP,
-      layer : 0,
+      faction : FACTION_ALLY,
       special : 1,
       damage : 0,
       unk_04 : 0xFF,
@@ -785,7 +785,7 @@ const struct Collision gRodCollisions[123] = {
     },
     [44] = {
       kind : DDP,
-      layer : 0,
+      faction : FACTION_ALLY,
       special : 1,
       damage : 3,
       unk_04 : 0x02,
@@ -801,7 +801,7 @@ const struct Collision gRodCollisions[123] = {
     },
     [45] = {
       kind : DRP,
-      layer : 0,
+      faction : FACTION_ALLY,
       special : 1,
       damage : 0,
       unk_04 : 0xFF,
@@ -817,7 +817,7 @@ const struct Collision gRodCollisions[123] = {
     },
     [46] = {
       kind : DDP,
-      layer : 0,
+      faction : FACTION_ALLY,
       special : 1,
       damage : 3,
       unk_04 : 0x02,
@@ -833,7 +833,7 @@ const struct Collision gRodCollisions[123] = {
     },
     [47] = {
       kind : DRP,
-      layer : 0,
+      faction : FACTION_ALLY,
       special : 1,
       damage : 0,
       unk_04 : 0xFF,
@@ -849,7 +849,7 @@ const struct Collision gRodCollisions[123] = {
     },
     [48] = {
       kind : DDP,
-      layer : 0,
+      faction : FACTION_ALLY,
       special : 1,
       damage : 3,
       unk_04 : 0x02,
@@ -865,7 +865,7 @@ const struct Collision gRodCollisions[123] = {
     },
     [49] = {
       kind : DRP,
-      layer : 0,
+      faction : FACTION_ALLY,
       special : 1,
       damage : 0,
       unk_04 : 0xFF,
@@ -881,7 +881,7 @@ const struct Collision gRodCollisions[123] = {
     },
     [50] = {
       kind : DDP,
-      layer : 0,
+      faction : FACTION_ALLY,
       special : 1,
       damage : 3,
       unk_04 : 0x02,
@@ -897,7 +897,7 @@ const struct Collision gRodCollisions[123] = {
     },
     [51] = {
       kind : DRP,
-      layer : 0,
+      faction : FACTION_ALLY,
       special : 1,
       damage : 0,
       unk_04 : 0xFF,
@@ -913,7 +913,7 @@ const struct Collision gRodCollisions[123] = {
     },
     [52] = {
       kind : DDP,
-      layer : 0,
+      faction : FACTION_ALLY,
       special : 1,
       damage : 3,
       unk_04 : 0x02,
@@ -929,7 +929,7 @@ const struct Collision gRodCollisions[123] = {
     },
     [53] = {
       kind : DRP,
-      layer : 0,
+      faction : FACTION_ALLY,
       special : 1,
       damage : 0,
       unk_04 : 0xFF,
@@ -945,7 +945,7 @@ const struct Collision gRodCollisions[123] = {
     },
     [54] = {
       kind : DDP,
-      layer : 0,
+      faction : FACTION_ALLY,
       special : 1,
       damage : 3,
       unk_04 : 0x02,
@@ -961,7 +961,7 @@ const struct Collision gRodCollisions[123] = {
     },
     [55] = {
       kind : DRP,
-      layer : 0,
+      faction : FACTION_ALLY,
       special : 1,
       damage : 0,
       unk_04 : 0xFF,
@@ -977,7 +977,7 @@ const struct Collision gRodCollisions[123] = {
     },
     [56] = {
       kind : DDP,
-      layer : 0,
+      faction : FACTION_ALLY,
       special : 1,
       damage : 3,
       unk_04 : 0x02,
@@ -993,7 +993,7 @@ const struct Collision gRodCollisions[123] = {
     },
     [57] = {
       kind : DRP,
-      layer : 0,
+      faction : FACTION_ALLY,
       special : 1,
       damage : 0,
       unk_04 : 0xFF,
@@ -1009,7 +1009,7 @@ const struct Collision gRodCollisions[123] = {
     },
     [58] = {
       kind : DDP,
-      layer : 0,
+      faction : FACTION_ALLY,
       special : 1,
       damage : 3,
       unk_04 : 0x02,
@@ -1025,7 +1025,7 @@ const struct Collision gRodCollisions[123] = {
     },
     [59] = {
       kind : DRP,
-      layer : 0,
+      faction : FACTION_ALLY,
       special : 1,
       damage : 0,
       unk_04 : 0xFF,
@@ -1041,7 +1041,7 @@ const struct Collision gRodCollisions[123] = {
     },
     [60] = {
       kind : DDP,
-      layer : 0,
+      faction : FACTION_ALLY,
       special : 1,
       damage : 3,
       unk_04 : 0x02,
@@ -1057,7 +1057,7 @@ const struct Collision gRodCollisions[123] = {
     },
     [61] = {
       kind : DRP,
-      layer : 0,
+      faction : FACTION_ALLY,
       special : 1,
       damage : 0,
       unk_04 : 0xFF,
@@ -1073,7 +1073,7 @@ const struct Collision gRodCollisions[123] = {
     },
     [62] = {
       kind : DDP,
-      layer : 0,
+      faction : FACTION_ALLY,
       special : 1,
       damage : 3,
       unk_04 : 0x02,
@@ -1089,7 +1089,7 @@ const struct Collision gRodCollisions[123] = {
     },
     [63] = {
       kind : DRP,
-      layer : 0,
+      faction : FACTION_ALLY,
       special : 1,
       damage : 0,
       unk_04 : 0xFF,
@@ -1105,7 +1105,7 @@ const struct Collision gRodCollisions[123] = {
     },
     [64] = {
       kind : DDP,
-      layer : 0,
+      faction : FACTION_ALLY,
       special : 1,
       damage : 3,
       unk_04 : 0x02,
@@ -1121,7 +1121,7 @@ const struct Collision gRodCollisions[123] = {
     },
     [65] = {
       kind : DRP,
-      layer : 0,
+      faction : FACTION_ALLY,
       special : 1,
       damage : 0,
       unk_04 : 0xFF,
@@ -1137,7 +1137,7 @@ const struct Collision gRodCollisions[123] = {
     },
     [66] = {
       kind : DDP,
-      layer : 0,
+      faction : FACTION_ALLY,
       special : 1,
       damage : 3,
       unk_04 : 0x02,
@@ -1153,7 +1153,7 @@ const struct Collision gRodCollisions[123] = {
     },
     [67] = {
       kind : DRP,
-      layer : 0,
+      faction : FACTION_ALLY,
       special : 1,
       damage : 0,
       unk_04 : 0xFF,
@@ -1169,7 +1169,7 @@ const struct Collision gRodCollisions[123] = {
     },
     [68] = {
       kind : DDP,
-      layer : 0,
+      faction : FACTION_ALLY,
       special : 1,
       damage : 3,
       unk_04 : 0x02,
@@ -1185,7 +1185,7 @@ const struct Collision gRodCollisions[123] = {
     },
     [69] = {
       kind : DRP,
-      layer : 0,
+      faction : FACTION_ALLY,
       special : 1,
       damage : 0,
       unk_04 : 0xFF,
@@ -1201,7 +1201,7 @@ const struct Collision gRodCollisions[123] = {
     },
     [70] = {
       kind : DDP,
-      layer : 0,
+      faction : FACTION_ALLY,
       special : 1,
       damage : 3,
       unk_04 : 0x02,
@@ -1217,7 +1217,7 @@ const struct Collision gRodCollisions[123] = {
     },
     [71] = {
       kind : DRP,
-      layer : 0,
+      faction : FACTION_ALLY,
       special : 1,
       damage : 0,
       unk_04 : 0xFF,
@@ -1233,7 +1233,7 @@ const struct Collision gRodCollisions[123] = {
     },
     [72] = {
       kind : DDP,
-      layer : 0,
+      faction : FACTION_ALLY,
       special : 1,
       damage : 12,
       unk_04 : 0x02,
@@ -1249,7 +1249,7 @@ const struct Collision gRodCollisions[123] = {
     },
     [73] = {
       kind : DRP,
-      layer : 0,
+      faction : FACTION_ALLY,
       special : 1,
       damage : 0,
       unk_04 : 0xFF,
@@ -1265,7 +1265,7 @@ const struct Collision gRodCollisions[123] = {
     },
     [74] = {
       kind : DDP,
-      layer : 0,
+      faction : FACTION_ALLY,
       special : 1,
       damage : 12,
       unk_04 : 0x02,
@@ -1281,7 +1281,7 @@ const struct Collision gRodCollisions[123] = {
     },
     [75] = {
       kind : DRP,
-      layer : 0,
+      faction : FACTION_ALLY,
       special : 1,
       damage : 0,
       unk_04 : 0xFF,
@@ -1297,7 +1297,7 @@ const struct Collision gRodCollisions[123] = {
     },
     [76] = {
       kind : DDP,
-      layer : 0,
+      faction : FACTION_ALLY,
       special : 1,
       damage : 12,
       unk_04 : 0x02,
@@ -1313,7 +1313,7 @@ const struct Collision gRodCollisions[123] = {
     },
     [77] = {
       kind : DRP,
-      layer : 0,
+      faction : FACTION_ALLY,
       special : 1,
       damage : 0,
       unk_04 : 0xFF,
@@ -1329,7 +1329,7 @@ const struct Collision gRodCollisions[123] = {
     },
     [78] = {
       kind : DDP,
-      layer : 0,
+      faction : FACTION_ALLY,
       special : 1,
       damage : 12,
       unk_04 : 0x02,
@@ -1345,7 +1345,7 @@ const struct Collision gRodCollisions[123] = {
     },
     [79] = {
       kind : DRP,
-      layer : 0,
+      faction : FACTION_ALLY,
       special : 1,
       damage : 0,
       unk_04 : 0xFF,
@@ -1361,7 +1361,7 @@ const struct Collision gRodCollisions[123] = {
     },
     [80] = {
       kind : DDP,
-      layer : 0,
+      faction : FACTION_ALLY,
       special : 1,
       damage : 12,
       unk_04 : 0x02,
@@ -1377,7 +1377,7 @@ const struct Collision gRodCollisions[123] = {
     },
     [81] = {
       kind : DRP,
-      layer : 0,
+      faction : FACTION_ALLY,
       special : 1,
       damage : 0,
       unk_04 : 0xFF,
@@ -1393,7 +1393,7 @@ const struct Collision gRodCollisions[123] = {
     },
     [82] = {
       kind : DDP,
-      layer : 0,
+      faction : FACTION_ALLY,
       special : 1,
       damage : 12,
       unk_04 : 0x02,
@@ -1409,7 +1409,7 @@ const struct Collision gRodCollisions[123] = {
     },
     [83] = {
       kind : DRP,
-      layer : 0,
+      faction : FACTION_ALLY,
       special : 1,
       damage : 0,
       unk_04 : 0xFF,
@@ -1425,7 +1425,7 @@ const struct Collision gRodCollisions[123] = {
     },
     [84] = {
       kind : DDP,
-      layer : 0,
+      faction : FACTION_ALLY,
       special : 1,
       damage : 12,
       unk_04 : 0x02,
@@ -1441,7 +1441,7 @@ const struct Collision gRodCollisions[123] = {
     },
     [85] = {
       kind : DRP,
-      layer : 0,
+      faction : FACTION_ALLY,
       special : 1,
       damage : 0,
       unk_04 : 0xFF,
@@ -1457,7 +1457,7 @@ const struct Collision gRodCollisions[123] = {
     },
     [86] = {
       kind : DDP,
-      layer : 0,
+      faction : FACTION_ALLY,
       special : 1,
       damage : 12,
       unk_04 : 0x02,
@@ -1473,7 +1473,7 @@ const struct Collision gRodCollisions[123] = {
     },
     [87] = {
       kind : DRP,
-      layer : 0,
+      faction : FACTION_ALLY,
       special : 1,
       damage : 0,
       unk_04 : 0xFF,
@@ -1489,7 +1489,7 @@ const struct Collision gRodCollisions[123] = {
     },
     [88] = {
       kind : DDP,
-      layer : 0,
+      faction : FACTION_ALLY,
       special : 1,
       damage : 12,
       unk_04 : 0x02,
@@ -1505,7 +1505,7 @@ const struct Collision gRodCollisions[123] = {
     },
     [89] = {
       kind : DRP,
-      layer : 0,
+      faction : FACTION_ALLY,
       special : 1,
       damage : 0,
       unk_04 : 0xFF,
@@ -1521,7 +1521,7 @@ const struct Collision gRodCollisions[123] = {
     },
     [90] = {
       kind : DDP,
-      layer : 0,
+      faction : FACTION_ALLY,
       special : 1,
       damage : 12,
       unk_04 : 0x02,
@@ -1537,7 +1537,7 @@ const struct Collision gRodCollisions[123] = {
     },
     [91] = {
       kind : DRP,
-      layer : 0,
+      faction : FACTION_ALLY,
       special : 1,
       damage : 0,
       unk_04 : 0xFF,
@@ -1553,7 +1553,7 @@ const struct Collision gRodCollisions[123] = {
     },
     [92] = {
       kind : DDP,
-      layer : 0,
+      faction : FACTION_ALLY,
       special : 1,
       damage : 12,
       unk_04 : 0x02,
@@ -1569,7 +1569,7 @@ const struct Collision gRodCollisions[123] = {
     },
     [93] = {
       kind : DRP,
-      layer : 0,
+      faction : FACTION_ALLY,
       special : 1,
       damage : 0,
       unk_04 : 0xFF,
@@ -1585,7 +1585,7 @@ const struct Collision gRodCollisions[123] = {
     },
     [94] = {
       kind : DDP,
-      layer : 0,
+      faction : FACTION_ALLY,
       special : 1,
       damage : 12,
       unk_04 : 0x02,
@@ -1601,7 +1601,7 @@ const struct Collision gRodCollisions[123] = {
     },
     [95] = {
       kind : DRP,
-      layer : 0,
+      faction : FACTION_ALLY,
       special : 1,
       damage : 0,
       unk_04 : 0xFF,
@@ -1617,7 +1617,7 @@ const struct Collision gRodCollisions[123] = {
     },
     [96] = {
       kind : DDP,
-      layer : 0,
+      faction : FACTION_ALLY,
       special : 1,
       damage : 12,
       unk_04 : 0x02,
@@ -1633,7 +1633,7 @@ const struct Collision gRodCollisions[123] = {
     },
     [97] = {
       kind : DRP,
-      layer : 0,
+      faction : FACTION_ALLY,
       special : 1,
       damage : 0,
       unk_04 : 0xFF,
@@ -1649,7 +1649,7 @@ const struct Collision gRodCollisions[123] = {
     },
     [98] = {
       kind : DDP,
-      layer : 0,
+      faction : FACTION_ALLY,
       special : 1,
       damage : 12,
       unk_04 : 0x02,
@@ -1665,7 +1665,7 @@ const struct Collision gRodCollisions[123] = {
     },
     [99] = {
       kind : DRP,
-      layer : 0,
+      faction : FACTION_ALLY,
       special : 1,
       damage : 0,
       unk_04 : 0xFF,
@@ -1681,7 +1681,7 @@ const struct Collision gRodCollisions[123] = {
     },
     [100] = {
       kind : DDP,
-      layer : 0,
+      faction : FACTION_ALLY,
       special : 1,
       damage : 12,
       unk_04 : 0x02,
@@ -1697,7 +1697,7 @@ const struct Collision gRodCollisions[123] = {
     },
     [101] = {
       kind : DRP,
-      layer : 0,
+      faction : FACTION_ALLY,
       special : 1,
       damage : 0,
       unk_04 : 0xFF,
@@ -1713,7 +1713,7 @@ const struct Collision gRodCollisions[123] = {
     },
     [102] = {
       kind : DDP,
-      layer : 0,
+      faction : FACTION_ALLY,
       special : 1,
       damage : 12,
       unk_04 : 0x02,
@@ -1729,7 +1729,7 @@ const struct Collision gRodCollisions[123] = {
     },
     [103] = {
       kind : DRP,
-      layer : 0,
+      faction : FACTION_ALLY,
       special : 1,
       damage : 0,
       unk_04 : 0xFF,
@@ -1745,7 +1745,7 @@ const struct Collision gRodCollisions[123] = {
     },
     [104] = {
       kind : DDP,
-      layer : 0,
+      faction : FACTION_ALLY,
       special : 1,
       damage : 12,
       unk_04 : 0x02,
@@ -1761,7 +1761,7 @@ const struct Collision gRodCollisions[123] = {
     },
     [105] = {
       kind : DRP,
-      layer : 0,
+      faction : FACTION_ALLY,
       special : 1,
       damage : 0,
       unk_04 : 0xFF,
@@ -1777,7 +1777,7 @@ const struct Collision gRodCollisions[123] = {
     },
     [106] = {
       kind : DDP,
-      layer : 0,
+      faction : FACTION_ALLY,
       special : 1,
       damage : 12,
       unk_04 : 0x02,
@@ -1793,7 +1793,7 @@ const struct Collision gRodCollisions[123] = {
     },
     [107] = {
       kind : DRP,
-      layer : 0,
+      faction : FACTION_ALLY,
       special : 1,
       damage : 0,
       unk_04 : 0xFF,
@@ -1809,7 +1809,7 @@ const struct Collision gRodCollisions[123] = {
     },
     [108] = {
       kind : DDP,
-      layer : 0,
+      faction : FACTION_ALLY,
       special : 1,
       damage : 12,
       unk_04 : 0x02,
@@ -1825,7 +1825,7 @@ const struct Collision gRodCollisions[123] = {
     },
     [109] = {
       kind : DRP,
-      layer : 0,
+      faction : FACTION_ALLY,
       special : 1,
       damage : 0,
       unk_04 : 0xFF,
@@ -1841,7 +1841,7 @@ const struct Collision gRodCollisions[123] = {
     },
     [110] = {
       kind : DDP,
-      layer : 0,
+      faction : FACTION_ALLY,
       special : 1,
       damage : 12,
       unk_04 : 0x02,
@@ -1857,7 +1857,7 @@ const struct Collision gRodCollisions[123] = {
     },
     [111] = {
       kind : DRP,
-      layer : 0,
+      faction : FACTION_ALLY,
       special : 1,
       damage : 0,
       unk_04 : 0xFF,
@@ -1873,7 +1873,7 @@ const struct Collision gRodCollisions[123] = {
     },
     [112] = {
       kind : DDP,
-      layer : 0,
+      faction : FACTION_ALLY,
       special : 1,
       damage : 12,
       unk_04 : 0x02,
@@ -1889,7 +1889,7 @@ const struct Collision gRodCollisions[123] = {
     },
     [113] = {
       kind : DRP,
-      layer : 0,
+      faction : FACTION_ALLY,
       special : 1,
       damage : 0,
       unk_04 : 0xFF,
@@ -1905,7 +1905,7 @@ const struct Collision gRodCollisions[123] = {
     },
     [114] = {
       kind : DDP,
-      layer : 0,
+      faction : FACTION_ALLY,
       special : 1,
       damage : 12,
       unk_04 : 0x02,
@@ -1921,7 +1921,7 @@ const struct Collision gRodCollisions[123] = {
     },
     [115] = {
       kind : DRP,
-      layer : 0,
+      faction : FACTION_ALLY,
       special : 1,
       damage : 0,
       unk_04 : 0xFF,
@@ -1937,7 +1937,7 @@ const struct Collision gRodCollisions[123] = {
     },
     [116] = {
       kind : DDP,
-      layer : 0,
+      faction : FACTION_ALLY,
       special : 1,
       damage : 12,
       unk_04 : 0x02,
@@ -1953,7 +1953,7 @@ const struct Collision gRodCollisions[123] = {
     },
     [117] = {
       kind : DRP,
-      layer : 0,
+      faction : FACTION_ALLY,
       special : 1,
       damage : 0,
       unk_04 : 0xFF,
@@ -1969,7 +1969,7 @@ const struct Collision gRodCollisions[123] = {
     },
     [118] = {
       kind : DDP,
-      layer : 0,
+      faction : FACTION_ALLY,
       special : 1,
       damage : 12,
       unk_04 : 0x02,
@@ -1985,7 +1985,7 @@ const struct Collision gRodCollisions[123] = {
     },
     [119] = {
       kind : DRP,
-      layer : 0,
+      faction : FACTION_ALLY,
       special : 1,
       damage : 0,
       unk_04 : 0xFF,
@@ -2001,7 +2001,7 @@ const struct Collision gRodCollisions[123] = {
     },
     [120] = {
       kind : DDP,
-      layer : 0,
+      faction : FACTION_ALLY,
       special : 1,
       damage : 12,
       unk_04 : 0x02,
@@ -2017,7 +2017,7 @@ const struct Collision gRodCollisions[123] = {
     },
     [121] = {
       kind : DRP,
-      layer : 0,
+      faction : FACTION_ALLY,
       special : 1,
       damage : 0,
       unk_04 : 0xFF,
@@ -2033,7 +2033,7 @@ const struct Collision gRodCollisions[123] = {
     },
     [122] = {
       kind : DDP,
-      layer : 0,
+      faction : FACTION_ALLY,
       special : 1,
       damage : 0,
       unk_04 : 0x01,

@@ -35,18 +35,10 @@ struct Projectile* CreateProjectile6(struct Entity* e, struct Coord* c, u8 r2, u
 }
 
 static void Projectile6_Init(struct Projectile* p) {
-  struct Body* body;
-
   InitNonAffineMotion(&p->s);
   (p->s).flags |= DISPLAY;
   (p->s).flags |= FLIPABLE;
-  (p->s).flags |= COLLIDABLE;
-
-  body = &p->body;
-  InitBody(body, sCollisions, &(p->s).coord, 1);
-  body->parent = (struct CollidableEntity*)p;
-  body->fn = NULL;
-
+  INIT_BODY(p, &sCollisions[0], 1, NULL);
   (p->s).coord.x = (((p->s).unk_28)->coord).x;
   (p->s).coord.y = (((p->s).unk_28)->coord).y;
   SET_PROJECTILE_ROUTINE(p, ENTITY_MAIN);
@@ -73,7 +65,7 @@ static const ProjectileFunc sUpdates[4] = {
 static const struct Collision sCollisions[6] = {
     {
       kind : DRP,
-      layer : 1,
+      faction : FACTION_ENEMY,
       special : 0,
       damage : 0,
       unk_04 : 0xFF,
@@ -89,7 +81,7 @@ static const struct Collision sCollisions[6] = {
     },
     {
       kind : DDP,
-      layer : 1,
+      faction : FACTION_ENEMY,
       special : 0,
       damage : 3,
       unk_04 : 0x00,
@@ -105,7 +97,7 @@ static const struct Collision sCollisions[6] = {
     },
     {
       kind : DDP,
-      layer : 1,
+      faction : FACTION_ENEMY,
       special : 0,
       damage : 3,
       unk_04 : 0x00,
@@ -121,7 +113,7 @@ static const struct Collision sCollisions[6] = {
     },
     {
       kind : DDP,
-      layer : 1,
+      faction : FACTION_ENEMY,
       special : 0,
       damage : 3,
       unk_04 : 0x00,
@@ -137,7 +129,7 @@ static const struct Collision sCollisions[6] = {
     },
     {
       kind : DDP,
-      layer : 1,
+      faction : FACTION_ENEMY,
       special : 0,
       damage : 3,
       unk_04 : 0x00,
@@ -153,7 +145,7 @@ static const struct Collision sCollisions[6] = {
     },
     {
       kind : DRP,
-      layer : 1,
+      faction : FACTION_ENEMY,
       special : 0,
       damage : 0,
       unk_04 : 0xFF,

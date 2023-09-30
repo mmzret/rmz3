@@ -415,7 +415,7 @@ const struct EntityTemplate gGiantElevatorEntity[41] = {
         {
             1,
             ENTITY_SOLID,
-            45,
+            SOLID_GE_PIER,
             0,
             0,
             0,

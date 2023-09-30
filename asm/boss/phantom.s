@@ -217,7 +217,7 @@ Phantom_Init: @ 0x0805ED3C
 	ldr r1, _0805EECC @ =0x083652C0
 	adds r0, r7, #0
 	movs r2, #0x60
-	bl resetBossData
+	bl ResetBossBody
 	ldr r1, _0805EED0 @ =phantom_0805eed4
 	adds r0, r7, #0
 	adds r0, #0x74

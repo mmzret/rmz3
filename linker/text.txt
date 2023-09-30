@@ -169,6 +169,31 @@
 			src/enemy/snakecord.o (.text);
 			src/enemy/hammer.o (.text);
 			src/enemy/purple_nerple.o (.text);
+			src/enemy/wormer_rock_drone.o (.text);
+			src/enemy/volcaire.o (.text);
+			src/enemy/tile_cannon.o (.text);
+			src/enemy/shelluno.o (.text);
+			src/enemy/deathtanz_rock.o (.text);
+			src/enemy/heavy_cannon_ball.o (.text);
+			src/enemy/wormer_snow_ball.o (.text);
+			src/enemy/beetank.o (.text);
+			src/enemy/swordy.o (.text);
+			src/enemy/puffy.o (.text);
+			src/enemy/crossbyne.o (.text);
+			src/enemy/burnable_wood.o (.text);
+			src/enemy/mellnet.o (.text);
+			src/enemy/hell_bouncer.o (.text);
+			src/enemy/pantheon_zombie.o (.text);
+			src/enemy/pantheon_aqua_mod_obj.o (.text);
+			src/enemy/glacierle_arm.o (.text);
+			src/enemy/omega_gold_hand.o (.text);
+			src/enemy/eye_cannon.o (.text);
+			src/enemy/unk_42.o (.text);
+			src/enemy/capsule_cannon.o (.text);
+			src/enemy/pantheon_bomber.o (.text);
+			src/enemy/hanumachine_obj.o (.text);
+			src/enemy/gallisni.o (.text);
+			src/enemy/mothjiro.o (.text);
 
 		src/projectile.o (.text);
       src/projectile/lemon.o (.text);
@@ -274,8 +299,8 @@
       src/solid/unk_03.o (.text);
       src/solid/iron_star.o (.text);
       src/solid/heavy_cannon.o (.text);
-      src/solid/unk_06.o (.text);
-      src/solid/unk_07.o (.text);
+      src/solid/lava_geyser_platform.o (.text);
+      src/solid/lava_geyser.o (.text);
       src/solid/lava_river_platform.o (.text);
       src/solid/door_3d.o (.text);
       src/solid/unk_10.o (.text);
@@ -300,7 +325,7 @@
       src/solid/mob_npc.o (.text);
       src/solid/main_npc.o (.text);
       src/solid/cyberspace_door.o (.text);
-      src/solid/unk_32.o (.text);
+      src/solid/light_switch.o (.text);
       src/solid/unk_33.o (.text);
       src/solid/unk_34.o (.text);
       src/solid/container.o (.text);
@@ -313,9 +338,9 @@
       src/solid/ciel_mg_obj.o (.text);
       src/solid/unk_43.o (.text);
       src/solid/unk_44.o (.text);
-      src/solid/unk_45.o (.text);
-      src/solid/unk_46.o (.text);
-      src/solid/unk_47.o (.text);
+      src/solid/giant_elevator_pier.o (.text);
+      src/solid/giant_elevator_platform.o (.text);
+      src/solid/anatre_cube.o (.text);
       src/solid/ciel_computer.o (.text);
       src/solid/graffiti.o (.text);
       src/solid/structural_steel.o (.text);
@@ -341,6 +366,9 @@
 			src/cyberelf/unk_7.o (.text);
 			src/cyberelf/follower.o (.text);
 			src/cyberelf/sea_otter.o (.text);
+			src/cyberelf/unk_10.o (.text);
+			src/cyberelf/unk_11.o (.text);
+			src/cyberelf/bird.o (.text);
 
 		src/widget.o (.text);
       src/widget/weapon_icon.o (.text);

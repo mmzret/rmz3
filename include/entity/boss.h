@@ -24,7 +24,7 @@ struct OmegaZeroProps {
   u8 unk_c1;
   u16 unk_c2;
   bool8 isRight;
-  u8 unk_c5;
+  u8 prevMode;
   u8 unk_c6;
   u8 unk_c7;
   void *unk_c8;

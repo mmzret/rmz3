@@ -183,7 +183,7 @@ Anubis_Init: @ 0x08050194
 	ldr r1, _080502F4 @ =0x0836356C
 	adds r0, r7, #0
 	movs r2, #0x40
-	bl resetBossData
+	bl ResetBossBody
 	ldr r1, _080502F8 @ =FUN_080500c8
 	adds r0, r7, #0
 	adds r0, #0x74

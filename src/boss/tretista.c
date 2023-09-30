@@ -14,7 +14,7 @@ const BossRoutine gTretistaRoutine = {
     [ENTITY_INIT] =      Tretista_Init,
     [ENTITY_MAIN] =      Tretista_Update,
     [ENTITY_DIE] =       Tretista_Die,
-    [ENTITY_DISAPPEAR] = deleteBoss,
+    [ENTITY_DISAPPEAR] = DeleteBoss,
     [ENTITY_EXIT] =      (BossFunc)DeleteEntity,
 };
 // clang-format on
@@ -67,7 +67,7 @@ NAKED static void Tretista_Init(struct Boss* p) {
 	ldr r1, _0804D710 @ =sCollisions\n\
 	adds r0, r5, #0\n\
 	movs r2, #0x60\n\
-	bl resetBossData\n\
+	bl ResetBossBody\n\
 	ldr r1, _0804D714 @ =FUN_0804fdf8\n\
 	adds r0, r5, #0\n\
 	adds r0, #0x74\n\
@@ -268,7 +268,7 @@ INCASM("asm/boss/tretista.inc");
 static const struct Collision sCollisions[13] = {
     [0] = {
       kind : DRP,
-      layer : LAYER_ENEMY,
+      faction : FACTION_ENEMY,
       special : 2,
       damage : 0,
       unk_04 : 0xFF,
@@ -284,7 +284,7 @@ static const struct Collision sCollisions[13] = {
     },
     [1] = {
       kind : DDP,
-      layer : LAYER_ENEMY,
+      faction : FACTION_ENEMY,
       special : 2,
       damage : 3,
       unk_04 : 0x00,
@@ -300,7 +300,7 @@ static const struct Collision sCollisions[13] = {
     },
     [2] = {
       kind : DRP,
-      layer : LAYER_ENEMY,
+      faction : FACTION_ENEMY,
       special : 2,
       damage : 0,
       unk_04 : 0xFF,
@@ -316,7 +316,7 @@ static const struct Collision sCollisions[13] = {
     },
     [3] = {
       kind : DRP,
-      layer : LAYER_ENEMY,
+      faction : FACTION_ENEMY,
       special : 2,
       damage : 0,
       unk_04 : 0xFF,
@@ -332,7 +332,7 @@ static const struct Collision sCollisions[13] = {
     },
     [4] = {
       kind : DDP,
-      layer : LAYER_ENEMY,
+      faction : FACTION_ENEMY,
       special : 2,
       damage : 3,
       unk_04 : 0x00,
@@ -348,7 +348,7 @@ static const struct Collision sCollisions[13] = {
     },
     [5] = {
       kind : DRP,
-      layer : LAYER_ENEMY,
+      faction : FACTION_ENEMY,
       special : 2,
       damage : 0,
       unk_04 : 0xFF,
@@ -364,7 +364,7 @@ static const struct Collision sCollisions[13] = {
     },
     [6] = {
       kind : DRP,
-      layer : LAYER_ENEMY,
+      faction : FACTION_ENEMY,
       special : 2,
       damage : 0,
       unk_04 : 0xFF,
@@ -380,7 +380,7 @@ static const struct Collision sCollisions[13] = {
     },
     [7] = {
       kind : DDP,
-      layer : LAYER_ENEMY,
+      faction : FACTION_ENEMY,
       special : 2,
       damage : 3,
       unk_04 : 0x00,
@@ -396,7 +396,7 @@ static const struct Collision sCollisions[13] = {
     },
     [8] = {
       kind : DRP,
-      layer : LAYER_ENEMY,
+      faction : FACTION_ENEMY,
       special : 2,
       damage : 0,
       unk_04 : 0xFF,
@@ -412,7 +412,7 @@ static const struct Collision sCollisions[13] = {
     },
     [9] = {
       kind : DRP,
-      layer : LAYER_ENEMY,
+      faction : FACTION_ENEMY,
       special : 2,
       damage : 0,
       unk_04 : 0xFF,
@@ -428,7 +428,7 @@ static const struct Collision sCollisions[13] = {
     },
     [10] = {
       kind : DDP,
-      layer : LAYER_ENEMY,
+      faction : FACTION_ENEMY,
       special : 2,
       damage : 3,
       unk_04 : 0x00,
@@ -444,7 +444,7 @@ static const struct Collision sCollisions[13] = {
     },
     [11] = {
       kind : DRP,
-      layer : LAYER_ENEMY,
+      faction : FACTION_ENEMY,
       special : 2,
       damage : 0,
       unk_04 : 0xFF,
@@ -460,7 +460,7 @@ static const struct Collision sCollisions[13] = {
     },
     [12] = {
       kind : DRP,
-      layer : LAYER_ENEMY,
+      faction : FACTION_ENEMY,
       special : 2,
       damage : 0,
       unk_04 : 0xFF,

@@ -73,7 +73,7 @@ NAKED static void KcMenuLoop_Init(struct GameState *g) {
 	movs r1, #0\n\
 	bl LoadBlink\n\
 	movs r0, #0x43\n\
-	bl GetBlinkMotionState\n\
+	bl UpdateBlinkMotionState\n\
 	movs r0, #0x43\n\
 	bl ClearBlink\n\
 	movs r0, #0x44\n\
@@ -662,7 +662,7 @@ _080F5F8A:\n\
 	movs r1, #0\n\
 	bl LoadBlink\n\
 	movs r0, #0x42\n\
-	bl GetBlinkMotionState\n\
+	bl UpdateBlinkMotionState\n\
 	movs r0, #0x42\n\
 	bl ClearBlink\n\
 	movs r0, #0x41\n\
@@ -683,7 +683,7 @@ _080F5FD0:\n\
 	movs r1, #0\n\
 	bl LoadBlink\n\
 	movs r0, #0x43\n\
-	bl GetBlinkMotionState\n\
+	bl UpdateBlinkMotionState\n\
 	movs r0, #0x43\n\
 	bl ClearBlink\n\
 	movs r0, #0x40\n\
@@ -694,11 +694,11 @@ _080F5FFA:\n\
 	strb r0, [r4, #1]\n\
 _080F5FFC:\n\
 	movs r0, #0x44\n\
-	bl GetBlinkMotionState\n\
+	bl UpdateBlinkMotionState\n\
 	ldr r0, _080F6030 @ =0x00000DF8\n\
 	add r0, r8\n\
 	ldrb r0, [r0, #1]\n\
-	bl GetBlinkMotionState\n\
+	bl UpdateBlinkMotionState\n\
 	ldr r0, _080F6034 @ =0x00000ED8\n\
 	add r0, r8\n\
 	ldr r1, _080F6038 @ =gVideoRegBuffer+6\n\

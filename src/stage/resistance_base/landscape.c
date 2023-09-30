@@ -55,7 +55,7 @@ static void updateResistanceBase(struct Coord* c) {
       gOverworld.work.resistanceBase.unk_000 |= 1;
       LoadBlink(0x6a, 0);
     }
-    GetBlinkMotionState(0x6a);
+    UpdateBlinkMotionState(0x6a);
 
   } else if (gOverworld.work.resistanceBase.unk_000 & 1) {
     ClearBlink(0x6a);
@@ -67,7 +67,7 @@ static void updateResistanceBase(struct Coord* c) {
       gOverworld.work.resistanceBase.unk_000 |= 2;
       LoadBlink(0x68, 0);
     }
-    GetBlinkMotionState(0x68);
+    UpdateBlinkMotionState(0x68);
 
   } else if (gOverworld.work.resistanceBase.unk_000 & 2) {
     ClearBlink(0x68);
@@ -80,7 +80,7 @@ static void updateResistanceBase(struct Coord* c) {
     if (((c->y < PIXEL(800)) && (PIXEL(480) <= c->x)) && (c->x <= PIXEL(2160))) {
       if ((gOverworld.work.resistanceBase.unk_002 & 0xF) == 0) {
         struct Coord c;
-        RNG_0202f388 = (LCG(RNG_0202f388) << 1) >> 1;
+        RNG_0202f388 = LCG(RNG_0202f388);
         c.x = PIXEL((RNG_0202f388 >> 16) % 960) + PIXEL(1200);
         c.y = PIXEL(160);
         CreateSnow(&c, 0x380);
@@ -89,7 +89,7 @@ static void updateResistanceBase(struct Coord* c) {
     } else if (c->y < PIXEL(1120)) {
       if ((gOverworld.work.resistanceBase.unk_002 & 0x3F) == 0) {
         struct Coord c;
-        RNG_0202f388 = (LCG(RNG_0202f388) << 1) >> 1;
+        RNG_0202f388 = LCG(RNG_0202f388);
         c.x = PIXEL((RNG_0202f388 >> 16) % 240) + PIXEL(720);
         c.y = PIXEL(800);
         CreateSnow(&c, 0x140);
@@ -97,7 +97,7 @@ static void updateResistanceBase(struct Coord* c) {
 
     } else if ((gOverworld.work.resistanceBase.unk_002 & 0x1F) == 0) {
       struct Coord c;
-      RNG_0202f388 = (LCG(RNG_0202f388) << 1) >> 1;
+      RNG_0202f388 = LCG(RNG_0202f388);
       c.x = PIXEL((RNG_0202f388 >> 16) % 480) + PIXEL(2160);
       c.y = PIXEL(1280);
       CreateSnow(&c, 0x140);
@@ -203,7 +203,7 @@ _08016438:\n\
 	strb r0, [r5, #0xe]\n\
 _08016452:\n\
 	movs r0, #0x72\n\
-	bl GetBlinkMotionState\n\
+	bl UpdateBlinkMotionState\n\
 	lsls r0, r0, #0x18\n\
 	lsrs r0, r0, #0x18\n\
 	cmp r0, #4\n\
@@ -224,7 +224,7 @@ _08016452:\n\
 	strb r0, [r5, #0xe]\n\
 _08016480:\n\
 	movs r0, #0x73\n\
-	bl GetBlinkMotionState\n\
+	bl UpdateBlinkMotionState\n\
 	lsls r0, r0, #0x18\n\
 	lsrs r0, r0, #0x18\n\
 	cmp r0, #3\n\
@@ -263,23 +263,23 @@ _080164D2:\n\
 	adds r0, #1\n\
 	strh r0, [r5, #0x10]\n\
 	movs r0, #0x6b\n\
-	bl GetBlinkMotionState\n\
+	bl UpdateBlinkMotionState\n\
 	movs r0, #0x6c\n\
-	bl GetBlinkMotionState\n\
+	bl UpdateBlinkMotionState\n\
 	movs r0, #0x6d\n\
-	bl GetBlinkMotionState\n\
+	bl UpdateBlinkMotionState\n\
 	movs r0, #0x6e\n\
-	bl GetBlinkMotionState\n\
+	bl UpdateBlinkMotionState\n\
 	movs r0, #0x6f\n\
-	bl GetBlinkMotionState\n\
+	bl UpdateBlinkMotionState\n\
 	movs r0, #0x70\n\
-	bl GetBlinkMotionState\n\
+	bl UpdateBlinkMotionState\n\
 	movs r0, #0x74\n\
-	bl GetBlinkMotionState\n\
+	bl UpdateBlinkMotionState\n\
 	movs r0, #0x75\n\
-	bl GetBlinkMotionState\n\
+	bl UpdateBlinkMotionState\n\
 	movs r0, #0x76\n\
-	bl GetBlinkMotionState\n\
+	bl UpdateBlinkMotionState\n\
 	pop {r4, r5}\n\
 	pop {r0}\n\
 	bx r0\n\
@@ -426,13 +426,13 @@ static void rbase_0801666c(struct StageLayer* l, const struct Stage* _ UNUSED) {
   }
 
   if (gOverworld.work.resistanceBase.weather == SUNNY) {
-    GetBlinkMotionState(105);
+    UpdateBlinkMotionState(105);
 
   } else if (gOverworld.work.resistanceBase.weather == NIGHT) {
-    GetBlinkMotionState(120);
-    GetBlinkMotionState(121);
-    GetBlinkMotionState(122);
-    GetBlinkMotionState(123);
+    UpdateBlinkMotionState(120);
+    UpdateBlinkMotionState(121);
+    UpdateBlinkMotionState(122);
+    UpdateBlinkMotionState(123);
     l->unk_10++;
     if (l->unk_10 == 3600) {
       ClearBlink(123);
@@ -441,8 +441,8 @@ static void rbase_0801666c(struct StageLayer* l, const struct Stage* _ UNUSED) {
     }
 
   } else if (gOverworld.work.resistanceBase.weather == SNOWY) {
-    GetBlinkMotionState(201);
-    GetBlinkMotionState(202);
+    UpdateBlinkMotionState(201);
+    UpdateBlinkMotionState(202);
   }
 }
 
@@ -642,9 +642,9 @@ _08016A5C:\n\
 	cmp r0, #2\n\
 	bne _08016A90\n\
 	movs r0, #0xc7\n\
-	bl GetBlinkMotionState\n\
+	bl UpdateBlinkMotionState\n\
 	movs r0, #0xc8\n\
-	bl GetBlinkMotionState\n\
+	bl UpdateBlinkMotionState\n\
 	b _08016AA2\n\
 	.align 2, 0\n\
 _08016A78: .4byte gVideoRegBuffer+4\n\
@@ -658,9 +658,9 @@ _08016A90:\n\
 	bne _08016AA2\n\
 	movs r0, #0x89\n\
 	lsls r0, r0, #1\n\
-	bl GetBlinkMotionState\n\
+	bl UpdateBlinkMotionState\n\
 	ldr r0, _08016AB4 @ =0x00000113\n\
-	bl GetBlinkMotionState\n\
+	bl UpdateBlinkMotionState\n\
 _08016AA2:\n\
 	ldr r0, [r7, #0x68]\n\
 	adds r0, #1\n\
@@ -964,7 +964,7 @@ _08016CD8:\n\
 	ble _08016CD8\n\
 _08016CE0:\n\
 	movs r0, #0x77\n\
-	bl GetBlinkMotionState\n\
+	bl UpdateBlinkMotionState\n\
 _08016CE6:\n\
 	add sp, #4\n\
 	pop {r3, r4, r5}\n\

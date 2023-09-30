@@ -71,7 +71,7 @@ INCASM("asm/solid/unk_22.inc");
 static const struct Collision sCollisions[2] = {
     [0] = {
       kind : DDP,
-      layer : 1,
+      faction : FACTION_ENEMY,
       special : 0,
       damage : 255,
       unk_04 : 0x00,
@@ -87,7 +87,7 @@ static const struct Collision sCollisions[2] = {
     },
     [1] = {
       kind : DRP,
-      layer : 1,
+      faction : FACTION_ENEMY,
       special : 0,
       damage : 255,
       unk_04 : 0xFF,

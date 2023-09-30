@@ -13,7 +13,7 @@ const BossRoutine gAnubisRoutine = {
     [ENTITY_INIT] =      Anubis_Init,
     [ENTITY_MAIN] =      Anubis_Update,
     [ENTITY_DIE] =       Anubis_Die,
-    [ENTITY_DISAPPEAR] = deleteBoss,
+    [ENTITY_DISAPPEAR] = DeleteBoss,
     [ENTITY_EXIT] =      (BossFunc)DeleteEntity,
 };
 // clang-format on
@@ -81,7 +81,7 @@ static const BossFunc sDeads[2] = {
 static const struct Collision sCollisions[3] = {
     {
       kind : DRP,
-      layer : LAYER_ENEMY,
+      faction : FACTION_ENEMY,
       special : 2,
       damage : 0,
       unk_04 : 0xFF,
@@ -97,7 +97,7 @@ static const struct Collision sCollisions[3] = {
     },
     {
       kind : DDP,
-      layer : LAYER_ENEMY,
+      faction : FACTION_ENEMY,
       special : 2,
       damage : 3,
       unk_04 : 0x00,
@@ -113,7 +113,7 @@ static const struct Collision sCollisions[3] = {
     },
     {
       kind : DRP,
-      layer : LAYER_ENEMY,
+      faction : FACTION_ENEMY,
       special : 2,
       damage : 0,
       unk_04 : 0xFF,

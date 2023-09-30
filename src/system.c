@@ -45,7 +45,7 @@ WIP void Process_SoftReset(struct Process* _ UNUSED) {
   gWindowRegBuffer.unk_0c[2] = 0xFF;
   wMOSAIC = 0x00;
   PALETTE16(0) = RGB_BLACK;
-  stopAllMusics();
+  StopAllMusics();
   text_080e9730();
   LoadKatakanaBold();
   gVideoRegBuffer.dispcnt &= BG_MODE_0;

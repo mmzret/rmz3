@@ -15,7 +15,7 @@ const BossRoutine gBabyElfRoutine = {
     [ENTITY_INIT] =      BabyElf_Init,
     [ENTITY_MAIN] =      BabyElf_Update,
     [ENTITY_DIE] =       BabyElf_Die,
-    [ENTITY_DISAPPEAR] = deleteBoss,
+    [ENTITY_DISAPPEAR] = DeleteBoss,
     [ENTITY_EXIT] =      (BossFunc)DeleteEntity,
 };
 // clang-format on
@@ -107,7 +107,7 @@ static const BossFunc sDeinitializers[2] = {
 static const struct Collision sCollisions[5] = {
     [0] = {
       kind : DRP,
-      layer : LAYER_ENEMY,
+      faction : FACTION_ENEMY,
       special : 2,
       damage : 0,
       unk_04 : 0xFF,
@@ -123,7 +123,7 @@ static const struct Collision sCollisions[5] = {
     },
     [1] = {
       kind : DDP,
-      layer : LAYER_ENEMY,
+      faction : FACTION_ENEMY,
       special : 2,
       damage : 3,
       unk_04 : 0x00,
@@ -139,7 +139,7 @@ static const struct Collision sCollisions[5] = {
     },
     [2] = {
       kind : DRP,
-      layer : LAYER_ENEMY,
+      faction : FACTION_ENEMY,
       special : 2,
       damage : 0,
       unk_04 : 0xFF,
@@ -155,7 +155,7 @@ static const struct Collision sCollisions[5] = {
     },
     [3] = {
       kind : DDP,
-      layer : LAYER_ENEMY,
+      faction : FACTION_ENEMY,
       special : 2,
       damage : 3,
       unk_04 : 0x00,
@@ -171,7 +171,7 @@ static const struct Collision sCollisions[5] = {
     },
     [4] = {
       kind : DRP,
-      layer : LAYER_ENEMY,
+      faction : FACTION_ENEMY,
       special : 2,
       damage : 0,
       unk_04 : 0xFF,

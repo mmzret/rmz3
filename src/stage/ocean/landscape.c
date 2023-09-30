@@ -126,9 +126,9 @@ NAKED static void ocean_0800cbe8(struct Coord* _ UNUSED) {
 	bl LoadBlink\n\
 _0800CC24:\n\
 	movs r0, #0xe5\n\
-	bl GetBlinkMotionState\n\
+	bl UpdateBlinkMotionState\n\
 	movs r0, #0xe6\n\
-	bl GetBlinkMotionState\n\
+	bl UpdateBlinkMotionState\n\
 	b _0800CC62\n\
 	.align 2, 0\n\
 _0800CC34: .4byte gOverworld\n\
@@ -186,13 +186,13 @@ _0800CC62:\n\
 	bl LoadBlink\n\
 _0800CCAC:\n\
 	movs r0, #0xe7\n\
-	bl GetBlinkMotionState\n\
+	bl UpdateBlinkMotionState\n\
 	movs r0, #0xe8\n\
-	bl GetBlinkMotionState\n\
+	bl UpdateBlinkMotionState\n\
 	movs r0, #0xe9\n\
-	bl GetBlinkMotionState\n\
+	bl UpdateBlinkMotionState\n\
 	movs r0, #0xea\n\
-	bl GetBlinkMotionState\n\
+	bl UpdateBlinkMotionState\n\
 	b _0800CD02\n\
 	.align 2, 0\n\
 _0800CCC8: .4byte gOverworld\n\
@@ -253,7 +253,7 @@ _0800CD02:\n\
 	strb r4, [r0]\n\
 _0800CD44:\n\
 	movs r0, #0xeb\n\
-	bl GetBlinkMotionState\n\
+	bl UpdateBlinkMotionState\n\
 	ldr r0, _0800CD84 @ =0x0002D029\n\
 	adds r1, r5, r0\n\
 	ldrb r0, [r1]\n\
@@ -333,13 +333,13 @@ _0800CDA8:\n\
 	bl LoadBlink\n\
 _0800CDF2:\n\
 	movs r0, #0xec\n\
-	bl GetBlinkMotionState\n\
+	bl UpdateBlinkMotionState\n\
 	movs r0, #0xed\n\
-	bl GetBlinkMotionState\n\
+	bl UpdateBlinkMotionState\n\
 	movs r0, #0xee\n\
-	bl GetBlinkMotionState\n\
+	bl UpdateBlinkMotionState\n\
 	movs r0, #0xef\n\
-	bl GetBlinkMotionState\n\
+	bl UpdateBlinkMotionState\n\
 	b _0800CE46\n\
 	.align 2, 0\n\
 _0800CE0C: .4byte gOverworld\n\
@@ -678,20 +678,7 @@ static const StageLayerRoutine sLayerRoutine[7] = {
 };
 // clang-format on
 
-extern const struct ScreenLayout sScreenMap1;
-INCBIN_STATIC(sScreenMap1, "data/stage/ocean/layer1.bin");  // ./tools/dumper/bin.ts ./baserom.gba 0x0833c004 0x0833c2c8 ./data/stage/ocean/layer1.bin
-
-extern const struct ScreenLayout sScreenMap2;
-INCBIN_STATIC(sScreenMap2, "data/stage/ocean/layer2.bin");  // ./tools/dumper/bin.ts ./baserom.gba 0x0833c2c8 0x0833c4cc ./data/stage/ocean/layer2.bin
-
-extern const struct ScreenLayout sScreenMap3;
-INCBIN_STATIC(sScreenMap3, "data/stage/ocean/layer3.bin");  // ./tools/dumper/bin.ts ./baserom.gba 0x0833c4cc 0x0833c6d0 ./data/stage/ocean/layer3.bin
-
-extern const tileset_ofs_t sTilesetOffset[];
-INCBIN_STATIC(sTilesetOffset, "data/stage/ocean/tileset_offset.bin");  // ./tools/dumper/bin.ts ./baserom.gba 0x0833c6d0 0x0833c8d4 ./data/stage/ocean/tileset_offset.bin
-
-extern const u16 sScreenBehavior[];
-INCBIN_STATIC(sScreenBehavior, "data/stage/ocean/screen_behavior.bin");  // ./tools/dumper/bin.ts ./baserom.gba 0x0833c8d4 0x0833ccdc ./data/stage/ocean/screen_behavior.bin
+#include "../../../data/stage/ocean/layer.h"
 
 static const s32 sOceanSeaLevels[5] = {
     0x30000, 0x2C000, 0x28000, 0x24000, 0x20000,
@@ -716,21 +703,7 @@ static const struct Coord sSeaLevelButtonCoords[4] = {
     [3] = {0x260800, 0x38000},
 };
 
-const struct Stage gOceanLandscape = {
-  id : STAGE_OCEAN,
-  fn : sStageRoutine,
-  terrainHdr : &gStageTerrains[STAGE_OCEAN],
-  maps : {&sScreenMap1, &sScreenMap2, &sScreenMap3},
-  bgIdx : {USE_BG1, USE_BG2, USE_BG3},
-  prio : {2, 0, 3},
-  screenBase : {BGMAP_BLOCK(2), BGMAP_BLOCK(4), BGMAP_BLOCK(6)},
-  scrollPower : {{0x100, 0x100}, {0x100, 0x100}, {0x100, 0x100}},
-  scroll : {{0, 0}, {0, 0}, {0, 0}},
-  tilesetOffset : sTilesetOffset,
-  bgFns : sLayerRoutine,
-  behavior : sScreenBehavior,
-  unk_78 : {0, 0},
-};
+#include "../../../data/stage/ocean/landscape.h"
 
 const struct MetatilePatch MetatilePatch_0833cda8 = {
   w : 2,

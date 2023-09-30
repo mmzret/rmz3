@@ -421,7 +421,7 @@ _080BF696:
 	strb r0, [r4, #0xe]
 _080BF6C0:
 	movs r0, #0x46
-	bl GetBlinkMotionState
+	bl UpdateBlinkMotionState
 	adds r0, r4, #0
 	bl UpdateMotionGraphic
 _080BF6CC:
@@ -603,7 +603,7 @@ _080BF81A:
 	strb r0, [r4, #0xe]
 _080BF82C:
 	movs r0, #0x47
-	bl GetBlinkMotionState
+	bl UpdateBlinkMotionState
 	adds r0, r4, #0
 	bl UpdateMotionGraphic
 	b _080BF886
@@ -615,7 +615,7 @@ _080BF83A:
 	strb r0, [r4, #0xe]
 _080BF844:
 	movs r0, #0x47
-	bl GetBlinkMotionState
+	bl UpdateBlinkMotionState
 	adds r0, r4, #0
 	bl UpdateMotionGraphic
 	ldr r0, [r4, #0x58]

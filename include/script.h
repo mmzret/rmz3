@@ -6,6 +6,8 @@
 #include "entity.h"
 #include "gba/types.h"
 
+#define SCRIPT_ENTITY_COUNT 12
+
 // vm.screenEffect
 enum ScreenEffect {
   NO_SCREEN_EFFECT,
@@ -52,7 +54,8 @@ struct ScriptEntity {
   u16 unk_0A[3];
 };
 
-struct ScriptString {
+union ScriptString {
+  u32 raw;
   s16 n;
   u8 x;
   u8 y;
@@ -60,14 +63,15 @@ struct ScriptString {
 
 // フィールドスクリプト実行VM
 struct VM {
-  u16 unk_000;
+  u8 unk_000;
+  u8 unk_001;
   bool8 active;
   u8 unk_003;
   u16 unk_004;
   u16 unk_006;
   struct Command* start;  // コマンド列の開始地点
   struct Command* pc;     // コマンド列の現在地点
-  struct ScriptEntity entities[12];
+  struct ScriptEntity entities[SCRIPT_ENTITY_COUNT];
   u32 time;  // Frame count from ClearVM
   u32 wait;  // waitコマンドで設定する待機時間
   struct Camera camera;
@@ -84,7 +88,7 @@ struct VM {
   */
   u16 emergency;
   u16 magnitude;  // 0xFFにするほど揺れが強い
-  struct ScriptString rune;
+  union ScriptString rune;
   struct VFX* indicator;  // ステージへオペレータに転送されたとき(もしくはミッション開始時に)右下に出てくる "Z x 9" や `MISSION START`などのオーバーレイ
   SoundID32 bgm;
   TextID zeroDeathTextIDs[2];  // ゼロがボス戦で死んだ時にボスが喋るメッセージのテキストID配列

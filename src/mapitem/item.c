@@ -745,7 +745,7 @@ const motion_t gMapItemMotions[9] = {
 
 static const struct Collision sCollision = {
   kind : DDP,
-  layer : LAYER_ENEMY,
+  faction : FACTION_ENEMY,
   special : 0,
   damage : 255,
   unk_04 : 0x00,

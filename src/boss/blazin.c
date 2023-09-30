@@ -18,7 +18,7 @@ const BossRoutine gBlazinRoutine = {
     [ENTITY_INIT] =      Blazin_Init,
     [ENTITY_MAIN] =      Blazin_Update,
     [ENTITY_DIE] =       Blazin_Die,
-    [ENTITY_DISAPPEAR] = deleteBoss,
+    [ENTITY_DISAPPEAR] = DeleteBoss,
     [ENTITY_EXIT] =      (BossFunc)DeleteEntity,
 };
 // clang-format on
@@ -69,7 +69,7 @@ NAKED static void Blazin_Init(struct Boss* p) {
 	ldr r1, _0803E9A4 @ =0x08361C68\n\
 	adds r0, r5, #0\n\
 	movs r2, #0x40\n\
-	bl resetBossData\n\
+	bl ResetBossBody\n\
 	ldr r1, _0803E9A8 @ =FUN_0803ff28\n\
 	adds r0, r5, #0\n\
 	adds r0, #0x74\n\
@@ -750,7 +750,7 @@ INCASM("asm/boss/blazin.inc");
 const struct Collision gBlazinCollisions[15] = {
     {
       kind : DRP,
-      layer : 1,
+      faction : FACTION_ENEMY,
       special : 2,
       damage : 0,
       unk_04 : 0xFF,
@@ -769,7 +769,7 @@ const struct Collision gBlazinCollisions[15] = {
 
     {
       kind : DDP,
-      layer : 1,
+      faction : FACTION_ENEMY,
       special : 2,
       damage : 3,
       unk_04 : 0x00,
@@ -785,7 +785,7 @@ const struct Collision gBlazinCollisions[15] = {
     },
     {
       kind : DRP,
-      layer : 1,
+      faction : FACTION_ENEMY,
       special : 2,
       damage : 0,
       unk_04 : 0xFF,
@@ -804,7 +804,7 @@ const struct Collision gBlazinCollisions[15] = {
 
     {
       kind : DDP,
-      layer : 1,
+      faction : FACTION_ENEMY,
       special : 2,
       damage : 3,
       unk_04 : 0x00,
@@ -820,7 +820,7 @@ const struct Collision gBlazinCollisions[15] = {
     },
     {
       kind : DRP,
-      layer : 1,
+      faction : FACTION_ENEMY,
       special : 2,
       damage : 0,
       unk_04 : 0xFF,
@@ -839,7 +839,7 @@ const struct Collision gBlazinCollisions[15] = {
 
     {
       kind : DDP,
-      layer : 1,
+      faction : FACTION_ENEMY,
       special : 2,
       damage : 3,
       unk_04 : 0x00,
@@ -855,7 +855,7 @@ const struct Collision gBlazinCollisions[15] = {
     },
     {
       kind : DRP,
-      layer : 1,
+      faction : FACTION_ENEMY,
       special : 2,
       damage : 0,
       unk_04 : 0xFF,
@@ -874,7 +874,7 @@ const struct Collision gBlazinCollisions[15] = {
 
     {
       kind : DDP,
-      layer : 1,
+      faction : FACTION_ENEMY,
       special : 2,
       damage : 3,
       unk_04 : 0x00,
@@ -890,7 +890,7 @@ const struct Collision gBlazinCollisions[15] = {
     },
     {
       kind : DRP,
-      layer : 1,
+      faction : FACTION_ENEMY,
       special : 2,
       damage : 0,
       unk_04 : 0xFF,
@@ -909,7 +909,7 @@ const struct Collision gBlazinCollisions[15] = {
 
     {
       kind : DDP,
-      layer : 1,
+      faction : FACTION_ENEMY,
       special : 2,
       damage : 3,
       unk_04 : 0x00,
@@ -925,7 +925,7 @@ const struct Collision gBlazinCollisions[15] = {
     },
     {
       kind : DRP,
-      layer : 1,
+      faction : FACTION_ENEMY,
       special : 2,
       damage : 0,
       unk_04 : 0xFF,
@@ -944,7 +944,7 @@ const struct Collision gBlazinCollisions[15] = {
 
     {
       kind : DDP,
-      layer : 1,
+      faction : FACTION_ENEMY,
       special : 2,
       damage : 3,
       unk_04 : 0x00,
@@ -960,7 +960,7 @@ const struct Collision gBlazinCollisions[15] = {
     },
     {
       kind : DRP,
-      layer : 1,
+      faction : FACTION_ENEMY,
       special : 2,
       damage : 0,
       unk_04 : 0xFF,
@@ -976,7 +976,7 @@ const struct Collision gBlazinCollisions[15] = {
     },
     {
       kind : DDP,
-      layer : 1,
+      faction : FACTION_ENEMY,
       special : 2,
       damage : 3,
       unk_04 : 0x00,
@@ -992,7 +992,7 @@ const struct Collision gBlazinCollisions[15] = {
     },
     {
       kind : DRP,
-      layer : 1,
+      faction : FACTION_ENEMY,
       special : 2,
       damage : 0,
       unk_04 : 0xFF,

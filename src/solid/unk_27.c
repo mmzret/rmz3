@@ -24,7 +24,7 @@ const SolidRoutine gSolid27Routine = {
 const struct Collision Collision_ARRAY_083710f4[5] = {
     {
       kind : DDP,
-      layer : 1,
+      faction : FACTION_ENEMY,
       special : 0,
       damage : 6,
       unk_04 : 0x00,
@@ -40,7 +40,7 @@ const struct Collision Collision_ARRAY_083710f4[5] = {
     },
     {
       kind : DDP,
-      layer : 1,
+      faction : FACTION_ENEMY,
       special : 0,
       damage : 6,
       unk_04 : 0x00,
@@ -56,7 +56,7 @@ const struct Collision Collision_ARRAY_083710f4[5] = {
     },
     {
       kind : DDP,
-      layer : 1,
+      faction : FACTION_ENEMY,
       special : 0,
       damage : 6,
       unk_04 : 0x00,
@@ -72,7 +72,7 @@ const struct Collision Collision_ARRAY_083710f4[5] = {
     },
     {
       kind : DDP,
-      layer : 1,
+      faction : FACTION_ENEMY,
       special : 0,
       damage : 6,
       unk_04 : 0x00,
@@ -88,7 +88,7 @@ const struct Collision Collision_ARRAY_083710f4[5] = {
     },
     {
       kind : DDP,
-      layer : 1,
+      faction : FACTION_ENEMY,
       special : 0,
       damage : 6,
       unk_04 : 0x00,

@@ -56,7 +56,7 @@ extern const BossRoutine gOmegaZeroRoutine;
 
 // --------------------------------------------
 
-void deleteBoss(struct Boss* p);
-void resetBossData(struct Boss* p, const struct Collision* collisions, s16 hp);
+void DeleteBoss(struct Boss* p);
+void ResetBossBody(struct Boss* p, const struct Collision* collisions, s16 hp);
 
 #endif  // GUARD_RMZ3_BOSS_H

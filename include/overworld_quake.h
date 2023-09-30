@@ -17,7 +17,7 @@ struct QuakeManager {
   struct Quake unk_0d0[17];
   u16 length;  // 020300f4 の有効な配列の長さ
   u16 frame;   // 揺れ始めから経過したフレーム
-  u32 power;
+  s32 power;
   u16 unk_1a4;
   u16 unk_1a6;
 };  // 424 bytes

@@ -65,7 +65,7 @@ struct Stage {
   u32 prio[3];  // BG Priority for layer
   u32 screenBase[3];
   struct Coord scrollPower[3];
-  struct Coord scroll[3];
+  struct Coord scroll[3];              // レイヤに常に加算されるスクロール値(ピクセル単位) つまりxに16を加えるとレイヤが16pxずれる(あくまでずれるのはレイヤの見た目で地形はずれない)
   const tileset_ofs_t *tilesetOffset;  // tilesetOffset[n] >> 4 が
   const StageLayerRoutine *bgFns;
   const u16 *behavior;
@@ -115,7 +115,7 @@ struct StageLayer {
   struct Coord drawPivotOffset;          // 画面の振動時に0以外になってた
   struct Coord viewportCenterPixel;      // 現在の画面中央のワールド座標(ピクセル単位)
   struct Coord prevViewportCenterPixel;  // 1フレーム?前の.viewportCenterPixel
-  struct Coord scrollPower;              // .scroll の1単位ごとのスクロール度合い
+  struct Coord scrollPower;              // ゼロが1px動く時に、画面がどれくらいスクロールするか(256で1px動くと1pxスクロール,つまり1倍, 512で1px動くと2pxスクロール,つまり2倍)
   struct Coord scroll;
   struct Coord scrollCopy;
   u32 bgIdx;  // bit4-8がbgcntのn(BGnか), そしてbit0-4 は (1 << n) したもの
@@ -388,11 +388,11 @@ extern const u8 gScreenX[3072];
 extern const struct TerrainHeader gStageTerrains[STAGE_COUNT];
 
 extern const struct Stage gStage0Landscape;
-extern const struct Stage gSpaceCraftLandscape;
+extern const struct Stage gSpacecraftLandscape;
 extern const struct Stage gVolcanoLandscape;
 extern const struct Stage gOceanLandscape;
 extern const struct Stage gRepairFactoryLandscape;
-extern const struct Stage gOldLifeSpaceLandscape;
+extern const struct Stage gOldResidentialLandscape;
 extern const struct Stage gResistanceBaseLandscape;
 extern const struct Stage gMissileFactoryLandscape;
 extern const struct Stage gTwilightDesertLandscape;
@@ -402,6 +402,9 @@ extern const struct Stage gAreaX2Landscape;
 extern const struct Stage gEnergyFacilityLandscape;
 extern const struct Stage gSnowyPlainsLandscape;
 extern const struct Stage gSunkenLibraryLandscape;
+extern const struct Stage gGiantElevatorLandscape;
+extern const struct Stage gSubArcadiaLandscape;
+extern const struct Stage gWeilLaboLandscape;
 
 void ResetLandscape(s32 stageID, struct Coord *c);
 void UpdateStageLandscape(struct Coord *c);

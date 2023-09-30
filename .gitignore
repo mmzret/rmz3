@@ -28,7 +28,8 @@ sprites/**/metasprite.inc
 sprites/**/sequence.inc
 data/tilesets/*/header.s
 graphics/**/header.s
-data/stage/**/stage.h
+data/stage/**/layer.h
+data/stage/**/landscape.h
 *.gfx
 tools/mgba
 tools/tmp

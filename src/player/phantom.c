@@ -55,8 +55,6 @@ static void onCollision(struct Body* body, struct Coord* r1 UNUSED, struct Coord
 }
 
 static void PhantomMini_Init(struct Zero* z) {
-  struct Body* body;
-
   SET_PLAYER_ROUTINE(z, ENTITY_MAIN);
   (z->s).mode[1] = sInitModes[(z->s).work[0]];
 
@@ -64,13 +62,7 @@ static void PhantomMini_Init(struct Zero* z) {
   (z->s).flags |= DISPLAY;
   InitNonAffineMotion(&z->s);
   ResetDynamicMotion(&z->s);
-  (z->s).flags |= COLLIDABLE;
-
-  body = &z->body;
-  InitBody(body, sCollisions, &(z->s).coord, 6);
-  body->parent = (struct CollidableEntity*)z;
-  body->fn = onCollision;
-
+  INIT_BODY(z, &sCollisions[0], 6, onCollision);
   (z->s).unk_coord.y = (z->s).coord.y;
   (z->s).work[3] = 0;
   PhantomMini_Update(z);
@@ -107,7 +99,7 @@ const ZeroFunc sPhantomMiniUpdates2[4] = {
 static const struct Collision sCollisions[2] = {
     [0] = {
       kind : DRP,
-      layer : 0,
+      faction : FACTION_ALLY,
       special : 1,
       damage : 0,
       unk_04 : 0xFF,
@@ -123,7 +115,7 @@ static const struct Collision sCollisions[2] = {
     },
     [1] = {
       kind : DRP,
-      layer : 0,
+      faction : FACTION_ALLY,
       special : 1,
       damage : 0,
       unk_04 : 0xFF,

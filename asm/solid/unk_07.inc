@@ -73,7 +73,7 @@ _080CC884:
 	ldr r0, _080CC8F4 @ =0x00000811
 	strh r0, [r5, #0x26]
 	adds r0, r5, #0
-	bl CreateSolid6
+	bl CreateLavaGeyserPlatform
 _080CC8D8:
 	adds r0, r5, #0
 	bl Solid7_Update
@@ -530,7 +530,7 @@ _080CCC2E:
 	ldr r0, [r0]
 	str r0, [sp]
 	adds r0, r4, #0
-	bl CreateSolid7
+	bl CreateLavaGeyser
 	movs r1, #0xe4
 	lsls r1, r1, #6
 	adds r0, r4, #0

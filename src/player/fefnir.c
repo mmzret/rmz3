@@ -36,8 +36,6 @@ void CreatePlayerFefnir(void* p, s32 x, s32 y) {
 static void onCollision(struct Body* body UNUSED, struct Coord* r1 UNUSED, struct Coord* r2 UNUSED) { return; }
 
 static void Fefnir_Init(struct Zero* z) {
-  struct Body* body;
-
   SET_PLAYER_ROUTINE(z, ENTITY_MAIN);
   (z->s).mode[1] = sInitModes[(z->s).work[0]];
 
@@ -45,13 +43,7 @@ static void Fefnir_Init(struct Zero* z) {
   (z->s).flags |= DISPLAY;
   InitNonAffineMotion(&z->s);
   ResetDynamicMotion(&z->s);
-  (z->s).flags |= COLLIDABLE;
-
-  body = &z->body;
-  InitBody(body, sCollisions, &(z->s).coord, 6);
-  body->parent = (struct CollidableEntity*)z;
-  body->fn = onCollision;
-
+  INIT_BODY(z, &sCollisions[0], 6, onCollision);
   (z->s).work[3] = 0;
   (z->s).coord.y = FUN_0800a05c((z->s).coord.x, (z->s).coord.y);
   Fefnir_Update(z);
@@ -89,7 +81,7 @@ const ZeroFunc gFefnirUpdates2[4] = {
 static const struct Collision sCollisions[3] = {
     {
       kind : DRP,
-      layer : 0,
+      faction : FACTION_ALLY,
       special : 0,
       damage : 0,
       unk_04 : 0xFF,
@@ -105,7 +97,7 @@ static const struct Collision sCollisions[3] = {
     },
     {
       kind : DDP,
-      layer : 0,
+      faction : FACTION_ALLY,
       special : 0,
       damage : 2,
       unk_04 : 0x00,
@@ -121,7 +113,7 @@ static const struct Collision sCollisions[3] = {
     },
     {
       kind : DRP,
-      layer : 0,
+      faction : FACTION_ALLY,
       special : 0,
       damage : 0,
       unk_04 : 0xFF,

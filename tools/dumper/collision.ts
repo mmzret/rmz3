@@ -7,11 +7,11 @@ import { Rect, toHex } from '../common/index.ts';
 const BASE = 0x0800_0000;
 const SIZE = 24;
 const KIND = ['DDP', 'DRP', 'DRP2'];
-const LAYER = ['LAYER_ALLY', 'LAYER_ENEMY', 'LAYER_UNK2'];
+const LAYER = ['FACTION_ALLY', 'FACTION_ENEMY', 'FACTION_UNK2'];
 
 const Collision = new Parser().endianness('little')
   .uint8('kind')
-  .uint8('layer')
+  .uint8('faction')
   .uint8('special')
   .uint8('damage')
   .uint8('unk_04')
@@ -27,7 +27,7 @@ const Collision = new Parser().endianness('little')
 
 type ParseResult = {
   kind: number;
-  layer: number;
+  faction: number;
   special: number;
   damage: number;
   unk_04: number;
@@ -78,7 +78,7 @@ const main = async () => {
     };
     console.log(`${options.index ? `[${i}] = ` : ''}{
     kind: ${KIND[result.kind]},
-    layer: ${LAYER[result.layer]},
+    faction: ${LAYER[result.faction]},
     special: ${result.special},
     damage: ${result.damage},
     unk_04: ${collision.unk_04},

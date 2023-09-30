@@ -37,7 +37,6 @@ const ZeroRoutine* const gZeroFnTable[PLAYER_ENTITY_COUNT] = {
 WIP void Zero_Init(struct Zero* z) {
 #if MODERN
   s32 i;
-  struct Body* body;
   struct Zero_b4* b4;
 
   SET_PLAYER_ROUTINE(z, ENTITY_MAIN);
@@ -50,13 +49,7 @@ WIP void Zero_Init(struct Zero* z) {
   if ((z->s).work[1] == 0) {
     (z->s).coord.y = FUN_0800a05c((z->s).coord.x, (z->s).coord.y);
   }
-  (z->s).flags |= COLLIDABLE;
-
-  body = &z->body;
-  InitBody(body, gZeroCollisions, &(z->s).coord, 16);
-  body->parent = (struct CollidableEntity*)z;
-  body->fn = onCollision;
-
+  INIT_BODY(z, gZeroCollisions, 16, onCollision);
   InitPlayerKeyMap(z);
   b4 = &z->unk_b4;
   (z->s).d.x = 0;

@@ -125,7 +125,6 @@ _080E0FFC:\n\
 
 static void MapDisk_Init(struct MapItem *p) {
   motion_t m;
-  struct Body *body;
   u8 *disks = gStageDiskManager.disk;
   const s32 diskID = (p->s).work[0] - 1;
   if (((disks[diskID >> 2] & 0x0F) >> (diskID & 3)) & 1) {
@@ -144,13 +143,7 @@ static void MapDisk_Init(struct MapItem *p) {
   SetMotion(&p->s, m);
   (p->s).flags |= DISPLAY;
   (p->s).flags |= FLIPABLE;
-  (p->s).flags |= COLLIDABLE;
-
-  body = &p->body;
-  InitBody(body, &sCollision, &(p->s).coord, 64);
-  body->parent = (struct CollidableEntity *)p;
-  body->fn = onCollision;
-
+  INIT_BODY(p, &sCollision, 64, onCollision);
   p->y = (p->s).coord.y;
   p->z = NULL;
 
@@ -511,7 +504,7 @@ _080E143E:\n\
 
 static const struct Collision sCollision = {
   kind : DDP,
-  layer : LAYER_ENEMY,
+  faction : FACTION_ENEMY,
   special : 0,
   damage : 255,
   unk_04 : 0x00,

@@ -25,7 +25,7 @@ struct SaberWave {
 const struct Collision sWeapon5Collisions[16] = {
     [0] = {
       kind : DDP,
-      layer : 0,
+      faction : FACTION_ALLY,
       special : 1,
       damage : 8,
       unk_04 : 0x01,
@@ -41,7 +41,7 @@ const struct Collision sWeapon5Collisions[16] = {
     },
     [1] = {
       kind : DRP,
-      layer : 0,
+      faction : FACTION_ALLY,
       special : 1,
       damage : 0,
       unk_04 : 0xFF,
@@ -57,7 +57,7 @@ const struct Collision sWeapon5Collisions[16] = {
     },
     [2] = {
       kind : DDP,
-      layer : 0,
+      faction : FACTION_ALLY,
       special : 1,
       damage : 8,
       unk_04 : 0x01,
@@ -73,7 +73,7 @@ const struct Collision sWeapon5Collisions[16] = {
     },
     [3] = {
       kind : DRP,
-      layer : 0,
+      faction : FACTION_ALLY,
       special : 1,
       damage : 0,
       unk_04 : 0xFF,
@@ -89,7 +89,7 @@ const struct Collision sWeapon5Collisions[16] = {
     },
     [4] = {
       kind : DDP,
-      layer : 0,
+      faction : FACTION_ALLY,
       special : 1,
       damage : 8,
       unk_04 : 0x01,
@@ -105,7 +105,7 @@ const struct Collision sWeapon5Collisions[16] = {
     },
     [5] = {
       kind : DRP,
-      layer : 0,
+      faction : FACTION_ALLY,
       special : 1,
       damage : 0,
       unk_04 : 0xFF,
@@ -121,7 +121,7 @@ const struct Collision sWeapon5Collisions[16] = {
     },
     [6] = {
       kind : DDP,
-      layer : 0,
+      faction : FACTION_ALLY,
       special : 1,
       damage : 8,
       unk_04 : 0x01,
@@ -137,7 +137,7 @@ const struct Collision sWeapon5Collisions[16] = {
     },
     [7] = {
       kind : DRP,
-      layer : 0,
+      faction : FACTION_ALLY,
       special : 1,
       damage : 0,
       unk_04 : 0xFF,
@@ -153,7 +153,7 @@ const struct Collision sWeapon5Collisions[16] = {
     },
     [8] = {
       kind : DDP,
-      layer : 0,
+      faction : FACTION_ALLY,
       special : 1,
       damage : 8,
       unk_04 : 0x01,
@@ -169,7 +169,7 @@ const struct Collision sWeapon5Collisions[16] = {
     },
     [9] = {
       kind : DRP,
-      layer : 0,
+      faction : FACTION_ALLY,
       special : 1,
       damage : 0,
       unk_04 : 0xFF,
@@ -185,7 +185,7 @@ const struct Collision sWeapon5Collisions[16] = {
     },
     [10] = {
       kind : DDP,
-      layer : 0,
+      faction : FACTION_ALLY,
       special : 1,
       damage : 8,
       unk_04 : 0x01,
@@ -201,7 +201,7 @@ const struct Collision sWeapon5Collisions[16] = {
     },
     [11] = {
       kind : DRP,
-      layer : 0,
+      faction : FACTION_ALLY,
       special : 1,
       damage : 0,
       unk_04 : 0xFF,
@@ -217,7 +217,7 @@ const struct Collision sWeapon5Collisions[16] = {
     },
     [12] = {
       kind : DDP,
-      layer : 0,
+      faction : FACTION_ALLY,
       special : 1,
       damage : 8,
       unk_04 : 0x01,
@@ -233,7 +233,7 @@ const struct Collision sWeapon5Collisions[16] = {
     },
     [13] = {
       kind : DRP,
-      layer : 0,
+      faction : FACTION_ALLY,
       special : 1,
       damage : 0,
       unk_04 : 0xFF,
@@ -249,7 +249,7 @@ const struct Collision sWeapon5Collisions[16] = {
     },
     [14] = {
       kind : DDP,
-      layer : 0,
+      faction : FACTION_ALLY,
       special : 1,
       damage : 8,
       unk_04 : 0x01,
@@ -265,7 +265,7 @@ const struct Collision sWeapon5Collisions[16] = {
     },
     [15] = {
       kind : DRP,
-      layer : 0,
+      faction : FACTION_ALLY,
       special : 1,
       damage : 0,
       unk_04 : 0xFF,

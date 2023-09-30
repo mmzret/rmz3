@@ -8,7 +8,7 @@ static const motion_t sMotions[8];
 static const struct Collision sCollisions[2] = {
     {
       kind : DDP,
-      layer : LAYER_ALLY,
+      faction : FACTION_ALLY,
       special : 1,
       damage : 10,
       unk_04 : 0x00,
@@ -23,7 +23,7 @@ static const struct Collision sCollisions[2] = {
     },
     {
       kind : DRP,
-      layer : LAYER_ALLY,
+      faction : FACTION_ALLY,
       special : 1,
       damage : 0,
       unk_04 : 0xFF,

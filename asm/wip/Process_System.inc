@@ -40,7 +40,7 @@ _080019B6:
 	ldrb r0, [r6]
 	movs r0, #0
 	strb r0, [r6]
-	bl pollKeyInput
+	bl PollKeyInput
 	movs r2, #0x80
 	lsls r2, r2, #0x13
 	ldrh r0, [r2]

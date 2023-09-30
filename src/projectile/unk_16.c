@@ -27,7 +27,7 @@ static const ProjectileFunc PTR_ARRAY_0836b350[2] = {
 static const struct Collision sCollisions[3] = {
     {
       kind : DDP,
-      layer : LAYER_ENEMY,
+      faction : FACTION_ENEMY,
       special : 0,
       damage : 2,
       unk_04 : 0x00,
@@ -43,7 +43,7 @@ static const struct Collision sCollisions[3] = {
     },
     {
       kind : DRP,
-      layer : LAYER_ENEMY,
+      faction : FACTION_ENEMY,
       special : 0,
       damage : 0,
       unk_04 : 0xFF,
@@ -59,7 +59,7 @@ static const struct Collision sCollisions[3] = {
     },
     {
       kind : DDP,
-      layer : LAYER_ENEMY,
+      faction : FACTION_ENEMY,
       special : 0,
       damage : 3,
       unk_04 : 0x00,

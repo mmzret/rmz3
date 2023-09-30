@@ -43,7 +43,7 @@ BeeServer_Init: @ 0x0804CE68
 	ldr r1, _0804CEC8 @ =0x08363258
 	adds r0, r7, #0
 	movs r2, #0x30
-	bl resetBossData
+	bl ResetBossBody
 	b _0804CED6
 	.align 2, 0
 _0804CEBC: .4byte gBossFnTable
@@ -54,7 +54,7 @@ _0804CECC:
 	ldr r1, _0804CFB8 @ =0x08363258
 	adds r0, r7, #0
 	movs r2, #0x20
-	bl resetBossData
+	bl ResetBossBody
 _0804CED6:
 	ldr r1, _0804CFBC @ =onCollision
 	adds r0, r7, #0
@@ -254,7 +254,7 @@ _0804D046:
 	adds r0, r4, #0
 	bl _call_via_r1
 	movs r0, #0x45
-	bl GetBlinkMotionState
+	bl UpdateBlinkMotionState
 _0804D078:
 	pop {r4, r5}
 	pop {r0}

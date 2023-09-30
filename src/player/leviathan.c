@@ -67,8 +67,6 @@ struct Zero* CreatePlayerLeviathan(void* p, s32 x, s32 y) {
 static void onCollision(struct Body* body UNUSED, struct Coord* r1 UNUSED, struct Coord* r2 UNUSED) { return; }
 
 static void Leviathan_Init(struct Zero* z) {
-  struct Body* body;
-
   SET_PLAYER_ROUTINE(z, ENTITY_MAIN);
   (z->s).mode[1] = sInitModes[(z->s).work[0]];
 
@@ -79,14 +77,8 @@ static void Leviathan_Init(struct Zero* z) {
   (z->s).spr.xflip = TRUE;
   (z->s).spr.oam.xflip = TRUE;
   (z->s).flags |= X_FLIP;
-  (z->s).flags |= COLLIDABLE;
-
-  body = &z->body;
-  InitBody(body, sCollisions, &(z->s).coord, 6);
-  body->parent = (struct CollidableEntity*)z;
-  body->fn = onCollision;
-
-  *(s32*)(&z->unk_27c) = (z->s).coord.x;
+  INIT_BODY(z, &sCollisions[0], 6, onCollision);
+  (z->mg).leviathan.x = (z->s).coord.x;
   (z->s).unk_coord.y = (z->s).coord.y;
   (z->s).work[3] = 0;
   (z->s).d.x = 0;
@@ -123,7 +115,7 @@ const ZeroFunc sLeviathanUpdates2[3] = {
 static const struct Collision sCollisions[3] = {
     [0] = {
       kind : DRP,
-      layer : 0,
+      faction : FACTION_ALLY,
       special : 0,
       damage : 0,
       unk_04 : 0xFF,
@@ -139,7 +131,7 @@ static const struct Collision sCollisions[3] = {
     },
     [1] = {
       kind : DDP,
-      layer : 0,
+      faction : FACTION_ALLY,
       special : 0,
       damage : 1,
       unk_04 : 0x00,
@@ -155,7 +147,7 @@ static const struct Collision sCollisions[3] = {
     },
     [2] = {
       kind : DDP,
-      layer : 0,
+      faction : FACTION_ALLY,
       special : 0,
       damage : 1,
       unk_04 : 0x00,

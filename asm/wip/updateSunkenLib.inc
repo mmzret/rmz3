@@ -28,9 +28,9 @@
 	bl LoadBlink
 _08013510:
 	movs r0, #0x94
-	bl GetBlinkMotionState
+	bl UpdateBlinkMotionState
 	movs r0, #0x95
-	bl GetBlinkMotionState
+	bl UpdateBlinkMotionState
 	b _0801354E
 	.align 2, 0
 _08013520: .4byte gOverworld
@@ -79,7 +79,7 @@ _0801354E:
 	bl LoadBlink
 _08013580:
 	movs r0, #0x99
-	bl GetBlinkMotionState
+	bl UpdateBlinkMotionState
 	b _080135B0
 	.align 2, 0
 _08013588: .4byte gOverworld
@@ -101,7 +101,7 @@ _08013594:
 	bl ClearBlink
 _080135B0:
 	movs r0, #0x96
-	bl GetBlinkMotionState
+	bl UpdateBlinkMotionState
 	ldr r2, _080135F0 @ =gOverworld
 	ldr r3, _080135F8 @ =0x0002D029
 	adds r4, r2, r3

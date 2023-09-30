@@ -115,7 +115,7 @@ INCASM("asm/solid/main_npc.inc");
 const struct Collision Collision_ARRAY_08371380[2] = {
     {
       kind : DDP,
-      layer : 2,
+      faction : FACTION_UNK2,
       special : CHATABLE,
       damage : 255,
       unk_04 : 0x00,
@@ -131,7 +131,7 @@ const struct Collision Collision_ARRAY_08371380[2] = {
     },
     {
       kind : DRP,
-      layer : 2,
+      faction : FACTION_UNK2,
       special : CHATABLE,
       damage : 255,
       unk_04 : 0xFF,
@@ -150,7 +150,7 @@ const struct Collision Collision_ARRAY_08371380[2] = {
 const struct Collision Collision_ARRAY_083713b0[2] = {
     {
       kind : DDP,
-      layer : 2,
+      faction : FACTION_UNK2,
       special : CHATABLE,
       damage : 255,
       unk_04 : 0x00,
@@ -166,7 +166,7 @@ const struct Collision Collision_ARRAY_083713b0[2] = {
     },
     {
       kind : DRP,
-      layer : 2,
+      faction : FACTION_UNK2,
       special : CHATABLE,
       damage : 255,
       unk_04 : 0xFF,
@@ -185,7 +185,7 @@ const struct Collision Collision_ARRAY_083713b0[2] = {
 const struct Collision Collision_ARRAY_083713e0[2] = {
     {
       kind : DDP,
-      layer : 2,
+      faction : FACTION_UNK2,
       special : CHATABLE,
       damage : 255,
       unk_04 : 0x00,
@@ -201,7 +201,7 @@ const struct Collision Collision_ARRAY_083713e0[2] = {
     },
     {
       kind : DRP,
-      layer : 2,
+      faction : FACTION_UNK2,
       special : CHATABLE,
       damage : 255,
       unk_04 : 0xFF,
@@ -220,7 +220,7 @@ const struct Collision Collision_ARRAY_083713e0[2] = {
 const struct Collision Collision_ARRAY_08371410[2] = {
     {
       kind : DDP,
-      layer : 2,
+      faction : FACTION_UNK2,
       special : CHATABLE,
       damage : 255,
       unk_04 : 0x00,
@@ -236,7 +236,7 @@ const struct Collision Collision_ARRAY_08371410[2] = {
     },
     {
       kind : DRP,
-      layer : 2,
+      faction : FACTION_UNK2,
       special : CHATABLE,
       damage : 255,
       unk_04 : 0xFF,

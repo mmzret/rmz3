@@ -49,8 +49,8 @@ _SKIP:
       }
     }
   }
-  GetBlinkMotionState(131);
-  GetBlinkMotionState(132);
+  UpdateBlinkMotionState(131);
+  UpdateBlinkMotionState(132);
 }
 
 static void nop_0800f9bc(struct Coord* _ UNUSED) { return; }

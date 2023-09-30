@@ -106,17 +106,11 @@ NAKED static struct Projectile *unused_0809ca34(struct Coord *c, s32 r1, u8 r2) 
 #endif
 
 static void Lemon_Init(struct Projectile *p) {
-  struct Body *body;
   InitNonAffineMotion(&p->s);
   (p->s).flags |= DISPLAY;
   (p->s).flags |= FLIPABLE;
-  (p->s).flags |= COLLIDABLE;
-
-  body = &p->body;
-  InitBody(body, sCollisions, &(p->s).coord, 0);
-  body->parent = (struct CollidableEntity *)p;
-  body->fn = NULL;
-  SetMotion(&p->s, MOTION(SM002_LEMON, 0x00));
+  INIT_BODY(p, sCollisions, 0, NULL);
+  SetMotion(&p->s, MOTION(SM002_LEMON, 0));
   (p->s).work[2] = 0xFF;
   SET_PROJECTILE_ROUTINE(p, ENTITY_MAIN);
   Lemon_Update(p);
@@ -332,7 +326,7 @@ static void Lemon_Die(struct Projectile *p) {
 static const struct Collision sCollisions[6] = {
     {
       kind : DDP,
-      layer : 1,
+      faction : FACTION_ENEMY,
       special : 0,
       damage : 2,
       unk_04 : 0x00,
@@ -348,7 +342,7 @@ static const struct Collision sCollisions[6] = {
     },
     {
       kind : DRP,
-      layer : 1,
+      faction : FACTION_ENEMY,
       special : 0,
       damage : 2,
       unk_04 : 0xFF,
@@ -367,7 +361,7 @@ static const struct Collision sCollisions[6] = {
 
     {
       kind : DDP,
-      layer : 0,
+      faction : FACTION_ALLY,
       special : 0,
       damage : 2,
       unk_04 : 0x00,
@@ -386,7 +380,7 @@ static const struct Collision sCollisions[6] = {
 
     {
       kind : DRP,
-      layer : 0,
+      faction : FACTION_ALLY,
       special : 0,
       damage : 2,
       unk_04 : 0xFF,
@@ -405,7 +399,7 @@ static const struct Collision sCollisions[6] = {
 
     {
       kind : DDP,
-      layer : 1,
+      faction : FACTION_ENEMY,
       special : 0,
       damage : 255,
       unk_04 : 0x00,
@@ -421,7 +415,7 @@ static const struct Collision sCollisions[6] = {
     },
     {
       kind : DRP,
-      layer : 1,
+      faction : FACTION_ENEMY,
       special : 0,
       damage : 255,
       unk_04 : 0xFF,

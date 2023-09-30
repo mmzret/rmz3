@@ -689,7 +689,7 @@ WIP static void LemonBullet_Update(struct Weapon *w) {
   if (((w->s).mode[1] == 0) && isBlocked(w)) {
     CreateParticle(&(w->s).coord, 6, ((w->s).flags >> 4) & 1);
     (w->s).d.x = -(w->s).d.x;
-    RNG_0202f388 = (LCG(RNG_0202f388) << 1) >> 1;  // & 0x7FFFFFFF
+    RNG_0202f388 = LCG(RNG_0202f388);
     if ((RNG_0202f388 >> 16) & 1) {
       (w->s).d.y = (w->s).d.x;
     } else {
@@ -1806,7 +1806,7 @@ const struct Collision gSemiBulletCollisions[2] = {
 const struct Collision gFullBulletCollisions[2] = {
     {
       kind : DDP,
-      layer : 0,
+      faction : FACTION_ALLY,
       special : 1,
       damage : 8,
       unk_04 : 0,
@@ -1822,7 +1822,7 @@ const struct Collision gFullBulletCollisions[2] = {
     },
     {
       kind : DRP,
-      layer : 0,
+      faction : FACTION_ALLY,
       special : 1,
       damage : 0,
       unk_04 : 0xFF,
@@ -1841,7 +1841,7 @@ const struct Collision gFullBulletCollisions[2] = {
 const struct Collision gLaserShotCollisions[2] = {
     {
       kind : DDP,
-      layer : 0,
+      faction : FACTION_ALLY,
       special : 1,
       damage : 8,
       unk_04 : 4,
@@ -1857,7 +1857,7 @@ const struct Collision gLaserShotCollisions[2] = {
     },
     {
       kind : DRP,
-      layer : 0,
+      faction : FACTION_ALLY,
       special : 1,
       damage : 0,
       unk_04 : 0xFF,
@@ -1876,7 +1876,7 @@ const struct Collision gLaserShotCollisions[2] = {
 const struct Collision gBurstShotCollisions[2] = {
     {
       kind : DDP,
-      layer : 0,
+      faction : FACTION_ALLY,
       special : 1,
       damage : 8,
       unk_04 : 6,
@@ -1892,7 +1892,7 @@ const struct Collision gBurstShotCollisions[2] = {
     },
     {
       kind : DRP,
-      layer : 0,
+      faction : FACTION_ALLY,
       special : 1,
       damage : 0,
       unk_04 : 0xFF,
@@ -1911,7 +1911,7 @@ const struct Collision gBurstShotCollisions[2] = {
 const struct Collision gBlizzardArrowCollisions[2] = {
     {
       kind : DDP,
-      layer : 0,
+      faction : FACTION_ALLY,
       special : 1,
       damage : 8,
       unk_04 : 7,
@@ -1927,7 +1927,7 @@ const struct Collision gBlizzardArrowCollisions[2] = {
     },
     {
       kind : DRP,
-      layer : 0,
+      faction : FACTION_ALLY,
       special : 1,
       damage : 0,
       unk_04 : 0xFF,
@@ -1946,7 +1946,7 @@ const struct Collision gBlizzardArrowCollisions[2] = {
 const struct Collision Hitbox_ARRAY_0835efc4[2] = {
     {
       kind : DDP,
-      layer : 0,
+      faction : FACTION_ALLY,
       special : 1,
       damage : 8,
       unk_04 : 0,
@@ -1962,7 +1962,7 @@ const struct Collision Hitbox_ARRAY_0835efc4[2] = {
     },
     {
       kind : DRP,
-      layer : 0,
+      faction : FACTION_ALLY,
       special : 1,
       damage : 0,
       unk_04 : 0xFF,

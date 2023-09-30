@@ -452,7 +452,7 @@ const SolidFunc sSolid18Updates2[5] = {
 const struct Collision sSolid18Collisions[2] = {
     [0] = {
       kind : DDP,
-      layer : 0,
+      faction : FACTION_ALLY,
       special : 0,
       damage : 16,
       unk_04 : 0x01,
@@ -468,7 +468,7 @@ const struct Collision sSolid18Collisions[2] = {
     },
     [1] = {
       kind : DDP,
-      layer : 1,
+      faction : FACTION_ENEMY,
       special : 0,
       damage : 255,
       unk_04 : 0x00,

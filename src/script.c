@@ -21,14 +21,14 @@ static void tryDeleteIndicator(struct VM *vm);
 static void tryForceZeroXCoord(struct VM *vm);
 static void NoEntryZero(struct VM *vm);
 
-WIP void ClearVM(struct VM *vm, u32 stageID) {
-#if MODERN
+void ClearVM(struct VM *vm, u32 stageID) {
   s32 i;
 
-  vm->unk_000 = stageID & 0xFF;
+  vm->unk_000 = stageID;
+  vm->unk_001 = 0;
   vm->unk_003 = vm->unk_004 = 0;
 
-  for (i = 0; i < ARRAY_COUNT(vm->entities); i++) {
+  for (i = 0; i < SCRIPT_ENTITY_COUNT; i++) {
     vm->entities[i].entity = NULL;
   }
 
@@ -39,19 +39,16 @@ WIP void ClearVM(struct VM *vm, u32 stageID) {
   vm->unk_14a = 0;
   vm->emergency = 0;
   vm->magnitude = 0;
-  *(u32 *)&vm->rune = 0x0;
+  vm->rune.raw = 0;
   vm->indicator = NULL;
   vm->bgm = MUS_NONE;
   vm->zeroDeathTextIDs[0] = vm->zeroDeathTextIDs[1] = 0xFFFF;
   (vm->forceCoord).x = (vm->forceCoord).y = -1;
-  vm->active = 0;
 
+  gStageRun.vm.active = 0;
   PALETTE16(0) = RGB_BLACK;
   gPaletteManager.filter[0] = gPaletteManager.filter[1] = gPaletteManager.filter[2] = 0x00;
-  stopAllMusics();
-#else
-  INCCODE("asm/wip/ClearVM.inc");
-#endif
+  StopAllMusics();
 }
 
 void FUN_08021b88(struct VM *_ UNUSED) {
@@ -64,7 +61,7 @@ void FUN_08021b88(struct VM *_ UNUSED) {
   wMOSAIC = 0;
   PALETTE16(0) = RGB_BLACK;
   gVideoRegBuffer.dispcnt &= ~(DISPCNT_BG1_ON | DISPCNT_BG2_ON | DISPCNT_BG3_ON | DISPCNT_OBJ_ON | DISPCNT_WIN0_ON);
-  stopAllMusics();
+  StopAllMusics();
 }
 
 void SetScript(struct VM *vm, const struct Command *script) {
@@ -543,37 +540,13 @@ _08022170:\n\
  .syntax divided\n");
 }
 
-NAKED static void writeRune(struct VM *vm) {
-  asm(".syntax unified\n\
-	push {r4, lr}\n\
-	movs r1, #0xa8\n\
-	lsls r1, r1, #1\n\
-	adds r0, r0, r1\n\
-	ldr r4, [r0]\n\
-	cmp r4, #0\n\
-	beq _080221A2\n\
-	asrs r1, r4, #0x10\n\
-	lsls r1, r1, #0x18\n\
-	lsrs r1, r1, #0x18\n\
-	lsrs r2, r4, #0x18\n\
-	ldr r3, _080221A8 @ =StringOfsTable\n\
-	ldr r0, _080221AC @ =0x0000FFFF\n\
-	ands r4, r0\n\
-	lsls r0, r4, #1\n\
-	adds r0, r0, r3\n\
-	ldrh r0, [r0]\n\
-	ldr r3, _080221B0 @ =gStringData\n\
-	adds r0, r0, r3\n\
-	bl PrintString\n\
-_080221A2:\n\
-	pop {r4}\n\
-	pop {r0}\n\
-	bx r0\n\
-	.align 2, 0\n\
-_080221A8: .4byte StringOfsTable\n\
-_080221AC: .4byte 0x0000FFFF\n\
-_080221B0: .4byte gStringData\n\
- .syntax divided\n");
+static void writeRune(struct VM *vm) {
+  const s32 rune = vm->rune.raw;
+  if (rune != 0) {
+    u8 x = rune >> 16;
+    u8 y = rune >> 24;
+    PrintString(STRING(rune & 0xFFFF), x, y);
+  }
 }
 
 static void tryDeleteIndicator(struct VM *vm) {
@@ -699,62 +672,20 @@ _08022320: .4byte 0x00000402\n\
  .syntax divided\n");
 }
 
-NAKED static void quakeScreen(struct VM *vm) {
-  asm(".syntax unified\n\
-	push {lr}\n\
-	sub sp, #8\n\
-	movs r1, #0xa7\n\
-	lsls r1, r1, #1\n\
-	adds r0, r0, r1\n\
-	ldrh r3, [r0]\n\
-	cmp r3, #0\n\
-	beq _0802237E\n\
-	ldr r2, _08022384 @ =RNG_0202f388\n\
-	ldr r1, [r2]\n\
-	ldr r0, _08022388 @ =0x000343FD\n\
-	muls r0, r1, r0\n\
-	ldr r1, _0802238C @ =0x00269EC3\n\
-	adds r0, r0, r1\n\
-	lsls r0, r0, #1\n\
-	lsrs r1, r0, #1\n\
-	str r1, [r2]\n\
-	lsrs r1, r0, #0x11\n\
-	movs r0, #0xf\n\
-	ands r1, r0\n\
-	movs r0, #0xff\n\
-	ands r0, r3\n\
-	cmp r1, r0\n\
-	bgt _0802235C\n\
-	adds r0, r1, #0\n\
-	ldr r1, _08022390 @ =gStageRun+288\n\
-	bl AppendQuake\n\
-_0802235C:\n\
-	ldr r1, _08022394 @ =gStageRun+232\n\
-	movs r0, #0x18\n\
-	ldrsb r0, [r1, r0]\n\
-	cmp r0, #0\n\
-	bne _0802237E\n\
-	adds r0, r1, #0\n\
-	adds r0, #0x30\n\
-	mov r1, sp\n\
-	bl CalcQuake\n\
-	ldr r1, _08022398 @ =gVideoRegBuffer+16\n\
-	ldr r0, [sp]\n\
-	asrs r0, r0, #8\n\
-	strh r0, [r1]\n\
-	ldr r0, [sp, #4]\n\
-	asrs r0, r0, #8\n\
-	strh r0, [r1, #2]\n\
-_0802237E:\n\
-	add sp, #8\n\
-	pop {r0}\n\
-	bx r0\n\
-	.align 2, 0\n\
-_08022384: .4byte RNG_0202f388\n\
-_08022388: .4byte 0x000343FD\n\
-_0802238C: .4byte 0x00269EC3\n\
-_08022390: .4byte gStageRun+288\n\
-_08022394: .4byte gStageRun+232\n\
-_08022398: .4byte gVideoRegBuffer+16\n\
-   .syntax divided\n");
+static void quakeScreen(struct VM *vm) {
+  struct Coord c;
+  s32 rng;
+
+  if (vm->magnitude != 0) {
+    RNG_0202f388 = LCG(RNG_0202f388);
+    rng = (RNG_0202f388 >> 16) & 0xF;
+    if (rng <= (vm->magnitude & 0xFF)) {
+      AppendQuake(rng, &gStageRun.vm.camera.viewport);
+    }
+    if ((&gStageRun.vm.camera)->mode == 0) {
+      CalcQuake(&(&gStageRun.vm.camera)->target, &c);
+      ((struct BgOfs *)gVideoRegBuffer.bgofs[1])->x = c.x >> 8;
+      ((struct BgOfs *)gVideoRegBuffer.bgofs[1])->y = c.y >> 8;
+    }
+  }
 }

@@ -186,7 +186,7 @@ Blizzack_Init: @ 0x08059AA4
 	ldr r1, _08059CAC @ =0x08364BB0
 	adds r0, r7, #0
 	movs r2, #0x40
-	bl resetBossData
+	bl ResetBossBody
 	adds r2, r7, #0
 	adds r2, #0x49
 	ldrb r1, [r2]

@@ -68,7 +68,7 @@ const SolidFunc PTR_ARRAY_0836fe08[2] = {
 const struct Collision Collision_ARRAY_0836fe10[3] = {
     {
       kind : DDP,
-      layer : 1,
+      faction : FACTION_ENEMY,
       special : 0,
       damage : 4,
       unk_04 : 0x00,
@@ -84,7 +84,7 @@ const struct Collision Collision_ARRAY_0836fe10[3] = {
     },
     {
       kind : DDP,
-      layer : 1,
+      faction : FACTION_ENEMY,
       special : 0,
       damage : 255,
       unk_04 : 0x00,
@@ -100,7 +100,7 @@ const struct Collision Collision_ARRAY_0836fe10[3] = {
     },
     {
       kind : DDP,
-      layer : 1,
+      faction : FACTION_ENEMY,
       special : 0,
       damage : 4,
       unk_04 : 0x00,

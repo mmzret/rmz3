@@ -3467,7 +3467,7 @@ _080D339C:
 	adds r0, r7, #0
 	bl UpdateMotionGraphic
 	movs r0, #0xf8
-	bl GetBlinkMotionState
+	bl UpdateBlinkMotionState
 	lsls r0, r0, #0x18
 	lsrs r0, r0, #0x18
 	cmp r0, #3
@@ -3496,7 +3496,7 @@ _080D33DA:
 	adds r0, r7, #0
 	bl UpdateMotionGraphic
 	movs r0, #0xf9
-	bl GetBlinkMotionState
+	bl UpdateBlinkMotionState
 	lsls r0, r0, #0x18
 	lsrs r0, r0, #0x18
 	cmp r0, #4
@@ -3521,7 +3521,7 @@ _080D3412:
 	adds r0, r7, #0
 	bl UpdateMotionGraphic
 	movs r0, #0xfa
-	bl GetBlinkMotionState
+	bl UpdateBlinkMotionState
 	lsls r0, r0, #0x18
 	lsrs r0, r0, #0x18
 	cmp r0, #3
@@ -3692,7 +3692,7 @@ _080D3568: .4byte 0x08370DE8
 _080D356C:
 	ldrb r0, [r7, #0x11]
 	adds r0, #0xfb
-	bl GetBlinkMotionState
+	bl UpdateBlinkMotionState
 	lsls r0, r0, #0x18
 	lsrs r0, r0, #0x18
 	cmp r0, #3
@@ -9221,10 +9221,10 @@ _080D6254:
 _080D627A:
 	movs r0, #0x8a
 	lsls r0, r0, #1
-	bl GetBlinkMotionState
+	bl UpdateBlinkMotionState
 	movs r0, #0x8b
 	lsls r0, r0, #1
-	bl GetBlinkMotionState
+	bl UpdateBlinkMotionState
 	ldr r0, [r7, #0x18]
 	ldrb r1, [r0, #9]
 	movs r0, #4
@@ -9250,11 +9250,11 @@ _080D62B4:
 	movs r5, #0x8a
 	lsls r5, r5, #1
 	adds r0, r5, #0
-	bl GetBlinkMotionState
+	bl UpdateBlinkMotionState
 	movs r4, #0x8b
 	lsls r4, r4, #1
 	adds r0, r4, #0
-	bl GetBlinkMotionState
+	bl UpdateBlinkMotionState
 	lsls r0, r0, #0x18
 	lsrs r0, r0, #0x18
 	cmp r0, #4
@@ -9289,10 +9289,10 @@ _080D6302:
 	movs r5, #0x88
 	lsls r5, r5, #1
 	adds r0, r5, #0
-	bl GetBlinkMotionState
+	bl UpdateBlinkMotionState
 	ldr r4, _080D6334 @ =0x00000117
 	adds r0, r4, #0
-	bl GetBlinkMotionState
+	bl UpdateBlinkMotionState
 	lsls r0, r0, #0x18
 	lsrs r0, r0, #0x18
 	cmp r0, #3
@@ -9317,9 +9317,9 @@ _080D6338:
 	movs r1, #0xe0
 	bl LoadBlink
 	adds r0, r5, #0
-	bl GetBlinkMotionState
+	bl UpdateBlinkMotionState
 	adds r0, r4, #0
-	bl GetBlinkMotionState
+	bl UpdateBlinkMotionState
 	adds r0, r5, #0
 	bl ClearBlink
 	adds r0, r4, #0
