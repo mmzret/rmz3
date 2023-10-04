@@ -319,7 +319,7 @@ static bool8 CheckMissionFail(struct StageRun* p) {
   if ((gStageRun.missionStatus & MISSION_STAY) == 0) {
     if (gStageRun.missionStatus & MISSION_FAIL) {
       gCollisionManager.disabled |= (1 << 7);
-      gHUD.timeLeft = 0;
+      gHUD.timeLeft = NULL;
       c = (p->vm).start;
       if ((c != Script_MissionFail) && (c != Script_MissionFail2)) {
         if (gStageRun.vm.screenEffect != NO_SCREEN_EFFECT) {

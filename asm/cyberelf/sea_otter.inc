@@ -92,7 +92,7 @@ SeaOtterElf_Init: @ 0x080E4628
 	orrs r0, r1
 	strb r0, [r7, #0xa]
 	movs r0, #1
-	bl createElfAction
+	bl GetElfMotion
 	adds r1, r0, #0
 	lsls r1, r1, #0x10
 	lsrs r1, r1, #0x10
@@ -627,7 +627,7 @@ _080E4A52:
 	b _080E4A82
 _080E4A60:
 	adds r0, r2, #0
-	bl FUN_080e1b10
+	bl CheckPlayerStandStill
 	lsls r0, r0, #0x18
 	cmp r0, #0
 	beq _080E4A82
@@ -663,7 +663,7 @@ _080E4A9C:
 	cmp r0, #1
 	bhi _080E4AAE
 	adds r0, r2, #0
-	bl FUN_080e1b10
+	bl CheckPlayerStandStill
 	lsls r0, r0, #0x18
 	cmp r0, #0
 	bne _080E4AB6
@@ -720,7 +720,7 @@ _080E4B00:
 	cmp r0, #1
 	bhi _080E4B12
 	adds r0, r2, #0
-	bl FUN_080e1b10
+	bl CheckPlayerStandStill
 	lsls r0, r0, #0x18
 	cmp r0, #0
 	bne _080E4B26

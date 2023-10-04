@@ -37,7 +37,7 @@ _080E3A98:
 	bhi _080E3AB0
 	movs r0, #1
 _080E3A9E:
-	bl createElfAction
+	bl GetElfMotion
 	adds r1, r0, #0
 	lsls r1, r1, #0x10
 	lsrs r1, r1, #0x10
@@ -46,7 +46,7 @@ _080E3A9E:
 	b _080E3AC2
 _080E3AB0:
 	movs r0, #2
-	bl createElfAction
+	bl GetElfMotion
 	adds r1, r0, #0
 	lsls r1, r1, #0x10
 	lsrs r1, r1, #0x10

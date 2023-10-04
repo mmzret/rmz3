@@ -41,7 +41,7 @@ struct Enemy {
     u8 raw[16];
     struct PantheonProps pantheon;
     struct GyroCannonProps gyroCannon;
-    struct ShrimporinProps shrimporin;
+    struct ShrimporinProps shrimpolin;
     struct FlopperProps flopper;
   } props;
 };  // 196 bytes

@@ -372,13 +372,13 @@
     },
     {
       "id": 95,
-      "name": "Saber 95",
-      "path": "weapon/saber_95"
+      "name": "Walk Saber",
+      "path": "weapon/saber_walk"
     },
     {
       "id": 96,
-      "name": "Saber 96",
-      "path": "weapon/saber_96"
+      "name": "Dash Saber",
+      "path": "weapon/saber_dash"
     },
     {
       "id": 97,
@@ -818,6 +818,531 @@
   ],
   "prop": [
     {
+      "id": 80,
+      "name": "Unk 80",
+      "path": "prop/80"
+    },
+    {
+      "id": 81,
+      "name": "Mother Elf(81)",
+      "path": "prop/mother_elf/81"
+    },
+    {
+      "id": 82,
+      "name": "Item on Elf Menu",
+      "path": "prop/menu/elf_menu"
+    },
+    {
+      "id": 83,
+      "name": "Icon on Elf Menu",
+      "path": "prop/menu/elf_menu_icon"
+    },
+    {
+      "id": 84,
+      "name": "LocomoIF",
+      "path": "prop/locomo_if/body"
+    },
+    {
+      "id": 85,
+      "name": "Platform on LocomoIF Battle",
+      "path": "prop/locomo_if/platform"
+    },
+    {
+      "id": 86,
+      "name": "LocomoIF's flame",
+      "path": "prop/locomo_if/flame"
+    },
+    {
+      "id": 87,
+      "name": "Chill made by LocomoIF",
+      "path": "prop/locomo_if/chill"
+    },
+    {
+      "id": 88,
+      "name": "Ice made by LocomoIF",
+      "path": "prop/locomo_if/ice"
+    },
+    {
+      "id": 89,
+      "name": "Glacierle's hand",
+      "path": "prop/glacierle/hand"
+    },
+    {
+      "id": 90,
+      "name": "Icicle",
+      "path": "prop/glacierle/icicle"
+    },
+    {
+      "id": 91,
+      "name": "Copy X's Fire shot",
+      "path": "prop/copy_x/fire_shot"
+    },
+    {
+      "id": 92,
+      "name": "Copy X's Elec/Ice shot",
+      "path": "prop/copy_x/elec_shot"
+    },
+    {
+      "id": 93,
+      "name": "Copy X's Normal shot",
+      "path": "prop/copy_x/normal_shot"
+    },
+    {
+      "id": 94,
+      "name": "Spark from Copy X sliding",
+      "path": "prop/copy_x/sliding_spark"
+    },
+    {
+      "id": 95,
+      "name": "Copy X's Charge Effect",
+      "path": "prop/copy_x/charge_effect"
+    },
+    {
+      "id": 96,
+      "name": "Copy X's Reflect Laser",
+      "path": "prop/copy_x/reflect_laser"
+    },
+    {
+      "id": 97,
+      "name": "Copy X Unk(97)",
+      "path": "prop/copy_x/97"
+    },
+    {
+      "id": 98,
+      "name": "Ice made by Blizzack",
+      "path": "prop/blizzack/ice"
+    },
+    {
+      "id": 99,
+      "name": "Blizzack chill",
+      "path": "prop/blizzack/chill"
+    },
+    {
+      "id": 100,
+      "name": "Blizzack shoulder",
+      "path": "prop/blizzack/shoulder"
+    },
+    {
+      "id": 101,
+      "name": "Omega White's sword",
+      "path": "prop/omega_white/sword"
+    },
+    {
+      "id": 102,
+      "name": "Eye Cannon",
+      "path": "prop/enemy/eye_cannon"
+    },
+    {
+      "id": 103,
+      "name": "Gallisni",
+      "path": "prop/enemy/gallisni"
+    },
+    {
+      "id": 104,
+      "name": "Capsule Cannon",
+      "path": "prop/enemy/capsule_cannon"
+    },
+    {
+      "id": 105,
+      "name": "Pantheon Bomber",
+      "path": "prop/enemy/pantheon_bomber"
+    },
+    {
+      "id": 106,
+      "name": "Hanumachine's Various Object",
+      "path": "prop/hanumachine_obj"
+    },
+    {
+      "id": 107,
+      "name": "Mothjiro",
+      "path": "prop/enemy/mothjiro"
+    },
+    {
+      "id": 108,
+      "name": "Platform on Sub Arcadia",
+      "path": "prop/sub_arcadia_platform"
+    },
+    {
+      "id": 109,
+      "name": "Pantheon Base",
+      "path": "prop/enemy/pantheon_base"
+    },
+    {
+      "id": 110,
+      "name": "Carrybee G",
+      "path": "prop/enemy/carrybee_g"
+    },
+    {
+      "id": 111,
+      "name": "Rocket(ミサイル弾)",
+      "path": "prop/rocket"
+    },
+    {
+      "id": 112,
+      "name": "Anatre Cube",
+      "path": "prop/anatre_cube"
+    },
+    {
+      "id": 113,
+      "name": "Generator Cannon",
+      "path": "prop/enemy/generator_cannon"
+    },
+    {
+      "id": 114,
+      "name": "Keaton",
+      "path": "prop/enemy/keaton"
+    },
+    {
+      "id": 115,
+      "name": "Resistance Base Elevator",
+      "path": "prop/resistance_base/elevator/default"
+    },
+    {
+      "id": 116,
+      "name": "Deathlock",
+      "path": "prop/enemy/deathlock"
+    },
+    {
+      "id": 117,
+      "name": "Claveker",
+      "path": "prop/enemy/claveker"
+    },
+    {
+      "id": 118,
+      "name": "Lever Switch(Red)",
+      "path": "prop/lever_switch/red"
+    },
+    {
+      "id": 119,
+      "name": "Seimeran",
+      "path": "prop/enemy/seimeran"
+    },
+    {
+      "id": 120,
+      "name": "Door 2D (Gray, Horizontal)",
+      "path": "prop/door_2d/gray/horizontal"
+    },
+    {
+      "id": 121,
+      "name": "Turtloid S",
+      "path": "prop/enemy/turtloid_s"
+    },
+    {
+      "id": 122,
+      "name": "Door 2D (Gray, Vertical)",
+      "path": "prop/door_2d/gray/vertical"
+    },
+    {
+      "id": 123,
+      "name": "Teleportal",
+      "path": "prop/teleportal"
+    },
+    {
+      "id": 124,
+      "name": "Platform on Area X2",
+      "path": "prop/area_x2_platform"
+    },
+    {
+      "id": 125,
+      "name": "Platform on Weil Labo",
+      "path": "prop/weil_labo_platform"
+    },
+    {
+      "id": 126,
+      "name": "Petatria",
+      "path": "prop/enemy/petatria"
+    },
+    {
+      "id": 127,
+      "name": "Secret Disk (Disabled)",
+      "path": "prop/disabled_disk"
+    },
+    {
+      "id": 128,
+      "name": "Unk 128",
+      "path": "prop/128"
+    },
+    {
+      "id": 129,
+      "name": "Subtank(129)",
+      "path": "prop/subtank2"
+    },
+    {
+      "id": 130,
+      "name": "Mob on Prologue",
+      "path": "prop/prologue/mob"
+    },
+    {
+      "id": 131,
+      "name": "Mob on Prologue Cutscene",
+      "path": "prop/prologue/cutscene_mob"
+    },
+    {
+      "id": 132,
+      "name": "Zero on Prologue Cutscene",
+      "path": "prop/prologue/cutscene_zero"
+    },
+    {
+      "id": 133,
+      "name": "Ciel on Prologue Cutscene",
+      "path": "prop/prologue/cutscene_ciel"
+    },
+    {
+      "id": 134,
+      "name": "Ninja Star(手裏剣)",
+      "path": "prop/phantom/ninja_star"
+    },
+    {
+      "id": 135,
+      "name": "Unk 135",
+      "path": "prop/phantom/135"
+    },
+    {
+      "id": 136,
+      "name": "Makibishi",
+      "path": "prop/phantom/makibishi"
+    },
+    {
+      "id": 137,
+      "name": "Resistance Base Elevator (Wood)",
+      "path": "prop/resistance_base/elevator/wood"
+    },
+    {
+      "id": 138,
+      "name": "Resistance Base Elevator (X-Style)",
+      "path": "prop/resistance_base/elevator/mmx"
+    },
+    {
+      "id": 139,
+      "name": "Button at Energy Facility",
+      "path": "prop/energy_facility_btn"
+    },
+    {
+      "id": 140,
+      "name": "Reistance Mob",
+      "path": "prop/resistance/mob"
+    },
+    {
+      "id": 142,
+      "name": "Shotloid",
+      "path": "prop/enemy/shotloid"
+    },
+    {
+      "id": 144,
+      "name": "Ciel Computer 0",
+      "path": "prop/resistance_base/ciel_comp/0"
+    },
+    {
+      "id": 145,
+      "name": "Ciel Computer 1",
+      "path": "prop/resistance_base/ciel_comp/1"
+    },
+    {
+      "id": 146,
+      "name": "Ciel Computer 2",
+      "path": "prop/resistance_base/ciel_comp/2"
+    },
+    {
+      "id": 147,
+      "name": "Ciel Computer 3",
+      "path": "prop/resistance_base/ciel_comp/3"
+    },
+    {
+      "id": 148,
+      "name": "Ciel Computer 4",
+      "path": "prop/resistance_base/ciel_comp/4"
+    },
+    {
+      "id": 149,
+      "name": "Megaman Logo",
+      "path": "prop/logo/megaman"
+    },
+    {
+      "id": 150,
+      "name": "Z Logo",
+      "path": "prop/logo/z"
+    },
+    {
+      "id": 151,
+      "name": "Platform on Missile Factory",
+      "path": "prop/missile_platform"
+    },
+    {
+      "id": 152,
+      "name": "Mother Elf(152)",
+      "path": "prop/mother_elf/152"
+    },
+    {
+      "id": 153,
+      "name": "Volcano Coffin",
+      "path": "prop/volcano/coffin"
+    },
+    {
+      "id": 154,
+      "name": "Giant Elevator Pier",
+      "path": "prop/giant_elevator_pier"
+    },
+    {
+      "id": 155,
+      "name": "Giant Elevator Platform",
+      "path": "prop/giant_elevator_platform"
+    },
+    {
+      "id": 156,
+      "name": "Unk 156",
+      "path": "prop/156"
+    },
+    {
+      "id": 157,
+      "name": "Smoke(157)",
+      "path": "prop/smoke_157"
+    },
+    {
+      "id": 158,
+      "name": "Zero icon",
+      "path": "prop/minigame/zero"
+    },
+    {
+      "id": 159,
+      "name": "Copy X icon",
+      "path": "prop/minigame/copy_x"
+    },
+    {
+      "id": 160,
+      "name": "Phantom icon",
+      "path": "prop/minigame/phantom/icon"
+    },
+    {
+      "id": 161,
+      "name": "Harpuia icon",
+      "path": "prop/minigame/harpuia"
+    },
+    {
+      "id": 162,
+      "name": "Painting (Megaman.EXE)",
+      "path": "prop/resistance_base/painting/mmbn"
+    },
+    {
+      "id": 163,
+      "name": "Graffiti (Zero part1)",
+      "path": "prop/resistance_base/graffiti/zero1"
+    },
+    {
+      "id": 164,
+      "name": "Graffiti (Ciel)",
+      "path": "prop/resistance_base/graffiti/ciel"
+    },
+    {
+      "id": 165,
+      "name": "Graffiti (Zero part2)",
+      "path": "prop/resistance_base/graffiti/zero2"
+    },
+    {
+      "id": 166,
+      "name": "Painting (Ciel)",
+      "path": "prop/resistance_base/painting/ciel"
+    },
+    {
+      "id": 167,
+      "name": "Life Energy",
+      "path": "prop/life_energy/default"
+    },
+    {
+      "id": 168,
+      "name": "Life Energy(X-Style)",
+      "path": "prop/life_energy/x"
+    },
+    {
+      "id": 169,
+      "name": "Life Energy(Tank)",
+      "path": "prop/life_energy/tank"
+    },
+    {
+      "id": 170,
+      "name": "E-Crystal",
+      "path": "prop/ecrystal/default"
+    },
+    {
+      "id": 171,
+      "name": "E-Crystal(Ball)",
+      "path": "prop/ecrystal/ball"
+    },
+    {
+      "id": 172,
+      "name": "E-Crystal(Green)",
+      "path": "prop/ecrystal/green"
+    },
+    {
+      "id": 173,
+      "name": "1UP",
+      "path": "prop/exlife/default"
+    },
+    {
+      "id": 174,
+      "name": "1UP(Blue)",
+      "path": "prop/exlife/blue"
+    },
+    {
+      "id": 175,
+      "name": "1UP(Green)",
+      "path": "prop/exlife/green"
+    },
+    {
+      "id": 176,
+      "name": "Secret Disk in Result",
+      "path": "prop/result_disk/default"
+    },
+    {
+      "id": 177,
+      "name": "Secret Disk(Blue) in Result",
+      "path": "prop/result_disk/blue"
+    },
+    {
+      "id": 178,
+      "name": "Secret Disk(Red) in Result",
+      "path": "prop/result_disk/red"
+    },
+    {
+      "id": 179,
+      "name": "Unk 179",
+      "path": "prop/179"
+    },
+    {
+      "id": 180,
+      "name": "Childre Ship",
+      "path": "prop/ocean/childre_ship"
+    },
+    {
+      "id": 181,
+      "name": "Sea Level Button",
+      "path": "prop/ocean/sea_level_button"
+    },
+    {
+      "id": 182,
+      "name": "Unk 182",
+      "path": "prop/ocean/182"
+    },
+    {
+      "id": 183,
+      "name": "Sonic Wave from Childre ship",
+      "path": "prop/ocean/childre_ship_sonic_wave"
+    },
+    {
+      "id": 184,
+      "name": "X",
+      "path": "prop/x"
+    },
+    {
+      "id": 185,
+      "name": "Floating Rock in Omega ZX Battle",
+      "path": "prop/omega_zx_floating_rock"
+    },
+    {
+      "id": 186,
+      "name": "Unk 186",
+      "path": "prop/186"
+    },
+    {
       "id": 187,
       "name": "Alouette(Resistance)",
       "path": "prop/resistance/alouette"
@@ -934,13 +1459,13 @@
     },
     {
       "id": 210,
-      "name": "Lever Switch",
-      "path": "prop/lever_switch"
+      "name": "Lever Switch(Yellow)",
+      "path": "prop/lever_switch/yellow"
     },
     {
       "id": 211,
       "name": "Menu Border",
-      "path": "prop/menu_border"
+      "path": "prop/menu/border"
     },
     {
       "id": 212,
@@ -1010,22 +1535,22 @@
     {
       "id": 225,
       "name": "Omega White",
-      "path": "prop/omega_white"
+      "path": "prop/omega_white/body"
     },
     {
       "id": 226,
       "name": "Crashed Container(226)",
-      "path": "prop/container/226"
+      "path": "prop/container/crashed"
     },
     {
       "id": 227,
       "name": "Crashed Container(227)",
-      "path": "prop/container/227"
+      "path": "prop/container/crashed"
     },
     {
       "id": 228,
       "name": "Crashed Container(228)",
-      "path": "prop/container/228"
+      "path": "prop/container/crashed"
     },
     {
       "id": 229,

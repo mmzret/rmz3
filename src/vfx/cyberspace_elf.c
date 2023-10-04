@@ -1,11 +1,10 @@
+#include "cyberelf.h"
 #include "global.h"
 #include "vfx.h"
 
 /*
   ゼロがサイバー空間に入った時にゼロの周りを飛ぶエルフ
 */
-
-s32 createElfAction(u8 category);
 
 static void CyberSpaceElf_Init(struct VFX *vfx);
 void CyberSpaceElf_Update(struct VFX *vfx);
@@ -41,7 +40,7 @@ WIP static void CyberSpaceElf_Init(struct VFX *vfx) {
   ResetDynamicMotion(&vfx->s);
   (vfx->s).flags |= DISPLAY;
   (vfx->s).flags |= FLIPABLE;
-  SetMotion(&vfx->s, createElfAction((vfx->s).work[0]));
+  SetMotion(&vfx->s, GetElfMotion((vfx->s).work[0]));
   {
     const bool8 xflip = FALSE;
     (vfx->s).flags &= ~X_FLIP;

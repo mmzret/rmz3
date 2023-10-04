@@ -39,7 +39,7 @@ void ClearZeroStatus(struct ZeroStatus *p) {
   (p->asset).fusions = 0;
   p->maxHP = 64;
   p->dying = FALSE;
-  p->menuZeroColor = BODY_CHIP_NONE;
+  p->menuZeroColor = MZC_NORMAL;
 }
 
 void ClearZeroStatusHard(struct ZeroStatus *p) {
@@ -74,7 +74,7 @@ void ClearZeroStatusHard(struct ZeroStatus *p) {
   (p->asset).fusions = 0;
   p->maxHP = 64;
   p->dying = FALSE;
-  p->menuZeroColor = 1;
+  p->menuZeroColor = MZC_HARD;
 }
 
 void ClearZeroStatusUltimate(struct ZeroStatus *p) {
@@ -109,7 +109,7 @@ void ClearZeroStatusUltimate(struct ZeroStatus *p) {
   (p->asset).fusions = 0;
   p->maxHP = 64;
   p->dying = FALSE;
-  p->menuZeroColor = 2;
+  p->menuZeroColor = MZC_ULTIMATE;
 }
 
 void FUN_080321d4(struct ZeroStatus *p) {
@@ -584,10 +584,10 @@ WIP bool8 IsElfUsed(struct Zero *z, cyberelf_t elfID) {
 u8 GetZeroColor(struct Zero *z) {
   struct Zero_b4 *b4 = &(z->unk_b4);
   u8 c = (b4->status).menuZeroColor;
-  if (c == 2) {
+  if (c == MZC_ULTIMATE) {
     return BODY_CHIP_ULTIMA;
   }
-  if (c == 1) {
+  if (c == MZC_HARD) {
     return BODY_CHIP_PROTO;
   }
   return (b4->status).body;

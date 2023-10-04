@@ -305,7 +305,7 @@ static void triple_slash_1st(struct Zero* z) {
   }
 
   b4 = &(z->unk_b4);
-  if ((((b4->status).menuZeroColor != 1) && ((z->s).motion.cmdIdx >= 4)) && (z->tripleSlashCounter > 0)) {
+  if ((((b4->status).menuZeroColor != MZC_HARD) && ((z->s).motion.cmdIdx >= 4)) && (z->tripleSlashCounter > 0)) {
     (z->unk_b4).attackMode[1] = 2;
     (z->unk_b4).attackMode[2] = 0;
     triple_slash_2nd(z);

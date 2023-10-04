@@ -54,10 +54,10 @@ WIP static void OmegaWhite_Init(struct Boss *p) {
 
   omegaWhite_0800bd24(p);
   gOverworld.unk_1c8.work[1] = 0;
-  LOAD_STATIC_GRAPHIC(SM009_OMEGA_ARM);
+  LOAD_STATIC_GRAPHIC(SM009_OMEGA_HAND);
   LOAD_STATIC_GRAPHIC(SM010_OMEGA_RING);
   LOAD_STATIC_GRAPHIC(SM011_OMEGA_RECOVER);
-  LOAD_STATIC_GRAPHIC(SM012_UNK);
+  LOAD_STATIC_GRAPHIC(SM012_OMEGA_RUBBLE);
 
   ResetBossBody(p, &sCollisions[0], 64);
   body = &p->body;

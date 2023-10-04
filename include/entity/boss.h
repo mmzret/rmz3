@@ -4,6 +4,18 @@
 #include "entity/entity.h"
 #include "sound.h"
 
+struct GlacierleProps {
+  u32 unk_b4;
+  struct VFX *unk_b8;
+  s32 unk_bc;
+  u8 unk_c0;
+  u8 unk_c1;
+  bool8 shouldRightDir;
+  u8 unk_c3[5];
+  struct Coord unk_c8;
+  u8 unk_d0[20];
+};
+
 struct OmegaWhiteProps {
   u8 unk_b4;
   s8 unk_b5[2];
@@ -44,6 +56,7 @@ struct Boss {
     u8 raw[48];
     struct OmegaWhiteProps omegaWhite;
     struct OmegaZeroProps oz;
+    struct GlacierleProps glacierle;
   } props;
 };  // 228 bytes
 

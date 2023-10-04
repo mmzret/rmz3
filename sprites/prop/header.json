@@ -1,0 +1,3326 @@
+{
+  "data": [
+    {
+      "name": "effects/sheet.lz.png",
+      "ofs": 160,
+      "chunkSize": 1592,
+      "props": [
+        "lz77",
+        "4bpp"
+      ],
+      "palette": {
+        "color": 32,
+        "id": 14
+      },
+      "files": [
+        "effects/sheet.lz",
+        "effects/14.pal",
+        "effects/15.pal"
+      ]
+    },
+    {
+      "name": "1/sheet.lz.png",
+      "ofs": 512,
+      "chunkSize": 400,
+      "props": [
+        "lz77",
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 8
+      }
+    },
+    {
+      "name": "lemon/sheet.lz.png",
+      "ofs": 359,
+      "chunkSize": 24,
+      "props": [
+        "lz77",
+        "4bpp",
+        "no_pal"
+      ],
+      "palette": {
+        "color": 0,
+        "id": 14
+      }
+    },
+    {
+      "name": "emotion_bubble/sheet.png",
+      "ofs": 362,
+      "chunkSize": 48,
+      "props": [
+        "4bpp",
+        "no_pal"
+      ],
+      "palette": {
+        "color": 0,
+        "id": 14
+      }
+    },
+    {
+      "name": "enemy/shotcounter/sheet.png",
+      "ofs": 512,
+      "chunkSize": 448,
+      "props": [
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 4
+      }
+    },
+    {
+      "name": "gravel/sheet.lz.png",
+      "ofs": 896,
+      "chunkSize": 56,
+      "props": [
+        "lz77",
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 5
+      }
+    },
+    {
+      "name": "enemy/batring/sheet.png",
+      "ofs": 512,
+      "chunkSize": 776,
+      "props": [
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 4
+      }
+    },
+    {
+      "name": "enemy/grand_cannon/sheet.png",
+      "ofs": 512,
+      "chunkSize": 328,
+      "props": [
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 4
+      }
+    },
+    {
+      "name": "enemy/pillar_cannon/sheet.png",
+      "ofs": 512,
+      "chunkSize": 560,
+      "props": [
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 4
+      }
+    },
+    {
+      "name": "omega_white/hand/sheet.lz.png",
+      "ofs": 512,
+      "chunkSize": 1056,
+      "props": [
+        "lz77",
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 4
+      }
+    },
+    {
+      "name": "omega_white/ring/sheet.lz.png",
+      "ofs": 644,
+      "chunkSize": 992,
+      "props": [
+        "lz77",
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 5
+      }
+    },
+    {
+      "name": "omega_white/recover/sheet.lz.png",
+      "ofs": 768,
+      "chunkSize": 304,
+      "props": [
+        "lz77",
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 6
+      }
+    },
+    {
+      "name": "omega_white/rubble/sheet.png",
+      "ofs": 806,
+      "chunkSize": 160,
+      "props": [
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 7
+      }
+    },
+    {
+      "name": "enemy/shrimpolin/sheet.png",
+      "ofs": 512,
+      "chunkSize": 1024,
+      "props": [
+        "4bpp"
+      ],
+      "palette": {
+        "color": 32,
+        "id": 4
+      },
+      "files": [
+        "enemy/shrimpolin/sheet.4bpp",
+        "enemy/shrimpolin/04.pal",
+        "enemy/shrimpolin/05.pal"
+      ]
+    },
+    {
+      "name": "menu/chip_icon/sheet.lz.png",
+      "ofs": 512,
+      "chunkSize": 976,
+      "props": [
+        "lz77",
+        "4bpp"
+      ],
+      "palette": {
+        "color": 32,
+        "id": 4
+      },
+      "files": [
+        "menu/chip_icon/sheet.lz",
+        "menu/chip_icon/04.pal",
+        "menu/chip_icon/05.pal"
+      ]
+    },
+    {
+      "name": "menu/main_menu/sheet.lz.png",
+      "ofs": 634,
+      "chunkSize": 824,
+      "props": [
+        "lz77",
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 6
+      }
+    },
+    {
+      "name": "enemy/icebon/icebon/sheet.png",
+      "ofs": 512,
+      "chunkSize": 312,
+      "props": [
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 4
+      }
+    },
+    {
+      "name": "enemy/icebon/ice/sheet.png",
+      "ofs": 548,
+      "chunkSize": 520,
+      "props": [
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 5
+      }
+    },
+    {
+      "name": "door_2d/blue/sheet.png",
+      "ofs": 480,
+      "chunkSize": 256,
+      "props": [
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 10
+      }
+    },
+    {
+      "name": "enemy/pantheon_hunter/sheet.png",
+      "ofs": 512,
+      "chunkSize": 960,
+      "props": [
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 4
+      }
+    },
+    {
+      "name": "enemy/pantheon_guardian/sheet.png",
+      "ofs": 512,
+      "chunkSize": 1232,
+      "props": [
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 4
+      }
+    },
+    {
+      "name": "enemy/top_gabyoall/sheet.png",
+      "ofs": 512,
+      "chunkSize": 256,
+      "props": [
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 4
+      }
+    },
+    {
+      "name": "enemy/flopper/sheet.png",
+      "ofs": 512,
+      "chunkSize": 128,
+      "props": [
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 4
+      }
+    },
+    {
+      "name": "enemy/gyro_cannon/sheet.png",
+      "ofs": 512,
+      "chunkSize": 760,
+      "props": [
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 4
+      }
+    },
+    {
+      "name": "enemy/sharkseal_x/sheet.png",
+      "ofs": 908,
+      "chunkSize": 720,
+      "props": [
+        "4bpp"
+      ],
+      "palette": {
+        "color": 32,
+        "id": 9
+      },
+      "files": [
+        "enemy/sharkseal_x/sheet.4bpp",
+        "enemy/sharkseal_x/09.pal",
+        "enemy/sharkseal_x/10.pal"
+      ]
+    },
+    {
+      "name": "enemy/lamplort/sheet.png",
+      "ofs": 512,
+      "chunkSize": 1248,
+      "props": [
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 4
+      }
+    },
+    {
+      "name": "element_effect/thunder/sheet.lz.png",
+      "ofs": 420,
+      "chunkSize": 176,
+      "props": [
+        "lz77",
+        "4bpp",
+        "no_pal"
+      ],
+      "palette": {
+        "color": 0,
+        "id": 15
+      }
+    },
+    {
+      "name": "element_effect/flame/sheet.lz.png",
+      "ofs": 420,
+      "chunkSize": 176,
+      "props": [
+        "lz77",
+        "4bpp",
+        "no_pal"
+      ],
+      "palette": {
+        "color": 0,
+        "id": 14
+      }
+    },
+    {
+      "name": "element_effect/ice/sheet.lz.png",
+      "ofs": 412,
+      "chunkSize": 64,
+      "props": [
+        "lz77",
+        "4bpp",
+        "no_pal"
+      ],
+      "palette": {
+        "color": 0,
+        "id": 15
+      }
+    },
+    {
+      "name": "enemy/lemmingles/sheet.png",
+      "ofs": 533,
+      "chunkSize": 640,
+      "props": [
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 4
+      }
+    },
+    {
+      "name": "enemy/lemmingles_nest/sheet.png",
+      "ofs": 512,
+      "chunkSize": 168,
+      "props": [
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 5
+      }
+    },
+    {
+      "name": "volcano/bomb/sheet.png",
+      "ofs": 512,
+      "chunkSize": 128,
+      "props": [
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 4
+      }
+    },
+    {
+      "name": "32/sheet.png",
+      "ofs": 512,
+      "chunkSize": 496,
+      "props": [
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 4
+      }
+    },
+    {
+      "name": "fefnir_fireball/sheet.lz.png",
+      "ofs": 512,
+      "chunkSize": 200,
+      "props": [
+        "lz77",
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 4
+      }
+    },
+    {
+      "name": "enemy/carryarm/sheet.lz.png",
+      "ofs": 537,
+      "chunkSize": 320,
+      "props": [
+        "lz77",
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 5
+      }
+    },
+    {
+      "name": "container/container/sheet.lz.png",
+      "ofs": 577,
+      "chunkSize": 160,
+      "props": [
+        "lz77",
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 6
+      }
+    },
+    {
+      "name": "childre/36/sheet.lz.png",
+      "ofs": 640,
+      "chunkSize": 272,
+      "props": [
+        "lz77",
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 5
+      }
+    },
+    {
+      "name": "childre/ear_shot/sheet.lz.png",
+      "ofs": 674,
+      "chunkSize": 936,
+      "props": [
+        "lz77",
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 6
+      }
+    },
+    {
+      "name": "childre/38/sheet.lz.png",
+      "ofs": 800,
+      "chunkSize": 440,
+      "props": [
+        "lz77",
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 7
+      }
+    },
+    {
+      "name": "enemy/pantheon_aqua/sheet.png",
+      "ofs": 512,
+      "chunkSize": 768,
+      "props": [
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 4
+      }
+    },
+    {
+      "name": "enemy/snakecord/sheet.png",
+      "ofs": 512,
+      "chunkSize": 704,
+      "props": [
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 4
+      }
+    },
+    {
+      "name": "hammer/sheet.png",
+      "ofs": 512,
+      "chunkSize": 136,
+      "props": [
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 4
+      }
+    },
+    {
+      "name": "enemy/purple_nerple/sheet.png",
+      "ofs": 832,
+      "chunkSize": 256,
+      "props": [
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 8
+      }
+    },
+    {
+      "name": "wormer/body/sheet.lz.png",
+      "ofs": 512,
+      "chunkSize": 1792,
+      "props": [
+        "lz77",
+        "4bpp"
+      ],
+      "palette": {
+        "color": 32,
+        "id": 4
+      },
+      "files": [
+        "wormer/body/sheet.lz",
+        "wormer/body/04.pal",
+        "wormer/body/05.pal"
+      ]
+    },
+    {
+      "name": "wormer/rock_drone/sheet.lz.png",
+      "ofs": 768,
+      "chunkSize": 304,
+      "props": [
+        "lz77",
+        "4bpp"
+      ],
+      "palette": {
+        "color": 32,
+        "id": 6
+      },
+      "files": [
+        "wormer/rock_drone/sheet.lz",
+        "wormer/rock_drone/06.pal",
+        "wormer/rock_drone/07.pal"
+      ]
+    },
+    {
+      "name": "minigame/phantom/mine/sheet.png",
+      "ofs": 644,
+      "chunkSize": 112,
+      "props": [
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 7
+      }
+    },
+    {
+      "name": "enemy/volcaire/sheet.png",
+      "ofs": 512,
+      "chunkSize": 840,
+      "props": [
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 4
+      }
+    },
+    {
+      "name": "enemy/tile_cannon/sheet.png",
+      "ofs": 512,
+      "chunkSize": 640,
+      "props": [
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 4
+      }
+    },
+    {
+      "name": "baby_elf/48/sheet.lz.png",
+      "ofs": 512,
+      "chunkSize": 160,
+      "props": [
+        "lz77",
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 4
+      }
+    },
+    {
+      "name": "baby_elf/49/sheet.lz.png",
+      "ofs": 544,
+      "chunkSize": 616,
+      "props": [
+        "lz77",
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 5
+      }
+    },
+    {
+      "name": "baby_elf/50/sheet.lz.png",
+      "ofs": 640,
+      "chunkSize": 512,
+      "props": [
+        "lz77",
+        "4bpp"
+      ],
+      "palette": {
+        "color": 32,
+        "id": 7
+      },
+      "files": [
+        "baby_elf/50/sheet.lz",
+        "baby_elf/50/07.pal",
+        "baby_elf/50/08.pal"
+      ]
+    },
+    {
+      "name": "baby_elf/51/sheet.lz.png",
+      "ofs": 704,
+      "chunkSize": 1224,
+      "props": [
+        "lz77",
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 9
+      }
+    },
+    {
+      "name": "baby_elf/52/sheet.lz.png",
+      "ofs": 864,
+      "chunkSize": 1024,
+      "props": [
+        "lz77",
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 5
+      }
+    },
+    {
+      "name": "enemy/shelluno/sheet.png",
+      "ofs": 908,
+      "chunkSize": 368,
+      "props": [
+        "4bpp"
+      ],
+      "palette": {
+        "color": 32,
+        "id": 9
+      },
+      "files": [
+        "enemy/shelluno/sheet.4bpp",
+        "enemy/shelluno/09.pal",
+        "enemy/shelluno/10.pal"
+      ]
+    },
+    {
+      "name": "deathtanz/rock/sheet.lz.png",
+      "ofs": 768,
+      "chunkSize": 512,
+      "props": [
+        "lz77",
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 5
+      }
+    },
+    {
+      "name": "deathtanz/projectile/sheet.lz.png",
+      "ofs": 832,
+      "chunkSize": 1040,
+      "props": [
+        "lz77",
+        "4bpp"
+      ],
+      "palette": {
+        "color": 64,
+        "id": 6
+      },
+      "files": [
+        "deathtanz/projectile/sheet.lz",
+        "deathtanz/projectile/06.pal",
+        "deathtanz/projectile/07.pal",
+        "deathtanz/projectile/08.pal",
+        "deathtanz/projectile/09.pal"
+      ]
+    },
+    {
+      "name": "enemy/heavy_cannon/sheet.png",
+      "ofs": 512,
+      "chunkSize": 496,
+      "props": [
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 4
+      }
+    },
+    {
+      "name": "volcano/geyser/sheet.png",
+      "ofs": 512,
+      "chunkSize": 1160,
+      "props": [
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 4
+      }
+    },
+    {
+      "name": "volcano/geyser_platform/sheet.png",
+      "ofs": 704,
+      "chunkSize": 240,
+      "props": [
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 5
+      }
+    },
+    {
+      "name": "volcano/lava_river_platform/sheet.png",
+      "ofs": 512,
+      "chunkSize": 192,
+      "props": [
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 4
+      }
+    },
+    {
+      "name": "exlife_indicator/sheet.lz.png",
+      "ofs": 48,
+      "chunkSize": 384,
+      "props": [
+        "lz77",
+        "4bpp",
+        "no_pal"
+      ],
+      "palette": {
+        "color": 0,
+        "id": 14
+      }
+    },
+    {
+      "name": "61/sheet.png",
+      "ofs": 512,
+      "chunkSize": 232,
+      "props": [
+        "4bpp",
+        "no_pal"
+      ],
+      "palette": {
+        "color": 0,
+        "id": 13
+      }
+    },
+    {
+      "name": "enemy/beetank/sheet.png",
+      "ofs": 640,
+      "chunkSize": 800,
+      "props": [
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 5
+      }
+    },
+    {
+      "name": "enemy/swordy/sheet.png",
+      "ofs": 640,
+      "chunkSize": 608,
+      "props": [
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 5
+      }
+    },
+    {
+      "name": "iceball/sheet.lz.png",
+      "ofs": 808,
+      "chunkSize": 248,
+      "props": [
+        "lz77",
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 8
+      }
+    },
+    {
+      "name": "enemy/puffy/body/sheet.png",
+      "ofs": 640,
+      "chunkSize": 240,
+      "props": [
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 5
+      }
+    },
+    {
+      "name": "enemy/puffy/bubble/sheet.png",
+      "ofs": 768,
+      "chunkSize": 784,
+      "props": [
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 6
+      }
+    },
+    {
+      "name": "enemy/crossbyne/sheet.png",
+      "ofs": 512,
+      "chunkSize": 696,
+      "props": [
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 4
+      }
+    },
+    {
+      "name": "old_residential/fall_rock/sheet.png",
+      "ofs": 512,
+      "chunkSize": 256,
+      "props": [
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 4
+      }
+    },
+    {
+      "name": "menu/exskill_icon/sheet.notrim.png",
+      "ofs": 864,
+      "chunkSize": 1152,
+      "props": [
+        "4bpp"
+      ],
+      "palette": {
+        "color": 32,
+        "id": 10
+      },
+      "files": [
+        "menu/exskill_icon/sheet.notrim.4bpp",
+        "menu/exskill_icon/10.pal",
+        "menu/exskill_icon/11.pal"
+      ]
+    },
+    {
+      "name": "bee_server/sheet.lz.png",
+      "ofs": 512,
+      "chunkSize": 1568,
+      "props": [
+        "lz77",
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 4
+      }
+    },
+    {
+      "name": "enemy/mellnet/sheet.png",
+      "ofs": 708,
+      "chunkSize": 256,
+      "props": [
+        "4bpp"
+      ],
+      "palette": {
+        "color": 48,
+        "id": 5
+      },
+      "files": [
+        "enemy/mellnet/sheet.4bpp",
+        "enemy/mellnet/05.pal",
+        "enemy/mellnet/06.pal",
+        "enemy/mellnet/07.pal"
+      ]
+    },
+    {
+      "name": "72/sheet.png",
+      "ofs": 512,
+      "chunkSize": 64,
+      "props": [
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 4
+      }
+    },
+    {
+      "name": "anubis/rod/sheet.lz.png",
+      "ofs": 640,
+      "chunkSize": 160,
+      "props": [
+        "lz77",
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 5
+      }
+    },
+    {
+      "name": "anubis/sand/sheet.lz.png",
+      "ofs": 660,
+      "chunkSize": 736,
+      "props": [
+        "lz77",
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 6
+      }
+    },
+    {
+      "name": "anubis/coffin/sheet.png",
+      "ofs": 752,
+      "chunkSize": 640,
+      "props": [
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 7
+      }
+    },
+    {
+      "name": "enemy/pantheon_zombie/sheet.png",
+      "ofs": 752,
+      "chunkSize": 1664,
+      "props": [
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 7
+      }
+    },
+    {
+      "name": "pantheon_aqua_mod/body/sheet.lz.png",
+      "ofs": 608,
+      "chunkSize": 880,
+      "props": [
+        "lz77",
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 6
+      }
+    },
+    {
+      "name": "pantheon_aqua_mod/projectile/sheet.lz.png",
+      "ofs": 718,
+      "chunkSize": 608,
+      "props": [
+        "lz77",
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 7
+      }
+    },
+    {
+      "name": "pantheon_aqua_mod/rock/sheet.lz.png",
+      "ofs": 794,
+      "chunkSize": 240,
+      "props": [
+        "lz77",
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 8
+      }
+    },
+    {
+      "name": "80/sheet.lz.png",
+      "ofs": 824,
+      "chunkSize": 128,
+      "props": [
+        "lz77",
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 9
+      }
+    },
+    {
+      "name": "mother_elf/81/sheet.png",
+      "ofs": 840,
+      "chunkSize": 1016,
+      "props": [
+        "4bpp"
+      ],
+      "palette": {
+        "color": 32,
+        "id": 6
+      },
+      "files": [
+        "mother_elf/81/sheet.4bpp",
+        "mother_elf/81/06.pal",
+        "mother_elf/81/07.pal"
+      ]
+    },
+    {
+      "name": "menu/elf_menu/sheet.lz.png",
+      "ofs": 879,
+      "chunkSize": 656,
+      "props": [
+        "lz77",
+        "4bpp"
+      ],
+      "palette": {
+        "color": 32,
+        "id": 8
+      },
+      "files": [
+        "menu/elf_menu/sheet.lz",
+        "menu/elf_menu/08.pal",
+        "menu/elf_menu/09.pal"
+      ]
+    },
+    {
+      "name": "menu/elf_menu_icon/sheet.lz.png",
+      "ofs": 961,
+      "chunkSize": 504,
+      "props": [
+        "lz77",
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 10
+      }
+    },
+    {
+      "name": "locomo_if/body/sheet.lz.png",
+      "ofs": 592,
+      "chunkSize": 1200,
+      "props": [
+        "lz77",
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 5
+      }
+    },
+    {
+      "name": "locomo_if/platform/sheet.lz.png",
+      "ofs": 742,
+      "chunkSize": 200,
+      "props": [
+        "lz77",
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 6
+      }
+    },
+    {
+      "name": "locomo_if/flame/sheet.lz.png",
+      "ofs": 767,
+      "chunkSize": 512,
+      "props": [
+        "lz77",
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 7
+      }
+    },
+    {
+      "name": "locomo_if/chill/sheet.lz.png",
+      "ofs": 831,
+      "chunkSize": 408,
+      "props": [
+        "lz77",
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 8
+      }
+    },
+    {
+      "name": "locomo_if/ice/sheet.png",
+      "ofs": 895,
+      "chunkSize": 416,
+      "props": [
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 9
+      }
+    },
+    {
+      "name": "glacierle/hand/sheet.lz.png",
+      "ofs": 768,
+      "chunkSize": 816,
+      "props": [
+        "lz77",
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 4
+      }
+    },
+    {
+      "name": "glacierle/icicle/sheet.png",
+      "ofs": 896,
+      "chunkSize": 288,
+      "props": [
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 5
+      }
+    },
+    {
+      "name": "copy_x/fire_shot/sheet.lz.png",
+      "ofs": 576,
+      "chunkSize": 1272,
+      "props": [
+        "lz77",
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 5
+      }
+    },
+    {
+      "name": "copy_x/elec_shot/sheet.lz.png",
+      "ofs": 735,
+      "chunkSize": 584,
+      "props": [
+        "lz77",
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 5
+      }
+    },
+    {
+      "name": "copy_x/normal_shot/sheet.lz.png",
+      "ofs": 808,
+      "chunkSize": 640,
+      "props": [
+        "lz77",
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 6
+      }
+    },
+    {
+      "name": "copy_x/sliding_spark/sheet.lz.png",
+      "ofs": 888,
+      "chunkSize": 280,
+      "props": [
+        "lz77",
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 6
+      }
+    },
+    {
+      "name": "copy_x/charge_effect/sheet.lz.png",
+      "ofs": 923,
+      "chunkSize": 152,
+      "props": [
+        "lz77",
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 5
+      }
+    },
+    {
+      "name": "copy_x/reflect_laser/sheet.lz.png",
+      "ofs": 942,
+      "chunkSize": 512,
+      "props": [
+        "lz77",
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 7
+      }
+    },
+    {
+      "name": "copy_x/97/sheet.lz.png",
+      "ofs": 1006,
+      "chunkSize": 128,
+      "props": [
+        "lz77",
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 8
+      }
+    },
+    {
+      "name": "blizzack/ice/sheet.lz.png",
+      "ofs": 576,
+      "chunkSize": 1008,
+      "props": [
+        "lz77",
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 5
+      }
+    },
+    {
+      "name": "blizzack/chill/sheet.lz.png",
+      "ofs": 702,
+      "chunkSize": 864,
+      "props": [
+        "lz77",
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 6
+      }
+    },
+    {
+      "name": "blizzack/shoulder/sheet.lz.png",
+      "ofs": 810,
+      "chunkSize": 480,
+      "props": [
+        "lz77",
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 7
+      }
+    },
+    {
+      "name": "omega_white/sword/sheet.lz.png",
+      "ofs": 826,
+      "chunkSize": 1864,
+      "props": [
+        "lz77",
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 8
+      }
+    },
+    {
+      "name": "enemy/eye_cannon/sheet.png",
+      "ofs": 512,
+      "chunkSize": 384,
+      "props": [
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 4
+      }
+    },
+    {
+      "name": "enemy/gallisni/sheet.png",
+      "ofs": 512,
+      "chunkSize": 1064,
+      "props": [
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 4
+      }
+    },
+    {
+      "name": "enemy/capsule_cannon/sheet.png",
+      "ofs": 512,
+      "chunkSize": 336,
+      "props": [
+        "4bpp"
+      ],
+      "palette": {
+        "color": 32,
+        "id": 4
+      },
+      "files": [
+        "enemy/capsule_cannon/sheet.4bpp",
+        "enemy/capsule_cannon/04.pal",
+        "enemy/capsule_cannon/05.pal"
+      ]
+    },
+    {
+      "name": "enemy/pantheon_bomber/sheet.png",
+      "ofs": 512,
+      "chunkSize": 760,
+      "props": [
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 4
+      }
+    },
+    {
+      "name": "hanumachine_obj/sheet.lz.png",
+      "ofs": 640,
+      "chunkSize": 1136,
+      "props": [
+        "lz77",
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 5
+      }
+    },
+    {
+      "name": "enemy/mothjiro/sheet.png",
+      "ofs": 512,
+      "chunkSize": 384,
+      "props": [
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 4
+      }
+    },
+    {
+      "name": "sub_arcadia_platform/sheet.png",
+      "ofs": 512,
+      "chunkSize": 320,
+      "props": [
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 4
+      }
+    },
+    {
+      "name": "enemy/pantheon_base/sheet.png",
+      "ofs": 512,
+      "chunkSize": 760,
+      "props": [
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 4
+      }
+    },
+    {
+      "name": "enemy/carrybee_g/sheet.png",
+      "ofs": 512,
+      "chunkSize": 1600,
+      "props": [
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 4
+      }
+    },
+    {
+      "name": "rocket/sheet.png",
+      "ofs": 800,
+      "chunkSize": 128,
+      "props": [
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 5
+      }
+    },
+    {
+      "name": "anatre_cube/sheet.png",
+      "ofs": 800,
+      "chunkSize": 408,
+      "props": [
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 5
+      }
+    },
+    {
+      "name": "enemy/generator_cannon/sheet.png",
+      "ofs": 512,
+      "chunkSize": 376,
+      "props": [
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 4
+      }
+    },
+    {
+      "name": "enemy/keaton/sheet.png",
+      "ofs": 560,
+      "chunkSize": 408,
+      "props": [
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 5
+      }
+    },
+    {
+      "name": "resistance_base/elevator/default/sheet.png",
+      "ofs": 560,
+      "chunkSize": 640,
+      "props": [
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 5
+      }
+    },
+    {
+      "name": "enemy/deathlock/sheet.png",
+      "ofs": 512,
+      "chunkSize": 760,
+      "props": [
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 4
+      }
+    },
+    {
+      "name": "enemy/claveker/sheet.png",
+      "ofs": 512,
+      "chunkSize": 392,
+      "props": [
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 4
+      }
+    },
+    {
+      "name": "lever_switch/red/sheet.png",
+      "ofs": 624,
+      "chunkSize": 280,
+      "props": [
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 5
+      }
+    },
+    {
+      "name": "enemy/seimeran/sheet.png",
+      "ofs": 512,
+      "chunkSize": 512,
+      "props": [
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 4
+      }
+    },
+    {
+      "name": "door_2d/gray/horizontal/sheet.png",
+      "ofs": 480,
+      "chunkSize": 248,
+      "props": [
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 10
+      }
+    },
+    {
+      "name": "enemy/turtloid_s/sheet.png",
+      "ofs": 512,
+      "chunkSize": 1352,
+      "props": [
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 4
+      }
+    },
+    {
+      "name": "door_2d/gray/vertical/sheet.png",
+      "ofs": 480,
+      "chunkSize": 240,
+      "props": [
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 10
+      }
+    },
+    {
+      "name": "teleportal/sheet.png",
+      "ofs": 512,
+      "chunkSize": 664,
+      "props": [
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 9
+      }
+    },
+    {
+      "name": "area_x2_platform/sheet.png",
+      "ofs": 512,
+      "chunkSize": 280,
+      "props": [
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 9
+      }
+    },
+    {
+      "name": "weil_labo_platform/sheet.png",
+      "ofs": 512,
+      "chunkSize": 480,
+      "props": [
+        "4bpp"
+      ],
+      "palette": {
+        "color": 48,
+        "id": 9
+      },
+      "files": [
+        "weil_labo_platform/sheet.4bpp",
+        "weil_labo_platform/09.pal",
+        "weil_labo_platform/10.pal",
+        "weil_labo_platform/11.pal"
+      ]
+    },
+    {
+      "name": "enemy/petatria/sheet.png",
+      "ofs": 512,
+      "chunkSize": 640,
+      "props": [
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 4
+      }
+    },
+    {
+      "name": "disabled_disk/sheet.lz.png",
+      "ofs": 512,
+      "chunkSize": 96,
+      "props": [
+        "lz77",
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 5
+      }
+    },
+    {
+      "name": "128/sheet.lz.png",
+      "ofs": 656,
+      "chunkSize": 1832,
+      "props": [
+        "lz77",
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 6
+      }
+    },
+    {
+      "name": "subtank2/sheet.lz.png",
+      "ofs": 737,
+      "chunkSize": 480,
+      "props": [
+        "lz77",
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 7
+      }
+    },
+    {
+      "name": "prologue/mob/sheet.lz.png",
+      "ofs": 737,
+      "chunkSize": 432,
+      "props": [
+        "lz77",
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 6
+      }
+    },
+    {
+      "name": "prologue/cutscene_mob/sheet.lz.png",
+      "ofs": 576,
+      "chunkSize": 1280,
+      "props": [
+        "lz77",
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 7
+      }
+    },
+    {
+      "name": "prologue/cutscene_zero/sheet.lz.png",
+      "ofs": 736,
+      "chunkSize": 824,
+      "props": [
+        "lz77",
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 8
+      }
+    },
+    {
+      "name": "prologue/cutscene_ciel/sheet.lz.png",
+      "ofs": 859,
+      "chunkSize": 944,
+      "props": [
+        "lz77",
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 9
+      }
+    },
+    {
+      "name": "phantom/ninja_star/sheet.lz.png",
+      "ofs": 576,
+      "chunkSize": 512,
+      "props": [
+        "lz77",
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 5
+      }
+    },
+    {
+      "name": "phantom/135/sheet.lz.png",
+      "ofs": 640,
+      "chunkSize": 992,
+      "props": [
+        "lz77",
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 6
+      }
+    },
+    {
+      "name": "phantom/makibishi/sheet.lz.png",
+      "ofs": 764,
+      "chunkSize": 304,
+      "props": [
+        "lz77",
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 7
+      }
+    },
+    {
+      "name": "resistance_base/elevator/wood/sheet.png",
+      "ofs": 560,
+      "chunkSize": 640,
+      "props": [
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 5
+      }
+    },
+    {
+      "name": "resistance_base/elevator/mmx/sheet.png",
+      "ofs": 560,
+      "chunkSize": 328,
+      "props": [
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 5
+      }
+    },
+    {
+      "name": "energy_facility_btn/sheet.lz.png",
+      "ofs": 512,
+      "chunkSize": 1832,
+      "props": [
+        "lz77",
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 4
+      }
+    },
+    {
+      "name": "resistance/mob/sheet.lz.png",
+      "ofs": 656,
+      "chunkSize": 976,
+      "props": [
+        "lz77",
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 6
+      }
+    },
+    {
+      "name": "enemy/shotloid/sheet.png",
+      "ofs": 512,
+      "chunkSize": 0,
+      "props": [],
+      "palette": {
+        "color": 0,
+        "id": 7
+      },
+      "hdrOnly": true
+    },
+    {
+      "name": "enemy/shotloid/sheet.png",
+      "ofs": 512,
+      "chunkSize": 336,
+      "props": [
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 4
+      }
+    },
+    {
+      "name": "resistance_base/ciel_comp/0/sheet.lz.png",
+      "ofs": 512,
+      "chunkSize": 0,
+      "props": [],
+      "palette": {
+        "color": 0,
+        "id": 4
+      },
+      "hdrOnly": true
+    },
+    {
+      "name": "resistance_base/ciel_comp/0/sheet.lz.png",
+      "ofs": 512,
+      "chunkSize": 304,
+      "props": [
+        "lz77",
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 4
+      }
+    },
+    {
+      "name": "resistance_base/ciel_comp/1/sheet.lz.png",
+      "ofs": 512,
+      "chunkSize": 320,
+      "props": [
+        "lz77",
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 4
+      }
+    },
+    {
+      "name": "resistance_base/ciel_comp/2/sheet.lz.png",
+      "ofs": 512,
+      "chunkSize": 424,
+      "props": [
+        "lz77",
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 4
+      }
+    },
+    {
+      "name": "resistance_base/ciel_comp/3/sheet.lz.png",
+      "ofs": 512,
+      "chunkSize": 424,
+      "props": [
+        "lz77",
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 4
+      }
+    },
+    {
+      "name": "resistance_base/ciel_comp/4/sheet.lz.png",
+      "ofs": 512,
+      "chunkSize": 320,
+      "props": [
+        "lz77",
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 4
+      }
+    },
+    {
+      "name": "logo/megaman/sheet.lz.png",
+      "ofs": 0,
+      "chunkSize": 896,
+      "props": [
+        "lz77",
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 2
+      }
+    },
+    {
+      "name": "logo/z/sheet.lz.png",
+      "ofs": 512,
+      "chunkSize": 1064,
+      "props": [
+        "lz77",
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 3
+      }
+    },
+    {
+      "name": "missile_platform/sheet.png",
+      "ofs": 512,
+      "chunkSize": 136,
+      "props": [
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 4
+      }
+    },
+    {
+      "name": "mother_elf/152/sheet.png",
+      "ofs": 512,
+      "chunkSize": 1016,
+      "props": [
+        "4bpp"
+      ],
+      "palette": {
+        "color": 32,
+        "id": 4
+      },
+      "files": [
+        "mother_elf/152/sheet.4bpp",
+        "mother_elf/152/04.pal",
+        "mother_elf/152/05.pal"
+      ]
+    },
+    {
+      "name": "volcano/coffin/sheet.png",
+      "ofs": 512,
+      "chunkSize": 408,
+      "props": [
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 4
+      }
+    },
+    {
+      "name": "giant_elevator_pier/sheet.png",
+      "ofs": 512,
+      "chunkSize": 192,
+      "props": [
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 4
+      }
+    },
+    {
+      "name": "giant_elevator_platform/sheet.png",
+      "ofs": 640,
+      "chunkSize": 256,
+      "props": [
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 5
+      }
+    },
+    {
+      "name": "156/sheet.png",
+      "ofs": 768,
+      "chunkSize": 96,
+      "props": [
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 6
+      }
+    },
+    {
+      "name": "smoke_157/sheet.png",
+      "ofs": 512,
+      "chunkSize": 256,
+      "props": [
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 4
+      }
+    },
+    {
+      "name": "minigame/zero/sheet.lz.png",
+      "ofs": 512,
+      "chunkSize": 32,
+      "props": [
+        "lz77",
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 4
+      }
+    },
+    {
+      "name": "minigame/copy_x/sheet.lz.png",
+      "ofs": 512,
+      "chunkSize": 32,
+      "props": [
+        "lz77",
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 4
+      }
+    },
+    {
+      "name": "minigame/phantom/icon/sheet.lz.png",
+      "ofs": 640,
+      "chunkSize": 32,
+      "props": [
+        "lz77",
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 6
+      }
+    },
+    {
+      "name": "minigame/harpuia/sheet.lz.png",
+      "ofs": 512,
+      "chunkSize": 32,
+      "props": [
+        "lz77",
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 4
+      }
+    },
+    {
+      "name": "resistance_base/painting/mmbn/sheet.png",
+      "ofs": 512,
+      "chunkSize": 96,
+      "props": [
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 4
+      }
+    },
+    {
+      "name": "resistance_base/graffiti/zero1/sheet.png",
+      "ofs": 512,
+      "chunkSize": 240,
+      "props": [
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 4
+      }
+    },
+    {
+      "name": "resistance_base/graffiti/ciel/sheet.png",
+      "ofs": 512,
+      "chunkSize": 152,
+      "props": [
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 4
+      }
+    },
+    {
+      "name": "resistance_base/graffiti/zero2/sheet.png",
+      "ofs": 512,
+      "chunkSize": 144,
+      "props": [
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 4
+      }
+    },
+    {
+      "name": "resistance_base/painting/ciel/sheet.png",
+      "ofs": 512,
+      "chunkSize": 144,
+      "props": [
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 4
+      }
+    },
+    {
+      "name": "life_energy/default/sheet.lz.png",
+      "ofs": 442,
+      "chunkSize": 128,
+      "props": [
+        "lz77",
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 11
+      }
+    },
+    {
+      "name": "life_energy/x/sheet.lz.png",
+      "ofs": 442,
+      "chunkSize": 128,
+      "props": [
+        "lz77",
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 11
+      }
+    },
+    {
+      "name": "life_energy/tank/sheet.lz.png",
+      "ofs": 442,
+      "chunkSize": 128,
+      "props": [
+        "lz77",
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 11
+      }
+    },
+    {
+      "name": "ecrystal/default/sheet.lz.png",
+      "ofs": 458,
+      "chunkSize": 88,
+      "props": [
+        "lz77",
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 11
+      }
+    },
+    {
+      "name": "ecrystal/ball/sheet.lz.png",
+      "ofs": 458,
+      "chunkSize": 88,
+      "props": [
+        "lz77",
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 11
+      }
+    },
+    {
+      "name": "ecrystal/green/sheet.lz.png",
+      "ofs": 458,
+      "chunkSize": 88,
+      "props": [
+        "lz77",
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 11
+      }
+    },
+    {
+      "name": "exlife/default/sheet.lz.png",
+      "ofs": 469,
+      "chunkSize": 32,
+      "props": [
+        "lz77",
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 11
+      }
+    },
+    {
+      "name": "exlife/blue/sheet.lz.png",
+      "ofs": 469,
+      "chunkSize": 32,
+      "props": [
+        "lz77",
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 11
+      }
+    },
+    {
+      "name": "exlife/green/sheet.lz.png",
+      "ofs": 469,
+      "chunkSize": 32,
+      "props": [
+        "lz77",
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 11
+      }
+    },
+    {
+      "name": "result_disk/default/sheet.lz.png",
+      "ofs": 473,
+      "chunkSize": 40,
+      "props": [
+        "lz77",
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 11
+      }
+    },
+    {
+      "name": "result_disk/blue/sheet.lz.png",
+      "ofs": 473,
+      "chunkSize": 40,
+      "props": [
+        "lz77",
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 11
+      }
+    },
+    {
+      "name": "result_disk/red/sheet.lz.png",
+      "ofs": 473,
+      "chunkSize": 40,
+      "props": [
+        "lz77",
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 11
+      }
+    },
+    {
+      "name": "179/sheet.lz.png",
+      "ofs": 796,
+      "chunkSize": 8,
+      "props": [
+        "lz77",
+        "4bpp",
+        "no_pal"
+      ],
+      "palette": {
+        "color": 0,
+        "id": 5
+      }
+    },
+    {
+      "name": "ocean/childre_ship/sheet.png",
+      "ofs": 512,
+      "chunkSize": 904,
+      "props": [
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 4
+      }
+    },
+    {
+      "name": "ocean/sea_level_button/sheet.png",
+      "ofs": 512,
+      "chunkSize": 96,
+      "props": [
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 4
+      }
+    },
+    {
+      "name": "ocean/182/sheet.png",
+      "ofs": 512,
+      "chunkSize": 232,
+      "props": [
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 4
+      }
+    },
+    {
+      "name": "ocean/childre_ship_sonic_wave/sheet.png",
+      "ofs": 512,
+      "chunkSize": 64,
+      "props": [
+        "4bpp",
+        "no_pal"
+      ],
+      "palette": {
+        "color": 0,
+        "id": 14
+      }
+    },
+    {
+      "name": "x/sheet.png",
+      "ofs": 512,
+      "chunkSize": 984,
+      "props": [
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 4
+      }
+    },
+    {
+      "name": "omega_zx_floating_rock/sheet.lz.png",
+      "ofs": 512,
+      "chunkSize": 248,
+      "props": [
+        "lz77",
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 9
+      }
+    },
+    {
+      "name": "186/sheet.lz.png",
+      "ofs": 512,
+      "chunkSize": 408,
+      "props": [
+        "lz77",
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 4
+      }
+    },
+    {
+      "name": "resistance/alouette/sheet.png",
+      "ofs": 512,
+      "chunkSize": 456,
+      "props": [
+        "4bpp"
+      ],
+      "palette": {
+        "color": 48,
+        "id": 4
+      },
+      "files": [
+        "resistance/alouette/sheet.4bpp",
+        "resistance/alouette/04.pal",
+        "resistance/alouette/05.pal",
+        "resistance/alouette/06.pal"
+      ]
+    },
+    {
+      "name": "resistance/kiss/sheet.lz.png",
+      "ofs": 512,
+      "chunkSize": 104,
+      "props": [
+        "lz77",
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 4
+      }
+    },
+    {
+      "name": "resistance/faucon/sheet.lz.png",
+      "ofs": 512,
+      "chunkSize": 160,
+      "props": [
+        "lz77",
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 4
+      }
+    },
+    {
+      "name": "resistance/hirondelle/sheet.lz.png",
+      "ofs": 512,
+      "chunkSize": 96,
+      "props": [
+        "lz77",
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 4
+      }
+    },
+    {
+      "name": "resistance/autruche/sheet.lz.png",
+      "ofs": 512,
+      "chunkSize": 120,
+      "props": [
+        "lz77",
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 4
+      }
+    },
+    {
+      "name": "resistance/rocinolle/sheet.lz.png",
+      "ofs": 512,
+      "chunkSize": 88,
+      "props": [
+        "lz77",
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 4
+      }
+    },
+    {
+      "name": "resistance/doigt/sheet.lz.png",
+      "ofs": 512,
+      "chunkSize": 120,
+      "props": [
+        "lz77",
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 4
+      }
+    },
+    {
+      "name": "resistance/cerveau/sheet.lz.png",
+      "ofs": 512,
+      "chunkSize": 512,
+      "props": [
+        "lz77",
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 4
+      }
+    },
+    {
+      "name": "resistance/hibou/sheet.lz.png",
+      "ofs": 512,
+      "chunkSize": 328,
+      "props": [
+        "lz77",
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 4
+      }
+    },
+    {
+      "name": "resistance/andrew/sheet.lz.png",
+      "ofs": 512,
+      "chunkSize": 320,
+      "props": [
+        "lz77",
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 4
+      }
+    },
+    {
+      "name": "resistance/menart/sheet.lz.png",
+      "ofs": 512,
+      "chunkSize": 96,
+      "props": [
+        "lz77",
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 4
+      }
+    },
+    {
+      "name": "resistance/perroquiet/sheet.lz.png",
+      "ofs": 512,
+      "chunkSize": 192,
+      "props": [
+        "lz77",
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 4
+      }
+    },
+    {
+      "name": "resistance/pic/sheet.lz.png",
+      "ofs": 512,
+      "chunkSize": 104,
+      "props": [
+        "lz77",
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 4
+      }
+    },
+    {
+      "name": "smoke/sheet.png",
+      "ofs": 512,
+      "chunkSize": 320,
+      "props": [
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 4
+      }
+    },
+    {
+      "name": "resistance/operator/sheet.lz.png",
+      "ofs": 544,
+      "chunkSize": 168,
+      "props": [
+        "lz77",
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 5
+      }
+    },
+    {
+      "name": "resistance_base/202/sheet.lz.png",
+      "ofs": 565,
+      "chunkSize": 192,
+      "props": [
+        "lz77",
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 6
+      }
+    },
+    {
+      "name": "iceblock/sheet.png",
+      "ofs": 512,
+      "chunkSize": 512,
+      "props": [
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 4
+      }
+    },
+    {
+      "name": "resistance_base/204/sheet.lz.png",
+      "ofs": 996,
+      "chunkSize": 144,
+      "props": [
+        "lz77",
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 7
+      }
+    },
+    {
+      "name": "mission_mugshot/first4/sheet.lz.png",
+      "ofs": 740,
+      "chunkSize": 2048,
+      "props": [
+        "lz77",
+        "4bpp"
+      ],
+      "palette": {
+        "color": 64,
+        "id": 8
+      },
+      "files": [
+        "mission_mugshot/first4/sheet.lz",
+        "mission_mugshot/first4/08.pal",
+        "mission_mugshot/first4/09.pal",
+        "mission_mugshot/first4/10.pal",
+        "mission_mugshot/first4/11.pal"
+      ]
+    },
+    {
+      "name": "mission_mugshot/middle4/sheet.lz.png",
+      "ofs": 740,
+      "chunkSize": 2048,
+      "props": [
+        "lz77",
+        "4bpp"
+      ],
+      "palette": {
+        "color": 64,
+        "id": 8
+      },
+      "files": [
+        "mission_mugshot/middle4/sheet.lz",
+        "mission_mugshot/middle4/08.pal",
+        "mission_mugshot/middle4/09.pal",
+        "mission_mugshot/middle4/10.pal",
+        "mission_mugshot/middle4/11.pal"
+      ]
+    },
+    {
+      "name": "mission_mugshot/done/sheet.notrim.lz.png",
+      "ofs": 676,
+      "chunkSize": 512,
+      "props": [
+        "lz77",
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 7
+      }
+    },
+    {
+      "name": "mission_mugshot/later4/sheet.lz.png",
+      "ofs": 740,
+      "chunkSize": 2048,
+      "props": [
+        "lz77",
+        "4bpp"
+      ],
+      "palette": {
+        "color": 64,
+        "id": 8
+      },
+      "files": [
+        "mission_mugshot/later4/sheet.lz",
+        "mission_mugshot/later4/08.pal",
+        "mission_mugshot/later4/09.pal",
+        "mission_mugshot/later4/10.pal",
+        "mission_mugshot/later4/11.pal"
+      ]
+    },
+    {
+      "name": "number/sheet.png",
+      "ofs": 368,
+      "chunkSize": 80,
+      "props": [
+        "4bpp",
+        "no_pal"
+      ],
+      "palette": {
+        "color": 0,
+        "id": 15
+      }
+    },
+    {
+      "name": "lever_switch/yellow/sheet.png",
+      "ofs": 512,
+      "chunkSize": 216,
+      "props": [
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 4
+      }
+    },
+    {
+      "name": "menu/border/sheet.png",
+      "ofs": 512,
+      "chunkSize": 8,
+      "props": [
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 4
+      }
+    },
+    {
+      "name": "enemy/pantheon_fist/sheet.png",
+      "ofs": 512,
+      "chunkSize": 1056,
+      "props": [
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 4
+      }
+    },
+    {
+      "name": "enemy/cattatank/sheet.png",
+      "ofs": 512,
+      "chunkSize": 600,
+      "props": [
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 4
+      }
+    },
+    {
+      "name": "enemy/spearook/sheet.png",
+      "ofs": 512,
+      "chunkSize": 1320,
+      "props": [
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 4
+      }
+    },
+    {
+      "name": "215/sheet.png",
+      "ofs": 768,
+      "chunkSize": 216,
+      "props": [
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 5
+      }
+    },
+    {
+      "name": "resistance_base/cat/216/sheet.png",
+      "ofs": 512,
+      "chunkSize": 224,
+      "props": [
+        "4bpp"
+      ],
+      "palette": {
+        "color": 48,
+        "id": 4
+      },
+      "files": [
+        "resistance_base/cat/216/sheet.4bpp",
+        "resistance_base/cat/216/04.pal",
+        "resistance_base/cat/216/05.pal",
+        "resistance_base/cat/216/06.pal"
+      ]
+    },
+    {
+      "name": "resistance_base/cat/217/sheet.png",
+      "ofs": 512,
+      "chunkSize": 136,
+      "props": [
+        "4bpp"
+      ],
+      "palette": {
+        "color": 48,
+        "id": 4
+      },
+      "files": [
+        "resistance_base/cat/217/sheet.4bpp",
+        "resistance_base/cat/217/04.pal",
+        "resistance_base/cat/217/05.pal",
+        "resistance_base/cat/217/06.pal"
+      ]
+    },
+    {
+      "name": "resistance_base/seagull/sheet.png",
+      "ofs": 512,
+      "chunkSize": 376,
+      "props": [
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 4
+      }
+    },
+    {
+      "name": "enemy/shellcrawler/sheet.png",
+      "ofs": 512,
+      "chunkSize": 1016,
+      "props": [
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 4
+      }
+    },
+    {
+      "name": "enemy/cannon_hopper/sheet.png",
+      "ofs": 512,
+      "chunkSize": 448,
+      "props": [
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 4
+      }
+    },
+    {
+      "name": "enemy/mettaur/sheet.png",
+      "ofs": 512,
+      "chunkSize": 752,
+      "props": [
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 4
+      }
+    },
+    {
+      "name": "structural_steel/sheet.png",
+      "ofs": 512,
+      "chunkSize": 448,
+      "props": [
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 4
+      }
+    },
+    {
+      "name": "light_switch/sheet.png",
+      "ofs": 512,
+      "chunkSize": 168,
+      "props": [
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 4
+      }
+    },
+    {
+      "name": "rubble/sheet.png",
+      "ofs": 512,
+      "chunkSize": 176,
+      "props": [
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 4
+      }
+    },
+    {
+      "name": "omega_white/body/sheet.lz.png",
+      "ofs": 512,
+      "chunkSize": 1952,
+      "props": [
+        "lz77",
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 4
+      }
+    },
+    {
+      "name": "container/crashed/0.png",
+      "ofs": 380,
+      "chunkSize": 208,
+      "props": [
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 2
+      }
+    },
+    {
+      "name": "container/crashed/1.png",
+      "ofs": 380,
+      "chunkSize": 208,
+      "props": [
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 2
+      }
+    },
+    {
+      "name": "container/crashed/2.png",
+      "ofs": 380,
+      "chunkSize": 208,
+      "props": [
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 2
+      }
+    },
+    {
+      "name": "subtank/sheet.png",
+      "ofs": 380,
+      "chunkSize": 48,
+      "props": [
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 2
+      }
+    },
+    {
+      "name": "resistance_base/flying_fish/sheet.png",
+      "ofs": 512,
+      "chunkSize": 152,
+      "props": [
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 4
+      }
+    },
+    {
+      "name": "resistance_base/plant/sheet.png",
+      "ofs": 512,
+      "chunkSize": 112,
+      "props": [
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 4
+      }
+    },
+    {
+      "name": "ciel_minigame/232/sheet.lz.png",
+      "ofs": 512,
+      "chunkSize": 256,
+      "props": [
+        "lz77",
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 4
+      }
+    },
+    {
+      "name": "ciel_minigame/233/sheet.lz.png",
+      "ofs": 556,
+      "chunkSize": 568,
+      "props": [
+        "lz77",
+        "4bpp"
+      ],
+      "palette": {
+        "color": 80,
+        "id": 5
+      },
+      "files": [
+        "ciel_minigame/233/sheet.lz",
+        "ciel_minigame/233/05.pal",
+        "ciel_minigame/233/06.pal",
+        "ciel_minigame/233/07.pal",
+        "ciel_minigame/233/08.pal",
+        "ciel_minigame/233/09.pal"
+      ]
+    },
+    {
+      "name": "ciel_minigame/234/sheet.lz.png",
+      "ofs": 628,
+      "chunkSize": 448,
+      "props": [
+        "lz77",
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 10
+      }
+    },
+    {
+      "name": "235/sheet.png",
+      "ofs": 0,
+      "chunkSize": 256,
+      "props": [
+        "4bpp",
+        "no_pal"
+      ],
+      "palette": {
+        "color": 0,
+        "id": 14
+      }
+    },
+    {
+      "name": "spark/sheet.lz.png",
+      "ofs": 968,
+      "chunkSize": 448,
+      "props": [
+        "lz77",
+        "4bpp",
+        "no_pal"
+      ],
+      "palette": {
+        "color": 0,
+        "id": 13
+      }
+    },
+    {
+      "name": "rock_237/sheet.lz.png",
+      "ofs": 912,
+      "chunkSize": 184,
+      "props": [
+        "lz77",
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 7
+      }
+    },
+    {
+      "name": "238/sheet.png",
+      "ofs": 362,
+      "chunkSize": 112,
+      "props": [
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 15
+      }
+    },
+    {
+      "name": "fish/angel_fish/sheet.lz.png",
+      "ofs": 768,
+      "chunkSize": 312,
+      "props": [
+        "lz77",
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 5
+      }
+    },
+    {
+      "name": "fish/sea_bream/sheet.lz.png",
+      "ofs": 807,
+      "chunkSize": 392,
+      "props": [
+        "lz77",
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 6
+      }
+    },
+    {
+      "name": "fish/crab/sheet.lz.png",
+      "ofs": 856,
+      "chunkSize": 160,
+      "props": [
+        "lz77",
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 7
+      }
+    },
+    {
+      "name": "fish/school/sheet.lz.png",
+      "ofs": 876,
+      "chunkSize": 256,
+      "props": [
+        "lz77",
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 8
+      }
+    },
+    {
+      "name": "243/sheet.lz.png",
+      "ofs": 512,
+      "chunkSize": 96,
+      "props": [
+        "lz77",
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 7
+      }
+    },
+    {
+      "name": "copy_x_minigame_slot/sheet.lz.png",
+      "ofs": 942,
+      "chunkSize": 376,
+      "props": [
+        "lz77",
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 6
+      }
+    },
+    {
+      "name": "boss_human/hellbat/sheet.lz.png",
+      "ofs": 512,
+      "chunkSize": 216,
+      "props": [
+        "lz77",
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 4
+      }
+    },
+    {
+      "name": "boss_human/childre/sheet.lz.png",
+      "ofs": 512,
+      "chunkSize": 88,
+      "props": [
+        "lz77",
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 4
+      }
+    },
+    {
+      "name": "boss_human/blazin/sheet.lz.png",
+      "ofs": 512,
+      "chunkSize": 160,
+      "props": [
+        "lz77",
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 4
+      }
+    },
+    {
+      "name": "boss_human/deathtanz/sheet.lz.png",
+      "ofs": 512,
+      "chunkSize": 208,
+      "props": [
+        "lz77",
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 4
+      }
+    },
+    {
+      "name": "boss_human/glacierle/sheet.lz.png",
+      "ofs": 512,
+      "chunkSize": 144,
+      "props": [
+        "lz77",
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 4
+      }
+    },
+    {
+      "name": "boss_human/cubit/sheet.lz.png",
+      "ofs": 512,
+      "chunkSize": 160,
+      "props": [
+        "lz77",
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 4
+      }
+    },
+    {
+      "name": "boss_human/tretista/sheet.lz.png",
+      "ofs": 512,
+      "chunkSize": 328,
+      "props": [
+        "lz77",
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 4
+      }
+    },
+    {
+      "name": "boss_human/volteel/sheet.lz.png",
+      "ofs": 512,
+      "chunkSize": 168,
+      "props": [
+        "lz77",
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 4
+      }
+    },
+    {
+      "name": "253/sheet.png",
+      "ofs": 512,
+      "chunkSize": 72,
+      "props": [
+        "4bpp"
+      ],
+      "palette": {
+        "color": 16,
+        "id": 4
+      }
+    }
+  ],
+  "label": "gStaticMotionGraphics"
+}

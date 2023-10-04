@@ -55,11 +55,8 @@ extern const struct Graphic gGraphic_OpeningAnim2;
 extern const struct Palette gPalette_OpeningAnim2;
 
 void Process_Intro(struct Process* p);
+void Process_Game(struct Process* p);
 
 void SetIntroMode(struct Intro* intro, u32 mode);
-void FUN_080ed9c0(struct Intro* p);
-void minigameSelectScript(struct Intro* p);
-void FUN_080eddb8(struct Intro* p);
-void FUN_080edf04(struct Intro* p);
 
 #endif  // GUARD_RMZ3_INTRO_H

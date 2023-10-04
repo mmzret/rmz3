@@ -1581,7 +1581,7 @@ status:
 static bool32 Cmd_missionresult(struct VM* vm) {
   const struct Command* pc = vm->pc;
   if (pc->status == 0) {
-    prepareResultScreen(&gGameState.sceneState.result);
+    PrepareResultScreen(&gGameState.sceneState.result);
   } else {
     bool32 redo = result_0802400c(&gGameState.sceneState.result);
     if (redo == 1) {

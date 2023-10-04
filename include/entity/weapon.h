@@ -15,6 +15,20 @@ struct Weapon_b4 {
   u8 unk_c8[36];
 };
 
+struct Rod_b4 {
+  struct Zero *z;
+  u8 element;
+  u8 atk;
+  u8 unk_06;
+  u8 comboLv;
+  u8 unk_08;
+  u8 unk_09;
+  u8 unk_0a;
+  u8 unk_0b;
+  u8 unk_0c[8];
+  u8 unk_c8[36];
+};
+
 struct Buster_b4 {
   struct Zero *z;
   struct Coord c;

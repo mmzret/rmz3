@@ -2,8 +2,6 @@
 #include "enemy.h"
 #include "global.h"
 
-INCASM("asm/enemy/volcaire.inc");
-
 void Volcaire_Init(struct Enemy* p);
 void Volcaire_Update(struct Enemy* p);
 void Volcaire_Die(struct Enemy* p);
@@ -17,6 +15,166 @@ const EnemyRoutine gVolcaireRoutine = {
     [ENTITY_EXIT] =      (EnemyFunc)DeleteEntity,
 };
 // clang-format on
+
+s32 FUN_08077110(struct Enemy* p, s32 x) {
+  s32 dx;
+
+  if (x != 0) {
+    (p->s).coord.x += x;
+    if (x < 0) {
+      dx = PushoutToRight1((p->s).coord.x - PIXEL(2), (p->s).coord.y - PIXEL(8));
+      if (dx > 0) {
+        (p->s).coord.x += dx;
+        return 1;
+      }
+    } else {
+      dx = PushoutToLeft1((p->s).coord.x + PIXEL(2), (p->s).coord.y - PIXEL(8));
+      if (dx < 0) {
+        (p->s).coord.x += dx;
+        return 2;
+      }
+    }
+  }
+
+  return 0;
+}
+
+void FUN_08077174(struct Enemy* e) {
+  struct Enemy* p = (struct Enemy*)AllocEntityLast(gZakoHeaderPtr);
+  if (p != NULL) {
+    (p->s).taskCol = 24;
+    INIT_ZAKO_ROUTINE(p, ENEMY_VOLCAIRE);
+    (p->s).tileNum = 0;
+    (p->s).palID = 0;
+    (p->s).flags2 |= ENTITY_FLAGS2_B4;
+    (p->s).invincibleID = (p->s).uniqueID;
+    (p->s).work[0] = 1;
+    (p->s).coord.x = (e->s).coord.x;
+    (p->s).coord.y = (e->s).coord.y;
+    (p->s).unk_28 = &e->s;
+  }
+}
+
+void FUN_080771cc(struct Enemy* e, s32 x, s32 y, u8 n) {
+  struct Enemy* p = (struct Enemy*)AllocEntityFirst(gZakoHeaderPtr);
+  if (p != NULL) {
+    (p->s).taskCol = 24;
+    INIT_ZAKO_ROUTINE(p, ENEMY_VOLCAIRE);
+    (p->s).tileNum = 0;
+    (p->s).palID = 0;
+    (p->s).flags2 |= ENTITY_FLAGS2_B4;
+    (p->s).invincibleID = (p->s).uniqueID;
+    (p->s).work[0] = 2;
+    (p->s).coord.x = x;
+    (p->s).coord.y = y;
+    if (n == 0) {
+      (p->s).coord.x = x - PIXEL(2);
+      (p->s).coord.y = y + PIXEL(8);
+    } else {
+      (p->s).coord.x = x + PIXEL(2);
+      (p->s).coord.y = y + PIXEL(7);
+    }
+    (p->s).work[2] = n;
+    if (e != NULL) {
+      e->props.raw[4]++;
+    }
+    (p->s).unk_28 = &e->s;
+  }
+}
+
+static void onCollision(struct Body* body UNUSED, struct Coord* r1 UNUSED, struct Coord* r2 UNUSED) {
+  // NOP
+  return;
+}
+
+NAKED static bool8 FUN_08077260(struct Enemy* p) {
+  asm(".syntax unified\n\
+	push {r4, r5, lr}\n\
+	adds r2, r0, #0\n\
+	adds r3, r2, #0\n\
+	adds r3, #0x8c\n\
+	ldr r0, [r3]\n\
+	movs r1, #0x80\n\
+	lsls r1, r1, #2\n\
+	ands r0, r1\n\
+	cmp r0, #0\n\
+	beq _080772F0\n\
+	ldrb r4, [r2, #0x10]\n\
+	cmp r4, #1\n\
+	bne _080772B0\n\
+	ldr r1, _080772A8 @ =gEnemyFnTable\n\
+	ldrb r0, [r2, #9]\n\
+	lsls r0, r0, #2\n\
+	adds r0, r0, r1\n\
+	movs r5, #2\n\
+	str r5, [r2, #0xc]\n\
+	ldr r0, [r0]\n\
+	ldr r0, [r0, #8]\n\
+	str r0, [r2, #0x14]\n\
+	ldr r1, [r3]\n\
+	movs r0, #0x80\n\
+	lsls r0, r0, #9\n\
+	ands r0, r1\n\
+	cmp r0, #0\n\
+	bne _080772DC\n\
+	movs r0, #0x80\n\
+	lsls r0, r0, #0xa\n\
+	ands r0, r1\n\
+	cmp r0, #0\n\
+	beq _080772AC\n\
+	strb r5, [r2, #0xd]\n\
+	b _080772E6\n\
+	.align 2, 0\n\
+_080772A8: .4byte gEnemyFnTable\n\
+_080772AC:\n\
+	strb r0, [r2, #0xd]\n\
+	b _080772E6\n\
+_080772B0:\n\
+	ldr r1, [r2, #0x28]\n\
+	cmp r1, #0\n\
+	beq _080772BE\n\
+	adds r1, #0xb8\n\
+	ldrb r0, [r1]\n\
+	subs r0, #1\n\
+	strb r0, [r1]\n\
+_080772BE:\n\
+	ldr r1, _080772E0 @ =gEnemyFnTable\n\
+	ldrb r0, [r2, #9]\n\
+	lsls r0, r0, #2\n\
+	adds r0, r0, r1\n\
+	movs r4, #2\n\
+	str r4, [r2, #0xc]\n\
+	ldr r0, [r0]\n\
+	ldr r0, [r0, #8]\n\
+	str r0, [r2, #0x14]\n\
+	ldr r1, [r3]\n\
+	movs r0, #0x80\n\
+	lsls r0, r0, #0xa\n\
+	ands r1, r0\n\
+	cmp r1, #0\n\
+	beq _080772E4\n\
+_080772DC:\n\
+	strb r4, [r2, #0xd]\n\
+	b _080772E6\n\
+	.align 2, 0\n\
+_080772E0: .4byte gEnemyFnTable\n\
+_080772E4:\n\
+	strb r1, [r2, #0xd]\n\
+_080772E6:\n\
+	adds r0, r2, #0\n\
+	bl Volcaire_Die\n\
+	movs r0, #1\n\
+	b _080772F2\n\
+_080772F0:\n\
+	movs r0, #0\n\
+_080772F2:\n\
+	pop {r4, r5}\n\
+	pop {r1}\n\
+	bx r1\n\
+ .syntax divided\n");
+}
+
+INCASM("asm/enemy/volcaire.inc");
 
 // --------------------------------------------
 

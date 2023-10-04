@@ -74,8 +74,8 @@
       sprites/weapon/split_heaven/sheet/header.o (.rodata);
       sprites/weapon/throw_blade/sheet/header.o (.rodata);
       sprites/weapon/charge_saber_94/sheet/header.o (.rodata);
-      sprites/weapon/saber_95/sheet/header.o (.rodata);
-      sprites/weapon/saber_96/sheet/header.o (.rodata);
+      sprites/weapon/saber_walk/sheet/header.o (.rodata);
+      sprites/weapon/saber_dash/sheet/header.o (.rodata);
       sprites/weapon/gale_attack/sheet/header.o (.rodata);
       sprites/weapon/saber_98/sheet/header.o (.rodata);
       sprites/weapon/saber_99/sheet/header.o (.rodata);

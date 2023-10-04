@@ -23,7 +23,7 @@ struct ResultState {
 
 // ------------------------------------------------------------------------------------------------------------------------------------
 
-void prepareResultScreen(struct ResultState* p);
+void PrepareResultScreen(struct ResultState* p);
 bool32 result_0802400c(struct ResultState* p);
 
 #endif  // GUARD_RMZ3_RESULT_H

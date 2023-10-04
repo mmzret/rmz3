@@ -58,6 +58,8 @@ extern const ElfRoutine gElf10Routine;
 extern const ElfRoutine gElf11Routine;
 extern const ElfRoutine gBirdElfRoutine;
 
+extern const struct ElfBreedInfo gElfBreedInfo[CYBERELF_LENGTH];
+
 // --------------------------------------------
 
 void DeleteElf(struct Elf *p);
@@ -66,6 +68,7 @@ void clearUnlockedCyberElfDataHard(u8 *p);
 void unlockAllElvesForUltimate(u8 *p);
 
 void CreateSateliteElf(struct Zero *z, cyberelf_t id, bool8 isSatelite2);
+motion_t GetElfMotion(u8 category);
 
 struct Elf *CreateElf0(struct Zero *z, u8 breed, u8 availability, u8 _);
 struct Elf *CreateNurseBElf(struct Zero *z, u8 r1, u8 r2, u8 isSatelite2);

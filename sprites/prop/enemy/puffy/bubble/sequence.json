@@ -1,0 +1,127 @@
+{
+  "label": "gMotionCmd_SM66",
+  "data": [
+    [
+      {
+        "frameIdx": 0,
+        "duration": 4
+      },
+      {
+        "frameIdx": 1,
+        "duration": 5
+      },
+      {
+        "frameIdx": 2,
+        "duration": 6
+      },
+      {
+        "frameIdx": 3,
+        "duration": 6
+      },
+      {
+        "frameIdx": 2,
+        "duration": 6
+      },
+      {
+        "frameIdx": 4,
+        "duration": 6
+      },
+      {
+        "frameIdx": 2,
+        "duration": 254
+      }
+    ],
+    [
+      {
+        "frameIdx": 5,
+        "duration": 3
+      },
+      {
+        "frameIdx": 6,
+        "duration": 4
+      },
+      {
+        "frameIdx": 0,
+        "duration": 255
+      }
+    ],
+    [
+      {
+        "frameIdx": 7,
+        "duration": 4
+      },
+      {
+        "frameIdx": 8,
+        "duration": 5
+      },
+      {
+        "frameIdx": 9,
+        "duration": 7
+      },
+      {
+        "frameIdx": 10,
+        "duration": 7
+      },
+      {
+        "frameIdx": 9,
+        "duration": 7
+      },
+      {
+        "frameIdx": 11,
+        "duration": 7
+      },
+      {
+        "frameIdx": 2,
+        "duration": 254
+      }
+    ],
+    [
+      {
+        "frameIdx": 8,
+        "duration": 5
+      },
+      {
+        "frameIdx": 7,
+        "duration": 4
+      },
+      {
+        "frameIdx": 0,
+        "duration": 255
+      }
+    ],
+    [
+      {
+        "frameIdx": 12,
+        "duration": 4
+      },
+      {
+        "frameIdx": 13,
+        "duration": 1
+      },
+      {
+        "frameIdx": 14,
+        "duration": 6
+      },
+      {
+        "frameIdx": 15,
+        "duration": 7
+      },
+      {
+        "frameIdx": 16,
+        "duration": 6
+      },
+      {
+        "frameIdx": 17,
+        "duration": 6
+      },
+      {
+        "frameIdx": 18,
+        "duration": 5
+      },
+      {
+        "frameIdx": 0,
+        "duration": 255
+      }
+    ]
+  ]
+}

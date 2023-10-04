@@ -35,6 +35,8 @@ extern const MapItemRoutine gMapItemRoutine;
 extern const MapItemRoutine gMapDiskRoutine;
 
 void DeleteMapItem(struct MapItem *p);
+
+struct MapItem *CreateMapItem(u8 itemID, struct Coord *c, u8 param_3);
 struct MapItem *CreateMapDisk(u8 diskNo, struct Coord *c, u8 r2);
 
 #endif  // GUARD_RMZ3_MAP_ITEM_H

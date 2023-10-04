@@ -144,7 +144,8 @@
       asm/scripts/todo.o (.rodata);
       asm/scripts/resistance_base.o (.rodata);
 		
-		src/data/reward.o (.rodata);
+		src/result.o (.rodata);
+		src/drop.o (.rodata);
 		src/element.o (.rodata);
 
 		src/zero.o (.rodata);
@@ -218,7 +219,7 @@
       src/enemy/batring.o (.rodata);
       src/enemy/piller_cannon.o (.rodata);
       src/enemy/grand_cannon.o (.rodata);
-      src/enemy/shrimporin.o (.rodata);
+      src/enemy/shrimpolin.o (.rodata);
       src/enemy/omega_white_hand.o (.rodata);
       src/enemy/flopper.o (.rodata);
       src/enemy/lamplort.o (.rodata);
@@ -490,7 +491,7 @@
 		src/blink.o (.rodata);
 
 		asm/sprite_prop.o (.rodata);
-		src/data/graphic_table/sprite_prop.o (.rodata);
+    sprites/prop/header.o (.rodata);
 		FILL(0xFF)
 		. += 40;
 

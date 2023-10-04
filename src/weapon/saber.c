@@ -1,11 +1,11 @@
 #include "collision.h"
 #include "entity.h"
-#include "vfx.h"
 #include "global.h"
 #include "mission.h"
 #include "motion.h"
 #include "overworld.h"
 #include "sound.h"
+#include "vfx.h"
 #include "weapon.h"
 #include "zero.h"
 

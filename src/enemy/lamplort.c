@@ -1,8 +1,6 @@
 #include "collision.h"
-#include "global.h"
 #include "enemy.h"
-
-INCASM("asm/enemy/lamplort.inc");
+#include "global.h"
 
 void Lamplort_Init(struct Enemy *p);
 void Lamplort_Update(struct Enemy *p);
@@ -18,6 +16,23 @@ const EnemyRoutine gLamplortRoutine = {
     [ENTITY_EXIT] =      (EnemyFunc)DeleteEntity,
 };
 // clang-format on
+
+struct Enemy *CreateLamplort(struct Coord *c, u8 n) {
+  struct Enemy *p = (struct Enemy *)AllocEntityFirst(gZakoHeaderPtr);
+  if (p != NULL) {
+    (p->s).taskCol = 24;
+    INIT_ZAKO_ROUTINE(p, ENEMY_LAMPLORT);
+    (p->s).tileNum = 0;
+    (p->s).palID = 0;
+    (p->s).flags2 |= ENTITY_FLAGS2_B4;
+    (p->s).invincibleID = (p->s).uniqueID;
+    (p->s).coord = *c;
+    (p->s).work[0] = n;
+  }
+  return p;
+}
+
+INCASM("asm/enemy/lamplort.inc");
 
 void FUN_0806c81c(struct Enemy *p);
 void FUN_0806c824(struct Enemy *p);

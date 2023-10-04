@@ -52,7 +52,7 @@ static void Solid53_Update(struct Solid* p) {
       (p->s).flags |= DISPLAY;
       (p->s).flags |= FLIPABLE;
       InitNonAffineMotion(&p->s);
-      SetMotion(&p->s, MOTION(0xB6, 0x01));
+      SetMotion(&p->s, MOTION(SM182_UNK, 1));
       SET_SOLID_ROUTINE(p, ENTITY_DIE);
       Solid53_Die(p);
     }
@@ -65,7 +65,6 @@ static const struct Collision sCollision = {
   kind : DRP,
   faction : FACTION_ENEMY,
   special : 0,
-  damage : 0,
   unk_04 : 0x00,
   element : 0x78,
   nature : 0x00,

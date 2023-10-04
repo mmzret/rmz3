@@ -82,7 +82,7 @@ static void ElfMenuLoop_Init(struct GameState* g) {
     (&((g->sceneState).menu).elf)->displayed[i] = 0;
   }
   (&((g->sceneState).menu).elf)->y = 0;
-  if (((&z->unk_b4)->status).menuZeroColor == 1) {  // hard
+  if (((&z->unk_b4)->status).menuZeroColor == MZC_HARD) {
     (&((g->sceneState).menu).elf)->mode = 4;
   } else {
     (&((g->sceneState).menu).elf)->mode = 0;
@@ -105,7 +105,7 @@ static void ElfMenuLoop_Init(struct GameState* g) {
   LOAD_STATIC_GRAPHIC(82);
   LOAD_STATIC_GRAPHIC(83);
   LOAD_STATIC_GRAPHIC(83);
-  if (((&z->unk_b4)->status).menuZeroColor == 1) {  // hard
+  if (((&z->unk_b4)->status).menuZeroColor == MZC_HARD) {
     CreateElfMenuItem(g, 4, 0);
   } else {
     for (i = 0; i < 5; i++) {

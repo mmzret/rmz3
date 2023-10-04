@@ -8,7 +8,7 @@ void FUN_080250b8(void) {
   wElement.unk_0 = 0;
   setWramElement(0);
   wElement.unk_2 = 0;
-  LOAD_STATIC_GRAPHIC(SM028_UNK);
+  LOAD_STATIC_GRAPHIC(SM028_ICE_EFFECT);
 }
 
 void FUN_0802511c(void) {

@@ -80,7 +80,7 @@ clean-code: clean-src
 $(ROM): $(ELF)
 	@$(OBJCOPY) -O binary $< $@
 
-$(ELF): %.elf: $(ASOBJFILE) $(COBJFILE) midi ld_script.ld $(GFX_HDR)
+$(ELF): %.elf: $(ASOBJFILE) $(COBJFILE) midi ld_script.ld graphic-headers
 	@$(LD) -T $(LDSCRIPT) -Map $*.map -o $@ $(ASOBJFILE) $(COBJFILE) $(GFX_HDR) $(LDFLAGS)
 
 $(COBJFILE): %.o: %.c graphics stage

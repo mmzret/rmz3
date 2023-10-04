@@ -61,7 +61,7 @@ NAKED static void Elf6_Init(struct Elf* e) {
 	orrs r0, r1\n\
 	strb r0, [r6, #0xa]\n\
 	movs r0, #2\n\
-	bl createElfAction\n\
+	bl GetElfMotion\n\
 	adds r1, r0, #0\n\
 	lsls r1, r1, #0x10\n\
 	lsrs r1, r1, #0x10\n\

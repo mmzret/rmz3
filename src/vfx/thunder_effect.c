@@ -35,7 +35,7 @@ struct VFX* CreateThunderEffect(struct Entity* friend, struct Coord* c, u8 r2) {
 
 static void Ghost9_Init(struct VFX* p) {
   InitNonAffineMotion(&p->s);
-  SetMotion(&p->s, MOTION(SM026_UNK, 0x05));
+  SetMotion(&p->s, MOTION(SM026_THUNDER_EFFECT, 5));
   (p->s).flags |= DISPLAY;
   SET_VFX_ROUTINE(p, ENTITY_MAIN);
   Ghost9_Update(p);

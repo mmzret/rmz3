@@ -124,4 +124,6 @@ void ScalerotSprite(struct Sprite *s, s32 angle);
 void UpdateEntityPaletteID(struct Entity *p);
 void PaintEntityWhite(struct Entity *p);
 
+bool32 isKilled(struct Entity *p);
+
 #endif  // GUARD_RMZ3_ENTITY_H

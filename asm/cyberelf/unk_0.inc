@@ -38,7 +38,7 @@ Elf0_Init: @ 0x080E1D30
 	orrs r4, r0
 	strb r4, [r7, #0xa]
 	movs r0, #0
-	bl createElfAction
+	bl GetElfMotion
 	adds r1, r0, #0
 	lsls r1, r1, #0x10
 	lsrs r1, r1, #0x10

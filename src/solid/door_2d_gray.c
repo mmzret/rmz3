@@ -155,7 +155,7 @@ _080D0474: .4byte gStageRun\n\
 static void FUN_080d0478(struct Solid* p) {
   switch ((p->s).mode[2]) {
     case 0: {
-      SetMotion(&p->s, MOTION(0x7a, 0x00));
+      SetMotion(&p->s, MOTION(SM122_DOOR_2D_GRAY_V, 0));
       INIT_BODY(p, &sCollisions[0], 0, onCollision);
       (p->s).mode[2]++;
       FALLTHROUGH;

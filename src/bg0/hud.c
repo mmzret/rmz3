@@ -15,12 +15,12 @@ static void drawZeroHPWeaponIcon(void* p);
 static void FUN_080ea3c8(void* p);
 static void drawLeftTime(struct HUD* p);
 
-void ResetHUD(void* p) {
-  gHUD.bg0 = p;
+void ResetHUD(u16* bg0) {
+  gHUD.bg0 = bg0;
   gHUD.unk_02 = 0;
   gHUD.z = NULL;
   gHUD.unk_0c = NULL;
-  gHUD.timeLeft = 0;
+  gHUD.timeLeft = NULL;
 }
 
 void DrawStatus(void) {
@@ -52,7 +52,7 @@ void DrawStatus(void) {
 }
 
 void DrawLeftTime(void) {
-  if (gHUD.timeLeft != 0) {
+  if (gHUD.timeLeft != NULL) {
     gWindowRegBuffer.unk_0c[2] |= 1;
     drawLeftTime(&gHUD);
   }
@@ -468,132 +468,37 @@ _080EA4EC: .4byte 0x12031202\n\
  .syntax divided\n");
 }
 
-NAKED static void drawLeftTime(struct HUD* p) {
-  asm(".syntax unified\n\
-	push {r4, r5, r6, r7, lr}\n\
-	mov r7, sb\n\
-	mov r6, r8\n\
-	push {r6, r7}\n\
-	ldr r7, [r0]\n\
-	ldr r3, _080EA5EC @ =gVideoRegBuffer\n\
-	ldrh r2, [r3]\n\
-	movs r4, #0x80\n\
-	lsls r4, r4, #1\n\
-	adds r1, r4, #0\n\
-	orrs r1, r2\n\
-	strh r1, [r3]\n\
-	ldr r0, [r0, #0x10]\n\
-	ldr r0, [r0]\n\
-	mov r8, r0\n\
-	movs r1, #0x96\n\
-	lsls r1, r1, #2\n\
-	bl __divsi3\n\
-	adds r2, r7, #0\n\
-	adds r2, #0x68\n\
-	lsls r0, r0, #1\n\
-	movs r1, #0x9c\n\
-	lsls r1, r1, #5\n\
-	adds r6, r1, #0\n\
-	adds r1, r0, r6\n\
-	strh r1, [r2]\n\
-	adds r2, #2\n\
-	ldr r4, _080EA5F0 @ =0x00001381\n\
-	adds r5, r4, #0\n\
-	adds r1, r0, r5\n\
-	strh r1, [r2]\n\
-	adds r2, #0x3e\n\
-	ldr r1, _080EA5F4 @ =0x00001395\n\
-	adds r4, r1, #0\n\
-	adds r1, r0, r4\n\
-	strh r1, [r2]\n\
-	adds r1, r7, #0\n\
-	adds r1, #0xaa\n\
-	ldr r2, _080EA5F8 @ =0x00001396\n\
-	mov sb, r2\n\
-	add r0, sb\n\
-	strh r0, [r1]\n\
-	mov r0, r8\n\
-	movs r1, #0x3c\n\
-	bl __divsi3\n\
-	movs r1, #0xa\n\
-	bl __modsi3\n\
-	adds r2, r7, #0\n\
-	adds r2, #0x6c\n\
-	lsls r0, r0, #1\n\
-	adds r1, r0, r6\n\
-	strh r1, [r2]\n\
-	adds r2, #2\n\
-	adds r1, r0, r5\n\
-	strh r1, [r2]\n\
-	adds r2, #0x3e\n\
-	adds r1, r0, r4\n\
-	strh r1, [r2]\n\
-	adds r1, r7, #0\n\
-	adds r1, #0xae\n\
-	add r0, sb\n\
-	strh r0, [r1]\n\
-	subs r1, #0x3e\n\
-	ldr r2, _080EA5FC @ =0x00001394\n\
-	adds r0, r2, #0\n\
-	strh r0, [r1]\n\
-	adds r1, #0x40\n\
-	adds r2, #0x15\n\
-	adds r0, r2, #0\n\
-	strh r0, [r1]\n\
-	mov r0, r8\n\
-	movs r1, #0x3c\n\
-	bl __modsi3\n\
-	mov r8, r0\n\
-	movs r1, #6\n\
-	bl __divsi3\n\
-	adds r2, r7, #0\n\
-	adds r2, #0x72\n\
-	lsls r0, r0, #1\n\
-	adds r1, r0, r6\n\
-	strh r1, [r2]\n\
-	adds r2, #2\n\
-	adds r1, r0, r5\n\
-	strh r1, [r2]\n\
-	adds r2, #0x3e\n\
-	adds r1, r0, r4\n\
-	strh r1, [r2]\n\
-	adds r1, r7, #0\n\
-	adds r1, #0xb4\n\
-	add r0, sb\n\
-	strh r0, [r1]\n\
-	movs r0, #0x64\n\
-	mov r1, r8\n\
-	muls r1, r0, r1\n\
-	adds r0, r1, #0\n\
-	movs r1, #0x3c\n\
-	bl __divsi3\n\
-	movs r1, #0xa\n\
-	bl __modsi3\n\
-	adds r1, r7, #0\n\
-	adds r1, #0x76\n\
-	lsls r0, r0, #1\n\
-	adds r6, r0, r6\n\
-	strh r6, [r1]\n\
-	adds r1, #2\n\
-	adds r5, r0, r5\n\
-	strh r5, [r1]\n\
-	adds r1, #0x3e\n\
-	adds r4, r0, r4\n\
-	strh r4, [r1]\n\
-	adds r1, #2\n\
-	add r0, sb\n\
-	strh r0, [r1]\n\
-	pop {r3, r4}\n\
-	mov r8, r3\n\
-	mov sb, r4\n\
-	pop {r4, r5, r6, r7}\n\
-	pop {r0}\n\
-	bx r0\n\
-	.align 2, 0\n\
-_080EA5EC: .4byte gVideoRegBuffer\n\
-_080EA5F0: .4byte 0x00001381\n\
-_080EA5F4: .4byte 0x00001395\n\
-_080EA5F8: .4byte 0x00001396\n\
-_080EA5FC: .4byte 0x00001394\n\
- .syntax divided\n");
+static void drawLeftTime(struct HUD* hud) {
+  s32 timeLeft;
+  s32 a, b, c, d;
+  u16* bg0 = hud->bg0;
+  gVideoRegBuffer.dispcnt |= DISPCNT_BG0_ON;
+  timeLeft = *hud->timeLeft;
+
+  a = (timeLeft / 600);
+  bg0[52] = (a << 1) + 0x1380;
+  bg0[53] = (a << 1) + 0x1381;
+  bg0[52 + 32] = (a << 1) + 0x1395;
+  bg0[53 + 32] = (a << 1) + 0x1396;
+
+  b = ((timeLeft / 60) % 10);
+  bg0[54] = (b << 1) + 0x1380;
+  bg0[55] = (b << 1) + 0x1381;
+  bg0[54 + 32] = (b << 1) + 0x1395;
+  bg0[55 + 32] = (b << 1) + 0x1396;
+  bg0[56] = 0x1394;
+  bg0[88] = 0x1394 + 0x15;
+
+  timeLeft %= 60;
+  c = (timeLeft / 6);
+  bg0[57] = (c << 1) + 0x1380;
+  bg0[58] = (c << 1) + 0x1381;
+  bg0[57 + 32] = (c << 1) + 0x1395;
+  bg0[58 + 32] = (c << 1) + 0x1396;
+
+  d = (((timeLeft * 100) / 60) % 10);
+  bg0[59] = (d << 1) + 0x1380;
+  bg0[60] = (d << 1) + 0x1381;
+  bg0[59 + 32] = (d << 1) + 0x1395;
+  bg0[60 + 32] = (d << 1) + 0x1396;
 }

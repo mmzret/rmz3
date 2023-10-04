@@ -107,7 +107,7 @@ const struct EntityTemplate gVolcanoEntity[51] = {
         {
             1,
             ENTITY_ENEMY,
-            11,
+            ENEMY_GYRO_CANNON,
             0,
             0,
             1,
@@ -118,7 +118,7 @@ const struct EntityTemplate gVolcanoEntity[51] = {
         {
             1,
             ENTITY_SOLID,
-            7,
+            SOLID_LAVA_GEYSER,
             0,
             0,
             0,
@@ -129,7 +129,7 @@ const struct EntityTemplate gVolcanoEntity[51] = {
         {
             1,
             ENTITY_SOLID,
-            7,
+            SOLID_LAVA_GEYSER,
             1,
             0,
             0,
@@ -140,7 +140,7 @@ const struct EntityTemplate gVolcanoEntity[51] = {
         {
             1,
             ENTITY_SOLID,
-            7,
+            SOLID_LAVA_GEYSER,
             2,
             0,
             0,
@@ -151,7 +151,7 @@ const struct EntityTemplate gVolcanoEntity[51] = {
         {
             1,
             ENTITY_SOLID,
-            7,
+            SOLID_LAVA_GEYSER,
             3,
             0,
             0,
@@ -162,7 +162,7 @@ const struct EntityTemplate gVolcanoEntity[51] = {
         {
             1,
             ENTITY_SOLID,
-            7,
+            SOLID_LAVA_GEYSER,
             4,
             0,
             0,
@@ -173,7 +173,7 @@ const struct EntityTemplate gVolcanoEntity[51] = {
         {
             1,
             ENTITY_SOLID,
-            7,
+            SOLID_LAVA_GEYSER,
             5,
             0,
             0,
@@ -184,7 +184,7 @@ const struct EntityTemplate gVolcanoEntity[51] = {
         {
             1,
             ENTITY_SOLID,
-            7,
+            SOLID_LAVA_GEYSER,
             6,
             0,
             0,
@@ -195,7 +195,7 @@ const struct EntityTemplate gVolcanoEntity[51] = {
         {
             1,
             ENTITY_SOLID,
-            7,
+            SOLID_LAVA_GEYSER,
             7,
             0,
             0,
@@ -206,7 +206,7 @@ const struct EntityTemplate gVolcanoEntity[51] = {
         {
             1,
             ENTITY_SOLID,
-            7,
+            SOLID_LAVA_GEYSER,
             8,
             0,
             0,
@@ -217,7 +217,7 @@ const struct EntityTemplate gVolcanoEntity[51] = {
         {
             1,
             ENTITY_SOLID,
-            7,
+            SOLID_LAVA_GEYSER,
             9,
             0,
             0,
@@ -228,7 +228,7 @@ const struct EntityTemplate gVolcanoEntity[51] = {
         {
             1,
             ENTITY_SOLID,
-            7,
+            SOLID_LAVA_GEYSER,
             10,
             0,
             0,
@@ -239,7 +239,7 @@ const struct EntityTemplate gVolcanoEntity[51] = {
         {
             1,
             ENTITY_SOLID,
-            7,
+            SOLID_LAVA_GEYSER,
             11,
             0,
             0,
@@ -250,7 +250,7 @@ const struct EntityTemplate gVolcanoEntity[51] = {
         {
             1,
             ENTITY_ENEMY,
-            1,
+            ENEMY_P_HUNTER,
             0,
             0,
             1,
@@ -261,7 +261,7 @@ const struct EntityTemplate gVolcanoEntity[51] = {
         {
             1,
             ENTITY_ENEMY,
-            0,
+            ENEMY_P_GUARDIAN,
             0,
             0,
             1,
@@ -272,7 +272,7 @@ const struct EntityTemplate gVolcanoEntity[51] = {
         {
             1,
             ENTITY_ENEMY,
-            24,
+            ENEMY_VOLCAIRE,
             0,
             0,
             1,
@@ -283,7 +283,7 @@ const struct EntityTemplate gVolcanoEntity[51] = {
         {
             1,
             ENTITY_SOLID,
-            5,
+            SOLID_HEAVY_CANNON,
             0,
             0,
             1,
@@ -294,7 +294,7 @@ const struct EntityTemplate gVolcanoEntity[51] = {
         {
             1,
             ENTITY_SOLID,
-            5,
+            SOLID_HEAVY_CANNON,
             1,
             0,
             1,
@@ -305,7 +305,7 @@ const struct EntityTemplate gVolcanoEntity[51] = {
         {
             1,
             ENTITY_SOLID,
-            5,
+            SOLID_HEAVY_CANNON,
             2,
             0,
             1,
@@ -316,7 +316,7 @@ const struct EntityTemplate gVolcanoEntity[51] = {
         {
             1,
             ENTITY_ENEMY,
-            10,
+            ENEMY_LAMPLORT,
             0,
             0,
             1,
@@ -327,7 +327,7 @@ const struct EntityTemplate gVolcanoEntity[51] = {
         {
             1,
             ENTITY_ENEMY,
-            10,
+            ENEMY_LAMPLORT,
             1,
             0,
             1,
@@ -338,7 +338,7 @@ const struct EntityTemplate gVolcanoEntity[51] = {
         {
             1,
             ENTITY_ENEMY,
-            14,
+            ENEMY_14,
             0,
             0,
             1,
@@ -349,7 +349,7 @@ const struct EntityTemplate gVolcanoEntity[51] = {
         {
             1,
             ENTITY_ENEMY,
-            14,
+            ENEMY_14,
             1,
             0,
             1,
@@ -360,7 +360,7 @@ const struct EntityTemplate gVolcanoEntity[51] = {
         {
             1,
             ENTITY_ENEMY,
-            14,
+            ENEMY_14,
             2,
             0,
             1,
@@ -371,7 +371,7 @@ const struct EntityTemplate gVolcanoEntity[51] = {
         {
             1,
             ENTITY_ENEMY,
-            14,
+            ENEMY_14,
             3,
             0,
             1,
@@ -382,7 +382,7 @@ const struct EntityTemplate gVolcanoEntity[51] = {
         {
             1,
             ENTITY_ENEMY,
-            14,
+            ENEMY_14,
             0,
             1,
             1,
@@ -393,7 +393,7 @@ const struct EntityTemplate gVolcanoEntity[51] = {
         {
             1,
             ENTITY_ENEMY,
-            14,
+            ENEMY_14,
             1,
             1,
             1,
@@ -404,7 +404,7 @@ const struct EntityTemplate gVolcanoEntity[51] = {
         {
             1,
             ENTITY_ENEMY,
-            14,
+            ENEMY_14,
             2,
             1,
             1,
@@ -415,7 +415,7 @@ const struct EntityTemplate gVolcanoEntity[51] = {
         {
             1,
             ENTITY_ENEMY,
-            14,
+            ENEMY_14,
             3,
             1,
             1,
@@ -470,7 +470,7 @@ const struct EntityTemplate gVolcanoEntity[51] = {
         {
             2,
             ENTITY_SOLID,
-            35,
+            SOLID_CONTAINER,
             1,
             8,
             0,
@@ -481,7 +481,7 @@ const struct EntityTemplate gVolcanoEntity[51] = {
         {
             2,
             ENTITY_SOLID,
-            35,
+            SOLID_CONTAINER,
             1,
             72,
             0,
@@ -492,7 +492,7 @@ const struct EntityTemplate gVolcanoEntity[51] = {
         {
             2,
             ENTITY_SOLID,
-            35,
+            SOLID_CONTAINER,
             1,
             102,
             0,
@@ -503,7 +503,7 @@ const struct EntityTemplate gVolcanoEntity[51] = {
         {
             2,
             ENTITY_SOLID,
-            35,
+            SOLID_CONTAINER,
             1,
             254,
             0,
@@ -514,7 +514,7 @@ const struct EntityTemplate gVolcanoEntity[51] = {
         {
             2,
             ENTITY_SOLID,
-            35,
+            SOLID_CONTAINER,
             1,
             255,
             0,
@@ -525,7 +525,7 @@ const struct EntityTemplate gVolcanoEntity[51] = {
         {
             1,
             ENTITY_SOLID,
-            31,
+            SOLID_CYBERSPACE_DOOR,
             0,
             0,
             0,
@@ -536,7 +536,7 @@ const struct EntityTemplate gVolcanoEntity[51] = {
         {
             1,
             ENTITY_SOLID,
-            31,
+            SOLID_CYBERSPACE_DOOR,
             1,
             0,
             0,
@@ -547,7 +547,7 @@ const struct EntityTemplate gVolcanoEntity[51] = {
         {
             1,
             ENTITY_ENEMY,
-            1,
+            ENEMY_P_HUNTER,
             1,
             0,
             1,
@@ -623,7 +623,7 @@ const struct PreloadEntity gVolcanoStatic[20] = {
         0,
     },
     {
-        SM031_UNK,
+        SM031_VOLCANO_BOMB,
         B8(00000001),
         849,
         8,
@@ -695,7 +695,7 @@ const struct PreloadEntity gVolcanoStatic[20] = {
         0,
     },
     {
-        153,
+        SM153_VOLCANO_COFFIN,
         B8(00010000),
         905,
         9,

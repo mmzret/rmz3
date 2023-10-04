@@ -317,7 +317,7 @@ _080CAF78: .4byte gStageRun\n\
 static void FUN_080caf7c(struct Solid* p) {
   switch ((p->s).mode[2]) {
     case 0: {
-      SetMotion(&p->s, MOTION(SM018_UNK, 0x00));
+      SetMotion(&p->s, MOTION(SM018_DOOR_2D_BLUE, 0));
       INIT_BODY(p, &sCollisions[0], 0, onCollision);
       (p->s).mode[2]++;
       FALLTHROUGH;

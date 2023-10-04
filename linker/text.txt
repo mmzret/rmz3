@@ -73,7 +73,8 @@
 		src/script.o (.text);
 		src/script_command.o (.text);
 
-		asm/result_drop.o (.text);
+		src/result.o (.text);
+		src/drop.o (.text);
 		src/element.o (.text);
 
 		src/zero.o (.text);
@@ -153,7 +154,7 @@
 			src/enemy/batring.o (.text);
 			src/enemy/piller_cannon.o (.text);
 			src/enemy/grand_cannon.o (.text);
-			src/enemy/shrimporin.o (.text);
+			src/enemy/shrimpolin.o (.text);
 			src/enemy/omega_white_hand.o (.text);
 			src/enemy/flopper.o (.text);
 			src/enemy/lamplort.o (.text);
@@ -355,7 +356,6 @@
       src/mapitem/disk.o (.text);
 
 		src/cyberelf.o (.text);
-      asm/cyberelf.o (.text);
 			src/cyberelf/unk_0.o (.text);
 			src/cyberelf/unk_1.o (.text);
 			src/cyberelf/nurse_b.o (.text);
@@ -384,7 +384,7 @@
       src/widget/disk_icon.o (.text);
       src/widget/elf_icon.o (.text);
       src/widget/disk_modal_border.o (.text);
-      asm/widget.o (.text);
+      src/widget/unk_13.o (.text);
 		
 		src/math.o (.text);
 

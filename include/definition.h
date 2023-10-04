@@ -21,7 +21,7 @@ void CreateFirework(s32 x, s32 y, bool8 r2);
 void resetData_08016db4(void);
 void FUN_0802511c(void);
 void clearStageDisk(void);
-bool8 TryDropItem(u32 table, struct Coord* c);
+u32 TryDropItem(u32 table, struct Coord* c);
 
 // --------------------------------------------
 
@@ -29,6 +29,11 @@ s32 PushoutToLeft1(s32 x, s32 y);
 s32 PushoutToLeft2(s32 x, s32 y);
 s32 PushoutToRight1(s32 x, s32 y);
 s32 PushoutToRight2(s32 x, s32 y);
+
+// --------------------------------------------
+
+s32 FUN_0800a22c(s32 x, s32 y);
+s32 FUN_0800a31c(s32 x, s32 y);
 
 // --------------------------------------------
 

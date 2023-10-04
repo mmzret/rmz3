@@ -106,6 +106,7 @@ struct Weapon *CreateWeaponShieldFly(struct Zero *z, u8 n);
 struct Weapon *CreateSmashElec(struct Zero *z, struct Coord *c, u8 leftOrRight);
 struct Weapon *CreateThrowBlade(struct Zero *z, struct Weapon *w, bool8 isIce);
 struct Weapon *CreateSaberWave(struct Zero *z, struct Weapon *w, bool8 r2);
+void CreateWeapon6(s32 x, s32 y);
 
 u8 CalcBusterBonus(struct Zero *z);
 u8 CalcSaberBonus(struct Zero *z);

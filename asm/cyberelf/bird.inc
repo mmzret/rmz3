@@ -152,7 +152,7 @@ BirdElf_Init: @ 0x080E5998
 	orrs r0, r1
 	strb r0, [r7, #0xa]
 	movs r0, #1
-	bl createElfAction
+	bl GetElfMotion
 	adds r1, r0, #0
 	lsls r1, r1, #0x10
 	lsrs r1, r1, #0x10

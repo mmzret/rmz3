@@ -306,8 +306,8 @@ static void GameLoop_PreOverworld(struct GameState *p) {
   InitMapItemHeader(&p->entityHeaders[ENTITY_ITEM], gMapItems, 10);
   InitElfHeader(&p->entityHeaders[ENTITY_ELF], gElfEntities, 16);
   FUN_080250b8();
-  ResetHUD(gGameState.bg0);
-  ClearTextWindow(gGameState.bg0);
+  ResetHUD((u16 *)gGameState.bg0);
+  ClearTextWindow((u16 *)gGameState.bg0);
   SaveZeroStatus(p->z2, &(p->save).status);
   ClearStageRun(&p->taskManager);
   p->mode[1]++;  // -> OVERWORLD

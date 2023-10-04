@@ -5,6 +5,12 @@
 #include "input.h"
 #include "types.h"
 
+enum MenuZeroColor {
+  MZC_NORMAL,
+  MZC_HARD,
+  MZC_ULTIMATE,
+};
+
 // Zero.mode[1]
 enum {
   ZERO_GROUND = 0,     // 地上(棒立ち、歩き、ダッシュ、Zセイバー、etc...)

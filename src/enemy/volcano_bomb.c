@@ -84,8 +84,8 @@ static const struct Collision sCollisions[] = {
 static const u8 u8_ARRAY_08366b28[2] = {0, 0};
 
 static const motion_t sMotions[4] = {
-    MOTION(SM031_UNK, 0x01),
-    MOTION(SM031_UNK, 0x02),
-    MOTION(SM031_UNK, 0x03),
-    MOTION(SM031_UNK, 0x04),
+    MOTION(SM031_VOLCANO_BOMB, 0x01),
+    MOTION(SM031_VOLCANO_BOMB, 0x02),
+    MOTION(SM031_VOLCANO_BOMB, 0x03),
+    MOTION(SM031_VOLCANO_BOMB, 0x04),
 };

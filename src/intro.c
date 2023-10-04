@@ -2027,95 +2027,34 @@ _080ED8D8: .4byte gWindowRegBuffer\n\
 
 // ------------------------------------------------------------------------------------------------------------------------------------
 
-NAKED static void IntroLoop_080ed8dc(struct Intro* p) {
-  asm(".syntax unified\n\
-	push {r4, r5, r6, lr}\n\
-	adds r6, r0, #0\n\
-	ldrb r5, [r6, #5]\n\
-	cmp r5, #0\n\
-	beq _080ED8EC\n\
-	cmp r5, #1\n\
-	beq _080ED950\n\
-	b _080ED96C\n\
-_080ED8EC:\n\
-	ldr r4, _080ED974 @ =gPaletteManager\n\
-	ldr r1, _080ED978 @ =0x00000402\n\
-	adds r0, r4, r1\n\
-	movs r1, #0x20\n\
-	strb r1, [r0]\n\
-	ldr r2, _080ED97C @ =0x00000401\n\
-	adds r0, r4, r2\n\
-	strb r1, [r0]\n\
-	movs r3, #0x80\n\
-	lsls r3, r3, #3\n\
-	adds r0, r4, r3\n\
-	strb r1, [r0]\n\
-	movs r1, #0x81\n\
-	lsls r1, r1, #3\n\
-	adds r0, r4, r1\n\
-	str r5, [r0]\n\
-	bl ClearBlinkings\n\
-	ldr r0, _080ED980 @ =gBlendRegBuffer\n\
-	strh r5, [r0]\n\
-	ldr r1, _080ED984 @ =gWindowRegBuffer\n\
-	strh r5, [r1]\n\
-	movs r0, #0xff\n\
-	strb r0, [r1, #0xe]\n\
-	ldr r0, _080ED988 @ =wMOSAIC\n\
-	strh r5, [r0]\n\
-	strh r5, [r4]\n\
-	bl text_080e9730\n\
-	ldr r2, _080ED98C @ =gVideoRegBuffer\n\
-	ldrh r1, [r2]\n\
-	ldr r0, _080ED990 @ =0x0000FFF8\n\
-	ands r0, r1\n\
-	ldr r1, _080ED994 @ =0x0000F0FF\n\
-	ands r0, r1\n\
-	movs r3, #0x80\n\
-	lsls r3, r3, #1\n\
-	adds r1, r3, #0\n\
-	orrs r0, r1\n\
-	strh r0, [r2]\n\
-	movs r0, #1\n\
-	bl SwitchProcess\n\
-	ldr r1, _080ED998 @ =Process_Game\n\
-	movs r0, #1\n\
-	bl ResetProcess\n\
-	ldrb r0, [r6, #5]\n\
-	adds r0, #1\n\
-	strb r0, [r6, #5]\n\
-_080ED950:\n\
-	ldr r0, _080ED99C @ =gProcessManager\n\
-	movs r1, #0x99\n\
-	lsls r1, r1, #5\n\
-	adds r0, r0, r1\n\
-	ldrb r0, [r0]\n\
-	cmp r0, #1\n\
-	bne _080ED96C\n\
-	ldr r0, _080ED9A0 @ =gIntro\n\
-	movs r1, #1\n\
-	bl SetIntroMode\n\
-	ldr r0, _080ED9A4 @ =Process_SoftReset\n\
-	bl exec\n\
-_080ED96C:\n\
-	pop {r4, r5, r6}\n\
-	pop {r0}\n\
-	bx r0\n\
-	.align 2, 0\n\
-_080ED974: .4byte gPaletteManager\n\
-_080ED978: .4byte 0x00000402\n\
-_080ED97C: .4byte 0x00000401\n\
-_080ED980: .4byte gBlendRegBuffer\n\
-_080ED984: .4byte gWindowRegBuffer\n\
-_080ED988: .4byte wMOSAIC\n\
-_080ED98C: .4byte gVideoRegBuffer\n\
-_080ED990: .4byte 0x0000FFF8\n\
-_080ED994: .4byte 0x0000F0FF\n\
-_080ED998: .4byte Process_Game\n\
-_080ED99C: .4byte gProcessManager\n\
-_080ED9A0: .4byte gIntro\n\
-_080ED9A4: .4byte Process_SoftReset\n\
- .syntax divided\n");
+static void IntroLoop_080ed8dc(struct Intro* p) {
+  switch (p->mode[1]) {
+    case 0: {
+      gPaletteManager.filter[0] = gPaletteManager.filter[1] = gPaletteManager.filter[2] = 0x20;
+      gPaletteManager.unk_408 = NULL;
+      ClearBlinkings();
+      gBlendRegBuffer.bldclt = 0;
+      gWindowRegBuffer.dispcnt = 0;
+      gWindowRegBuffer.unk_0c[2] = 0xFF;
+      wMOSAIC = 0;
+      PALETTE16(0) = RGB_BLACK;
+      text_080e9730();
+      gVideoRegBuffer.dispcnt &= BG_MODE_0;
+      gVideoRegBuffer.dispcnt &= ~DISPCNT_BG_ALL_ON;
+      gVideoRegBuffer.dispcnt |= DISPCNT_BG0_ON;
+      SwitchProcess(TRUE);
+      ResetProcess(1, Process_Game);
+      p->mode[1]++;
+      FALLTHROUGH;
+    }
+    case 1: {
+      if (gProcessManager.processes[1].status == PROCESS_DISABLED) {
+        SetIntroMode(&gIntro, 1);
+        exec(Process_SoftReset);
+      }
+      break;
+    }
+  }
 }
 
 // --------------------------------------------
@@ -2127,7 +2066,7 @@ static void IntroLoop_Minigame(struct Intro* p) {
 
 // --------------------------------------------
 
-void FUN_080ed9c0(struct Intro* p) {
+static void FUN_080ed9c0(struct Intro* p) {
   gPaletteManager.filter[0] = gPaletteManager.filter[1] = gPaletteManager.filter[2] = 0x20;
   gPaletteManager.unk_408 = NULL;
   ClearBlinkings();
@@ -2145,7 +2084,633 @@ void FUN_080ed9c0(struct Intro* p) {
   p->mode[1] = 1;
 }
 
-INCASM("asm/intro.inc");
+NAKED static void minigameSelectScript(struct Intro* p) {
+  asm(".syntax unified\n\
+	push {r4, r5, r6, r7, lr}\n\
+	mov r7, sl\n\
+	mov r6, sb\n\
+	mov r5, r8\n\
+	push {r5, r6, r7}\n\
+	sub sp, #4\n\
+	adds r5, r0, #0\n\
+	movs r0, #0\n\
+	mov sb, r0\n\
+	mov r8, r0\n\
+	ldrb r0, [r5, #6]\n\
+	cmp r0, #1\n\
+	beq _080EDB72\n\
+	cmp r0, #1\n\
+	bgt _080EDA80\n\
+	cmp r0, #0\n\
+	beq _080EDA8E\n\
+	b _080EDCC4\n\
+_080EDA80:\n\
+	cmp r0, #2\n\
+	bne _080EDA86\n\
+	b _080EDC54\n\
+_080EDA86:\n\
+	cmp r0, #3\n\
+	bne _080EDA8C\n\
+	b _080EDC98\n\
+_080EDA8C:\n\
+	b _080EDCC4\n\
+_080EDA8E:\n\
+	ldr r2, _080EDBEC @ =gVideoRegBuffer\n\
+	ldrh r1, [r2]\n\
+	ldr r0, _080EDBF0 @ =0x0000FFF8\n\
+	ands r0, r1\n\
+	ldr r1, _080EDBF4 @ =0x0000F0FF\n\
+	ands r0, r1\n\
+	movs r3, #0xe4\n\
+	lsls r3, r3, #6\n\
+	adds r1, r3, #0\n\
+	orrs r0, r1\n\
+	strh r0, [r2]\n\
+	ldr r1, _080EDBF8 @ =0x00000606\n\
+	adds r0, r1, #0\n\
+	strh r0, [r2, #0xa]\n\
+	mov r3, r8\n\
+	str r3, [r2, #0x18]\n\
+	ldr r0, _080EDBFC @ =gGraphic_MenuMisc\n\
+	ldrh r2, [r2, #8]\n\
+	movs r1, #0xc\n\
+	ands r1, r2\n\
+	lsls r1, r1, #0xc\n\
+	bl LoadGraphic\n\
+	ldr r0, _080EDC00 @ =gGraphic_MenuMisc+12\n\
+	movs r1, #0\n\
+	bl LoadPalette\n\
+	ldr r1, _080EDC04 @ =gBgMapOffsets\n\
+	mov r0, r8\n\
+	str r0, [sp]\n\
+	movs r0, #0x38\n\
+	movs r2, #6\n\
+	movs r3, #0\n\
+	bl LoadBgMap\n\
+	movs r0, #0x40\n\
+	movs r1, #0\n\
+	bl LoadBlink\n\
+	ldr r1, _080EDC08 @ =gBlendRegBuffer\n\
+	ldr r0, _080EDC0C @ =0x00003E41\n\
+	strh r0, [r1]\n\
+	movs r2, #0x10\n\
+	mov sl, r2\n\
+	mov r3, sl\n\
+	strh r3, [r1, #2]\n\
+	bl text_080e9730\n\
+	bl FUN_080e9840\n\
+	movs r1, #0\n\
+	ldr r6, _080EDC10 @ =gSystemSavedataManager\n\
+	ldrb r0, [r6, #0x1a]\n\
+	ldr r7, _080EDC14 @ =gSineTable\n\
+	movs r4, #0xff\n\
+	ldrb r2, [r7, #0x14]\n\
+	cmp r0, r2\n\
+	bne _080EDB04\n\
+	movs r1, #1\n\
+_080EDB04:\n\
+	adds r3, r1, #0\n\
+	ldrb r2, [r6, #0x1b]\n\
+	ldrh r1, [r7, #0x16]\n\
+	adds r0, r4, #0\n\
+	ands r0, r1\n\
+	cmp r2, r0\n\
+	bne _080EDB14\n\
+	adds r3, #1\n\
+_080EDB14:\n\
+	ldrb r2, [r6, #0x1c]\n\
+	ldrh r1, [r7, #0x18]\n\
+	adds r0, r4, #0\n\
+	ands r0, r1\n\
+	cmp r2, r0\n\
+	bne _080EDB22\n\
+	adds r3, #1\n\
+_080EDB22:\n\
+	ldrb r2, [r6, #0x1d]\n\
+	ldrh r1, [r7, #0x1a]\n\
+	adds r0, r4, #0\n\
+	ands r0, r1\n\
+	cmp r2, r0\n\
+	bne _080EDB30\n\
+	adds r3, #1\n\
+_080EDB30:\n\
+	ldrb r2, [r6, #0x1e]\n\
+	ldrh r1, [r7, #0x1c]\n\
+	adds r0, r4, #0\n\
+	ands r0, r1\n\
+	cmp r2, r0\n\
+	bne _080EDB3E\n\
+	adds r3, #1\n\
+_080EDB3E:\n\
+	ldrb r2, [r6, #0x1f]\n\
+	ldrh r1, [r7, #0x1e]\n\
+	adds r0, r4, #0\n\
+	ands r0, r1\n\
+	cmp r2, r0\n\
+	bne _080EDB4C\n\
+	adds r3, #1\n\
+_080EDB4C:\n\
+	adds r2, r3, #0\n\
+	adds r0, r6, #0\n\
+	adds r0, #0x20\n\
+	ldrb r1, [r0]\n\
+	ldrh r0, [r7, #0x20]\n\
+	ands r4, r0\n\
+	cmp r1, r4\n\
+	bne _080EDB5E\n\
+	adds r2, #1\n\
+_080EDB5E:\n\
+	ldr r3, _080EDC18 @ =0x00000241\n\
+	adds r0, r5, r3\n\
+	strb r2, [r0]\n\
+	mov r0, sl\n\
+	strh r0, [r5, #8]\n\
+	mov r1, r8\n\
+	strh r1, [r5, #0xa]\n\
+	ldrb r0, [r5, #6]\n\
+	adds r0, #1\n\
+	strb r0, [r5, #6]\n\
+_080EDB72:\n\
+	movs r2, #0x90\n\
+	lsls r2, r2, #2\n\
+	adds r6, r5, r2\n\
+	ldrb r2, [r6]\n\
+	adds r4, r2, #0\n\
+	ldr r7, _080EDC1C @ =gJoypad\n\
+	ldrh r1, [r7, #6]\n\
+	movs r0, #0x80\n\
+	ands r0, r1\n\
+	cmp r0, #0\n\
+	beq _080EDB8C\n\
+	adds r0, r2, #1\n\
+	strb r0, [r6]\n\
+_080EDB8C:\n\
+	ldrh r1, [r7, #6]\n\
+	movs r0, #0x40\n\
+	ands r0, r1\n\
+	cmp r0, #0\n\
+	beq _080EDBA4\n\
+	ldrb r0, [r6]\n\
+	ldr r3, _080EDC18 @ =0x00000241\n\
+	adds r1, r5, r3\n\
+	adds r0, #0xff\n\
+	ldrb r1, [r1]\n\
+	adds r0, r0, r1\n\
+	strb r0, [r6]\n\
+_080EDBA4:\n\
+	ldr r0, _080EDC18 @ =0x00000241\n\
+	adds r1, r5, r0\n\
+	ldrb r0, [r6]\n\
+	ldrb r1, [r1]\n\
+	bl __umodsi3\n\
+	strb r0, [r6]\n\
+	lsls r0, r0, #0x18\n\
+	lsrs r0, r0, #0x18\n\
+	cmp r4, r0\n\
+	beq _080EDBC0\n\
+	movs r0, #1\n\
+	bl PlaySound\n\
+_080EDBC0:\n\
+	ldrh r2, [r5, #8]\n\
+	movs r1, #8\n\
+	ldrsh r0, [r5, r1]\n\
+	cmp r0, #0xf\n\
+	bgt _080EDBDE\n\
+	adds r2, #1\n\
+	strh r2, [r5, #8]\n\
+	ldr r3, _080EDC08 @ =gBlendRegBuffer\n\
+	movs r1, #0x1f\n\
+	ands r1, r2\n\
+	movs r0, #0x10\n\
+	subs r0, r0, r2\n\
+	lsls r0, r0, #8\n\
+	orrs r1, r0\n\
+	strh r1, [r3, #2]\n\
+_080EDBDE:\n\
+	ldrh r1, [r5, #0xa]\n\
+	movs r2, #0xa\n\
+	ldrsh r0, [r5, r2]\n\
+	cmp r0, #0x1f\n\
+	bgt _080EDC20\n\
+	adds r0, r1, #1\n\
+	b _080EDC60\n\
+	.align 2, 0\n\
+_080EDBEC: .4byte gVideoRegBuffer\n\
+_080EDBF0: .4byte 0x0000FFF8\n\
+_080EDBF4: .4byte 0x0000F0FF\n\
+_080EDBF8: .4byte 0x00000606\n\
+_080EDBFC: .4byte gGraphic_MenuMisc\n\
+_080EDC00: .4byte gPalette_MenuMisc\n\
+_080EDC04: .4byte gBgMapOffsets\n\
+_080EDC08: .4byte gBlendRegBuffer\n\
+_080EDC0C: .4byte 0x00003E41\n\
+_080EDC10: .4byte gSystemSavedataManager\n\
+_080EDC14: .4byte gSineTable\n\
+_080EDC18: .4byte 0x00000241\n\
+_080EDC1C: .4byte gJoypad\n\
+_080EDC20:\n\
+	ldrh r1, [r7, #4]\n\
+	movs r0, #9\n\
+	ands r0, r1\n\
+	cmp r0, #0\n\
+	beq _080EDC38\n\
+	movs r0, #2\n\
+	bl PlaySound\n\
+	ldrb r0, [r5, #6]\n\
+	adds r0, #2\n\
+	strb r0, [r5, #6]\n\
+	b _080EDCC4\n\
+_080EDC38:\n\
+	movs r0, #2\n\
+	ands r0, r1\n\
+	cmp r0, #0\n\
+	beq _080EDCC4\n\
+	movs r0, #3\n\
+	bl PlaySound\n\
+	movs r0, #0x40\n\
+	bl ClearBlink\n\
+	ldrb r0, [r5, #6]\n\
+	adds r0, #1\n\
+	strb r0, [r5, #6]\n\
+	b _080EDCC4\n\
+_080EDC54:\n\
+	ldrh r1, [r5, #0xa]\n\
+	movs r2, #0xa\n\
+	ldrsh r0, [r5, r2]\n\
+	cmp r0, #0\n\
+	beq _080EDC88\n\
+	subs r0, r1, #1\n\
+_080EDC60:\n\
+	adds r1, r0, #0\n\
+	strh r0, [r5, #0xa]\n\
+	ldr r2, _080EDC80 @ =gPaletteManager\n\
+	ldr r3, _080EDC84 @ =0x00000402\n\
+	adds r0, r2, r3\n\
+	strb r1, [r0]\n\
+	movs r0, #0xff\n\
+	ands r0, r1\n\
+	subs r3, #1\n\
+	adds r1, r2, r3\n\
+	strb r0, [r1]\n\
+	movs r1, #0x80\n\
+	lsls r1, r1, #3\n\
+	adds r2, r2, r1\n\
+	strb r0, [r2]\n\
+	b _080EDCC4\n\
+	.align 2, 0\n\
+_080EDC80: .4byte gPaletteManager\n\
+_080EDC84: .4byte 0x00000402\n\
+_080EDC88:\n\
+	movs r0, #0x40\n\
+	bl ClearBlink\n\
+	adds r0, r5, #0\n\
+	movs r1, #4\n\
+	bl SetIntroMode\n\
+	b _080EDCC4\n\
+_080EDC98:\n\
+	ldrh r2, [r5, #8]\n\
+	movs r3, #8\n\
+	ldrsh r0, [r5, r3]\n\
+	cmp r0, #0\n\
+	beq _080EDCBC\n\
+	subs r2, #1\n\
+	strh r2, [r5, #8]\n\
+	ldr r3, _080EDCB8 @ =gBlendRegBuffer\n\
+	movs r1, #0x1f\n\
+	ands r1, r2\n\
+	movs r0, #0x10\n\
+	subs r0, r0, r2\n\
+	lsls r0, r0, #8\n\
+	orrs r1, r0\n\
+	strh r1, [r3, #2]\n\
+	b _080EDCC4\n\
+	.align 2, 0\n\
+_080EDCB8: .4byte gBlendRegBuffer\n\
+_080EDCBC:\n\
+	mov r0, r8\n\
+	strb r0, [r5, #6]\n\
+	movs r0, #2\n\
+	strb r0, [r5, #5]\n\
+_080EDCC4:\n\
+	movs r0, #0x40\n\
+	bl UpdateBlinkMotionState\n\
+	mov r1, sb\n\
+	lsls r4, r1, #0x10\n\
+	asrs r1, r4, #0x10\n\
+	ldr r2, _080EDD38 @ =0x00000241\n\
+	adds r0, r5, r2\n\
+	ldrb r0, [r0]\n\
+	cmp r1, r0\n\
+	bge _080EDDA0\n\
+	mov r3, r8\n\
+	lsls r1, r3, #0x10\n\
+	asrs r0, r1, #0x10\n\
+	adds r7, r1, #0\n\
+	cmp r0, #6\n\
+	bgt _080EDDA0\n\
+	ldr r0, _080EDD3C @ =0x020021C8\n\
+	mov sl, r0\n\
+_080EDCEA:\n\
+	ldr r0, _080EDD40 @ =u8_ARRAY_0838607c\n\
+	asrs r6, r1, #0x10\n\
+	adds r0, r6, r0\n\
+	ldrb r1, [r0]\n\
+	adds r0, r1, #0\n\
+	subs r0, #0xf0\n\
+	add r0, sl\n\
+	ldrb r2, [r0]\n\
+	ldr r0, _080EDD44 @ =gSineTable\n\
+	adds r1, #0x18\n\
+	lsls r1, r1, #0x18\n\
+	lsrs r1, r1, #0x17\n\
+	adds r1, r1, r0\n\
+	ldrb r1, [r1]\n\
+	cmp r2, r1\n\
+	bne _080EDD7A\n\
+	movs r1, #0x90\n\
+	lsls r1, r1, #2\n\
+	adds r3, r5, r1\n\
+	ldrb r0, [r3]\n\
+	asrs r2, r4, #0x10\n\
+	cmp r0, r2\n\
+	bne _080EDD20\n\
+	adds r1, #2\n\
+	adds r0, r5, r1\n\
+	mov r1, r8\n\
+	strb r1, [r0]\n\
+_080EDD20:\n\
+	ldr r4, _080EDD48 @ =StringOfsTable\n\
+	ldr r0, _080EDD4C @ =u16_ARRAY_08386084\n\
+	lsls r1, r6, #1\n\
+	adds r1, r1, r0\n\
+	ldrh r1, [r1]\n\
+	ldrb r0, [r3]\n\
+	cmp r0, r2\n\
+	beq _080EDD50\n\
+	adds r0, r1, #1\n\
+	lsls r0, r0, #1\n\
+	b _080EDD52\n\
+	.align 2, 0\n\
+_080EDD38: .4byte 0x00000241\n\
+_080EDD3C: .4byte gSystemSavedataManager+24\n\
+_080EDD40: .4byte u8_ARRAY_0838607c\n\
+_080EDD44: .4byte gSineTable\n\
+_080EDD48: .4byte StringOfsTable\n\
+_080EDD4C: .4byte u16_ARRAY_08386084\n\
+_080EDD50:\n\
+	lsls r0, r1, #1\n\
+_080EDD52:\n\
+	adds r0, r4, r0\n\
+	ldrh r0, [r0]\n\
+	ldr r1, _080EDDB0 @ =gStringData\n\
+	adds r0, r0, r1\n\
+	mov r2, sb\n\
+	lsls r4, r2, #0x10\n\
+	asrs r4, r4, #0x10\n\
+	lsls r2, r4, #1\n\
+	adds r2, #0xa\n\
+	ldr r3, _080EDDB4 @ =0x00000241\n\
+	adds r1, r5, r3\n\
+	ldrb r1, [r1]\n\
+	subs r2, r2, r1\n\
+	movs r1, #8\n\
+	bl PrintString\n\
+	adds r4, #1\n\
+	lsls r4, r4, #0x10\n\
+	lsrs r4, r4, #0x10\n\
+	mov sb, r4\n\
+_080EDD7A:\n\
+	movs r1, #0x80\n\
+	lsls r1, r1, #9\n\
+	adds r0, r7, r1\n\
+	lsrs r0, r0, #0x10\n\
+	mov r8, r0\n\
+	mov r2, sb\n\
+	lsls r4, r2, #0x10\n\
+	asrs r1, r4, #0x10\n\
+	ldr r3, _080EDDB4 @ =0x00000241\n\
+	adds r0, r5, r3\n\
+	ldrb r0, [r0]\n\
+	cmp r1, r0\n\
+	bge _080EDDA0\n\
+	mov r0, r8\n\
+	lsls r1, r0, #0x10\n\
+	asrs r0, r1, #0x10\n\
+	adds r7, r1, #0\n\
+	cmp r0, #6\n\
+	ble _080EDCEA\n\
+_080EDDA0:\n\
+	add sp, #4\n\
+	pop {r3, r4, r5}\n\
+	mov r8, r3\n\
+	mov sb, r4\n\
+	mov sl, r5\n\
+	pop {r4, r5, r6, r7}\n\
+	pop {r0}\n\
+	bx r0\n\
+	.align 2, 0\n\
+_080EDDB0: .4byte gStringData\n\
+_080EDDB4: .4byte 0x00000241\n\
+ .syntax divided\n");
+}
+
+NAKED static void FUN_080eddb8(struct Intro* p) {
+  asm(".syntax unified\n\
+	push {r4, r5, r6, lr}\n\
+	adds r6, r0, #0\n\
+	ldrb r0, [r6, #6]\n\
+	cmp r0, #1\n\
+	beq _080EDDE2\n\
+	cmp r0, #1\n\
+	bgt _080EDDCC\n\
+	cmp r0, #0\n\
+	beq _080EDDD6\n\
+	b _080EDEB2\n\
+_080EDDCC:\n\
+	cmp r0, #2\n\
+	beq _080EDE3A\n\
+	cmp r0, #3\n\
+	beq _080EDE88\n\
+	b _080EDEB2\n\
+_080EDDD6:\n\
+	strh r0, [r6, #8]\n\
+	movs r0, #0x20\n\
+	strh r0, [r6, #0xa]\n\
+	ldrb r0, [r6, #6]\n\
+	adds r0, #1\n\
+	strb r0, [r6, #6]\n\
+_080EDDE2:\n\
+	ldrh r2, [r6, #8]\n\
+	movs r1, #8\n\
+	ldrsh r0, [r6, r1]\n\
+	cmp r0, #0xf\n\
+	bgt _080EDE00\n\
+	adds r2, #1\n\
+	strh r2, [r6, #8]\n\
+	ldr r3, _080EDE1C @ =gBlendRegBuffer\n\
+	movs r1, #0x1f\n\
+	ands r1, r2\n\
+	movs r0, #0x10\n\
+	subs r0, r0, r2\n\
+	lsls r0, r0, #8\n\
+	orrs r1, r0\n\
+	strh r1, [r3, #2]\n\
+_080EDE00:\n\
+	ldr r0, _080EDE20 @ =gJoypad\n\
+	ldrh r1, [r0, #4]\n\
+	movs r0, #9\n\
+	ands r0, r1\n\
+	cmp r0, #0\n\
+	beq _080EDE24\n\
+	movs r0, #2\n\
+	bl PlaySound\n\
+	ldrb r0, [r6, #6]\n\
+	adds r0, #1\n\
+	strb r0, [r6, #6]\n\
+	b _080EDEB2\n\
+	.align 2, 0\n\
+_080EDE1C: .4byte gBlendRegBuffer\n\
+_080EDE20: .4byte gJoypad\n\
+_080EDE24:\n\
+	movs r0, #2\n\
+	ands r0, r1\n\
+	cmp r0, #0\n\
+	beq _080EDEB2\n\
+	movs r0, #3\n\
+	bl PlaySound\n\
+	ldrb r0, [r6, #6]\n\
+	adds r0, #2\n\
+	strb r0, [r6, #6]\n\
+	b _080EDEB2\n\
+_080EDE3A:\n\
+	ldrh r0, [r6, #0xa]\n\
+	movs r2, #0xa\n\
+	ldrsh r4, [r6, r2]\n\
+	cmp r4, #0\n\
+	beq _080EDE70\n\
+	subs r0, #1\n\
+	adds r1, r0, #0\n\
+	strh r0, [r6, #0xa]\n\
+	ldr r2, _080EDE68 @ =gPaletteManager\n\
+	ldr r3, _080EDE6C @ =0x00000402\n\
+	adds r0, r2, r3\n\
+	strb r1, [r0]\n\
+	movs r0, #0xff\n\
+	ands r0, r1\n\
+	subs r3, #1\n\
+	adds r1, r2, r3\n\
+	strb r0, [r1]\n\
+	movs r1, #0x80\n\
+	lsls r1, r1, #3\n\
+	adds r2, r2, r1\n\
+	strb r0, [r2]\n\
+	b _080EDEB2\n\
+	.align 2, 0\n\
+_080EDE68: .4byte gPaletteManager\n\
+_080EDE6C: .4byte 0x00000402\n\
+_080EDE70:\n\
+	movs r0, #0x40\n\
+	bl ClearBlink\n\
+	ldr r0, _080EDE84 @ =gBlendRegBuffer\n\
+	movs r1, #0\n\
+	strh r4, [r0]\n\
+	strb r1, [r6, #6]\n\
+	movs r0, #3\n\
+	b _080EDEB0\n\
+	.align 2, 0\n\
+_080EDE84: .4byte gBlendRegBuffer\n\
+_080EDE88:\n\
+	ldrh r2, [r6, #8]\n\
+	movs r3, #8\n\
+	ldrsh r0, [r6, r3]\n\
+	cmp r0, #0\n\
+	beq _080EDEAC\n\
+	subs r2, #1\n\
+	strh r2, [r6, #8]\n\
+	ldr r3, _080EDEA8 @ =gBlendRegBuffer\n\
+	movs r1, #0x1f\n\
+	ands r1, r2\n\
+	movs r0, #0x10\n\
+	subs r0, r0, r2\n\
+	lsls r0, r0, #8\n\
+	orrs r1, r0\n\
+	strh r1, [r3, #2]\n\
+	b _080EDEB2\n\
+	.align 2, 0\n\
+_080EDEA8: .4byte gBlendRegBuffer\n\
+_080EDEAC:\n\
+	movs r0, #1\n\
+	strb r0, [r6, #6]\n\
+_080EDEB0:\n\
+	strb r0, [r6, #5]\n\
+_080EDEB2:\n\
+	movs r0, #0x40\n\
+	bl UpdateBlinkMotionState\n\
+	ldr r5, _080EDEF4 @ =StringOfsTable\n\
+	movs r1, #0x88\n\
+	lsls r1, r1, #4\n\
+	adds r0, r5, r1\n\
+	ldrh r0, [r0]\n\
+	ldr r4, _080EDEF8 @ =gStringData\n\
+	adds r0, r0, r4\n\
+	movs r1, #0xd\n\
+	movs r2, #2\n\
+	bl PrintString\n\
+	ldr r1, _080EDEFC @ =0x08386092\n\
+	ldr r2, _080EDF00 @ =0x00000242\n\
+	adds r0, r6, r2\n\
+	ldrb r0, [r0]\n\
+	lsls r0, r0, #1\n\
+	adds r0, r0, r1\n\
+	ldrh r0, [r0]\n\
+	lsls r0, r0, #1\n\
+	adds r0, r0, r5\n\
+	ldrh r0, [r0]\n\
+	adds r0, r0, r4\n\
+	movs r1, #3\n\
+	movs r2, #4\n\
+	bl PrintString\n\
+	pop {r4, r5, r6}\n\
+	pop {r0}\n\
+	bx r0\n\
+	.align 2, 0\n\
+_080EDEF4: .4byte StringOfsTable\n\
+_080EDEF8: .4byte gStringData\n\
+_080EDEFC: .4byte u16_ARRAY_08386092\n\
+_080EDF00: .4byte 0x00000242\n\
+ .syntax divided\n");
+}
+
+static void FUN_080edf04(struct Intro* p) {
+  switch (p->mode[2]) {
+    case 0: {
+      gPaletteManager.filter[0] = gPaletteManager.filter[1] = gPaletteManager.filter[2] = 0x20;
+      gPaletteManager.unk_408 = NULL;
+      ClearBlinkings();
+      gBlendRegBuffer.bldclt = 0;
+      gWindowRegBuffer.dispcnt = 0;
+      gWindowRegBuffer.unk_0c[2] = 0xFF;
+      wMOSAIC = 0;
+      PALETTE16(0) = RGB_BLACK;
+      text_080e9730();
+      gVideoRegBuffer.dispcnt &= BG_MODE_0;
+      gVideoRegBuffer.dispcnt &= ~DISPCNT_BG_ALL_ON;
+      gVideoRegBuffer.dispcnt |= DISPCNT_BG0_ON;
+      SwitchProcess(TRUE);
+      SetGameMode(&gGameState, (p->unk_242 << 8) + 3);
+      ResetProcess(1, Process_Game);
+      p->mode[2]++;
+      FALLTHROUGH;
+    }
+    case 1: {
+      if (gProcessManager.processes[1].status == PROCESS_DISABLED) {
+        p->mode[2] = 0;
+        p->mode[1] = 1;
+      }
+      break;
+    }
+  }
+}
 
 // ------------------------------------------------------------------------------------------------------------------------------------
 

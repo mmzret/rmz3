@@ -15,7 +15,6 @@ extern struct UnkElement wElement;
 void FUN_080250b8(void);
 void FUN_080251a8(void);
 void setWramElement(u8 elementID);
-bool32 isKilled(struct Entity *p);
 struct VFX *ApplyElementEffect(u8 idx, struct Entity *p, const struct Coord *c);
 
 #endif  // GUARD_RMZ3_ELEMENT_H

@@ -62,7 +62,7 @@ static void MinigameLoop_InitMinigame(struct GameState *g) {
   InitVFXHeader(&g->entityHeaders[ENTITY_VFX], gVFXs, 64);
   InitSolidHeader(&g->entityHeaders[ENTITY_SOLID], gSolids, 22);
   InitMapItemHeader(&g->entityHeaders[ENTITY_ITEM], gMapItems, 10);
-  ResetHUD(gGameState.bg0);
+  ResetHUD((u16 *)gGameState.bg0);
 
   // Fill by white for damaged entity palette (OBJ13)
   *(u32 *)&gPaletteManager.buf[464] = *(u32 *)&gPaletteManager.buf[466] = *(u32 *)&gPaletteManager.buf[468] = *(u32 *)&gPaletteManager.buf[470] = *(u32 *)&gPaletteManager.buf[472] = *(u32 *)&gPaletteManager.buf[474] = *(u32 *)&gPaletteManager.buf[476] = *(u32 *)&gPaletteManager.buf[478] = 0xFFFFFFFF;

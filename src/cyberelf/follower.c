@@ -115,7 +115,7 @@ _080E41E4:\n\
 	bne _080E41FC\n\
 	movs r0, #1\n\
 _080E41EA:\n\
-	bl createElfAction\n\
+	bl GetElfMotion\n\
 	adds r1, r0, #0\n\
 	lsls r1, r1, #0x10\n\
 	lsrs r1, r1, #0x10\n\
@@ -124,7 +124,7 @@ _080E41EA:\n\
 	b _080E420E\n\
 _080E41FC:\n\
 	movs r0, #2\n\
-	bl createElfAction\n\
+	bl GetElfMotion\n\
 	adds r1, r0, #0\n\
 	lsls r1, r1, #0x10\n\
 	lsrs r1, r1, #0x10\n\

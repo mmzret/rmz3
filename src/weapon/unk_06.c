@@ -83,7 +83,7 @@ static void updateWeapon6(struct Weapon* w) {
       (w->s).flags2 &= ~DYNAMIC;
       (w->s).tileNum = 0;
       (w->s).palID = 0;
-      SetMotion(&w->s, MOTION(SM033_UNK, 0x00));
+      SetMotion(&w->s, MOTION(SM033_FEFNIR_FIREBALL, 0));
       (w->s).angle = 64;
       (w->s).mode[2]++;
       FALLTHROUGH;

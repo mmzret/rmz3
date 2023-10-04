@@ -152,7 +152,7 @@ Elf10_Init: @ 0x080E4C64
 	orrs r0, r1
 	strb r0, [r7, #0xa]
 	movs r0, #1
-	bl createElfAction
+	bl GetElfMotion
 	adds r1, r0, #0
 	lsls r1, r1, #0x10
 	lsrs r1, r1, #0x10
@@ -545,7 +545,7 @@ _080E4F8A:
 	b _080E4FE8
 _080E4F96:
 	adds r0, r7, #0
-	bl FUN_080e1b10
+	bl CheckPlayerStandStill
 	lsls r0, r0, #0x18
 	cmp r0, #0
 	beq _080E4FE6

@@ -20,7 +20,7 @@
 	orrs r0, r1
 	strb r0, [r4, #0xa]
 	ldrb r0, [r4, #0x10]
-	bl createElfAction
+	bl GetElfMotion
 	adds r1, r0, #0
 	lsls r1, r1, #0x10
 	lsrs r1, r1, #0x10

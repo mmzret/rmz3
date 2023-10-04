@@ -7,5 +7,7 @@ GFX_HDR := $(subst .json,.o,$(GFX_JSON))
 $(GFX_HDR): %.o: %.s
 	$(AS) $(ASFLAGS) -o $@ $<
 
+graphic-headers: $(GFX_HDR)
+
 clean-graphic-headers:
 	@rm -f $(GFX_HDR) $(subst .json,.s,$(GFX_JSON))

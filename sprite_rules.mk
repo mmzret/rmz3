@@ -20,7 +20,7 @@ SPRITE_ANIM_TABLE := sprites/anim.s
 SPRITE_GFXHDR_TABLE := sprites/table.s
 
 $(SPRITE_ANIM_TABLE): sprites/sprite.json
-	./tools/dev/sprite_table.ts > $@
+	./tools/dev/animation.ts > $@
 
 $(SPRITE_GFXHDR_TABLE): sprites/sprite.json
 	./tools/dev/sprite_gfxhdr_table.ts > $@

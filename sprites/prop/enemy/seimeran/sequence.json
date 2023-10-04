@@ -1,0 +1,303 @@
+{
+  "label": "gMotionCmd_SM119",
+  "data": [
+    [
+      {
+        "frameIdx": 0,
+        "duration": 1
+      },
+      {
+        "frameIdx": 0,
+        "duration": 255
+      }
+    ],
+    [
+      {
+        "frameIdx": 1,
+        "duration": 1
+      },
+      {
+        "frameIdx": 2,
+        "duration": 3
+      },
+      {
+        "frameIdx": 3,
+        "duration": 3
+      },
+      {
+        "frameIdx": 4,
+        "duration": 3
+      },
+      {
+        "frameIdx": 5,
+        "duration": 3
+      },
+      {
+        "frameIdx": 6,
+        "duration": 3
+      },
+      {
+        "frameIdx": 7,
+        "duration": 3
+      },
+      {
+        "frameIdx": 8,
+        "duration": 3
+      },
+      {
+        "frameIdx": 9,
+        "duration": 3
+      },
+      {
+        "frameIdx": 10,
+        "duration": 3
+      },
+      {
+        "frameIdx": 11,
+        "duration": 3
+      },
+      {
+        "frameIdx": 12,
+        "duration": 3
+      },
+      {
+        "frameIdx": 0,
+        "duration": 1
+      },
+      {
+        "frameIdx": 0,
+        "duration": 255
+      }
+    ],
+    [
+      {
+        "frameIdx": 13,
+        "duration": 2
+      },
+      {
+        "frameIdx": 14,
+        "duration": 1
+      },
+      {
+        "frameIdx": 0,
+        "duration": 255
+      }
+    ],
+    [
+      {
+        "frameIdx": 16,
+        "duration": 2
+      },
+      {
+        "frameIdx": 17,
+        "duration": 2
+      },
+      {
+        "frameIdx": 14,
+        "duration": 1
+      },
+      {
+        "frameIdx": 0,
+        "duration": 255
+      }
+    ],
+    [
+      {
+        "frameIdx": 15,
+        "duration": 2
+      },
+      {
+        "frameIdx": 0,
+        "duration": 1
+      },
+      {
+        "frameIdx": 0,
+        "duration": 255
+      }
+    ],
+    [
+      {
+        "frameIdx": 18,
+        "duration": 1
+      },
+      {
+        "frameIdx": 0,
+        "duration": 255
+      }
+    ],
+    [
+      {
+        "frameIdx": 19,
+        "duration": 1
+      },
+      {
+        "frameIdx": 0,
+        "duration": 255
+      }
+    ],
+    [
+      {
+        "frameIdx": 1,
+        "duration": 1
+      },
+      {
+        "frameIdx": 0,
+        "duration": 255
+      }
+    ],
+    [
+      {
+        "frameIdx": 27,
+        "duration": 3
+      },
+      {
+        "frameIdx": 26,
+        "duration": 3
+      },
+      {
+        "frameIdx": 25,
+        "duration": 3
+      },
+      {
+        "frameIdx": 24,
+        "duration": 3
+      },
+      {
+        "frameIdx": 0,
+        "duration": 255
+      }
+    ],
+    [
+      {
+        "frameIdx": 20,
+        "duration": 2
+      },
+      {
+        "frameIdx": 21,
+        "duration": 2
+      },
+      {
+        "frameIdx": 22,
+        "duration": 2
+      },
+      {
+        "frameIdx": 23,
+        "duration": 2
+      },
+      {
+        "frameIdx": 0,
+        "duration": 254
+      }
+    ],
+    [
+      {
+        "frameIdx": 24,
+        "duration": 3
+      },
+      {
+        "frameIdx": 25,
+        "duration": 3
+      },
+      {
+        "frameIdx": 26,
+        "duration": 3
+      },
+      {
+        "frameIdx": 27,
+        "duration": 3
+      },
+      {
+        "frameIdx": 1,
+        "duration": 1
+      },
+      {
+        "frameIdx": 0,
+        "duration": 255
+      }
+    ],
+    [
+      {
+        "frameIdx": 28,
+        "duration": 3
+      },
+      {
+        "frameIdx": 29,
+        "duration": 3
+      },
+      {
+        "frameIdx": 30,
+        "duration": 3
+      },
+      {
+        "frameIdx": 0,
+        "duration": 254
+      }
+    ],
+    [
+      {
+        "frameIdx": 1,
+        "duration": 1
+      },
+      {
+        "frameIdx": 2,
+        "duration": 3
+      },
+      {
+        "frameIdx": 3,
+        "duration": 3
+      },
+      {
+        "frameIdx": 4,
+        "duration": 3
+      },
+      {
+        "frameIdx": 5,
+        "duration": 3
+      },
+      {
+        "frameIdx": 6,
+        "duration": 3
+      },
+      {
+        "frameIdx": 7,
+        "duration": 3
+      },
+      {
+        "frameIdx": 8,
+        "duration": 3
+      },
+      {
+        "frameIdx": 9,
+        "duration": 3
+      },
+      {
+        "frameIdx": 10,
+        "duration": 3
+      },
+      {
+        "frameIdx": 11,
+        "duration": 3
+      },
+      {
+        "frameIdx": 12,
+        "duration": 3
+      },
+      {
+        "frameIdx": 0,
+        "duration": 20
+      },
+      {
+        "frameIdx": 13,
+        "duration": 2
+      },
+      {
+        "frameIdx": 14,
+        "duration": 20
+      },
+      {
+        "frameIdx": 0,
+        "duration": 255
+      }
+    ]
+  ]
+}

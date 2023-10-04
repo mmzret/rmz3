@@ -7,17 +7,17 @@
 
 // state about BG0(Health Layer)
 struct HUD {
-  void* bg0;  // -> 0x02030b70
+  u16* bg0;  // -> 0x02030b70
   u16 unk_02;
   struct Zero* z;
   struct Entity* unk_0c;
-  u32 timeLeft;  // e.g. Left time in Volcano Mid-boss room(Kill 25 Crossbynes)
+  s32* timeLeft;  // e.g. Left time in Volcano Mid-boss room(Kill 25 Crossbynes)
   u8 _[12];
 };
 
 extern struct HUD gHUD;
 
-void ResetHUD(void* bg0);
+void ResetHUD(u16* bg0);
 void DrawStatus(void);
 void DrawLeftTime(void);
 
