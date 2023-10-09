@@ -12,7 +12,7 @@ void Solid16_Die(struct Solid* p);
 // clang-format off
 const SolidRoutine gSolid16Routine = {
     [ENTITY_INIT] =      Solid16_Init,
-    [ENTITY_MAIN] =      Solid16_Update,
+    [ENTITY_UPDATE] =    Solid16_Update,
     [ENTITY_DIE] =       Solid16_Die,
     [ENTITY_DISAPPEAR] = DeleteSolid,
     [ENTITY_EXIT] =      (SolidFunc)DeleteEntity,
@@ -26,7 +26,7 @@ struct Solid* FUN_080cedc0(u8 n) {
     INIT_SOLID_ROUTINE(p, SOLID_UNK_016);
     (p->s).tileNum = 0;
     (p->s).palID = 0;
-    (p->s).flags2 |= ENTITY_FLAGS2_B4;
+    (p->s).flags2 |= WHITE_PAINTABLE;
     (p->s).invincibleID = (p->s).uniqueID;
     (p->s).work[0] = n;
     (p->s).work[1] = 0;

@@ -11,7 +11,7 @@ void ChildreShip_Die(struct Solid* p);
 // clang-format off
 const SolidRoutine gChildreShipRoutine = {
     [ENTITY_INIT] =      ChildreShip_Init,
-    [ENTITY_MAIN] =      ChildreShip_Update,
+    [ENTITY_UPDATE] =    ChildreShip_Update,
     [ENTITY_DIE] =       ChildreShip_Die,
     [ENTITY_DISAPPEAR] = DeleteSolid,
     [ENTITY_EXIT] =      (SolidFunc)DeleteEntity,

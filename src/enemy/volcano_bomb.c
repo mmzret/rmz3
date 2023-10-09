@@ -11,7 +11,7 @@ void VolcanoBomb_Die(struct Enemy* p);
 // clang-format off
 const EnemyRoutine gVolcanoBombRoutine = {
     [ENTITY_INIT] =      VolcanoBomb_Init,
-    [ENTITY_MAIN] =      VolcanoBomb_Update,
+    [ENTITY_UPDATE] =    VolcanoBomb_Update,
     [ENTITY_DIE] =       VolcanoBomb_Die,
     [ENTITY_DISAPPEAR] = DeleteEnemy,
     [ENTITY_EXIT] =      (EnemyFunc)DeleteEntity,

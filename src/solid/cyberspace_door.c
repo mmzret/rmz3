@@ -13,7 +13,7 @@ static void CyberSpaceDoor_Disappear(struct Solid* p);
 // clang-format off
 const SolidRoutine gCyberSpaceDoorRoutine = {
     [ENTITY_INIT] =      CyberSpaceDoor_Init,
-    [ENTITY_MAIN] =      CyberSpaceDoor_Update,
+    [ENTITY_UPDATE] =    CyberSpaceDoor_Update,
     [ENTITY_DIE] =       CyberSpaceDoor_Die,
     [ENTITY_DISAPPEAR] = CyberSpaceDoor_Disappear,
     [ENTITY_EXIT] =      (SolidFunc)DeleteEntity,

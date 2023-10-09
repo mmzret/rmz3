@@ -14,7 +14,7 @@ static void Solid11_Die(struct Solid* p);
 // clang-format off
 const SolidRoutine gSolid11Routine = {
     [ENTITY_INIT] =      Solid11_Init,
-    [ENTITY_MAIN] =      Solid11_Update,
+    [ENTITY_UPDATE] =    Solid11_Update,
     [ENTITY_DIE] =       Solid11_Die,
     [ENTITY_DISAPPEAR] = DeleteSolid,
     [ENTITY_EXIT] =      (SolidFunc)DeleteEntity,
@@ -40,13 +40,13 @@ static void Solid11_Init(struct Solid* p) {
   velocity->x = velocity->y = 0;
   (p->s).coord.x += PIXEL(8);
   (p->s).coord.y += PIXEL(8);
-  SET_SOLID_ROUTINE(p, ENTITY_MAIN);
+  SET_SOLID_ROUTINE(p, ENTITY_UPDATE);
   Solid11_Update(p);
 }
 
 static void Solid11_Update(struct Solid* p) {
   if ((p->body).status & BODY_STATUS_WHITE) {
-    if ((p->body).status & BODY_STATUS_B17) {
+    if ((p->body).status & BODY_STATUS_RECOILED) {
       (p->body).status = 0;
       (p->body).prevStatus = 0;
       (p->body).invincibleTime = 0;

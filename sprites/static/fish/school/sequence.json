@@ -1,0 +1,27 @@
+{
+  "label": "gStaticAnimationSequence_fish_school",
+  "data": [
+    [
+      {
+        "frameIdx": 0,
+        "duration": 10
+      },
+      {
+        "frameIdx": 1,
+        "duration": 10
+      },
+      {
+        "frameIdx": 2,
+        "duration": 10
+      },
+      {
+        "frameIdx": 3,
+        "duration": 10
+      },
+      {
+        "frameIdx": 0,
+        "duration": 254
+      }
+    ]
+  ]
+}

@@ -13,7 +13,7 @@ void NurseB_Die(struct Elf* p);
 // clang-format off
 const ElfRoutine gNurseBRoutine = {
     [ENTITY_INIT] =      NurseB_Init,
-    [ENTITY_MAIN] =      NurseB_Update,
+    [ENTITY_UPDATE] =    NurseB_Update,
     [ENTITY_DIE] =       NurseB_Die,
     [ENTITY_DISAPPEAR] = DeleteElf,
     [ENTITY_EXIT] =      (ElfFunc)DeleteEntity,

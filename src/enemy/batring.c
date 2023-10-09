@@ -15,7 +15,7 @@ static void Batring_Die(struct Enemy* p);
 // clang-format off
 const EnemyRoutine gBatringRoutine = {
     [ENTITY_INIT] =      Batring_Init,
-    [ENTITY_MAIN] =      Batring_Update,
+    [ENTITY_UPDATE] =    Batring_Update,
     [ENTITY_DIE] =       Batring_Die,
     [ENTITY_DISAPPEAR] = DeleteEnemy,
     [ENTITY_EXIT] =      (EnemyFunc)DeleteEntity,
@@ -30,7 +30,7 @@ static struct Enemy* CreateBatring(struct Coord* c, u8 n) {
     INIT_ZAKO_ROUTINE(p, ZAKO_BATRING);
     (p->s).tileNum = 0;
     (p->s).palID = 0;
-    (p->s).flags2 |= ENTITY_FLAGS2_B4;
+    (p->s).flags2 |= WHITE_PAINTABLE;
     (p->s).invincibleID = (p->s).uniqueID;
     (p->s).coord = *c;
     (p->s).work[0] = n;

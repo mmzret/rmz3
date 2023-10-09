@@ -19,7 +19,7 @@ void PantheonHunter_Die(struct Enemy* p);
 // clang-format off
 const EnemyRoutine gPantheonHunterRoutine = {
     [ENTITY_INIT] =      PantheonHunter_Init,
-    [ENTITY_MAIN] =      PantheonHunter_Update,
+    [ENTITY_UPDATE] =    PantheonHunter_Update,
     [ENTITY_DIE] =       PantheonHunter_Die,
     [ENTITY_DISAPPEAR] = DeleteEnemy,
     [ENTITY_EXIT] =      (EnemyFunc)DeleteEntity,

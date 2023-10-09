@@ -11,7 +11,7 @@ void TileCannon_Die(struct Enemy* p);
 // clang-format off
 const EnemyRoutine gTileCannonRoutine = {
     [ENTITY_INIT] =      TileCannon_Init,
-    [ENTITY_MAIN] =      TileCannon_Update,
+    [ENTITY_UPDATE] =    TileCannon_Update,
     [ENTITY_DIE] =       TileCannon_Die,
     [ENTITY_DISAPPEAR] = DeleteEnemy,
     [ENTITY_EXIT] =      (EnemyFunc)DeleteEntity,

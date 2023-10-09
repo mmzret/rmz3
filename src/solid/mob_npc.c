@@ -16,7 +16,7 @@ static void MobNPC_Die(struct Solid* p);
 // clang-format off
 const SolidRoutine gMobNPCRoutine = {
     [ENTITY_INIT] =      MobNPC_Init,
-    [ENTITY_MAIN] =      MobNPC_Update,
+    [ENTITY_UPDATE] =    MobNPC_Update,
     [ENTITY_DIE] =       MobNPC_Die,
     [ENTITY_DISAPPEAR] = DeleteSolid,
     [ENTITY_EXIT] =      (SolidFunc)DeleteEntity,

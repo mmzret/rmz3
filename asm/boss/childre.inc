@@ -448,7 +448,7 @@ _0804080A:
 	adds r1, r1, r2
 	movs r2, #0
 	str r3, [sp]
-	bl CreateSeaEnemy
+	bl CreateBubble
 	b _080408AC
 	.align 2, 0
 _08040858: .4byte 0xFFFFF800
@@ -484,7 +484,7 @@ _08040878:
 	adds r1, r1, r2
 	movs r2, #1
 	str r3, [sp]
-	bl CreateSeaEnemy
+	bl CreateBubble
 _080408AC:
 	ldr r3, [sp]
 	movs r0, #1

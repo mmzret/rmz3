@@ -9,7 +9,7 @@ static void DiskIcon_Die(struct Widget *w);
 // clang-format off
 const WidgetRoutine gDiskIconRoutine = {
     [ENTITY_INIT] =      DiskIcon_Init,
-    [ENTITY_MAIN] =      DiskIcon_Update,
+    [ENTITY_UPDATE] =    DiskIcon_Update,
     [ENTITY_DIE] =       DiskIcon_Die,
     [ENTITY_DISAPPEAR] = DeleteWidget,
     [ENTITY_EXIT] =      (WidgetFunc)DeleteEntity,
@@ -30,7 +30,7 @@ void CreateDiskIcon(struct Coord *c, u8 n, u8 r2) {
 }
 
 static void DiskIcon_Init(struct Widget *w) {
-  SET_WIDGET_ROUTINE(w, ENTITY_MAIN);
+  SET_WIDGET_ROUTINE(w, ENTITY_UPDATE);
   InitNonAffineMotion(&w->s);
   (w->s).flags |= DISPLAY;
   (w->s).flags |= FLIPABLE;

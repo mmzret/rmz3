@@ -13,7 +13,7 @@ static void GrandCannonBomb_Die(struct Projectile* p);
 // clang-format off
 const ProjectileRoutine gGrandCannonBombRoutine = {
     [ENTITY_INIT] =      GrandCannonBomb_Init,
-    [ENTITY_MAIN] =      GrandCannonBomb_Update,
+    [ENTITY_UPDATE] =    GrandCannonBomb_Update,
     [ENTITY_DIE] =       GrandCannonBomb_Die,
     [ENTITY_DISAPPEAR] = DeleteProjectile,
     [ENTITY_EXIT] =      (ProjectileFunc)DeleteEntity,
@@ -37,7 +37,7 @@ void CreateGrandCannonBomb(struct Coord* c, s32 amplitude, u8 angle) {
 // --------------------------------------------
 
 static void GrandCannonBomb_Init(struct Projectile* p) {
-  SET_PROJECTILE_ROUTINE(p, ENTITY_MAIN);
+  SET_PROJECTILE_ROUTINE(p, ENTITY_UPDATE);
   (p->s).mode[1] = 0;
   (p->s).flags |= FLIPABLE;
   (p->s).flags |= DISPLAY;

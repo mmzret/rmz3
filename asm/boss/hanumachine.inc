@@ -300,7 +300,7 @@ _0805BBB4:
 	movs r0, #0x2f
 	bl PlaySound
 	adds r0, r4, #0
-	bl FUN_0808a6bc
+	bl CreateEnemy50
 	movs r0, #0
 	strb r0, [r4, #0xd]
 	strb r0, [r4, #0xf]

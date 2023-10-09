@@ -9,7 +9,7 @@ static void Widget9_Die(struct Widget *w);
 // clang-format off
 const WidgetRoutine gWidget9Routine = {
     [ENTITY_INIT] =      Widget9_Init,
-    [ENTITY_MAIN] =      Widget9_Update,
+    [ENTITY_UPDATE] =    Widget9_Update,
     [ENTITY_DIE] =       Widget9_Die,
     [ENTITY_DISAPPEAR] = DeleteWidget,
     [ENTITY_EXIT] =      (WidgetFunc)DeleteEntity,
@@ -40,7 +40,7 @@ static void Widget9_Init(struct Widget *w) {
       FUN_080e7a84,
       FUN_080e7a9c,
   };
-  SET_WIDGET_ROUTINE(w, ENTITY_MAIN);
+  SET_WIDGET_ROUTINE(w, ENTITY_UPDATE);
   InitNonAffineMotion(&w->s);
   (w->s).flags |= DISPLAY;
   (w->s).flags |= FLIPABLE;

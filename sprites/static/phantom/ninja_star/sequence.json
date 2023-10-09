@@ -1,0 +1,93 @@
+{
+  "label": "gStaticAnimationSequence_phantom_ninja_star",
+  "data": [
+    [
+      {
+        "frameIdx": 0,
+        "duration": 4
+      },
+      {
+        "frameIdx": 1,
+        "duration": 4
+      },
+      {
+        "frameIdx": 2,
+        "duration": 4
+      },
+      {
+        "frameIdx": 0,
+        "duration": 254
+      }
+    ],
+    [
+      {
+        "frameIdx": 3,
+        "duration": 1
+      },
+      {
+        "frameIdx": 0,
+        "duration": 255
+      }
+    ],
+    [
+      {
+        "frameIdx": 4,
+        "duration": 1
+      },
+      {
+        "frameIdx": 0,
+        "duration": 255
+      }
+    ],
+    [
+      {
+        "frameIdx": 5,
+        "duration": 12
+      },
+      {
+        "frameIdx": 6,
+        "duration": 6
+      },
+      {
+        "frameIdx": 7,
+        "duration": 6
+      },
+      {
+        "frameIdx": 8,
+        "duration": 6
+      },
+      {
+        "frameIdx": 0,
+        "duration": 255
+      }
+    ],
+    [
+      {
+        "frameIdx": 9,
+        "duration": 3
+      },
+      {
+        "frameIdx": 10,
+        "duration": 3
+      },
+      {
+        "frameIdx": 11,
+        "duration": 3
+      },
+      {
+        "frameIdx": 0,
+        "duration": 254
+      }
+    ],
+    [
+      {
+        "frameIdx": 12,
+        "duration": 1
+      },
+      {
+        "frameIdx": 0,
+        "duration": 255
+      }
+    ]
+  ]
+}

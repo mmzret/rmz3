@@ -38,7 +38,7 @@ void FUN_080251a8(void) {
     LOAD_STATIC_GRAPHIC(n);
   }
   if (wElement.unk_0 != 3) {
-    LOAD_STATIC_GRAPHIC(28);
+    LOAD_STATIC_GRAPHIC(SM028_ICE_EFFECT);
   }
 }
 

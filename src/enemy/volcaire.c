@@ -9,7 +9,7 @@ void Volcaire_Die(struct Enemy* p);
 // clang-format off
 const EnemyRoutine gVolcaireRoutine = {
     [ENTITY_INIT] =      Volcaire_Init,
-    [ENTITY_MAIN] =      Volcaire_Update,
+    [ENTITY_UPDATE] =    Volcaire_Update,
     [ENTITY_DIE] =       Volcaire_Die,
     [ENTITY_DISAPPEAR] = DeleteEnemy,
     [ENTITY_EXIT] =      (EnemyFunc)DeleteEntity,
@@ -46,7 +46,7 @@ void FUN_08077174(struct Enemy* e) {
     INIT_ZAKO_ROUTINE(p, ENEMY_VOLCAIRE);
     (p->s).tileNum = 0;
     (p->s).palID = 0;
-    (p->s).flags2 |= ENTITY_FLAGS2_B4;
+    (p->s).flags2 |= WHITE_PAINTABLE;
     (p->s).invincibleID = (p->s).uniqueID;
     (p->s).work[0] = 1;
     (p->s).coord.x = (e->s).coord.x;
@@ -62,7 +62,7 @@ void FUN_080771cc(struct Enemy* e, s32 x, s32 y, u8 n) {
     INIT_ZAKO_ROUTINE(p, ENEMY_VOLCAIRE);
     (p->s).tileNum = 0;
     (p->s).palID = 0;
-    (p->s).flags2 |= ENTITY_FLAGS2_B4;
+    (p->s).flags2 |= WHITE_PAINTABLE;
     (p->s).invincibleID = (p->s).uniqueID;
     (p->s).work[0] = 2;
     (p->s).coord.x = x;

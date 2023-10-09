@@ -26,7 +26,7 @@ static void MissionAlert_Die(struct VFX* p);
 // clang-format off
 const VFXRoutine gMissionAlertRoutine = {
     [ENTITY_INIT] =      MissionAlert_Init,
-    [ENTITY_MAIN] =      MissionAlert_Update,
+    [ENTITY_UPDATE] =    MissionAlert_Update,
     [ENTITY_DIE] =       MissionAlert_Die,
     [ENTITY_DISAPPEAR] = DeleteVFX,
     [ENTITY_EXIT] =      (VFXFunc)DeleteEntity,
@@ -109,7 +109,7 @@ static void initMissionXXX(struct VFX* p) {
   (p->s).flags |= FLIPABLE;
   (p->s).work[2] = 0;
   (p->s).d.y = 0;
-  SET_VFX_ROUTINE(p, ENTITY_MAIN);
+  SET_VFX_ROUTINE(p, ENTITY_UPDATE);
   MissionAlert_Update(p);
 }
 
@@ -450,7 +450,7 @@ static void initWarning(struct VFX* p) {
   (p->s).flags |= FLIPABLE;
   (p->s).work[2] = 0;
   (p->s).d.y = 0;
-  SET_VFX_ROUTINE(p, ENTITY_MAIN);
+  SET_VFX_ROUTINE(p, ENTITY_UPDATE);
   (p->s).mode[2] = 0;
   MissionAlert_Update(p);
 }
@@ -1186,7 +1186,7 @@ static void initGameOver(struct VFX* p) {
   (p->s).flags |= DISPLAY;
   (p->s).flags |= FLIPABLE;
   (p->s).work[2] = 0;
-  SET_VFX_ROUTINE(p, ENTITY_MAIN);
+  SET_VFX_ROUTINE(p, ENTITY_UPDATE);
   (p->s).mode[2] = 0;
   MissionAlert_Update(p);
 }

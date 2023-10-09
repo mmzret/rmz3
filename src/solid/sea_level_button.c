@@ -14,7 +14,7 @@ void SeaLevelButton_Die(struct Solid* p);
 // clang-format off
 const SolidRoutine gSeaLevelButtonRoutine = {
     [ENTITY_INIT] =      SeaLevelButton_Init,
-    [ENTITY_MAIN] =      SeaLevelButton_Update,
+    [ENTITY_UPDATE] =    SeaLevelButton_Update,
     [ENTITY_DIE] =       SeaLevelButton_Die,
     [ENTITY_DISAPPEAR] = DeleteSolid,
     [ENTITY_EXIT] =      (SolidFunc)DeleteEntity,

@@ -16,7 +16,7 @@ static void Solid6_Die(struct Solid* p);
 // clang-format off
 const SolidRoutine gLavaGeyserPlatformRoutine = {
     [ENTITY_INIT] =      Solid6_Init,
-    [ENTITY_MAIN] =      Solid6_Update,
+    [ENTITY_UPDATE] =    Solid6_Update,
     [ENTITY_DIE] =       Solid6_Die,
     [ENTITY_DISAPPEAR] = DeleteSolid,
     [ENTITY_EXIT] =      (SolidFunc)DeleteEntity,
@@ -30,7 +30,7 @@ void CreateLavaGeyserPlatform(struct Solid* s) {
     INIT_SOLID_ROUTINE(p, SOLID_LAVA_GEYSER_PLATFORM);
     (p->s).tileNum = 0;
     (p->s).palID = 0;
-    (p->s).flags2 |= ENTITY_FLAGS2_B4;
+    (p->s).flags2 |= WHITE_PAINTABLE;
     (p->s).invincibleID = (p->s).uniqueID;
     (p->s).work[0] = 0;
     (p->s).unk_28 = &s->s;
@@ -38,7 +38,7 @@ void CreateLavaGeyserPlatform(struct Solid* s) {
 }
 
 static void Solid6_Init(struct Solid* p) {
-  SET_SOLID_ROUTINE(p, ENTITY_MAIN);
+  SET_SOLID_ROUTINE(p, ENTITY_UPDATE);
   (p->s).mode[1] = sInitModes[(p->s).work[0]];
   (p->s).flags |= FLIPABLE;
   (p->s).flags |= DISPLAY;

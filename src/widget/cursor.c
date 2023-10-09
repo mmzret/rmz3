@@ -9,7 +9,7 @@ static void MenuCursor_Die(struct Widget *w);
 // clang-format off
 const WidgetRoutine gMenuCursorRoutine = {
     [ENTITY_INIT] =      MenuCursor_Init,
-    [ENTITY_MAIN] =      MenuCursor_Update,
+    [ENTITY_UPDATE] =    MenuCursor_Update,
     [ENTITY_DIE] =       MenuCursor_Die,
     [ENTITY_DISAPPEAR] = DeleteWidget,
     [ENTITY_EXIT] =      (WidgetFunc)DeleteEntity,
@@ -52,7 +52,7 @@ static void MenuCursor_Init(struct Widget *w) {
       FUN_080e7770,
   };
   // clang-format on
-  SET_WIDGET_ROUTINE(w, ENTITY_MAIN);
+  SET_WIDGET_ROUTINE(w, ENTITY_UPDATE);
   InitNonAffineMotion(&w->s);
   (w->s).flags |= DISPLAY;
   (w->s).flags |= FLIPABLE;
@@ -160,40 +160,40 @@ static void MenuCursor_Die(struct Widget *w) { SET_WIDGET_ROUTINE(w, ENTITY_EXIT
 
 static void FUN_080e76b4(struct Widget *w) {
   InitNonAffineMotion(&w->s);
-  SetMotion(&w->s, MOTION(0x53, 0x0A));
+  SetMotion(&w->s, MOTION(SM083_ELF_MENU_ICON, 0x0A));
   (w->s).coord.x = PIXEL(356);
   (w->s).coord.y = PIXEL(6);
 }
 
 static void FUN_080e76dc(struct Widget *w) {
   InitNonAffineMotion(&w->s);
-  SetMotion(&w->s, MOTION(0x53, 0x0C));
+  SetMotion(&w->s, MOTION(SM083_ELF_MENU_ICON, 0x0C));
   (w->s).coord.x = PIXEL(356);
   (w->s).coord.y = PIXEL(122);
 }
 
 static void FUN_080e7704(struct Widget *w) {
   InitNonAffineMotion(&w->s);
-  SetMotion(&w->s, MOTION(0x53, 0x0E));
+  SetMotion(&w->s, MOTION(SM083_ELF_MENU_ICON, 0x0E));
 }
 
 static void FUN_080e7720(struct Widget *w) {
   InitNonAffineMotion(&w->s);
-  SetMotion(&w->s, MOTION(0x53, 0x0A));
+  SetMotion(&w->s, MOTION(SM083_ELF_MENU_ICON, 0x0A));
   (w->s).coord.x = PIXEL(114);
   (w->s).coord.y = PIXEL(14);
 }
 
 static void FUN_080e7748(struct Widget *w) {
   InitNonAffineMotion(&w->s);
-  SetMotion(&w->s, MOTION(0x53, 0x0C));
+  SetMotion(&w->s, MOTION(SM083_ELF_MENU_ICON, 0x0C));
   (w->s).coord.x = PIXEL(114);
   (w->s).coord.y = PIXEL(128);
 }
 
 static void FUN_080e7770(struct Widget *w) {
   InitNonAffineMotion(&w->s);
-  SetMotion(&w->s, MOTION(0x53, 0x0E));
+  SetMotion(&w->s, MOTION(SM083_ELF_MENU_ICON, 0x0E));
 }
 
 // --------------------------------------------
@@ -252,61 +252,20 @@ static void FUN_080e789c(struct Widget *w) {
   }
 }
 
-NAKED static void FUN_080e78cc(struct Widget *w) {
-  asm(".syntax unified\n\
-	push {lr}\n\
-	adds r2, r0, #0\n\
-	ldr r1, [r2, #0x28]\n\
-	ldr r3, _080E78FC @ =0x00000E17\n\
-	adds r0, r1, r3\n\
-	ldrb r0, [r0]\n\
-	cmp r0, #2\n\
-	beq _080E7904\n\
-	ldrb r1, [r2, #0xa]\n\
-	movs r0, #0xfe\n\
-	ands r0, r1\n\
-	movs r1, #0xfd\n\
-	ands r0, r1\n\
-	strb r0, [r2, #0xa]\n\
-	ldr r1, _080E7900 @ =gWidgetFnTable\n\
-	ldrb r0, [r2, #9]\n\
-	lsls r0, r0, #2\n\
-	adds r0, r0, r1\n\
-	movs r1, #3\n\
-	str r1, [r2, #0xc]\n\
-	ldr r0, [r0]\n\
-	ldr r0, [r0, #0xc]\n\
-	str r0, [r2, #0x14]\n\
-	b _080E792E\n\
-	.align 2, 0\n\
-_080E78FC: .4byte 0x00000E17\n\
-_080E7900: .4byte gWidgetFnTable\n\
-_080E7904:\n\
-	ldr r3, _080E7914 @ =0x00000DFC\n\
-	adds r0, r1, r3\n\
-	ldrb r0, [r0, #0xe]\n\
-	cmp r0, #0\n\
-	beq _080E7918\n\
-	movs r0, #0xb9\n\
-	lsls r0, r0, #8\n\
-	b _080E791C\n\
-	.align 2, 0\n\
-_080E7914: .4byte 0x00000DFC\n\
-_080E7918:\n\
-	movs r0, #0x91\n\
-	lsls r0, r0, #8\n\
-_080E791C:\n\
-	str r0, [r2, #0x54]\n\
-	movs r0, #0xe0\n\
-	lsls r0, r0, #7\n\
-	str r0, [r2, #0x58]\n\
-	ldr r0, [r2, #0x54]\n\
-	movs r1, #0x80\n\
-	lsls r1, r1, #9\n\
-	adds r0, r0, r1\n\
-	str r0, [r2, #0x54]\n\
-_080E792E:\n\
-	pop {r0}\n\
-	bx r0\n\
- .syntax divided\n");
+static void FUN_080e78cc(struct Widget *w) {
+  struct GameState *g = (struct GameState *)(w->s).unk_28;
+  if ((&(g->sceneState).menu)->unk_4b != 2) {
+    (w->s).flags &= ~DISPLAY;
+    (w->s).flags &= ~FLIPABLE;
+    SET_WIDGET_ROUTINE(w, ENTITY_DISAPPEAR);
+    return;
+  }
+
+  if ((&(g->sceneState).menu.elf)->unk_e != 0) {
+    (w->s).coord.x = PIXEL(185);
+  } else {
+    (w->s).coord.x = PIXEL(145);
+  }
+  (w->s).coord.y = PIXEL(112);
+  (w->s).coord.x += PIXEL(256);
 }

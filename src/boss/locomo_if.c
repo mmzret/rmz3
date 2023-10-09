@@ -11,7 +11,7 @@ void LocomoIF_Die(struct Boss* p);
 // clang-format off
 const BossRoutine gLocomoIFRoutine = {
     [ENTITY_INIT] =      LocomoIF_Init,
-    [ENTITY_MAIN] =      LocomoIF_Update,
+    [ENTITY_UPDATE] =    LocomoIF_Update,
     [ENTITY_DIE] =       LocomoIF_Die,
     [ENTITY_DISAPPEAR] = DeleteBoss,
     [ENTITY_EXIT] =      (BossFunc)DeleteEntity,

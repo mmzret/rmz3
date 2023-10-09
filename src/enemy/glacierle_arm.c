@@ -11,7 +11,7 @@ void GlacierleAtkArm_Die(struct Enemy* p);
 // clang-format off
 const EnemyRoutine gGlacierleAtkArmRoutine = {
     [ENTITY_INIT] =      GlacierleAtkArm_Init,
-    [ENTITY_MAIN] =      GlacierleAtkArm_Update,
+    [ENTITY_UPDATE] =    GlacierleAtkArm_Update,
     [ENTITY_DIE] =       GlacierleAtkArm_Die,
     [ENTITY_DISAPPEAR] = DeleteEnemy,
     [ENTITY_EXIT] =      (EnemyFunc)DeleteEntity,

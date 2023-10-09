@@ -1,14 +1,11 @@
 #!/usr/bin/env -S deno run --allow-read --allow-write --unstable
 
 import { Command } from 'https://deno.land/x/cliffy@v0.25.4/command/mod.ts';
-import { dirname, extname, join } from 'https://deno.land/std/path/mod.ts';
-import { existsSync } from 'https://deno.land/std/fs/mod.ts';
-import { GraphicHeader } from '../common/index.ts';
 
 type SpriteMetadata = { id: number; name: string; path: string };
 
 type JsonData = {
-  main: SpriteMetadata[];
+  data: SpriteMetadata[];
 };
 
 type HeaderSymbol = `gGraphicHeader_Sprite_${string}`;
@@ -24,10 +21,10 @@ const main = async () => {
     )
     .parse(Deno.args);
 
-  const infos = JSON.parse(Deno.readTextFileSync('sprites/sprite.json')) as JsonData;
+  const infos = JSON.parse(Deno.readTextFileSync('sprites/dynamic/sprite.json')) as JsonData;
 
   let lastID = 0;
-  for (const info of infos.main) {
+  for (const info of infos.data) {
     const symbol = info.path.split('/').join('_');
     const label: HeaderSymbol = `gGraphicHeader_Sprite_${symbol}`;
     HeaderPtrTable.set(info.id, label);

@@ -17,7 +17,7 @@ static void ArmorIcons_Die(struct Widget *w);
 // clang-format off
 const WidgetRoutine gArmorIconsRoutine = {
     [ENTITY_INIT] =      ArmorIcons_Init,
-    [ENTITY_MAIN] =      ArmorIcons_Update,
+    [ENTITY_UPDATE] =    ArmorIcons_Update,
     [ENTITY_DIE] =       ArmorIcons_Die,
     [ENTITY_DISAPPEAR] = DeleteWidget,
     [ENTITY_EXIT] =      (WidgetFunc)DeleteEntity,

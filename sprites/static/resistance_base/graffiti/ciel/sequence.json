@@ -1,0 +1,15 @@
+{
+  "label": "gStaticAnimationSequence_resistance_base_graffiti_ciel",
+  "data": [
+    [
+      {
+        "frameIdx": 0,
+        "duration": 1
+      },
+      {
+        "frameIdx": 0,
+        "duration": 255
+      }
+    ]
+  ]
+}

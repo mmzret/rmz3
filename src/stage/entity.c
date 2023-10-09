@@ -104,17 +104,17 @@ WIP void InitStageEntityManager(u8 stageID, bool8 missionDone) {
   manager->unk_20e = 0;
   manager->stageID = stageID;
   manager->start = 1;
-  manager->dynamicEntityRange[0] = -0x7fffffff;
-  manager->dynamicEntityRange[1] = 0x7fffffff;
-  manager->area = 0xff;
+  manager->dynamicEntityRange[0] = -0x7FFFFFFF;
+  manager->dynamicEntityRange[1] = 0x7FFFFFFF;
+  manager->area = 0xFF;
   manager->unk_226[0] = 0;
   manager->unk_226[1] = 0;
   manager->unk_226[2] = 0;
-  manager->unk_226[3] = 0;
   manager->unk_22a = 0;
+  manager->unk_226[3] = 0;
   ReleaseAllStageEntities();
-  for (i = 0; i < 32; i++) {
-    manager->entityEnabled[i] = -1;  // All enabled
+  for (i = 0; i < 33; i++) {
+    manager->entityEnabled[i] = 0xFFFFFFFF;  // All enabled
   }
   manager->template = sStageEntityTemplate[stageID];
   manager->templateCoord = sStageEntityTemplateCoord[stageID];
@@ -1897,27 +1897,27 @@ _08018BFC: .4byte 0x00000211\n\
 
 WIP static void FUN_08018c00(u8 stageID, u8 area) {
 #if MODERN
-  const struct PreloadEntity* t;
+  const struct PreloadEntity* preload;
 
-  for (t = sStagePreloadEntities[stageID]; t->id != 0xFF; t = &t[1]) {
-    if (((t->habitat >> area) & 1) && (t->unk_05 & (1 << 1))) {
+  for (preload = sStagePreloadEntities[stageID]; preload->id != 0xFF; preload = &preload[1]) {
+    if (((preload->habitat >> area) & 1) && (preload->unk_05 & (1 << 1))) {
       u32 val, mask;
       if (gStageEntityManager.unk_226[3] != 0) {
-        val = t->unk_06;
+        val = preload->unk_06;
         mask = (1 << 1);
       } else {
-        val = t->unk_06;
+        val = preload->unk_06;
         mask = (1 << 0);
       }
       if (val & mask) {
-        if (t->unk_07 != 0) {
-          gStageEntityManager.unk_22a |= (1 << t->palID);
+        if (preload->unk_07 != 0) {
+          gStageEntityManager.unk_22a |= (1 << preload->palID);
         } else {
-          gStageEntityManager.unk_22a &= ~(1 << t->palID);
+          gStageEntityManager.unk_22a &= ~(1 << preload->palID);
         }
-        wStaticGraphicTilenums[t->id] = t->tileBase;
-        wStaticMotionPalIDs[t->id] = t->palID;
-        LOAD_STATIC_GRAPHIC(t->id);
+        wStaticGraphicTilenums[preload->id] = preload->tileBase;
+        wStaticMotionPalIDs[preload->id] = preload->palID;
+        LOAD_STATIC_GRAPHIC(preload->id);
       }
     }
   }

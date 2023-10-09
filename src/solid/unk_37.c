@@ -13,7 +13,7 @@ static void Solid37_Die(struct Solid* p);
 // clang-format off
 const SolidRoutine gSolid37Routine = {
     [ENTITY_INIT] =      Solid37_Init,
-    [ENTITY_MAIN] =      Solid37_Update,
+    [ENTITY_UPDATE] =    Solid37_Update,
     [ENTITY_DIE] =       Solid37_Die,
     [ENTITY_DISAPPEAR] = DeleteSolid,
     [ENTITY_EXIT] =      (SolidFunc)DeleteEntity,
@@ -27,7 +27,7 @@ void CreateSolid37(struct Solid* p) {
     INIT_SOLID_ROUTINE(s, SOLID_UNK_037);
     (s->s).tileNum = 0;
     (s->s).palID = 0;
-    (s->s).flags2 |= ENTITY_FLAGS2_B4;
+    (s->s).flags2 |= WHITE_PAINTABLE;
     (s->s).invincibleID = (s->s).uniqueID;
     (s->s).unk_28 = &p->s;
     (s->s).coord = (p->s).coord;

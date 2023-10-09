@@ -11,7 +11,7 @@ void CarryArm_Die(struct Enemy* p);
 // clang-format off
 const EnemyRoutine gCarryArmRoutine = {
     [ENTITY_INIT] =      CarryArm_Init,
-    [ENTITY_MAIN] =      CarryArm_Update,
+    [ENTITY_UPDATE] =    CarryArm_Update,
     [ENTITY_DIE] =       CarryArm_Die,
     [ENTITY_DISAPPEAR] = DeleteEnemy,
     [ENTITY_EXIT] =      (EnemyFunc)DeleteEntity,

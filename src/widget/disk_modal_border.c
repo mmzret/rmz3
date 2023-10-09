@@ -18,7 +18,7 @@ static void DiskModalBorder_Die(struct Widget *w);
 // clang-format off
 const WidgetRoutine gDiskModalBorderRoutine = {
     [ENTITY_INIT] =      DiskModalBorder_Init,
-    [ENTITY_MAIN] =      DiskModalBorder_Update,
+    [ENTITY_UPDATE] =    DiskModalBorder_Update,
     [ENTITY_DIE] =       DiskModalBorder_Die,
     [ENTITY_DISAPPEAR] = DeleteWidget,
     [ENTITY_EXIT] =      (WidgetFunc)DeleteEntity,

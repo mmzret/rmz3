@@ -14,7 +14,7 @@ void VolcanoCoffin_Die(struct Solid* p);
 // clang-format off
 const SolidRoutine gVolcanoCoffinRoutine = {
     [ENTITY_INIT] =      VolcanoCoffin_Init,
-    [ENTITY_MAIN] =      VolcanoCoffin_Update,
+    [ENTITY_UPDATE] =    VolcanoCoffin_Update,
     [ENTITY_DIE] =       VolcanoCoffin_Die,
     [ENTITY_DISAPPEAR] = DeleteSolid,
     [ENTITY_EXIT] =      (SolidFunc)DeleteEntity,
@@ -28,7 +28,7 @@ struct Solid* CreateVolcanoCoffin(u8 n, s32 x, s32 y) {
     INIT_SOLID_ROUTINE(p, SOLID_VOLCANO_COFFIN);
     (p->s).tileNum = 0;
     (p->s).palID = 0;
-    (p->s).flags2 |= ENTITY_FLAGS2_B4;
+    (p->s).flags2 |= WHITE_PAINTABLE;
     (p->s).invincibleID = (p->s).uniqueID;
     (p->s).work[0] = n;
     (p->s).coord.x = x;

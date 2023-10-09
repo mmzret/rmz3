@@ -21,7 +21,7 @@ struct Widget *CreateMenuComp2(struct GameState *g, u8 kind, u8 r2) {
 }
 
 static void MenuComp2_Init(struct Widget *w) {
-  SET_WIDGET_ROUTINE(w, ENTITY_MAIN);
+  SET_WIDGET_ROUTINE(w, ENTITY_UPDATE);
   InitNonAffineMotion(&w->s);
   (w->s).flags |= (1 << 0);
   (w->s).flags |= (1 << 1);
@@ -63,7 +63,7 @@ static void MenuComp2_Die(struct Widget *p) {
 // clang-format off
 const WidgetRoutine gMenuComp2Routine = {
     [ENTITY_INIT] =      MenuComp2_Init,
-    [ENTITY_MAIN] =      MenuComp2_Update,
+    [ENTITY_UPDATE] =    MenuComp2_Update,
     [ENTITY_DIE] =       MenuComp2_Die,
     [ENTITY_DISAPPEAR] = DeleteWidget,
     [ENTITY_EXIT] =      (WidgetFunc)DeleteEntity,

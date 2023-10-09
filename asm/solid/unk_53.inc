@@ -72,7 +72,7 @@ _080DFDD4:
 	lsrs r2, r2, #0x11
 	movs r3, #3
 	ands r2, r3
-	bl CreateSeaEnemy
+	bl CreateBubble
 	subs r4, #1
 	cmp r4, #0
 	bge _080DFDD4

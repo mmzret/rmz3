@@ -161,7 +161,7 @@
 			src/enemy/gyro_cannon.o (.text);
 			src/enemy/lemmingles_nest.o (.text);
 			src/enemy/lemmingles.o (.text);
-			src/enemy/unk_14.o (.text);
+			src/enemy/top_gabyoall.o (.text);
 			src/enemy/sharkseal_x.o (.text);
 			src/enemy/volcano_bomb.o (.text);
 			src/enemy/carry_arm.o (.text);
@@ -195,6 +195,10 @@
 			src/enemy/hanumachine_obj.o (.text);
 			src/enemy/gallisni.o (.text);
 			src/enemy/mothjiro.o (.text);
+			src/enemy/mettaur_swim.o (.text);
+			src/enemy/pantheon_base.o (.text);
+			src/enemy/hanumachine_necro.o (.text);
+			src/enemy/carrybee_g.o (.text);
 
 		src/projectile.o (.text);
       src/projectile/lemon.o (.text);
@@ -210,7 +214,7 @@
 
 		src/vfx.o (.text);
       src/vfx/smoke.o (.text);
-      src/vfx/sea_enemy.o (.text);
+      src/vfx/bubble.o (.text);
       src/vfx/charge_effect.o (.text);
       src/vfx/zero_death_effect.o (.text);
       src/vfx/particle.o (.text);
@@ -228,7 +232,7 @@
       src/vfx/unk_18.o (.text);
       src/vfx/unk_19.o (.text);
       src/vfx/unk_20.o (.text);
-      src/vfx/unk_21.o (.text);
+      src/vfx/batring_necro.o (.text);
       src/vfx/unk_22.o (.text);
       src/vfx/necro.o (.text);
       src/vfx/shrimporin_vfx.o (.text);
@@ -312,11 +316,11 @@
       src/solid/glacierle_arm.o (.text);
       src/solid/unk_16.o (.text);
       src/solid/unk_17.o (.text);
-      src/solid/unk_18.o (.text);
+      src/solid/snowboard.o (.text);
       src/solid/base_elevator.o (.text);
-      src/solid/door_2d_gray.o (.text);
+      src/solid/door_2d_gray_v.o (.text);
       src/solid/actor.o (.text);
-      src/solid/unk_22.o (.text);
+      src/solid/door_2d_gray_h.o (.text);
       src/solid/unk_23.o (.text);
       src/solid/phantom_teleporter.o (.text);
       src/solid/unk_25.o (.text);
@@ -347,7 +351,7 @@
       src/solid/structural_steel.o (.text);
       src/solid/mod_elf.o (.text);
       src/solid/unk_52.o (.text);
-      src/solid/unk_53.o (.text);
+      src/solid/ocean_rod_wall.o (.text);
       src/solid/sea_level_button.o (.text);
       src/solid/childre_ship.o (.text);
 

@@ -13,7 +13,7 @@ static void PhantomTeleporter_Die(struct Solid* p);
 // clang-format off
 const SolidRoutine gPhantomTeleporterRoutine = {
     [ENTITY_INIT] =      PhantomTeleporter_Init,
-    [ENTITY_MAIN] =      PhantomTeleporter_Update,
+    [ENTITY_UPDATE] =    PhantomTeleporter_Update,
     [ENTITY_DIE] =       PhantomTeleporter_Die,
     [ENTITY_DISAPPEAR] = DeleteSolid,
     [ENTITY_EXIT] =      (SolidFunc)DeleteEntity,

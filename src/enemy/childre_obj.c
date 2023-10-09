@@ -11,7 +11,7 @@ void ChildreObj_Die(struct Enemy* p);
 // clang-format off
 const EnemyRoutine gChildreObjRoutine = {
     [ENTITY_INIT] =      ChildreObj_Init,
-    [ENTITY_MAIN] =      ChildreObj_Update,
+    [ENTITY_UPDATE] =    ChildreObj_Update,
     [ENTITY_DIE] =       ChildreObj_Die,
     [ENTITY_DISAPPEAR] = DeleteEnemy,
     [ENTITY_EXIT] =      (EnemyFunc)DeleteEntity,

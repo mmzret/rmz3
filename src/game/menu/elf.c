@@ -102,9 +102,9 @@ static void ElfMenuLoop_Init(struct GameState* g) {
 
   gBlendRegBuffer.bldclt = 0x210;
 
-  LOAD_STATIC_GRAPHIC(82);
-  LOAD_STATIC_GRAPHIC(83);
-  LOAD_STATIC_GRAPHIC(83);
+  LOAD_STATIC_GRAPHIC(SM082_ELF_MENU);
+  LOAD_STATIC_GRAPHIC(SM083_ELF_MENU_ICON);
+  LOAD_STATIC_GRAPHIC(SM083_ELF_MENU_ICON);
   if (((&z->unk_b4)->status).menuZeroColor == MZC_HARD) {
     CreateElfMenuItem(g, 4, 0);
   } else {

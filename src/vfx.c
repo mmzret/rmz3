@@ -6,7 +6,7 @@
 // clang-format off
 const VFXRoutine* const gVFXFnTable[VFX_COUNT] = {
     [VFX_SMOKE] =  &gSmokeRoutine,
-    [VFX_SEA_ENEMY] = &gSeaEnemyRoutine,
+    [VFX_BUBBLE] = &gBubbleRoutine,
     [VFX_CHARGE_EFFECT] =  &gChargeEffectRoutine,
     [VFX_UNK_003] =  &gSmokeRoutine,
     [VFX_DEATH_EFFECT] =  &gZeroDeathEffectRoutine,
@@ -26,7 +26,7 @@ const VFXRoutine* const gVFXFnTable[VFX_COUNT] = {
     [VFX_UNK_018] = &gGhost18Routine,
     [VFX_UNK_019] = &gGhost19Routine,
     [VFX_UNK_020] = &gGhost20Routine,
-    [VFX_UNK_021] = &gGhost21Routine,
+    [VFX_BATRING_NECRO] = &gBatringNecroRoutine,
     [VFX_UNK_022] = &gGhost22Routine,
     [VFX_NECRO] = &gNecroRoutine,
     [VFX_SHRIMPORIN] = &gShrimporinVFXRoutine,

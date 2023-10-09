@@ -11,7 +11,7 @@ void Anubis_Die(struct Boss* p);
 // clang-format off
 const BossRoutine gAnubisRoutine = {
     [ENTITY_INIT] =      Anubis_Init,
-    [ENTITY_MAIN] =      Anubis_Update,
+    [ENTITY_UPDATE] =    Anubis_Update,
     [ENTITY_DIE] =       Anubis_Die,
     [ENTITY_DISAPPEAR] = DeleteBoss,
     [ENTITY_EXIT] =      (BossFunc)DeleteEntity,

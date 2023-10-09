@@ -12,7 +12,7 @@ static const motion_t sMotions[3];
 // clang-format off
 const VFXRoutine gGhost17Routine = {
     [ENTITY_INIT] =      Ghost17_Init,
-    [ENTITY_MAIN] =      Ghost17_Update,
+    [ENTITY_UPDATE] =    Ghost17_Update,
     [ENTITY_DIE] =       Ghost17_Die,
     [ENTITY_DISAPPEAR] = DeleteVFX,
     [ENTITY_EXIT] =      (VFXFunc)DeleteEntity,

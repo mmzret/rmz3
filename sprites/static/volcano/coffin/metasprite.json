@@ -1,0 +1,76 @@
+{
+  "data": [
+    {
+      "sheetIdx": 0,
+      "subsprites": [
+        {
+          "tileNum": 40,
+          "xflip": false,
+          "yflip": false,
+          "size": [
+            32,
+            8
+          ],
+          "x": 4,
+          "y": 32
+        },
+        {
+          "tileNum": 44,
+          "xflip": false,
+          "yflip": false,
+          "size": [
+            32,
+            8
+          ],
+          "x": -35,
+          "y": 32
+        },
+        {
+          "tileNum": 50,
+          "xflip": false,
+          "yflip": false,
+          "size": [
+            8,
+            8
+          ],
+          "x": -48,
+          "y": 15
+        },
+        {
+          "tileNum": 48,
+          "xflip": false,
+          "yflip": false,
+          "size": [
+            8,
+            16
+          ],
+          "x": 40,
+          "y": 8
+        },
+        {
+          "tileNum": 32,
+          "xflip": false,
+          "yflip": false,
+          "size": [
+            16,
+            32
+          ],
+          "x": 24,
+          "y": 0
+        },
+        {
+          "tileNum": 0,
+          "xflip": false,
+          "yflip": false,
+          "size": [
+            64,
+            32
+          ],
+          "x": -40,
+          "y": 0
+        }
+      ]
+    }
+  ],
+  "label": "gStaticMetaSprite_volcano_coffin"
+}

@@ -7,21 +7,21 @@
 #define BG_MODE_0 0xFFF8
 
 #define POW2(n) (n * n)
-#define OFFSET_TABLE(tbl, n) ((void*)((u32)(void*)&tbl[n] + (u32)tbl[n]))
-#define PTR_U32(p) ((u32)(void*)(p))
+#define OFFSET_TABLE(tbl, n) ((void *)((u32)(void *)&tbl[n] + (u32)tbl[n]))
+#define PTR_U32(p) ((u32)(void *)(p))
 
 typedef s32 (*ShapeChecker)(s32 x, s32 y);
 
 struct Coord;
 
-void* Malloc(u32 bytesize);
+void *Malloc(u32 bytesize);
 metatile_attr_t GetHazardMetatileAttr(s32 x, s32 y);
 s32 FUN_08009f6c(s32 x, s32 y);
 void CreateFirework(s32 x, s32 y, bool8 r2);
 void resetData_08016db4(void);
 void FUN_0802511c(void);
 void clearStageDisk(void);
-u32 TryDropItem(u32 table, struct Coord* c);
+u32 TryDropItem(u32 table, struct Coord *c);
 
 // --------------------------------------------
 
@@ -75,6 +75,10 @@ s32 FUN_0800ab68(s32 x, s32 y);
 s32 FUN_0800ab90(s32 x, s32 y);
 s32 FUN_0800abc4(s32 x, s32 y);
 s32 FUN_0800abf8(s32 x, s32 y);
+
+#if MODERN
+void *memcpy(void *buf1, const void *buf2, u32 n);
+#endif
 
 // --------------------------------------------
 

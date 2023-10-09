@@ -11,7 +11,7 @@ void SharksealX_Die(struct Enemy* p);
 // clang-format off
 const EnemyRoutine gSharksealXRoutine = {
     [ENTITY_INIT] =      SharksealX_Init,
-    [ENTITY_MAIN] =      SharksealX_Update,
+    [ENTITY_UPDATE] =    SharksealX_Update,
     [ENTITY_DIE] =       SharksealX_Die,
     [ENTITY_DISAPPEAR] = DeleteEnemy,
     [ENTITY_EXIT] =      (EnemyFunc)DeleteEntity,

@@ -11,7 +11,7 @@ static void Ghost19_Die(struct VFX *p);
 // clang-format off
 const VFXRoutine gGhost19Routine = {
     [ENTITY_INIT] =      Ghost19_Init,
-    [ENTITY_MAIN] =      Ghost19_Update,
+    [ENTITY_UPDATE] =    Ghost19_Update,
     [ENTITY_DIE] =       Ghost19_Die,
     [ENTITY_DISAPPEAR] = DeleteVFX,
     [ENTITY_EXIT] =      (VFXFunc)DeleteEntity,
@@ -65,7 +65,7 @@ void CreateGhost19_2(struct Entity *p, struct Coord *c) {
 // --------------------------------------------
 
 static void Ghost19_Init(struct VFX *p) {
-  SET_VFX_ROUTINE(p, ENTITY_MAIN);
+  SET_VFX_ROUTINE(p, ENTITY_UPDATE);
   (p->s).mode[1] = u8_ARRAY_0836e8a8[(p->s).work[0]];
   (p->s).flags |= FLIPABLE;
   (p->s).flags |= DISPLAY;

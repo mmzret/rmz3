@@ -8,7 +8,7 @@ void SeaOtterElf_Die(struct Elf* p);
 // clang-format off
 const ElfRoutine gSeaOtterElfRoutine = {
     [ENTITY_INIT] =      SeaOtterElf_Init,
-    [ENTITY_MAIN] =      SeaOtterElf_Update,
+    [ENTITY_UPDATE] =    SeaOtterElf_Update,
     [ENTITY_DIE] =       SeaOtterElf_Die,
     [ENTITY_DISAPPEAR] = DeleteElf,
     [ENTITY_EXIT] =      (ElfFunc)DeleteEntity,

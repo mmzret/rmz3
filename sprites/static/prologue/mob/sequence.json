@@ -1,0 +1,47 @@
+{
+  "label": "gStaticAnimationSequence_prologue_mob",
+  "data": [
+    [
+      {
+        "frameIdx": 0,
+        "duration": 1
+      },
+      {
+        "frameIdx": 0,
+        "duration": 255
+      }
+    ],
+    [
+      {
+        "frameIdx": 1,
+        "duration": 1
+      },
+      {
+        "frameIdx": 0,
+        "duration": 255
+      }
+    ],
+    [
+      {
+        "frameIdx": 2,
+        "duration": 18
+      },
+      {
+        "frameIdx": 3,
+        "duration": 21
+      },
+      {
+        "frameIdx": 4,
+        "duration": 18
+      },
+      {
+        "frameIdx": 5,
+        "duration": 21
+      },
+      {
+        "frameIdx": 0,
+        "duration": 254
+      }
+    ]
+  ]
+}

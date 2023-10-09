@@ -11,7 +11,7 @@ void HellBouncer_Die(struct Enemy* p);
 // clang-format off
 const EnemyRoutine gHellBouncerRoutine = {
     [ENTITY_INIT] =      HellBouncer_Init,
-    [ENTITY_MAIN] =      HellBouncer_Update,
+    [ENTITY_UPDATE] =    HellBouncer_Update,
     [ENTITY_DIE] =       HellBouncer_Die,
     [ENTITY_DISAPPEAR] = DeleteEnemy,
     [ENTITY_EXIT] =      (EnemyFunc)DeleteEntity,

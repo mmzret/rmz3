@@ -13,7 +13,7 @@ void Solid44_Die(struct Solid* p);
 // clang-format off
 const SolidRoutine gSolid44Routine = {
     [ENTITY_INIT] =      Solid44_Init,
-    [ENTITY_MAIN] =      Solid44_Update,
+    [ENTITY_UPDATE] =    Solid44_Update,
     [ENTITY_DIE] =       Solid44_Die,
     [ENTITY_DISAPPEAR] = DeleteSolid,
     [ENTITY_EXIT] =      (SolidFunc)DeleteEntity,
@@ -37,7 +37,7 @@ static void Solid44_Init(struct Solid* p) {
       INIT_BODY(p, &sCollisions[0], 0, NULL);
       (p->s).coord.x += PIXEL(8);
       (p->s).coord.y = FUN_08009f6c((p->s).coord.x, (p->s).coord.y);
-      SET_SOLID_ROUTINE(p, ENTITY_MAIN);
+      SET_SOLID_ROUTINE(p, ENTITY_UPDATE);
       Solid44_Update(p);
     }
   } else {
@@ -61,7 +61,7 @@ static void Solid44_Update(struct Solid* p) {
       INIT_SOLID_ROUTINE(p2, SOLID_UNK_044);
       (p2->s).tileNum = 0;
       (p2->s).palID = 0;
-      (p2->s).flags2 |= ENTITY_FLAGS2_B4;
+      (p2->s).flags2 |= WHITE_PAINTABLE;
       (p2->s).invincibleID = (p2->s).uniqueID;
       (p2->s).work[0] = 1;
       (p2->s).work[1] = 0;

@@ -15,7 +15,7 @@ void MgNinjaStar_Die(struct Solid* p);
 // clang-format off
 const SolidRoutine gMinigameNinjaStarRoutine = {
     [ENTITY_INIT] =      MgNinjaStar_Init,
-    [ENTITY_MAIN] =      MgNinjaStar_Update,
+    [ENTITY_UPDATE] =    MgNinjaStar_Update,
     [ENTITY_DIE] =       MgNinjaStar_Die,
     [ENTITY_DISAPPEAR] = DeleteSolid,
     [ENTITY_EXIT] =      (SolidFunc)DeleteEntity,
@@ -29,7 +29,7 @@ void FUN_080d915c(struct MenuState* m, s32 x, s32 y) {
     INIT_SOLID_ROUTINE(p, SOLID_MG_NINJASTAR);
     (p->s).tileNum = 0;
     (p->s).palID = 0;
-    (p->s).flags2 |= ENTITY_FLAGS2_B4;
+    (p->s).flags2 |= WHITE_PAINTABLE;
     (p->s).invincibleID = (p->s).uniqueID;
     (p->s).work[0] = 0;
     (p->s).coord.x = x;
@@ -45,7 +45,7 @@ void FUN_080d91b4(struct MenuState* m, s32 x, s32 y, u8 r3) {
     INIT_SOLID_ROUTINE(p, SOLID_MG_NINJASTAR);
     (p->s).tileNum = 0;
     (p->s).palID = 0;
-    (p->s).flags2 |= ENTITY_FLAGS2_B4;
+    (p->s).flags2 |= WHITE_PAINTABLE;
     (p->s).invincibleID = (p->s).uniqueID;
     (p->s).work[0] = 1;
     (p->s).coord.x = x;
@@ -56,7 +56,7 @@ void FUN_080d91b4(struct MenuState* m, s32 x, s32 y, u8 r3) {
 }
 
 static void MgNinjaStar_Init(struct Solid* p) {
-  SET_SOLID_ROUTINE(p, ENTITY_MAIN);
+  SET_SOLID_ROUTINE(p, ENTITY_UPDATE);
   (p->s).mode[1] = sInitModes[(p->s).work[0]];
   (p->s).flags |= FLIPABLE;
   (p->s).flags |= DISPLAY;

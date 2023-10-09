@@ -53,7 +53,7 @@ struct Weapon* CreateWeaponShieldFly(struct Zero* z, u8 r1) {
 
 static void ShieldFly_Init(struct Weapon* w) {
   struct Weapon_b4* b4;
-  SET_WEAPON_ROUTINE(w, ENTITY_MAIN);
+  SET_WEAPON_ROUTINE(w, ENTITY_UPDATE);
   InitNonAffineMotion(&w->s);
   ResetDynamicMotion(&w->s);
   (w->s).flags |= DISPLAY;
@@ -235,7 +235,7 @@ static const WeaponFunc sShieldFlyUpdates[5] = {
 // clang-format off
 const WeaponRoutine gShieldFlyRoutine = {
     [ENTITY_INIT] =      ShieldFly_Init,
-    [ENTITY_MAIN] =      ShieldFly_Update,
+    [ENTITY_UPDATE] =    ShieldFly_Update,
     [ENTITY_DIE] =       ShieldFly_Die,
     [ENTITY_DISAPPEAR] = DeleteWeapon,
     [ENTITY_EXIT] =      (WeaponFunc)DeleteEntity,    

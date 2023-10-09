@@ -15,7 +15,7 @@ static void EmotionBubble_Die(struct VFX* p);
 // clang-format off
 const VFXRoutine gEmotionBubbleRoutine = {
     [ENTITY_INIT] =      EmotionBubble_Init,
-    [ENTITY_MAIN] =      EmotionBubble_Update,
+    [ENTITY_UPDATE] =    EmotionBubble_Update,
     [ENTITY_DIE] =       EmotionBubble_Die,
     [ENTITY_DISAPPEAR] = DeleteVFX,
     [ENTITY_EXIT] =      (VFXFunc)DeleteEntity,
@@ -74,7 +74,7 @@ static void EmotionBubble_Init(struct VFX* p) {
   (p->s).flags |= DISPLAY;
   (p->s).spr.oam.priority = 0;
   (p->s).work[2] = SECOND;
-  SET_VFX_ROUTINE(p, ENTITY_MAIN);
+  SET_VFX_ROUTINE(p, ENTITY_UPDATE);
   EmotionBubble_Update(p);
 }
 

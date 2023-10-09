@@ -244,7 +244,7 @@ Script_ReturnFromStageRun:
   wait FRAME
   spawn 3, 0, EntityTemplate_0835beb0
   spawn 4, 0, EntityTemplate_0835bec0
-  cmd1b 1, 0, 1
+  gimmick 1, 0, 1
   cmd1c 1, 0, 0
   wait_screeneffect
   print_message 0x14, 0x0050
@@ -255,7 +255,7 @@ Script_ReturnFromStageRun:
   lock
   wait FRAME
   force 6, 0, 0
-  cmd1b 1, 0, 2
+  gimmick 1, 0, 2
   wait SECOND
   stop_bgm
   print_message 0x14, 0x0051 @ おつかれさまでした
@@ -263,18 +263,18 @@ Script_ReturnFromStageRun:
   cmd04 0, 0, Camera_0835bdec
   play_bgm BGM_RBASE
   wait SECOND+15*FRAME
-  cmd1b 1, 1, 1
+  gimmick 1, 1, 1
   wait SECOND/4
   goodluck 0
   wait_msgbox_end
   wait SECOND/4
-  cmd1b 1, 1, 0
+  gimmick 1, 1, 0
   wait 8*FRAME
-  cmd1b 1, 1, 2
+  gimmick 1, 1, 2
   wait 8*FRAME
-  cmd1b 1, 1, 0x82
+  gimmick 1, 1, 0x82
   wait 8*FRAME
-  cmd1b 1, 1, 0x80
+  gimmick 1, 1, 0x80
   wait 45*FRAME
   message 1, 0, 0x1300
   wait_msgbox_end
@@ -285,11 +285,11 @@ Script_ReturnFromStageRun:
   wait 3*SECOND
   cmd0c 3, 6, 0
   cmd0c 4, 6, 0
-  cmd1b 1, 1, 0x82
+  gimmick 1, 1, 0x82
   wait 8*FRAME
-  cmd1b 1, 1, 2
+  gimmick 1, 1, 2
   wait 8*FRAME
-  cmd1b 1, 1, 0
+  gimmick 1, 1, 0
   wait SECOND/4
   start_talk
   wait 16*FRAME
@@ -303,12 +303,12 @@ Script_0835c288:
   message 1, 0, 0x1310
   wait_msgbox_end
   wait SECOND/4
-  cmd1b 1, 1, 2
+  gimmick 1, 1, 2
   wait SECOND/2
   message 1, 0, 0x1311
   wait_msgbox_end
   wait SECOND/4
-  cmd1b 1, 1, 0
+  gimmick 1, 1, 0
   wait 8*FRAME
   start_talk
   wait 16*FRAME
@@ -379,7 +379,7 @@ Script_0835c480:
   stop_bgm
   play_se SE_TENSOU_BEEP
   emergency_on
-  cmd1b 1, 0, 1
+  gimmick 1, 0, 1
   force 4, 0, 0
   wait SECOND
   print_message 0x1E, 0x47
@@ -391,7 +391,7 @@ Script_0835c480:
   wait SECOND*3/4
   wait_msgbox_end
   force 5, 0, 0
-  cmd1b 1, 0, 2
+  gimmick 1, 0, 2
   wait SECOND/2
   fadeout_se SECOND SE_TENSOU_BEEP
   wait SECOND/4
@@ -411,7 +411,7 @@ Script_0835c5b0:
   cmd04 0, 0, Camera_0835be18
   normal_screen
   wait FRAME
-  cmd1b 1, 0, 1
+  gimmick 1, 0, 1
   cmd1c 1, 0, 0
   wait_screeneffect
   print_message 0x14, 0x50
@@ -422,7 +422,7 @@ Script_0835c5b0:
   lock
   wait FRAME
   force 6, 0, 0
-  cmd1b 1, 0, 2
+  gimmick 1, 0, 2
   wait SECOND
   stop_bgm
   print_message 0x14, 0x51
@@ -430,12 +430,12 @@ Script_0835c5b0:
   cmd04 0, 0, Camera_0835bdec
   play_bgm BGM_RBASE
   wait 75*FRAME
-  cmd1b 1, 1, 1
+  gimmick 1, 1, 1
   wait SECOND/4
   goodluck 0
   wait_msgbox_end
   wait SECOND/4
-  cmd1b 1, 1, 0
+  gimmick 1, 1, 0
   release
   resume 0
   end
@@ -452,7 +452,7 @@ Script_FreeRunTransport:
   stop_bgm
   play_se SE_TENSOU_BEEP
   emergency_on
-  cmd1b 1, 0, 1
+  gimmick 1, 0, 1
   force 4, 0, 0
   wait SECOND
   print_message 0x1E, 0x47
@@ -464,7 +464,7 @@ Script_FreeRunTransport:
   wait SECOND*3/4
   wait_msgbox_end
   force 5, 0, 0
-  cmd1b 1, 0, 2
+  gimmick 1, 0, 2
   fadeout_se SECOND SE_TENSOU_BEEP
   emergency_off
   wait SECOND

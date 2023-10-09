@@ -23,7 +23,7 @@ static void GrandCannon_Dissappear(struct Enemy* p);
 // clang-format off
 const EnemyRoutine gGrandCannonRoutine = {
     [ENTITY_INIT] =      GrandCannon_Init,
-    [ENTITY_MAIN] =      GrandCannon_Update,
+    [ENTITY_UPDATE] =    GrandCannon_Update,
     [ENTITY_DIE] =       GrandCannon_Die,
     [ENTITY_DISAPPEAR] = GrandCannon_Dissappear,
     [ENTITY_EXIT] =      (EnemyFunc)DeleteEntity,
@@ -40,7 +40,7 @@ WIP void CreateGrandCannonBattery(struct Enemy* p) {
     INIT_ZAKO_ROUTINE(battery, 6);
     (battery->s).tileNum = 0;
     (battery->s).palID = 0;
-    (battery->s).flags2 |= ENTITY_FLAGS2_B4;
+    (battery->s).flags2 |= WHITE_PAINTABLE;
     (battery->s).invincibleID = (battery->s).uniqueID;
     (battery->s).work[0] = GRAND_CANNON_BATTERY;
     (battery->s).invincibleID = (p->s).uniqueID;
@@ -140,7 +140,7 @@ static void FUN_0806910c(struct Enemy* p) {
 
 WIP static void GrandCannon_Init(struct Enemy* p) {
 #if MODERN
-  SET_ZAKO_ROUTINE(p, ENTITY_MAIN);
+  SET_ZAKO_ROUTINE(p, ENTITY_UPDATE);
   (p->s).mode[1] = sInitModes[(p->s).work[0]];
   (p->s).flags |= FLIPABLE;
   (p->s).flags |= DISPLAY;
@@ -175,7 +175,7 @@ WIP static void GrandCannon_Update(struct Enemy* p) {
     struct Entity* turret = (p->s).unk_28;
     if (!IS_METTAUR) {
       if (turret->mode[0] != ENTITY_EXIT) {
-        if (turret->mode[0] > ENTITY_MAIN) {
+        if (turret->mode[0] > ENTITY_UPDATE) {
           SET_ZAKO_ROUTINE(p, ENTITY_DIE);
           (p->s).mode[1] = 2;
           GrandCannon_Die(p);

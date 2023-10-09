@@ -9,7 +9,7 @@ void Ghost77_Die(struct VFX *p);
 // clang-format off
 const VFXRoutine gMinigameIconRoutine = {
     [ENTITY_INIT] =      Ghost77_Init,
-    [ENTITY_MAIN] =      Ghost77_Update,
+    [ENTITY_UPDATE] =    Ghost77_Update,
     [ENTITY_DIE] =       Ghost77_Die,
     [ENTITY_DISAPPEAR] = DeleteVFX,
     [ENTITY_EXIT] =      (VFXFunc)DeleteEntity,

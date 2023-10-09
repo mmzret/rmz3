@@ -45,7 +45,7 @@ void ReflectLaser_Die(struct Weapon* w);
 // clang-format off
 const WeaponRoutine gReflectLaserRoutine = {
     [ENTITY_INIT] =      ReflectLaser_Init,
-    [ENTITY_MAIN] =      ReflectLaser_Update,
+    [ENTITY_UPDATE] =    ReflectLaser_Update,
     [ENTITY_DIE] =       ReflectLaser_Die,
     [ENTITY_DISAPPEAR] = DeleteWeapon,
     [ENTITY_EXIT] =      (WeaponFunc)DeleteEntity,    

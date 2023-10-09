@@ -10,7 +10,7 @@ void Childre_Die(struct Boss* p);
 // clang-format off
 const BossRoutine gChildreRoutine = {
     [ENTITY_INIT] =      Childre_Init,
-    [ENTITY_MAIN] =      Childre_Main,
+    [ENTITY_UPDATE] =    Childre_Main,
     [ENTITY_DIE] =       Childre_Die,
     [ENTITY_DISAPPEAR] = DeleteBoss,
     [ENTITY_EXIT] =      (BossFunc)DeleteEntity,

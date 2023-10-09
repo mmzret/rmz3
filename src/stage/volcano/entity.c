@@ -85,7 +85,7 @@ const struct EntityTemplate gVolcanoEntity[51] = {
         {
             1,
             ENTITY_SOLID,
-            SOLID_DOOR_2D_GRAY,
+            SOLID_DOOR_2D_GRAY_V,
             0,
             0,
             0,
@@ -96,7 +96,7 @@ const struct EntityTemplate gVolcanoEntity[51] = {
         {
             1,
             ENTITY_SOLID,
-            SOLID_DOOR_2D_GRAY,
+            SOLID_DOOR_2D_GRAY_V,
             2,
             0,
             0,
@@ -338,7 +338,7 @@ const struct EntityTemplate gVolcanoEntity[51] = {
         {
             1,
             ENTITY_ENEMY,
-            ENEMY_14,
+            ENEMY_TOP_GABYOALL,
             0,
             0,
             1,
@@ -349,7 +349,7 @@ const struct EntityTemplate gVolcanoEntity[51] = {
         {
             1,
             ENTITY_ENEMY,
-            ENEMY_14,
+            ENEMY_TOP_GABYOALL,
             1,
             0,
             1,
@@ -360,7 +360,7 @@ const struct EntityTemplate gVolcanoEntity[51] = {
         {
             1,
             ENTITY_ENEMY,
-            ENEMY_14,
+            ENEMY_TOP_GABYOALL,
             2,
             0,
             1,
@@ -371,7 +371,7 @@ const struct EntityTemplate gVolcanoEntity[51] = {
         {
             1,
             ENTITY_ENEMY,
-            ENEMY_14,
+            ENEMY_TOP_GABYOALL,
             3,
             0,
             1,
@@ -382,7 +382,7 @@ const struct EntityTemplate gVolcanoEntity[51] = {
         {
             1,
             ENTITY_ENEMY,
-            ENEMY_14,
+            ENEMY_TOP_GABYOALL,
             0,
             1,
             1,
@@ -393,7 +393,7 @@ const struct EntityTemplate gVolcanoEntity[51] = {
         {
             1,
             ENTITY_ENEMY,
-            ENEMY_14,
+            ENEMY_TOP_GABYOALL,
             1,
             1,
             1,
@@ -404,7 +404,7 @@ const struct EntityTemplate gVolcanoEntity[51] = {
         {
             1,
             ENTITY_ENEMY,
-            ENEMY_14,
+            ENEMY_TOP_GABYOALL,
             2,
             1,
             1,
@@ -415,7 +415,7 @@ const struct EntityTemplate gVolcanoEntity[51] = {
         {
             1,
             ENTITY_ENEMY,
-            ENEMY_14,
+            ENEMY_TOP_GABYOALL,
             3,
             1,
             1,

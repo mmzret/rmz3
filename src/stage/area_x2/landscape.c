@@ -177,10 +177,12 @@ static void LayerUpdate_2(struct StageLayer* l, const struct Stage* _ UNUSED) {
   }
 }
 
+// 0x08011820
 WIP static void LayerDraw_2(struct StageLayer* l, const struct Stage* stage) {
 #if MODERN
   u16 eva;
-  u32 n = (gOverworld.work.areaX2.unk_002 & 0xFF);
+  struct Overworld* ow = &gOverworld;
+  u32 n = (ow->work.areaX2.unk_002 & 0xFF);
   if (n < 64) {
     eva = 0;
   } else if (n < 128) {

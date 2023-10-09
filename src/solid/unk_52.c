@@ -13,7 +13,7 @@ void Solid52_Die(struct Solid* p);
 // clang-format off
 const SolidRoutine gSolid52Routine = {
     [ENTITY_INIT] =      Solid52_Init,
-    [ENTITY_MAIN] =      Solid52_Update,
+    [ENTITY_UPDATE] =    Solid52_Update,
     [ENTITY_DIE] =       Solid52_Die,
     [ENTITY_DISAPPEAR] = DeleteSolid,
     [ENTITY_EXIT] =      (SolidFunc)DeleteEntity,

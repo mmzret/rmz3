@@ -14,7 +14,7 @@ static void Shotcounter_Die(struct Enemy* p);
 // clang-format off
 const EnemyRoutine gShotcounterRoutine = {
     [ENTITY_INIT] =      Shotcounter_Init,
-    [ENTITY_MAIN] =      Shotcounter_Update,
+    [ENTITY_UPDATE] =    Shotcounter_Update,
     [ENTITY_DIE] =       Shotcounter_Die,
     [ENTITY_DISAPPEAR] = DeleteEnemy,
     [ENTITY_EXIT] =      (EnemyFunc)DeleteEntity,
@@ -30,7 +30,7 @@ static struct Enemy* CreateShotcounter(struct Coord* c, u8 r1) {
     INIT_ZAKO_ROUTINE(p, 3);
     (p->s).tileNum = 0;
     (p->s).palID = 0;
-    (p->s).flags2 |= ENTITY_FLAGS2_B4;
+    (p->s).flags2 |= WHITE_PAINTABLE;
     (p->s).invincibleID = (p->s).uniqueID;
     (p->s).coord = *c;
     (p->s).work[0] = r1;

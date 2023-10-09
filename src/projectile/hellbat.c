@@ -9,7 +9,7 @@ void Projectile15_Die(struct Projectile* p);
 // clang-format off
 const ProjectileRoutine gHellbatProjectileRoutine = {
     [ENTITY_INIT] =      Projectile15_Init,
-    [ENTITY_MAIN] =      Projectile15_Update,
+    [ENTITY_UPDATE] =    Projectile15_Update,
     [ENTITY_DIE] =       Projectile15_Die,
     [ENTITY_DISAPPEAR] = DeleteProjectile,
     [ENTITY_EXIT] =      (ProjectileFunc)DeleteEntity,

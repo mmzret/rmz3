@@ -414,7 +414,7 @@ Script_0834d608: @ 0x0834d608
   wait SECOND*2
   print_message 0x50, 0x0301
   wait_msgbox_end
-  cmd1b 1, 0, 1
+  gimmick 1, 0, 1
   wait SECOND*3
   print_message 0x50, 0x0302 @ 0x0837f1de
   wait_msgbox_end
@@ -548,7 +548,7 @@ Script_0834da48: @ 0x0834da48
   wait SECOND/4
   blackout_screen
   wait_screeneffect
-  cmd1b 1, 0, 1
+  gimmick 1, 0, 1
   spawn 4, 0, EntityTemplate_0834d3c0
   spawn 5, 0, EntityTemplate_0834d3d0
   spawn 3, 0, EntityTemplate_0834d3b0
@@ -600,9 +600,40 @@ Script_0834dfb8:
   resume 0
   end
 
+@;@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+
 Script_GuarderRoom:
-# ./tools/dumper/bin.ts ./baserom.gba 0x0834e010 0x0834ebc0 ./data/spacecraft_scripts.bin
-    .incbin "data/spacecraft_scripts.bin"
+  spawn 0, 0, EntityTemplate_Zero_0834d560
+  cmd04 0, 0, Camera_0834d318
+  lock
+  screeneffect 9
+  wait_screeneffect
+  play_bgm BGM_GUARDER_ROOM
+  indicator 1, 0, 0
+  indicator 0, 0, 0
+  release
+  resume 0
+  end
+
+@;@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+
+Script_PreOmegaWhiteBattle:
+# ./tools/dumper/bin.ts ./baserom.gba 0x0834e068 0x0834e4d8 ./data/Script_PreOmegaWhiteBattle.bin
+  .incbin "data/Script_PreOmegaWhiteBattle.bin"
+
+@;@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+
+Script_0834e4d8:
+# ./tools/dumper/bin.ts ./baserom.gba 0x0834e4d8 0x0834eba0 ./data/spacecraft_scripts.bin
+  .incbin "data/spacecraft_scripts.bin"
+
+@;@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+
+Script_MissionResult:
+  cmd06 0, 5, 0xFFFF
+  prepare_missionresult
+  missionresult
+  end
 
 @;@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 
@@ -656,10 +687,10 @@ SpaceCraftScriptList:
   .word Script_SpaceCraftBuilding
   .word Script_0834dfb8
   .word Script_GuarderRoom
-  .word 0x0834E068
-  .word 0x0834E4D8
+  .word Script_PreOmegaWhiteBattle
+  .word Script_0834e4d8
   .word 0x0834E5A0
   .word 0x0834E628
-  .word 0x0834EBA0
+  .word Script_MissionResult
   .word Script_InitSpaceCraftFreeRun
   .word Script_0834ec38

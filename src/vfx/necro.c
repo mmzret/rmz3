@@ -18,7 +18,7 @@ static void Necro_Die(struct VFX *vfx);
 // clang-format off
 const VFXRoutine gNecroRoutine = {
     [ENTITY_INIT] =      Necro_Init,
-    [ENTITY_MAIN] =      Necro_Update,
+    [ENTITY_UPDATE] =    Necro_Update,
     [ENTITY_DIE] =       Necro_Die,
     [ENTITY_DISAPPEAR] = DeleteVFX,
     [ENTITY_EXIT] =      (VFXFunc)DeleteEntity,
@@ -328,7 +328,7 @@ void FUN_080b869c(struct CollidableEntity *p, struct Coord *c, struct Coord *dc,
 // --------------------------------------------
 
 static void Necro_Init(struct VFX *vfx) {
-  SET_VFX_ROUTINE(vfx, ENTITY_MAIN);
+  SET_VFX_ROUTINE(vfx, ENTITY_UPDATE);
   (vfx->s).mode[1] = sInitModes[(vfx->s).work[0]];
   (vfx->s).flags |= FLIPABLE;
   (vfx->s).flags |= DISPLAY;

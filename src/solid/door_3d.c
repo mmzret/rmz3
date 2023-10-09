@@ -42,7 +42,7 @@ static void Door3D_Die(struct Solid* p);
 // clang-format off
 const SolidRoutine gDoor3DRoutine = {
     [ENTITY_INIT] =      Door3D_Init,
-    [ENTITY_MAIN] =      Door3D_Update,
+    [ENTITY_UPDATE] =    Door3D_Update,
     [ENTITY_DIE] =       Door3D_Die,
     [ENTITY_DISAPPEAR] = DeleteSolid,
     [ENTITY_EXIT] =      (SolidFunc)DeleteEntity,

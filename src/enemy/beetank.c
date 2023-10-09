@@ -11,7 +11,7 @@ void Beetank_Die(struct Enemy* p);
 // clang-format off
 const EnemyRoutine gBeetankRoutine = {
     [ENTITY_INIT] =      Beetank_Init,
-    [ENTITY_MAIN] =      Beetank_Update,
+    [ENTITY_UPDATE] =    Beetank_Update,
     [ENTITY_DIE] =       Beetank_Die,
     [ENTITY_DISAPPEAR] = DeleteEnemy,
     [ENTITY_EXIT] =      (EnemyFunc)DeleteEntity,

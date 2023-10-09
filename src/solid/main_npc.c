@@ -20,7 +20,7 @@ static void MainNPC_Die(struct Solid* p);
 */
 const SolidRoutine gMainNPCRoutine = {
     [ENTITY_INIT] =      MainNPC_Init,
-    [ENTITY_MAIN] =      MainNPC_Update,
+    [ENTITY_UPDATE] =    MainNPC_Update,
     [ENTITY_DIE] =       MainNPC_Die,
     [ENTITY_DISAPPEAR] = DeleteSolid,
     [ENTITY_EXIT] =      (SolidFunc)DeleteEntity,
@@ -89,7 +89,7 @@ void MainNPC_Die(struct Solid* p) {
 // --------------------------------------------
 
 static void initMainNPC(struct Solid* p) {
-  SET_SOLID_ROUTINE(p, ENTITY_MAIN);
+  SET_SOLID_ROUTINE(p, ENTITY_UPDATE);
   MainNPC_Update(p);
 }
 

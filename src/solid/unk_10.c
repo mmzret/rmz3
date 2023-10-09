@@ -21,7 +21,7 @@ static void Solid10_Die(struct Solid* p);
 // clang-format off
 const SolidRoutine gSolid10Routine = {
     [ENTITY_INIT] =      Solid10_Init,
-    [ENTITY_MAIN] =      Solid10_Update,
+    [ENTITY_UPDATE] =    Solid10_Update,
     [ENTITY_DIE] =       Solid10_Die,
     [ENTITY_DISAPPEAR] = DeleteSolid,
     [ENTITY_EXIT] =      (SolidFunc)DeleteEntity,
@@ -47,7 +47,7 @@ static void Solid10_Init(struct Solid* p) {
   velocity->x = velocity->y = 0;
   (p->s).coord.x += PIXEL(8);
   (p->s).coord.y = FUN_08009f6c((p->s).coord.x, (p->s).coord.y) + 1;
-  SET_SOLID_ROUTINE(p, ENTITY_MAIN);
+  SET_SOLID_ROUTINE(p, ENTITY_UPDATE);
   Solid10_Update(p);
 }
 

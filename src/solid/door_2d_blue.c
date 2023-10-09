@@ -14,7 +14,7 @@ static void Door2DBlue_Die(struct Solid* p);
 // clang-format off
 const SolidRoutine gDoor2DBlueRoutine = {
     [ENTITY_INIT] =      Door2DBlue_Init,
-    [ENTITY_MAIN] =      Door2DBlue_Update,
+    [ENTITY_UPDATE] =    Door2DBlue_Update,
     [ENTITY_DIE] =       Door2DBlue_Die,
     [ENTITY_DISAPPEAR] = DeleteSolid,
     [ENTITY_EXIT] =      (SolidFunc)DeleteEntity,

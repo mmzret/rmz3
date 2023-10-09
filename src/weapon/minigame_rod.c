@@ -11,7 +11,7 @@ void Weapon16_Die(struct Weapon* w);
 // clang-format off
 const WeaponRoutine gMinigameRodRoutine = {
     [ENTITY_INIT] =      Weapon16_Init,
-    [ENTITY_MAIN] =      Weapon16_Update,
+    [ENTITY_UPDATE] =    Weapon16_Update,
     [ENTITY_DIE] =       Weapon16_Die,
     [ENTITY_DISAPPEAR] = DeleteWeapon,
     [ENTITY_EXIT] =      (WeaponFunc)DeleteEntity,    

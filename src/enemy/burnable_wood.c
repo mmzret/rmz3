@@ -12,7 +12,7 @@ void BurnableWood_Die(struct Enemy* p);
 // clang-format off
 const EnemyRoutine gBurnableWoodRoutine = {
     [ENTITY_INIT] =      BurnableWood_Init,
-    [ENTITY_MAIN] =      BurnableWood_Update,
+    [ENTITY_UPDATE] =    BurnableWood_Update,
     [ENTITY_DIE] =       BurnableWood_Die,
     [ENTITY_DISAPPEAR] = DeleteEnemy,
     [ENTITY_EXIT] =      (EnemyFunc)DeleteEntity,

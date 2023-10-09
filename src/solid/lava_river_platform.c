@@ -12,7 +12,7 @@ static void LavaRiverPlatform_Die(struct Solid* p);
 // clang-format off
 const SolidRoutine gLavaRiverPlatformRoutine = {
     [ENTITY_INIT] =      LavaRiverPlatform_Init,
-    [ENTITY_MAIN] =      LavaRiverPlatform_Update,
+    [ENTITY_UPDATE] =    LavaRiverPlatform_Update,
     [ENTITY_DIE] =       LavaRiverPlatform_Die,
     [ENTITY_DISAPPEAR] = DeleteSolid,
     [ENTITY_EXIT] =      (SolidFunc)DeleteEntity,
@@ -26,7 +26,7 @@ void CreateLavaRiverPlatform(u32 x, u32 y) {
     INIT_SOLID_ROUTINE(s, SOLID_LAVA_RIVER_PLATFORM);
     (s->s).tileNum = 0;
     (s->s).palID = 0;
-    (s->s).flags2 |= ENTITY_FLAGS2_B4;
+    (s->s).flags2 |= WHITE_PAINTABLE;
     (s->s).invincibleID = (s->s).uniqueID;
     (s->s).work[0] = 0;
     (s->s).coord.x = x;
@@ -38,7 +38,7 @@ void CreateLavaRiverPlatform(u32 x, u32 y) {
 // --------------------------------------------
 
 static void LavaRiverPlatform_Init(struct Solid* p) {
-  SET_SOLID_ROUTINE(p, ENTITY_MAIN);
+  SET_SOLID_ROUTINE(p, ENTITY_UPDATE);
   (p->s).mode[1] = sInitMode[(p->s).work[0]];
   (p->s).flags |= FLIPABLE;
   (p->s).flags |= DISPLAY;

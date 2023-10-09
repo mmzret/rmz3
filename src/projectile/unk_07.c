@@ -11,7 +11,7 @@ void Projectile7_Die(struct Projectile* p);
 // clang-format off
 const ProjectileRoutine gProjectile7Routine = {
     [ENTITY_INIT] =      Projectile7_Init,
-    [ENTITY_MAIN] =      Projectile7_Update,
+    [ENTITY_UPDATE] =    Projectile7_Update,
     [ENTITY_DIE] =       Projectile7_Die,
     [ENTITY_DISAPPEAR] = DeleteProjectile,
     [ENTITY_EXIT] =      (ProjectileFunc)DeleteEntity,

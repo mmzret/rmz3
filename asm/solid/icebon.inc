@@ -302,7 +302,7 @@ _080CA302:
 	adds r1, r1, r0
 	adds r0, r4, #0
 	movs r2, #0
-	bl CreateSeaEnemy
+	bl CreateBubble
 	b _080CA3D0
 	.align 2, 0
 _080CA368: .4byte 0xFFFFF100
@@ -346,7 +346,7 @@ _080CA388:
 	adds r1, r1, r0
 	adds r0, r4, #0
 	movs r2, #1
-	bl CreateSeaEnemy
+	bl CreateBubble
 _080CA3D0:
 	movs r3, #1
 	rsbs r3, r3, #0

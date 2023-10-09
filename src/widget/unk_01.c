@@ -218,7 +218,7 @@ static void MenuComp1_Die(struct Widget *w) {
 // clang-format off
 const WidgetRoutine gMenuComp1Routine = {
     [ENTITY_INIT] =      MenuComp1_Init,
-    [ENTITY_MAIN] =      MenuComp1_Update,
+    [ENTITY_UPDATE] =    MenuComp1_Update,
     [ENTITY_DIE] =       MenuComp1_Die,
     [ENTITY_DISAPPEAR] = DeleteWidget,
     [ENTITY_EXIT] =      (WidgetFunc)DeleteEntity,

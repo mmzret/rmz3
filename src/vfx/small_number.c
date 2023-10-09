@@ -10,7 +10,7 @@ static void Ghost81_Die(struct VFX *vfx);
 // clang-format off
 const VFXRoutine gSmallNumberRoutine = {
     [ENTITY_INIT] =      Ghost81_Init,
-    [ENTITY_MAIN] =      Ghost81_Update,
+    [ENTITY_UPDATE] =    Ghost81_Update,
     [ENTITY_DIE] =       Ghost81_Die,
     [ENTITY_DISAPPEAR] = DeleteVFX,
     [ENTITY_EXIT] =      (VFXFunc)DeleteEntity,
@@ -154,7 +154,7 @@ _080C942C: .4byte 0xFFFFF800\n\
 static const u8 u8_ARRAY_0836fa3c[4];
 
 static void Ghost81_Init(struct VFX *p) {
-  SET_VFX_ROUTINE(p, ENTITY_MAIN);
+  SET_VFX_ROUTINE(p, ENTITY_UPDATE);
   (p->s).mode[1] = u8_ARRAY_0836fa3c[(p->s).work[0]];
   (p->s).flags |= FLIPABLE;
   (p->s).flags |= DISPLAY;
@@ -195,7 +195,7 @@ static void FUN_080c94a8(struct VFX *p) {
     }
     case 1: {
       if ((p->s).unk_coord.x == 0) {
-        (p->s).mode[1] = ENTITY_MAIN;
+        (p->s).mode[1] = ENTITY_UPDATE;
         (p->s).mode[2] = 0;
       }
       (p->s).unk_coord.x--;

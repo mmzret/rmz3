@@ -11,7 +11,7 @@ void Shelluno_Die(struct Enemy* p);
 // clang-format off
 const EnemyRoutine gShellunoRoutine = {
     [ENTITY_INIT] =      Shelluno_Init,
-    [ENTITY_MAIN] =      Shelluno_Update,
+    [ENTITY_UPDATE] =    Shelluno_Update,
     [ENTITY_DIE] =       Shelluno_Die,
     [ENTITY_DISAPPEAR] = DeleteEnemy,
     [ENTITY_EXIT] =      (EnemyFunc)DeleteEntity,

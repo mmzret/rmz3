@@ -28,7 +28,7 @@ const main = async () => {
     .arguments('<json:string>')
     .option('--verbose', 'verbose')
     .option('-l, --label', 'label')
-    .usage('sprites/zero/idle/sheet/sheet.json')
+    .usage('sprites/dynamic/zero/idle/sheet/sheet.json')
     .parse(Deno.args);
 
   const base = dirname(args[0]);

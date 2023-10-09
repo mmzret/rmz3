@@ -21,7 +21,7 @@
 #define BODY_STATUS_B14 (1 << 14)
 #define BODY_STATUS_B15 (1 << 15)
 #define BODY_STATUS_SLASHED (1 << 16)
-#define BODY_STATUS_B17 (1 << 17)
+#define BODY_STATUS_RECOILED (1 << 17)  // Pushed by recoil rod
 #define BODY_STATUS_B22 (1 << 22)
 #define BODY_STATUS_B23 (1 << 23)
 #define BODY_STATUS_B28 (1 << 28)
@@ -34,7 +34,7 @@
 #define BODY_NATURE_B2 (1 << 2)
 #define BODY_NATURE_B3 (1 << 3)
 #define BODY_NATURE_B4 (1 << 4)
-#define BODY_NATURE_B5 (1 << 5)
+#define BODY_NATURE_RECOIL (1 << 5)   // Recoil rod(Charge)
 #define BODY_NATURE_ILETHAS (1 << 6)  // Vanish enemy's lemon
 
 struct Collision;

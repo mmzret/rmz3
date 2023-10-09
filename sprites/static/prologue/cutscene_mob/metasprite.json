@@ -1,0 +1,87 @@
+{
+  "data": [
+    {
+      "sheetIdx": 0,
+      "subsprites": [
+        {
+          "tileNum": 158,
+          "xflip": false,
+          "yflip": false,
+          "size": [
+            16,
+            8
+          ],
+          "x": 0,
+          "y": -35
+        },
+        {
+          "tileNum": 144,
+          "xflip": false,
+          "yflip": false,
+          "size": [
+            32,
+            16
+          ],
+          "x": -9,
+          "y": -30
+        },
+        {
+          "tileNum": 152,
+          "xflip": false,
+          "yflip": false,
+          "size": [
+            32,
+            8
+          ],
+          "x": 24,
+          "y": -21
+        },
+        {
+          "tileNum": 156,
+          "xflip": false,
+          "yflip": false,
+          "size": [
+            8,
+            16
+          ],
+          "x": 57,
+          "y": 16
+        },
+        {
+          "tileNum": 0,
+          "xflip": false,
+          "yflip": false,
+          "size": [
+            64,
+            64
+          ],
+          "x": -2,
+          "y": -16
+        },
+        {
+          "tileNum": 128,
+          "xflip": false,
+          "yflip": false,
+          "size": [
+            32,
+            32
+          ],
+          "x": -64,
+          "y": -43
+        },
+        {
+          "tileNum": 64,
+          "xflip": false,
+          "yflip": false,
+          "size": [
+            64,
+            64
+          ],
+          "x": -64,
+          "y": -16
+        }
+      ]
+    }
+  ],
+  "label": "gStaticMetaSprite_prologue_cutscene_mob"
+}

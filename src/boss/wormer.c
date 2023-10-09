@@ -14,7 +14,7 @@ void Wormer_Die(struct Boss* p);
 // clang-format off
 const BossRoutine gWormerRoutine = {
     [ENTITY_INIT] =      Wormer_Init,
-    [ENTITY_MAIN] =      Wormer_Update,
+    [ENTITY_UPDATE] =    Wormer_Update,
     [ENTITY_DIE] =       Wormer_Die,
     [ENTITY_DISAPPEAR] = DeleteBoss,
     [ENTITY_EXIT] =      (BossFunc)DeleteEntity,

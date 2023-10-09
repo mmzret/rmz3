@@ -11,7 +11,7 @@ void Crossbyne_Die(struct Enemy* p);
 // clang-format off
 const EnemyRoutine gCrossbyneRoutine = {
     [ENTITY_INIT] =      Crossbyne_Init,
-    [ENTITY_MAIN] =      Crossbyne_Update,
+    [ENTITY_UPDATE] =    Crossbyne_Update,
     [ENTITY_DIE] =       Crossbyne_Die,
     [ENTITY_DISAPPEAR] = DeleteEnemy,
     [ENTITY_EXIT] =      (EnemyFunc)DeleteEntity,

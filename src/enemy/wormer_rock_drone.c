@@ -11,7 +11,7 @@ void WormerRockDrone_Die(struct Enemy* p);
 // clang-format off
 const EnemyRoutine gWormerRockDroneRoutine = {
     [ENTITY_INIT] =      WormerRockDrone_Init,
-    [ENTITY_MAIN] =      WormerRockDrone_Update,
+    [ENTITY_UPDATE] =    WormerRockDrone_Update,
     [ENTITY_DIE] =       WormerRockDrone_Die,
     [ENTITY_DISAPPEAR] = DeleteEnemy,
     [ENTITY_EXIT] =      (EnemyFunc)DeleteEntity,

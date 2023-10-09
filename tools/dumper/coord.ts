@@ -18,12 +18,27 @@ const main = async () => {
   const rom = Deno.readFileSync('baserom.gba');
   const start = Number(args[0]);
   const length = args[1];
+
+  console.log();
+  if (length >= 5) console.log(`// clang-format off`);
+  console.log(`static const struct Coord sCoords[${length}] = {`);
   for (let i = 0; i < length; i++) {
+    let x, y: string;
     const addr = start + (i * SIZE);
-    const x = toHex(loadI32(rom, addr + 0, BASE), 8, '0x');
-    const y = toHex(loadI32(rom, addr + 4, BASE), 8, '0x');
-    console.log(`{${x}, ${y}},`);
+    const xRaw = loadI32(rom, addr + 0, BASE);
+    const yRaw = loadI32(rom, addr + 4, BASE);
+    if (((xRaw & 0xFF) === 0x00) && ((yRaw & 0xFF) === 0x00)) {
+      const pixel = [xRaw >> 8, yRaw >> 8];
+      x = (pixel[0] >= 0) ? `PIXEL(${pixel[0]})` : `-PIXEL(${-pixel[0]})`;
+      y = (pixel[1] >= 0) ? `PIXEL(${pixel[1]})` : `-PIXEL(${-pixel[1]})`;
+    } else {
+      x = toHex(xRaw, 8, '0x');
+      y = toHex(yRaw, 8, '0x');
+    }
+    console.log(`    {${x}, ${y}},`);
   }
+  console.log('};');
+  if (length >= 5) console.log(`// clang-format on`);
 };
 
 main();

@@ -1,0 +1,15 @@
+{
+  "label": "gStaticAnimationSequence_prologue_cutscene_mob",
+  "data": [
+    [
+      {
+        "frameIdx": 0,
+        "duration": 1
+      },
+      {
+        "frameIdx": 0,
+        "duration": 255
+      }
+    ]
+  ]
+}

@@ -83,5 +83,12 @@ NAKED static void unused_080e9698(void* param_1, void* param_2, u32 param_3, u32
 #endif
 
 #if MODERN == 0
-NAKED static s32 unused_080e96c8(s32 a, s32 b) { INCCODE("asm/unused/unused_080e96c8.inc"); }
+static s32 unused_080e96c8(s32 a, s32 b) {
+  register s32 c asm("r2") = 0x100 - a;
+  b += c;
+  c = ((b & 0xFF) + 0x80);
+  c &= 0xFF;
+  c -= 0x80;
+  return c;
+}
 #endif

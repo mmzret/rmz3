@@ -1,0 +1,35 @@
+{
+  "label": "gStaticAnimationSequence_copy_x_97",
+  "data": [
+    [
+      {
+        "frameIdx": 0,
+        "duration": 48
+      },
+      {
+        "frameIdx": 0,
+        "duration": 255
+      }
+    ],
+    [
+      {
+        "frameIdx": 1,
+        "duration": 48
+      },
+      {
+        "frameIdx": 0,
+        "duration": 255
+      }
+    ],
+    [
+      {
+        "frameIdx": 2,
+        "duration": 45
+      },
+      {
+        "frameIdx": 0,
+        "duration": 255
+      }
+    ]
+  ]
+}

@@ -16,7 +16,7 @@ static void Blazin_Die(struct Boss* p);
 // clang-format off
 const BossRoutine gBlazinRoutine = {
     [ENTITY_INIT] =      Blazin_Init,
-    [ENTITY_MAIN] =      Blazin_Update,
+    [ENTITY_UPDATE] =    Blazin_Update,
     [ENTITY_DIE] =       Blazin_Die,
     [ENTITY_DISAPPEAR] = DeleteBoss,
     [ENTITY_EXIT] =      (BossFunc)DeleteEntity,
@@ -30,7 +30,7 @@ struct Boss* CreateBlazin(struct Coord* c, u8 n) {
     INIT_BOSS_ROUTINE(p, BOSS_BLAZIN);
     (p->s).tileNum = 0;
     (p->s).palID = 0;
-    (p->s).flags2 |= ENTITY_FLAGS2_B4;
+    (p->s).flags2 |= WHITE_PAINTABLE;
     (p->s).invincibleID = (p->s).uniqueID;
     (p->s).coord = *c;
     (p->s).work[0] = n;

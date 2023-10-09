@@ -514,7 +514,7 @@ WIP static void initZeroJump(struct Zero* z) {
     case ROD_JUMP: {
       (z->s).d.y = -GetRodJumpPower(z);
       b4 = &z->unk_b4;
-      (z->s).d.x = z->unk_138;
+      (z->s).d.x = z->recoilJumpDx;
       if (abs((z->s).d.x) < CalcDx(z)) {
         (z->s).d.x = CalcDx(z);
       }

@@ -14,7 +14,7 @@ static void Hellbat_Die(struct Boss* p);
 // clang-format off
 const BossRoutine gHellbatRoutine = {
     [ENTITY_INIT] =      Hellbat_Init,
-    [ENTITY_MAIN] =      Hellbat_Update,
+    [ENTITY_UPDATE] =    Hellbat_Update,
     [ENTITY_DIE] =       Hellbat_Die,
     [ENTITY_DISAPPEAR] = DeleteBoss,
     [ENTITY_EXIT] =      (BossFunc)DeleteEntity,
@@ -30,7 +30,7 @@ struct Boss* CreateHellbat(struct Coord* c, u8 n) {
 
     (p->s).tileNum = 0;
     (p->s).palID = 0;
-    (p->s).flags2 |= ENTITY_FLAGS2_B4;
+    (p->s).flags2 |= WHITE_PAINTABLE;
     (p->s).invincibleID = (p->s).uniqueID;
     (p->s).coord = *c;
     (p->s).work[0] = n;

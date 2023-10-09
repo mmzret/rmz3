@@ -12,7 +12,7 @@ void OmegaGold_Disappear(struct Boss* p);
 // clang-format off
 const BossRoutine gOmegaGoldRoutine = {
     [ENTITY_INIT] =      OmegaGold_Init,
-    [ENTITY_MAIN] =      OmegaGold_Update,
+    [ENTITY_UPDATE] =    OmegaGold_Update,
     [ENTITY_DIE] =       OmegaGold_Die,
     [ENTITY_DISAPPEAR] = OmegaGold_Disappear,
     [ENTITY_EXIT] =      (BossFunc)DeleteEntity,

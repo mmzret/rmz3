@@ -63,7 +63,7 @@ struct Weapon* CreateWeaponShieldGuard(struct Zero* z, u8 n) {
 static void ShieldGuard_Init(struct Weapon* w) {
   struct Weapon_b4* b4 = &(w->unk_b4);
   struct Zero* z = b4->z;
-  SET_WEAPON_ROUTINE(w, ENTITY_MAIN);
+  SET_WEAPON_ROUTINE(w, ENTITY_UPDATE);
   InitNonAffineMotion(&w->s);
   ResetDynamicMotion(&w->s);
   (w->s).flags |= DISPLAY;
@@ -590,7 +590,7 @@ const s16 s16_ARRAY_083603f0[22] = {
 // clang-format off
 const WeaponRoutine gShieldGuardRoutine = {
     [ENTITY_INIT] =      ShieldGuard_Init,
-    [ENTITY_MAIN] =      ShieldGuard_Update,
+    [ENTITY_UPDATE] =    ShieldGuard_Update,
     [ENTITY_DIE] =       ShieldGuard_Die,
     [ENTITY_DISAPPEAR] = DeleteWeapon,
     [ENTITY_EXIT] =      (WeaponFunc)DeleteEntity,    

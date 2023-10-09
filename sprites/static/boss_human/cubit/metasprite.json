@@ -1,0 +1,32 @@
+{
+  "data": [
+    {
+      "sheetIdx": 0,
+      "subsprites": [
+        {
+          "tileNum": 16,
+          "xflip": false,
+          "yflip": false,
+          "size": [
+            16,
+            16
+          ],
+          "x": -6,
+          "y": -45
+        },
+        {
+          "tileNum": 0,
+          "xflip": false,
+          "yflip": false,
+          "size": [
+            32,
+            32
+          ],
+          "x": -14,
+          "y": -29
+        }
+      ]
+    }
+  ],
+  "label": "gStaticMetaSprite_boss_human_cubit"
+}

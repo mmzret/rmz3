@@ -12,7 +12,7 @@ void Weapon13_Die(struct Weapon* w);
 // clang-format off
 const WeaponRoutine gWeapon13Routine = {
     [ENTITY_INIT] =      Weapon13_Init,
-    [ENTITY_MAIN] =      Weapon13_Update,
+    [ENTITY_UPDATE] =    Weapon13_Update,
     [ENTITY_DIE] =       Weapon13_Die,
     [ENTITY_DISAPPEAR] = DeleteWeapon,
     [ENTITY_EXIT] =      (WeaponFunc)DeleteEntity,    

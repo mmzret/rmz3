@@ -1,0 +1,15 @@
+{
+  "label": "gStaticAnimationSequence_container_container",
+  "data": [
+    [
+      {
+        "frameIdx": 0,
+        "duration": 1
+      },
+      {
+        "frameIdx": 0,
+        "duration": 255
+      }
+    ]
+  ]
+}

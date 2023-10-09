@@ -11,7 +11,7 @@ static void Elf6_Die(struct Elf* e);
 // clang-format off
 const ElfRoutine gElf6Routine = {
     [ENTITY_INIT] =      Elf6_Init,
-    [ENTITY_MAIN] =      Elf6_Update,
+    [ENTITY_UPDATE] =    Elf6_Update,
     [ENTITY_DIE] =       Elf6_Die,
     [ENTITY_DISAPPEAR] = DeleteElf,
     [ENTITY_EXIT] =      (ElfFunc)DeleteEntity,

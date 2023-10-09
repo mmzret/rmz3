@@ -10,7 +10,7 @@ void ElecShieldSweep_Die(struct Weapon* w);
 // clang-format off
 const WeaponRoutine gElecShieldSweepRoutine = {
     [ENTITY_INIT] =      ElecShieldSweep_Init,
-    [ENTITY_MAIN] =      ElecShieldSweep_Update,
+    [ENTITY_UPDATE] =    ElecShieldSweep_Update,
     [ENTITY_DIE] =       ElecShieldSweep_Die,
     [ENTITY_DISAPPEAR] = DeleteWeapon,
     [ENTITY_EXIT] =      (WeaponFunc)DeleteEntity,    

@@ -8,7 +8,7 @@ void ShieldSweep_Die(struct Weapon* w);
 // clang-format off
 const WeaponRoutine gShieldSweepRoutine = {
     [ENTITY_INIT] =      ShieldSweep_Init,
-    [ENTITY_MAIN] =      ShieldSweep_Update,
+    [ENTITY_UPDATE] =    ShieldSweep_Update,
     [ENTITY_DIE] =       ShieldSweep_Die,
     [ENTITY_DISAPPEAR] = DeleteWeapon,
     [ENTITY_EXIT] =      (WeaponFunc)DeleteEntity,    

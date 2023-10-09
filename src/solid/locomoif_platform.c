@@ -16,7 +16,7 @@ void LocomoIFPlatform_Die(struct Solid* p);
 // clang-format off
 const SolidRoutine gLocomoIFPlatformRoutine = {
     [ENTITY_INIT] =      LocomoIFPlatform_Init,
-    [ENTITY_MAIN] =      LocomoIFPlatform_Update,
+    [ENTITY_UPDATE] =    LocomoIFPlatform_Update,
     [ENTITY_DIE] =       LocomoIFPlatform_Die,
     [ENTITY_DISAPPEAR] = DeleteSolid,
     [ENTITY_EXIT] =      (SolidFunc)DeleteEntity,
@@ -33,7 +33,7 @@ void CreateLocomoIFPlatform(struct Boss* locomoif) {
       INIT_SOLID_ROUTINE(p, SOLID_LOCOMOIF_PLATFORM);
       (p->s).tileNum = 0;
       (p->s).palID = 0;
-      (p->s).flags2 |= ENTITY_FLAGS2_B4;
+      (p->s).flags2 |= WHITE_PAINTABLE;
       (p->s).invincibleID = (p->s).uniqueID;
       (p->s).work[0] = 0;
       (p->props).lifp.unk_00 = (i << 15);

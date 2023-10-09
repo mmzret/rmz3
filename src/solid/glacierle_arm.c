@@ -14,7 +14,7 @@ void GlacierleArm_Die(struct Solid* p);
 // clang-format off
 const SolidRoutine gGlacierleArmRoutine = {
     [ENTITY_INIT] =      GlacierleArm_Init,
-    [ENTITY_MAIN] =      GlacierleArm_Update,
+    [ENTITY_UPDATE] =    GlacierleArm_Update,
     [ENTITY_DIE] =       GlacierleArm_Die,
     [ENTITY_DISAPPEAR] = DeleteSolid,
     [ENTITY_EXIT] =      (SolidFunc)DeleteEntity,

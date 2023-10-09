@@ -11,7 +11,7 @@ void PantheonZombie_Die(struct Enemy* p);
 // clang-format off
 const EnemyRoutine gPantheonZombieRoutine = {
     [ENTITY_INIT] =      PantheonZombie_Init,
-    [ENTITY_MAIN] =      PantheonZombie_Update,
+    [ENTITY_UPDATE] =    PantheonZombie_Update,
     [ENTITY_DIE] =       PantheonZombie_Die,
     [ENTITY_DISAPPEAR] = DeleteEnemy,
     [ENTITY_EXIT] =      (EnemyFunc)DeleteEntity,

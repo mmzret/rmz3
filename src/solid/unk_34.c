@@ -13,7 +13,7 @@ static void Solid34_Die(struct Solid* p);
 // clang-format off
 const SolidRoutine gSolid34Routine = {
     [ENTITY_INIT] =      Solid34_Init,
-    [ENTITY_MAIN] =      Solid34_Update,
+    [ENTITY_UPDATE] =    Solid34_Update,
     [ENTITY_DIE] =       Solid34_Die,
     [ENTITY_DISAPPEAR] = DeleteSolid,
     [ENTITY_EXIT] =      (SolidFunc)DeleteEntity,
@@ -26,7 +26,7 @@ static void Solid34_Init(struct Solid* p) {
   InitNonAffineMotion(&p->s);
   INIT_BODY(p, &sCollision, 0, NULL);
   (p->s).coord.y = FUN_0800a134((p->s).coord.x, (p->s).coord.y);
-  SET_SOLID_ROUTINE(p, ENTITY_MAIN);
+  SET_SOLID_ROUTINE(p, ENTITY_UPDATE);
   Solid34_Update(p);
 }
 

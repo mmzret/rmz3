@@ -14,7 +14,7 @@ void Harpuia_Die(struct Zero* z);
 // clang-format off
 const ZeroRoutine gHarpuiaRoutine = {
   [ENTITY_INIT] =       Harpuia_Init,
-  [ENTITY_MAIN] =       Harpuia_Update,
+  [ENTITY_UPDATE] =     Harpuia_Update,
   [ENTITY_DIE]  =       Harpuia_Die,
   [ENTITY_DISAPPEAR] =  RemovePlayer,
   [ENTITY_EXIT] =       (ZeroFunc)DeleteEntity,
@@ -47,7 +47,7 @@ static void Harpuia_Init(struct Zero* z) {
   (z->s).flags |= X_FLIP;
   INIT_BODY(z, &sCollisions[0], 32, NULL);
   (z->s).coord.y = FUN_0800a05c((z->s).coord.x, (z->s).coord.y);
-  SET_PLAYER_ROUTINE(z, ENTITY_MAIN);
+  SET_PLAYER_ROUTINE(z, ENTITY_UPDATE);
   (z->s).mode[1] = 0;
   (z->s).mode[2] = 0;
   (z->s).mode[3] = 0;

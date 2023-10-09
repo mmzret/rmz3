@@ -11,7 +11,7 @@ void Gallisni_Die(struct Enemy* p);
 // clang-format off
 const EnemyRoutine gGallisniRoutine = {
     [ENTITY_INIT] =      Gallisni_Init,
-    [ENTITY_MAIN] =      Gallisni_Update,
+    [ENTITY_UPDATE] =    Gallisni_Update,
     [ENTITY_DIE] =       Gallisni_Die,
     [ENTITY_DISAPPEAR] = DeleteEnemy,
     [ENTITY_EXIT] =      (EnemyFunc)DeleteEntity,

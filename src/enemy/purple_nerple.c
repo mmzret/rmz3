@@ -11,7 +11,7 @@ void PurpleNerple_Die(struct Enemy* p);
 // clang-format off
 const EnemyRoutine gPurpleNerpleRoutine = {
     [ENTITY_INIT] =      PurpleNerple_Init,
-    [ENTITY_MAIN] =      PurpleNerple_Update,
+    [ENTITY_UPDATE] =    PurpleNerple_Update,
     [ENTITY_DIE] =       PurpleNerple_Die,
     [ENTITY_DISAPPEAR] = DeleteEnemy,
     [ENTITY_EXIT] =      (EnemyFunc)DeleteEntity,

@@ -11,7 +11,7 @@ static void SubtankIcon_Die(struct Widget *w);
 // clang-format off
 const WidgetRoutine gSubtankIconRoutine = {
     [ENTITY_INIT] =      SubtankIcon_Init,
-    [ENTITY_MAIN] =      SubtankIcon_Update,
+    [ENTITY_UPDATE] =    SubtankIcon_Update,
     [ENTITY_DIE] =       SubtankIcon_Die,
     [ENTITY_DISAPPEAR] = DeleteWidget,
     [ENTITY_EXIT] =      (WidgetFunc)DeleteEntity,
@@ -33,7 +33,7 @@ struct Widget *CreateSubtankIcon(struct GameState *g, u8 r1, u8 r2) {
 }
 
 static void SubtankIcon_Init(struct Widget *w) {
-  SET_WIDGET_ROUTINE(w, ENTITY_MAIN);
+  SET_WIDGET_ROUTINE(w, ENTITY_UPDATE);
   InitNonAffineMotion(&w->s);
   (w->s).flags |= DISPLAY;
   (w->s).flags |= FLIPABLE;

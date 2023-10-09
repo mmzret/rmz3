@@ -13,7 +13,7 @@ void BabyElf_Die(struct Boss* p);
 // clang-format off
 const BossRoutine gBabyElfRoutine = {
     [ENTITY_INIT] =      BabyElf_Init,
-    [ENTITY_MAIN] =      BabyElf_Update,
+    [ENTITY_UPDATE] =    BabyElf_Update,
     [ENTITY_DIE] =       BabyElf_Die,
     [ENTITY_DISAPPEAR] = DeleteBoss,
     [ENTITY_EXIT] =      (BossFunc)DeleteEntity,

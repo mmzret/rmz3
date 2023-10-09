@@ -13,7 +13,7 @@ void ShotcounterBullet_Die(struct Projectile *p);
 // clang-format off
 const ProjectileRoutine gShotcounterBulletRoutine = {
     [ENTITY_INIT] =      ShotcounterBullet_Init,
-    [ENTITY_MAIN] =      ShotcounterBullet_Update,
+    [ENTITY_UPDATE] =    ShotcounterBullet_Update,
     [ENTITY_DIE] =       ShotcounterBullet_Die,
     [ENTITY_DISAPPEAR] = DeleteProjectile,
     [ENTITY_EXIT] =      (ProjectileFunc)DeleteEntity,

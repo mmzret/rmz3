@@ -1,0 +1,57 @@
+{
+  "label": "gStaticAnimationSequence_light_switch",
+  "data": [
+    [
+      {
+        "frameIdx": 0,
+        "duration": 1
+      },
+      {
+        "frameIdx": 0,
+        "duration": 255
+      }
+    ],
+    [
+      {
+        "frameIdx": 1,
+        "duration": 2
+      },
+      {
+        "frameIdx": 2,
+        "duration": 2
+      },
+      {
+        "frameIdx": 1,
+        "duration": 2
+      },
+      {
+        "frameIdx": 2,
+        "duration": 2
+      },
+      {
+        "frameIdx": 1,
+        "duration": 3
+      },
+      {
+        "frameIdx": 2,
+        "duration": 3
+      },
+      {
+        "frameIdx": 1,
+        "duration": 3
+      },
+      {
+        "frameIdx": 2,
+        "duration": 3
+      },
+      {
+        "frameIdx": 0,
+        "duration": 1
+      },
+      {
+        "frameIdx": 0,
+        "duration": 255
+      }
+    ]
+  ]
+}

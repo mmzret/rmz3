@@ -9,7 +9,7 @@ static void Solid47_Die(struct Solid* p);
 // clang-format off
 const SolidRoutine gAnatreCubeRoutine = {
     [ENTITY_INIT] =      Solid47_Init,
-    [ENTITY_MAIN] =      Solid47_Update,
+    [ENTITY_UPDATE] =    Solid47_Update,
     [ENTITY_DIE] =       Solid47_Die,
     [ENTITY_DISAPPEAR] = DeleteSolid,
     [ENTITY_EXIT] =      (SolidFunc)DeleteEntity,
@@ -23,7 +23,7 @@ struct Solid* FUN_080deb10(struct Coord* c) {
     INIT_SOLID_ROUTINE(p, SOLID_ANATRE_CUBE);
     (p->s).tileNum = 0;
     (p->s).palID = 0;
-    (p->s).flags2 |= ENTITY_FLAGS2_B4;
+    (p->s).flags2 |= WHITE_PAINTABLE;
     (p->s).invincibleID = (p->s).uniqueID;
     (p->s).work[0] = 0;
     (p->s).unk_coord.y = (p->s).coord.x = c->x;
@@ -39,7 +39,7 @@ struct Solid* FUN_080deb6c(u8 r0, struct Coord* c) {
     INIT_SOLID_ROUTINE(p, SOLID_ANATRE_CUBE);
     (p->s).tileNum = 0;
     (p->s).palID = 0;
-    (p->s).flags2 |= ENTITY_FLAGS2_B4;
+    (p->s).flags2 |= WHITE_PAINTABLE;
     (p->s).invincibleID = (p->s).uniqueID;
     (p->s).work[0] = 1;
     (p->s).work[1] = r0;
@@ -90,7 +90,7 @@ static void FUN_080dec04(struct Solid* p) {
   (p->s).coord.y = FUN_08009f6c((p->s).coord.x, (p->s).coord.y) - (PIXEL(32) - 1);
   d = &(p->s).d;
   d->x = d->y = 0;
-  SET_SOLID_ROUTINE(p, ENTITY_MAIN);
+  SET_SOLID_ROUTINE(p, ENTITY_UPDATE);
 }
 
 INCASM("asm/solid/anatre_cube.inc");

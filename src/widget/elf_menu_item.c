@@ -15,7 +15,7 @@ static void ElfMenuItem_Die(struct Widget *w);
 // clang-format off
 const WidgetRoutine gElfMenuItemRoutine = {
     [ENTITY_INIT] =      ElfMenuItem_Init,
-    [ENTITY_MAIN] =      ElfMenuItem_Update,
+    [ENTITY_UPDATE] =    ElfMenuItem_Update,
     [ENTITY_DIE] =       ElfMenuItem_Die,
     [ENTITY_DISAPPEAR] = DeleteWidget,
     [ENTITY_EXIT] =      (WidgetFunc)DeleteEntity,

@@ -14,7 +14,7 @@ void ExlifeIndicator_Die(struct VFX* vfx);
 // clang-format off
 const VFXRoutine gExlifeIndicatorRoutine = {
     [ENTITY_INIT] =      ExlifeIndicator_Init,
-    [ENTITY_MAIN] =      ExlifeIndicator_Update,
+    [ENTITY_UPDATE] =    ExlifeIndicator_Update,
     [ENTITY_DIE] =       ExlifeIndicator_Die,
     [ENTITY_DISAPPEAR] = DeleteVFX,
     [ENTITY_EXIT] =      (VFXFunc)DeleteEntity,
@@ -38,10 +38,10 @@ static void ExlifeIndicator_Init(struct VFX* vfx) {
   (vfx->s).spr.sprites = (struct MetaspriteHeader*)vfx;
   (vfx->s).flags &= ~OAM_PRIO;
   (vfx->s).flags |= DISPLAY;
-  LOAD_STATIC_GRAPHIC(60);
+  LOAD_STATIC_GRAPHIC(SM060_EXLIFE_INDICATOR);
   (vfx->s).coord.x = PIXEL(0);
   (vfx->s).coord.y = PIXEL(148);
-  SET_VFX_ROUTINE(vfx, ENTITY_MAIN);
+  SET_VFX_ROUTINE(vfx, ENTITY_UPDATE);
   (vfx->s).work[2] = 0;
   ExlifeIndicator_Update(vfx);
 }

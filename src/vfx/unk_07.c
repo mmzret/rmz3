@@ -18,7 +18,7 @@ static void Ghost7_Die(struct VFX* p);
 // clang-format off
 const VFXRoutine gGhost7Routine = {
     [ENTITY_INIT] =      Ghost7_Init,
-    [ENTITY_MAIN] =      Ghost7_Update,
+    [ENTITY_UPDATE] =    Ghost7_Update,
     [ENTITY_DIE] =       Ghost7_Die,
     [ENTITY_DISAPPEAR] = DeleteVFX,
     [ENTITY_EXIT] =      (VFXFunc)DeleteEntity,
@@ -130,7 +130,7 @@ static void FUN_080b4504(struct VFX* p) {
   (p->s).spr.mag.y = 0x100;
   (p->props).unk7.unk_0 = 0x100;
   (p->props).unk7.unk_2 = 0x80;
-  SET_VFX_ROUTINE(p, ENTITY_MAIN);
+  SET_VFX_ROUTINE(p, ENTITY_UPDATE);
   Ghost7_Update(p);
 }
 
@@ -143,7 +143,7 @@ static void FUN_080b455c(struct VFX* p) {
   (p->s).spr.mag.y = 0x800;
   (p->props).unk7.unk_0 = 0x100;
   (p->props).unk7.unk_2 = 0x80;
-  SET_VFX_ROUTINE(p, ENTITY_MAIN);
+  SET_VFX_ROUTINE(p, ENTITY_UPDATE);
   Ghost7_Update(p);
 }
 
@@ -157,7 +157,7 @@ static void FUN_080b45c0(struct VFX* p) {
   (p->s).angle = 0x20;
   (p->props).unk7.unk_0 = 0x100;
   (p->props).unk7.unk_2 = 0x80;
-  SET_VFX_ROUTINE(p, ENTITY_MAIN);
+  SET_VFX_ROUTINE(p, ENTITY_UPDATE);
   Ghost7_Update(p);
 }
 
@@ -171,7 +171,7 @@ static void FUN_080b4624(struct VFX* p) {
   (p->s).angle = 0x20;
   (p->props).unk7.unk_0 = 0x100;
   (p->props).unk7.unk_2 = 0x80;
-  SET_VFX_ROUTINE(p, ENTITY_MAIN);
+  SET_VFX_ROUTINE(p, ENTITY_UPDATE);
   Ghost7_Update(p);
 }
 
@@ -185,7 +185,7 @@ static void FUN_080b4688(struct VFX* p) {
   (p->s).work[2] = 0;
   (p->props).unk7.unk_0 = 0x80;
   (p->props).unk7.unk_2 = 0x80;
-  SET_VFX_ROUTINE(p, ENTITY_MAIN);
+  SET_VFX_ROUTINE(p, ENTITY_UPDATE);
   Ghost7_Update(p);
 }
 
@@ -200,7 +200,7 @@ static void FUN_080b46e0(struct VFX* p) {
   (p->s).work[2] = 0;
   (p->props).unk7.unk_0 = 0x80;
   (p->props).unk7.unk_2 = 0x80;
-  SET_VFX_ROUTINE(p, ENTITY_MAIN);
+  SET_VFX_ROUTINE(p, ENTITY_UPDATE);
   Ghost7_Update(p);
 }
 
@@ -210,7 +210,7 @@ static void FUN_080b4744(struct VFX* p) {
   SetMotion(&p->s, MOTION(0x00, 0x0E));
   UpdateMotionGraphic(&p->s);
   (p->s).work[2] = 6;
-  SET_VFX_ROUTINE(p, ENTITY_MAIN);
+  SET_VFX_ROUTINE(p, ENTITY_UPDATE);
   Ghost7_Update(p);
 }
 

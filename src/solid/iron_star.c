@@ -14,7 +14,7 @@ void killIronStar(struct Solid* p);
 // clang-format off
 const SolidRoutine gIronStarRoutine = {
     [ENTITY_INIT] =      initIronStar,
-    [ENTITY_MAIN] =      ironStarAI,
+    [ENTITY_UPDATE] =    ironStarAI,
     [ENTITY_DIE] =       killIronStar,
     [ENTITY_DISAPPEAR] = DeleteSolid,
     [ENTITY_EXIT] =      (SolidFunc)DeleteEntity,
@@ -28,7 +28,7 @@ void CreateIronStar(struct Entity* e, s32 x, s32 y) {
     INIT_SOLID_ROUTINE(p, SOLID_UNK_004);
     (p->s).tileNum = 0;
     (p->s).palID = 0;
-    (p->s).flags2 |= ENTITY_FLAGS2_B4;
+    (p->s).flags2 |= WHITE_PAINTABLE;
     (p->s).invincibleID = (p->s).uniqueID;
     (p->s).work[0] = 2;
     (p->s).coord.x = x;

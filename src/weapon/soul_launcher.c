@@ -87,7 +87,7 @@ void SoulLauncher_Die(struct Weapon* w);
 // clang-format off
 const WeaponRoutine gSoulLauncherRoutine = {
     [ENTITY_INIT] =      SoulLauncher_Init,
-    [ENTITY_MAIN] =      SoulLauncher_Update,
+    [ENTITY_UPDATE] =    SoulLauncher_Update,
     [ENTITY_DIE] =       SoulLauncher_Die,
     [ENTITY_DISAPPEAR] = DeleteWeapon,
     [ENTITY_EXIT] =      (WeaponFunc)DeleteEntity,    

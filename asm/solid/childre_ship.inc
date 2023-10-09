@@ -283,7 +283,7 @@ _080E04A2:
 	lsrs r2, r2, #0x11
 	movs r3, #3
 	ands r2, r3
-	bl CreateSeaEnemy
+	bl CreateBubble
 _080E0506:
 	ldr r0, _080E0540 @ =gStageRun+232
 	adds r1, r7, #0
@@ -781,7 +781,7 @@ _080E08B4:
 	lsrs r2, r2, #0x11
 	movs r3, #3
 	ands r2, r3
-	bl CreateSeaEnemy
+	bl CreateBubble
 	subs r4, #1
 	cmp r4, #0
 	bne _080E08B4

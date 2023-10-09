@@ -226,7 +226,7 @@
       src/enemy/gyro_cannon.o (.rodata);
       src/enemy/lemmingles_nest.o (.rodata);
       src/enemy/lemmingles.o (.rodata);
-      src/enemy/unk_14.o (.rodata);
+      src/enemy/top_gabyoall.o (.rodata);
       src/enemy/sharkseal_x.o (.rodata);
       src/enemy/volcano_bomb.o (.rodata);
       src/enemy/carry_arm.o (.rodata);
@@ -260,6 +260,13 @@
       src/enemy/hanumachine_obj.o (.rodata);
       src/enemy/gallisni.o (.rodata);
       src/enemy/mothjiro.o (.rodata);
+      src/enemy/mettaur_swim.o (.rodata);
+      src/enemy/pantheon_base.o (.rodata);
+      src/enemy/hanumachine_necro.o (.rodata);
+      src/enemy/carrybee_g.o (.rodata);
+      src/enemy/omega_zero_rock.o (.rodata);
+      src/enemy/omega_gold_sword.o (.rodata);
+      src/enemy/generator_cannon.o (.rodata);
 
 		src/projectile.o (.rodata);
       src/projectile/lemon.o (.rodata);
@@ -287,7 +294,7 @@
 
 		src/vfx.o (.rodata);
       src/vfx/smoke.o (.rodata);
-      src/vfx/sea_enemy.o (.rodata);
+      src/vfx/bubble.o (.rodata);
       src/vfx/charge_effect.o (.rodata);
       src/vfx/zero_death_effect.o (.rodata);
       src/vfx/particle.o (.rodata);
@@ -305,7 +312,7 @@
       src/vfx/unk_18.o (.rodata);
       src/vfx/unk_19.o (.rodata);
       src/vfx/unk_20.o (.rodata);
-      src/vfx/unk_21.o (.rodata);
+      src/vfx/batring_necro.o (.rodata);
       src/vfx/unk_22.o (.rodata);
       src/vfx/necro.o (.rodata);
       src/vfx/shrimporin_vfx.o (.rodata);
@@ -389,11 +396,11 @@
       src/solid/glacierle_arm.o (.rodata);
       src/solid/unk_16.o (.rodata);
       src/solid/unk_17.o (.rodata);
-      src/solid/unk_18.o (.rodata);
+      src/solid/snowboard.o (.rodata);
       src/solid/base_elevator.o (.rodata);
-      src/solid/door_2d_gray.o (.rodata);
+      src/solid/door_2d_gray_v.o (.rodata);
       src/solid/actor.o (.rodata);
-      src/solid/unk_22.o (.rodata);
+      src/solid/door_2d_gray_h.o (.rodata);
       src/solid/unk_23.o (.rodata);
       src/solid/phantom_teleporter.o (.rodata);
       src/solid/unk_25.o (.rodata);
@@ -424,7 +431,7 @@
       src/solid/structural_steel.o (.rodata);
       src/solid/mod_elf.o (.rodata);
       src/solid/unk_52.o (.rodata);
-      src/solid/unk_53.o (.rodata);
+      src/solid/ocean_rod_wall.o (.rodata);
       src/solid/sea_level_button.o (.rodata);
       src/solid/childre_ship.o (.rodata);
 
@@ -490,8 +497,8 @@
 		graphics/dialog/header.o (.rodata);
 		src/blink.o (.rodata);
 
-		asm/sprite_prop.o (.rodata);
-    sprites/prop/header.o (.rodata);
+    sprites/static/anim.o (.rodata);
+    sprites/static/header.o (.rodata);
 		FILL(0xFF)
 		. += 40;
 

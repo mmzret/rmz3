@@ -9,7 +9,7 @@ void TretistaProjectile_Die(struct Projectile* p);
 // clang-format off
 const ProjectileRoutine gTretistaProjectileRoutine = {
     [ENTITY_INIT] =      TretistaProjectile_Init,
-    [ENTITY_MAIN] =      TretistaProjectile_Update,
+    [ENTITY_UPDATE] =    TretistaProjectile_Update,
     [ENTITY_DIE] =       TretistaProjectile_Die,
     [ENTITY_DISAPPEAR] = DeleteProjectile,
     [ENTITY_EXIT] =      (ProjectileFunc)DeleteEntity,

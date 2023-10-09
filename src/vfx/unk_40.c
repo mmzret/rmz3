@@ -10,7 +10,7 @@ void VFX40_Die(struct VFX* vfx);
 // clang-format off
 const VFXRoutine gVFX40Routine = {
     [ENTITY_INIT] =      VFX40_Init,
-    [ENTITY_MAIN] =      VFX40_Update,
+    [ENTITY_UPDATE] =    VFX40_Update,
     [ENTITY_DIE] =       VFX40_Die,
     [ENTITY_DISAPPEAR] = DeleteVFX,
     [ENTITY_EXIT] =      (VFXFunc)DeleteEntity,

@@ -19,7 +19,7 @@ void ModElf_Die(struct Solid* p);
 // clang-format off
 const SolidRoutine gModElfRoutine = {
     [ENTITY_INIT] =      ModElf_Init,
-    [ENTITY_MAIN] =      ModElf_Update,
+    [ENTITY_UPDATE] =    ModElf_Update,
     [ENTITY_DIE] =       ModElf_Die,
     [ENTITY_DISAPPEAR] = DeleteSolid,
     [ENTITY_EXIT] =      (SolidFunc)DeleteEntity,

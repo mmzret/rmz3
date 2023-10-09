@@ -13,7 +13,7 @@ void MegamilpaNode_Die(struct Enemy* p);
 // clang-format off
 const EnemyRoutine gMegamilpaNodeRoutine = {
     [ENTITY_INIT] =      MegamilpaNode_Init,
-    [ENTITY_MAIN] =      MegamilpaNode_Update,
+    [ENTITY_UPDATE] =    MegamilpaNode_Update,
     [ENTITY_DIE] =       MegamilpaNode_Die,
     [ENTITY_DISAPPEAR] = DeleteEnemy,
     [ENTITY_EXIT] =      (EnemyFunc)DeleteEntity,

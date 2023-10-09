@@ -11,7 +11,7 @@ void Elf5_Die(struct Elf* p);
 // clang-format off
 const ElfRoutine gElf5Routine = {
     [ENTITY_INIT] =      Elf5_Init,
-    [ENTITY_MAIN] =      Elf5_Update,
+    [ENTITY_UPDATE] =    Elf5_Update,
     [ENTITY_DIE] =       Elf5_Die,
     [ENTITY_DISAPPEAR] = DeleteElf,
     [ENTITY_EXIT] =      (ElfFunc)DeleteEntity,

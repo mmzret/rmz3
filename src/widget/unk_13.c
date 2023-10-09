@@ -10,7 +10,7 @@ static void MenuComp13_Die(struct Widget *w);
 // clang-format off
 const WidgetRoutine gMenuComp13Routine = {
     [ENTITY_INIT] =      MenuComp13_Init,
-    [ENTITY_MAIN] =      MenuComp13_Update,
+    [ENTITY_UPDATE] =    MenuComp13_Update,
     [ENTITY_DIE] =       MenuComp13_Die,
     [ENTITY_DISAPPEAR] = DeleteWidget,
     [ENTITY_EXIT] =      (WidgetFunc)DeleteEntity,

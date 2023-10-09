@@ -14,7 +14,7 @@ static void Enemy21_Die(struct Enemy* p);
 // clang-format off
 const EnemyRoutine gHammerRoutine = {
     [ENTITY_INIT] =      Enemy21_Init,
-    [ENTITY_MAIN] =      Enemy21_Update,
+    [ENTITY_UPDATE] =    Enemy21_Update,
     [ENTITY_DIE] =       Enemy21_Die,
     [ENTITY_DISAPPEAR] = DeleteEnemy,
     [ENTITY_EXIT] =      (EnemyFunc)DeleteEntity,
@@ -28,7 +28,7 @@ struct Enemy* unused_080752cc(struct Coord* c, u8 n) {
     INIT_ZAKO_ROUTINE(p, ENEMY_HAMMER);
     (p->s).tileNum = 0;
     (p->s).palID = 0;
-    (p->s).flags2 |= ENTITY_FLAGS2_B4;
+    (p->s).flags2 |= WHITE_PAINTABLE;
     (p->s).invincibleID = (p->s).uniqueID;
     (p->s).coord = *c;
     (p->s).work[0] = n;
@@ -44,7 +44,7 @@ static struct Enemy* FUN_0807532c(struct Entity* e, u8 n) {
     INIT_ZAKO_ROUTINE(p, ENEMY_HAMMER);
     (p->s).tileNum = 0;
     (p->s).palID = 0;
-    (p->s).flags2 |= ENTITY_FLAGS2_B4;
+    (p->s).flags2 |= WHITE_PAINTABLE;
     (p->s).invincibleID = (p->s).uniqueID;
     (p->s).unk_28 = e;
     (p->s).work[0] = n;

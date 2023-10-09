@@ -43,7 +43,7 @@ static bool32 Cmd_message(struct VM* vm);
 static bool32 Cmd_bgm(struct VM* vm);
 static bool32 Cmd_se(struct VM* vm);
 static bool32 Cmd_force(struct VM* vm);
-static bool32 Cmd_cmd1b(struct VM* vm);
+static bool32 Cmd_gimmick(struct VM* vm);
 static bool32 Cmd_cmd1c(struct VM* vm);
 static bool32 Cmd_sweep(struct VM* vm);
 static bool32 Cmd_lockmenu(struct VM* vm);
@@ -84,7 +84,7 @@ const CommandHandler gScriptCommands[38] = {
     Cmd_bgm,
     Cmd_se,
     Cmd_force,
-    Cmd_cmd1b,
+    Cmd_gimmick,
     Cmd_cmd1c,
     Cmd_sweep,
     Cmd_lockmenu,
@@ -1442,7 +1442,8 @@ static bool32 Cmd_force(struct VM* vm) {
   return FALSE;
 }
 
-static bool32 Cmd_cmd1b(struct VM* vm) {
+// ステージに変化を与えるためのコマンド
+static bool32 Cmd_gimmick(struct VM* vm) {
   const struct Command* pc = vm->pc;
   switch (pc->status) {
     case 0: {
@@ -1554,9 +1555,9 @@ static bool32 Cmd_eventflag(struct VM* vm) {
 }
 
 static bool32 Cmd_cmd20(struct VM* vm) {
-  LOAD_STATIC_GRAPHIC(0);
-  LOAD_STATIC_GRAPHIC(3);
-  LOAD_STATIC_GRAPHIC(209);
+  LOAD_STATIC_GRAPHIC(SM000_BATTLE_EFFECT);
+  LOAD_STATIC_GRAPHIC(SM003_EMOTION_BUBBLE);
+  LOAD_STATIC_GRAPHIC(SM209_NUMBER);
   FUN_080251a8();
   return FALSE;
 }

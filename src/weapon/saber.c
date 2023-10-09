@@ -87,7 +87,7 @@ WIP static void Saber_Init(struct Weapon *w) {
   struct Saber_b4 *b4 = (struct Saber_b4 *)&(w->unk_b4);
   struct Zero *z = b4->z;
 
-  SET_WEAPON_ROUTINE(w, ENTITY_MAIN);
+  SET_WEAPON_ROUTINE(w, ENTITY_UPDATE);
   InitNonAffineMotion(&w->s);
   ResetDynamicMotion(&w->s);
   (w->s).flags |= DISPLAY;
@@ -3586,7 +3586,7 @@ static const bool8 gIlethasables[25] = {
 // clang-format off
 const WeaponRoutine gSaberRoutine = {
     [ENTITY_INIT] =      Saber_Init,
-    [ENTITY_MAIN] =      Saber_Update,
+    [ENTITY_UPDATE] =    Saber_Update,
     [ENTITY_DIE] =       Saber_Die,
     [ENTITY_DISAPPEAR] = DeleteWeapon,
     [ENTITY_EXIT] =      (WeaponFunc)DeleteEntity,    

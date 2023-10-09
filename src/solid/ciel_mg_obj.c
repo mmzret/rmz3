@@ -13,7 +13,7 @@ void CielMinigameObj_Die(struct Solid* p);
 // clang-format off
 const SolidRoutine gCielMinigameObjRoutine = {
     [ENTITY_INIT] =      CielMinigameObj_Init,
-    [ENTITY_MAIN] =      CielMinigameObj_Update,
+    [ENTITY_UPDATE] =    CielMinigameObj_Update,
     [ENTITY_DIE] =       CielMinigameObj_Die,
     [ENTITY_DISAPPEAR] = DeleteSolid,
     [ENTITY_EXIT] =      (SolidFunc)DeleteEntity,

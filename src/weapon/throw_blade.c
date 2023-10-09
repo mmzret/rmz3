@@ -77,7 +77,7 @@ void ThrowBlade_Die(struct Weapon* w);
 // clang-format off
 const WeaponRoutine gThrowBladeRoutine = {
     [ENTITY_INIT] =      ThrowBlade_Init,
-    [ENTITY_MAIN] =      ThrowBlade_Update,
+    [ENTITY_UPDATE] =    ThrowBlade_Update,
     [ENTITY_DIE] =       ThrowBlade_Die,
     [ENTITY_DISAPPEAR] = DeleteWeapon,
     [ENTITY_EXIT] =      (WeaponFunc)DeleteEntity,    

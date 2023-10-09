@@ -64,7 +64,7 @@ void zeroAirAtk(struct Zero* z) {
       onBuster,
       onSaber,
       onRod,
-      (ZeroFunc)0x0802FEA9,
+      onShield,
   };
   (weapon[z->usingWeapon])(z);
 }
@@ -317,6 +317,7 @@ static void air_saber_end(struct Zero* z) {
   }
 }
 
+// 0x0802f8e0
 NAKED static void air_charge_saber(struct Zero* z) {
   asm(".syntax unified\n\
 	push {r4, r5, r6, lr}\n\
@@ -426,6 +427,7 @@ _0802F9AC: .4byte 0x00000125\n\
  .syntax divided\n");
 }
 
+// 0x0802f9b0
 NAKED static void split_heavens(struct Zero* z) {
   asm(".syntax unified\n\
 	push {r4, r5, lr}\n\
@@ -817,7 +819,7 @@ static void rod_charge_up(struct Zero* z) {
 static void rod_charge_down(struct Zero* z) {
   z->rodID = 16;
   FUN_0803267c(z, MOTION(DM060_ZERO_ROD_CHARGE_DOWN_AIR, 0x00));
-  z->unk_138 = (s16)(z->s).d.x;
+  z->recoilJumpDx = (s16)(z->s).d.x;
   if (z->unk_135 != 0) {
     (z->s).mode[1] = ZERO_AIR;
     (z->s).mode[2] = 0;
@@ -828,113 +830,35 @@ static void rod_charge_down(struct Zero* z) {
 }
 
 // 0x0802fdc8
-NAKED static void recoil_jump(struct Zero* z) {
-  asm(".syntax unified\n\
-	push {r4, r5, lr}\n\
-	adds r5, r0, #0\n\
-	adds r0, #0xee\n\
-	ldrb r0, [r0]\n\
-	cmp r0, #0\n\
-	bne _0802FE38\n\
-	movs r1, #0x9f\n\
-	lsls r1, r1, #1\n\
-	adds r0, r5, r1\n\
-	ldrh r1, [r0]\n\
-	movs r0, #0xe4\n\
-	lsls r0, r0, #6\n\
-	cmp r1, r0\n\
-	bne _0802FE10\n\
-	ldr r1, _0802FE04 @ =0x00003901\n\
-	movs r2, #0xa0\n\
-	lsls r2, r2, #1\n\
-	adds r0, r5, r2\n\
-	ldrb r2, [r0]\n\
-	ldr r3, _0802FE08 @ =0x00000141\n\
-	adds r0, r5, r3\n\
-	ldrb r3, [r0]\n\
-	adds r0, r5, #0\n\
-	bl GotoMotion\n\
-	ldr r0, _0802FE0C @ =0x00000135\n\
-	adds r1, r5, r0\n\
-	movs r0, #2\n\
-	b _0802FE2C\n\
-	.align 2, 0\n\
-_0802FE04: .4byte 0x00003901\n\
-_0802FE08: .4byte 0x00000141\n\
-_0802FE0C: .4byte 0x00000135\n\
-_0802FE10:\n\
-	ldr r1, _0802FE58 @ =0x00003C01\n\
-	movs r2, #0xa0\n\
-	lsls r2, r2, #1\n\
-	adds r0, r5, r2\n\
-	ldrb r2, [r0]\n\
-	ldr r3, _0802FE5C @ =0x00000141\n\
-	adds r0, r5, r3\n\
-	ldrb r3, [r0]\n\
-	adds r0, r5, #0\n\
-	bl GotoMotion\n\
-	ldr r0, _0802FE60 @ =0x00000135\n\
-	adds r1, r5, r0\n\
-	movs r0, #3\n\
-_0802FE2C:\n\
-	strb r0, [r1]\n\
-	adds r1, r5, #0\n\
-	adds r1, #0xee\n\
-	ldrb r0, [r1]\n\
-	adds r0, #1\n\
-	strb r0, [r1]\n\
-_0802FE38:\n\
-	ldr r1, _0802FE60 @ =0x00000135\n\
-	adds r0, r5, r1\n\
-	ldrb r0, [r0]\n\
-	cmp r0, #2\n\
-	bne _0802FE68\n\
-	movs r2, #0x93\n\
-	lsls r2, r2, #1\n\
-	adds r4, r5, r2\n\
-	movs r0, #0x13\n\
-	strb r0, [r4]\n\
-	ldr r1, _0802FE64 @ =0x00003901\n\
-	adds r0, r5, #0\n\
-	bl KeepMotion\n\
-	b _0802FE7A\n\
-	.align 2, 0\n\
-_0802FE58: .4byte 0x00003C01\n\
-_0802FE5C: .4byte 0x00000141\n\
-_0802FE60: .4byte 0x00000135\n\
-_0802FE64: .4byte 0x00003901\n\
-_0802FE68:\n\
-	movs r3, #0x93\n\
-	lsls r3, r3, #1\n\
-	adds r4, r5, r3\n\
-	movs r0, #0x14\n\
-	strb r0, [r4]\n\
-	ldr r1, _0802FEA0 @ =0x00003C01\n\
-	adds r0, r5, #0\n\
-	bl KeepMotion\n\
-_0802FE7A:\n\
-	ldr r0, [r5, #0x60]\n\
-	cmp r0, #0\n\
-	blt _0802FE98\n\
-	ldr r1, _0802FEA4 @ =0x00000404\n\
-	adds r0, r5, #0\n\
-	movs r2, #2\n\
-	movs r3, #1\n\
-	bl GotoMotion\n\
-	adds r1, r5, #0\n\
-	adds r1, #0xec\n\
-	movs r0, #0\n\
-	strb r0, [r1]\n\
-	movs r0, #0xff\n\
-	strb r0, [r4]\n\
-_0802FE98:\n\
-	pop {r4, r5}\n\
-	pop {r0}\n\
-	bx r0\n\
-	.align 2, 0\n\
-_0802FEA0: .4byte 0x00003C01\n\
-_0802FEA4: .4byte 0x00000404\n\
- .syntax divided\n");
+static void recoil_jump(struct Zero* z) {
+  register u8* rodID asm("r4");
+
+  if ((z->unk_b4).attackMode[2] == 0) {
+    if (z->prevMotion == MOTION(DM057_ZERO_ROD_CHARGE_DOWN, 0)) {
+      GotoMotion(&z->s, MOTION(DM057_ZERO_ROD_CHARGE_DOWN, 1), z->motionCmdIdx, z->motionDuration);
+      z->unk_135 = 2;
+    } else {
+      GotoMotion(&z->s, MOTION(DM060_ZERO_ROD_CHARGE_DOWN_AIR, 1), z->motionCmdIdx, z->motionDuration);
+      z->unk_135 = 3;
+    }
+    (z->unk_b4).attackMode[2]++;
+  }
+
+  if (z->unk_135 == 2) {
+    rodID = &(z->rodID);
+    *rodID = 19;
+    KeepMotion(z, MOTION(DM057_ZERO_ROD_CHARGE_DOWN, 1));
+  } else {
+    rodID = &(z->rodID);
+    *rodID = 20;
+    KeepMotion(z, MOTION(DM060_ZERO_ROD_CHARGE_DOWN_AIR, 1));
+  }
+  if ((z->s).d.y < 0) {
+    return;
+  }
+  GotoMotion(&z->s, MOTION(DM004_ZERO_AIR, 4), 2, 1);
+  (z->unk_b4).attackMode[0] = 0;
+  *rodID = 0xFF;
 }
 
 // --------------------------------------------

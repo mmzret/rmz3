@@ -11,7 +11,7 @@ void Cubit_Die(struct Boss* p);
 // clang-format off
 const BossRoutine gCubitRoutine = {
     [ENTITY_INIT] =      Cubit_Init,
-    [ENTITY_MAIN] =      Cubit_Update,
+    [ENTITY_UPDATE] =    Cubit_Update,
     [ENTITY_DIE] =       Cubit_Die,
     [ENTITY_DISAPPEAR] = DeleteBoss,
     [ENTITY_EXIT] =      (BossFunc)DeleteEntity,

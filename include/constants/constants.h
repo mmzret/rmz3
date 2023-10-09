@@ -37,7 +37,7 @@
 
 // Entity Routine
 #define ENTITY_INIT 0
-#define ENTITY_MAIN 1
+#define ENTITY_UPDATE 1
 #define ENTITY_DIE 2
 #define ENTITY_DISAPPEAR 3
 #define ENTITY_EXIT 4

@@ -19,7 +19,7 @@ static void Shrimporin_Die(struct Enemy* p);
 // clang-format off
 const EnemyRoutine gShrimporinRoutine = {
     [ENTITY_INIT] =      Shrimporin_Init,
-    [ENTITY_MAIN] =      Shrimporin_Update,
+    [ENTITY_UPDATE] =    Shrimporin_Update,
     [ENTITY_DIE] =       Shrimporin_Die,
     [ENTITY_DISAPPEAR] = DeleteEnemy,
     [ENTITY_EXIT] =      (EnemyFunc)DeleteEntity,
@@ -33,7 +33,7 @@ void CreateShrimporin(s32 x, s32 y, u8 n, bool8 r3) {
     INIT_ZAKO_ROUTINE(p, 7);
     (p->s).tileNum = 0;
     (p->s).palID = 0;
-    (p->s).flags2 |= ENTITY_FLAGS2_B4;
+    (p->s).flags2 |= WHITE_PAINTABLE;
     (p->s).invincibleID = (p->s).uniqueID;
     (p->s).coord.x = x;
     (p->s).coord.y = y;
@@ -55,7 +55,7 @@ static bool8 tryKillShrimporin(struct Enemy* p) {
       (p->s).mode[1] = 3;
     } else if ((p->body).status & BODY_STATUS_SLASHED) {
       (p->s).mode[1] = 1;
-    } else if ((p->body).status & BODY_STATUS_B17) {
+    } else if ((p->body).status & BODY_STATUS_RECOILED) {
       (p->s).mode[1] = 2;
     } else {
       (p->s).mode[1] = 0;
@@ -165,7 +165,7 @@ _0806998C:\n\
 
 void shrimporin_08069994(struct Enemy* p) {
   if ((p->props).shrimpolin.elementEffect == NULL && ((p->body).status & BODY_STATUS_WHITE)) {
-    if (((p->body).status & BODY_STATUS_B17)) {
+    if (((p->body).status & BODY_STATUS_RECOILED)) {
       (p->s).mode[1] = 7;
       (p->s).mode[2] = 0;
     } else {
@@ -179,7 +179,7 @@ void shrimporin_08069994(struct Enemy* p) {
 }
 
 static void FUN_080699e0(struct Enemy* p) {
-  if (((p->body).status & (BODY_STATUS_WHITE | BODY_STATUS_B17)) == (BODY_STATUS_WHITE | BODY_STATUS_B17)) {
+  if (((p->body).status & (BODY_STATUS_WHITE | BODY_STATUS_RECOILED)) == (BODY_STATUS_WHITE | BODY_STATUS_RECOILED)) {
     (p->s).mode[1] = 7;
     (p->s).mode[2] = 0;
   }

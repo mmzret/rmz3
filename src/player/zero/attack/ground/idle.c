@@ -606,6 +606,7 @@ static void rod_1000slash(struct Zero* z);
 void FUN_080322dc(struct Zero* z, motion_t m, u8 r2);
 void FUN_080325e8(struct Zero* z, motion_t m);
 
+// 0x0802da20
 void recoilAttack(struct Zero* z) {
   // clang-format off
   static ZeroFunc const routine[] = {
@@ -635,6 +636,7 @@ void recoilAttack(struct Zero* z) {
   (routine[(z->unk_b4).attackMode[1]])(z);
 }
 
+// 0x0802da64
 NAKED static void handle_rod_input(struct Zero* z) {
   asm(".syntax unified\n\
 	push {r4, lr}\n\

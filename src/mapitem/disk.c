@@ -19,7 +19,7 @@ static void MapDisk_Die(struct MapItem *p);
 // clang-format off
 const MapItemRoutine gMapDiskRoutine = {
     [ENTITY_INIT] =      MapDisk_Init,
-    [ENTITY_MAIN] =      MapDisk_Update,
+    [ENTITY_UPDATE] =    MapDisk_Update,
     [ENTITY_DIE] =       MapDisk_Die,
     [ENTITY_DISAPPEAR] = DeleteMapItem,
     [ENTITY_EXIT] =      (MapItemFunc)DeleteEntity,
@@ -153,7 +153,7 @@ static void MapDisk_Init(struct MapItem *p) {
     (p->s).d.y = -PIXEL(4);
   }
   *((u16 *)&(p->s).work[2]) = 360;
-  SET_ITEM_ROUTINE(p, ENTITY_MAIN);
+  SET_ITEM_ROUTINE(p, ENTITY_UPDATE);
   MapDisk_Update(p);
 }
 

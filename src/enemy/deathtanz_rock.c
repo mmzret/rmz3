@@ -11,7 +11,7 @@ void DeathtanzRock_Die(struct Enemy* p);
 // clang-format off
 const EnemyRoutine gDeathtanzRockRoutine = {
     [ENTITY_INIT] =      DeathtanzRock_Init,
-    [ENTITY_MAIN] =      DeathtanzRock_Update,
+    [ENTITY_UPDATE] =    DeathtanzRock_Update,
     [ENTITY_DIE] =       DeathtanzRock_Die,
     [ENTITY_DISAPPEAR] = DeleteEnemy,
     [ENTITY_EXIT] =      (EnemyFunc)DeleteEntity,

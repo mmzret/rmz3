@@ -13,7 +13,7 @@ static void MenuHP_Die(struct Widget *w);
 // clang-format off
 const WidgetRoutine gMenuHPRoutine = {
     [ENTITY_INIT] =      MenuHP_Init,
-    [ENTITY_MAIN] =      MenuHP_Update,
+    [ENTITY_UPDATE] =    MenuHP_Update,
     [ENTITY_DIE] =       MenuHP_Die,
     [ENTITY_DISAPPEAR] = DeleteWidget,
     [ENTITY_EXIT] =      (WidgetFunc)DeleteEntity,
@@ -39,7 +39,7 @@ struct Widget *CreateMenuHPGauge(struct GameState *g, u8 x, u8 r2) {
 // --------------------------------------------
 
 static void MenuHP_Init(struct Widget *w) {
-  SET_WIDGET_ROUTINE(w, ENTITY_MAIN);
+  SET_WIDGET_ROUTINE(w, ENTITY_UPDATE);
   InitNonAffineMotion(&w->s);
   (w->s).flags |= DISPLAY;
   (w->s).flags |= FLIPABLE;

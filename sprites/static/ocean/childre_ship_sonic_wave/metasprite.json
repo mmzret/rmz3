@@ -1,0 +1,59 @@
+{
+  "data": [
+    {
+      "sheetIdx": 0,
+      "subsprites": [
+        {
+          "tileNum": 0,
+          "xflip": true,
+          "yflip": false,
+          "size": [
+            16,
+            16
+          ],
+          "x": 0,
+          "y": -8
+        },
+        {
+          "tileNum": 0,
+          "xflip": false,
+          "yflip": false,
+          "size": [
+            16,
+            16
+          ],
+          "x": -16,
+          "y": -8
+        }
+      ]
+    },
+    {
+      "sheetIdx": 0,
+      "subsprites": [
+        {
+          "tileNum": 4,
+          "xflip": false,
+          "yflip": false,
+          "size": [
+            16,
+            16
+          ],
+          "x": -16,
+          "y": -8
+        },
+        {
+          "tileNum": 4,
+          "xflip": true,
+          "yflip": false,
+          "size": [
+            16,
+            16
+          ],
+          "x": 0,
+          "y": -8
+        }
+      ]
+    }
+  ],
+  "label": "gStaticMetaSprite_ocean_childre_ship_sonic_wave"
+}

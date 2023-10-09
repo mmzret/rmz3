@@ -9,7 +9,7 @@ void Phantom_Die(struct Boss* p);
 // clang-format off
 const BossRoutine gPhantomBossRoutine = {
     [ENTITY_INIT] =      Phantom_Init,
-    [ENTITY_MAIN] =      Phantom_Update,
+    [ENTITY_UPDATE] =    Phantom_Update,
     [ENTITY_DIE] =       Phantom_Die,
     [ENTITY_DISAPPEAR] = DeleteBoss,
     [ENTITY_EXIT] =      (BossFunc)DeleteEntity,

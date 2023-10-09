@@ -79,7 +79,7 @@ const struct EntityTemplate gOldLifeSpaceEntity[37] = {
         {
             1,
             ENTITY_SOLID,
-            SOLID_DOOR_2D_GRAY,
+            SOLID_DOOR_2D_GRAY_V,
             2,
             0,
             0,
@@ -90,7 +90,7 @@ const struct EntityTemplate gOldLifeSpaceEntity[37] = {
         {
             1,
             ENTITY_SOLID,
-            SOLID_DOOR_2D_GRAY,
+            SOLID_DOOR_2D_GRAY_V,
             0,
             0,
             0,
@@ -101,7 +101,7 @@ const struct EntityTemplate gOldLifeSpaceEntity[37] = {
         {
             1,
             ENTITY_SOLID,
-            SOLID_DOOR_2D_GRAY,
+            SOLID_DOOR_2D_GRAY_V,
             1,
             0,
             0,

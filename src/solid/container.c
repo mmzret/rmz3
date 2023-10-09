@@ -16,7 +16,7 @@ static void Solid35_Die(struct Solid* p);
 // clang-format off
 const SolidRoutine gContainerRoutine = {
     [ENTITY_INIT] =      Container_Init,
-    [ENTITY_MAIN] =      Solid35_Update,
+    [ENTITY_UPDATE] =    Solid35_Update,
     [ENTITY_DIE] =       Solid35_Die,
     [ENTITY_DISAPPEAR] = DeleteSolid,
     [ENTITY_EXIT] =      (SolidFunc)DeleteEntity,
@@ -47,7 +47,7 @@ WIP static void Container_Init(struct Solid* p) {
   if (FUN_080098a4((p->s).coord.x + PIXEL(12), (p->s).coord.y) != 0) {
     (p->s).coord.x += PushoutToLeft1((p->s).coord.x + PIXEL(12), (p->s).coord.y) + PIXEL(1);
   }
-  SET_SOLID_ROUTINE(p, ENTITY_MAIN);
+  SET_SOLID_ROUTINE(p, ENTITY_UPDATE);
   Solid35_Update(p);
 #else
   INCCODE("asm/wip/Container_Init.inc");

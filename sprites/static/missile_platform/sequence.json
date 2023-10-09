@@ -1,0 +1,41 @@
+{
+  "label": "gStaticAnimationSequence_missile_platform",
+  "data": [
+    [
+      {
+        "frameIdx": 0,
+        "duration": 1
+      },
+      {
+        "frameIdx": 0,
+        "duration": 255
+      }
+    ],
+    [
+      {
+        "frameIdx": 1,
+        "duration": 6
+      },
+      {
+        "frameIdx": 2,
+        "duration": 6
+      },
+      {
+        "frameIdx": 3,
+        "duration": 6
+      },
+      {
+        "frameIdx": 4,
+        "duration": 6
+      },
+      {
+        "frameIdx": 0,
+        "duration": 12
+      },
+      {
+        "frameIdx": 0,
+        "duration": 254
+      }
+    ]
+  ]
+}

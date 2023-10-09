@@ -9,7 +9,7 @@ static void IceEffect_Die(struct VFX* p);
 // clang-format off
 const VFXRoutine gIceEffectRoutine = {
     [ENTITY_INIT] =      IceEffect_Init,
-    [ENTITY_MAIN] =      IceEffect_Update,
+    [ENTITY_UPDATE] =    IceEffect_Update,
     [ENTITY_DIE] =       IceEffect_Die,
     [ENTITY_DISAPPEAR] = DeleteVFX,
     [ENTITY_EXIT] =      (VFXFunc)DeleteEntity,

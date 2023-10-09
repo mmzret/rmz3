@@ -14,7 +14,7 @@ void Hanumachine_Die(struct Boss* p);
 // clang-format off
 const BossRoutine gHanumachineRoutine = {
     [ENTITY_INIT] =      Hanumachine_Init,
-    [ENTITY_MAIN] =      Hanumachine_Update,
+    [ENTITY_UPDATE] =    Hanumachine_Update,
     [ENTITY_DIE] =       Hanumachine_Die,
     [ENTITY_DISAPPEAR] = DeleteBoss,
     [ENTITY_EXIT] =      (BossFunc)DeleteEntity,

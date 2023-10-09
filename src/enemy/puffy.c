@@ -11,7 +11,7 @@ void Puffy_Die(struct Enemy* p);
 // clang-format off
 const EnemyRoutine gPuffyRoutine = {
     [ENTITY_INIT] =      Puffy_Init,
-    [ENTITY_MAIN] =      Puffy_Update,
+    [ENTITY_UPDATE] =    Puffy_Update,
     [ENTITY_DIE] =       Puffy_Die,
     [ENTITY_DISAPPEAR] = DeleteEnemy,
     [ENTITY_EXIT] =      (EnemyFunc)DeleteEntity,

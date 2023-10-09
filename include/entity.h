@@ -27,9 +27,9 @@
 // Entity.flags2
 #define SCALEROT (1 << 0)
 #define ENTITY_FLAG2_B1 (1 << 1)  // 意味のないフラグに見える(どちらにしろScalerotSpriteするので)
-#define DYNAMIC (1 << 2)
+#define DYNAMIC (1 << 2)          // Entity has "Dynamic sprite" (See sprites/README.md)
 #define ENTITY_HAZARD (1 << 3)
-#define ENTITY_FLAGS2_B4 (1 << 4)
+#define WHITE_PAINTABLE (1 << 4)  // (if damaged) white painted by RunDamageEffect
 #define PALETTE_FORCED (1 << 5)
 #define ENTITY_FLAGS2_B6 (1 << 6)
 #define STOPPED (1 << 7)

@@ -14,7 +14,7 @@ void Flopper_Die(struct Enemy *p);
 // clang-format off
 const EnemyRoutine gFlopperRoutine = {
     [ENTITY_INIT] =      Flopper_Init,
-    [ENTITY_MAIN] =      Flopper_Update,
+    [ENTITY_UPDATE] =    Flopper_Update,
     [ENTITY_DIE] =       Flopper_Die,
     [ENTITY_DISAPPEAR] = DeleteEnemy,
     [ENTITY_EXIT] =      (EnemyFunc)DeleteEntity,
@@ -22,7 +22,7 @@ const EnemyRoutine gFlopperRoutine = {
 // clang-format on
 
 static void Flopper_Init(struct Enemy *p) {
-  SET_ZAKO_ROUTINE(p, ENTITY_MAIN);
+  SET_ZAKO_ROUTINE(p, ENTITY_UPDATE);
   p->props.flopper.c.x = (p->s).coord.x;
   p->props.flopper.c.y = (p->s).coord.y;
   INIT_BODY(p, &sCollisions[0], 1, Flopper_onCollision);

@@ -10,7 +10,7 @@ void Lamplort_Disappear(struct Enemy *p);
 // clang-format off
 const EnemyRoutine gLamplortRoutine = {
     [ENTITY_INIT] =      Lamplort_Init,
-    [ENTITY_MAIN] =      Lamplort_Update,
+    [ENTITY_UPDATE] =    Lamplort_Update,
     [ENTITY_DIE] =       Lamplort_Die,
     [ENTITY_DISAPPEAR] = Lamplort_Disappear,
     [ENTITY_EXIT] =      (EnemyFunc)DeleteEntity,
@@ -24,7 +24,7 @@ struct Enemy *CreateLamplort(struct Coord *c, u8 n) {
     INIT_ZAKO_ROUTINE(p, ENEMY_LAMPLORT);
     (p->s).tileNum = 0;
     (p->s).palID = 0;
-    (p->s).flags2 |= ENTITY_FLAGS2_B4;
+    (p->s).flags2 |= WHITE_PAINTABLE;
     (p->s).invincibleID = (p->s).uniqueID;
     (p->s).coord = *c;
     (p->s).work[0] = n;

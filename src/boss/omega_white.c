@@ -22,7 +22,7 @@ static void OmegaWhite_Disappear(struct Boss *p);
 // clang-format off
 const BossRoutine gOmegaWhiteRoutine = {
     [ENTITY_INIT] =      OmegaWhite_Init,
-    [ENTITY_MAIN] =      OmegaWhite_Update,
+    [ENTITY_UPDATE] =    OmegaWhite_Update,
     [ENTITY_DIE] =       OmegaWhite_Die,
     [ENTITY_DISAPPEAR] = OmegaWhite_Disappear,
     [ENTITY_EXIT] =      (BossFunc)DeleteEntity,
@@ -38,7 +38,7 @@ struct Boss *CreateOmegaWhite(struct Coord *c, u8 n) {
     INIT_BOSS_ROUTINE(p, BOSS_OMEGA_WHITE);
     (p->s).tileNum = 0;
     (p->s).palID = 0;
-    (p->s).flags2 |= ENTITY_FLAGS2_B4;
+    (p->s).flags2 |= WHITE_PAINTABLE;
     (p->s).invincibleID = (p->s).uniqueID;
     (p->s).coord = *c;
     (p->s).work[0] = n;
@@ -76,10 +76,10 @@ WIP static void OmegaWhite_Init(struct Boss *p) {
   (p->s).unk_coord.y = (p->props).omegaWhite.unk_y = (p->s).coord.y;
 
   if ((p->s).work[0] == 0) {
-    SET_BOSS_ROUTINE(p, ENTITY_MAIN);
+    SET_BOSS_ROUTINE(p, ENTITY_UPDATE);
     (p->s).mode[1] = 0;
   } else {
-    SET_BOSS_ROUTINE(p, ENTITY_MAIN);
+    SET_BOSS_ROUTINE(p, ENTITY_UPDATE);
     (p->s).mode[1] = 3;
   }
   (p->s).mode[2] = 0;

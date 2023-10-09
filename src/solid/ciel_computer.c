@@ -12,7 +12,7 @@ static void CielComputer_Die(struct Solid* p);
 // clang-format off
 const SolidRoutine gCielComputerRoutine = {
     [ENTITY_INIT] =      CielComputer_Init,
-    [ENTITY_MAIN] =      CielComputer_Update,
+    [ENTITY_UPDATE] =    CielComputer_Update,
     [ENTITY_DIE] =       CielComputer_Die,
     [ENTITY_DISAPPEAR] = CielComputer_Die,
     [ENTITY_EXIT] =      (SolidFunc)DeleteEntity,

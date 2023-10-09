@@ -11,7 +11,7 @@ void HeavyCannon_Die(struct Enemy* p);
 // clang-format off
 const EnemyRoutine gHeavyCannonBallRoutine = {
     [ENTITY_INIT] =      HeavyCannon_Init,
-    [ENTITY_MAIN] =      HeavyCannon_Update,
+    [ENTITY_UPDATE] =    HeavyCannon_Update,
     [ENTITY_DIE] =       HeavyCannon_Die,
     [ENTITY_DISAPPEAR] = DeleteEnemy,
     [ENTITY_EXIT] =      (EnemyFunc)DeleteEntity,

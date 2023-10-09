@@ -12,7 +12,7 @@ void FUN_080cc284(struct Solid* p);
 // clang-format off
 const SolidRoutine gHeavyCannonRoutine = {
     [ENTITY_INIT] =      initHeavyCannon,
-    [ENTITY_MAIN] =      heavyCannonAI,
+    [ENTITY_UPDATE] =    heavyCannonAI,
     [ENTITY_DIE] =       killHeavyCannon,
     [ENTITY_DISAPPEAR] = FUN_080cc284,
     [ENTITY_EXIT] =      (SolidFunc)DeleteEntity,

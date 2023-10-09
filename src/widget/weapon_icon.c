@@ -9,7 +9,7 @@ static void MenuWeapon_Die(struct Widget *w);
 // clang-format off
 const WidgetRoutine gMenuWeaponIconRoutine = {
     [ENTITY_INIT] =      MenuWeapon_Init,
-    [ENTITY_MAIN] =      MenuWeapon_Update,
+    [ENTITY_UPDATE] =    MenuWeapon_Update,
     [ENTITY_DIE] =       MenuWeapon_Die,
     [ENTITY_DISAPPEAR] = DeleteWidget,
     [ENTITY_EXIT] =      (WidgetFunc)DeleteEntity,
@@ -43,7 +43,7 @@ struct Widget *createMenuWeaponIcon(void *g, weapon_t weapon, bool8 isSubWeapon,
 static void MenuWeapon_Init(struct Widget *w) {
   s32 x, y;
 
-  SET_WIDGET_ROUTINE(w, ENTITY_MAIN);
+  SET_WIDGET_ROUTINE(w, ENTITY_UPDATE);
   InitNonAffineMotion(&w->s);
   (w->s).flags |= DISPLAY;
   (w->s).flags |= FLIPABLE;

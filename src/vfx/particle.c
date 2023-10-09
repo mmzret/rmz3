@@ -18,7 +18,7 @@ static void Ghost5_Die(struct VFX* p);
 // clang-format off
 const VFXRoutine gParticleRoutine = {
     [ENTITY_INIT] =      Ghost5_Init,
-    [ENTITY_MAIN] =      Ghost5_Update,
+    [ENTITY_UPDATE] =    Ghost5_Update,
     [ENTITY_DIE] =       Ghost5_Die,
     [ENTITY_DISAPPEAR] = DeleteVFX,
     [ENTITY_EXIT] =      (VFXFunc)DeleteEntity,
@@ -175,7 +175,7 @@ static void initDashDust(struct VFX* p) {
   SetMotion(&p->s, MOTION(SM000_BATTLE_EFFECT, 0x0B));
   (p->s).spr.mag.x = 0x200;
   (p->s).spr.mag.y = 0x200;
-  SET_VFX_ROUTINE(p, ENTITY_MAIN);
+  SET_VFX_ROUTINE(p, ENTITY_UPDATE);
   Ghost5_Update(p);
 }
 
@@ -190,7 +190,7 @@ static void FUN_080b39dc(struct VFX* p) {
     (p->s).coord.x += PIXEL(20);
   }
   (p->s).work[2] = 0;
-  SET_VFX_ROUTINE(p, ENTITY_MAIN);
+  SET_VFX_ROUTINE(p, ENTITY_UPDATE);
   Ghost5_Update(p);
 }
 
@@ -221,7 +221,7 @@ static void FUN_080b3a3c(struct VFX* p) {
   (p->s).flags |= FLIPABLE;
   SetMotion(&p->s, MOTION(SM000_BATTLE_EFFECT, 0x11));
   (p->s).work[2] = 0;
-  SET_VFX_ROUTINE(p, ENTITY_MAIN);
+  SET_VFX_ROUTINE(p, ENTITY_UPDATE);
   Ghost5_Update(p);
 }
 
@@ -237,7 +237,7 @@ static void FUN_080b3b20(struct VFX* p) {
   } else {
     (p->s).coord.x += PIXEL(7);
   }
-  SET_VFX_ROUTINE(p, ENTITY_MAIN);
+  SET_VFX_ROUTINE(p, ENTITY_UPDATE);
   Ghost5_Update(p);
 }
 
@@ -258,7 +258,7 @@ static void FUN_080b3b8c(struct VFX* p) {
   RNG_0202f388 = LCG(RNG_0202f388);
   (p->s).d.y = (((RNG_0202f388 >> 16) & 0xF) + 0xD) * -0x40;
 
-  SET_VFX_ROUTINE(p, ENTITY_MAIN);
+  SET_VFX_ROUTINE(p, ENTITY_UPDATE);
   Ghost5_Update(p);
 }
 
@@ -279,7 +279,7 @@ static void FUN_080b3c40(struct VFX* p) {
   RNG_0202f388 = LCG(RNG_0202f388);
   (p->s).d.y = (((RNG_0202f388 >> 16) & 0xF) + 0xA) * -0x40;
 
-  SET_VFX_ROUTINE(p, ENTITY_MAIN);
+  SET_VFX_ROUTINE(p, ENTITY_UPDATE);
   Ghost5_Update(p);
 }
 
@@ -288,7 +288,7 @@ static void initRicochet(struct VFX* p) {
   (p->s).flags |= DISPLAY;
   (p->s).flags |= FLIPABLE;
   SetMotion(&p->s, MOTION(SM000_BATTLE_EFFECT, 0x09));
-  SET_VFX_ROUTINE(p, ENTITY_MAIN);
+  SET_VFX_ROUTINE(p, ENTITY_UPDATE);
   Ghost5_Update(p);
 }
 

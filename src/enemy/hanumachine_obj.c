@@ -11,7 +11,7 @@ void HanumachineObj_Die(struct Enemy* p);
 // clang-format off
 const EnemyRoutine gHanumachineObjRoutine = {
     [ENTITY_INIT] =      HanumachineObj_Init,
-    [ENTITY_MAIN] =      HanumachineObj_Update,
+    [ENTITY_UPDATE] =    HanumachineObj_Update,
     [ENTITY_DIE] =       HanumachineObj_Die,
     [ENTITY_DISAPPEAR] = DeleteEnemy,
     [ENTITY_EXIT] =      (EnemyFunc)DeleteEntity,

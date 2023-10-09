@@ -326,6 +326,7 @@ static void walk_shield_3(struct Zero* z);
 static void walk_shield_4(struct Zero* z);
 static void walk_shield_5(struct Zero* z);
 
+// 0x0802e828
 static void onShield(struct Zero* z) {
   // clang-format off
   static ZeroFunc const seq[] = {
@@ -350,6 +351,7 @@ static void onShield(struct Zero* z) {
   (seq[(z->unk_b4).attackMode[1]])(z);
 }
 
+// 0x0802e890
 NAKED static void walk_shield_0(struct Zero* z) {
   asm(".syntax unified\n\
 	push {r4, r5, r6, r7, lr}\n\
@@ -528,196 +530,62 @@ _0802E9E2:\n\
  .syntax divided\n");
 }
 
-NAKED static void walk_shield_1(struct Zero* z) {
-  asm(".syntax unified\n\
-	push {r4, r5, lr}\n\
-	adds r4, r0, #0\n\
-	adds r2, r4, #0\n\
-	adds r2, #0xb4\n\
-	movs r0, #0x97\n\
-	lsls r0, r0, #1\n\
-	adds r1, r4, r0\n\
-	movs r0, #1\n\
-	strb r0, [r1]\n\
-	ldrb r1, [r4, #0x1e]\n\
-	lsls r1, r1, #8\n\
-	adds r0, r4, #0\n\
-	adds r0, #0x70\n\
-	ldrb r0, [r0]\n\
-	orrs r0, r1\n\
-	movs r5, #0xa8\n\
-	lsls r5, r5, #6\n\
-	cmp r0, r5\n\
-	beq _0802EA40\n\
-	ldrh r1, [r2, #0x34]\n\
-	movs r0, #0x80\n\
-	lsls r0, r0, #1\n\
-	cmp r1, r0\n\
-	bne _0802EA38\n\
-	adds r0, r4, #0\n\
-	adds r0, #0x71\n\
-	movs r2, #0\n\
-	ldrsb r2, [r0, r2]\n\
-	lsls r2, r2, #0x10\n\
-	lsrs r2, r2, #0x10\n\
-	adds r0, #1\n\
-	movs r3, #0\n\
-	ldrsb r3, [r0, r3]\n\
-	lsls r3, r3, #0x10\n\
-	lsrs r3, r3, #0x10\n\
-	adds r0, r4, #0\n\
-	adds r1, r5, #0\n\
-	bl GotoMotion\n\
-	b _0802EA40\n\
-_0802EA38:\n\
-	adds r0, r4, #0\n\
-	adds r1, r5, #0\n\
-	bl SetMotion\n\
-_0802EA40:\n\
-	adds r5, r4, #0\n\
-	adds r5, #0xee\n\
-	ldrb r0, [r5]\n\
-	cmp r0, #0\n\
-	bne _0802EA5A\n\
-	adds r0, r4, #0\n\
-	movs r1, #1\n\
-	bl CreateWeaponShieldGuard\n\
-	ldrb r0, [r5]\n\
-	adds r0, #1\n\
-	strb r0, [r5]\n\
-	b _0802EA9A\n\
-_0802EA5A:\n\
-	movs r0, #0x94\n\
-	lsls r0, r0, #1\n\
-	adds r1, r4, r0\n\
-	adds r0, r4, #0\n\
-	bl IsAttackOK\n\
-	lsls r0, r0, #0x18\n\
-	lsrs r0, r0, #0x18\n\
-	cmp r0, #1\n\
-	bne _0802EA84\n\
-	adds r0, r4, #0\n\
-	adds r0, #0xec\n\
-	movs r2, #0\n\
-	movs r1, #3\n\
-	strb r1, [r0]\n\
-	adds r0, #1\n\
-	strb r2, [r0]\n\
-	adds r0, r4, #0\n\
-	bl FUN_0802e3b0\n\
-	b _0802EA9A\n\
-_0802EA84:\n\
-	cmp r0, #2\n\
-	beq _0802EA9A\n\
-	adds r2, r4, #0\n\
-	adds r2, #0xed\n\
-	movs r1, #0\n\
-	movs r0, #2\n\
-	strb r0, [r2]\n\
-	strb r1, [r5]\n\
-	adds r0, r4, #0\n\
-	bl walk_shield_2\n\
-_0802EA9A:\n\
-	pop {r4, r5}\n\
-	pop {r0}\n\
-	bx r0\n\
- .syntax divided\n");
+// 0x0802e9e8
+static void walk_shield_1(struct Zero* z) {
+  u8 ok;
+  motion_t m;
+
+  struct Zero_b4* b4 = &(z->unk_b4);
+  z->unk_12e = 1;
+  if (m = MOTION_VALUE(z), m != MOTION(DM042_ZERO_SHIELD_WALK, 0)) {
+    if ((*(u16*)&b4->prevMode) == 0x100) {
+      GotoMotion(&z->s, MOTION(DM042_ZERO_SHIELD_WALK, 0), (z->s).motion.cmdIdx, (z->s).motion.duration);
+    } else {
+      SetMotion(&z->s, MOTION(DM042_ZERO_SHIELD_WALK, 0));
+    }
+  }
+
+  if ((z->unk_b4).attackMode[2] == 0) {
+    CreateWeaponShieldGuard(z, 1);
+    (z->unk_b4).attackMode[2]++;
+    return;
+  }
+
+  ok = IsAttackOK(z, &z->usingWeapon);
+  if (ok == 1) {
+    (z->unk_b4).attackMode[0] = 3;
+    (z->unk_b4).attackMode[1] = 0;
+    FUN_0802e3b0(z);
+  } else if (ok != 2) {
+    (z->unk_b4).attackMode[1] = 2;
+    (z->unk_b4).attackMode[2] = 0;
+    walk_shield_2(z);
+  }
 }
 
-NAKED static void walk_shield_2(struct Zero* z) {
-  asm(".syntax unified\n\
-	push {r4, r5, lr}\n\
-	adds r4, r0, #0\n\
-	adds r5, r4, #0\n\
-	adds r5, #0xee\n\
-	ldrb r0, [r5]\n\
-	cmp r0, #0\n\
-	bne _0802EADA\n\
-	ldr r1, _0802EB14 @ =0x00002A01\n\
-	adds r0, r4, #0\n\
-	adds r0, #0x71\n\
-	movs r2, #0\n\
-	ldrsb r2, [r0, r2]\n\
-	lsls r2, r2, #0x10\n\
-	lsrs r2, r2, #0x10\n\
-	adds r0, #1\n\
-	movs r3, #0\n\
-	ldrsb r3, [r0, r3]\n\
-	lsls r3, r3, #0x10\n\
-	lsrs r3, r3, #0x10\n\
-	adds r0, r4, #0\n\
-	bl GotoMotion\n\
-	ldr r0, _0802EB18 @ =0x00000129\n\
-	adds r1, r4, r0\n\
-	movs r0, #5\n\
-	strb r0, [r1]\n\
-	ldrb r0, [r5]\n\
-	adds r0, #1\n\
-	strb r0, [r5]\n\
-_0802EADA:\n\
-	movs r0, #0x92\n\
-	lsls r0, r0, #1\n\
-	adds r2, r4, r0\n\
-	ldrb r0, [r2]\n\
-	movs r1, #4\n\
-	orrs r0, r1\n\
-	strb r0, [r2]\n\
-	movs r0, #0x94\n\
-	lsls r0, r0, #1\n\
-	adds r1, r4, r0\n\
-	adds r0, r4, #0\n\
-	bl IsAttackOK\n\
-	lsls r0, r0, #0x18\n\
-	lsrs r2, r0, #0x18\n\
-	cmp r2, #0\n\
-	beq _0802EB1C\n\
-	adds r0, r4, #0\n\
-	adds r0, #0xec\n\
-	movs r2, #0\n\
-	movs r1, #3\n\
-	strb r1, [r0]\n\
-	adds r0, #1\n\
-	strb r2, [r0]\n\
-	adds r0, r4, #0\n\
-	bl FUN_0802e3b0\n\
-	b _0802EB52\n\
-	.align 2, 0\n\
-_0802EB14: .4byte 0x00002A01\n\
-_0802EB18: .4byte 0x00000129\n\
-_0802EB1C:\n\
-	ldr r0, _0802EB58 @ =0x00000129\n\
-	adds r1, r4, r0\n\
-	ldrb r0, [r1]\n\
-	subs r0, #1\n\
-	strb r0, [r1]\n\
-	lsls r0, r0, #0x18\n\
-	lsrs r0, r0, #0x18\n\
-	cmp r0, #0xff\n\
-	bne _0802EB52\n\
-	adds r0, r4, #0\n\
-	adds r0, #0xec\n\
-	strb r2, [r0]\n\
-	movs r1, #0x80\n\
-	lsls r1, r1, #2\n\
-	subs r0, #0x7b\n\
-	movs r2, #0\n\
-	ldrsb r2, [r0, r2]\n\
-	lsls r2, r2, #0x10\n\
-	lsrs r2, r2, #0x10\n\
-	adds r0, #1\n\
-	movs r3, #0\n\
-	ldrsb r3, [r0, r3]\n\
-	lsls r3, r3, #0x10\n\
-	lsrs r3, r3, #0x10\n\
-	adds r0, r4, #0\n\
-	bl GotoMotion\n\
-_0802EB52:\n\
-	pop {r4, r5}\n\
-	pop {r0}\n\
-	bx r0\n\
-	.align 2, 0\n\
-_0802EB58: .4byte 0x00000129\n\
- .syntax divided\n");
+// 0x0802eaa0
+static void walk_shield_2(struct Zero* z) {
+  u8 ok;
+
+  if ((z->unk_b4).attackMode[2] == 0) {
+    GotoMotion(&z->s, MOTION(DM042_ZERO_SHIELD_WALK, 1), (z->s).motion.cmdIdx, (z->s).motion.duration);
+    z->atkCooltime = 5;
+    (z->unk_b4).attackMode[2]++;
+  }
+  z->restriction.shield = TRUE;
+
+  ok = IsAttackOK(z, &z->usingWeapon);
+  if (ok) {
+    (z->unk_b4).attackMode[0] = 3;
+    (z->unk_b4).attackMode[1] = 0;
+    FUN_0802e3b0(z);
+  } else {
+    z->atkCooltime--;
+    if (z->atkCooltime == 0xFF) {
+      (z->unk_b4).attackMode[0] = 0;
+      GotoMotion(&z->s, MOTION(DM002_ZERO_RUN, 0), (z->s).motion.cmdIdx, (z->s).motion.duration);
+    }
+  }
 }
 
 static void walk_shield_3(struct Zero* z) {

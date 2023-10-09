@@ -10,7 +10,7 @@ static void Ghost83_Die(struct VFX *p);
 // clang-format off
 const VFXRoutine gGhost83Routine = {
     [ENTITY_INIT] =      Ghost83_Init,
-    [ENTITY_MAIN] =      Ghost83_Update,
+    [ENTITY_UPDATE] =    Ghost83_Update,
     [ENTITY_DIE] =       Ghost83_Die,
     [ENTITY_DISAPPEAR] = DeleteVFX,
     [ENTITY_EXIT] =      (VFXFunc)DeleteEntity,
@@ -43,7 +43,7 @@ static void Ghost83_Init(struct VFX *p) {
   (p->s).flags &= 0xF7;
   (p->s).flags |= DISPLAY;
   (p->s).flags |= FLIPABLE;
-  SET_VFX_ROUTINE(p, ENTITY_MAIN);
+  SET_VFX_ROUTINE(p, ENTITY_UPDATE);
   (p->s).mode[1] = 0;
   (p->s).mode[2] = 0;
   (p->s).mode[3] = 0;

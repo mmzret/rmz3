@@ -15,7 +15,7 @@ void Solid46_Die(struct Solid* p);
 // clang-format off
 const SolidRoutine gGiantElevatorPlatformRoutine = {
     [ENTITY_INIT] =      Solid46_Init,
-    [ENTITY_MAIN] =      Solid46_Update,
+    [ENTITY_UPDATE] =    Solid46_Update,
     [ENTITY_DIE] =       Solid46_Die,
     [ENTITY_DISAPPEAR] = DeleteSolid,
     [ENTITY_EXIT] =      (SolidFunc)DeleteEntity,
@@ -29,7 +29,7 @@ struct Solid* CreateGiantElevatorPlatform(u8 isRight) {
     INIT_SOLID_ROUTINE(p, SOLID_GE_PLATFORM);
     (p->s).tileNum = 0;
     (p->s).palID = 0;
-    (p->s).flags2 |= ENTITY_FLAGS2_B4;
+    (p->s).flags2 |= WHITE_PAINTABLE;
     (p->s).invincibleID = (p->s).uniqueID;
     (p->s).work[0] = isRight;
     if (isRight == 0) {
@@ -56,7 +56,7 @@ static void Solid46_Init(struct Solid* p) {
     LOAD_STATIC_GRAPHIC(SM155_GIANT_ELEVATOR_PLATFORM);
   }
   (p->s).work[1] = (gCurStory.s.gameflags[4] >> 6) & 1;
-  SET_SOLID_ROUTINE(p, ENTITY_MAIN);
+  SET_SOLID_ROUTINE(p, ENTITY_UPDATE);
   Solid46_Update(p);
 }
 

@@ -12,7 +12,7 @@ void FUN_080aeec0(struct Projectile* p);
 // clang-format off
 const ProjectileRoutine gProjectile39Routine = {
     [ENTITY_INIT] =      FUN_080aedf0,
-    [ENTITY_MAIN] =      FUN_080aee54,
+    [ENTITY_UPDATE] =    FUN_080aee54,
     [ENTITY_DIE] =       FUN_080aeec0,
     [ENTITY_DISAPPEAR] = DeleteProjectile,
     [ENTITY_EXIT] =      (ProjectileFunc)DeleteEntity,

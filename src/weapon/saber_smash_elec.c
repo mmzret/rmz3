@@ -13,7 +13,7 @@ void SmashElec_Disappear(struct Weapon* w);
 // clang-format off
 const WeaponRoutine gSmashElecRoutine = {
     [ENTITY_INIT] =      SmashElec_Init,
-    [ENTITY_MAIN] =      SmashElec_Update,
+    [ENTITY_UPDATE] =    SmashElec_Update,
     [ENTITY_DIE] =       SmashElec_Die,
     [ENTITY_DISAPPEAR] = SmashElec_Disappear,
     [ENTITY_EXIT] =      (WeaponFunc)DeleteEntity,    

@@ -13,7 +13,7 @@ void PhantomMini_Die(struct Zero* z);
 // clang-format off
 const ZeroRoutine gPhantomMiniRoutine = {
   [ENTITY_INIT] =       PhantomMini_Init,
-  [ENTITY_MAIN] =       PhantomMini_Update,
+  [ENTITY_UPDATE] =     PhantomMini_Update,
   [ENTITY_DIE]  =       PhantomMini_Die,
   [ENTITY_DISAPPEAR] =  RemovePlayer,
   [ENTITY_EXIT] =       (ZeroFunc)DeleteEntity,
@@ -55,7 +55,7 @@ static void onCollision(struct Body* body, struct Coord* r1 UNUSED, struct Coord
 }
 
 static void PhantomMini_Init(struct Zero* z) {
-  SET_PLAYER_ROUTINE(z, ENTITY_MAIN);
+  SET_PLAYER_ROUTINE(z, ENTITY_UPDATE);
   (z->s).mode[1] = sInitModes[(z->s).work[0]];
 
   (z->s).flags |= FLIPABLE;

@@ -272,7 +272,7 @@
   .4byte \dst
 	.endm
 
-	.macro cmd1b a b c
+	.macro gimmick a b c
   .byte 0x1b
 	.byte \a
   .2byte \b
@@ -312,6 +312,20 @@
 	.byte \a
   .2byte \b
   .4byte \c
+	.endm
+
+	.macro prepare_missionresult
+  .byte 0x22
+	.byte 0
+  .2byte 0
+  .4byte 0
+	.endm
+
+	.macro missionresult
+  .byte 0x22
+	.byte 1
+  .2byte 0
+  .4byte 0
 	.endm
 
 	.macro goodluck val

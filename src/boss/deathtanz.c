@@ -14,7 +14,7 @@ void Deathtanz_Die(struct Boss* p);
 // clang-format off
 const BossRoutine gDeathtanzRoutine = {
     [ENTITY_INIT] =      Deathtanz_Init,
-    [ENTITY_MAIN] =      Deathtanz_Update,
+    [ENTITY_UPDATE] =    Deathtanz_Update,
     [ENTITY_DIE] =       Deathtanz_Die,
     [ENTITY_DISAPPEAR] = DeleteBoss,
     [ENTITY_EXIT] =      (BossFunc)DeleteEntity,

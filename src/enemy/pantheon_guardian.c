@@ -16,7 +16,7 @@ void PantheonGuardian_Update(struct Enemy* p);
 // clang-format off
 const EnemyRoutine gPantheonGuardianRoutine = {
     [ENTITY_INIT] =      PantheonGuardian_Init,
-    [ENTITY_MAIN] =      PantheonGuardian_Update,
+    [ENTITY_UPDATE] =    PantheonGuardian_Update,
     [ENTITY_DIE] =       PantheonGuardian_Die,
     [ENTITY_DISAPPEAR] = DeleteEnemy,
     [ENTITY_EXIT] =      (EnemyFunc)DeleteEntity,
@@ -46,7 +46,7 @@ WIP static void PantheonGuardian_Init(struct Enemy* p) {
   props->unk_b8[0] = 0;
   props->unk_b8[1] = 0;
 
-  SET_ZAKO_ROUTINE(p, ENTITY_MAIN);
+  SET_ZAKO_ROUTINE(p, ENTITY_UPDATE);
   if ((pZero2->s).coord.x < (p->s).coord.x) {
     (p->s).mode[1] = 1;
   } else {

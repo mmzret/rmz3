@@ -14,7 +14,7 @@ static void ModPlant_Die(struct Solid* p);
 // clang-format off
 const SolidRoutine gModPlantRoutine = {
     [ENTITY_INIT] =      ModPlant_Init,
-    [ENTITY_MAIN] =      ModPlant_Update,
+    [ENTITY_UPDATE] =    ModPlant_Update,
     [ENTITY_DIE] =       ModPlant_Die,
     [ENTITY_DISAPPEAR] = DeleteSolid,
     [ENTITY_EXIT] =      (SolidFunc)DeleteEntity,

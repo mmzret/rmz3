@@ -45,7 +45,7 @@ struct Zero *AllocPlayer(void) {
   ENTITY(z).work[0] = 0;
   (z->s).tileNum = 0;
   (z->s).palID = 0;
-  ENTITY(z).flags2 |= ENTITY_FLAGS2_B4;
+  ENTITY(z).flags2 |= WHITE_PAINTABLE;
   ENTITY(z).invincibleID = ENTITY(z).uniqueID;
   return z;
 }
@@ -63,7 +63,7 @@ struct Zero *AllocPlayer2(void) {
   ENTITY(z).work[0] = 1;
   (z->s).tileNum = 512;
   (z->s).palID = 4;
-  ENTITY(z).flags2 |= ENTITY_FLAGS2_B4;
+  ENTITY(z).flags2 |= WHITE_PAINTABLE;
   ENTITY(z).invincibleID = ENTITY(z).uniqueID;
   return z;
 }

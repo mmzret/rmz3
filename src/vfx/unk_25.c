@@ -9,7 +9,7 @@ static void VFX25_Die(struct VFX *vfx);
 // clang-format off
 const VFXRoutine gVFX25Routine = {
     [ENTITY_INIT] =      VFX25_Init,
-    [ENTITY_MAIN] =      VFX25_Update,
+    [ENTITY_UPDATE] =    VFX25_Update,
     [ENTITY_DIE] =       VFX25_Die,
     [ENTITY_DISAPPEAR] = DeleteVFX,
     [ENTITY_EXIT] =      (VFXFunc)DeleteEntity,
@@ -67,7 +67,7 @@ static void VFX25_Init(struct VFX *vfx) {
     (vfx->s).flags |= DISPLAY;
     (vfx->s).flags |= FLIPABLE;
     (vfx->s).work[2] = 8;
-    SET_VFX_ROUTINE(vfx, ENTITY_MAIN);
+    SET_VFX_ROUTINE(vfx, ENTITY_UPDATE);
     (vfx->s).mode[1] = 0;
     (vfx->s).mode[2] = 0;
     (vfx->s).mode[3] = 0;
@@ -77,7 +77,7 @@ static void VFX25_Init(struct VFX *vfx) {
     (vfx->s).flags |= DISPLAY;
     (vfx->s).flags |= FLIPABLE;
     (vfx->s).work[2] = 8;
-    SET_VFX_ROUTINE(vfx, ENTITY_MAIN);
+    SET_VFX_ROUTINE(vfx, ENTITY_UPDATE);
     (vfx->s).mode[1] = 1;
     (vfx->s).mode[2] = 0;
     (vfx->s).mode[3] = 0;
@@ -88,7 +88,7 @@ static void VFX25_Init(struct VFX *vfx) {
     (vfx->s).flags |= FLIPABLE;
     (vfx->props).unk25.c.x = 0;
     (vfx->props).unk25.c.y = 0;
-    SET_VFX_ROUTINE(vfx, ENTITY_MAIN);
+    SET_VFX_ROUTINE(vfx, ENTITY_UPDATE);
     (vfx->s).mode[1] = 2;
     (vfx->s).mode[2] = 0;
     (vfx->s).mode[3] = 0;
@@ -100,7 +100,7 @@ static void VFX25_Init(struct VFX *vfx) {
     (vfx->s).flags |= FLIPABLE;
     (vfx->props).unk25.c.x = 0;
     (vfx->props).unk25.c.y = 0;
-    SET_VFX_ROUTINE(vfx, ENTITY_MAIN);
+    SET_VFX_ROUTINE(vfx, ENTITY_UPDATE);
     (vfx->s).mode[1] = 3;
     (vfx->s).mode[2] = 0;
     (vfx->s).mode[3] = 0;
@@ -110,7 +110,7 @@ static void VFX25_Init(struct VFX *vfx) {
   } else if ((vfx->s).work[0] == 4) {
     struct VFX *vfx2;
     (vfx->s).work[2] = 60;
-    SET_VFX_ROUTINE(vfx, ENTITY_MAIN);
+    SET_VFX_ROUTINE(vfx, ENTITY_UPDATE);
     (vfx->s).mode[1] = 4;
     (vfx->s).mode[2] = 0;
     (vfx->s).mode[3] = 0;
@@ -133,7 +133,7 @@ static void VFX25_Init(struct VFX *vfx) {
     (vfx->s).flags |= FLIPABLE;
     RNG_0202f388 = LCG(RNG_0202f388);
     (vfx->s).work[2] = ((RNG_0202f388 >> 16) & 0x7) + 60;
-    SET_VFX_ROUTINE(vfx, ENTITY_MAIN);
+    SET_VFX_ROUTINE(vfx, ENTITY_UPDATE);
     (vfx->s).mode[1] = 5;
     (vfx->s).mode[2] = 0;
     (vfx->s).mode[3] = 0;

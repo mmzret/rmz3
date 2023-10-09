@@ -8,7 +8,12 @@ struct GameState;
 typedef void (*MinigameLoopFunc)(struct GameState*);
 
 struct MinigameState {
-  u8 unk_00[256];
+  u8 unk_00[4];
+  s16 unk_04;
+  u8 unk_06[6];
+  u8 unk_0c;
+  u8 unk_0d[3];
+  u8 unk_10[240];
 };
 
 void MinigameLoop_Main(struct GameState* p);

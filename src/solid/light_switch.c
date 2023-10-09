@@ -14,7 +14,7 @@ void Solid32_Disappear(struct Solid* p);
 // clang-format off
 const SolidRoutine gLightSwitchRoutine = {
     [ENTITY_INIT] =      Solid32_Init,
-    [ENTITY_MAIN] =      Solid32_Update,
+    [ENTITY_UPDATE] =    Solid32_Update,
     [ENTITY_DIE] =       Solid32_Die,
     [ENTITY_DISAPPEAR] = Solid32_Disappear,
     [ENTITY_EXIT] =      (SolidFunc)DeleteEntity,
@@ -29,10 +29,10 @@ static void Solid32_Init(struct Solid* p) {
   (p->s).flags2 |= ENTITY_HAZARD;
   (p->s).size = &sSize;
   (p->s).hazardAttr = METATILE_GROUND;
-  (p->s).flags2 &= ~ENTITY_FLAGS2_B4;
+  (p->s).flags2 &= ~WHITE_PAINTABLE;
   (p->s).invincibleID = (p->s).uniqueID;
   (p->s).coord.y = FUN_08009f6c((p->s).coord.x, (p->s).coord.y);
-  SET_SOLID_ROUTINE(p, ENTITY_MAIN);
+  SET_SOLID_ROUTINE(p, ENTITY_UPDATE);
   if ((gCurStory.unk_54 >> (p->s).work[0]) & 1) {
     (p->s).mode[3] = 2;
   } else {

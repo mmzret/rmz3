@@ -346,7 +346,7 @@ static void FlameEffect_Die(struct VFX* p) {
 // clang-format off
 const VFXRoutine gFlameEffectRoutine = {
     [ENTITY_INIT] =      FlameEffect_Init,
-    [ENTITY_MAIN] =      FlameEffect_Update,
+    [ENTITY_UPDATE] =    FlameEffect_Update,
     [ENTITY_DIE] =       FlameEffect_Die,
     [ENTITY_DISAPPEAR] = DeleteVFX,
     [ENTITY_EXIT] =      (VFXFunc)DeleteEntity,

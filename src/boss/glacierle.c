@@ -18,7 +18,7 @@ static void Glacierle_Die(struct Boss* p);
 // clang-format off
 const BossRoutine gGlacierleRoutine = {
     [ENTITY_INIT] =      Glacierle_Init,
-    [ENTITY_MAIN] =      Glacierle_Update,
+    [ENTITY_UPDATE] =    Glacierle_Update,
     [ENTITY_DIE] =       Glacierle_Die,
     [ENTITY_DISAPPEAR] = DeleteBoss,
     [ENTITY_EXIT] =      (BossFunc)DeleteEntity,
@@ -483,7 +483,7 @@ static void glacierle_08057d00(struct Boss* p) {
 
 static void FUN_08057d30(struct Boss* p) {
   if ((p->body).status & BODY_STATUS_WHITE) {
-    if ((p->body).status & BODY_STATUS_B17) {
+    if ((p->body).status & BODY_STATUS_RECOILED) {
       (p->s).mode[1] = 20;
       (p->s).mode[2] = 0;
     }

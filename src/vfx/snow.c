@@ -11,7 +11,7 @@ static void Snow_Die(struct VFX *p);
 // clang-format off
 const VFXRoutine gSnowRoutine = {
     [ENTITY_INIT] =      Snow_Init,
-    [ENTITY_MAIN] =      Snow_Update,
+    [ENTITY_UPDATE] =    Snow_Update,
     [ENTITY_DIE] =       Snow_Die,
     [ENTITY_DISAPPEAR] = DeleteVFX,
     [ENTITY_EXIT] =      (VFXFunc)DeleteEntity,

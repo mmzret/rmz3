@@ -55,7 +55,7 @@ extern const EnemyRoutine gLamplortRoutine;
 extern const EnemyRoutine gGyroCannonRoutine;
 extern const EnemyRoutine gLemminglesNestRoutine;
 extern const EnemyRoutine gLemminglesRoutine;
-extern const EnemyRoutine gEnemy14Routine;
+extern const EnemyRoutine gTopGabyoallRoutine;
 extern const EnemyRoutine gSharksealXRoutine;
 extern const EnemyRoutine gVolcanoBombRoutine;
 extern const EnemyRoutine gCarryArmRoutine;
@@ -89,6 +89,13 @@ extern const EnemyRoutine gPantheonBomberRoutine;
 extern const EnemyRoutine gHanumachineObjRoutine;
 extern const EnemyRoutine gGallisniRoutine;
 extern const EnemyRoutine gMothjiroRoutine;
+extern const EnemyRoutine gMettaurSwimRoutine;
+extern const EnemyRoutine gPantheonBaseRoutine;
+extern const EnemyRoutine gHanumachineNecroRoutine;
+extern const EnemyRoutine gCarrybeeGRoutine;
+extern const EnemyRoutine gOmegaZeroRockRoutine;
+extern const EnemyRoutine gOmegaGoldSwordRoutine;
+extern const EnemyRoutine gGeneratorCannonRoutine;
 
 // --------------------------------------------
 

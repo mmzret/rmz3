@@ -68,7 +68,8 @@ EWRAM_DATA struct SaveSlotInfo gSaveSlotInfo = {};
 
 EWRAM_DATA struct MusicPlayerTrack gMPlayTracks[21] = {};
 
-EWRAM_DATA u8 Unk_02000cd0[128] = {};
+EWRAM_DATA u8 gLinkRecvCmds[64] = {};
+EWRAM_DATA u8 gLinkSendCmds[64] = {};
 EWRAM_DATA struct Unk_02000d50 gUnk02000d50 = {};
 EWRAM_DATA u8 unused_02000da8[8] = {};
 EWRAM_DATA u8 Unk_02000db0[1840] = {};  // 0x02000db0..0x020014df

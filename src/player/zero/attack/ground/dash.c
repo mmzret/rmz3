@@ -663,7 +663,7 @@ static void onRod(struct Zero* z) {
   (z->s).mode[2] = 0;
   (z->s).mode[3] = 0;
   recoilAttack(z);
-  z->unk_138 = GetDashSpeed(z);
+  z->recoilJumpDx = GetDashSpeed(z);
 }
 
 // --------------------------------------------

@@ -15,7 +15,7 @@ static void ZeroDeathEffect_Die(struct VFX* p);
 // xx nn nn nn
 const VFXRoutine gZeroDeathEffectRoutine = {
     [ENTITY_INIT] =      ZeroDeathEffect_Init,
-    [ENTITY_MAIN] =      ZeroDeathEffect_Update,
+    [ENTITY_UPDATE] =    ZeroDeathEffect_Update,
     [ENTITY_DIE] =       ZeroDeathEffect_Die,
     [ENTITY_DISAPPEAR] = DeleteVFX,
     [ENTITY_EXIT] =      (VFXFunc)DeleteEntity,
@@ -170,7 +170,7 @@ static void FUN_080b3698(struct VFX* p) {
   InitNonAffineMotion(&p->s);
   (p->s).spr.oam.priority = 0;
   (p->s).work[3] = 0x80;
-  SET_VFX_ROUTINE(p, ENTITY_MAIN);
+  SET_VFX_ROUTINE(p, ENTITY_UPDATE);
   ZeroDeathEffect_Update(p);
 }
 

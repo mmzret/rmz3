@@ -15,7 +15,7 @@ static void Solid33_Die(struct Solid* p);
 // clang-format off
 const SolidRoutine gSolid33Routine = {
     [ENTITY_INIT] =      Solid33_Init,
-    [ENTITY_MAIN] =      Solid33_Update,
+    [ENTITY_UPDATE] =    Solid33_Update,
     [ENTITY_DIE] =       Solid33_Die,
     [ENTITY_DISAPPEAR] = DeleteSolid,
     [ENTITY_EXIT] =      (SolidFunc)DeleteEntity,
@@ -39,7 +39,7 @@ static void Solid33_Init(struct Solid* p) {
   d->y = 0;
   (p->s).d.x = 0;
   (p->s).coord.x += PIXEL(8);
-  SET_SOLID_ROUTINE(p, ENTITY_MAIN);
+  SET_SOLID_ROUTINE(p, ENTITY_UPDATE);
   Solid33_Update(p);
 }
 

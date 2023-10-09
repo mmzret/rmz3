@@ -1,0 +1,97 @@
+{
+  "label": "gStaticAnimationSequence_phantom_makibishi",
+  "data": [
+    [
+      {
+        "frameIdx": 0,
+        "duration": 1
+      },
+      {
+        "frameIdx": 0,
+        "duration": 255
+      }
+    ],
+    [
+      {
+        "frameIdx": 4,
+        "duration": 2
+      },
+      {
+        "frameIdx": 5,
+        "duration": 2
+      },
+      {
+        "frameIdx": 6,
+        "duration": 2
+      },
+      {
+        "frameIdx": 7,
+        "duration": 2
+      },
+      {
+        "frameIdx": 0,
+        "duration": 2
+      },
+      {
+        "frameIdx": 1,
+        "duration": 2
+      },
+      {
+        "frameIdx": 2,
+        "duration": 2
+      },
+      {
+        "frameIdx": 3,
+        "duration": 2
+      },
+      {
+        "frameIdx": 0,
+        "duration": 254
+      }
+    ],
+    [
+      {
+        "frameIdx": 4,
+        "duration": 2
+      },
+      {
+        "frameIdx": 8,
+        "duration": 2
+      },
+      {
+        "frameIdx": 10,
+        "duration": 2
+      },
+      {
+        "frameIdx": 9,
+        "duration": 2
+      },
+      {
+        "frameIdx": 10,
+        "duration": 2
+      },
+      {
+        "frameIdx": 9,
+        "duration": 2
+      },
+      {
+        "frameIdx": 10,
+        "duration": 2
+      },
+      {
+        "frameIdx": 0,
+        "duration": 255
+      }
+    ],
+    [
+      {
+        "frameIdx": 10,
+        "duration": 1
+      },
+      {
+        "frameIdx": 0,
+        "duration": 255
+      }
+    ]
+  ]
+}

@@ -1,0 +1,1273 @@
+{
+  "data": [
+    {
+      "id": 0,
+      "name": "Various Effects",
+      "path": "effects"
+    },
+    {
+      "id": 1,
+      "name": "Unk 1",
+      "path": "1"
+    },
+    {
+      "id": 2,
+      "name": "Lemon(Bullet)",
+      "path": "lemon"
+    },
+    {
+      "id": 3,
+      "name": "Emotion Bubble",
+      "path": "emotion_bubble"
+    },
+    {
+      "id": 4,
+      "name": "Shotcounter",
+      "path": "enemy/shotcounter"
+    },
+    {
+      "id": 5,
+      "name": "Gravel",
+      "path": "gravel"
+    },
+    {
+      "id": 6,
+      "name": "Batring",
+      "path": "enemy/batring"
+    },
+    {
+      "id": 7,
+      "name": "Grand Cannon",
+      "path": "enemy/grand_cannon"
+    },
+    {
+      "id": 8,
+      "name": "Pillar Cannon",
+      "path": "enemy/pillar_cannon"
+    },
+    {
+      "id": 9,
+      "name": "Omega Hand",
+      "path": "omega_white/hand"
+    },
+    {
+      "id": 10,
+      "name": "Omega Ring",
+      "path": "omega_white/ring"
+    },
+    {
+      "id": 11,
+      "name": "Omega White Recover Effect",
+      "path": "omega_white/recover"
+    },
+    {
+      "id": 12,
+      "name": "Rubble on Omega White Battle",
+      "path": "omega_white/rubble"
+    },
+    {
+      "id": 13,
+      "name": "Shrimpolin",
+      "path": "enemy/shrimpolin"
+    },
+    {
+      "id": 14,
+      "name": "Chip Icon on Menu",
+      "path": "menu/chip_icon"
+    },
+    {
+      "id": 15,
+      "name": "Main Menu UI",
+      "path": "menu/main_menu"
+    },
+    {
+      "id": 16,
+      "name": "Icebon",
+      "path": "enemy/icebon/icebon"
+    },
+    {
+      "id": 17,
+      "name": "Ice made by Icebon",
+      "path": "enemy/icebon/ice"
+    },
+    {
+      "id": 18,
+      "name": "Door 2D (Blue)",
+      "path": "door_2d/blue"
+    },
+    {
+      "id": 19,
+      "name": "Pantheon Hunter",
+      "path": "enemy/pantheon_hunter"
+    },
+    {
+      "id": 20,
+      "name": "Pantheon Guardian",
+      "path": "enemy/pantheon_guardian"
+    },
+    {
+      "id": 21,
+      "name": "Top Gabyoall",
+      "path": "enemy/top_gabyoall"
+    },
+    {
+      "id": 22,
+      "name": "Flopper",
+      "path": "enemy/flopper"
+    },
+    {
+      "id": 23,
+      "name": "Gyro Cannon",
+      "path": "enemy/gyro_cannon"
+    },
+    {
+      "id": 24,
+      "name": "Sharkseal X",
+      "path": "enemy/sharkseal_x"
+    },
+    {
+      "id": 25,
+      "name": "Lamplort",
+      "path": "enemy/lamplort"
+    },
+    {
+      "id": 26,
+      "name": "Element Effect(Thunder)",
+      "path": "element_effect/thunder"
+    },
+    {
+      "id": 27,
+      "name": "Element Effect(Flame)",
+      "path": "element_effect/flame",
+      "noAnimation": true
+    },
+    {
+      "id": 28,
+      "name": "Element Effect(Ice)",
+      "path": "element_effect/ice"
+    },
+    {
+      "id": 29,
+      "name": "Lemmingles",
+      "path": "enemy/lemmingles"
+    },
+    {
+      "id": 30,
+      "name": "Lemmingles Nest",
+      "path": "enemy/lemmingles_nest",
+      "noAnimation": true
+    },
+    {
+      "id": 31,
+      "name": "Volcano Bomb",
+      "path": "volcano/bomb"
+    },
+    {
+      "id": 32,
+      "name": "Unk 32",
+      "path": "32"
+    },
+    {
+      "id": 33,
+      "name": "Fireball made by Fefnir",
+      "path": "fefnir_fireball"
+    },
+    {
+      "id": 34,
+      "name": "Carryarm",
+      "path": "enemy/carryarm"
+    },
+    {
+      "id": 35,
+      "name": "Container",
+      "path": "container/container"
+    },
+    {
+      "id": 36,
+      "name": "Childre 36",
+      "path": "childre/36"
+    },
+    {
+      "id": 37,
+      "name": "Ear Shot",
+      "path": "childre/ear_shot"
+    },
+    {
+      "id": 38,
+      "name": "Childre 38",
+      "path": "childre/38"
+    },
+    {
+      "id": 39,
+      "name": "Pantheon Aqua",
+      "path": "enemy/pantheon_aqua"
+    },
+    {
+      "id": 40,
+      "name": "Snakecord",
+      "path": "enemy/snakecord"
+    },
+    {
+      "id": 41,
+      "name": "Hammer",
+      "path": "hammer"
+    },
+    {
+      "id": 42,
+      "name": "Purple Nerple",
+      "path": "enemy/purple_nerple"
+    },
+    {
+      "id": 43,
+      "name": "Wormer",
+      "path": "wormer/body"
+    },
+    {
+      "id": 44,
+      "name": "Rock Drone made by Wormer",
+      "path": "wormer/rock_drone"
+    },
+    {
+      "id": 45,
+      "name": "Mine for Phantom Minigame",
+      "path": "minigame/phantom/mine"
+    },
+    {
+      "id": 46,
+      "name": "Volcaire",
+      "path": "enemy/volcaire"
+    },
+    {
+      "id": 47,
+      "name": "Tile Cannon",
+      "path": "enemy/tile_cannon"
+    },
+    {
+      "id": 48,
+      "name": "Baby Elf 48",
+      "path": "baby_elf/48"
+    },
+    {
+      "id": 49,
+      "name": "Baby Elf 49",
+      "path": "baby_elf/49"
+    },
+    {
+      "id": 50,
+      "name": "Baby Elf 50",
+      "path": "baby_elf/50"
+    },
+    {
+      "id": 51,
+      "name": "Baby Elf 51",
+      "path": "baby_elf/51"
+    },
+    {
+      "id": 52,
+      "name": "Baby Elf 52",
+      "path": "baby_elf/52"
+    },
+    {
+      "id": 53,
+      "name": "Shelluno",
+      "path": "enemy/shelluno"
+    },
+    {
+      "id": 54,
+      "name": "Rock made by Deathtanz",
+      "path": "deathtanz/rock"
+    },
+    {
+      "id": 55,
+      "name": "Projectile made by Deathtanz",
+      "path": "deathtanz/projectile"
+    },
+    {
+      "id": 56,
+      "name": "Heavy Cannon",
+      "path": "enemy/heavy_cannon"
+    },
+    {
+      "id": 57,
+      "name": "Lava Geyser",
+      "path": "volcano/geyser"
+    },
+    {
+      "id": 58,
+      "name": "Lava Geyser Platform",
+      "path": "volcano/geyser_platform"
+    },
+    {
+      "id": 59,
+      "name": "Lava River Platform",
+      "path": "volcano/lava_river_platform"
+    },
+    {
+      "id": 60,
+      "name": "EXLife Indicator",
+      "path": "exlife_indicator"
+    },
+    {
+      "id": 61,
+      "name": "Unk 61",
+      "path": "61"
+    },
+    {
+      "id": 62,
+      "name": "Beetank",
+      "path": "enemy/beetank"
+    },
+    {
+      "id": 63,
+      "name": "Swordy",
+      "path": "enemy/swordy"
+    },
+    {
+      "id": 64,
+      "name": "Iceball",
+      "path": "iceball"
+    },
+    {
+      "id": 65,
+      "name": "Puffy",
+      "path": "enemy/puffy/body"
+    },
+    {
+      "id": 66,
+      "name": "Puffy's Bubble",
+      "path": "enemy/puffy/bubble"
+    },
+    {
+      "id": 67,
+      "name": "Crossbyne",
+      "path": "enemy/crossbyne"
+    },
+    {
+      "id": 68,
+      "name": "Fall Rock on Old Residential",
+      "path": "old_residential/fall_rock"
+    },
+    {
+      "id": 69,
+      "name": "EXSkill Icon on Menu",
+      "path": "menu/exskill_icon"
+    },
+    {
+      "id": 70,
+      "name": "Bee Server",
+      "path": "bee_server"
+    },
+    {
+      "id": 71,
+      "name": "Mellnet",
+      "path": "enemy/mellnet"
+    },
+    {
+      "id": 72,
+      "name": "Unk 72",
+      "path": "72"
+    },
+    {
+      "id": 73,
+      "name": "Anubis's Rod",
+      "path": "anubis/rod"
+    },
+    {
+      "id": 74,
+      "name": "Anubis's Sand",
+      "path": "anubis/sand"
+    },
+    {
+      "id": 75,
+      "name": "Anubis's Coffin",
+      "path": "anubis/coffin"
+    },
+    {
+      "id": 76,
+      "name": "Pantheon Zombie",
+      "path": "enemy/pantheon_zombie"
+    },
+    {
+      "id": 77,
+      "name": "Modified Pantheon Aqua",
+      "path": "pantheon_aqua_mod/body"
+    },
+    {
+      "id": 78,
+      "name": "Projectile made by Modified Pantheon Aqua",
+      "path": "pantheon_aqua_mod/projectile"
+    },
+    {
+      "id": 79,
+      "name": "Rock made by Modified Pantheon Aqua",
+      "path": "pantheon_aqua_mod/rock"
+    },
+    {
+      "id": 80,
+      "name": "Unk 80",
+      "path": "80"
+    },
+    {
+      "id": 81,
+      "name": "Mother Elf(81)",
+      "path": "mother_elf/81"
+    },
+    {
+      "id": 82,
+      "name": "Item on Elf Menu",
+      "path": "menu/elf_menu"
+    },
+    {
+      "id": 83,
+      "name": "Icon on Elf Menu",
+      "path": "menu/elf_menu_icon"
+    },
+    {
+      "id": 84,
+      "name": "LocomoIF",
+      "path": "locomo_if/body"
+    },
+    {
+      "id": 85,
+      "name": "Platform on LocomoIF Battle",
+      "path": "locomo_if/platform"
+    },
+    {
+      "id": 86,
+      "name": "LocomoIF's flame",
+      "path": "locomo_if/flame"
+    },
+    {
+      "id": 87,
+      "name": "Chill made by LocomoIF",
+      "path": "locomo_if/chill"
+    },
+    {
+      "id": 88,
+      "name": "Ice made by LocomoIF",
+      "path": "locomo_if/ice"
+    },
+    {
+      "id": 89,
+      "name": "Glacierle's hand",
+      "path": "glacierle/hand"
+    },
+    {
+      "id": 90,
+      "name": "Icicle",
+      "path": "glacierle/icicle"
+    },
+    {
+      "id": 91,
+      "name": "Copy X's Fire shot",
+      "path": "copy_x/fire_shot"
+    },
+    {
+      "id": 92,
+      "name": "Copy X's Elec/Ice shot",
+      "path": "copy_x/elec_shot"
+    },
+    {
+      "id": 93,
+      "name": "Copy X's Normal shot",
+      "path": "copy_x/normal_shot"
+    },
+    {
+      "id": 94,
+      "name": "Spark from Copy X sliding",
+      "path": "copy_x/sliding_spark"
+    },
+    {
+      "id": 95,
+      "name": "Copy X's Charge Effect",
+      "path": "copy_x/charge_effect"
+    },
+    {
+      "id": 96,
+      "name": "Copy X's Reflect Laser",
+      "path": "copy_x/reflect_laser"
+    },
+    {
+      "id": 97,
+      "name": "Copy X Unk(97)",
+      "path": "copy_x/97"
+    },
+    {
+      "id": 98,
+      "name": "Ice made by Blizzack",
+      "path": "blizzack/ice"
+    },
+    {
+      "id": 99,
+      "name": "Blizzack chill",
+      "path": "blizzack/chill"
+    },
+    {
+      "id": 100,
+      "name": "Blizzack shoulder",
+      "path": "blizzack/shoulder"
+    },
+    {
+      "id": 101,
+      "name": "Omega White's sword",
+      "path": "omega_white/sword"
+    },
+    {
+      "id": 102,
+      "name": "Eye Cannon",
+      "path": "enemy/eye_cannon"
+    },
+    {
+      "id": 103,
+      "name": "Gallisni",
+      "path": "enemy/gallisni"
+    },
+    {
+      "id": 104,
+      "name": "Capsule Cannon",
+      "path": "enemy/capsule_cannon"
+    },
+    {
+      "id": 105,
+      "name": "Pantheon Bomber",
+      "path": "enemy/pantheon_bomber"
+    },
+    {
+      "id": 106,
+      "name": "Hanumachine's Various Object",
+      "path": "hanumachine_obj"
+    },
+    {
+      "id": 107,
+      "name": "Mothjiro",
+      "path": "enemy/mothjiro"
+    },
+    {
+      "id": 108,
+      "name": "Platform on Sub Arcadia",
+      "path": "sub_arcadia_platform"
+    },
+    {
+      "id": 109,
+      "name": "Pantheon Base",
+      "path": "enemy/pantheon_base"
+    },
+    {
+      "id": 110,
+      "name": "Carrybee G",
+      "path": "enemy/carrybee_g"
+    },
+    {
+      "id": 111,
+      "name": "Rocket(ミサイル弾)",
+      "path": "rocket"
+    },
+    {
+      "id": 112,
+      "name": "Anatre Cube",
+      "path": "anatre_cube"
+    },
+    {
+      "id": 113,
+      "name": "Generator Cannon",
+      "path": "enemy/generator_cannon"
+    },
+    {
+      "id": 114,
+      "name": "Keaton",
+      "path": "enemy/keaton"
+    },
+    {
+      "id": 115,
+      "name": "Resistance Base Elevator",
+      "path": "resistance_base/elevator/default"
+    },
+    {
+      "id": 116,
+      "name": "Deathlock",
+      "path": "enemy/deathlock"
+    },
+    {
+      "id": 117,
+      "name": "Claveker",
+      "path": "enemy/claveker"
+    },
+    {
+      "id": 118,
+      "name": "Lever Switch(Red)",
+      "path": "lever_switch/red"
+    },
+    {
+      "id": 119,
+      "name": "Seimeran",
+      "path": "enemy/seimeran"
+    },
+    {
+      "id": 120,
+      "name": "Door 2D (Gray, Horizontal)",
+      "path": "door_2d/gray/horizontal"
+    },
+    {
+      "id": 121,
+      "name": "Turtloid S",
+      "path": "enemy/turtloid_s"
+    },
+    {
+      "id": 122,
+      "name": "Door 2D (Gray, Vertical)",
+      "path": "door_2d/gray/vertical"
+    },
+    {
+      "id": 123,
+      "name": "Teleportal",
+      "path": "teleportal"
+    },
+    {
+      "id": 124,
+      "name": "Platform on Area X2",
+      "path": "area_x2_platform"
+    },
+    {
+      "id": 125,
+      "name": "Platform on Weil Labo",
+      "path": "weil_labo_platform"
+    },
+    {
+      "id": 126,
+      "name": "Petatria",
+      "path": "enemy/petatria"
+    },
+    {
+      "id": 127,
+      "name": "Secret Disk (Disabled)",
+      "path": "disabled_disk"
+    },
+    {
+      "id": 128,
+      "name": "Unk 128",
+      "path": "128"
+    },
+    {
+      "id": 129,
+      "name": "Subtank(129)",
+      "path": "subtank2"
+    },
+    {
+      "id": 130,
+      "name": "Mob on Prologue",
+      "path": "prologue/mob"
+    },
+    {
+      "id": 131,
+      "name": "Mob on Prologue Cutscene",
+      "path": "prologue/cutscene_mob"
+    },
+    {
+      "id": 132,
+      "name": "Zero on Prologue Cutscene",
+      "path": "prologue/cutscene_zero"
+    },
+    {
+      "id": 133,
+      "name": "Ciel on Prologue Cutscene",
+      "path": "prologue/cutscene_ciel"
+    },
+    {
+      "id": 134,
+      "name": "Ninja Star(手裏剣)",
+      "path": "phantom/ninja_star"
+    },
+    {
+      "id": 135,
+      "name": "Unk 135",
+      "path": "phantom/135"
+    },
+    {
+      "id": 136,
+      "name": "Makibishi",
+      "path": "phantom/makibishi"
+    },
+    {
+      "id": 137,
+      "name": "Resistance Base Elevator (Wood)",
+      "path": "resistance_base/elevator/wood"
+    },
+    {
+      "id": 138,
+      "name": "Resistance Base Elevator (X-Style)",
+      "path": "resistance_base/elevator/mmx"
+    },
+    {
+      "id": 139,
+      "name": "Button at Energy Facility",
+      "path": "energy_facility_btn"
+    },
+    {
+      "id": 140,
+      "name": "Reistance Mob",
+      "path": "resistance/mob"
+    },
+    {
+      "id": 142,
+      "name": "Shotloid",
+      "path": "enemy/shotloid"
+    },
+    {
+      "id": 143,
+      "name": "No image",
+      "path": "143"
+    },
+    {
+      "id": 144,
+      "name": "Ciel Computer 0",
+      "path": "resistance_base/ciel_comp/0"
+    },
+    {
+      "id": 145,
+      "name": "Ciel Computer 1",
+      "path": "resistance_base/ciel_comp/1"
+    },
+    {
+      "id": 146,
+      "name": "Ciel Computer 2",
+      "path": "resistance_base/ciel_comp/2"
+    },
+    {
+      "id": 147,
+      "name": "Ciel Computer 3",
+      "path": "resistance_base/ciel_comp/3"
+    },
+    {
+      "id": 148,
+      "name": "Ciel Computer 4",
+      "path": "resistance_base/ciel_comp/4"
+    },
+    {
+      "id": 149,
+      "name": "Megaman Logo",
+      "path": "logo/megaman"
+    },
+    {
+      "id": 150,
+      "name": "Z Logo",
+      "path": "logo/z"
+    },
+    {
+      "id": 151,
+      "name": "Platform on Missile Factory",
+      "path": "missile_platform"
+    },
+    {
+      "id": 152,
+      "name": "Mother Elf(152)",
+      "path": "mother_elf/152"
+    },
+    {
+      "id": 153,
+      "name": "Volcano Coffin",
+      "path": "volcano/coffin"
+    },
+    {
+      "id": 154,
+      "name": "Giant Elevator Pier",
+      "path": "giant_elevator_pier"
+    },
+    {
+      "id": 155,
+      "name": "Giant Elevator Platform",
+      "path": "giant_elevator_platform"
+    },
+    {
+      "id": 156,
+      "name": "Unk 156",
+      "path": "156"
+    },
+    {
+      "id": 157,
+      "name": "Smoke(157)",
+      "path": "smoke_157"
+    },
+    {
+      "id": 158,
+      "name": "Zero icon",
+      "path": "minigame/zero"
+    },
+    {
+      "id": 159,
+      "name": "Copy X icon",
+      "path": "minigame/copy_x"
+    },
+    {
+      "id": 160,
+      "name": "Phantom icon",
+      "path": "minigame/phantom/icon"
+    },
+    {
+      "id": 161,
+      "name": "Harpuia icon",
+      "path": "minigame/harpuia"
+    },
+    {
+      "id": 162,
+      "name": "Painting (Megaman.EXE)",
+      "path": "resistance_base/painting/mmbn"
+    },
+    {
+      "id": 163,
+      "name": "Graffiti (Zero part1)",
+      "path": "resistance_base/graffiti/zero1"
+    },
+    {
+      "id": 164,
+      "name": "Graffiti (Ciel)",
+      "path": "resistance_base/graffiti/ciel"
+    },
+    {
+      "id": 165,
+      "name": "Graffiti (Zero part2)",
+      "path": "resistance_base/graffiti/zero2"
+    },
+    {
+      "id": 166,
+      "name": "Painting (Ciel)",
+      "path": "resistance_base/painting/ciel"
+    },
+    {
+      "id": 167,
+      "name": "Life Energy",
+      "path": "life_energy/default"
+    },
+    {
+      "id": 168,
+      "name": "Life Energy(X-Style)",
+      "path": "life_energy/x"
+    },
+    {
+      "id": 169,
+      "name": "Life Energy(Tank)",
+      "path": "life_energy/tank"
+    },
+    {
+      "id": 170,
+      "name": "E-Crystal",
+      "path": "ecrystal/default"
+    },
+    {
+      "id": 171,
+      "name": "E-Crystal(Ball)",
+      "path": "ecrystal/ball"
+    },
+    {
+      "id": 172,
+      "name": "E-Crystal(Green)",
+      "path": "ecrystal/green"
+    },
+    {
+      "id": 173,
+      "name": "1UP",
+      "path": "exlife/default"
+    },
+    {
+      "id": 174,
+      "name": "1UP(Blue)",
+      "path": "exlife/blue"
+    },
+    {
+      "id": 175,
+      "name": "1UP(Green)",
+      "path": "exlife/green"
+    },
+    {
+      "id": 176,
+      "name": "Secret Disk in Result",
+      "path": "result_disk/default"
+    },
+    {
+      "id": 177,
+      "name": "Secret Disk(Blue) in Result",
+      "path": "result_disk/blue"
+    },
+    {
+      "id": 178,
+      "name": "Secret Disk(Red) in Result",
+      "path": "result_disk/red"
+    },
+    {
+      "id": 179,
+      "name": "Unk 179",
+      "path": "179"
+    },
+    {
+      "id": 180,
+      "name": "Childre Ship",
+      "path": "ocean/childre_ship"
+    },
+    {
+      "id": 181,
+      "name": "Sea Level Button",
+      "path": "ocean/sea_level_button"
+    },
+    {
+      "id": 182,
+      "name": "Unk 182",
+      "path": "ocean/182"
+    },
+    {
+      "id": 183,
+      "name": "Sonic Wave from Childre ship",
+      "path": "ocean/childre_ship_sonic_wave"
+    },
+    {
+      "id": 184,
+      "name": "X",
+      "path": "x"
+    },
+    {
+      "id": 185,
+      "name": "Floating Rock in Omega ZX Battle",
+      "path": "omega_zx_floating_rock"
+    },
+    {
+      "id": 186,
+      "name": "Unk 186",
+      "path": "186"
+    },
+    {
+      "id": 187,
+      "name": "Alouette(Resistance)",
+      "path": "resistance/alouette"
+    },
+    {
+      "id": 188,
+      "name": "Kiss(Resistance)",
+      "path": "resistance/kiss"
+    },
+    {
+      "id": 189,
+      "name": "Faucon(Resistance)",
+      "path": "resistance/faucon"
+    },
+    {
+      "id": 190,
+      "name": "Hirondelle(Resistance)",
+      "path": "resistance/hirondelle"
+    },
+    {
+      "id": 191,
+      "name": "Autruche(Resistance)",
+      "path": "resistance/autruche"
+    },
+    {
+      "id": 192,
+      "name": "Rocinolle(Resistance)",
+      "path": "resistance/rocinolle"
+    },
+    {
+      "id": 193,
+      "name": "Doigt(Resistance)",
+      "path": "resistance/doigt"
+    },
+    {
+      "id": 194,
+      "name": "Cerveau(Resistance)",
+      "path": "resistance/cerveau"
+    },
+    {
+      "id": 195,
+      "name": "Hibou(Resistance)",
+      "path": "resistance/hibou"
+    },
+    {
+      "id": 196,
+      "name": "Andrew(Resistance)",
+      "path": "resistance/andrew"
+    },
+    {
+      "id": 197,
+      "name": "Menart(Resistance)",
+      "path": "resistance/menart"
+    },
+    {
+      "id": 198,
+      "name": "Perroquiet(Resistance)",
+      "path": "resistance/perroquiet"
+    },
+    {
+      "id": 199,
+      "name": "Pic(Resistance)",
+      "path": "resistance/pic"
+    },
+    {
+      "id": 200,
+      "name": "Smoke",
+      "path": "smoke"
+    },
+    {
+      "id": 201,
+      "name": "Operator",
+      "path": "resistance/operator"
+    },
+    {
+      "id": 202,
+      "name": "Prop 202",
+      "path": "resistance_base/202"
+    },
+    {
+      "id": 203,
+      "name": "Ice Block",
+      "path": "iceblock"
+    },
+    {
+      "id": 204,
+      "name": "Prop 204",
+      "path": "resistance_base/204"
+    },
+    {
+      "id": 205,
+      "name": "Mission Mugshot(First4)",
+      "path": "mission_mugshot/first4"
+    },
+    {
+      "id": 206,
+      "name": "Mission Mugshot(Middle4)",
+      "path": "mission_mugshot/middle4"
+    },
+    {
+      "id": 207,
+      "name": "Mission Mugshot(Done)",
+      "path": "mission_mugshot/done"
+    },
+    {
+      "id": 208,
+      "name": "Mission Mugshot(Later4)",
+      "path": "mission_mugshot/later4"
+    },
+    {
+      "id": 209,
+      "name": "Number",
+      "path": "number"
+    },
+    {
+      "id": 210,
+      "name": "Lever Switch(Yellow)",
+      "path": "lever_switch/yellow"
+    },
+    {
+      "id": 211,
+      "name": "Menu Border",
+      "path": "menu/border"
+    },
+    {
+      "id": 212,
+      "name": "Pantheon Fist",
+      "path": "enemy/pantheon_fist"
+    },
+    {
+      "id": 213,
+      "name": "Cattatank",
+      "path": "enemy/cattatank"
+    },
+    {
+      "id": 214,
+      "name": "Spearook",
+      "path": "enemy/spearook"
+    },
+    {
+      "id": 215,
+      "name": "Prop 215",
+      "path": "215"
+    },
+    {
+      "id": 216,
+      "name": "Cat(216)",
+      "path": "resistance_base/cat/216"
+    },
+    {
+      "id": 217,
+      "name": "Cat(217)",
+      "path": "resistance_base/cat/217"
+    },
+    {
+      "id": 218,
+      "name": "Seagull",
+      "path": "resistance_base/seagull"
+    },
+    {
+      "id": 219,
+      "name": "Shellcrawler",
+      "path": "enemy/shellcrawler"
+    },
+    {
+      "id": 220,
+      "name": "Cannon Hopper",
+      "path": "enemy/cannon_hopper"
+    },
+    {
+      "id": 221,
+      "name": "Mettaur",
+      "path": "enemy/mettaur"
+    },
+    {
+      "id": 222,
+      "name": "Structural Steel",
+      "path": "structural_steel"
+    },
+    {
+      "id": 223,
+      "name": "Light Switch in Energy Facility",
+      "path": "light_switch"
+    },
+    {
+      "id": 224,
+      "name": "Rubble",
+      "path": "rubble"
+    },
+    {
+      "id": 225,
+      "name": "Omega White",
+      "path": "omega_white/body"
+    },
+    {
+      "id": 226,
+      "name": "Crashed Container(226)",
+      "path": "container/crashed"
+    },
+    {
+      "id": 227,
+      "name": "Crashed Container(227)",
+      "path": "container/crashed",
+      "noAnimation": true
+    },
+    {
+      "id": 228,
+      "name": "Crashed Container(228)",
+      "path": "container/crashed",
+      "noAnimation": true
+    },
+    {
+      "id": 229,
+      "name": "Subtank",
+      "path": "subtank"
+    },
+    {
+      "id": 230,
+      "name": "Flying Fish",
+      "path": "resistance_base/flying_fish"
+    },
+    {
+      "id": 231,
+      "name": "Plant",
+      "path": "resistance_base/plant"
+    },
+    {
+      "id": 232,
+      "name": "Ciel Minigame Prop(232)",
+      "path": "ciel_minigame/232"
+    },
+    {
+      "id": 233,
+      "name": "Ciel Minigame Prop(233)",
+      "path": "ciel_minigame/233"
+    },
+    {
+      "id": 234,
+      "name": "Ciel Minigame Prop(234)",
+      "path": "ciel_minigame/234"
+    },
+    {
+      "id": 235,
+      "name": "Prop 235",
+      "path": "235"
+    },
+    {
+      "id": 236,
+      "name": "Spark",
+      "path": "spark"
+    },
+    {
+      "id": 237,
+      "name": "Rock(237)",
+      "path": "rock_237"
+    },
+    {
+      "id": 238,
+      "name": "Prop 238",
+      "path": "238"
+    },
+    {
+      "id": 239,
+      "name": "Angel Fish",
+      "path": "fish/angel_fish"
+    },
+    {
+      "id": 240,
+      "name": "Sea Bream",
+      "path": "fish/sea_bream"
+    },
+    {
+      "id": 241,
+      "name": "Crab",
+      "path": "fish/crab"
+    },
+    {
+      "id": 242,
+      "name": "Fish School",
+      "path": "fish/school"
+    },
+    {
+      "id": 243,
+      "name": "Prop 243",
+      "path": "243"
+    },
+    {
+      "id": 244,
+      "name": "CopyX Minigame Slot",
+      "path": "copy_x_minigame_slot"
+    },
+    {
+      "id": 245,
+      "name": "Hellbat Human",
+      "path": "boss_human/hellbat"
+    },
+    {
+      "id": 246,
+      "name": "Childre Human",
+      "path": "boss_human/childre"
+    },
+    {
+      "id": 247,
+      "name": "Blazin Human",
+      "path": "boss_human/blazin"
+    },
+    {
+      "id": 248,
+      "name": "Deathtanz Human",
+      "path": "boss_human/deathtanz"
+    },
+    {
+      "id": 249,
+      "name": "Glacierle Human",
+      "path": "boss_human/glacierle"
+    },
+    {
+      "id": 250,
+      "name": "Cubit Human",
+      "path": "boss_human/cubit"
+    },
+    {
+      "id": 251,
+      "name": "Tretista Human",
+      "path": "boss_human/tretista"
+    },
+    {
+      "id": 252,
+      "name": "Volteel Human",
+      "path": "boss_human/volteel"
+    },
+    {
+      "id": 253,
+      "name": "Prop 253",
+      "path": "253"
+    }
+  ]
+}

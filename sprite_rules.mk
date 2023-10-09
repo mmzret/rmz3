@@ -16,13 +16,10 @@ $(SEQUENCE): %.inc: %.json
 
 #### Table Rules ####
 
-SPRITE_ANIM_TABLE := sprites/anim.s
-SPRITE_GFXHDR_TABLE := sprites/table.s
+sprites/%/anim.s: sprites/%/sprite.json
+	./tools/dev/animation.ts $< > $@
 
-$(SPRITE_ANIM_TABLE): sprites/sprite.json
-	./tools/dev/animation.ts > $@
-
-$(SPRITE_GFXHDR_TABLE): sprites/sprite.json
+sprites/dynamic/table.s: sprites/dynamic/sprite.json
 	./tools/dev/sprite_gfxhdr_table.ts > $@
 
 ########################
@@ -30,4 +27,4 @@ $(SPRITE_GFXHDR_TABLE): sprites/sprite.json
 sprite: $(METASPRITE) $(SEQUENCE)
 
 clean-sprite:
-	@rm -f $(METASPRITE) $(SEQUENCE) $(SPRITE_ANIM_TABLE) $(SPRITE_GFXHDR_TABLE)
+	@rm -f $(METASPRITE) $(SEQUENCE) sprites/*/anim.s sprites/dynamic/table.s

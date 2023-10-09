@@ -12,7 +12,7 @@ void ElfParticle_Die(struct VFX* vfx);
 // clang-format off
 const VFXRoutine gElfParticleRoutine = {
     [ENTITY_INIT] =      ElfParticle_Init,
-    [ENTITY_MAIN] =      ElfParticle_Update,
+    [ENTITY_UPDATE] =    ElfParticle_Update,
     [ENTITY_DIE] =       ElfParticle_Die,
     [ENTITY_DISAPPEAR] = DeleteVFX,
     [ENTITY_EXIT] =      (VFXFunc)DeleteEntity,

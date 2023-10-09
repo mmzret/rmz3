@@ -13,7 +13,7 @@ static void Solid36_Die(struct Solid* p);
 // clang-format off
 const SolidRoutine gSolid36Routine = {
     [ENTITY_INIT] =      Solid36_Init,
-    [ENTITY_MAIN] =      Solid36_Update,
+    [ENTITY_UPDATE] =    Solid36_Update,
     [ENTITY_DIE] =       Solid36_Die,
     [ENTITY_DISAPPEAR] = DeleteSolid,
     [ENTITY_EXIT] =      (SolidFunc)DeleteEntity,
@@ -26,7 +26,7 @@ static void Solid36_Init(struct Solid* p) {
   (p->s).flags |= FLIPABLE;
   (p->s).unk_coord.y = (p->s).coord.y - PIXEL(8);
   SetMotion(&p->s, MOTION(0x97, 0x01));
-  SET_SOLID_ROUTINE(p, ENTITY_MAIN);
+  SET_SOLID_ROUTINE(p, ENTITY_UPDATE);
   Solid36_Update(p);
 }
 

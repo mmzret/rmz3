@@ -9,7 +9,7 @@ void Elf7_Die(struct Elf* p);
 // clang-format off
 const ElfRoutine gElf7Routine = {
     [ENTITY_INIT] =      Elf7_Init,
-    [ENTITY_MAIN] =      Elf7_Update,
+    [ENTITY_UPDATE] =    Elf7_Update,
     [ENTITY_DIE] =       Elf7_Die,
     [ENTITY_DISAPPEAR] = DeleteElf,
     [ENTITY_EXIT] =      (ElfFunc)DeleteEntity,

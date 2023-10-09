@@ -2707,7 +2707,7 @@ _080731FE:
 	adds r0, r4, #0
 	adds r1, r5, #0
 	movs r2, #1
-	bl CreateSeaEnemy
+	bl CreateBubble
 	ldr r1, _0807331C @ =RNG_0202f388
 	mov sl, r1
 	ldr r0, [r1]
@@ -2744,7 +2744,7 @@ _080731FE:
 	adds r1, r1, r5
 	adds r5, r1, #0
 	movs r2, #1
-	bl CreateSeaEnemy
+	bl CreateBubble
 	mov r3, sl
 	ldr r0, [r3]
 	mov r1, sb
@@ -2776,7 +2776,7 @@ _080731FE:
 	adds r1, r1, r5
 	adds r5, r1, #0
 	movs r2, #1
-	bl CreateSeaEnemy
+	bl CreateBubble
 	mov r3, sl
 	ldr r0, [r3]
 	mov r1, sb
@@ -2808,7 +2808,7 @@ _080731FE:
 	adds r1, r1, r5
 	adds r5, r1, #0
 	movs r2, #0
-	bl CreateSeaEnemy
+	bl CreateBubble
 	mov r3, sl
 	ldr r0, [r3]
 	mov r1, sb
@@ -2838,7 +2838,7 @@ _080731FE:
 	lsls r1, r1, #8
 	adds r1, r1, r5
 	movs r2, #0
-	bl CreateSeaEnemy
+	bl CreateBubble
 	b _08073356
 	.align 2, 0
 _0807331C: .4byte RNG_0202f388

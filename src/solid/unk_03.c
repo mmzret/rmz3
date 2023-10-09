@@ -19,7 +19,7 @@ void Solid3_Die(struct Solid* p);
 // clang-format off
 const SolidRoutine gSolid3Routine = {
     [ENTITY_INIT] =      Solid3_Init,
-    [ENTITY_MAIN] =      Solid3_Update,
+    [ENTITY_UPDATE] =    Solid3_Update,
     [ENTITY_DIE] =       Solid3_Die,
     [ENTITY_DISAPPEAR] = DeleteSolid,
     [ENTITY_EXIT] =      (SolidFunc)DeleteEntity,
@@ -34,7 +34,7 @@ struct Solid* CreateLeafBurn(u8 r0) {
     INIT_SOLID_ROUTINE(p, SOLID_UNK_003);
     (p->s).tileNum = 0;
     (p->s).palID = 0;
-    (p->s).flags2 |= ENTITY_FLAGS2_B4;
+    (p->s).flags2 |= WHITE_PAINTABLE;
     (p->s).invincibleID = (p->s).uniqueID;
     (p->s).work[0] = r0;
     (p->s).work[1] = 0;

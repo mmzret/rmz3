@@ -21,7 +21,7 @@ static void Solid23_Die(struct Solid* p);
 // clang-format off
 const SolidRoutine gSolid23Routine = {
     [ENTITY_INIT] =      Solid23_Init,
-    [ENTITY_MAIN] =      Solid23_Update,
+    [ENTITY_UPDATE] =    Solid23_Update,
     [ENTITY_DIE] =       Solid23_Die,
     [ENTITY_DISAPPEAR] = DeleteSolid,
     [ENTITY_EXIT] =      (SolidFunc)DeleteEntity,
@@ -33,7 +33,7 @@ const SolidRoutine gSolid23Routine = {
 static void onCollision(struct Body* _ UNUSED, struct Coord* r1, struct Coord* r2) { return; }
 
 static void Solid23_Init(struct Solid* p) {
-  SET_SOLID_ROUTINE(p, ENTITY_MAIN);
+  SET_SOLID_ROUTINE(p, ENTITY_UPDATE);
   (p->s).mode[1] = sInitMode[(p->s).work[0]];
   (p->s).flags |= FLIPABLE;
   (p->s).flags |= DISPLAY;

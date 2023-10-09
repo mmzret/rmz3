@@ -1,4 +1,3 @@
-#include "entity.h"
 #include "global.h"
 #include "vfx.h"
 
@@ -15,7 +14,7 @@ static void ChargeEffect_Die(struct VFX* p);
 // clang-format off
 const VFXRoutine gChargeEffectRoutine = {
     [ENTITY_INIT] =      ChargeEffect_Init,
-    [ENTITY_MAIN] =      ChargeEffect_Update,
+    [ENTITY_UPDATE] =    ChargeEffect_Update,
     [ENTITY_DIE] =       ChargeEffect_Die,
     [ENTITY_DISAPPEAR] = DeleteVFX,
     [ENTITY_EXIT] =      (VFXFunc)DeleteEntity,
@@ -47,7 +46,7 @@ NON_MATCH static void ChargeEffect_Init(struct VFX* p) {
   (p->s).flags &= ~X_FLIP;
   (p->s).spr.xflip = FALSE;
   (p->s).spr.oam.xflip = FALSE;
-  SET_VFX_ROUTINE(p, ENTITY_MAIN);
+  SET_VFX_ROUTINE(p, ENTITY_UPDATE);
   ChargeEffect_Update(p);
 #else
   INCCODE("asm/wip/ChargeEffect_Init.inc");
@@ -56,7 +55,7 @@ NON_MATCH static void ChargeEffect_Init(struct VFX* p) {
 
 // --------------------------------------------
 
-NAKED static void ChargeEffect_Update(struct VFX* p) {
+NAKED static void ChargeEffect_Update(struct VFX* vfx) {
   asm(".syntax unified\n\
 	push {r4, r5, r6, r7, lr}\n\
 	mov r7, r8\n\
@@ -276,18 +275,19 @@ _080B3556:\n\
 
 // --------------------------------------------
 
-static void ChargeEffect_Die(struct VFX* p) { SET_VFX_ROUTINE(p, ENTITY_EXIT); }
+static void ChargeEffect_Die(struct VFX* vfx) { SET_VFX_ROUTINE(vfx, ENTITY_EXIT); }
 
 // --------------------------------------------
 
 static const motion_t sMotions[2] = {
-    MOTION(SM000_BATTLE_EFFECT, 0x08),
-    MOTION(SM000_BATTLE_EFFECT, 0x12),
+    MOTION(SM000_BATTLE_EFFECT, 8),
+    MOTION(SM000_BATTLE_EFFECT, 18),
 };
 
 const s16 sChargeEffectXOffsets[6] = {
-    -0x0200, -0x0800, 0x0000, -0x0800, -0x0200, -0x0200,
+    -PIXEL(2), -PIXEL(8), PIXEL(0), -PIXEL(8), -PIXEL(2), -PIXEL(2),
 };
+
 const s16 sChargeEffectYOffsets[6] = {
-    -0x1400, -0x0C00, -0x1400, -0x0C00, -0x1400, -0x1400,
+    -PIXEL(20), -PIXEL(12), -PIXEL(20), -PIXEL(12), -PIXEL(20), -PIXEL(20),
 };

@@ -11,7 +11,7 @@ void Lemmingles_Die(struct Enemy* p);
 // clang-format off
 const EnemyRoutine gLemminglesRoutine = {
     [ENTITY_INIT] =      Lemmingles_Init,
-    [ENTITY_MAIN] =      Lemmingles_Update,
+    [ENTITY_UPDATE] =    Lemmingles_Update,
     [ENTITY_DIE] =       Lemmingles_Die,
     [ENTITY_DISAPPEAR] = DeleteEnemy,
     [ENTITY_EXIT] =      (EnemyFunc)DeleteEntity,

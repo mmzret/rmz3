@@ -13,7 +13,7 @@ static void AfterImage_Die(struct VFX *p);
 // clang-format off
 const VFXRoutine gDashAfterImageRoutine = {
     [ENTITY_INIT] =      AfterImage_Init,
-    [ENTITY_MAIN] =      AfterImage_Update,
+    [ENTITY_UPDATE] =    AfterImage_Update,
     [ENTITY_DIE] =       AfterImage_Die,
     [ENTITY_DISAPPEAR] = DeleteVFX,
     [ENTITY_EXIT] =      (VFXFunc)DeleteEntity,
@@ -93,7 +93,7 @@ NON_MATCH static void AfterImage_Init(struct VFX *p) {
     }
 
     (p->s).work[2] = 3;
-    SET_VFX_ROUTINE(p, ENTITY_MAIN);
+    SET_VFX_ROUTINE(p, ENTITY_UPDATE);
     AfterImage_Update(p);
   }
 #else

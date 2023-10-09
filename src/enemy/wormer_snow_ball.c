@@ -11,7 +11,7 @@ void WormerSnowBall_Die(struct Enemy* p);
 // clang-format off
 const EnemyRoutine gWormerSnowBallRoutine = {
     [ENTITY_INIT] =      WormerSnowBall_Init,
-    [ENTITY_MAIN] =      WormerSnowBall_Update,
+    [ENTITY_UPDATE] =    WormerSnowBall_Update,
     [ENTITY_DIE] =       WormerSnowBall_Die,
     [ENTITY_DISAPPEAR] = DeleteEnemy,
     [ENTITY_EXIT] =      (EnemyFunc)DeleteEntity,

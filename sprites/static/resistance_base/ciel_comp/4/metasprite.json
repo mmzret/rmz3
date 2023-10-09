@@ -1,0 +1,120 @@
+{
+  "data": [
+    {
+      "sheetIdx": 0,
+      "subsprites": [
+        {
+          "tileNum": 16,
+          "xflip": true,
+          "yflip": false,
+          "size": [
+            16,
+            32
+          ],
+          "x": 0,
+          "y": -32
+        },
+        {
+          "tileNum": 32,
+          "xflip": true,
+          "yflip": false,
+          "size": [
+            8,
+            32
+          ],
+          "x": 16,
+          "y": -32
+        },
+        {
+          "tileNum": 36,
+          "xflip": true,
+          "yflip": false,
+          "size": [
+            32,
+            8
+          ],
+          "x": 0,
+          "y": -40
+        },
+        {
+          "tileNum": 24,
+          "xflip": true,
+          "yflip": false,
+          "size": [
+            32,
+            16
+          ],
+          "x": 0,
+          "y": -56
+        },
+        {
+          "tileNum": 0,
+          "xflip": true,
+          "yflip": false,
+          "size": [
+            32,
+            32
+          ],
+          "x": 0,
+          "y": -88
+        },
+        {
+          "tileNum": 16,
+          "xflip": false,
+          "yflip": false,
+          "size": [
+            16,
+            32
+          ],
+          "x": -16,
+          "y": -32
+        },
+        {
+          "tileNum": 32,
+          "xflip": false,
+          "yflip": false,
+          "size": [
+            8,
+            32
+          ],
+          "x": -24,
+          "y": -32
+        },
+        {
+          "tileNum": 36,
+          "xflip": false,
+          "yflip": false,
+          "size": [
+            32,
+            8
+          ],
+          "x": -32,
+          "y": -40
+        },
+        {
+          "tileNum": 24,
+          "xflip": false,
+          "yflip": false,
+          "size": [
+            32,
+            16
+          ],
+          "x": -32,
+          "y": -56
+        },
+        {
+          "tileNum": 0,
+          "xflip": false,
+          "yflip": false,
+          "size": [
+            32,
+            32
+          ],
+          "x": -32,
+          "y": -88
+        }
+      ]
+    }
+  ],
+  "label": "gStaticMetaSprite_resistance_base_ciel_comp_4"
+}

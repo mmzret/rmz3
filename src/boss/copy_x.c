@@ -16,7 +16,7 @@ static void CopyX_Die(struct Boss* p);
 // clang-format off
 const BossRoutine gCopyXRoutine = {
     [ENTITY_INIT] =      CopyX_Init,
-    [ENTITY_MAIN] =      CopyX_Update,
+    [ENTITY_UPDATE] =    CopyX_Update,
     [ENTITY_DIE] =       CopyX_Die,
     [ENTITY_DISAPPEAR] = DeleteBoss,
     [ENTITY_EXIT] =      (BossFunc)DeleteEntity,
@@ -32,7 +32,7 @@ void CreateCopyX(struct Coord* c) {
 
     (p->s).tileNum = 0;
     (p->s).palID = 0;
-    (p->s).flags2 |= ENTITY_FLAGS2_B4;
+    (p->s).flags2 |= WHITE_PAINTABLE;
     (p->s).invincibleID = (p->s).uniqueID;
 
     ((p->s).coord).x = c->x;
@@ -393,6 +393,25 @@ void copyxMode16(struct Boss* p);
 void copyxMode17(struct Boss* p);
 void copyxMode18(struct Boss* p);
 void copyxMode19(struct Boss* p);
+void copyx_08056508(struct Boss* p);
+void copyx_080565c0(struct Boss* p);
+void copyx_080566b0(struct Boss* p);
+void copyx_08056724(struct Boss* p);
+void copyx_08056794(struct Boss* p);
+void copyx_080568bc(struct Boss* p);
+void copyx_08056908(struct Boss* p);
+void FUN_080569a4(struct Boss* p);
+void copyx_080569e4(struct Boss* p);
+void FUN_08056a80(struct Boss* p);
+void copyx_08056ac0(struct Boss* p);
+void copyx_08056b6c(struct Boss* p);
+void copyx_08056bd0(struct Boss* p);
+void copyxKnockBackDamage(struct Boss* p);
+void FUN_08056d58(struct Boss* p);
+void copyxRaisingExcharge(struct Boss* p);
+void copyxMode36(struct Boss* p);
+void copyx_08057094(struct Boss* p);
+void copyxMode38(struct Boss* p);
 
 // clang-format off
 static const BossFunc sUpdates[39] = {
@@ -416,25 +435,25 @@ static const BossFunc sUpdates[39] = {
     [17] = copyxMode17,
     [18] = copyxMode18,
     [19] = copyxMode19,
-    [20] = (BossFunc)0x08056509,
-    [21] = (BossFunc)0x080565C1,
-    [22] = (BossFunc)0x080566B1,
-    [23] = (BossFunc)0x08056725,
-    [24] = (BossFunc)0x08056795,
-    [25] = (BossFunc)0x080568BD,
-    [26] = (BossFunc)0x08056909,
-    [27] = (BossFunc)0x080569A5,
-    [28] = (BossFunc)0x080569E5,
-    [29] = (BossFunc)0x08056A81,
-    [30] = (BossFunc)0x08056AC1,
-    [31] = (BossFunc)0x08056B6D,
-    [32] = (BossFunc)0x08056BD1,
-    [33] = (BossFunc)0x08056C15,
-    [34] = (BossFunc)0x08056D59,
-    [35] = (BossFunc)0x08056E95,
-    [36] = (BossFunc)0x08056FD5,
-    [37] = (BossFunc)0x08057095,
-    [38] = (BossFunc)0x0805713D,
+    [20] = copyx_08056508,
+    [21] = copyx_080565c0,
+    [22] = copyx_080566b0,
+    [23] = copyx_08056724,
+    [24] = copyx_08056794,
+    [25] = copyx_080568bc,
+    [26] = copyx_08056908,
+    [27] = FUN_080569a4,
+    [28] = copyx_080569e4,
+    [29] = FUN_08056a80,
+    [30] = copyx_08056ac0,
+    [31] = copyx_08056b6c,
+    [32] = copyx_08056bd0,
+    [33] = copyxKnockBackDamage,
+    [34] = FUN_08056d58,
+    [35] = copyxRaisingExcharge,
+    [36] = copyxMode36,
+    [37] = copyx_08057094,
+    [38] = copyxMode38,
 };
 // clang-format on
 

@@ -10,7 +10,7 @@ static void Seagulls_Die(struct Solid* p);
 // clang-format off
 const SolidRoutine gSeagullsRoutine = {
     [ENTITY_INIT] =      Seagulls_Init,
-    [ENTITY_MAIN] =      Seagulls_Update,
+    [ENTITY_UPDATE] =    Seagulls_Update,
     [ENTITY_DIE] =       Seagulls_Die,
     [ENTITY_DISAPPEAR] = DeleteSolid,
     [ENTITY_EXIT] =      (SolidFunc)DeleteEntity,
@@ -24,7 +24,7 @@ struct Solid* CreateSeagulls(struct Solid* friend, u8 t, u8 param_3) {
     INIT_SOLID_ROUTINE(p, SOLID_SEAGULLS);
     (p->s).tileNum = 0;
     (p->s).palID = 0;
-    (p->s).flags2 |= ENTITY_FLAGS2_B4;
+    (p->s).flags2 |= WHITE_PAINTABLE;
     (p->s).invincibleID = (p->s).uniqueID;
     (p->s).unk_28 = &friend->s;
     (p->s).coord = (friend->s).coord;

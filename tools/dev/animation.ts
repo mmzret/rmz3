@@ -3,77 +3,104 @@
 import { Command } from 'https://deno.land/x/cliffy@v0.25.4/command/mod.ts';
 import { join } from 'https://deno.land/std/path/mod.ts';
 
-type SpriteMetadata = { id: number; name: string; path: string };
+type SpriteMetadata = { id: number; name: string; path: string; noAnimation?: boolean };
 
 type JsonData = {
-  main: SpriteMetadata[];
+  data: SpriteMetadata[];
 };
 
-type MetaspriteSymbol = `gMetaSprite_${string}`;
-type SequenceSymbol = `gAnimationSequence_${string}`;
+type MetaspriteSymbol = `gMetaSprite_${string}` | `gStaticMetaSprite_${string}`;
+type SequenceSymbol = `gAnimationSequence_${string}` | `gStaticAnimationSequence_${string}`;
 
 const HeaderPtrTable = new Map<number, [MetaspriteSymbol, SequenceSymbol]>();
 
 const main = async () => {
-  await new Command()
+  const { args } = await new Command()
     .name('animation.ts')
     .version('1.0.0')
     .description(
       'Create gDynamicMotionMetaspriteTable and gDynamicMotionCmdTable as Asm pointer table',
     )
+    .arguments('<json:string>')
     .parse(Deno.args);
 
-  const infos = JSON.parse(Deno.readTextFileSync('sprites/sprite.json')) as JsonData;
+  const jsonPath = args[0];
+  const isDynamic = jsonPath.endsWith('dynamic/sprite.json');
+  const dir = isDynamic ? 'dynamic' : 'static';
+
+  const infos = JSON.parse(Deno.readTextFileSync(jsonPath)) as JsonData;
 
   const metaspriteIncludes: `.include "${string}"`[] = [];
   const sequenceIncludes: `.include "${string}"`[] = [];
 
   let lastID = 0;
-  for (const info of infos.main) {
-    const symbol = info.path.split('/').join('_');
-    HeaderPtrTable.set(info.id, [`gMetaSprite_${symbol}`, `gAnimationSequence_${symbol}`]);
+  for (const info of infos.data) {
+    let symbol = info.path.split('/').join('_');
+    if (info.noAnimation) {
+      symbol = infos.data[lastID].path.split('/').join('_');
+    }
+    if (isDynamic) {
+      HeaderPtrTable.set(info.id, [`gMetaSprite_${symbol}`, `gAnimationSequence_${symbol}`]);
+    } else {
+      HeaderPtrTable.set(info.id, [`gStaticMetaSprite_${symbol}`, `gStaticAnimationSequence_${symbol}`]);
+    }
     if (info.id > lastID) {
       lastID = info.id;
     }
 
-    metaspriteIncludes.push(`.include "${join('sprites', info.path, 'metasprite.inc')}"`);
-    sequenceIncludes.push(`.include "${join('sprites', info.path, 'sequence.inc')}"`);
+    if (!info.noAnimation) {
+      metaspriteIncludes.push(`.include "${join(`sprites/${dir}`, info.path, 'metasprite.inc')}"`);
+      sequenceIncludes.push(`.include "${join(`sprites/${dir}`, info.path, 'sequence.inc')}"`);
+    }
   }
 
   console.log(`	.include "asm/macros.inc"`);
   console.log(`  .balign 4`);
   console.log(`  .section .rodata\n`);
 
-  console.log(`.global gDynamicMotionMetaspriteTable`);
-  console.log(`gDynamicMotionMetaspriteTable:`);
-  for (let id = 0; id <= lastID; id++) {
-    const label = HeaderPtrTable.get(id);
-    if (label) {
-      console.log(`  .word ${label[0]}`);
-    } else if (id < 144) {
-      console.log(`  .word ${HeaderPtrTable.get(0)![0]}`);
-    } else {
-      console.log(`  .word ${HeaderPtrTable.get(144)![0]}`);
+  {
+    const ofsTblLabel = isDynamic ? 'gDynamicMotionMetaspriteTable' : 'gStaticMotionMetaspriteTable';
+    console.log(`.global ${ofsTblLabel}`);
+    console.log(`${ofsTblLabel}:`);
+    for (let id = 0; id <= lastID; id++) {
+      const label = HeaderPtrTable.get(id);
+      if (label) {
+        console.log(`  .word ${label[0]}`);
+      } else {
+        if (isDynamic) {
+          if (id < 144) {
+            console.log(`  .word ${HeaderPtrTable.get(0)![0]}`);
+          } else {
+            console.log(`  .word ${HeaderPtrTable.get(144)![0]}`);
+          }
+        } else {
+          console.log(`  .word ${HeaderPtrTable.get(0)![0]}`);
+        }
+      }
     }
+    console.log('\n');
+    console.log(metaspriteIncludes.join('\n'));
   }
-  console.log('\n');
-  console.log(metaspriteIncludes.join('\n'));
 
   console.log(`\n  .balign 4`);
-  console.log(`.global gDynamicMotionCmdTable`);
-  console.log(`gDynamicMotionCmdTable:`);
-  for (let id = 0; id <= lastID; id++) {
-    const label = HeaderPtrTable.get(id);
-    if (label) {
-      console.log(`  .word ${label[1]}`);
-    } else if (id < 144) {
-      console.log(`  .word ${HeaderPtrTable.get(0)![1]}`);
-    } else {
-      console.log(`  .word ${HeaderPtrTable.get(144)![1]}`);
+
+  {
+    const ofsTblLabel = isDynamic ? 'gDynamicMotionCmdTable' : 'gStaticMotionCmdTable';
+    console.log(`.global ${ofsTblLabel}`);
+    console.log(`${ofsTblLabel}:`);
+    for (let id = 0; id <= lastID; id++) {
+      const label = HeaderPtrTable.get(id);
+      if (label) {
+        console.log(`  .word ${label[1]}`);
+      } else if (id < 144) {
+        console.log(`  .word ${HeaderPtrTable.get(0)![1]}`);
+      } else {
+        console.log(`  .word ${HeaderPtrTable.get(144)![1]}`);
+      }
     }
+    console.log('\n');
+    console.log(sequenceIncludes.join('\n'));
   }
-  console.log('\n');
-  console.log(sequenceIncludes.join('\n'));
 
   console.log(`  .balign 4`);
 };

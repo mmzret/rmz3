@@ -12,7 +12,7 @@ static void MapItem_Die(struct MapItem *p);
 // clang-format off
 const MapItemRoutine gMapItemRoutine = {
     [ENTITY_INIT] =      MapItem_Init,
-    [ENTITY_MAIN] =      MapItem_Update,
+    [ENTITY_UPDATE] =    MapItem_Update,
     [ENTITY_DIE] =       MapItem_Die,
     [ENTITY_DISAPPEAR] = DeleteMapItem,
     [ENTITY_EXIT] =      (MapItemFunc)DeleteEntity,

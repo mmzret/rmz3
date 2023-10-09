@@ -288,7 +288,7 @@ void Weapon5_Die(struct Weapon* w);
 // clang-format off
 const WeaponRoutine gSaberWaveRoutine = {
     [ENTITY_INIT] =      Weapon5_Init,
-    [ENTITY_MAIN] =      Weapon5_Update,
+    [ENTITY_UPDATE] =    Weapon5_Update,
     [ENTITY_DIE] =       Weapon5_Die,
     [ENTITY_DISAPPEAR] = DeleteWeapon,
     [ENTITY_EXIT] =      (WeaponFunc)DeleteEntity,    

@@ -12,7 +12,7 @@ void BeeServer_Die(struct Boss* p);
 // clang-format off
 const BossRoutine gBeeServerRoutine = {
     [ENTITY_INIT] =      BeeServer_Init,
-    [ENTITY_MAIN] =      BeeServer_Update,
+    [ENTITY_UPDATE] =    BeeServer_Update,
     [ENTITY_DIE] =       BeeServer_Die,
     [ENTITY_DISAPPEAR] = DeleteBoss,
     [ENTITY_EXIT] =      (BossFunc)DeleteEntity,

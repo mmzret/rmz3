@@ -11,7 +11,7 @@ static void OmegaZeroProjectile_Die(struct Projectile *p);
 // clang-format off
 const ProjectileRoutine gOmegaZeroProjectileRoutine = {
     [ENTITY_INIT] =      OmegaZeroProjectile_Init,
-    [ENTITY_MAIN] =      OmegaZeroProjectile_Update,
+    [ENTITY_UPDATE] =    OmegaZeroProjectile_Update,
     [ENTITY_DIE] =       OmegaZeroProjectile_Die,
     [ENTITY_DISAPPEAR] = DeleteProjectile,
     [ENTITY_EXIT] =      (ProjectileFunc)DeleteEntity,

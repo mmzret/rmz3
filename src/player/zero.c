@@ -39,7 +39,7 @@ WIP void Zero_Init(struct Zero* z) {
   s32 i;
   struct Zero_b4* b4;
 
-  SET_PLAYER_ROUTINE(z, ENTITY_MAIN);
+  SET_PLAYER_ROUTINE(z, ENTITY_UPDATE);
   InitNonAffineMotion(&z->s);
   ResetDynamicMotion(&z->s);
   (z->s).flags |= DISPLAY;
@@ -468,7 +468,7 @@ static const ZeroFunc sZeroAttacks[4] = {
 // clang-format off
 static const ZeroRoutine gZeroRoutine = {
   [ENTITY_INIT] =       Zero_Init,
-  [ENTITY_MAIN] =       Zero_Update,
+  [ENTITY_UPDATE] =     Zero_Update,
   [ENTITY_DIE]  =       Zero_Die,
   [ENTITY_DISAPPEAR] =  Zero_Disappear,
   [ENTITY_EXIT] =       (ZeroFunc)DeleteEntity,

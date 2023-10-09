@@ -14,7 +14,7 @@ static void Fefnir_Die(struct Zero* z);
 // clang-format off
 const ZeroRoutine gFefnirRoutine = {
   [ENTITY_INIT] =       Fefnir_Init,
-  [ENTITY_MAIN] =       Fefnir_Update,
+  [ENTITY_UPDATE] =     Fefnir_Update,
   [ENTITY_DIE]  =       Fefnir_Die,
   [ENTITY_DISAPPEAR] =  RemovePlayer,
   [ENTITY_EXIT] =       (ZeroFunc)DeleteEntity,
@@ -36,7 +36,7 @@ void CreatePlayerFefnir(struct MinigameState* p, s32 x, s32 y) {
 static void onCollision(struct Body* body UNUSED, struct Coord* r1 UNUSED, struct Coord* r2 UNUSED) { return; }
 
 static void Fefnir_Init(struct Zero* z) {
-  SET_PLAYER_ROUTINE(z, ENTITY_MAIN);
+  SET_PLAYER_ROUTINE(z, ENTITY_UPDATE);
   (z->s).mode[1] = sInitModes[(z->s).work[0]];
 
   (z->s).flags |= FLIPABLE;

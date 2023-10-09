@@ -46,7 +46,7 @@ void BlizzardArrow_Die(struct Weapon* w);
 // clang-format off
 const WeaponRoutine gBlizzardArrowRoutine = {
     [ENTITY_INIT] =      BlizzardArrow_Init,
-    [ENTITY_MAIN] =      BlizzardArrow_Update,
+    [ENTITY_UPDATE] =    BlizzardArrow_Update,
     [ENTITY_DIE] =       BlizzardArrow_Die,
     [ENTITY_DISAPPEAR] = DeleteWeapon,
     [ENTITY_EXIT] =      (WeaponFunc)DeleteEntity,    

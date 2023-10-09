@@ -521,7 +521,7 @@ _0807044A:
 	ldr r0, [sp]
 	ldr r1, [sp, #4]
 	movs r2, #1
-	bl CreateSeaEnemy
+	bl CreateBubble
 	ldr r3, _080704E8 @ =RNG_0202f388
 	ldr r0, [r3]
 	ldr r6, _080704EC @ =0x000343FD
@@ -553,7 +553,7 @@ _0807044A:
 	str r1, [sp, #4]
 	movs r2, #1
 	str r3, [sp, #0x20]
-	bl CreateSeaEnemy
+	bl CreateBubble
 	ldr r3, [sp, #0x20]
 	ldr r0, [r3]
 	adds r1, r0, #0
@@ -581,7 +581,7 @@ _0807044A:
 	adds r1, r1, r2
 	str r1, [sp, #4]
 	movs r2, #0
-	bl CreateSeaEnemy
+	bl CreateBubble
 	adds r1, r7, #0
 	adds r1, #0x54
 	movs r0, #3
@@ -793,7 +793,7 @@ _08070670:
 	ldr r0, [sp]
 	ldr r1, [sp, #4]
 	movs r2, #1
-	bl CreateSeaEnemy
+	bl CreateBubble
 	ldr r5, _080707B0 @ =RNG_0202f388
 	ldr r0, [r5]
 	ldr r1, _080707B4 @ =0x000343FD
@@ -827,7 +827,7 @@ _08070670:
 	adds r1, r1, r2
 	str r1, [sp, #4]
 	movs r2, #1
-	bl CreateSeaEnemy
+	bl CreateBubble
 	ldr r0, [r5]
 	mov r1, r8
 	muls r1, r0, r1
@@ -856,7 +856,7 @@ _08070670:
 	adds r1, r1, r2
 	str r1, [sp, #4]
 	movs r2, #0
-	bl CreateSeaEnemy
+	bl CreateBubble
 	ldr r0, [r5]
 	mov r4, r8
 	muls r4, r0, r4
@@ -2100,7 +2100,7 @@ _0807106A:
 	adds r0, r4, #0
 	adds r1, r5, #0
 	movs r2, #1
-	bl CreateSeaEnemy
+	bl CreateBubble
 	ldr r1, _08071188 @ =RNG_0202f388
 	mov sl, r1
 	ldr r0, [r1]
@@ -2137,7 +2137,7 @@ _0807106A:
 	adds r1, r1, r5
 	adds r5, r1, #0
 	movs r2, #1
-	bl CreateSeaEnemy
+	bl CreateBubble
 	mov r3, sl
 	ldr r0, [r3]
 	mov r1, sb
@@ -2169,7 +2169,7 @@ _0807106A:
 	adds r1, r1, r5
 	adds r5, r1, #0
 	movs r2, #1
-	bl CreateSeaEnemy
+	bl CreateBubble
 	mov r3, sl
 	ldr r0, [r3]
 	mov r1, sb
@@ -2201,7 +2201,7 @@ _0807106A:
 	adds r1, r1, r5
 	adds r5, r1, #0
 	movs r2, #0
-	bl CreateSeaEnemy
+	bl CreateBubble
 	mov r3, sl
 	ldr r0, [r3]
 	mov r1, sb
@@ -2231,7 +2231,7 @@ _0807106A:
 	lsls r1, r1, #8
 	adds r1, r1, r5
 	movs r2, #0
-	bl CreateSeaEnemy
+	bl CreateBubble
 	b _080711C2
 	.align 2, 0
 _08071188: .4byte RNG_0202f388

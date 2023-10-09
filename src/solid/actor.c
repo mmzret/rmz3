@@ -19,7 +19,7 @@ void Actor_Die(struct Solid* p);
 // clang-format off
 const SolidRoutine gScriptActorRoutine = {
     [ENTITY_INIT] =      Actor_Init,
-    [ENTITY_MAIN] =      Actor_Update,
+    [ENTITY_UPDATE] =    Actor_Update,
     [ENTITY_DIE] =       Actor_Die,
     [ENTITY_DISAPPEAR] = DeleteSolid,
     [ENTITY_EXIT] =      (SolidFunc)DeleteEntity,
@@ -33,7 +33,7 @@ struct Solid* CreateScriptActor(struct Solid* e, u8 kind) {
     INIT_SOLID_ROUTINE(p, SOLID_SCRIPT_ACTOR);
     (p->s).tileNum = 0;
     (p->s).palID = 0;
-    (p->s).flags2 |= ENTITY_FLAGS2_B4;
+    (p->s).flags2 |= WHITE_PAINTABLE;
     (p->s).invincibleID = (p->s).uniqueID;
     (p->s).work[0] = kind;
     (p->s).coord.x = (e->s).coord.x;
@@ -516,7 +516,7 @@ static void initStaticActor(struct Solid* p) {
   (p->s).flags |= DISPLAY;
   (p->s).flags |= FLIPABLE;
   InitNonAffineMotion(&p->s);
-  SET_SOLID_ROUTINE(p, ENTITY_MAIN);
+  SET_SOLID_ROUTINE(p, ENTITY_UPDATE);
   Actor_Update(p);
 }
 
@@ -525,7 +525,7 @@ static void initDynamicActor(struct Solid* p) {
   (p->s).flags |= FLIPABLE;
   InitNonAffineMotion(&p->s);
   ResetDynamicMotion(&p->s);
-  SET_SOLID_ROUTINE(p, ENTITY_MAIN);
+  SET_SOLID_ROUTINE(p, ENTITY_UPDATE);
   Actor_Update(p);
 }
 
@@ -822,9 +822,9 @@ static void Actor3_Update(struct Solid* p) {
     case 0: {
       (p->s).coord.y = FUN_08009f6c((p->s).coord.x + PIXEL(240), (p->s).coord.y);
       if ((p->s).work[1] == 0) {
-        LOAD_STATIC_GRAPHIC(130);
+        LOAD_STATIC_GRAPHIC(SM130_PROLOGUE_RESISTANCE);
       }
-      SetMotion(&p->s, MOTION(0x82, 0x02));
+      SetMotion(&p->s, MOTION(SM130_PROLOGUE_RESISTANCE, 2));
       (p->s).mode[1]++;
       FALLTHROUGH
     }
@@ -837,7 +837,7 @@ static void Actor3_Update(struct Solid* p) {
       if (((p->s).arr[9] & 1) == 0) {
         return;
       }
-      SetMotion(&p->s, MOTION(0x82, 0x00));
+      SetMotion(&p->s, MOTION(SM130_PROLOGUE_RESISTANCE, 0));
       (p->s).mode[1]++;
       break;
     }
@@ -846,7 +846,7 @@ static void Actor3_Update(struct Solid* p) {
       if (((p->s).arr[9] & 2) == 0) {
         return;
       }
-      LOAD_STATIC_GRAPHIC(130);
+      LOAD_STATIC_GRAPHIC(SM130_PROLOGUE_RESISTANCE);
       (p->s).mode[1]++;
       break;
     }
@@ -1284,8 +1284,8 @@ static void Actor7_Update(struct Solid* p) {
       (p->s).coord.y = FUN_08009f6c((p->s).coord.x, (p->s).coord.y);
       wStaticGraphicTilenums[19] = 0x388;
       wStaticMotionPalIDs[19] = 9;
-      LOAD_STATIC_GRAPHIC(19);
-      SetMotion(&p->s, MOTION(SM019_PANTHEON_HUNTER, 0x09));
+      LOAD_STATIC_GRAPHIC(SM019_PANTHEON_HUNTER);
+      SetMotion(&p->s, MOTION(SM019_PANTHEON_HUNTER, 9));
       (p->s).mode[1]++;
       FALLTHROUGH;
     }

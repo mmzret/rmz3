@@ -11,7 +11,7 @@ static void Ghost29_Die(struct VFX *vfx);
 // clang-format off
 const VFXRoutine gGhost29Routine = {
     [ENTITY_INIT] =      Ghost29_Init,
-    [ENTITY_MAIN] =      Ghost29_Update,
+    [ENTITY_UPDATE] =    Ghost29_Update,
     [ENTITY_DIE] =       Ghost29_Die,
     [ENTITY_DISAPPEAR] = DeleteVFX,
     [ENTITY_EXIT] =      (VFXFunc)DeleteEntity,
@@ -21,7 +21,7 @@ const VFXRoutine gGhost29Routine = {
 static void Ghost29_Init(struct VFX *vfx) {
   (vfx->s).flags |= FLIPABLE;
   FUN_080cb4c0((struct Solid *)vfx);
-  SET_VFX_ROUTINE(vfx, ENTITY_MAIN);
+  SET_VFX_ROUTINE(vfx, ENTITY_UPDATE);
   Ghost29_Update(vfx);
 }
 

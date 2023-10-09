@@ -15,7 +15,7 @@ static void Volteel_Die(struct Boss* p);
 // clang-format off
 const BossRoutine gVolteelRoutine = {
     [ENTITY_INIT] =      Volteel_Init,
-    [ENTITY_MAIN] =      Volteel_Update,
+    [ENTITY_UPDATE] =    Volteel_Update,
     [ENTITY_DIE] =       Volteel_Die,
     [ENTITY_DISAPPEAR] = DeleteBoss,
     [ENTITY_EXIT] =      (BossFunc)DeleteEntity,
@@ -29,7 +29,7 @@ struct Boss* CreateVolteel(struct Coord* c, u8 n) {
     INIT_BOSS_ROUTINE(p, BOSS_VOLTEEL);
     (p->s).tileNum = 0;
     (p->s).palID = 0;
-    (p->s).flags2 |= ENTITY_FLAGS2_B4;
+    (p->s).flags2 |= WHITE_PAINTABLE;
     (p->s).invincibleID = (p->s).uniqueID;
     (p->s).coord = *c;
     (p->s).work[0] = n;

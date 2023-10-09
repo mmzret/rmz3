@@ -12,7 +12,7 @@ void Projectile6_Die(struct Projectile* p);
 // clang-format off
 const ProjectileRoutine gProjectile6Routine = {
     [ENTITY_INIT] =      Projectile6_Init,
-    [ENTITY_MAIN] =      Projectile6_Update,
+    [ENTITY_UPDATE] =    Projectile6_Update,
     [ENTITY_DIE] =       Projectile6_Die,
     [ENTITY_DISAPPEAR] = DeleteProjectile,
     [ENTITY_EXIT] =      (ProjectileFunc)DeleteEntity,
@@ -41,7 +41,7 @@ static void Projectile6_Init(struct Projectile* p) {
   INIT_BODY(p, &sCollisions[0], 1, NULL);
   (p->s).coord.x = (((p->s).unk_28)->coord).x;
   (p->s).coord.y = (((p->s).unk_28)->coord).y;
-  SET_PROJECTILE_ROUTINE(p, ENTITY_MAIN);
+  SET_PROJECTILE_ROUTINE(p, ENTITY_UPDATE);
   (p->s).mode[1] = 1;
   (p->s).mode[2] = 0;
   (p->s).mode[3] = 0;

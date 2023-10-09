@@ -1,7 +1,6 @@
-#include "entity.h"
-#include "vfx.h"
 #include "global.h"
 #include "motion.h"
+#include "vfx.h"
 
 /*
   ショットカウンターのミサイル破壊時の煙など
@@ -16,7 +15,7 @@ static void Smoke_Die(struct VFX* p);
 // clang-format off
 const VFXRoutine gSmokeRoutine = {
     [ENTITY_INIT] =      Smoke_Init,
-    [ENTITY_MAIN] =      Smoke_Update,
+    [ENTITY_UPDATE] =    Smoke_Update,
     [ENTITY_DIE] =       Smoke_Die,
     [ENTITY_DISAPPEAR] = DeleteVFX,
     [ENTITY_EXIT] =      (VFXFunc)DeleteEntity,
@@ -274,7 +273,7 @@ _080B2CEC:\n\
 
 static void Smoke_Init(struct VFX* p) {
   (p->s).flags |= DISPLAY;
-  SET_VFX_ROUTINE(p, ENTITY_MAIN);
+  SET_VFX_ROUTINE(p, ENTITY_UPDATE);
   Smoke_Update(p);
 }
 

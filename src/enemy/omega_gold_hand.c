@@ -9,7 +9,7 @@ void OmegaGoldHand_Die(struct Enemy* p);
 // clang-format off
 const EnemyRoutine gOmegaGoldHandRoutine = {
     [ENTITY_INIT] =      OmegaGoldHand_Init,
-    [ENTITY_MAIN] =      OmegaGoldHand_Update,
+    [ENTITY_UPDATE] =    OmegaGoldHand_Update,
     [ENTITY_DIE] =       OmegaGoldHand_Die,
     [ENTITY_DISAPPEAR] = DeleteEnemy,
     [ENTITY_EXIT] =      (EnemyFunc)DeleteEntity,
@@ -23,7 +23,7 @@ struct Enemy* FUN_08082b58(struct Coord* c, bool8 isLeftHand, struct Boss* omega
     INIT_ZAKO_ROUTINE(p, ENEMY_OMEGA_GOLD_HAND);
     (p->s).tileNum = 0;
     (p->s).palID = 0;
-    (p->s).flags2 |= ENTITY_FLAGS2_B4;
+    (p->s).flags2 |= WHITE_PAINTABLE;
     (p->s).invincibleID = (p->s).uniqueID;
     (p->s).coord = *c;
     (p->s).work[0] = isLeftHand;

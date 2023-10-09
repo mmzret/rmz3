@@ -11,7 +11,7 @@ void PantheonAqua_Die(struct Enemy* p);
 // clang-format off
 const EnemyRoutine gPantheonAquaRoutine = {
     [ENTITY_INIT] =      PantheonAqua_Init,
-    [ENTITY_MAIN] =      PantheonAqua_Update,
+    [ENTITY_UPDATE] =    PantheonAqua_Update,
     [ENTITY_DIE] =       PantheonAqua_Die,
     [ENTITY_DISAPPEAR] = DeleteEnemy,
     [ENTITY_EXIT] =      (EnemyFunc)DeleteEntity,

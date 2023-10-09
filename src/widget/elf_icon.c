@@ -11,7 +11,7 @@ static void ElfIcon_Die(struct Widget *w);
 // clang-format off
 const WidgetRoutine gElfIconRoutine = {
     [ENTITY_INIT] =      ElfIcon_Init,
-    [ENTITY_MAIN] =      ElfIcon_Update,
+    [ENTITY_UPDATE] =    ElfIcon_Update,
     [ENTITY_DIE] =       ElfIcon_Die,
     [ENTITY_DISAPPEAR] = DeleteWidget,
     [ENTITY_EXIT] =      (WidgetFunc)DeleteEntity,
@@ -33,7 +33,7 @@ struct Widget *CreateElfIcon(struct GameState *g) {
 }
 
 static void ElfIcon_Init(struct Widget *w) {
-  SET_WIDGET_ROUTINE(w, ENTITY_MAIN);
+  SET_WIDGET_ROUTINE(w, ENTITY_UPDATE);
   wStaticGraphicTilenums[143] = 863;
   wStaticMotionPalIDs[143] = 11;
   InitNonAffineMotion(&w->s);

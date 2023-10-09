@@ -1,11 +1,25 @@
 #include "collision.h"
 #include "element.h"
-#include "entity.h"
 #include "global.h"
+#include "overworld_terrain.h"
 #include "solid.h"
 
 static const SolidFunc sIcebonDeathSeq[2];
 const struct Collision sIcebonCollisions[3];
+
+static void Icebon_Init(struct Solid* p);
+static void Icebon_Update(struct Solid* p);
+static void Icebon_Die(struct Solid* p);
+
+// clang-format off
+const SolidRoutine gIcebonRoutine = {
+    [ENTITY_INIT] =      Icebon_Init,
+    [ENTITY_UPDATE] =    Icebon_Update,
+    [ENTITY_DIE] =       Icebon_Die,
+    [ENTITY_DISAPPEAR] = DeleteSolid,
+    [ENTITY_EXIT] =      (SolidFunc)DeleteEntity,
+};
+// clang-format on
 
 void nop_080c9e90(struct Body* _ UNUSED) { return; }
 
@@ -108,6 +122,8 @@ _080C9F42:\n\
 	bx r1\n\
  .syntax divided\n");
 }
+
+// --------------------------------------------
 
 NAKED static void Icebon_Init(struct Solid* p) {
   asm(".syntax unified\n\
@@ -218,62 +234,56 @@ _080CA028: .4byte nop_080c9e90\n\
  .syntax divided\n");
 }
 
-NAKED static void Icebon_Update(struct Solid* p) {
-  asm(".syntax unified\n\
-	push {r4, r5, lr}\n\
-	adds r4, r0, #0\n\
-	bl tryKillIcebon\n\
-	lsls r0, r0, #0x18\n\
-	lsrs r5, r0, #0x18\n\
-	cmp r5, #0\n\
-	bne _080CA08E\n\
-	adds r0, r4, #0\n\
-	bl icebon_080c9e94\n\
-	ldr r1, _080CA094 @ =0x0836FC18\n\
-	ldrb r0, [r4, #0xd]\n\
-	lsls r0, r0, #2\n\
-	adds r0, r0, r1\n\
-	ldr r1, [r0]\n\
-	adds r0, r4, #0\n\
-	bl _call_via_r1\n\
-	ldr r1, _080CA098 @ =0x0836FC24\n\
-	ldrb r0, [r4, #0xd]\n\
-	lsls r0, r0, #2\n\
-	adds r0, r0, r1\n\
-	ldr r1, [r0]\n\
-	adds r0, r4, #0\n\
-	bl _call_via_r1\n\
-	ldr r0, [r4, #0x60]\n\
-	adds r0, #0x40\n\
-	str r0, [r4, #0x60]\n\
-	movs r1, #0xe0\n\
-	lsls r1, r1, #3\n\
-	cmp r0, r1\n\
-	ble _080CA072\n\
-	str r1, [r4, #0x60]\n\
-_080CA072:\n\
-	ldr r1, [r4, #0x58]\n\
-	ldr r0, [r4, #0x60]\n\
-	adds r1, r1, r0\n\
-	str r1, [r4, #0x58]\n\
-	ldr r0, [r4, #0x54]\n\
-	bl PushoutToUp2\n\
-	adds r1, r0, #0\n\
-	cmp r1, #0\n\
-	bge _080CA08E\n\
-	str r5, [r4, #0x60]\n\
-	ldr r0, [r4, #0x58]\n\
-	adds r0, r0, r1\n\
-	str r0, [r4, #0x58]\n\
-_080CA08E:\n\
-	pop {r4, r5}\n\
-	pop {r0}\n\
-	bx r0\n\
-	.align 2, 0\n\
-_080CA094: .4byte 0x0836FC18\n\
-_080CA098: .4byte 0x0836FC24\n\
- .syntax divided\n");
+// --------------------------------------------
+
+static void icebon_080ca0b8(struct Solid* p);
+static void nop_080ca0b4(struct Solid* _ UNUSED);
+
+static void icebon_080ca0e0(struct Solid* p);
+void icebon_080ca104(struct Solid* p);
+void icebon_080ca154(struct Solid* p);
+
+static void Icebon_Update(struct Solid* p) {
+  static const SolidFunc sUpdates1[3] = {
+      icebon_080ca0b8,
+      nop_080ca0b4,
+      nop_080ca0b4,
+  };
+  static const SolidFunc sUpdates2[3] = {
+      icebon_080ca0e0,
+      icebon_080ca104,
+      icebon_080ca154,
+  };
+
+  if (!tryKillIcebon(p)) {
+    s32 delta;
+
+    icebon_080c9e94(p);
+    (sUpdates1[(p->s).mode[1]])(p);
+    (sUpdates2[(p->s).mode[1]])(p);
+    (p->s).d.y += PIXEL(1) / 4;
+    if ((p->s).d.y > PIXEL(7)) {
+      (p->s).d.y = PIXEL(7);
+    }
+    (p->s).coord.y += (p->s).d.y;
+
+    delta = PushoutToUp2((p->s).coord.x, (p->s).coord.y);
+    if (delta < 0) {
+      (p->s).d.y = 0;
+      (p->s).coord.y = (p->s).coord.y + delta;
+    }
+  }
 }
+
+// --------------------------------------------
+
+void icebonDeath0(struct Solid* p);
+void icebonDeath1(struct Solid* p);
+
+static const SolidFunc sIcebonDeathSeq[2] = {
+    icebonDeath0,
+    icebonDeath1,
+};
 
 static void Icebon_Die(struct Solid* p) {
   (sIcebonDeathSeq[(p->s).mode[1]])(p);
@@ -315,41 +325,6 @@ static void icebon_080ca0e0(struct Solid* p) {
 }
 
 INCASM("asm/solid/icebon.inc");
-
-// clang-format off
-
-// xx nn nn nn
-const SolidRoutine gIcebonRoutine = {
-    [ENTITY_INIT] =      Icebon_Init,
-    [ENTITY_MAIN] =      Icebon_Update,
-    [ENTITY_DIE] =       Icebon_Die,
-    [ENTITY_DISAPPEAR] = DeleteSolid,
-    [ENTITY_EXIT] =      (SolidFunc)DeleteEntity,
-};
-// clang-format on
-
-const SolidFunc sIcebonModeTable1[3] = {
-    icebon_080ca0b8,
-    nop_080ca0b4,
-    nop_080ca0b4,
-};
-
-void icebon_080ca104(struct Solid* p);
-void icebon_080ca154(struct Solid* p);
-
-const SolidFunc sIcebonModeTable2[3] = {
-    icebon_080ca0e0,
-    icebon_080ca104,
-    icebon_080ca154,
-};
-
-void icebonDeath0(struct Solid* p);
-void icebonDeath1(struct Solid* p);
-
-static const SolidFunc sIcebonDeathSeq[2] = {
-    icebonDeath0,
-    icebonDeath1,
-};
 
 const struct Collision sIcebonCollisions[3] = {
     {

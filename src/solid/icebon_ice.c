@@ -14,7 +14,7 @@ void FUN_080ca698(struct Solid* p);
 // xx nn nn nn
 const SolidRoutine gIcebonIceRoutine = {
     [ENTITY_INIT] =      IcebonIce_Init,
-    [ENTITY_MAIN] =      IcebonIce_Update,
+    [ENTITY_UPDATE] =    IcebonIce_Update,
     [ENTITY_DIE] =       FUN_080ca698,
     [ENTITY_DISAPPEAR] = DeleteSolid,
     [ENTITY_EXIT] =      (SolidFunc)DeleteEntity,

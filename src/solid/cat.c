@@ -11,7 +11,7 @@ static void Cat_Die(struct Solid* p);
 // clang-format off
 const SolidRoutine gCatRoutine = {
     [ENTITY_INIT] =      Cat_Init,
-    [ENTITY_MAIN] =      Cat_Update,
+    [ENTITY_UPDATE] =    Cat_Update,
     [ENTITY_DIE] =       Cat_Die,
     [ENTITY_DISAPPEAR] = DeleteSolid,
     [ENTITY_EXIT] =      (SolidFunc)DeleteEntity,

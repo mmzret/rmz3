@@ -22,7 +22,7 @@ static void BaseElevator_Disappear(struct Solid* p);
 // clang-format off
 const SolidRoutine gBaseElevatorRoutine = {
     [ENTITY_INIT] =      BaseElevator_Init,
-    [ENTITY_MAIN] =      BaseElevator_Update,
+    [ENTITY_UPDATE] =    BaseElevator_Update,
     [ENTITY_DIE] =       BaseElevator_Die,
     [ENTITY_DISAPPEAR] = BaseElevator_Disappear,
     [ENTITY_EXIT] =      (SolidFunc)DeleteEntity,
@@ -38,7 +38,7 @@ struct Solid* CreateResistanceBaseElevator(u8 lv) {
     INIT_SOLID_ROUTINE(p, SOLID_BASE_ELEVATOR);
     (p->s).tileNum = 0;
     (p->s).palID = 0;
-    (p->s).flags2 |= ENTITY_FLAGS2_B4;
+    (p->s).flags2 |= WHITE_PAINTABLE;
     (p->s).invincibleID = (p->s).uniqueID;
     (p->s).work[0] = 0;
     (p->s).level = lv;
@@ -54,7 +54,7 @@ void CreateResistanceBaseElevator2(struct Solid* e, u8 r1, u8 lv) {
     INIT_SOLID_ROUTINE(p, SOLID_BASE_ELEVATOR);
     (p->s).tileNum = 0;
     (p->s).palID = 0;
-    (p->s).flags2 |= ENTITY_FLAGS2_B4;
+    (p->s).flags2 |= WHITE_PAINTABLE;
     (p->s).invincibleID = (p->s).uniqueID;
     (p->s).unk_28 = &e->s;
     (p->s).work[0] = r1;
@@ -108,13 +108,13 @@ static void BaseElevator_Disappear(struct Solid* p) {
 WIP static void rBase_080cfd4c(struct Solid* p) {
 #if MODERN
   if (p->props.rbe.skin == ELEVATOR_DEFAULT) {
-    LOAD_STATIC_GRAPHIC(115);
+    LOAD_STATIC_GRAPHIC(SM115_ELEVATOR);
   }
   if (p->props.rbe.skin == ELEVATOR_WOOD) {
-    LOAD_STATIC_GRAPHIC(137);
+    LOAD_STATIC_GRAPHIC(SM137_ELEVATOR_WOOD);
   }
   if (p->props.rbe.skin == ELEVATOR_MMX) {
-    LOAD_STATIC_GRAPHIC(138);
+    LOAD_STATIC_GRAPHIC(SM138_ELEVATOR_MMX);
   }
 
   InitNonAffineMotion(&p->s);
@@ -140,7 +140,7 @@ WIP static void rBase_080cfd4c(struct Solid* p) {
   gOverworld.unk_1c8.disableArea[3] = 0x280000;
   p->props.rbe.unk_c0 = 0;
   p->props.rbe.unk_c1 = 5;
-  SET_SOLID_ROUTINE(p, ENTITY_MAIN);
+  SET_SOLID_ROUTINE(p, ENTITY_UPDATE);
   BaseElevator_Update(p);
 #else
   INCCODE("asm/wip/rBase_080cfd4c.inc");

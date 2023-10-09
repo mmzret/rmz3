@@ -866,15 +866,15 @@ static void LayerUpdate_SpaceCraft_5(struct StageLayer* l, const struct Stage* _
 
 void omegaWhite_0800bd24(struct Boss* p) { gOverworld.work.spacecraft.omega = p; }
 
+// For Iceblock
 WIP bool16 FUN_0800bd38(s32 x, s32 y) {
 #if MODERN
   s16 mx = METACOORD(x) - 1;
   s16 my = METACOORD(y) - 1;
   struct MetatileMap* tm = (struct MetatileMap*)gOverworld.unk_1c8.tilemap;
-  metatile_id_t id1 = tm->map[my * tm->width + mx];
-  metatile_id_t id2 = tm->map[my * tm->width + mx + 120];
-  u32 val = (id1 ^ id2);
-  return (-val) >> 31;
+  metatile_id_t a = tm->map[my * tm->width + mx];
+  metatile_id_t b = tm->map[my * tm->width + mx + 120];
+  return ((u32)(-(a ^ b) | (a ^ b))) >> 31;
 #else
   INCCODE("asm/wip/FUN_0800bd38.inc");
 #endif

@@ -73,7 +73,7 @@ struct NecroProps {
   u8 unk_06[10];
 };
 
-struct SeaEnemyProps {
+struct BubbleProps {
   u8 unk_0[4];
   s32 unk_4;
   u8 unk_8[8];
@@ -83,13 +83,14 @@ struct VFX {
   struct Entity s;
   union {
     u8 raw[16];
-    struct SeaEnemyProps seaEnemy;
+    struct BubbleProps bubble;
     struct AfterImageProps afterImage;
     struct NecroProps necro;
     struct SnowProps snow;
     struct ElementalEffectProps ee;
     struct Unk7Props unk7;
     struct Unk8Props unk8;
+    struct Unk28Props vfx21;
     struct Unk25Props unk25;
     struct Unk28Props unk28;
     struct Unk32Props unk32;

@@ -14,7 +14,7 @@ void Solid27_Die(struct Solid* p);
 // clang-format off
 const SolidRoutine gSolid27Routine = {
     [ENTITY_INIT] =      Solid27_Init,
-    [ENTITY_MAIN] =      Solid27_Update,
+    [ENTITY_UPDATE] =    Solid27_Update,
     [ENTITY_DIE] =       Solid27_Die,
     [ENTITY_DISAPPEAR] = DeleteSolid,
     [ENTITY_EXIT] =      (SolidFunc)DeleteEntity,

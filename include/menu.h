@@ -65,7 +65,10 @@ struct MenuState {
   struct ExSkillMenuState exskill;
   struct KeyConfigMenuState kc;
   struct ElfMenuState elf;
-  u8 unk_40[12];
+  u8 unk_40[8];
+  cyberelf_t satelites[2];
+  u8 unk_4a;
+  u8 unk_4b;
   u8 unk_4c;
   u8 unk_4d;
   u8 unk_4e[178];

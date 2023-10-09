@@ -96,7 +96,7 @@ static void Buster_Init(struct Weapon *w) {
   struct Body *body;
   BodyFunc fn;
 
-  SET_WEAPON_ROUTINE(w, ENTITY_MAIN);
+  SET_WEAPON_ROUTINE(w, ENTITY_UPDATE);
   (sInitalizer[(w->s).work[0]])(w);
   b4 = (struct Buster_b4 *)&w->unk_b4;
   b4->props[0] = 0;
@@ -223,9 +223,9 @@ WIP static void initLemonBullet(struct Weapon *w) {
 #endif
 }
 
-WIP static void initSemiBullet(struct Weapon *w) {
-#if MODERN
+static void initSemiBullet(struct Weapon *w) {
   bool16 isVShot;
+  u8 atk, element;
   struct Body *body;
   struct Weapon_b4 *b4 = &w->unk_b4;
   struct Zero *z = b4->z;
@@ -235,28 +235,37 @@ WIP static void initSemiBullet(struct Weapon *w) {
 
   (w->s).flags |= DISPLAY;
   (w->s).flags |= FLIPABLE;
-  SetMotion(&w->s, MOTION(0x86, 0x00));
+  SetMotion(&w->s, MOTION(DM134_UNK, 0));
   PlaySound(SE_CHARGE_BUSTER);
 
+  element = b4->props[1][1];
   isVShot = FALSE;
-  if (b4->props[1][1] == ELEMENT_THUNDER) {
-    isVShot = (((z->unk_b4).status).exSkill & (1 << EXSKILL_ID_VSHOT)) >> 1;
+  if (element == ELEMENT_THUNDER) {
+    isVShot = (((&z->unk_b4)->status).exSkill & (1 << EXSKILL_ID_VSHOT)) >> EXSKILL_ID_VSHOT;
   }
 
   if ((w->s).flags & X_FLIP) {
     (w->s).d.x = PIXEL(6);
-  } else {
-    (w->s).d.x = -PIXEL(6);
-  }
-
-  if (isVShot) {
-    if ((w->s).flags & Y_FLIP) {
-      (w->s).d.x = 0x180;
+    if (isVShot) {
+      if ((w->s).flags & Y_FLIP) {
+        (w->s).d.y = 0x180;
+      } else {
+        (w->s).d.y = -0x180;
+      }
     } else {
-      (w->s).d.x = -0x180;
+      (w->s).d.y = 0;
     }
   } else {
-    (w->s).d.y = 0;
+    (w->s).d.x = -PIXEL(6);
+    if (isVShot) {
+      if ((w->s).flags & Y_FLIP) {
+        (w->s).d.y = 0x180;
+      } else {
+        (w->s).d.y = -0x180;
+      }
+    } else {
+      (w->s).d.y = 0;
+    }
   }
 
   (w->s).flags |= COLLIDABLE;
@@ -266,10 +275,8 @@ WIP static void initSemiBullet(struct Weapon *w) {
   body->parent = (struct CollidableEntity *)w;
   body->fn = NULL;
 
-  InitWeaponBody(body, gSemiBulletCollisions, (u8)(CalcBusterBonus(z) + 6), -1, -1, -1);
-#else
-  INCCODE("asm/wip/initSemiBullet.inc");
-#endif
+  atk = 6 + CalcBusterBonus(z);
+  InitWeaponBody(body, gSemiBulletCollisions, atk, -1, -1, -1);
 }
 
 NAKED static void initFullBullet(struct Weapon *w) {

@@ -12,7 +12,7 @@ static void Lemon_Die(struct Projectile *p);
 // clang-format off
 const ProjectileRoutine gLemonRoutine = {
     [ENTITY_INIT] =      Lemon_Init,
-    [ENTITY_MAIN] =      Lemon_Update,
+    [ENTITY_UPDATE] =    Lemon_Update,
     [ENTITY_DIE] =       Lemon_Die,
     [ENTITY_DISAPPEAR] = DeleteProjectile,
     [ENTITY_EXIT] =      (ProjectileFunc)DeleteEntity,
@@ -112,7 +112,7 @@ static void Lemon_Init(struct Projectile *p) {
   INIT_BODY(p, sCollisions, 0, NULL);
   SetMotion(&p->s, MOTION(SM002_LEMON, 0));
   (p->s).work[2] = 0xFF;
-  SET_PROJECTILE_ROUTINE(p, ENTITY_MAIN);
+  SET_PROJECTILE_ROUTINE(p, ENTITY_UPDATE);
   Lemon_Update(p);
 }
 

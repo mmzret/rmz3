@@ -50,7 +50,7 @@ _080D8CE8:
 	movs r0, #8
 	orrs r0, r1
 	strb r0, [r4, #0xb]
-	ldr r0, _080D8D88 @ =0x083710D8
+	ldr r0, _080D8D88 @ =sSize
 	str r0, [r4, #0x30]
 	ldr r0, _080D8D8C @ =0x00003801
 	strh r0, [r4, #0x26]
@@ -102,7 +102,7 @@ _080D8D4C:
 	str r0, [r4, #0x60]
 	adds r0, r4, #0
 	adds r0, #0x74
-	ldr r1, _080D8D94 @ =0x083710C0
+	ldr r1, _080D8D94 @ =sCollisions+24
 	bl SetDDP
 	ldr r1, _080D8D98 @ =0x0000CB01
 	adds r0, r4, #0
@@ -118,10 +118,10 @@ _080D8D78: .4byte gStageRun+232
 _080D8D7C: .4byte 0x000077FF
 _080D8D80: .4byte 0xFFFF8800
 _080D8D84: .4byte 0xFFFF6800
-_080D8D88: .4byte 0x083710D8
+_080D8D88: .4byte sSize
 _080D8D8C: .4byte 0x00003801
 _080D8D90: .4byte 0x000006FF
-_080D8D94: .4byte 0x083710C0
+_080D8D94: .4byte sCollisions+24
 _080D8D98: .4byte 0x0000CB01
 _080D8D9C:
 	adds r0, r4, #0
@@ -134,7 +134,7 @@ _080D8D9C:
 	bne _080D8DC0
 	adds r0, r4, #0
 	adds r0, #0x74
-	ldr r1, _080D8DEC @ =0x083710A8
+	ldr r1, _080D8DEC @ =sCollisions
 	bl SetDDP
 	movs r0, #1
 	strb r0, [r4, #0x10]
@@ -161,7 +161,7 @@ _080D8DC0:
 	bl SetMotion
 	b _080D8E22
 	.align 2, 0
-_080D8DEC: .4byte 0x083710A8
+_080D8DEC: .4byte sCollisions
 _080D8DF0: .4byte 0x0000CB01
 _080D8DF4:
 	movs r1, #0

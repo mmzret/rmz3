@@ -79,7 +79,7 @@ WIP void RunDamageEffect(struct EntityHeader *h) {
   h->last = h->last->prev;
   p = (struct CollidableEntity *)h->last;
   while (p != (struct CollidableEntity *)&h->next) {
-    if (((p->s).flags & COLLIDABLE) && ((p->s).flags2 & ENTITY_FLAGS2_B4)) {
+    if (((p->s).flags & COLLIDABLE) && ((p->s).flags2 & WHITE_PAINTABLE)) {
       if (((p->body).status & BODY_STATUS_WHITE) || ((p->body).prevStatus & 1) || ((p->body).invincibleTime & 2)) {
         gWhitePaintFlags[(p->s).invincibleID >> 5] |= (1 << ((p->s).invincibleID & 0x1F));
       }

@@ -11,7 +11,7 @@ void Blizzack_Die(struct Boss* p);
 // clang-format off
 const BossRoutine gBlizzackRoutine = {
     [ENTITY_INIT] =      Blizzack_Init,
-    [ENTITY_MAIN] =      Blizzack_Update,
+    [ENTITY_UPDATE] =    Blizzack_Update,
     [ENTITY_DIE] =       Blizzack_Die,
     [ENTITY_DISAPPEAR] = DeleteBoss,
     [ENTITY_EXIT] =      (BossFunc)DeleteEntity,

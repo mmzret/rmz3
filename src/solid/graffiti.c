@@ -11,7 +11,7 @@ void Solid49_Die(struct Solid* p);
 // clang-format off
 const SolidRoutine gGraffitiRoutine = {
     [ENTITY_INIT] =      Solid49_Init,
-    [ENTITY_MAIN] =      Solid49_Update,
+    [ENTITY_UPDATE] =    Solid49_Update,
     [ENTITY_DIE] =       Solid49_Die,
     [ENTITY_DISAPPEAR] = DeleteSolid,
     [ENTITY_EXIT] =      (SolidFunc)DeleteEntity,

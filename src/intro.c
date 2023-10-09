@@ -1215,8 +1215,8 @@ NAKED static void intro_080ed108(struct Intro* p) { INCCODE("asm/todo/intro_080e
 
 static void intro_080ed1d4(struct Intro* p) {
   InitMotionLocation();
-  LOAD_STATIC_GRAPHIC(149);
-  LOAD_STATIC_GRAPHIC(150);
+  LOAD_STATIC_GRAPHIC(SM149_MEGAMAN_LOGO);
+  LOAD_STATIC_GRAPHIC(SM150_Z_LOGO);
   p->unk_240 = 0;
   p->unk_243 = 10;
 }

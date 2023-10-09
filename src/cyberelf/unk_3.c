@@ -12,7 +12,7 @@ void Elf3_Die(struct Elf *p);
 // clang-format off
 const ElfRoutine gElf3Routine = {
     [ENTITY_INIT] =      Elf3_Init,
-    [ENTITY_MAIN] =      Elf3_Update,
+    [ENTITY_UPDATE] =    Elf3_Update,
     [ENTITY_DIE] =       Elf3_Die,
     [ENTITY_DISAPPEAR] = DeleteElf,
     [ENTITY_EXIT] =      (ElfFunc)DeleteEntity,

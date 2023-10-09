@@ -299,7 +299,7 @@ _0805481A:
 	adds r0, #0x54
 	movs r1, #0
 	movs r2, #2
-	bl CreateEnemy14
+	bl CreateTopGabyoall
 	adds r1, r7, #0
 	adds r1, #0xc0
 	str r0, [r1]
@@ -313,14 +313,14 @@ _0805481A:
 	mov r0, sp
 	movs r1, #2
 	movs r2, #2
-	bl CreateEnemy14
+	bl CreateTopGabyoall
 	adds r1, r7, #0
 	adds r1, #0xc4
 	str r0, [r1]
 	mov r0, sp
 	movs r1, #3
 	movs r2, #2
-	bl CreateEnemy14
+	bl CreateTopGabyoall
 	adds r1, r7, #0
 	adds r1, #0xc8
 	str r0, [r1]

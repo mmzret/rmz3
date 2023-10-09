@@ -1,0 +1,139 @@
+{
+  "label": "gStaticAnimationSequence_deathtanz_projectile",
+  "data": [
+    [
+      {
+        "frameIdx": 0,
+        "duration": 1
+      },
+      {
+        "frameIdx": 1,
+        "duration": 2
+      },
+      {
+        "frameIdx": 0,
+        "duration": 1
+      },
+      {
+        "frameIdx": 1,
+        "duration": 2
+      },
+      {
+        "frameIdx": 0,
+        "duration": 1
+      },
+      {
+        "frameIdx": 1,
+        "duration": 2
+      },
+      {
+        "frameIdx": 2,
+        "duration": 1
+      },
+      {
+        "frameIdx": 3,
+        "duration": 2
+      },
+      {
+        "frameIdx": 4,
+        "duration": 1
+      },
+      {
+        "frameIdx": 5,
+        "duration": 2
+      },
+      {
+        "frameIdx": 6,
+        "duration": 1
+      },
+      {
+        "frameIdx": 7,
+        "duration": 2
+      },
+      {
+        "frameIdx": 0,
+        "duration": 255
+      }
+    ],
+    [
+      {
+        "frameIdx": 11,
+        "duration": 2
+      },
+      {
+        "frameIdx": 10,
+        "duration": 1
+      },
+      {
+        "frameIdx": 9,
+        "duration": 2
+      },
+      {
+        "frameIdx": 8,
+        "duration": 1
+      },
+      {
+        "frameIdx": 0,
+        "duration": 254
+      }
+    ],
+    [
+      {
+        "frameIdx": 12,
+        "duration": 2
+      },
+      {
+        "frameIdx": 13,
+        "duration": 2
+      },
+      {
+        "frameIdx": 0,
+        "duration": 255
+      }
+    ],
+    [
+      {
+        "frameIdx": 13,
+        "duration": 2
+      },
+      {
+        "frameIdx": 12,
+        "duration": 2
+      },
+      {
+        "frameIdx": 0,
+        "duration": 255
+      }
+    ],
+    [
+      {
+        "frameIdx": 14,
+        "duration": 2
+      },
+      {
+        "frameIdx": 15,
+        "duration": 2
+      },
+      {
+        "frameIdx": 14,
+        "duration": 2
+      },
+      {
+        "frameIdx": 15,
+        "duration": 2
+      },
+      {
+        "frameIdx": 16,
+        "duration": 2
+      },
+      {
+        "frameIdx": 17,
+        "duration": 2
+      },
+      {
+        "frameIdx": 4,
+        "duration": 254
+      }
+    ]
+  ]
+}

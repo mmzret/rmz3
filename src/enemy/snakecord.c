@@ -11,7 +11,7 @@ void Snakecord_Die(struct Enemy* p);
 // clang-format off
 const EnemyRoutine gSnakecordRoutine = {
     [ENTITY_INIT] =      Snakecord_Init,
-    [ENTITY_MAIN] =      Snakecord_Update,
+    [ENTITY_UPDATE] =    Snakecord_Update,
     [ENTITY_DIE] =       Snakecord_Die,
     [ENTITY_DISAPPEAR] = DeleteEnemy,
     [ENTITY_EXIT] =      (EnemyFunc)DeleteEntity,

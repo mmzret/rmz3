@@ -13,7 +13,7 @@ static void Projectile2_Die(struct Projectile* p);
 // clang-format off
 const ProjectileRoutine gProjectile2Routine = {
     [ENTITY_INIT] =      Projectile2_Init,
-    [ENTITY_MAIN] =      Projectile2_Update,
+    [ENTITY_UPDATE] =    Projectile2_Update,
     [ENTITY_DIE] =       Projectile2_Die,
     [ENTITY_DISAPPEAR] = DeleteProjectile,
     [ENTITY_EXIT] =      (ProjectileFunc)DeleteEntity,

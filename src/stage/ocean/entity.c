@@ -8,19 +8,14 @@ const struct EntityTemplate gOceanEntity[31] = {
         {
             0,
             ENTITY_PLAYER,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
+            PLAYER_ZERO,
         },
     [1] =
         {
             2,
             ENTITY_ITEM,
-            0,
-            1,
+            ITEM_GENERAL,
+            ITEM_LIFE_M,
             2,
             0,
             0,
@@ -30,8 +25,8 @@ const struct EntityTemplate gOceanEntity[31] = {
         {
             2,
             ENTITY_ITEM,
-            0,
-            2,
+            ITEM_GENERAL,
+            ITEM_LIFE_L,
             2,
             0,
             0,
@@ -41,8 +36,8 @@ const struct EntityTemplate gOceanEntity[31] = {
         {
             2,
             ENTITY_ITEM,
-            0,
-            4,
+            ITEM_GENERAL,
+            ITEM_EC_L,
             2,
             0,
             0,
@@ -52,8 +47,8 @@ const struct EntityTemplate gOceanEntity[31] = {
         {
             2,
             ENTITY_ITEM,
-            0,
-            5,
+            ITEM_GENERAL,
+            ITEM_EXLIFE,
             2,
             0,
             0,
@@ -85,7 +80,7 @@ const struct EntityTemplate gOceanEntity[31] = {
         {
             1,
             ENTITY_SOLID,
-            0,
+            SOLID_ICEBON,
             0,
             0,
             1,
@@ -96,7 +91,7 @@ const struct EntityTemplate gOceanEntity[31] = {
         {
             1,
             ENTITY_ENEMY,
-            15,
+            ENEMY_SHARKSEAL_X,
             0,
             0,
             1,
@@ -107,7 +102,7 @@ const struct EntityTemplate gOceanEntity[31] = {
         {
             1,
             ENTITY_ENEMY,
-            18,
+            ENEMY_P_AQUA,
             0,
             0,
             1,
@@ -118,7 +113,7 @@ const struct EntityTemplate gOceanEntity[31] = {
         {
             1,
             ENTITY_SOLID,
-            4,
+            SOLID_UNK_004,
             1,
             0,
             1,
@@ -129,7 +124,7 @@ const struct EntityTemplate gOceanEntity[31] = {
         {
             1,
             ENTITY_SOLID,
-            4,
+            SOLID_UNK_004,
             0,
             0,
             0,
@@ -140,7 +135,7 @@ const struct EntityTemplate gOceanEntity[31] = {
         {
             1,
             ENTITY_ENEMY,
-            26,
+            ENEMY_SHELLUNO,
             0,
             0,
             1,
@@ -151,7 +146,7 @@ const struct EntityTemplate gOceanEntity[31] = {
         {
             1,
             ENTITY_SOLID,
-            SOLID_DOOR_2D_GRAY,
+            SOLID_DOOR_2D_GRAY_V,
             2,
             0,
             0,
@@ -162,7 +157,7 @@ const struct EntityTemplate gOceanEntity[31] = {
         {
             1,
             ENTITY_SOLID,
-            SOLID_DOOR_2D_GRAY,
+            SOLID_DOOR_2D_GRAY_V,
             0,
             0,
             0,
@@ -173,7 +168,7 @@ const struct EntityTemplate gOceanEntity[31] = {
         {
             1,
             ENTITY_SOLID,
-            SOLID_DOOR_2D_GRAY,
+            SOLID_DOOR_2D_GRAY_V,
             1,
             0,
             0,
@@ -184,7 +179,7 @@ const struct EntityTemplate gOceanEntity[31] = {
         {
             2,
             ENTITY_ITEM,
-            1,
+            ITEM_DISK,
             5,
             2,
             0,
@@ -195,7 +190,7 @@ const struct EntityTemplate gOceanEntity[31] = {
         {
             2,
             ENTITY_ITEM,
-            1,
+            ITEM_DISK,
             9,
             2,
             0,
@@ -206,7 +201,7 @@ const struct EntityTemplate gOceanEntity[31] = {
         {
             2,
             ENTITY_ITEM,
-            1,
+            ITEM_DISK,
             49,
             2,
             0,
@@ -217,7 +212,7 @@ const struct EntityTemplate gOceanEntity[31] = {
         {
             2,
             ENTITY_ITEM,
-            1,
+            ITEM_DISK,
             75,
             2,
             0,
@@ -228,8 +223,8 @@ const struct EntityTemplate gOceanEntity[31] = {
         {
             2,
             ENTITY_ITEM,
-            0,
-            0,
+            ITEM_GENERAL,
+            ITEM_LIFE_S,
             0,
             0,
             0,
@@ -239,7 +234,7 @@ const struct EntityTemplate gOceanEntity[31] = {
         {
             2,
             ENTITY_SOLID,
-            35,
+            SOLID_CONTAINER,
             1,
             59,
             0,
@@ -250,7 +245,7 @@ const struct EntityTemplate gOceanEntity[31] = {
         {
             2,
             ENTITY_SOLID,
-            35,
+            SOLID_CONTAINER,
             1,
             113,
             0,
@@ -261,7 +256,7 @@ const struct EntityTemplate gOceanEntity[31] = {
         {
             2,
             ENTITY_SOLID,
-            35,
+            SOLID_CONTAINER,
             1,
             254,
             0,
@@ -272,7 +267,7 @@ const struct EntityTemplate gOceanEntity[31] = {
         {
             2,
             ENTITY_SOLID,
-            35,
+            SOLID_CONTAINER,
             1,
             255,
             0,
@@ -283,7 +278,7 @@ const struct EntityTemplate gOceanEntity[31] = {
         {
             1,
             ENTITY_SOLID,
-            31,
+            SOLID_CYBERSPACE_DOOR,
             0,
             0,
             0,
@@ -294,7 +289,7 @@ const struct EntityTemplate gOceanEntity[31] = {
         {
             1,
             ENTITY_SOLID,
-            31,
+            SOLID_CYBERSPACE_DOOR,
             1,
             0,
             0,
@@ -305,7 +300,7 @@ const struct EntityTemplate gOceanEntity[31] = {
         {
             1,
             ENTITY_SOLID,
-            53,
+            SOLID_OCEAN_ROD_WALL,
             0,
             0,
             0,
@@ -316,7 +311,7 @@ const struct EntityTemplate gOceanEntity[31] = {
         {
             1,
             ENTITY_SOLID,
-            4,
+            SOLID_UNK_004,
             3,
             0,
             0,
@@ -327,7 +322,7 @@ const struct EntityTemplate gOceanEntity[31] = {
         {
             1,
             ENTITY_SOLID,
-            4,
+            SOLID_UNK_004,
             5,
             0,
             0,
@@ -349,7 +344,7 @@ const struct EntityTemplate gOceanEntity[31] = {
 
 const struct PreloadEntity gOceanStatic[17] = {
     {
-        122,
+        SM122_DOOR_2D_GRAY_V,
         0,
         480,
         2,
@@ -358,7 +353,7 @@ const struct PreloadEntity gOceanStatic[17] = {
         0,
     },
     {
-        53,
+        SM053_SHELLUNO,
         7,
         512,
         4,
@@ -367,7 +362,7 @@ const struct PreloadEntity gOceanStatic[17] = {
         0,
     },
     {
-        24,
+        SM024_SHARKSEAL_X,
         7,
         558,
         5,
@@ -376,7 +371,7 @@ const struct PreloadEntity gOceanStatic[17] = {
         0,
     },
     {
-        39,
+        SM039_PANTHEON_AQUA,
         7,
         648,
         6,
@@ -385,7 +380,7 @@ const struct PreloadEntity gOceanStatic[17] = {
         0,
     },
     {
-        182,
+        SM182_UNK,
         1,
         744,
         7,
@@ -394,7 +389,7 @@ const struct PreloadEntity gOceanStatic[17] = {
         1,
     },
     {
-        61,
+        SM061_UNK,
         7,
         558,
         13,
@@ -403,7 +398,7 @@ const struct PreloadEntity gOceanStatic[17] = {
         0,
     },
     {
-        65,
+        SM065_PUFFY,
         7,
         587,
         5,
@@ -412,7 +407,7 @@ const struct PreloadEntity gOceanStatic[17] = {
         0,
     },
     {
-        66,
+        SM066_PUFFY_BUBBLE,
         7,
         617,
         6,
@@ -421,7 +416,7 @@ const struct PreloadEntity gOceanStatic[17] = {
         0,
     },
     {
-        183,
+        SM183_CHILDRE_SHIP_SONIC_WAVE,
         7,
         891,
         14,
@@ -430,7 +425,7 @@ const struct PreloadEntity gOceanStatic[17] = {
         0,
     },
     {
-        181,
+        SM181_SEA_LEVEL_BUTTON,
         7,
         899,
         10,
@@ -439,7 +434,7 @@ const struct PreloadEntity gOceanStatic[17] = {
         1,
     },
     {
-        180,
+        SM180_CHILDRE_SHIP,
         0,
         911,
         10,
@@ -448,7 +443,7 @@ const struct PreloadEntity gOceanStatic[17] = {
         0,
     },
     {
-        16,
+        SM016_ICEBON,
         6,
         744,
         7,
@@ -457,7 +452,7 @@ const struct PreloadEntity gOceanStatic[17] = {
         0,
     },
     {
-        17,
+        SM017_ICEBON_ICE,
         6,
         783,
         8,
@@ -466,7 +461,7 @@ const struct PreloadEntity gOceanStatic[17] = {
         0,
     },
     {
-        45,
+        SM045_MINE,
         6,
         848,
         9,
@@ -475,7 +470,7 @@ const struct PreloadEntity gOceanStatic[17] = {
         1,
     },
     {
-        39,
+        SM039_PANTHEON_AQUA,
         64,
         512,
         4,
@@ -484,7 +479,7 @@ const struct PreloadEntity gOceanStatic[17] = {
         0,
     },
     {
-        221,
+        SM221_METTAUR,
         63,
         648,
         6,

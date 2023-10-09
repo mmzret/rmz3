@@ -11,7 +11,7 @@ void CapsuleCannon_Die(struct Enemy* p);
 // clang-format off
 const EnemyRoutine gCapsuleCannonRoutine = {
     [ENTITY_INIT] =      CapsuleCannon_Init,
-    [ENTITY_MAIN] =      CapsuleCannon_Update,
+    [ENTITY_UPDATE] =    CapsuleCannon_Update,
     [ENTITY_DIE] =       CapsuleCannon_Die,
     [ENTITY_DISAPPEAR] = DeleteEnemy,
     [ENTITY_EXIT] =      (EnemyFunc)DeleteEntity,

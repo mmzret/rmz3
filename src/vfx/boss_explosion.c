@@ -1,4 +1,3 @@
-#include "entity.h"
 #include "global.h"
 #include "vfx.h"
 
@@ -21,7 +20,7 @@ void BossExplosion_Die(struct VFX *p);
 // clang-format off
 const VFXRoutine gBossExplosionRoutine = {
     [ENTITY_INIT] =      BossExplosion_Init,
-    [ENTITY_MAIN] =      BossExplosion_Update,
+    [ENTITY_UPDATE] =    BossExplosion_Update,
     [ENTITY_DIE] =       BossExplosion_Die,
     [ENTITY_DISAPPEAR] = DeleteVFX,
     [ENTITY_EXIT] =      (VFXFunc)DeleteEntity,
@@ -53,7 +52,7 @@ NON_MATCH static void initFireball(struct VFX *p) {
   (p->s).flags |= DISPLAY;
   ResetDynamicMotion(&p->s);
   (p->s).flags |= FLIPABLE;
-  SetMotion(&p->s, MOTION(0xC7, 0x00));
+  SetMotion(&p->s, MOTION(DM199_BOSS_EXPLOSION, 0));
   UpdateMotionGraphic(&p->s);
   (p->s).flags &= ~X_FLIP;
   (p->s).spr.xflip = FALSE;
@@ -61,7 +60,7 @@ NON_MATCH static void initFireball(struct VFX *p) {
   (p->s).spr.oam.priority = 1;
   (p->s).spr.mag.y = (p->s).spr.mag.x = 0x10;
   (p->s).angle = 0;
-  SET_VFX_ROUTINE(p, ENTITY_MAIN);
+  SET_VFX_ROUTINE(p, ENTITY_UPDATE);
   BossExplosion_Update(p);
 #else
   INCCODE("asm/wip/initFireball.inc");

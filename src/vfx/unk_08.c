@@ -11,7 +11,7 @@ void Ghost8_Die(struct VFX* p);
 // clang-format off
 const VFXRoutine gGhost8Routine = {
     [ENTITY_INIT] =      Ghost8_Init,
-    [ENTITY_MAIN] =      Ghost8_Update,
+    [ENTITY_UPDATE] =    Ghost8_Update,
     [ENTITY_DIE] =       Ghost8_Die,
     [ENTITY_DISAPPEAR] = DeleteVFX,
     [ENTITY_EXIT] =      (VFXFunc)DeleteEntity,

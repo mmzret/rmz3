@@ -9,7 +9,7 @@ static void Ghost9_Die(struct VFX* p);
 // clang-format off
 const VFXRoutine gThunderEffectRoutine = {
     [ENTITY_INIT] =      Ghost9_Init,
-    [ENTITY_MAIN] =      Ghost9_Update,
+    [ENTITY_UPDATE] =    Ghost9_Update,
     [ENTITY_DIE] =       Ghost9_Die,
     [ENTITY_DISAPPEAR] = DeleteVFX,
     [ENTITY_EXIT] =      (VFXFunc)DeleteEntity,
@@ -37,7 +37,7 @@ static void Ghost9_Init(struct VFX* p) {
   InitNonAffineMotion(&p->s);
   SetMotion(&p->s, MOTION(SM026_THUNDER_EFFECT, 5));
   (p->s).flags |= DISPLAY;
-  SET_VFX_ROUTINE(p, ENTITY_MAIN);
+  SET_VFX_ROUTINE(p, ENTITY_UPDATE);
   Ghost9_Update(p);
 }
 

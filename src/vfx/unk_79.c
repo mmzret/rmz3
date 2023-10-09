@@ -11,7 +11,7 @@ static void Ghost79_Die(struct VFX *p);
 // clang-format off
 const VFXRoutine gGhost79Routine = {
     [ENTITY_INIT] =      Ghost79_Init,
-    [ENTITY_MAIN] =      Ghost79_Update,
+    [ENTITY_UPDATE] =    Ghost79_Update,
     [ENTITY_DIE] =       Ghost79_Die,
     [ENTITY_DISAPPEAR] = DeleteVFX,
     [ENTITY_EXIT] =      (VFXFunc)DeleteEntity,
@@ -269,7 +269,7 @@ _080C8FA8:\n\
 
 NON_MATCH static void FUN_080c8fc8(struct VFX *p) {
 #if MODERN
-  SET_VFX_ROUTINE(p, ENTITY_MAIN);
+  SET_VFX_ROUTINE(p, ENTITY_UPDATE);
   InitNonAffineMotion(&p->s);
   (p->s).flags |= FLIPABLE;
   (p->s).flags &= ~X_FLIP;

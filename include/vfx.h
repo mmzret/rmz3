@@ -47,7 +47,7 @@
 
 extern const VFXRoutine *const gVFXFnTable[85];
 extern const VFXRoutine gSmokeRoutine;
-extern const VFXRoutine gSeaEnemyRoutine;
+extern const VFXRoutine gBubbleRoutine;
 extern const VFXRoutine gChargeEffectRoutine;
 extern const VFXRoutine gZeroDeathEffectRoutine;
 extern const VFXRoutine gParticleRoutine;
@@ -65,7 +65,7 @@ extern const VFXRoutine gGhost17Routine;
 extern const VFXRoutine gGhost18Routine;
 extern const VFXRoutine gGhost19Routine;
 extern const VFXRoutine gGhost20Routine;
-extern const VFXRoutine gGhost21Routine;
+extern const VFXRoutine gBatringNecroRoutine;
 extern const VFXRoutine gGhost22Routine;
 extern const VFXRoutine gNecroRoutine;
 extern const VFXRoutine gShrimporinVFXRoutine;
@@ -145,5 +145,6 @@ struct VFX *CreateExlifeIndicator(u8 extraLife);
 struct VFX *CreateMissionAlert(u8 kind);
 struct VFX *CreateSlashedEnemy(struct Coord *c, const struct SlashedEnemy *data, u8 r2, u8 r3);
 struct VFX *FUN_080bfce8(struct Coord *c, u8 r1);
+struct VFX *CreateBossExplosion(struct Boss *boss, struct Coord *c);
 
 #endif  // GUARD_RMZ3_VFX_H

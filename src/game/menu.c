@@ -1,13 +1,14 @@
 #include "menu.h"
 
 #include "cyberelf.h"
-#include "entity.h"
 #include "game.h"
 #include "gfx.h"
 #include "global.h"
 #include "sprite.h"
 #include "weapon.h"
 #include "zero.h"
+
+static const MenuLoopFunc gEachMenuLoops[4];
 
 static void menu_080f394c(struct GameState *g);
 static void menu_080f39a8(struct GameState *m);
@@ -18,100 +19,28 @@ void MainLoop_Menu(struct GameState *m) {
 }
 
 // 01 00 xx xx
-NAKED void MenuLoop_InitMenu(struct GameState *m) {
-  asm(".syntax unified\n\
-	push {r4, r5, r6, lr}\n\
-	mov r6, r8\n\
-	push {r6}\n\
-	adds r4, r0, #0\n\
-	ldr r1, _080F3690 @ =0x000064AC\n\
-	adds r0, r4, r1\n\
-	ldr r3, [r0]\n\
-	movs r2, #0\n\
-	mov r8, r2\n\
-	movs r6, #0\n\
-	strh r6, [r4, #4]\n\
-	adds r2, r3, #0\n\
-	adds r2, #0xb4\n\
-	ldrb r1, [r2, #0xc]\n\
-	ldr r5, _080F3694 @ =0x00000E12\n\
-	adds r0, r4, r5\n\
-	strb r1, [r0]\n\
-	ldrb r1, [r2, #0xd]\n\
-	adds r5, #1\n\
-	adds r0, r4, r5\n\
-	strb r1, [r0]\n\
-	ldrb r1, [r2, #0xe]\n\
-	adds r5, #3\n\
-	adds r0, r4, r5\n\
-	strb r1, [r0]\n\
-	adds r3, #0xd9\n\
-	ldrb r1, [r3]\n\
-	ldr r3, _080F3698 @ =0x00000E1E\n\
-	adds r0, r4, r3\n\
-	strb r1, [r0]\n\
-	ldrb r1, [r2]\n\
-	subs r5, #2\n\
-	adds r0, r4, r5\n\
-	strb r1, [r0]\n\
-	ldrb r1, [r2, #1]\n\
-	ldr r2, _080F369C @ =0x00000E15\n\
-	adds r0, r4, r2\n\
-	strb r1, [r0]\n\
-	subs r3, #2\n\
-	adds r1, r4, r3\n\
-	movs r0, #0xff\n\
-	strb r0, [r1]\n\
-	ldr r0, _080F36A0 @ =0x00000E18\n\
-	adds r5, r4, r0\n\
-	mov r1, r8\n\
-	strb r1, [r5]\n\
-	adds r0, r4, #0\n\
-	bl menu_080f394c\n\
-	ldr r2, _080F36A4 @ =gVideoRegBuffer\n\
-	ldrh r1, [r2]\n\
-	ldr r0, _080F36A8 @ =0x0000FFF8\n\
-	ands r0, r1\n\
-	ldr r1, _080F36AC @ =0x0000F0FF\n\
-	ands r0, r1\n\
-	movs r3, #0x98\n\
-	lsls r3, r3, #5\n\
-	adds r1, r3, #0\n\
-	orrs r0, r1\n\
-	strh r0, [r2]\n\
-	ldr r1, _080F36B0 @ =0x00004206\n\
-	adds r0, r1, #0\n\
-	strh r0, [r2, #6]\n\
-	str r6, [r2, #0x10]\n\
-	ldr r1, _080F36B4 @ =gEachMenuLoops\n\
-	ldrb r0, [r5]\n\
-	lsls r0, r0, #2\n\
-	adds r0, r0, r1\n\
-	ldr r1, [r0]\n\
-	adds r0, r4, #0\n\
-	bl _call_via_r1\n\
-	movs r0, #1\n\
-	strb r0, [r4, #2]\n\
-	strb r0, [r4, #1]\n\
-	adds r0, r4, #0\n\
-	bl MenuLoop_OpenMenu\n\
-	pop {r3}\n\
-	mov r8, r3\n\
-	pop {r4, r5, r6}\n\
-	pop {r0}\n\
-	bx r0\n\
-	.align 2, 0\n\
-_080F3690: .4byte 0x000064AC\n\
-_080F3694: .4byte 0x00000E12\n\
-_080F3698: .4byte 0x00000E1E\n\
-_080F369C: .4byte 0x00000E15\n\
-_080F36A0: .4byte 0x00000E18\n\
-_080F36A4: .4byte gVideoRegBuffer\n\
-_080F36A8: .4byte 0x0000FFF8\n\
-_080F36AC: .4byte 0x0000F0FF\n\
-_080F36B0: .4byte 0x00004206\n\
-_080F36B4: .4byte gEachMenuLoops\n\
- .syntax divided\n");
+void MenuLoop_InitMenu(struct GameState *g) {
+  struct Zero *z;
+
+  z = g->z2;
+  g->frames = 0;
+  MENU->unk_40[6] = ((&z->unk_b4)->status).mainWeapon;
+  MENU->unk_40[7] = ((&z->unk_b4)->status).subWeapon;
+  MENU->unk_4a = ((&z->unk_b4)->status).element;
+  MENU->unk_4e[4] = ((&z->unk_b4)->status).keyMap.attackMode;
+  MENU->satelites[0] = ((&z->unk_b4)->status).asset.satelites[0];
+  MENU->satelites[1] = ((&z->unk_b4)->status).asset.satelites[1];
+  MENU->unk_4e[2] = 0xFF;
+  MENU->unk_4c = 0;
+  menu_080f394c(g);
+  gVideoRegBuffer.dispcnt &= 0xFFF8;
+  gVideoRegBuffer.dispcnt &= 0xF0FF;
+  gVideoRegBuffer.dispcnt |= 0x1300;
+  BGCNT16(1) = 0x4206;
+  *(u32 *)gVideoRegBuffer.bgofs[1] = 0;
+  (gEachMenuLoops[MENU->unk_4c])(g);
+  g->mode[1] = g->mode[2] = 1;
+  MenuLoop_OpenMenu(g);
 }
 
 // 01 01 xx xx
@@ -934,7 +863,7 @@ void close_menu_080f3d64(struct Elf *p) {
 // ------------------------------------------------------------------------------------------------------------------------------------
 
 // idx is BYTE[0x02031978]
-const MenuLoopFunc gEachMenuLoops[4] = {
+static const MenuLoopFunc gEachMenuLoops[4] = {
     EachMenuLoop_MainMenu,
     EachMenuLoop_ExSkill,
     EachMenuLoop_KeyConfig,

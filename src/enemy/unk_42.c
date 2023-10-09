@@ -11,7 +11,7 @@ void Enemy42_Die(struct Enemy* p);
 // clang-format off
 const EnemyRoutine gEnemy42Routine = {
     [ENTITY_INIT] =      Enemy42_Init,
-    [ENTITY_MAIN] =      Enemy42_Update,
+    [ENTITY_UPDATE] =    Enemy42_Update,
     [ENTITY_DIE] =       Enemy42_Die,
     [ENTITY_DISAPPEAR] = DeleteEnemy,
     [ENTITY_EXIT] =      (EnemyFunc)DeleteEntity,

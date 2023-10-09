@@ -13,7 +13,7 @@ void Leviathan_Die(struct Zero* z);
 // clang-format off
 const ZeroRoutine gLeviathanRoutine = {
   [ENTITY_INIT] =       Leviathan_Init,
-  [ENTITY_MAIN] =       Leviathan_Update,
+  [ENTITY_UPDATE] =     Leviathan_Update,
   [ENTITY_DIE]  =       Leviathan_Die,
   [ENTITY_DISAPPEAR] =  RemovePlayer,
   [ENTITY_EXIT] =       (ZeroFunc)DeleteEntity,
@@ -67,7 +67,7 @@ struct Zero* CreatePlayerLeviathan(void* p, s32 x, s32 y) {
 static void onCollision(struct Body* body UNUSED, struct Coord* r1 UNUSED, struct Coord* r2 UNUSED) { return; }
 
 static void Leviathan_Init(struct Zero* z) {
-  SET_PLAYER_ROUTINE(z, ENTITY_MAIN);
+  SET_PLAYER_ROUTINE(z, ENTITY_UPDATE);
   (z->s).mode[1] = sInitModes[(z->s).work[0]];
 
   (z->s).flags |= FLIPABLE;

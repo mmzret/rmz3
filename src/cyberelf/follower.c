@@ -10,7 +10,7 @@ static void FollowerElf_Die(struct Elf* e);
 // clang-format off
 const ElfRoutine gFollowerElfRoutine = {
     [ENTITY_INIT] =      FollowerElf_Init,
-    [ENTITY_MAIN] =      FollowerElf_Update,
+    [ENTITY_UPDATE] =    FollowerElf_Update,
     [ENTITY_DIE] =       FollowerElf_Die,
     [ENTITY_DISAPPEAR] = DeleteElf,
     [ENTITY_EXIT] =      (ElfFunc)DeleteEntity,

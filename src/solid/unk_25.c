@@ -10,7 +10,7 @@ void Solid25_Die(struct Solid* p);
 // clang-format off
 const SolidRoutine gSolid25Routine = {
     [ENTITY_INIT] =      Solid25_Init,
-    [ENTITY_MAIN] =      Solid25_Update,
+    [ENTITY_UPDATE] =    Solid25_Update,
     [ENTITY_DIE] =       Solid25_Die,
     [ENTITY_DISAPPEAR] = DeleteSolid,
     [ENTITY_EXIT] =      (SolidFunc)DeleteEntity,
@@ -33,7 +33,7 @@ static void Solid25_Init(struct Solid* p) {
   } else {
     SetMotion(&p->s, MOTION(0x7d, 0x00));
   }
-  SET_SOLID_ROUTINE(p, ENTITY_MAIN);
+  SET_SOLID_ROUTINE(p, ENTITY_UPDATE);
   Solid25_Update(p);
 }
 

@@ -16,7 +16,7 @@ void Ripple_Disappear(struct VFX* p);
 // clang-format off
 const VFXRoutine gRippleRoutine = {
     [ENTITY_INIT] =      Ripple_Init,
-    [ENTITY_MAIN] =      Ripple_Update,
+    [ENTITY_UPDATE] =    Ripple_Update,
     [ENTITY_DIE] =       Ripple_Die,
     [ENTITY_DISAPPEAR] = Ripple_Disappear,
     [ENTITY_EXIT] =      (VFXFunc)DeleteEntity,
@@ -68,7 +68,7 @@ NON_MATCH static void Ripple_Init(struct VFX* p) {
   }
   (p->s).coord.x = (z->s).coord.x;
   (p->s).coord.y = SEA;
-  SET_VFX_ROUTINE(p, ENTITY_MAIN);
+  SET_VFX_ROUTINE(p, ENTITY_UPDATE);
   Ripple_Update(p);
 #else
   INCCODE("asm/wip/Ripple_Init.inc");

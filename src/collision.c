@@ -427,6 +427,9 @@ WIP void hitbox_08007674(struct Body *a, struct Body *d) {
   if (gCollisionManager.disabled & (1 << 7)) {
     return;
   }
+  if ((a->unk_3c & *(u32 *)(&d->drp->unk_04)) == 0) {
+    return;
+  }
 
   if ((a->drp)->special == CHATABLE) {
     a->status |= BODY_STATUS_CHAT;
@@ -490,7 +493,7 @@ WIP void hitbox_08007674(struct Body *a, struct Body *d) {
       a->enemy = d;
       a->hitboxFlags |= BODY_STATUS_B5;
       if ((d->drp)->hardness & METAL) {
-        a->hitboxFlags |= BODY_STATUS_B28;
+        a->hitboxFlags |= BODY_STATUS_BLOCKED;
       }
     }
     if ((d->invincibleTime != 0) || (a->atk == 0xFF)) {
@@ -499,8 +502,8 @@ WIP void hitbox_08007674(struct Body *a, struct Body *d) {
     }
     d->enemy = a;
     d->hitboxFlags |= BODY_STATUS_B3;
-    d->unk_23 = (a->drp)->unk_04;
-    d->elemented = a->element;
+    d->unk_23 = (a->drp)->unk_04 & 0xF;
+    d->elemented = a->element & 0xF;
     d->invincibleLv = a->comboLv;
 
     if (a->nature & BODY_NATURE_B2) {
@@ -515,14 +518,14 @@ WIP void hitbox_08007674(struct Body *a, struct Body *d) {
     if (a->nature & BODY_NATURE_B4) {
       d->hitboxFlags |= BODY_STATUS_SLASHED;
     }
-    if (a->nature & BODY_NATURE_B5) {
-      d->hitboxFlags |= BODY_STATUS_B17;
+    if (a->nature & BODY_NATURE_RECOIL) {
+      d->hitboxFlags |= BODY_STATUS_RECOILED;
     }
     if (a->nature & BODY_NATURE_ILETHAS) {
       d->hitboxFlags |= BODY_STATUS_B22;
     }
 
-    if (((d->drp)->hitzone != 0xFF) && ((a->drp)->unk_04 < 3)) {
+    if (((d->drp)->hitzone != 0xFF) && (((a->drp)->unk_04 == 1) || ((a->drp)->unk_04 == 2))) {
       gCollisionManager.pauseFrame = 4;
     }
     a->status |= a->hitboxFlags;
@@ -563,7 +566,7 @@ WIP void hitbox_08007674(struct Body *a, struct Body *d) {
   }
 
   // 攻撃が通った
-  if (d->invincibleTime == 0 && ((a->comboLv > d->invincibleLv))) {
+  if (d->invincibleTime == 0 || (a->comboLv > d->invincibleLv)) {
     if (a->atk != 0xFF) {
       d->enemy = a;
       d->hitboxFlags |= BODY_STATUS_WHITE;
@@ -572,8 +575,8 @@ WIP void hitbox_08007674(struct Body *a, struct Body *d) {
       d->invincibleLv = a->comboLv;
 
       if (a->nature & BODY_NATURE_B2) {
-        a->hitboxFlags |= BODY_STATUS_BLOCKED;
-        d->hitboxFlags |= BODY_STATUS_B13;
+        a->hitboxFlags |= BODY_STATUS_B13;
+        d->hitboxFlags |= BODY_STATUS_BLOCKED;
       }
       if (a->nature & BODY_NATURE_B0) {
         d->hitboxFlags |= BODY_STATUS_B14;
@@ -584,8 +587,8 @@ WIP void hitbox_08007674(struct Body *a, struct Body *d) {
       if (a->nature & BODY_NATURE_B4) {
         d->hitboxFlags |= BODY_STATUS_SLASHED;
       }
-      if (a->nature & BODY_NATURE_B5) {
-        d->hitboxFlags |= BODY_STATUS_B17;
+      if (a->nature & BODY_NATURE_RECOIL) {
+        d->hitboxFlags |= BODY_STATUS_RECOILED;
       }
       if (a->nature & BODY_NATURE_ILETHAS) {
         a->hitboxFlags |= BODY_STATUS_B23;
@@ -593,11 +596,11 @@ WIP void hitbox_08007674(struct Body *a, struct Body *d) {
       }
 
       d->hp -= CalcDamage(a, d);
-      if (d->hp < 1) {
+      if (d->hp <= 0) {
         d->hp = 0;
-        d->hitboxFlags = BODY_STATUS_DEAD;
+        d->hitboxFlags |= BODY_STATUS_DEAD;
       }
-      if (((d->drp)->hitzone != 0xFF) && ((a->drp)->unk_04 < 3)) {
+      if (((d->drp)->hitzone != 0xFF) && (((a->drp)->unk_04 == 1) || ((a->drp)->unk_04 == 2))) {
         gCollisionManager.pauseFrame = 4;
       }
       if (((d->drp)->special == 1) || ((d->drp)->special == CS_BOSS)) {

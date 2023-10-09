@@ -6,7 +6,7 @@
 #include "story.h"
 
 static const s8 sMiddleBossDiskNo[8];
-static const u16 sItemDropRates[9][7];
+static const u16 sItemDropRates[ITEM_COUNT][7];
 static const ALIGNED(2) struct DiskDrop sEnemyDiskDrops[42];
 static const u8 sStageEnemyDiskDrops[STAGE_COUNT];
 
@@ -19,7 +19,7 @@ u32 TryDropItem(u32 table, struct Coord *c) {
   rng = (u8)((RNG_0202f388 >> 16));
 
   // Secret Disk
-  if (table >= 9) {
+  if (table >= ITEM_COUNT) {
     u8 *disks;
     s32 diskID;
 
@@ -247,7 +247,7 @@ _080250A6:\n\
 }
 
 // clang-format off
-static const u16 sItemDropRates[9][7] = {
+static const u16 sItemDropRates[ITEM_COUNT][7] = {
      // sItemDropRates[確率テーブル][itemID]
     { 0x0100, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000 },
     { 0x00A0, 0x00E0, 0x0100, 0x0000, 0x0000, 0x0000, 0x0000 },

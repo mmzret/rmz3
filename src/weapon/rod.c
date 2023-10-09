@@ -2296,7 +2296,7 @@ void Rod_Die(struct Weapon* w);
 // clang-format off
 const WeaponRoutine gRodRoutine = {
     [ENTITY_INIT] =      Rod_Init,
-    [ENTITY_MAIN] =      Rod_Update,
+    [ENTITY_UPDATE] =    Rod_Update,
     [ENTITY_DIE] =       Rod_Die,
     [ENTITY_DISAPPEAR] = DeleteWeapon,
     [ENTITY_EXIT] =      (WeaponFunc)DeleteEntity,    
@@ -2314,7 +2314,7 @@ NON_MATCH static void Rod_Init(struct Weapon* w) {
   struct Body* body;
   struct Zero* z = (&w->unk_b4)->z;
 
-  SET_WEAPON_ROUTINE(w, ENTITY_MAIN);
+  SET_WEAPON_ROUTINE(w, ENTITY_UPDATE);
   InitNonAffineMotion(&w->s);
   ResetDynamicMotion(&w->s);
   (w->s).flags |= DISPLAY;

@@ -12,7 +12,7 @@ static void Weapon6_Die(struct Weapon* w);
 // clang-format off
 const WeaponRoutine gWeapon6Routine = {
     [ENTITY_INIT] =      Weapon6_Init,
-    [ENTITY_MAIN] =      Weapon6_Update,
+    [ENTITY_UPDATE] =    Weapon6_Update,
     [ENTITY_DIE] =       Weapon6_Die,
     [ENTITY_DISAPPEAR] = DeleteWeapon,
     [ENTITY_EXIT] =      (WeaponFunc)DeleteEntity,    
@@ -37,7 +37,7 @@ void CreateWeapon6(s32 x, s32 y) {
 static void onHit(struct Body* body UNUSED, struct Coord* r1 UNUSED, struct Coord* r2 UNUSED) { return; }
 
 static void Weapon6_Init(struct Weapon* w) {
-  SET_WEAPON_ROUTINE(w, ENTITY_MAIN);
+  SET_WEAPON_ROUTINE(w, ENTITY_UPDATE);
   (w->s).mode[1] = sInitModes[(w->s).work[0]];
   (w->s).flags |= FLIPABLE;
   (w->s).flags |= DISPLAY;

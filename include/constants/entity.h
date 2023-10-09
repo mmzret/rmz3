@@ -72,7 +72,7 @@
 
 // VFX.id
 #define VFX_SMOKE 0
-#define VFX_SEA_ENEMY 1
+#define VFX_BUBBLE 1
 #define VFX_CHARGE_EFFECT 2
 #define VFX_UNK_003 3
 #define VFX_DEATH_EFFECT 4
@@ -92,7 +92,7 @@
 #define VFX_UNK_018 18
 #define VFX_UNK_019 19
 #define VFX_UNK_020 20
-#define VFX_UNK_021 21
+#define VFX_BATRING_NECRO 21
 #define VFX_UNK_022 22
 #define VFX_NECRO 23
 #define VFX_SHRIMPORIN 24

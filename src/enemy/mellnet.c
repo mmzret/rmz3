@@ -11,7 +11,7 @@ void Mellnet_Die(struct Enemy* p);
 // clang-format off
 const EnemyRoutine gMellnetRoutine = {
     [ENTITY_INIT] =      Mellnet_Init,
-    [ENTITY_MAIN] =      Mellnet_Update,
+    [ENTITY_UPDATE] =    Mellnet_Update,
     [ENTITY_DIE] =       Mellnet_Die,
     [ENTITY_DISAPPEAR] = DeleteEnemy,
     [ENTITY_EXIT] =      (EnemyFunc)DeleteEntity,

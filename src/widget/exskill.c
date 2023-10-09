@@ -13,7 +13,7 @@ static void ExIcon_Die(struct Widget *w);
 // clang-format off
 const WidgetRoutine gExIconRoutine = {
     [ENTITY_INIT] =      ExIcon_Init,
-    [ENTITY_MAIN] =      ExIcon_Update,
+    [ENTITY_UPDATE] =    ExIcon_Update,
     [ENTITY_DIE] =       ExIcon_Die,
     [ENTITY_DISAPPEAR] = DeleteWidget,
     [ENTITY_EXIT] =      (WidgetFunc)DeleteEntity,
@@ -38,7 +38,7 @@ struct Widget *CreateExSkillIcon(struct GameState *g, u8 kind) {
 
 NON_MATCH static void ExIcon_Init(struct Widget *w) {
 #if MODERN
-  SET_WIDGET_ROUTINE(w, ENTITY_MAIN);
+  SET_WIDGET_ROUTINE(w, ENTITY_UPDATE);
   (w->s).flags |= DISPLAY;
   (w->s).flags |= FLIPABLE;
   (w->s).spr.xflip = FALSE;

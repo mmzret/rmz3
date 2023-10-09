@@ -12,7 +12,7 @@ void BirdElf_Die(struct Elf* p);
 // clang-format off
 const ElfRoutine gBirdElfRoutine = {
     [ENTITY_INIT] =      BirdElf_Init,
-    [ENTITY_MAIN] =      BirdElf_Update,
+    [ENTITY_UPDATE] =    BirdElf_Update,
     [ENTITY_DIE] =       BirdElf_Die,
     [ENTITY_DISAPPEAR] = DeleteElf,
     [ENTITY_EXIT] =      (ElfFunc)DeleteEntity,

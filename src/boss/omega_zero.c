@@ -5,12 +5,14 @@
 #include "overworld.h"
 #include "projectile.h"
 #include "sound.h"
+#include "vfx.h"
 #include "weapon.h"
 #include "zero.h"
 
 static const u8 gOmegaZeroMode[48];
 static const u8 sInitModes[4];
 static const struct Collision sCollisions[6];
+static const struct Coord sExplosionCoords[2];
 
 void CreateOzChargeSaberRock(s32 x, u8 r1);
 void oz_080b3820(struct Coord *c, bool8 isRight);
@@ -28,7 +30,7 @@ static void OmegaZero_Die(struct Boss *p);
 // clang-format off
 const BossRoutine gOmegaZeroRoutine = {
     [ENTITY_INIT] =      OmegaZero_Init,
-    [ENTITY_MAIN] =      OmegaZero_Update,
+    [ENTITY_UPDATE] =    OmegaZero_Update,
     [ENTITY_DIE] =       OmegaZero_Die,
     [ENTITY_DISAPPEAR] = DeleteBoss,
     [ENTITY_EXIT] =      (BossFunc)DeleteEntity,
@@ -125,7 +127,7 @@ static bool8 tryKillOmegaZero(struct Boss *p) {
 NON_MATCH static void OmegaZero_Init(struct Boss *p) {
 #if MODERN
   struct Body *body;
-  SET_BOSS_ROUTINE(p, ENTITY_MAIN);
+  SET_BOSS_ROUTINE(p, ENTITY_UPDATE);
   (p->s).mode[1] = sInitModes[(p->s).work[0]];
   (p->s).flags |= FLIPABLE;
   (p->s).flags |= DISPLAY;
@@ -137,8 +139,8 @@ NON_MATCH static void OmegaZero_Init(struct Boss *p) {
   (p->s).palID = 4;
   (p->s).tileNum = 512;
   if ((p->s).work[0] == 0) {
-    LOAD_STATIC_GRAPHIC(128);
-    LOAD_STATIC_GRAPHIC(237);
+    LOAD_STATIC_GRAPHIC(SM128_UNK);
+    LOAD_STATIC_GRAPHIC(SM237_ROCK);
     p->props.oz.x = (p->s).coord.x >> 8;
     p->props.oz.x = ((p->props.oz.x / 240) * PIXEL(240));
     p->props.oz.y = FUN_08009f6c((p->s).coord.x, (p->s).coord.y);
@@ -435,7 +437,7 @@ _0805DB48:\n\
 _0805DB52:\n\
 	adds r0, r4, #0\n\
 	adds r0, #0x74\n\
-	ldr r1, _0805DBF8 @ =0x08365174\n\
+	ldr r1, _0805DBF8 @ =sCollisions+72\n\
 	bl SetDDP\n\
 	movs r0, #0xe9\n\
 	bl PlaySound\n\
@@ -512,12 +514,12 @@ _0805DBEE:\n\
 	bl UpdateMotionGraphic\n\
 	b _0805DC40\n\
 	.align 2, 0\n\
-_0805DBF8: .4byte 0x08365174\n\
+_0805DBF8: .4byte sCollisions+72\n\
 _0805DBFC: .4byte 0xFFFFFC80\n\
 _0805DC00:\n\
 	adds r0, r4, #0\n\
 	adds r0, #0x74\n\
-	ldr r1, _0805DC48 @ =0x08365144\n\
+	ldr r1, _0805DC48 @ =sCollisions+24\n\
 	bl SetDDP\n\
 	adds r3, r4, #0\n\
 	adds r3, #0xbc\n\
@@ -551,7 +553,7 @@ _0805DC40:\n\
 	pop {r0}\n\
 	bx r0\n\
 	.align 2, 0\n\
-_0805DC48: .4byte 0x08365144\n\
+_0805DC48: .4byte sCollisions+24\n\
 _0805DC4C: .4byte 0x00000301\n\
  .syntax divided\n");
 }
@@ -1070,7 +1072,7 @@ _0805E08E:\n\
 _0805E090:\n\
 	adds r0, r4, #0\n\
 	adds r0, #0x74\n\
-	ldr r1, _0805E14C @ =0x08365174\n\
+	ldr r1, _0805E14C @ =sCollisions+72\n\
 	bl SetDDP\n\
 	movs r0, #0xe9\n\
 	bl PlaySound\n\
@@ -1159,14 +1161,14 @@ _0805E142:\n\
 	bl UpdateMotionGraphic\n\
 	b _0805E1AE\n\
 	.align 2, 0\n\
-_0805E14C: .4byte 0x08365174\n\
+_0805E14C: .4byte sCollisions+72\n\
 _0805E150: .4byte 0xFFFFFC80\n\
 _0805E154: .4byte pZero2\n\
 _0805E158: .4byte 0x00002FFF\n\
 _0805E15C:\n\
 	adds r0, r4, #0\n\
 	adds r0, #0x74\n\
-	ldr r1, _0805E1B4 @ =0x08365144\n\
+	ldr r1, _0805E1B4 @ =sCollisions+24\n\
 	bl SetDDP\n\
 	adds r0, r4, #0\n\
 	movs r1, #4\n\
@@ -1207,7 +1209,7 @@ _0805E1AE:\n\
 	pop {r0}\n\
 	bx r0\n\
 	.align 2, 0\n\
-_0805E1B4: .4byte 0x08365144\n\
+_0805E1B4: .4byte sCollisions+24\n\
  .syntax divided\n");
 }
 
@@ -1323,65 +1325,31 @@ _0805E27C: .4byte gProjectileFnTable\n\
   01 0D xx --
   Fall down
 */
-NAKED static void ozRyuenjin3(struct Boss *p) {
-  asm(".syntax unified\n\
-	push {r4, lr}\n\
-	adds r4, r0, #0\n\
-	ldrb r0, [r4, #0xe]\n\
-	cmp r0, #0\n\
-	beq _0805E290\n\
-	cmp r0, #1\n\
-	beq _0805E2A6\n\
-	b _0805E2E4\n\
-_0805E290:\n\
-	adds r0, r4, #0\n\
-	movs r1, #6\n\
-	bl CreateOmegaZeroSaber\n\
-	ldr r1, _0805E2EC @ =0x00001202\n\
-	adds r0, r4, #0\n\
-	bl SetMotion\n\
-	ldrb r0, [r4, #0xe]\n\
-	adds r0, #1\n\
-	strb r0, [r4, #0xe]\n\
-_0805E2A6:\n\
-	ldr r0, [r4, #0x54]\n\
-	ldr r1, [r4, #0x5c]\n\
-	adds r0, r0, r1\n\
-	str r0, [r4, #0x54]\n\
-	adds r0, r4, #0\n\
-	bl oz_0805d6a8\n\
-	ldr r0, [r4, #0x60]\n\
-	adds r0, #0x40\n\
-	str r0, [r4, #0x60]\n\
-	movs r1, #0xe0\n\
-	lsls r1, r1, #3\n\
-	cmp r0, r1\n\
-	ble _0805E2C4\n\
-	str r1, [r4, #0x60]\n\
-_0805E2C4:\n\
-	ldr r0, [r4, #0x58]\n\
-	ldr r1, [r4, #0x60]\n\
-	adds r0, r0, r1\n\
-	str r0, [r4, #0x58]\n\
-	adds r1, r4, #0\n\
-	adds r1, #0xb8\n\
-	ldr r1, [r1]\n\
-	cmp r0, r1\n\
-	blt _0805E2DE\n\
-	str r1, [r4, #0x58]\n\
-	movs r0, #0\n\
-	strb r0, [r4, #0xd]\n\
-	strb r0, [r4, #0xe]\n\
-_0805E2DE:\n\
-	adds r0, r4, #0\n\
-	bl UpdateMotionGraphic\n\
-_0805E2E4:\n\
-	pop {r4}\n\
-	pop {r0}\n\
-	bx r0\n\
-	.align 2, 0\n\
-_0805E2EC: .4byte 0x00001202\n\
- .syntax divided\n");
+static void ozRyuenjin3(struct Boss *p) {
+  switch ((p->s).mode[2]) {
+    case 0: {
+      CreateOmegaZeroSaber(p, 6);
+      SetMotion(&p->s, MOTION(DM018_ZERO_SABER_TENRETSUJIN, 2));
+      (p->s).mode[2]++;
+      FALLTHROUGH;
+    }
+    case 1: {
+      (p->s).coord.x += (p->s).d.x;
+      oz_0805d6a8(p);
+      (p->s).d.y += PIXEL(1) / 4;
+      if ((p->s).d.y > PIXEL(7)) {
+        (p->s).d.y = PIXEL(7);
+      }
+      (p->s).coord.y += (p->s).d.y;
+      if ((p->s).coord.y >= p->props.oz.y) {
+        (p->s).coord.y = p->props.oz.y;
+        (p->s).mode[1] = 0;
+        (p->s).mode[2] = 0;
+      }
+      UpdateMotionGraphic(&p->s);
+      break;
+    }
+  }
 }
 
 /*
@@ -2417,112 +2385,48 @@ _0805EB14: .4byte pZero2\n\
 }
 
 // 02 00 xx --
-NAKED static void ozDeath0(struct Boss *p) {
-  asm(".syntax unified\n\
-	push {r4, r5, lr}\n\
-	adds r4, r0, #0\n\
-	ldrb r0, [r4, #0xe]\n\
-	cmp r0, #4\n\
-	bhi _0805EBE0\n\
-	lsls r0, r0, #2\n\
-	ldr r1, _0805EB2C @ =_0805EB30\n\
-	adds r0, r0, r1\n\
-	ldr r0, [r0]\n\
-	mov pc, r0\n\
-	.align 2, 0\n\
-_0805EB2C: .4byte _0805EB30\n\
-_0805EB30: @ jump table\n\
-	.4byte _0805EB44 @ case 0\n\
-	.4byte _0805EB90 @ case 1\n\
-	.4byte _0805EBB8 @ case 2\n\
-	.4byte _0805EBC8 @ case 3\n\
-	.4byte _0805EBE0 @ case 4\n\
-_0805EB44:\n\
-	adds r0, r4, #0\n\
-	adds r0, #0x8c\n\
-	movs r1, #0\n\
-	str r1, [r0]\n\
-	adds r0, #4\n\
-	str r1, [r0]\n\
-	adds r0, #4\n\
-	strb r1, [r0]\n\
-	ldrb r1, [r4, #0xa]\n\
-	movs r0, #0xfb\n\
-	ands r0, r1\n\
-	strb r0, [r4, #0xa]\n\
-	ldr r3, _0805EBAC @ =gStageRun\n\
-	ldrh r2, [r3, #8]\n\
-	movs r5, #1\n\
-	adds r0, r5, #0\n\
-	ands r0, r2\n\
-	cmp r0, #0\n\
-	beq _0805EB7E\n\
-	ldrb r1, [r3, #0x12]\n\
-	adds r0, r5, #0\n\
-	ands r0, r1\n\
-	cmp r0, #0\n\
-	bne _0805EB7E\n\
-	ldr r0, _0805EBB0 @ =0x0000FFFE\n\
-	ands r0, r2\n\
-	movs r1, #0x10\n\
-	orrs r0, r1\n\
-	strh r0, [r3, #8]\n\
-_0805EB7E:\n\
-	movs r0, #0x50\n\
-	strb r0, [r4, #0x12]\n\
-	ldr r1, _0805EBB4 @ =0x00003201\n\
-	adds r0, r4, #0\n\
-	bl SetMotion\n\
-	ldrb r0, [r4, #0xe]\n\
-	adds r0, #1\n\
-	strb r0, [r4, #0xe]\n\
-_0805EB90:\n\
-	adds r0, r4, #0\n\
-	bl UpdateMotionGraphic\n\
-	ldrb r0, [r4, #0x12]\n\
-	subs r0, #1\n\
-	strb r0, [r4, #0x12]\n\
-	ldr r0, [r4, #0x18]\n\
-	ldrb r1, [r0, #9]\n\
-	movs r0, #0x80\n\
-	ands r0, r1\n\
-	cmp r0, #0\n\
-	beq _0805EBE0\n\
-	b _0805EBDA\n\
-	.align 2, 0\n\
-_0805EBAC: .4byte gStageRun\n\
-_0805EBB0: .4byte 0x0000FFFE\n\
-_0805EBB4: .4byte 0x00003201\n\
-_0805EBB8:\n\
-	ldr r1, _0805EBE8 @ =0x083651F0\n\
-	adds r0, r4, #0\n\
-	bl CreateBossExplosion\n\
-	str r0, [r4, #0x2c]\n\
-	ldrb r0, [r4, #0xe]\n\
-	adds r0, #1\n\
-	strb r0, [r4, #0xe]\n\
-_0805EBC8:\n\
-	ldr r0, [r4, #0x2c]\n\
-	ldrb r0, [r0, #0xc]\n\
-	cmp r0, #1\n\
-	bls _0805EBE0\n\
-	ldr r2, _0805EBEC @ =gStageRun\n\
-	ldrb r1, [r2, #0x12]\n\
-	movs r0, #2\n\
-	orrs r0, r1\n\
-	strb r0, [r2, #0x12]\n\
-_0805EBDA:\n\
-	ldrb r0, [r4, #0xe]\n\
-	adds r0, #1\n\
-	strb r0, [r4, #0xe]\n\
-_0805EBE0:\n\
-	pop {r4, r5}\n\
-	pop {r0}\n\
-	bx r0\n\
-	.align 2, 0\n\
-_0805EBE8: .4byte 0x083651F0\n\
-_0805EBEC: .4byte gStageRun\n\
- .syntax divided\n");
+static void ozDeath0(struct Boss *p) {
+  switch ((p->s).mode[2]) {
+    case 0: {
+      (p->body).status = 0;
+      (p->body).prevStatus = 0;
+      (p->body).invincibleTime = 0;
+      (p->s).flags &= ~COLLIDABLE;
+      if ((gStageRun.missionStatus & MISSION_STAY) && !(gStageRun.vm.active & 1)) {
+        gStageRun.missionStatus &= ~MISSION_STAY;
+        gStageRun.missionStatus |= MISSION_SUCCESS;
+      }
+      (p->s).work[2] = 80;
+      SetMotion(&p->s, MOTION(DM050_ZERO_STUN, 1));
+      (p->s).mode[2]++;
+      FALLTHROUGH;
+    }
+    case 1: {
+      UpdateMotionGraphic(&p->s);
+      (p->s).work[2]--;
+      if ((p->s).arr[9] & (1 << 7)) {
+        (p->s).mode[2]++;
+      }
+      break;
+    }
+
+    case 2: {
+      (p->s).unk_2c = (struct Entity *)CreateBossExplosion(p, (struct Coord *)sExplosionCoords);
+      (p->s).mode[2]++;
+      FALLTHROUGH;
+    }
+    case 3: {
+      if (((p->s).unk_2c)->mode[0] >= 2) {
+        gStageRun.vm.active |= (1 << 1);
+        (p->s).mode[2]++;
+      }
+      break;
+    }
+
+    case 4: {
+      break;
+    }
+  }
 }
 
 // 02 01 xx --
@@ -2748,7 +2652,7 @@ static const u8 gOmegaZeroMode[48] = {
 
 static const u8 sInitModes[4] = {1, 0, 0, 0};
 
-const struct Coord gOmegaExplodeCoords[2] = {
+static const struct Coord sExplosionCoords[2] = {
     {0x0, -0x1C00},
     {0x0, -0x1C00},
 };

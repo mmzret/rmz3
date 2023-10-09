@@ -14,7 +14,7 @@ void Solid7_Die(struct Solid* p);
 // clang-format off
 const SolidRoutine gLavaGeyserRoutine = {
     [ENTITY_INIT] =      Solid7_Init,
-    [ENTITY_MAIN] =      Solid7_Update,
+    [ENTITY_UPDATE] =    Solid7_Update,
     [ENTITY_DIE] =       Solid7_Die,
     [ENTITY_DISAPPEAR] = DeleteSolid,
     [ENTITY_EXIT] =      (SolidFunc)DeleteEntity,
@@ -33,7 +33,7 @@ WIP void CreateLavaGeyser(struct Solid* solid, s32 x, s32 y, s32 n) {
       INIT_SOLID_ROUTINE(p, SOLID_LAVA_GEYSER);
       (p->s).tileNum = 0;
       (p->s).palID = 0;
-      (p->s).flags2 |= ENTITY_FLAGS2_B4;
+      (p->s).flags2 |= WHITE_PAINTABLE;
       (p->s).invincibleID = (p->s).uniqueID;
       (p->s).work[0] = 12;
       (p->s).work[1] = i;
@@ -63,7 +63,7 @@ static void CreateSolid7_Unused(s32 x, u8 n) {
     INIT_SOLID_ROUTINE(p, SOLID_LAVA_GEYSER);
     (p->s).tileNum = 0;
     (p->s).palID = 0;
-    (p->s).flags2 |= ENTITY_FLAGS2_B4;
+    (p->s).flags2 |= WHITE_PAINTABLE;
     (p->s).invincibleID = (p->s).uniqueID;
     (p->s).work[0] = n;
     (p->s).coord.x = x;

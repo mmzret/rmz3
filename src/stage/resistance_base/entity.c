@@ -556,7 +556,7 @@ const struct PreloadEntity gResistanceBaseStatic[41] = {
         0,
     },
     {
-        163,
+        SM163_GRAFFITI_ZERO1,
         222,
         891,
         8,
@@ -565,7 +565,7 @@ const struct PreloadEntity gResistanceBaseStatic[41] = {
         0,
     },
     {
-        164,
+        SM164_GRAFFITI_CIEL,
         222,
         921,
         9,
@@ -574,7 +574,7 @@ const struct PreloadEntity gResistanceBaseStatic[41] = {
         0,
     },
     {
-        167,
+        SM167_LIFE_ENERGY,
         254,
         442,
         11,
@@ -610,7 +610,7 @@ const struct PreloadEntity gResistanceBaseStatic[41] = {
         0,
     },
     {
-        115,
+        SM115_ELEVATOR,
         0,
         528,
         4,
@@ -619,7 +619,7 @@ const struct PreloadEntity gResistanceBaseStatic[41] = {
         1,
     },
     {
-        137,
+        SM137_ELEVATOR_WOOD,
         0,
         528,
         4,
@@ -628,7 +628,7 @@ const struct PreloadEntity gResistanceBaseStatic[41] = {
         1,
     },
     {
-        138,
+        SM138_ELEVATOR_MMX,
         0,
         528,
         4,
@@ -637,7 +637,7 @@ const struct PreloadEntity gResistanceBaseStatic[41] = {
         1,
     },
     {
-        190,
+        SM190_HIRONDELLE,
         2,
         612,
         5,
@@ -646,7 +646,7 @@ const struct PreloadEntity gResistanceBaseStatic[41] = {
         0,
     },
     {
-        196,
+        SM196_ANDREW,
         2,
         624,
         5,
@@ -655,7 +655,7 @@ const struct PreloadEntity gResistanceBaseStatic[41] = {
         0,
     },
     {
-        195,
+        SM195_HIBOU,
         2,
         664,
         5,
@@ -664,7 +664,7 @@ const struct PreloadEntity gResistanceBaseStatic[41] = {
         0,
     },
     {
-        198,
+        SM198_PERROQUIET,
         2,
         705,
         6,
@@ -673,7 +673,7 @@ const struct PreloadEntity gResistanceBaseStatic[41] = {
         0,
     },
     {
-        189,
+        SM189_FAUCON,
         2,
         729,
         5,
@@ -691,7 +691,7 @@ const struct PreloadEntity gResistanceBaseStatic[41] = {
         0,
     },
     {
-        179,
+        SM179_UNK,
         6,
         796,
         5,
@@ -700,7 +700,7 @@ const struct PreloadEntity gResistanceBaseStatic[41] = {
         1,
     },
     {
-        197,
+        SM197_MENART,
         4,
         612,
         6,
@@ -709,7 +709,7 @@ const struct PreloadEntity gResistanceBaseStatic[41] = {
         0,
     },
     {
-        130,
+        SM130_PROLOGUE_RESISTANCE,
         4,
         628,
         5,
@@ -718,7 +718,7 @@ const struct PreloadEntity gResistanceBaseStatic[41] = {
         0,
     },
     {
-        189,
+        SM189_FAUCON,
         4,
         682,
         5,
@@ -736,7 +736,7 @@ const struct PreloadEntity gResistanceBaseStatic[41] = {
         0,
     },
     {
-        187,
+        SM187_ALOUETTE,
         8,
         512,
         7,
@@ -745,7 +745,7 @@ const struct PreloadEntity gResistanceBaseStatic[41] = {
         0,
     },
     {
-        144,
+        SM144_CIEL_COMP_0,
         0,
         569,
         4,
@@ -754,7 +754,7 @@ const struct PreloadEntity gResistanceBaseStatic[41] = {
         1,
     },
     {
-        145,
+        SM145_CIEL_COMP_1,
         0,
         569,
         4,
@@ -763,7 +763,7 @@ const struct PreloadEntity gResistanceBaseStatic[41] = {
         1,
     },
     {
-        146,
+        SM146_CIEL_COMP_2,
         0,
         569,
         4,
@@ -772,7 +772,7 @@ const struct PreloadEntity gResistanceBaseStatic[41] = {
         1,
     },
     {
-        147,
+        SM147_CIEL_COMP_3,
         0,
         569,
         4,
@@ -781,7 +781,7 @@ const struct PreloadEntity gResistanceBaseStatic[41] = {
         1,
     },
     {
-        148,
+        SM148_CIEL_COMP_4,
         0,
         569,
         4,
@@ -790,7 +790,7 @@ const struct PreloadEntity gResistanceBaseStatic[41] = {
         1,
     },
     {
-        194,
+        SM194_CERVEAU,
         16,
         512,
         5,
@@ -799,7 +799,7 @@ const struct PreloadEntity gResistanceBaseStatic[41] = {
         0,
     },
     {
-        192,
+        SM192_ROCINOLLE,
         16,
         576,
         4,
@@ -808,7 +808,7 @@ const struct PreloadEntity gResistanceBaseStatic[41] = {
         0,
     },
     {
-        193,
+        SM193_DOIGT,
         32,
         512,
         4,
@@ -826,7 +826,7 @@ const struct PreloadEntity gResistanceBaseStatic[41] = {
         0,
     },
     {
-        191,
+        SM191_AUTRUCHE,
         32,
         540,
         4,
@@ -835,7 +835,7 @@ const struct PreloadEntity gResistanceBaseStatic[41] = {
         0,
     },
     {
-        189,
+        SM189_FAUCON,
         32,
         555,
         4,
@@ -844,7 +844,7 @@ const struct PreloadEntity gResistanceBaseStatic[41] = {
         0,
     },
     {
-        188,
+        SM188_KISS,
         32,
         575,
         4,
@@ -853,7 +853,7 @@ const struct PreloadEntity gResistanceBaseStatic[41] = {
         0,
     },
     {
-        130,
+        SM130_PROLOGUE_RESISTANCE,
         32,
         591,
         4,
@@ -862,7 +862,7 @@ const struct PreloadEntity gResistanceBaseStatic[41] = {
         0,
     },
     {
-        162,
+        SM162_PAINTING_MMBN,
         32,
         645,
         6,
@@ -871,7 +871,7 @@ const struct PreloadEntity gResistanceBaseStatic[41] = {
         0,
     },
     {
-        166,
+        SM166_PAINTING_CIEL,
         32,
         662,
         9,
@@ -880,7 +880,7 @@ const struct PreloadEntity gResistanceBaseStatic[41] = {
         0,
     },
     {
-        165,
+        SM165_GRAFFITI_ZERO2,
         32,
         680,
         8,

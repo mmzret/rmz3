@@ -41,7 +41,7 @@ else
 endif
 LDFLAGS := $(LIBPATH) -lgcc -lc
 
-ASFILE := $(wildcard asm/*.s) $(wildcard asm/*/*.s) $(shell find sound/songs -type f -name '*.s') src/libs/m4a_1.s data/tilesets/offsets.s sprites/table.s sprites/anim.s
+ASFILE := $(wildcard asm/*.s) $(wildcard asm/*/*.s) $(shell find sound/songs -type f -name '*.s') src/libs/m4a_1.s data/tilesets/offsets.s sprites/dynamic/table.s sprites/dynamic/anim.s sprites/static/anim.s
 ASOBJFILE := $(ASFILE:.s=.o)
 
 CFILE := $(shell find src -type f -name '*.c')

@@ -10,7 +10,7 @@ void PantheonAquaMod_Die(struct Boss* p);
 // clang-format off
 const BossRoutine gPantheonAquaModRoutine = {
     [ENTITY_INIT] =      PantheonAquaMod_Init,
-    [ENTITY_MAIN] =      PantheonAquaMod_Update,
+    [ENTITY_UPDATE] =    PantheonAquaMod_Update,
     [ENTITY_DIE] =       PantheonAquaMod_Die,
     [ENTITY_DISAPPEAR] = DeleteBoss,
     [ENTITY_EXIT] =      (BossFunc)DeleteEntity,

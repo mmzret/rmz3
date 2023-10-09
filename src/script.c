@@ -551,7 +551,7 @@ static void writeRune(struct VM *vm) {
 
 static void tryDeleteIndicator(struct VM *vm) {
   struct VFX *z = vm->indicator;
-  if ((z != NULL) && (ENTITY_MAIN < (z->s).mode[0])) {
+  if ((z != NULL) && (ENTITY_UPDATE < (z->s).mode[0])) {
     vm->indicator = NULL;
   }
 }

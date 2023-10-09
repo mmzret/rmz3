@@ -11,7 +11,7 @@ void Swordy_Die(struct Enemy* p);
 // clang-format off
 const EnemyRoutine gSwordyRoutine = {
     [ENTITY_INIT] =      Swordy_Init,
-    [ENTITY_MAIN] =      Swordy_Update,
+    [ENTITY_UPDATE] =    Swordy_Update,
     [ENTITY_DIE] =       Swordy_Die,
     [ENTITY_DISAPPEAR] = DeleteEnemy,
     [ENTITY_EXIT] =      (EnemyFunc)DeleteEntity,

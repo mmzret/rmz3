@@ -15,7 +15,7 @@ void IcebonIcedust_Die(struct VFX *p);
 // clang-format off
 const VFXRoutine gIcebonIcedustRoutine = {
     [ENTITY_INIT] =      IcebonIcedust_Init,
-    [ENTITY_MAIN] =      IcebonIcedust_Update,
+    [ENTITY_UPDATE] =    IcebonIcedust_Update,
     [ENTITY_DIE] =       IcebonIcedust_Die,
     [ENTITY_DISAPPEAR] = DeleteVFX,
     [ENTITY_EXIT] =      (VFXFunc)DeleteEntity,

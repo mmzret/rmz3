@@ -165,7 +165,7 @@ struct Zero {
   u8 unk_135;
   u8 unk_136;
   u8 unk_137;
-  s16 unk_138;
+  s16 recoilJumpDx;  // リコイルジャンプのX速度を記録しておく
   u8 unk_13a;
   u8 rodToggle;  // リコイルロッドで通常攻撃を連続で打つ場合に、奇数発目の振り向きモーションを管理するためのToggle (0x00 or 0x10)
   u8 ALIGNED(1) unk_13c[2];

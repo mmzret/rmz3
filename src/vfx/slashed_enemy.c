@@ -19,7 +19,7 @@ static void SlashedEnemy_Die(struct Ghost16* p);
 // clang-format off
 const VFXRoutine gSlashedEnemyRoutine = {
     [ENTITY_INIT] =      (VFXFunc)SlashedEnemy_Init,
-    [ENTITY_MAIN] =      (VFXFunc)SlashedEnemy_Update,
+    [ENTITY_UPDATE] =    (VFXFunc)SlashedEnemy_Update,
     [ENTITY_DIE] =       (VFXFunc)SlashedEnemy_Die,
     [ENTITY_DISAPPEAR] = DeleteVFX,
     [ENTITY_EXIT] =      (VFXFunc)DeleteEntity,

@@ -15,7 +15,7 @@ const main = async () => {
     .version('1.0.0')
     .arguments('<id:number>')
     .option('-o, --output <dir:string>', 'output dir')
-    .usage('252 -o ./sprites/prop/volteel_human')
+    .usage('252 -o ./sprites/static/volteel_human')
     .parse(Deno.args);
 
   const rom = Deno.readFileSync('baserom.gba');

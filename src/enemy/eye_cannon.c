@@ -9,7 +9,7 @@ void EyeCannon_Die(struct Enemy* p);
 // clang-format off
 const EnemyRoutine gEyeCannonRoutine = {
     [ENTITY_INIT] =      EyeCannon_Init,
-    [ENTITY_MAIN] =      EyeCannon_Update,
+    [ENTITY_UPDATE] =    EyeCannon_Update,
     [ENTITY_DIE] =       EyeCannon_Die,
     [ENTITY_DISAPPEAR] = DeleteEnemy,
     [ENTITY_EXIT] =      (EnemyFunc)DeleteEntity,

@@ -13,7 +13,7 @@ static void GyroCannon_Die(struct Enemy *p);
 // clang-format off
 const EnemyRoutine gGyroCannonRoutine = {
     [ENTITY_INIT] =      GyroCannon_Init,
-    [ENTITY_MAIN] =      GyroCannon_Update,
+    [ENTITY_UPDATE] =    GyroCannon_Update,
     [ENTITY_DIE] =       GyroCannon_Die,
     [ENTITY_DISAPPEAR] = DeleteEnemy,
     [ENTITY_EXIT] =      (EnemyFunc)DeleteEntity,
@@ -27,7 +27,7 @@ struct Enemy *CreateGyroCannon(struct Entity *friend, u8 n, u8 r2) {
     INIT_ZAKO_ROUTINE(p, ZAKO_GYRO_CANNON);
     (p->s).tileNum = 0;
     (p->s).palID = 0;
-    (p->s).flags2 |= ENTITY_FLAGS2_B4;
+    (p->s).flags2 |= WHITE_PAINTABLE;
     (p->s).invincibleID = (p->s).uniqueID;
     (p->s).unk_28 = friend;
     (p->s).work[0] = n;
@@ -42,7 +42,7 @@ static void initGyroCannonWithPropeller(struct Enemy *p);
 void initGyroCannonWithoutPropeller(struct Enemy *p);
 
 static void GyroCannon_Init(struct Enemy *p) {
-  SET_ZAKO_ROUTINE(p, ENTITY_MAIN);
+  SET_ZAKO_ROUTINE(p, ENTITY_UPDATE);
   InitNonAffineMotion(&p->s);
   (p->s).flags |= DISPLAY;
   (p->s).flags |= FLIPABLE;

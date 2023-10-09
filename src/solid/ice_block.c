@@ -18,7 +18,7 @@ void IceBlock_Disappear(struct Solid* p);
 // clang-format off
 const SolidRoutine gIceBlockRoutine = {
     [ENTITY_INIT] =      IceBlock_Init,
-    [ENTITY_MAIN] =      IceBlock_Update,
+    [ENTITY_UPDATE] =    IceBlock_Update,
     [ENTITY_DIE] =       IceBlock_Die,
     [ENTITY_DISAPPEAR] = IceBlock_Disappear,
     [ENTITY_EXIT] =      (SolidFunc)DeleteEntity,
@@ -33,7 +33,7 @@ NON_MATCH static void IceBlock_Init(struct Solid* p) {
   (&(p->s).d)->x = (&(p->s).d)->y = 0;
   (p->s).coord.x += PIXEL(8);
   (p->s).coord.y -= PIXEL(11);
-  SET_SOLID_ROUTINE(p, ENTITY_MAIN);
+  SET_SOLID_ROUTINE(p, ENTITY_UPDATE);
 
   if (FUN_0800bd38((p->s).coord.x, (p->s).coord.y) == 0) {
     (p->s).coord.y = FUN_08009f6c((p->s).coord.x, (p->s).coord.y) + PIXEL(32);

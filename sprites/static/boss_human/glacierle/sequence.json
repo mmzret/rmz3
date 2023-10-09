@@ -1,0 +1,15 @@
+{
+  "label": "gStaticAnimationSequence_boss_human_glacierle",
+  "data": [
+    [
+      {
+        "frameIdx": 0,
+        "duration": 1
+      },
+      {
+        "frameIdx": 0,
+        "duration": 255
+      }
+    ]
+  ]
+}

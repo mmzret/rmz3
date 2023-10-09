@@ -12,7 +12,7 @@ void ZeroMini_Die(struct Zero* z);
 // clang-format off
 const ZeroRoutine gZeroMiniRoutine = {
   [ENTITY_INIT] =       ZeroMini_Init,
-  [ENTITY_MAIN] =       ZeroMini_Update,
+  [ENTITY_UPDATE] =     ZeroMini_Update,
   [ENTITY_DIE]  =       ZeroMini_Die,
   [ENTITY_DISAPPEAR] =  RemovePlayer,
   [ENTITY_EXIT] =       (ZeroFunc)DeleteEntity,

@@ -13,7 +13,7 @@ void CyberSpaceElf_Die(struct VFX *vfx);
 // clang-format off
 const VFXRoutine gCyberSpaceElfRoutine = {
     [ENTITY_INIT] =      CyberSpaceElf_Init,
-    [ENTITY_MAIN] =      CyberSpaceElf_Update,
+    [ENTITY_UPDATE] =    CyberSpaceElf_Update,
     [ENTITY_DIE] =       CyberSpaceElf_Die,
     [ENTITY_DISAPPEAR] = DeleteVFX,
     [ENTITY_EXIT] =      (VFXFunc)DeleteEntity,
@@ -35,7 +35,7 @@ void CreateCyberSpaceElf(struct Coord *c, u8 kind, u8 r2) {
 
 WIP static void CyberSpaceElf_Init(struct VFX *vfx) {
 #if MODERN
-  SET_VFX_ROUTINE(vfx, ENTITY_MAIN);
+  SET_VFX_ROUTINE(vfx, ENTITY_UPDATE);
   InitNonAffineMotion(&vfx->s);
   ResetDynamicMotion(&vfx->s);
   (vfx->s).flags |= DISPLAY;
