@@ -27,7 +27,7 @@ _080019AA:
 	strh r2, [r1]
 	mov r3, sl
 	strh r0, [r3]
-	bl sramScript
+	bl UpdateSram
 _080019B6:
 	ldrb r1, [r6]
 	ldrb r0, [r7]

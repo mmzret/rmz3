@@ -2,6 +2,8 @@
 #include "enemy.h"
 #include "global.h"
 
+INCASM("asm/enemy/omega_zero_rock.inc");
+
 void OmegaZeroRock_Init(struct Enemy* p);
 void OmegaZeroRock_Update(struct Enemy* p);
 void OmegaZeroRock_Die(struct Enemy* p);

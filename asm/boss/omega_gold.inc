@@ -247,7 +247,7 @@ _0805B136:
 	adds r0, #0x54
 	movs r1, #0
 	adds r2, r7, #0
-	bl FUN_0808b798
+	bl CreateOmegaGoldSword
 	adds r1, r7, #0
 	adds r1, #0xc8
 	str r0, [r1]

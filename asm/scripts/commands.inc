@@ -34,18 +34,52 @@
   .4byte \t
 	.endm
 
-	.macro cmd04 a b addr
+	.macro reset_camera template
   .byte 0x04
-	.byte \a
-  .2byte \b
-  .4byte \addr
+	.byte 0x00, 0x00, 0x00
+  .4byte \template
 	.endm
 
-	.macro cmd05 a b c
+	.macro adjust_camera a b c
   .byte 0x05
 	.byte \a
   .2byte \b
   .4byte \c
+	.endm
+
+	.macro change_camera_mode mode
+  .byte 0x05
+	.byte 0x00
+  .2byte 0x00
+  .4byte \mode
+	.endm
+
+	.macro scroll_speed_x speed
+  .byte 0x05
+	.byte 0x05
+  .2byte 0x00
+  .4byte \speed
+	.endm
+
+	.macro scroll_speed_y speed
+  .byte 0x05
+	.byte 0x06
+  .2byte 0x00
+  .4byte \speed
+	.endm
+
+	.macro stop_camera
+  .byte 0x05
+	.byte 0x10
+  .2byte 0x00
+  .4byte 0x00
+	.endm
+
+	.macro resume_camera
+  .byte 0x05
+	.byte 0x11
+  .2byte 0x00
+  .4byte 0x00
 	.endm
 
 	.macro cmd06 a b c
@@ -53,6 +87,13 @@
 	.byte \a
   .2byte \b
   .4byte \c
+	.endm
+
+  .macro backdrop_color color
+  .byte 0x06
+	.byte 0x00
+  .2byte 0x05
+  .2byte \color, 0x00
 	.endm
 
 	.macro resume a
@@ -97,11 +138,39 @@
   .4byte \addr
 	.endm
 
-	.macro cmd0c a b c
+	.macro entity a b c
   .byte 0x0c
 	.byte \a
   .2byte \b
   .4byte \c
+	.endm
+
+	.macro turn_left slot
+  .byte 0x0c
+	.byte \slot
+  .2byte 0x02
+  .4byte 0x00
+	.endm
+
+	.macro turn_right slot
+  .byte 0x0c
+	.byte \slot
+  .2byte 0x02
+  .4byte 0x01
+	.endm
+
+	.macro visible slot val
+  .byte 0x0c
+	.byte \slot
+  .2byte 0x04+\val
+  .4byte 0x00
+	.endm
+
+  .macro destroy slot
+  .byte 0x0c
+	.byte \slot
+  .2byte 0x06
+  .4byte 0x00
 	.endm
 
 	.macro emergency_on
@@ -118,11 +187,17 @@
   .4byte 0
 	.endm
 
-	.macro cmd0d a b c
+	.macro entityflag slot bit bool
   .byte 0x0D
-	.byte \a
-  .2byte \b
-  .4byte \c
+	.byte \slot
+  .2byte (1 << \bit)
+  .4byte \bool
+	.endm
+
+  .macro gameflag n val
+  .byte 0x0D, 0x00
+  .2byte \n
+  .4byte 0x02 + \val
 	.endm
 
 	.macro emotion idx x y c
@@ -178,6 +253,21 @@
 	.byte \a
   .2byte \b
   .4byte \c
+	.endm
+
+  .macro wait_indicator_end
+  .byte 0x16, 0x00
+  .2byte 0x00, 0x00, 0x00
+	.endm
+
+  .macro failed_or_gameover_indicator
+  .byte 0x16, 0x02
+  .2byte 0x00, 0x00, 0x00
+	.endm
+
+  .macro warning_indicator
+  .byte 0x16, 0x04
+  .2byte 0x00, 0x00, 0x00
 	.endm
 
 	.macro message a b c
@@ -249,6 +339,13 @@
 	.byte \a
   .2byte \b
   .4byte \c
+	.endm
+
+  .macro clear_force_coord
+  .byte 0x1a
+	.byte 1
+  .2byte 0
+  .4byte 0
 	.endm
 
   .macro start_talk

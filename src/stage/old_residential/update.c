@@ -1,7 +1,7 @@
 #include "global.h"
 #include "overworld.h"
 
-NAKED s16 OldLifeSpace_MissionUpdate(struct StageRun* p) {
+NAKED s16 OldResidential_MissionUpdate(struct StageRun* p) {
   asm(".syntax unified\n\
 	push {r4, r5, r6, r7, lr}\n\
 	mov r7, r8\n\
@@ -667,4 +667,4 @@ _0801CE98: .4byte 0x0000FFFE\n\
  .syntax divided\n");
 }
 
-s16 OldLifeSpace_FreeUpdate(struct StageRun* p) { return OldLifeSpace_MissionUpdate(p); }
+s16 OldResidential_FreeUpdate(struct StageRun* p) { return OldResidential_MissionUpdate(p); }

@@ -430,7 +430,7 @@ void AppendHazard(u16 id, u16 attr, const struct Coord *c, const struct Rect *si
 metatile_attr_t GetGroundMetatileAttr(s32 x, s32 y);
 s32 PushoutToUp2(s32 x, s32 y);
 
-void UpdateBGOFS(struct LayerGraphic *p, u16 *bgofs);
+void UpdateBGOFS(struct LayerGraphic *p, struct BgOfs *bgofs);
 void ResetTerrain(struct Terrain *terrain, metatile_attr_t *attr, Metatile *tiles, Screen *m, const struct ScreenLayout *map);
 void FUN_08006bb4(struct LayerGraphic *l, struct Coord *c, u32 *bgmap, struct MetatileMap *mm);
 void FUN_08006a10(struct LayerGraphic *r0, struct Coord *c, u16 *map, metatile_id_t *bm);

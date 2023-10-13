@@ -148,7 +148,7 @@ _080F3DFA:\n\
 	strb r0, [r2, #0x10]\n\
 _080F3E06:\n\
 	strb r3, [r2, #0x11]\n\
-	ldr r0, _080F408C @ =gGraphic_MainMenu\n\
+	ldr r0, _080F408C @ =gGraphic_Capcom+(20*20)\n\
 	ldr r5, _080F4090 @ =gVideoRegBuffer+6\n\
 	ldrh r2, [r5]\n\
 	movs r4, #0xc\n\
@@ -156,7 +156,7 @@ _080F3E06:\n\
 	ands r1, r2\n\
 	lsls r1, r1, #0xc\n\
 	bl LoadGraphic\n\
-	ldr r0, _080F4094 @ =gGraphic_MainMenu+12\n\
+	ldr r0, _080F4094 @ =gGraphic_Capcom+(20*20)+12\n\
 	movs r1, #0\n\
 	bl LoadPalette\n\
 	ldr r0, _080F4098 @ =gGraphics_CodeName\n\
@@ -448,9 +448,9 @@ _080F4026:\n\
 	.align 2, 0\n\
 _080F4084: .4byte 0x000064AC\n\
 _080F4088: .4byte 0x00000DCC\n\
-_080F408C: .4byte gGraphic_MainMenu\n\
+_080F408C: .4byte gGraphic_Capcom+(20*20)\n\
 _080F4090: .4byte gVideoRegBuffer+6\n\
-_080F4094: .4byte gGraphic_MainMenu+12\n\
+_080F4094: .4byte gGraphic_Capcom+(20*20)+12\n\
 _080F4098: .4byte gGraphics_CodeName\n\
 _080F409C: .4byte gGraphics_CodeName+12\n\
 _080F40A0: .4byte gBgMapOffsets+(20*4)\n\

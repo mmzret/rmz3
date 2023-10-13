@@ -38,7 +38,7 @@ const u16 gProcessStackPointerOffsets[3] = {
 
 static const ALIGNED(4) u8 sBuildDateTime[] = "Mar 20 2004 01:33:22";
 
-const saveFunc SramScripts[3] = {
+const saveFunc gSramRoutine[3] = {
     nop_080033d4,
     saveSram,
     loadSram,

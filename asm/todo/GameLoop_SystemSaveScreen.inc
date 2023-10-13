@@ -188,7 +188,7 @@ _080EFE98:
 	lsls r7, r5, #2
 	ldr r4, _080EFF94 @ =gSramState
 _080EFEB0:
-	bl sramScript
+	bl UpdateSram
 	ldrb r0, [r4]
 	cmp r0, #1
 	beq _080EFEB0

@@ -96,6 +96,15 @@ extern const EnemyRoutine gCarrybeeGRoutine;
 extern const EnemyRoutine gOmegaZeroRockRoutine;
 extern const EnemyRoutine gOmegaGoldSwordRoutine;
 extern const EnemyRoutine gGeneratorCannonRoutine;
+extern const EnemyRoutine gDeathlockRoutine;
+extern const EnemyRoutine gClavekerRoutine;
+extern const EnemyRoutine gSeimeranRoutine;
+extern const EnemyRoutine gPetatriaRoutine;
+extern const EnemyRoutine gEnemy59Routine;
+extern const EnemyRoutine gEnemy60Routine;
+extern const EnemyRoutine gEnemy61Routine;
+extern const EnemyRoutine gShotloidRoutine;
+extern const EnemyRoutine gEnemy63Routine;
 
 // --------------------------------------------
 

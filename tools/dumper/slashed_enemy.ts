@@ -19,6 +19,8 @@ const main = async () => {
   const rom = Deno.readFileSync('baserom.gba');
   const start = Number(args[0]);
   const length = args[1];
+
+  console.log(`static const struct SlashedEnemy sSlashedEnemies[${length}] = {`);
   for (let i = 0; i < length; i++) {
     const addr = start + (i * SIZE);
     const slashedEnemy = {
@@ -43,10 +45,13 @@ const main = async () => {
     d: {${toHex(slashedEnemy.d[0], 4, '0x')}, ${toHex(slashedEnemy.d[1], 4, '0x')}},
     unk_0c: {${toHex(slashedEnemy.unk_0c[0], 4, '0x')}, ${toHex(slashedEnemy.unk_0c[1], 4, '0x')}},
     unk_10: {${toHex(slashedEnemy.unk_10[0], 4, '0x')}, ${toHex(slashedEnemy.unk_10[1], 4, '0x')}},
-    unk_14: {${slashedEnemy.unk_14[0]}, ${slashedEnemy.unk_14[1]}},
-    _: {${slashedEnemy.unk[0]}, ${slashedEnemy.unk[1]}, ${slashedEnemy.unk[2]}, ${slashedEnemy.unk[3]}},
-},`);
+    unk_14: {${slashedEnemy.unk_14[0]}, ${slashedEnemy.unk_14[1]}},`);
+    if (slashedEnemy.unk[0] !== 0 || slashedEnemy.unk[1] !== 0 || slashedEnemy.unk[2] !== 0 || slashedEnemy.unk[3] !== 0) {
+      console.log(`    _: {${slashedEnemy.unk[0]}, ${slashedEnemy.unk[1]}, ${slashedEnemy.unk[2]}, ${slashedEnemy.unk[3]}},`);
+    }
+    console.log(`},`);
   }
+  console.log('};');
 };
 
 main();

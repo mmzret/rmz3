@@ -141,7 +141,10 @@
       asm/scripts/anatre_forest.o (.rodata);
       asm/scripts/frostline_ice_base.o (.rodata);
       asm/scripts/area_x2.o (.rodata);
+      asm/scripts/energy_facility.o (.rodata);
+      asm/scripts/snowy_plains.o (.rodata);
       asm/scripts/todo.o (.rodata);
+      asm/scripts/weil_labo.o (.rodata);
       asm/scripts/resistance_base.o (.rodata);
 		
 		src/result.o (.rodata);
@@ -267,6 +270,15 @@
       src/enemy/omega_zero_rock.o (.rodata);
       src/enemy/omega_gold_sword.o (.rodata);
       src/enemy/generator_cannon.o (.rodata);
+      src/enemy/deathlock.o (.rodata);
+      src/enemy/claveker.o (.rodata);
+      src/enemy/seimeran.o (.rodata);
+      src/enemy/petatria.o (.rodata);
+      src/enemy/unk_59.o (.rodata);
+      src/enemy/unk_60.o (.rodata);
+      src/enemy/unk_61.o (.rodata);
+      src/enemy/shotloid.o (.rodata);
+      src/enemy/unk_63.o (.rodata);
 
 		src/projectile.o (.rodata);
       src/projectile/lemon.o (.rodata);

@@ -18,7 +18,7 @@ const VFXRoutine gGhost31Routine = {
 };
 // clang-format on
 
-void FUN_080ba538(s32 x, s32 y) {
+void CreateVFX31_1(s32 x, s32 y) {
   struct VFX *p = (struct VFX *)AllocEntityLast(gVFXHeaderPtr);
   if (p != NULL) {
     (p->s).taskCol = 1;
@@ -31,7 +31,7 @@ void FUN_080ba538(s32 x, s32 y) {
   }
 }
 
-void FUN_080ba580(s32 x, s32 y) {
+void CreateVFX31_2(s32 x, s32 y) {
   s32 i;
   for (i = 0; i < 4; i++) {
     struct VFX *p = (struct VFX *)AllocEntityLast(gVFXHeaderPtr);

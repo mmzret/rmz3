@@ -146,5 +146,7 @@ struct VFX *CreateMissionAlert(u8 kind);
 struct VFX *CreateSlashedEnemy(struct Coord *c, const struct SlashedEnemy *data, u8 r2, u8 r3);
 struct VFX *FUN_080bfce8(struct Coord *c, u8 r1);
 struct VFX *CreateBossExplosion(struct Boss *boss, struct Coord *c);
+void CreateVFX31_1(s32 x, s32 y);
+void CreateVFX31_2(s32 x, s32 y);
 
 #endif  // GUARD_RMZ3_VFX_H

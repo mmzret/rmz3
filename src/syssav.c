@@ -26,7 +26,7 @@ void LoadSystemData(void) {
     s8 tmp;
     sram_08003378(SLOT_SYSTEM, (u8*)&gSystemSavedataManager, sizeof(gSystemSavedataManager));
     do {
-      sramScript();
+      UpdateSram();
       if (gSramState.unk_00 != 1) {
         tmp = gSramState.health;
       } else {
@@ -53,7 +53,7 @@ void SaveSystemData(void) {
   sram_08003330(SLOT_SYSTEM, gSystemSavedataManager.flags, sizeof(gSystemSavedataManager));
   do {
     do {
-      sramScript();
+      UpdateSram();
     } while (gSramState.unk_00 == 2);
   } while (gSramState.unk_1c == 0);
 }

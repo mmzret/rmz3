@@ -65,7 +65,7 @@ static void Actor_Init(struct Solid* p) {
   // clang-format off
   static SolidFunc const sInitializers[] = {
       [0] =  initStaticActor,
-      [1] =  loadNeutralZeroColor,
+      [ACTOR_ZERO_WALK] =  loadNeutralZeroColor,
       [ACTOR_CIEL_WALK] =  initDynamicActor,
       [3] =  initStaticActor,
       [4] =  initDynamicActor,
@@ -209,7 +209,7 @@ void Actor_Update(struct Solid* p) {
   // clang-format off
   static SolidFunc const sUpdates[] = {
       [0] =  ActorDummy_Update,
-      [1] =  Actor1_Update,
+      [ACTOR_ZERO_WALK] =  Actor1_Update,
       [ACTOR_CIEL_WALK] =  Actor2_Update,
       [3] =  Actor3_Update,
       [4] =  Actor4_Update,
@@ -288,7 +288,7 @@ void Actor_Die(struct Solid* p) {
   // clang-format off
   static SolidFunc const sDeinitalizer[] = {
       [0] =  deleteActor,
-      [1] =  deleteActor,
+      [ACTOR_ZERO_WALK] =  deleteActor,
       [ACTOR_CIEL_WALK] =  deleteActor,
       [3] =  deleteActor,
       [4] =  deleteActor,
@@ -781,7 +781,7 @@ static void Actor2_Update(struct Solid* p) {
     case 1: {
       UpdateMotionGraphic(&p->s);
       (p->s).coord.x += 0x50;
-      if (((p->s).arr[9] & (1 << 0)) && ((p->s).motion.state == MOTION_NEXT)) {
+      if (((p->s).scriptEntity->flags & (1 << 0)) && ((p->s).motion.state == MOTION_NEXT)) {
         SetMotion(&p->s, MOTION(DM194_CIEL, 17));
         (p->s).mode[1]++;
       }
@@ -790,7 +790,7 @@ static void Actor2_Update(struct Solid* p) {
 
     case 2: {
       UpdateMotionGraphic(&p->s);
-      if (((p->s).arr[9] & (1 << 1)) == 0) {
+      if (((p->s).scriptEntity->flags & (1 << 1)) == 0) {
         return;
       }
       SetMotion(&p->s, MOTION(DM194_CIEL, 19));
@@ -800,7 +800,7 @@ static void Actor2_Update(struct Solid* p) {
 
     case 3: {
       UpdateMotionGraphic(&p->s);
-      if (((p->s).arr[9] & (1 << 2)) == 0) {
+      if (((p->s).scriptEntity->flags & (1 << 2)) == 0) {
         return;
       }
       SetMotion(&p->s, MOTION(DM194_CIEL, 17));
@@ -834,7 +834,7 @@ static void Actor3_Update(struct Solid* p) {
       if ((p->s).motion.state != MOTION_NEXT) {
         return;
       }
-      if (((p->s).arr[9] & 1) == 0) {
+      if (((p->s).scriptEntity->flags & 1) == 0) {
         return;
       }
       SetMotion(&p->s, MOTION(SM130_PROLOGUE_RESISTANCE, 0));
@@ -843,7 +843,7 @@ static void Actor3_Update(struct Solid* p) {
     }
     case 2: {
       UpdateMotionGraphic(&p->s);
-      if (((p->s).arr[9] & 2) == 0) {
+      if (((p->s).scriptEntity->flags & 2) == 0) {
         return;
       }
       LOAD_STATIC_GRAPHIC(SM130_PROLOGUE_RESISTANCE);
@@ -2069,7 +2069,7 @@ const struct Collision Collision_ARRAY_08370c68[16] = {
     },
     [15] = {
       kind : DRP,
-      faction : FACTION_UNK2,
+      faction : FACTION_NEUTRAL,
       special : 0,
       damage : 0,
       unk_04 : 0xFF,

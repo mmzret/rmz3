@@ -23,11 +23,11 @@ typedef void (*sramFunc)(const u8* src, u8* dest, u32 size);
 typedef void (*saveFunc)(struct SramState* s);
 
 extern struct SramState gSramState;
-extern const saveFunc SramScripts[3];
+extern const saveFunc gSramRoutine[3];
 
-void sramScript(void);
+void UpdateSram(void);
 bool32 CheckSavedataCorrect(u8 saveIdx, s32 length);
-bool8 WriteSramINTI(u8 saveIdx);
+s32 WriteSramINTI(u8 saveIdx);
 s32 sram_08003330(u8 saveIdx, u8* dst, u32 length);
 s32 sram_08003378(u8 saveIdx, u8* dst, u32 length);
 

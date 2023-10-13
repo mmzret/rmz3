@@ -37,14 +37,14 @@ NAKED static void ExMenuLoop_Init(struct GameState* g) {
 	movs r0, #0\n\
 	strb r0, [r4, #4]\n\
 	strb r0, [r4, #5]\n\
-	ldr r0, _080F7AF8 @ =gGraphic_ExSkillMenu\n\
+	ldr r0, _080F7AF8 @ =gGraphic_Capcom+(21*20)\n\
 	ldr r5, _080F7AFC @ =gVideoRegBuffer+6\n\
 	ldrh r2, [r5]\n\
 	movs r1, #0xc\n\
 	ands r1, r2\n\
 	lsls r1, r1, #0xc\n\
 	bl LoadGraphic\n\
-	ldr r0, _080F7B00 @ =gGraphic_ExSkillMenu+12\n\
+	ldr r0, _080F7B00 @ =gGraphic_Capcom+(21*20)+12\n\
 	movs r1, #0\n\
 	bl LoadPalette\n\
 	ldr r0, _080F7B04 @ =0x085222F4\n\
@@ -139,9 +139,9 @@ _080F7ADE:\n\
 	bx r0\n\
 	.align 2, 0\n\
 _080F7AF4: .4byte 0x000064AC\n\
-_080F7AF8: .4byte gGraphic_ExSkillMenu\n\
+_080F7AF8: .4byte gGraphic_Capcom+(21*20)\n\
 _080F7AFC: .4byte gVideoRegBuffer+6\n\
-_080F7B00: .4byte gGraphic_ExSkillMenu+12\n\
+_080F7B00: .4byte gGraphic_Capcom+(21*20)+12\n\
 _080F7B04: .4byte gBgMapOffsets+(21*4)\n\
 _080F7B08: .4byte gBgMapOffsets+(23*4)\n\
 _080F7B0C: .4byte 0x000016D8\n\

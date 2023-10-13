@@ -199,6 +199,12 @@
 			src/enemy/pantheon_base.o (.text);
 			src/enemy/hanumachine_necro.o (.text);
 			src/enemy/carrybee_g.o (.text);
+			src/enemy/omega_zero_rock.o (.text);
+			src/enemy/omega_gold_sword.o (.text);
+			src/enemy/generator_cannon.o (.text);
+			src/enemy/deathlock.o (.text);
+			src/enemy/claveker.o (.text);
+			src/enemy/seimeran.o (.text);
 
 		src/projectile.o (.text);
       src/projectile/lemon.o (.text);

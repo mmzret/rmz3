@@ -81,7 +81,7 @@ EntityTemplate_0835bec0: @ 0x0835bec0
   .4byte 0x11C00, 0x1C000
   .4byte DIR_RIGHT
 
-EntityTemplate_Zero_0835bed0: @ 0x0835bed0
+Entity_Zero_0835bed0: @ 0x0835bed0
   .byte 0
   .byte 0
   .byte 0
@@ -203,7 +203,7 @@ EntityTemplate_0835bfb0: @ 0x0835bfb0
 
 Script_0835bfc0:
   spawn 0, 0, EntityTemplate_Zero_0835be70
-  cmd04 0, 0, Camera_0835bdec
+  reset_camera Camera_0835bdec
   lock
   screeneffect 9
   wait_screeneffect
@@ -215,7 +215,7 @@ Script_0835bfc0:
 Script_ContinueGameSaveSelect:
   spawn 0, 0, EntityTemplate_Zero_0835be80
   spawn 3, 0, EntityTemplate_Ciel_0835be90
-  cmd04 0, 0, Camera_0835bdec
+  reset_camera Camera_0835bdec
   lock
   normal_screen
   play_bgm BGM_RBASE
@@ -227,7 +227,7 @@ Script_ContinueGameSaveSelect:
 
 Script_0835c060:
   spawn 0, 0, EntityTemplate_Zero_0835bea0
-  cmd04 0, 0, Camera_0835bdec
+  reset_camera Camera_0835bdec
   lock
   normal_screen
   wait_screeneffect
@@ -239,7 +239,7 @@ Script_0835c060:
 Script_ReturnFromStageRun:
   play_bgm SE_RBASE_TYPING
   cmd1c 0, 0, 0
-  cmd04 0, 0, Camera_0835be18
+  reset_camera Camera_0835be18
   normal_screen
   wait FRAME
   spawn 3, 0, EntityTemplate_0835beb0
@@ -251,7 +251,7 @@ Script_ReturnFromStageRun:
   wait_msgbox_end
   play_se SE_TENSOU_VOICE
   wait SECOND
-  spawn 0, 1, EntityTemplate_Zero_0835bed0
+  spawn 0, 1, Entity_Zero_0835bed0
   lock
   wait FRAME
   force 6, 0, 0
@@ -260,7 +260,7 @@ Script_ReturnFromStageRun:
   stop_bgm
   print_message 0x14, 0x0051 @ おつかれさまでした
   wait_msgbox_end
-  cmd04 0, 0, Camera_0835bdec
+  reset_camera Camera_0835bdec
   play_bgm BGM_RBASE
   wait SECOND+15*FRAME
   gimmick 1, 1, 1
@@ -279,12 +279,12 @@ Script_ReturnFromStageRun:
   message 1, 0, 0x1300
   wait_msgbox_end
   wait SECOND/2
-  cmd0d 3, 1, 1
+  entityflag 3, 0, TRUE
   wait SECOND/4
-  cmd0d 4, 1, 1
+  entityflag 4, 0, TRUE
   wait 3*SECOND
-  cmd0c 3, 6, 0
-  cmd0c 4, 6, 0
+  destroy 3
+  destroy 4
   gimmick 1, 1, 0x82
   wait 8*FRAME
   gimmick 1, 1, 2
@@ -317,7 +317,7 @@ Script_0835c288:
   wait SECOND
   screeneffect 10
   wait_screeneffect
-  cmd0c 0, 6, 0
+  destroy 0
   wait SECOND*2
   end
 
@@ -352,14 +352,14 @@ Script_ReceiveRod:
   blackout_screen
   wait_screeneffect
   lock
-  cmd05 0x10, 0, 0
+  stop_camera
   normal_screen
   wait_screeneffect
-  message 1, 0, 0x130C
+  message 1, 0, 0x130C @ シエルにはまだ...ささえてやってくれ ゼロ....
   wait_msgbox_end
   sweep 3, 0, 0
   wait 32*FRAME
-  cmd05 0x11, 0, 0
+  resume_camera
   wait_screeneffect
   release
   resume 0
@@ -373,7 +373,7 @@ Script_0835c480:
   wait SECOND/4
   walkto 0x16800
   wait SECOND/4
-  cmd0c 0, 2, 0
+  turn_left 0
   message 1, 0, 0x46
   wait_msgbox_end
   stop_bgm
@@ -408,7 +408,7 @@ Script_0835c480:
 Script_0835c5b0:
   play_bgm SE_RBASE_TYPING
   cmd1c 0, 0, 0
-  cmd04 0, 0, Camera_0835be18
+  reset_camera Camera_0835be18
   normal_screen
   wait FRAME
   gimmick 1, 0, 1
@@ -418,7 +418,7 @@ Script_0835c5b0:
   wait_msgbox_end
   play_se SE_TENSOU_VOICE
   wait SECOND
-  spawn 0, 1, EntityTemplate_Zero_0835bed0
+  spawn 0, 1, Entity_Zero_0835bed0
   lock
   wait FRAME
   force 6, 0, 0
@@ -427,7 +427,7 @@ Script_0835c5b0:
   stop_bgm
   print_message 0x14, 0x51
   wait_msgbox_end
-  cmd04 0, 0, Camera_0835bdec
+  reset_camera Camera_0835bdec
   play_bgm BGM_RBASE
   wait 75*FRAME
   gimmick 1, 1, 1
@@ -448,7 +448,7 @@ Script_FreeRunTransport:
   wait SECOND/4
   walkto 0x16800
   wait SECOND/4
-  cmd0c 0, 2, 0
+  turn_left 0
   stop_bgm
   play_se SE_TENSOU_BEEP
   emergency_on
@@ -474,12 +474,37 @@ Script_FreeRunTransport:
   end
 
 Script_0835c7b0:
-# ./tools/dumper/bin.ts ./baserom.gba 0x0835c7b0 0x0835d3f0 ./data/scripts2.bin
+  play_bgm SE_RBASE_TYPING
+  cmd1c 0, 0, 0
+  reset_camera Camera_0835be18
+  normal_screen
+  wait FRAME
+  gimmick 1, 0, 1
+  cmd1c 1, 0, 0
+  wait_screeneffect
+  spawn 0, 1, Entity_Zero_0835bed0
+  lock
+  wait FRAME
+  force 6, 0, 0
+  gimmick 1, 0, 2
+  wait SECOND
+  stop_bgm
+  print_message 0x14, 0x51
+  wait_msgbox_end
+  reset_camera Camera_0835bdec
+  play_bgm BGM_RBASE
+  wait 75*FRAME
+  release
+  resume 0
+  end
+
+Script_0835c868:
+# ./tools/dumper/bin.ts ./baserom.gba 0x0835c868 0x0835d3f0 ./data/scripts2.bin
 .incbin "data/scripts2.bin"
 
 Script_0835d3f0:
   spawn 0, 0, EntityTemplate_Zero_0835bf60
-  cmd04 0, 0, Camera_0835bdec
+  reset_camera Camera_0835bdec
   lock
   normal_screen
   wait_screeneffect
@@ -520,7 +545,7 @@ ResistanceBaseScriptList:
   .word Script_0835c5b0
   .word Script_FreeRunTransport
   .word Script_0835c7b0
-  .word 0x0835C868
+  .word Script_0835c868
   .word 0x0835CA60
   .word 0x0835CCC8
   .word 0x0835CDB8

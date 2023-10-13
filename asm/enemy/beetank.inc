@@ -4,54 +4,6 @@
 	
 	.text
 
-	thumb_func_start CreateBeetank
-CreateBeetank: @ 0x0807B860
-	push {r4, r5, lr}
-	adds r5, r0, #0
-	lsls r1, r1, #0x18
-	lsrs r4, r1, #0x18
-	ldr r0, _0807B8B4 @ =gZakoHeaderPtr
-	ldr r0, [r0]
-	bl AllocEntityFirst
-	adds r3, r0, #0
-	cmp r3, #0
-	beq _0807B8AC
-	adds r1, r3, #0
-	adds r1, #0x25
-	movs r2, #0
-	movs r0, #0x18
-	strb r0, [r1]
-	ldr r1, _0807B8B8 @ =gEnemyFnTable
-	movs r0, #0x1e
-	strb r0, [r3, #9]
-	ldr r0, [r1, #0x78]
-	ldr r0, [r0]
-	str r0, [r3, #0x14]
-	movs r0, #0
-	strh r2, [r3, #0x20]
-	adds r1, r3, #0
-	adds r1, #0x22
-	strb r0, [r1]
-	ldrb r1, [r3, #0xb]
-	movs r0, #0x10
-	orrs r0, r1
-	strb r0, [r3, #0xb]
-	ldrb r0, [r3, #0x1c]
-	strb r0, [r3, #0x1d]
-	ldr r0, [r5]
-	ldr r1, [r5, #4]
-	str r0, [r3, #0x54]
-	str r1, [r3, #0x58]
-	strb r4, [r3, #0x10]
-_0807B8AC:
-	adds r0, r3, #0
-	pop {r4, r5}
-	pop {r1}
-	bx r1
-	.align 2, 0
-_0807B8B4: .4byte gZakoHeaderPtr
-_0807B8B8: .4byte gEnemyFnTable
-
 	thumb_func_start Beetank_Init
 Beetank_Init: @ 0x0807B8BC
 	push {r4, r5, r6, lr}
@@ -149,7 +101,7 @@ _0807B972:
 	strb r0, [r6, #0xa]
 	adds r4, r6, #0
 	adds r4, #0x74
-	ldr r1, _0807B9E4 @ =0x083679EC
+	ldr r1, _0807B9E4 @ =sCollisions
 	adds r2, r6, #0
 	adds r2, #0x54
 	adds r0, r4, #0
@@ -196,7 +148,7 @@ _0807B9D6:
 	pop {r0}
 	bx r0
 	.align 2, 0
-_0807B9E4: .4byte 0x083679EC
+_0807B9E4: .4byte sCollisions
 _0807B9E8: .4byte nop_0807bea4
 _0807B9EC: .4byte gEnemyFnTable
 
@@ -228,7 +180,7 @@ Beetank_Update: @ 0x0807B9F0
 	.align 2, 0
 _0807BA20: .4byte gEnemyFnTable
 _0807BA24:
-	ldr r1, _0807BAA4 @ =0x083679C4
+	ldr r1, _0807BAA4 @ =sUpdates1
 	ldrb r0, [r5, #0xd]
 	lsls r0, r0, #2
 	adds r0, r0, r1
@@ -289,7 +241,7 @@ _0807BA74:
 	str r4, [r5, #0x58]
 	b _0807BAB6
 	.align 2, 0
-_0807BAA4: .4byte 0x083679C4
+_0807BAA4: .4byte sUpdates1
 _0807BAA8: .4byte 0xFFFFFC00
 _0807BAAC: .4byte 0xFFFFF000
 _0807BAB0: .4byte 0xFFFFFA00
@@ -306,7 +258,7 @@ _0807BAB6:
 	strb r1, [r0]
 	b _0807BADA
 _0807BACA:
-	ldr r0, _0807BAE4 @ =0x083679D8
+	ldr r0, _0807BAE4 @ =sUpdates2
 	ldrb r1, [r5, #0xd]
 	lsls r1, r1, #2
 	adds r1, r1, r0
@@ -320,7 +272,7 @@ _0807BADA:
 	pop {r0}
 	bx r0
 	.align 2, 0
-_0807BAE4: .4byte 0x083679D8
+_0807BAE4: .4byte sUpdates2
 
 	thumb_func_start Beetank_Die
 Beetank_Die: @ 0x0807BAE8
@@ -813,7 +765,7 @@ FUN_0807be50: @ 0x0807BE50
 	ands r0, r1
 	cmp r0, #0
 	beq _0807BE9A
-	ldr r2, _0807BE8C @ =0x08367A1C
+	ldr r2, _0807BE8C @ =sElementCoord
 	movs r0, #0
 	adds r1, r4, #0
 	bl ApplyElementEffect
@@ -830,7 +782,7 @@ FUN_0807be50: @ 0x0807BE50
 	movs r0, #2
 	b _0807BE96
 	.align 2, 0
-_0807BE8C: .4byte 0x08367A1C
+_0807BE8C: .4byte sElementCoord
 _0807BE90:
 	cmp r1, #0x30
 	bne _0807BE9A

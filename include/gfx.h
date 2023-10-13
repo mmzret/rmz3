@@ -37,6 +37,14 @@
 #define TILESETS(id, ofs) ((struct ColorGraphic*)(*((u32*)(0x087044b0 + (id * 4))) + (0x087044b0 + (id * 4)) + (ofs * 20)))
 #endif
 
+#if MODERN
+#define BG_GRAPHIC(n) ((const struct Graphic*)&((struct ColorGraphic*)&gGraphic_Capcom)[(n)])
+#define BG_PALETTE(n) ((const struct Palette*)&(((struct ColorGraphic*)&gGraphic_Capcom)[(n)].pal))
+#else
+#define BG_GRAPHIC(n) ((const struct Graphic*)((void*)(0x08547280) + ((n) * (sizeof(struct ColorGraphic)))))
+#define BG_PALETTE(n) ((const struct Palette*)((void*)(0x0854728C) + ((n) * (sizeof(struct ColorGraphic)))))
+#endif
+
 /**
  * @brief 0x080036cc の関数で src -> dst に転送が行われる (Transfer gfx data from src to dest by 0x080036cc)
  * @details
@@ -163,10 +171,6 @@ extern const struct ColorGraphic gMiscTilesetGraphics[177];
 
 extern const struct Graphic gGraphic_Capcom;
 extern const struct Palette gPalette_Capcom;
-extern const struct Graphic gGraphic_TitleLogo;
-extern const struct Palette gPalette_TitleLogo;
-extern const struct Graphic gGraphic_MenuMisc;
-extern const struct Palette gPalette_MenuMisc;
 
 extern const u32 gBgMapOffsets[134];
 

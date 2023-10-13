@@ -8,18 +8,8 @@
 #include "widget.h"
 #include "zero.h"
 
-extern const struct Graphic gGraphic_NurseElfTab;
-extern const struct Palette gPalette_NurseElfTab;
-#define gGraphic_ElfTab(category) ((const struct Graphic*)((void*)&gGraphic_NurseElfTab + (category * 20)))
-#define gPalette_ElfTab(category) ((const struct Palette*)((void*)&gPalette_NurseElfTab + (category * 20)))
-
-extern const struct ColorGraphic gGraphics_ElfCategory[3];
-
-extern const struct Graphic gGraphic_ElfMenu;
-extern const struct Palette gPalette_ElfMenu;
-
-extern const struct Graphic gGraphic_0854758C;
-extern const struct Palette gPalette_0854758C;
+#define gGraphic_ElfTab(category) ((const struct Graphic*)((void*)BG_GRAPHIC(BG_ELF_TAB) + (category * 20)))
+#define gPalette_ElfTab(category) ((const struct Palette*)((void*)BG_PALETTE(BG_ELF_TAB) + (category * 20)))
 
 static void printElfNames(struct GameState* g);
 static void printElfMenuDescription(struct GameState* g);
@@ -74,9 +64,9 @@ static void ElfMenuLoop_Init(struct GameState* g) {
   u8 i;
   const struct ColorGraphic* gfx;
   struct Zero* z = g->z2;
-  LoadGraphic(&gGraphic_ElfMenu, (void*)CHAR_BASE(1));
-  LoadPalette(&gPalette_ElfMenu, 0);
-  CpuFastCopy(BGMAP(23), g->unk_16d8, 1920);
+  LoadGraphic(BG_GRAPHIC(BG_ELF_MENU), (void*)CHAR_BASE(1));
+  LoadPalette(BG_PALETTE(BG_ELF_MENU), 0);
+  CpuFastCopy(BGMAP(BG_ELF_MENU), g->unk_16d8, 1920);
   RequestBgMapTransfer(g->unk_0ed8, (void*)SCREEN_BASE_16(1), 0x1000);
   for (i = 0; i < 6; i++) {
     (&((g->sceneState).menu).elf)->displayed[i] = 0;
@@ -135,18 +125,13 @@ static void ElfMenuLoop_Update(struct GameState* g) {
 
     if (g->mode[3] >= 2) {
       if (tab != ELF_MENU->tab || (prev < 2)) {
-#if MODERN
-        LoadGraphic(&gGraphics_ElfCategory[ELF_MENU->tab].g, (void*)CHAR_BASE(1));
-        LoadPalette(&gGraphics_ElfCategory[ELF_MENU->tab].pal, 0);
-#else
-        LoadGraphic((const struct Graphic*)(0x08547514 + (20 * ELF_MENU->tab)), (void*)CHAR_BASE(1));
-        LoadPalette((const struct Palette*)(0x08547520 + (20 * ELF_MENU->tab)), 0);
-#endif
+        LoadGraphic((const struct Graphic*)((void*)BG_GRAPHIC(BG_ELF_CATEGORY) + (20 * ELF_MENU->tab)), (void*)CHAR_BASE(1));
+        LoadPalette((const struct Palette*)((void*)BG_PALETTE(BG_ELF_CATEGORY) + (20 * ELF_MENU->tab)), 0);
       }
     } else {
       if (1 < prev) {
-        LoadGraphic(&gGraphic_0854758C, (void*)CHAR_BASE(1));
-        LoadPalette(&gPalette_0854758C, 0);
+        LoadGraphic(BG_GRAPHIC(BG_UNK_39), (void*)CHAR_BASE(1));
+        LoadPalette(BG_PALETTE(BG_UNK_39), 0);
       }
       if ((ELF_MENU->mode == 0) && (SATELITE_1 != ELF_NONE)) {
         PrintString(STRING(100 + SATELITE_1), 21, 1);
@@ -165,12 +150,12 @@ static void ElfMenuLoop_Update(struct GameState* g) {
 
 static void ElfMenuLoop_SlideOut(struct GameState* g) {
   if (MENU->unk_4d == 0) {
-    ((struct BgOfs*)gVideoRegBuffer.bgofs[1])->x += 16;
+    BGOFS(1)->x += 16;
   } else {
-    ((struct BgOfs*)gVideoRegBuffer.bgofs[1])->x -= 16;
+    BGOFS(1)->x -= 16;
   }
-  ((struct BgOfs*)gVideoRegBuffer.bgofs[1])->x &= 0x1FF;
-  if ((((struct BgOfs*)gVideoRegBuffer.bgofs[1])->x & 0xFF) == 0) {
+  BGOFS(1)->x &= 0x1FF;
+  if ((BGOFS(1)->x & 0xFF) == 0) {
     MENU->unk_4c = MENU->unk_4d;
     g->mode[2] = 1;
     ElfMenuLoop_Exit(g);

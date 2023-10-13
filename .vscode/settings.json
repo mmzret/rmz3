@@ -49,7 +49,7 @@
         "graphics/**/*.gbapal": true,
         "sprites/**/*.gbapal": true,
         "sprites/**/*.inc": true,
-        "sprites/*.s": true,
+        "sprites/*/*.s": true,
         "*.sha1": true,
         "**/*.o": true,
         "baserom.gba": true,

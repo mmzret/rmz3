@@ -201,7 +201,7 @@ _080F0848:
 	mov r8, r4
 	ldr r4, _080F09D0 @ =gSramState
 _080F0862:
-	bl sramScript
+	bl UpdateSram
 	ldrb r0, [r4]
 	cmp r0, #1
 	beq _080F0862

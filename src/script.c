@@ -110,10 +110,10 @@ void FUN_08021cb4(struct VM *vm, const struct Command *script, struct Entity *e)
   struct ScriptEntity *se = &vm->entities[2];
   if (se->entity == NULL) {
     e->flags |= SCRIPTED;
-    e->arr = (u8 *)se;
+    e->scriptEntity = se;
     vm->entities[2].entity = e;
     se->unk_08 = 2;
-    se->unk_09 = 0;
+    se->flags = 0;
     se->unk_0A[0] = se->unk_0A[1] = se->unk_0A[2] = 0;
     SetScript(vm, script);
   }
@@ -137,7 +137,7 @@ void CreateScriptEntity(u8 n, struct ScriptEntityTemplate *template) {
     se->entity = e;
     if (e != NULL) {
       e->flags |= SCRIPTED;
-      e->arr = (u8 *)se;
+      e->scriptEntity = se;
       e->work[0] = template->unk_02;
       e->work[1] = template->unk_03;
       e->coord.x = (template->coord).x;
@@ -153,7 +153,7 @@ void CreateScriptEntity(u8 n, struct ScriptEntityTemplate *template) {
         e->flags &= ~Y_FLIP;
       }
       se->unk_08 = n;
-      se->unk_09 = 0;
+      se->flags = 0;
       se->unk_0A[0] = se->unk_0A[1] = se->unk_0A[2] = 0;
       if (n == 0) {
         pZero2 = (struct Zero *)e;
@@ -684,8 +684,8 @@ static void quakeScreen(struct VM *vm) {
     }
     if ((&gStageRun.vm.camera)->mode == 0) {
       CalcQuake(&(&gStageRun.vm.camera)->target, &c);
-      ((struct BgOfs *)gVideoRegBuffer.bgofs[1])->x = c.x >> 8;
-      ((struct BgOfs *)gVideoRegBuffer.bgofs[1])->y = c.y >> 8;
+      BGOFS(1)->x = c.x >> 8;
+      BGOFS(1)->y = c.y >> 8;
     }
   }
 }

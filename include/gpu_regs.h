@@ -4,6 +4,8 @@
 #include "constants/constants.h"
 #include "gba/gba.h"
 
+#define BGOFS(n) ((struct BgOfs*)gVideoRegBuffer.bgofs[(n)])
+
 struct BgOfs {
   u16 x;
   u16 y;
@@ -53,7 +55,7 @@ extern u16 wMOSAIC;  // wMOSAIC
 void ResetVideoRegister(void);
 void FlashVideoRegister(void);
 void LoadBgMap(u8 bg16, const u32* tbl, u8 idx, s8 x, s8 y);
-void loadBgMap_08004248(s32 dst, s32* tbl, s32 idx, u8 x, s32 y);
+void loadBgMap_08004248(u16* dst, const u32* tbl, s32 idx, u8 x, s32 y);
 void ResetOAM(void);
 void FlashOAM(void);
 void ClearBLDCLT_1(void);

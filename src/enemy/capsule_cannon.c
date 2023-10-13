@@ -2,8 +2,6 @@
 #include "enemy.h"
 #include "global.h"
 
-INCASM("asm/enemy/capsule_cannon.inc");
-
 void CapsuleCannon_Init(struct Enemy* p);
 void CapsuleCannon_Update(struct Enemy* p);
 void CapsuleCannon_Die(struct Enemy* p);
@@ -17,6 +15,23 @@ const EnemyRoutine gCapsuleCannonRoutine = {
     [ENTITY_EXIT] =      (EnemyFunc)DeleteEntity,
 };
 // clang-format on
+
+struct Enemy* CreateCapsuleCannon(struct Coord* c, u8 n) {
+  struct Enemy* p = (struct Enemy*)AllocEntityFirst(gZakoHeaderPtr);
+  if (p != NULL) {
+    (p->s).taskCol = 24;
+    INIT_ZAKO_ROUTINE(p, ENEMY_CAPSULE_CANNON);
+    (p->s).tileNum = 0;
+    (p->s).palID = 0;
+    (p->s).flags2 |= WHITE_PAINTABLE;
+    (p->s).invincibleID = (p->s).uniqueID;
+    (p->s).coord = *c;
+    (p->s).work[0] = n;
+  }
+  return p;
+}
+
+INCASM("asm/enemy/capsule_cannon.inc");
 
 void FUN_08085a08(struct Enemy* p);
 void FUN_08085a10(struct Enemy* p);

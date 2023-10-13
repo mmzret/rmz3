@@ -46,14 +46,14 @@ NAKED static void KcMenuLoop_Init(struct GameState *g) {
 	movs r0, #0\n\
 	mov r1, r8\n\
 	strb r0, [r1]\n\
-	ldr r0, _080F5B70 @ =gGraphic_MenuMisc\n\
+	ldr r0, _080F5B70 @ =gGraphic_Capcom+(22*20)\n\
 	ldr r6, _080F5B74 @ =gVideoRegBuffer+6\n\
 	ldrh r2, [r6]\n\
 	movs r1, #0xc\n\
 	ands r1, r2\n\
 	lsls r1, r1, #0xc\n\
 	bl LoadGraphic\n\
-	ldr r0, _080F5B78 @ =gGraphic_MenuMisc+12\n\
+	ldr r0, _080F5B78 @ =gGraphic_Capcom+(22*20)+12\n\
 	movs r1, #0\n\
 	bl LoadPalette\n\
 	ldr r0, _080F5B7C @ =0x085222F8\n\
@@ -103,9 +103,9 @@ NAKED static void KcMenuLoop_Init(struct GameState *g) {
 	bx r0\n\
 	.align 2, 0\n\
 _080F5B6C: .4byte 0x00000DF8\n\
-_080F5B70: .4byte gGraphic_MenuMisc\n\
+_080F5B70: .4byte gGraphic_Capcom+(22*20)\n\
 _080F5B74: .4byte gVideoRegBuffer+6\n\
-_080F5B78: .4byte gGraphic_MenuMisc+12\n\
+_080F5B78: .4byte gGraphic_Capcom+(22*20)+12\n\
 _080F5B7C: .4byte gBgMapOffsets+(22*4)\n\
 _080F5B80: .4byte gBgMapOffsets+(24*4)\n\
 _080F5B84: .4byte 0x00000ED8\n\
@@ -726,12 +726,12 @@ _080F6038: .4byte gVideoRegBuffer+6\n\
 
 static void KcMenuLoop_SlideOut(struct GameState *g) {
   if (MENU->unk_4d == 3) {
-    ((struct BgOfs *)gVideoRegBuffer.bgofs[1])->x += 16;
+    BGOFS(1)->x += 16;
   } else {
-    ((struct BgOfs *)gVideoRegBuffer.bgofs[1])->x -= 16;
+    BGOFS(1)->x -= 16;
   }
-  ((struct BgOfs *)gVideoRegBuffer.bgofs[1])->x &= 0x1FF;
-  if ((((struct BgOfs *)gVideoRegBuffer.bgofs[1])->x & 0xFF) == 0) {
+  BGOFS(1)->x &= 0x1FF;
+  if ((BGOFS(1)->x & 0xFF) == 0) {
     MENU->unk_4c = MENU->unk_4d;
     g->mode[2] = 1;
     KcMenuLoop_Exit(g);

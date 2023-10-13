@@ -54,7 +54,7 @@ WIP void LoadBgMap(u8 bg16, const u32* tbl, u8 idx, s8 x, s8 y) {
  * @brief BgMapOffsets[n] を(x*8, y*8)にくるようにdst(BGMap)にロード
  * @note 0x08004248
  */
-NAKED void loadBgMap_08004248(s32 dst, s32* tbl, s32 idx, u8 x, s32 y) {
+NAKED void loadBgMap_08004248(u16* dst, const u32* tbl, s32 idx, u8 x, s32 y) {
   asm(".syntax unified\n\
 	push {r4, r5, r6, r7, lr}\n\
 	mov r7, sb\n\

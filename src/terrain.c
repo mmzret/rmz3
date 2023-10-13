@@ -521,7 +521,7 @@ WIP void DrawGeneralStageLayer(struct StageLayer* l, const struct Stage* _) {
   } else {
     FUN_08005a70(&l->gfx, &c, VRAM + SCREEN_BASE(l->bgIdx >> 4));
   }
-  UpdateBGOFS(&l->gfx, gVideoRegBuffer.bgofs[l->bgIdx >> 4]);
+  UpdateBGOFS(&l->gfx, BGOFS(l->bgIdx >> 4));
 #else
   INCCODE("asm/wip/DrawGeneralStageLayer.inc");
 #endif

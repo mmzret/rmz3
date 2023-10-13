@@ -88,7 +88,7 @@ static void ArmorIcons_Update(struct Widget *w) {
     FUN_080e6c94(w);
   }
   (w->s).unk_coord = (w->s).coord;
-  if (((struct BgOfs *)gVideoRegBuffer.bgofs[1])->x > 0x100) {
+  if (BGOFS(1)->x > 0x100) {
     (w->s).coord.x += PIXEL(512);
   }
 }

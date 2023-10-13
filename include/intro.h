@@ -44,15 +44,6 @@ extern const struct Graphic gGraphic_Inti;
 extern const struct Palette gPalette_Inti;
 extern const struct Graphic gGraphic_085472a8;
 extern const struct Palette gPalette_085472a8;
-extern const struct Graphic gGraphic_TitleZero;
-extern const struct Palette gPalette_TitleZero;
-extern const struct Graphic gGraphic_TitleCiel;
-extern const struct Palette gPalette_TitleCiel;
-
-extern const struct Graphic gGraphic_OpeningAnim1;
-extern const struct Palette gPalette_OpeningAnim1;
-extern const struct Graphic gGraphic_OpeningAnim2;
-extern const struct Palette gPalette_OpeningAnim2;
 
 void Process_Intro(struct Process* p);
 void Process_Game(struct Process* p);

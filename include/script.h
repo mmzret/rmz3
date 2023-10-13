@@ -50,7 +50,7 @@ struct ScriptEntity {
   struct Entity* entity;
   struct Entity* unk_04;
   u8 unk_08;
-  u8 unk_09;
+  u8 flags;  // Actorによって各bitの意味が異なる
   u16 unk_0A[3];
 };
 

@@ -2,8 +2,6 @@
 #include "enemy.h"
 #include "global.h"
 
-INCASM("asm/enemy/enemy.inc");
-
 void CarrybeeG_Init(struct Enemy* p);
 void CarrybeeG_Update(struct Enemy* p);
 void CarrybeeG_Die(struct Enemy* p);
@@ -18,6 +16,38 @@ const EnemyRoutine gCarrybeeGRoutine = {
     [ENTITY_EXIT] =      (EnemyFunc)DeleteEntity,
 };
 // clang-format on
+
+struct Enemy* FUN_0808a854(struct Coord* c) {
+  struct Enemy* p = (struct Enemy*)AllocEntityFirst(gZakoHeaderPtr);
+  if (p != NULL) {
+    (p->s).taskCol = 24;
+    INIT_ZAKO_ROUTINE(p, ENEMY_CARRYBEE_G);
+    (p->s).tileNum = 0;
+    (p->s).palID = 0;
+    (p->s).flags2 |= WHITE_PAINTABLE;
+    (p->s).invincibleID = (p->s).uniqueID;
+    (p->s).coord = *c;
+    (p->s).work[0] = 0;
+  }
+  return p;
+}
+
+struct Enemy* FUN_0808a8b0(struct Entity* e) {
+  struct Enemy* p = (struct Enemy*)AllocEntityFirst(gZakoHeaderPtr);
+  if (p != NULL) {
+    (p->s).taskCol = 24;
+    INIT_ZAKO_ROUTINE(p, ENEMY_CARRYBEE_G);
+    (p->s).tileNum = 0;
+    (p->s).palID = 0;
+    (p->s).flags2 |= WHITE_PAINTABLE;
+    (p->s).invincibleID = (p->s).uniqueID;
+    (p->s).work[0] = 1;
+    (p->s).unk_28 = e;
+  }
+  return p;
+}
+
+INCASM("asm/enemy/carrybee_g.inc");
 
 bool8 FUN_0808af78(struct Enemy* p);
 bool8 FUN_0808b008(struct Enemy* p);

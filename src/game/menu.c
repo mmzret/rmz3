@@ -380,7 +380,7 @@ static void menu_080f394c(struct GameState *g) {
 }
 
 static void menu_080f39a8(struct GameState *g) {
-  g->unk_0dc4.x = PIXEL(((struct BgOfs *)gVideoRegBuffer.bgofs[1])->x & 0x1FF) + PIXEL(120);
+  g->unk_0dc4.x = PIXEL(BGOFS(1)->x & 0x1FF) + PIXEL(120);
   ClearTaskBuffer(&g->taskManager2);
   UpdateEntities(gWidgetHeaderPtr);
   DrawEntity(gWidgetHeaderPtr, &g->taskManager2);

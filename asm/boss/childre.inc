@@ -2031,7 +2031,7 @@ _080414B4: .4byte 0x0000A404
 _080414B8:
 	ldr r0, [r4, #0x54]
 	ldr r1, [r4, #0x58]
-	bl FUN_08073660
+	bl CreateSplitMineBomb
 	ldr r1, _08041548 @ =0x0000A405
 	adds r0, r4, #0
 	bl SetMotion
@@ -2121,7 +2121,7 @@ _08041560:
 	bne _08041588
 	ldr r0, [r4, #0x54]
 	ldr r1, [r4, #0x58]
-	bl FUN_08073660
+	bl CreateSplitMineBomb
 	movs r0, #8
 	strb r0, [r4, #0xd]
 	strb r5, [r4, #0xe]
@@ -2390,27 +2390,27 @@ _08041762:
 	ldr r2, _080417DC @ =0xFFFFFB00
 	adds r0, r0, r2
 	movs r2, #0x68
-	bl createChildreScrewIce
+	bl CreateChildreScrewIce
 	ldr r0, [r4, #0x54]
 	movs r1, #0xa0
 	lsls r1, r1, #3
 	adds r0, r0, r1
 	ldr r1, [r4, #0x58]
 	movs r2, #0x18
-	bl createChildreScrewIce
+	bl CreateChildreScrewIce
 	ldr r0, [r4, #0x54]
 	ldr r2, _080417DC @ =0xFFFFFB00
 	adds r0, r0, r2
 	ldr r1, [r4, #0x58]
 	movs r2, #0x78
-	bl createChildreScrewIce
+	bl CreateChildreScrewIce
 	ldr r0, [r4, #0x54]
 	movs r1, #0xa0
 	lsls r1, r1, #3
 	adds r0, r0, r1
 	ldr r1, [r4, #0x58]
 	movs r2, #8
-	bl createChildreScrewIce
+	bl CreateChildreScrewIce
 	ldr r0, _080417E0 @ =gOverworld
 	ldr r2, _080417E4 @ =0x0002C00C
 	adds r0, r0, r2
@@ -2544,7 +2544,7 @@ _080418B8:
 	bl SetDDP
 	ldr r0, [r4, #0x54]
 	ldr r1, [r4, #0x58]
-	bl FUN_080ba580
+	bl CreateVFX31_2
 	movs r0, #0xa0
 	lsls r0, r0, #2
 	str r0, [r4, #0x5c]
@@ -2808,7 +2808,7 @@ _08041AA8:
 	lsrs r2, r2, #4
 	movs r3, #1
 	ands r2, r3
-	bl createChildreMissile
+	bl CreateChildreMissile
 _08041ADE:
 	movs r0, #0x18
 	strb r0, [r4, #0x13]

@@ -2404,7 +2404,7 @@ static void ozDeath0(struct Boss *p) {
     case 1: {
       UpdateMotionGraphic(&p->s);
       (p->s).work[2]--;
-      if ((p->s).arr[9] & (1 << 7)) {
+      if ((p->s).scriptEntity->flags & (1 << 7)) {
         (p->s).mode[2]++;
       }
       break;

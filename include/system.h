@@ -47,9 +47,9 @@ struct InterruptManager {
   u32 main[72];        // IntrMain(0x080001bc) が ここにコピーされる
   VoidFunc vblankCallback;
   VoidFunc hblankCallback;
-  u32 frame;         // ゲーム開始時から経過したフレーム数
-  vu8 frame2;        // ゲーム速度コントロール用のフレームカウンタ, VBlank割り込みのたびにインクリメントされる
-  u8 slowGameRatio;  // この値をxにするとゲームスピードが 1/x になる
+  u32 frame;          // ゲーム開始時から経過したフレーム数
+  vu8 frame2;         // ゲーム速度コントロール用のフレームカウンタ, VBlank割り込みのたびにインクリメントされる
+  vu8 slowGameRatio;  // この値をxにするとゲームスピードが 1/x になる
   u8 lyc;
   u8 intrLock;
   u32 dma0[3];

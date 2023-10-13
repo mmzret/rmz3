@@ -21,13 +21,13 @@ struct SaveSlotInfo {
 };  // 72 bytes
 
 struct SaveHeader {
-  u8 INTI[4];  // マジックナンバ INTI
+  u32 INTI;  // マジックナンバ INTI
   u32 checksum;
   u32 size;
   u8 unk_c;  // 0x0B で固定
   u8 pad_d;
   u8 idx;  // セーブデータの番号(0..4)
-  u8 _;
+  u8 unk_f;
 };  // 16 bytes
 
 /**

@@ -3,6 +3,7 @@
 #include "constants/boss.h"
 #include "constants/song.h"
 #include "constants/solid.h"
+#include "constants/flag.h"
 
   .balign 4
   .section .rodata
@@ -329,7 +330,7 @@ EntityTemplate_Zero_0834d570: @ 0x0834d570
   .4byte 0xF9800, 0x12000
   .4byte DIR_RIGHT
 
-EntityTemplate_OmegaWhite: @ 0x0834d580
+Entity_OmegaWhite: @ 0x0834d580
   .byte BOSS
   .byte BOSS_OMEGA_WHITE
   .byte 0
@@ -371,13 +372,13 @@ Script_0834d608: @ 0x0834d608
   wait_screeneffect
   rune 0, 0, 0
   wait SECOND*2
-  cmd04 0, 0, Camera_0834d294
+  reset_camera Camera_0834d294
   time 0
   lock
   normal_screen
   wait_screeneffect
   waitabs 213
-  cmd05 6, 0, 0
+  scroll_speed_y 0
   spawn ZERO, 0, EntityTemplate_SpaceCraftIntroZero
   wait SECOND
   spawn CIEL, 0, EntityTemplate_SpaceCraftIntroCiel
@@ -385,30 +386,30 @@ Script_0834d608: @ 0x0834d608
   wait SECOND/4
   spawn 5, 0, EntityTemplate_0834d390
   wait SECOND*8+20
-  cmd05 5, 0, 80
+  scroll_speed_x 80
   wait SECOND*2
   print_message 0x50, 0x0300
   wait_msgbox_end
   wait SECOND*6
-  cmd0d 4, 1, 1
-  cmd05 5, 0, 0x60
+  entityflag 4, 0, TRUE
+  scroll_speed_x 0x60
   wait FRAME
-  cmd05 5, 0, 0x50
+  scroll_speed_x 0x50
   wait FRAME
-  cmd05 5, 0, 0x40
+  scroll_speed_x 0x40
   wait FRAME
-  cmd05 5, 0, 0x30
+  scroll_speed_x 0x30
   wait FRAME
-  cmd05 5, 0, 0x20
+  scroll_speed_x 0x20
   wait FRAME
-  cmd05 5, 0, 0x10
-  cmd0d 5, 1, 1
+  scroll_speed_x 0x10
+  entityflag 5, 0, TRUE
   wait FRAME*40
-  cmd05 5, 0, 0x00
+  scroll_speed_x 0x00
   emotion CIEL, 0xC00, 0xFFD800, 0
   wait SECOND/4
-  cmd0d 3, 1, 1
-  cmd0d 6, 1, 1
+  entityflag 3, 0, TRUE
+  entityflag 6, 0, TRUE
   wait SECOND
   emotion ZERO, 0xC00, 0xFFD800, 1
   wait SECOND*2
@@ -424,15 +425,15 @@ Script_0834d608: @ 0x0834d608
   print_message 0x50, 0x0303 @ 0x0837f1eb
   wait_msgbox_end
   wait SECOND/4
-  cmd0d 4, 2, 1
+  entityflag 4, 1, TRUE
   wait SECOND/2
   blackout_screen
   wait_screeneffect
-  cmd0c 3, 4, 0
-  cmd0c 4, 4, 0
-  cmd0c 5, 4, 0
-  cmd0c 6, 4, 0
-  cmd05 16, 0, 0x00
+  visible 3, FALSE
+  visible 4, FALSE
+  visible 5, FALSE
+  visible 6, FALSE
+  stop_camera
   cutscene 0
   normal_screen
   cutscene 1
@@ -446,28 +447,28 @@ Script_0834d608: @ 0x0834d608
   blackout_screen
   wait_screeneffect
   cutscene 2
-  cmd0c 6, 5, 0
-  cmd0c 5, 5, 0
-  cmd0c 4, 5, 0
-  cmd0c 3, 5, 0
-  cmd0d 5, 2, 1
-  cmd04 0, 0, Camera_0834d2c0
-  cmd0d 4, 4, 1
+  visible 6, TRUE
+  visible 5, TRUE
+  visible 4, TRUE
+  visible 3, TRUE
+  entityflag 5, 1, TRUE
+  reset_camera Camera_0834d2c0
+  entityflag 4, 2, TRUE
   normal_screen
   wait_screeneffect
   wait SECOND/4
   message 1, 0, 0x0306
   wait_msgbox_end
   wait SECOND/4
-  cmd0d 3, 2, 1
+  entityflag 3, 1, TRUE
   stop_bgm
   wait SECOND
   blackout_screen
   wait_screeneffect
-  cmd0c 3, 6, 0
-  cmd0c 4, 6, 0
-  cmd0c 6, 6, 0
-  cmd0c 5, 6, 0
+  destroy 3
+  destroy 4
+  destroy 6
+  destroy 5
   eventflag 1, 0, 0
   lockmenu
   end
@@ -477,7 +478,7 @@ Script_0834d608: @ 0x0834d608
 Script_0834d978:  @ 0x0834d978
   unlockmenu
   spawn 0, 0, EntityTemplate_0834d530
-  cmd04 0, 0, Camera_0834d268
+  reset_camera Camera_0834d268
   lock
   normal_screen
   forcekeyinput DPAD_RIGHT
@@ -486,7 +487,7 @@ Script_0834d978:  @ 0x0834d978
   wait 16
   indicator 1, 0, 0
   walkto 0x52000
-  indicator 0, 0, 0
+  wait_indicator_end
   release
   resume 0
   end
@@ -495,13 +496,13 @@ Script_0834d978:  @ 0x0834d978
 
 Script_InitSpaceCraftStageRun: @ 0x0834d9f0
   spawn 0, 0, EntityTemplate_ZeroSpaceCraftStartPoint
-  cmd04 0, 0, Camera_0834d268
+  reset_camera Camera_0834d268
   lock
   screeneffect 9
   wait_screeneffect
   play_bgm BGM_BREAKOUT
   indicator 1, 0, 0
-  indicator 0, 0, 0
+  wait_indicator_end
   release
   resume 0
   end
@@ -513,10 +514,10 @@ Script_0834da48: @ 0x0834da48
   force 0, 0, 0
   lock
   force 8, 0, 0
-  cmd0c 0, 2, 1
-  cmd05 0, 0, 6
-  cmd05 1, 0, 4
-  cmd05 11, 0, 0xC5000
+  turn_right 0
+  change_camera_mode 6
+  adjust_camera 1, 0, 4
+  adjust_camera 11, 0, 0xC5000
   wait 90*FRAME
   start_talk
   wait 45*FRAME
@@ -525,18 +526,18 @@ Script_0834da48: @ 0x0834da48
   wait SECOND/4
   blackout_screen
   wait_screeneffect
-  cmd05 16, 0, 0
+  stop_camera
   cmd06 0x72, 6, 0
   normal_screen
   wait_screeneffect
   wait SECOND/4
-  message 1, 0, 0x308
+  message 1, 0, 0x308 @ アイツは俺のことを知っていた.. 世界を滅ぼしかけたエルフがなぜオレのことを..
   wait_msgbox_end
   blackout_screen
   wait_screeneffect
   cmd06 0, 1, 0
-  cmd05 17, 0, 0
-  cmd05 0, 0, 1
+  resume_camera
+  change_camera_mode 1
   normal_screen
   wait_screeneffect
   wait SECOND/2
@@ -552,7 +553,7 @@ Script_0834da48: @ 0x0834da48
   spawn 4, 0, EntityTemplate_0834d3c0
   spawn 5, 0, EntityTemplate_0834d3d0
   spawn 3, 0, EntityTemplate_0834d3b0
-  cmd04 0, 0, Camera_0834d2c0
+  reset_camera Camera_0834d2c0
   normal_screen
   wait_screeneffect
   wait SECOND/4
@@ -567,7 +568,7 @@ Script_0834da48: @ 0x0834da48
   play_bgm BGM_ANTAN
   wait_msgbox_end
   wait SECOND/4
-  cmd0d 3, 1, 1
+  entityflag 3, 0, TRUE
   wait SECOND/4
   .incbin "data/Script_0834da48.bin" @ ./tools/dumper/bin.ts ./baserom.gba 0x0834dc28 0x0834df70 ./data/Script_0834da48.bin
   @ WIP 0x0834dc28..0x0834df70
@@ -576,7 +577,7 @@ Script_0834da48: @ 0x0834da48
 
 Script_SpaceCraftBuilding:
   spawn 0, 0, EntityTemplate_ZeroSpaceCraftBuilding
-  cmd04 0, 0, Camera_0834d318
+  reset_camera Camera_0834d318
   lock
   normal_screen
   wait_screeneffect
@@ -589,13 +590,13 @@ Script_SpaceCraftBuilding:
 
 Script_0834dfb8:
   spawn 0, 0, EntityTemplate_ZeroSpaceCraftBuilding
-  cmd04 0, 0, Camera_0834d318
+  reset_camera Camera_0834d318
   lock
   screeneffect 9
   wait_screeneffect
   play_bgm BGM_BREAKOUT
   indicator 1, 0, 0
-  indicator 0, 0, 0
+  wait_indicator_end
   release
   resume 0
   end
@@ -604,13 +605,13 @@ Script_0834dfb8:
 
 Script_GuarderRoom:
   spawn 0, 0, EntityTemplate_Zero_0834d560
-  cmd04 0, 0, Camera_0834d318
+  reset_camera Camera_0834d318
   lock
   screeneffect 9
   wait_screeneffect
   play_bgm BGM_GUARDER_ROOM
   indicator 1, 0, 0
-  indicator 0, 0, 0
+  wait_indicator_end
   release
   resume 0
   end
@@ -623,14 +624,43 @@ Script_PreOmegaWhiteBattle:
 
 @;@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 
-Script_0834e4d8:
-# ./tools/dumper/bin.ts ./baserom.gba 0x0834e4d8 0x0834eba0 ./data/spacecraft_scripts.bin
+Script_IntoOmegaWhiteBattle:
+  cmd1c 0, 0, 0
+  wait FRAME
+  gimmick 1, 2, 4
+  forcekeyinput DPAD_RIGHT
+  pause
+  spawn 1, 0, Entity_OmegaWhite
+  eventflag 0, 3, 0
+  gameflag FLAG_2, TRUE
+  walkto 3992 * PX
+  eventflag 1, 0, 0
+  change_camera_mode 6
+  adjust_camera 1, 0, 2
+  adjust_camera 11, 0, 3944 * PX
+  adjust_camera 12, 0, 4184 * PX
+  stop_bgm
+  wait SECOND
+  play_se SE_OMEGA1_GROWL
+  wait 2*SECOND
+  warning_indicator
+  wait_indicator_end
+  clear_force_coord
+  release
+  play_bgm BGM_OMEGA_BATTLE
+  resume 1
+  end
+
+@;@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+
+Script_0834e5a0:
+# ./tools/dumper/bin.ts ./baserom.gba 0x0834e5a0 0x0834eba0 ./data/spacecraft_scripts.bin
   .incbin "data/spacecraft_scripts.bin"
 
 @;@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 
 Script_MissionResult:
-  cmd06 0, 5, 0xFFFF
+  backdrop_color 0xFFFF
   prepare_missionresult
   missionresult
   end
@@ -639,17 +669,17 @@ Script_MissionResult:
 
 Script_InitSpaceCraftFreeRun:
   spawn 0, 0, EntityTemplate_ZeroSpaceCraftStartPoint
-  cmd04 0, 0, Camera_0834d268
+  reset_camera Camera_0834d268
   lock
   wait FRAME
-  cmd0c 0, 4, 0
+  visible 0, FALSE
   normal_screen
   wait_screeneffect
   play_bgm BGM_BREAKOUT
   indicator 1, 0, 0
   wait 15*FRAME
   force 6, 0, 0
-  indicator 0, 0, 0
+  wait_indicator_end
   release
   resume 0
   end
@@ -670,7 +700,7 @@ Script_0834ec38:
   blackout_screen
   wait_screeneffect
   wait SECOND/2
-  cmd0c 0, 6, 0
+  destroy 0
   force 1, 0, 0
   release
   end
@@ -688,8 +718,8 @@ SpaceCraftScriptList:
   .word Script_0834dfb8
   .word Script_GuarderRoom
   .word Script_PreOmegaWhiteBattle
-  .word Script_0834e4d8
-  .word 0x0834E5A0
+  .word Script_IntoOmegaWhiteBattle
+  .word Script_0834e5a0
   .word 0x0834E628
   .word Script_MissionResult
   .word Script_InitSpaceCraftFreeRun

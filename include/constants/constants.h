@@ -1,6 +1,7 @@
 #ifndef GUARD_RMZ3_CONST_CONST_H
 #define GUARD_RMZ3_CONST_CONST_H
 
+#include "constants/bg.h"
 #include "constants/boss.h"
 #include "constants/charcode.h"
 #include "constants/codename.h"

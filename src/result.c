@@ -155,12 +155,12 @@ _080240A2:\n\
 	adds r1, r3, #0\n\
 	orrs r0, r1\n\
 	strh r0, [r2]\n\
-	ldr r0, _080241B0 @ =gGraphic_MenuMisc\n\
+	ldr r0, _080241B0 @ =gGraphic_Capcom+(22*20)\n\
 	movs r4, #0xc\n\
 	movs r1, #0x80\n\
 	lsls r1, r1, #7\n\
 	bl LoadGraphic\n\
-	ldr r0, _080241B4 @ =gGraphic_MenuMisc+12\n\
+	ldr r0, _080241B4 @ =gGraphic_Capcom+(22*20)+12\n\
 	movs r1, #0\n\
 	bl LoadPalette\n\
 	ldr r0, _080241B8 @ =gGraphics_CodeName\n\
@@ -246,8 +246,8 @@ _080241A0: .4byte gGameState\n\
 _080241A4: .4byte 0x000064AC\n\
 _080241A8: .4byte gVideoRegBuffer+6\n\
 _080241AC: .4byte 0x0000F0FF\n\
-_080241B0: .4byte gGraphic_MenuMisc\n\
-_080241B4: .4byte gGraphic_MenuMisc+12\n\
+_080241B0: .4byte gGraphic_Capcom+(22*20)\n\
+_080241B4: .4byte gGraphic_Capcom+(22*20)+12\n\
 _080241B8: .4byte gGraphics_CodeName\n\
 _080241BC: .4byte gGraphics_CodeName+12\n\
 _080241C0: .4byte gBgMapOffsets+400\n\
@@ -1724,7 +1724,7 @@ static void FUN_08024db4(void) {
 
 static void result_08024e0c(void) {
   struct Coord* c = &gGameState.unk_0dc4;
-  c->x = PIXEL((((struct BgOfs*)gVideoRegBuffer.bgofs[1])->x) & 0x1FF) + PIXEL(120);
+  c->x = PIXEL(BGOFS(1)->x & 0x1FF) + PIXEL(120);
   ClearTaskBuffer(&gGameState.taskManager2);
   UpdateEntities(gWidgetHeaderPtr);
   DrawEntity(gWidgetHeaderPtr, &gGameState.taskManager2);

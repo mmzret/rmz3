@@ -62,7 +62,48 @@ WIP void Process_SoftReset(struct Process* _ UNUSED) {
 #endif
 }
 
-NAKED NORETURN void Process_System(struct Process* p) { INCCODE("asm/wip/Process_System.inc"); }
+WIP NORETURN void Process_System(struct Process* p) {
+#if MODERN
+  while (TRUE) {
+    PrintAllStrings();
+    ExecBlink();
+    gSystemBuffer.idx = (gSystemBuffer.idx == 0);
+    gSystemBuffer.ofs = 0;
+    UpdateSram();
+    do {
+      do {
+      } while (gIntrManager.frame2 < gIntrManager.slowGameRatio);
+    } while (REG_VCOUNT != 161);
+    gIntrManager.frame2 = 0;
+    PollKeyInput();
+    REG_DISPCNT &= ~DISPCNT_FORCED_BLANK;
+    FlashVideoRegister();
+    FlashOAM();
+    FlashBlendRegister();
+    FlashWinRegister();
+    FlashMOSAIC();
+    transferData();
+    FUN_080e98ec();
+    flashPalette_08003b24();
+    doGraphicTransferTasks();
+    if (gSramState.unk_00 == 0) {
+      if (gGameState.unk_00c != 0) {
+        if (((gJoypad[0].input & (SELECT_BUTTON | START_BUTTON)) == (SELECT_BUTTON | START_BUTTON)) && (gJoypad[0].input & A_BUTTON) && (gJoypad[0].input & B_BUTTON)) {
+          if ((gJoypad[0].pressed & (SELECT_BUTTON | START_BUTTON)) || (gJoypad[0].pressed & A_BUTTON) || (gJoypad[0].pressed & B_BUTTON)) {
+            disableProcess(0);
+            disableProcess(1);
+            SetIntroMode(&gIntro, 1);
+            ResetProcess(0, Process_SoftReset);
+          }
+        }
+      }
+    }
+    InterruptSystemProcess(p, 1);
+  }
+#else
+  INCCODE("asm/wip/Process_System.inc");
+#endif
+}
 
 void usrHBlankCallback(void) {
   _usrHBlankCallback();

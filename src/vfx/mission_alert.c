@@ -5,11 +5,6 @@
 #include "task.h"
 #include "vfx.h"
 
-extern const struct Graphic gGraphic_GAMEOVER;
-extern const struct Palette gPalette_GAMEOVER;
-extern const struct Graphic gGraphic_MissionStart;
-extern const struct Palette gPalette_MissionStart;
-
 // work[0]
 #define MISSION_START 0
 #define MISSION_FAILED 1
@@ -210,7 +205,7 @@ _080B58B2:\n\
 	lsls r0, r1, #2\n\
 	adds r0, r0, r1\n\
 	lsls r0, r0, #2\n\
-	ldr r2, _080B5930 @ =gGraphic_MissionStart\n\
+	ldr r2, _080B5930 @ =gGraphic_Capcom+11*20\n\
 	adds r0, r0, r2\n\
 	ldrh r2, [r4, #4]\n\
 	movs r1, #0xc\n\
@@ -222,7 +217,7 @@ _080B58B2:\n\
 	lsls r0, r1, #2\n\
 	adds r0, r0, r1\n\
 	lsls r0, r0, #2\n\
-	ldr r1, _080B5934 @ =gPalette_MissionStart\n\
+	ldr r1, _080B5934 @ =gPalette_Capcom+11*20\n\
 	adds r0, r0, r1\n\
 	movs r1, #0\n\
 	bl LoadPalette\n\
@@ -234,8 +229,8 @@ _080B5920: .4byte gVideoRegBuffer\n\
 _080B5924: .4byte 0x12001200\n\
 _080B5928: .4byte 0x06000800\n\
 _080B592C: .4byte 0x01000200\n\
-_080B5930: .4byte gGraphic_MissionStart\n\
-_080B5934: .4byte gPalette_MissionStart\n\
+_080B5930: .4byte gGraphic_Capcom+11*20\n\
+_080B5934: .4byte gPalette_Capcom+11*20\n\
 _080B5938:\n\
 	mov r2, r8\n\
 	ldrb r0, [r2, #0x10]\n\
@@ -555,7 +550,7 @@ _080B5BA6:\n\
 	lsls r0, r1, #2\n\
 	adds r0, r0, r1\n\
 	lsls r0, r0, #2\n\
-	ldr r4, _080B5C00 @ =gGraphic_MissionStart\n\
+	ldr r4, _080B5C00 @ =gGraphic_Capcom+11*20\n\
 	adds r0, r0, r4\n\
 	ldrh r2, [r2, #4]\n\
 	movs r1, #0xc\n\
@@ -566,7 +561,7 @@ _080B5BA6:\n\
 	lsls r0, r1, #2\n\
 	adds r0, r0, r1\n\
 	lsls r0, r0, #2\n\
-	ldr r6, _080B5C04 @ =gPalette_MissionStart\n\
+	ldr r6, _080B5C04 @ =gPalette_Capcom+11*20\n\
 	adds r0, r0, r6\n\
 	movs r1, #0\n\
 	bl LoadPalette\n\
@@ -586,8 +581,8 @@ _080B5BF2:\n\
 	mov pc, r0\n\
 	.align 2, 0\n\
 _080B5BFC: .4byte gVideoRegBuffer\n\
-_080B5C00: .4byte gGraphic_MissionStart\n\
-_080B5C04: .4byte gPalette_MissionStart\n\
+_080B5C00: .4byte gGraphic_Capcom+11*20\n\
+_080B5C04: .4byte gPalette_Capcom+11*20\n\
 _080B5C08: .4byte _080B5C0C\n\
 _080B5C0C: @ jump table\n\
 	.4byte _080B5C24 @ case 0\n\
@@ -1235,13 +1230,13 @@ _080B6160:\n\
 	adds r0, r3, #0\n\
 	orrs r0, r2\n\
 	strh r0, [r1]\n\
-	ldr r0, _080B620C @ =gGraphic_GAMEOVER\n\
+	ldr r0, _080B620C @ =gGraphic_Capcom+16*20\n\
 	ldrh r2, [r1, #4]\n\
 	movs r1, #0xc\n\
 	ands r1, r2\n\
 	lsls r1, r1, #0xc\n\
 	bl LoadGraphic\n\
-	ldr r0, _080B6210 @ =gPalette_GAMEOVER\n\
+	ldr r0, _080B6210 @ =gPalette_Capcom+16*20\n\
 	movs r1, #0\n\
 	bl LoadPalette\n\
 	ldrb r0, [r4, #0xf]\n\
@@ -1310,8 +1305,8 @@ _080B61C8:\n\
 	.align 2, 0\n\
 _080B6204: .4byte gGameState+16\n\
 _080B6208: .4byte gVideoRegBuffer\n\
-_080B620C: .4byte gGraphic_GAMEOVER\n\
-_080B6210: .4byte gPalette_GAMEOVER\n\
+_080B620C: .4byte gGraphic_Capcom+16*20\n\
+_080B6210: .4byte gPalette_Capcom+16*20\n\
 _080B6214: .4byte 0x0836E7B8\n\
 _080B6218:\n\
 	cmp r0, #1\n\

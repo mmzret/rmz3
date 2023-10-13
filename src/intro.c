@@ -1188,14 +1188,14 @@ NAKED static u8 intro_080ecd28(struct Intro* p) { INCCODE("asm/todo/intro_080ecd
 static void loadTitleScreen(struct Intro* _ UNUSED) {
   if (gSystemSavedataManager.title < 3) {
     *(u32*)gVideoRegBuffer.bgofs[3] = gSystemSavedataManager.title * 80;
-    LoadGraphic(&gGraphic_TitleZero, (void*)CHAR_BASE(3));
-    LoadPalette(&gPalette_TitleZero, 0);
-    LoadBgMap(56, gBgMapOffsets, 3, 0, 0);
+    LoadGraphic(BG_GRAPHIC(BG_TITLE_ZERO), (void*)CHAR_BASE(3));
+    LoadPalette(BG_PALETTE(BG_TITLE_ZERO), 0);
+    LoadBgMap(56, gBgMapOffsets, BG_TITLE_ZERO, 0, 0);
   } else {
     *(u32*)gVideoRegBuffer.bgofs[3] = (gSystemSavedataManager.title - 3) * 80;
-    LoadGraphic(&gGraphic_TitleCiel, (void*)CHAR_BASE(3));
-    LoadPalette(&gPalette_TitleCiel, 0);
-    LoadBgMap(56, gBgMapOffsets, 4, 0, 0);
+    LoadGraphic(BG_GRAPHIC(BG_TITLE_CIEL), (void*)CHAR_BASE(3));
+    LoadPalette(BG_PALETTE(BG_TITLE_CIEL), 0);
+    LoadBgMap(56, gBgMapOffsets, BG_TITLE_CIEL, 0, 0);
   }
 }
 
@@ -1203,11 +1203,11 @@ static void FUN_080ed07c(struct Intro* p) {
   gVideoRegBuffer.dispcnt |= 0x1200;
   *(u16*)&gVideoRegBuffer.bgcnt[1] = 0x1807;
   *(u32*)gVideoRegBuffer.bgofs[1] = 0;
-  LoadGraphic(&gGraphic_OpeningAnim1, (void*)CHAR_BASE(1));
-  LoadPalette(&gPalette_OpeningAnim1, 0);
-  LoadGraphic(&gGraphic_OpeningAnim2, (void*)CHAR_BASE(1));
-  LoadPalette(&gPalette_OpeningAnim2, 0);
-  LoadBgMap(18, gBgMapOffsets, 0x82, 0, 0);
+  LoadGraphic(BG_GRAPHIC(BG_OP_ANIM1), (void*)CHAR_BASE(1));
+  LoadPalette(BG_PALETTE(BG_OP_ANIM1), 0);
+  LoadGraphic(BG_GRAPHIC(BG_OP_ANIM2), (void*)CHAR_BASE(1));
+  LoadPalette(BG_PALETTE(BG_OP_ANIM2), 0);
+  LoadBgMap(18, gBgMapOffsets, BG_OP_ANIM1, 0, 0);
   p->unk_23c = 0;
 }
 
@@ -1821,8 +1821,8 @@ NAKED static void FUN_080ed6c4(struct Intro* p) {
 _080ED750: .4byte gVideoRegBuffer\n\
 _080ED754: .4byte 0x00005A42\n\
 _080ED758: .4byte 0x01000400\n\
-_080ED75C: .4byte gGraphic_TitleZero\n\
-_080ED760: .4byte gPalette_TitleZero\n\
+_080ED75C: .4byte gGraphic_Capcom+3*20\n\
+_080ED760: .4byte gPalette_Capcom+3*20\n\
 _080ED764: .4byte gBgMapOffsets\n\
 _080ED768: .4byte gWindowRegBuffer\n\
 _080ED76C: .4byte 0x00000246\n\
@@ -2131,13 +2131,13 @@ _080EDA8E:\n\
 	strh r0, [r2, #0xa]\n\
 	mov r3, r8\n\
 	str r3, [r2, #0x18]\n\
-	ldr r0, _080EDBFC @ =gGraphic_MenuMisc\n\
+	ldr r0, _080EDBFC @ =gGraphic_Capcom+(22*20)\n\
 	ldrh r2, [r2, #8]\n\
 	movs r1, #0xc\n\
 	ands r1, r2\n\
 	lsls r1, r1, #0xc\n\
 	bl LoadGraphic\n\
-	ldr r0, _080EDC00 @ =gGraphic_MenuMisc+12\n\
+	ldr r0, _080EDC00 @ =gGraphic_Capcom+(22*20)+12\n\
 	movs r1, #0\n\
 	bl LoadPalette\n\
 	ldr r1, _080EDC04 @ =gBgMapOffsets\n\
@@ -2299,8 +2299,8 @@ _080EDBEC: .4byte gVideoRegBuffer\n\
 _080EDBF0: .4byte 0x0000FFF8\n\
 _080EDBF4: .4byte 0x0000F0FF\n\
 _080EDBF8: .4byte 0x00000606\n\
-_080EDBFC: .4byte gGraphic_MenuMisc\n\
-_080EDC00: .4byte gPalette_MenuMisc\n\
+_080EDBFC: .4byte gGraphic_Capcom+(22*20)\n\
+_080EDC00: .4byte gGraphic_Capcom+(22*20)+12\n\
 _080EDC04: .4byte gBgMapOffsets\n\
 _080EDC08: .4byte gBlendRegBuffer\n\
 _080EDC0C: .4byte 0x00003E41\n\

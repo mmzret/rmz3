@@ -6,6 +6,8 @@
 #include "global.h"
 #include "motion.h"
 
+struct ScriptEntity;
+
 #define INIT_BODY(p, collisions, hp, onCollision)  \
   {                                                \
     struct Body *body;                             \
@@ -34,6 +36,14 @@ struct EntityOamData {
   /*    */ u16 paletteNum : 4;
 
   // OBJ Attribute 1 (Non affine)
+  /*0x06*/ u8 unused : 4;
+  /*    */ u8 xflip : 1;
+  /*    */ u8 yflip : 1;
+  /*    */ u8 size : 2;
+  /*    */ u8 : 8;
+};
+
+struct __attribute__((packed, aligned(1))) EntityOamData_06 {
   /*0x06*/ u8 unused : 4;
   /*    */ u8 xflip : 1;
   /*    */ u8 yflip : 1;
@@ -90,7 +100,7 @@ struct Entity {
 
   u8 work[4];      // general purpose
   void *onUpdate;  // EntityFunc
-  u8 *arr;
+  struct ScriptEntity *scriptEntity;
   u8 uniqueID;      // すべてのEntityを区別するためのID
   u8 invincibleID;  // 被ダメ時の無敵を表す白塗りをEntityに適用する際にEntityの区別に用いるID
 

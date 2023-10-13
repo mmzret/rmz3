@@ -115,12 +115,12 @@ WIP void UpdateMotionState(struct Motion *m) {
 }
 
 // TODO: 後で src/overworld_layer.c に
-void ResetLayerGraphic(struct LayerGraphic *p, struct Coord *c, u16 *_, Metatile *tiledata, Screen *screens, const struct ScreenLayout *layout) {
-  (p->c).x = c->x;
-  (p->c).y = c->y;
-  p->tiledata = tiledata;
-  p->screens = screens;
-  p->map = layout;
-  p->bgofs[0] = c->x & 0x1FF;
-  p->bgofs[1] = c->y & 0x1FF;
+void ResetLayerGraphic(struct LayerGraphic *l, struct Coord *c, u16 *_, Metatile *tiledata, Screen *screens, const struct ScreenLayout *layout) {
+  (l->c).x = c->x;
+  (l->c).y = c->y;
+  l->tiledata = tiledata;
+  l->screens = screens;
+  l->map = layout;
+  l->bgofs[0] = c->x & 0x1FF;
+  l->bgofs[1] = c->y & 0x1FF;
 }

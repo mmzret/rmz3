@@ -53,12 +53,12 @@ NAKED static void DiskLoop_Init(struct GameState *g) {
 	ldr r1, _080F7E40 @ =gBlendRegBuffer\n\
 	ldr r0, _080F7E44 @ =0x00002010\n\
 	strh r0, [r1]\n\
-	ldr r0, _080F7E48 @ =gGraphic_MenuMisc\n\
+	ldr r0, _080F7E48 @ =gGraphic_Capcom+(22*20)\n\
 	movs r5, #0xc\n\
 	movs r1, #0x80\n\
 	lsls r1, r1, #7\n\
 	bl LoadGraphic\n\
-	ldr r0, _080F7E4C @ =gGraphic_MenuMisc+12\n\
+	ldr r0, _080F7E4C @ =gGraphic_Capcom+(22*20)+12\n\
 	movs r1, #0\n\
 	bl LoadPalette\n\
 	ldr r2, _080F7E50 @ =0x00000ED8\n\
@@ -74,13 +74,13 @@ NAKED static void DiskLoop_Init(struct GameState *g) {
 	ldrb r0, [r0]\n\
 	cmp r0, #1\n\
 	bne _080F7E64\n\
-	ldr r0, _080F7E5C @ =gGraphics_ModSecretDisk\n\
+	ldr r0, _080F7E5C @ =gGraphic_Capcom+(36*20)\n\
 	ldrh r2, [r4, #6]\n\
 	adds r1, r5, #0\n\
 	ands r1, r2\n\
 	lsls r1, r1, #0xc\n\
 	bl LoadGraphic\n\
-	ldr r0, _080F7E60 @ =gGraphics_ModSecretDisk+12\n\
+	ldr r0, _080F7E60 @ =gGraphic_Capcom+(36*20)+12\n\
 	movs r1, #0\n\
 	bl LoadPalette\n\
 	b _080F7E7E\n\
@@ -92,23 +92,23 @@ _080F7E38: .4byte 0x0000F0FF\n\
 _080F7E3C: .4byte 0x00004206\n\
 _080F7E40: .4byte gBlendRegBuffer\n\
 _080F7E44: .4byte 0x00002010\n\
-_080F7E48: .4byte gGraphic_MenuMisc\n\
-_080F7E4C: .4byte gGraphic_MenuMisc+12\n\
+_080F7E48: .4byte gGraphic_Capcom+(22*20)\n\
+_080F7E4C: .4byte gGraphic_Capcom+(22*20)+12\n\
 _080F7E50: .4byte 0x00000ED8\n\
 _080F7E54: .4byte gBgMapOffsets+(101*4)\n\
 _080F7E58: .4byte gSystemSavedataManager\n\
-_080F7E5C: .4byte gGraphics_ModSecretDisk\n\
-_080F7E60: .4byte gGraphics_ModSecretDisk+12\n\
+_080F7E5C: .4byte gGraphic_Capcom+(36*20)\n\
+_080F7E60: .4byte gGraphic_Capcom+(36*20)+12\n\
 _080F7E64:\n\
 	cmp r0, #2\n\
 	bne _080F7E7E\n\
-	ldr r0, _080F7F78 @ =gGraphics_ModSecretDisk+20\n\
+	ldr r0, _080F7F78 @ =gGraphic_Capcom+(36*20)+20\n\
 	ldrh r2, [r4, #6]\n\
 	adds r1, r5, #0\n\
 	ands r1, r2\n\
 	lsls r1, r1, #0xc\n\
 	bl LoadGraphic\n\
-	ldr r0, _080F7F7C @ =gGraphics_ModSecretDisk+32\n\
+	ldr r0, _080F7F7C @ =gGraphic_Capcom+(36*20)+32\n\
 	movs r1, #0\n\
 	bl LoadPalette\n\
 _080F7E7E:\n\
@@ -225,8 +225,8 @@ _080F7F34:\n\
 	pop {r0}\n\
 	bx r0\n\
 	.align 2, 0\n\
-_080F7F78: .4byte gGraphics_ModSecretDisk+20\n\
-_080F7F7C: .4byte gGraphics_ModSecretDisk+32\n\
+_080F7F78: .4byte gGraphic_Capcom+(36*20)+20\n\
+_080F7F7C: .4byte gGraphic_Capcom+(36*20)+32\n\
 _080F7F80: .4byte gStaticMotionGraphics\n\
 _080F7F84: .4byte wStaticGraphicTilenums\n\
 _080F7F88: .4byte gStaticMotionGraphics+12\n\

@@ -358,7 +358,7 @@ static const motion_t sMotions[5] = {
 static const struct Collision sCollisions[2] = {
     {
       kind : DDP,
-      faction : FACTION_UNK2,
+      faction : FACTION_NEUTRAL,
       special : CHATABLE,
       damage : 255,
       unk_04 : 0x00,
@@ -374,7 +374,7 @@ static const struct Collision sCollisions[2] = {
     },
     {
       kind : DRP,
-      faction : FACTION_UNK2,
+      faction : FACTION_NEUTRAL,
       special : CHATABLE,
       damage : 255,
       unk_04 : 0xFF,

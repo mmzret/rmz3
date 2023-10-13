@@ -426,7 +426,7 @@ const struct EntityTemplate gVolcanoEntity[51] = {
         {
             2,
             ENTITY_ITEM,
-            1,
+            ITEM_DISK,
             26,
             2,
             0,
@@ -437,7 +437,7 @@ const struct EntityTemplate gVolcanoEntity[51] = {
         {
             2,
             ENTITY_ITEM,
-            1,
+            ITEM_DISK,
             47,
             2,
             0,
@@ -448,7 +448,7 @@ const struct EntityTemplate gVolcanoEntity[51] = {
         {
             2,
             ENTITY_ITEM,
-            1,
+            ITEM_DISK,
             73,
             2,
             0,
@@ -459,7 +459,7 @@ const struct EntityTemplate gVolcanoEntity[51] = {
         {
             2,
             ENTITY_ITEM,
-            1,
+            ITEM_DISK,
             114,
             2,
             0,

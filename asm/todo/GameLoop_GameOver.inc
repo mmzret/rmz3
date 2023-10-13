@@ -62,11 +62,11 @@ _080EF5CA:
 	adds r0, r3, #0
 	strh r0, [r2, #0xa]
 	str r4, [r2, #0x18]
-	ldr r0, _080EF720 @ =gGraphic_GameOver
+	ldr r0, _080EF720 @ =gGraphic_Capcom+(102*20)
 	movs r1, #0x80
 	lsls r1, r1, #7
 	bl LoadGraphic
-	ldr r0, _080EF724 @ =gPalette_GameOver
+	ldr r0, _080EF724 @ =gGraphic_Capcom+(102*20)+12
 	movs r1, #0
 	bl LoadPalette
 	ldr r5, _080EF728 @ =gBgMapOffsets
@@ -194,8 +194,8 @@ _080EF710: .4byte 0x0000FFF8
 _080EF714: .4byte 0x0000F0FF
 _080EF718: .4byte 0x00000406
 _080EF71C: .4byte 0x00000606
-_080EF720: .4byte gGraphic_GameOver
-_080EF724: .4byte gPalette_GameOver
+_080EF720: .4byte gGraphic_Capcom+(102*20)
+_080EF724: .4byte gGraphic_Capcom+(102*20)+12
 _080EF728: .4byte gBgMapOffsets
 _080EF72C: .4byte gPaletteManager
 _080EF730: .4byte 0x00000402

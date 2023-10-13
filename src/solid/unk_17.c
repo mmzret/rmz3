@@ -64,7 +64,7 @@ const struct Collision sSolid17Collisions[3] = {
     },
     [1] = {
       kind : DDP,
-      faction : FACTION_UNK2,
+      faction : FACTION_NEUTRAL,
       special : 0,
       damage : 255,
       unk_04 : 0x00,

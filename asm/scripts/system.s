@@ -14,12 +14,12 @@ Script_MissionFail: @ 0x0834d0b4
     message 5 0 0
     wait SECOND
     message 2 0 0
-    indicator 0 0 0
-    indicator 2 0 0
-    indicator 0 0 0
+    wait_indicator_end
+    failed_or_gameover_indicator
+    wait_indicator_end
     fadeout_se SECOND SE_IN_SEA
     screeneffect 10
-    screeneffect 0
+    wait_screeneffect
     wait SECOND
     end
 
@@ -28,18 +28,18 @@ Script_MissionFail2: @ 0x0834d12c
     disablekeyinput 2 0 0xFFFF
     message 7 0 0
     stop_bgm
-    screeneffect 0
-    screeneffect 1
+    wait_screeneffect
+    normal_screen
     wait SECOND
     message 5 0 0
     wait SECOND
     message 2 0 0
-    indicator 0 0 0
-    indicator 2 0 0
-    indicator 0 0 0
+    wait_indicator_end
+    failed_or_gameover_indicator
+    wait_indicator_end
     fadeout_se SECOND SE_IN_SEA
     screeneffect 10
-    screeneffect 0
+    wait_screeneffect
     wait SECOND
     end
 

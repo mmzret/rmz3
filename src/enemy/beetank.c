@@ -2,8 +2,6 @@
 #include "enemy.h"
 #include "global.h"
 
-INCASM("asm/enemy/beetank.inc");
-
 void Beetank_Init(struct Enemy* p);
 void Beetank_Update(struct Enemy* p);
 void Beetank_Die(struct Enemy* p);
@@ -18,6 +16,23 @@ const EnemyRoutine gBeetankRoutine = {
 };
 // clang-format on
 
+struct Enemy* CreateBeetank(struct Coord* c, u8 n) {
+  struct Enemy* p = (struct Enemy*)AllocEntityFirst(gZakoHeaderPtr);
+  if (p != NULL) {
+    (p->s).taskCol = 24;
+    INIT_ZAKO_ROUTINE(p, ENEMY_BEETANK);
+    (p->s).tileNum = 0;
+    (p->s).palID = 0;
+    (p->s).flags2 |= WHITE_PAINTABLE;
+    (p->s).invincibleID = (p->s).uniqueID;
+    (p->s).coord = *c;
+    (p->s).work[0] = n;
+  }
+  return p;
+}
+
+INCASM("asm/enemy/beetank.inc");
+
 void nop_0807bc8c(struct Enemy* p);
 void nop_0807bd3c(struct Enemy* p);
 void nop_0807bde4(struct Enemy* p);
@@ -25,7 +40,7 @@ void FUN_0807be14(struct Enemy* p);
 void FUN_0807be1c(struct Enemy* p);
 
 // clang-format off
-static const EnemyFunc PTR_ARRAY_083679c4[5] = {
+static const EnemyFunc sUpdates1[5] = {
     nop_0807bc8c,
     nop_0807bd3c,
     nop_0807bde4,
@@ -41,7 +56,7 @@ void nop_0807be18(struct Enemy* p);
 void FUN_0807be20(struct Enemy* p);
 
 // clang-format off
-static const EnemyFunc PTR_ARRAY_083679d8[5] = {
+static const EnemyFunc sUpdates2[5] = {
     FUN_0807bc90,
     FUN_0807bd40,
     FUN_0807bde8,

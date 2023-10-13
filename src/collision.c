@@ -49,19 +49,19 @@ void CheckCollision(void) {
   gCollisionManager.door = NULL;
   gCollisionManager.teleportal = NULL;
   checkOverlap1(gCollisionManager.list[DDP][FACTION_ALLY], gCollisionManager.list[DRP2][FACTION_ENEMY]);
-  checkOverlap1(gCollisionManager.list[DDP][FACTION_ALLY], gCollisionManager.list[DRP2][FACTION_UNK2]);
+  checkOverlap1(gCollisionManager.list[DDP][FACTION_ALLY], gCollisionManager.list[DRP2][FACTION_NEUTRAL]);
   checkOverlap1(gCollisionManager.list[DDP][FACTION_ENEMY], gCollisionManager.list[DRP2][FACTION_ALLY]);
-  checkOverlap1(gCollisionManager.list[DDP][FACTION_ENEMY], gCollisionManager.list[DRP2][FACTION_UNK2]);
-  checkOverlap1(gCollisionManager.list[DDP][FACTION_UNK2], gCollisionManager.list[DRP2][FACTION_ENEMY]);
-  checkOverlap1(gCollisionManager.list[DDP][FACTION_UNK2], gCollisionManager.list[DRP2][FACTION_ALLY]);
-  checkOverlap1(gCollisionManager.list[DDP][FACTION_UNK2], gCollisionManager.list[DRP2][FACTION_UNK2]);
+  checkOverlap1(gCollisionManager.list[DDP][FACTION_ENEMY], gCollisionManager.list[DRP2][FACTION_NEUTRAL]);
+  checkOverlap1(gCollisionManager.list[DDP][FACTION_NEUTRAL], gCollisionManager.list[DRP2][FACTION_ENEMY]);
+  checkOverlap1(gCollisionManager.list[DDP][FACTION_NEUTRAL], gCollisionManager.list[DRP2][FACTION_ALLY]);
+  checkOverlap1(gCollisionManager.list[DDP][FACTION_NEUTRAL], gCollisionManager.list[DRP2][FACTION_NEUTRAL]);
   checkOverlap2(gCollisionManager.list[DDP][FACTION_ALLY], gCollisionManager.list[DRP][FACTION_ENEMY]);
-  checkOverlap2(gCollisionManager.list[DDP][FACTION_ALLY], gCollisionManager.list[DRP][FACTION_UNK2]);
+  checkOverlap2(gCollisionManager.list[DDP][FACTION_ALLY], gCollisionManager.list[DRP][FACTION_NEUTRAL]);
   checkOverlap2(gCollisionManager.list[DDP][FACTION_ENEMY], gCollisionManager.list[DRP][FACTION_ALLY]);
-  checkOverlap2(gCollisionManager.list[DDP][FACTION_ENEMY], gCollisionManager.list[DRP][FACTION_UNK2]);
-  checkOverlap2(gCollisionManager.list[DDP][FACTION_UNK2], gCollisionManager.list[DRP][FACTION_ENEMY]);
-  checkOverlap2(gCollisionManager.list[DDP][FACTION_UNK2], gCollisionManager.list[DRP][FACTION_ALLY]);
-  checkOverlap2(gCollisionManager.list[DDP][FACTION_UNK2], gCollisionManager.list[DRP][FACTION_UNK2]);
+  checkOverlap2(gCollisionManager.list[DDP][FACTION_ENEMY], gCollisionManager.list[DRP][FACTION_NEUTRAL]);
+  checkOverlap2(gCollisionManager.list[DDP][FACTION_NEUTRAL], gCollisionManager.list[DRP][FACTION_ENEMY]);
+  checkOverlap2(gCollisionManager.list[DDP][FACTION_NEUTRAL], gCollisionManager.list[DRP][FACTION_ALLY]);
+  checkOverlap2(gCollisionManager.list[DDP][FACTION_NEUTRAL], gCollisionManager.list[DRP][FACTION_NEUTRAL]);
 }
 
 void InitBody(struct Body *p, const struct Collision *collisions, struct Coord *coord, s16 hp) {

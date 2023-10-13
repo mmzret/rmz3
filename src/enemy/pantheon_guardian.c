@@ -208,7 +208,7 @@ static const struct Collision sCollisions[7] = {
     },
     [6] = {
       kind : DDP,
-      faction : FACTION_UNK2,
+      faction : FACTION_NEUTRAL,
       special : 0,
       damage : 3,
       unk_04 : 0x00,

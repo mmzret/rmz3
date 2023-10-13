@@ -20,16 +20,16 @@ static bool32 Cmd_goto(struct VM* vm);
 static bool32 Cmd_wait(struct VM* vm);
 static bool32 Cmd_time(struct VM* vm);
 static bool32 Cmd_nop(struct VM* _ UNUSED);
-static bool32 Cmd_resetcamera(struct VM* vm);
-static bool32 Cmd_modifycamera(struct VM* vm);
+static bool32 Cmd_reset_camera(struct VM* vm);
+static bool32 Cmd_adjust_camera(struct VM* vm);
 static bool32 Cmd_cmd06(struct VM* vm);
 static bool32 Cmd_resume(struct VM* vm);
 static bool32 Cmd_cmd08(struct VM* vm);
 static bool32 Cmd_disablekeyinput(struct VM* vm);
 static bool32 Cmd_loadgraphic(struct VM* vm);
 static bool32 Cmd_spawn(struct VM* vm);
-static bool32 Cmd_cmd0c(struct VM* vm);
-static bool32 Cmd_cmd0d(struct VM* vm);
+static bool32 Cmd_entity(struct VM* vm);
+static bool32 Cmd_flag(struct VM* vm);
 static bool32 Cmd_cmd0e(struct VM* vm);
 static bool32 Cmd_cmd0f(struct VM* vm);
 static bool32 Cmd_emergency(struct VM* vm);
@@ -61,16 +61,16 @@ const CommandHandler gScriptCommands[38] = {
     Cmd_wait,
     Cmd_time,
     Cmd_nop,
-    Cmd_resetcamera,
-    Cmd_modifycamera,
+    Cmd_reset_camera,
+    Cmd_adjust_camera,
     Cmd_cmd06,
     Cmd_resume,
     Cmd_cmd08,
     Cmd_disablekeyinput,
     Cmd_loadgraphic,
     Cmd_spawn,
-    Cmd_cmd0c,
-    Cmd_cmd0d,
+    Cmd_entity,
+    Cmd_flag,
     Cmd_cmd0e,
     Cmd_cmd0f,
     Cmd_emergency,
@@ -142,7 +142,7 @@ static bool32 Cmd_nop(struct VM* _ UNUSED) {
 }
 
 // カメラの設定を一括で行う
-static bool32 Cmd_resetcamera(struct VM* vm) {
+static bool32 Cmd_reset_camera(struct VM* vm) {
   struct Entity* p;
   struct CameraTemplate* t = (struct CameraTemplate*)vm->pc->work;
   struct Camera* camera = &gStageRun.vm.camera;
@@ -174,7 +174,7 @@ type:
   03: カメラのX座標セット
   04: カメラのY座標セット
 */
-static bool32 Cmd_modifycamera(struct VM* vm) {
+static bool32 Cmd_adjust_camera(struct VM* vm) {
   struct Camera* camera = &gStageRun.vm.camera;
   switch (vm->pc->status) {
     case 0: {
@@ -264,285 +264,84 @@ static bool32 Cmd_modifycamera(struct VM* vm) {
   return FALSE;
 }
 
-NAKED static bool32 Cmd_cmd06(struct VM* vm) {
-  asm(".syntax unified\n\
-	push {r4, r5, r6, r7, lr}\n\
-	sub sp, #4\n\
-	adds r2, r0, #0\n\
-	ldr r7, [r2, #0xc]\n\
-	movs r1, #2\n\
-	ldrsh r0, [r7, r1]\n\
-	cmp r0, #6\n\
-	bls _080225C6\n\
-	b _08022800\n\
-_080225C6:\n\
-	lsls r0, r0, #2\n\
-	ldr r1, _080225D0 @ =_080225D4\n\
-	adds r0, r0, r1\n\
-	ldr r0, [r0]\n\
-	mov pc, r0\n\
-	.align 2, 0\n\
-_080225D0: .4byte _080225D4\n\
-_080225D4: @ jump table\n\
-	.4byte _080225F0 @ case 0\n\
-	.4byte _08022640 @ case 1\n\
-	.4byte _08022660 @ case 2\n\
-	.4byte _08022700 @ case 3\n\
-	.4byte _08022778 @ case 4\n\
-	.4byte _0802279A @ case 5\n\
-	.4byte _080227A8 @ case 6\n\
-_080225F0:\n\
-	ldr r1, _08022634 @ =gVideoRegBuffer+6\n\
-	movs r2, #0xa1\n\
-	lsls r2, r2, #2\n\
-	adds r0, r2, #0\n\
-	strh r0, [r1]\n\
-	adds r0, r1, #0\n\
-	adds r0, #0xa\n\
-	movs r4, #0\n\
-	str r4, [r0]\n\
-	subs r1, #6\n\
-	ldrh r2, [r1]\n\
-	movs r3, #0x90\n\
-	lsls r3, r3, #5\n\
-	adds r0, r3, #0\n\
-	orrs r0, r2\n\
-	strh r0, [r1]\n\
-	ldrb r1, [r7, #1]\n\
-	lsls r0, r1, #2\n\
-	adds r0, r0, r1\n\
-	lsls r0, r0, #2\n\
-	ldr r5, _08022638 @ =0x08547280\n\
-	adds r0, r0, r5\n\
-	movs r1, #0x80\n\
-	lsls r1, r1, #7\n\
-	bl LoadGraphic\n\
-	ldrb r1, [r7, #1]\n\
-	lsls r0, r1, #2\n\
-	adds r0, r0, r1\n\
-	lsls r0, r0, #2\n\
-	ldr r1, _0802263C @ =0x0854728C\n\
-	adds r0, r0, r1\n\
-	b _08022746\n\
-	.align 2, 0\n\
-_08022634: .4byte gVideoRegBuffer+6\n\
-_08022638: .4byte gGraphic_Capcom\n\
-_0802263C: .4byte gPalette_Capcom\n\
-_08022640:\n\
-	ldr r2, _08022658 @ =gVideoRegBuffer\n\
-	ldrh r1, [r2]\n\
-	ldr r0, _0802265C @ =0x0000EDFF\n\
-	ands r0, r1\n\
-	movs r3, #0x80\n\
-	lsls r3, r3, #1\n\
-	adds r1, r3, #0\n\
-	orrs r0, r1\n\
-	strh r0, [r2]\n\
-	bl ResumeAllBlinks\n\
-	b _08022800\n\
-	.align 2, 0\n\
-_08022658: .4byte gVideoRegBuffer\n\
-_0802265C: .4byte 0x0000EDFF\n\
-_08022660:\n\
-	ldr r4, _080226E4 @ =gVideoRegBuffer+6\n\
-	ldr r5, _080226E8 @ =0x00008284\n\
-	adds r0, r5, #0\n\
-	strh r0, [r4]\n\
-	movs r3, #0\n\
-	strh r3, [r4, #0xa]\n\
-	movs r0, #0xa0\n\
-	strh r0, [r4, #0xc]\n\
-	subs r2, r4, #6\n\
-	ldrh r0, [r2]\n\
-	movs r5, #0x90\n\
-	lsls r5, r5, #5\n\
-	adds r1, r5, #0\n\
-	orrs r0, r1\n\
-	movs r6, #0\n\
-	orrs r0, r3\n\
-	ldr r1, _080226EC @ =0x0000FEFF\n\
-	ands r0, r1\n\
-	strh r0, [r2]\n\
-	ldrb r1, [r7, #1]\n\
-	lsls r0, r1, #2\n\
-	adds r0, r0, r1\n\
-	lsls r0, r0, #2\n\
-	ldr r1, _080226F0 @ =0x08547280\n\
-	adds r0, r0, r1\n\
-	movs r1, #0x80\n\
-	lsls r1, r1, #7\n\
-	bl LoadGraphic\n\
-	ldrb r1, [r7, #1]\n\
-	lsls r0, r1, #2\n\
-	adds r0, r0, r1\n\
-	lsls r0, r0, #2\n\
-	ldr r2, _080226F4 @ =0x0854728C\n\
-	adds r0, r0, r2\n\
-	movs r1, #0\n\
-	bl LoadPalette\n\
-	ldr r5, _080226F8 @ =gBgMapOffsets\n\
-	ldrb r2, [r7, #1]\n\
-	str r6, [sp]\n\
-	movs r0, #0x12\n\
-	adds r1, r5, #0\n\
-	movs r3, #0\n\
-	bl LoadBgMap\n\
-	ldrh r1, [r4]\n\
-	movs r0, #0xf8\n\
-	lsls r0, r0, #5\n\
-	ands r0, r1\n\
-	lsls r0, r0, #3\n\
-	ldr r3, _080226FC @ =0x06000800\n\
-	adds r0, r0, r3\n\
-	ldrb r2, [r7, #1]\n\
-	adds r2, #1\n\
-	lsls r2, r2, #0x18\n\
-	lsrs r2, r2, #0x18\n\
-	str r6, [sp]\n\
-	adds r1, r5, #0\n\
-	movs r3, #0\n\
-	bl loadBgMap_08004248\n\
-	bl PauseAllBlinks\n\
-	b _08022800\n\
-	.align 2, 0\n\
-_080226E4: .4byte gVideoRegBuffer+6\n\
-_080226E8: .4byte 0x00008284\n\
-_080226EC: .4byte 0x0000FEFF\n\
-_080226F0: .4byte gGraphic_Capcom\n\
-_080226F4: .4byte gPalette_Capcom\n\
-_080226F8: .4byte gBgMapOffsets\n\
-_080226FC: .4byte 0x06000800\n\
-_08022700:\n\
-	ldr r2, _08022760 @ =gVideoRegBuffer+6\n\
-	ldr r4, _08022764 @ =0x00008284\n\
-	adds r0, r4, #0\n\
-	strh r0, [r2]\n\
-	movs r3, #0\n\
-	strh r3, [r2, #0xa]\n\
-	movs r0, #0x60\n\
-	strh r0, [r2, #0xc]\n\
-	subs r2, #6\n\
-	ldrh r0, [r2]\n\
-	movs r5, #0x90\n\
-	lsls r5, r5, #5\n\
-	adds r1, r5, #0\n\
-	orrs r0, r1\n\
-	movs r4, #0\n\
-	orrs r0, r3\n\
-	ldr r1, _08022768 @ =0x0000FEFF\n\
-	ands r0, r1\n\
-	strh r0, [r2]\n\
-	ldrb r1, [r7, #1]\n\
-	lsls r0, r1, #2\n\
-	adds r0, r0, r1\n\
-	lsls r0, r0, #2\n\
-	ldr r1, _0802276C @ =0x08547280\n\
-	adds r0, r0, r1\n\
-	movs r1, #0x80\n\
-	lsls r1, r1, #7\n\
-	bl LoadGraphic\n\
-	ldrb r1, [r7, #1]\n\
-	lsls r0, r1, #2\n\
-	adds r0, r0, r1\n\
-	lsls r0, r0, #2\n\
-	ldr r2, _08022770 @ =0x0854728C\n\
-	adds r0, r0, r2\n\
-_08022746:\n\
-	movs r1, #0\n\
-	bl LoadPalette\n\
-	ldr r1, _08022774 @ =gBgMapOffsets\n\
-	ldrb r2, [r7, #1]\n\
-	str r4, [sp]\n\
-	movs r0, #0x12\n\
-	movs r3, #0\n\
-	bl LoadBgMap\n\
-	bl PauseAllBlinks\n\
-	b _08022800\n\
-	.align 2, 0\n\
-_08022760: .4byte gVideoRegBuffer+6\n\
-_08022764: .4byte 0x00008284\n\
-_08022768: .4byte 0x0000FEFF\n\
-_0802276C: .4byte gGraphic_Capcom\n\
-_08022770: .4byte gPalette_Capcom\n\
-_08022774: .4byte gBgMapOffsets\n\
-_08022778:\n\
-	ldr r1, _08022790 @ =gVideoRegBuffer+18\n\
-	ldrh r0, [r1]\n\
-	cmp r0, #0\n\
-	beq _08022794\n\
-	subs r0, #1\n\
-	strh r0, [r1]\n\
-	ldr r0, [r2, #0xc]\n\
-	subs r0, #8\n\
-	str r0, [r2, #0xc]\n\
-	movs r0, #1\n\
-	b _08022802\n\
-	.align 2, 0\n\
-_08022790: .4byte gVideoRegBuffer+18\n\
-_08022794:\n\
-	bl text_080e9730\n\
-	b _08022800\n\
-_0802279A:\n\
-	ldr r1, _080227A4 @ =gPaletteManager\n\
-	ldr r0, [r7, #4]\n\
-	strh r0, [r1]\n\
-	b _08022800\n\
-	.align 2, 0\n\
-_080227A4: .4byte gPaletteManager\n\
-_080227A8:\n\
-	ldr r1, _0802280C @ =gVideoRegBuffer+6\n\
-	movs r3, #0x81\n\
-	lsls r3, r3, #2\n\
-	adds r0, r3, #0\n\
-	strh r0, [r1]\n\
-	adds r0, r1, #0\n\
-	adds r0, #0xa\n\
-	movs r4, #0\n\
-	str r4, [r0]\n\
-	subs r1, #6\n\
-	ldrh r2, [r1]\n\
-	movs r5, #0x90\n\
-	lsls r5, r5, #5\n\
-	adds r0, r5, #0\n\
-	orrs r0, r2\n\
-	strh r0, [r1]\n\
-	ldrb r1, [r7, #1]\n\
-	lsls r0, r1, #2\n\
-	adds r0, r0, r1\n\
-	lsls r0, r0, #2\n\
-	ldr r1, _08022810 @ =0x08547280\n\
-	adds r0, r0, r1\n\
-	movs r1, #0x80\n\
-	lsls r1, r1, #7\n\
-	bl LoadGraphic\n\
-	ldrb r1, [r7, #1]\n\
-	lsls r0, r1, #2\n\
-	adds r0, r0, r1\n\
-	lsls r0, r0, #2\n\
-	ldr r2, _08022814 @ =0x0854728C\n\
-	adds r0, r0, r2\n\
-	movs r1, #0\n\
-	bl LoadPalette\n\
-	ldr r1, _08022818 @ =gBgMapOffsets\n\
-	ldrb r2, [r7, #1]\n\
-	str r4, [sp]\n\
-	movs r0, #0x12\n\
-	movs r3, #0\n\
-	bl LoadBgMap\n\
-	bl PauseAllBlinks\n\
-_08022800:\n\
-	movs r0, #0\n\
-_08022802:\n\
-	add sp, #4\n\
-	pop {r4, r5, r6, r7}\n\
-	pop {r1}\n\
-	bx r1\n\
-	.align 2, 0\n\
-_0802280C: .4byte gVideoRegBuffer+6\n\
-_08022810: .4byte gGraphic_Capcom\n\
-_08022814: .4byte gPalette_Capcom\n\
-_08022818: .4byte gBgMapOffsets\n\
- .syntax divided\n");
+WIP static bool32 Cmd_cmd06(struct VM* vm) {
+#if MODERN
+  struct Command* c = vm->pc;
+  switch (c->val2) {
+    case 0: {
+      BGCNT16(1) = 0x284;
+      *(u32*)gVideoRegBuffer.bgofs[1] = 0;
+      gVideoRegBuffer.dispcnt |= (DISPCNT_OBJ_ON | DISPCNT_BG1_ON);
+      LoadGraphic(BG_GRAPHIC(c->status), (void*)0x4000);
+      LoadPalette(BG_PALETTE(c->status), 0);
+      LoadBgMap(18, gBgMapOffsets, c->status, 0, 0);
+      PauseAllBlinks();
+      break;
+    }
+    case 1: {
+      gVideoRegBuffer.dispcnt &= ~(DISPCNT_BG1_ON | DISPCNT_OBJ_ON);
+      gVideoRegBuffer.dispcnt |= DISPCNT_BG0_ON;
+      ResumeAllBlinks();
+      break;
+    }
+    case 2: {
+      BGCNT16(1) = 0x8284;
+      BGOFS(1)->x = 0;
+      BGOFS(1)->y = 160;
+      gVideoRegBuffer.dispcnt |= (DISPCNT_OBJ_ON | DISPCNT_BG1_ON);
+      gVideoRegBuffer.dispcnt |= 0;
+      gVideoRegBuffer.dispcnt &= ~DISPCNT_BG0_ON;
+      LoadGraphic(BG_GRAPHIC(c->status), (void*)0x4000);
+      LoadPalette(BG_PALETTE(c->status), 0);
+      LoadBgMap(18, gBgMapOffsets, c->status, 0, 0);
+      loadBgMap_08004248((u16*)(void*)(BG_SCREEN_ADDR(1) + SCREEN_BASE_16(1)), gBgMapOffsets, c->status + 1, 0, 0);
+      PauseAllBlinks();
+      break;
+    }
+    case 3: {
+      BGCNT16(1) = 0x8284;
+      BGOFS(1)->x = 0;
+      BGOFS(1)->y = 96;
+      gVideoRegBuffer.dispcnt |= (DISPCNT_OBJ_ON | DISPCNT_BG1_ON);
+      gVideoRegBuffer.dispcnt &= ~DISPCNT_BG0_ON;
+      LoadGraphic(BG_GRAPHIC(c->status), (void*)0x4000);
+      LoadPalette(BG_PALETTE(c->status), 0);
+      LoadBgMap(18, gBgMapOffsets, c->status, 0, 0);
+      PauseAllBlinks();
+      break;
+    }
+    case 4: {
+      if (BGOFS(1)->y != 0) {
+        BGOFS(1)->y--;
+        vm->pc--;
+        return TRUE;
+      }
+      text_080e9730();
+      break;
+    }
+    case 5: {
+      PALETTE16(0) = (u16)c->work;
+      break;
+    }
+    case 6: {
+      BGCNT16(1) = 0x204;
+      *(u32*)gVideoRegBuffer.bgofs[1] = 0;
+      gVideoRegBuffer.dispcnt |= (DISPCNT_OBJ_ON | DISPCNT_BG1_ON);
+      LoadGraphic(BG_GRAPHIC(c->status), (void*)0x4000);
+      LoadPalette(BG_PALETTE(c->status), 0);
+      LoadBgMap(18, gBgMapOffsets, c->status, 0, 0);
+      PauseAllBlinks();
+      break;
+    }
+    default: {
+      break;
+    }
+  }
+
+  return FALSE;
+#else
+  INCCODE("asm/wip/Cmd_cmd06.inc");
+#endif
 }
 
 static bool32 Cmd_resume(struct VM* vm) {
@@ -626,169 +425,98 @@ static bool32 Cmd_spawn(struct VM* vm) {
   return FALSE;
 }
 
-NAKED static bool32 Cmd_cmd0c(struct VM* vm) {
-  asm(".syntax unified\n\
-	push {r4, r5, lr}\n\
-	adds r2, r0, #0\n\
-	ldr r4, [r2, #0xc]\n\
-	ldrb r0, [r4, #1]\n\
-	lsls r0, r0, #4\n\
-	adds r0, #0x10\n\
-	adds r5, r2, r0\n\
-	ldr r3, [r5]\n\
-	cmp r3, #0\n\
-	bne _080229C2\n\
-	b _08022ABE\n\
-_080229C2:\n\
-	movs r1, #2\n\
-	ldrsh r0, [r4, r1]\n\
-	cmp r0, #7\n\
-	bhi _08022ABE\n\
-	lsls r0, r0, #2\n\
-	ldr r1, _080229D4 @ =_080229D8\n\
-	adds r0, r0, r1\n\
-	ldr r0, [r0]\n\
-	mov pc, r0\n\
-	.align 2, 0\n\
-_080229D4: .4byte _080229D8\n\
-_080229D8: @ jump table\n\
-	.4byte _080229F8 @ case 0\n\
-	.4byte _08022A06 @ case 1\n\
-	.4byte _08022A20 @ case 2\n\
-	.4byte _08022A5C @ case 3\n\
-	.4byte _08022A9E @ case 4\n\
-	.4byte _08022AA8 @ case 5\n\
-	.4byte _08022AB2 @ case 6\n\
-	.4byte _08022ABA @ case 7\n\
-_080229F8:\n\
-	ldr r0, [r4, #4]\n\
-	ldr r0, [r0]\n\
-	str r0, [r3, #0x54]\n\
-	ldr r0, [r4, #4]\n\
-	ldr r0, [r0, #4]\n\
-	str r0, [r3, #0x58]\n\
-	b _08022ABE\n\
-_08022A06:\n\
-	ldr r1, [r4, #4]\n\
-	lsls r1, r1, #4\n\
-	adds r0, r2, #0\n\
-	adds r0, #0x10\n\
-	adds r0, r0, r1\n\
-	ldr r1, [r0]\n\
-	cmp r1, #0\n\
-	beq _08022ABE\n\
-	ldr r0, [r1, #0x54]\n\
-	str r0, [r3, #0x54]\n\
-	ldr r0, [r1, #0x58]\n\
-	str r0, [r3, #0x58]\n\
-	b _08022ABE\n\
-_08022A20:\n\
-	ldr r0, [r4, #4]\n\
-	cmp r0, #0\n\
-	beq _08022A2E\n\
-	ldrb r1, [r3, #0xa]\n\
-	movs r0, #0x10\n\
-	orrs r0, r1\n\
-	b _08022A34\n\
-_08022A2E:\n\
-	ldrb r1, [r3, #0xa]\n\
-	movs r0, #0xef\n\
-	ands r0, r1\n\
-_08022A34:\n\
-	strb r0, [r3, #0xa]\n\
-	ldrb r1, [r3, #0xa]\n\
-	movs r0, #8\n\
-	ands r0, r1\n\
-	cmp r0, #0\n\
-	beq _08022ABE\n\
-	ldr r0, [r4, #4]\n\
-	movs r2, #1\n\
-	ands r0, r2\n\
-	adds r1, r3, #0\n\
-	adds r1, #0x4c\n\
-	strb r0, [r1]\n\
-	ldr r1, [r4, #4]\n\
-	adds r3, #0x4a\n\
-	ands r1, r2\n\
-	lsls r1, r1, #4\n\
-	ldrb r2, [r3]\n\
-	movs r0, #0x11\n\
-	rsbs r0, r0, #0\n\
-	b _08022A96\n\
-_08022A5C:\n\
-	ldr r0, [r4, #4]\n\
-	cmp r0, #0\n\
-	beq _08022A6A\n\
-	ldrb r1, [r3, #0xa]\n\
-	movs r0, #0x20\n\
-	orrs r0, r1\n\
-	b _08022A70\n\
-_08022A6A:\n\
-	ldrb r1, [r3, #0xa]\n\
-	movs r0, #0xdf\n\
-	ands r0, r1\n\
-_08022A70:\n\
-	strb r0, [r3, #0xa]\n\
-	ldrb r1, [r3, #0xa]\n\
-	movs r0, #8\n\
-	ands r0, r1\n\
-	cmp r0, #0\n\
-	beq _08022ABE\n\
-	ldr r0, [r4, #4]\n\
-	movs r2, #1\n\
-	ands r0, r2\n\
-	adds r1, r3, #0\n\
-	adds r1, #0x4d\n\
-	strb r0, [r1]\n\
-	ldr r1, [r4, #4]\n\
-	adds r3, #0x4a\n\
-	ands r1, r2\n\
-	lsls r1, r1, #5\n\
-	ldrb r2, [r3]\n\
-	movs r0, #0x21\n\
-	rsbs r0, r0, #0\n\
-_08022A96:\n\
-	ands r0, r2\n\
-	orrs r0, r1\n\
-	strb r0, [r3]\n\
-	b _08022ABE\n\
-_08022A9E:\n\
-	ldrb r1, [r3, #0xa]\n\
-	movs r0, #0xfe\n\
-	ands r0, r1\n\
-	strb r0, [r3, #0xa]\n\
-	b _08022ABE\n\
-_08022AA8:\n\
-	ldrb r1, [r3, #0xa]\n\
-	movs r0, #1\n\
-	orrs r0, r1\n\
-	strb r0, [r3, #0xa]\n\
-	b _08022ABE\n\
-_08022AB2:\n\
-	ldrb r0, [r4, #1]\n\
-	bl DeleteScriptEntity\n\
-	b _08022ABE\n\
-_08022ABA:\n\
-	movs r0, #0\n\
-	str r0, [r5]\n\
-_08022ABE:\n\
-	movs r0, #0\n\
-	pop {r4, r5}\n\
-	pop {r1}\n\
-	bx r1\n\
- .syntax divided\n");
+static bool32 Cmd_entity(struct VM* vm) {
+  struct EntityOamData_06* fxxk;
+  struct Command* c = vm->pc;
+  struct ScriptEntity* se = &vm->entities[c->status];
+  struct Entity* e = se->entity;
+
+  if (e != NULL) {
+    switch (c->val2) {
+      case 0: {
+        (e->coord).x = ((struct Coord*)c->work)->x;
+        (e->coord).y = ((struct Coord*)c->work)->y;
+        break;
+      }
+
+      case 1: {
+        struct Entity* target = vm->entities[c->work].entity;
+        if (target != NULL) {
+          (e->coord).x = (target->coord).x;
+          (e->coord).y = (target->coord).y;
+        }
+        break;
+      }
+
+      case 2: {
+        if (c->work) {
+          e->flags |= X_FLIP;
+        } else {
+          e->flags &= ~X_FLIP;
+        }
+        if (e->flags & OAM_PRIO) {
+          u32 work;
+          (e->spr).xflip = (c->work & 1);
+          work = (c->work & 1);
+          fxxk = (struct EntityOamData_06*)((void*)&(e->spr).oam + 6);
+          fxxk->xflip = work;
+        }
+        break;
+      }
+
+      case 3: {
+        if (c->work) {
+          e->flags |= Y_FLIP;
+        } else {
+          e->flags &= ~Y_FLIP;
+        }
+        if (e->flags & OAM_PRIO) {
+          u32 work;
+          (e->spr).yflip = (c->work & 1);
+          work = (c->work & 1);
+          fxxk = (struct EntityOamData_06*)((void*)&(e->spr).oam + 6);
+          fxxk->yflip = work;
+        }
+        break;
+      }
+
+      case 4: {
+        e->flags &= ~DISPLAY;
+        break;
+      }
+
+      case 5: {
+        e->flags |= DISPLAY;
+        break;
+      }
+
+      case 6: {
+        DeleteScriptEntity(c->status);
+        break;
+      }
+
+      case 7: {
+        se->entity = NULL;
+        break;
+      }
+    }
+  }
+
+  return FALSE;
 }
 
-WIP static bool32 Cmd_cmd0d(struct VM* vm) {
+WIP static bool32 Cmd_flag(struct VM* vm) {
 #if MODERN
   struct Command0D* c = (struct Command0D*)vm->pc;
   if (c->flags & (1 << 1)) {
+    // gameflag
     if (c->flags & (1 << 0)) {
       SET_FLAG(gCurStory.s.gameflags, c->val.idx);
     } else {
       CLEAR_FLAG(gCurStory.s.gameflags, c->val.idx);
     }
   } else {
+    // entityflag
     if (vm->entities[c->entityIdx].entity != NULL) {
       if (c->flags) {
         vm->entities[c->entityIdx].unk_09 |= c->val.mask;
@@ -799,7 +527,7 @@ WIP static bool32 Cmd_cmd0d(struct VM* vm) {
   }
   return FALSE;
 #else
-  INCCODE("asm/wip/Cmd_cmd0d.inc");
+  INCCODE("asm/wip/Cmd_flag.inc");
 #endif
 }
 

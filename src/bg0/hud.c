@@ -5,12 +5,6 @@
 #include "gpu_regs.h"
 #include "story.h"
 
-extern const struct Graphic gGraphic_085473D4;
-extern const struct Palette gPalette_085473D4;
-
-extern const struct Graphic gGraphic_HPGauge;
-extern const struct Palette gPalette_HPGauge;
-
 static void drawZeroHPWeaponIcon(void* p);
 static void FUN_080ea3c8(void* p);
 static void drawLeftTime(struct HUD* p);
@@ -27,13 +21,13 @@ void DrawStatus(void) {
   gWindowRegBuffer.unk_0c[2] |= 1;
   if (gHUD.unk_02 == 0) {
     if (!FLAG(gCurStory.s.gameflags, DEMO_PLAY)) {
-      LoadGraphic(&gGraphic_085473D4, (void*)CHAR_BASE(0));
-      LoadPalette(&gPalette_085473D4, 0);
-      LoadGraphic(&gGraphic_HPGauge, (void*)CHAR_BASE(0));
-      LoadPalette(&gPalette_HPGauge, 0);
+      LoadGraphic(BG_GRAPHIC(BG_UNK_17), (void*)CHAR_BASE(0));
+      LoadPalette(BG_PALETTE(BG_UNK_17), 0);
+      LoadGraphic(BG_GRAPHIC(BG_HP_GAUGE), (void*)CHAR_BASE(0));
+      LoadPalette(BG_PALETTE(BG_HP_GAUGE), 0);
     } else {
-      LoadGraphic(&gGraphic_TitleLogo, (void*)CHAR_BASE(0));
-      LoadPalette(&gPalette_TitleLogo, 0);
+      LoadGraphic(BG_GRAPHIC(BG_TITLE_LOGO), (void*)CHAR_BASE(0));
+      LoadPalette(BG_PALETTE(BG_TITLE_LOGO), 0);
     }
     gHUD.unk_02 = 1;
   }
@@ -46,8 +40,8 @@ void DrawStatus(void) {
     if (gHUD.unk_02 < 32) {
       gHUD.unk_02++;
     }
-    gVideoRegBuffer.bgofs[0][1] = 32 - gHUD.unk_02;
-    loadBgMap_08004248((s32)gHUD.bg0, (s32*)&gBgMapOffsets[0], 18, 0, 0);
+    BGOFS(0)->y = 32 - gHUD.unk_02;
+    loadBgMap_08004248(gHUD.bg0, gBgMapOffsets, 18, 0, 0);
   }
 }
 

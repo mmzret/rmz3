@@ -630,7 +630,7 @@ static void CopyX_Die(struct Boss* p) {
 }
 
 static void copyx_080557a4(struct Boss* p) {
-  if ((p->s).arr[9] & 1) {
+  if ((p->s).scriptEntity->flags & (1 << 0)) {
     (p->s).mode[1] = 1;
     (p->s).mode[2] = 1;
   }
@@ -638,7 +638,7 @@ static void copyx_080557a4(struct Boss* p) {
 
 static void copyxMode1(struct Boss* p) {
   if ((p->s).mode[2] != 0) {
-    SetMotion(&p->s, MOTION(DM179_COPY_X, 0x1A));
+    SetMotion(&p->s, MOTION(DM179_COPY_X, 26));
     CreateVFX55(p, 0, 0);
     (p->s).mode[2] = 0;
     (p->s).mode[3] = 0;

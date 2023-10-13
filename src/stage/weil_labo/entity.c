@@ -14,7 +14,7 @@ const struct EntityTemplate gWeilLaboEntity[50] = {
             2,
             ENTITY_ITEM,
             ITEM_GENERAL,
-            1,
+            ITEM_LIFE_M,
             2,
             0,
             0,
@@ -25,7 +25,7 @@ const struct EntityTemplate gWeilLaboEntity[50] = {
             2,
             ENTITY_ITEM,
             ITEM_GENERAL,
-            2,
+            ITEM_LIFE_L,
             2,
             0,
             0,
@@ -36,7 +36,7 @@ const struct EntityTemplate gWeilLaboEntity[50] = {
             2,
             ENTITY_ITEM,
             ITEM_GENERAL,
-            4,
+            ITEM_EC_L,
             2,
             0,
             0,
@@ -47,7 +47,7 @@ const struct EntityTemplate gWeilLaboEntity[50] = {
             2,
             ENTITY_ITEM,
             ITEM_GENERAL,
-            5,
+            ITEM_EXLIFE,
             2,
             0,
             0,
@@ -112,7 +112,7 @@ const struct EntityTemplate gWeilLaboEntity[50] = {
         {
             1,
             ENTITY_SOLID,
-            24,
+            SOLID_PHANTOM_TELEPORTER,
             0,
             0,
             0,
@@ -123,7 +123,7 @@ const struct EntityTemplate gWeilLaboEntity[50] = {
         {
             1,
             ENTITY_SOLID,
-            25,
+            SOLID_UNK_025,
             0,
             1,
             0,
@@ -134,7 +134,7 @@ const struct EntityTemplate gWeilLaboEntity[50] = {
         {
             1,
             ENTITY_SOLID,
-            25,
+            SOLID_UNK_025,
             1,
             1,
             0,
@@ -145,7 +145,7 @@ const struct EntityTemplate gWeilLaboEntity[50] = {
         {
             1,
             ENTITY_SOLID,
-            25,
+            SOLID_UNK_025,
             2,
             1,
             0,
@@ -156,7 +156,7 @@ const struct EntityTemplate gWeilLaboEntity[50] = {
         {
             1,
             ENTITY_SOLID,
-            25,
+            SOLID_UNK_025,
             3,
             1,
             0,
@@ -167,7 +167,7 @@ const struct EntityTemplate gWeilLaboEntity[50] = {
         {
             1,
             ENTITY_SOLID,
-            24,
+            SOLID_PHANTOM_TELEPORTER,
             0,
             0,
             0,
@@ -178,7 +178,7 @@ const struct EntityTemplate gWeilLaboEntity[50] = {
         {
             1,
             ENTITY_SOLID,
-            24,
+            SOLID_PHANTOM_TELEPORTER,
             1,
             0,
             0,
@@ -189,7 +189,7 @@ const struct EntityTemplate gWeilLaboEntity[50] = {
         {
             1,
             ENTITY_SOLID,
-            24,
+            SOLID_PHANTOM_TELEPORTER,
             2,
             0,
             0,
@@ -200,7 +200,7 @@ const struct EntityTemplate gWeilLaboEntity[50] = {
         {
             1,
             ENTITY_SOLID,
-            24,
+            SOLID_PHANTOM_TELEPORTER,
             3,
             0,
             0,
@@ -211,7 +211,7 @@ const struct EntityTemplate gWeilLaboEntity[50] = {
         {
             1,
             ENTITY_SOLID,
-            24,
+            SOLID_PHANTOM_TELEPORTER,
             4,
             0,
             0,
@@ -222,7 +222,7 @@ const struct EntityTemplate gWeilLaboEntity[50] = {
         {
             1,
             ENTITY_SOLID,
-            24,
+            SOLID_PHANTOM_TELEPORTER,
             5,
             0,
             0,
@@ -233,7 +233,7 @@ const struct EntityTemplate gWeilLaboEntity[50] = {
         {
             1,
             ENTITY_SOLID,
-            24,
+            SOLID_PHANTOM_TELEPORTER,
             6,
             0,
             0,
@@ -244,7 +244,7 @@ const struct EntityTemplate gWeilLaboEntity[50] = {
         {
             1,
             ENTITY_SOLID,
-            24,
+            SOLID_PHANTOM_TELEPORTER,
             7,
             0,
             0,
@@ -277,7 +277,7 @@ const struct EntityTemplate gWeilLaboEntity[50] = {
         {
             2,
             ENTITY_SOLID,
-            35,
+            SOLID_CONTAINER,
             0,
             20,
             0,
@@ -288,7 +288,7 @@ const struct EntityTemplate gWeilLaboEntity[50] = {
         {
             2,
             ENTITY_SOLID,
-            35,
+            SOLID_CONTAINER,
             0,
             11,
             0,
@@ -299,7 +299,7 @@ const struct EntityTemplate gWeilLaboEntity[50] = {
         {
             2,
             ENTITY_SOLID,
-            35,
+            SOLID_CONTAINER,
             0,
             19,
             0,
@@ -310,7 +310,7 @@ const struct EntityTemplate gWeilLaboEntity[50] = {
         {
             2,
             ENTITY_SOLID,
-            35,
+            SOLID_CONTAINER,
             0,
             97,
             0,
@@ -321,7 +321,7 @@ const struct EntityTemplate gWeilLaboEntity[50] = {
         {
             2,
             ENTITY_SOLID,
-            35,
+            SOLID_CONTAINER,
             0,
             151,
             0,
@@ -332,7 +332,7 @@ const struct EntityTemplate gWeilLaboEntity[50] = {
         {
             2,
             ENTITY_SOLID,
-            35,
+            SOLID_CONTAINER,
             0,
             164,
             0,
@@ -343,7 +343,7 @@ const struct EntityTemplate gWeilLaboEntity[50] = {
         {
             2,
             ENTITY_SOLID,
-            35,
+            SOLID_CONTAINER,
             0,
             179,
             0,
@@ -354,7 +354,7 @@ const struct EntityTemplate gWeilLaboEntity[50] = {
         {
             2,
             ENTITY_SOLID,
-            35,
+            SOLID_CONTAINER,
             0,
             254,
             0,
@@ -365,7 +365,7 @@ const struct EntityTemplate gWeilLaboEntity[50] = {
         {
             2,
             ENTITY_SOLID,
-            35,
+            SOLID_CONTAINER,
             0,
             255,
             0,
@@ -387,7 +387,7 @@ const struct EntityTemplate gWeilLaboEntity[50] = {
         {
             1,
             ENTITY_ENEMY,
-            47,
+            ENEMY_MOTHJIRO,
             0,
             0,
             1,
@@ -398,7 +398,7 @@ const struct EntityTemplate gWeilLaboEntity[50] = {
         {
             1,
             ENTITY_ENEMY,
-            47,
+            ENEMY_MOTHJIRO,
             1,
             0,
             1,
@@ -409,7 +409,7 @@ const struct EntityTemplate gWeilLaboEntity[50] = {
         {
             1,
             ENTITY_ENEMY,
-            43,
+            ENEMY_CAPSULE_CANNON,
             1,
             0,
             1,
@@ -420,7 +420,7 @@ const struct EntityTemplate gWeilLaboEntity[50] = {
         {
             1,
             ENTITY_ENEMY,
-            43,
+            ENEMY_CAPSULE_CANNON,
             0,
             0,
             1,
@@ -431,7 +431,7 @@ const struct EntityTemplate gWeilLaboEntity[50] = {
         {
             1,
             ENTITY_ENEMY,
-            46,
+            ENEMY_GALLISNI,
             0,
             0,
             0,
@@ -464,7 +464,7 @@ const struct EntityTemplate gWeilLaboEntity[50] = {
         {
             2,
             ENTITY_ENEMY,
-            41,
+            ENEMY_EYE_CANNON,
             0,
             0,
             0,
@@ -486,7 +486,7 @@ const struct EntityTemplate gWeilLaboEntity[50] = {
         {
             1,
             ENTITY_ENEMY,
-            66,
+            ENEMY_CANNON_HOPPER,
             1,
             0,
             1,
@@ -497,7 +497,7 @@ const struct EntityTemplate gWeilLaboEntity[50] = {
         {
             1,
             ENTITY_ENEMY,
-            58,
+            ENEMY_PETATRIA,
             0,
             0,
             1,
@@ -508,7 +508,7 @@ const struct EntityTemplate gWeilLaboEntity[50] = {
         {
             1,
             ENTITY_ENEMY,
-            58,
+            ENEMY_PETATRIA,
             1,
             0,
             1,
@@ -519,7 +519,7 @@ const struct EntityTemplate gWeilLaboEntity[50] = {
         {
             1,
             ENTITY_ENEMY,
-            58,
+            ENEMY_PETATRIA,
             2,
             0,
             1,
@@ -552,8 +552,8 @@ const struct EntityTemplate gWeilLaboEntity[50] = {
 
 const struct PreloadEntity gWeilLaboStatic[13] = {
     {
-        123,
-        64,
+        SM123_TELEPORTAL,
+        B8(01000000),
         903,
         8,
         3,
@@ -561,8 +561,8 @@ const struct PreloadEntity gWeilLaboStatic[13] = {
         1,
     },
     {
-        19,
-        5,
+        SM019_PANTHEON_HUNTER,
+        B8(00000101),
         512,
         4,
         1,
@@ -570,8 +570,8 @@ const struct PreloadEntity gWeilLaboStatic[13] = {
         0,
     },
     {
-        125,
-        1,
+        SM125_WEILLABO_PLATFORM,
+        B8(00000001),
         632,
         5,
         3,
@@ -579,8 +579,8 @@ const struct PreloadEntity gWeilLaboStatic[13] = {
         1,
     },
     {
-        107,
-        1,
+        SM107_MOTHJIRO,
+        B8(00000001),
         692,
         6,
         1,
@@ -588,8 +588,8 @@ const struct PreloadEntity gWeilLaboStatic[13] = {
         0,
     },
     {
-        104,
-        1,
+        SM104_CAPSULE_CANNON,
+        B8(00000001),
         740,
         7,
         1,
@@ -597,8 +597,8 @@ const struct PreloadEntity gWeilLaboStatic[13] = {
         0,
     },
     {
-        20,
-        2,
+        SM020_PANTHEON_GUARDIAN,
+        B8(00000010),
         512,
         4,
         1,
@@ -606,8 +606,8 @@ const struct PreloadEntity gWeilLaboStatic[13] = {
         0,
     },
     {
-        103,
-        2,
+        SM103_GALLISNI,
+        B8(00000010),
         666,
         5,
         3,
@@ -615,8 +615,8 @@ const struct PreloadEntity gWeilLaboStatic[13] = {
         0,
     },
     {
-        4,
-        2,
+        SM004_SHOTCOUNTER,
+        B8(00000010),
         799,
         6,
         1,
@@ -624,8 +624,8 @@ const struct PreloadEntity gWeilLaboStatic[13] = {
         0,
     },
     {
-        102,
-        2,
+        SM102_EYE_CANNON,
+        B8(00000010),
         855,
         7,
         3,
@@ -633,8 +633,8 @@ const struct PreloadEntity gWeilLaboStatic[13] = {
         0,
     },
     {
-        220,
-        4,
+        SM220_CANNON_HOPPER,
+        B8(00000100),
         632,
         5,
         1,
@@ -642,8 +642,8 @@ const struct PreloadEntity gWeilLaboStatic[13] = {
         0,
     },
     {
-        126,
-        4,
+        SM126_PETATRIA,
+        B8(00000100),
         688,
         6,
         1,
@@ -651,8 +651,8 @@ const struct PreloadEntity gWeilLaboStatic[13] = {
         0,
     },
     {
-        221,
-        63,
+        SM221_METTAUR,
+        B8(00111111),
         512,
         4,
         2,

@@ -28,9 +28,9 @@ enum HitboxKind {
 
 // Collision is occuring between different factions
 enum CollisionFaction {
-  FACTION_ALLY,   // 味方側の攻撃
-  FACTION_ENEMY,  // 敵側の攻撃(=ゼロにダメージがあるもの)
-  FACTION_UNK2,
+  FACTION_ALLY,     // 味方側の攻撃
+  FACTION_ENEMY,    // 敵側の攻撃(=ゼロにダメージがあるもの)
+  FACTION_NEUTRAL,  // 中立(兵器再生工場のハンマー振り子など)
 };
 
 struct Collision {
@@ -75,7 +75,7 @@ struct CollisionManager {
   /*
     bit 0: ゼロ側のコリジョン関連の処理をスキップ(FACTION_ALLY)
     bit 1: 敵側のコリジョン関連の処理をスキップ(FACTION_ENEMY)
-    bit 2: ???(FACTION_UNK2)
+    bit 2: 中立エンティティのコリジョン関連の処理をスキップ(FACTION_NEUTRAL)
     bit 7: 全部スキップ
   */
   u8 disabled;
@@ -83,7 +83,7 @@ struct CollisionManager {
   /*
     bit 0:    kill Zero(FACTION_ALLY)
     bit 1:    kill All Enemies (Used for area change?)(FACTION_ENEMY)
-    bit 2:    ???(FACTION_UNK2)
+    bit 2:    kill Neutral Entities(FACTION_NEUTRAL)
     bit 3..7: Unused
   */
   u8 sweep;

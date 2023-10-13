@@ -17,12 +17,12 @@ EntityTemplate_0834d204:
 
 Script_Stage0: @ 0x0834d214
   spawn 0 0 EntityTemplate_0834d204
-  cmd04 0 0 Camera_0834d1d8
+  reset_camera Camera_0834d1d8
   lock
   screeneffect 9
-  screeneffect 0
-  indicator 1 0 0
-  indicator 0 0 0
+  wait_screeneffect
+  indicator 1, 0, 0
+  wait_indicator_end
   release
   resume 0
   end
