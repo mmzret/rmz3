@@ -30,15 +30,22 @@ struct MobProps {
   u8 unk_0c[4];
 };
 
+struct CyberDoorProps {
+  struct MetaspriteHeader* sprites;
+  u8 unk_04[12];
+};
+
 struct Solid {
   struct Entity s;
   struct Body body;
   union {
     u8 raw[16];
+    struct Solid8Props icebonIce;
     struct Solid8Props solid8;
     struct ResistanceBaseElevatorProps rbe;
     struct LocomoIFPlatformProps lifp;
     struct MobProps mob;
+    struct CyberDoorProps cyberDoor;
   } props;
 };  // 196 bytes
 

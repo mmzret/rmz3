@@ -5,7 +5,7 @@
 
 bool8 shotcounter_08066da0(struct Enemy* p);
 
-static const struct Collision sShotcounterCollisions[12];
+static const struct Collision sCollisions[12];
 
 static void Shotcounter_Init(struct Enemy* p);
 static void Shotcounter_Update(struct Enemy* p);
@@ -71,7 +71,7 @@ NAKED static void Shotcounter_Init(struct Enemy* p) {
 	strb r2, [r6, #0xa]\n\
 	adds r4, r6, #0\n\
 	adds r4, #0x74\n\
-	ldr r1, _08066034 @ =sShotcounterCollisions\n\
+	ldr r1, _08066034 @ =sCollisions\n\
 	adds r2, r6, #0\n\
 	adds r2, #0x54\n\
 	adds r0, r4, #0\n\
@@ -80,7 +80,7 @@ NAKED static void Shotcounter_Init(struct Enemy* p) {
 	.align 2, 0\n\
 _0806602C: .4byte gSystemSavedataManager\n\
 _08066030: .4byte gCurStory\n\
-_08066034: .4byte sShotcounterCollisions\n\
+_08066034: .4byte sCollisions\n\
 _08066038:\n\
 	ldrb r1, [r6, #0xa]\n\
 	movs r0, #4\n\
@@ -89,7 +89,7 @@ _08066038:\n\
 	strb r0, [r6, #0xa]\n\
 	adds r4, r6, #0\n\
 	adds r4, #0x74\n\
-	ldr r1, _0806607C @ =sShotcounterCollisions\n\
+	ldr r1, _0806607C @ =sCollisions\n\
 	adds r2, r6, #0\n\
 	adds r2, #0x54\n\
 	adds r0, r4, #0\n\
@@ -116,7 +116,7 @@ _08066050:\n\
 	adds r4, r0, #0\n\
 	b _0806608E\n\
 	.align 2, 0\n\
-_0806607C: .4byte sShotcounterCollisions\n\
+_0806607C: .4byte sCollisions\n\
 _08066080: .4byte FUN_08066e34\n\
 _08066084:\n\
 	adds r1, r6, #0\n\
@@ -771,117 +771,73 @@ static bool8 FUN_080665e8(struct Enemy* p) { return TRUE; }
 
 INCASM("asm/enemy/shotcounter.inc");
 
-static const struct Collision sShotcounterCollisions[12] = {
+static const struct Collision sCollisions[12] = {
     [0] = {
       kind : DDP,
       faction : FACTION_ENEMY,
-      special : 0,
       damage : 2,
-      unk_04 : 0x00,
-      element : 0x00,
-      nature : 0x00,
-      comboLv : 0x00,
-      hitzone : 0x00,
-      hardness : 0x00,
-      unk_0a : 0x00,
       remaining : 4,
-      unk_0c : 0x00000001,
+      layer : 0x00000001,
       range : {0x0000, 0x0000, 0x1A00, 0x1A00},
     },
     [1] = {
       kind : DRP2,
       faction : FACTION_ENEMY,
-      special : 0,
       damage : 0,
-      unk_04 : 0xFF,
-      element : 0xFF,
-      nature : 0xFF,
-      comboLv : 0xFF,
+      LAYER(0xFFFFFFFF),
       hitzone : 0xFF,
-      hardness : 0x01,
-      unk_0a : 0x00,
+      hardness : METAL,
       remaining : 3,
-      unk_0c : 0x00000000,
       range : {-0x0C00, 0x0000, 0x0800, 0x1E00},
     },
     [2] = {
       kind : DRP2,
       faction : FACTION_ENEMY,
-      special : 0,
       damage : 0,
-      unk_04 : 0xFF,
-      element : 0xFF,
-      nature : 0xFF,
-      comboLv : 0xFF,
+      LAYER(0xFFFFFFFF),
       hitzone : 0xFF,
-      hardness : 0x01,
-      unk_0a : 0x00,
+      hardness : METAL,
       remaining : 2,
-      unk_0c : 0xFFFFFFFF,
+      layer : 0xFFFFFFFF,
       range : {-0x0600, 0x0C00, 0x0C00, 0x0800},
     },
     [3] = {
       kind : DRP2,
       faction : FACTION_ENEMY,
-      special : 0,
       damage : 0,
-      unk_04 : 0xFF,
-      element : 0xFF,
-      nature : 0xFF,
-      comboLv : 0xFF,
+      LAYER(0xFFFFFFFF),
       hitzone : 0xFF,
-      hardness : 0x01,
-      unk_0a : 0x00,
+      hardness : METAL,
       remaining : 1,
-      unk_0c : 0xFFFFFFFF,
+      layer : 0xFFFFFFFF,
       range : {-0x0600, -0x0C00, 0x0C00, 0x0800},
     },
     [4] = {
       kind : DRP,
       faction : FACTION_ENEMY,
-      special : 0,
       damage : 0,
-      unk_04 : 0xFF,
-      element : 0xFF,
-      nature : 0xFF,
-      comboLv : 0xFF,
-      hitzone : 0x01,
-      hardness : 0x00,
-      unk_0a : 0x00,
+      LAYER(0xFFFFFFFF),
+      hitzone : 1,
       remaining : 0,
-      unk_0c : 0x00000000,
       range : {0x0E00, 0x0000, 0x0800, 0x1600},
     },
     [5] = {
       kind : DDP,
       faction : FACTION_ENEMY,
-      special : 0,
       damage : 2,
-      unk_04 : 0x00,
-      element : 0x00,
-      nature : 0x00,
-      comboLv : 0x00,
-      hitzone : 0x00,
-      hardness : 0x00,
-      unk_0a : 0x00,
       remaining : 1,
-      unk_0c : 0x00000001,
+      layer : 0x00000001,
       range : {0x0000, 0x0000, 0x0C00, 0x1A00},
     },
     [6] = {
       kind : DRP,
       faction : FACTION_ENEMY,
-      special : 0,
       damage : 0,
-      unk_04 : 0xFF,
-      element : 0xFF,
-      nature : 0xFF,
-      comboLv : 0xFF,
-      hitzone : 0x01,
-      hardness : 0x01,
-      unk_0a : 0x00,
+      LAYER(0xFFFFFFFF),
+      hitzone : 1,
+      hardness : METAL,
       remaining : 0,
-      unk_0c : 0xFFFFFFFF,
+      layer : 0xFFFFFFFF,
       range : {0x0000, 0x0000, 0x0C00, 0x1A00},
     },
     [7] = {
@@ -889,47 +845,26 @@ static const struct Collision sShotcounterCollisions[12] = {
       faction : FACTION_ENEMY,
       special : 0,
       damage : 2,
-      unk_04 : 0x00,
-      element : 0x00,
-      nature : 0x00,
-      comboLv : 0x00,
-      hitzone : 0x00,
-      hardness : 0x00,
-      unk_0a : 0x00,
       remaining : 2,
-      unk_0c : 0x00000001,
+      layer : 0x00000001,
       range : {0x0000, 0x0000, 0x1A00, 0x1A00},
     },
     [8] = {
       kind : DRP,
       faction : FACTION_ENEMY,
-      special : 0,
       damage : 0,
-      unk_04 : 0xFF,
-      element : 0xFF,
-      nature : 0xFF,
-      comboLv : 0xFF,
-      hitzone : 0x01,
-      hardness : 0x00,
-      unk_0a : 0x00,
+      LAYER(0xFFFFFFFF),
+      hitzone : 1,
       remaining : 1,
-      unk_0c : 0x00000000,
       range : {-0x0A00, 0x0000, 0x0800, 0x1200},
     },
     [9] = {
       kind : DRP,
       faction : FACTION_ENEMY,
-      special : 0,
       damage : 0,
-      unk_04 : 0xFF,
-      element : 0xFF,
-      nature : 0xFF,
-      comboLv : 0xFF,
-      hitzone : 0x01,
-      hardness : 0x00,
-      unk_0a : 0x00,
+      LAYER(0xFFFFFFFF),
+      hitzone : 1,
       remaining : 0,
-      unk_0c : 0x00000000,
       range : {0x0E00, 0x0000, 0x0800, 0x1600},
     },
     [10] = {
@@ -937,31 +872,17 @@ static const struct Collision sShotcounterCollisions[12] = {
       faction : FACTION_NEUTRAL,
       special : 0,
       damage : 2,
-      unk_04 : 0x00,
-      element : 0x00,
-      nature : 0x00,
-      comboLv : 0x00,
-      hitzone : 0x00,
-      hardness : 0x00,
-      unk_0a : 0x00,
       remaining : 1,
-      unk_0c : 0x00000001,
+      layer : 0x00000001,
       range : {0x0000, 0x0000, 0x1A00, 0x1A00},
     },
     [11] = {
       kind : DRP,
       faction : FACTION_NEUTRAL,
-      special : 0,
       damage : 0,
-      unk_04 : 0xFF,
-      element : 0xFF,
-      nature : 0xFF,
-      comboLv : 0xFF,
-      hitzone : 0x01,
-      hardness : 0x00,
-      unk_0a : 0x00,
+      LAYER(0xFFFFFFFF),
+      hitzone : 1,
       remaining : 0,
-      unk_0c : 0x00000000,
       range : {0x0000, 0x0000, 0x1A00, 0x1A00},
     },
 };

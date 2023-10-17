@@ -270,13 +270,13 @@ static void walk_saber_0(struct Zero* z) {
 static void walk_saber_1(struct Zero* z) {
   u8* ct;
   if ((z->unk_b4).attackMode[2] == 0) {
-    GotoMotion(&z->s, MOTION(DM021_ZERO_SABER_RUN_1, 0x00), (z->s).motion.cmdIdx, (z->s).motion.duration);
-    CreateWeaponSaber(z, SABER_UNK_03);
+    GotoMotion(&z->s, MOTION(DM021_ZERO_SABER_RUN_1, 0), (z->s).motion.cmdIdx, (z->s).motion.duration);
+    CreateWeaponSaber(z, SABER_WALK);
     ct = &z->atkCooltime;
     *ct = 2;
     (z->unk_b4).attackMode[2]++;
   } else {
-    KeepMotion(z, MOTION(DM021_ZERO_SABER_RUN_1, 0x00));
+    KeepMotion(z, MOTION(DM021_ZERO_SABER_RUN_1, 0));
     ct = &z->atkCooltime;
   }
 

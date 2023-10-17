@@ -1,5 +1,4 @@
 #include "collision.h"
-#include "entity.h"
 #include "global.h"
 #include "mission.h"
 #include "motion.h"
@@ -8,6 +7,8 @@
 #include "vfx.h"
 #include "weapon.h"
 #include "zero.h"
+
+#define PROP (w->props.buster)
 
 #define BUSTER_BLIZZARD_ARROW 5
 
@@ -19,6 +20,9 @@ static bool8 buster_08037f78(struct Weapon *w, const struct Rect *size);
 static const WeaponFunc sBulletUpdate[6];
 static const motion_t sFullBulletMotions[4];
 static const struct Rect sFullBulletSize;
+static const struct Collision sSemiBulletCollisions[2];
+static const struct Collision sFullBulletCollisions[2];
+static const struct Collision sLaserShotCollisions[2];
 
 NAKED void MenuExit_Buster(struct Weapon *w) { INCCODE("asm/todo/MenuExit_Buster.inc"); }
 
@@ -42,7 +46,7 @@ WIP struct Weapon *CreateWeaponBuster(struct Zero *z, struct Coord *c, u8 charge
       (w->s).palID = 1;
       SetWeaponElement(1, gSaberElements[(z->unk_b4).status.element]);
     }
-    b4 = (struct Buster_b4 *)(&w->unk_b4);
+    b4 = &PROP;
     b4->z = z;
     b4->c.x = c->x, b4->c.y = c->y;
     (w->s).coord.x = (z->s).coord.x + c->x;
@@ -63,7 +67,7 @@ WIP struct Weapon *CreateWeaponBuster(struct Zero *z, struct Coord *c, u8 charge
     }
     (w->s).spr.yflip = yflip;
     (w->s).spr.oam.yflip = yflip;
-    b4->props[1] = (z->unk_b4).status.element;
+    b4->element = (z->unk_b4).status.element;
   }
   return w;
 #else
@@ -91,18 +95,16 @@ static void Buster_Init(struct Weapon *w) {
       initBlizzardArrowBullet,
   };
   // clang-format on
-  struct Buster_b4 *b4;
   struct Zero *z;
   struct Body *body;
   BodyFunc fn;
 
   SET_WEAPON_ROUTINE(w, ENTITY_UPDATE);
   (sInitalizer[(w->s).work[0]])(w);
-  b4 = (struct Buster_b4 *)&w->unk_b4;
-  b4->props[0] = 0;
-  b4->props[3] = 1;
+  (&PROP)->unk_c0 = 0;
+  (&PROP)->unk_c3 = 1;
 
-  z = b4->z;
+  z = (&PROP)->z;
   z->bulletCount++;
 
   fn = onHit;
@@ -117,14 +119,14 @@ static void Buster_Init(struct Weapon *w) {
 static void LemonBullet_Update(struct Weapon *w);
 
 static void Buster_Update(struct Weapon *w) {
-  struct Buster_b4 *b4 = (struct Buster_b4 *)&w->unk_b4;
-  if (b4->props[0] != 0) {
+  struct Buster_b4 *b4 = &PROP;
+  if (b4->unk_c0 != 0) {
     if ((w->s).work[0] == BUSTER_BLIZZARD_ARROW) {
       (w->body).status = 0;
       (w->body).prevStatus = 0;
       (w->body).invincibleTime = 0;
       (w->s).flags &= ~COLLIDABLE;
-      (b4->props)[0] = 0;
+      b4->unk_c0 = 0;
       return;
     }
 
@@ -151,16 +153,16 @@ static void Buster_Die(struct Weapon *w) {
 }
 
 static void Buster_Delete(struct Weapon *w) {
-  (w->unk_b4.z)->bulletCount--;
+  (PROP.z)->bulletCount--;
   DeleteEntity(&w->s);
 }
 
-static const struct Collision gLemonBulletCollisions[2];
+static const struct Collision sLemonBulletCollisions[2];
 
 WIP static void initLemonBullet(struct Weapon *w) {
 #if MODERN
   struct Body *body;
-  struct Zero *z = (w->unk_b4).z;
+  struct Zero *z = PROP.z;
 
   InitNonAffineMotion(&w->s);
   ResetDynamicMotion(&w->s);
@@ -185,7 +187,7 @@ WIP static void initLemonBullet(struct Weapon *w) {
   PlaySound(SE_Z_BUSTER);
 
   bool16 isVShot = FALSE;
-  if ((w->unk_b4).props[1][1] == ELEMENT_THUNDER) {
+  if ((w->props.common).props[1][1] == ELEMENT_THUNDER) {
     struct Zero_b4 *b4 = &(z->unk_b4);
     isVShot = ((b4->status).exSkill & (1 << EXSKILL_ID_VSHOT)) != 0;
   }
@@ -209,7 +211,7 @@ WIP static void initLemonBullet(struct Weapon *w) {
   (w->s).flags |= COLLIDABLE;
 
   body = &w->body;
-  InitBody(body, gLemonBulletCollisions, &(w->s).coord, 1);
+  InitBody(body, sLemonBulletCollisions, &(w->s).coord, 1);
   body->parent = (struct CollidableEntity *)w;
   body->fn = NULL;
 
@@ -217,7 +219,7 @@ WIP static void initLemonBullet(struct Weapon *w) {
   if (((z->s).mode[1] == ZERO_GROUND) && ((z->s).mode[2] == GROUND_DASH)) {
     atk = 3;  // Dash buster
   }
-  InitWeaponBody(body, gLemonBulletCollisions, atk + CalcBusterBonus(z), ELEMENT_NONE, -1, -1);
+  InitWeaponBody(body, sLemonBulletCollisions, atk + CalcBusterBonus(z), ELEMENT_NONE, -1, -1);
 #else
   INCCODE("asm/wip/initLemonBullet.inc");
 #endif
@@ -227,7 +229,7 @@ static void initSemiBullet(struct Weapon *w) {
   bool16 isVShot;
   u8 atk, element;
   struct Body *body;
-  struct Weapon_b4 *b4 = &w->unk_b4;
+  struct Buster_b4 *b4 = &PROP;
   struct Zero *z = b4->z;
 
   InitNonAffineMotion(&w->s);
@@ -238,7 +240,7 @@ static void initSemiBullet(struct Weapon *w) {
   SetMotion(&w->s, MOTION(DM134_UNK, 0));
   PlaySound(SE_CHARGE_BUSTER);
 
-  element = b4->props[1][1];
+  element = b4->element;
   isVShot = FALSE;
   if (element == ELEMENT_THUNDER) {
     isVShot = (((&z->unk_b4)->status).exSkill & (1 << EXSKILL_ID_VSHOT)) >> EXSKILL_ID_VSHOT;
@@ -271,12 +273,12 @@ static void initSemiBullet(struct Weapon *w) {
   (w->s).flags |= COLLIDABLE;
 
   body = &w->body;
-  InitBody(body, gSemiBulletCollisions, &(w->s).coord, 1);
+  InitBody(body, sSemiBulletCollisions, &(w->s).coord, 1);
   body->parent = (struct CollidableEntity *)w;
   body->fn = NULL;
 
   atk = 6 + CalcBusterBonus(z);
-  InitWeaponBody(body, gSemiBulletCollisions, atk, -1, -1, -1);
+  InitWeaponBody(body, sSemiBulletCollisions, atk, -1, -1, -1);
 }
 
 NAKED static void initFullBullet(struct Weapon *w) {
@@ -374,7 +376,7 @@ _080373F6:\n\
 	strb r0, [r5, #0xa]\n\
 	adds r6, r5, #0\n\
 	adds r6, #0x74\n\
-	ldr r7, _0803744C @ =gFullBulletCollisions\n\
+	ldr r7, _0803744C @ =sFullBulletCollisions\n\
 	adds r2, r5, #0\n\
 	adds r2, #0x54\n\
 	adds r0, r6, #0\n\
@@ -408,7 +410,7 @@ _080373F6:\n\
 	bl InitWeaponBody\n\
 	b _08037472\n\
 	.align 2, 0\n\
-_0803744C: .4byte gFullBulletCollisions\n\
+_0803744C: .4byte sFullBulletCollisions\n\
 _08037450: .4byte u8_ARRAY_0835ee9e\n\
 _08037454:\n\
 	ldr r1, _08037480 @ =u8_ARRAY_0835ee9e\n\
@@ -603,7 +605,7 @@ _08037588:\n\
 	strb r0, [r7, #0xa]\n\
 	adds r4, r7, #0\n\
 	adds r4, #0x74\n\
-	ldr r6, _08037614 @ =gLaserShotCollisions\n\
+	ldr r6, _08037614 @ =sLaserShotCollisions\n\
 	adds r2, #0xb\n\
 	adds r0, r4, #0\n\
 	adds r1, r6, #0\n\
@@ -635,13 +637,13 @@ _08037588:\n\
 	pop {r0}\n\
 	bx r0\n\
 	.align 2, 0\n\
-_08037614: .4byte gLaserShotCollisions\n\
+_08037614: .4byte sLaserShotCollisions\n\
  .syntax divided\n");
 }
 
 static void initBurstShotBullet(struct Weapon *w) {
   struct Body *body;
-  struct Zero *z = (w->unk_b4).z;
+  struct Zero *z = PROP.z;
 
   InitNonAffineMotion(&w->s);
   ResetDynamicMotion(&w->s);
@@ -664,19 +666,19 @@ static void initBurstShotBullet(struct Weapon *w) {
   body->parent = (struct CollidableEntity *)w;
   body->fn = NULL;
 
-  InitWeaponBody(body, gBurstShotCollisions, (u8)(CalcBusterBonus(z) + 6), ELEMENT_FLAME, BODY_NATURE_B1, -1);
+  InitWeaponBody(body, gBurstShotCollisions, (u8)(CalcBusterBonus(z) + 6), ELEMENT_FLAME, ELEMENT_ENCHANTABLE, -1);
 }
 
 static void initBlizzardArrowBullet(struct Weapon *w) {
   struct Body *body;
-  struct Zero *z = (w->unk_b4).z;
+  struct Zero *z = PROP.z;
 
   InitNonAffineMotion(&w->s);
   ResetDynamicMotion(&w->s);
 
   (w->s).flags |= DISPLAY;
   (w->s).flags |= FLIPABLE;
-  SetMotion(&w->s, MOTION(0x52, 0x00));
+  SetMotion(&w->s, MOTION(DM082_BLIZZ_ARROW, 0));
   PlaySound(SE_CHARGE_BUSTER);
   (w->s).flags |= COLLIDABLE;
 
@@ -795,8 +797,8 @@ static void FullBullet_Update(struct Weapon *w) {
   if ((w->s).mode[1] == 0) {
     if (buster_08037f78(w, &sFullBulletSize)) {
       const motion_t *m = sFullBulletMotions;
-      struct Weapon_b4 *b4 = &w->unk_b4;
-      SetMotion(&w->s, m[(b4->props)[1][1]]);
+      struct Buster_b4 *b4 = &PROP;
+      SetMotion(&w->s, m[b4->element]);
       (w->s).mode[1]++;
     }
   } else {
@@ -1489,7 +1491,7 @@ _08037E44: .4byte gWeaponFnTable\n\
 }
 
 static void BlizzardArrow_Update(struct Weapon *w) {
-  struct Zero *z = (w->unk_b4).z;
+  struct Zero *z = PROP.z;
   switch ((w->s).mode[1]) {
     case 0: {
       if ((w->s).motion.state == MOTION_NEXT) {
@@ -1800,82 +1802,106 @@ const u8 u8_ARRAY_0835ee9e[4] = {
     3,
 };
 
-static const struct Collision gLemonBulletCollisions[2] = {
-    {0, 0, 1, 2, 0, 0, 0, 0, 0, 0, 0, 1, 1, {0, 0, 0x800, 0x800}},
-    {1, 0, 1, 0, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0, 0, 0, 0, {0, 0, 0x800, 0x800}},
-};
-
-const struct Collision gSemiBulletCollisions[2] = {
-    {0, 0, 1, 4, 0, 0, 1, 1, 0, 0, 0, 1, 0x80000000, {0x200, 0, 0x1200, 0x1000}},
-    {1, 0, 1, 0, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0, 0, 0, 0, {0x200, 0, 0x1200, 0x1000}},
-};
-
-const struct Collision gFullBulletCollisions[2] = {
+static const struct Collision sLemonBulletCollisions[2] = {
     {
       kind : DDP,
       faction : FACTION_ALLY,
-      special : 1,
-      damage : 8,
-      unk_04 : 0,
-      element : 0,
-      nature : 2,
-      comboLv : 1,
-      hitzone : 0,
-      hardness : 0,
-      unk_0a : 0,
+      special : HALFABLE,
+      damage : 2,
+      comboLv : 0,
       remaining : 1,
-      unk_0c : 2,
-      range : {0x600, 0x0, 0x1800, 0x1400},
+      layer : 0x00000001,
+      range : {PIXEL(0), PIXEL(0), PIXEL(8), PIXEL(8)},
     },
     {
       kind : DRP,
       faction : FACTION_ALLY,
-      special : 1,
+      special : HALFABLE,
       damage : 0,
-      unk_04 : 0xFF,
+      atkType : 0xFF,
       element : 0xFF,
       nature : 0xFF,
-      comboLv : 0xFF,
-      hitzone : 0xFF,
-      hardness : 0,
-      unk_0a : 0,
+      comboLv : 255,
+      hitzone : 255,
       remaining : 0,
-      unk_0c : 0,
-      range : {0x600, 0x0, 0x1800, 0x1400},
+      range : {PIXEL(0), PIXEL(0), PIXEL(8), PIXEL(8)},
     },
 };
 
-const struct Collision gLaserShotCollisions[2] = {
+static const struct Collision sSemiBulletCollisions[2] = {
     {
       kind : DDP,
       faction : FACTION_ALLY,
-      special : 1,
-      damage : 8,
-      unk_04 : 4,
-      element : 0,
-      nature : 2,
+      special : HALFABLE,
+      damage : 4,
+      nature : BODY_NATURE_B0,
       comboLv : 1,
-      hitzone : 0,
-      hardness : 0,
-      unk_0a : 0,
       remaining : 1,
-      unk_0c : 0x10000,
+      layer : 0x80000000,
+      range : {PIXEL(2), PIXEL(0), PIXEL(18), PIXEL(16)},
+    },
+    {
+      kind : DRP,
+      faction : FACTION_ALLY,
+      special : HALFABLE,
+      damage : 0,
+      atkType : 0xFF,
+      element : 0xFF,
+      nature : 0xFF,
+      comboLv : 255,
+      hitzone : 255,
+      remaining : 0,
+      range : {PIXEL(2), PIXEL(0), PIXEL(18), PIXEL(16)},
+    },
+};
+
+static const struct Collision sFullBulletCollisions[2] = {
+    {
+      kind : DDP,
+      faction : FACTION_ALLY,
+      special : HALFABLE,
+      damage : 8,
+      nature : ELEMENT_ENCHANTABLE,
+      comboLv : 1,
+      remaining : 1,
+      layer : 2,
+      range : {PIXEL(6), PIXEL(0), PIXEL(24), PIXEL(20)},
+    },
+    {
+      kind : DRP,
+      faction : FACTION_ALLY,
+      special : HALFABLE,
+      damage : 0,
+      LAYER(0xFFFFFFFF),
+      hitzone : 0xFF,
+      remaining : 0,
+      layer : 0,
+      range : {PIXEL(6), PIXEL(0), PIXEL(24), PIXEL(20)},
+    },
+};
+
+static const struct Collision sLaserShotCollisions[2] = {
+    {
+      kind : DDP,
+      faction : FACTION_ALLY,
+      special : HALFABLE,
+      damage : 8,
+      atkType : ATK_UNK4,
+      nature : ELEMENT_ENCHANTABLE,
+      comboLv : 1,
+      remaining : 1,
+      layer : 0x10000,
       range : {0x0, 0x0, 0x1000, 0x1000},
     },
     {
       kind : DRP,
       faction : FACTION_ALLY,
-      special : 1,
+      special : HALFABLE,
       damage : 0,
-      unk_04 : 0xFF,
-      element : 0xFF,
-      nature : 0xFF,
-      comboLv : 0xFF,
+      LAYER(0xFFFFFFFF),
       hitzone : 0xFF,
-      hardness : 0,
-      unk_0a : 0,
       remaining : 0,
-      unk_0c : 0,
+      layer : 0,
       range : {0x0, 0x0, 0x1000, 0x1000},
     },
 };
@@ -1884,33 +1910,24 @@ const struct Collision gBurstShotCollisions[2] = {
     {
       kind : DDP,
       faction : FACTION_ALLY,
-      special : 1,
+      special : HALFABLE,
       damage : 8,
-      unk_04 : 6,
-      element : 0,
-      nature : 2,
+      atkType : 6,
+      nature : ELEMENT_ENCHANTABLE,
       comboLv : 1,
-      hitzone : 0,
-      hardness : 0,
-      unk_0a : 0,
       remaining : 1,
-      unk_0c : 8,
+      layer : 8,
       range : {0x0, 0x0, 0x1000, 0x1000},
     },
     {
       kind : DRP,
       faction : FACTION_ALLY,
-      special : 1,
+      special : HALFABLE,
       damage : 0,
-      unk_04 : 0xFF,
-      element : 0xFF,
-      nature : 0xFF,
-      comboLv : 0xFF,
+      LAYER(0xFFFFFFFF),
       hitzone : 0xFF,
-      hardness : 0,
-      unk_0a : 0,
       remaining : 0,
-      unk_0c : 0,
+      layer : 0,
       range : {0x0, 0x0, 0x1000, 0x1000},
     },
 };
@@ -1919,33 +1936,23 @@ const struct Collision gBlizzardArrowCollisions[2] = {
     {
       kind : DDP,
       faction : FACTION_ALLY,
-      special : 1,
+      special : HALFABLE,
       damage : 8,
-      unk_04 : 7,
-      element : 0,
-      nature : 2,
+      atkType : 7,
+      nature : ELEMENT_ENCHANTABLE,
       comboLv : 1,
-      hitzone : 0,
-      hardness : 0,
-      unk_0a : 0,
       remaining : 1,
-      unk_0c : 0x10,
+      layer : 0x10,
       range : {0x0, 0x0, 0x1000, 0x1000},
     },
     {
       kind : DRP,
       faction : FACTION_ALLY,
-      special : 1,
+      special : HALFABLE,
       damage : 0,
-      unk_04 : 0xFF,
-      element : 0xFF,
-      nature : 0xFF,
-      comboLv : 0xFF,
+      LAYER(0xFFFFFFFF),
       hitzone : 0xFF,
-      hardness : 0,
-      unk_0a : 0,
       remaining : 0,
-      unk_0c : 0,
       range : {0x0, 0x0, 0x1000, 0x1000},
     },
 };
@@ -1954,33 +1961,22 @@ const struct Collision Hitbox_ARRAY_0835efc4[2] = {
     {
       kind : DDP,
       faction : FACTION_ALLY,
-      special : 1,
+      special : HALFABLE,
       damage : 8,
-      unk_04 : 0,
-      element : 0,
-      nature : 2,
+      nature : ELEMENT_ENCHANTABLE,
       comboLv : 1,
-      hitzone : 0,
-      hardness : 0,
-      unk_0a : 0,
       remaining : 1,
-      unk_0c : 2,
+      layer : 2,
       range : {0x600, 0x0, 0x1800, 0x1400},
     },
     {
       kind : DRP,
       faction : FACTION_ALLY,
-      special : 1,
+      special : HALFABLE,
       damage : 0,
-      unk_04 : 0xFF,
-      element : 0xFF,
-      nature : 0xFF,
-      comboLv : 0xFF,
+      LAYER(0xFFFFFFFF),
       hitzone : 0xFF,
-      hardness : 0,
-      unk_0a : 0,
       remaining : 0,
-      unk_0c : 0,
       range : {0x600, 0x0, 0x1800, 0x1400},
     },
 };
@@ -1995,3 +1991,5 @@ static const motion_t sFullBulletMotions[4] = {
     MOTION(0x8B, 0x00),
     MOTION(0x8C, 0x00),
 };
+
+#undef PROP

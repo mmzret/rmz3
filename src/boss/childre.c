@@ -1,16 +1,19 @@
 #include "boss.h"
 #include "collision.h"
-#include "entity.h"
 #include "global.h"
+#include "stagerun.h"
 
-void Childre_Init(struct Boss* p);
-void Childre_Main(struct Boss* p);
-void Childre_Die(struct Boss* p);
+static const u8 sInitModes[4];
+static const struct Collision sCollisions[16];
+
+static void Childre_Init(struct Boss* p);
+static void Childre_Update(struct Boss* p);
+static void Childre_Die(struct Boss* p);
 
 // clang-format off
 const BossRoutine gChildreRoutine = {
     [ENTITY_INIT] =      Childre_Init,
-    [ENTITY_UPDATE] =    Childre_Main,
+    [ENTITY_UPDATE] =    Childre_Update,
     [ENTITY_DIE] =       Childre_Die,
     [ENTITY_DISAPPEAR] = DeleteBoss,
     [ENTITY_EXIT] =      (BossFunc)DeleteEntity,
@@ -119,37 +122,89 @@ _080404D8:\n\
  .syntax divided\n");
 }
 
-INCASM("asm/boss/childre.inc");
+static void onCollision(struct Body* body, struct Coord* c1, struct Coord* c2) {
+  struct Zero* z = (struct Zero*)body->enemy->parent;
+  struct Boss* boss = (struct Boss*)body->parent;
+
+  if (body->hitboxFlags & BODY_STATUS_WHITE) {
+    (boss->props.childre).unk_c8.x = (z->s).coord.x;
+    (boss->props.childre).unk_c8.y = (z->s).coord.y;
+    (boss->props.childre).shouldTurnRight = (boss->s).coord.x < (z->s).coord.x;
+  }
+}
+
+static bool8 tryKillChildre(struct Boss* p) {
+  if ((((p->body).status & BODY_STATUS_DEAD) || ((p->body).hp == 0)) && !(gStageRun.missionStatus & MISSION_FAIL)) {
+    PlaySound(SE_CHILDRE_DEATH);
+    SET_BOSS_ROUTINE(p, ENTITY_DIE);
+    if ((p->body).status & BODY_STATUS_SLASHED) {
+      (p->s).mode[1] = 1;
+    } else {
+      (p->s).mode[1] = 0;
+    }
+    Childre_Die(p);
+    return TRUE;
+  }
+
+  return FALSE;
+}
+
+// --------------------------------------------
+
+static void Childre_Init(struct Boss* p) {
+  struct Body* body;
+  s32 y;
+  void* fn;
+
+  // TODO: Kill them all
+#if MODERN == 0
+  register u32 r0 asm("r0");
+  register u8 r1 asm("r1");
+  register u8* r2 asm("r2");
+#endif
+
+  SET_BOSS_ROUTINE(p, ENTITY_UPDATE);
+  (p->s).mode[1] = sInitModes[(p->s).work[0]];
+  (p->s).flags |= FLIPABLE;
+  (p->s).flags |= DISPLAY;
+  InitNonAffineMotion(&p->s);
+  ResetDynamicMotion(&p->s);
+
+  ResetBossBody(p, &sCollisions[0], 64);
+  fn = onCollision;
+  body = &p->body;
+  body->fn = fn;
+
+  if ((p->s).work[0] == 0) {
+    LOAD_STATIC_GRAPHIC(SM036_UNK);
+    LOAD_STATIC_GRAPHIC(SM037_EAR_SHOT);
+    LOAD_STATIC_GRAPHIC(SM038_UNK);
+    ((p->props).childre).unk_b4 = NULL;
+
+    y = FUN_08009f6c((p->s).coord.x, (p->s).coord.y);
+    (p->s).coord.y = y;
+    ((p->props).childre).unk_bc.y = y;
+
+    ((p->props).childre).unk_bc.x = (((p->s).coord.x / PIXEL(240)) * PIXEL(240)) + PIXEL(120);
+
+#if MODERN
+    ((p->props).childre).unk_c4 = 0xFF;
+#else
+    r2 = &((p->props).childre).unk_c4;
+    r0 = *r2;
+    r1 = 0xFF;
+    r0 |= r1;
+    *r2 = r0;
+#endif
+    ((p->props).childre).unk_c5 = 0;
+  }
+  Childre_Update(p);
+}
 
 // --------------------------------------------
 
 void childreNeutral(struct Boss* p);
-void nop_08040788(struct Boss* p);
-
-// clang-format off
-const BossFunc sChildreUpdates1[19] = {
-    childreNeutral,
-    nop_08040788,
-    childreNeutral,
-    childreNeutral,
-    childreNeutral,
-    childreNeutral,
-    childreNeutral,
-    childreNeutral,
-    childreNeutral,
-    childreNeutral,
-    childreNeutral,
-    childreNeutral,
-    childreNeutral,
-    childreNeutral,
-    childreNeutral,
-    childreNeutral,
-    nop_08040788,
-    nop_08040788,
-    nop_08040788,
-};
-// clang-format on
-// --------------------------------------------
+static void nop_08040788(struct Boss* p);
 
 void childreMode0(struct Boss* p);
 void childreMode1(struct Boss* p);
@@ -171,295 +226,295 @@ void childreMode16(struct Boss* p);
 void childreStun(struct Boss* p);
 void childreMode18(struct Boss* p);
 
-// clang-format off
-const BossFunc sChildreUpdates2[19] = {
-    childreMode0,
-    childreMode1,
-    childreMode2,
-    childreMode3,
-    childreStartRising,
-    childreRising,
-    childreMode6,
-    childreMode7,
-    childreMode8,
-    childreStartScrewIce,
-    childreMaybeMiddleScrewIce,
-    childreScrewIce,
-    childreMissile,
-    childreStartEarShot,
-    childreEarShot,
-    childreEndEarShot,
-    childreMode16,
-    childreStun,
-    childreMode18,
-};
-// clang-format on
+static void Childre_Update(struct Boss* p) {
+  // clang-format off
+  static const BossFunc sUpdates1[19] = {
+      childreNeutral,
+      nop_08040788,
+      childreNeutral,
+      childreNeutral,
+      childreNeutral,
+      childreNeutral,
+      childreNeutral,
+      childreNeutral,
+      childreNeutral,
+      childreNeutral,
+      childreNeutral,
+      childreNeutral,
+      childreNeutral,
+      childreNeutral,
+      childreNeutral,
+      childreNeutral,
+      nop_08040788,
+      nop_08040788,
+      nop_08040788,
+  };
+  // clang-format on
+
+  // clang-format off
+  static const BossFunc sUpdates2[19] = {
+      childreMode0,
+      childreMode1,
+      childreMode2,
+      childreMode3,
+      childreStartRising,
+      childreRising,
+      childreMode6,
+      childreMode7,
+      childreMode8,
+      childreStartScrewIce,
+      childreMaybeMiddleScrewIce,
+      childreScrewIce,
+      childreMissile,
+      childreStartEarShot,
+      childreEarShot,
+      childreEndEarShot,
+      childreMode16,
+      childreStun,
+      childreMode18,
+  };
+  // clang-format on
+
+  bool8 killed;
+
+  struct Entity* e = ((p->props).childre).unk_b4;
+  if ((e != NULL) && isKilled(e)) {
+    ((p->props).childre).unk_b4 = NULL;
+  }
+
+  killed = tryKillChildre(p);
+  if (!killed) {
+    (sUpdates1[(p->s).mode[1]])(p);
+    (sUpdates2[(p->s).mode[1]])(p);
+  }
+}
 
 // --------------------------------------------
 
 void childre_08042140(struct Boss* p);
 void childre_08042224(struct Boss* p);
 
-const BossFunc sChildreDeathSeq[2] = {
-    childre_08042140,
-    childre_08042224,
-};
+static void Childre_Die(struct Boss* p) {
+  static const BossFunc sDeads[2] = {
+      childre_08042140,
+      childre_08042224,
+  };
+  (sDeads[(p->s).mode[1]])(p);
+}
 
-const struct Collision sChildreCollisions[16] = {
+// --------------------------------------------
+
+static void nop_08040788(struct Boss* p) {
+  // nop
+  return;
+}
+
+INCASM("asm/boss/childre.inc");
+
+// --------------------------------------------
+
+static const struct Collision sCollisions[16] = {
     [0] = {
       kind : DRP,
       faction : FACTION_ENEMY,
-      special : 2,
+      special : CS_BOSS,
       damage : 0,
-      unk_04 : 0xFF,
-      element : 0xFF,
-      nature : 0xFF,
-      comboLv : 0xFF,
+      LAYER(0xFFFFFFFF),
       hitzone : 0x00,
-      hardness : 0x08,
-      unk_0a : 0x00,
+      hardness : HARDNESS_B3,
       remaining : 0,
-      unk_0c : 0x00000000,
       range : {0x0000, 0x0000, 0x0800, 0x0800},
     },
     [1] = {
       kind : DDP,
       faction : FACTION_ENEMY,
-      special : 2,
+      special : CS_BOSS,
       damage : 3,
-      unk_04 : 0x00,
+      atkType : 0x00,
       element : 0x00,
       nature : 0x00,
       comboLv : 0x00,
       hitzone : 0x00,
-      hardness : 0x00,
-      unk_0a : 0x00,
       remaining : 1,
-      unk_0c : 0x00000001,
+      layer : 0x00000001,
       range : {0x0000, -0x0D00, 0x1400, 0x1A00},
     },
     [2] = {
       kind : DRP,
       faction : FACTION_ENEMY,
-      special : 2,
+      special : CS_BOSS,
       damage : 0,
-      unk_04 : 0xFF,
-      element : 0xFF,
-      nature : 0xFF,
-      comboLv : 0xFF,
+      LAYER(0xFFFFFFFF),
       hitzone : 0x08,
-      hardness : 0x08,
-      unk_0a : 0x00,
+      hardness : HARDNESS_B3,
       remaining : 0,
-      unk_0c : 0x00000000,
       range : {0x0000, -0x0D00, 0x1400, 0x1A00},
     },
     [3] = {
       kind : DDP,
       faction : FACTION_ENEMY,
-      special : 2,
+      special : CS_BOSS,
       damage : 3,
-      unk_04 : 0x00,
+      atkType : 0x00,
       element : 0x00,
       nature : 0x00,
       comboLv : 0x00,
       hitzone : 0x00,
-      hardness : 0x00,
-      unk_0a : 0x00,
       remaining : 1,
-      unk_0c : 0x00000001,
+      layer : 0x00000001,
       range : {0x0000, 0x0000, 0x1300, 0x1500},
     },
     [4] = {
       kind : DRP,
       faction : FACTION_ENEMY,
-      special : 2,
+      special : CS_BOSS,
       damage : 0,
-      unk_04 : 0xFF,
-      element : 0xFF,
-      nature : 0xFF,
-      comboLv : 0xFF,
+      LAYER(0xFFFFFFFF),
       hitzone : 0x08,
-      hardness : 0x08,
-      unk_0a : 0x00,
+      hardness : HARDNESS_B3,
       remaining : 0,
-      unk_0c : 0x00000000,
       range : {0x0000, 0x0000, 0x1300, 0x1500},
     },
     [5] = {
       kind : DDP,
       faction : FACTION_ENEMY,
-      special : 2,
+      special : CS_BOSS,
       damage : 4,
-      unk_04 : 0x00,
+      atkType : 0x00,
       element : 0x00,
       nature : 0x00,
       comboLv : 0x00,
       hitzone : 0x00,
-      hardness : 0x00,
-      unk_0a : 0x00,
       remaining : 1,
-      unk_0c : 0x00000001,
+      layer : 0x00000001,
       range : {0x0000, -0x1200, 0x1000, 0x3800},
     },
     [6] = {
       kind : DRP,
       faction : FACTION_ENEMY,
-      special : 2,
+      special : CS_BOSS,
       damage : 0,
-      unk_04 : 0xFF,
-      element : 0xFF,
-      nature : 0xFF,
-      comboLv : 0xFF,
+      LAYER(0xFFFFFFFF),
       hitzone : 0x08,
-      hardness : 0x08,
-      unk_0a : 0x00,
+      hardness : HARDNESS_B3,
       remaining : 0,
-      unk_0c : 0x00000000,
       range : {0x0000, -0x2600, 0x1200, 0x1800},
     },
     [7] = {
       kind : DDP,
       faction : FACTION_ENEMY,
-      special : 2,
+      special : CS_BOSS,
       damage : 3,
-      unk_04 : 0x00,
+      atkType : 0x00,
       element : 0x00,
       nature : 0x00,
       comboLv : 0x00,
       hitzone : 0x00,
-      hardness : 0x00,
-      unk_0a : 0x00,
       remaining : 1,
-      unk_0c : 0x00000001,
+      layer : 0x00000001,
       range : {0x0000, -0x1200, 0x1000, 0x3800},
     },
     [8] = {
       kind : DRP,
       faction : FACTION_ENEMY,
-      special : 2,
+      special : CS_BOSS,
       damage : 0,
-      unk_04 : 0xFF,
-      element : 0xFF,
-      nature : 0xFF,
-      comboLv : 0xFF,
+      LAYER(0xFFFFFFFF),
       hitzone : 0x08,
-      hardness : 0x08,
-      unk_0a : 0x00,
+      hardness : HARDNESS_B3,
       remaining : 0,
-      unk_0c : 0x00000000,
       range : {0x0000, -0x2600, 0x1200, 0x1800},
     },
     [9] = {
       kind : DDP,
       faction : FACTION_ENEMY,
-      special : 2,
+      special : CS_BOSS,
       damage : 3,
-      unk_04 : 0x00,
+      atkType : 0x00,
       element : 0x00,
       nature : 0x00,
       comboLv : 0x00,
       hitzone : 0x00,
-      hardness : 0x00,
-      unk_0a : 0x00,
       remaining : 2,
-      unk_0c : 0x00000001,
+      layer : 0x00000001,
       range : {0x0000, -0x0D00, 0x1400, 0x1A00},
     },
     [10] = {
       kind : DDP,
       faction : FACTION_ENEMY,
-      special : 2,
+      special : CS_BOSS,
       damage : 3,
-      unk_04 : 0x00,
+      atkType : 0x00,
       element : 0x00,
       nature : 0x00,
       comboLv : 0x00,
       hitzone : 0x00,
-      hardness : 0x00,
-      unk_0a : 0x00,
       remaining : 1,
-      unk_0c : 0x00000001,
+      layer : 0x00000001,
       range : {-0x1000, -0x0E00, 0x3000, 0x0E00},
     },
     [11] = {
       kind : DRP,
       faction : FACTION_ENEMY,
-      special : 2,
+      special : CS_BOSS,
       damage : 0,
-      unk_04 : 0xFF,
-      element : 0xFF,
-      nature : 0xFF,
-      comboLv : 0xFF,
+      LAYER(0xFFFFFFFF),
       hitzone : 0x08,
-      hardness : 0x08,
-      unk_0a : 0x00,
+      hardness : HARDNESS_B3,
       remaining : 0,
-      unk_0c : 0x00000000,
       range : {0x0000, -0x0D00, 0x1400, 0x1A00},
     },
     [12] = {
       kind : DDP,
       faction : FACTION_ENEMY,
-      special : 2,
+      special : CS_BOSS,
       damage : 3,
-      unk_04 : 0x00,
+      atkType : 0x00,
       element : 0x00,
       nature : 0x00,
       comboLv : 0x00,
       hitzone : 0x00,
-      hardness : 0x00,
-      unk_0a : 0x00,
       remaining : 3,
-      unk_0c : 0x00000001,
+      layer : 0x00000001,
       range : {0x0000, -0x0D00, 0x1400, 0x1A00},
     },
     [13] = {
       kind : DDP,
       faction : FACTION_ENEMY,
-      special : 2,
+      special : CS_BOSS,
       damage : 3,
-      unk_04 : 0x00,
+      atkType : 0x00,
       element : 0x00,
       nature : 0x00,
       comboLv : 0x00,
       hitzone : 0x00,
-      hardness : 0x00,
-      unk_0a : 0x00,
       remaining : 2,
-      unk_0c : 0x00000001,
+      layer : 0x00000001,
       range : {-0x2200, -0x0B00, 0x5200, 0x0E00},
     },
     [14] = {
       kind : DDP,
       faction : FACTION_ENEMY,
-      special : 2,
+      special : CS_BOSS,
       damage : 3,
-      unk_04 : 0x00,
+      atkType : 0x00,
       element : 0x00,
       nature : 0x00,
       comboLv : 0x00,
       hitzone : 0x00,
-      hardness : 0x00,
-      unk_0a : 0x00,
       remaining : 1,
-      unk_0c : 0x00000001,
+      layer : 0x00000001,
       range : {-0x0E00, -0x0C00, 0x2B00, 0x2200},
     },
     [15] = {
       kind : DRP,
       faction : FACTION_ENEMY,
-      special : 2,
+      special : CS_BOSS,
       damage : 0,
-      unk_04 : 0xFF,
-      element : 0xFF,
-      nature : 0xFF,
-      comboLv : 0xFF,
+      LAYER(0xFFFFFFFF),
       hitzone : 0x08,
-      hardness : 0x08,
-      unk_0a : 0x00,
+      hardness : HARDNESS_B3,
       remaining : 0,
-      unk_0c : 0x00000000,
       range : {0x0000, -0x0D00, 0x1400, 0x1A00},
     },
 };
@@ -471,7 +526,8 @@ const u8 u8_ARRAY_ARRAY_0836202c[3][16] = {
 };
 
 const u8 u8_ARRAY_0836205c[4] = {2, 2, 12, 13};
-const u8 u8_ARRAY_08362060[4] = {1, 16, 0, 0};
+
+static const u8 sInitModes[4] = {1, 16, 0, 0};
 
 const struct Coord Coord_08362064 = {0, -0x1000};
 

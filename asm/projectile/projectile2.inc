@@ -456,8 +456,8 @@ _080AF0F4:
 	bx r0
 	.align 2, 0
 
-	thumb_func_start FUN_080af0fc
-FUN_080af0fc: @ 0x080AF0FC
+	thumb_func_start PhantomProjectile_Init
+PhantomProjectile_Init: @ 0x080AF0FC
 	push {lr}
 	ldr r2, _080AF110 @ =0x0836D3E8
 	ldrb r1, [r0, #0x10]
@@ -540,7 +540,7 @@ _080AF15C:
 	adds r0, r4, #0
 	bl SetMotion
 	adds r0, r4, #0
-	bl FUN_080af308
+	bl PhantomProjectile_Update
 _080AF1A2:
 	pop {r4}
 	pop {r0}
@@ -588,7 +588,7 @@ FUN_080af1b4: @ 0x080AF1B4
 	orrs r0, r1
 	strb r0, [r4, #0xa]
 	adds r0, r4, #0
-	bl FUN_080af308
+	bl PhantomProjectile_Update
 	pop {r4, r5, r6}
 	pop {r0}
 	bx r0
@@ -620,7 +620,7 @@ FUN_080af214: @ 0x080AF214
 	orrs r0, r1
 	strb r0, [r4, #0xa]
 	adds r0, r4, #0
-	bl FUN_080af308
+	bl PhantomProjectile_Update
 	pop {r4}
 	pop {r0}
 	bx r0
@@ -665,7 +665,7 @@ FUN_080af250: @ 0x080AF250
 	orrs r0, r1
 	strb r0, [r4, #0xa]
 	adds r0, r4, #0
-	bl FUN_080af308
+	bl PhantomProjectile_Update
 	pop {r4, r5, r6}
 	pop {r0}
 	bx r0
@@ -708,7 +708,7 @@ FUN_080af2b0: @ 0x080AF2B0
 	orrs r0, r1
 	strb r0, [r4, #0xa]
 	adds r0, r4, #0
-	bl FUN_080af308
+	bl PhantomProjectile_Update
 	pop {r4, r5, r6}
 	pop {r0}
 	bx r0
@@ -716,8 +716,8 @@ FUN_080af2b0: @ 0x080AF2B0
 _080AF300: .4byte 0x0836D3B8
 _080AF304: .4byte gProjectileFnTable
 
-	thumb_func_start FUN_080af308
-FUN_080af308: @ 0x080AF308
+	thumb_func_start PhantomProjectile_Update
+PhantomProjectile_Update: @ 0x080AF308
 	push {r4, lr}
 	adds r4, r0, #0
 	ldr r1, _080AF328 @ =0x0836D400
@@ -1286,7 +1286,7 @@ FUN_080af70c: @ 0x080AF70C
 	str r0, [r3, #0x14]
 	strb r2, [r3, #0xd]
 	adds r0, r3, #0
-	bl FUN_080af308
+	bl PhantomProjectile_Update
 	pop {r0}
 	bx r0
 	.align 2, 0
@@ -1844,8 +1844,8 @@ _080AFB5E:
 	.align 2, 0
 _080AFB64: .4byte gProjectileFnTable
 
-	thumb_func_start FUN_080afb68
-FUN_080afb68: @ 0x080AFB68
+	thumb_func_start PhantomProjectile_Die
+PhantomProjectile_Die: @ 0x080AFB68
 	push {r4, lr}
 	adds r4, r0, #0
 	ldr r1, _080AFBAC @ =gProjectileFnTable
@@ -2571,8 +2571,8 @@ _080B00D2:
 _080B00DC: .4byte gProjectileHeaderPtr
 _080B00E0: .4byte gProjectileFnTable
 
-	thumb_func_start FUN_080b00e4
-FUN_080b00e4: @ 0x080B00E4
+	thumb_func_start OmegaZXProjectile_Init
+OmegaZXProjectile_Init: @ 0x080B00E4
 	push {lr}
 	ldr r2, _080B0110 @ =gProjectileFnTable
 	ldrb r1, [r0, #9]
@@ -2590,14 +2590,14 @@ FUN_080b00e4: @ 0x080B00E4
 	strb r2, [r0, #0xf]
 	movs r1, #0xff
 	strb r1, [r0, #0x12]
-	bl omega2_080b0114
+	bl OmegaZXProjectile_Update
 	pop {r0}
 	bx r0
 	.align 2, 0
 _080B0110: .4byte gProjectileFnTable
 
-	thumb_func_start omega2_080b0114
-omega2_080b0114: @ 0x080B0114
+	thumb_func_start OmegaZXProjectile_Update
+OmegaZXProjectile_Update: @ 0x080B0114
 	push {lr}
 	ldr r2, _080B0128 @ =0x0836D468
 	ldrb r1, [r0, #0xd]
@@ -2610,8 +2610,8 @@ omega2_080b0114: @ 0x080B0114
 	.align 2, 0
 _080B0128: .4byte 0x0836D468
 
-	thumb_func_start FUN_080b012c
-FUN_080b012c: @ 0x080B012C
+	thumb_func_start OmegaZXProjectile_Die
+OmegaZXProjectile_Die: @ 0x080B012C
 	adds r2, r0, #0
 	ldrb r1, [r2, #0xa]
 	movs r0, #0xfe

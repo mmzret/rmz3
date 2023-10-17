@@ -28,7 +28,7 @@ const main = async () => {
       unk_02: [loadU8(rom, addr + 2, BASE), loadU8(rom, addr + 3, BASE)],
       c: [loadI16(rom, addr + 4, BASE), loadI16(rom, addr + 6, BASE)],
       d: [loadI16(rom, addr + 8, BASE), loadI16(rom, addr + 10, BASE)],
-      unk_0c: [loadI16(rom, addr + 12, BASE), loadI16(rom, addr + 14, BASE)],
+      unk_coord_0c: [loadI16(rom, addr + 12, BASE), loadI16(rom, addr + 14, BASE)],
       unk_10: [loadI16(rom, addr + 16, BASE), loadI16(rom, addr + 18, BASE)],
       unk_14: [loadU16(rom, addr + 20, BASE), loadU16(rom, addr + 22, BASE)],
       unk: [
@@ -43,7 +43,7 @@ const main = async () => {
     unk_02: {${slashedEnemy.unk_02[0]}, ${slashedEnemy.unk_02[1]}},
     c: {${toHex(slashedEnemy.c[0], 4, '0x')}, ${toHex(slashedEnemy.c[1], 4, '0x')}},
     d: {${toHex(slashedEnemy.d[0], 4, '0x')}, ${toHex(slashedEnemy.d[1], 4, '0x')}},
-    unk_0c: {${toHex(slashedEnemy.unk_0c[0], 4, '0x')}, ${toHex(slashedEnemy.unk_0c[1], 4, '0x')}},
+    unk_coord_0c: {${toHex(slashedEnemy.unk_coord_0c[0], 4, '0x')}, ${toHex(slashedEnemy.unk_coord_0c[1], 4, '0x')}},
     unk_10: {${toHex(slashedEnemy.unk_10[0], 4, '0x')}, ${toHex(slashedEnemy.unk_10[1], 4, '0x')}},
     unk_14: {${slashedEnemy.unk_14[0]}, ${slashedEnemy.unk_14[1]}},`);
     if (slashedEnemy.unk[0] !== 0 || slashedEnemy.unk[1] !== 0 || slashedEnemy.unk[2] !== 0 || slashedEnemy.unk[3] !== 0) {

@@ -3,6 +3,8 @@
 
 #include "entity/entity.h"
 
+struct Weapon;
+
 struct Weapon_b4 {
   struct Zero *z;
   /*
@@ -32,14 +34,64 @@ struct Rod_b4 {
 struct Buster_b4 {
   struct Zero *z;
   struct Coord c;
+  u8 unk_c0;
+  u8 element;
+  u8 unk_c2;
+  u8 unk_c3;
+  u8 unk_c4[40];
+};
+
+struct Saber_b4 {
+  struct Zero *z;
   u8 props[8];
-  u8 unk_c8[36];
+  u8 element;
+  u8 atk;
+  u8 nature;
+  bool8 unk;
+  u8 unk_c4[40];
+};
+
+// エルフで出せるやつ
+struct SaberWave_b4 {
+  struct Weapon *saber;  // projectile -> saber (if saber, this is null)
+  struct Zero *z;
+  u8 props[4];
+  u8 element;
+  u8 atk;
+  u8 flags;
+  bool8 unk;
+  u8 unk_c4[40];
+};
+
+struct SoulLauncherProps {
+  struct Zero *z;
+  u8 unk_b8[8];
+  u8 unk_c0;
+  u8 element;
+  u8 unk_c2[42];
+};
+
+// EXSkill (Ja: ザンエイダン)
+struct ThrowBladeProps {
+  struct Weapon *saber;
+  u8 unk_b8[8];
+  u8 element;
+  u8 unk_c1[43];
 };
 
 struct Weapon {
   struct Entity s;
   struct Body body;
-  struct Weapon_b4 unk_b4;
+  union {
+    u8 raw[56];
+    struct Weapon_b4 common;
+    struct Buster_b4 buster;
+    struct Saber_b4 saber;
+    struct SaberWave_b4 wave;  // Not EXSkill
+    struct ThrowBladeProps throw_blade;
+    struct SoulLauncherProps soul_launcher;
+    struct Rod_b4 rod;
+  } props;
 };  // 236 bytes
 
 typedef void (*WeaponFunc)(struct Weapon *);

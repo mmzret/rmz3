@@ -79,20 +79,16 @@ WIP static void updateSunkenLib(struct Coord* _ UNUSED) {
 #endif
 }
 
-WIP static void FUN_080136a0(struct Coord* _ UNUSED) {
-#if MODERN
+static void FUN_080136a0(struct Coord* _ UNUSED) {
   if ((TILESET_ID(0) == STAGE_SUNKEN_LIBRARY) && (TILESET_IDX(0) == 4)) {
     if (STAGE.unk_002 != 0) {
-      RequestGraphicTransfer(&(TILESETS(18, 72)[(STAGE.unk_002 << 1) + (STAGE.unk_001 >> 2)]).g, (void*)0x4000);
-      LoadPalette(&(TILESETS(18, 72)[(STAGE.unk_002 << 1) + (STAGE.unk_001 >> 2)]).pal, 0);
+      RequestGraphicTransfer(&(TILESETS(18, 0)[72 + (STAGE.unk_002 << 1) + (STAGE.unk_001 >> 2)]).g, (void*)0x4000);
+      LoadPalette(&(TILESETS(18, 0)[72 + (STAGE.unk_002 << 1) + (STAGE.unk_001 >> 2)]).pal, 0);
     } else {
-      RequestGraphicTransfer(&(TILESETS(18, 72)[(STAGE.unk_001 >> 2) & 1]).g, (void*)0x4000);
-      LoadPalette(&(TILESETS(18, 72)[(STAGE.unk_001 >> 2) & 1]).pal, 0);
+      RequestGraphicTransfer(&(TILESETS(18, 0)[72 + ((STAGE.unk_001 >> 2) & 1)]).g, (void*)0x4000);
+      LoadPalette(&(TILESETS(18, 0)[72 + ((STAGE.unk_001 >> 2) & 1)]).pal, 0);
     }
   }
-#else
-  INCCODE("asm/wip/FUN_080136a0.inc");
-#endif
 }
 
 static void exitSunkenLibrary(struct Coord* _ UNUSED) {
@@ -108,8 +104,8 @@ static void exitSunkenLibrary(struct Coord* _ UNUSED) {
 // ------------------------------------------------------------------------------------------------------------------------------------
 
 static void LayerUpdate_2(struct StageLayer* l, const struct Stage* _ UNUSED);
-void FUN_08013898(struct StageLayer* l, const struct Stage* stage);
-void FUN_08013908(struct StageLayer* l, const struct Stage* stage);
+static void FUN_08013898(struct StageLayer* l, const struct Stage* _ UNUSED);
+static void FUN_08013908(struct StageLayer* l UNUSED, const struct Stage* _ UNUSED);
 void sunkenlib_08013930(struct StageLayer* l, const struct Stage* stage);
 void FUN_08013a98(struct StageLayer* l, const struct Stage* stage);
 void FUN_08013b10(struct StageLayer* l, const struct Stage* stage);
@@ -170,6 +166,31 @@ static void LayerUpdate_2(struct StageLayer* l, const struct Stage* _ UNUSED) {
     l->unk_10 = 0;
     l->phase++;
   }
+}
+
+static void FUN_08013898(struct StageLayer* l, const struct Stage* _ UNUSED) {
+  u16 n = l->bgIdx;
+  s32 deltaPixel = ((l->viewportCenterPixel).y - (SEA >> 8)) + 5;
+  if (deltaPixel > 255) {
+    deltaPixel = 255;
+  }
+  if (deltaPixel < -255) {
+    deltaPixel = -255;
+  }
+  if (deltaPixel < 0) {
+    gWindowRegBuffer.winV.half[1] = (-deltaPixel) & 0xFF;
+  } else {
+    gWindowRegBuffer.winV.half[1] = 0;
+  }
+
+  BGOFS(n >> 4)->x = (l->viewportCenterPixel).x;
+  gVideoRegBuffer.bgofs[n >> 4][1] = deltaPixel;
+}
+
+static void FUN_08013908(struct StageLayer* l UNUSED, const struct Stage* _ UNUSED) {
+  gBlendRegBuffer.bldclt = 0;
+  gWindowRegBuffer.dispcnt &= 0xBFFF;
+  gWindowRegBuffer.unk_0c[2] |= 0xE;
 }
 
 INCASM("asm/stage_gfx/sunken_library.inc");

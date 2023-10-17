@@ -1,3 +1,4 @@
+#include "blink.h"
 #include "boss.h"
 #include "collision.h"
 #include "global.h"
@@ -6,6 +7,8 @@
 #include "vfx.h"
 
 struct VFX* CreateVFX55(struct Boss* p, u8 r1, u8 r2);
+
+void copyx_08057744(struct Boss* p);
 
 static const struct Collision sCollisions[10];
 
@@ -413,202 +416,95 @@ void copyxMode36(struct Boss* p);
 void copyx_08057094(struct Boss* p);
 void copyxMode38(struct Boss* p);
 
-// clang-format off
-static const BossFunc sUpdates[39] = {
-    [0] =  copyx_080557a4,
-    [1] =  copyxMode1,
-    [2] =  copyxNeutral,
-    [3] =  copyxNextMode,
-    [4] =  copyxMode4,
-    [5] =  copyxMode5,
-    [6] =  copyxMode6,
-    [7] =  copyxMode7,
-    [8] =  copyxMode8,
-    [9] =  copyxMode9,
-    [10] = copyxMode10,
-    [11] = copyxMode11,
-    [12] = copyxMode12,
-    [13] = copyxJumpForNovaStrike,
-    [14] = copyxNovaStrike2,
-    [15] = copyxNovaStrike3,
-    [16] = copyxMode16,
-    [17] = copyxMode17,
-    [18] = copyxMode18,
-    [19] = copyxMode19,
-    [20] = copyx_08056508,
-    [21] = copyx_080565c0,
-    [22] = copyx_080566b0,
-    [23] = copyx_08056724,
-    [24] = copyx_08056794,
-    [25] = copyx_080568bc,
-    [26] = copyx_08056908,
-    [27] = FUN_080569a4,
-    [28] = copyx_080569e4,
-    [29] = FUN_08056a80,
-    [30] = copyx_08056ac0,
-    [31] = copyx_08056b6c,
-    [32] = copyx_08056bd0,
-    [33] = copyxKnockBackDamage,
-    [34] = FUN_08056d58,
-    [35] = copyxRaisingExcharge,
-    [36] = copyxMode36,
-    [37] = copyx_08057094,
-    [38] = copyxMode38,
-};
-// clang-format on
+static void CopyX_Update(struct Boss* p) {
+  // clang-format off
+  static const BossFunc sUpdates[39] = {
+      [0] =  copyx_080557a4,
+      [1] =  copyxMode1,
+      [2] =  copyxNeutral,
+      [3] =  copyxNextMode,
+      [4] =  copyxMode4,
+      [5] =  copyxMode5,
+      [6] =  copyxMode6,
+      [7] =  copyxMode7,
+      [8] =  copyxMode8,
+      [9] =  copyxMode9,
+      [10] = copyxMode10,
+      [11] = copyxMode11,
+      [12] = copyxMode12,
+      [13] = copyxJumpForNovaStrike,
+      [14] = copyxNovaStrike2,
+      [15] = copyxNovaStrike3,
+      [16] = copyxMode16,
+      [17] = copyxMode17,
+      [18] = copyxMode18,
+      [19] = copyxMode19,
+      [20] = copyx_08056508,
+      [21] = copyx_080565c0,
+      [22] = copyx_080566b0,
+      [23] = copyx_08056724,
+      [24] = copyx_08056794,
+      [25] = copyx_080568bc,
+      [26] = copyx_08056908,
+      [27] = FUN_080569a4,
+      [28] = copyx_080569e4,
+      [29] = FUN_08056a80,
+      [30] = copyx_08056ac0,
+      [31] = copyx_08056b6c,
+      [32] = copyx_08056bd0,
+      [33] = copyxKnockBackDamage,
+      [34] = FUN_08056d58,
+      [35] = copyxRaisingExcharge,
+      [36] = copyxMode36,
+      [37] = copyx_08057094,
+      [38] = copyxMode38,
+  };
+  // clang-format on
 
-NAKED static void CopyX_Update(struct Boss* p) {
-  asm(".syntax unified\n\
-	push {r4, r5, r6, lr}\n\
-	adds r4, r0, #0\n\
-	adds r6, r4, #0\n\
-	adds r6, #0x8c\n\
-	ldr r0, [r6]\n\
-	movs r1, #0x80\n\
-	lsls r1, r1, #2\n\
-	ands r0, r1\n\
-	cmp r0, #0\n\
-	bne _08055670\n\
-	adds r0, r4, #0\n\
-	adds r0, #0xa4\n\
-	movs r1, #0\n\
-	ldrsh r0, [r0, r1]\n\
-	cmp r0, #0\n\
-	bne _080556D0\n\
-_08055670:\n\
-	ldr r0, _080556C8 @ =gStageRun\n\
-	ldrh r1, [r0, #8]\n\
-	movs r0, #8\n\
-	ands r0, r1\n\
-	lsls r0, r0, #0x10\n\
-	lsrs r5, r0, #0x10\n\
-	cmp r5, #0\n\
-	bne _080556D0\n\
-	movs r1, #0xa0\n\
-	lsls r1, r1, #2\n\
-	movs r0, #0x5c\n\
-	bl LoadBlink\n\
-	movs r0, #0x5c\n\
-	bl UpdateBlinkMotionState\n\
-	movs r0, #0x5c\n\
-	bl ClearBlink\n\
-	ldr r1, _080556CC @ =gBossFnTable\n\
-	ldrb r0, [r4, #9]\n\
-	lsls r0, r0, #2\n\
-	adds r0, r0, r1\n\
-	movs r1, #2\n\
-	str r1, [r4, #0xc]\n\
-	ldr r0, [r0]\n\
-	ldr r0, [r0, #8]\n\
-	str r0, [r4, #0x14]\n\
-	movs r0, #1\n\
-	strb r0, [r4, #0xe]\n\
-	str r5, [r6]\n\
-	adds r0, r4, #0\n\
-	adds r0, #0x90\n\
-	str r5, [r0]\n\
-	adds r0, #4\n\
-	strb r5, [r0]\n\
-	ldrb r1, [r4, #0xa]\n\
-	movs r0, #0xfb\n\
-	ands r0, r1\n\
-	strb r0, [r4, #0xa]\n\
-	adds r0, r4, #0\n\
-	bl CopyX_Die\n\
-	b _08055774\n\
-	.align 2, 0\n\
-_080556C8: .4byte gStageRun\n\
-_080556CC: .4byte gBossFnTable\n\
-_080556D0:\n\
-	adds r0, r4, #0\n\
-	bl copyx_08057744\n\
-	ldrb r0, [r4, #0xd]\n\
-	cmp r0, #0x21\n\
-	beq _080556F4\n\
-	adds r0, r4, #0\n\
-	adds r0, #0xa4\n\
-	ldrb r0, [r0]\n\
-	subs r0, #0x10\n\
-	adds r1, r4, #0\n\
-	adds r1, #0xdd\n\
-	strb r0, [r1]\n\
-	lsls r0, r0, #0x18\n\
-	cmp r0, #0\n\
-	bge _080556F4\n\
-	movs r0, #0\n\
-	strb r0, [r1]\n\
-_080556F4:\n\
-	adds r0, r4, #0\n\
-	adds r0, #0x8c\n\
-	ldr r2, [r0]\n\
-	movs r3, #1\n\
-	adds r0, r2, #0\n\
-	ands r0, r3\n\
-	cmp r0, #0\n\
-	beq _0805573E\n\
-	adds r0, r4, #0\n\
-	adds r0, #0x97\n\
-	ldrb r1, [r0]\n\
-	movs r0, #0xf\n\
-	ands r0, r1\n\
-	cmp r0, #0\n\
-	bne _0805571C\n\
-	movs r0, #0xc0\n\
-	lsls r0, r0, #8\n\
-	ands r2, r0\n\
-	cmp r2, #0\n\
-	beq _0805573E\n\
-_0805571C:\n\
-	ldrb r1, [r4, #0xd]\n\
-	subs r0, r1, #5\n\
-	lsls r0, r0, #0x18\n\
-	lsrs r0, r0, #0x18\n\
-	cmp r0, #1\n\
-	bls _0805573E\n\
-	adds r0, r1, #0\n\
-	cmp r0, #9\n\
-	beq _0805573E\n\
-	cmp r0, #0xa\n\
-	beq _0805573E\n\
-	cmp r0, #0xb\n\
-	beq _0805573E\n\
-	movs r0, #0x21\n\
-	strb r0, [r4, #0xd]\n\
-	strb r3, [r4, #0xe]\n\
-	strb r0, [r4, #0xf]\n\
-_0805573E:\n\
-	ldr r1, _0805577C @ =sUpdates\n\
-	ldrb r0, [r4, #0xd]\n\
-	lsls r0, r0, #2\n\
-	adds r0, r0, r1\n\
-	ldr r1, [r0]\n\
-	adds r0, r4, #0\n\
-	bl _call_via_r1\n\
-	adds r5, r4, #0\n\
-	adds r5, #0xc5\n\
-	ldrb r0, [r5]\n\
-	adds r0, #0x5c\n\
-	movs r1, #0xa0\n\
-	lsls r1, r1, #2\n\
-	bl LoadBlink\n\
-	ldrb r0, [r5]\n\
-	adds r0, #0x5c\n\
-	bl UpdateBlinkMotionState\n\
-	ldrb r0, [r5]\n\
-	adds r0, #0x5c\n\
-	bl ClearBlink\n\
-	adds r0, r4, #0\n\
-	bl UpdateMotionGraphic\n\
-_08055774:\n\
-	pop {r4, r5, r6}\n\
-	pop {r0}\n\
-	bx r0\n\
-	.align 2, 0\n\
-_0805577C: .4byte sUpdates\n\
- .syntax divided\n");
+  if ((((p->body).status & BODY_STATUS_DEAD) || ((p->body).hp == 0)) && !(gStageRun.missionStatus & MISSION_FAIL)) {
+    LoadBlink(92, 640);
+    UpdateBlinkMotionState(92);
+    ClearBlink(92);
+    SET_BOSS_ROUTINE(p, ENTITY_DIE);
+    (p->s).mode[2] = 1;
+    (p->body).status = 0;
+    (p->body).prevStatus = 0;
+    (p->body).invincibleTime = 0;
+    (p->s).flags &= ~COLLIDABLE;
+    CopyX_Die(p);
+    return;
+  }
+
+  copyx_08057744(p);
+  if ((p->s).mode[1] != 33) {
+    ((p->props).copyx).unk_dd = (p->body).hp - 16;
+    if (((p->props).copyx).unk_dd < 0) {
+      ((p->props).copyx).unk_dd = 0;
+    }
+  }
+
+  // Check if Copy X is flinching
+  if (((p->body).status & BODY_STATUS_WHITE) && (((p->body).unk_23 != 0) || ((p->body).status & (BODY_STATUS_B14 | BODY_STATUS_B15)))) {
+    if ((u8)((p->s).mode[1] - 5) > 1) {
+      if ((p->s).mode[1] != 9) {
+        if ((p->s).mode[1] != 10) {
+          if ((p->s).mode[1] != 11) {
+            (p->s).mode[1] = 33;  // flinch(0x08056c14)
+            (p->s).mode[2] = 1;
+            (p->s).mode[3] = 33;
+          }
+        }
+      }
+    }
+  }
+
+  (sUpdates[(p->s).mode[1]])(p);
+  LoadBlink(92 + ((p->props).copyx).unk_c5, 640);
+  UpdateBlinkMotionState(92 + ((p->props).copyx).unk_c5);
+  ClearBlink(92 + ((p->props).copyx).unk_c5);
+  UpdateMotionGraphic(&p->s);
 }
 
-void copyx_08057744(struct Boss* p);
 void copyx_08057204(struct Boss* p);
 void copyx_08057418(struct Boss* p);
 void copyx_08057520(struct Boss* p);
@@ -665,161 +561,142 @@ static const struct Collision sCollisions[10] = {
     {
       kind : DDP,
       faction : FACTION_ENEMY,
-      special : 2,
+      special : CS_BOSS,
       damage : 2,
-      unk_04 : 0x00,
+      atkType : 0x00,
       element : 0x00,
       nature : 0x00,
       comboLv : 0,
       hitzone : 5,
-      hardness : 0x00,
-      unk_0a : 0x00,
       remaining : 1,
-      unk_0c : 0x00000001,
+      layer : 0x00000001,
       range : {PIXEL(0), -PIXEL(18), PIXEL(16), PIXEL(36)},
     },
     {
       kind : DRP,
       faction : FACTION_ENEMY,
-      special : 2,
+      special : CS_BOSS,
       damage : 2,
-      unk_04 : 0xFF,
+      atkType : 0xFF,
       element : 0xFF,
       nature : 0xFF,
       comboLv : 255,
       hitzone : 5,
-      hardness : 0x00,
-      unk_0a : 0x00,
       remaining : 0,
-      unk_0c : 0x00000000,
       range : {PIXEL(0), -PIXEL(18), PIXEL(16), PIXEL(36)},
     },
     {
       kind : DDP,
       faction : FACTION_ENEMY,
-      special : 2,
+      special : CS_BOSS,
       damage : 2,
-      unk_04 : 0x00,
+      atkType : 0x00,
       element : 0x00,
       nature : 0x00,
       comboLv : 0,
       hitzone : 5,
-      hardness : 0x00,
-      unk_0a : 0x00,
       remaining : 1,
-      unk_0c : 0x00000001,
+      layer : 0x00000001,
       range : {PIXEL(12), -PIXEL(24), PIXEL(8), PIXEL(20)},
     },
     {
       kind : DRP,
       faction : FACTION_ENEMY,
-      special : 2,
+      special : CS_BOSS,
       damage : 2,
-      unk_04 : 0xFF,
+      atkType : 0xFF,
       element : 0xFF,
       nature : 0xFF,
       comboLv : 255,
       hitzone : 5,
-      hardness : 0x00,
-      unk_0a : 0x00,
       remaining : 0,
-      unk_0c : 0x00000000,
       range : {PIXEL(12), -PIXEL(24), PIXEL(8), PIXEL(20)},
     },
     {
       kind : DDP,
       faction : FACTION_ENEMY,
-      special : 2,
+      special : CS_BOSS,
       damage : 2,
-      unk_04 : 0x00,
+      atkType : 0x00,
       element : 0x00,
-      nature : 0x04,
+      nature : BODY_NATURE_B2,
       comboLv : 0,
       hitzone : 5,
-      hardness : 0x01,
-      unk_0a : 0x00,
+      hardness : METAL,
       remaining : 1,
-      unk_0c : 0x00000001,
+      layer : 0x00000001,
       range : {PIXEL(0), -PIXEL(18), PIXEL(16), PIXEL(36)},
     },
     {
       kind : DRP,
       faction : FACTION_ENEMY,
-      special : 2,
+      special : CS_BOSS,
       damage : 2,
-      unk_04 : 0xFF,
+      atkType : 0xFF,
       element : 0xFF,
       nature : 0xFF,
       comboLv : 255,
       hitzone : 5,
-      hardness : 0x01,
-      unk_0a : 0x00,
+      hardness : METAL,
       remaining : 0,
-      unk_0c : 0xFFFFFFFF,
+      layer : 0xFFFFFFFF,
       range : {PIXEL(0), -PIXEL(18), PIXEL(16), PIXEL(36)},
     },
     {
       kind : DDP,
       faction : FACTION_ENEMY,
-      special : 2,
+      special : CS_BOSS,
       damage : 2,
-      unk_04 : 0x00,
+      atkType : 0x00,
       element : 0x00,
-      nature : 0x04,
+      nature : BODY_NATURE_B2,
       comboLv : 0,
       hitzone : 5,
-      hardness : 0x01,
-      unk_0a : 0x00,
+      hardness : METAL,
       remaining : 1,
-      unk_0c : 0x00000001,
+      layer : 0x00000001,
       range : {PIXEL(12), -PIXEL(24), PIXEL(8), PIXEL(20)},
     },
     {
       kind : DRP,
       faction : FACTION_ENEMY,
-      special : 2,
+      special : CS_BOSS,
       damage : 2,
-      unk_04 : 0xFF,
+      atkType : 0xFF,
       element : 0xFF,
       nature : 0xFF,
       comboLv : 255,
       hitzone : 5,
-      hardness : 0x01,
-      unk_0a : 0x00,
+      hardness : METAL,
       remaining : 0,
-      unk_0c : 0xFFFFFFFF,
+      layer : 0xFFFFFFFF,
       range : {PIXEL(12), -PIXEL(24), PIXEL(8), PIXEL(20)},
     },
     {
       kind : DDP,
       faction : FACTION_ENEMY,
-      special : 2,
+      special : CS_BOSS,
       damage : 2,
-      unk_04 : 0x00,
+      atkType : 0x00,
       element : 0x00,
       nature : 0x00,
       comboLv : 0,
       hitzone : 5,
-      hardness : 0x00,
-      unk_0a : 0x00,
       remaining : 1,
-      unk_0c : 0x00000001,
+      layer : 0x00000001,
       range : {PIXEL(8), -PIXEL(8), PIXEL(8), PIXEL(16)},
     },
     {
       kind : DRP,
       faction : FACTION_ENEMY,
-      special : 2,
+      special : CS_BOSS,
       damage : 2,
-      unk_04 : 0xFF,
+      atkType : 0xFF,
       element : 0xFF,
       nature : 0xFF,
       comboLv : 255,
       hitzone : 5,
-      hardness : 0x00,
-      unk_0a : 0x00,
       remaining : 0,
-      unk_0c : 0x00000000,
       range : {PIXEL(8), -PIXEL(8), PIXEL(8), PIXEL(16)},
     },
 };

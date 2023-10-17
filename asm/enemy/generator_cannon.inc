@@ -4,60 +4,6 @@
 	
 	.text
 
-	thumb_func_start CreateGeneratorCannon
-CreateGeneratorCannon: @ 0x0808C388
-	push {r4, r5, r6, lr}
-	adds r5, r0, #0
-	adds r6, r1, #0
-	lsls r2, r2, #0x18
-	lsrs r4, r2, #0x18
-	ldr r0, _0808C3E0 @ =gZakoHeaderPtr
-	ldr r0, [r0]
-	bl AllocEntityFirst
-	adds r3, r0, #0
-	cmp r3, #0
-	beq _0808C3D8
-	adds r1, r3, #0
-	adds r1, #0x25
-	movs r2, #0
-	movs r0, #0x18
-	strb r0, [r1]
-	ldr r0, _0808C3E4 @ =gEnemyFnTable
-	movs r1, #0x36
-	strb r1, [r3, #9]
-	adds r0, #0xd8
-	ldr r0, [r0]
-	ldr r0, [r0]
-	str r0, [r3, #0x14]
-	movs r0, #0
-	strh r2, [r3, #0x20]
-	adds r1, r3, #0
-	adds r1, #0x22
-	strb r0, [r1]
-	ldrb r1, [r3, #0xb]
-	movs r0, #0x10
-	orrs r0, r1
-	strb r0, [r3, #0xb]
-	ldrb r0, [r3, #0x1c]
-	strb r0, [r3, #0x1d]
-	movs r0, #1
-	strb r0, [r3, #0x10]
-	strb r4, [r3, #0x12]
-	str r5, [r3, #0x54]
-	str r6, [r3, #0x58]
-_0808C3D8:
-	pop {r4, r5, r6}
-	pop {r0}
-	bx r0
-	.align 2, 0
-_0808C3E0: .4byte gZakoHeaderPtr
-_0808C3E4: .4byte gEnemyFnTable
-
-	thumb_func_start nop_0808c3e8
-nop_0808c3e8: @ 0x0808C3E8
-	bx lr
-	.align 2, 0
-
 	thumb_func_start FUN_0808c3ec
 FUN_0808c3ec: @ 0x0808C3EC
 	push {r4, lr}
@@ -350,7 +296,7 @@ _0808C620:
 	bl InitBody
 	str r6, [r4, #0x2c]
 	str r5, [r4, #0x24]
-	ldr r0, _0808C63C @ =nop_0808c3e8
+	ldr r0, _0808C63C @ =onCollision
 	str r0, [r4, #0x24]
 	adds r0, r6, #0
 	bl GeneratorCannon_Update
@@ -359,7 +305,7 @@ _0808C620:
 	bx r0
 	.align 2, 0
 _0808C638: .4byte 0x08368F58
-_0808C63C: .4byte nop_0808c3e8
+_0808C63C: .4byte onCollision
 
 	thumb_func_start GeneratorCannon_Update
 GeneratorCannon_Update: @ 0x0808C640

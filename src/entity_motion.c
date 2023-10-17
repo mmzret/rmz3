@@ -93,7 +93,7 @@ void ResetDynamicMotion(struct Entity *p) {
   p->flags2 |= DYNAMIC;
 }
 
-WIP void SetMotion(struct Entity *p, motion_t m) {
+NON_MATCH void SetMotion(struct Entity *p, motion_t m) {
 #if MODERN
   motion_id_t id = (m >> 8) & 0xFF;
   if (id != p->motionID) {

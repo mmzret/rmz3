@@ -746,14 +746,8 @@ const motion_t gMapItemMotions[9] = {
 static const struct Collision sCollision = {
   kind : DDP,
   faction : FACTION_ENEMY,
-  special : 0,
   damage : 255,
-  unk_04 : 0x00,
-  element : 0x00,
-  nature : 0x00,
-  comboLv : 0,
-  unk_0a : 0x00,
   remaining : 0,
-  unk_0c : 0x00000001,
+  layer : 0x00000001,
   range : {PIXEL(0), -PIXEL(6), PIXEL(12), PIXEL(12)},
 };

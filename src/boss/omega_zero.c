@@ -160,7 +160,7 @@ NON_MATCH static void OmegaZero_Init(struct Boss *p) {
 // --------------------------------------------
 
 static void nop_0805d950(struct Boss *_);
-static void oz_0805d954(struct Boss *p);
+static void tryMakeFlinch(struct Boss *p);
 static void ozNeutral(struct Boss *p);
 static void ozMode1(struct Boss *p);
 static void ozDash(struct Boss *p);
@@ -180,7 +180,7 @@ static void rekkoha(struct Boss *p);
 static void charge_saber(struct Boss *p);
 static void arc_blade_1(struct Boss *p);
 static void arc_blade_2(struct Boss *p);
-static void ozMode19(struct Boss *p);
+static void flinched(struct Boss *p);
 static void ozRanbu1(struct Boss *p);
 static void ozRanbu2(struct Boss *p);
 static void ozRanbu3(struct Boss *p);
@@ -189,27 +189,27 @@ static void ozRanbu4(struct Boss *p);
 static void OmegaZero_Update(struct Boss *p) {
   // clang-format off
   static const BossFunc sUpdates1[24] = {
-      oz_0805d954,
+      tryMakeFlinch,
       nop_0805d950,
       nop_0805d950,
       nop_0805d950,
-      oz_0805d954,
-      nop_0805d950,
-      nop_0805d950,
-      nop_0805d950,
-      nop_0805d950,
-      nop_0805d950,
-      nop_0805d950,
-      nop_0805d950,
-      nop_0805d950,
-      oz_0805d954,
+      tryMakeFlinch,
       nop_0805d950,
       nop_0805d950,
       nop_0805d950,
       nop_0805d950,
       nop_0805d950,
       nop_0805d950,
-      oz_0805d954,
+      nop_0805d950,
+      nop_0805d950,
+      tryMakeFlinch,
+      nop_0805d950,
+      nop_0805d950,
+      nop_0805d950,
+      nop_0805d950,
+      nop_0805d950,
+      nop_0805d950,
+      tryMakeFlinch,
       nop_0805d950,
       nop_0805d950,
       nop_0805d950,
@@ -234,7 +234,7 @@ static void OmegaZero_Update(struct Boss *p) {
       charge_saber,
       arc_blade_1,
       arc_blade_2,
-      ozMode19,
+      flinched,
       ozRanbu1,
       ozRanbu2,
       ozRanbu3,
@@ -260,9 +260,13 @@ static void OmegaZero_Die(struct Boss *p) {
   return;
 }
 
-static void nop_0805d950(struct Boss *_) { return; }
+static void nop_0805d950(struct Boss *_) {
+  // nop
+  return;
+}
 
-static void oz_0805d954(struct Boss *p) {
+// 0x0805d954
+static void tryMakeFlinch(struct Boss *p) {
   if ((p->body).status & BODY_STATUS_WHITE) {
     (p->s).mode[1] = 19;
     (p->s).mode[2] = 0;
@@ -1811,8 +1815,8 @@ _0805E6C8: .4byte 0x00001901\n\
  .syntax divided\n");
 }
 
-// 01 13 xx --
-NAKED static void ozMode19(struct Boss *p) {
+// 0x0805e6cc
+NAKED static void flinched(struct Boss *p) {
   asm(".syntax unified\n\
 	push {r4, r5, lr}\n\
 	adds r4, r0, #0\n\
@@ -2544,16 +2548,11 @@ static const struct Collision sCollisions[6] = {
       faction : FACTION_ENEMY,
       special : 0,
       damage : 0,
-      unk_04 : 0xFF,
-      element : 0xFF,
-      nature : 0xFF,
-      comboLv : 0xFF,
+      LAYER(0xFFFFFFFF),
       hitzone : 0x00,
       hardness : HARDNESS_B3,
-      unk_0a : 0x00,
       remaining : 0,
-      unk_0c : 0x00000000,
-      range : {0x0000, 0x0000, 0x0800, 0x0800},
+      range : {PIXEL(0), PIXEL(0), PIXEL(8), PIXEL(8)},
     },
 
     // --------------------------------------------
@@ -2561,34 +2560,24 @@ static const struct Collision sCollisions[6] = {
     {
       kind : DDP,
       faction : FACTION_ENEMY,
-      special : 2,
+      special : CS_BOSS,
       damage : 3,
-      unk_04 : 0x00,
-      element : 0x00,
-      nature : 0x00,
+      atkType : 0x00,
       comboLv : 0x00,
-      hitzone : 0x00,
-      hardness : 0x00,
-      unk_0a : 0x00,
       remaining : 1,
-      unk_0c : 0x00000001,
-      range : {-0x0100, -0x0E00, 0x1000, 0x1E00},
+      layer : 0x00000001,
+      range : {-PIXEL(1), -PIXEL(14), PIXEL(16), PIXEL(30)},
     },
     {
       kind : DRP,
       faction : FACTION_ENEMY,
-      special : 2,
+      special : CS_BOSS,
       damage : 0,
-      unk_04 : 0xFF,
-      element : 0xFF,
-      nature : 0xFF,
-      comboLv : 0xFF,
-      hitzone : 0x05,
+      LAYER(0xFFFFFFFF),
+      hitzone : 5,
       hardness : HARDNESS_B3,
-      unk_0a : 0x00,
       remaining : 0,
-      unk_0c : 0x00000000,
-      range : {-0x0100, -0x0E00, 0x1000, 0x1E00},
+      range : {-PIXEL(1), -PIXEL(14), PIXEL(16), PIXEL(30)},
     },
 
     // --------------------------------------------
@@ -2596,34 +2585,24 @@ static const struct Collision sCollisions[6] = {
     {
       kind : DDP,
       faction : FACTION_ENEMY,
-      special : 2,
+      special : CS_BOSS,
       damage : 3,
-      unk_04 : 0x00,
-      element : 0x00,
-      nature : 0x00,
+      atkType : 0x00,
       comboLv : 0x00,
-      hitzone : 0x00,
-      hardness : 0x00,
-      unk_0a : 0x00,
       remaining : 1,
-      unk_0c : 0x00000001,
-      range : {-0x0200, -0x0A00, 0x1A00, 0x1600},
+      layer : 0x00000001,
+      range : {-PIXEL(2), -PIXEL(10), PIXEL(26), PIXEL(22)},
     },
     {
       kind : DRP,
       faction : FACTION_ENEMY,
-      special : 2,
+      special : CS_BOSS,
       damage : 0,
-      unk_04 : 0xFF,
-      element : 0xFF,
-      nature : 0xFF,
-      comboLv : 0xFF,
-      hitzone : 0x05,
+      LAYER(0xFFFFFFFF),
+      hitzone : 5,
       hardness : HARDNESS_B3,
-      unk_0a : 0x00,
       remaining : 0,
-      unk_0c : 0x00000000,
-      range : {-0x0200, -0x0A00, 0x1A00, 0x1600},
+      range : {-PIXEL(2), -PIXEL(10), PIXEL(26), PIXEL(22)},
     },
 
     // --------------------------------------------
@@ -2631,18 +2610,13 @@ static const struct Collision sCollisions[6] = {
     {
       kind : DDP,
       faction : FACTION_ENEMY,
-      special : 2,
+      special : CS_BOSS,
       damage : 3,
-      unk_04 : 0x00,
-      element : 0x00,
-      nature : 0x00,
+      atkType : 0x00,
       comboLv : 0x00,
-      hitzone : 0x00,
-      hardness : 0x00,
-      unk_0a : 0x00,
       remaining : 0,
-      unk_0c : 0x00000001,
-      range : {-0x0100, -0x0E00, 0x1000, 0x1E00},
+      layer : 0x00000001,
+      range : {-PIXEL(1), -PIXEL(14), PIXEL(16), PIXEL(30)},
     },
 };
 
@@ -2653,6 +2627,6 @@ static const u8 gOmegaZeroMode[48] = {
 static const u8 sInitModes[4] = {1, 0, 0, 0};
 
 static const struct Coord sExplosionCoords[2] = {
-    {0x0, -0x1C00},
-    {0x0, -0x1C00},
+    {PIXEL(0), -PIXEL(28)},
+    {PIXEL(0), -PIXEL(28)},
 };

@@ -20,19 +20,18 @@ const SolidRoutine gLavaRiverPlatformRoutine = {
 // clang-format on
 
 void CreateLavaRiverPlatform(u32 x, u32 y) {
-  struct Solid* s = (struct Solid*)AllocEntityLast(gSolidHeaderPtr);
-  if (s != NULL) {
-    (s->s).taskCol = 30;
-    INIT_SOLID_ROUTINE(s, SOLID_LAVA_RIVER_PLATFORM);
-    (s->s).tileNum = 0;
-    (s->s).palID = 0;
-    (s->s).flags2 |= WHITE_PAINTABLE;
-    (s->s).invincibleID = (s->s).uniqueID;
-    (s->s).work[0] = 0;
-    (s->s).coord.x = x;
-    (s->s).coord.y = y;
+  struct Solid* p = (struct Solid*)AllocEntityLast(gSolidHeaderPtr);
+  if (p != NULL) {
+    (p->s).taskCol = 30;
+    INIT_SOLID_ROUTINE(p, SOLID_LAVA_RIVER_PLATFORM);
+    (p->s).tileNum = 0;
+    (p->s).palID = 0;
+    (p->s).flags2 |= WHITE_PAINTABLE;
+    (p->s).invincibleID = (p->s).uniqueID;
+    (p->s).work[0] = 0;
+    (p->s).coord.x = x;
+    (p->s).coord.y = y;
   }
-  return;
 }
 
 // --------------------------------------------

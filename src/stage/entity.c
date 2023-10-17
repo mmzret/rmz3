@@ -1928,28 +1928,28 @@ WIP static void FUN_08018c00(u8 stageID, u8 area) {
 
 WIP static void FUN_08018d10(u8 stageID, u8 area) {
 #if MODERN
-  const struct PreloadEntity* t;
+  const struct PreloadEntity* preload;
 
-  for (t = sStagePreloadEntities[stageID]; t->id != 0xFF; t = &t[1]) {
-    if ((t->habitat >> area) & 1) {
+  for (preload = sStagePreloadEntities[stageID]; preload->id != 0xFF; preload = &preload[1]) {
+    if ((preload->habitat >> area) & 1) {
       u32 val, mask;
       if (gStageEntityManager.unk_226[1] != 0) {
-        val = t->unk_05;
+        val = preload->unk_05;
         mask = (1 << 1);
       } else {
-        val = t->unk_05;
+        val = preload->unk_05;
         mask = (1 << 0);
       }
       if (val & mask) {
-        if (t->unk_06 & (1 << 1)) {
-          if (t->unk_07 != 0) {
-            gStageEntityManager.unk_22a |= (1 << t->palID);
+        if (preload->unk_06 & (1 << 1)) {
+          if (preload->unk_07 != 0) {
+            gStageEntityManager.unk_22a |= (1 << preload->palID);
           } else {
-            gStageEntityManager.unk_22a &= ~(1 << t->palID);
+            gStageEntityManager.unk_22a &= ~(1 << preload->palID);
           }
-          wStaticGraphicTilenums[t->id] = t->tileBase;
-          wStaticMotionPalIDs[t->id] = t->palID;
-          LOAD_STATIC_GRAPHIC(t->id);
+          wStaticGraphicTilenums[preload->id] = preload->tileBase;
+          wStaticMotionPalIDs[preload->id] = preload->palID;
+          LOAD_STATIC_GRAPHIC(preload->id);
         }
       }
     }

@@ -1,11 +1,6 @@
 #include "collision.h"
-#include "entity.h"
 #include "global.h"
 #include "solid.h"
-
-INCASM("asm/solid/glacierle_arm.inc");
-
-// ------------------------------------------------------------------------------------------------------------------------------------
 
 void GlacierleArm_Init(struct Solid* p);
 void GlacierleArm_Update(struct Solid* p);
@@ -20,6 +15,44 @@ const SolidRoutine gGlacierleArmRoutine = {
     [ENTITY_EXIT] =      (SolidFunc)DeleteEntity,
 };
 // clang-format on
+
+void CreateSolidGlacierleArm(struct Boss* glacierle, s32 x, s32 y) {
+  struct Solid* p = (struct Solid*)AllocEntityLast(gSolidHeaderPtr);
+  if (p != NULL) {
+    (p->s).taskCol = 30;
+    INIT_SOLID_ROUTINE(p, SOLID_GLACIERLE_ARM);
+    (p->s).tileNum = 0;
+    (p->s).palID = 0;
+    (p->s).flags2 |= WHITE_PAINTABLE;
+    (p->s).invincibleID = (p->s).uniqueID;
+    (p->s).work[0] = 0;
+    (p->s).coord.x = x;
+    (p->s).coord.y = y;
+    (p->s).unk_28 = &glacierle->s;
+  }
+}
+
+void FUN_080ce8c4(u32 x, u32 y) {
+  struct Solid* p = (struct Solid*)AllocEntityLast(gSolidHeaderPtr);
+  if (p != NULL) {
+    (p->s).taskCol = 30;
+    INIT_SOLID_ROUTINE(p, SOLID_GLACIERLE_ARM);
+    (p->s).tileNum = 0;
+    (p->s).palID = 0;
+    (p->s).flags2 |= WHITE_PAINTABLE;
+    (p->s).invincibleID = (p->s).uniqueID;
+    (p->s).work[0] = 2;
+    (p->s).coord.x = x;
+    (p->s).coord.y = y;
+  }
+}
+
+static void onCollision(struct Body* body UNUSED, struct Coord* r1 UNUSED, struct Coord* r2 UNUSED) {
+  // NOP
+  return;
+}
+
+INCASM("asm/solid/glacierle_arm.inc");
 
 // --------------------------------------------
 
@@ -45,15 +78,10 @@ const struct Collision sGlacierleArmCollisions[21] = {
       faction : FACTION_ENEMY,
       special : 0,
       damage : 0,
-      unk_04 : 0xFF,
-      element : 0xFF,
-      nature : 0xFF,
-      comboLv : 0xFF,
+      LAYER(0xFFFFFFFF),
       hitzone : 0x00,
       hardness : HARDNESS_B3,
-      unk_0a : 0x00,
       remaining : 0,
-      unk_0c : 0x00000000,
       range : {0x0000, 0x0000, 0x0800, 0x0800},
     },
     [1] = {
@@ -61,15 +89,13 @@ const struct Collision sGlacierleArmCollisions[21] = {
       faction : FACTION_ENEMY,
       special : 0,
       damage : 3,
-      unk_04 : 0x00,
+      atkType : 0x00,
       element : 0x00,
       nature : 0x00,
       comboLv : 0x00,
       hitzone : 0x00,
-      hardness : 0x00,
-      unk_0a : 0x00,
       remaining : 1,
-      unk_0c : 0x00000001,
+      layer : 0x00000001,
       range : {0x0000, 0x0500, 0x1000, 0x0800},
     },
     [2] = {
@@ -77,15 +103,10 @@ const struct Collision sGlacierleArmCollisions[21] = {
       faction : FACTION_ENEMY,
       special : 0,
       damage : 0,
-      unk_04 : 0xFF,
-      element : 0xFF,
-      nature : 0xFF,
-      comboLv : 0xFF,
+      LAYER(0xFFFFFFFF),
       hitzone : 0x04,
       hardness : HARDNESS_B3,
-      unk_0a : 0x00,
       remaining : 0,
-      unk_0c : 0x00000000,
       range : {0x0000, 0x0500, 0x1000, 0x0800},
     },
     [3] = {
@@ -93,15 +114,13 @@ const struct Collision sGlacierleArmCollisions[21] = {
       faction : FACTION_ENEMY,
       special : 0,
       damage : 3,
-      unk_04 : 0x00,
+      atkType : 0x00,
       element : 0x00,
       nature : 0x00,
       comboLv : 0x00,
       hitzone : 0x00,
-      hardness : 0x00,
-      unk_0a : 0x00,
       remaining : 1,
-      unk_0c : 0x00000001,
+      layer : 0x00000001,
       range : {0x0000, 0x0500, 0x1000, 0x0B00},
     },
     [4] = {
@@ -109,15 +128,10 @@ const struct Collision sGlacierleArmCollisions[21] = {
       faction : FACTION_ENEMY,
       special : 0,
       damage : 0,
-      unk_04 : 0xFF,
-      element : 0xFF,
-      nature : 0xFF,
-      comboLv : 0xFF,
+      LAYER(0xFFFFFFFF),
       hitzone : 0x04,
       hardness : HARDNESS_B3,
-      unk_0a : 0x00,
       remaining : 0,
-      unk_0c : 0x00000000,
       range : {0x0000, 0x0500, 0x1000, 0x0B00},
     },
     [5] = {
@@ -125,15 +139,13 @@ const struct Collision sGlacierleArmCollisions[21] = {
       faction : FACTION_ENEMY,
       special : 0,
       damage : 3,
-      unk_04 : 0x00,
+      atkType : 0x00,
       element : 0x00,
       nature : 0x00,
       comboLv : 0x00,
       hitzone : 0x00,
-      hardness : 0x00,
-      unk_0a : 0x00,
       remaining : 3,
-      unk_0c : 0x00000001,
+      layer : 0x00000001,
       range : {0x0000, 0x0400, 0x1000, 0x0800},
     },
     [6] = {
@@ -141,15 +153,13 @@ const struct Collision sGlacierleArmCollisions[21] = {
       faction : FACTION_ENEMY,
       special : 0,
       damage : 3,
-      unk_04 : 0x00,
+      atkType : 0x00,
       element : 0x00,
       nature : 0x00,
       comboLv : 0x00,
       hitzone : 0x00,
-      hardness : 0x00,
-      unk_0a : 0x00,
       remaining : 2,
-      unk_0c : 0x00000001,
+      layer : 0x00000001,
       range : {0x0000, 0x0A00, 0x0800, 0x0800},
     },
     [7] = {
@@ -157,15 +167,10 @@ const struct Collision sGlacierleArmCollisions[21] = {
       faction : FACTION_ENEMY,
       special : 0,
       damage : 0,
-      unk_04 : 0xFF,
-      element : 0xFF,
-      nature : 0xFF,
-      comboLv : 0xFF,
+      LAYER(0xFFFFFFFF),
       hitzone : 0x04,
       hardness : HARDNESS_B3,
-      unk_0a : 0x00,
       remaining : 1,
-      unk_0c : 0x00000000,
       range : {0x0000, 0x0400, 0x1000, 0x0800},
     },
     [8] = {
@@ -173,15 +178,10 @@ const struct Collision sGlacierleArmCollisions[21] = {
       faction : FACTION_ENEMY,
       special : 0,
       damage : 0,
-      unk_04 : 0xFF,
-      element : 0xFF,
-      nature : 0xFF,
-      comboLv : 0xFF,
+      LAYER(0xFFFFFFFF),
       hitzone : 0x04,
       hardness : HARDNESS_B3,
-      unk_0a : 0x00,
       remaining : 0,
-      unk_0c : 0x00000000,
       range : {0x0000, 0x0A00, 0x0800, 0x0800},
     },
     [9] = {
@@ -189,15 +189,13 @@ const struct Collision sGlacierleArmCollisions[21] = {
       faction : FACTION_ENEMY,
       special : 0,
       damage : 3,
-      unk_04 : 0x00,
+      atkType : 0x00,
       element : 0x00,
       nature : 0x00,
       comboLv : 0x00,
       hitzone : 0x00,
-      hardness : 0x00,
-      unk_0a : 0x00,
       remaining : 3,
-      unk_0c : 0x00000001,
+      layer : 0x00000001,
       range : {0x0000, 0x0400, 0x1000, 0x0800},
     },
     [10] = {
@@ -205,15 +203,13 @@ const struct Collision sGlacierleArmCollisions[21] = {
       faction : FACTION_ENEMY,
       special : 0,
       damage : 3,
-      unk_04 : 0x00,
+      atkType : 0x00,
       element : 0x00,
       nature : 0x00,
       comboLv : 0x00,
       hitzone : 0x00,
-      hardness : 0x00,
-      unk_0a : 0x00,
       remaining : 2,
-      unk_0c : 0x00000001,
+      layer : 0x00000001,
       range : {0x0000, 0x0C00, 0x0800, 0x0900},
     },
     [11] = {
@@ -221,15 +217,10 @@ const struct Collision sGlacierleArmCollisions[21] = {
       faction : FACTION_ENEMY,
       special : 0,
       damage : 0,
-      unk_04 : 0xFF,
-      element : 0xFF,
-      nature : 0xFF,
-      comboLv : 0xFF,
+      LAYER(0xFFFFFFFF),
       hitzone : 0x04,
       hardness : HARDNESS_B3,
-      unk_0a : 0x00,
       remaining : 1,
-      unk_0c : 0x00000000,
       range : {0x0000, 0x0400, 0x1000, 0x0800},
     },
     [12] = {
@@ -237,15 +228,10 @@ const struct Collision sGlacierleArmCollisions[21] = {
       faction : FACTION_ENEMY,
       special : 0,
       damage : 0,
-      unk_04 : 0xFF,
-      element : 0xFF,
-      nature : 0xFF,
-      comboLv : 0xFF,
+      LAYER(0xFFFFFFFF),
       hitzone : 0x04,
       hardness : HARDNESS_B3,
-      unk_0a : 0x00,
       remaining : 0,
-      unk_0c : 0x00000000,
       range : {0x0000, 0x0C00, 0x0800, 0x0900},
     },
     [13] = {
@@ -253,15 +239,13 @@ const struct Collision sGlacierleArmCollisions[21] = {
       faction : FACTION_ENEMY,
       special : 0,
       damage : 3,
-      unk_04 : 0x00,
+      atkType : 0x00,
       element : 0x00,
       nature : 0x00,
       comboLv : 0x00,
       hitzone : 0x00,
-      hardness : 0x00,
-      unk_0a : 0x00,
       remaining : 3,
-      unk_0c : 0x00000001,
+      layer : 0x00000001,
       range : {0x0000, 0x0400, 0x1000, 0x0800},
     },
     [14] = {
@@ -269,15 +253,13 @@ const struct Collision sGlacierleArmCollisions[21] = {
       faction : FACTION_ENEMY,
       special : 0,
       damage : 3,
-      unk_04 : 0x00,
+      atkType : 0x00,
       element : 0x00,
       nature : 0x00,
       comboLv : 0x00,
       hitzone : 0x00,
-      hardness : 0x00,
-      unk_0a : 0x00,
       remaining : 2,
-      unk_0c : 0x00000001,
+      layer : 0x00000001,
       range : {0x0000, 0x0F00, 0x0800, 0x0E00},
     },
     [15] = {
@@ -285,15 +267,10 @@ const struct Collision sGlacierleArmCollisions[21] = {
       faction : FACTION_ENEMY,
       special : 0,
       damage : 0,
-      unk_04 : 0xFF,
-      element : 0xFF,
-      nature : 0xFF,
-      comboLv : 0xFF,
+      LAYER(0xFFFFFFFF),
       hitzone : 0x04,
       hardness : HARDNESS_B3,
-      unk_0a : 0x00,
       remaining : 1,
-      unk_0c : 0x00000000,
       range : {0x0000, 0x0400, 0x1000, 0x0800},
     },
     [16] = {
@@ -301,15 +278,10 @@ const struct Collision sGlacierleArmCollisions[21] = {
       faction : FACTION_ENEMY,
       special : 0,
       damage : 0,
-      unk_04 : 0xFF,
-      element : 0xFF,
-      nature : 0xFF,
-      comboLv : 0xFF,
+      LAYER(0xFFFFFFFF),
       hitzone : 0x04,
       hardness : HARDNESS_B3,
-      unk_0a : 0x00,
       remaining : 0,
-      unk_0c : 0x00000000,
       range : {0x0000, 0x0F00, 0x0800, 0x0E00},
     },
     [17] = {
@@ -317,15 +289,13 @@ const struct Collision sGlacierleArmCollisions[21] = {
       faction : FACTION_ENEMY,
       special : 0,
       damage : 3,
-      unk_04 : 0x00,
+      atkType : 0x00,
       element : 0x00,
       nature : 0x00,
       comboLv : 0x00,
       hitzone : 0x00,
-      hardness : 0x00,
-      unk_0a : 0x00,
       remaining : 3,
-      unk_0c : 0x00000001,
+      layer : 0x00000001,
       range : {0x0000, 0x0400, 0x1000, 0x0800},
     },
     [18] = {
@@ -333,15 +303,13 @@ const struct Collision sGlacierleArmCollisions[21] = {
       faction : FACTION_ENEMY,
       special : 0,
       damage : 3,
-      unk_04 : 0x00,
+      atkType : 0x00,
       element : 0x00,
       nature : 0x00,
       comboLv : 0x00,
       hitzone : 0x00,
-      hardness : 0x00,
-      unk_0a : 0x00,
       remaining : 2,
-      unk_0c : 0x00000001,
+      layer : 0x00000001,
       range : {0x0000, 0x1300, 0x0800, 0x1600},
     },
     [19] = {
@@ -349,15 +317,10 @@ const struct Collision sGlacierleArmCollisions[21] = {
       faction : FACTION_ENEMY,
       special : 0,
       damage : 0,
-      unk_04 : 0xFF,
-      element : 0xFF,
-      nature : 0xFF,
-      comboLv : 0xFF,
+      LAYER(0xFFFFFFFF),
       hitzone : 0x04,
       hardness : HARDNESS_B3,
-      unk_0a : 0x00,
       remaining : 1,
-      unk_0c : 0x00000000,
       range : {0x0000, 0x0400, 0x1000, 0x0800},
     },
     [20] = {
@@ -365,15 +328,10 @@ const struct Collision sGlacierleArmCollisions[21] = {
       faction : FACTION_ENEMY,
       special : 0,
       damage : 0,
-      unk_04 : 0xFF,
-      element : 0xFF,
-      nature : 0xFF,
-      comboLv : 0xFF,
+      LAYER(0xFFFFFFFF),
       hitzone : 0x04,
       hardness : HARDNESS_B3,
-      unk_0a : 0x00,
       remaining : 0,
-      unk_0c : 0x00000000,
       range : {0x0000, 0x1300, 0x0800, 0x1600},
     },
 };

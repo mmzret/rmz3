@@ -148,5 +148,6 @@ struct VFX *FUN_080bfce8(struct Coord *c, u8 r1);
 struct VFX *CreateBossExplosion(struct Boss *boss, struct Coord *c);
 void CreateVFX31_1(s32 x, s32 y);
 void CreateVFX31_2(s32 x, s32 y);
+void FUN_080b81a0(struct CollidableEntity *p, struct Coord *c, motion_t *motions, u8 len);
 
 #endif  // GUARD_RMZ3_VFX_H

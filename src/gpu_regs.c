@@ -169,8 +169,8 @@ void FlashWinRegister(void) {
   dispcnt |= gWindowRegBuffer.dispcnt;
   REG_DISPCNT = dispcnt;
 
-  (*(vu32*)REG_ADDR_WIN0H) = gWindowRegBuffer.winH;
-  (*(vu32*)REG_ADDR_WIN0V) = gWindowRegBuffer.winV;
+  (*(vu32*)REG_ADDR_WIN0H) = gWindowRegBuffer.winH.word;
+  (*(vu32*)REG_ADDR_WIN0V) = gWindowRegBuffer.winV.word;
   (*(vu32*)REG_ADDR_WININ) = *((u32*)&gWindowRegBuffer.unk_0c);
 }
 

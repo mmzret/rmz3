@@ -14,7 +14,7 @@ const Collision = new Parser().endianness('little')
   .uint8('faction')
   .uint8('special')
   .uint8('damage')
-  .uint8('unk_04')
+  .uint8('atkType')
   .uint8('element')
   .uint8('nature')
   .uint8('comboLv')
@@ -22,7 +22,7 @@ const Collision = new Parser().endianness('little')
   .uint8('hardness')
   .uint8('unk_0a')
   .uint8('remaining')
-  .uint32('unk_0c')
+  .uint32('layer')
   .nest('range', { type: Rect });
 
 type ParseResult = {
@@ -30,7 +30,7 @@ type ParseResult = {
   faction: number;
   special: number;
   damage: number;
-  unk_04: number;
+  atkType: number;
   element: number;
   nature: number;
   comboLv: number;
@@ -38,7 +38,7 @@ type ParseResult = {
   hardness: number;
   unk_0a: number;
   remaining: number;
-  unk_0c: number;
+  layer: number;
   range: {
     w: number;
     h: number;
@@ -66,11 +66,11 @@ const main = async () => {
     const addr = start + (i * SIZE) - BASE;
     const result = Collision.parse(rom.slice(addr, addr + SIZE)) as ParseResult;
     const collision = {
-      unk_04: `0x${toHex(result.unk_04, 2)}`,
+      atkType: `0x${toHex(result.atkType, 2)}`,
       element: `0x${toHex(result.element, 2)}`,
       nature: `0x${toHex(result.nature, 2)}`,
       unk_0a: `0x${toHex(result.unk_0a, 2)}`,
-      unk_0c: `0x${toHex(result.unk_0c, 8)}`,
+      layer: `0x${toHex(result.layer, 8)}`,
       rect_0: result.range.x >> 8,
       rect_1: result.range.y >> 8,
       rect_2: result.range.w >> 8,
@@ -81,15 +81,11 @@ const main = async () => {
     faction: ${FACTION[result.faction]},
     special: ${result.special},
     damage: ${result.damage},
-    unk_04: ${collision.unk_04},
-    element: ${collision.element},
-    nature: ${collision.nature},
-    comboLv: ${result.comboLv},
-    hitzone: ${result.hitzone},
-    hardness: ${result.hardness},
+    atkType: ${collision.atkType},${result.element === 0 ? '' : `\n    element: ${collision.element},`}${result.nature === 0 ? '' : `\n    nature: ${collision.nature},`}
+    comboLv: ${result.comboLv},${((result.kind === 0) && (result.hitzone === 0)) ? '' : `\n    hitzone: ${result.hitzone},`}${result.hardness === 0 ? '' : `\n    hardness: ${result.hardness},`}
     unk_0a: ${collision.unk_0a},
     remaining: ${result.remaining},
-    unk_0c: ${collision.unk_0c},
+    layer: ${collision.layer},
     range: {${collision.rect_0 < 0 ? '-' : ''}PIXEL(${Math.abs(collision.rect_0)}), ${collision.rect_1 < 0 ? '-' : ''}PIXEL(${Math.abs(collision.rect_1)}), ${collision.rect_2 < 0 ? '-' : ''}PIXEL(${Math.abs(collision.rect_2)}), ${collision.rect_3 < 0 ? '-' : ''}PIXEL(${Math.abs(collision.rect_3)})},
 },`);
   }

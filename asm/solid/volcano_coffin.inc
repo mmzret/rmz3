@@ -4,59 +4,6 @@
 	
 	.text
 
-	thumb_func_start VolcanoCoffin_Init
-VolcanoCoffin_Init: @ 0x080DDA74
-	push {r4, r5, lr}
-	adds r4, r0, #0
-	ldrb r1, [r4, #0xa]
-	movs r0, #2
-	movs r5, #0
-	orrs r0, r1
-	strb r0, [r4, #0xa]
-	ldr r1, _080DDAD4 @ =gCurStory
-	ldr r2, _080DDAD8 @ =0x083716B8
-	ldrb r0, [r4, #0x10]
-	lsls r0, r0, #1
-	adds r0, r0, r2
-	adds r1, #0xc
-	ldrh r0, [r0]
-	adds r1, r1, r0
-	ldrb r1, [r1]
-	lsls r1, r1, #0x18
-	asrs r1, r1, #0x18
-	lsls r1, r1, #8
-	ldr r0, [r4, #0x54]
-	adds r0, r0, r1
-	str r0, [r4, #0x54]
-	ldr r1, [r4, #0x58]
-	bl FUN_08009f6c
-	ldr r1, _080DDADC @ =0xFFFFE001
-	adds r0, r0, r1
-	str r0, [r4, #0x58]
-	adds r0, r4, #0
-	adds r0, #0x5c
-	str r5, [r0, #4]
-	str r5, [r4, #0x5c]
-	ldr r1, _080DDAE0 @ =gSolidFnTable
-	ldrb r0, [r4, #9]
-	lsls r0, r0, #2
-	adds r0, r0, r1
-	movs r1, #1
-	str r1, [r4, #0xc]
-	ldr r0, [r0]
-	ldr r0, [r0, #4]
-	str r0, [r4, #0x14]
-	adds r0, r4, #0
-	bl VolcanoCoffin_Update
-	pop {r4, r5}
-	pop {r0}
-	bx r0
-	.align 2, 0
-_080DDAD4: .4byte gCurStory
-_080DDAD8: .4byte 0x083716B8
-_080DDADC: .4byte 0xFFFFE001
-_080DDAE0: .4byte gSolidFnTable
-
 	thumb_func_start VolcanoCoffin_Update
 VolcanoCoffin_Update: @ 0x080DDAE4
 	push {r4, r5, r6, r7, lr}

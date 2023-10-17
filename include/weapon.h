@@ -72,9 +72,6 @@ extern const WeaponRoutine gSmashElecRoutine;
 extern const WeaponRoutine gElecShieldSweepRoutine;
 extern const WeaponRoutine gMinigameRodRoutine;
 
-extern const struct Collision gSemiBulletCollisions[2];
-extern const struct Collision gFullBulletCollisions[2];
-extern const struct Collision gLaserShotCollisions[2];
 extern const struct Collision gBurstShotCollisions[2];
 extern const struct Collision gBlizzardArrowCollisions[2];
 extern const struct Collision Hitbox_ARRAY_0835efc4[2];

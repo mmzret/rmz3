@@ -46,18 +46,12 @@ INCASM("asm/solid/light_switch.inc");
 static const struct Collision sCollision = {
   kind : DRP,
   faction : FACTION_ENEMY,
-  special : 0,
-  unk_04 : 0xFF,
-  element : 0xFF,
-  nature : 0xFF,
-  comboLv : 0xFF,
+  LAYER(0xFFFFFFFF),
   hitzone : 0xFF,
-  hardness : 0x00,
-  unk_0a : 0x00,
   remaining : 0,
-  unk_0c : 0xFFFDEF7B,
+  priorityLayer : 0xFFFDEF7B,
   range : {PIXEL(0), -PIXEL(16), PIXEL(16), PIXEL(32)},
 };
 
 static const struct Rect sSize = {PIXEL(0), -PIXEL(16), PIXEL(16), PIXEL(32)};
-const struct Coord Coord_083714bc = {0, 0xFFFFF000};
+const struct Coord Coord_083714bc = {PIXEL(0), -PIXEL(16)};

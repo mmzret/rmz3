@@ -1085,7 +1085,7 @@ void text_080eaefc(struct TextWindowText *t, u32 len) {
 
   win = &gWindowRegBuffer;
   size = sin >> 3;
-  *(u16 *)&win->winH = 0x400 | (((size << 3) + 12) & 0xFF);
+  *(u16 *)&win->winH.word = 0x400 | (((size << 3) + 12) & 0xFF);
   if (size != 0) {
     FillMemory(709, &bgmap[513], size << 1);
     FillMemory(710, &bgmap[609], size << 1);

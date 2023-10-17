@@ -1,5 +1,4 @@
 #include "collision.h"
-#include "entity.h"
 #include "global.h"
 #include "solid.h"
 
@@ -49,16 +48,9 @@ INCASM("asm/solid/unk_03.inc");
 static const struct Collision sCollision = {
   kind : DRP,
   faction : FACTION_ENEMY,
-  special : 0,
   damage : 0,
-  unk_04 : 0x08,
-  element : 0x21,
-  nature : 0x44,
-  comboLv : 0x00,
+  LAYER(0x442108),
   hitzone : 0xFF,
-  hardness : 0x00,
-  unk_0a : 0x00,
   remaining : 0,
-  unk_0c : 0x00000000,
-  range : {0x0000, 0x0000, -0x0100, -0x0100},
+  range : {PIXEL(0), PIXEL(0), -PIXEL(1), -PIXEL(1)},
 };

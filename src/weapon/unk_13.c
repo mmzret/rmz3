@@ -2,6 +2,8 @@
 #include "global.h"
 #include "weapon.h"
 
+#define PROP (w->props.common)
+
 static const motion_t sMotions[4];
 static const struct Collision sCollisions[2];
 
@@ -20,7 +22,7 @@ const WeaponRoutine gWeapon13Routine = {
 // clang-format on
 
 void MenuExit_Weapon13(struct Weapon* w) {
-  if (((w->unk_b4).z)->unk_136 & (1 << 2)) {
+  if ((PROP.z)->unk_136 & (1 << 2)) {
     (w->s).flags &= ~DISPLAY;
     (w->s).flags &= ~FLIPABLE;
     (w->body).status = 0;
@@ -52,7 +54,7 @@ struct Weapon* CreateWeapon13(struct Zero* z, u8 n) {
       element = ((&z->unk_b4)->status).element;
       SetWeaponElement(1, element);
     }
-    (&w->unk_b4)->z = z;
+    (&PROP)->z = z;
     (w->s).work[0] = n;
     (w->s).work[1] = ++z->unk_137;
   }
@@ -69,43 +71,35 @@ const s8 s8_ARRAY_ARRAY_083616cc[2][4] = {
 const u8 u8_ARRAY_083616d4[4] = {0x80, 0xC0, 0x40, 0x00};
 
 static const motion_t sMotions[4] = {
-    MOTION(0x68, 0x00),
-    MOTION(0x68, 0x01),
-    MOTION(0x68, 0x01),
-    MOTION(0x68, 0x00),
+    MOTION(DM104_UNK, 0),
+    MOTION(DM104_UNK, 1),
+    MOTION(DM104_UNK, 1),
+    MOTION(DM104_UNK, 0),
 };
 
 static const struct Collision sCollisions[2] = {
     {
       kind : DDP,
       faction : FACTION_ALLY,
-      special : 1,
+      special : HALFABLE,
       damage : 8,
-      unk_04 : 0x00,
-      element : 0x01,
-      nature : 0x02,
-      comboLv : 0x01,
-      hitzone : 0x00,
-      hardness : 0x00,
-      unk_0a : 0x00,
+      element : ELEMENT_THUNDER,
+      nature : ELEMENT_ENCHANTABLE,
+      comboLv : 1,
       remaining : 1,
-      unk_0c : 0x00000004,
-      range : {0x0000, 0x0000, 0x1200, 0x1200},
+      layer : 0x00000004,
+      range : {PIXEL(0), PIXEL(0), PIXEL(18), PIXEL(18)},
     },
     {
       kind : DRP,
       faction : FACTION_ALLY,
-      special : 1,
+      special : HALFABLE,
       damage : 0,
-      unk_04 : 0xFF,
-      element : 0xFF,
-      nature : 0xFF,
-      comboLv : 0xFF,
+      LAYER(0xFFFFFFFF),
       hitzone : 0xFF,
-      hardness : 0x00,
-      unk_0a : 0x00,
       remaining : 0,
-      unk_0c : 0x00000000,
-      range : {0x0000, 0x0000, 0x1200, 0x1200},
+      range : {PIXEL(0), PIXEL(0), PIXEL(18), PIXEL(18)},
     },
 };
+
+#undef PROP

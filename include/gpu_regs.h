@@ -30,6 +30,11 @@ struct WramBlendRegister {
   u16 _;
 };  // 8 bytes
 
+union WindowRegister {
+  u32 word;
+  u16 half[2];  // win0, win1
+};
+
 // Window register buffer on EWRAM (gWindowRegBuffer)
 struct WramWindowRegister {
   /*
@@ -38,8 +43,8 @@ struct WramWindowRegister {
   */
   u16 dispcnt;
   u16 _;
-  u32 winH;  // (win1h << 16 | win0h)
-  u32 winV;  // (win1v << 16 | win0v)
+  union WindowRegister winH;
+  union WindowRegister winV;
   u8 unk_0c[3];
 };  // 16 bytes
 

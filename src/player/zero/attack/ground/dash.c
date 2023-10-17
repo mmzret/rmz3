@@ -244,7 +244,7 @@ static void buster_3(struct Zero* z) {
     u8 foot;
     if (((z->last & INPUT_DISABLED) == 0) && ((foot = (b4->status).foot, (foot == FOOT_CHIP_SHADOW) || (foot == FOOT_CHIP_ULTIMA)))) {
       LoadZeroPalette(&z->s, GetZeroColor(z));
-      z->posture = 1;
+      z->posture = POSTURE_DASH;
     }
     (z->unk_b4).attackMode[0] = 3;
     (z->unk_b4).attackMode[1] = 0;

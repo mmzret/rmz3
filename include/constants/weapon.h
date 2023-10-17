@@ -33,7 +33,7 @@
 #define SABER_TRIPLE_1 0
 #define SABER_TRIPLE_2 1
 #define SABER_TRIPLE_3 2
-#define SABER_UNK_03 3
+#define SABER_WALK 3
 #define SABER_DASH 4
 #define SABER_AIR 5
 #define SABER_WALL 6
@@ -42,7 +42,7 @@
 #define SABER_CHARGE_AIR 9
 #define SABER_CHARGE_WALL 10
 #define SABER_CHARGE_LADDER 11
-#define SABER_UNK_12 12
+#define SABER_SLASH_UP 12
 #define SABER_ZANEIDAN 13    // Throw Blade
 #define SABER_TENRETUJIN 14  // Split heavens
 #define SABER_TENRETUJIN_FIRE 15

@@ -1,6 +1,8 @@
 #include "global.h"
 #include "weapon.h"
 
+#define PROP (w->props.common)
+
 void ShieldSweep_Init(struct Weapon* w);
 void ShieldSweep_Update(struct Weapon* w);
 void ShieldSweep_Die(struct Weapon* w);
@@ -16,7 +18,7 @@ const WeaponRoutine gShieldSweepRoutine = {
 // clang-format on
 
 void MenuExit_ShieldSweep(struct Weapon* w) {
-  if (((w->unk_b4).z)->unk_136 & (1 << 3)) {
+  if ((PROP.z)->unk_136 & (1 << 3)) {
     (w->s).flags &= ~DISPLAY;
     (w->s).flags &= ~FLIPABLE;
     (w->body).status = 0;
@@ -51,7 +53,7 @@ struct Weapon* CreateShieldSweep(struct Zero* z, struct Entity* p, u8 n) {
       element = ((&z->unk_b4)->status).element;
       SetWeaponElement(1, element);
     }
-    b4 = (struct Weapon_b4*)(&w->unk_b4);
+    b4 = &PROP;
     b4->z = z;
     (w->s).unk_28 = p;
     (w->s).work[0] = n;
@@ -61,3 +63,5 @@ struct Weapon* CreateShieldSweep(struct Zero* z, struct Entity* p, u8 n) {
 }
 
 INCASM("asm/weapon/shield_sweep.inc");
+
+#undef PROP

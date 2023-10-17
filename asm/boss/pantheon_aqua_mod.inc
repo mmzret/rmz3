@@ -4,37 +4,6 @@
 	
 	.text
 
-	thumb_func_start paquam_080512f8
-paquam_080512f8: @ 0x080512F8
-	mov ip, r0
-	mov r3, ip
-	adds r3, #0xba
-	movs r1, #0x80
-	lsls r1, r1, #1
-	adds r0, r1, #0
-	ldrh r2, [r3]
-	adds r0, r0, r2
-	strh r0, [r3]
-	mov r0, ip
-	adds r0, #0xbc
-	ldr r1, [r0]
-	mov r0, ip
-	str r1, [r0, #0x58]
-	ldr r2, _0805132C @ =gSineTable
-	ldrh r0, [r3]
-	lsrs r0, r0, #8
-	lsls r0, r0, #1
-	adds r0, r0, r2
-	movs r2, #0
-	ldrsh r0, [r0, r2]
-	lsls r0, r0, #2
-	adds r1, r1, r0
-	mov r0, ip
-	str r1, [r0, #0x58]
-	bx lr
-	.align 2, 0
-_0805132C: .4byte gSineTable
-
 	thumb_func_start PantheonAquaMod_Init
 PantheonAquaMod_Init: @ 0x08051330
 	push {r4, r5, r6, r7, lr}

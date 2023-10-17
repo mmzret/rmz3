@@ -7,6 +7,17 @@
 #include "gba/gba.h"
 #include "types.h"
 
+// Zero.posture (gZeroCollisions's idx)
+enum ZeroPosture {
+  POSTURE_IDLE = 0,
+  POSTURE_DASH = 1,
+  POSTURE_WALL = 2,
+  POSTURE_SHADOW = 3,
+  POSTURE_DOOR_2D = 4,
+  POSTURE_DOOR_3D = 5,
+  POSTURE_COUNT,
+};
+
 #if MODERN
 #define SET_PLAYER_ROUTINE(player, routine)                                            \
   {                                                                                    \
@@ -77,7 +88,8 @@ extern const ZeroRoutine gCopyXMiniRoutine;
 extern const ZeroRoutine gLeviathanRoutine;
 extern const ZeroRoutine gZeroMiniRoutine;
 
-extern const struct Collision gZeroCollisions[12];
+extern const struct Collision gZeroCollisions[POSTURE_COUNT];
+extern const struct Rect gZeroRanges[POSTURE_COUNT];
 
 void ClearZeroStatus(struct ZeroStatus* p);
 void ClearZeroStatusHard(struct ZeroStatus* p);
@@ -205,5 +217,6 @@ bool8 Is1000Slash(struct Zero* z);
 void zero_08032724(struct Zero* z);
 void SetDisableArea(struct Zero* z, s32 left, s32 top, s32 right, s32 bottom);
 void HandlePlayerInput(struct Zero* z);
+u8 zero_08026970(struct Zero* z, const struct Rect* range, bool8 _);
 
 #endif  // GUARD_RMZ3_ZERO_H

@@ -439,30 +439,29 @@ s16 calcMaxFallSpeed(struct Zero *z) {
   return 0x700;
 }
 
-WIP s16 getWallFallSpeed(struct Zero *z) {
-#if MODERN
+s16 getWallFallSpeed(struct Zero *z) {
   s16 dy = 0x180;
   struct Zero_b4 *b4 = &z->unk_b4;
 
   if (!(z->zeroInput & DPAD_DOWN)) {
-    const bool8 isKwappa = IsElfUsed(z, ELF_KWAPPA);
     if (((b4->status).foot == FOOT_CHIP_FROG) || ((b4->status).foot == FOOT_CHIP_ULTIMA)) {
-      if (isKwappa && ((b4->status).body == BODY_CHIP_LIGHT)) {
+      if (IsElfUsed(z, ELF_KWAPPA) && ((b4->status).body == BODY_CHIP_LIGHT)) {
         return 0;
       }
       dy = 0xC0;
-    } else if (isKwappa) {
+    } else if (IsElfUsed(z, ELF_KWAPPA)) {
       dy = 0xC0;
     }
   }
 
-  if (SEA < (z->s).coord.y - (gZeroRanges[z->posture].h >> 1)) {
-    return dy / 2;
+  if ((z->s).coord.y - (gZeroRanges[z->posture].h >> 1) > SEA) {
+    if (dy == 0xC0) {
+      return 0x60;
+    } else {
+      return 0xC0;
+    }
   }
   return dy;
-#else
-  INCCODE("asm/wip/getWallFallSpeed.inc");
-#endif
 }
 
 WIP s16 CalcDx(struct Zero *z) {
@@ -615,23 +614,23 @@ void InstantlyKilling(struct Zero *z) {
 }
 
 // clang-format off
-const struct Rect gZeroRanges[6] = {
-    [0] = {-0x0100, -0x0F00, 0x0F00, 0x1E00},
-    [1] = {-0x0200, -0x0B00, 0x1A00, 0x1600},
-    [2] = {-0x0700, -0x0F00, 0x0E00, 0x1E00},
-    [3] = {-0x0200, -0x0B00, 0x1A00, 0x1600},
-    [4] = {-0x0100, -0x0F00, 0x0F00, 0x1E00},
-    [5] = {-0x0200, -0x0F00, 0x1A00, 0x1E00},
+const struct Rect gZeroRanges[POSTURE_COUNT] = {
+    [POSTURE_IDLE]    = {-PIXEL(1), -PIXEL(15), PIXEL(15), PIXEL(30)},
+    [POSTURE_DASH]    = {-PIXEL(2), -PIXEL(11), PIXEL(26), PIXEL(22)},
+    [POSTURE_WALL]    = {-PIXEL(7), -PIXEL(15), PIXEL(14), PIXEL(30)},
+    [POSTURE_SHADOW]  = {-PIXEL(2), -PIXEL(11), PIXEL(26), PIXEL(22)},
+    [POSTURE_DOOR_2D] = {-PIXEL(1), -PIXEL(15), PIXEL(15), PIXEL(30)},
+    [POSTURE_DOOR_3D] = {-PIXEL(2), -PIXEL(15), PIXEL(26), PIXEL(30)},
 };
 // clang-format on
 
-const struct Collision gZeroCollisions[12] = {
-    [0] = {
+const struct Collision gZeroCollisions[POSTURE_COUNT] = {
+    [POSTURE_IDLE] = {
       kind : DRP,
       faction : FACTION_ALLY,
-      special : 1,
+      special : HALFABLE,
       damage : 0,
-      unk_04 : 0xFF,
+      atkType : 0xFF,
       element : 0xFF,
       nature : 0xFF,
       comboLv : 255,
@@ -639,15 +638,14 @@ const struct Collision gZeroCollisions[12] = {
       hardness : HARDNESS_B3,
       unk_0a : 0x04,
       remaining : 0,
-      unk_0c : 0x00000000,
       range : {-PIXEL(1), -PIXEL(14), PIXEL(16), PIXEL(30)},
     },
-    [1] = {
+    [POSTURE_DASH] = {
       kind : DRP,
       faction : FACTION_ALLY,
-      special : 1,
+      special : HALFABLE,
       damage : 0,
-      unk_04 : 0xFF,
+      atkType : 0xFF,
       element : 0xFF,
       nature : 0xFF,
       comboLv : 255,
@@ -655,15 +653,14 @@ const struct Collision gZeroCollisions[12] = {
       hardness : HARDNESS_B3,
       unk_0a : 0x04,
       remaining : 0,
-      unk_0c : 0x00000000,
       range : {-PIXEL(2), -PIXEL(10), PIXEL(26), PIXEL(22)},
     },
-    [2] = {
+    [POSTURE_WALL] = {
       kind : DRP,
       faction : FACTION_ALLY,
-      special : 1,
+      special : HALFABLE,
       damage : 0,
-      unk_04 : 0xFF,
+      atkType : 0xFF,
       element : 0xFF,
       nature : 0xFF,
       comboLv : 255,
@@ -671,63 +668,63 @@ const struct Collision gZeroCollisions[12] = {
       hardness : HARDNESS_B3,
       unk_0a : 0x04,
       remaining : 0,
-      unk_0c : 0x00000000,
       range : {-PIXEL(7), -PIXEL(15), PIXEL(16), PIXEL(30)},
     },
-    [3] = {
+    [POSTURE_SHADOW] = {
       kind : DRP,
       faction : FACTION_ALLY,
-      special : 1,
+      special : HALFABLE,
       damage : 0,
-      unk_04 : 0xFF,
+      atkType : 0xFF,
       element : 0xFF,
       nature : 0xFF,
       comboLv : 255,
       hitzone : 1,
       hardness : HARDNESS_B3,
-      unk_0a : 0x00,
       remaining : 0,
-      unk_0c : 0xFFFFFFFF,
+      layer : 0xFFFFFFFF,
       range : {-PIXEL(2), -PIXEL(10), PIXEL(26), PIXEL(22)},
     },
-    [4] = {
+    [POSTURE_DOOR_2D] = {
       kind : DRP,
       faction : FACTION_ALLY,
-      special : 1,
+      special : HALFABLE,
       damage : 0,
-      unk_04 : 0xFF,
+      atkType : 0xFF,
       element : 0xFF,
       nature : 0xFF,
       comboLv : 255,
       hitzone : 1,
       hardness : HARDNESS_B3,
-      unk_0a : 0x00,
       remaining : 0,
-      unk_0c : 0xFFFFFFFF,
+      layer : 0xFFFFFFFF,
       range : {-PIXEL(1), -PIXEL(14), PIXEL(16), PIXEL(30)},
     },
-    [5] = {
+    [POSTURE_DOOR_3D] = {
       kind : DRP,
       faction : FACTION_ALLY,
-      special : 1,
+      special : HALFABLE,
       damage : 0,
-      unk_04 : 0xFF,
+      atkType : 0xFF,
       element : 0xFF,
       nature : 0xFF,
       comboLv : 255,
       hitzone : 1,
       hardness : HARDNESS_B3,
-      unk_0a : 0x00,
       remaining : 0,
-      unk_0c : 0xFFFFFFFF,
+      layer : 0xFFFFFFFF,
       range : {-PIXEL(2), -PIXEL(14), PIXEL(26), PIXEL(30)},
     },
-    [6] = {
+};
+
+// Unused (For Z2 Proto Form?)
+const struct Collision gZeroProtoCollisions[POSTURE_COUNT] = {
+    [POSTURE_IDLE] = {
       kind : DRP,
       faction : FACTION_ALLY,
-      special : 1,
+      special : HALFABLE,
       damage : 0,
-      unk_04 : 0xFF,
+      atkType : 0xFF,
       element : 0xFF,
       nature : 0xFF,
       comboLv : 255,
@@ -735,15 +732,14 @@ const struct Collision gZeroCollisions[12] = {
       hardness : HARDNESS_B3 | HARDNESS_WEAK,
       unk_0a : 0x04,
       remaining : 0,
-      unk_0c : 0x00000000,
       range : {-PIXEL(1), -PIXEL(14), PIXEL(16), PIXEL(30)},
     },
-    [7] = {
+    [POSTURE_DASH] = {
       kind : DRP,
       faction : FACTION_ALLY,
-      special : 1,
+      special : HALFABLE,
       damage : 0,
-      unk_04 : 0xFF,
+      atkType : 0xFF,
       element : 0xFF,
       nature : 0xFF,
       comboLv : 255,
@@ -751,15 +747,14 @@ const struct Collision gZeroCollisions[12] = {
       hardness : HARDNESS_B3 | HARDNESS_WEAK,
       unk_0a : 0x04,
       remaining : 0,
-      unk_0c : 0x00000000,
       range : {-PIXEL(2), -PIXEL(10), PIXEL(26), PIXEL(22)},
     },
-    [8] = {
+    [POSTURE_WALL] = {
       kind : DRP,
       faction : FACTION_ALLY,
-      special : 1,
+      special : HALFABLE,
       damage : 0,
-      unk_04 : 0xFF,
+      atkType : 0xFF,
       element : 0xFF,
       nature : 0xFF,
       comboLv : 255,
@@ -767,55 +762,51 @@ const struct Collision gZeroCollisions[12] = {
       hardness : HARDNESS_B3 | HARDNESS_WEAK,
       unk_0a : 0x04,
       remaining : 0,
-      unk_0c : 0x00000000,
       range : {-PIXEL(7), -PIXEL(15), PIXEL(16), PIXEL(30)},
     },
-    [9] = {
+    [POSTURE_SHADOW] = {
       kind : DRP,
       faction : FACTION_ALLY,
-      special : 1,
+      special : HALFABLE,
       damage : 0,
-      unk_04 : 0xFF,
+      atkType : 0xFF,
       element : 0xFF,
       nature : 0xFF,
       comboLv : 255,
       hitzone : 1,
       hardness : HARDNESS_B3 | HARDNESS_WEAK,
-      unk_0a : 0x00,
       remaining : 0,
-      unk_0c : 0xFFFFFFFF,
+      layer : 0xFFFFFFFF,
       range : {-PIXEL(2), -PIXEL(10), PIXEL(26), PIXEL(22)},
     },
-    [10] = {
+    [POSTURE_DOOR_2D] = {
       kind : DRP,
       faction : FACTION_ALLY,
-      special : 1,
+      special : HALFABLE,
       damage : 0,
-      unk_04 : 0xFF,
+      atkType : 0xFF,
       element : 0xFF,
       nature : 0xFF,
       comboLv : 255,
       hitzone : 1,
       hardness : HARDNESS_B3 | HARDNESS_WEAK,
-      unk_0a : 0x00,
       remaining : 0,
-      unk_0c : 0xFFFFFFFF,
+      layer : 0xFFFFFFFF,
       range : {-PIXEL(1), -PIXEL(14), PIXEL(16), PIXEL(30)},
     },
-    [11] = {
+    [POSTURE_DOOR_3D] = {
       kind : DRP,
       faction : FACTION_ALLY,
-      special : 1,
+      special : HALFABLE,
       damage : 0,
-      unk_04 : 0xFF,
+      atkType : 0xFF,
       element : 0xFF,
       nature : 0xFF,
       comboLv : 255,
       hitzone : 1,
       hardness : HARDNESS_B3 | HARDNESS_WEAK,
-      unk_0a : 0x00,
       remaining : 0,
-      unk_0c : 0xFFFFFFFF,
+      layer : 0xFFFFFFFF,
       range : {-PIXEL(2), -PIXEL(14), PIXEL(26), PIXEL(30)},
     },
 };

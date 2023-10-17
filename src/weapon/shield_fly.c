@@ -3,6 +3,8 @@
 #include "mission.h"
 #include "weapon.h"
 
+#define PROP (w->props.common)
+
 static const u8 sElements[4];
 static const motion_t sShieldFlyMotions[3][4];
 static const WeaponFunc sShieldFlyUpdates[5];
@@ -43,10 +45,10 @@ struct Weapon* CreateWeaponShieldFly(struct Zero* z, u8 r1) {
       SetWeaponElement(1, element);
     }
 
-    (&w->unk_b4)->z = z;
+    (&PROP)->z = z;
     (w->s).work[0] = z->unk_127;
     (w->s).work[1] = r1;
-    (&w->unk_b4)->props[1][1] = ((&z->unk_b4)->status).element;
+    (&PROP)->props[1][1] = ((&z->unk_b4)->status).element;
   }
   return w;
 }
@@ -60,13 +62,13 @@ static void ShieldFly_Init(struct Weapon* w) {
   (w->s).flags |= FLIPABLE;
   SetMotion(&w->s, sShieldFlyMotions[(w->s).work[1]][(w->s).work[0]]);
   PlaySound(SE_CHARGE_SHIELD_VOICE);
-  b4 = &w->unk_b4;
+  b4 = &PROP;
   b4->props[1][2] = 1;
   ShieldFly_Update(w);
 }
 
 static void ShieldFly_Update(struct Weapon* w) {
-  struct Weapon_b4* b4 = &w->unk_b4;
+  struct Weapon_b4* b4 = &PROP;
   struct Zero* z = b4->z;
   if (z->elfMotion != 0) {
     SET_WEAPON_ROUTINE(w, ENTITY_DIE);
@@ -146,34 +148,24 @@ const struct Collision Collision_ARRAY_083612ac[2] = {
     {
       kind : DDP,
       faction : FACTION_ALLY,
-      special : 1,
+      special : HALFABLE,
       damage : 8,
-      unk_04 : 0x03,
-      element : 0x00,
-      nature : 0x12,
-      comboLv : 0x01,
-      hitzone : 0x00,
-      hardness : 0x00,
-      unk_0a : 0x00,
+      atkType : ATK_UNK3,
+      nature : (BODY_NATURE_CUT | ELEMENT_ENCHANTABLE),
+      comboLv : 1,
       remaining : 1,
-      unk_0c : 0x00010000,
-      range : {0x0000, 0x0000, 0x2600, 0x1000},
+      layer : 0x00010000,
+      range : {PIXEL(0), PIXEL(0), PIXEL(38), PIXEL(16)},
     },
     {
       kind : DRP,
       faction : FACTION_ALLY,
-      special : 1,
+      special : HALFABLE,
       damage : 0,
-      unk_04 : 0xFF,
-      element : 0xFF,
-      nature : 0xFF,
-      comboLv : 0xFF,
+      LAYER(0xFFFFFFFF),
       hitzone : 0xFF,
-      hardness : 0x00,
-      unk_0a : 0x00,
       remaining : 0,
-      unk_0c : 0x00000000,
-      range : {0x0000, 0x0000, 0x2600, 0x1000},
+      range : {PIXEL(0), PIXEL(0), PIXEL(38), PIXEL(16)},
     },
 };
 
@@ -181,34 +173,24 @@ const struct Collision Collision_ARRAY_083612dc[2] = {
     {
       kind : DDP,
       faction : FACTION_ALLY,
-      special : 1,
+      special : HALFABLE,
       damage : 8,
-      unk_04 : 0x03,
-      element : 0x00,
-      nature : 0x12,
-      comboLv : 0x01,
-      hitzone : 0x00,
-      hardness : 0x00,
-      unk_0a : 0x00,
+      atkType : ATK_UNK3,
+      nature : (BODY_NATURE_CUT | ELEMENT_ENCHANTABLE),
+      comboLv : 1,
       remaining : 1,
-      unk_0c : 0x00010000,
-      range : {0x0000, 0x0000, 0x2200, 0x2200},
+      layer : 0x00010000,
+      range : {PIXEL(0), PIXEL(0), PIXEL(34), PIXEL(34)},
     },
     {
       kind : DRP,
       faction : FACTION_ALLY,
-      special : 1,
+      special : HALFABLE,
       damage : 0,
-      unk_04 : 0xFF,
-      element : 0xFF,
-      nature : 0xFF,
-      comboLv : 0xFF,
+      LAYER(0xFFFFFFFF),
       hitzone : 0xFF,
-      hardness : 0x00,
-      unk_0a : 0x00,
       remaining : 0,
-      unk_0c : 0x00000000,
-      range : {0x0000, 0x0000, 0x2200, 0x2200},
+      range : {PIXEL(0), PIXEL(0), PIXEL(34), PIXEL(34)},
     },
 };
 
@@ -243,3 +225,5 @@ const WeaponRoutine gShieldFlyRoutine = {
 // clang-format on
 
 const u8 u8_ARRAY_08361334[4] = {1, 3, 4, 0};
+
+#undef PROP

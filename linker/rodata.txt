@@ -79,7 +79,9 @@
 		src/collision.o (.rodata);
 		src/syssav.o (.rodata);
 
-		src/data/stage.o (.rodata);
+		src/physics/shape.o (.rodata);
+		src/coord_to_screen.o (.rodata);
+		src/terrain.o (.rodata);
 
 		src/stage/stage0/landscape.o (.rodata);
 		src/stage/spacecraft/landscape.o (.rodata);
@@ -213,6 +215,9 @@
       src/boss/hanumachine.o (.rodata);
       src/boss/omega_zero.o (.rodata);
       src/boss/phantom.o (.rodata);
+      src/boss/omega_zx.o (.rodata);
+      src/boss/reactor_core.o (.rodata);
+      src/boss/spearook.o (.rodata);
 
 		src/enemy.o (.rodata);
       src/enemy/pantheon_guardian.o (.rodata);
@@ -290,7 +295,7 @@
       src/projectile/unk_06.o (.rodata);
       src/projectile/unk_07.o (.rodata);
       src/projectile/unk_08.o (.rodata);
-      src/projectile/unk_09.o (.rodata);
+      src/projectile/blazin.o (.rodata);
       src/projectile/blazin_tail.o (.rodata);
       src/projectile/ear_shot.o (.rodata);
       src/projectile/unk_12.o (.rodata);
@@ -302,7 +307,9 @@
       src/projectile/unk_18.o (.rodata);
       src/projectile/tretista.o (.rodata);
       src/projectile/omega_zero.o (.rodata);
-      src/projectile/unk_39.o (.rodata);
+      src/projectile/claveker_yellow_balls.o (.rodata);
+      src/projectile/phantom.o (.rodata);
+      src/projectile/omega_zx.o (.rodata);
 
 		src/vfx.o (.rodata);
       src/vfx/smoke.o (.rodata);

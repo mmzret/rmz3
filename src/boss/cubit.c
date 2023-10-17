@@ -2,8 +2,6 @@
 #include "collision.h"
 #include "global.h"
 
-INCASM("asm/boss/cubit.inc");
-
 void Cubit_Init(struct Boss* p);
 void Cubit_Update(struct Boss* p);
 void Cubit_Die(struct Boss* p);
@@ -17,6 +15,23 @@ const BossRoutine gCubitRoutine = {
     [ENTITY_EXIT] =      (BossFunc)DeleteEntity,
 };
 // clang-format on
+
+struct Boss* CreateCubit(struct Coord* c, u8 n) {
+  struct Boss* p = (struct Boss*)AllocEntityFirst(gBossHeaderPtr);
+  if (p != NULL) {
+    (p->s).taskCol = 24;
+    INIT_BOSS_ROUTINE(p, BOSS_CUBIT);
+    (p->s).tileNum = 0;
+    (p->s).palID = 0;
+    (p->s).flags2 |= WHITE_PAINTABLE;
+    (p->s).invincibleID = (p->s).uniqueID;
+    (p->s).coord = *c;
+    (p->s).work[0] = n;
+  }
+  return p;
+}
+
+INCASM("asm/boss/cubit.inc");
 
 // --------------------------------------------
 
@@ -96,97 +111,83 @@ static const struct Collision sCollisions[6] = {
     {
       kind : DRP,
       faction : FACTION_ENEMY,
-      special : 2,
+      special : CS_BOSS,
       damage : 0,
-      unk_04 : 0xFF,
+      atkType : 0xFF,
       element : 0xFF,
       nature : 0xFF,
       comboLv : 255,
       hitzone : 7,
-      hardness : 0x00,
-      unk_0a : 0x00,
       remaining : 0,
-      unk_0c : 0xFFFFFFFF,
+      layer : 0xFFFFFFFF,
       range : {PIXEL(0), -PIXEL(18), PIXEL(36), PIXEL(38)},
     },
     {
       kind : DDP,
       faction : FACTION_ENEMY,
-      special : 2,
+      special : CS_BOSS,
       damage : 3,
-      unk_04 : 0x00,
+      atkType : 0x00,
       element : 0x00,
       nature : 0x00,
       comboLv : 0,
       hitzone : 0,
-      hardness : 0x00,
-      unk_0a : 0x00,
       remaining : 1,
-      unk_0c : 0x00000001,
+      layer : 0x00000001,
       range : {PIXEL(0), -PIXEL(23), PIXEL(26), PIXEL(48)},
     },
     {
       kind : DRP,
       faction : FACTION_ENEMY,
-      special : 2,
+      special : CS_BOSS,
       damage : 0,
-      unk_04 : 0xFF,
+      atkType : 0xFF,
       element : 0xFF,
       nature : 0xFF,
       comboLv : 255,
       hitzone : 7,
-      hardness : 0x00,
-      unk_0a : 0x00,
       remaining : 0,
-      unk_0c : 0x00000000,
       range : {PIXEL(0), -PIXEL(23), PIXEL(26), PIXEL(48)},
     },
     {
       kind : DDP,
       faction : FACTION_ENEMY,
-      special : 2,
+      special : CS_BOSS,
       damage : 3,
-      unk_04 : 0x00,
+      atkType : 0x00,
       element : 0x00,
       nature : 0x00,
       comboLv : 0,
       hitzone : 0,
-      hardness : 0x00,
-      unk_0a : 0x00,
       remaining : 1,
-      unk_0c : 0x00000001,
+      layer : 0x00000001,
       range : {PIXEL(0), PIXEL(13), PIXEL(26), PIXEL(48)},
     },
     {
       kind : DRP,
       faction : FACTION_ENEMY,
-      special : 2,
+      special : CS_BOSS,
       damage : 0,
-      unk_04 : 0xFF,
+      atkType : 0xFF,
       element : 0xFF,
       nature : 0xFF,
       comboLv : 255,
       hitzone : 7,
-      hardness : 0x00,
-      unk_0a : 0x00,
       remaining : 0,
-      unk_0c : 0x00000000,
       range : {PIXEL(0), PIXEL(13), PIXEL(26), PIXEL(48)},
     },
     {
       kind : DDP,
       faction : FACTION_ENEMY,
-      special : 2,
+      special : CS_BOSS,
       damage : 3,
-      unk_04 : 0x00,
+      atkType : 0x00,
       element : 0x00,
       nature : 0x00,
       comboLv : 0,
       hitzone : 0,
-      hardness : 0x00,
-      unk_0a : 0x00,
       remaining : 0,
-      unk_0c : 0x00000001,
+      layer : 0x00000001,
       range : {PIXEL(0), -PIXEL(30), PIXEL(40), PIXEL(60)},
     },
 };

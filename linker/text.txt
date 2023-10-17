@@ -141,10 +141,10 @@
       src/boss/omega_gold.o (.text);
       src/boss/hanumachine.o (.text);
       src/boss/omega_zero.o (.text);
-      asm/boss/phantom.o (.text);
-      asm/boss/boss22.o (.text);
-      asm/boss/reactor_core.o (.text);
-      asm/boss/boss24.o (.text);
+      src/boss/phantom.o (.text);
+      src/boss/omega_zx.o (.text);
+      src/boss/reactor_core.o (.text);
+      src/boss/spearook.o (.text);
 
 		src/enemy.o (.text);
       src/enemy/pantheon_guardian.o (.text);
@@ -216,7 +216,7 @@
       src/projectile/unk_06.o (.text);
       src/projectile/unk_07.o (.text);
       src/projectile/omega_zero.o (.text);
-      src/projectile/unk_39.o (.text);
+      src/projectile/claveker_yellow_balls.o (.text);
 
 		src/vfx.o (.text);
       src/vfx/smoke.o (.text);

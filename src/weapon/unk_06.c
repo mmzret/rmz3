@@ -105,18 +105,11 @@ static void updateWeapon6(struct Weapon* w) {
 static const struct Collision sCollision = {
   kind : DDP,
   faction : FACTION_ALLY,
-  special : 1,
+  special : HALFABLE,
   damage : 1,
-  unk_04 : 0x00,
-  element : 0x00,
-  nature : 0x00,
-  comboLv : 0x00,
-  hitzone : 0x00,
-  hardness : 0x00,
-  unk_0a : 0x00,
   remaining : 0,
-  unk_0c : 0x00000001,
-  range : {0x0000, 0x0000, 0x0E00, 0x0E00},
+  layer : 0x00000001,
+  range : {PIXEL(0), PIXEL(0), PIXEL(14), PIXEL(14)},
 };
 
 static const u8 sInitModes[4] = {0, 0, 0, 0};

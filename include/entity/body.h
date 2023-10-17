@@ -12,6 +12,7 @@
 #define BODY_STATUS_B4 (1 << 4)
 #define BODY_STATUS_B5 (1 << 5)
 #define BODY_STATUS_B6 (1 << 6)
+#define BODY_STATUS_B7 (1 << 7)
 #define BODY_STATUS_B8 (1 << 8)
 #define BODY_STATUS_DEAD (1 << 9)
 #define BODY_STATUS_B10 (1 << 10)
@@ -30,12 +31,13 @@
 #define BODY_STATUS_TELEPORTAL (1 << 31)
 
 #define BODY_NATURE_B0 (1 << 0)
-#define BODY_NATURE_B1 (1 << 1)
+#define ELEMENT_ENCHANTABLE (1 << 1)  // (ゼロ専用)エレメントチップで属性を付与できる
 #define BODY_NATURE_B2 (1 << 2)
 #define BODY_NATURE_B3 (1 << 3)
-#define BODY_NATURE_B4 (1 << 4)
+#define BODY_NATURE_CUT (1 << 4)      // 斬撃属性(死体を両断するか)
 #define BODY_NATURE_RECOIL (1 << 5)   // Recoil rod(Charge)
 #define BODY_NATURE_ILETHAS (1 << 6)  // Vanish enemy's lemon
+#define BODY_NATURE_B7 (1 << 7)
 
 struct Collision;
 struct Body;
@@ -47,7 +49,7 @@ typedef void (*BodyFunc)(struct Body*, struct Coord*, struct Coord*);
  */
 struct Body {
   const struct Collision* collisions;  // Collision chain start
-  const struct Collision* drp;         // DAMAGE RECEIVING POINTER
+  const struct Collision* processing;  // .collisions は Bodyが持ってる当たり判定のリスト、 .processing は オーバーラップした時に、解決処理の間、Collisionリストの先頭を指す
   struct Coord* coord;
   struct Body* enemy;  // 接触ダメージを受ける時は接触相手
   struct Body* unk_10;
@@ -85,7 +87,7 @@ struct Body {
   u8 comboLv;  // 連鎖値(無敵レベル)
 
   /*
-    攻撃を喰らう際に  自分の drp->unk_09 と ORしたものをフラグとして使っている
+    攻撃を喰らう際に  自分の processing->unk_09 と ORしたものをフラグとして使っている
     bit 0: 1にすると、攻撃が当たった時に金属音がなり、バスターが貫通しなくなる(ダメージは通る, 関数の0x08007e28参照)
     bit 1: ダメージを0に
     bit 2: ダメージを2/3に
@@ -93,7 +95,7 @@ struct Body {
     bit 4: ダメージを2倍に
   */
   u8 hardness;
-  u32 unk_3c;
+  u32 collisionLayer;
 };  // 64 bytes
 
 #endif  // GUARD_RMZ3_PHYSICS_BODY_H

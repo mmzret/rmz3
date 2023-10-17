@@ -227,221 +227,92 @@ static void inDash(struct Zero* z) {
 
 // ------------------------------------------------------------------------------------------------------------------------------------
 
-NAKED void HandlePlayerInput_Air(struct Zero* z) {
-  asm(".syntax unified\n\
-	push {r4, r5, r6, r7, lr}\n\
-	mov r7, r8\n\
-	push {r7}\n\
-	adds r4, r0, #0\n\
-	adds r5, r4, #0\n\
-	adds r5, #0xb4\n\
-	ldr r1, _08029DF4 @ =0x00000119\n\
-	adds r0, r4, r1\n\
-	ldrb r7, [r0]\n\
-	cmp r7, #0\n\
-	beq _08029DF8\n\
-	movs r1, #0\n\
-	movs r0, #5\n\
-	b _08029F0C\n\
-	.align 2, 0\n\
-_08029DF4: .4byte 0x00000119\n\
-_08029DF8:\n\
-	ldrh r1, [r4, #0xe]\n\
-	ldr r0, _08029E6C @ =0x00000202\n\
-	cmp r1, r0\n\
-	bne _08029E02\n\
-	b _08029F60\n\
-_08029E02:\n\
-	movs r2, #0x86\n\
-	lsls r2, r2, #2\n\
-	adds r1, r4, r2\n\
-	ldr r0, [r1]\n\
-	movs r6, #1\n\
-	ands r0, r6\n\
-	mov r8, r1\n\
-	cmp r0, #0\n\
-	beq _08029EEC\n\
-	ldrb r0, [r4, #0xf]\n\
-	cmp r0, #2\n\
-	bhi _08029EEC\n\
-	ldr r1, _08029E70 @ =0x00000147\n\
-	adds r0, r4, r1\n\
-	ldrb r1, [r0]\n\
-	lsls r1, r1, #3\n\
-	ldr r0, _08029E74 @ =gZeroRanges\n\
-	adds r1, r1, r0\n\
-	adds r0, r4, #0\n\
-	movs r2, #0\n\
-	bl zero_08026970\n\
-	lsls r0, r0, #0x18\n\
-	lsrs r1, r0, #0x18\n\
-	cmp r1, #0\n\
-	beq _08029E8C\n\
-	ldr r0, [r5, #0x40]\n\
-	cmp r0, #0\n\
-	beq _08029E40\n\
-	strb r6, [r0, #0x11]\n\
-	str r7, [r5, #0x40]\n\
-_08029E40:\n\
-	subs r1, #1\n\
-	movs r0, #1\n\
-	ands r1, r0\n\
-	adds r0, r4, #0\n\
-	adds r0, #0x4c\n\
-	strb r1, [r0]\n\
-	adds r5, r4, #0\n\
-	adds r5, #0x4a\n\
-	lsls r3, r1, #4\n\
-	ldrb r2, [r5]\n\
-	movs r0, #0x11\n\
-	rsbs r0, r0, #0\n\
-	ands r0, r2\n\
-	orrs r0, r3\n\
-	strb r0, [r5]\n\
-	cmp r1, #0\n\
-	beq _08029E78\n\
-	ldrb r0, [r4, #0xa]\n\
-	movs r1, #0x10\n\
-	orrs r0, r1\n\
-	b _08029E7E\n\
-	.align 2, 0\n\
-_08029E6C: .4byte 0x00000202\n\
-_08029E70: .4byte 0x00000147\n\
-_08029E74: .4byte gZeroRanges\n\
-_08029E78:\n\
-	ldrb r1, [r4, #0xa]\n\
-	movs r0, #0xef\n\
-	ands r0, r1\n\
-_08029E7E:\n\
-	strb r0, [r4, #0xa]\n\
-	movs r0, #0\n\
-	movs r1, #1\n\
-	strb r1, [r4, #0xd]\n\
-	strb r0, [r4, #0xe]\n\
-	movs r0, #2\n\
-	b _08029EDC\n\
-_08029E8C:\n\
-	ldrb r0, [r5, #0x11]\n\
-	cmp r0, #1\n\
-	beq _08029E96\n\
-	cmp r0, #7\n\
-	bne _08029EAA\n\
-_08029E96:\n\
-	movs r2, #0x8e\n\
-	lsls r2, r2, #1\n\
-	adds r0, r4, r2\n\
-	ldrb r0, [r0]\n\
-	cmp r0, #0\n\
-	beq _08029EAA\n\
-	strb r6, [r4, #0xd]\n\
-	strb r1, [r4, #0xe]\n\
-	strb r1, [r4, #0xf]\n\
-	b _08029EDE\n\
-_08029EAA:\n\
-	adds r2, r4, #0\n\
-	adds r2, #0xb4\n\
-	ldr r1, _08029EE8 @ =0x00000216\n\
-	adds r0, r4, r1\n\
-	ldrh r1, [r0]\n\
-	movs r0, #0x80\n\
-	lsls r0, r0, #8\n\
-	ands r0, r1\n\
-	cmp r0, #0\n\
-	bne _08029EEC\n\
-	ldrb r0, [r2, #0x11]\n\
-	cmp r0, #2\n\
-	beq _08029EC8\n\
-	cmp r0, #7\n\
-	bne _08029EEC\n\
-_08029EC8:\n\
-	movs r0, #0x8d\n\
-	lsls r0, r0, #1\n\
-	adds r2, r4, r0\n\
-	ldrb r1, [r2]\n\
-	cmp r1, #0\n\
-	bne _08029EEC\n\
-	movs r0, #1\n\
-	strb r0, [r2]\n\
-	strb r0, [r4, #0xd]\n\
-	strb r1, [r4, #0xe]\n\
-_08029EDC:\n\
-	strb r0, [r4, #0xf]\n\
-_08029EDE:\n\
-	adds r0, r4, #0\n\
-	bl zero_08032724\n\
-	b _08029F60\n\
-	.align 2, 0\n\
-_08029EE8: .4byte 0x00000216\n\
-_08029EEC:\n\
-	mov r1, r8\n\
-	ldr r0, [r1]\n\
-	movs r1, #0x40\n\
-	ands r0, r1\n\
-	cmp r0, #0\n\
-	beq _08029F18\n\
-	ldr r1, _08029F14 @ =gZeroRanges\n\
-	adds r0, r4, #0\n\
-	movs r2, #0\n\
-	bl TryLadderUp\n\
-	lsls r0, r0, #0x18\n\
-	cmp r0, #0\n\
-	beq _08029F18\n\
-	movs r1, #0\n\
-	movs r0, #3\n\
-_08029F0C:\n\
-	strb r0, [r4, #0xd]\n\
-	strb r1, [r4, #0xe]\n\
-	strb r1, [r4, #0xf]\n\
-	b _08029F60\n\
-	.align 2, 0\n\
-_08029F14: .4byte gZeroRanges\n\
-_08029F18:\n\
-	ldrb r5, [r4, #0xe]\n\
-	cmp r5, #1\n\
-	bne _08029F3C\n\
-	ldrb r0, [r4, #0xf]\n\
-	subs r0, #3\n\
-	lsls r0, r0, #0x18\n\
-	lsrs r0, r0, #0x18\n\
-	cmp r0, #1\n\
-	bls _08029F60\n\
-	mov r2, r8\n\
-	ldr r0, [r2]\n\
-	movs r1, #2\n\
-	ands r0, r1\n\
-	cmp r0, #0\n\
-	bne _08029F60\n\
-	strb r1, [r4, #0xe]\n\
-	strb r0, [r4, #0xf]\n\
-	b _08029F60\n\
-_08029F3C:\n\
-	cmp r5, #2\n\
-	bne _08029F60\n\
-	ldr r1, _08029F6C @ =0x00000147\n\
-	adds r0, r4, r1\n\
-	ldrb r1, [r0]\n\
-	lsls r1, r1, #3\n\
-	ldr r0, _08029F70 @ =gZeroRanges\n\
-	adds r1, r1, r0\n\
-	adds r0, r4, #0\n\
-	movs r2, #0\n\
-	bl CanWallSlide\n\
-	lsls r0, r0, #0x18\n\
-	cmp r0, #0\n\
-	beq _08029F60\n\
-	movs r0, #0\n\
-	strb r5, [r4, #0xd]\n\
-	strb r0, [r4, #0xe]\n\
-_08029F60:\n\
-	pop {r3}\n\
-	mov r8, r3\n\
-	pop {r4, r5, r6, r7}\n\
-	pop {r0}\n\
-	bx r0\n\
-	.align 2, 0\n\
-_08029F6C: .4byte 0x00000147\n\
-_08029F70: .4byte gZeroRanges\n\
- .syntax divided\n");
+WIP void HandlePlayerInput_Air(struct Zero* z) {
+#if MODERN
+  u8 foot;
+  u32 val;
+  zero_input_t* key;
+  bool32 ok;
+  struct Zero_b4* b4 = &(z->unk_b4);
+
+  if (z->isAreaChange) {
+    (z->s).mode[1] = ZERO_DOOR_2D;
+    (z->s).mode[2] = 0;
+    (z->s).mode[3] = 0;
+    return;
+  }
+
+  if (*((u16*)&(z->s).mode[2]) == 0x202) {
+    return;
+  }
+
+  ok = z->zeroInput & ZERO_INPUT_PRESS_JUMP;
+  key = &z->zeroInput;
+  if (ok) {
+    if ((z->s).mode[3] < 3) {
+      val = zero_08026970(z, &gZeroRanges[z->posture], FALSE);
+      if (val) {
+        bool32 xflip;
+
+        if (b4->shadow != NULL) {
+          b4->shadow->work[1] = 1;
+          b4->shadow = NULL;
+        }
+
+        xflip = (val - 1) & 1;
+        (z->s).spr.oam.xflip = (z->s).spr.xflip = xflip;
+        if (xflip) {
+          (z->s).flags |= X_FLIP;
+        } else {
+          (z->s).flags &= ~X_FLIP;
+        }
+        (z->s).mode[1] = ZERO_AIR;
+        (z->s).mode[2] = 0;
+        (z->s).mode[3] = 2;
+      } else if ((foot = (b4->status).foot, (foot == FOOT_CHIP_SPLASH) || (foot == FOOT_CHIP_ULTIMA)) && z->canSplashJump) {
+        (z->s).mode[1] = ZERO_AIR;
+        (z->s).mode[2] = 0;
+        (z->s).mode[3] = 0;
+      } else if (foot = ((&(z->unk_b4))->status).foot, ((z->last & INPUT_DISABLED) == 0) && ((foot == FOOT_CHIP_DOUBLE) || (foot == FOOT_CHIP_ULTIMA)) && !z->airJumpped) {
+        z->airJumpped = TRUE;
+        (z->s).mode[1] = ZERO_AIR;
+        (z->s).mode[2] = 0;
+        (z->s).mode[3] = 1;
+      } else {
+        goto DONE;
+      }
+      zero_08032724(z);
+      return;
+    }
+  }
+
+DONE:
+  if (((*key) & DPAD_UP) && TryLadderUp(z, &gZeroRanges[0], FALSE)) {
+    (z->s).mode[1] = ZERO_LADDER;
+    (z->s).mode[2] = 0;
+    (z->s).mode[3] = 0;
+    return;
+  }
+
+  if ((z->s).mode[2] == 1) {
+    if ((u8)((z->s).mode[3] - 3) >= 2) {
+      if (((*key) & ZERO_INPUT_JUMP) == 0) {
+        (z->s).mode[2] = 2;
+        (z->s).mode[3] = 0;
+      }
+    }
+    return;
+  }
+
+  if ((z->s).mode[2] == 2) {
+    if (CanWallSlide(z, &gZeroRanges[z->posture], FALSE)) {
+      (z->s).mode[1] = ZERO_WALL;
+      (z->s).mode[2] = 0;
+    }
+  }
+#else
+  INCCODE("asm/wip/HandlePlayerInput_Air.inc");
+#endif
 }
 
 // ------------------------------------------------------------------------------------------------------------------------------------

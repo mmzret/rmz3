@@ -31,9 +31,6 @@
 #define ZERO_INPUT_PRESS_SUB_WEAPON (1 << 14)
 #define ZERO_INPUT_SUB_WEAPON (1 << 15)
 
-#define DASH 1
-#define SHADOW 2
-
 #define X_FLIP (1 << 4)
 #define Y_FLIP (1 << 5)
 

@@ -22,7 +22,7 @@ _08038726:
 	bne _08038738
 	b _080388DA
 _08038738:
-	ldr r1, _08038774 @ =gSaberMotions
+	ldr r1, _08038774 @ =sSaberMotions
 	lsls r0, r6, #1
 	adds r0, r0, r1
 	ldrh r7, [r0]
@@ -51,7 +51,7 @@ _08038738:
 	b _08038798
 	.align 2, 0
 _08038770: .4byte 0x00000125
-_08038774: .4byte gSaberMotions
+_08038774: .4byte sSaberMotions
 _08038778: .4byte 0x00006202
 _0803877C:
 	movs r2, #0

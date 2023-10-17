@@ -552,17 +552,15 @@ _08035E44: .4byte 0x0000B304\n\
 static const struct Collision sCollision = {
   kind : DRP,
   faction : FACTION_ALLY,
-  special : 0,
   damage : 0,
-  unk_04 : 0xFF,
+  atkType : 0xFF,
   element : 0xFF,
   nature : 0xFF,
   comboLv : 0xFF,
-  hitzone : 0x01,
+  hitzone : 1,
   hardness : METAL,
-  unk_0a : 0x00,
   remaining : 0,
-  unk_0c : 0xFFFFFFFF,
+  layer : 0xFFFFFFFF,
   range : {0x0000, 0x0000, 0x1600, 0x1600},
 };
 

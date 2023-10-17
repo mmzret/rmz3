@@ -4,102 +4,6 @@
 	
 	.text
 
-	thumb_func_start CreateGlacierleArm
-CreateGlacierleArm: @ 0x080CE86C
-	push {r4, r5, r6, r7, lr}
-	adds r7, r0, #0
-	adds r5, r1, #0
-	adds r6, r2, #0
-	ldr r0, _080CE8BC @ =gSolidHeaderPtr
-	ldr r0, [r0]
-	bl AllocEntityLast
-	adds r4, r0, #0
-	cmp r4, #0
-	beq _080CE8B6
-	adds r1, r4, #0
-	adds r1, #0x25
-	movs r3, #0
-	movs r0, #0x1e
-	strb r0, [r1]
-	ldr r1, _080CE8C0 @ =gSolidFnTable
-	movs r0, #0xf
-	strb r0, [r4, #9]
-	ldr r0, [r1, #0x3c]
-	ldr r0, [r0]
-	str r0, [r4, #0x14]
-	movs r2, #0
-	strh r3, [r4, #0x20]
-	adds r0, r4, #0
-	adds r0, #0x22
-	strb r2, [r0]
-	ldrb r1, [r4, #0xb]
-	movs r0, #0x10
-	orrs r0, r1
-	strb r0, [r4, #0xb]
-	ldrb r0, [r4, #0x1c]
-	strb r0, [r4, #0x1d]
-	strb r2, [r4, #0x10]
-	str r5, [r4, #0x54]
-	str r6, [r4, #0x58]
-	str r7, [r4, #0x28]
-_080CE8B6:
-	pop {r4, r5, r6, r7}
-	pop {r0}
-	bx r0
-	.align 2, 0
-_080CE8BC: .4byte gSolidHeaderPtr
-_080CE8C0: .4byte gSolidFnTable
-
-	thumb_func_start FUN_080ce8c4
-FUN_080ce8c4: @ 0x080CE8C4
-	push {r4, r5, lr}
-	adds r4, r0, #0
-	adds r5, r1, #0
-	ldr r0, _080CE914 @ =gSolidHeaderPtr
-	ldr r0, [r0]
-	bl AllocEntityLast
-	adds r3, r0, #0
-	cmp r3, #0
-	beq _080CE90C
-	adds r1, r3, #0
-	adds r1, #0x25
-	movs r2, #0
-	movs r0, #0x1e
-	strb r0, [r1]
-	ldr r1, _080CE918 @ =gSolidFnTable
-	movs r0, #0xf
-	strb r0, [r3, #9]
-	ldr r0, [r1, #0x3c]
-	ldr r0, [r0]
-	str r0, [r3, #0x14]
-	movs r0, #0
-	strh r2, [r3, #0x20]
-	adds r1, r3, #0
-	adds r1, #0x22
-	strb r0, [r1]
-	ldrb r1, [r3, #0xb]
-	movs r0, #0x10
-	orrs r0, r1
-	strb r0, [r3, #0xb]
-	ldrb r0, [r3, #0x1c]
-	strb r0, [r3, #0x1d]
-	movs r0, #2
-	strb r0, [r3, #0x10]
-	str r4, [r3, #0x54]
-	str r5, [r3, #0x58]
-_080CE90C:
-	pop {r4, r5}
-	pop {r0}
-	bx r0
-	.align 2, 0
-_080CE914: .4byte gSolidHeaderPtr
-_080CE918: .4byte gSolidFnTable
-
-	thumb_func_start FUN_080ce91c
-FUN_080ce91c: @ 0x080CE91C
-	bx lr
-	.align 2, 0
-
 	thumb_func_start GlacierleArm_Init
 GlacierleArm_Init: @ 0x080CE920
 	push {r4, r5, lr}
@@ -157,7 +61,7 @@ _080CE940:
 	movs r3, #8
 	bl InitBody
 	str r5, [r4, #0x2c]
-	ldr r0, _080CE9C0 @ =FUN_080ce91c
+	ldr r0, _080CE9C0 @ =onCollision
 	str r0, [r4, #0x24]
 	ldr r0, [r5, #0x54]
 	ldr r1, [r5, #0x58]
@@ -179,7 +83,7 @@ _080CE940:
 _080CE9B4: .4byte gSolidFnTable
 _080CE9B8: .4byte 0x08370538
 _080CE9BC: .4byte 0x08370340
-_080CE9C0: .4byte FUN_080ce91c
+_080CE9C0: .4byte onCollision
 
 	thumb_func_start GlacierleArm_Update
 GlacierleArm_Update: @ 0x080CE9C4
@@ -320,7 +224,7 @@ _080CEAB6:
 	adds r0, #4
 	ldr r2, [r0]
 	adds r0, r3, #0
-	bl CreateGlacierleArm
+	bl CreateSolidGlacierleArm
 _080CEADC:
 	ldr r1, _080CEAF4 @ =gSolidFnTable
 	ldrb r0, [r4, #9]

@@ -1,5 +1,4 @@
 #include "collision.h"
-#include "entity.h"
 #include "global.h"
 #include "projectile.h"
 
@@ -181,31 +180,23 @@ static const struct Collision sCollisions[2] = {
       faction : FACTION_ENEMY,
       special : 0,
       damage : 0,
-      unk_04 : 0xFF,
-      element : 0xFF,
-      nature : 0xFF,
-      comboLv : 0xFF,
-      hitzone : 0x00,
-      hardness : 0x01,
-      unk_0a : 0x00,
+      LAYER(0xFFFFFFFF),
+      hitzone : 0,
+      hardness : 1,
       remaining : 0,
-      unk_0c : 0xFFFFFFFF,
-      range : {0x0000, 0x0000, 0x1000, 0x1000},
+      layer : 0xFFFFFFFF,
+      range : {PIXEL(0), PIXEL(0), PIXEL(16), PIXEL(16)},
     },
     {
       kind : DDP,
       faction : FACTION_ENEMY,
       special : 0,
       damage : 3,
-      unk_04 : 0x00,
-      element : 0x00,
-      nature : 0x80,
+      atkType : 0x00,
+      nature : BODY_NATURE_B7,
       comboLv : 0x00,
-      hitzone : 0x00,
-      hardness : 0x00,
-      unk_0a : 0x00,
       remaining : 0,
-      unk_0c : 0x00000001,
-      range : {0x0000, 0x0000, 0x1000, 0x1000},
+      layer : 0x00000001,
+      range : {PIXEL(0), PIXEL(0), PIXEL(16), PIXEL(16)},
     },
 };

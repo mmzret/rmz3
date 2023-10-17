@@ -24,9 +24,9 @@
 #define BOSS_HANUMACHINE 19
 #define BOSS_OMEGA_ZERO 20
 #define BOSS_PHANTOM 21
-#define BOSS_UNK22 22
-#define BOSS_REACTOR_CORE 23
-#define BOSS_UNK24 24
+#define BOSS_OMEGA_ZX 22
+#define BOSS_REACTOR_CORE 23  // エネルギー再生施設の炉心(スイッチ押し込み部屋)
+#define BOSS_SPEAROOK 24
 
 #define BOSS_ENTITY_COUNT 25
 

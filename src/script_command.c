@@ -519,9 +519,9 @@ WIP static bool32 Cmd_flag(struct VM* vm) {
     // entityflag
     if (vm->entities[c->entityIdx].entity != NULL) {
       if (c->flags) {
-        vm->entities[c->entityIdx].unk_09 |= c->val.mask;
+        vm->entities[c->entityIdx].flags |= c->val.mask;
       } else {
-        vm->entities[c->entityIdx].unk_09 &= ~c->val.mask;
+        vm->entities[c->entityIdx].flags &= ~c->val.mask;
       }
     }
   }

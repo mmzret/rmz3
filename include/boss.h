@@ -5,6 +5,13 @@
 #include "entity.h"
 #include "gba/gba.h"
 
+#define SET_BOSS_COLLISION_HANDLER(boss, onCollision) \
+  {                                                   \
+    fn = onCollision;                                 \
+    body = &boss->body;                               \
+    body->fn = fn;                                    \
+  }
+
 #define SET_BOSS_ROUTINE(boss, routine)          \
   {                                              \
     u32 tbl, id;                                 \
@@ -53,6 +60,10 @@ extern const BossRoutine gBlizzackRoutine;
 extern const BossRoutine gOmegaGoldRoutine;
 extern const BossRoutine gHanumachineRoutine;
 extern const BossRoutine gOmegaZeroRoutine;
+extern const BossRoutine gPhantomBossRoutine;
+extern const BossRoutine gOmegaZXRoutine;
+extern const BossRoutine gReactorCoreRoutine;
+extern const BossRoutine gSpearookRoutine;
 
 // --------------------------------------------
 

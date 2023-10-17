@@ -1,4 +1,5 @@
 #include "global.h"
+#include "overworld.h"
 
 /*
   ステージの傾斜などを表現するため
@@ -6,6 +7,84 @@
 
   返り値が0なら空中, 0以外なら壁の中
 */
+
+// clang-format off
+const ShapeChecker gShapeCheckerUp[16] = {
+    FUN_0800a738,
+    FUN_0800a73c,
+    FUN_0800a740,
+    FUN_0800a760,
+    FUN_0800a780,
+    FUN_0800a7a0,
+    FUN_0800a7c0,
+    FUN_0800a7e0,
+    FUN_0800a800,
+    FUN_0800a814,
+    FUN_0800a834,
+    FUN_0800a848,
+    FUN_0800a868,
+    FUN_0800a888,
+    FUN_0800a73c,
+    FUN_0800a73c,
+};
+
+const ShapeChecker gShapeCheckerDown[16] = {
+    FUN_0800a738,
+    FUN_0800a73c,
+    FUN_0800a8a8,
+    FUN_0800a8bc,
+    FUN_0800a8d4,
+    FUN_0800a8e8,
+    FUN_0800a900,
+    FUN_0800a918,
+    FUN_0800a930,
+    FUN_0800a94c,
+    FUN_0800a968,
+    FUN_0800a984,
+    FUN_0800a9a0,
+    FUN_0800a9bc,
+    FUN_0800a738,
+    FUN_0800a73c,
+};
+
+const ShapeChecker gShapeCheckerLeft[16] = {
+    FUN_0800a738,
+    FUN_0800a73c,
+    FUN_0800aa08,
+    FUN_0800a9d8,
+    FUN_0800aaec,
+    FUN_0800aaac,
+    FUN_0800aa6c,
+    FUN_0800aa3c,
+    FUN_0800ab48,
+    FUN_0800ab20,
+    FUN_0800abf8,
+    FUN_0800abc4,
+    FUN_0800ab90,
+    FUN_0800ab68,
+    FUN_0800a738,
+    FUN_0800a73c,
+};
+
+const ShapeChecker gShapeCheckerRight[16] = {
+    FUN_0800a738,
+    FUN_0800a73c,
+    FUN_0800ab20,
+    FUN_0800ab48,
+    FUN_0800ab68,
+    FUN_0800ab90,
+    FUN_0800abc4,
+    FUN_0800abf8,
+    FUN_0800a9d8,
+    FUN_0800aa08,
+    FUN_0800aa3c,
+    FUN_0800aa6c,
+    FUN_0800aaac,
+    FUN_0800aaec,
+    FUN_0800a738,
+    FUN_0800a73c,
+};
+// clang-format on
 
 s32 FUN_0800a738(s32 x, s32 y) { return 0; }
 

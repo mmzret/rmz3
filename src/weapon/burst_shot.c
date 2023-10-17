@@ -9,14 +9,11 @@ static const struct Collision sCollision = {
   faction : FACTION_ALLY,
   special : HALFABLE,
   damage : 2,
-  unk_04 : 0x06,
-  element : 0x00,
-  nature : BODY_NATURE_B1,
+  atkType : 6,
+  nature : ELEMENT_ENCHANTABLE,
   comboLv : 2,
-  hitzone : 0,
-  unk_0a : 0x00,
   remaining : 0,
-  unk_0c : 0x00000008,
+  layer : 0x00000008,
   range : {PIXEL(0), PIXEL(0), PIXEL(8), PIXEL(8)},
 };
 

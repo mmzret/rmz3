@@ -106,7 +106,7 @@ struct SlashedEnemy {
   u8 unk_02[2];
   struct Coord16 c;
   struct Coord16 d;
-  struct Coord16 unk_0c;
+  struct Coord16 unk_coord_0c;
   struct Coord16 unk_10;
   u16 unk_14[2];
   u8 _[4];

@@ -155,14 +155,8 @@ _0809D42C: .4byte gProjectileFnTable\n\
 static const struct Collision sCollision = {
   kind : DDP,
   faction : FACTION_NEUTRAL,
-  special : 0,
   damage : 3,
-  unk_04 : 0x00,
-  element : 0x00,
-  nature : 0x00,
-  comboLv : 0,
-  unk_0a : 0x00,
   remaining : 0,
-  unk_0c : 0x00000001,
+  layer : 0x00000001,
   range : {PIXEL(0), PIXEL(0), PIXEL(8), PIXEL(8)},
 };

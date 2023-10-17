@@ -23,16 +23,11 @@ const SolidRoutine gSolid52Routine = {
 static const struct Collision sCollision = {
   kind : DRP,
   faction : FACTION_ENEMY,
-  special : 0,
   damage : 0,
-  unk_04 : 0xFF,
-  element : 0xFF,
-  nature : 0xFF,
-  comboLv : 0xFF,
+  LAYER(0xFFFFFFFF),
   hitzone : 1,
   hardness : METAL,
-  unk_0a : 0x00,
   remaining : 0,
-  unk_0c : 0xFFFFFFFF,
+  layer : 0xFFFFFFFF,
   range : {PIXEL(0), PIXEL(8), PIXEL(32), PIXEL(16)},
 };

@@ -1,7 +1,6 @@
 #include "entity.h"
-#include "gba/gba.h"
 
-WIP void InitEntityHeader(struct EntityHeader *h, s8 kind, struct Entity *arr, s16 size, s16 count) {
+NON_MATCH void InitEntityHeader(struct EntityHeader *h, s8 kind, struct Entity *arr, s16 size, s16 count) {
 #if MODERN
   struct Entity *free;
 

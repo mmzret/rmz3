@@ -431,7 +431,7 @@ WIP static void GameLoop_Overworld(struct GameState *p) {
     }
     gIsPlayDamageSE = FALSE;
   }
-  wPauseFrame = gCollisionManager.pauseFrame;
+  wPauseFrame = gCollisionManager.hitstop;
 #else
   INCCODE("asm/wip/GameLoop_Overworld.inc");
 #endif
@@ -504,7 +504,7 @@ WIP static void GameLoop_CloseMenu(struct GameState *p) {
     }
 
     z = p->z2;
-    if (z->posture == 3) {
+    if (z->posture == POSTURE_SHADOW) {
       LoadZeroPalette(&z->s, color);
       LoadShadowDashPalette(p->z2, color);
     } else {

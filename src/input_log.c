@@ -8,18 +8,23 @@ void ClearInputHistory(struct Zero *z) {
   }
 }
 
-WIP void handlePlayerInput(struct Zero *z) {
-#if MODERN
-  s32 i;
-  KEY_INPUT input;
-  for (i = ARRAY_COUNT(z->inputHistory) - 1; i != 0; i--) {
-    z->inputHistory[i] = z->inputHistory[i - 1];
+void handlePlayerInput(struct Zero *z) {
+  s32 i = ARRAY_COUNT(z->inputHistory) - 1;
+  struct StageRun *s = &gStageRun;
+  KEY_INPUT *history = &z->inputHistory[0];
+
+  /*
+    history[63] = history[62];
+    history[62] = history[61];
+    ...
+    history[2] = history[1];
+    history[1] = history[0];
+  */
+  for (; i != 0; i--) {
+    history[i] = history[i - 1];
   }
-  input = gStageRun.input;
-  z->inputHistory[0] = input & 0x0FFF;
-  z->pressed = (z->last ^ input) & input;
-  z->last = input;
-#else
-  INCCODE("asm/wip/handlePlayerInput.inc");
-#endif
+
+  history[0] = s->input & 0x0FFF;
+  z->pressed = (z->last ^ s->input) & s->input;
+  z->last = s->input;
 }

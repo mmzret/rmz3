@@ -289,7 +289,7 @@ void ApplyGiantElf(struct StageRun* p) {
                 if (id != BOSS_LOCOMO_IF) {
                   if (id != BOSS_PHANTOM) {
                     if (id != BOSS_REACTOR_CORE) {
-                      if (id != BOSS_UNK24) {
+                      if (id != BOSS_SPEAROOK) {
                         if ((boss->s).flags & COLLIDABLE) {
                           (boss->body).hp = ((u16)(boss->body).hp + 1) >> 1;
                           CLEAR_FLAG(gCurStory.s.gameflags, GIANT_ELF_ENABLED);

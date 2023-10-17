@@ -267,17 +267,22 @@ _080C8FA8:\n\
  .syntax divided\n");
 }
 
-NON_MATCH static void FUN_080c8fc8(struct VFX *p) {
-#if MODERN
-  SET_VFX_ROUTINE(p, ENTITY_UPDATE);
-  InitNonAffineMotion(&p->s);
-  (p->s).flags |= FLIPABLE;
-  (p->s).flags &= ~X_FLIP;
-  (p->s).spr.oam.xflip = (p->s).spr.xflip = FALSE;
-  Ghost79_Update(p);
-#else
-  INCCODE("asm/wip/FUN_080c8fc8.inc");
-#endif
+static void FUN_080c8fc8(struct VFX *vfx) {
+  register u8 r0 asm("r1");
+  register u8 flags asm("r0");
+  bool8 xflip;
+
+  SET_VFX_ROUTINE(vfx, ENTITY_UPDATE);
+  InitNonAffineMotion(&vfx->s);
+  r0 = (vfx->s).flags;
+  flags = r0 | FLIPABLE;
+  xflip = FALSE;
+  flags &= ~X_FLIP;
+  (vfx->s).flags = flags;
+
+  (vfx->s).spr.xflip = xflip;
+  (vfx->s).spr.oam.xflip = xflip;
+  Ghost79_Update(vfx);
 }
 
 // --------------------------------------------

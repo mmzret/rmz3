@@ -1,5 +1,4 @@
 #include "collision.h"
-#include "entity.h"
 #include "global.h"
 #include "mission.h"
 #include "motion.h"
@@ -8,15 +7,18 @@
 #include "weapon.h"
 #include "zero.h"
 
+#define PROP (w->props.common)
+
 static const u8 sElements[4];
 static const motion_t gShieldGuardMotions[5];
 static const struct Collision sShieldGuardCollisions[2][5];
+static const s16 sCoords[11][2];
 
 static void onCollision(struct Body* body, struct Coord* r1, struct Coord* r2);
 static void ShieldGuard_Update(struct Weapon* w);
 
 void MenuExit_ShieldGuard(struct Weapon* w) {
-  if (((w->unk_b4).z)->unk_136 & (1 << 3)) {
+  if (((PROP).z)->unk_136 & (1 << 3)) {
     (w->s).flags &= ~DISPLAY;
     (w->s).flags &= ~FLIPABLE;
     (w->body).status = 0;
@@ -52,7 +54,7 @@ struct Weapon* CreateWeaponShieldGuard(struct Zero* z, u8 n) {
       element = sElements[((&z->unk_b4)->status).element];
       SetWeaponElement(1, element);
     }
-    b4 = (struct Weapon_b4*)(&w->unk_b4);
+    b4 = (struct Weapon_b4*)(&PROP);
     b4->z = z;
     (w->s).work[0] = n;
     (w->s).work[1] = 0;
@@ -61,7 +63,7 @@ struct Weapon* CreateWeaponShieldGuard(struct Zero* z, u8 n) {
 }
 
 static void ShieldGuard_Init(struct Weapon* w) {
-  struct Weapon_b4* b4 = &(w->unk_b4);
+  struct Weapon_b4* b4 = &(PROP);
   struct Zero* z = b4->z;
   SET_WEAPON_ROUTINE(w, ENTITY_UPDATE);
   InitNonAffineMotion(&w->s);
@@ -76,11 +78,24 @@ static void ShieldGuard_Init(struct Weapon* w) {
     (b4->props)[1][0] = 0;
   }
 
-  ((&w->unk_b4)->props)[1][1] = 0;
-  ((&w->unk_b4)->props)[1][2] = 0;
-  INIT_BODY(w, &sShieldGuardCollisions[((&w->unk_b4)->props)[1][0]][(w->s).work[0]], 1, onCollision);
+  ((&PROP)->props)[1][1] = 0;
+  ((&PROP)->props)[1][2] = 0;
+  INIT_BODY(w, &sShieldGuardCollisions[((&PROP)->props)[1][0]][(w->s).work[0]], 1, onCollision);
   ShieldGuard_Update(w);
 }
+
+static void FUN_08039358(struct Weapon* w);
+static void FUN_08039368(struct Weapon* w);
+
+// clang-format off
+static const WeaponFunc sUpdates[5] = {
+    FUN_08039358,
+    FUN_08039368,
+    FUN_08039358,
+    FUN_08039358,
+    FUN_08039358,
+};
+// clang-format on
 
 NAKED static void ShieldGuard_Update(struct Weapon* w) {
   asm(".syntax unified\n\
@@ -190,7 +205,7 @@ _08039178:\n\
 	lsls r1, r2, #1\n\
 	adds r1, r1, r2\n\
 	lsls r1, r1, #3\n\
-	ldr r2, _080391F0 @ =0x08360378\n\
+	ldr r2, _080391F0 @ =sShieldGuardCollisions+120\n\
 	adds r1, r1, r2\n\
 	bl SetDDP\n\
 	movs r0, #1\n\
@@ -228,7 +243,7 @@ _080391E6:\n\
 	bl PlaySound\n\
 	b _0803925A\n\
 	.align 2, 0\n\
-_080391F0: .4byte 0x08360378\n\
+_080391F0: .4byte sShieldGuardCollisions+120\n\
 _080391F4:\n\
 	adds r0, r5, #0\n\
 	adds r0, #0x74\n\
@@ -237,7 +252,7 @@ _080391F4:\n\
 	lsls r1, r2, #1\n\
 	adds r1, r1, r2\n\
 	lsls r1, r1, #3\n\
-	ldr r2, _08039224 @ =0x08360300\n\
+	ldr r2, _08039224 @ =sShieldGuardCollisions\n\
 	adds r1, r1, r2\n\
 	bl SetDDP\n\
 	mov r2, sb\n\
@@ -253,7 +268,7 @@ _080391F4:\n\
 	mov sl, r0\n\
 	b _0803925A\n\
 	.align 2, 0\n\
-_08039224: .4byte 0x08360300\n\
+_08039224: .4byte sShieldGuardCollisions\n\
 _08039228:\n\
 	ldrb r0, [r4, #0xc]\n\
 	adds r6, r4, #0\n\
@@ -274,7 +289,7 @@ _08039228:\n\
 	lsls r1, r2, #1\n\
 	adds r1, r1, r2\n\
 	lsls r1, r1, #3\n\
-	ldr r2, _080392B0 @ =0x08360300\n\
+	ldr r2, _080392B0 @ =sShieldGuardCollisions\n\
 	adds r1, r1, r2\n\
 	bl SetDDP\n\
 	mov r0, r8\n\
@@ -284,7 +299,7 @@ _0803925A:\n\
 	lsls r0, r0, #8\n\
 	ldrb r1, [r7]\n\
 	orrs r1, r0\n\
-	ldr r2, _080392B4 @ =0x083602F0\n\
+	ldr r2, _080392B4 @ =gShieldGuardMotions\n\
 	ldr r3, [sp, #4]\n\
 	ldrb r0, [r3]\n\
 	lsls r0, r0, #1\n\
@@ -306,7 +321,7 @@ _0803925A:\n\
 	lsls r2, r3, #1\n\
 	adds r2, r2, r3\n\
 	lsls r2, r2, #3\n\
-	ldr r3, _080392B0 @ =0x08360300\n\
+	ldr r3, _080392B0 @ =sShieldGuardCollisions\n\
 	adds r2, r2, r3\n\
 	adds r1, r1, r2\n\
 	bl SetDDP\n\
@@ -323,8 +338,8 @@ _0803929A:\n\
 	orrs r0, r1\n\
 	b _080392BE\n\
 	.align 2, 0\n\
-_080392B0: .4byte 0x08360300\n\
-_080392B4: .4byte 0x083602F0\n\
+_080392B0: .4byte sShieldGuardCollisions\n\
+_080392B4: .4byte gShieldGuardMotions\n\
 _080392B8:\n\
 	ldrb r1, [r5, #0xa]\n\
 	movs r0, #0xef\n\
@@ -345,7 +360,7 @@ _080392BE:\n\
 	strb r0, [r3]\n\
 	adds r0, r5, #0\n\
 	bl UpdateMotionGraphic\n\
-	ldr r1, _08039304 @ =0x083602DC\n\
+	ldr r1, _08039304 @ =sUpdates\n\
 	ldr r2, [sp, #4]\n\
 	ldrb r0, [r2]\n\
 	lsls r0, r0, #2\n\
@@ -364,11 +379,14 @@ _080392F2:\n\
 	pop {r0}\n\
 	bx r0\n\
 	.align 2, 0\n\
-_08039304: .4byte 0x083602DC\n\
+_08039304: .4byte sUpdates\n\
    .syntax divided\n");
 }
 
-static void ShieldGuard_Die(struct Weapon* w) { SET_WEAPON_ROUTINE(w, ENTITY_EXIT); }
+static void ShieldGuard_Die(struct Weapon* w) {
+  SET_WEAPON_ROUTINE(w, ENTITY_EXIT);
+  return;
+}
 
 static void onCollision(struct Body* body, struct Coord* c1 UNUSED, struct Coord* c2 UNUSED) {
   if (body->hitboxFlags & BODY_STATUS_B6) {
@@ -377,40 +395,37 @@ static void onCollision(struct Body* body, struct Coord* c1 UNUSED, struct Coord
       struct Weapon_b4* b4;
       struct Weapon* shield = (struct Weapon*)body->parent;
       (shield->s).unk_coord = (enemy->s).coord;
-      b4 = &shield->unk_b4;
+      b4 = &shield->props.common;
       b4->props[1][1]++;
     }
   }
 }
 
 static void FUN_08039358(struct Weapon* w) {
-  struct Zero* z = (w->unk_b4).z;
+  struct Zero* z = PROP.z;
   (w->s).coord.x = (z->s).coord.x;
   (w->s).coord.y = (z->s).coord.y;
 }
 
-INCASM("asm/weapon/shield.inc");
+static void FUN_08039368(struct Weapon* w) {
+  struct Zero* z = PROP.z;
+  if ((w->s).flags & X_FLIP) {
+    (w->s).coord.x = (z->s).coord.x + sCoords[(z->s).motion.cmdIdx][0];
+  } else {
+    (w->s).coord.x = (z->s).coord.x - sCoords[(z->s).motion.cmdIdx][0];
+  }
+  (w->s).coord.y = (z->s).coord.y + sCoords[(z->s).motion.cmdIdx][1];
+}
 
-static void FUN_08039358(struct Weapon* w);
-void FUN_08039368(struct Weapon* w);
-
-// clang-format off
-const WeaponFunc gShieldGuardActions[5] = {
-    FUN_08039358,
-    FUN_08039368,
-    FUN_08039358,
-    FUN_08039358,
-    FUN_08039358,
-};
-// clang-format on
+// --------------------------------------------
 
 // clang-format off
 static const motion_t gShieldGuardMotions[5] = {
-    MOTION(0x6C, 0x00),
-    MOTION(0x6E, 0x00),
-    MOTION(0x6F, 0x00),
-    MOTION(0x71, 0x00),
-    MOTION(0x73, 0x00),
+    MOTION(DM108_UNK, 0),
+    MOTION(DM110_UNK, 0),
+    MOTION(DM111_UNK, 0),
+    MOTION(DM113_UNK, 0),
+    MOTION(DM115_UNK, 0),
 };
 // clang-format on
 
@@ -423,15 +438,11 @@ static const struct Collision sShieldGuardCollisions[2][5] = {
           faction : FACTION_ALLY,
           special : 0,
           damage : 0,
-          unk_04 : 0xFF,
-          element : 0xFF,
-          nature : 0xFF,
-          comboLv : 0xFF,
+          LAYER(0xFFFFFFFF),
           hitzone : 0xFF,
-          hardness : 0x01,
-          unk_0a : 0x00,
+          hardness : METAL,
           remaining : 0,
-          unk_0c : 0x00000000,
+          layer : 0x00000000,
           range : {-0x0F00, -0x1600, 0x1000, 0x1E00},
         },
         [1] = {
@@ -439,15 +450,11 @@ static const struct Collision sShieldGuardCollisions[2][5] = {
           faction : FACTION_ALLY,
           special : 0,
           damage : 0,
-          unk_04 : 0xFF,
-          element : 0xFF,
-          nature : 0xFF,
-          comboLv : 0xFF,
+          LAYER(0xFFFFFFFF),
           hitzone : 0xFF,
-          hardness : 0x01,
-          unk_0a : 0x00,
+          hardness : METAL,
           remaining : 0,
-          unk_0c : 0x00000000,
+          layer : 0x00000000,
           range : {0x0100, 0x0000, 0x1000, 0x1E00},
         },
         [2] = {
@@ -455,15 +462,11 @@ static const struct Collision sShieldGuardCollisions[2][5] = {
           faction : FACTION_ALLY,
           special : 0,
           damage : 0,
-          unk_04 : 0xFF,
-          element : 0xFF,
-          nature : 0xFF,
-          comboLv : 0xFF,
+          LAYER(0xFFFFFFFF),
           hitzone : 0xFF,
-          hardness : 0x01,
-          unk_0a : 0x00,
+          hardness : METAL,
           remaining : 0,
-          unk_0c : 0x00000000,
+          layer : 0x00000000,
           range : {-0x0F00, -0x1500, 0x1000, 0x1E00},
         },
         [3] = {
@@ -471,15 +474,11 @@ static const struct Collision sShieldGuardCollisions[2][5] = {
           faction : FACTION_ALLY,
           special : 0,
           damage : 0,
-          unk_04 : 0xFF,
-          element : 0xFF,
-          nature : 0xFF,
-          comboLv : 0xFF,
+          LAYER(0xFFFFFFFF),
           hitzone : 0xFF,
-          hardness : 0x01,
-          unk_0a : 0x00,
+          hardness : METAL,
           remaining : 0,
-          unk_0c : 0x00000000,
+          layer : 0x00000000,
           range : {0x0C00, -0x1300, 0x1000, 0x1E00},
         },
         [4] = {
@@ -487,15 +486,11 @@ static const struct Collision sShieldGuardCollisions[2][5] = {
           faction : FACTION_ALLY,
           special : 0,
           damage : 0,
-          unk_04 : 0xFF,
-          element : 0xFF,
-          nature : 0xFF,
-          comboLv : 0xFF,
+          LAYER(0xFFFFFFFF),
           hitzone : 0xFF,
-          hardness : 0x01,
-          unk_0a : 0x00,
+          hardness : METAL,
           remaining : 0,
-          unk_0c : 0x00000000,
+          layer : 0x00000000,
           range : {-0x0E00, -0x1200, 0x1000, 0x1E00},
         },
     },
@@ -505,15 +500,10 @@ static const struct Collision sShieldGuardCollisions[2][5] = {
           faction : FACTION_ALLY,
           special : 0,
           damage : 0,
-          unk_04 : 0xFF,
-          element : 0xFF,
-          nature : 0xFF,
-          comboLv : 0xFF,
+          LAYER(0xFFFFFFFF),
           hitzone : 0xFF,
-          hardness : 0x00,
-          unk_0a : 0x00,
           remaining : 0,
-          unk_0c : 0x00000000,
+          layer : 0x00000000,
           range : {-0x0F00, -0x1600, 0x1000, 0x1E00},
         },
         [1] = {
@@ -521,15 +511,10 @@ static const struct Collision sShieldGuardCollisions[2][5] = {
           faction : FACTION_ALLY,
           special : 0,
           damage : 0,
-          unk_04 : 0xFF,
-          element : 0xFF,
-          nature : 0xFF,
-          comboLv : 0xFF,
+          LAYER(0xFFFFFFFF),
           hitzone : 0xFF,
-          hardness : 0x00,
-          unk_0a : 0x00,
           remaining : 0,
-          unk_0c : 0x00000000,
+          layer : 0x00000000,
           range : {0x0100, 0x0000, 0x1000, 0x1E00},
         },
         [2] = {
@@ -537,15 +522,10 @@ static const struct Collision sShieldGuardCollisions[2][5] = {
           faction : FACTION_ALLY,
           special : 0,
           damage : 0,
-          unk_04 : 0xFF,
-          element : 0xFF,
-          nature : 0xFF,
-          comboLv : 0xFF,
+          LAYER(0xFFFFFFFF),
           hitzone : 0xFF,
-          hardness : 0x00,
-          unk_0a : 0x00,
           remaining : 0,
-          unk_0c : 0x00000000,
+          layer : 0x00000000,
           range : {-0x0F00, -0x1500, 0x1000, 0x1E00},
         },
         [3] = {
@@ -553,15 +533,10 @@ static const struct Collision sShieldGuardCollisions[2][5] = {
           faction : FACTION_ALLY,
           special : 0,
           damage : 0,
-          unk_04 : 0xFF,
-          element : 0xFF,
-          nature : 0xFF,
-          comboLv : 0xFF,
+          LAYER(0xFFFFFFFF),
           hitzone : 0xFF,
-          hardness : 0x00,
-          unk_0a : 0x00,
           remaining : 0,
-          unk_0c : 0x00000000,
+          layer : 0x00000000,
           range : {0x0C00, -0x1300, 0x1000, 0x1E00},
         },
         [4] = {
@@ -569,23 +544,30 @@ static const struct Collision sShieldGuardCollisions[2][5] = {
           faction : FACTION_ALLY,
           special : 0,
           damage : 0,
-          unk_04 : 0xFF,
-          element : 0xFF,
-          nature : 0xFF,
-          comboLv : 0xFF,
+          LAYER(0xFFFFFFFF),
           hitzone : 0xFF,
-          hardness : 0x00,
-          unk_0a : 0x00,
           remaining : 0,
-          unk_0c : 0x00000000,
+          layer : 0x00000000,
           range : {-0x0E00, -0x1200, 0x1000, 0x1E00},
         },
     },
 };
 
-const s16 s16_ARRAY_083603f0[22] = {
-    0x1600, -0x1400, 0x1500, -0x1400, 0x1600, -0x1500, 0x1600, -0x1300, 0x1500, -0x1300, 0x1400, -0x1300, 0x1500, -0x1400, 0x1600, -0x1500, 0x1600, -0x1300, 0x1500, -0x1300, 0x1400, -0x1300,
+// clang-format off
+static const s16 sCoords[11][2] = {
+    {PIXEL(22), -PIXEL(20)},
+    {PIXEL(21), -PIXEL(20)},
+    {PIXEL(22), -PIXEL(21)},
+    {PIXEL(22), -PIXEL(19)},
+    {PIXEL(21), -PIXEL(19)},
+    {PIXEL(20), -PIXEL(19)},
+    {PIXEL(21), -PIXEL(20)},
+    {PIXEL(22), -PIXEL(21)},
+    {PIXEL(22), -PIXEL(19)},
+    {PIXEL(21), -PIXEL(19)},
+    {PIXEL(20), -PIXEL(19)},
 };
+// clang-format on
 
 // clang-format off
 const WeaponRoutine gShieldGuardRoutine = {
@@ -596,3 +578,5 @@ const WeaponRoutine gShieldGuardRoutine = {
     [ENTITY_EXIT] =      (WeaponFunc)DeleteEntity,    
 };
 // clang-format on
+
+#undef PROP

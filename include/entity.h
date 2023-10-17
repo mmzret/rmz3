@@ -123,6 +123,7 @@ void RotateSprite(struct Sprite *s, s32 angle);
 void ScalerotSprite(struct Sprite *s, s32 angle);
 void UpdateEntityPaletteID(struct Entity *p);
 void PaintEntityWhite(struct Entity *p);
+void FUN_0801779c(struct Entity *p);
 
 bool32 isKilled(struct Entity *p);
 

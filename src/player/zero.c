@@ -205,7 +205,7 @@ WIP void Zero_Update(struct Zero* z) {
   z->motionCmdIdx = (z->s).motion.cmdIdx;
   z->motionDuration = (z->s).motion.duration;
   z->prevPosture = z->posture;
-  z->posture = 0;
+  z->posture = POSTURE_IDLE;
   if (((z->s).mode[1] != ZERO_DAMAGED) || ((z->s).mode[2] != 0)) {
     z->isGround = FALSE;
   }
@@ -291,8 +291,8 @@ LAB_080296fe:
     z->rodToggle--;
   }
 
-  if ((((z->posture == 1) && (!(z->last & INPUT_DISABLED))) && (((FOOT == FOOT_CHIP_SHADOW) || (FOOT == FOOT_CHIP_ULTIMA)))) && (z->prevPosture == (DASH | SHADOW))) {
-    z->posture = 3;
+  if ((((z->posture == POSTURE_DASH) && (!(z->last & INPUT_DISABLED))) && (((FOOT == FOOT_CHIP_SHADOW) || (FOOT == FOOT_CHIP_ULTIMA)))) && (z->prevPosture == POSTURE_SHADOW)) {
+    z->posture = POSTURE_SHADOW;
   }
 
   if ((z->s).mode[1] < 4) {
@@ -311,7 +311,7 @@ LAB_080296fe:
 
   if (z->prevPosture != z->posture) {
     SetDDP(&z->body, &gZeroCollisions[z->posture]);
-    if (z->posture == 3) {
+    if (z->posture == POSTURE_SHADOW) {
       LoadShadowDashPalette(z, GetZeroColor(z));
     } else {
       LoadZeroPalette(&z->s, GetZeroColor(z));

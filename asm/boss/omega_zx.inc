@@ -52,8 +52,8 @@ _08060B30:
 _08060B38: .4byte gBossHeaderPtr
 _08060B3C: .4byte gBossFnTable
 
-	thumb_func_start initBoss22
-initBoss22: @ 0x08060B40
+	thumb_func_start OmegaZX_Init
+OmegaZX_Init: @ 0x08060B40
 	push {r4, r5, r6, r7, lr}
 	sub sp, #8
 	adds r5, r0, #0
@@ -207,7 +207,7 @@ _08060C44:
 	adds r1, r4, #0
 	bl LoadBlink
 	adds r0, r5, #0
-	bl FUN_08060ca4
+	bl OmegaZX_Update
 	add sp, #8
 	pop {r4, r5, r6, r7}
 	pop {r0}
@@ -215,8 +215,8 @@ _08060C44:
 	.align 2, 0
 _08060CA0: .4byte gBossFnTable
 
-	thumb_func_start FUN_08060ca4
-FUN_08060ca4: @ 0x08060CA4
+	thumb_func_start OmegaZX_Update
+OmegaZX_Update: @ 0x08060CA4
 	push {r4, lr}
 	adds r4, r0, #0
 	adds r0, #0x8c
@@ -249,7 +249,7 @@ _08060CC2:
 	ldr r0, [r0, #8]
 	str r0, [r4, #0x14]
 	adds r0, r4, #0
-	bl FUN_08060d20
+	bl OmegaZX_Die
 	b _08060D10
 	.align 2, 0
 _08060CE8: .4byte gStageRun
@@ -277,8 +277,8 @@ _08060D10:
 _08060D18: .4byte 0x08365584
 _08060D1C: .4byte 0x083655A8
 
-	thumb_func_start FUN_08060d20
-FUN_08060d20: @ 0x08060D20
+	thumb_func_start OmegaZX_Die
+OmegaZX_Die: @ 0x08060D20
 	push {lr}
 	ldr r2, _08060D34 @ =0x083655CC
 	ldrb r1, [r0, #0xd]
@@ -291,8 +291,8 @@ FUN_08060d20: @ 0x08060D20
 	.align 2, 0
 _08060D34: .4byte 0x083655CC
 
-	thumb_func_start FUN_08060d38
-FUN_08060d38: @ 0x08060D38
+	thumb_func_start OmegaZX_Disappear
+OmegaZX_Disappear: @ 0x08060D38
 	push {r4, lr}
 	adds r4, r0, #0
 	movs r0, #0xa7

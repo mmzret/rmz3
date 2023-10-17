@@ -466,7 +466,7 @@ _08061ED6:
 	strb r0, [r2, #0xd]
 _08061ED8:
 	adds r0, r2, #0
-	bl FUN_0806224c
+	bl Spearook_Die
 	movs r0, #1
 	b _08061EEA
 	.align 2, 0
@@ -517,8 +517,8 @@ _08061F2E:
 	.align 2, 0
 _08061F34: .4byte 0x0836592C
 
-	thumb_func_start FUN_08061f38
-FUN_08061f38: @ 0x08061F38
+	thumb_func_start Spearook_Init
+Spearook_Init: @ 0x08061F38
 	push {r4, r5, r6, r7, lr}
 	mov r7, sl
 	mov r6, sb
@@ -672,7 +672,7 @@ _0806205C:
 	adds r0, #1
 	strb r2, [r0]
 	adds r0, r7, #0
-	bl FUN_080620ac
+	bl Spearook_Update
 	pop {r3, r4, r5}
 	mov r8, r3
 	mov sb, r4
@@ -690,8 +690,8 @@ _080620A0: .4byte gStaticMotionGraphics+12
 _080620A4: .4byte wStaticMotionPalIDs
 _080620A8: .4byte 0x000010CC
 
-	thumb_func_start FUN_080620ac
-FUN_080620ac: @ 0x080620AC
+	thumb_func_start Spearook_Update
+Spearook_Update: @ 0x080620AC
 	push {r4, r5, lr}
 	adds r4, r0, #0
 	bl FUN_08061e24
@@ -911,8 +911,8 @@ _08062246:
 	pop {r0}
 	bx r0
 
-	thumb_func_start FUN_0806224c
-FUN_0806224c: @ 0x0806224C
+	thumb_func_start Spearook_Die
+Spearook_Die: @ 0x0806224C
 	push {lr}
 	ldr r2, _08062260 @ =0x08365770
 	ldrb r1, [r0, #0xd]
@@ -924,7 +924,9 @@ FUN_0806224c: @ 0x0806224C
 	bx r0
 	.align 2, 0
 _08062260: .4byte 0x08365770
-_08062264:
+
+	thumb_func_start FUN_08062264
+FUN_08062264:
 	.byte 0x70, 0x47, 0x00, 0x00
 
 	thumb_func_start FUN_08062268
@@ -1015,7 +1017,9 @@ _080622FE:
 	pop {r0}
 	bx r0
 	.align 2, 0
-_08062304:
+
+	thumb_func_start FUN_08062304
+FUN_08062304:
 	.byte 0x00, 0xB5, 0x03, 0x1C, 0x8C, 0x30, 0x01, 0x68, 0x01, 0x20, 0x08, 0x40
 	.byte 0x00, 0x28, 0x0F, 0xD0, 0x80, 0x20, 0x80, 0x02, 0x01, 0x40, 0x00, 0x29, 0x0A, 0xD0, 0x1A, 0x1C
 	.byte 0xBC, 0x32, 0x10, 0x68, 0x05, 0x21, 0x49, 0x42, 0x08, 0x40, 0x10, 0x60, 0x00, 0x21, 0x0E, 0x20

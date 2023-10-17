@@ -40,7 +40,7 @@ extern const ProjectileRoutine gProjectile5Routine;
 extern const ProjectileRoutine gProjectile6Routine;
 extern const ProjectileRoutine gProjectile7Routine;
 extern const ProjectileRoutine gProjectile8Routine;
-extern const ProjectileRoutine gProjectile9Routine;
+extern const ProjectileRoutine gBlazinProjectileRoutine;
 extern const ProjectileRoutine gBlazinTailRoutine;
 extern const ProjectileRoutine gEarShotRoutine;
 extern const ProjectileRoutine gProjectile12Routine;
@@ -53,7 +53,9 @@ extern const ProjectileRoutine gProjectile18Routine;
 extern const ProjectileRoutine gTretistaProjectileRoutine;
 // ...
 extern const ProjectileRoutine gOmegaZeroProjectileRoutine;
-extern const ProjectileRoutine gProjectile39Routine;
+extern const ProjectileRoutine gClavekerYellowBallsRoutine;
+extern const ProjectileRoutine gPhantomProjectileRoutine;
+extern const ProjectileRoutine gOmegaZXProjectileRoutine;
 
 // --------------------------------------------
 

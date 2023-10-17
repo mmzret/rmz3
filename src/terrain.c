@@ -1,4 +1,3 @@
-#include "gba/gba.h"
 #include "gfx.h"
 #include "global.h"
 #include "overworld.h"
@@ -9,6 +8,29 @@ static void loadStageLandscape(const struct Stage* p, const struct ScreenLayout*
 static void TaskCB_UpdateOwGraphic(struct Overworld* ow, struct DrawPivot* tc);
 
 void ResetTerrain(struct Terrain* terrain, metatile_attr_t* attr, Metatile* tiles, Screen* m, const struct ScreenLayout* map);
+
+// clang-format off
+static const struct Stage* const gStageLandscape[STAGE_COUNT] = { // 0x0833a2e8
+    [STAGE_NONE] =            &gStage0Landscape,
+    [STAGE_SPACE_CRAFT] =     &gSpacecraftLandscape,
+    [STAGE_VOLCANO] =         &gVolcanoLandscape,
+    [STAGE_OCEAN] =           &gOceanLandscape,
+    [STAGE_REPAIR_FACTORY] =  &gRepairFactoryLandscape,
+    [STAGE_OLD_RESIDENTIAL] = &gOldResidentialLandscape,
+    [STAGE_MISSILE_FACTORY] = &gMissileFactoryLandscape,
+    [STAGE_TWILIGHT_DESERT] = &gTwilightDesertLandscape,
+    [STAGE_ANATRE_FOREST] =   &gAnatreForestLandscape,
+    [STAGE_ICE_BASE] =        &gFrostlineIceBaseLandscape,
+    [STAGE_AREA_X2] =         &gAreaX2Landscape,
+    [STAGE_E_FACILITY] =      &gEnergyFacilityLandscape,
+    [STAGE_SNOWY_PLAINS] =    &gSnowyPlainsLandscape,
+    [STAGE_SUNKEN_LIBRARY] =  &gSunkenLibraryLandscape, 
+    [STAGE_GIANT_ELEVATOR] =  &gGiantElevatorLandscape, 
+    [STAGE_SUB_ARCADIA] =     &gSubArcadiaLandscape, 
+    [STAGE_WEILS_LABO] =      &gWeilLaboLandscape, 
+    [STAGE_BASE] =            &gResistanceBaseLandscape,
+};
+// clang-format on
 
 /*
     Overworld(ow) manager

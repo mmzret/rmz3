@@ -102,10 +102,6 @@ extern u16 INTR_CHECK;
 
 // --------------------------------------------
 
-extern const struct Rect gZeroRanges[6];
-
-// --------------------------------------------
-
 extern const ShapeChecker gShapeCheckerUp[16];
 extern const ShapeChecker gShapeCheckerDown[16];
 extern const ShapeChecker gShapeCheckerLeft[16];

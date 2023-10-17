@@ -382,7 +382,6 @@ struct Overworld {
 #define SEA (gOverworld.unk_1c8.sea)
 
 extern struct Overworld gOverworld;
-extern const struct Stage *const gStageLandscape[STAGE_COUNT];
 extern const u8 gScreenY[2048];
 extern const u8 gScreenX[3072];
 extern const struct TerrainHeader gStageTerrains[STAGE_COUNT];

@@ -1,7 +1,6 @@
 #include "boss.h"
 
 #include "collision.h"
-#include "entity.h"
 #include "global.h"
 
 // clang-format off
@@ -27,10 +26,10 @@ const BossRoutine* const gBossFnTable[BOSS_ENTITY_COUNT] = {
     [BOSS_OMEGA_GOLD] =         &gOmegaGoldRoutine,
     [BOSS_HANUMACHINE] =        &gHanumachineRoutine,
     [BOSS_OMEGA_ZERO] =         &gOmegaZeroRoutine,
-    [BOSS_PHANTOM] =            (const BossRoutine*)0x08365200,
-    [BOSS_UNK22] =              (const BossRoutine*)0x08365570,
-    [BOSS_REACTOR_CORE] =       (const BossRoutine*)0x08365688,
-    [BOSS_UNK24] =              (const BossRoutine*)0x083656D4,
+    [BOSS_PHANTOM] =            &gPhantomBossRoutine,
+    [BOSS_OMEGA_ZX] =           &gOmegaZXRoutine,
+    [BOSS_REACTOR_CORE] =       &gReactorCoreRoutine,
+    [BOSS_SPEAROOK] =           &gSpearookRoutine,
 };
 // clang-format on
 

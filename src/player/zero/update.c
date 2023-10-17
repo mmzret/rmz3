@@ -126,7 +126,7 @@ static void zeroIdle_0802a30c(struct Zero* z) {
 
 static void zeroIdleStep0(struct Zero* z) {
   struct Zero_b4* b4;
-  if ((z->prevPosture == DASH) || (z->prevPosture == (DASH | SHADOW))) {
+  if ((z->prevPosture == POSTURE_DASH) || (z->prevPosture == POSTURE_SHADOW)) {
     SetMotion(&z->s, MOTION(DM003_ZERO_DASH, 0x01));
   } else {
     SetMotion(&z->s, GetDefaultMotion(z));
@@ -334,7 +334,7 @@ static void zero_dash_step0(struct Zero* z) {
     if (((z->last & INPUT_DISABLED) == 0) && ((foot = (b4->status).foot, foot == FOOT_CHIP_SHADOW || (foot == FOOT_CHIP_ULTIMA)))) {
       const u8 color = GetZeroColor(z);
       LoadShadowDashPalette(z, color);
-      z->posture = 3;
+      z->posture = POSTURE_SHADOW;
     }
 
     PlaySound(SE_DASH_1);
@@ -347,8 +347,8 @@ static void zero_dash_step0(struct Zero* z) {
 WIP static void zero_dash_step1(struct Zero* z) {
 #if MODERN
   bool8 xflip;
-  if (z->posture != 3) {
-    z->posture = 1;
+  if (z->posture != POSTURE_SHADOW) {
+    z->posture = POSTURE_DASH;
   }
 
   z->dashDustTimer++;
@@ -991,7 +991,7 @@ WIP static void zeroWallSeq1(struct Zero* z) {
 #if MODERN
   metatile_attr_t attr;
 
-  z->posture = 2;
+  z->posture = POSTURE_WALL;
   attr = GetWallMetatileAttr(z, &gZeroRanges[z->posture], FALSE);
   if (attr & METATILE_SPIKE) {
     InstantlyKilling(z);
@@ -1546,7 +1546,7 @@ void zeroDoor2D(struct Zero* z) {
       door2D_0,
       door2D_1,
   };
-  z->posture = 4;
+  z->posture = POSTURE_DOOR_2D;
   (seq[(z->s).mode[2]])(z);
 }
 
@@ -1610,7 +1610,7 @@ void zeroDoor3D(struct Zero* z) {
       zero_door_0802c2a4,
       zero_door_0802c364,
   };
-  z->posture = 5;
+  z->posture = POSTURE_DOOR_3D;
   (gZeroDoor3DSeq[(z->s).mode[2]])(z);
 }
 
@@ -2342,7 +2342,7 @@ void zeroTalk(struct Zero* z) {
       zeroTalk0,
       zeroTalk1,
   };
-  z->posture = 5;
+  z->posture = POSTURE_DOOR_3D;
   (gZeroTalkSeq[(z->s).mode[2]])(z);
 }
 
@@ -2637,7 +2637,7 @@ void zeroCyberDoor(struct Zero* z) {
       zeroCyberDoor2,
   };
 
-  z->posture = 4;
+  z->posture = POSTURE_DOOR_2D;
   (sZeroCyberDoorSeq[(z->s).mode[2]])(z);
 }
 

@@ -4,8 +4,8 @@
 	
 	.text
 
-	thumb_func_start initReactorCore
-initReactorCore: @ 0x08061758
+	thumb_func_start ReactorCore_Init
+ReactorCore_Init: @ 0x08061758
 	push {r4, r5, r6, r7, lr}
 	mov r7, sl
 	mov r6, sb
@@ -169,7 +169,7 @@ _0806179C:
 	movs r0, #0xe0
 	bl PlaySound
 	adds r0, r7, #0
-	bl reactorCoreAI
+	bl ReactorCore_Update
 	pop {r3, r4, r5}
 	mov r8, r3
 	mov sb, r4
@@ -190,8 +190,8 @@ _080618EC: .4byte 0x0000053C
 _080618F0: .4byte 0x083656B0
 _080618F4: .4byte 0xFFFFE800
 
-	thumb_func_start reactorCoreAI
-reactorCoreAI: @ 0x080618F8
+	thumb_func_start ReactorCore_Update
+ReactorCore_Update: @ 0x080618F8
 	push {r4, r5, r6, r7, lr}
 	mov r7, sl
 	mov r6, sb
@@ -299,7 +299,7 @@ _080619AA:
 	str r0, [r7, #0x14]
 	strb r3, [r7, #0xd]
 	adds r0, r7, #0
-	bl killReactorCore
+	bl ReactorCore_Die
 	b _08061A14
 	.align 2, 0
 _080619D8: .4byte gStageRun
@@ -337,8 +337,8 @@ _08061A14:
 _08061A24: .4byte 0x0836569C
 _08061A28: .4byte 0x083656A4
 
-	thumb_func_start killReactorCore
-killReactorCore: @ 0x08061A2C
+	thumb_func_start ReactorCore_Die
+ReactorCore_Die: @ 0x08061A2C
 	push {r4, lr}
 	adds r4, r0, #0
 	movs r0, #0xcb
@@ -358,8 +358,8 @@ killReactorCore: @ 0x08061A2C
 	.align 2, 0
 _08061A54: .4byte 0x083656AC
 
-	thumb_func_start FUN_08061a58
-FUN_08061a58: @ 0x08061A58
+	thumb_func_start ReactorCore_Disappear
+ReactorCore_Disappear: @ 0x08061A58
 	push {r4, lr}
 	adds r4, r0, #0
 	movs r0, #0xcb

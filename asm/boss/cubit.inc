@@ -4,54 +4,6 @@
 	
 	.text
 
-	thumb_func_start createCubit
-createCubit: @ 0x080525B0
-	push {r4, r5, lr}
-	adds r5, r0, #0
-	lsls r1, r1, #0x18
-	lsrs r4, r1, #0x18
-	ldr r0, _08052604 @ =gBossHeaderPtr
-	ldr r0, [r0]
-	bl AllocEntityFirst
-	adds r3, r0, #0
-	cmp r3, #0
-	beq _080525FC
-	adds r1, r3, #0
-	adds r1, #0x25
-	movs r2, #0
-	movs r0, #0x18
-	strb r0, [r1]
-	ldr r1, _08052608 @ =gBossFnTable
-	movs r0, #0xd
-	strb r0, [r3, #9]
-	ldr r0, [r1, #0x34]
-	ldr r0, [r0]
-	str r0, [r3, #0x14]
-	movs r0, #0
-	strh r2, [r3, #0x20]
-	adds r1, r3, #0
-	adds r1, #0x22
-	strb r0, [r1]
-	ldrb r1, [r3, #0xb]
-	movs r0, #0x10
-	orrs r0, r1
-	strb r0, [r3, #0xb]
-	ldrb r0, [r3, #0x1c]
-	strb r0, [r3, #0x1d]
-	ldr r0, [r5]
-	ldr r1, [r5, #4]
-	str r0, [r3, #0x54]
-	str r1, [r3, #0x58]
-	strb r4, [r3, #0x10]
-_080525FC:
-	adds r0, r3, #0
-	pop {r4, r5}
-	pop {r1}
-	bx r1
-	.align 2, 0
-_08052604: .4byte gBossHeaderPtr
-_08052608: .4byte gBossFnTable
-
 	thumb_func_start Cubit_Init
 Cubit_Init: @ 0x0805260C
 	push {r4, r5, r6, r7, lr}

@@ -275,16 +275,9 @@ _0809D222:\n\
 static const struct Collision sCollision = {
   kind : DDP,
   faction : FACTION_ENEMY,
-  special : 0,
   damage : 4,
-  unk_04 : 0x00,
-  element : 0x00,
-  nature : 0x80,
-  comboLv : 0x00,
-  hitzone : 0x00,
-  hardness : 0x00,
-  unk_0a : 0x00,
+  nature : BODY_NATURE_B7,
   remaining : 0,
-  unk_0c : 0x00000001,
+  layer : 0x00000001,
   range : {0x0000, 0x0000, 0x1400, 0x0800},
 };

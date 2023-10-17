@@ -2,35 +2,29 @@
 #include "global.h"
 #include "weapon.h"
 
+#define PROP (w->props.throw_blade)
+
 static const struct Collision sNormalCollisions[2] = {
     {
       kind : DDP,
       faction : FACTION_ALLY,
-      special : 1,
+      special : HALFABLE,
       damage : 6,
-      unk_04 : 0x0B,
-      element : 0x00,
-      nature : BODY_NATURE_B4,
+      atkType : ATK_UNK11,
+      nature : BODY_NATURE_CUT,
       comboLv : 1,
-      hitzone : 0,
-      unk_0a : 0x00,
       remaining : 1,
-      unk_0c : 0x00000040,
+      layer : 0x00000040,
       range : {PIXEL(7), PIXEL(1), PIXEL(27), PIXEL(17)},
     },
     {
       kind : DRP,
       faction : FACTION_ALLY,
-      special : 1,
+      special : HALFABLE,
       damage : 0,
-      unk_04 : 0xFF,
-      element : 0xFF,
-      nature : 0xFF,
-      comboLv : 0xFF,
+      LAYER(0xFFFFFFFF),
       hitzone : 0xFF,
-      unk_0a : 0x00,
       remaining : 0,
-      unk_0c : 0x00000000,
       range : {PIXEL(7), PIXEL(1), PIXEL(27), PIXEL(17)},
     },
 };
@@ -39,31 +33,23 @@ static const struct Collision sIceCollisions[2] = {
     {
       kind : DDP,
       faction : FACTION_ALLY,
-      special : 1,
+      special : HALFABLE,
       damage : 6,
-      unk_04 : 0x0B,
-      element : 0x00,
-      nature : BODY_NATURE_B4,
+      atkType : ATK_UNK11,
+      nature : BODY_NATURE_CUT,
       comboLv : 1,
-      hitzone : 0,
-      unk_0a : 0x00,
       remaining : 1,
-      unk_0c : 0x00000040,
+      layer : 0x00000040,
       range : {PIXEL(10), PIXEL(1), PIXEL(35), PIXEL(23)},
     },
     {
       kind : DRP,
       faction : FACTION_ALLY,
-      special : 1,
+      special : HALFABLE,
       damage : 0,
-      unk_04 : 0xFF,
-      element : 0xFF,
-      nature : 0xFF,
-      comboLv : 0xFF,
+      LAYER(0xFFFFFFFF),
       hitzone : 0xFF,
-      unk_0a : 0x00,
       remaining : 0,
-      unk_0c : 0x00000000,
       range : {PIXEL(10), PIXEL(1), PIXEL(35), PIXEL(23)},
     },
 };
@@ -86,7 +72,7 @@ const WeaponRoutine gThrowBladeRoutine = {
 
 void MenuExit_ThrowBlade(struct Weapon* w) {
   struct Zero* z = (struct Zero*)(w->s).unk_28;
-  if (((&w->unk_b4)->props[1][0] != ((&z->unk_b4)->status).element)) {
+  if (((&PROP)->element != ((&z->unk_b4)->status).element)) {
     (w->s).flags &= ~DISPLAY;
     (w->s).flags &= ~FLIPABLE;
     (w->body).status = 0;
@@ -122,8 +108,8 @@ struct Weapon* CreateThrowBlade(struct Zero* z, struct Weapon* saber, bool8 isIc
       }
     }
     (w->s).unk_28 = &z->s;
-    (&w->unk_b4)->z = (struct Zero*)saber;
-    (&w->unk_b4)->props[1][0] = ((&z->unk_b4)->status).element;
+    (&PROP)->saber = saber;
+    (&PROP)->element = ((&z->unk_b4)->status).element;
     (w->s).work[0] = isIce;
     (w->s).work[1] = 0;
   }
@@ -131,3 +117,5 @@ struct Weapon* CreateThrowBlade(struct Zero* z, struct Weapon* saber, bool8 isIc
 }
 
 INCASM("asm/weapon/throw_blade.inc");
+
+#undef PROP

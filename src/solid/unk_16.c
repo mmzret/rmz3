@@ -41,16 +41,9 @@ INCASM("asm/solid/unk_16.inc");
 const struct Collision sSolid16Collision = {
   kind : DRP,
   faction : FACTION_ENEMY,
-  special : 0,
   damage : 0,
-  unk_04 : 0x00,
-  element : 0x78,
-  nature : 0x00,
-  comboLv : 0x00,
+  LAYER(RECOIL_PUSHABLE),
   hitzone : 0xFF,
-  hardness : 0x00,
-  unk_0a : 0x00,
   remaining : 0,
-  unk_0c : 0x00000000,
   range : {PIXEL(0), PIXEL(0), -PIXEL(1), -PIXEL(96)},
 };

@@ -26,7 +26,7 @@
 	movs r1, #2
 	orrs r0, r1
 	strb r0, [r6, #0xa]
-	ldr r1, _080382A8 @ =gSaberMotions
+	ldr r1, _080382A8 @ =sSaberMotions
 	ldrb r0, [r6, #0x10]
 	lsls r0, r0, #1
 	adds r0, r0, r1
@@ -53,7 +53,7 @@
 	bl InitBody
 	str r6, [r4, #0x2c]
 	str r5, [r4, #0x24]
-	ldr r1, _080382B0 @ =gSaberSoundIDs
+	ldr r1, _080382B0 @ =sSaberSEs
 	ldrb r2, [r6, #0x10]
 	lsls r0, r2, #1
 	adds r1, r0, r1
@@ -73,9 +73,9 @@
 	b _080382C2
 	.align 2, 0
 _080382A4: .4byte gWeaponFnTable
-_080382A8: .4byte gSaberMotions
+_080382A8: .4byte sSaberMotions
 _080382AC: .4byte gSaberCollisions
-_080382B0: .4byte gSaberSoundIDs
+_080382B0: .4byte sSaberSEs
 _080382B4:
 	ldrh r0, [r1]
 	bl PlaySound
@@ -142,7 +142,7 @@ _0803832C:
 	ldrb r0, [r0]
 _08038330:
 	strb r0, [r5, #0xc]
-	ldr r1, _08038370 @ =gSaberDamages
+	ldr r1, _08038370 @ =sSaberDamages
 	ldrb r0, [r6, #0x10]
 	adds r0, r0, r1
 	ldrb r0, [r0]
@@ -170,7 +170,7 @@ _08038330:
 	b _0803837A
 	.align 2, 0
 _0803836C: .4byte gSaberElements
-_08038370: .4byte gSaberDamages
+_08038370: .4byte sSaberDamages
 _08038374: .4byte gIlethasables
 _08038378:
 	ldrb r0, [r7, #6]

@@ -74,20 +74,13 @@ const SolidFunc sLocomoIFPlatformUpdates2[4] = {
 const struct Collision sLocomoIFPlatformCollision = {
   kind : DDP,
   faction : FACTION_ENEMY,
-  special : 0,
   damage : 255,
-  unk_04 : 0x00,
-  element : 0x00,
-  nature : 0x04,
-  comboLv : 0x00,
-  hitzone : 0x00,
-  hardness : 0x00,
-  unk_0a : 0x00,
+  nature : BODY_NATURE_B2,
   remaining : 0,
-  unk_0c : 0x00000001,
-  range : {0x0000, 0x0D00, 0x2F00, 0x1600},
+  layer : 0x00000001,
+  range : {PIXEL(0), PIXEL(13), PIXEL(47), PIXEL(22)},
 };
 
 const u8 u8_ARRAY_08370310[4] = {0, 0, 0, 0};
 
-const struct Rect Rect_08370314 = {0x0, 0xB00, 0x3000, 0x1600};
+const struct Rect Rect_08370314 = {PIXEL(0), PIXEL(11), PIXEL(48), PIXEL(22)};

@@ -2,6 +2,8 @@
 #include "global.h"
 #include "weapon.h"
 
+#define PROP (w->props.common)
+
 static const struct Collision sCollisions[2];
 static const motion_t sMotions[8];
 
@@ -9,31 +11,25 @@ static const struct Collision sCollisions[2] = {
     {
       kind : DDP,
       faction : FACTION_ALLY,
-      special : 1,
+      special : HALFABLE,
       damage : 10,
-      unk_04 : 0x00,
+      atkType : 0x00,
       element : 0x00,
       nature : 0x00,
       comboLv : 1,
       hitzone : 0,
-      unk_0a : 0x00,
       remaining : 1,
-      unk_0c : 0x00000001,
+      layer : 0x00000001,
       range : {PIXEL(0), PIXEL(0), PIXEL(8), PIXEL(8)},
     },
     {
       kind : DRP,
       faction : FACTION_ALLY,
-      special : 1,
+      special : HALFABLE,
       damage : 0,
-      unk_04 : 0xFF,
-      element : 0xFF,
-      nature : 0xFF,
-      comboLv : 0xFF,
+      LAYER(0xFFFFFFFF),
       hitzone : 0xFF,
-      unk_0a : 0x00,
       remaining : 0,
-      unk_0c : 0x00000000,
       range : {PIXEL(0), PIXEL(0), PIXEL(8), PIXEL(8)},
     },
 };
@@ -86,7 +82,7 @@ struct Weapon* CreateReflectLaser(struct Zero* z, struct Entity* p, u8 n) {
       (w->s).palID = gWeaponPalIDs[1];
     }
     (w->s).unk_28 = &z->s;
-    (&w->unk_b4)->z = (struct Zero*)p;
+    (&PROP)->z = (struct Zero*)p;
     (w->s).work[0] = n;
     (w->s).work[1] = 0;
   }
@@ -111,3 +107,5 @@ static const motion_t sMotions[8] = {
     MOTION(DM080_SEMI_BUSTER, 0x02),
 };
 // clang-format on
+
+#undef PROP

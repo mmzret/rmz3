@@ -1,13 +1,16 @@
-#include "entity.h"
+#include "collision.h"
 #include "global.h"
 #include "solid.h"
+#include "story.h"
 
 // リコイルロッドで押せる棺桶みたいなコンテナ
+
+static const u16 u16_ARRAY_083716b8[2];
 
 static const struct Collision sCollision;
 static const struct Rect sSize;
 
-void VolcanoCoffin_Init(struct Solid* p);
+static void VolcanoCoffin_Init(struct Solid* p);
 void VolcanoCoffin_Update(struct Solid* p);
 void VolcanoCoffin_Die(struct Solid* p);
 
@@ -38,25 +41,37 @@ struct Solid* CreateVolcanoCoffin(u8 n, s32 x, s32 y) {
   return p;
 }
 
+// --------------------------------------------
+
+static void VolcanoCoffin_Init(struct Solid* p) {
+  struct Coord* d;
+  s8 px;
+
+  (p->s).flags |= FLIPABLE;
+  px = gCurStory.s.counts[u16_ARRAY_083716b8[(p->s).work[0]]];
+  (p->s).coord.x += PIXEL(px);
+  (p->s).coord.y = FUN_08009f6c((p->s).coord.x, (p->s).coord.y);
+  (p->s).coord.y -= (PIXEL(32) - 1);
+  d = &(p->s).d;
+  d->x = d->y = 0;
+  SET_SOLID_ROUTINE(p, ENTITY_UPDATE);
+  VolcanoCoffin_Update(p);
+}
+
+// --------------------------------------------
+
 INCASM("asm/solid/volcano_coffin.inc");
 
 static const struct Collision sCollision = {
   kind : DRP,
   faction : FACTION_ENEMY,
-  special : 0,
   damage : 0,
-  unk_04 : 0x00,
-  element : 0x78,
-  nature : 0x00,
-  comboLv : 0x00,
+  LAYER(RECOIL_PUSHABLE),
   hitzone : 0xFF,
-  hardness : 0x00,
-  unk_0a : 0x00,
   remaining : 0,
-  unk_0c : 0x00000000,
-  range : {0x0000, 0x1400, 0x5000, 0x2800},
+  range : {PIXEL(0), PIXEL(20), PIXEL(80), PIXEL(40)},
 };
 
-static const struct Rect sSize = {0x0, 0x1200, 0x5000, 0x2400};
+static const struct Rect sSize = {PIXEL(0), PIXEL(18), PIXEL(80), PIXEL(36)};
 
-const u16 u16_ARRAY_083716b8[2] = {0x46, 0x47};
+static const u16 u16_ARRAY_083716b8[2] = {70, 71};

@@ -23,7 +23,7 @@ static void unused_Clear24Bytes(u32 *p) {
 void ResetCollisionManager(void) {
   gCollisionManager.disabled = 0;
   gCollisionManager.sweep = 0;
-  gCollisionManager.pauseFrame = 0;
+  gCollisionManager.hitstop = 0;
   ClearAllHitboxes();
 }
 
@@ -40,8 +40,8 @@ void ClearAllHitboxes(void) {
 // 0x080070E0
 void CheckCollision(void) {
   TrySweepBodies();
-  if (gCollisionManager.pauseFrame != 0) {
-    gCollisionManager.pauseFrame--;
+  if (gCollisionManager.hitstop != 0) {
+    gCollisionManager.hitstop--;
     return;
   }
 
@@ -388,14 +388,14 @@ _080075BC: .4byte gCollisionManager\n\
 */
 WIP u16 CalcDamage(struct Body *a, struct Body *d) {
 #if MODERN
-  const struct Collision *drp = d->drp;
-  const u8 hardness = drp->hardness | d->hardness;
+  const struct Collision *processing = d->processing;
+  const u8 hardness = processing->hardness | d->hardness;
 
-  if (!(gCollisionManager.disabled & 0x80) && (drp->hitzone != 0xFF) && !(hardness & NO_DAMAGE)) {
-    const s32 X = sDamageScale[drp->hitzone][a->element];
+  if (!(gCollisionManager.disabled & 0x80) && (processing->hitzone != 0xFF) && !(hardness & NO_DAMAGE)) {
+    const s32 X = sDamageScale[processing->hitzone][a->element];
     if (X != 9) {
       u16 damage = (X * a->atk) / 4;
-      if (drp->special == HALFABLE) {
+      if (processing->special == HALFABLE) {
         if (FLAG(gCurStory.s.gameflags, PUTITE_ENABLED) && (a->atk == 254)) {
           damage = 8;
         }
@@ -427,41 +427,43 @@ WIP void hitbox_08007674(struct Body *a, struct Body *d) {
   if (gCollisionManager.disabled & (1 << 7)) {
     return;
   }
-  if ((a->unk_3c & *(u32 *)(&d->drp->unk_04)) == 0) {
+
+  if ((a->collisionLayer & LAYER_MASK(&d->processing)) == 0) {
     return;
   }
 
-  if ((a->drp)->special == CHATABLE) {
+  if ((a->processing)->special == CHATABLE) {
     a->status |= BODY_STATUS_CHAT;
     d->status |= BODY_STATUS_CHAT;
     gCollisionManager.talkTo = a;
   }
-  if ((a->drp)->special == DOOR_3D) {
+  if ((a->processing)->special == DOOR_3D) {
     a->status |= BODY_STATUS_DOOR;
     d->status |= BODY_STATUS_DOOR;
     gCollisionManager.door = a;
   }
-  if ((a->drp)->special == CS_TELEPORTAL) {
+  if ((a->processing)->special == CS_TELEPORTAL) {
     a->status |= BODY_STATUS_TELEPORTAL;
     d->status |= BODY_STATUS_TELEPORTAL;
     gCollisionManager.teleportal = a;
   }
 
-  if (((gCollisionManager.disabled >> (d->drp)->faction)) & 1) {
+  if (((gCollisionManager.disabled >> (d->processing)->faction)) & 1) {
     return;
   }
-  if (((a->drp)->unk_0a & ((1 << 5) | (1 << 0))) && ((d->drp)->unk_0a & (1 << 2))) {
+
+  if (((a->processing)->unk_0a & ((1 << 5) | (1 << 0))) && ((d->processing)->unk_0a & (1 << 2))) {
     if (!(a->status & BODY_STATUS_B11) && !(d->status & BODY_STATUS_B10)) {
       if (!(a->prevStatus & BODY_STATUS_B11) && !(d->prevStatus & BODY_STATUS_B10)) {
         a->unk_10 = d;
         d->unk_10 = a;
-        a->unk_21 = d->unk_21 = ((a->drp)->unk_0a & 0xF0) >> 1;
+        a->unk_21 = d->unk_21 = ((a->processing)->unk_0a & 0xF0) >> 1;
         a->hitboxFlags |= BODY_STATUS_B11;
         d->hitboxFlags |= BODY_STATUS_B10;
         a->status |= a->hitboxFlags;
         d->status |= d->hitboxFlags;
       } else if ((a->unk_10 == d) && (d->unk_10 == a)) {
-        if ((((a->drp)->unk_0a & (1 << 1)) && (a->unk_21 != 0)) || (a->unk_21 != 0 && d->unk_21 != 0)) {
+        if ((((a->processing)->unk_0a & (1 << 1)) && (a->unk_21 != 0)) || (a->unk_21 != 0 && d->unk_21 != 0)) {
           a->hitboxFlags |= BODY_STATUS_B11;
           d->hitboxFlags |= BODY_STATUS_B10;
           a->status |= a->hitboxFlags;
@@ -474,11 +476,12 @@ WIP void hitbox_08007674(struct Body *a, struct Body *d) {
   if (d->status & (BODY_STATUS_WHITE | BODY_STATUS_B3)) {
     return;
   }
-  if (a->unk_3c & (d->drp)->unk_0c) {
-    if ((a->drp)->special == HALFABLE) {
-      if ((a->drp)->unk_04 != 0) {
+
+  if (a->collisionLayer & (d->processing)->priorityLayer) {
+    if ((a->processing)->special == HALFABLE) {
+      if ((a->processing)->atkType != 0) {
         if (d->prevStatus & (BODY_STATUS_B3 | BODY_STATUS_B4)) {
-          if (d->unk_23 == (a->drp)->unk_04) {
+          if (d->unk_23 == (a->processing)->atkType) {
             if (a->comboLv <= d->invincibleLv) {
               a->enemy = d;
               d->enemy = a;
@@ -489,10 +492,10 @@ WIP void hitbox_08007674(struct Body *a, struct Body *d) {
         }
       }
     }
-    if ((d->drp)->hitzone != 0xFF) {
+    if ((d->processing)->hitzone != 0xFF) {
       a->enemy = d;
       a->hitboxFlags |= BODY_STATUS_B5;
-      if ((d->drp)->hardness & METAL) {
+      if ((d->processing)->hardness & METAL) {
         a->hitboxFlags |= BODY_STATUS_BLOCKED;
       }
     }
@@ -502,7 +505,7 @@ WIP void hitbox_08007674(struct Body *a, struct Body *d) {
     }
     d->enemy = a;
     d->hitboxFlags |= BODY_STATUS_B3;
-    d->unk_23 = (a->drp)->unk_04 & 0xF;
+    d->unk_23 = (a->processing)->atkType & 0xF;
     d->elemented = a->element & 0xF;
     d->invincibleLv = a->comboLv;
 
@@ -512,10 +515,10 @@ WIP void hitbox_08007674(struct Body *a, struct Body *d) {
     if (a->nature & BODY_NATURE_B0) {
       d->hitboxFlags |= BODY_STATUS_B14;
     }
-    if (a->nature & BODY_NATURE_B1) {
+    if (a->nature & ELEMENT_ENCHANTABLE) {
       d->hitboxFlags |= BODY_STATUS_B15;
     }
-    if (a->nature & BODY_NATURE_B4) {
+    if (a->nature & BODY_NATURE_CUT) {
       d->hitboxFlags |= BODY_STATUS_SLASHED;
     }
     if (a->nature & BODY_NATURE_RECOIL) {
@@ -525,18 +528,20 @@ WIP void hitbox_08007674(struct Body *a, struct Body *d) {
       d->hitboxFlags |= BODY_STATUS_B22;
     }
 
-    if (((d->drp)->hitzone != 0xFF) && (((a->drp)->unk_04 == 1) || ((a->drp)->unk_04 == 2))) {
-      gCollisionManager.pauseFrame = 4;
+    if ((d->processing)->hitzone != 0xFF) {
+      if (((a->processing)->atkType == ATK_SABER) || ((a->processing)->atkType == ATK_ROD)) {
+        gCollisionManager.hitstop = 4;
+      }
     }
     a->status |= a->hitboxFlags;
     d->status |= d->hitboxFlags;
     return;
   }
 
-  if ((a->drp)->special == HALFABLE) {
-    if ((a->drp)->unk_04 != 0) {
+  if ((a->processing)->special == HALFABLE) {
+    if ((a->processing)->atkType != 0) {
       if (d->prevStatus & (BODY_STATUS_WHITE | BODY_STATUS_B1)) {
-        if (d->unk_23 == (a->drp)->unk_04) {
+        if (d->unk_23 == (a->processing)->atkType) {
           if (a->comboLv <= d->invincibleLv) {
             a->enemy = d;
             d->enemy = a;
@@ -547,18 +552,18 @@ WIP void hitbox_08007674(struct Body *a, struct Body *d) {
       }
     }
   }
-  if ((d->drp)->hitzone != 0xFF) {
+  if ((d->processing)->hitzone != 0xFF) {
     a->enemy = d;
     a->hitboxFlags |= BODY_STATUS_B2;
-    if ((d->drp)->hardness & METAL) {
+    if ((d->processing)->hardness & METAL) {
       a->hitboxFlags |= BODY_STATUS_BLOCKED;
       d->hitboxFlags |= BODY_STATUS_B13;
     }
   }
 
-  if ((d->drp)->special == CS_BOSS) {
+  if ((d->processing)->special == CS_BOSS) {
     if (d->invincibleTime != 0) {
-      if ((a->comboLv <= d->invincibleLv) && ((a->drp)->unk_04 != 0)) {
+      if ((a->comboLv <= d->invincibleLv) && ((a->processing)->atkType != 0)) {
         a->hitboxFlags = 0;
         return;
       }
@@ -570,7 +575,7 @@ WIP void hitbox_08007674(struct Body *a, struct Body *d) {
     if (a->atk != 0xFF) {
       d->enemy = a;
       d->hitboxFlags |= BODY_STATUS_WHITE;
-      d->unk_23 = (a->drp)->unk_04;
+      d->unk_23 = (a->processing)->atkType;
       d->elemented = a->element;
       d->invincibleLv = a->comboLv;
 
@@ -581,10 +586,10 @@ WIP void hitbox_08007674(struct Body *a, struct Body *d) {
       if (a->nature & BODY_NATURE_B0) {
         d->hitboxFlags |= BODY_STATUS_B14;
       }
-      if (a->nature & BODY_NATURE_B1) {
+      if (a->nature & ELEMENT_ENCHANTABLE) {
         d->hitboxFlags |= BODY_STATUS_B15;
       }
-      if (a->nature & BODY_NATURE_B4) {
+      if (a->nature & BODY_NATURE_CUT) {
         d->hitboxFlags |= BODY_STATUS_SLASHED;
       }
       if (a->nature & BODY_NATURE_RECOIL) {
@@ -600,10 +605,12 @@ WIP void hitbox_08007674(struct Body *a, struct Body *d) {
         d->hp = 0;
         d->hitboxFlags |= BODY_STATUS_DEAD;
       }
-      if (((d->drp)->hitzone != 0xFF) && (((a->drp)->unk_04 == 1) || ((a->drp)->unk_04 == 2))) {
-        gCollisionManager.pauseFrame = 4;
+      if ((d->processing)->hitzone != 0xFF) {
+        if (((a->processing)->atkType == ATK_SABER) || ((a->processing)->atkType == ATK_ROD)) {
+          gCollisionManager.hitstop = 4;
+        }
       }
-      if (((d->drp)->special == 1) || ((d->drp)->special == CS_BOSS)) {
+      if (((d->processing)->special == HALFABLE) || ((d->processing)->special == CS_BOSS)) {
         d->invincibleTime = 90;
       }
       a->status |= a->hitboxFlags;
@@ -629,7 +636,7 @@ WIP void hitbox_08007674(struct Body *a, struct Body *d) {
 }
 
 static bool8 unused_08007b80(struct Body *a, struct Body *d) {
-  const u8 hardness = (d->drp)->hardness | d->hardness;
+  const u8 hardness = (d->processing)->hardness | d->hardness;
   if (gCollisionManager.disabled & (1 << 7)) {
     return FALSE;
   }
@@ -637,14 +644,14 @@ static bool8 unused_08007b80(struct Body *a, struct Body *d) {
     d->hp--;
     d->enemy = a;
     d->status |= BODY_STATUS_WHITE;
-    d->unk_23 = (a->drp)->unk_04;
+    d->unk_23 = (a->processing)->atkType;
     d->elemented = a->element;
     d->invincibleLv = a->comboLv;
     if (d->hp < 1) {
       d->hp = 0;
       d->status |= BODY_STATUS_DEAD;
     }
-    switch ((d->drp)->special) {
+    switch ((d->processing)->special) {
       case 1: {
         d->invincibleTime = 90;
         break;
@@ -659,7 +666,7 @@ static bool8 unused_08007b80(struct Body *a, struct Body *d) {
 }
 
 u16 CalcPutitedSpikeDamage(struct Body *body, u8 damage) {
-  const u8 hardness = (body->drp)->hardness | body->hardness;
+  const u8 hardness = (body->processing)->hardness | body->hardness;
   if (gCollisionManager.disabled & (1 << 7)) {
     return 0;
   }
@@ -684,7 +691,7 @@ u16 CalcPutitedSpikeDamage(struct Body *body, u8 damage) {
       body->hitboxFlags |= BODY_STATUS_DEAD;
     }
 
-    switch (body->drp->special) {
+    switch (body->processing->special) {
       case 1: {
         body->invincibleTime = 90;
         break;
@@ -723,384 +730,167 @@ static void TrySweepBodies(void) {
 }
 
 /**
- * @brief Hitboxが重なっていたら 0x08007e28 を呼び出す
- * @param ah Attacker's hitbox info
- * @param dh Defender's hitbox info
+ * @brief DDP と DRP2 について、 Hitboxが重なっていたら 0x08007e28 を呼び出す
+ * @param ah DDP's hitbox info
+ * @param dh DRP2's hitbox info
  * @note 0x08007d38
  */
-static void checkOverlap1(struct Hitbox *ah, struct Hitbox *dh) {
+static void checkOverlap1(struct Hitbox *a, struct Hitbox *drp2) {
   u16 w, h;
   s32 x, y;
-  u32 uVar1;
-  u32 uVar2;
-  struct Hitbox *cur;
+  u32 W, H;
+  struct Hitbox *d;
 
-  if ((ah != NULL) && (dh != NULL)) {
+  if ((a != NULL) && (drp2 != NULL)) {
     do {
-      x = (ah->c).x;
-      y = (ah->c).y;
-      w = ah->w;
-      h = ah->h;
+      x = (a->c).x;
+      y = (a->c).y;
+      w = a->w;
+      h = a->h;
 
-      for (cur = dh; cur != NULL; cur = cur->next) {
-        if (((ah->body != cur->body) && (uVar1 = (u32)w + (u32)cur->w, uVar2 = (u32)h + (u32)cur->h, (x - (cur->c).x) + (uVar1 >> 1) < uVar1)) && ((y - (cur->c).y) + (uVar2 >> 1) < uVar2)) {
-          tryOverlapCallback1(ah, cur);
+      for (d = drp2; d != NULL; d = d->next) {
+        if (a->body != d->body) {
+          W = w + d->w;
+          H = h + d->h;
+          if ((x - (d->c).x) + (W >> 1) < W) {
+            if ((y - (d->c).y) + (H >> 1) < H) {
+              tryOverlapCallback1(a, d);
+            }
+          }
         }
       }
 
-      ah = ah->next;
-    } while (ah != NULL);
+      a = a->next;
+    } while (a != NULL);
   }
-
-  return;
 }
 
 /**
- * @brief Hitboxが重なっていたら 0x08008078 を呼び出す
+ * @brief DDP　と DRP について、Hitboxが重なっていたら 0x08008078 を呼び出す
  * @details 呼び出す関数が 0x08008078 に変わった以外は、 0x08007d38 と全く同じ
- * @param ah Attacker's hitbox info
- * @param dh Defender's hitbox info
+ * @param ah DDP's hitbox info
+ * @param dh DRP's hitbox info
  * @note 0x08007db0
  */
-static void checkOverlap2(struct Hitbox *ah, struct Hitbox *dh) {
+static void checkOverlap2(struct Hitbox *a, struct Hitbox *drp1) {
   u16 w, h;
   s32 x, y;
-  u32 uVar1;
-  u32 uVar2;
-  struct Hitbox *cur;
+  u32 W, H;
+  struct Hitbox *d;
 
-  if ((ah != NULL) && (dh != NULL)) {
+  if ((a != NULL) && (drp1 != NULL)) {
     do {
-      x = (ah->c).x;
-      y = (ah->c).y;
-      w = ah->w;
-      h = ah->h;
+      x = (a->c).x;
+      y = (a->c).y;
+      w = a->w;
+      h = a->h;
 
-      for (cur = dh; cur != NULL; cur = cur->next) {
-        if (((ah->body != cur->body) && (uVar1 = (u32)w + (u32)cur->w, uVar2 = (u32)h + (u32)cur->h, (x - (cur->c).x) + (uVar1 >> 1) < uVar1)) && ((y - (cur->c).y) + (uVar2 >> 1) < uVar2)) {
-          tryOverlapCallback2(ah, cur);
+      for (d = drp1; d != NULL; d = d->next) {
+        if (a->body != d->body) {
+          W = w + d->w;
+          H = h + d->h;
+          if ((x - (d->c).x) + (W >> 1) < W) {
+            if ((y - (d->c).y) + (H >> 1) < H) {
+              tryOverlapCallback2(a, d);
+            }
+          }
         }
       }
 
-      ah = ah->next;
-    } while (ah != NULL);
+      a = a->next;
+    } while (a != NULL);
   }
-
-  return;
 }
 
 /**
  * @brief apとdpに衝突の結果生まれるフラグをセットして、ap->body->fn と dh->body->fn をそれぞれ呼び出す
- * @param ah Attacker's hitbox info
- * @param dh Defender's hitbox info
+ * @param ah DDP's hitbox info
+ * @param dh DRP2's hitbox info
  */
-NAKED static void tryOverlapCallback1(struct Hitbox *ah, struct Hitbox *dh) {
-  asm(".syntax unified\n\
-	push {r4, r5, r6, r7, lr}\n\
-	mov r7, sl\n\
-	mov r6, sb\n\
-	mov r5, r8\n\
-	push {r5, r6, r7}\n\
-	sub sp, #0x10\n\
-	mov sl, r0\n\
-	mov sb, r1\n\
-	ldr r7, [r0, #8]\n\
-	ldr r0, [r1, #8]\n\
-	mov r8, r0\n\
-	ldr r2, _08007EE0 @ =gCollisionManager\n\
-	ldrb r1, [r2]\n\
-	movs r3, #0x80\n\
-	mov ip, r3\n\
-	mov r0, ip\n\
-	ands r0, r1\n\
-	cmp r0, #0\n\
-	beq _08007E50\n\
-	b _08008066\n\
-_08007E50:\n\
-	mov r4, sl\n\
-	ldr r3, [r4, #4]\n\
-	ldrb r0, [r3, #2]\n\
-	cmp r0, #4\n\
-	bne _08007E5C\n\
-	b _08008066\n\
-_08007E5C:\n\
-	adds r4, r7, #0\n\
-	adds r4, #0x36\n\
-	ldrb r1, [r4]\n\
-	movs r6, #4\n\
-	adds r0, r6, #0\n\
-	ands r0, r1\n\
-	adds r5, r7, #0\n\
-	adds r5, #0x39\n\
-	cmp r0, #0\n\
-	bne _08007E74\n\
-	ldrb r0, [r3, #6]\n\
-	strb r0, [r5]\n\
-_08007E74:\n\
-	ldrb r1, [r5]\n\
-	mov r0, ip\n\
-	ands r0, r1\n\
-	lsls r0, r0, #0x18\n\
-	lsrs r0, r0, #0x18\n\
-	cmp r0, #0\n\
-	beq _08007E84\n\
-	b _08008066\n\
-_08007E84:\n\
-	str r0, [r7, #0x14]\n\
-	mov r1, r8\n\
-	str r0, [r1, #0x14]\n\
-	mov r3, sl\n\
-	ldr r0, [r3, #4]\n\
-	str r0, [r7, #4]\n\
-	mov r1, sb\n\
-	ldr r0, [r1, #4]\n\
-	mov r3, r8\n\
-	str r0, [r3, #4]\n\
-	ldrb r1, [r4]\n\
-	adds r0, r6, #0\n\
-	ands r0, r1\n\
-	cmp r0, #0\n\
-	bne _08007EAA\n\
-	mov r4, sl\n\
-	ldr r0, [r4, #4]\n\
-	ldrb r0, [r0, #6]\n\
-	strb r0, [r5]\n\
-_08007EAA:\n\
-	ldr r0, [r7, #0x18]\n\
-	movs r1, #0x80\n\
-	lsls r1, r1, #1\n\
-	ands r0, r1\n\
-	cmp r0, #0\n\
-	bne _08007EC0\n\
-	movs r0, #0x80\n\
-	lsls r0, r0, #8\n\
-	strh r0, [r7, #0x32]\n\
-	subs r0, #1\n\
-	strh r0, [r7, #0x34]\n\
-_08007EC0:\n\
-	ldr r0, [r7, #8]\n\
-	mov r3, r8\n\
-	ldr r1, [r3, #8]\n\
-	ldr r3, [r0]\n\
-	ldr r0, [r1]\n\
-	cmp r3, r0\n\
-	bge _08007EE4\n\
-	mov r4, sb\n\
-	ldrh r1, [r4, #0x14]\n\
-	ldr r0, [r4, #0xc]\n\
-	subs r0, r0, r1\n\
-	subs r0, r0, r3\n\
-	asrs r0, r0, #8\n\
-	strh r0, [r7, #0x34]\n\
-	b _08007EF2\n\
-	.align 2, 0\n\
-_08007EE0: .4byte gCollisionManager\n\
-_08007EE4:\n\
-	mov r0, sb\n\
-	ldrh r1, [r0, #0x14]\n\
-	ldr r0, [r0, #0xc]\n\
-	adds r0, r0, r1\n\
-	subs r0, r0, r3\n\
-	asrs r0, r0, #8\n\
-	strh r0, [r7, #0x32]\n\
-_08007EF2:\n\
-	ldr r0, [r7, #4]\n\
-	ldrb r1, [r0, #2]\n\
-	adds r3, r0, #0\n\
-	cmp r1, #1\n\
-	bne _08007F1C\n\
-	ldrb r0, [r3, #4]\n\
-	cmp r0, #0\n\
-	beq _08007F1C\n\
-	mov r1, r8\n\
-	ldr r0, [r1, #0x1c]\n\
-	movs r1, #0xc0\n\
-	ands r0, r1\n\
-	cmp r0, #0\n\
-	beq _08007F1C\n\
-	mov r2, r8\n\
-	str r7, [r2, #0xc]\n\
-	ldr r0, [r2, #0x18]\n\
-	movs r1, #0x80\n\
-	orrs r0, r1\n\
-	str r0, [r2, #0x18]\n\
-	b _08007F70\n\
-_08007F1C:\n\
-	mov r4, r8\n\
-	ldr r0, [r4, #4]\n\
-	ldrb r1, [r0, #9]\n\
-	movs r4, #1\n\
-	adds r0, r4, #0\n\
-	ands r0, r1\n\
-	cmp r0, #0\n\
-	beq _08007F3A\n\
-	mov r1, r8\n\
-	ldr r0, [r1, #0x14]\n\
-	movs r1, #0x80\n\
-	lsls r1, r1, #6\n\
-	orrs r0, r1\n\
-	mov r1, r8\n\
-	str r0, [r1, #0x14]\n\
-_08007F3A:\n\
-	mov r0, r8\n\
-	str r7, [r0, #0xc]\n\
-	ldr r0, [r0, #0x14]\n\
-	movs r1, #0x40\n\
-	orrs r0, r1\n\
-	mov r1, r8\n\
-	str r0, [r1, #0x14]\n\
-	ldrb r0, [r3, #4]\n\
-	subs r0, #1\n\
-	lsls r0, r0, #0x18\n\
-	lsrs r0, r0, #0x18\n\
-	cmp r0, #1\n\
-	bhi _08007F58\n\
-	movs r0, #4\n\
-	strb r0, [r2, #2]\n\
-_08007F58:\n\
-	mov r2, r8\n\
-	ldr r0, [r2, #4]\n\
-	ldrb r1, [r0, #9]\n\
-	adds r0, r4, #0\n\
-	ands r0, r1\n\
-	cmp r0, #0\n\
-	beq _08007F70\n\
-	ldr r0, [r7, #0x14]\n\
-	movs r1, #0x80\n\
-	lsls r1, r1, #5\n\
-	orrs r0, r1\n\
-	str r0, [r7, #0x14]\n\
-_08007F70:\n\
-	mov r3, r8\n\
-	str r3, [r7, #0xc]\n\
-	ldr r0, [r7, #0x14]\n\
-	movs r2, #0x20\n\
-	orrs r0, r2\n\
-	movs r1, #0x80\n\
-	lsls r1, r1, #1\n\
-	orrs r0, r1\n\
-	str r0, [r7, #0x14]\n\
-	ldrb r0, [r5]\n\
-	ands r2, r0\n\
-	cmp r2, #0\n\
-	beq _08007F94\n\
-	ldr r0, [r3, #0x14]\n\
-	movs r1, #0x80\n\
-	lsls r1, r1, #0xb\n\
-	orrs r0, r1\n\
-	str r0, [r3, #0x14]\n\
-_08007F94:\n\
-	ldr r0, [r7, #0x18]\n\
-	ldr r1, [r7, #0x14]\n\
-	orrs r0, r1\n\
-	str r0, [r7, #0x18]\n\
-	mov r4, r8\n\
-	ldr r0, [r4, #0x18]\n\
-	ldr r1, [r4, #0x14]\n\
-	orrs r0, r1\n\
-	str r0, [r4, #0x18]\n\
-	ldr r0, [r7, #0x24]\n\
-	cmp r0, #0\n\
-	bne _08007FB2\n\
-	ldr r0, [r4, #0x24]\n\
-	cmp r0, #0\n\
-	beq _08008066\n\
-_08007FB2:\n\
-	ldr r0, [r7, #0x14]\n\
-	cmp r0, #0\n\
-	bne _08007FBC\n\
-	cmp r1, #0\n\
-	beq _08008066\n\
-_08007FBC:\n\
-	mov r1, sl\n\
-	ldr r0, [r1, #0xc]\n\
-	mov r2, sb\n\
-	ldr r5, [r2, #0xc]\n\
-	subs r0, r0, r5\n\
-	str r0, [sp]\n\
-	ldr r4, [r1, #0x10]\n\
-	ldr r6, [r2, #0x10]\n\
-	subs r4, r4, r6\n\
-	str r4, [sp, #4]\n\
-	ldrh r2, [r2, #0x14]\n\
-	muls r0, r2, r0\n\
-	ldrh r1, [r1, #0x14]\n\
-	adds r1, r1, r2\n\
-	bl __divsi3\n\
-	adds r5, r5, r0\n\
-	str r5, [sp, #8]\n\
-	mov r3, sb\n\
-	ldrh r2, [r3, #0x16]\n\
-	adds r0, r2, #0\n\
-	muls r0, r4, r0\n\
-	mov r4, sl\n\
-	ldrh r1, [r4, #0x16]\n\
-	adds r1, r1, r2\n\
-	bl __divsi3\n\
-	adds r6, r6, r0\n\
-	add r5, sp, #8\n\
-	str r6, [r5, #4]\n\
-	ldr r0, [sp]\n\
-	adds r1, r0, #0\n\
-	muls r1, r0, r1\n\
-	adds r0, r1, #0\n\
-	ldr r1, [sp, #4]\n\
-	adds r2, r1, #0\n\
-	muls r2, r1, r2\n\
-	adds r1, r2, #0\n\
-	adds r0, r0, r1\n\
-	bl Sqrt\n\
-	adds r4, r0, #0\n\
-	lsls r4, r4, #0x10\n\
-	lsrs r4, r4, #0x10\n\
-	ldr r0, [sp]\n\
-	lsls r0, r0, #8\n\
-	adds r1, r4, #0\n\
-	bl __divsi3\n\
-	str r0, [sp]\n\
-	ldr r0, [sp, #4]\n\
-	lsls r0, r0, #8\n\
-	adds r1, r4, #0\n\
-	bl __divsi3\n\
-	str r0, [sp, #4]\n\
-	ldr r3, [r7, #0x24]\n\
-	cmp r3, #0\n\
-	beq _08008042\n\
-	ldr r0, [r7, #0x14]\n\
-	cmp r0, #0\n\
-	beq _08008042\n\
-	adds r0, r7, #0\n\
-	adds r1, r5, #0\n\
-	mov r2, sp\n\
-	bl _call_via_r3\n\
-_08008042:\n\
-	mov r4, r8\n\
-	ldr r3, [r4, #0x24]\n\
-	cmp r3, #0\n\
-	beq _08008066\n\
-	ldr r0, [r4, #0x14]\n\
-	cmp r0, #0\n\
-	beq _08008066\n\
-	ldr r0, [sp]\n\
-	rsbs r0, r0, #0\n\
-	str r0, [sp]\n\
-	ldr r0, [sp, #4]\n\
-	rsbs r0, r0, #0\n\
-	str r0, [sp, #4]\n\
-	mov r0, r8\n\
-	adds r1, r5, #0\n\
-	mov r2, sp\n\
-	bl _call_via_r3\n\
-_08008066:\n\
-	add sp, #0x10\n\
-	pop {r3, r4, r5}\n\
-	mov r8, r3\n\
-	mov sb, r4\n\
-	mov sl, r5\n\
-	pop {r4, r5, r6, r7}\n\
-	pop {r0}\n\
-	bx r0\n\
-     .syntax divided\n");
+WIP static void tryOverlapCallback1(struct Hitbox *ah, struct Hitbox *dh) {
+#if MODERN
+  struct Body *a = ah->body;
+  struct Body *d = dh->body;
+
+  if ((gCollisionManager.disabled & (1 << 7)) || (ah->collisions->special == DOOR_3D)) {
+    return;
+  }
+
+  if (!(a->forceFlags & FORCE_NATURE)) {
+    a->nature = ah->collisions->nature;
+  }
+
+  if (a->nature & BODY_NATURE_B7) {
+    return;
+  }
+
+  a->hitboxFlags = 0;
+  d->hitboxFlags = 0;
+  a->processing = ah->collisions;
+  d->processing = dh->collisions;
+
+  if (!(a->forceFlags & FORCE_NATURE)) {
+    a->nature = ah->collisions->nature;
+  }
+
+  if ((a->status & BODY_STATUS_B8) == 0) {
+    a->unk_32[0] = -0x8000;
+    a->unk_32[1] = 0x7FFF;
+  }
+
+  if (a->coord->x >= d->coord->x) {
+    a->unk_32[0] = (s16)(((dh->c).x + dh->w) - a->coord->x) >> 8;
+  } else {
+    a->unk_32[1] = (s16)(((dh->c).x - dh->w) - a->coord->x) >> 8;
+  }
+
+  if ((a->processing->special == HALFABLE) && (a->processing->atkType != 0) && (d->prevStatus & (BODY_STATUS_B6 | BODY_STATUS_B7))) {
+    d->enemy = a;
+    d->status |= BODY_STATUS_B7;
+  } else {
+    if (d->processing->hardness & METAL) {
+      d->hitboxFlags |= BODY_STATUS_B13;
+    }
+    d->enemy = a;
+    d->hitboxFlags |= BODY_STATUS_B6;
+    if ((a->processing->atkType == ATK_SABER) || (a->processing->atkType == ATK_ROD)) {
+      gCollisionManager.hitstop = 4;
+    }
+    if (d->processing->hardness & METAL) {
+      a->hitboxFlags |= BODY_STATUS_BLOCKED;
+    }
+  }
+
+  a->enemy = d;
+  a->hitboxFlags |= (BODY_STATUS_B5 | BODY_STATUS_B8);
+  if (a->nature & BODY_NATURE_RECOIL) {
+    d->hitboxFlags |= BODY_STATUS_B22;
+  }
+  a->status |= a->hitboxFlags;
+  d->status |= d->hitboxFlags;
+
+  if ((a->fn == NULL) && (d->fn == NULL) && (a->hitboxFlags == 0) && (d->hitboxFlags == 0)) {
+    return;
+  } else {
+    u16 distance;
+    struct Coord c1, c2;
+    c1.x = (dh->w * ((ah->c).x - (dh->c).x)) / (ah->w + dh->w);
+    c1.y = (dh->h * ((ah->c).y - (dh->c).y)) / (ah->h + dh->h);
+    distance = Sqrt(POW2((ah->c).x - (dh->c).x) + POW2((ah->c).y - (dh->c).y));
+    c2.x = (((ah->c).x - (dh->c).x) << 8) / distance;
+    c2.y = (((ah->c).y - (dh->c).y) << 8) / distance;
+    if ((a->fn != NULL) && (a->hitboxFlags)) {
+      (a->fn)(a, &c1, &c2);
+    }
+    if ((d->fn != NULL) && (d->hitboxFlags)) {
+      c2.x = -c2.x;
+      c2.y = -c2.y;
+      (d->fn)(d, &c1, &c2);
+    }
+  }
+#else
+  INCCODE("asm/wip/tryOverlapCallback1.inc");
+#endif
 }
 
 /**
@@ -1110,7 +900,7 @@ _08008066:\n\
  */
 WIP static void tryOverlapCallback2(struct Hitbox *ah, struct Hitbox *dh) {
 #if MODERN
-  u8 unk_04;
+  u8 atkType;
   struct Body *a = ah->body;
   struct Body *d = dh->body;
   if (a->status & BODY_STATUS_B8) {
@@ -1123,8 +913,8 @@ WIP static void tryOverlapCallback2(struct Hitbox *ah, struct Hitbox *dh) {
   }
   a->hitboxFlags = 0, d->hitboxFlags = 0;
 
-  a->drp = ah->collisions;
-  d->drp = dh->collisions;
+  a->processing = ah->collisions;
+  d->processing = dh->collisions;
 
   if (!(a->forceFlags & FORCE_DAMAGE)) {
     a->atk = ah->collisions->damage;
@@ -1138,56 +928,56 @@ WIP static void tryOverlapCallback2(struct Hitbox *ah, struct Hitbox *dh) {
   if (!(a->forceFlags & FORCE_COMBO_LEVEL)) {
     a->comboLv = ah->collisions->comboLv;
   }
-  if (!(a->forceFlags & (FORCE_ELEMENT | FORCE_NATURE))) {
-    a->unk_3c = ah->collisions->unk_0c;
+  if (!(a->forceFlags & FORCE_LAYER)) {
+    a->collisionLayer = ah->collisions->layer;
     goto DONE;
   }
 
-  unk_04 = (ah->collisions)->unk_04;
-  if (unk_04 < 4) {
+  atkType = (ah->collisions)->atkType;
+  if (atkType < 4) {
     if (a->nature & BODY_NATURE_B0) {
-      a->unk_3c = 0x80000000;
-    } else if (a->nature & BODY_NATURE_B1) {
-      a->unk_3c = (1 << (unk_04 * 5 + a->element + 1));
+      a->collisionLayer = (1 << 31);
+    } else if (a->nature & ELEMENT_ENCHANTABLE) {
+      a->collisionLayer = (1 << (atkType * 5 + a->element + 1));
     } else {
-      a->unk_3c = (1 << (unk_04 * 5 + a->element));
+      a->collisionLayer = (1 << (atkType * 5 + a->element));
     }
 
-  } else if (unk_04 == 4) {
-    a->unk_3c = 0x10000;
+  } else if (atkType == ATK_UNK4) {
+    a->collisionLayer = (1 << 16);
 
-  } else if (unk_04 < 8) {
-    a->unk_3c = 1 << (unk_04 - 3);
+  } else if (atkType < 8) {
+    a->collisionLayer = 1 << (atkType - 3);
 
-  } else if (unk_04 < 12) {
+  } else if (atkType < 12) {
     if (a->element != 0) {
-      a->unk_3c = 1 << (a->element + 6);
+      a->collisionLayer = 1 << (a->element + 6);
     } else {
-      a->unk_3c = 0x40;
+      a->collisionLayer = (1 << 6);
     }
 
-  } else if (unk_04 == 12) {
-    a->unk_3c = 0x100;
+  } else if (atkType == ATK_UNK12) {
+    a->collisionLayer = (1 << 8);
 
-  } else if (unk_04 == 13) {
+  } else if (atkType == ATK_SOUL_LAUNCHER) {
     if (a->element == ELEMENT_FLAME) {
-      a->unk_3c = 0x400000;
+      a->collisionLayer = 0x400000;
     } else {
-      a->unk_3c = 0x200000;
+      a->collisionLayer = 0x200000;
     }
 
-  } else if (unk_04 == 14) {
+  } else if (atkType == 14) {
     if (a->element == ELEMENT_THUNDER) {
-      a->unk_3c = 0x20000;
+      a->collisionLayer = (1 << 17);
     } else {
-      a->unk_3c = 0x10000;
+      a->collisionLayer = (1 << 16);
     }
 
   } else {
     if (a->element == ELEMENT_ICE) {
-      a->unk_3c = 0x40000;
+      a->collisionLayer = 0x40000;
     } else {
-      a->unk_3c = 0x10000;
+      a->collisionLayer = (1 << 16);
     }
   }
 

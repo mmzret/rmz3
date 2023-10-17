@@ -318,113 +318,39 @@ static void air_saber_end(struct Zero* z) {
 }
 
 // 0x0802f8e0
-NAKED static void air_charge_saber(struct Zero* z) {
-  asm(".syntax unified\n\
-	push {r4, r5, r6, lr}\n\
-	adds r4, r0, #0\n\
-	movs r6, #0\n\
-	adds r5, r4, #0\n\
-	adds r5, #0xee\n\
-	ldrb r0, [r5]\n\
-	cmp r0, #0\n\
-	bne _0802F90C\n\
-	ldr r1, _0802F908 @ =0x00001902\n\
-	adds r0, r4, #0\n\
-	bl SetMotion\n\
-	adds r0, r4, #0\n\
-	movs r1, #9\n\
-	bl CreateWeaponSaber\n\
-	ldrb r0, [r5]\n\
-	adds r0, #1\n\
-	strb r0, [r5]\n\
-	b _0802F94C\n\
-	.align 2, 0\n\
-_0802F908: .4byte 0x00001902\n\
-_0802F90C:\n\
-	movs r1, #0x92\n\
-	lsls r1, r1, #1\n\
-	adds r0, r4, r1\n\
-	ldrb r1, [r0]\n\
-	movs r0, #0x40\n\
-	ands r0, r1\n\
-	cmp r0, #0\n\
-	beq _0802F944\n\
-	movs r3, #0xa0\n\
-	lsls r3, r3, #1\n\
-	adds r2, r4, r3\n\
-	ldrb r0, [r2]\n\
-	cmp r0, #7\n\
-	bhi _0802F940\n\
-	ldr r1, _0802F93C @ =0x00001902\n\
-	adds r2, r0, #0\n\
-	adds r3, #1\n\
-	adds r0, r4, r3\n\
-	ldrb r3, [r0]\n\
-	adds r0, r4, #0\n\
-	bl GotoMotion\n\
-	b _0802F94C\n\
-	.align 2, 0\n\
-_0802F93C: .4byte 0x00001902\n\
-_0802F940:\n\
-	movs r6, #1\n\
-	b _0802F94C\n\
-_0802F944:\n\
-	ldr r1, _0802F984 @ =0x00001902\n\
-	adds r0, r4, #0\n\
-	bl KeepMotion\n\
-_0802F94C:\n\
-	adds r0, r4, #0\n\
-	adds r0, #0x73\n\
-	ldrb r0, [r0]\n\
-	cmp r0, #3\n\
-	beq _0802F95A\n\
-	cmp r6, #0\n\
-	beq _0802F99E\n\
-_0802F95A:\n\
-	movs r1, #0x86\n\
-	lsls r1, r1, #2\n\
-	adds r0, r4, r1\n\
-	ldr r1, [r0]\n\
-	movs r0, #0x80\n\
-	ands r1, r0\n\
-	cmp r1, #0\n\
-	beq _0802F988\n\
-	adds r2, r4, #0\n\
-	adds r2, #0xed\n\
-	movs r1, #0\n\
-	movs r0, #2\n\
-	strb r0, [r2]\n\
-	adds r0, r4, #0\n\
-	adds r0, #0xee\n\
-	strb r1, [r0]\n\
-	adds r0, r4, #0\n\
-	bl air_saber_hold\n\
-	b _0802F9A6\n\
-	.align 2, 0\n\
-_0802F984: .4byte 0x00001902\n\
-_0802F988:\n\
-	adds r2, r4, #0\n\
-	adds r2, #0xed\n\
-	movs r0, #3\n\
-	strb r0, [r2]\n\
-	adds r0, r4, #0\n\
-	adds r0, #0xee\n\
-	strb r1, [r0]\n\
-	adds r0, r4, #0\n\
-	bl air_saber_end\n\
-	b _0802F9A6\n\
-_0802F99E:\n\
-	ldr r3, _0802F9AC @ =0x00000125\n\
-	adds r1, r4, r3\n\
-	movs r0, #2\n\
-	strb r0, [r1]\n\
-_0802F9A6:\n\
-	pop {r4, r5, r6}\n\
-	pop {r0}\n\
-	bx r0\n\
-	.align 2, 0\n\
-_0802F9AC: .4byte 0x00000125\n\
- .syntax divided\n");
+static void air_charge_saber(struct Zero* z) {
+  bool32 done = FALSE;
+
+  if ((z->unk_b4).attackMode[2] == 0) {
+    SetMotion(&z->s, MOTION(DM025_ZERO_SABER_AIR, 2));
+    CreateWeaponSaber(z, 9);
+    (z->unk_b4).attackMode[2]++;
+  } else {
+    if ((z->restriction).b6) {
+      if (z->motionCmdIdx < 8) {
+        GotoMotion(&z->s, MOTION(DM025_ZERO_SABER_AIR, 2), z->motionCmdIdx, z->motionDuration);
+      } else {
+        done = TRUE;
+      }
+    } else {
+      KeepMotion(z, MOTION(DM025_ZERO_SABER_AIR, 2));
+    }
+  }
+
+  if (((z->s).motion.state == MOTION_END) || done) {
+    if (z->zeroInput & DPAD_DOWN) {
+      (z->unk_b4).attackMode[1] = 2;
+      (z->unk_b4).attackMode[2] = 0;
+      air_saber_hold(z);
+    } else {
+      (z->unk_b4).attackMode[1] = 3;
+      (z->unk_b4).attackMode[2] = 0;
+      air_saber_end(z);
+    }
+    return;
+  }
+
+  z->chargeSaber = 2;
 }
 
 // 0x0802f9b0
