@@ -2,7 +2,7 @@
 
 import { Command } from 'https://deno.land/x/cliffy@v0.25.4/command/mod.ts';
 import { Parser } from 'npm:binary-parser@2.2.1';
-import { Coord } from '../../common/index.ts';
+import { CoordParser } from '../../common/index.ts';
 
 const BASE = 0x0800_0000;
 const SIZE = 16;
@@ -13,7 +13,7 @@ const ScriptEntityTemplate = new Parser().endianness('little')
   .uint8('variant')
   .uint8('unk_02')
   .uint8('unk_03')
-  .nest('coord', { type: Coord })
+  .nest('coord', { type: CoordParser })
   .uint32('flag');
 
 const main = async () => {

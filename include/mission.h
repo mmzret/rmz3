@@ -28,7 +28,7 @@ struct Mission {
       5: elf
   */
   u8 resultScore[6];
-  u16 weaponCount[4];  // Weapon use count (buster, saber, rod, shield)
+  u16 weaponCount[WEAPON_KINDS];  // Weapon use count (buster, saber, rod, shield)
   u8 _[12];
 };  // 48 bytes
 

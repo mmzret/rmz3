@@ -117,7 +117,6 @@ static const struct Collision sCollisions[5] = {
     {
       kind : DRP,
       faction : FACTION_ENEMY,
-      damage : 0,
       LAYER(0xFFFFFFFF),
       hitzone : 0,
       hardness : HARDNESS_B3,
@@ -136,7 +135,6 @@ static const struct Collision sCollisions[5] = {
     {
       kind : DRP,
       faction : FACTION_ENEMY,
-      damage : 0,
       LAYER(0xFFFFFFFF),
       hitzone : 4,
       hardness : HARDNESS_B3,
@@ -146,7 +144,6 @@ static const struct Collision sCollisions[5] = {
     {
       kind : DDP,
       faction : FACTION_ENEMY,
-      special : 0,
       damage : 4,
       comboLv : 0,
       remaining : 1,
@@ -156,7 +153,6 @@ static const struct Collision sCollisions[5] = {
     {
       kind : DRP,
       faction : FACTION_ENEMY,
-      damage : 0,
       LAYER(0xFFFFFFFF),
       hitzone : 4,
       hardness : HARDNESS_B3,

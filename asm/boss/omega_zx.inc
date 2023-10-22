@@ -4,311 +4,6 @@
 	
 	.text
 
-	thumb_func_start CreateBoss22
-CreateBoss22: @ 0x08060AE4
-	push {r4, r5, lr}
-	adds r5, r0, #0
-	lsls r1, r1, #0x18
-	lsrs r4, r1, #0x18
-	ldr r0, _08060B38 @ =gBossHeaderPtr
-	ldr r0, [r0]
-	bl AllocEntityFirst
-	adds r3, r0, #0
-	cmp r3, #0
-	beq _08060B30
-	adds r1, r3, #0
-	adds r1, #0x25
-	movs r2, #0
-	movs r0, #0x18
-	strb r0, [r1]
-	ldr r1, _08060B3C @ =gBossFnTable
-	movs r0, #0x16
-	strb r0, [r3, #9]
-	ldr r0, [r1, #0x58]
-	ldr r0, [r0]
-	str r0, [r3, #0x14]
-	movs r0, #0
-	strh r2, [r3, #0x20]
-	adds r1, r3, #0
-	adds r1, #0x22
-	strb r0, [r1]
-	ldrb r1, [r3, #0xb]
-	movs r0, #0x10
-	orrs r0, r1
-	strb r0, [r3, #0xb]
-	ldrb r0, [r3, #0x1c]
-	strb r0, [r3, #0x1d]
-	ldr r0, [r5]
-	ldr r1, [r5, #4]
-	str r0, [r3, #0x54]
-	str r1, [r3, #0x58]
-	strb r4, [r3, #0x10]
-_08060B30:
-	adds r0, r3, #0
-	pop {r4, r5}
-	pop {r1}
-	bx r1
-	.align 2, 0
-_08060B38: .4byte gBossHeaderPtr
-_08060B3C: .4byte gBossFnTable
-
-	thumb_func_start OmegaZX_Init
-OmegaZX_Init: @ 0x08060B40
-	push {r4, r5, r6, r7, lr}
-	sub sp, #8
-	adds r5, r0, #0
-	adds r1, r5, #0
-	adds r1, #0x54
-	adds r2, r5, #0
-	adds r2, #0x5c
-	bl FUN_08016094
-	ldr r0, _08060C04 @ =gOverworld
-	ldr r1, _08060C08 @ =0x0002D025
-	adds r0, r0, r1
-	movs r4, #0
-	strb r4, [r0]
-	ldrb r1, [r5, #0xa]
-	movs r0, #0xfe
-	ands r0, r1
-	strb r0, [r5, #0xa]
-	ldr r1, _08060C0C @ =0x083655D4
-	adds r0, r5, #0
-	movs r2, #0x60
-	bl ResetBossBody
-	ldr r1, _08060C10 @ =FUN_080616b8
-	adds r0, r5, #0
-	adds r0, #0x74
-	str r1, [r0, #0x24]
-	adds r0, #0x40
-	strb r4, [r0]
-	adds r1, r5, #0
-	adds r1, #0xb5
-	movs r0, #0xff
-	strb r0, [r1]
-	adds r1, #1
-	strb r0, [r1]
-	adds r3, r5, #0
-	adds r3, #0xbc
-	str r4, [r3]
-	adds r0, r5, #0
-	adds r0, #0xb7
-	strb r4, [r0]
-	adds r0, #9
-	movs r1, #0
-	mov ip, r1
-	strh r4, [r0]
-	adds r0, #2
-	strh r4, [r0]
-	ldr r0, [r5, #0x58]
-	ldr r1, _08060C14 @ =0xFFFFB000
-	adds r7, r0, r1
-	ldr r0, _08060C18 @ =gStageRun+232
-	ldr r0, [r0, #0x3c]
-	ldr r1, _08060C1C @ =0x00003FFF
-	adds r7, r0, r1
-	ldr r1, _08060C20 @ =0xFFFFD800
-	adds r0, r7, r1
-	str r0, [r5, #0x58]
-	adds r2, r5, #0
-	adds r2, #0xb8
-	str r0, [r2]
-	ldr r0, [r5, #0x58]
-	movs r1, #0xb4
-	lsls r1, r1, #8
-	adds r0, r0, r1
-	str r0, [r5, #0x58]
-	ldr r0, [r5, #0x54]
-	ldr r1, [r5, #0x58]
-	str r0, [r5, #0x5c]
-	str r1, [r5, #0x60]
-	ldr r0, [r2]
-	str r0, [r5, #0x68]
-	ldr r0, [r5, #0x54]
-	str r0, [r5, #0x64]
-	str r4, [r5, #0x2c]
-	str r4, [r3]
-	adds r0, r5, #0
-	adds r0, #0xc4
-	str r4, [r0]
-	adds r0, #8
-	str r4, [r0]
-	ldrb r0, [r5, #0x10]
-	cmp r0, #0
-	bne _08060C28
-	ldr r1, _08060C24 @ =gBossFnTable
-	ldrb r0, [r5, #9]
-	lsls r0, r0, #2
-	adds r0, r0, r1
-	movs r1, #1
-	str r1, [r5, #0xc]
-	ldr r0, [r0]
-	ldr r0, [r0, #4]
-	str r0, [r5, #0x14]
-	mov r0, ip
-	strb r0, [r5, #0xd]
-	strb r0, [r5, #0xe]
-	strb r0, [r5, #0xf]
-	b _08060C44
-	.align 2, 0
-_08060C04: .4byte gOverworld
-_08060C08: .4byte 0x0002D025
-_08060C0C: .4byte 0x083655D4
-_08060C10: .4byte FUN_080616b8
-_08060C14: .4byte 0xFFFFB000
-_08060C18: .4byte gStageRun+232
-_08060C1C: .4byte 0x00003FFF
-_08060C20: .4byte 0xFFFFD800
-_08060C24: .4byte gBossFnTable
-_08060C28:
-	ldr r1, _08060CA0 @ =gBossFnTable
-	ldrb r0, [r5, #9]
-	lsls r0, r0, #2
-	adds r0, r0, r1
-	movs r1, #1
-	str r1, [r5, #0xc]
-	ldr r0, [r0]
-	ldr r0, [r0, #4]
-	str r0, [r5, #0x14]
-	movs r0, #3
-	strb r0, [r5, #0xd]
-	mov r1, ip
-	strb r1, [r5, #0xe]
-	strb r1, [r5, #0xf]
-_08060C44:
-	mov r0, sp
-	movs r1, #0
-	adds r2, r5, #0
-	bl FUN_08092444
-	mov r0, sp
-	movs r1, #1
-	adds r2, r5, #0
-	bl FUN_08092444
-	mov r0, sp
-	movs r1, #2
-	adds r2, r5, #0
-	bl FUN_08092444
-	adds r1, r5, #0
-	adds r1, #0xcc
-	str r0, [r1]
-	movs r4, #0xb0
-	lsls r4, r4, #2
-	movs r0, #0xa7
-	adds r1, r4, #0
-	bl LoadBlink
-	movs r1, #0xb8
-	lsls r1, r1, #2
-	movs r0, #0xa8
-	bl LoadBlink
-	movs r1, #0xc0
-	lsls r1, r1, #2
-	movs r0, #0xa9
-	bl LoadBlink
-	movs r0, #0xaa
-	adds r1, r4, #0
-	bl LoadBlink
-	adds r0, r5, #0
-	bl OmegaZX_Update
-	add sp, #8
-	pop {r4, r5, r6, r7}
-	pop {r0}
-	bx r0
-	.align 2, 0
-_08060CA0: .4byte gBossFnTable
-
-	thumb_func_start OmegaZX_Update
-OmegaZX_Update: @ 0x08060CA4
-	push {r4, lr}
-	adds r4, r0, #0
-	adds r0, #0x8c
-	ldr r0, [r0]
-	movs r1, #0x80
-	lsls r1, r1, #2
-	ands r0, r1
-	cmp r0, #0
-	bne _08060CC2
-	adds r0, r4, #0
-	adds r0, #0xa4
-	movs r1, #0
-	ldrsh r0, [r0, r1]
-	cmp r0, #0
-	bne _08060CF0
-_08060CC2:
-	ldr r0, _08060CE8 @ =gStageRun
-	ldrh r1, [r0, #8]
-	movs r0, #8
-	ands r0, r1
-	cmp r0, #0
-	bne _08060CF0
-	ldr r1, _08060CEC @ =gBossFnTable
-	ldrb r0, [r4, #9]
-	lsls r0, r0, #2
-	adds r0, r0, r1
-	movs r1, #2
-	str r1, [r4, #0xc]
-	ldr r0, [r0]
-	ldr r0, [r0, #8]
-	str r0, [r4, #0x14]
-	adds r0, r4, #0
-	bl OmegaZX_Die
-	b _08060D10
-	.align 2, 0
-_08060CE8: .4byte gStageRun
-_08060CEC: .4byte gBossFnTable
-_08060CF0:
-	ldr r1, _08060D18 @ =0x08365584
-	ldrb r0, [r4, #0xd]
-	lsls r0, r0, #2
-	adds r0, r0, r1
-	ldr r1, [r0]
-	adds r0, r4, #0
-	bl _call_via_r1
-	ldr r1, _08060D1C @ =0x083655A8
-	ldrb r0, [r4, #0xd]
-	lsls r0, r0, #2
-	adds r0, r0, r1
-	ldr r1, [r0]
-	adds r0, r4, #0
-	bl _call_via_r1
-_08060D10:
-	pop {r4}
-	pop {r0}
-	bx r0
-	.align 2, 0
-_08060D18: .4byte 0x08365584
-_08060D1C: .4byte 0x083655A8
-
-	thumb_func_start OmegaZX_Die
-OmegaZX_Die: @ 0x08060D20
-	push {lr}
-	ldr r2, _08060D34 @ =0x083655CC
-	ldrb r1, [r0, #0xd]
-	lsls r1, r1, #2
-	adds r1, r1, r2
-	ldr r1, [r1]
-	bl _call_via_r1
-	pop {r0}
-	bx r0
-	.align 2, 0
-_08060D34: .4byte 0x083655CC
-
-	thumb_func_start OmegaZX_Disappear
-OmegaZX_Disappear: @ 0x08060D38
-	push {r4, lr}
-	adds r4, r0, #0
-	movs r0, #0xa7
-	bl ClearBlink
-	movs r0, #0xa8
-	bl ClearBlink
-	movs r0, #0xa9
-	bl ClearBlink
-	movs r0, #0xaa
-	bl ClearBlink
-	adds r0, r4, #0
-	bl DeleteBoss
-	pop {r4}
-	pop {r0}
-	bx r0
-
 	thumb_func_start FUN_08060d60
 FUN_08060d60: @ 0x08060D60
 	push {r4, r5, lr}
@@ -775,7 +470,7 @@ Boss22Neutral: @ 0x080610AC
 _080610C0:
 	adds r0, r5, #0
 	adds r0, #0x74
-	ldr r1, _080610D8 @ =0x083655EC
+	ldr r1, _080610D8 @ =sCollisions+24
 	bl SetDDP
 	ldrb r0, [r5, #0xf]
 	cmp r0, #0xff
@@ -785,7 +480,7 @@ _080610C0:
 	strb r4, [r5, #0xf]
 	b _080610E0
 	.align 2, 0
-_080610D8: .4byte 0x083655EC
+_080610D8: .4byte sCollisions+24
 _080610DC:
 	movs r0, #0x78
 	strb r0, [r5, #0x13]
@@ -836,7 +531,7 @@ _08061102:
 	lsrs r1, r0, #1
 	str r1, [r2]
 	lsrs r0, r0, #0x11
-	ldr r4, _08061168 @ =0x080FEFE9
+	ldr r4, _08061168 @ =gOmegaZXMode2
 	ldrb r1, [r4]
 	bl __umodsi3
 	adds r0, #1
@@ -855,7 +550,7 @@ _08061102:
 _0806115C: .4byte RNG_0202f388
 _08061160: .4byte 0x000343FD
 _08061164: .4byte 0x00269EC3
-_08061168: .4byte 0x080FEFE9
+_08061168: .4byte gOmegaZXMode2
 _0806116C:
 	ldr r2, _080611A4 @ =RNG_0202f388
 	ldr r1, [r2]
@@ -867,7 +562,7 @@ _0806116C:
 	lsrs r1, r0, #1
 	str r1, [r2]
 	lsrs r0, r0, #0x11
-	ldr r4, _080611B0 @ =0x080FEFD8
+	ldr r4, _080611B0 @ =gOmegaZXMode1
 	ldrb r1, [r4]
 	bl __umodsi3
 	adds r0, #1
@@ -886,7 +581,7 @@ _0806116C:
 _080611A4: .4byte RNG_0202f388
 _080611A8: .4byte 0x000343FD
 _080611AC: .4byte 0x00269EC3
-_080611B0: .4byte 0x080FEFD8
+_080611B0: .4byte gOmegaZXMode1
 _080611B4:
 	adds r0, r5, #0
 	adds r0, #0xa4
@@ -904,13 +599,13 @@ _080611B4:
 	lsrs r1, r0, #1
 	str r1, [r2]
 	lsrs r0, r0, #0x11
-	ldr r4, _080611E4 @ =0x080FEFE9
+	ldr r4, _080611E4 @ =gOmegaZXMode2
 	b _080611FE
 	.align 2, 0
 _080611D8: .4byte RNG_0202f388
 _080611DC: .4byte 0x000343FD
 _080611E0: .4byte 0x00269EC3
-_080611E4: .4byte 0x080FEFE9
+_080611E4: .4byte gOmegaZXMode2
 _080611E8:
 	ldr r2, _08061220 @ =RNG_0202f388
 	ldr r1, [r2]
@@ -922,7 +617,7 @@ _080611E8:
 	lsrs r1, r0, #1
 	str r1, [r2]
 	lsrs r0, r0, #0x11
-	ldr r4, _0806122C @ =0x080FEFD8
+	ldr r4, _0806122C @ =gOmegaZXMode1
 _080611FE:
 	ldrb r1, [r4]
 	bl __umodsi3
@@ -946,7 +641,7 @@ _08061216:
 _08061220: .4byte RNG_0202f388
 _08061224: .4byte 0x000343FD
 _08061228: .4byte 0x00269EC3
-_0806122C: .4byte 0x080FEFD8
+_0806122C: .4byte gOmegaZXMode1
 
 	thumb_func_start FUN_08061230
 FUN_08061230: @ 0x08061230
@@ -1320,7 +1015,7 @@ _08061524:
 	ldr r1, [r4, #0x58]
 	str r0, [sp]
 	str r1, [sp, #4]
-	ldr r3, _08061598 @ =0x0836561C
+	ldr r3, _08061598 @ =sOmegaZXProjectileTemplates
 	adds r0, r4, #0
 	adds r0, #0xc8
 	ldrb r1, [r0]
@@ -1370,7 +1065,7 @@ _08061560:
 _0806158C: .4byte RNG_0202f388
 _08061590: .4byte 0x000343FD
 _08061594: .4byte 0x00269EC3
-_08061598: .4byte 0x0836561C
+_08061598: .4byte sOmegaZXProjectileTemplates
 _0806159C:
 	movs r0, #1
 	strb r0, [r4, #0xe]
@@ -1471,7 +1166,7 @@ FUN_08061648: @ 0x08061648
 	cmp r1, #0x20
 	bgt _0806167E
 	movs r2, #0
-	ldr r5, _08061670 @ =0x080FEFFA
+	ldr r5, _08061670 @ =u16_ARRAY_080feffa
 	adds r3, r5, #0
 _0806165E:
 	ldrh r1, [r3]
@@ -1483,7 +1178,7 @@ _0806165E:
 	ble _0806165E
 	b _080616B0
 	.align 2, 0
-_08061670: .4byte 0x080FEFFA
+_08061670: .4byte u16_ARRAY_080feffa
 _08061674:
 	adds r0, r2, #1
 	movs r1, #5
@@ -1491,7 +1186,7 @@ _08061674:
 	b _0806169A
 _0806167E:
 	movs r2, #0
-	ldr r5, _080616A4 @ =0x080FEFFA
+	ldr r5, _080616A4 @ =u16_ARRAY_080feffa
 	adds r3, r5, #0
 _08061684:
 	ldrh r1, [r3]
@@ -1512,7 +1207,7 @@ _0806169A:
 	ldrh r0, [r0]
 	b _080616B0
 	.align 2, 0
-_080616A4: .4byte 0x080FEFFA
+_080616A4: .4byte u16_ARRAY_080feffa
 _080616A8:
 	adds r3, #2
 	adds r2, #1

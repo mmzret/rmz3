@@ -584,7 +584,6 @@ static const struct Collision sCollisions[3] = {
     [1] = {
       kind : DRP,
       faction : FACTION_ENEMY,
-      damage : 0,
       LAYER(0xFFFFFFFF),
       hitzone : 0x01,
       hardness : HARDNESS_B3,

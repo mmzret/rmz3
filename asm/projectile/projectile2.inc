@@ -4801,11 +4801,13 @@ _080B1284:
 	.align 2, 0
 _080B1290: .4byte gProjectileHeaderPtr
 _080B1294: .4byte gProjectileFnTable
-_080B1298:
+
+	thumb_func_start FUN_080b1298
+FUN_080b1298:
 	.byte 0x70, 0x47, 0x00, 0x00
 
-	thumb_func_start FUN_080b129c
-FUN_080b129c: @ 0x080B129C
+	thumb_func_start Projectile42_Init
+Projectile42_Init: @ 0x080B129C
 	push {r4, r5, lr}
 	adds r4, r0, #0
 	ldr r1, _080B12FC @ =gProjectileFnTable
@@ -4846,7 +4848,7 @@ FUN_080b129c: @ 0x080B129C
 	ldr r0, _080B1308 @ =0x080B1299
 	str r0, [r5, #0x24]
 	adds r0, r4, #0
-	bl FUN_080b130c
+	bl Projectile42_Update
 	pop {r4, r5}
 	pop {r0}
 	bx r0
@@ -4856,8 +4858,8 @@ _080B1300: .4byte 0x0836D730
 _080B1304: .4byte 0x0836D718
 _080B1308: .4byte 0x080B1299
 
-	thumb_func_start FUN_080b130c
-FUN_080b130c: @ 0x080B130C
+	thumb_func_start Projectile42_Update
+Projectile42_Update: @ 0x080B130C
 	push {r4, lr}
 	adds r4, r0, #0
 	ldrb r2, [r4, #0x10]
@@ -4922,8 +4924,8 @@ _080B1380:
 _080B1388: .4byte 0x0836D710
 _080B138C: .4byte 0x0836D714
 
-	thumb_func_start FUN_080b1390
-FUN_080b1390: @ 0x080B1390
+	thumb_func_start Projectile42_Die
+Projectile42_Die: @ 0x080B1390
 	push {r4, lr}
 	adds r4, r0, #0
 	adds r0, #0x8c

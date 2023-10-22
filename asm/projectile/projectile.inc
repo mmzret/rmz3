@@ -14403,8 +14403,8 @@ nop_080a5048: @ 0x080A5048
 	bx lr
 	.align 2, 0
 
-	thumb_func_start FUN_080a504c
-FUN_080a504c: @ 0x080A504C
+	thumb_func_start Projectile20_Init
+Projectile20_Init: @ 0x080A504C
 	push {r4, r5, lr}
 	adds r4, r0, #0
 	ldr r1, _080A50AC @ =gProjectileFnTable
@@ -14445,7 +14445,7 @@ FUN_080a504c: @ 0x080A504C
 	ldr r0, _080A50B8 @ =nop_080a5048
 	str r0, [r5, #0x24]
 	adds r0, r4, #0
-	bl FUN_080a50bc
+	bl Projectile20_Update
 	pop {r4, r5}
 	pop {r0}
 	bx r0
@@ -14455,8 +14455,8 @@ _080A50B0: .4byte 0x0836BAE8
 _080A50B4: .4byte 0x0836BAA0
 _080A50B8: .4byte nop_080a5048
 
-	thumb_func_start FUN_080a50bc
-FUN_080a50bc: @ 0x080A50BC
+	thumb_func_start Projectile20_Update
+Projectile20_Update: @ 0x080A50BC
 	push {r4, lr}
 	adds r4, r0, #0
 	ldr r0, [r4, #0x28]
@@ -14492,8 +14492,8 @@ _080A50D6:
 _080A50FC: .4byte 0x0836BA50
 _080A5100: .4byte 0x0836BA78
 
-	thumb_func_start FUN_080a5104
-FUN_080a5104: @ 0x080A5104
+	thumb_func_start Projectile20_Die
+Projectile20_Die: @ 0x080A5104
 	push {r4, lr}
 	adds r4, r0, #0
 	adds r0, #0x8c
@@ -14525,8 +14525,10 @@ FUN_080a5104: @ 0x080A5104
 	bx r0
 	.align 2, 0
 _080A5140: .4byte gProjectileFnTable
-_080A5144:
-	.byte 0x70, 0x47, 0x00, 0x00
+
+	thumb_func_start FUN_080a5144
+FUN_080a5144:
+	bx lr
 
 	thumb_func_start FUN_080a5148
 FUN_080a5148: @ 0x080A5148
@@ -14699,7 +14701,9 @@ _080A5288:
 	pop {r0}
 	bx r0
 	.align 2, 0
-_080A5290:
+
+	thumb_func_start FUN_080a5290
+FUN_080a5290:
 	.byte 0xF0, 0xB5, 0x47, 0x46, 0x80, 0xB4, 0x07, 0x1C, 0xBD, 0x6A, 0xB8, 0x7B, 0x01, 0x28, 0x3F, 0xD0
 	.byte 0x01, 0x28, 0x02, 0xDC, 0x00, 0x28, 0x06, 0xD0, 0x96, 0xE0, 0x02, 0x28, 0x62, 0xD0, 0x03, 0x28
 	.byte 0x00, 0xD1, 0x84, 0xE0, 0x90, 0xE0, 0x38, 0x1C, 0x74, 0x30, 0x0A, 0x49, 0x61, 0xF7, 0xAA, 0xFF
@@ -14863,7 +14867,9 @@ _080A54F0:
 	pop {r0}
 	bx r0
 	.align 2, 0
-_080A54F8:
+
+	thumb_func_start FUN_080a54f8
+FUN_080a54f8:
 	.byte 0x70, 0xB5, 0x04, 0x1C, 0xA5, 0x6A, 0xA0, 0x7B
 	.byte 0x01, 0x28, 0x69, 0xD0, 0x01, 0x28, 0x02, 0xDC, 0x00, 0x28, 0x07, 0xD0, 0xC3, 0xE0, 0x02, 0x28
 	.byte 0x00, 0xD1, 0x81, 0xE0, 0x03, 0x28, 0x00, 0xD1, 0x99, 0xE0, 0xBC, 0xE0, 0x20, 0x1C, 0x74, 0x30
@@ -15620,8 +15626,8 @@ nop_080a5c10: @ 0x080A5C10
 	bx lr
 	.align 2, 0
 
-	thumb_func_start FUN_080a5c14
-FUN_080a5c14: @ 0x080A5C14
+	thumb_func_start PantheonAquaModProjectile_Init
+PantheonAquaModProjectile_Init: @ 0x080A5C14
 	push {r4, r5, lr}
 	adds r4, r0, #0
 	ldr r1, _080A5C74 @ =gProjectileFnTable
@@ -15662,7 +15668,7 @@ FUN_080a5c14: @ 0x080A5C14
 	ldr r0, _080A5C80 @ =nop_080a5c10
 	str r0, [r5, #0x24]
 	adds r0, r4, #0
-	bl FUN_080a5c84
+	bl PantheonAquaModProjectile_Update
 	pop {r4, r5}
 	pop {r0}
 	bx r0
@@ -15672,8 +15678,8 @@ _080A5C78: .4byte 0x0836BB48
 _080A5C7C: .4byte 0x0836BB18
 _080A5C80: .4byte nop_080a5c10
 
-	thumb_func_start FUN_080a5c84
-FUN_080a5c84: @ 0x080A5C84
+	thumb_func_start PantheonAquaModProjectile_Update
+PantheonAquaModProjectile_Update: @ 0x080A5C84
 	push {r4, lr}
 	adds r4, r0, #0
 	ldr r1, _080A5CB0 @ =0x0836BB00
@@ -15697,8 +15703,8 @@ FUN_080a5c84: @ 0x080A5C84
 _080A5CB0: .4byte 0x0836BB00
 _080A5CB4: .4byte 0x0836BB0C
 
-	thumb_func_start FUN_080a5cb8
-FUN_080a5cb8: @ 0x080A5CB8
+	thumb_func_start PantheonAquaModProjectile_Die
+PantheonAquaModProjectile_Die: @ 0x080A5CB8
 	push {r4, lr}
 	adds r4, r0, #0
 	adds r0, #0x8c
@@ -15730,8 +15736,10 @@ FUN_080a5cb8: @ 0x080A5CB8
 	bx r0
 	.align 2, 0
 _080A5CF4: .4byte gProjectileFnTable
-_080A5CF8:
-	.byte 0x70, 0x47, 0x00, 0x00
+
+	thumb_func_start FUN_080a5cf8
+FUN_080a5cf8:
+	bx lr
 
 	thumb_func_start FUN_080a5cfc
 FUN_080a5cfc: @ 0x080A5CFC
@@ -16391,8 +16399,8 @@ _080A61EC:
 _080A61F4: .4byte gProjectileHeaderPtr
 _080A61F8: .4byte gProjectileFnTable
 
-	thumb_func_start initCubitAtkObject
-initCubitAtkObject: @ 0x080A61FC
+	thumb_func_start CubitProjectile_Init
+CubitProjectile_Init: @ 0x080A61FC
 	push {r4, r5, r6, r7, lr}
 	adds r6, r0, #0
 	bl InitNonAffineMotion
@@ -16554,7 +16562,7 @@ _080A6336:
 	movs r0, #0xff
 	strb r0, [r6, #0x12]
 	adds r0, r6, #0
-	bl FUN_080a6350
+	bl CubitProjectile_Update
 	pop {r4, r5, r6, r7}
 	pop {r0}
 	bx r0
@@ -16562,8 +16570,8 @@ _080A6336:
 _080A6348: .4byte 0x0836BCC4
 _080A634C: .4byte gProjectileFnTable
 
-	thumb_func_start FUN_080a6350
-FUN_080a6350: @ 0x080A6350
+	thumb_func_start CubitProjectile_Update
+CubitProjectile_Update: @ 0x080A6350
 	push {lr}
 	ldr r2, _080A636C @ =0x0836BB94
 	ldrb r1, [r0, #0x10]
@@ -16580,8 +16588,8 @@ FUN_080a6350: @ 0x080A6350
 	.align 2, 0
 _080A636C: .4byte 0x0836BB94
 
-	thumb_func_start FUN_080a6370
-FUN_080a6370: @ 0x080A6370
+	thumb_func_start CubitProjectile_Die
+CubitProjectile_Die: @ 0x080A6370
 	adds r2, r0, #0
 	ldrb r1, [r2, #0xa]
 	movs r0, #0xfe

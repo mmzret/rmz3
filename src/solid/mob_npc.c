@@ -1,9 +1,11 @@
 #include "collision.h"
-#include "entity.h"
 #include "global.h"
 #include "solid.h"
 
 // レジスタンスベースのモブキャラ
+
+static const struct Collision sCollisions[3];
+static const motion_t sMotions[27];
 
 typedef TextID (*TalkFunc)(struct Solid*);
 
@@ -464,48 +466,43 @@ const TalkFunc sMobNPCTalks[27] = {
 // clang-format on
 
 // clang-format off
-const motion_t sMobNPCMotions[27] = {
-    MOTION(0xC4, 0x00),
-    MOTION(0xBB, 0x00),
-    MOTION(0xC3, 0x00),
-    MOTION(0xC5, 0x00),
-    MOTION(0xC0, 0x00),
-    MOTION(0xBE, 0x00),
-    MOTION(0xC7, 0x00),
-    MOTION(0xC6, 0x00),
-    MOTION(0xC1, 0x00),
-    MOTION(0xBF, 0x00),
-    MOTION(0xBD, 0x00),
-    MOTION(0xBD, 0x00),
-    MOTION(0xBD, 0x00),
-    MOTION(0xBD, 0x00),
-    MOTION(0xBD, 0x00),
-    MOTION(0xBD, 0x00),
-    MOTION(0xBD, 0x00),
-    MOTION(0xBD, 0x00),
-    MOTION(0xBD, 0x00),
-    MOTION(0xBD, 0x00),
-    MOTION(0xBD, 0x00),
-    MOTION(0xBC, 0x00),
-    MOTION(0x82, 0x00),
-    MOTION(0x82, 0x00),
-    MOTION(0x82, 0x00),
-    MOTION(0x82, 0x00),
-    MOTION(0xC4, 0x00),
+static const motion_t sMotions[27] = {
+    MOTION(SM196_ANDREW, 0),
+    MOTION(SM187_ALOUETTE, 0),
+    MOTION(SM195_HIBOU, 0),
+    MOTION(SM197_MENART, 0),
+    MOTION(SM192_ROCINOLLE, 0),
+    MOTION(SM190_HIRONDELLE, 0),
+    MOTION(SM199_PIC, 0),
+    MOTION(SM198_PERROQUIET, 0),
+    MOTION(SM193_DOIGT, 0),
+    MOTION(SM191_AUTRUCHE, 0),
+    MOTION(SM189_FAUCON, 0),
+    MOTION(SM189_FAUCON, 0),
+    MOTION(SM189_FAUCON, 0),
+    MOTION(SM189_FAUCON, 0),
+    MOTION(SM189_FAUCON, 0),
+    MOTION(SM189_FAUCON, 0),
+    MOTION(SM189_FAUCON, 0),
+    MOTION(SM189_FAUCON, 0),
+    MOTION(SM189_FAUCON, 0),
+    MOTION(SM189_FAUCON, 0),
+    MOTION(SM189_FAUCON, 0),
+    MOTION(SM188_KISS, 0),
+    MOTION(SM130_PROLOGUE_RESISTANCE, 0),
+    MOTION(SM130_PROLOGUE_RESISTANCE, 0),
+    MOTION(SM130_PROLOGUE_RESISTANCE, 0),
+    MOTION(SM130_PROLOGUE_RESISTANCE, 0),
+    MOTION(SM196_ANDREW, 0),
 };
 // clang-format on
 
-const struct Collision sMobNPCCollisions[3] = {
+static const struct Collision sCollisions[3] = {
     {
       kind : DDP,
       faction : FACTION_ENEMY,
       special : CHATABLE,
       damage : 255,
-      atkType : 0x00,
-      element : 0x00,
-      nature : 0x00,
-      comboLv : 0x00,
-      hitzone : 0x00,
       remaining : 0,
       layer : 0x00000001,
       range : {PIXEL(0), PIXEL(0), PIXEL(72), PIXEL(1)},
@@ -515,11 +512,6 @@ const struct Collision sMobNPCCollisions[3] = {
       faction : FACTION_ENEMY,
       special : CHATABLE,
       damage : 255,
-      atkType : 0x00,
-      element : 0x00,
-      nature : 0x00,
-      comboLv : 0x00,
-      hitzone : 0x00,
       remaining : 0,
       layer : 0x00000001,
       range : {-PIXEL(16), PIXEL(0), PIXEL(32), PIXEL(1)},
@@ -529,11 +521,6 @@ const struct Collision sMobNPCCollisions[3] = {
       faction : FACTION_ENEMY,
       special : CHATABLE,
       damage : 255,
-      atkType : 0x00,
-      element : 0x00,
-      nature : 0x00,
-      comboLv : 0x00,
-      hitzone : 0x00,
       remaining : 0,
       layer : 0x00000001,
       range : {PIXEL(0), PIXEL(0), PIXEL(8), PIXEL(1)},

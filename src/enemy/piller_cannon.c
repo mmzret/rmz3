@@ -1,7 +1,7 @@
 #include "collision.h"
-#include "vfx.h"
-#include "global.h"
 #include "enemy.h"
+#include "global.h"
+#include "vfx.h"
 
 static const struct Collision sCollisions[14];
 static const motion_t sMotions[7];
@@ -24,7 +24,7 @@ struct Enemy* CreatePillerCannon(struct Coord* c, u8 n) {
   struct Enemy* p = (struct Enemy*)AllocEntityFirst(gZakoHeaderPtr);
   if (p != NULL) {
     (p->s).taskCol = 24;
-    INIT_ZAKO_ROUTINE(p, ZAKO_PILLER_CANNON);
+    INIT_ZAKO_ROUTINE(p, ENEMY_PILLER_CANNON);
     (p->s).tileNum = 0;
     (p->s).palID = 0;
     (p->s).flags2 |= WHITE_PAINTABLE;
@@ -89,8 +89,6 @@ static const struct Collision sCollisions[14] = {
     [0] = {
       kind : DRP,
       faction : FACTION_ENEMY,
-      special : 0,
-      damage : 0,
       LAYER(0xFFFFFFFF),
       hitzone : 0x00,
       hardness : 0x01,
@@ -101,12 +99,7 @@ static const struct Collision sCollisions[14] = {
     [1] = {
       kind : DDP,
       faction : FACTION_ENEMY,
-      special : 0,
       damage : 2,
-      atkType : 0x00,
-      element : 0x00,
-      nature : 0x00,
-      comboLv : 0x00,
       hitzone : 0x00,
       remaining : 1,
       layer : 0x00000001,
@@ -115,8 +108,6 @@ static const struct Collision sCollisions[14] = {
     [2] = {
       kind : DRP,
       faction : FACTION_ENEMY,
-      special : 0,
-      damage : 0,
       LAYER(0xFFFFFFFF),
       hitzone : 0x01,
       hardness : 0x01,
@@ -127,12 +118,7 @@ static const struct Collision sCollisions[14] = {
     [3] = {
       kind : DDP,
       faction : FACTION_ENEMY,
-      special : 0,
       damage : 2,
-      atkType : 0x00,
-      element : 0x00,
-      nature : 0x00,
-      comboLv : 0x00,
       hitzone : 0x00,
       remaining : 1,
       layer : 0x00000001,
@@ -141,8 +127,6 @@ static const struct Collision sCollisions[14] = {
     [4] = {
       kind : DRP,
       faction : FACTION_ENEMY,
-      special : 0,
-      damage : 0,
       LAYER(0xFFFFFFFF),
       hitzone : 0x01,
       hardness : 0x01,
@@ -153,12 +137,7 @@ static const struct Collision sCollisions[14] = {
     [5] = {
       kind : DDP,
       faction : FACTION_ENEMY,
-      special : 0,
       damage : 2,
-      atkType : 0x00,
-      element : 0x00,
-      nature : 0x00,
-      comboLv : 0x00,
       hitzone : 0x00,
       remaining : 1,
       layer : 0x00000001,
@@ -167,8 +146,6 @@ static const struct Collision sCollisions[14] = {
     [6] = {
       kind : DRP,
       faction : FACTION_ENEMY,
-      special : 0,
-      damage : 0,
       LAYER(0xFFFFFFFF),
       hitzone : 0x01,
       hardness : 0x01,
@@ -179,12 +156,7 @@ static const struct Collision sCollisions[14] = {
     [7] = {
       kind : DDP,
       faction : FACTION_ENEMY,
-      special : 0,
       damage : 2,
-      atkType : 0x00,
-      element : 0x00,
-      nature : 0x00,
-      comboLv : 0x00,
       hitzone : 0x00,
       remaining : 1,
       layer : 0x00000001,
@@ -193,8 +165,6 @@ static const struct Collision sCollisions[14] = {
     [8] = {
       kind : DRP,
       faction : FACTION_ENEMY,
-      special : 0,
-      damage : 0,
       LAYER(0xFFFFFFFF),
       hitzone : 0x01,
       hardness : 0x01,
@@ -205,12 +175,7 @@ static const struct Collision sCollisions[14] = {
     [9] = {
       kind : DDP,
       faction : FACTION_ENEMY,
-      special : 0,
       damage : 2,
-      atkType : 0x00,
-      element : 0x00,
-      nature : 0x00,
-      comboLv : 0x00,
       hitzone : 0x00,
       remaining : 1,
       layer : 0x00000001,
@@ -219,8 +184,6 @@ static const struct Collision sCollisions[14] = {
     [10] = {
       kind : DRP,
       faction : FACTION_ENEMY,
-      special : 0,
-      damage : 0,
       LAYER(0xFFFFFFFF),
       hitzone : 0x01,
       hardness : 0x01,
@@ -231,12 +194,7 @@ static const struct Collision sCollisions[14] = {
     [11] = {
       kind : DDP,
       faction : FACTION_ENEMY,
-      special : 0,
       damage : 2,
-      atkType : 0x00,
-      element : 0x00,
-      nature : 0x00,
-      comboLv : 0x00,
       hitzone : 0x00,
       remaining : 2,
       layer : 0x00000001,
@@ -245,8 +203,6 @@ static const struct Collision sCollisions[14] = {
     [12] = {
       kind : DRP,
       faction : FACTION_ENEMY,
-      special : 0,
-      damage : 0,
       LAYER(0xFFFFFFFF),
       hitzone : 0x01,
       hardness : 0x01,
@@ -257,8 +213,6 @@ static const struct Collision sCollisions[14] = {
     [13] = {
       kind : DRP,
       faction : FACTION_ENEMY,
-      special : 0,
-      damage : 0,
       LAYER(0xFFFFFFFF),
       hitzone : 0x01,
       remaining : 0,

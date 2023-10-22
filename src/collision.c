@@ -452,20 +452,21 @@ WIP void hitbox_08007674(struct Body *a, struct Body *d) {
     return;
   }
 
+  // Binding
   if (((a->processing)->unk_0a & ((1 << 5) | (1 << 0))) && ((d->processing)->unk_0a & (1 << 2))) {
-    if (!(a->status & BODY_STATUS_B11) && !(d->status & BODY_STATUS_B10)) {
-      if (!(a->prevStatus & BODY_STATUS_B11) && !(d->prevStatus & BODY_STATUS_B10)) {
-        a->unk_10 = d;
-        d->unk_10 = a;
+    if (!(a->status & BODY_STATUS_BINDING) && !(d->status & BODY_STATUS_BINDED)) {
+      if (!(a->prevStatus & BODY_STATUS_BINDING) && !(d->prevStatus & BODY_STATUS_BINDED)) {
+        a->bindPair = d;
+        d->bindPair = a;
         a->unk_21 = d->unk_21 = ((a->processing)->unk_0a & 0xF0) >> 1;
-        a->hitboxFlags |= BODY_STATUS_B11;
-        d->hitboxFlags |= BODY_STATUS_B10;
+        a->hitboxFlags |= BODY_STATUS_BINDING;
+        d->hitboxFlags |= BODY_STATUS_BINDED;
         a->status |= a->hitboxFlags;
         d->status |= d->hitboxFlags;
-      } else if ((a->unk_10 == d) && (d->unk_10 == a)) {
+      } else if ((a->bindPair == d) && (d->bindPair == a)) {
         if ((((a->processing)->unk_0a & (1 << 1)) && (a->unk_21 != 0)) || (a->unk_21 != 0 && d->unk_21 != 0)) {
-          a->hitboxFlags |= BODY_STATUS_B11;
-          d->hitboxFlags |= BODY_STATUS_B10;
+          a->hitboxFlags |= BODY_STATUS_BINDING;
+          d->hitboxFlags |= BODY_STATUS_BINDED;
           a->status |= a->hitboxFlags;
           d->status |= d->hitboxFlags;
         }

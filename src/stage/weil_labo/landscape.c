@@ -110,11 +110,11 @@ static void exitWeilLabo(struct Coord* _ UNUSED) {
 
 // ------------------------------------------------------------------------------------------------------------------------------------
 
-void FUN_080152bc(struct StageLayer* l, const struct Stage* stage);
-void FUN_0801534c(struct StageLayer* l, const struct Stage* stage);
-void FUN_08015378(struct StageLayer* l, const struct Stage* stage);
-void FUN_08015390(struct StageLayer* l, const struct Stage* stage);
-void FUN_080153cc(struct StageLayer* l, const struct Stage* stage);
+static void LayerUpdate_2(struct StageLayer* l, const struct Stage* _ UNUSED);
+static void FUN_0801534c(struct StageLayer* l UNUSED, const struct Stage* _ UNUSED);
+static void FUN_08015378(struct StageLayer* l, const struct Stage* _ UNUSED);
+static void FUN_08015390(struct StageLayer* l, const struct Stage* _ UNUSED);
+static void FUN_080153cc(struct StageLayer* l, const struct Stage* _ UNUSED);
 void FUN_080153e8(struct StageLayer* l, const struct Stage* stage);
 void FUN_08015510(struct StageLayer* l, const struct Stage* stage);
 void weilLabo_08015564(struct StageLayer* l, const struct Stage* stage);
@@ -141,7 +141,7 @@ static const StageLayerRoutine sLayerRoutine[11] = {
       [LAYER_EXIT]   = NULL,
     },
     [2] = {
-      [LAYER_UPDATE] = FUN_080152bc,
+      [LAYER_UPDATE] = LayerUpdate_2,
       [LAYER_DRAW]   = DrawGeneralStageLayer,
       [LAYER_EXIT]   = FUN_0801534c,
     },
@@ -187,6 +187,80 @@ static const StageLayerRoutine sLayerRoutine[11] = {
     },
 };
 // clang-format on
+
+// 0x080152bc
+static void LayerUpdate_2(struct StageLayer* l, const struct Stage* _ UNUSED) {
+#if MODERN == 0
+  register u16 tmp asm("r1");
+  register s32 sin asm("r1");
+  register s32 scy asm("r0");
+#else
+  u16 sin;
+#endif
+
+  if (l->phase == 0) {
+    const u16 n = l->bgIdx;
+    BGCNT16(n >> 4) &= 0xFFFC;
+    BGCNT16(n >> 4) |= 1;
+    gBlendRegBuffer.bldclt = 0x3B44;
+    gBlendRegBuffer.bldalpha = 0xC04;
+    SEA = PIXEL(832);
+    LoadBlink(234, 192);
+    l->unk_10 = 0;
+    l->phase++;
+  }
+
+  l->unk_10++;
+#if MODERN == 0
+  tmp = SIN(l->unk_10);
+  sin = ((s32)tmp << 16) >> 22;
+  scy = -27 - sin;
+  (l->scroll).y = scy;
+#else
+  sin = SIN(l->unk_10);
+  (l->scroll).y = -27 - (((s16)sin) >> 6);
+#endif
+  UpdateBlinkMotionState(234);
+}
+
+// 0x0801534c
+static void FUN_0801534c(struct StageLayer* l UNUSED, const struct Stage* _ UNUSED) {
+  ClearBlink(234);
+  gBlendRegBuffer.bldclt = 0;
+  SEA = PIXEL(10240);
+}
+
+// 0x08015378
+static void FUN_08015378(struct StageLayer* l, const struct Stage* _ UNUSED) {
+  if (l->phase == 0) {
+    (l->scrollPower).x = 0;
+    (l->scrollPower).y = 0;
+    l->phase++;
+  }
+}
+
+// 0x08015390
+static void FUN_08015390(struct StageLayer* l, const struct Stage* _ UNUSED) {
+  if (l->phase == 0) {
+    (l->scrollPower).x = 0xC0;
+    (l->scrollPower).y = 0xC0;
+    if ((l->viewportCenterPixel).x < 5760) {
+      (l->scroll).x = 840;
+    } else {
+      (l->scroll).x = 1500;
+    }
+    (l->scroll).y = 40;
+    l->phase++;
+  }
+}
+
+static void FUN_080153cc(struct StageLayer* l, const struct Stage* _ UNUSED) {
+  if (l->phase == 0) {
+    l->unk_10 = 0;
+    l->phase++;
+  }
+  l->unk_10++;
+}
 
 INCASM("asm/stage_gfx/weil_labo.inc");
 

@@ -4,7 +4,6 @@
 #include "global.h"
 
 #define FONT_BOLD 0x7800
-extern u16 DefaultBGPalette[SLOT_4BPP];
 
 static s32 printStringWithLen(u8 startX, u8 startY, char_t *s, u16 len);
 
@@ -19,10 +18,14 @@ void InitTextPrinter(u32 *bg0) {
 }
 
 void text_080e9730(void) {
+  static const ALIGNED(4) u16 sDefaultBGPalette[SLOT_4BPP] = {
+      0x0000, 0xFFFF, 0xB9CE, 0x8421, 0xC21F, 0xABFF, 0xC3EC, 0x9E80, 0xA110, 0xF3F3, 0xF68A, 0xD14A, 0xA8FC, 0x8537, 0x908D, 0xCEB5,
+  };
+
   u8 val;
   CpuFastCopy(gFontBold, (void *)(CHAR_BASE(0) + VRAM + FONT_BOLD), 2048);
   val = 0;
-  CpuFastCopy(DefaultBGPalette, gPaletteManager.buf, 32);
+  CpuFastCopy(sDefaultBGPalette, gPaletteManager.buf, 32);
   gTextPrinter.startX = val;
   gTextPrinter.endX = 30;
   gTextPrinter.startY = 0;

@@ -403,7 +403,7 @@ static void onCollision(struct Body* body, struct Coord* r1 UNUSED, struct Coord
     if ((z->s).mode[1] == ZERO_BINDED) {
       return;
     }
-    if (body->hitboxFlags & BODY_STATUS_B10) {
+    if (body->hitboxFlags & BODY_STATUS_BINDED) {
       z->isRightDir = (enemy->coord).x > (z->s).coord.x;
       (z->s).mode[1] = ZERO_BINDED;
       (z->s).mode[2] = 0;

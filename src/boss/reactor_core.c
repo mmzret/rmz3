@@ -52,10 +52,8 @@ static const struct Collision sCollisions[1] = {
     {
       kind : DDP,
       faction : FACTION_ENEMY,
-      special : 2,
+      special : CS_BOSS,
       damage : 3,
-      atkType : 0x00,
-      comboLv : 0,
       remaining : 0,
       layer : 0x00000001,
       range : {PIXEL(0), PIXEL(0), PIXEL(48), PIXEL(32)},

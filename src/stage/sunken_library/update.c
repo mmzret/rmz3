@@ -1,6 +1,8 @@
 #include "global.h"
 #include "overworld.h"
 
+static const struct Coord sSunkenLibRoom[24];
+
 /*
 checkpoint (0202fe62):
   00: ステージ読み込み中
@@ -589,24 +591,24 @@ NAKED struct Coord* getSunkenLibRoomCoord(u8 idx) {
 	adds r0, r1, r0\n\
 	ldrb r0, [r0]\n\
 	lsls r0, r0, #3\n\
-	ldr r1, _0801F6F8 @ =gSunkenLibRoom\n\
+	ldr r1, _0801F6F8 @ =sSunkenLibRoom\n\
 	b _0801F706\n\
 	.align 2, 0\n\
 _0801F6F4: .4byte 0x0202FFF4\n\
-_0801F6F8: .4byte gSunkenLibRoom\n\
+_0801F6F8: .4byte sSunkenLibRoom\n\
 _0801F6FC:\n\
 	ldr r0, _0801F70C @ =0x0202FFF4\n\
 	adds r0, r1, r0\n\
 	ldrb r0, [r0]\n\
 	lsls r0, r0, #3\n\
-	ldr r1, _0801F710 @ =gSunkenLibRoom\n\
+	ldr r1, _0801F710 @ =sSunkenLibRoom\n\
 _0801F706:\n\
 	adds r0, r0, r1\n\
 	pop {r1}\n\
 	bx r1\n\
 	.align 2, 0\n\
 _0801F70C: .4byte 0x0202FFF4\n\
-_0801F710: .4byte gSunkenLibRoom\n\
+_0801F710: .4byte sSunkenLibRoom\n\
  .syntax divided\n");
 }
 
@@ -779,7 +781,7 @@ _0801F83C: .4byte gStageRun\n\
     16 04 05 06 07 17
     18 19 20 21 22 23
 */
-const struct Coord gSunkenLibRoom[24] = {
+static const struct Coord sSunkenLibRoom[24] = {
   { 0x001A5000, 0x00031F00 }, { 0x001AA000, 0x00031F00 }, { 0x001AF000, 0x00031F00 }, { 0x001B4000, 0x00031F00 }, { 0x001A5000, 0x00035F00 }, { 0x001AA000, 0x00035F00 },
   { 0x001AF000, 0x00035F00 }, { 0x001B4000, 0x00035F00 }, { 0x001A0000, 0x0002DF00 }, { 0x001A5000, 0x0002DF00 }, { 0x001AA000, 0x0002DF00 }, { 0x001AF000, 0x0002DF00 },
   { 0x001B4000, 0x0002DF00 }, { 0x001B9000, 0x0002DF00 }, { 0x001A0000, 0x00031F00 }, { 0x001B9000, 0x00031F00 }, { 0x001A0000, 0x00035F00 }, { 0x001B9000, 0x00035F00 },

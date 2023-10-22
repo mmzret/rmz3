@@ -8,6 +8,12 @@ const BASE = 0x0800_0000;
 const SIZE = 24;
 const KIND = ['DDP', 'DRP', 'DRP2'];
 const FACTION = ['FACTION_ALLY', 'FACTION_ENEMY', 'FACTION_NEUTRAL'];
+const SPECIAL = ['0', 'HALFABLE', 'CS_BOSS'];
+const HARDNESS: Record<number, string> = {
+  1: 'METAL',
+  2: 'NO_DAMAGE',
+  8: 'HARDNESS_B3',
+};
 
 const Collision = new Parser().endianness('little')
   .uint8('kind')
@@ -69,6 +75,7 @@ const main = async () => {
       atkType: `0x${toHex(result.atkType, 2)}`,
       element: `0x${toHex(result.element, 2)}`,
       nature: `0x${toHex(result.nature, 2)}`,
+      hardness: HARDNESS[result.hardness] ?? String(result.hardness),
       unk_0a: `0x${toHex(result.unk_0a, 2)}`,
       layer: `0x${toHex(result.layer, 8)}`,
       rect_0: result.range.x >> 8,
@@ -76,18 +83,41 @@ const main = async () => {
       rect_2: result.range.w >> 8,
       rect_3: result.range.h >> 8,
     };
-    console.log(`${options.index ? `[${i}] = ` : ''}{
-    kind: ${KIND[result.kind]},
-    faction: ${FACTION[result.faction]},
-    special: ${result.special},
-    damage: ${result.damage},
-    atkType: ${collision.atkType},${result.element === 0 ? '' : `\n    element: ${collision.element},`}${result.nature === 0 ? '' : `\n    nature: ${collision.nature},`}
-    comboLv: ${result.comboLv},${((result.kind === 0) && (result.hitzone === 0)) ? '' : `\n    hitzone: ${result.hitzone},`}${result.hardness === 0 ? '' : `\n    hardness: ${result.hardness},`}
-    unk_0a: ${collision.unk_0a},
-    remaining: ${result.remaining},
-    layer: ${collision.layer},
-    range: {${collision.rect_0 < 0 ? '-' : ''}PIXEL(${Math.abs(collision.rect_0)}), ${collision.rect_1 < 0 ? '-' : ''}PIXEL(${Math.abs(collision.rect_1)}), ${collision.rect_2 < 0 ? '-' : ''}PIXEL(${Math.abs(collision.rect_2)}), ${collision.rect_3 < 0 ? '-' : ''}PIXEL(${Math.abs(collision.rect_3)})},
-},`);
+
+    const layerName = result.kind === 1 ? `priorityLayer` : `layer`;
+    console.log(`${options.index ? `[${i}] = ` : ''}{`);
+    console.log(`    kind: ${KIND[result.kind]},`);
+    console.log(`    faction: ${FACTION[result.faction]},`);
+    if (result.special !== 0) console.log(`    special: ${SPECIAL[result.special] ?? result.special},`);
+    if (result.damage !== 0) console.log(`    damage: ${result.damage},`);
+
+    switch (KIND[result.kind]) {
+      case 'DRP2':
+      case 'DDP': {
+        if (result.atkType !== 0) console.log(`    atkType: ${collision.atkType},`);
+        if (result.element !== 0) console.log(`    element: ${collision.element},`);
+        if (result.nature !== 0) console.log(`    nature: ${collision.nature},`);
+        if (result.comboLv !== 0) console.log(`    comboLv: ${result.comboLv},`);
+        break;
+      }
+      case 'DRP': {
+        let layerLo = result.atkType;
+        layerLo |= result.element << 8;
+        let layerHi = result.nature;
+        layerHi |= result.comboLv << 8;
+        console.log(`    LAYER(0x${toHex(layerHi, 4)}${toHex(layerLo, 4)}),`);
+        break;
+      }
+    }
+
+    if ((KIND[result.kind] !== 'DDP') || (result.hitzone !== 0)) console.log(`    hitzone: ${result.hitzone},`);
+    if (result.hardness !== 0) console.log(`    hardness: ${collision.hardness},`);
+    if (result.unk_0a !== 0) console.log(`    unk_0a: ${collision.unk_0a},`);
+    console.log(`    remaining: ${result.remaining},`);
+    if (result.layer !== 0) console.log(`    ${layerName}: ${collision.layer},`);
+
+    console.log(`    range: {${collision.rect_0 < 0 ? '-' : ''}PIXEL(${Math.abs(collision.rect_0)}), ${collision.rect_1 < 0 ? '-' : ''}PIXEL(${Math.abs(collision.rect_1)}), ${collision.rect_2 < 0 ? '-' : ''}PIXEL(${Math.abs(collision.rect_2)}), ${collision.rect_3 < 0 ? '-' : ''}PIXEL(${Math.abs(collision.rect_3)})},`);
+    console.log(`},`);
   }
   console.log('};');
 };

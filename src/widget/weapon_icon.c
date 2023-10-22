@@ -16,7 +16,7 @@ const WidgetRoutine gMenuWeaponIconRoutine = {
 };
 // clang-format on
 
-const motion_t sWeaponIconMotions[4] = {
+const motion_t sWeaponIconMotions[WEAPON_KINDS] = {
     [WEAPON_BUSTER] = MOTION(SM014_CHIPICON, 0),
     [WEAPON_SABER] = MOTION(SM014_CHIPICON, 1),
     [WEAPON_ROD] = MOTION(SM014_CHIPICON, 2),

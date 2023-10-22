@@ -2,6 +2,7 @@
 		src/system.o (.rodata);
 		src/sram.o (.rodata);
 		src/data/data_080fea74.o (.rodata);
+		src/bg0/text.o (.rodata);
 		asm/font.o (.rodata);
 		src/data/minigame_string.o (.rodata);
 		src/libs/m4a_tables.o (.rodata);
@@ -284,6 +285,15 @@
       src/enemy/unk_61.o (.rodata);
       src/enemy/shotloid.o (.rodata);
       src/enemy/unk_63.o (.rodata);
+      src/enemy/pantheon_fist.o (.rodata);
+      src/enemy/shellcrawler.o (.rodata);
+      src/enemy/cannon_hopper.o (.rodata);
+      src/enemy/cattatank.o (.rodata);
+      src/enemy/minigame/leviathan.o (.rodata);
+      src/enemy/minigame/harpuia.o (.rodata);
+      src/enemy/minigame/ciel1.o (.rodata);
+      src/enemy/minigame/ciel2.o (.rodata);
+      src/enemy/unk_72.o (.rodata);
 
 		src/projectile.o (.rodata);
       src/projectile/lemon.o (.rodata);
@@ -306,10 +316,14 @@
       src/projectile/unk_17.o (.rodata);
       src/projectile/unk_18.o (.rodata);
       src/projectile/tretista.o (.rodata);
+      src/projectile/unk_20.o (.rodata);
+      src/projectile/pantheon_aqua_mod.o (.rodata);
+      src/projectile/cubit.o (.rodata);
       src/projectile/omega_zero.o (.rodata);
       src/projectile/claveker_yellow_balls.o (.rodata);
       src/projectile/phantom.o (.rodata);
       src/projectile/omega_zx.o (.rodata);
+      src/projectile/unk_42.o (.rodata);
 
 		src/vfx.o (.rodata);
       src/vfx/smoke.o (.rodata);

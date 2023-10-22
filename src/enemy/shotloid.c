@@ -2,6 +2,8 @@
 #include "enemy.h"
 #include "global.h"
 
+INCASM("asm/enemy/shotloid.inc");
+
 void Shotloid_Init(struct Enemy* p);
 void Shotloid_Update(struct Enemy* p);
 void Shotloid_Die(struct Enemy* p);
@@ -75,13 +77,7 @@ static const struct Collision sCollisions[3] = {
     {
       kind : DDP,
       faction : FACTION_ENEMY,
-      special : 0,
       damage : 2,
-      atkType : 0x00,
-      element : 0x00,
-      nature : 0x00,
-      comboLv : 0,
-      hitzone : 0,
       remaining : 1,
       layer : 0x00000001,
       range : {PIXEL(0), -PIXEL(12), PIXEL(23), PIXEL(23)},
@@ -89,12 +85,7 @@ static const struct Collision sCollisions[3] = {
     {
       kind : DRP,
       faction : FACTION_ENEMY,
-      special : 0,
-      damage : 0,
-      atkType : 0xFF,
-      element : 0xFF,
-      nature : 0xFF,
-      comboLv : 255,
+      LAYER(0xFFFFFFFF),
       hitzone : 1,
       hardness : 8,
       remaining : 0,
@@ -105,11 +96,6 @@ static const struct Collision sCollisions[3] = {
       faction : FACTION_NEUTRAL,
       special : 0,
       damage : 2,
-      atkType : 0x00,
-      element : 0x00,
-      nature : 0x00,
-      comboLv : 0,
-      hitzone : 0,
       remaining : 0,
       layer : 0x00000001,
       range : {PIXEL(0), -PIXEL(12), PIXEL(23), PIXEL(23)},

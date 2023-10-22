@@ -1,8 +1,7 @@
 .include "asm/scripts/commands.inc"
 .include "asm/scripts/constants.inc"
-#include "constants/boss.h"
+#include "constants/entity.h"
 #include "constants/song.h"
-#include "constants/solid.h"
 #include "constants/flag.h"
 
   .balign 4
@@ -62,7 +61,7 @@ Camera_0834d344: @ 0x0834d344
   .2byte 0x0, 0x0, 0x0, 0x0
   .4byte 0xF6800, 0x105800, 0x0, 0x280000
 
-EntityTemplate_SpaceCraftIntroZero: @ 0x0834d370
+Entity_SpaceCraftIntroZero: @ 0x0834d370
   .byte SOLID
   .byte SOLID_SCRIPT_ACTOR
   .byte ACTOR_ZERO_WALK
@@ -118,7 +117,7 @@ EntityTemplate_0834d3d0: @ 0x0834d3d0
   .4byte 0x45000, 0x6C000
   .4byte DIR_RIGHT
 
-EntityTemplate_0834d3e0: @ 0x0834d3e0
+Entity_0834d3e0: @ 0x0834d3e0
   .byte SOLID
   .byte SOLID_SCRIPT_ACTOR
   .byte 0x7
@@ -126,7 +125,7 @@ EntityTemplate_0834d3e0: @ 0x0834d3e0
   .4byte 0x3B000, 0x6C000
   .4byte DIR_RIGHT
 
-EntityTemplate_0834d3f0: @ 0x0834d3f0
+Entity_0834d3f0: @ 0x0834d3f0
   .byte SOLID
   .byte SOLID_SCRIPT_ACTOR
   .byte 0x6
@@ -135,7 +134,7 @@ EntityTemplate_0834d3f0: @ 0x0834d3f0
   .4byte DIR_LEFT
 
 @ オメガと四天王の戦闘に巻き込まれて死ぬパンテオン3匹(0)
-EntityTemplate_PantheonOmegaCrash0: @ 0x0834d400
+Entity_PantheonOmegaCrash0: @ 0x0834d400
   .byte SOLID
   .byte SOLID_SCRIPT_ACTOR
   .byte ACTOR_CRASHED_PANTHEON
@@ -143,7 +142,7 @@ EntityTemplate_PantheonOmegaCrash0: @ 0x0834d400
   .4byte 0xF6000, 0x12000
   .4byte DIR_RIGHT
 
-EntityTemplate_PantheonOmegaCrash1:
+Entity_PantheonOmegaCrash1:
   .byte SOLID
   .byte SOLID_SCRIPT_ACTOR
   .byte ACTOR_CRASHED_PANTHEON
@@ -151,7 +150,7 @@ EntityTemplate_PantheonOmegaCrash1:
   .4byte 0xF7000, 0x12000
   .4byte DIR_RIGHT
 
-EntityTemplate_PantheonOmegaCrash2:
+Entity_PantheonOmegaCrash2:
   .byte SOLID
   .byte SOLID_SCRIPT_ACTOR
   .byte ACTOR_CRASHED_PANTHEON
@@ -159,7 +158,7 @@ EntityTemplate_PantheonOmegaCrash2:
   .4byte 0xF9000, 0x12000
   .4byte DIR_RIGHT
 
-EntityTemplate_0834d430: @ 0x0834d430
+Entity_0834d430: @ 0x0834d430
   .byte SOLID
   .byte SOLID_SCRIPT_ACTOR
   .byte 10
@@ -167,7 +166,7 @@ EntityTemplate_0834d430: @ 0x0834d430
   .4byte 0xFB000, 0xF000
   .4byte DIR_LEFT
 
-EntityTemplate_0834d440: @ 0x0834d440
+Entity_0834d440: @ 0x0834d440
   .byte SOLID
   .byte SOLID_SCRIPT_ACTOR
   .byte 11
@@ -175,7 +174,7 @@ EntityTemplate_0834d440: @ 0x0834d440
   .4byte 0xFB000, 0xF000
   .4byte DIR_LEFT
 
-EntityTemplate_0834d450: @ 0x0834d450
+Entity_0834d450: @ 0x0834d450
   .byte SOLID
   .byte SOLID_SCRIPT_ACTOR
   .byte 12
@@ -183,7 +182,7 @@ EntityTemplate_0834d450: @ 0x0834d450
   .4byte 0xFB000, 0x13000
   .4byte DIR_RIGHT
 
-EntityTemplate_0834d460: @ 0x0834d460
+Entity_0834d460: @ 0x0834d460
   .byte SOLID
   .byte SOLID_SCRIPT_ACTOR
   .byte 17
@@ -191,7 +190,7 @@ EntityTemplate_0834d460: @ 0x0834d460
   .4byte 0x101000, 0x12000
   .4byte DIR_RIGHT
 
-EntityTemplate_0834d470: @ 0x0834d470
+Entity_0834d470: @ 0x0834d470
   .byte SOLID
   .byte SOLID_SCRIPT_ACTOR
   .byte 17
@@ -199,7 +198,7 @@ EntityTemplate_0834d470: @ 0x0834d470
   .4byte 0x103800, 0x12000
   .4byte DIR_LEFT
 
-EntityTemplate_0834d480: @ 0x0834d480
+Entity_0834d480: @ 0x0834d480
   .byte SOLID
   .byte SOLID_SCRIPT_ACTOR
   .byte 17
@@ -207,7 +206,7 @@ EntityTemplate_0834d480: @ 0x0834d480
   .4byte 0x102600, 0x12000
   .4byte DIR_RIGHT
 
-EntityTemplate_0834d490: @ 0x0834d490
+Entity_0834d490: @ 0x0834d490
   .byte SOLID
   .byte SOLID_SCRIPT_ACTOR
   .byte 17
@@ -215,7 +214,7 @@ EntityTemplate_0834d490: @ 0x0834d490
   .4byte 0x101500, 0x12000
   .4byte DIR_RIGHT
 
-EntityTemplate_0834d4a0: @ 0x0834d4a0
+Entity_0834d4a0: @ 0x0834d4a0
   .byte SOLID
   .byte SOLID_SCRIPT_ACTOR
   .byte 17
@@ -223,8 +222,7 @@ EntityTemplate_0834d4a0: @ 0x0834d4a0
   .4byte 0x103000, 0x12000
   .4byte DIR_LEFT
 
-
-EntityTemplate_0834d4b0: @ 0x0834d4b0
+Entity_0834d4b0: @ 0x0834d4b0
   .byte SOLID
   .byte SOLID_SCRIPT_ACTOR
   .byte 17
@@ -232,7 +230,7 @@ EntityTemplate_0834d4b0: @ 0x0834d4b0
   .4byte 0x102200, 0x12000
   .4byte DIR_RIGHT
 
-EntityTemplate_0834d4c0: @ 0x0834d4c0
+Entity_0834d4c0: @ 0x0834d4c0
   .byte SOLID
   .byte SOLID_SCRIPT_ACTOR
   .byte 17
@@ -240,7 +238,7 @@ EntityTemplate_0834d4c0: @ 0x0834d4c0
   .4byte 0x102800, 0x12000
   .4byte DIR_RIGHT
 
-EntityTemplate_0834d4d0: @ 0x0834d4d0
+Entity_0834d4d0: @ 0x0834d4d0
   .byte SOLID
   .byte SOLID_SCRIPT_ACTOR
   .byte 17
@@ -248,7 +246,7 @@ EntityTemplate_0834d4d0: @ 0x0834d4d0
   .4byte 0x101800, 0x12000
   .4byte DIR_RIGHT
 
-EntityTemplate_0834d4e0: @ 0x0834d4e0
+Entity_0834d4e0: @ 0x0834d4e0
   .byte SOLID
   .byte SOLID_SCRIPT_ACTOR
   .byte 17
@@ -256,7 +254,7 @@ EntityTemplate_0834d4e0: @ 0x0834d4e0
   .4byte 0x102000, 0x12000
   .4byte DIR_RIGHT
 
-EntityTemplate_0834d4f0: @ 0x0834d4f0
+Entity_0834d4f0: @ 0x0834d4f0
   .byte SOLID
   .byte SOLID_SCRIPT_ACTOR
   .byte 18
@@ -264,7 +262,7 @@ EntityTemplate_0834d4f0: @ 0x0834d4f0
   .4byte 0xFD000, 0x12000
   .4byte DIR_RIGHT
 
-EntityTemplate_0834d500: @ 0x0834d500
+Entity_0834d500: @ 0x0834d500
   .byte SOLID
   .byte SOLID_SCRIPT_ACTOR
   .byte 19
@@ -272,7 +270,7 @@ EntityTemplate_0834d500: @ 0x0834d500
   .4byte 0x104000, 0xE000
   .4byte DIR_LEFT
 
-EntityTemplate_0834d510: @ 0x0834d510
+Entity_0834d510: @ 0x0834d510
   .byte SOLID
   .byte SOLID_SCRIPT_ACTOR
   .byte 20
@@ -280,7 +278,7 @@ EntityTemplate_0834d510: @ 0x0834d510
   .4byte 0x100000, 0x12000
   .4byte DIR_LEFT
 
-EntityTemplate_0834d520: @ 0x0834d520
+Entity_0834d520: @ 0x0834d520
   .byte SOLID
   .byte SOLID_SCRIPT_ACTOR
   .byte 21
@@ -288,7 +286,7 @@ EntityTemplate_0834d520: @ 0x0834d520
   .4byte 0x102000, 0x12000
   .4byte DIR_LEFT
 
-EntityTemplate_0834d530: @ 0x0834d530
+Entity_0834d530: @ 0x0834d530
   .byte PLAYER
   .byte 0
   .byte 0
@@ -297,7 +295,7 @@ EntityTemplate_0834d530: @ 0x0834d530
   .4byte DIR_RIGHT
 
 @ ゼロを壊れた宇宙船のスタート地点に生成する
-EntityTemplate_ZeroSpaceCraftStartPoint: @ 0x0834d540
+Entity_ZeroSpaceCraftStartPoint: @ 0x0834d540
   .byte PLAYER
   .byte 0
   .byte 0
@@ -306,7 +304,7 @@ EntityTemplate_ZeroSpaceCraftStartPoint: @ 0x0834d540
   .4byte DIR_RIGHT
 
 @ ゼロを壊れた宇宙船のスタート地点に生成する
-EntityTemplate_ZeroSpaceCraftBuilding: @ 0x0834d550
+Entity_ZeroSpaceCraftBuilding: @ 0x0834d550
   .byte PLAYER
   .byte 0
   .byte 0
@@ -314,7 +312,7 @@ EntityTemplate_ZeroSpaceCraftBuilding: @ 0x0834d550
   .4byte 0xD4000, 0x57000
   .4byte DIR_RIGHT
 
-EntityTemplate_Zero_0834d560: @ 0x0834d560
+Entity_0834d560: @ 0x0834d560
   .byte PLAYER
   .byte 0
   .byte 0
@@ -322,7 +320,7 @@ EntityTemplate_Zero_0834d560: @ 0x0834d560
   .4byte 0xE8000, 0x12000
   .4byte DIR_RIGHT
 
-EntityTemplate_Zero_0834d570: @ 0x0834d570
+Entity_0834d570: @ 0x0834d570
   .byte PLAYER
   .byte 0
   .byte 0
@@ -337,6 +335,8 @@ Entity_OmegaWhite: @ 0x0834d580
   .byte 0
   .4byte 0x102000, 0x12000
   .4byte DIR_LEFT
+
+@;@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 
 Script_0834d590:
   eventflag 0, 0, 0
@@ -358,7 +358,7 @@ Script_0834d590:
 @;@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 
 @ script entity slot idx
-.equ ZERO, 3
+@ 3: Zero
 .equ CIEL, 4
 
 Script_0834d608: @ 0x0834d608
@@ -379,7 +379,7 @@ Script_0834d608: @ 0x0834d608
   wait_screeneffect
   waitabs 213
   scroll_speed_y 0
-  spawn ZERO, 0, EntityTemplate_SpaceCraftIntroZero
+  spawn 3, 0, Entity_SpaceCraftIntroZero
   wait SECOND
   spawn CIEL, 0, EntityTemplate_SpaceCraftIntroCiel
   spawn 6, 0, EntityTemplate_0834d3a0
@@ -411,7 +411,7 @@ Script_0834d608: @ 0x0834d608
   entityflag 3, 0, TRUE
   entityflag 6, 0, TRUE
   wait SECOND
-  emotion ZERO, 0xC00, 0xFFD800, 1
+  emotion 3, 0xC00, 0xFFD800, 1
   wait SECOND*2
   print_message 0x50, 0x0301
   wait_msgbox_end
@@ -477,7 +477,7 @@ Script_0834d608: @ 0x0834d608
 
 Script_0834d978:  @ 0x0834d978
   unlockmenu
-  spawn 0, 0, EntityTemplate_0834d530
+  spawn 0, 0, Entity_0834d530
   reset_camera Camera_0834d268
   lock
   normal_screen
@@ -495,7 +495,7 @@ Script_0834d978:  @ 0x0834d978
 @;@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 
 Script_InitSpaceCraftStageRun: @ 0x0834d9f0
-  spawn 0, 0, EntityTemplate_ZeroSpaceCraftStartPoint
+  spawn 0, 0, Entity_ZeroSpaceCraftStartPoint
   reset_camera Camera_0834d268
   lock
   screeneffect 9
@@ -570,13 +570,116 @@ Script_0834da48: @ 0x0834da48
   wait SECOND/4
   entityflag 3, 0, TRUE
   wait SECOND/4
-  .incbin "data/Script_0834da48.bin" @ ./tools/dumper/bin.ts ./baserom.gba 0x0834dc28 0x0834df70 ./data/Script_0834da48.bin
-  @ WIP 0x0834dc28..0x0834df70
+  entityflag 4, 0, TRUE
+  wait 15
+  message 1, 0, 0x030E
+  wait_msgbox_end
+  wait 15
+  entityflag 5, 1, TRUE
+  wait 30
+  spawn 6, 0, Entity_0834d3e0
+  wait 8
+  entityflag 3, 1, TRUE
+  wait 15
+  spawn 7, 0, Entity_0834d3e0
+  wait 15
+  stop_bgm
+  blackout_screen
+  wait_screeneffect
+  stop_camera
+  wait 90
+  play_se 90
+  wait 60
+  destroy 3
+  destroy 4
+  destroy 5
+  destroy 6
+  destroy 7
+  wait 120
+  reset_camera Camera_0834d2ec
+  normal_screen
+  wait_screeneffect
+  play_bgm 166
+  message 1, 0, 0x030F
+  wait_msgbox_end
+  wait 30
+  emotion 0, 0x0C00, 0x00FFD800, 0
+  wait 60
+  force 3, 0, 0
+  wait 60
+  spawn 3, 0, Entity_0834d3f0
+  wait 90
+  message 1, 0, 0x0310
+  wait_msgbox_end
+  wait 15
+  entityflag 3, 0, TRUE
+  wait 30
+  message 1, 0, 0x0311
+  wait_msgbox_end
+  entityflag 3, 1, TRUE
+  wait 15
+  entityflag 3, 2, TRUE
+  wait 180
+  message 1, 0, 0x0312
+  wait_msgbox_end
+  wait 90
+  message 1, 0, 0x0313
+  wait_msgbox_end
+  wait 15
+  force 2, 0, 0
+  wait 60
+  message 1, 0, 0x0314
+  wait_msgbox_end
+  wait 15
+  message 1, 0, 0x0315
+  wait_msgbox_end
+  wait 60
+  destroy 3
+  play_se 231
+  wait 180
+  emotion 0, 0x0C00, 0x00FFD800, 0
+  wait 60
+  message 1, 0, 0x0316
+  wait_msgbox_end
+  wait 15
+  blackout_screen
+  wait_screeneffect
+  stop_camera
+  cmd06 115, 0, 0
+  normal_screen
+  wait_screeneffect
+  wait 15
+  message 1, 0, 0x0317
+  wait_msgbox_end
+  wait 15
+  blackout_screen
+  wait_screeneffect
+  cmd06 0, 1, 0
+  reset_camera Camera_0834d2ec
+  normal_screen
+  wait_screeneffect
+  wait 15
+  force 3, 0, 0
+  wait 15
+  force 1, 0, 0
+  forcekeyinput 0x00004010
+  wait 1
+  force 9, 0, 868352
+  adjust_camera 1, 0, 4
+  adjust_camera 11, 0, 860160
+  adjust_camera 14, 0, 2621440
+  stop_bgm
+  wait 60
+  eventflag 1, 0, 0
+  play_bgm 170
+  release
+  resume 1
+  end
 
 @;@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 
 Script_SpaceCraftBuilding:
-  spawn 0, 0, EntityTemplate_ZeroSpaceCraftBuilding
+  spawn 0, 0, Entity_ZeroSpaceCraftBuilding
   reset_camera Camera_0834d318
   lock
   normal_screen
@@ -589,7 +692,7 @@ Script_SpaceCraftBuilding:
 @;@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 
 Script_0834dfb8:
-  spawn 0, 0, EntityTemplate_ZeroSpaceCraftBuilding
+  spawn 0, 0, Entity_ZeroSpaceCraftBuilding
   reset_camera Camera_0834d318
   lock
   screeneffect 9
@@ -604,7 +707,7 @@ Script_0834dfb8:
 @;@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 
 Script_GuarderRoom:
-  spawn 0, 0, EntityTemplate_Zero_0834d560
+  spawn 0, 0, Entity_0834d560
   reset_camera Camera_0834d318
   lock
   screeneffect 9
@@ -619,8 +722,148 @@ Script_GuarderRoom:
 @;@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 
 Script_PreOmegaWhiteBattle:
-# ./tools/dumper/bin.ts ./baserom.gba 0x0834e068 0x0834e4d8 ./data/Script_PreOmegaWhiteBattle.bin
-  .incbin "data/Script_PreOmegaWhiteBattle.bin"
+  eventflag 0, 3, 0
+  spawn 3, 0, Entity_PantheonOmegaCrash0
+  spawn 4, 0, Entity_PantheonOmegaCrash1
+  spawn 5, 0, Entity_PantheonOmegaCrash2
+  stop_bgm
+  lock
+  force 0, 0, 0
+  turn_right 0
+  emotion 0, 0x1000, 0x00FFD800, 0
+  wait 60
+  play_se 285
+  quake 2, 0, 4
+  wait 60
+  play_bgm 167
+  change_camera_mode 1
+  adjust_camera 1, 0, 2
+  adjust_camera 3, 0, 1013760
+  wait 60
+  play_se 285
+  quake 2, 0, 8
+  wait 30
+  play_se 285
+  quake 2, 0, 12
+  wait 30
+  gimmick 1, 2, 1
+  quake 0, 0, 2
+  wait 60
+  play_se 246
+  wait 30
+  spawn 6, 0, Entity_0834d440
+  spawn 7, 0, Entity_0834d430
+  gimmick 1, 2, 2
+  wait 30
+  quake 0, 0, 4
+  wait 30
+  gimmick 1, 2, 3
+  stop_quake
+  wait 90
+  spawn 8, 0, Entity_0834d450
+  gimmick 1, 2, 4
+  wait 60
+  entityflag 6, 0, TRUE
+  entityflag 7, 0, TRUE
+  destroy 3
+  destroy 4
+  destroy 5
+  wait 90
+  message 1, 0, 0x0319
+  wait_msgbox_end
+  wait 15
+  entityflag 8, 0, TRUE
+  wait 90
+  message 1, 0, 0x031A
+  wait_msgbox_end
+  wait 15
+  entityflag 8, 1, TRUE
+  wait 60
+  entityflag 7, 1, TRUE
+  wait 60
+  message 1, 0, 0x031B
+  wait_msgbox_end
+  wait 15
+  spawn 1, 0, Entity_OmegaWhite
+  change_camera_mode 1
+  adjust_camera 1, 0, 2
+  adjust_camera 3, 0, 1028096
+  wait 60
+  play_se 231
+  wait 90
+  stop_bgm
+  wait 90
+  blackout_screen
+  wait_screeneffect
+  stop_camera
+  cmd06 116, 3, 0
+  normal_screen
+  wait_screeneffect
+  play_bgm 165
+  wait 15
+  cmd06 116, 4, 0
+  wait 15
+  message 1, 0, 0x031C
+  wait_msgbox_end
+  wait 15
+  blackout_screen
+  wait_screeneffect
+  cmd06 0, 1, 0
+  resume_camera
+  change_camera_mode 1
+  adjust_camera 1, 0, 8
+  adjust_camera 3, 0, 1028096
+  normal_screen
+  wait_screeneffect
+  force 1, 0, 0
+  gameflag 2, 0
+  force 9, 0, 1021952
+  gameflag 2, 1
+  emotion 8, 0x1000, 0x00FFD800, 0
+  wait 60
+  message 1, 0, 0x031D
+  wait_msgbox_end
+  wait 15
+  change_camera_mode 1
+  adjust_camera 1, 0, 2
+  adjust_camera 3, 0, 1013760
+  wait 60
+  message 1, 0, 0x031E
+  wait_msgbox_end
+  wait 15
+  entityflag 6, 1, TRUE
+  wait 60
+  change_camera_mode 1
+  adjust_camera 1, 0, 2
+  adjust_camera 3, 0, 1028096
+  wait 60
+  message 1, 0, 0x031F
+  wait_msgbox_end
+  wait 15
+  entityflag 8, 2, TRUE
+  eventflag 1, 0, 0
+  wait 120
+  change_camera_mode 6
+  adjust_camera 1, 0, 2
+  adjust_camera 11, 0, 1009664
+  adjust_camera 12, 0, 1071104
+  stop_bgm
+  wait 120
+  play_se 231
+  wait 180
+  message 1, 0, 0x0320
+  wait_msgbox_end
+  wait 15
+  destroy 6
+  destroy 7
+  destroy 8
+  warning_indicator
+  wait_indicator_end
+  force 1, 0, 0
+  release
+  play_bgm 187
+  resume 1
+  end
 
 @;@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 
@@ -654,8 +897,202 @@ Script_IntoOmegaWhiteBattle:
 @;@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 
 Script_0834e5a0:
-# ./tools/dumper/bin.ts ./baserom.gba 0x0834e5a0 0x0834eba0 ./data/spacecraft_scripts.bin
-  .incbin "data/spacecraft_scripts.bin"
+  cmd1c 0, 0, 0
+  spawn 0, 0, Entity_0834d570
+  spawn 1, 0, Entity_OmegaWhite
+  reset_camera Camera_0834d344
+  lock
+  screeneffect 9
+  wait 1
+  gimmick 1, 2, 4
+  wait_screeneffect
+  play_se 231
+  wait 120
+  warning_indicator
+  wait_indicator_end
+  release
+  play_bgm 187
+  resume 1
+  end
+
+@;@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+
+Script_0834e628:
+  forcekeyinput 0x0000FFFF
+  stop_bgm
+  wait 1
+  lock
+  force 8, 0, 0
+  eventflag 0, 4, 0
+  entityflag 1, 7, TRUE
+  wait 90
+  message 1, 0, 0x0321
+  wait_msgbox_end
+  wait 15
+  force 8, 0, 0
+  force 9, 0, 1019904
+  wait 8
+  turn_right 0
+  wait 120
+  entityflag 1, 0, TRUE
+  wait 30
+  play_bgm 167
+  emotion 0, 0x1000, 0x00FFD800, 0
+  wait 90
+  play_se 231
+  wait 240
+  message 1, 0, 0x0322
+  wait_msgbox_end
+  wait 15
+  emotion 0, 0x1000, 0x00FFD800, 0
+  wait 60
+  sweep 1, 0, 0
+  sweep 3, 0, 0
+  spawn 3, 0, Entity_0834d460
+  wait 9
+  spawn 4, 0, Entity_0834d470
+  wait 9
+  spawn 5, 0, Entity_0834d480
+  wait 9
+  spawn 6, 0, Entity_0834d490
+  wait 12
+  spawn 7, 0, Entity_0834d4a0
+  wait 9
+  spawn 8, 0, Entity_0834d4b0
+  wait 12
+  spawn 9, 0, Entity_0834d4c0
+  wait 18
+  spawn 10, 0, Entity_0834d4d0
+  wait 30
+  spawn 11, 0, Entity_0834d4e0
+  wait 15
+  destroy 3
+  destroy 4
+  destroy 5
+  destroy 6
+  destroy 7
+  destroy 8
+  destroy 9
+  destroy 10
+  destroy 11
+  spawn 3, 0, Entity_0834d4f0
+  wait 60
+  entityflag 1, 0, FALSE
+  wait 90
+  message 1, 0, 0x0324
+  wait_msgbox_end
+  wait 15
+  message 1, 0, 0x0323
+  wait_msgbox_end
+  entityflag 1, 0, TRUE
+  wait 30
+  entityflag 3, 0, TRUE
+  wait 90
+  play_se 231
+  wait 210
+  message 1, 0, 0x0325
+  wait_msgbox_end
+  stop_bgm
+  wait 15
+  emotion 0, 0x1000, 0x00FFD800, 0
+  emotion 3, 0x0C00, 0x00FFD000, 0
+  wait 90
+  play_bgm 166
+  message 1, 0, 0x0326
+  wait_msgbox_end
+  wait 60
+  play_se 231
+  message 1, 0, 0x0327
+  wait_msgbox_end
+  spawn 4, 0, Entity_0834d500
+  wait 210
+  blackout_screen
+  wait_screeneffect
+  stop_camera
+  cmd06 117, 0, 0
+  normal_screen
+  wait_screeneffect
+  wait 15
+  message 1, 0, 0x0328
+  wait_msgbox_end
+  stop_bgm
+  wait 15
+  blackout_screen
+  wait_screeneffect
+  cmd06 0, 1, 0
+  resume_camera
+  change_camera_mode 1
+  adjust_camera 1, 0, 8
+  normal_screen
+  wait_screeneffect
+  play_bgm 164
+  wait 15
+  spawn 5, 0, Entity_0834d510
+  wait 60
+  message 1, 0, 0x0329
+  wait_msgbox_end
+  wait 15
+  entityflag 3, 1, TRUE
+  wait 150
+  message 1, 0, 0x032A
+  wait_msgbox_end
+  wait 60
+  message 1, 0, 0x032B
+  wait_msgbox_end
+  emotion 3, 0x0C00, 0x00FFD800, 0
+  wait 60
+  message 1, 0, 0x032C
+  wait_msgbox_end
+  wait 30
+  message 1, 0, 0x032D
+  wait_msgbox_end
+  wait 15
+  entityflag 5, 0, TRUE
+  wait 120
+  message 1, 0, 0x032E
+  wait_msgbox_end
+  wait 15
+  entityflag 3, 2, TRUE
+  wait 30
+  entityflag 4, 0, TRUE
+  wait 30
+  spawn 6, 0, Entity_0834d520
+  wait 30
+  destroy 1
+  wait 60
+  stop_bgm
+  wait 120
+  destroy 6
+  force 2, 0, 0
+  wait 75
+  play_bgm 167
+  message 1, 0, 0x032F
+  wait_msgbox_end
+  wait 15
+  message 1, 0, 0x0330
+  wait_msgbox_end
+  message 1, 0, 0x0331
+  wait_msgbox_end
+  message 1, 0, 0x0332
+  wait_msgbox_end
+  stop_bgm
+  wait 15
+  force 4, 0, 0
+  force 5, 0, 0
+  screeneffect 6
+  wait_screeneffect
+  wait 60
+  eventflag 1, 0, 0
+  destroy 0
+  destroy 3
+  destroy 4
+  destroy 5
+  stop_camera
+  cmd06 0, 5, 65535
+  screeneffect 5
+  prepare_missionresult
+  missionresult
+  end
 
 @;@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 
@@ -668,7 +1105,7 @@ Script_MissionResult:
 @;@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 
 Script_InitSpaceCraftFreeRun:
-  spawn 0, 0, EntityTemplate_ZeroSpaceCraftStartPoint
+  spawn 0, 0, Entity_ZeroSpaceCraftStartPoint
   reset_camera Camera_0834d268
   lock
   wait FRAME
@@ -707,8 +1144,8 @@ Script_0834ec38:
 
 @;@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 
-.global SpaceCraftScriptList
-SpaceCraftScriptList:
+.global gSpaceCraftScriptList
+gSpaceCraftScriptList:
   .word Script_0834d590
   .word Script_0834d608
   .word Script_0834d978
@@ -720,7 +1157,7 @@ SpaceCraftScriptList:
   .word Script_PreOmegaWhiteBattle
   .word Script_IntoOmegaWhiteBattle
   .word Script_0834e5a0
-  .word 0x0834E628
+  .word Script_0834e628
   .word Script_MissionResult
   .word Script_InitSpaceCraftFreeRun
   .word Script_0834ec38

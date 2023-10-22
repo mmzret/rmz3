@@ -9,7 +9,7 @@
 /*
   Actor:
   Solid.id が 21 の Entity は 基本的にフィールドスクリプト(Script)によって生成される、スクリプトの登場人物のようなもの
-  どの種類のActorかは Solid.s.work[0] に格納される (constants/solid.h の ACTOR_XXXX を参照)
+  どの種類のActorかは Solid.s.work[0] に格納される (constants/entity/solid.h の ACTOR_XXXX を参照)
 */
 
 static void Actor_Init(struct Solid* p);
@@ -1596,14 +1596,7 @@ INCASM("asm/solid/actor.inc");
 const struct Collision Collision_08370ab8 = {
   kind : DDP,
   faction : FACTION_ALLY,
-  special : 0,
   damage : 1,
-  atkType : 0x00,
-  element : 0x00,
-  nature : 0x00,
-  comboLv : 0x00,
-  hitzone : 0x00,
-  hardness : 0x00,
   remaining : 0,
   layer : 0x00000001,
   range : {0x0000, 0x0800, 0x2000, 0x1000},
@@ -1612,12 +1605,8 @@ const struct Collision Collision_08370ab8 = {
 const struct Collision Collision_08370ad0 = {
   kind : DRP,
   faction : FACTION_ENEMY,
-  damage : 0,
-  atkType : 0xFF,
-  element : 0xFF,
-  nature : 0xFF,
-  comboLv : 0xFF,
-  hitzone : 0x01,
+  LAYER(0xFFFFFFFF),
+  hitzone : 1,
   remaining : 1,
   range : {0x0000, -0x1000, 0x1000, 0x2000},
 };
@@ -1646,10 +1635,6 @@ const struct Collision Collision_ARRAY_08370b58[11] = {
       faction : FACTION_ALLY,
       special : 0,
       damage : 1,
-      atkType : 0x00,
-      element : 0x00,
-      nature : 0x00,
-      comboLv : 0x00,
       hitzone : 0x00,
       remaining : 0,
       layer : 0x00000001,
@@ -1659,7 +1644,6 @@ const struct Collision Collision_ARRAY_08370b58[11] = {
       kind : DRP,
       faction : FACTION_ENEMY,
       special : CS_BOSS,
-      damage : 0,
       LAYER(0xFFFFFFFF),
       hitzone : 0x01,
       remaining : 0,
@@ -1670,10 +1654,6 @@ const struct Collision Collision_ARRAY_08370b58[11] = {
       faction : FACTION_ALLY,
       special : 0,
       damage : 1,
-      atkType : 0x00,
-      element : 0x00,
-      nature : 0x00,
-      comboLv : 0x00,
       hitzone : 0x00,
       remaining : 0,
       layer : 0x00000001,
@@ -1809,12 +1789,7 @@ const struct Collision Collision_ARRAY_08370c68[16] = {
     [1] = {
       kind : DDP,
       faction : FACTION_ENEMY,
-      special : 0,
       damage : 1,
-      atkType : 0x00,
-      element : 0x00,
-      nature : 0x00,
-      comboLv : 0x00,
       hitzone : 0x00,
       remaining : 0,
       layer : 0x00000001,
@@ -1843,12 +1818,7 @@ const struct Collision Collision_ARRAY_08370c68[16] = {
     [4] = {
       kind : DDP,
       faction : FACTION_ENEMY,
-      special : 0,
       damage : 1,
-      atkType : 0x00,
-      element : 0x00,
-      nature : 0x00,
-      comboLv : 0x00,
       hitzone : 0x00,
       remaining : 0,
       layer : 0x00000001,
@@ -1857,7 +1827,6 @@ const struct Collision Collision_ARRAY_08370c68[16] = {
     [5] = {
       kind : DDP,
       faction : FACTION_ENEMY,
-      special : 0,
       damage : 1,
       atkType : 0x00,
       element : 0x00,
@@ -1871,7 +1840,6 @@ const struct Collision Collision_ARRAY_08370c68[16] = {
     [6] = {
       kind : DDP,
       faction : FACTION_ENEMY,
-      special : 0,
       damage : 1,
       atkType : 0x00,
       element : 0x00,
@@ -1895,12 +1863,7 @@ const struct Collision Collision_ARRAY_08370c68[16] = {
     [8] = {
       kind : DDP,
       faction : FACTION_ENEMY,
-      special : 0,
       damage : 1,
-      atkType : 0x00,
-      element : 0x00,
-      nature : 0x00,
-      comboLv : 0x00,
       hitzone : 0x00,
       remaining : 0,
       layer : 0x00000001,
@@ -1909,7 +1872,6 @@ const struct Collision Collision_ARRAY_08370c68[16] = {
     [9] = {
       kind : DDP,
       faction : FACTION_ENEMY,
-      special : 0,
       damage : 1,
       atkType : 0x00,
       element : 0x00,
@@ -1923,7 +1885,6 @@ const struct Collision Collision_ARRAY_08370c68[16] = {
     [10] = {
       kind : DDP,
       faction : FACTION_ENEMY,
-      special : 0,
       damage : 1,
       atkType : 0x00,
       element : 0x00,
@@ -1937,12 +1898,7 @@ const struct Collision Collision_ARRAY_08370c68[16] = {
     [11] = {
       kind : DDP,
       faction : FACTION_ENEMY,
-      special : 0,
       damage : 1,
-      atkType : 0x00,
-      element : 0x00,
-      nature : 0x00,
-      comboLv : 0x00,
       hitzone : 0x00,
       remaining : 0,
       layer : 0x00000001,
@@ -1951,7 +1907,6 @@ const struct Collision Collision_ARRAY_08370c68[16] = {
     [12] = {
       kind : DDP,
       faction : FACTION_ENEMY,
-      special : 0,
       damage : 1,
       atkType : 0x00,
       element : 0x00,
@@ -1965,7 +1920,6 @@ const struct Collision Collision_ARRAY_08370c68[16] = {
     [13] = {
       kind : DDP,
       faction : FACTION_ENEMY,
-      special : 0,
       damage : 1,
       atkType : 0x00,
       element : 0x00,

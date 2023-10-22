@@ -8,19 +8,14 @@ const struct EntityTemplate gSunkenLibraryEntity[37] = {
         {
             0,
             ENTITY_PLAYER,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
+            PLAYER_ZERO,
         },
     [1] =
         {
             2,
             ENTITY_ITEM,
-            0,
-            1,
+            ITEM_GENERAL,
+            ITEM_LIFE_M,
             2,
             0,
             0,
@@ -30,8 +25,8 @@ const struct EntityTemplate gSunkenLibraryEntity[37] = {
         {
             2,
             ENTITY_ITEM,
-            0,
-            2,
+            ITEM_GENERAL,
+            ITEM_LIFE_L,
             2,
             0,
             0,

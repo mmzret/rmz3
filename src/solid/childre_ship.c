@@ -2,6 +2,9 @@
 #include "global.h"
 #include "solid.h"
 
+static const struct Collision sCollisions[2];
+static const s32 sSonicWaveXCoords[4];
+
 INCASM("asm/solid/childre_ship.inc");
 
 void ChildreShip_Init(struct Solid* p);
@@ -22,34 +25,26 @@ static const struct Collision sCollisions[2] = {
     {
       kind : DDP,
       faction : FACTION_ENEMY,
-      special : 0,
       damage : 4,
-      atkType : 0x00,
-      element : 0x00,
-      nature : 0x00,
-      comboLv : 0x00,
-      hitzone : 0x00,
       remaining : 1,
       layer : 0x00000001,
-      range : {0x0000, 0x0000, 0x3800, 0x3800},
+      range : {PIXEL(0), PIXEL(0), PIXEL(56), PIXEL(56)},
     },
     {
       kind : DRP,
       faction : FACTION_ENEMY,
-      special : 0,
-      damage : 0,
       LAYER(0xFFFFFFFF),
-      hitzone : 0x01,
-      hardness : 0x01,
+      hitzone : 1,
+      hardness : METAL,
       remaining : 0,
-      layer : 0xFFFFFFFF,
-      range : {0x0000, 0x0000, 0x4000, 0x4000},
+      priorityLayer : 0xFFFFFFFF,
+      range : {PIXEL(0), PIXEL(0), PIXEL(64), PIXEL(64)},
     },
 };
 
-const s32 s32_ARRAY_08371a00[4] = {
-    0xBA800,
-    0x125800,
-    0x219800,
-    0x260800,
+static const s32 sSonicWaveXCoords[4] = {
+    PIXEL(2984),
+    PIXEL(4696),
+    PIXEL(8600),
+    PIXEL(9736),
 };

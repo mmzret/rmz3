@@ -465,7 +465,6 @@ const struct Collision sSolid18Collisions[2] = {
     [1] = {
       kind : DDP,
       faction : FACTION_ENEMY,
-      special : 0,
       damage : 255,
       remaining : 0,
       layer : 0x00000001,

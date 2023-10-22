@@ -27,7 +27,7 @@ static struct Enemy* CreateBatring(struct Coord* c, u8 n) {
   struct Enemy* p = (struct Enemy*)AllocEntityFirst(gZakoHeaderPtr);
   if (p != NULL) {
     (p->s).taskCol = 24;
-    INIT_ZAKO_ROUTINE(p, ZAKO_BATRING);
+    INIT_ZAKO_ROUTINE(p, ENEMY_BATRING);
     (p->s).tileNum = 0;
     (p->s).palID = 0;
     (p->s).flags2 |= WHITE_PAINTABLE;
@@ -1129,12 +1129,7 @@ static const struct Collision sCollisions[14] = {
     [0] = {
       kind : DDP,
       faction : FACTION_ENEMY,
-      special : 0,
       damage : 2,
-      atkType : 0x00,
-      element : 0x00,
-      nature : 0x00,
-      comboLv : 0x00,
       remaining : 1,
       layer : 0x00000001,
       range : {PIXEL(0), PIXEL(0), PIXEL(20), PIXEL(20)},
@@ -1142,8 +1137,6 @@ static const struct Collision sCollisions[14] = {
     [1] = {
       kind : DRP,
       faction : FACTION_ENEMY,
-      special : 0,
-      damage : 0,
       LAYER(0xFFFFFFFF),
       hitzone : 1,
       hardness : METAL,
@@ -1154,12 +1147,7 @@ static const struct Collision sCollisions[14] = {
     [2] = {
       kind : DDP,
       faction : FACTION_ENEMY,
-      special : 0,
       damage : 2,
-      atkType : 0x00,
-      element : 0x00,
-      nature : 0x00,
-      comboLv : 0x00,
       remaining : 1,
       layer : 0x00000001,
       range : {PIXEL(0), PIXEL(0), PIXEL(28), PIXEL(19)},
@@ -1167,8 +1155,6 @@ static const struct Collision sCollisions[14] = {
     [3] = {
       kind : DRP,
       faction : FACTION_ENEMY,
-      special : 0,
-      damage : 0,
       LAYER(0xFFFFFFFF),
       hitzone : 1,
       remaining : 0,
@@ -1177,12 +1163,7 @@ static const struct Collision sCollisions[14] = {
     [4] = {
       kind : DDP,
       faction : FACTION_ENEMY,
-      special : 0,
       damage : 2,
-      atkType : 0x00,
-      element : 0x00,
-      nature : 0x00,
-      comboLv : 0x00,
       remaining : 1,
       layer : 0x00000001,
       range : {PIXEL(0), PIXEL(0), PIXEL(33), PIXEL(19)},
@@ -1190,8 +1171,6 @@ static const struct Collision sCollisions[14] = {
     [5] = {
       kind : DRP,
       faction : FACTION_ENEMY,
-      special : 0,
-      damage : 0,
       LAYER(0xFFFFFFFF),
       hitzone : 1,
       remaining : 0,
@@ -1200,12 +1179,7 @@ static const struct Collision sCollisions[14] = {
     [6] = {
       kind : DDP,
       faction : FACTION_ENEMY,
-      special : 0,
       damage : 2,
-      atkType : 0x00,
-      element : 0x00,
-      nature : 0x00,
-      comboLv : 0x00,
       remaining : 1,
       layer : 0x00000001,
       range : {PIXEL(0), PIXEL(0), PIXEL(20), PIXEL(20)},
@@ -1213,8 +1187,6 @@ static const struct Collision sCollisions[14] = {
     [7] = {
       kind : DRP,
       faction : FACTION_ENEMY,
-      special : 0,
-      damage : 0,
       LAYER(0xFFFFFFFF),
       hitzone : 1,
       hardness : METAL,
@@ -1225,12 +1197,7 @@ static const struct Collision sCollisions[14] = {
     [8] = {
       kind : DDP,
       faction : FACTION_ENEMY,
-      special : 0,
       damage : 2,
-      atkType : 0x00,
-      element : 0x00,
-      nature : 0x00,
-      comboLv : 0x00,
       remaining : 1,
       layer : 0x00000001,
       range : {PIXEL(0), PIXEL(0), PIXEL(12), PIXEL(20)},
@@ -1238,8 +1205,6 @@ static const struct Collision sCollisions[14] = {
     [9] = {
       kind : DRP,
       faction : FACTION_ENEMY,
-      special : 0,
-      damage : 0,
       LAYER(0xFFFFFFFF),
       hitzone : 1,
       hardness : METAL,
@@ -1250,12 +1215,7 @@ static const struct Collision sCollisions[14] = {
     [10] = {
       kind : DDP,
       faction : FACTION_ENEMY,
-      special : 0,
       damage : 2,
-      atkType : 0x00,
-      element : 0x00,
-      nature : 0x00,
-      comboLv : 0x00,
       remaining : 1,
       layer : 0x00000001,
       range : {PIXEL(0), PIXEL(0), PIXEL(20), PIXEL(20)},
@@ -1263,8 +1223,6 @@ static const struct Collision sCollisions[14] = {
     [11] = {
       kind : DRP,
       faction : FACTION_ENEMY,
-      special : 0,
-      damage : 0,
       LAYER(0xFFFFFFFF),
       hitzone : 1,
       hardness : METAL,
@@ -1277,10 +1235,6 @@ static const struct Collision sCollisions[14] = {
       faction : FACTION_NEUTRAL,
       special : 0,
       damage : 2,
-      atkType : 0x00,
-      element : 0x00,
-      nature : 0x00,
-      comboLv : 0x00,
       remaining : 1,
       layer : 0x00000001,
       range : {PIXEL(0), PIXEL(0), PIXEL(22), PIXEL(22)},

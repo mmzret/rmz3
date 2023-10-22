@@ -155,12 +155,7 @@ static const struct Collision sCollisions[2] = {
     [0] = {
       kind : DDP,
       faction : FACTION_ENEMY,
-      special : 0,
       damage : 255,
-      atkType : 0x00,
-      element : 0x00,
-      nature : 0x00,
-      comboLv : 0x00,
       hitzone : 0x00,
       remaining : 0,
       layer : 0x00000001,
@@ -169,7 +164,6 @@ static const struct Collision sCollisions[2] = {
     [1] = {
       kind : DRP,
       faction : FACTION_ENEMY,
-      special : 0,
       damage : 255,
       LAYER(0xFFFFFFFF),
       hitzone : 0x00,

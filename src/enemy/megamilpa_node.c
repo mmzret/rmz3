@@ -46,7 +46,6 @@ const struct Collision gMegamilpaNodeHitbox[2] = {
     [0] = {
       kind : DDP,
       faction : FACTION_ENEMY,
-      special : 0,
       damage : 4,
       atkType : 0x00,
       element : 0x00,
@@ -59,8 +58,6 @@ const struct Collision gMegamilpaNodeHitbox[2] = {
     [1] = {
       kind : DRP,
       faction : FACTION_ENEMY,
-      special : 0,
-      damage : 0,
       LAYER(0xFFFFFFFF),
       hitzone : 0x00,
       hardness : HARDNESS_B3,

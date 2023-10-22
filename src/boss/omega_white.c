@@ -511,7 +511,7 @@ _0803E444:\n\
 	bne _0803E46C\n\
 	movs r0, #0x84\n\
 	lsls r0, r0, #3\n\
-	ldr r2, _0803E468 @ =0x080FECEC\n\
+	ldr r2, _0803E468 @ =u8_ARRAY_080fecec\n\
 	ldrb r1, [r4, #0x12]\n\
 	subs r1, #1\n\
 	adds r1, r1, r2\n\
@@ -521,7 +521,7 @@ _0803E444:\n\
 	bl createOmega1Laser\n\
 	b _0803E482\n\
 	.align 2, 0\n\
-_0803E468: .4byte 0x080FECEC\n\
+_0803E468: .4byte u8_ARRAY_080fecec\n\
 _0803E46C:\n\
 	movs r0, #0x84\n\
 	lsls r0, r0, #3\n\
@@ -994,6 +994,7 @@ _0803E7E6:\n\
  .syntax divided\n");
 }
 
+// 0x0803e7ec
 NAKED static void onCollision(struct Body *body, struct Coord *c1, struct Coord *c2) {
   asm(".syntax unified\n\
 	push {lr}\n\
@@ -1038,28 +1039,10 @@ _0803E82C:\n\
 }
 
 // オメガが縦にふわふわする処理
-NAKED static void floatOmegaWhite(struct Boss *p) {
-  asm(".syntax unified\n\
-	adds r3, r0, #0\n\
-	adds r3, #0xc0\n\
-	ldrh r1, [r3]\n\
-	adds r1, #1\n\
-	movs r2, #0xff\n\
-	ands r1, r2\n\
-	strh r1, [r3]\n\
-	ldr r2, _0803E854 @ =gSineTable\n\
-	lsls r1, r1, #1\n\
-	adds r1, r1, r2\n\
-	movs r3, #0\n\
-	ldrsh r2, [r1, r3]\n\
-	lsls r2, r2, #3\n\
-	ldr r1, [r0, #0x68]\n\
-	adds r1, r1, r2\n\
-	str r1, [r0, #0x58]\n\
-	bx lr\n\
-	.align 2, 0\n\
-_0803E854: .4byte gSineTable\n\
- .syntax divided\n");
+static void floatOmegaWhite(struct Boss *p) {
+  u16 val = ((p->props.omegaWhite).unk_c0 + 1) & 0xFF;
+  (p->props.omegaWhite).unk_c0 = val;
+  (p->s).coord.y = (p->s).unk_coord.y + (gSineTable[val] << 3);
 }
 
 static const struct Collision sCollisions[8] = {
@@ -1067,13 +1050,12 @@ static const struct Collision sCollisions[8] = {
       kind : DRP,
       faction : FACTION_ENEMY,
       special : CS_BOSS,
-      damage : 0,
       LAYER(0xFFFFFFFF),
       hitzone : 0,
       hardness : METAL,
       remaining : 0,
-      layer : 0xFFFFFFFF,
-      range : {0x0, 0x300, 0x1800, 0x1800},
+      priorityLayer : 0xFFFFFFFF,
+      range : {PIXEL(0), PIXEL(3), PIXEL(24), PIXEL(24)},
     },
 
     // --------------------------------------------
@@ -1085,27 +1067,25 @@ static const struct Collision sCollisions[8] = {
       damage : 2,
       remaining : 2,
       layer : 1,
-      range : {0x1400, -0x4000, 0x3600, 0x8000},
+      range : {PIXEL(20), -PIXEL(64), PIXEL(54), PIXEL(128)},
     },
     {
       kind : DRP,
       faction : FACTION_ENEMY,
       special : CS_BOSS,
-      damage : 0,
       LAYER(0xFFFFFFFF),
       hitzone : 5,
       remaining : 1,
-      range : {0x200, -0x6600, 0x1000, 0x1000},
+      range : {PIXEL(2), -PIXEL(102), PIXEL(16), PIXEL(16)},
     },
     {
       kind : DRP,
       faction : FACTION_ENEMY,
       special : CS_BOSS,
-      damage : 0,
       LAYER(0xFFFFFFFF),
       hitzone : 5,
       remaining : 0,
-      range : {0x0, -0x5000, 0x1000, 0x1C00},
+      range : {PIXEL(0), -PIXEL(80), PIXEL(16), PIXEL(28)},
     },
 
     // --------------------------------------------
@@ -1117,17 +1097,16 @@ static const struct Collision sCollisions[8] = {
       damage : 2,
       remaining : 1,
       layer : 1,
-      range : {0x0, 0x300, 0x2800, 0x5000},
+      range : {PIXEL(0), PIXEL(3), PIXEL(40), PIXEL(80)},
     },
     {
       kind : DRP,
       faction : FACTION_ENEMY,
       special : CS_BOSS,
-      damage : 0,
       LAYER(0xFFFFFFFF),
       hitzone : 5,
       remaining : 0,
-      range : {0x0, -0x5000, 0x1800, 0x1800},
+      range : {PIXEL(0), -PIXEL(80), PIXEL(24), PIXEL(24)},
     },
 
     // --------------------------------------------
@@ -1139,16 +1118,15 @@ static const struct Collision sCollisions[8] = {
       damage : 2,
       remaining : 1,
       layer : 1,
-      range : {0x0, 0x300, 0x2800, 0x5000},
+      range : {PIXEL(0), PIXEL(3), PIXEL(40), PIXEL(80)},
     },
     {
       kind : DRP,
       faction : FACTION_ENEMY,
       special : CS_BOSS,
-      damage : 0,
       LAYER(0xFFFFFFFF),
       hitzone : 5,
       remaining : 0,
-      range : {0x0, -0x5000, 0x1800, 0x1800},
+      range : {PIXEL(0), -PIXEL(80), PIXEL(24), PIXEL(24)},
     },
 };

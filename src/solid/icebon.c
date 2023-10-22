@@ -330,8 +330,6 @@ const struct Collision sIcebonCollisions[3] = {
     {
       kind : DRP,
       faction : FACTION_ENEMY,
-      special : 0,
-      damage : 0,
       LAYER(0xFFFFFFFF),
       hitzone : 0x00,
       hardness : HARDNESS_B3,
@@ -341,12 +339,7 @@ const struct Collision sIcebonCollisions[3] = {
     {
       kind : DDP,
       faction : FACTION_ENEMY,
-      special : 0,
       damage : 2,
-      atkType : 0x00,
-      element : 0x00,
-      nature : 0x00,
-      comboLv : 0x00,
       hitzone : 0x00,
       remaining : 1,
       layer : 0x00000001,
@@ -355,8 +348,6 @@ const struct Collision sIcebonCollisions[3] = {
     {
       kind : DRP,
       faction : FACTION_ENEMY,
-      special : 0,
-      damage : 0,
       LAYER(0xFFFFFFFF),
       hitzone : 0x04,
       hardness : HARDNESS_B3,

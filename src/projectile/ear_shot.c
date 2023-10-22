@@ -32,7 +32,6 @@ static const struct Collision sCollisions[4] = {
     {
       kind : DDP,
       faction : FACTION_ENEMY,
-      special : 0,
       damage : 4,
       atkType : 0x00,
       element : 0x00,
@@ -46,7 +45,6 @@ static const struct Collision sCollisions[4] = {
     {
       kind : DDP,
       faction : FACTION_ENEMY,
-      special : 0,
       damage : 5,
       atkType : 0x00,
       element : 0x00,
@@ -60,7 +58,6 @@ static const struct Collision sCollisions[4] = {
     {
       kind : DDP,
       faction : FACTION_ENEMY,
-      special : 0,
       damage : 5,
       atkType : 0x00,
       element : 0x00,
@@ -74,7 +71,6 @@ static const struct Collision sCollisions[4] = {
     {
       kind : DDP,
       faction : FACTION_ENEMY,
-      special : 0,
       damage : 5,
       atkType : 0x00,
       element : 0x00,

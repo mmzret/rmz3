@@ -51,11 +51,15 @@ extern const ProjectileRoutine gProjectile16Routine;
 extern const ProjectileRoutine gProjectile17Routine;
 extern const ProjectileRoutine gProjectile18Routine;
 extern const ProjectileRoutine gTretistaProjectileRoutine;
+extern const ProjectileRoutine gProjectile20Routine;
+extern const ProjectileRoutine gPantheonAquaModProjectileRoutine;
+extern const ProjectileRoutine gCubitProjectileRoutine;
 // ...
 extern const ProjectileRoutine gOmegaZeroProjectileRoutine;
 extern const ProjectileRoutine gClavekerYellowBallsRoutine;
 extern const ProjectileRoutine gPhantomProjectileRoutine;
 extern const ProjectileRoutine gOmegaZXProjectileRoutine;
+extern const ProjectileRoutine gProjectile42Routine;
 
 // --------------------------------------------
 

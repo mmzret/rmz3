@@ -71,7 +71,7 @@ _080F8FB4:
 	ldr r2, _080F9188 @ =0x01000008
 	mov r0, sp
 	bl CpuFastSet
-	ldr r1, _080F918C @ =0x08386AB4
+	ldr r1, _080F918C @ =gEachMinigameLoops
 	ldrb r0, [r6, #1]
 	lsls r0, r0, #2
 	adds r0, r0, r1
@@ -252,7 +252,7 @@ _080F917C: .4byte 0x0202F354
 _080F9180: .4byte 0x0202F360
 _080F9184: .4byte 0x001FFFFF
 _080F9188: .4byte 0x01000008
-_080F918C: .4byte 0x08386AB4
+_080F918C: .4byte gEachMinigameLoops
 _080F9190: .4byte 0x020023D4
 _080F9194: .4byte gSolidHeaderPtr
 _080F9198: .4byte gZakoHeaderPtr

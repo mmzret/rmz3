@@ -651,7 +651,7 @@ FUN_0800d61c: @ 0x0800D61C
 	sub sp, #8
 	adds r5, r0, #0
 	adds r4, r1, #0
-	ldr r0, _0800D660 @ =0x080FECC4
+	ldr r0, _0800D660 @ =Coord_080fecc4
 	ldr r1, [r0, #4]
 	ldr r0, [r0]
 	str r0, [sp]
@@ -679,7 +679,7 @@ FUN_0800d61c: @ 0x0800D61C
 	movs r0, #1
 	b _0800D666
 	.align 2, 0
-_0800D660: .4byte 0x080FECC4
+_0800D660: .4byte Coord_080fecc4
 _0800D664:
 	movs r0, #0
 _0800D666:

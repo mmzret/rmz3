@@ -105,6 +105,15 @@ extern const EnemyRoutine gEnemy60Routine;
 extern const EnemyRoutine gEnemy61Routine;
 extern const EnemyRoutine gShotloidRoutine;
 extern const EnemyRoutine gEnemy63Routine;
+extern const EnemyRoutine gPantheonFistRoutine;
+extern const EnemyRoutine gShellcrawlerRoutine;
+extern const EnemyRoutine gCannonHopperRoutine;
+extern const EnemyRoutine gCattatankRoutine;
+extern const EnemyRoutine gLeviathanMinigameEnemyRoutine;
+extern const EnemyRoutine gHarpuiaMinigameEnemyRoutine;
+extern const EnemyRoutine gCielMinigameEnemy1Routine;
+extern const EnemyRoutine gCielMinigameEnemy2Routine;
+extern const EnemyRoutine gEnemy72Routine;
 
 // --------------------------------------------
 

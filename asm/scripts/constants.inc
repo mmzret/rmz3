@@ -10,8 +10,8 @@
 .equ SECOND, 60
 
 .equ PX, 256
-.equ MAX_X, 240*64*PX
-.equ MAX_Y, 160*64*PX
+.equ MAX_X, 240*64*PX @ 15360*PX, 0x3C0000
+.equ MAX_Y, 160*64*PX @ 10240*PX, 0x280000
 
 .equ A_BUTTON, 0x0001
 .equ B_BUTTON, 0x0002

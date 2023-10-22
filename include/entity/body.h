@@ -15,8 +15,8 @@
 #define BODY_STATUS_B7 (1 << 7)
 #define BODY_STATUS_B8 (1 << 8)
 #define BODY_STATUS_DEAD (1 << 9)
-#define BODY_STATUS_B10 (1 << 10)
-#define BODY_STATUS_B11 (1 << 11)
+#define BODY_STATUS_BINDED (1 << 10)
+#define BODY_STATUS_BINDING (1 << 11)
 #define BODY_STATUS_BLOCKED (1 << 12)
 #define BODY_STATUS_B13 (1 << 13)
 #define BODY_STATUS_B14 (1 << 14)
@@ -51,8 +51,8 @@ struct Body {
   const struct Collision* collisions;  // Collision chain start
   const struct Collision* processing;  // .collisions は Bodyが持ってる当たり判定のリスト、 .processing は オーバーラップした時に、解決処理の間、Collisionリストの先頭を指す
   struct Coord* coord;
-  struct Body* enemy;  // 接触ダメージを受ける時は接触相手
-  struct Body* unk_10;
+  struct Body* enemy;     // 接触ダメージを受ける時は接触相手
+  struct Body* bindPair;  // 拘束技(オメガZXのバインディングボールなど)を食らった時の相手(e.g. Zero ⇆ Binding ball)
 
   u32 hitboxFlags;  // .status と同じ内容？
 

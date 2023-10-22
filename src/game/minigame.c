@@ -73,7 +73,7 @@ static void MinigameLoop_InitMinigame(struct GameState *g) {
 }
 
 // clang-format off
-const MinigameLoopFunc EachMinigameLoops[MINIGAME_COUNT] = {
+const MinigameLoopFunc gEachMinigameLoops[MINIGAME_COUNT] = {
     [MINIGAME_ZERO] = zeroMinigame,
     [MINIGAME_CIEL] = cielMinigame,
     [MINIGAME_COPY_X] = copyXMinigame,

@@ -681,7 +681,7 @@ andrew_080d9cd8: @ 0x080D9CD8
 	.align 2, 0
 _080D9D14: .4byte gSystemSavedataManager
 _080D9D18:
-	ldr r2, _080D9D84 @ =sMobNPCMotions
+	ldr r2, _080D9D84 @ =sMotions
 	ldrb r0, [r6, #0x10]
 	lsls r0, r0, #1
 	adds r0, r0, r2
@@ -719,7 +719,7 @@ _080D9D54:
 	strb r0, [r6, #0xa]
 	adds r4, r6, #0
 	adds r4, #0x74
-	ldr r1, _080D9D88 @ =sMobNPCCollisions
+	ldr r1, _080D9D88 @ =sCollisions
 	adds r2, r6, #0
 	adds r2, #0x54
 	adds r0, r4, #0
@@ -735,8 +735,8 @@ _080D9D54:
 	pop {r0}
 	bx r0
 	.align 2, 0
-_080D9D84: .4byte sMobNPCMotions
-_080D9D88: .4byte sMobNPCCollisions
+_080D9D84: .4byte sMotions
+_080D9D88: .4byte sCollisions
 
 	thumb_func_start andrew_080d9d8c
 andrew_080d9d8c: @ 0x080D9D8C
@@ -907,7 +907,7 @@ alouette_080d9eb8: @ 0x080D9EB8
 	ands r0, r1
 	cmp r0, #0
 	beq _080D9F08
-	ldr r2, _080D9F04 @ =sMobNPCMotions
+	ldr r2, _080D9F04 @ =sMotions
 	ldrb r0, [r6, #0x10]
 	lsls r0, r0, #1
 	adds r0, r0, r2
@@ -936,9 +936,9 @@ alouette_080d9eb8: @ 0x080D9EB8
 	b _080D9F3A
 	.align 2, 0
 _080D9F00: .4byte gSystemSavedataManager
-_080D9F04: .4byte sMobNPCMotions
+_080D9F04: .4byte sMotions
 _080D9F08:
-	ldr r2, _080D9F80 @ =sMobNPCMotions
+	ldr r2, _080D9F80 @ =sMotions
 	ldrb r0, [r6, #0x10]
 	lsls r0, r0, #1
 	adds r0, r0, r2
@@ -970,7 +970,7 @@ _080D9F3A:
 	strb r0, [r6, #0xa]
 	adds r4, r6, #0
 	adds r4, #0x74
-	ldr r1, _080D9F84 @ =sMobNPCCollisions
+	ldr r1, _080D9F84 @ =sCollisions
 	adds r2, r6, #0
 	adds r2, #0x54
 	adds r0, r4, #0
@@ -996,8 +996,8 @@ _080D9F3A:
 	pop {r0}
 	bx r0
 	.align 2, 0
-_080D9F80: .4byte sMobNPCMotions
-_080D9F84: .4byte sMobNPCCollisions
+_080D9F80: .4byte sMotions
+_080D9F84: .4byte sCollisions
 
 	thumb_func_start alouette_080d9f88
 alouette_080d9f88: @ 0x080D9F88
@@ -1083,7 +1083,7 @@ _080DA016:
 FUN_080da01c: @ 0x080DA01C
 	push {r4, r5, r6, lr}
 	adds r6, r0, #0
-	ldr r2, _080DA090 @ =sMobNPCMotions
+	ldr r2, _080DA090 @ =sMotions
 	ldrb r0, [r6, #0x10]
 	lsls r0, r0, #1
 	adds r0, r0, r2
@@ -1111,7 +1111,7 @@ FUN_080da01c: @ 0x080DA01C
 	strb r0, [r6, #0xa]
 	adds r4, r6, #0
 	adds r4, #0x74
-	ldr r1, _080DA094 @ =sMobNPCCollisions
+	ldr r1, _080DA094 @ =sCollisions
 	adds r2, r6, #0
 	adds r2, #0x54
 	adds r0, r4, #0
@@ -1137,8 +1137,8 @@ FUN_080da01c: @ 0x080DA01C
 	pop {r0}
 	bx r0
 	.align 2, 0
-_080DA090: .4byte sMobNPCMotions
-_080DA094: .4byte sMobNPCCollisions
+_080DA090: .4byte sMotions
+_080DA094: .4byte sCollisions
 
 	thumb_func_start hibou_080da098
 hibou_080da098: @ 0x080DA098
@@ -1219,7 +1219,7 @@ FUN_080da114: @ 0x080DA114
 	strb r0, [r6, #0xa]
 	adds r4, r6, #0
 	adds r4, #0x74
-	ldr r1, _080DA184 @ =sMobNPCCollisions+24
+	ldr r1, _080DA184 @ =sCollisions+24
 	adds r2, r6, #0
 	adds r2, #0x54
 	adds r0, r4, #0
@@ -1227,7 +1227,7 @@ FUN_080da114: @ 0x080DA114
 	bl InitBody
 	str r6, [r4, #0x2c]
 	str r5, [r4, #0x24]
-	ldr r2, _080DA188 @ =sMobNPCMotions
+	ldr r2, _080DA188 @ =sMotions
 	ldrb r0, [r6, #0x10]
 	lsls r0, r0, #1
 	adds r0, r0, r2
@@ -1264,8 +1264,8 @@ FUN_080da114: @ 0x080DA114
 	pop {r0}
 	bx r0
 	.align 2, 0
-_080DA184: .4byte sMobNPCCollisions+24
-_080DA188: .4byte sMobNPCMotions
+_080DA184: .4byte sCollisions+24
+_080DA188: .4byte sMotions
 
 	thumb_func_start menart_080da18c
 menart_080da18c: @ 0x080DA18C
@@ -1355,7 +1355,7 @@ FUN_080da21c: @ 0x080DA21C
 	strb r0, [r6, #0xa]
 	adds r4, r6, #0
 	adds r4, #0x74
-	ldr r1, _080DA28C @ =sMobNPCCollisions
+	ldr r1, _080DA28C @ =sCollisions
 	adds r2, r6, #0
 	adds r2, #0x54
 	adds r0, r4, #0
@@ -1363,7 +1363,7 @@ FUN_080da21c: @ 0x080DA21C
 	bl InitBody
 	str r6, [r4, #0x2c]
 	str r5, [r4, #0x24]
-	ldr r2, _080DA290 @ =sMobNPCMotions
+	ldr r2, _080DA290 @ =sMotions
 	ldrb r0, [r6, #0x10]
 	lsls r0, r0, #1
 	adds r0, r0, r2
@@ -1401,8 +1401,8 @@ FUN_080da21c: @ 0x080DA21C
 	pop {r0}
 	bx r0
 	.align 2, 0
-_080DA28C: .4byte sMobNPCCollisions
-_080DA290: .4byte sMobNPCMotions
+_080DA28C: .4byte sCollisions
+_080DA290: .4byte sMotions
 
 	thumb_func_start rocinolle_080da294
 rocinolle_080da294: @ 0x080DA294
@@ -1490,7 +1490,7 @@ FUN_080da320: @ 0x080DA320
 	strb r0, [r6, #0xa]
 	adds r4, r6, #0
 	adds r4, #0x74
-	ldr r1, _080DA390 @ =sMobNPCCollisions
+	ldr r1, _080DA390 @ =sCollisions
 	adds r2, r6, #0
 	adds r2, #0x54
 	adds r0, r4, #0
@@ -1498,7 +1498,7 @@ FUN_080da320: @ 0x080DA320
 	bl InitBody
 	str r6, [r4, #0x2c]
 	str r5, [r4, #0x24]
-	ldr r2, _080DA394 @ =sMobNPCMotions
+	ldr r2, _080DA394 @ =sMotions
 	ldrb r0, [r6, #0x10]
 	lsls r0, r0, #1
 	adds r0, r0, r2
@@ -1536,8 +1536,8 @@ FUN_080da320: @ 0x080DA320
 	pop {r0}
 	bx r0
 	.align 2, 0
-_080DA390: .4byte sMobNPCCollisions
-_080DA394: .4byte sMobNPCMotions
+_080DA390: .4byte sCollisions
+_080DA394: .4byte sMotions
 
 	thumb_func_start hirondelle_080da398
 hirondelle_080da398: @ 0x080DA398
@@ -1624,7 +1624,7 @@ FUN_080da41c: @ 0x080DA41C
 	strb r0, [r6, #0xa]
 	adds r4, r6, #0
 	adds r4, #0x74
-	ldr r1, _080DA48C @ =sMobNPCCollisions+24
+	ldr r1, _080DA48C @ =sCollisions+24
 	adds r2, r6, #0
 	adds r2, #0x54
 	adds r0, r4, #0
@@ -1632,7 +1632,7 @@ FUN_080da41c: @ 0x080DA41C
 	bl InitBody
 	str r6, [r4, #0x2c]
 	str r5, [r4, #0x24]
-	ldr r2, _080DA490 @ =sMobNPCMotions
+	ldr r2, _080DA490 @ =sMotions
 	ldrb r0, [r6, #0x10]
 	lsls r0, r0, #1
 	adds r0, r0, r2
@@ -1669,8 +1669,8 @@ FUN_080da41c: @ 0x080DA41C
 	pop {r0}
 	bx r0
 	.align 2, 0
-_080DA48C: .4byte sMobNPCCollisions+24
-_080DA490: .4byte sMobNPCMotions
+_080DA48C: .4byte sCollisions+24
+_080DA490: .4byte sMotions
 
 	thumb_func_start pic_080da494
 pic_080da494: @ 0x080DA494
@@ -1736,7 +1736,7 @@ _080DA4FC: .4byte 0x00000273
 FUN_080da500: @ 0x080DA500
 	push {r4, r5, r6, lr}
 	adds r6, r0, #0
-	ldr r2, _080DA574 @ =sMobNPCMotions
+	ldr r2, _080DA574 @ =sMotions
 	ldrb r0, [r6, #0x10]
 	lsls r0, r0, #1
 	adds r0, r0, r2
@@ -1764,7 +1764,7 @@ FUN_080da500: @ 0x080DA500
 	strb r0, [r6, #0xa]
 	adds r4, r6, #0
 	adds r4, #0x74
-	ldr r1, _080DA578 @ =sMobNPCCollisions
+	ldr r1, _080DA578 @ =sCollisions
 	adds r2, r6, #0
 	adds r2, #0x54
 	adds r0, r4, #0
@@ -1790,8 +1790,8 @@ FUN_080da500: @ 0x080DA500
 	pop {r0}
 	bx r0
 	.align 2, 0
-_080DA574: .4byte sMobNPCMotions
-_080DA578: .4byte sMobNPCCollisions
+_080DA574: .4byte sMotions
+_080DA578: .4byte sCollisions
 
 	thumb_func_start perroquiet_080da57c
 perroquiet_080da57c: @ 0x080DA57C
@@ -1865,7 +1865,7 @@ FUN_080da5e8: @ 0x080DA5E8
 	strb r0, [r6, #0xa]
 	adds r4, r6, #0
 	adds r4, #0x74
-	ldr r1, _080DA658 @ =sMobNPCCollisions
+	ldr r1, _080DA658 @ =sCollisions
 	adds r2, r6, #0
 	adds r2, #0x54
 	adds r0, r4, #0
@@ -1873,7 +1873,7 @@ FUN_080da5e8: @ 0x080DA5E8
 	bl InitBody
 	str r6, [r4, #0x2c]
 	str r5, [r4, #0x24]
-	ldr r2, _080DA65C @ =sMobNPCMotions
+	ldr r2, _080DA65C @ =sMotions
 	ldrb r0, [r6, #0x10]
 	lsls r0, r0, #1
 	adds r0, r0, r2
@@ -1911,8 +1911,8 @@ FUN_080da5e8: @ 0x080DA5E8
 	pop {r0}
 	bx r0
 	.align 2, 0
-_080DA658: .4byte sMobNPCCollisions
-_080DA65C: .4byte sMobNPCMotions
+_080DA658: .4byte sCollisions
+_080DA65C: .4byte sMotions
 
 	thumb_func_start doigt_080da660
 doigt_080da660: @ 0x080DA660
@@ -2002,7 +2002,7 @@ FUN_080da6f0: @ 0x080DA6F0
 	strb r0, [r6, #0xa]
 	adds r4, r6, #0
 	adds r4, #0x74
-	ldr r1, _080DA760 @ =sMobNPCCollisions
+	ldr r1, _080DA760 @ =sCollisions
 	adds r2, r6, #0
 	adds r2, #0x54
 	adds r0, r4, #0
@@ -2010,7 +2010,7 @@ FUN_080da6f0: @ 0x080DA6F0
 	bl InitBody
 	str r6, [r4, #0x2c]
 	str r5, [r4, #0x24]
-	ldr r2, _080DA764 @ =sMobNPCMotions
+	ldr r2, _080DA764 @ =sMotions
 	ldrb r0, [r6, #0x10]
 	lsls r0, r0, #1
 	adds r0, r0, r2
@@ -2048,8 +2048,8 @@ FUN_080da6f0: @ 0x080DA6F0
 	pop {r0}
 	bx r0
 	.align 2, 0
-_080DA760: .4byte sMobNPCCollisions
-_080DA764: .4byte sMobNPCMotions
+_080DA760: .4byte sCollisions
+_080DA764: .4byte sMotions
 
 	thumb_func_start autruche_080da768
 autruche_080da768: @ 0x080DA768
@@ -2243,7 +2243,7 @@ _080DA8C8:
 	strb r0, [r6, #0xa]
 	adds r4, r6, #0
 	adds r4, #0x74
-	ldr r1, _080DA934 @ =sMobNPCCollisions
+	ldr r1, _080DA934 @ =sCollisions
 	adds r2, r6, #0
 	adds r2, #0x54
 	adds r0, r4, #0
@@ -2251,7 +2251,7 @@ _080DA8C8:
 	bl InitBody
 	str r6, [r4, #0x2c]
 	str r5, [r4, #0x24]
-	ldr r2, _080DA938 @ =sMobNPCMotions
+	ldr r2, _080DA938 @ =sMotions
 	ldrb r0, [r6, #0x10]
 	lsls r0, r0, #1
 	adds r0, r0, r2
@@ -2290,8 +2290,8 @@ _080DA92E:
 	pop {r0}
 	bx r0
 	.align 2, 0
-_080DA934: .4byte sMobNPCCollisions
-_080DA938: .4byte sMobNPCMotions
+_080DA934: .4byte sCollisions
+_080DA938: .4byte sMotions
 
 	thumb_func_start faucon_080da93c
 faucon_080da93c: @ 0x080DA93C
@@ -2605,7 +2605,7 @@ _080DAB90:
 	strb r0, [r6, #0xa]
 	adds r4, r6, #0
 	adds r4, #0x74
-	ldr r1, _080DABFC @ =sMobNPCCollisions
+	ldr r1, _080DABFC @ =sCollisions
 	adds r2, r6, #0
 	adds r2, #0x54
 	adds r0, r4, #0
@@ -2613,7 +2613,7 @@ _080DAB90:
 	bl InitBody
 	str r6, [r4, #0x2c]
 	str r5, [r4, #0x24]
-	ldr r2, _080DAC00 @ =sMobNPCMotions
+	ldr r2, _080DAC00 @ =sMotions
 	ldrb r0, [r6, #0x10]
 	lsls r0, r0, #1
 	adds r0, r0, r2
@@ -2651,8 +2651,8 @@ _080DABF4:
 	pop {r0}
 	bx r0
 	.align 2, 0
-_080DABFC: .4byte sMobNPCCollisions
-_080DAC00: .4byte sMobNPCMotions
+_080DABFC: .4byte sCollisions
+_080DAC00: .4byte sMotions
 
 	thumb_func_start kiss_080dac04
 kiss_080dac04: @ 0x080DAC04
@@ -2734,7 +2734,7 @@ _080DAC58:
 _080DAC90: .4byte gSystemSavedataManager
 _080DAC94: .4byte gSolidFnTable
 _080DAC98:
-	ldr r2, _080DAD08 @ =sMobNPCMotions
+	ldr r2, _080DAD08 @ =sMotions
 	ldrb r0, [r6, #0x10]
 	lsls r0, r0, #1
 	adds r0, r0, r2
@@ -2762,7 +2762,7 @@ _080DAC98:
 	strb r0, [r6, #0xa]
 	adds r4, r6, #0
 	adds r4, #0x74
-	ldr r1, _080DAD0C @ =sMobNPCCollisions
+	ldr r1, _080DAD0C @ =sCollisions
 	adds r2, r6, #0
 	adds r2, #0x54
 	adds r0, r4, #0
@@ -2789,8 +2789,8 @@ _080DAD00:
 	pop {r0}
 	bx r0
 	.align 2, 0
-_080DAD08: .4byte sMobNPCMotions
-_080DAD0C: .4byte sMobNPCCollisions
+_080DAD08: .4byte sMotions
+_080DAD0C: .4byte sCollisions
 
 	thumb_func_start colbor_080dad10
 colbor_080dad10: @ 0x080DAD10
@@ -2923,7 +2923,7 @@ _080DADF8: .4byte 0x000002AD
 FUN_080dadfc: @ 0x080DADFC
 	push {r4, r5, r6, r7, lr}
 	adds r7, r0, #0
-	ldr r2, _080DAE70 @ =sMobNPCMotions
+	ldr r2, _080DAE70 @ =sMotions
 	ldrb r0, [r7, #0x10]
 	lsls r0, r0, #1
 	adds r0, r0, r2
@@ -2953,7 +2953,7 @@ FUN_080dadfc: @ 0x080DADFC
 	strb r0, [r7, #0xa]
 	adds r4, r7, #0
 	adds r4, #0x74
-	ldr r1, _080DAE74 @ =sMobNPCCollisions+48
+	ldr r1, _080DAE74 @ =sCollisions+48
 	adds r2, r7, #0
 	adds r2, #0x54
 	adds r0, r4, #0
@@ -2977,8 +2977,8 @@ FUN_080dadfc: @ 0x080DADFC
 	pop {r0}
 	bx r0
 	.align 2, 0
-_080DAE70: .4byte sMobNPCMotions
-_080DAE74: .4byte sMobNPCCollisions+48
+_080DAE70: .4byte sMotions
+_080DAE74: .4byte sCollisions+48
 
 	thumb_func_start getCielComputerResearchTextID
 getCielComputerResearchTextID: @ 0x080DAE78

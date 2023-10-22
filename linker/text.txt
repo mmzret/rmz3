@@ -205,6 +205,12 @@
 			src/enemy/deathlock.o (.text);
 			src/enemy/claveker.o (.text);
 			src/enemy/seimeran.o (.text);
+			src/enemy/petatria.o (.text);
+			src/enemy/unk_59.o (.text);
+			src/enemy/unk_60.o (.text);
+			src/enemy/unk_61.o (.text);
+			src/enemy/shotloid.o (.text);
+			src/enemy/unk_63.o (.text);
 
 		src/projectile.o (.text);
       src/projectile/lemon.o (.text);

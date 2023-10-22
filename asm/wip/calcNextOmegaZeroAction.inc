@@ -36,7 +36,7 @@ _0805D612:
 	mov r8, r0
 	mov r5, ip
 	adds r5, #0xc5
-	ldr r2, _0805D630 @ =gOmegaZeroMode
+	ldr r2, _0805D630 @ =sModes
 	mov sb, r2
 	lsls r7, r1, #4
 	mov r4, ip
@@ -46,7 +46,7 @@ _0805D612:
 	b _0805D638
 	.align 2, 0
 _0805D62C: .4byte RNG_0202f388
-_0805D630: .4byte gOmegaZeroMode
+_0805D630: .4byte sModes
 _0805D634:
 	cmp r2, #0x14
 	bne _0805D66C

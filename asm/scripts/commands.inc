@@ -1,9 +1,9 @@
 
-	.macro goto a b c
+	.macro goto dst
   .byte 0x00
 	.byte 0
-  .2byte \b
-  .4byte \c
+  .2byte 0x00
+  .4byte \dst
 	.endm
 
 	.macro pause
@@ -32,6 +32,13 @@
 	.byte 0x00
   .2byte 0x00
   .4byte \t
+	.endm
+
+	.macro do_nothing
+  .byte 0x03
+	.byte 0x00
+  .2byte 0x00
+  .4byte 0x00
 	.endm
 
 	.macro reset_camera template
@@ -103,8 +110,8 @@
   .4byte 0
 	.endm
 
-	.macro disablekeyinput a b c
-  .byte 0x09
+	.macro cmd08 a b c
+  .byte 0x08
 	.byte \a
   .2byte \b
   .4byte \c
@@ -173,6 +180,19 @@
   .4byte 0x00
 	.endm
 
+	.macro entityflag slot bit bool
+  .byte 0x0D
+	.byte \slot
+  .2byte (1 << \bit)
+  .4byte \bool
+	.endm
+
+  .macro gameflag n val
+  .byte 0x0D, 0x00
+  .2byte \n
+  .4byte 0x02 + \val
+	.endm
+
 	.macro emergency_on
   .byte 0x10
 	.byte 0
@@ -187,17 +207,18 @@
   .4byte 0
 	.endm
 
-	.macro entityflag slot bit bool
-  .byte 0x0D
-	.byte \slot
-  .2byte (1 << \bit)
-  .4byte \bool
+	.macro quake a b c
+  .byte 0x11
+	.byte \a
+  .2byte \b
+  .4byte \c
 	.endm
 
-  .macro gameflag n val
-  .byte 0x0D, 0x00
-  .2byte \n
-  .4byte 0x02 + \val
+  .macro stop_quake
+  .byte 0x11
+	.byte 1
+  .2byte 0
+  .4byte 0
 	.endm
 
 	.macro emotion idx x y c
@@ -406,6 +427,13 @@
 
 	.macro eventflag a b c
   .byte 0x1f
+	.byte \a
+  .2byte \b
+  .4byte \c
+	.endm
+
+	.macro cmd20 a b c
+  .byte 0x20
 	.byte \a
   .2byte \b
   .4byte \c

@@ -2,9 +2,9 @@
 #define GUARD_RMZ3_TRIG_H
 
 // Converts a number to Q8.8 fixed-point format
-#define Q_8_8(n) ((s16)((n)*256))
+#define Q_8_8(n) ((s16)((n) * 256))
 
-#define SIN(index) (gSineTable[index])
+#define SIN(index) (gSineTable[(u8)(index)])
 #define COS(index) (gSineTable[(u8)(index + 64)])
 
 #define SINX(index, amplitude) ((amplitude * gSineTable[index]))

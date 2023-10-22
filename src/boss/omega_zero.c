@@ -9,7 +9,7 @@
 #include "weapon.h"
 #include "zero.h"
 
-static const u8 gOmegaZeroMode[48];
+static const u8 sModes[48];
 static const u8 sInitModes[4];
 static const struct Collision sCollisions[6];
 static const struct Coord sExplosionCoords[2];
@@ -54,15 +54,15 @@ NON_MATCH static void calcNextOmegaZeroAction(struct Boss *p) {
     RNG_0202f388 = LCG(RNG_0202f388);
     rng = (RNG_0202f388 >> 16) & 0xF;
 
-    if ((p->props.oz).prevMode == gOmegaZeroMode[d + rng]) {
+    if ((p->props.oz).prevMode == sModes[d + rng]) {
       if ((p->props.oz).unk_c6 != 0) continue;
     }
 
-    if ((p->body).hp < 33 || (gOmegaZeroMode[d + rng] != 20)) {
-      if ((p->props.oz).prevMode == gOmegaZeroMode[d + rng]) {
+    if ((p->body).hp < 33 || (sModes[d + rng] != 20)) {
+      if ((p->props.oz).prevMode == sModes[d + rng]) {
         (p->props.oz).unk_c6++;
       } else {
-        (p->props.oz).prevMode = gOmegaZeroMode[d + rng];
+        (p->props.oz).prevMode = sModes[d + rng];
         (p->props.oz).unk_c6 = 0;
       }
       (p->s).mode[1] = (p->props.oz).prevMode;
@@ -215,30 +215,30 @@ static void OmegaZero_Update(struct Boss *p) {
       nop_0805d950,
   };
   static const BossFunc sUpdates2[24] = {
-      ozNeutral,
-      ozMode1,
-      ozDash,
-      ozDoubleJump1,
-      ozDoubleJump2,
-      ozTripleSlash1,
-      ozTripleSlash2,
-      ozTripleSlash3,
-      double_charge_wave_1,
-      double_charge_wave_2,
-      double_charge_wave_3,
-      ozRyuenjin1,
-      ozRyuenjin2,
-      ozRyuenjin3,
-      messenkou,
-      rekkoha,
-      charge_saber,
-      arc_blade_1,
-      arc_blade_2,
-      flinched,
-      ozRanbu1,
-      ozRanbu2,
-      ozRanbu3,
-      ozRanbu4,
+      [0]  = ozNeutral,
+      [1]  = ozMode1,
+      [2]  = ozDash,
+      [3]  = ozDoubleJump1,
+      [4]  = ozDoubleJump2,
+      [5]  = ozTripleSlash1,
+      [6]  = ozTripleSlash2,
+      [7]  = ozTripleSlash3,
+      [8]  = double_charge_wave_1,
+      [9]  = double_charge_wave_2,
+      [10] = double_charge_wave_3,
+      [11] = ozRyuenjin1,
+      [12] = ozRyuenjin2,
+      [13] = ozRyuenjin3,
+      [14] = messenkou,
+      [15] = rekkoha,
+      [16] = charge_saber,
+      [17] = arc_blade_1,
+      [18] = arc_blade_2,
+      [19] = flinched,
+      [20] = ozRanbu1,
+      [21] = ozRanbu2,
+      [22] = ozRanbu3,
+      [23] = ozRanbu4,
   };
   // clang-format on
   bool8 isDead = tryKillOmegaZero(p);
@@ -780,77 +780,41 @@ static void ozTripleSlash3(struct Boss *p) {
 }
 
 // 01 08 xx --
-NAKED static void double_charge_wave_1(struct Boss *p) {
-  asm(".syntax unified\n\
-	push {r4, lr}\n\
-	adds r4, r0, #0\n\
-	ldrb r0, [r4, #0xe]\n\
-	cmp r0, #1\n\
-	beq _0805DE9C\n\
-	cmp r0, #1\n\
-	bgt _0805DE7C\n\
-	cmp r0, #0\n\
-	beq _0805DE86\n\
-	b _0805DEDC\n\
-_0805DE7C:\n\
-	cmp r0, #2\n\
-	beq _0805DEB6\n\
-	cmp r0, #3\n\
-	beq _0805DEC4\n\
-	b _0805DEDC\n\
-_0805DE86:\n\
-	movs r0, #0x18\n\
-	strb r0, [r4, #0x12]\n\
-	adds r0, r4, #0\n\
-	bl oz_080c3b44\n\
-	adds r0, r4, #0\n\
-	bl oz_080c3b9c\n\
-	ldrb r0, [r4, #0xe]\n\
-	adds r0, #1\n\
-	strb r0, [r4, #0xe]\n\
-_0805DE9C:\n\
-	ldrb r0, [r4, #0x12]\n\
-	subs r0, #1\n\
-	strb r0, [r4, #0x12]\n\
-	lsls r0, r0, #0x18\n\
-	cmp r0, #0\n\
-	bne _0805DEAE\n\
-	ldrb r0, [r4, #0xe]\n\
-	adds r0, #1\n\
-	strb r0, [r4, #0xe]\n\
-_0805DEAE:\n\
-	adds r0, r4, #0\n\
-	bl UpdateMotionGraphic\n\
-	b _0805DEDC\n\
-_0805DEB6:\n\
-	ldr r1, _0805DEE4 @ =0x00000803\n\
-	adds r0, r4, #0\n\
-	bl SetMotion\n\
-	ldrb r0, [r4, #0xe]\n\
-	adds r0, #1\n\
-	strb r0, [r4, #0xe]\n\
-_0805DEC4:\n\
-	adds r0, r4, #0\n\
-	bl UpdateMotionGraphic\n\
-	adds r0, r4, #0\n\
-	adds r0, #0x73\n\
-	ldrb r0, [r0]\n\
-	cmp r0, #3\n\
-	bne _0805DEDC\n\
-	movs r1, #0\n\
-	movs r0, #9\n\
-	strb r0, [r4, #0xd]\n\
-	strb r1, [r4, #0xe]\n\
-_0805DEDC:\n\
-	pop {r4}\n\
-	pop {r0}\n\
-	bx r0\n\
-	.align 2, 0\n\
-_0805DEE4: .4byte 0x00000803\n\
- .syntax divided\n");
+static void double_charge_wave_1(struct Boss *p) {
+  switch ((p->s).mode[2]) {
+    case 0: {
+      (p->s).work[2] = 24;
+      oz_080c3b44(p);
+      oz_080c3b9c(p);
+      (p->s).mode[2]++;
+      FALLTHROUGH;
+    }
+    case 1: {
+      (p->s).work[2]--;
+      if ((p->s).work[2] == 0) {
+        (p->s).mode[2]++;
+      }
+      UpdateMotionGraphic(&p->s);
+      break;
+    }
+
+    case 2: {
+      SetMotion(&p->s, MOTION(DM008_ZERO_BUSTER, 3));
+      (p->s).mode[2]++;
+      FALLTHROUGH;
+    }
+    case 3: {
+      UpdateMotionGraphic(&p->s);
+      if ((p->s).motion.state == MOTION_END) {
+        (p->s).mode[1] = 9;
+        (p->s).mode[2] = 0;
+      }
+      break;
+    }
+  }
 }
 
-// 01 09 xx --
+// 0x0805dee8
 NAKED static void double_charge_wave_2(struct Boss *p) {
   asm(".syntax unified\n\
 	push {r4, lr}\n\
@@ -2288,104 +2252,52 @@ _0805EA50: .4byte pZero2\n\
 }
 
 // 01 17 xx --
-NAKED static void ozRanbu4(struct Boss *p) {
-  asm(".syntax unified\n\
-	push {r4, lr}\n\
-	adds r4, r0, #0\n\
-	ldrb r0, [r4, #0xe]\n\
-	cmp r0, #1\n\
-	beq _0805EA90\n\
-	cmp r0, #1\n\
-	bgt _0805EA68\n\
-	cmp r0, #0\n\
-	beq _0805EA72\n\
-	b _0805EB02\n\
-_0805EA68:\n\
-	cmp r0, #2\n\
-	beq _0805EAAE\n\
-	cmp r0, #3\n\
-	beq _0805EAC8\n\
-	b _0805EB02\n\
-_0805EA72:\n\
-	movs r0, #0xec\n\
-	bl PlaySound\n\
-	adds r0, r4, #0\n\
-	movs r1, #0xe\n\
-	bl CreateOmegaZeroSaber\n\
-	movs r1, #0x80\n\
-	lsls r1, r1, #5\n\
-	adds r0, r4, #0\n\
-	bl SetMotion\n\
-	ldrb r0, [r4, #0xe]\n\
-	adds r0, #1\n\
-	strb r0, [r4, #0xe]\n\
-_0805EA90:\n\
-	adds r0, r4, #0\n\
-	bl FUN_0801779c\n\
-	adds r0, r4, #0\n\
-	bl UpdateMotionGraphic\n\
-	adds r0, r4, #0\n\
-	adds r0, #0x73\n\
-	ldrb r0, [r0]\n\
-	cmp r0, #3\n\
-	bne _0805EB02\n\
-	ldrb r0, [r4, #0xe]\n\
-	adds r0, #1\n\
-	strb r0, [r4, #0xe]\n\
-	b _0805EB02\n\
-_0805EAAE:\n\
-	movs r0, #0xee\n\
-	bl PlaySound\n\
-	movs r1, #0x88\n\
-	lsls r1, r1, #5\n\
-	adds r0, r4, #0\n\
-	bl SetMotion\n\
-	movs r0, #0\n\
-	strb r0, [r4, #0x12]\n\
-	ldrb r0, [r4, #0xe]\n\
-	adds r0, #1\n\
-	strb r0, [r4, #0xe]\n\
-_0805EAC8:\n\
-	adds r0, r4, #0\n\
-	bl FUN_0801779c\n\
-	adds r0, r4, #0\n\
-	bl UpdateMotionGraphic\n\
-	adds r0, r4, #0\n\
-	adds r0, #0x71\n\
-	movs r1, #0\n\
-	ldrsb r1, [r0, r1]\n\
-	cmp r1, #1\n\
-	bne _0805EAF0\n\
-	ldrb r0, [r4, #0x12]\n\
-	cmp r0, #0\n\
-	bne _0805EAF0\n\
-	strb r1, [r4, #0x12]\n\
-	adds r0, r4, #0\n\
-	movs r1, #0xf\n\
-	bl CreateOmegaZeroSaber\n\
-_0805EAF0:\n\
-	adds r0, r4, #0\n\
-	adds r0, #0x73\n\
-	ldrb r0, [r0]\n\
-	cmp r0, #3\n\
-	bne _0805EB02\n\
-	movs r1, #0\n\
-	movs r0, #0xb\n\
-	strb r0, [r4, #0xd]\n\
-	strb r1, [r4, #0xe]\n\
-_0805EB02:\n\
-	ldr r0, _0805EB14 @ =pZero2\n\
-	ldr r1, [r0]\n\
-	ldr r0, [r4, #0x64]\n\
-	str r0, [r1, #0x54]\n\
-	ldr r0, [r4, #0x68]\n\
-	str r0, [r1, #0x58]\n\
-	pop {r4}\n\
-	pop {r0}\n\
-	bx r0\n\
-	.align 2, 0\n\
-_0805EB14: .4byte pZero2\n\
- .syntax divided\n");
+static void ozRanbu4(struct Boss *p) {
+  switch ((p->s).mode[2]) {
+    case 0: {
+      PlaySound(SE_OMEGAZERO_VOICE_ec);
+      CreateOmegaZeroSaber(p, 14);
+      SetMotion(&p->s, MOTION(DM016_ZERO_SABER_TRIPLE3, 0));
+      (p->s).mode[2]++;
+      FALLTHROUGH;
+    }
+    case 1: {
+      FUN_0801779c(&p->s);
+      UpdateMotionGraphic(&p->s);
+      if ((p->s).motion.state == MOTION_END) {
+        (p->s).mode[2]++;
+      }
+      break;
+    }
+
+    case 2: {
+      PlaySound(SE_OMEGAZERO_CHARGE_SABER);
+      SetMotion(&p->s, MOTION(DM017_ZERO_SABER_SLASH_UP, 0));
+      (p->s).work[2] = 0;
+      (p->s).mode[2]++;
+      FALLTHROUGH;
+    }
+    case 3: {
+      FUN_0801779c(&p->s);
+      UpdateMotionGraphic(&p->s);
+      if (((p->s).motion.cmdIdx == 1) && ((p->s).work[2] == 0)) {
+        (p->s).work[2] = 1;
+        CreateOmegaZeroSaber(p, 15);
+      }
+      if ((p->s).motion.state == MOTION_END) {
+        (p->s).mode[1] = 11;
+        (p->s).mode[2] = 0;
+      }
+      break;
+    }
+
+    default: {
+      break;
+    }
+  }
+
+  (pZero2->s).coord.x = (p->s).unk_coord.x;
+  (pZero2->s).coord.y = (p->s).unk_coord.y;
 }
 
 // 02 00 xx --
@@ -2434,122 +2346,56 @@ static void ozDeath0(struct Boss *p) {
 }
 
 // 02 01 xx --
-NAKED static void ozDeath1(struct Boss *p) {
-  asm(".syntax unified\n\
-	push {r4, r5, lr}\n\
-	adds r4, r0, #0\n\
-	ldrb r0, [r4, #0xe]\n\
-	cmp r0, #4\n\
-	bhi _0805ECB8\n\
-	lsls r0, r0, #2\n\
-	ldr r1, _0805EC04 @ =_0805EC08\n\
-	adds r0, r0, r1\n\
-	ldr r0, [r0]\n\
-	mov pc, r0\n\
-	.align 2, 0\n\
-_0805EC04: .4byte _0805EC08\n\
-_0805EC08: @ jump table\n\
-	.4byte _0805EC1C @ case 0\n\
-	.4byte _0805EC68 @ case 1\n\
-	.4byte _0805EC90 @ case 2\n\
-	.4byte _0805ECA0 @ case 3\n\
-	.4byte _0805ECB8 @ case 4\n\
-_0805EC1C:\n\
-	adds r0, r4, #0\n\
-	adds r0, #0x8c\n\
-	movs r1, #0\n\
-	str r1, [r0]\n\
-	adds r0, #4\n\
-	str r1, [r0]\n\
-	adds r0, #4\n\
-	strb r1, [r0]\n\
-	ldrb r1, [r4, #0xa]\n\
-	movs r0, #0xfb\n\
-	ands r0, r1\n\
-	strb r0, [r4, #0xa]\n\
-	ldr r3, _0805EC84 @ =gStageRun\n\
-	ldrh r2, [r3, #8]\n\
-	movs r5, #1\n\
-	adds r0, r5, #0\n\
-	ands r0, r2\n\
-	cmp r0, #0\n\
-	beq _0805EC56\n\
-	ldrb r1, [r3, #0x12]\n\
-	adds r0, r5, #0\n\
-	ands r0, r1\n\
-	cmp r0, #0\n\
-	bne _0805EC56\n\
-	ldr r0, _0805EC88 @ =0x0000FFFE\n\
-	ands r0, r2\n\
-	movs r1, #0x10\n\
-	orrs r0, r1\n\
-	strh r0, [r3, #8]\n\
-_0805EC56:\n\
-	movs r0, #0x50\n\
-	strb r0, [r4, #0x12]\n\
-	ldr r1, _0805EC8C @ =0x00003201\n\
-	adds r0, r4, #0\n\
-	bl SetMotion\n\
-	ldrb r0, [r4, #0xe]\n\
-	adds r0, #1\n\
-	strb r0, [r4, #0xe]\n\
-_0805EC68:\n\
-	adds r0, r4, #0\n\
-	bl UpdateMotionGraphic\n\
-	ldrb r0, [r4, #0x12]\n\
-	subs r0, #1\n\
-	strb r0, [r4, #0x12]\n\
-	ldr r0, [r4, #0x18]\n\
-	ldrb r1, [r0, #9]\n\
-	movs r0, #0x80\n\
-	ands r0, r1\n\
-	cmp r0, #0\n\
-	beq _0805ECB8\n\
-	b _0805ECB2\n\
-	.align 2, 0\n\
-_0805EC84: .4byte gStageRun\n\
-_0805EC88: .4byte 0x0000FFFE\n\
-_0805EC8C: .4byte 0x00003201\n\
-_0805EC90:\n\
-	ldr r1, _0805ECC0 @ =0x083651F8\n\
-	adds r0, r4, #0\n\
-	bl CreateBossExplosion\n\
-	str r0, [r4, #0x2c]\n\
-	ldrb r0, [r4, #0xe]\n\
-	adds r0, #1\n\
-	strb r0, [r4, #0xe]\n\
-_0805ECA0:\n\
-	ldr r0, [r4, #0x2c]\n\
-	ldrb r0, [r0, #0xc]\n\
-	cmp r0, #1\n\
-	bls _0805ECB8\n\
-	ldr r2, _0805ECC4 @ =gStageRun\n\
-	ldrb r1, [r2, #0x12]\n\
-	movs r0, #2\n\
-	orrs r0, r1\n\
-	strb r0, [r2, #0x12]\n\
-_0805ECB2:\n\
-	ldrb r0, [r4, #0xe]\n\
-	adds r0, #1\n\
-	strb r0, [r4, #0xe]\n\
-_0805ECB8:\n\
-	pop {r4, r5}\n\
-	pop {r0}\n\
-	bx r0\n\
-	.align 2, 0\n\
-_0805ECC0: .4byte 0x083651F8\n\
-_0805ECC4: .4byte gStageRun\n\
- .syntax divided\n");
+static void ozDeath1(struct Boss *p) {
+  switch ((p->s).mode[2]) {
+    case 0: {
+      (p->body).status = 0;
+      (p->body).prevStatus = 0;
+      (p->body).invincibleTime = 0;
+      (p->s).flags &= ~COLLIDABLE;
+      if ((gStageRun.missionStatus & MISSION_STAY) && !(gStageRun.vm.active & 1)) {
+        gStageRun.missionStatus &= ~MISSION_STAY;
+        gStageRun.missionStatus |= MISSION_SUCCESS;
+      }
+      (p->s).work[2] = 80;
+      SetMotion(&p->s, MOTION(DM050_ZERO_STUN, 1));
+      (p->s).mode[2]++;
+      FALLTHROUGH;
+    }
+    case 1: {
+      UpdateMotionGraphic(&p->s);
+      (p->s).work[2]--;
+      if ((p->s).scriptEntity->flags & (1 << 7)) {
+        (p->s).mode[2]++;
+      }
+      break;
+    }
+
+    case 2: {
+      (p->s).unk_2c = (struct Entity *)CreateBossExplosion(p, (struct Coord *)&sExplosionCoords[1]);
+      (p->s).mode[2]++;
+      FALLTHROUGH;
+    }
+    case 3: {
+      if (((p->s).unk_2c)->mode[0] >= 2) {
+        gStageRun.vm.active |= (1 << 1);
+        (p->s).mode[2]++;
+      }
+      break;
+    }
+
+    case 4: {
+      break;
+    }
+  }
 }
 
 static const struct Collision sCollisions[6] = {
     {
       kind : DRP,
       faction : FACTION_ENEMY,
-      special : 0,
-      damage : 0,
       LAYER(0xFFFFFFFF),
-      hitzone : 0x00,
+      hitzone : 0,
       hardness : HARDNESS_B3,
       remaining : 0,
       range : {PIXEL(0), PIXEL(0), PIXEL(8), PIXEL(8)},
@@ -2562,8 +2408,6 @@ static const struct Collision sCollisions[6] = {
       faction : FACTION_ENEMY,
       special : CS_BOSS,
       damage : 3,
-      atkType : 0x00,
-      comboLv : 0x00,
       remaining : 1,
       layer : 0x00000001,
       range : {-PIXEL(1), -PIXEL(14), PIXEL(16), PIXEL(30)},
@@ -2572,7 +2416,6 @@ static const struct Collision sCollisions[6] = {
       kind : DRP,
       faction : FACTION_ENEMY,
       special : CS_BOSS,
-      damage : 0,
       LAYER(0xFFFFFFFF),
       hitzone : 5,
       hardness : HARDNESS_B3,
@@ -2587,8 +2430,6 @@ static const struct Collision sCollisions[6] = {
       faction : FACTION_ENEMY,
       special : CS_BOSS,
       damage : 3,
-      atkType : 0x00,
-      comboLv : 0x00,
       remaining : 1,
       layer : 0x00000001,
       range : {-PIXEL(2), -PIXEL(10), PIXEL(26), PIXEL(22)},
@@ -2597,7 +2438,6 @@ static const struct Collision sCollisions[6] = {
       kind : DRP,
       faction : FACTION_ENEMY,
       special : CS_BOSS,
-      damage : 0,
       LAYER(0xFFFFFFFF),
       hitzone : 5,
       hardness : HARDNESS_B3,
@@ -2612,17 +2452,19 @@ static const struct Collision sCollisions[6] = {
       faction : FACTION_ENEMY,
       special : CS_BOSS,
       damage : 3,
-      atkType : 0x00,
-      comboLv : 0x00,
       remaining : 0,
       layer : 0x00000001,
       range : {-PIXEL(1), -PIXEL(14), PIXEL(16), PIXEL(30)},
     },
 };
 
-static const u8 gOmegaZeroMode[48] = {
-    5, 5, 5, 5, 5, 5, 11, 11, 15, 15, 15, 15, 16, 16, 16, 16, 8, 8, 8, 8, 11, 11, 20, 20, 14, 14, 14, 14, 17, 17, 17, 17, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 11, 11, 11, 11,
-};
+// clang-format off
+static const u8 sModes[16 * 3] = {
+    /* range short */   5, 5, 5, 5, 5, 5, 11, 11, 15, 15, 15, 15, 16, 16, 16, 16,
+    /* range middle */  8, 8, 8, 8, 11, 11, 20, 20, 14, 14, 14, 14, 17, 17, 17, 17,
+    /* range long */    2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 11, 11, 11, 11,
+}; // 0x083651bc
+// clang-format on
 
 static const u8 sInitModes[4] = {1, 0, 0, 0};
 

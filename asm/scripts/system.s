@@ -7,7 +7,7 @@
 
 .global Script_MissionFail
 Script_MissionFail: @ 0x0834d0b4
-    disablekeyinput 2 0 0xFFFF
+    forcekeyinput 0xFFFF
     message 7 0 0
     stop_bgm
     wait SECOND
@@ -25,7 +25,7 @@ Script_MissionFail: @ 0x0834d0b4
 
 .global Script_MissionFail2
 Script_MissionFail2: @ 0x0834d12c
-    disablekeyinput 2 0 0xFFFF
+    forcekeyinput 0xFFFF
     message 7 0 0
     stop_bgm
     wait_screeneffect

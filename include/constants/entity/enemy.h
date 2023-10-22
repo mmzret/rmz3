@@ -69,10 +69,10 @@
 #define ENEMY_SHELLCRAWLER 65
 #define ENEMY_CANNON_HOPPER 66
 #define ENEMY_CATTATANK 67
-#define ENEMY_68 68
-#define ENEMY_AZTEC_FALCON 69  // Harpuia minigame
-#define ENEMY_70 70
-#define ENEMY_71 71
+#define ENEMY_LEVIATHAN_MG 68
+#define ENEMY_HARPUIA_MG 69  // Harpuia minigame
+#define ENEMY_CIEL_MG_1 70
+#define ENEMY_CIEL_MG_2 71
 #define ENEMY_72 72
 
 #define ENEMY_COUNT (ENEMY_72 + 1)

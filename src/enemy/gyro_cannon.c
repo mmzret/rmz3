@@ -24,7 +24,7 @@ struct Enemy *CreateGyroCannon(struct Entity *friend, u8 n, u8 r2) {
   struct Enemy *p = (struct Enemy *)AllocEntityFirst(gZakoHeaderPtr);
   if (p != NULL) {
     (p->s).taskCol = 24;
-    INIT_ZAKO_ROUTINE(p, ZAKO_GYRO_CANNON);
+    INIT_ZAKO_ROUTINE(p, ENEMY_GYRO_CANNON);
     (p->s).tileNum = 0;
     (p->s).palID = 0;
     (p->s).flags2 |= WHITE_PAINTABLE;
@@ -233,13 +233,7 @@ static const struct Collision sCollisions[5] = {
     {
       kind : DDP,
       faction : FACTION_ENEMY,
-      special : 0,
       damage : 2,
-      atkType : 0x00,
-      element : 0x00,
-      nature : 0x00,
-      comboLv : 0,
-      hitzone : 0,
       remaining : 1,
       layer : 0x00000001,
       range : {PIXEL(0), PIXEL(4), PIXEL(32), PIXEL(24)},
@@ -247,12 +241,7 @@ static const struct Collision sCollisions[5] = {
     {
       kind : DRP,
       faction : FACTION_ENEMY,
-      special : 0,
-      damage : 0,
-      atkType : 0xFF,
-      element : 0xFF,
-      nature : 0xFF,
-      comboLv : 255,
+      LAYER(0xFFFFFFFF),
       hitzone : 2,
       hardness : HARDNESS_B3,
       remaining : 0,
@@ -261,13 +250,7 @@ static const struct Collision sCollisions[5] = {
     {
       kind : DDP,
       faction : FACTION_ENEMY,
-      special : 0,
       damage : 2,
-      atkType : 0x00,
-      element : 0x00,
-      nature : 0x00,
-      comboLv : 0,
-      hitzone : 0,
       remaining : 1,
       layer : 0x00000001,
       range : {PIXEL(0), -PIXEL(20), PIXEL(32), PIXEL(8)},
@@ -275,12 +258,7 @@ static const struct Collision sCollisions[5] = {
     {
       kind : DRP,
       faction : FACTION_ENEMY,
-      special : 0,
-      damage : 0,
-      atkType : 0xFF,
-      element : 0xFF,
-      nature : 0xFF,
-      comboLv : 255,
+      LAYER(0xFFFFFFFF),
       hitzone : 2,
       hardness : HARDNESS_B3,
       remaining : 0,
@@ -291,11 +269,6 @@ static const struct Collision sCollisions[5] = {
       faction : FACTION_NEUTRAL,
       special : 0,
       damage : 2,
-      atkType : 0x00,
-      element : 0x00,
-      nature : 0x00,
-      comboLv : 0,
-      hitzone : 0,
       remaining : 0,
       layer : 0x00000001,
       range : {PIXEL(0), PIXEL(4), PIXEL(32), PIXEL(24)},
