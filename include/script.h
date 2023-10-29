@@ -98,8 +98,7 @@ struct VM {
 struct ScriptEntityTemplate {
   u8 kind;
   u8 variant;
-  u8 unk_02;
-  u8 unk_03;
+  u8 work[2];
   struct Coord coord;
   s8 xflip;
   s8 yflip;

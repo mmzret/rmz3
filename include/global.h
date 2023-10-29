@@ -50,13 +50,15 @@
 #define COORD(metacoord) (metacoord * 0x1000)  // 16px
 
 // coord　を 16pxのマス目単位に
-#define METACOORD(coord) (coord >> 12)
+#define METACOORD(coord) ((coord) >> 12)
 
 // gamecoord -> 1px
-#define COORD_TO_PIXEL(coord) (coord >> 8)
+#define COORD_TO_PIXEL(coord) ((coord) >> 8)
 
 // px -> gamecoord
 #define PIXEL(pixel) ((pixel) << 8)
+#define MAX_X (PIXEL(64 * DISPLAY_WIDTH))
+#define MAX_Y (PIXEL(64 * DISPLAY_HEIGHT))
 
 #define SCREEN_LEFT(coord_x) (((coord_x >> 8) + -120) << 8)  // Screen center -> Screen left
 #define SCREEN_TOP(coord_y) (((coord_y >> 8) + -80) << 8)    // Screen center -> Screen top
@@ -75,8 +77,8 @@
 #define STAGE_COUNT 18       // Stage0 + ベース含む
 
 #define LCG(s) (((s * 0x343FD + 0x269EC3) << 1) >> 1)
-#define HIHALF(n) (((n)&0xFFFF0000) >> 16)
-#define LOHALF(n) ((n)&0xFFFF)
+#define HIHALF(n) (((n) & 0xFFFF0000) >> 16)
+#define LOHALF(n) ((n) & 0xFFFF)
 #define HI_NIBBLE(byte) (((u8)byte) >> 4)
 #define LO_NIBBLE(byte) (((u8)byte) & 0xF)
 

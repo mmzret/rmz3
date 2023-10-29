@@ -6,6 +6,7 @@
 #include "mission.h"
 #include "motion.h"
 #include "overworld.h"
+#include "physics.h"
 #include "sound.h"
 #include "vfx.h"
 #include "weapon.h"
@@ -193,7 +194,7 @@ WIP void Zero_Update(struct Zero* z) {
   }
 
   if (z->unk_234 == 0) {
-    if (((gOverworld.unk_1c8.id & 0x7F) == STAGE_TWILIGHT_DESERT) && (FUN_080101a8() != 0)) {
+    if (((gOverworld.id & 0x7F) == STAGE_TWILIGHT_DESERT) && (FUN_080101a8() != 0)) {
       z->unk_234 = 16;
     }
   } else {

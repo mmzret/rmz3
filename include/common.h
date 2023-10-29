@@ -51,4 +51,18 @@ struct Rect {
   s16 h;
 };
 
+/*
+  ----- top -----
+  |             |
+  left          right
+  |             |
+  --- bottom ---
+*/
+struct Area32 {
+  s32 left;
+  s32 top;
+  s32 right;
+  s32 bottom;
+};
+
 #endif  // GUARD_RMZ3_COMMON_H

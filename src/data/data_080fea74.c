@@ -1,4 +1,3 @@
-#include "gba/gba.h"
 #include "global.h"
 #include "motion.h"
 
@@ -17,8 +16,8 @@ const struct Coord Coord_080fecdc = {
 };
 
 const s32 s32_ARRAY_080fece4[2] = {
-    0x3C0000,
-    0x280000,
+    MAX_X,
+    MAX_Y,
 };
 
 const ALIGNED(4) u8 u8_ARRAY_080fecec[6] = {

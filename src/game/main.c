@@ -291,7 +291,7 @@ static void GameLoop_PreOverworld(struct GameState *p) {
   p->inMenu = FALSE;
   ResetTaskManager(&p->taskManager);
   ResetCollisionManager();
-  resetData_08016db4();
+  ResetEntityEnvironment();
   RNG_0202f388 = (u32)(p->save).stageID;
   s32_0202f334 = -1;
   PTR_0202f384 = (void *)&p->unk_1ed8;

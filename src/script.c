@@ -124,7 +124,7 @@ void CreateScriptEntity(u8 n, struct ScriptEntityTemplate *template) {
   if (se->entity == NULL) {
     struct Entity *e;
 
-    if ((template->kind == ENTITY_PLAYER) && (template->unk_02 != 0)) {
+    if ((template->kind == ENTITY_PLAYER) && (template->work[0] != PLAYER_ZERO)) {
       e = (struct Entity *)AllocPlayer2();
       if (e != NULL) {
         e->taskCol = 16;
@@ -138,8 +138,8 @@ void CreateScriptEntity(u8 n, struct ScriptEntityTemplate *template) {
     if (e != NULL) {
       e->flags |= SCRIPTED;
       e->scriptEntity = se;
-      e->work[0] = template->unk_02;
-      e->work[1] = template->unk_03;
+      e->work[0] = template->work[0];
+      e->work[1] = template->work[1];
       e->coord.x = (template->coord).x;
       e->coord.y = (template->coord).y;
       if (template->xflip) {
@@ -564,7 +564,7 @@ static void tryForceZeroXCoord(struct VM *vm) {
   }
 }
 
-// gOverworld.disableArea の見えない壁に阻まれる処理
+// gOverworld.range の見えない壁に阻まれる処理
 WIP static void NoEntryZero(struct VM *vm) {
 #if MODERN
   s32 top = 0;
@@ -582,17 +582,17 @@ WIP static void NoEntryZero(struct VM *vm) {
       bottom = camera->bottom;
     }
 
-    if (left < gOverworld.unk_1c8.disableArea[0]) {
-      left = gOverworld.unk_1c8.disableArea[0];
+    if (left < gOverworld.range.left) {
+      left = gOverworld.range.left;
     }
-    if (top < gOverworld.unk_1c8.disableArea[1]) {
-      top = gOverworld.unk_1c8.disableArea[1];
+    if (top < gOverworld.range.top) {
+      top = gOverworld.range.top;
     }
-    if (right > gOverworld.unk_1c8.disableArea[2]) {
-      right = gOverworld.unk_1c8.disableArea[2];
+    if (right > gOverworld.range.right) {
+      right = gOverworld.range.right;
     }
-    if (bottom > gOverworld.unk_1c8.disableArea[3]) {
-      bottom = gOverworld.unk_1c8.disableArea[3];
+    if (bottom > gOverworld.range.bottom) {
+      bottom = gOverworld.range.bottom;
     }
     SetDisableArea(z, left, top, right, bottom);
 

@@ -38,7 +38,7 @@ _08000734: .4byte 0x01000000\n\
 NAKED static void mmbn4_08000738(u32 r0, u32 r1, u32 r2, u32 r3) {
   asm(".syntax unified\n\
 	push {r4, r5, r6, r7, lr}\n\
-	ldr r7, _08000794 @ =0x02000D50\n\
+	ldr r7, _08000794 @ =gUnk02000d50\n\
 	str r0, [r7, #0x20]\n\
 	str r0, [r7, #0x24]\n\
 	strb r2, [r7, #3]\n\
@@ -70,14 +70,17 @@ _08000770: .4byte UnkMmbn4Datas\n\
  .syntax divided\n");
 }
 
-WIP static void sio_08000774(u32 r0, u16 r1, u16 r2) {
-#if MODERN
-  gUnk02000d50.unk_1c = r0;
-  gUnk02000d50.unk_0a = r1;
-  gUnk02000d50.unk_0e = r2;
-#else
-  INCCODE("asm/wip/sio_08000774.inc");
-#endif
+NAKED static void sio_08000774(u32 r0, u16 r1, u16 r2) {
+  asm(".syntax unified\n\
+	push {r7, lr}\n\
+	ldr r7, _08000780 @ =gUnk02000d50\n\
+	str r0, [r7, #0x1c]\n\
+	strh r1, [r7, #0xa]\n\
+	strh r2, [r7, #0xe]\n\
+	pop {r7, pc}\n\
+	.align 2, 0\n\
+_08000780: .4byte gUnk02000d50\n\
+ .syntax divided\n");
 }
 
 INCASM("asm/mmbn4.inc");
@@ -159,7 +162,7 @@ NAKED static void sio_08001748(void) {
 	cmp r1, #5\n\
 	ble _08001770\n\
 _08001756:\n\
-	ldr r4, _08001774 @ =0x02000D50\n\
+	ldr r4, _08001774 @ =gUnk02000d50\n\
 	adds r0, r1, #0\n\
 	cmp r1, r2\n\
 	bge _08001760\n\
@@ -177,7 +180,7 @@ _0800176A:\n\
 _08001770:\n\
 	pop {r4, pc}\n\
 	.align 2, 0\n\
-_08001774: .4byte 0x02000D50\n\
+_08001774: .4byte gUnk02000d50\n\
  .syntax divided\n");
 }
 

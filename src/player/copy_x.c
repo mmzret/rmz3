@@ -2,6 +2,7 @@
 #include "collision.h"
 #include "global.h"
 #include "overworld.h"
+#include "physics.h"
 #include "vfx.h"
 #include "zero.h"
 

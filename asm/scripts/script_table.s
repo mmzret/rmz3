@@ -11,11 +11,11 @@ gStageScriptList: @ 0x0834d06c
     .word gRepairFactoryScriptList
     .word gOldResidentialScriptList
     .word gMissileFactoryScriptList
-    .word 0x08353A4C
-    .word 0x08354140
-    .word 0x08354814
+    .word gTwilightDesertScriptList
+    .word gAnatreForestScriptList
+    .word gFrostlineIceBaseScriptList
     .word gAreaX2ScriptList
-    .word 0x08355C28
+    .word gEnergyFacilityScriptList
     .word 0x0835663C
     .word 0x08357788
     .word 0x08358088

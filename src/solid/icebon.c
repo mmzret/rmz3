@@ -1,7 +1,7 @@
 #include "collision.h"
 #include "element.h"
 #include "global.h"
-#include "overworld_terrain.h"
+#include "physics.h"
 #include "solid.h"
 
 static const SolidFunc sIcebonDeathSeq[2];

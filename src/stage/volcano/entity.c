@@ -8,19 +8,14 @@ const struct EntityTemplate gVolcanoEntity[51] = {
         {
             0,
             ENTITY_PLAYER,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
+            PLAYER_ZERO,
         },
     [1] =
         {
             2,
             ENTITY_ITEM,
             ITEM_GENERAL,
-            1,
+            ITEM_LIFE_M,
             2,
             0,
             0,
@@ -31,7 +26,7 @@ const struct EntityTemplate gVolcanoEntity[51] = {
             2,
             ENTITY_ITEM,
             ITEM_GENERAL,
-            2,
+            ITEM_LIFE_L,
             2,
             0,
             0,
@@ -42,7 +37,7 @@ const struct EntityTemplate gVolcanoEntity[51] = {
             2,
             ENTITY_ITEM,
             ITEM_GENERAL,
-            4,
+            ITEM_EC_L,
             2,
             0,
             0,
@@ -53,7 +48,7 @@ const struct EntityTemplate gVolcanoEntity[51] = {
             2,
             ENTITY_ITEM,
             ITEM_GENERAL,
-            5,
+            ITEM_EXLIFE,
             2,
             0,
             0,
@@ -65,10 +60,6 @@ const struct EntityTemplate gVolcanoEntity[51] = {
             ENTITY_SOLID,
             SOLID_DOOR_2D_BLUE,
             0,
-            0,
-            0,
-            0,
-            0,
         },
     [6] =
         {
@@ -76,20 +67,12 @@ const struct EntityTemplate gVolcanoEntity[51] = {
             ENTITY_SOLID,
             SOLID_DOOR_2D_BLUE,
             1,
-            0,
-            0,
-            0,
-            0,
         },
     [7] =
         {
             1,
             ENTITY_SOLID,
             SOLID_DOOR_2D_GRAY_V,
-            0,
-            0,
-            0,
-            0,
             0,
         },
     [8] =
@@ -98,10 +81,6 @@ const struct EntityTemplate gVolcanoEntity[51] = {
             ENTITY_SOLID,
             SOLID_DOOR_2D_GRAY_V,
             2,
-            0,
-            0,
-            0,
-            0,
         },
     [9] =
         {
@@ -120,10 +99,6 @@ const struct EntityTemplate gVolcanoEntity[51] = {
             ENTITY_SOLID,
             SOLID_LAVA_GEYSER,
             0,
-            0,
-            0,
-            0,
-            0,
         },
     [11] =
         {
@@ -131,10 +106,6 @@ const struct EntityTemplate gVolcanoEntity[51] = {
             ENTITY_SOLID,
             SOLID_LAVA_GEYSER,
             1,
-            0,
-            0,
-            0,
-            0,
         },
     [12] =
         {
@@ -142,10 +113,6 @@ const struct EntityTemplate gVolcanoEntity[51] = {
             ENTITY_SOLID,
             SOLID_LAVA_GEYSER,
             2,
-            0,
-            0,
-            0,
-            0,
         },
     [13] =
         {
@@ -153,10 +120,6 @@ const struct EntityTemplate gVolcanoEntity[51] = {
             ENTITY_SOLID,
             SOLID_LAVA_GEYSER,
             3,
-            0,
-            0,
-            0,
-            0,
         },
     [14] =
         {
@@ -164,10 +127,6 @@ const struct EntityTemplate gVolcanoEntity[51] = {
             ENTITY_SOLID,
             SOLID_LAVA_GEYSER,
             4,
-            0,
-            0,
-            0,
-            0,
         },
     [15] =
         {
@@ -175,10 +134,6 @@ const struct EntityTemplate gVolcanoEntity[51] = {
             ENTITY_SOLID,
             SOLID_LAVA_GEYSER,
             5,
-            0,
-            0,
-            0,
-            0,
         },
     [16] =
         {
@@ -186,10 +141,6 @@ const struct EntityTemplate gVolcanoEntity[51] = {
             ENTITY_SOLID,
             SOLID_LAVA_GEYSER,
             6,
-            0,
-            0,
-            0,
-            0,
         },
     [17] =
         {
@@ -197,10 +148,6 @@ const struct EntityTemplate gVolcanoEntity[51] = {
             ENTITY_SOLID,
             SOLID_LAVA_GEYSER,
             7,
-            0,
-            0,
-            0,
-            0,
         },
     [18] =
         {
@@ -208,10 +155,6 @@ const struct EntityTemplate gVolcanoEntity[51] = {
             ENTITY_SOLID,
             SOLID_LAVA_GEYSER,
             8,
-            0,
-            0,
-            0,
-            0,
         },
     [19] =
         {
@@ -219,10 +162,6 @@ const struct EntityTemplate gVolcanoEntity[51] = {
             ENTITY_SOLID,
             SOLID_LAVA_GEYSER,
             9,
-            0,
-            0,
-            0,
-            0,
         },
     [20] =
         {
@@ -230,10 +169,6 @@ const struct EntityTemplate gVolcanoEntity[51] = {
             ENTITY_SOLID,
             SOLID_LAVA_GEYSER,
             10,
-            0,
-            0,
-            0,
-            0,
         },
     [21] =
         {
@@ -241,10 +176,6 @@ const struct EntityTemplate gVolcanoEntity[51] = {
             ENTITY_SOLID,
             SOLID_LAVA_GEYSER,
             11,
-            0,
-            0,
-            0,
-            0,
         },
     [22] =
         {
@@ -354,7 +285,6 @@ const struct EntityTemplate gVolcanoEntity[51] = {
             0,
             1,
             2,
-            0,
         },
     [32] =
         {
@@ -365,7 +295,6 @@ const struct EntityTemplate gVolcanoEntity[51] = {
             0,
             1,
             2,
-            0,
         },
     [33] =
         {
@@ -376,7 +305,6 @@ const struct EntityTemplate gVolcanoEntity[51] = {
             0,
             1,
             2,
-            0,
         },
     [34] =
         {
@@ -387,7 +315,6 @@ const struct EntityTemplate gVolcanoEntity[51] = {
             1,
             1,
             1,
-            0,
         },
     [35] =
         {
@@ -398,7 +325,6 @@ const struct EntityTemplate gVolcanoEntity[51] = {
             1,
             1,
             2,
-            0,
         },
     [36] =
         {
@@ -409,7 +335,6 @@ const struct EntityTemplate gVolcanoEntity[51] = {
             1,
             1,
             2,
-            0,
         },
     [37] =
         {
@@ -420,7 +345,6 @@ const struct EntityTemplate gVolcanoEntity[51] = {
             1,
             1,
             2,
-            0,
         },
     [38] =
         {
@@ -429,9 +353,6 @@ const struct EntityTemplate gVolcanoEntity[51] = {
             ITEM_DISK,
             26,
             2,
-            0,
-            0,
-            0,
         },
     [39] =
         {
@@ -440,9 +361,6 @@ const struct EntityTemplate gVolcanoEntity[51] = {
             ITEM_DISK,
             47,
             2,
-            0,
-            0,
-            0,
         },
     [40] =
         {
@@ -451,9 +369,6 @@ const struct EntityTemplate gVolcanoEntity[51] = {
             ITEM_DISK,
             73,
             2,
-            0,
-            0,
-            0,
         },
     [41] =
         {
@@ -462,9 +377,6 @@ const struct EntityTemplate gVolcanoEntity[51] = {
             ITEM_DISK,
             114,
             2,
-            0,
-            0,
-            0,
         },
     [42] =
         {
@@ -473,9 +385,6 @@ const struct EntityTemplate gVolcanoEntity[51] = {
             SOLID_CONTAINER,
             1,
             8,
-            0,
-            0,
-            0,
         },
     [43] =
         {
@@ -484,9 +393,6 @@ const struct EntityTemplate gVolcanoEntity[51] = {
             SOLID_CONTAINER,
             1,
             72,
-            0,
-            0,
-            0,
         },
     [44] =
         {
@@ -495,9 +401,6 @@ const struct EntityTemplate gVolcanoEntity[51] = {
             SOLID_CONTAINER,
             1,
             102,
-            0,
-            0,
-            0,
         },
     [45] =
         {
@@ -506,9 +409,6 @@ const struct EntityTemplate gVolcanoEntity[51] = {
             SOLID_CONTAINER,
             1,
             254,
-            0,
-            0,
-            0,
         },
     [46] =
         {
@@ -517,19 +417,12 @@ const struct EntityTemplate gVolcanoEntity[51] = {
             SOLID_CONTAINER,
             1,
             255,
-            0,
-            0,
-            0,
         },
     [47] =
         {
             1,
             ENTITY_SOLID,
             SOLID_CYBERSPACE_DOOR,
-            0,
-            0,
-            0,
-            0,
             0,
         },
     [48] =
@@ -538,10 +431,6 @@ const struct EntityTemplate gVolcanoEntity[51] = {
             ENTITY_SOLID,
             SOLID_CYBERSPACE_DOOR,
             1,
-            0,
-            0,
-            0,
-            0,
         },
     [49] =
         {

@@ -134,10 +134,10 @@ WIP static void rBase_080cfd4c(struct Solid* p) {
 
   p->props.rbe.se = MUS_NONE;
   CreateResistanceBaseElevator2(p, 1, 0);
-  gOverworld.unk_1c8.disableArea[0] = 0;
-  gOverworld.unk_1c8.disableArea[1] = 0;
-  gOverworld.unk_1c8.disableArea[2] = 0x3c0000;
-  gOverworld.unk_1c8.disableArea[3] = 0x280000;
+  gOverworld.range.left = PIXEL(0);
+  gOverworld.range.top = PIXEL(0);
+  gOverworld.range.right = MAX_X;
+  gOverworld.range.bottom = MAX_Y;
   p->props.rbe.unk_c0 = 0;
   p->props.rbe.unk_c1 = 5;
   SET_SOLID_ROUTINE(p, ENTITY_UPDATE);
@@ -155,20 +155,19 @@ static const struct Collision sCollisions[2] = {
     [0] = {
       kind : DDP,
       faction : FACTION_ENEMY,
-      damage : 255,
-      hitzone : 0x00,
+      damage : 0xFF,
       remaining : 0,
       layer : 0x00000001,
-      range : {0x0000, 0x0800, 0x1000, 0x1200},
+      range : {PIXEL(0), PIXEL(8), PIXEL(16), PIXEL(18)},
     },
     [1] = {
       kind : DRP,
       faction : FACTION_ENEMY,
-      damage : 255,
+      damage : 0xFF,
       LAYER(0xFFFFFFFF),
       hitzone : 0x00,
       remaining : 0,
-      range : {0x0000, 0x0000, 0x0000, 0x0000},
+      range : {PIXEL(0), PIXEL(0), PIXEL(0), PIXEL(0)},
     },
 };
 
@@ -176,18 +175,18 @@ static const struct Collision sCollisions[2] = {
 
 // clang-format off
 const motion_t sBaseElevatorMotions[6] = {
-    MOTION(0x73, 0x06),
-    MOTION(0x73, 0x05),
-    MOTION(0x73, 0x04),
-    MOTION(0x73, 0x03),
-    MOTION(0x73, 0x02),
-    MOTION(0x73, 0x01),
+    MOTION(SM115_ELEVATOR, 6),
+    MOTION(SM115_ELEVATOR, 5),
+    MOTION(SM115_ELEVATOR, 4),
+    MOTION(SM115_ELEVATOR, 3),
+    MOTION(SM115_ELEVATOR, 2),
+    MOTION(SM115_ELEVATOR, 1),
 };
 // clang-format on
 
 // --------------------------------------------
 
-static const struct Rect Rect_08370728 = {0x0, 0x800, 0x4000, 0x1000};
-const struct Rect Rect_08370730 = {0x0, 0xB800, 0x4000, 0x1000};
+static const struct Rect Rect_08370728 = {PIXEL(0), PIXEL(8), PIXEL(64), PIXEL(16)};
+const struct Rect Rect_08370730 = {PIXEL(0), -PIXEL(72), PIXEL(64), PIXEL(16)};
 
 #undef level

@@ -10,15 +10,15 @@
 #define ELF_AVABILITY_GROWUP1 (1 << 3)
 #define ELF_AVABILITY_GROWUP2 (1 << 4)
 
-#define INIT_ELF_ROUTINE(elf, elfID)               \
-  {                                                \
-    u32 tbl;                                       \
-    ElfFunc **r;                                   \
-    tbl = (u32)gElfFnTable;                        \
-    (elf->s).id = elfID;                           \
-                                                   \
-    r = (ElfFunc **)(tbl + (elfID << 2));          \
-    (elf->s).onUpdate = (void *)(*r)[ENTITY_INIT]; \
+#define INIT_ELF_ROUTINE(elf, elfID)                 \
+  {                                                  \
+    u32 tbl;                                         \
+    ElfFunc **r;                                     \
+    tbl = (u32)gElfFnTable;                          \
+    ((elf)->s).id = elfID;                           \
+                                                     \
+    r = (ElfFunc **)(tbl + (elfID << 2));            \
+    ((elf)->s).onUpdate = (void *)(*r)[ENTITY_INIT]; \
   }
 
 #define SET_ELF_ROUTINE(elf, routine)            \

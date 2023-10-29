@@ -1030,7 +1030,7 @@ NAKED static void unused_08006738(void) { INCCODE("asm/unused/unused_08006738.in
 NAKED static void unused_080069e0(void) { INCCODE("asm/unused/unused_080069e0.inc"); }
 #endif
 
-NAKED void FUN_08006a10(struct LayerGraphic *r0, struct Coord *c, u16 *map, metatile_id_t *bm) {
+NAKED void FUN_08006a10(struct LayerGraphic *l, struct Coord *c, u32 *bgmap, struct MetatileMap *mm) {
   asm(".syntax unified\n\
 	push {r4, r5, r6, r7, lr}\n\
 	mov r7, sl\n\
@@ -1416,7 +1416,7 @@ void UpdateBGOFS(struct LayerGraphic *l, struct BgOfs *bgofs) {
       r2 = 0863c638 + (0863c638)[0]
       r3 = 0863c638 + (0863c638)[2]
 */
-void ResetTerrain(struct Terrain *terrain, metatile_attr_t *attr, Metatile *tiles, Screen *m, const struct ScreenLayout *map) {
+void ResetTerrain(struct Terrain *terrain, metatile_attr_t *attr, Metatile *tiles, Screen *m, const struct ScreenMap *map) {
   terrain->attrs = attr;
   terrain->tiles = tiles;
   terrain->screens = m;

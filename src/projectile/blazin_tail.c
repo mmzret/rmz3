@@ -35,15 +35,15 @@ static const struct Collision sCollisions[2] = {
       hitzone : 7,
       remaining : 0,
       layer : 0xFFFFFFFF,
-      range : {0x1600, -0x1200, 0x1600, 0x1000},
+      range : {PIXEL(22), -PIXEL(18), PIXEL(22), PIXEL(16)},
     },
     {
       kind : DRP,
       faction : FACTION_ENEMY,
       special : CS_BOSS,
       LAYER(0xFFFFFFFF),
-      hitzone : 0x07,
+      hitzone : 7,
       remaining : 0,
-      range : {0x1600, -0x1200, 0x1600, 0x1000},
+      range : {PIXEL(22), -PIXEL(18), PIXEL(22), PIXEL(16)},
     },
 };

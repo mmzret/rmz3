@@ -49,14 +49,14 @@ static void CameraMode7Callback(struct Camera* camera);
 void SetCameraMode(struct Camera* camera, u32 mode) {
   // clang-format off
   static const CameraFunc sUpdates[8] = {
-      CameraMode0Callback,
-      CameraMode1Callback_ForceScroll,
-      CameraMode2Callback,
-      CameraMode3Callback,
-      CameraMode4Callback,
-      CameraMode4Callback,
-      CameraMode4Callback,
-      CameraMode7Callback,
+      [0] = CameraMode0Callback,
+      [1] = CameraMode1Callback_ForceScroll,
+      [2] = CameraMode2Callback,
+      [3] = CameraMode3Callback,
+      [4] = CameraMode4Callback,
+      [5] = CameraMode4Callback,
+      [6] = CameraMode4Callback,
+      [7] = CameraMode7Callback,
   };
   // clang-format on
   camera->mode = mode;
@@ -249,9 +249,9 @@ WIP static void CameraMode3Callback(struct Camera* camera) {
 #if MODERN
   s32 zx, zy, tmp;
   struct Coord c, d, target;
-  if (!camera->unk_1c) {
+  if (camera->unk_1c == 0) {
     camera->unk_22 = 0;
-    camera->unk_1c = TRUE;
+    camera->unk_1c++;
   }
   zx = camera->zero->x + camera->unk_left;
   zy = camera->zero->y + camera->unk_top;
@@ -276,29 +276,32 @@ WIP static void CameraMode3Callback(struct Camera* camera) {
   }
 
   CalcCameraDelta(&c, &d);
-  target.x = c.x;
-  if ((camera->chaseMode & (1 << 4)) == 0) {
+  if (camera->chaseMode & (1 << 4)) {
+    target.x = c.x;
+  } else {
     target.x = c.x + d.x;
   }
-  target.y = c.y;
-  if ((camera->chaseMode & (1 << 5)) == 0) {
+  if (camera->chaseMode & (1 << 5)) {
+    target.y = c.y;
+  } else {
     target.y = c.y + d.y;
   }
 
   if (camera->chaseMode & (1 << 3)) {
-    camera->target = target;
+    camera->target.y = target.y;
+    camera->target.x = target.x;
   } else {
     s32 x = (camera->target).x + PIXEL(4);
-    if ((x < target.x) || (x = (camera->target).x - PIXEL(4), target.x < x)) {
+    if ((x < target.x) || (x = (camera->target).x - PIXEL(4), x > target.x)) {
       (camera->target).x = x;
     } else {
       (camera->target).x = target.x;
     }
 
-    if ((camera->target).y < target.y) {
-      target.y = (camera->target).y * 7 + target.y + 7;
-    } else {
+    if ((camera->target).y >= target.y) {
       target.y = (camera->target).y * 7 + target.y;
+    } else {
+      target.y = (camera->target).y * 7 + target.y + 7;
     }
     (camera->target).y = (target.y >> 3);
   }

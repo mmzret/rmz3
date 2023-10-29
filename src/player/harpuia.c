@@ -1,6 +1,7 @@
 #include "collision.h"
 #include "global.h"
 #include "overworld.h"
+#include "physics.h"
 #include "zero.h"
 
 struct Enemy* FUN_0809af20(struct Zero* z, struct Coord* c, u8 n);

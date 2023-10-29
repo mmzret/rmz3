@@ -28,8 +28,8 @@ static const StageFunc sStageRoutine[4] = {
 };
 
 static void initResistanceBase(struct Coord* _ UNUSED) {
-  gOverworld.unk_1c8.work[0] = 0;
-  gOverworld.unk_1c8.work[1] = 0;
+  gOverworld.state[0] = 0;
+  gOverworld.state[1] = 0;
 
   gOverworld.work.resistanceBase.unk_000 = 0;
   gOverworld.work.resistanceBase.weather = gSystemSavedataManager.weather;
@@ -50,7 +50,7 @@ static void initResistanceBase(struct Coord* _ UNUSED) {
 
 // 0x08016154
 static void updateResistanceBase(struct Coord* c) {
-  if ((gOverworld.unk_1c8.tilesets[0] >> 8 == 0x11) && ((gOverworld.unk_1c8.tilesets[0] & 0xff) == 1)) {
+  if ((TILESET_ID(0) == STAGE_BASE) && (TILESET_IDX(0) == 1)) {
     if ((gOverworld.work.resistanceBase.unk_000 & 1) == 0) {
       gOverworld.work.resistanceBase.unk_000 |= 1;
       LoadBlink(0x6a, 0);
@@ -62,7 +62,7 @@ static void updateResistanceBase(struct Coord* c) {
     gOverworld.work.resistanceBase.unk_000 ^= 1;
   }
 
-  if ((gOverworld.unk_1c8.tilesets[0] >> 8 == 0x11) && ((gOverworld.unk_1c8.tilesets[0] & 0xff) == 4)) {
+  if ((TILESET_ID(0) == STAGE_BASE) && (TILESET_IDX(0) == 4)) {
     if ((gOverworld.work.resistanceBase.unk_000 & 2) == 0) {
       gOverworld.work.resistanceBase.unk_000 |= 2;
       LoadBlink(0x68, 0);
@@ -400,13 +400,13 @@ static void rbase_0801666c(struct StageLayer* l, const struct Stage* _ UNUSED) {
     if ((l->viewportCenterPixel).x < 1440) {
       (l->scroll).x = 0x276;
       (l->scroll).y = 0x2BC;
-      gOverworld.unk_1c8.disableArea[0] = 0x34000;
-      gOverworld.unk_1c8.disableArea[2] = 0x3c0000;
+      gOverworld.range.left = 0x34000;
+      gOverworld.range.right = MAX_X;
     } else {
       (l->scroll).x = 0x834;
       (l->scroll).y = 0x460;
-      gOverworld.unk_1c8.disableArea[0] = 0x0;
-      gOverworld.unk_1c8.disableArea[2] = 0x9e000;
+      gOverworld.range.left = 0x0;
+      gOverworld.range.right = 0x9e000;
     }
 
     if (gOverworld.work.resistanceBase.weather == SUNNY) {
@@ -447,10 +447,10 @@ static void rbase_0801666c(struct StageLayer* l, const struct Stage* _ UNUSED) {
 }
 
 static void rbase_080167dc(struct StageLayer* l, const struct Stage* _ UNUSED) {
-  gOverworld.unk_1c8.disableArea[0] = 0;
-  gOverworld.unk_1c8.disableArea[1] = 0;
-  gOverworld.unk_1c8.disableArea[2] = 0x3c0000;
-  gOverworld.unk_1c8.disableArea[3] = 0x280000;
+  gOverworld.range.left = 0;
+  gOverworld.range.top = 0;
+  gOverworld.range.right = MAX_X;
+  gOverworld.range.bottom = MAX_Y;
   ClearBlink(0x69);
   ClearBlink(0x78);
   ClearBlink(0x79);
@@ -1074,7 +1074,7 @@ static const StageLayerRoutine sLayerRoutine[11] = {
 };
 // clang-format on
 
-static const struct ScreenLayout sScreenMap1 = {
+static const struct ScreenMap sScreenMap1 = {
   realWidth : WIDTH,
   skip : 1,
   width : 16,
@@ -1100,7 +1100,7 @@ static const u8 sScreenMapData1[HEIGHT][WIDTH] = {
 };
 // clang-format on
 
-static const struct ScreenLayout sScreenMap2 = {
+static const struct ScreenMap sScreenMap2 = {
   realWidth : WIDTH,
   skip : 1,
   width : 16,
@@ -1126,7 +1126,7 @@ static const u8 sScreenMapData2[HEIGHT][WIDTH] = {
 };
 // clang-format on
 
-static const struct ScreenLayout sScreenMap3 = {
+static const struct ScreenMap sScreenMap3 = {
   realWidth : WIDTH,
   skip : 1,
   width : 16,

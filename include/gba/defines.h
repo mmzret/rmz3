@@ -84,4 +84,6 @@ extern struct SoundInfo *SOUND_INFO_PTR;
 #define NORETURN
 #endif
 
+#define static_assert(cond) extern char assertion[(cond) ? 1 : -1]
+
 #endif  // GUARD_GBA_DEFINES

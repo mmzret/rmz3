@@ -7,7 +7,7 @@
 	thumb_func_start FUN_08000784
 FUN_08000784: @ 0x08000784
 	push {r7, lr}
-	ldr r7, _08000794 @ =0x02000D50
+	ldr r7, _08000794 @ =gUnk02000d50
 	ldr r0, [r7, #0x48]
 	movs r1, #3
 	ands r0, r1
@@ -15,12 +15,12 @@ FUN_08000784: @ 0x08000784
 	tst r0, r0
 	pop {r7, pc}
 	.align 2, 0
-_08000794: .4byte 0x02000D50
+_08000794: .4byte gUnk02000d50
 
 	thumb_func_start FUN_08000798
 FUN_08000798: @ 0x08000798
 	push {lr}
-	ldr r0, _0800087C @ =0x02000D50
+	ldr r0, _0800087C @ =gUnk02000d50
 	movs r1, #0x58
 	bl clearMemory16
 	ldr r0, _08000880 @ =0x020010B0
@@ -35,7 +35,7 @@ FUN_08000798: @ 0x08000798
 FUN_080007b4: @ 0x080007B4
 	push {r4, r5, r6, r7, lr}
 	movs r6, #0
-	ldr r7, _0800087C @ =0x02000D50
+	ldr r7, _0800087C @ =gUnk02000d50
 	adds r0, r7, #6
 	ldr r1, _08000880 @ =0x020010B0
 	ldr r2, _08000884 @ =0x02000CD0
@@ -130,7 +130,7 @@ _08000866:
 	add sp, #0x10
 	cmp r6, #4
 	bne _08000876
-	ldr r0, _0800087C @ =0x02000D50
+	ldr r0, _0800087C @ =gUnk02000d50
 	ldrb r1, [r0, #5]
 	tst r1, r1
 	beq _08000876
@@ -139,7 +139,7 @@ _08000876:
 	adds r0, r6, #0
 	pop {r4, r5, r6, r7, pc}
 	.align 2, 0
-_0800087C: .4byte 0x02000D50
+_0800087C: .4byte gUnk02000d50
 _08000880: .4byte 0x020010B0
 _08000884: .4byte 0x02000CD0
 
@@ -183,7 +183,7 @@ Call_Jt_080008f0: @ 0x080008CC
 	mov r3, sb
 	push {r0, r3}
 	ldr r5, _08000900 @ =0x020010B0
-	ldr r7, _08000904 @ =0x02000D50
+	ldr r7, _08000904 @ =gUnk02000d50
 	ldr r1, _080008EC @ =0x080008F0
 	ldrb r0, [r7]
 	ldr r0, [r1, r0]
@@ -198,7 +198,7 @@ _080008F0:
 	.4byte FUN_08000934
 	.4byte FUN_08000944
 _08000900: .4byte 0x020010B0
-_08000904: .4byte 0x02000D50
+_08000904: .4byte gUnk02000d50
 
 	thumb_func_start FUN_08000908
 FUN_08000908: @ 0x08000908
@@ -265,7 +265,7 @@ _08000958:
 Call_Jt_0800980: @ 0x08000964
 	push {r4, r5, r6, r7, lr}
 	ldr r5, _0800098C @ =0x02000CD0
-	ldr r6, _08000990 @ =0x02000D50
+	ldr r6, _08000990 @ =gUnk02000d50
 	movs r0, #1
 	strb r0, [r6, #5]
 	ldr r1, _0800097C @ =0x08000980
@@ -281,7 +281,7 @@ _08000980:
 	.4byte FUN_08000c64
 	.4byte FUN_08000de0
 _0800098C: .4byte 0x02000CD0
-_08000990: .4byte 0x02000D50
+_08000990: .4byte gUnk02000d50
 
 	thumb_func_start FUN_08000994
 FUN_08000994: @ 0x08000994
@@ -1037,7 +1037,7 @@ FUN_08000ed4: @ 0x08000ED4
 	ldrb r0, [r1, r0]
 	cmp r0, #0xff
 	beq _08000EEE
-	ldr r4, _08000F20 @ =0x02000D50
+	ldr r4, _08000F20 @ =gUnk02000d50
 	ldrh r2, [r4, #0x10]
 	ldrh r0, [r4, #0x16]
 	movs r1, #0
@@ -1072,13 +1072,13 @@ _08000F16:
 	.align 2, 0
 _08000F18: .4byte _08000F24
 _08000F1C: .4byte 0x02000D10
-_08000F20: .4byte 0x02000D50
+_08000F20: .4byte gUnk02000d50
 _08000F24: .byte 0x02, 0xFF, 0xFF, 0x04
 
 	thumb_func_start FUN_08000f28
 FUN_08000f28: @ 0x08000F28
 	push {r4, lr}
-	ldr r4, _08000F60 @ =0x02000D50
+	ldr r4, _08000F60 @ =gUnk02000d50
 	ldrh r1, [r4, #0x14]
 	cmp r0, r1
 	beq _08000F38
@@ -1109,7 +1109,7 @@ _08000F52:
 _08000F5C:
 	pop {r4, pc}
 	.align 2, 0
-_08000F60: .4byte 0x02000D50
+_08000F60: .4byte gUnk02000d50
 
 	thumb_func_start FUN_08000f64
 FUN_08000f64: @ 0x08000F64
@@ -1149,7 +1149,7 @@ FUN_08000fac: @ 0x08000FAC
 FUN_08000fb8: @ 0x08000FB8
 	push {r4, r7, lr}
 	movs r4, #1
-	ldr r7, _08000FEC @ =0x02000D50
+	ldr r7, _08000FEC @ =gUnk02000d50
 	ldrb r0, [r7, #1]
 	cmp r0, #8
 	bne _08000FE6
@@ -1175,7 +1175,7 @@ _08000FE6:
 	adds r0, r4, #0
 	pop {r4, r7, pc}
 	.align 2, 0
-_08000FEC: .4byte 0x02000D50
+_08000FEC: .4byte gUnk02000d50
 
 	thumb_func_start FUN_08000ff0
 FUN_08000ff0: @ 0x08000FF0
@@ -1189,18 +1189,18 @@ FUN_08000ff0: @ 0x08000FF0
 	thumb_func_start FUN_08000ffc
 FUN_08000ffc: @ 0x08000FFC
 	push {lr}
-	ldr r2, _08001008 @ =0x02000D50
+	ldr r2, _08001008 @ =gUnk02000d50
 	ldrb r0, [r2, #4]
 	ldrb r1, [r2, #3]
 	cmp r0, r1
 	pop {pc}
 	.align 2, 0
-_08001008: .4byte 0x02000D50
+_08001008: .4byte gUnk02000d50
 
 	thumb_func_start sio_0800100c
 sio_0800100c: @ 0x0800100C
 	push {lr}
-	ldr r6, _08001020 @ =0x02000D50
+	ldr r6, _08001020 @ =gUnk02000d50
 	movs r0, #0
 	strh r0, [r6, #0xe]
 	movs r0, #8
@@ -1209,7 +1209,7 @@ sio_0800100c: @ 0x0800100C
 	bl FUN_08000ff0
 	pop {pc}
 	.align 2, 0
-_08001020: .4byte 0x02000D50
+_08001020: .4byte gUnk02000d50
 
 	thumb_func_start FUN_08001024
 FUN_08001024: @ 0x08001024
@@ -1305,7 +1305,7 @@ FUN_080010e8: @ 0x080010E8
 	movs r1, #0x10
 	bl clearMemory16
 	pop {r0}
-	ldr r6, _08001130 @ =0x02000D50
+	ldr r6, _08001130 @ =gUnk02000d50
 	str r7, [r6, #0x4c]
 	movs r5, #0
 	movs r4, #0
@@ -1333,7 +1333,7 @@ _08001114:
 	pop {r4, r5, r6, r7, pc}
 	.align 2, 0
 _0800112C: .4byte 0x02000FB0
-_08001130: .4byte 0x02000D50
+_08001130: .4byte gUnk02000d50
 
 	thumb_func_start FUN_08001134
 FUN_08001134: @ 0x08001134
@@ -1568,7 +1568,7 @@ _080012E8: .4byte 0x020014C0
 	thumb_func_start FUN_080012ec
 FUN_080012ec: @ 0x080012EC
 	push {r5, r6, r7, lr}
-	ldr r6, _08001324 @ =0x02000D50
+	ldr r6, _08001324 @ =gUnk02000d50
 	ldrb r0, [r6, #1]
 	cmp r0, #4
 	bne _08001322
@@ -1598,19 +1598,19 @@ _0800130C:
 _08001322:
 	pop {r5, r6, r7, pc}
 	.align 2, 0
-_08001324: .4byte 0x02000D50
+_08001324: .4byte gUnk02000d50
 
 	thumb_func_start FUN_08001328
 FUN_08001328: @ 0x08001328
 	push {r7, lr}
-	ldr r7, _08001338 @ =0x02000D50
+	ldr r7, _08001338 @ =gUnk02000d50
 	movs r0, #8
 	strb r0, [r7]
 	movs r0, #0x10
 	strh r0, [r7, #0xc]
 	pop {r7, pc}
 	.align 2, 0
-_08001338: .4byte 0x02000D50
+_08001338: .4byte gUnk02000d50
 
 	thumb_func_start sio_0800133c
 sio_0800133c: @ 0x0800133C
@@ -1789,17 +1789,17 @@ _08001494: .4byte 0x00002000
 	thumb_func_start FUN_08001498
 FUN_08001498: @ 0x08001498
 	push {lr}
-	ldr r1, _080014A4 @ =0x02000D50
+	ldr r1, _080014A4 @ =gUnk02000d50
 	ldrh r0, [r1, #0xe]
 	tst r0, r0
 	pop {pc}
 	.align 2, 0
-_080014A4: .4byte 0x02000D50
+_080014A4: .4byte gUnk02000d50
 
 	thumb_func_start FUN_080014a8
 FUN_080014a8: @ 0x080014A8
 	push {r4, r5, r6, r7, lr}
-	ldr r6, _080014E8 @ =0x02000D50
+	ldr r6, _080014E8 @ =gUnk02000d50
 	ldrb r0, [r6, #1]
 	cmp r0, #4
 	bne _080014DE
@@ -1831,7 +1831,7 @@ _080014DE:
 	.align 2, 0
 _080014E0: .4byte 0x02000FB0
 _080014E4: .4byte 0x020010C0
-_080014E8: .4byte 0x02000D50
+_080014E8: .4byte gUnk02000d50
 
 	thumb_func_start sio_080014ec
 sio_080014ec: @ 0x080014EC
@@ -1862,7 +1862,7 @@ sio_08001514: @ 0x08001514
 	beq _08001522
 	movs r1, #0x3c
 _08001522:
-	ldr r6, _08001534 @ =0x02000D50
+	ldr r6, _08001534 @ =gUnk02000d50
 	ldr r2, [r6, r1]
 	ldrh r0, [r2]
 	ldrh r0, [r2, r0]
@@ -1871,7 +1871,7 @@ _08001522:
 	pop {r4, r6, pc}
 	.align 2, 0
 _08001530: .4byte 0x020014C0
-_08001534: .4byte 0x02000D50
+_08001534: .4byte gUnk02000d50
 
 	thumb_func_start sio_08001538
 sio_08001538: @ 0x08001538
@@ -1889,13 +1889,13 @@ sio_08001538: @ 0x08001538
 	movs r1, #0
 	ldr r2, _08001564 @ =0x00004000
 	bl FUN_0800165c
-	ldr r0, _08001568 @ =0x02000D50
+	ldr r0, _08001568 @ =gUnk02000d50
 	movs r1, #0x3c
 	strh r1, [r0, #0xc]
 	pop {pc}
 	.align 2, 0
 _08001564: .4byte 0x00004000
-_08001568: .4byte 0x02000D50
+_08001568: .4byte gUnk02000d50
 _0800156C: .4byte 0x020014C0
 
 	thumb_func_start sio_08001570
@@ -2012,7 +2012,7 @@ _08001634:
 	adds r7, #1
 	cmp r7, #4
 	blt _0800160C
-	ldr r1, _08001658 @ =0x02000D50
+	ldr r1, _08001658 @ =gUnk02000d50
 	ldr r0, [r1, #0x48]
 	movs r1, #0x1c
 	ands r0, r1
@@ -2027,7 +2027,7 @@ _0800164C:
 	pop {r4, r5, r6, r7, pc}
 	.align 2, 0
 _08001654: .4byte 0x020014C0
-_08001658: .4byte 0x02000D50
+_08001658: .4byte gUnk02000d50
 
 	thumb_func_start FUN_0800165c
 FUN_0800165c: @ 0x0800165C

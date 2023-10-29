@@ -1059,216 +1059,112 @@ _08018370: .4byte 0x00017FFF\n\
 }
 
 // Create VolatileEntity or ScriptEntity
-NAKED struct Entity* CreateStageEntity(u8 kind, u8 id) {
-  asm(".syntax unified\n\
-	push {r4, lr}\n\
-	lsls r0, r0, #0x18\n\
-	lsrs r0, r0, #0x18\n\
-	lsls r1, r1, #0x18\n\
-	lsrs r4, r1, #0x18\n\
-	cmp r0, #8\n\
-	bls _08018384\n\
-	b _08018520\n\
-_08018384:\n\
-	lsls r0, r0, #2\n\
-	ldr r1, _08018390 @ =_08018394\n\
-	adds r0, r0, r1\n\
-	ldr r0, [r0]\n\
-	mov pc, r0\n\
-	.align 2, 0\n\
-_08018390: .4byte _08018394\n\
-_08018394: @ jump table\n\
-	.4byte _080183B8 @ case 0\n\
-	.4byte _08018520 @ case 1\n\
-	.4byte _080183E0 @ case 2\n\
-	.4byte _08018408 @ case 3\n\
-	.4byte _08018430 @ case 4\n\
-	.4byte _08018454 @ case 5\n\
-	.4byte _08018478 @ case 6\n\
-	.4byte _0801849C @ case 7\n\
-	.4byte _080184E4 @ case 8\n\
-_080183B8:\n\
-	bl AllocPlayer\n\
-	adds r3, r0, #0\n\
-	cmp r3, #0\n\
-	bne _080183C4\n\
-	b _08018522\n\
-_080183C4:\n\
-	adds r1, r3, #0\n\
-	adds r1, #0x25\n\
-	movs r0, #0x10\n\
-	strb r0, [r1]\n\
-	ldr r1, _080183DC @ =gZeroFnTable\n\
-	strb r4, [r3, #9]\n\
-	lsls r0, r4, #2\n\
-	adds r0, r0, r1\n\
-	ldr r0, [r0]\n\
-	ldr r0, [r0]\n\
-	str r0, [r3, #0x14]\n\
-	b _08018522\n\
-	.align 2, 0\n\
-_080183DC: .4byte gZeroFnTable\n\
-_080183E0:\n\
-	ldr r0, _08018400 @ =gBossHeaderPtr\n\
-	ldr r0, [r0]\n\
-	bl AllocEntityFirst\n\
-	adds r3, r0, #0\n\
-	cmp r3, #0\n\
-	bne _080183F0\n\
-	b _08018522\n\
-_080183F0:\n\
-	adds r1, r3, #0\n\
-	adds r1, #0x25\n\
-	movs r2, #0\n\
-	movs r0, #0x18\n\
-	strb r0, [r1]\n\
-	ldr r1, _08018404 @ =gBossFnTable\n\
-	b _080184B6\n\
-	.align 2, 0\n\
-_08018400: .4byte gBossHeaderPtr\n\
-_08018404: .4byte gBossFnTable\n\
-_08018408:\n\
-	ldr r0, _08018428 @ =gZakoHeaderPtr\n\
-	ldr r0, [r0]\n\
-	bl AllocEntityFirst\n\
-	adds r3, r0, #0\n\
-	cmp r3, #0\n\
-	bne _08018418\n\
-	b _08018522\n\
-_08018418:\n\
-	adds r1, r3, #0\n\
-	adds r1, #0x25\n\
-	movs r2, #0\n\
-	movs r0, #0x18\n\
-	strb r0, [r1]\n\
-	ldr r1, _0801842C @ =gEnemyFnTable\n\
-	b _080184B6\n\
-	.align 2, 0\n\
-_08018428: .4byte gZakoHeaderPtr\n\
-_0801842C: .4byte gEnemyFnTable\n\
-_08018430:\n\
-	ldr r0, _0801844C @ =gProjectileHeaderPtr\n\
-	ldr r0, [r0]\n\
-	bl AllocEntityFirst\n\
-	adds r3, r0, #0\n\
-	cmp r3, #0\n\
-	beq _08018522\n\
-	adds r1, r3, #0\n\
-	adds r1, #0x25\n\
-	movs r2, #0\n\
-	movs r0, #8\n\
-	strb r0, [r1]\n\
-	ldr r1, _08018450 @ =gProjectileFnTable\n\
-	b _080184FE\n\
-	.align 2, 0\n\
-_0801844C: .4byte gProjectileHeaderPtr\n\
-_08018450: .4byte gProjectileFnTable\n\
-_08018454:\n\
-	ldr r0, _08018470 @ =gVFXHeaderPtr\n\
-	ldr r0, [r0]\n\
-	bl AllocEntityFirst\n\
-	adds r3, r0, #0\n\
-	cmp r3, #0\n\
-	beq _08018522\n\
-	adds r1, r3, #0\n\
-	adds r1, #0x25\n\
-	movs r2, #0\n\
-	movs r0, #1\n\
-	strb r0, [r1]\n\
-	ldr r1, _08018474 @ =gVFXFnTable\n\
-	b _080184FE\n\
-	.align 2, 0\n\
-_08018470: .4byte gVFXHeaderPtr\n\
-_08018474: .4byte gVFXFnTable\n\
-_08018478:\n\
-	ldr r0, _08018494 @ =gSolidHeaderPtr\n\
-	ldr r0, [r0]\n\
-	bl AllocEntityLast\n\
-	adds r3, r0, #0\n\
-	cmp r3, #0\n\
-	beq _08018522\n\
-	adds r1, r3, #0\n\
-	adds r1, #0x25\n\
-	movs r2, #0\n\
-	movs r0, #0x1e\n\
-	strb r0, [r1]\n\
-	ldr r1, _08018498 @ =gSolidFnTable\n\
-	b _080184B6\n\
-	.align 2, 0\n\
-_08018494: .4byte gSolidHeaderPtr\n\
-_08018498: .4byte gSolidFnTable\n\
-_0801849C:\n\
-	ldr r0, _080184DC @ =gMapItemHeaderPtr\n\
-	ldr r0, [r0]\n\
-	bl AllocEntityFirst\n\
-	adds r3, r0, #0\n\
-	cmp r3, #0\n\
-	beq _08018522\n\
-	adds r1, r3, #0\n\
-	adds r1, #0x25\n\
-	movs r2, #0\n\
-	movs r0, #1\n\
-	strb r0, [r1]\n\
-	ldr r1, _080184E0 @ =gMapItemFnTable\n\
-_080184B6:\n\
-	strb r4, [r3, #9]\n\
-	lsls r0, r4, #2\n\
-	adds r0, r0, r1\n\
-	ldr r0, [r0]\n\
-	ldr r0, [r0]\n\
-	str r0, [r3, #0x14]\n\
-	movs r0, #0\n\
-	strh r2, [r3, #0x20]\n\
-	adds r1, r3, #0\n\
-	adds r1, #0x22\n\
-	strb r0, [r1]\n\
-	ldrb r1, [r3, #0xb]\n\
-	movs r0, #0x10\n\
-	orrs r0, r1\n\
-	strb r0, [r3, #0xb]\n\
-	ldrb r0, [r3, #0x1c]\n\
-	strb r0, [r3, #0x1d]\n\
-	b _08018522\n\
-	.align 2, 0\n\
-_080184DC: .4byte gMapItemHeaderPtr\n\
-_080184E0: .4byte gMapItemFnTable\n\
-_080184E4:\n\
-	ldr r0, _08018518 @ =gElfHeaderPtr\n\
-	ldr r0, [r0]\n\
-	bl AllocEntityFirst\n\
-	adds r3, r0, #0\n\
-	cmp r3, #0\n\
-	beq _08018522\n\
-	adds r1, r3, #0\n\
-	adds r1, #0x25\n\
-	movs r2, #0\n\
-	movs r0, #0x10\n\
-	strb r0, [r1]\n\
-	ldr r1, _0801851C @ =gElfFnTable\n\
-_080184FE:\n\
-	strb r4, [r3, #9]\n\
-	lsls r0, r4, #2\n\
-	adds r0, r0, r1\n\
-	ldr r0, [r0]\n\
-	ldr r0, [r0]\n\
-	str r0, [r3, #0x14]\n\
-	movs r0, #0\n\
-	strh r2, [r3, #0x20]\n\
-	adds r1, r3, #0\n\
-	adds r1, #0x22\n\
-	strb r0, [r1]\n\
-	b _08018522\n\
-	.align 2, 0\n\
-_08018518: .4byte gElfHeaderPtr\n\
-_0801851C: .4byte gElfFnTable\n\
-_08018520:\n\
-	movs r3, #0\n\
-_08018522:\n\
-	adds r0, r3, #0\n\
-	pop {r4}\n\
-	pop {r1}\n\
-	bx r1\n\
- .syntax divided\n");
+struct Entity* CreateStageEntity(u8 kind, u8 id) {
+  struct Entity* p;
+
+  switch (kind) {
+    case ENTITY_PLAYER: {
+      p = (struct Entity*)AllocPlayer();
+      if (p != NULL) {
+        p->taskCol = 16;
+        INIT_PLAYER_ROUTINE((struct Zero*)p, id);
+      }
+      break;
+    }
+
+    case ENTITY_BOSS: {
+      p = AllocEntityFirst(gBossHeaderPtr);
+      if (p != NULL) {
+        p->taskCol = 24;
+        INIT_BOSS_ROUTINE((struct Boss*)p, id);
+        p->tileNum = 0;
+        p->palID = 0;
+        p->flags2 |= WHITE_PAINTABLE;
+        p->invincibleID = p->uniqueID;
+      }
+      break;
+    }
+
+    case ENTITY_ENEMY: {
+      p = AllocEntityFirst(gZakoHeaderPtr);
+      if (p != NULL) {
+        p->taskCol = 24;
+        INIT_ZAKO_ROUTINE((struct Enemy*)p, id);
+        p->tileNum = 0;
+        p->palID = 0;
+        p->flags2 |= WHITE_PAINTABLE;
+        p->invincibleID = p->uniqueID;
+      }
+      break;
+    }
+
+    case ENTITY_PROJECTILE: {
+      p = AllocEntityFirst(gProjectileHeaderPtr);
+      if (p != NULL) {
+        p->taskCol = 8;
+        INIT_PROJECTILE_ROUTINE((struct Projectile*)p, id);
+        p->tileNum = 0;
+        p->palID = 0;
+      }
+      break;
+    }
+
+    case ENTITY_VFX: {
+      p = AllocEntityFirst(gVFXHeaderPtr);
+      if (p != NULL) {
+        p->taskCol = 1;
+        INIT_VFX_ROUTINE((struct VFX*)p, id);
+        p->tileNum = 0;
+        p->palID = 0;
+      }
+      break;
+    }
+
+    case ENTITY_SOLID: {
+      p = AllocEntityLast(gSolidHeaderPtr);
+      if (p != NULL) {
+        p->taskCol = 30;
+        INIT_SOLID_ROUTINE((struct Solid*)p, id);
+        p->tileNum = 0;
+        p->palID = 0;
+        p->flags2 |= WHITE_PAINTABLE;
+        p->invincibleID = p->uniqueID;
+      }
+      break;
+    }
+
+    case ENTITY_ITEM: {
+      p = AllocEntityFirst(gMapItemHeaderPtr);
+      if (p != NULL) {
+        p->taskCol = 1;
+        INIT_ITEM_ROUTINE((struct MapItem*)p, id);
+        p->tileNum = 0;
+        p->palID = 0;
+        p->flags2 |= WHITE_PAINTABLE;
+        p->invincibleID = p->uniqueID;
+      }
+      break;
+    }
+
+    case ENTITY_ELF: {
+      p = AllocEntityFirst(gElfHeaderPtr);
+      if (p != NULL) {
+        p->taskCol = 16;
+        INIT_ELF_ROUTINE((struct Elf*)p, id);
+        p->tileNum = 0;
+        p->palID = 0;
+      }
+      break;
+    }
+
+    case ENTITY_WEAPON:
+    default: {
+      p = NULL;
+      break;
+    }
+  }
+
+  return p;
 }
 
 void DeleteStageEntity(struct CollidableEntity* p) {

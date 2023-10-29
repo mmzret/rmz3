@@ -2,6 +2,8 @@
 #include "global.h"
 #include "overworld.h"
 
+#define STAGE (gOverworld.work.subArcadia)
+
 static void FUN_08014b28(struct Coord* _ UNUSED);
 static void subAracadia_08014b48(struct Coord* _ UNUSED);
 static void nop_08014e78(struct Coord* _ UNUSED);
@@ -15,14 +17,14 @@ static const StageFunc sStageRoutine[4] = {
 };
 
 static void FUN_08014b28(struct Coord* _ UNUSED) {
-  gOverworld.work.raw[0] = 0;
-  gOverworld.work.raw[1] = 0;
+  STAGE.unk_000 = 0;
+  STAGE.unk_001 = 0;
 }
 
 static void subAracadia_08014b48(struct Coord* _ UNUSED) {
-  if ((gOverworld.unk_1c8.tilesets[0] >> 8 == STAGE_SUB_ARCADIA) && ((gOverworld.unk_1c8.tilesets[0] & 0xFF) == 0)) {
-    if ((gOverworld.work.subArcadia.unk_000 & (1 << 0)) == 0) {
-      gOverworld.work.subArcadia.unk_000 |= (1 << 0);
+  if ((gOverworld.tilesets[0] >> 8 == STAGE_SUB_ARCADIA) && ((gOverworld.tilesets[0] & 0xFF) == 0)) {
+    if ((STAGE.unk_000 & (1 << 0)) == 0) {
+      STAGE.unk_000 |= (1 << 0);
       LoadBlink(124, 0);
       LoadBlink(125, 0);
       LoadBlink(126, 0);
@@ -35,8 +37,8 @@ static void subAracadia_08014b48(struct Coord* _ UNUSED) {
     UpdateBlinkMotionState(130);
     UpdateBlinkMotionState(166);
 
-  } else if (gOverworld.work.subArcadia.unk_000 & (1 << 0)) {
-    gOverworld.work.subArcadia.unk_000 ^= (1 << 0);
+  } else if (STAGE.unk_000 & (1 << 0)) {
+    STAGE.unk_000 ^= (1 << 0);
     ClearBlink(124);
     ClearBlink(125);
     ClearBlink(126);
@@ -44,9 +46,9 @@ static void subAracadia_08014b48(struct Coord* _ UNUSED) {
     ClearBlink(166);
   }
 
-  if ((gOverworld.unk_1c8.tilesets[1] >> 8 == STAGE_SUB_ARCADIA) && ((gOverworld.unk_1c8.tilesets[1] & 0xFF) == 1)) {
-    if ((gOverworld.work.subArcadia.unk_000 & (1 << 1)) == 0) {
-      gOverworld.work.subArcadia.unk_000 |= (1 << 1);
+  if ((gOverworld.tilesets[1] >> 8 == STAGE_SUB_ARCADIA) && ((gOverworld.tilesets[1] & 0xFF) == 1)) {
+    if ((STAGE.unk_000 & (1 << 1)) == 0) {
+      STAGE.unk_000 |= (1 << 1);
       LoadBlink(127, 0);
       LoadBlink(128, 0);
       LoadBlink(129, 0);
@@ -55,16 +57,16 @@ static void subAracadia_08014b48(struct Coord* _ UNUSED) {
     UpdateBlinkMotionState(128);
     UpdateBlinkMotionState(129);
 
-  } else if (gOverworld.work.subArcadia.unk_000 & (1 << 1)) {
-    gOverworld.work.subArcadia.unk_000 ^= (1 << 1);
+  } else if (STAGE.unk_000 & (1 << 1)) {
+    STAGE.unk_000 ^= (1 << 1);
     ClearBlink(127);
     ClearBlink(128);
     ClearBlink(129);
   }
 
-  if ((gOverworld.unk_1c8.tilesets[0] >> 8 == STAGE_SUB_ARCADIA) && ((gOverworld.unk_1c8.tilesets[0] & 0xFF) == 2)) {
-    if ((gOverworld.work.subArcadia.unk_000 & (1 << 2)) == 0) {
-      gOverworld.work.subArcadia.unk_000 |= (1 << 2);
+  if ((gOverworld.tilesets[0] >> 8 == STAGE_SUB_ARCADIA) && ((gOverworld.tilesets[0] & 0xFF) == 2)) {
+    if ((STAGE.unk_000 & (1 << 2)) == 0) {
+      STAGE.unk_000 |= (1 << 2);
       LoadBlink(161, 0);
       LoadBlink(162, 0);
       LoadBlink(163, 0);
@@ -77,8 +79,8 @@ static void subAracadia_08014b48(struct Coord* _ UNUSED) {
     UpdateBlinkMotionState(164);
     UpdateBlinkMotionState(165);
 
-  } else if (gOverworld.work.subArcadia.unk_000 & (1 << 2)) {
-    gOverworld.work.subArcadia.unk_000 ^= (1 << 2);
+  } else if (STAGE.unk_000 & (1 << 2)) {
+    STAGE.unk_000 ^= (1 << 2);
     ClearBlink(161);
     ClearBlink(162);
     ClearBlink(163);
@@ -86,9 +88,9 @@ static void subAracadia_08014b48(struct Coord* _ UNUSED) {
     ClearBlink(165);
   }
 
-  if ((gOverworld.unk_1c8.tilesets[1] >> 8 == STAGE_SUB_ARCADIA) && ((gOverworld.unk_1c8.tilesets[1] & 0xFF) == 3)) {
-    if ((gOverworld.work.subArcadia.unk_000 & (1 << 3)) == 0) {
-      gOverworld.work.subArcadia.unk_000 |= (1 << 3);
+  if ((gOverworld.tilesets[1] >> 8 == STAGE_SUB_ARCADIA) && ((gOverworld.tilesets[1] & 0xFF) == 3)) {
+    if ((STAGE.unk_000 & (1 << 3)) == 0) {
+      STAGE.unk_000 |= (1 << 3);
       LoadBlink(154, 0);
       LoadBlink(155, 0);
       LoadBlink(156, 0);
@@ -105,8 +107,8 @@ static void subAracadia_08014b48(struct Coord* _ UNUSED) {
     UpdateBlinkMotionState(159);
     UpdateBlinkMotionState(160);
 
-  } else if (gOverworld.work.subArcadia.unk_000 & (1 << 3)) {
-    gOverworld.work.subArcadia.unk_000 ^= (1 << 3);
+  } else if (STAGE.unk_000 & (1 << 3)) {
+    STAGE.unk_000 ^= (1 << 3);
     ClearBlink(154);
     ClearBlink(155);
     ClearBlink(156);
@@ -116,18 +118,18 @@ static void subAracadia_08014b48(struct Coord* _ UNUSED) {
     ClearBlink(160);
   }
 
-  if (gOverworld.work.subArcadia.unk_001 == 0) {
+  if (STAGE.unk_001 == 0) {
     if (FLAG(gCurStory.s.gameflags, IN_CYBERSPACE)) {
-      gOverworld.work.subArcadia.unk_001 = 1;
+      STAGE.unk_001 = 1;
       LoadScreenIntoMetatileMap(1, 6, 78);
     }
-    if (gOverworld.work.subArcadia.unk_001 == 0) {
+    if (STAGE.unk_001 == 0) {
       return;
     }
   }
 
   if (!FLAG(gCurStory.s.gameflags, IN_CYBERSPACE)) {
-    gOverworld.work.subArcadia.unk_001 = 1;
+    STAGE.unk_001 = 1;
     LoadScreenIntoMetatileMap(1, 6, 23);
   }
 }
@@ -191,13 +193,13 @@ INCASM("asm/stage_gfx/sub_arcadia.inc");
 
 // ------------------------------------------------------------------------------------------------------------------------------------
 
-extern const struct ScreenLayout sScreenMap1;
+extern const struct ScreenMap sScreenMap1;
 INCBIN_STATIC(sScreenMap1, "data/stage/sub_arcadia/layer1.bin");  // ./tools/dumper/bin.ts ./baserom.gba 0x08345904 0x08345bc8 ./data/stage/sub_arcadia/layer1.bin
 
-extern const struct ScreenLayout sScreenMap2;
+extern const struct ScreenMap sScreenMap2;
 INCBIN_STATIC(sScreenMap2, "data/stage/sub_arcadia/layer2.bin");  // ./tools/dumper/bin.ts ./baserom.gba 0x08345bc8 0x08345e8c ./data/stage/sub_arcadia/layer2.bin
 
-extern const struct ScreenLayout sScreenMap3;
+extern const struct ScreenMap sScreenMap3;
 INCBIN_STATIC(sScreenMap3, "data/stage/sub_arcadia/layer3.bin");  // ./tools/dumper/bin.ts ./baserom.gba 0x08345e8c 0x08346150 ./data/stage/sub_arcadia/layer3.bin
 
 extern const tileset_ofs_t sTilesetOffset[];
@@ -221,3 +223,5 @@ const struct Stage gSubArcadiaLandscape = {
   behavior : sScreenBehavior,
   unk_78 : {0x0, 0x0},
 };
+
+#undef STAGE

@@ -1,7 +1,6 @@
 #include "collision.h"
-#include "entity.h"
 #include "global.h"
-#include "overworld.h"
+#include "physics.h"
 #include "solid.h"
 
 static const struct Collision sCollision;

@@ -107,13 +107,13 @@ static const StageLayerRoutine sLayerRoutine[6] = {
 
 INCASM("asm/stage_gfx/twilight_desert.inc");
 
-extern const struct ScreenLayout sScreenMap1;
+extern const struct ScreenMap sScreenMap1;
 INCBIN_STATIC(sScreenMap1, "data/stage/twilight_desert/layer1.bin");  // ./tools/dumper/bin.ts ./baserom.gba 0x0833ee94 0x0833f018 ./data/stage/twilight_desert/layer1.bin
 
-extern const struct ScreenLayout sScreenMap2;
+extern const struct ScreenMap sScreenMap2;
 INCBIN_STATIC(sScreenMap2, "data/stage/twilight_desert/layer2.bin");  // ./tools/dumper/bin.ts ./baserom.gba 0x0833f018 0x0833f19c ./data/stage/twilight_desert/layer2.bin
 
-extern const struct ScreenLayout sScreenMap3;
+extern const struct ScreenMap sScreenMap3;
 INCBIN_STATIC(sScreenMap3, "data/stage/twilight_desert/layer3.bin");  // ./tools/dumper/bin.ts ./baserom.gba 0x0833f19c 0x0833f320 ./data/stage/twilight_desert/layer3.bin
 
 extern const tileset_ofs_t sTilesetOffset[];

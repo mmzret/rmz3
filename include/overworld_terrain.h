@@ -4,6 +4,7 @@
 #include "boss.h"
 #include "gfx.h"
 #include "global.h"
+#include "metatile.h"
 #include "solid.h"
 
 #define USE_BG1 0x12
@@ -16,14 +17,11 @@ enum LayerRoutine {
   LAYER_EXIT,
 };
 
-#define HAZARD_LENGTH (gOverworld.unk_1c8.hazardLength)
-#define HAZARD(n) (&gOverworld.unk_1c8.hazards[n])
+#define HAZARD_LENGTH (gOverworld.hazard.len)
+#define HAZARD(n) (&gOverworld.hazard.data[n])
 
 // マップデータ(2KB単位)を置くブロック -> 0x0600_0000 + (0x800)*n
 #define BGMAP_BLOCK(n) (n << 8)
-
-// 8x8タイルが2x2枚集まった論理タイル(16x16px)
-typedef u16 Metatile[4];
 
 typedef void (*StageFunc)(struct Coord *);
 
@@ -38,11 +36,15 @@ typedef metatile_id_t Screen[15 * 10];
 /*
   MetatileのTileMapである、Overworld.map(0x020029e4)に Screen をどう配置するかのデータ
 */
-struct ScreenLayout {
+struct ScreenMap {
+  // Layout
   u8 realWidth;
   u8 skip;    // そのステージでのSKIP値を格納する
   u8 width;   // ステージの横幅が画面何枚分か
   u8 height;  // ステージの縦幅が画面何枚分か
+
+  // ここからスクリーンマップデータ
+  // u8 data[height][realWidth];
 };
 
 /*
@@ -60,7 +62,7 @@ struct Stage {
   u32 id;  // ステージID
   const StageFunc *fn;
   const struct TerrainHeader *terrainHdr;
-  const struct ScreenLayout *maps[3];
+  const struct ScreenMap *maps[3];
   u32 bgIdx[3];
   u32 prio[3];  // BG Priority for layer
   u32 screenBase[3];
@@ -72,40 +74,25 @@ struct Stage {
   struct Coord unk_78;  // Overworld.unk_2c004
 };
 
-struct MetatileShift {
-  s16 x;      // メタタイル単位
-  s16 y;      // メタタイル単位
-  s16 block;  // 動かすメタタイルの数
-  s16 row;
-};
-
-// e.g. 0833ccf0
-struct MetatilePatch {
-  u16 w;  // パッチの横のメタタイル数
-  u16 h;  // パッチの縦のメタタイル数
-
-  /*
-    この後に
-    metatile_id_t patchs[w*h];
-    が続いている
-  */
-};
-
 // StageLayer構造体のうち、純粋なグラフィック部分に関係するもの
 struct LayerGraphic {
   struct Coord c;
   u16 bgofs[2];        // BGOFS(x, y) 参照: 08006dac
   Metatile *tiledata;  // 02002240, 020022c8, e.g. 086f9fec
   Screen *screens;
-  const struct ScreenLayout *map;
+  const struct ScreenMap *map;
 };  // 24 bytes
 
-// ステージ中のBG(BG1 or BG2 or BG3)の挙動
+/*
+  ステージを構成するレイヤ3枚(BG1~3)の挙動
+    レイヤ0: 地形データ
+    レイヤ1: 水面や草など
+    レイヤ2: 雲などの背景
+  レイヤ0 = BG1, レイヤ1 = BG2, レイヤ2 = BG3 とは限らないことに注意
+*/
 struct StageLayer {
   StageLayerRoutine fn;
-
-  // 0: BG1, 1: BG2, 2: BG3
-  u16 n;
+  u16 n;  // レイヤ番号(0..2)
 
   u8 phase;  // StageLayerの状態を表す
   u8 unk_0f;
@@ -152,8 +139,8 @@ struct Terrain {
   metatile_attr_t *attrs;
   Metatile *tiles;
   Screen *screens;
-  const struct ScreenLayout *map;
-};  // 16 bytes
+  const struct ScreenMap *map;  // レイヤ0(地形データ)のScreenMap
+};                              // 16 bytes
 
 // ゼロが通り抜けできないもの
 struct Hazard {
@@ -165,58 +152,32 @@ struct Hazard {
   struct Coord unk_10;
 };  // 24 bytes
 
+// Metatileのマップデータ
 struct MetatileMap {
-  u32 width : 16;
-  u32 pad : 16;
-  metatile_id_t map[89102];
+  u16 width;  // (layout->width * 15) -> ステージ全体の横幅(メタタイル単位)
+  u16 _;
+
+  /*
+    0..width:           MetaCoord is 0 (y= 0px)
+    width..width*2:     MetaCoord is 1 (y=16px)
+    width*2..width*3:   MetaCoord is 2 (y=32px)
+    ...
+    width*10..width*11: MetaCoord is 10 (y=160px)
+    ...
+
+    so, map is metatile_id_t map[89100/width][width]
+  */
+  metatile_id_t map[89100];
+  u32 unused;
 };
 
-struct Overworld_1c8 {
-  struct Coord viewport;  // 現在写っているの画面中央の座標
-  u16 id;                 // ステージID (Bit7(0x80)は、initRBaseとかの初期化関数が実行されていないことを示す)
-
-  // Hazard ゼロが通り抜けできないもの
-  u8 hazardLength;
-  u8 hazardActive;
-  struct Hazard hazards[32];
-  struct Hazard nextBlockings[32];
-  // Hazard
-
-  tileset_t tilesets[2];
-  u16 enabledBg;  // DISPCNTの bit8..11 つまり BGn有効フラグ
-  struct BgCnt savedBgCnt[3];
-
-  /*
-    Metatileのマップデータ
-    u16 width (現在のステージのピクセル単位の長さ)
-    u16 pad
-    u16 map[89102]
-  */
-  metatile_id_t tilemap[2 + 89102];  // =MetatileMap
-  u16 unk_2c000;
-  u16 unk_2c002;
-  struct Coord unk_2c004;
-  s32 sea;  // 海面のY座標
-  s32 unk_2c010;
-
-  /*
-      見えない壁(左 -> 上 -> 右 -> 下)
-      0だと存在しない
-      例:
-        左: レジスタンスベースの4階左
-        右: レジスタンスベースの1階の港
-  */
-  s32 disableArea[4];
-  u16 bgmap[2048];  // bit10セットでX反転するので実際のマップデータと同じなのは確認済み
-
-  /*
-    汎用データ領域
-      壊れた宇宙船
-        0:    雪を降らすか
-        1..3: ???
-  */
-  u8 work[4];
+struct ALIGNED(2) PACKED HazardManager {
+  u8 len;
+  u8 prevLen;
+  struct ALIGNED(4) Hazard data[32];
+  struct Hazard prev[32];
 };
+static_assert(sizeof(struct HazardManager) == ((sizeof(struct Hazard) * 64) + 2));
 
 // gOverworld, ステージの動的な地形情報
 struct Overworld {
@@ -225,7 +186,41 @@ struct Overworld {
   u8 unk_0c[20];
   struct StageLayer layer[3];  // 背景レイヤ BG1,2,3の挙動 (BG0は入ってない)
   struct Terrain terrain;      // 現在のステージの地形データ
-  struct Overworld_1c8 unk_1c8;
+  struct Coord viewport;       // 現在写っているの画面中央の座標
+  u16 id;                      // ステージID (Bit7(0x80)は、initRBaseとかの初期化関数が実行されていないことを示す)
+  struct HazardManager PACKED hazard;
+  tileset_t tilesets[2];
+
+  u16 enabledBg;  // DISPCNTの bit8..11 つまり BGn有効フラグ
+  struct BgCnt savedBgCnt[3];
+
+  struct MetatileMap tilemap;
+
+  bool16 unk_2c000;
+  bool16 unk_2c002;
+
+  struct Coord unk_2c004;  // Stage.unk_78
+
+  s32 sea;  // 海面のY座標
+  s32 unused_2c010;
+
+  /*
+    見えない壁(左 -> 上 -> 右 -> 下) = ステージ(世界)の範囲
+    例:
+      左: レジスタンスベースの4階左
+      右: レジスタンスベースの1階の港
+*/
+  struct Area32 range;
+  u16 bgmap[2048];  // bit10セットでX反転するので実際のマップデータと同じなのは確認済み
+
+  /*
+    汎用データ領域
+      壊れた宇宙船
+        0:    雪を降らすか
+        1..3: ???
+  */
+  u8 state[4];
+
   // ステージごとに用途が変わる
   union {
     u8 raw[264];
@@ -271,7 +266,7 @@ struct Overworld {
       u16 unk_010;
       u16 unk_012;
       u8 unk_014[244];
-    } oldLifeSpace;
+    } oldResidential;
     struct {
       u8 unk_000;
       u8 unk_001;
@@ -379,7 +374,7 @@ struct Overworld {
   } work;  // ステージごとに用途が変わる
 };         // 184360 bytes
 
-#define SEA (gOverworld.unk_1c8.sea)
+#define SEA (gOverworld.sea)
 
 extern struct Overworld gOverworld;
 extern const u8 gScreenY[2048];
@@ -411,32 +406,28 @@ void DrawOverworld(struct TaskManager *p);
 void SaveDispRegister(void);
 void RestoreBackground(void);
 void ExitStageLandscape(void);
-metatile_attr_t GetMetatileAttr(s32 x, s32 y);
 bool8 IsVoidSpace(s32 x, s32 y);
 void FUN_08008eb8(s32 x, s32 y, struct Coord *c);
 void CalcCameraDelta(struct Coord *c1, struct Coord *c2);
-void ShiftMetatile(s32 x, s32 y, const struct MetatileShift *s);
-void PatchMetatileMap(u32 x, u32 y, struct MetatilePatch *p);
 void LoadScreenIntoMetatileMap(s32 screenX, s32 screenY, u16 screenID);
 void ResetStageLayer(s32 n, const struct Stage *p);
 void DrawGeneralStageLayer(struct StageLayer *p, const struct Stage *_);
 u8 FUN_080094f0(s32 x, s32 y);
 const struct Stage *UpdateStageTileset(struct Coord *c);
 void UpdateStageLayer(struct StageLayer *p, const struct Stage *s, struct Coord *c);
-s32 PushoutToDown2(s32 x, s32 y);
 metatile_attr_t FUN_080098a4(s32 x, s32 y);
 void AppendHazard(u16 id, u16 attr, const struct Coord *c, const struct Rect *size);
 metatile_attr_t GetGroundMetatileAttr(s32 x, s32 y);
-s32 PushoutToUp2(s32 x, s32 y);
 
 void UpdateBGOFS(struct LayerGraphic *p, struct BgOfs *bgofs);
-void ResetTerrain(struct Terrain *terrain, metatile_attr_t *attr, Metatile *tiles, Screen *m, const struct ScreenLayout *map);
+void ResetTerrain(struct Terrain *terrain, metatile_attr_t *attr, Metatile *tiles, Screen *m, const struct ScreenMap *map);
 void FUN_08006bb4(struct LayerGraphic *l, struct Coord *c, u32 *bgmap, struct MetatileMap *mm);
-void FUN_08006a10(struct LayerGraphic *r0, struct Coord *c, u16 *map, metatile_id_t *bm);
+void FUN_08006a10(struct LayerGraphic *l, struct Coord *c, u32 *bgmap, struct MetatileMap *mm);
+void FUN_08006ae0(struct LayerGraphic *l, struct Coord *c, u32 *bgmap, struct MetatileMap *mm);
 void FUN_080050b0(struct LayerGraphic *l, struct Coord *c, u32 mapAddr);
 void FUN_08005a70(struct LayerGraphic *l, struct Coord *c, u32 mapAddr);
 
-void ResetLayerGraphic(struct LayerGraphic *p, struct Coord *c, u16 *_, Metatile *tiledata, Screen *screens, const struct ScreenLayout *map);
+void ResetLayerGraphic(struct LayerGraphic *p, struct Coord *c, u16 *_, Metatile *tiledata, Screen *screens, const struct ScreenMap *map);
 
 /**
  * @brief (x, y)がgStageのBlocking領域に含まれるかどうか

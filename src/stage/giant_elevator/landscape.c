@@ -18,8 +18,8 @@ static const StageFunc sStageRoutine[4] = {
 };
 
 static void initGiantElevator(struct Coord* _ UNUSED) {
-  gOverworld.unk_1c8.work[0] = 0;
-  gOverworld.unk_1c8.work[1] = 0;
+  gOverworld.state[0] = 0;
+  gOverworld.state[1] = 0;
   gOverworld.work.giantElevator.unk_000[0] = 0;
   gOverworld.work.giantElevator.unk_004 = 0;
   gOverworld.work.giantElevator.unk_006 = 0;
@@ -60,15 +60,15 @@ static void gelevator_08013e88(struct Coord* _ UNUSED) {
       gOverworld.work.giantElevator.unk_006 = 0;
     }
     UpdateBlinkMotionState(217);
-    if (gOverworld.unk_1c8.work[0] >= 11) {
+    if (gOverworld.state[0] >= 11) {
       if (gOverworld.work.giantElevator.unk_004 != 0) {
         gOverworld.work.giantElevator.unk_004 -= 2;
       }
-    } else if (gOverworld.unk_1c8.work[0] > 1) {
+    } else if (gOverworld.state[0] > 1) {
       if (gOverworld.work.giantElevator.unk_004 < 256) {
         gOverworld.work.giantElevator.unk_004 += 2;
-      } else if (gOverworld.unk_1c8.work[0] == 2) {
-        gOverworld.unk_1c8.work[0]++;
+      } else if (gOverworld.state[0] == 2) {
+        gOverworld.state[0]++;
       }
     }
     gOverworld.work.giantElevator.unk_006 += gOverworld.work.giantElevator.unk_004;
@@ -164,13 +164,13 @@ INCASM("asm/stage_gfx/giant_elevator.inc");
 
 // ------------------------------------------------------------------------------------------------------------------------------------
 
-extern const struct ScreenLayout sScreenMap1;
+extern const struct ScreenMap sScreenMap1;
 INCBIN_STATIC(sScreenMap1, "data/stage/giant_elevator/layer1.bin");  // ./tools/dumper/bin.ts ./baserom.gba 0x0834479c 0x08344a60 ./data/stage/giant_elevator/layer1.bin
 
-extern const struct ScreenLayout sScreenMap2;
+extern const struct ScreenMap sScreenMap2;
 INCBIN_STATIC(sScreenMap2, "data/stage/giant_elevator/layer2.bin");  // ./tools/dumper/bin.ts ./baserom.gba 0x08344a60 0x08344d24 ./data/stage/giant_elevator/layer2.bin
 
-extern const struct ScreenLayout sScreenMap3;
+extern const struct ScreenMap sScreenMap3;
 INCBIN_STATIC(sScreenMap3, "data/stage/giant_elevator/layer3.bin");  // ./tools/dumper/bin.ts ./baserom.gba 0x08344d24 0x08344fe8 ./data/stage/giant_elevator/layer3.bin
 
 extern const tileset_ofs_t sTilesetOffset[];

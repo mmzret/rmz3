@@ -6,12 +6,12 @@
 static const u8 u8_ARRAY_0833b200[6];
 
 static void initSpaceCraft(struct Coord* _ UNUSED) {
-  gOverworld.unk_1c8.work[0] = 0;
-  gOverworld.unk_1c8.work[2] = 0;
+  gOverworld.state[0] = 0;
+  gOverworld.state[2] = 0;
   gOverworld.work.spacecraft.omega = NULL;
   gOverworld.work.spacecraft.omegaCoord.x = PIXEL(4080);
   gOverworld.work.spacecraft.omegaCoord.y = PIXEL(288);
-  gOverworld.unk_1c8.work[1] = 0;
+  gOverworld.state[1] = 0;
   gOverworld.work.spacecraft.unk_00e = 0;
   if (!IS_MISSION) {
     LoadScreenIntoMetatileMap(16, 1, 48);
@@ -19,7 +19,7 @@ static void initSpaceCraft(struct Coord* _ UNUSED) {
 }
 
 static void updateSpaceCraft(struct Coord* _ UNUSED) {
-  if ((gOverworld.unk_1c8.tilesets[0] >> 8 == STAGE_SPACE_CRAFT) && ((gOverworld.unk_1c8.tilesets[0] & 0xFF) == 0)) {
+  if ((TILESET_ID(0) == STAGE_SPACE_CRAFT) && (TILESET_IDX(0) == 0)) {
     if ((gOverworld.work.spacecraft.unk_00e & (1 << 0)) == 0) {
       gOverworld.work.spacecraft.unk_00e |= 1;
       LoadBlink(5, 0);
@@ -30,7 +30,7 @@ static void updateSpaceCraft(struct Coord* _ UNUSED) {
     ClearBlink(5);
   }
 
-  if ((gOverworld.unk_1c8.tilesets[1] >> 8 == STAGE_SPACE_CRAFT) && ((gOverworld.unk_1c8.tilesets[1] & 0xFF) == 2)) {
+  if ((TILESET_ID(1) == STAGE_SPACE_CRAFT) && (TILESET_IDX(1) == 2)) {
     if ((gOverworld.work.spacecraft.unk_00e & (1 << 1)) == 0) {
       gOverworld.work.spacecraft.unk_00e |= (1 << 1);
       LoadBlink(9, 0);
@@ -41,7 +41,7 @@ static void updateSpaceCraft(struct Coord* _ UNUSED) {
     ClearBlink(9);
   }
 
-  if ((gOverworld.unk_1c8.tilesets[0] >> 8 == STAGE_SPACE_CRAFT) && ((gOverworld.unk_1c8.tilesets[0] & 0xFF) == 3)) {
+  if ((TILESET_ID(0) == STAGE_SPACE_CRAFT) && (TILESET_IDX(0) == 3)) {
     if ((gOverworld.work.spacecraft.unk_00e & (1 << 2)) == 0) {
       gOverworld.work.spacecraft.unk_00e |= (1 << 2);
       LoadBlink(6, 0);
@@ -55,7 +55,7 @@ static void updateSpaceCraft(struct Coord* _ UNUSED) {
     ClearBlink(8);
   }
 
-  if ((gOverworld.unk_1c8.tilesets[1] >> 8 == STAGE_SPACE_CRAFT) && ((gOverworld.unk_1c8.tilesets[1] & 0xFF) == 4)) {
+  if ((TILESET_ID(1) == STAGE_SPACE_CRAFT) && (TILESET_IDX(1) == 4)) {
     if ((gOverworld.work.spacecraft.unk_00e & (1 << 3)) == 0) {
       gOverworld.work.spacecraft.unk_00e |= (1 << 3);
       LoadBlink(7, 0);
@@ -744,13 +744,13 @@ WIP static void LayerDraw_FixOmegaWhiteCoord(struct StageLayer* l, const struct 
   struct Boss* omega;
 
   dispcnt = l->bgIdx;
-  if (gOverworld.unk_1c8.work[1] != 0) {
+  if (gOverworld.state[1] != 0) {
     gVideoRegBuffer.dispcnt |= (dispcnt << 8);
   } else {
     gVideoRegBuffer.dispcnt &= ~(dispcnt << 8);
   }
   n = dispcnt >> 4;
-  if (gOverworld.unk_1c8.unk_2c002 != 0) {
+  if (gOverworld.unk_2c002) {
     vu32 _;
     CpuFastCopy(BGMAP(42), (void*)(VRAM + SCREEN_BASE_16(n)), 2048);
     CpuFastFill(0, (void*)(VRAM + 0x800 + SCREEN_BASE_16(n)), 2048);
@@ -783,7 +783,7 @@ static void LayerUpdate_SnowFall(struct StageLayer* l, const struct Stage* _ UNU
   u16 eva;
   const u16 n = l->bgIdx;
 
-  // 初期化時, gOverworld.unk_1c8.work[0] が
+  // 初期化時, gOverworld.state[0] が
   //   0 : 雪を降らせる(BG2を透明にしない)
   //   1 : 雪を降らせない(BG2を透明にする)
   if (l->phase == 0) {
@@ -791,7 +791,7 @@ static void LayerUpdate_SnowFall(struct StageLayer* l, const struct Stage* _ UNU
     *(u32*)gVideoRegBuffer.bgofs[n >> 4] = 0;
     RequestBgMapTransfer(BGMAP(41), (void*)SCREEN_BASE_16(n >> 4), 2048);
     gBlendRegBuffer.bldclt = ((BLDCNT_TGT1_BG2) | (BLDCNT_TGT2_BD | BLDCNT_TGT2_OBJ | BLDCNT_TGT2_BG3 | BLDCNT_TGT2_BG1 | BLDCNT_TGT2_BG0)) | BLDCNT_EFFECT_BLEND;
-    if (gOverworld.unk_1c8.work[0] == 0) {
+    if (gOverworld.state[0] == 0) {
       gBlendRegBuffer.bldalpha = BLDALPHA_BLEND(16, 16);
     } else {
       gBlendRegBuffer.bldalpha = BLDALPHA_BLEND(0, 16);
@@ -801,8 +801,8 @@ static void LayerUpdate_SnowFall(struct StageLayer* l, const struct Stage* _ UNU
     l->phase++;
   }
 
-  // gOverworld.unk_1c8.work[0] が 1 のときに、雪が降っている(BG2が完全に透明でない)ときは、徐々に透明にしていく
-  if ((gOverworld.unk_1c8.work[0] != 0) && ((l->unk_10 & 0x1F) == 0) && (eva = (gBlendRegBuffer.bldalpha & 0x1F), eva != 0)) {
+  // gOverworld.state[0] が 1 のときに、雪が降っている(BG2が完全に透明でない)ときは、徐々に透明にしていく
+  if ((gOverworld.state[0] != 0) && ((l->unk_10 & 0x1F) == 0) && (eva = (gBlendRegBuffer.bldalpha & 0x1F), eva != 0)) {
     gBlendRegBuffer.bldalpha = BLDALPHA_BLEND(((eva - 1) & 0x1F), 16);
   }
 
@@ -830,7 +830,7 @@ static void LayerExit_DisableBlend(struct StageLayer* l UNUSED, const struct Sta
 static void LayerUpdate_SpaceCraft_5(struct StageLayer* l, const struct Stage* _ UNUSED) {
   switch (l->phase) {
     case 0: {
-      if (gOverworld.unk_1c8.work[2] == 0) {
+      if (gOverworld.state[2] == 0) {
         return;
       }
       LoadScreenIntoMetatileMap(16, 1, 52);
@@ -838,7 +838,7 @@ static void LayerUpdate_SpaceCraft_5(struct StageLayer* l, const struct Stage* _
       FALLTHROUGH;
     }
     case 1: {
-      if (gOverworld.unk_1c8.work[2] == 1) {
+      if (gOverworld.state[2] == 1) {
         return;
       }
       LoadScreenIntoMetatileMap(16, 1, 53);
@@ -846,7 +846,7 @@ static void LayerUpdate_SpaceCraft_5(struct StageLayer* l, const struct Stage* _
       FALLTHROUGH;
     }
     case 2: {
-      if (gOverworld.unk_1c8.work[2] == 2) {
+      if (gOverworld.state[2] == 2) {
         return;
       }
       LoadScreenIntoMetatileMap(16, 1, 54);
@@ -854,7 +854,7 @@ static void LayerUpdate_SpaceCraft_5(struct StageLayer* l, const struct Stage* _
       FALLTHROUGH;
     }
     case 3: {
-      if (gOverworld.unk_1c8.work[2] == 3) {
+      if (gOverworld.state[2] == 3) {
         return;
       }
       LoadScreenIntoMetatileMap(16, 1, 48);
@@ -871,7 +871,7 @@ WIP bool16 FUN_0800bd38(s32 x, s32 y) {
 #if MODERN
   s16 mx = METACOORD(x) - 1;
   s16 my = METACOORD(y) - 1;
-  struct MetatileMap* tm = (struct MetatileMap*)gOverworld.unk_1c8.tilemap;
+  struct MetatileMap* tm = &gOverworld.tilemap;
   metatile_id_t a = tm->map[my * tm->width + mx];
   metatile_id_t b = tm->map[my * tm->width + mx + 120];
   return ((u32)(-(a ^ b) | (a ^ b))) >> 31;

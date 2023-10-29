@@ -31,18 +31,18 @@ const VFXRoutine gMissionAlertRoutine = {
 // ------------------------------------------------------------------------------------------------------------------------------------
 
 struct VFX* CreateMissionAlert(u8 kind) {
-  struct VFX* g = (struct VFX*)AllocEntityFirst(gVFXHeaderPtr);
-  if (g != NULL) {
-    (g->s).taskCol = 1;
-    INIT_VFX_ROUTINE(g, VFX_MISSION_ALERT);
-    (g->s).tileNum = 0;
-    (g->s).palID = 0;
-    (g->s).work[0] = kind;
-    (g->s).work[1] = 0;
+  struct VFX* vfx = (struct VFX*)AllocEntityFirst(gVFXHeaderPtr);
+  if (vfx != NULL) {
+    (vfx->s).taskCol = 1;
+    INIT_VFX_ROUTINE(vfx, VFX_MISSION_ALERT);
+    (vfx->s).tileNum = 0;
+    (vfx->s).palID = 0;
+    (vfx->s).work[0] = kind;
+    (vfx->s).work[1] = 0;
   } else {
     return NULL;
   }
-  return g;
+  return vfx;
 }
 
 // --------------------------------------------
@@ -235,7 +235,7 @@ _080B5938:\n\
 	mov r2, r8\n\
 	ldrb r0, [r2, #0x10]\n\
 	lsls r0, r0, #8\n\
-	ldr r1, _080B5964 @ =0x0836DCC0\n\
+	ldr r1, _080B5964 @ =u16_ARRAY_ARRAY_0836dcc0\n\
 	adds r0, r0, r1\n\
 	movs r2, #0x80\n\
 	lsls r2, r2, #2\n\
@@ -255,7 +255,7 @@ _080B5958:\n\
 	beq _080B5972\n\
 	b _080B5A98\n\
 	.align 2, 0\n\
-_080B5964: .4byte 0x0836DCC0\n\
+_080B5964: .4byte u16_ARRAY_ARRAY_0836dcc0\n\
 _080B5968:\n\
 	cmp r4, #2\n\
 	beq _080B59E2\n\
@@ -437,20 +437,20 @@ _080B5ABC: .4byte gVideoRegBuffer+12\n\
 
 static void TaskCB_Unk080b5b90(struct Sprite* p, struct DrawPivot* _ UNUSED);
 
-static void initWarning(struct VFX* p) {
-  SetTaskCallback((struct Task*)&(p->s).spr, TaskCB_Unk080b5b90);
-  (p->s).spr.sprites = (struct MetaspriteHeader*)p;
-  (p->s).flags &= ~OAM_PRIO;
-  (p->s).flags |= DISPLAY;
-  (p->s).flags |= FLIPABLE;
-  (p->s).work[2] = 0;
-  (p->s).d.y = 0;
-  SET_VFX_ROUTINE(p, ENTITY_UPDATE);
-  (p->s).mode[2] = 0;
-  MissionAlert_Update(p);
+static void initWarning(struct VFX* vfx) {
+  SetTaskCallback((struct Task*)&(vfx->s).spr, TaskCB_Unk080b5b90);
+  (vfx->s).spr.sprites = (struct MetaspriteHeader*)vfx;
+  (vfx->s).flags &= ~OAM_PRIO;
+  (vfx->s).flags |= DISPLAY;
+  (vfx->s).flags |= FLIPABLE;
+  (vfx->s).work[2] = 0;
+  (vfx->s).d.y = 0;
+  SET_VFX_ROUTINE(vfx, ENTITY_UPDATE);
+  (vfx->s).mode[2] = 0;
+  MissionAlert_Update(vfx);
 }
 
-NAKED static void updateWarning(struct VFX* p) {
+NAKED static void updateWarning(struct VFX* vfx) {
   asm(".syntax unified\n\
 	push {lr}\n\
 	adds r2, r0, #0\n\

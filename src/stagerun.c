@@ -174,15 +174,15 @@ WIP bool32 OverworldUpdate(bool8 paused) {
 
   // Update hazards
   {
-    u32 fastcopysize = (gOverworld.unk_1c8.hazardLength * sizeof(struct Hazard)) & ~(0x1F);
-    CpuFastCopy(gOverworld.unk_1c8.hazards, gOverworld.unk_1c8.nextBlockings, fastcopysize);
+    u32 fastcopysize = (HAZARD_LENGTH * sizeof(struct Hazard)) & ~(0x1F);
+    CpuFastCopy(gOverworld.hazard.data, gOverworld.hazard.prev, fastcopysize);
 
-    u32 copysize = (gOverworld.unk_1c8.hazardLength * sizeof(struct Hazard)) & 0x1F;
+    u32 copysize = (HAZARD_LENGTH * sizeof(struct Hazard)) & 0x1F;
     if (copysize > 0) {
-      CpuCopy32((void*)gOverworld.unk_1c8.hazards + fastcopysize, (void*)gOverworld.unk_1c8.nextBlockings + fastcopysize, copysize);
+      CpuCopy32((void*)gOverworld.hazard.data + fastcopysize, (void*)gOverworld.hazard.prev + fastcopysize, copysize);
     }
-    gOverworld.unk_1c8.hazardActive = gOverworld.unk_1c8.hazardLength;
-    gOverworld.unk_1c8.hazardLength = 0;
+    gOverworld.hazard.prevLen = HAZARD_LENGTH;
+    HAZARD_LENGTH = 0;
   }
 
   if (gStageRun.vm.camera.mode != 0) {

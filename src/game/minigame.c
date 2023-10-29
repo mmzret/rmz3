@@ -49,7 +49,7 @@ static void MinigameLoop_InitMinigame(struct GameState *g) {
   ResetTaskManager(&g->taskManager);
   SetTaskPivot(&g->taskManager, pivot);
   ResetCollisionManager();
-  resetData_08016db4();
+  ResetEntityEnvironment();
   RNG_0202f388 = (g->save).stageID;
   s32_0202f334 = -1;
   PTR_0202f384 = &g->unk_1ed8;

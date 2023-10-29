@@ -10,8 +10,8 @@ WIP metatile_attr_t FUN_080098a4(s32 x, s32 y) {
   const s32 mx = METACOORD(x);
   const s32 my = METACOORD(y);
   if ((mx < 0x771) && (my < 0x4F6)) {
-    u16* tm = gOverworld.unk_1c8.tilemap;
-    metatile_attr_t attr = gOverworld.terrain.attrs[tm[my * tm[0] + mx + 2]];
+    struct MetatileMap* tm = &gOverworld.tilemap;
+    metatile_attr_t attr = gOverworld.terrain.attrs[tm->map[(my * tm->width) + mx]];
     if ((gShapeCheckerUp[attr & 0xF])(x & 0xFFF, y & 0xFFF) == 0) {
       return GetHazardMetatileAttr(x, y);
     }
@@ -28,8 +28,8 @@ WIP metatile_attr_t GetGroundMetatileAttr(s32 x, s32 y) {
 #if MODERN
   const s32 mx = METACOORD(x);
   const s32 my = METACOORD(y);
-  u16* tm = gOverworld.unk_1c8.tilemap;
-  metatile_attr_t attr = gOverworld.terrain.attrs[tm[my * tm[0] + mx + 2]];
+  struct MetatileMap* tm = &gOverworld.tilemap;
+  metatile_attr_t attr = gOverworld.terrain.attrs[tm->map[(my * tm->width) + mx]];
   if ((attr & 0x0F) == 0) {
     return 0;
   }
@@ -52,7 +52,7 @@ WIP s32 PushoutToUp1(s32 x, s32 y) {
   s32 newY;
   s32 i = 0;
   s32 Y = y;
-  struct MetatileMap* tm = (struct MetatileMap*)gOverworld.unk_1c8.tilemap;
+  struct MetatileMap* tm = &gOverworld.tilemap;
   while (TRUE) {
     metatile_attr_t attr = gOverworld.terrain.attrs[tm->map[METACOORD(Y) * tm->width + METACOORD(x)]];
     u32 shape = attr & 0xF;
@@ -93,7 +93,7 @@ NON_MATCH s32 PushoutToUp2(s32 x, s32 y) {
   s32 newY;
   s32 i = 0;
   s32 Y = y;
-  struct MetatileMap* tm = (struct MetatileMap*)gOverworld.unk_1c8.tilemap;
+  struct MetatileMap* tm = &gOverworld.tilemap;
   while (TRUE) {
     metatile_attr_t attr = gOverworld.terrain.attrs[tm->map[METACOORD(Y) * tm->width + METACOORD(x)]];
     u32 shape = attr & 0xF;
@@ -134,7 +134,7 @@ WIP s32 PushoutToDown1(s32 x, s32 y) {
   s32 newY;
   s32 i = 0;
   s32 Y = y;
-  struct MetatileMap* tm = (struct MetatileMap*)gOverworld.unk_1c8.tilemap;
+  struct MetatileMap* tm = &gOverworld.tilemap;
   while (TRUE) {
     metatile_attr_t attr = gOverworld.terrain.attrs[tm->map[METACOORD(Y) * tm->width + METACOORD(x)]];
     u32 shape = attr & 0xF;
@@ -172,7 +172,7 @@ WIP s32 PushoutToDown2(s32 x, s32 y) {
   s32 newY;
   s32 i = 0;
   s32 Y = y;
-  struct MetatileMap* tm = (struct MetatileMap*)gOverworld.unk_1c8.tilemap;
+  struct MetatileMap* tm = &gOverworld.tilemap;
   while (TRUE) {
     metatile_attr_t attr = gOverworld.terrain.attrs[tm->map[METACOORD(Y) * tm->width + METACOORD(x)]];
     u32 shape = attr & 0xF;
@@ -212,7 +212,7 @@ WIP s32 PushoutToLeft1(s32 x, s32 y) {
   s32 newX;
   s32 i = 0;
   s32 X = x;
-  struct MetatileMap* tm = (struct MetatileMap*)gOverworld.unk_1c8.tilemap;
+  struct MetatileMap* tm = &gOverworld.tilemap;
   while (TRUE) {
     metatile_attr_t attr = gOverworld.terrain.attrs[tm->map[METACOORD(y) * tm->width + METACOORD(X)]];
     u32 shape = attr & 0xF;
@@ -1269,14 +1269,14 @@ NON_MATCH s32 FUN_0800a4bc(s32 x, s32 y) {
   const s32 mx = METACOORD(x);
   const s32 my = METACOORD(y);
   if ((mx < 0x771) && (my < 0x4F6)) {
-    struct MetatileMap* tm = (struct MetatileMap*)gOverworld.unk_1c8.tilemap;
+    struct MetatileMap* tm = &gOverworld.tilemap;
     metatile_attr_t attr = gOverworld.terrain.attrs[tm->map[my * tm->width + mx]];
     if ((gShapeCheckerUp[attr & 0xF])(x & 0xFFF, y & 0xFFF) != 0) {
       if (attr & 0x2000) {
-        return gOverworld.unk_1c8.unk_2c004.y;
+        return gOverworld.unk_2c004.y;
       }
       if (attr & 0x4000) {
-        return gOverworld.unk_1c8.unk_2c004.x;
+        return gOverworld.unk_2c004.x;
       }
     }
   }

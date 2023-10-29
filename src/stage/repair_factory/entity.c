@@ -8,62 +8,45 @@ const struct EntityTemplate gRepairFactoryEntity[38] = {
         {
             0,
             ENTITY_PLAYER,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
+            PLAYER_ZERO,
         },
     [1] =
         {
             2,
             ENTITY_ITEM,
-            0,
-            1,
+            ITEM_GENERAL,
+            ITEM_LIFE_M,
             2,
-            0,
-            0,
-            0,
         },
     [2] =
         {
             2,
             ENTITY_ITEM,
-            0,
+            ITEM_GENERAL,
+            ITEM_LIFE_L,
             2,
-            2,
-            0,
-            0,
-            0,
         },
     [3] =
         {
             2,
             ENTITY_ITEM,
-            0,
-            4,
+            ITEM_GENERAL,
+            ITEM_EC_L,
             2,
-            0,
-            0,
-            0,
         },
     [4] =
         {
             2,
             ENTITY_ITEM,
-            0,
-            5,
+            ITEM_GENERAL,
+            ITEM_EXLIFE,
             2,
-            0,
-            0,
-            0,
         },
     [5] =
         {
             1,
             ENTITY_SOLID,
-            2,
+            SOLID_DOOR_2D_BLUE,
             0,
             0,
             0,
@@ -74,7 +57,7 @@ const struct EntityTemplate gRepairFactoryEntity[38] = {
         {
             1,
             ENTITY_SOLID,
-            2,
+            SOLID_DOOR_2D_BLUE,
             1,
             0,
             0,
@@ -85,7 +68,7 @@ const struct EntityTemplate gRepairFactoryEntity[38] = {
         {
             1,
             ENTITY_ENEMY,
-            0,
+            ENEMY_P_GUARDIAN,
             0,
             0,
             1,
@@ -96,7 +79,7 @@ const struct EntityTemplate gRepairFactoryEntity[38] = {
         {
             2,
             ENTITY_ENEMY,
-            41,
+            ENEMY_EYE_CANNON,
             0,
             0,
             1,
@@ -107,7 +90,7 @@ const struct EntityTemplate gRepairFactoryEntity[38] = {
         {
             1,
             ENTITY_ENEMY,
-            20,
+            ENEMY_SNAKECORD,
             0,
             0,
             1,
@@ -129,7 +112,7 @@ const struct EntityTemplate gRepairFactoryEntity[38] = {
         {
             1,
             ENTITY_ENEMY,
-            55,
+            ENEMY_DEATHLOCK,
             0,
             0,
             1,
@@ -140,7 +123,7 @@ const struct EntityTemplate gRepairFactoryEntity[38] = {
         {
             1,
             ENTITY_ENEMY,
-            55,
+            ENEMY_DEATHLOCK,
             1,
             0,
             1,
@@ -151,7 +134,7 @@ const struct EntityTemplate gRepairFactoryEntity[38] = {
         {
             1,
             ENTITY_ENEMY,
-            55,
+            ENEMY_DEATHLOCK,
             2,
             0,
             1,
@@ -162,7 +145,7 @@ const struct EntityTemplate gRepairFactoryEntity[38] = {
         {
             1,
             ENTITY_ENEMY,
-            55,
+            ENEMY_DEATHLOCK,
             3,
             0,
             1,
@@ -173,7 +156,7 @@ const struct EntityTemplate gRepairFactoryEntity[38] = {
         {
             1,
             ENTITY_ENEMY,
-            55,
+            ENEMY_DEATHLOCK,
             8,
             0,
             0,
@@ -184,7 +167,7 @@ const struct EntityTemplate gRepairFactoryEntity[38] = {
         {
             4,
             ENTITY_ENEMY,
-            12,
+            ENEMY_LEMMINGLES_NEST,
             0,
             0,
             1,
@@ -195,7 +178,7 @@ const struct EntityTemplate gRepairFactoryEntity[38] = {
         {
             4,
             ENTITY_ENEMY,
-            12,
+            ENEMY_LEMMINGLES_NEST,
             1,
             0,
             1,
@@ -206,7 +189,7 @@ const struct EntityTemplate gRepairFactoryEntity[38] = {
         {
             4,
             ENTITY_ENEMY,
-            12,
+            ENEMY_LEMMINGLES_NEST,
             4,
             0,
             1,
@@ -217,7 +200,7 @@ const struct EntityTemplate gRepairFactoryEntity[38] = {
         {
             4,
             ENTITY_ENEMY,
-            12,
+            ENEMY_LEMMINGLES_NEST,
             5,
             0,
             1,
@@ -228,7 +211,7 @@ const struct EntityTemplate gRepairFactoryEntity[38] = {
         {
             1,
             ENTITY_SOLID,
-            20,
+            SOLID_DOOR_2D_GRAY_V,
             2,
             0,
             0,
@@ -239,7 +222,7 @@ const struct EntityTemplate gRepairFactoryEntity[38] = {
         {
             1,
             ENTITY_SOLID,
-            20,
+            SOLID_DOOR_2D_GRAY_V,
             0,
             0,
             0,
@@ -250,7 +233,7 @@ const struct EntityTemplate gRepairFactoryEntity[38] = {
         {
             1,
             ENTITY_SOLID,
-            34,
+            SOLID_UNK_034,
             0,
             0,
             0,
@@ -305,7 +288,7 @@ const struct EntityTemplate gRepairFactoryEntity[38] = {
         {
             2,
             ENTITY_SOLID,
-            35,
+            SOLID_CONTAINER,
             0,
             12,
             0,
@@ -316,7 +299,7 @@ const struct EntityTemplate gRepairFactoryEntity[38] = {
         {
             2,
             ENTITY_SOLID,
-            35,
+            SOLID_CONTAINER,
             0,
             53,
             0,
@@ -327,7 +310,7 @@ const struct EntityTemplate gRepairFactoryEntity[38] = {
         {
             2,
             ENTITY_SOLID,
-            35,
+            SOLID_CONTAINER,
             0,
             254,
             0,
@@ -338,7 +321,7 @@ const struct EntityTemplate gRepairFactoryEntity[38] = {
         {
             2,
             ENTITY_SOLID,
-            35,
+            SOLID_CONTAINER,
             0,
             255,
             0,
@@ -349,67 +332,43 @@ const struct EntityTemplate gRepairFactoryEntity[38] = {
         {
             1,
             ENTITY_SOLID,
-            31,
-            0,
-            0,
-            0,
-            0,
+            SOLID_CYBERSPACE_DOOR,
             0,
         },
     [32] =
         {
             1,
             ENTITY_SOLID,
-            31,
+            SOLID_CYBERSPACE_DOOR,
             1,
-            0,
-            0,
-            0,
-            0,
         },
     [33] =
         {
             2,
             ENTITY_ENEMY,
-            41,
+            ENEMY_EYE_CANNON,
             1,
-            0,
-            0,
-            0,
-            0,
         },
     [34] =
         {
             2,
             ENTITY_ENEMY,
-            41,
+            ENEMY_EYE_CANNON,
             2,
-            0,
-            0,
-            0,
-            0,
         },
     [35] =
         {
             2,
             ENTITY_ENEMY,
-            41,
+            ENEMY_EYE_CANNON,
             3,
-            0,
-            0,
-            0,
-            0,
         },
     [36] =
         {
             2,
             ENTITY_ENEMY,
-            41,
+            ENEMY_EYE_CANNON,
             4,
-            0,
-            0,
-            0,
-            0,
         },
     [37] =
         {

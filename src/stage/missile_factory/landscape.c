@@ -21,7 +21,7 @@ static const StageFunc sStageRoutine[4] = {
 };
 
 static void initMissileFactory(struct Coord* _ UNUSED) {
-  gOverworld.unk_1c8.work[0] = 0;
+  gOverworld.state[0] = 0;
   gOverworld.work.missileFactory.unk_000 = 0;
   gOverworld.work.missileFactory.unk_001 = 0;
   gOverworld.work.missileFactory.unk_002 = 0;
@@ -31,14 +31,14 @@ static void initMissileFactory(struct Coord* _ UNUSED) {
   gOverworld.work.missileFactory.unk_010 = 0;
   gOverworld.work.missileFactory.unk_014.x = 0x1c2000;
   gOverworld.work.missileFactory.unk_014.y = 0x12000;
-  gOverworld.unk_1c8.work[2] = 0;
+  gOverworld.state[2] = 0;
   ShiftMetatile(0xFF, 100, &sMetatileShift);
 }
 
 static void FUN_0800e460(struct Coord* c) {
   gOverworld.work.missileFactory.unk_004++;
 
-  if ((gOverworld.unk_1c8.tilesets[0] >> 8 == STAGE_MISSILE_FACTORY) && ((gOverworld.unk_1c8.tilesets[0] & 0xFF) == 0)) {
+  if ((TILESET_ID(0) == STAGE_MISSILE_FACTORY) && (TILESET_IDX(0) == 0)) {
     if ((gOverworld.work.missileFactory.unk_000 & (1 << 0)) == 0) {
       gOverworld.work.missileFactory.unk_000 |= (1 << 0);
       LoadBlink(211, 0);
@@ -58,7 +58,7 @@ static void FUN_0800e460(struct Coord* c) {
     ClearBlink(212);
   }
 
-  if ((gOverworld.unk_1c8.tilesets[1] >> 8 == STAGE_MISSILE_FACTORY) && ((gOverworld.unk_1c8.tilesets[1] & 0xFF) == 4)) {
+  if ((TILESET_ID(1) == STAGE_MISSILE_FACTORY) && (TILESET_IDX(1) == 4)) {
     if ((gOverworld.work.missileFactory.unk_000 & (1 << 1)) == 0) {
       gOverworld.work.missileFactory.unk_000 |= (1 << 1);
       LoadBlink(209, 0);
@@ -70,7 +70,7 @@ static void FUN_0800e460(struct Coord* c) {
     ClearBlink(209);
   }
 
-  if ((gOverworld.unk_1c8.tilesets[0] >> 8 == STAGE_MISSILE_FACTORY) && ((gOverworld.unk_1c8.tilesets[0] & 0xFF) == 5)) {
+  if ((TILESET_ID(0) == STAGE_MISSILE_FACTORY) && (TILESET_IDX(0) == 5)) {
     if ((gOverworld.work.missileFactory.unk_000 & (1 << 2)) == 0) {
       gOverworld.work.missileFactory.unk_000 |= (1 << 2);
       LoadBlink(210, 0);
@@ -82,7 +82,7 @@ static void FUN_0800e460(struct Coord* c) {
     ClearBlink(210);
   }
 
-  if ((gOverworld.unk_1c8.tilesets[1] >> 8 == STAGE_MISSILE_FACTORY) && ((gOverworld.unk_1c8.tilesets[1] & 0xFF) == 1)) {
+  if ((TILESET_ID(1) == STAGE_MISSILE_FACTORY) && (TILESET_IDX(1) == 1)) {
     if (c->y >= 0x3C000) {
       gOverworld.work.missileFactory.unk_002++;
       if (gOverworld.work.missileFactory.unk_002 == 16) {
@@ -96,14 +96,14 @@ static void FUN_0800e460(struct Coord* c) {
     }
   }
 
-  if ((gOverworld.unk_1c8.tilesets[0] >> 8 == STAGE_MISSILE_FACTORY) && ((gOverworld.unk_1c8.tilesets[0] & 0xFF) == 3)) {
+  if ((TILESET_ID(0) == STAGE_MISSILE_FACTORY) && (TILESET_IDX(0) == 3)) {
     gOverworld.work.missileFactory.unk_003++;
     if (gOverworld.work.missileFactory.unk_003 == 32) {
       gOverworld.work.missileFactory.unk_003 = 0;
     }
   }
 
-  if ((gOverworld.unk_1c8.tilesets[1] >> 8 == STAGE_MISSILE_FACTORY) && ((gOverworld.unk_1c8.tilesets[1] & 0xFF) == 6)) {
+  if ((TILESET_ID(1) == STAGE_MISSILE_FACTORY) && (TILESET_IDX(1) == 6)) {
     gOverworld.work.missileFactory.unk_008++;
     if (gOverworld.work.missileFactory.unk_008 == 60) {
       gOverworld.work.missileFactory.unk_008 = 0;
@@ -123,22 +123,22 @@ static void FUN_0800e460(struct Coord* c) {
 }
 
 static void FUN_0800e6f8(struct Coord* _ UNUSED) {
-  if ((gOverworld.unk_1c8.tilesets[0] >> 8 == STAGE_MISSILE_FACTORY) && ((gOverworld.unk_1c8.tilesets[0] & 0xFF) == 0)) {
+  if ((TILESET_ID(0) == STAGE_MISSILE_FACTORY) && (TILESET_IDX(0) == 0)) {
     RequestGraphicTransfer(&(TILESETS(18, 136)[gOverworld.work.missileFactory.unk_001 / 5]).g, (void*)0x4000);
     LoadPalette(&(TILESETS(18, 136)[gOverworld.work.missileFactory.unk_001 / 5]).pal, 0);
   }
 
-  if ((gOverworld.unk_1c8.tilesets[1] >> 8 == STAGE_MISSILE_FACTORY) && ((gOverworld.unk_1c8.tilesets[1] & 0xFF) == 1)) {
+  if ((TILESET_ID(1) == STAGE_MISSILE_FACTORY) && (TILESET_IDX(1) == 1)) {
     RequestGraphicTransfer(&(TILESETS(18, 128)[gOverworld.work.missileFactory.unk_002 >> 1]).g, (void*)0x4000);
     LoadPalette(&(TILESETS(18, 128)[gOverworld.work.missileFactory.unk_002 >> 1]).pal, 0);
   }
 
-  if ((gOverworld.unk_1c8.tilesets[0] >> 8 == STAGE_MISSILE_FACTORY) && ((gOverworld.unk_1c8.tilesets[0] & 0xFF) == 3)) {
+  if ((TILESET_ID(0) == STAGE_MISSILE_FACTORY) && (TILESET_IDX(0) == 3)) {
     RequestGraphicTransfer(&(TILESETS(18, 140)[gOverworld.work.missileFactory.unk_003 >> 2]).g, (void*)0x4000);
     LoadPalette(&(TILESETS(18, 140)[gOverworld.work.missileFactory.unk_003 >> 2]).pal, 0);
   }
 
-  if ((gOverworld.unk_1c8.tilesets[1] >> 8 == STAGE_MISSILE_FACTORY) && ((gOverworld.unk_1c8.tilesets[1] & 0xFF) == 6)) {
+  if ((TILESET_ID(1) == STAGE_MISSILE_FACTORY) && (TILESET_IDX(1) == 6)) {
     RequestGraphicTransfer(&(TILESETS(18, 148)[gOverworld.work.missileFactory.unk_008 / 12]).g, (void*)0x4000);
     LoadPalette(&(TILESETS(18, 148)[gOverworld.work.missileFactory.unk_008 / 12]).pal, 0);
   }
@@ -262,7 +262,7 @@ static void LayerUpdate_2(struct StageLayer* l, const struct Stage* stage) {
     l->phase++;
   }
 
-  if (gOverworld.unk_1c8.work[0] != 0) {
+  if (gOverworld.state[0] != 0) {
     (l->work).missile.scrollTimer += 4;
     if ((l->work).missile.scrollTimer > 0x700) {
       (l->work).missile.scrollTimer = 0x700;
@@ -315,13 +315,13 @@ static void LayerUpdate_4(struct StageLayer* l, const struct Stage* _ UNUSED) {
 
 INCASM("asm/stage_gfx/missile_factory.inc");
 
-extern const struct ScreenLayout sScreenMap1;
+extern const struct ScreenMap sScreenMap1;
 INCBIN_STATIC(sScreenMap1, "data/stage/missile_factory/layer1.bin");  // ./tools/dumper/bin.ts ./baserom.gba 0x0833e1cc 0x0833e390 ./data/stage/missile_factory/layer1.bin
 
-extern const struct ScreenLayout sScreenMap2;
+extern const struct ScreenMap sScreenMap2;
 INCBIN_STATIC(sScreenMap2, "data/stage/missile_factory/layer2.bin");  // ./tools/dumper/bin.ts ./baserom.gba 0x0833e390 0x0833e554 ./data/stage/missile_factory/layer2.bin
 
-extern const struct ScreenLayout sScreenMap3;
+extern const struct ScreenMap sScreenMap3;
 INCBIN_STATIC(sScreenMap3, "data/stage/missile_factory/layer3.bin");  // ./tools/dumper/bin.ts ./baserom.gba 0x0833e554 0x0833e718 ./data/stage/missile_factory/layer3.bin
 
 extern const tileset_ofs_t sTilesetOffset[4 + (HEIGHT * WIDTH)];

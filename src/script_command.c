@@ -975,7 +975,7 @@ static bool32 Cmd_message(struct VM* vm) {
       break;
     }
     case 7: {
-      (&gTextWindow.text)->flag |= (1 << 1);
+      (&gTextWindow.text)->flag |= TEXT_FLAG_TERMINATE;
       break;
     }
   }
@@ -1176,12 +1176,12 @@ static bool32 Cmd_gimmick(struct VM* vm) {
   switch (pc->status) {
     case 0: {
       ExitStageLandscape();
-      ResetLandscape(vm->pc->val2, &gOverworld.unk_1c8.viewport);
+      ResetLandscape(vm->pc->val2, &gOverworld.viewport);
       break;
     }
 
     case 1: {
-      gOverworld.unk_1c8.work[pc->val2] = (u8)pc->work;
+      gOverworld.state[pc->val2] = (u8)pc->work;
       break;
     }
   }

@@ -14,6 +14,69 @@ $(MID_SUBDIR)/se_cursor.s: %.s: %.mid
 $(MID_SUBDIR)/se_rbase_pre_door.s: %.s: %.mid
 	$(MID) $< $@ -E -G002 -P020
 
+$(MID_SUBDIR)/se_omegazero_meshia.s: %.s: %.mid
+	$(MID) $< $@ -E -G002 -P020
+
+$(MID_SUBDIR)/se_fefnir_damage.s: %.s: %.mid
+	$(MID) $< $@ -E -G002 -P020
+
+$(MID_SUBDIR)/se_fefnir_atk.s: %.s: %.mid
+	$(MID) $< $@ -E -G002 -P020
+
+$(MID_SUBDIR)/se_leviathan_damage.s: %.s: %.mid
+	$(MID) $< $@ -E -G002 -P020
+
+$(MID_SUBDIR)/se_leviathan_atk.s: %.s: %.mid
+	$(MID) $< $@ -E -G002 -P020
+
+$(MID_SUBDIR)/se_harpuia_damage.s: %.s: %.mid
+	$(MID) $< $@ -E -G002 -P020
+
+$(MID_SUBDIR)/se_harpuia_atk.s: %.s: %.mid
+	$(MID) $< $@ -E -G002 -P020
+
+$(MID_SUBDIR)/se_phantom_shuriken.s: %.s: %.mid
+	$(MID) $< $@ -E -G002 -P020
+
+$(MID_SUBDIR)/se_phantom_retsu.s: %.s: %.mid
+	$(MID) $< $@ -E -G002 -P020
+
+$(MID_SUBDIR)/se_phantom_utsusemi.s: %.s: %.mid
+	$(MID) $< $@ -E -G002 -P020
+
+$(MID_SUBDIR)/se_phantom_damage.s: %.s: %.mid
+	$(MID) $< $@ -E -G002 -P020
+
+$(MID_SUBDIR)/se_phantom_se.s: %.s: %.mid
+	$(MID) $< $@ -E -G002 -P020
+
+$(MID_SUBDIR)/se_unk_101.s: %.s: %.mid
+	$(MID) $< $@ -E -G002 -P020
+
+$(MID_SUBDIR)/se_unk_103.s: %.s: %.mid
+	$(MID) $< $@ -E -P020
+
+$(MID_SUBDIR)/se_unk_104.s: %.s: %.mid
+	$(MID) $< $@ -E -G002 -P020
+
+$(MID_SUBDIR)/se_unk_105.s: %.s: %.mid
+	$(MID) $< $@ -E -G002 -P020
+
+$(MID_SUBDIR)/se_unk_106.s: %.s: %.mid
+	$(MID) $< $@ -E -G002 -P020
+
+$(MID_SUBDIR)/se_shell_crawler.s: %.s: %.mid
+	$(MID) $< $@ -E -P020
+
+$(MID_SUBDIR)/se_unk_108.s: %.s: %.mid
+	$(MID) $< $@ -E -G002 -P020
+
+$(MID_SUBDIR)/se_unk_109.s: %.s: %.mid
+	$(MID) $< $@ -E -G002 -P020
+
+$(MID_SUBDIR)/se_unk_10a.s: %.s: %.mid
+	$(MID) $< $@ -E -G002 -P020
+
 $(MID_SUBDIR)/se_unk_110.s: %.s: %.mid
 	$(MID) $< $@ -E -G002 -P020
 

@@ -111,13 +111,13 @@ INCASM("asm/stage_gfx/snowy_plains.inc");
 
 // ------------------------------------------------------------------------------------------------------------------------------------
 
-extern const struct ScreenLayout sScreenMap1;
+extern const struct ScreenMap sScreenMap1;
 INCBIN_STATIC(sScreenMap1, "data/stage/snowy_plains/layer1.bin");  // ./tools/dumper/bin.ts ./baserom.gba 0x083428b8 0x08342abc ./data/stage/snowy_plains/layer1.bin
 
-extern const struct ScreenLayout sScreenMap2;
+extern const struct ScreenMap sScreenMap2;
 INCBIN_STATIC(sScreenMap2, "data/stage/snowy_plains/layer2.bin");  // ./tools/dumper/bin.ts ./baserom.gba 0x08342abc 0x08342ec0 ./data/stage/snowy_plains/layer2.bin
 
-extern const struct ScreenLayout sScreenMap3;
+extern const struct ScreenMap sScreenMap3;
 INCBIN_STATIC(sScreenMap3, "data/stage/snowy_plains/layer3.bin");  // ./tools/dumper/bin.ts ./baserom.gba 0x08342ec0 0x083432c4 ./data/stage/snowy_plains/layer3.bin
 
 extern const tileset_ofs_t sTilesetOffset[];

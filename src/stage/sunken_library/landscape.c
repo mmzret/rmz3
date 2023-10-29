@@ -17,7 +17,7 @@ static const StageFunc sGfxRoutine[4] = {
 };
 
 static void initSunkenLib(struct Coord* _ UNUSED) {
-  gOverworld.unk_1c8.work[0] = 0;
+  gOverworld.state[0] = 0;
   STAGE.unk_000 = 0;
   STAGE.unk_001 = 0;
   STAGE.unk_002 = 0;
@@ -193,17 +193,19 @@ static void FUN_08013908(struct StageLayer* l UNUSED, const struct Stage* _ UNUS
   gWindowRegBuffer.unk_0c[2] |= 0xE;
 }
 
+#undef STAGE
+
 INCASM("asm/stage_gfx/sunken_library.inc");
 
 // ------------------------------------------------------------------------------------------------------------------------------------
 
-extern const struct ScreenLayout sScreenMap1;
+extern const struct ScreenMap sScreenMap1;
 INCBIN_STATIC(sScreenMap1, "data/stage/sunken_library/layer1.bin");  // ./tools/dumper/bin.ts ./baserom.gba 0x08343fc8 0x083440ec ./data/stage/sunken_library/layer1.bin
 
-extern const struct ScreenLayout sScreenMap2;
+extern const struct ScreenMap sScreenMap2;
 INCBIN_STATIC(sScreenMap2, "data/stage/sunken_library/layer2.bin");  // ./tools/dumper/bin.ts ./baserom.gba 0x083440ec 0x08344210 ./data/stage/sunken_library/layer2.bin
 
-extern const struct ScreenLayout sScreenMap3;
+extern const struct ScreenMap sScreenMap3;
 INCBIN_STATIC(sScreenMap3, "data/stage/sunken_library/layer3.bin");  // ./tools/dumper/bin.ts ./baserom.gba 0x08344210 0x08344334 ./data/stage/sunken_library/layer3.bin
 
 extern const tileset_ofs_t sTilesetOffset[];

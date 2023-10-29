@@ -51,7 +51,7 @@ _080DDB18:
 	strb r0, [r5, #0xa]
 	adds r4, r5, #0
 	adds r4, #0x74
-	ldr r1, _080DDBA8 @ =0x08371698
+	ldr r1, _080DDBA8 @ =sCollision
 	adds r0, r4, #0
 	adds r2, r7, #0
 	movs r3, #0
@@ -66,7 +66,7 @@ _080DDB18:
 	movs r1, #8
 	orrs r0, r1
 	strb r0, [r5, #0xb]
-	ldr r0, _080DDBAC @ =0x083716B0
+	ldr r0, _080DDBAC @ =sSize
 	str r0, [r5, #0x30]
 	ldr r0, _080DDBB0 @ =0x00002001
 	strh r0, [r5, #0x26]
@@ -104,8 +104,8 @@ _080DDB6A:
 	b _080DDCE0
 	.align 2, 0
 _080DDBA4: .4byte gStageRun+232
-_080DDBA8: .4byte 0x08371698
-_080DDBAC: .4byte 0x083716B0
+_080DDBA8: .4byte sCollision
+_080DDBAC: .4byte sSize
 _080DDBB0: .4byte 0x00002001
 _080DDBB4: .4byte pZero2
 _080DDBB8: .4byte 0xFFFFFBC0
@@ -241,7 +241,7 @@ _080DDCB8:
 	cmp r0, #0x80
 	bhi _080DDCE2
 	ldr r2, _080DDCF8 @ =gCurStory
-	ldr r1, _080DDCFC @ =0x083716B8
+	ldr r1, _080DDCFC @ =u16_ARRAY_083716b8
 	ldrb r0, [r5, #0x10]
 	lsls r0, r0, #1
 	adds r0, r0, r1
@@ -268,7 +268,7 @@ _080DDCEC: .4byte RNG_0202f388
 _080DDCF0: .4byte 0x000343FD
 _080DDCF4: .4byte 0x00269EC3
 _080DDCF8: .4byte gCurStory
-_080DDCFC: .4byte 0x083716B8
+_080DDCFC: .4byte u16_ARRAY_083716b8
 
 	thumb_func_start VolcanoCoffin_Die
 VolcanoCoffin_Die: @ 0x080DDD00

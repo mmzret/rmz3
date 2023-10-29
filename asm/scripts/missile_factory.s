@@ -2,6 +2,7 @@
 .include "asm/scripts/commands.inc"
 .include "asm/scripts/constants.inc"
 #include "constants/entity.h"
+#include "constants/song.h"
 
 .balign 4
 .section .rodata
@@ -148,7 +149,7 @@ Entity_08351f9c:
 
 Script_08351fac:
   eventflag 0, 19, 0
-  spawn 0, 0, Entity_08351e64
+  spawn 0, Entity_08351e64
   reset_camera Camera_08351d88
   lock
   normal_screen
@@ -173,7 +174,7 @@ Script_08351fac:
   end
 
 Script_0835206c:
-  spawn 0, 0, Entity_08351e64
+  spawn 0, Entity_08351e64
   reset_camera Camera_08351d88
   lock
   normal_screen
@@ -187,7 +188,7 @@ Script_0835206c:
   end
 
 Script_083520cc:
-  spawn 0, 0, Entity_08351e64
+  spawn 0, Entity_08351e64
   reset_camera Camera_08351d88
   lock
   screeneffect 9
@@ -205,18 +206,18 @@ Script_08352124:
   force 0, 0, 0
   force 8, 0, 0
   turn_right 0
-  spawn 3, 0, Entity_08351ea4
+  spawn 3, Entity_08351ea4
   play_se 269
   quake 0, 0, 2
   stop_bgm
-  emotion 0, 0x1000, 0x00FFD800, 0
+  emotion 0, 16*PX, 0x00FFD800, 0
   wait 60
   message 1, 0, 0x0801
   wait_msgbox_end
   wait 15
   change_camera_mode 1
   force 1, 0, 0
-  forcekeyinput 0x00000010
+  forcekeyinput DPAD_RIGHT
   wait 4
   forcekeyinput 0x00002010
   wait 28
@@ -264,7 +265,7 @@ Script_08352124:
 
 Script_0835230c:
   cmd1c 3, 0, 1600*PX
-  spawn 0, 0, Entity_08351e74
+  spawn 0, Entity_08351e74
   play_bgm 168
   reset_camera Camera_08351db4
   adjust_camera 1, 0, 8
@@ -277,7 +278,7 @@ Script_0835230c:
 
 Script_08352364:
   cmd1c 3, 0, 1600*PX
-  spawn 0, 0, Entity_08351e74
+  spawn 0, Entity_08351e74
   play_bgm 168
   reset_camera Camera_08351de0
   lock
@@ -326,12 +327,12 @@ Script_083523f4:
   end
 
 Script_083524d4:
-  spawn 0, 0, Entity_08351e84
+  spawn 0, Entity_08351e84
   reset_camera Camera_08351d88
   lock
   screeneffect 9
   wait_screeneffect
-  play_bgm 161
+  play_bgm BGM_GUARDER_ROOM
   indicator 1, 0, 0
   wait_indicator_end
   release
@@ -339,11 +340,11 @@ Script_083524d4:
   end
 
 Script_0835252c:
-  forcekeyinput 0x00000010
+  forcekeyinput DPAD_RIGHT
   pause
   eventflag 0, 21, 0
   wait 10
-  spawn 1, 0, Entity_08351ebc
+  spawn 1, Entity_08351ebc
   walkto 6880*PX
   lock
   emotion 0, 0x1000, 0x00FFD800, 0
@@ -386,7 +387,7 @@ Script_0835252c:
   wait 15
   message 1, 0, 0x0809
   wait_msgbox_end
-  message 3, 0, 0x080A
+  triumphant_message 0, 0x080A
   eventflag 1, 0, 0
   entityflag 1, 0, TRUE
   stop_bgm
@@ -400,11 +401,11 @@ Script_0835252c:
   end
 
 Script_08352704:
-  forcekeyinput 0x00000010
+  forcekeyinput DPAD_RIGHT
   pause
   eventflag 0, 21, 0
   wait 10
-  spawn 1, 0, Entity_08351ebc
+  spawn 1, Entity_08351ebc
   walkto 6880*PX
   lock
   change_camera_mode 6
@@ -412,7 +413,7 @@ Script_08352704:
   adjust_camera 11, 0 6832*PX
   adjust_camera 12, 0 7072*PX
   wait 75
-  message 3, 0, 0x080A
+  triumphant_message 0, 0x080A
   eventflag 1, 0, 0
   entityflag 1, 0, TRUE
   stop_bgm
@@ -426,13 +427,13 @@ Script_08352704:
   end
 
 Script_083527c4:
-  spawn 0, 0, Entity_08351e94
-  spawn 1, 0, Entity_08351ebc
+  spawn 0, Entity_08351e94
+  spawn 1, Entity_08351ebc
   reset_camera Camera_08351e0c
   lock
   normal_screen
   wait_screeneffect
-  message 3, 0, 0x080A
+  triumphant_message 0, 0x080A
   entityflag 1, 0, TRUE
   wait 120
   warning_indicator
@@ -445,7 +446,7 @@ Script_083527c4:
 
 Script_08352844:
   lockmenu
-  forcekeyinput 0x0000FFFF
+  forcekeyinput 0xFFFF
   stop_bgm
   wait 1
   lock
@@ -530,7 +531,7 @@ Script_08352a6c:
   play_bgm 223
   blackout_screen
   wait_screeneffect
-  spawn 3, 0, Entity_08351ecc
+  spawn 3, Entity_08351ecc
   reset_camera Camera_08351e38
   normal_screen
   wait 1
@@ -541,11 +542,11 @@ Script_08352a6c:
   wait 150
   emotion 3, 0x1200, 0x00FFE000, 0
   wait 60
-  spawn 4, 0, Entity_08351edc
+  spawn 4, Entity_08351edc
   wait 1
-  spawn 6, 0, Entity_08351eec
+  spawn 6, Entity_08351eec
   wait 1
-  spawn 7, 0, Entity_08351efc
+  spawn 7, Entity_08351efc
   change_camera_mode 1
   adjust_camera 1, 0, 2
   adjust_camera 3, 0 7320*PX
@@ -619,7 +620,7 @@ Script_08352a6c:
   adjust_camera 1, 0, 2
   adjust_camera 3, 0 7216*PX
   wait 120
-  spawn 5, 0, Entity_08351f0c
+  spawn 5, Entity_08351f0c
   wait 30
   entityflag 6, 4, FALSE
   wait 90
@@ -630,28 +631,28 @@ Script_08352a6c:
   wait 150
   entityflag 4, 6, TRUE
   entityflag 4, 7, TRUE
-  spawn 8, 0, Entity_08351f1c
+  spawn 8, Entity_08351f1c
   wait 9
-  spawn 9, 0, Entity_08351f2c
+  spawn 9, Entity_08351f2c
   wait 9
-  spawn 10, 0, Entity_08351f3c
+  spawn 10, Entity_08351f3c
   wait 9
-  spawn 11, 0, Entity_08351f4c
+  spawn 11, Entity_08351f4c
   wait 12
   destroy 8
-  spawn 8, 0, Entity_08351f5c
+  spawn 8, Entity_08351f5c
   wait 9
   destroy 9
-  spawn 9, 0, Entity_08351f6c
+  spawn 9, Entity_08351f6c
   wait 12
   destroy 10
-  spawn 10, 0, Entity_08351f7c
+  spawn 10, Entity_08351f7c
   wait 18
   destroy 11
-  spawn 11, 0, Entity_08351f8c
+  spawn 11, Entity_08351f8c
   wait 30
   destroy 8
-  spawn 8, 0, Entity_08351f9c
+  spawn 8, Entity_08351f9c
   entityflag 5, 1, TRUE
   entityflag 6, 7, TRUE
   entityflag 4, 7, FALSE
@@ -723,7 +724,7 @@ Script_08352a6c:
   end
 
 Script_083530cc:
-  spawn 0, 0, Entity_08351e64
+  spawn 0, Entity_08351e64
   reset_camera Camera_08351d88
   lock
   wait 1
@@ -740,7 +741,7 @@ Script_083530cc:
   end
 
 Script_08353144:
-  forcekeyinput 0x0000FFFF
+  forcekeyinput 0xFFFF
   stop_bgm
   pause
   walkto 2040*PX

@@ -20,7 +20,7 @@ static void initIceBase(struct Coord* _ UNUSED) {
 }
 
 static void FUN_08010eb8(struct Coord* _ UNUSED) {
-  if ((gOverworld.unk_1c8.tilesets[0] >> 8 == STAGE_ICE_BASE) && ((gOverworld.unk_1c8.tilesets[0] & 0xFF) == 0)) {
+  if ((gOverworld.tilesets[0] >> 8 == STAGE_ICE_BASE) && ((gOverworld.tilesets[0] & 0xFF) == 0)) {
     if ((gOverworld.work.iceBase.unk_000 & (1 << 0)) == 0) {
       gOverworld.work.iceBase.unk_000 |= (1 << 0);
       LoadBlink(133, 0);
@@ -32,7 +32,7 @@ static void FUN_08010eb8(struct Coord* _ UNUSED) {
     ClearBlink(133);
   }
 
-  if ((gOverworld.unk_1c8.tilesets[0] >> 8 == STAGE_ICE_BASE) && ((gOverworld.unk_1c8.tilesets[0] & 0xFF) == 4)) {
+  if ((gOverworld.tilesets[0] >> 8 == STAGE_ICE_BASE) && ((gOverworld.tilesets[0] & 0xFF) == 4)) {
     if ((gOverworld.work.iceBase.unk_000 & (1 << 1)) == 0) {
       gOverworld.work.iceBase.unk_000 |= (1 << 1);
       LoadBlink(139, 0);
@@ -50,7 +50,7 @@ static void FUN_08010eb8(struct Coord* _ UNUSED) {
     ClearBlink(141);
   }
 
-  if ((gOverworld.unk_1c8.tilesets[1] >> 8 == STAGE_ICE_BASE) && ((gOverworld.unk_1c8.tilesets[1] & 0xFF) == 2)) {
+  if ((gOverworld.tilesets[1] >> 8 == STAGE_ICE_BASE) && ((gOverworld.tilesets[1] & 0xFF) == 2)) {
     if ((gOverworld.work.iceBase.unk_000 & (1 << 2)) == 0) {
       gOverworld.work.iceBase.unk_000 |= (1 << 2);
       LoadBlink(136, 0);
@@ -62,7 +62,7 @@ static void FUN_08010eb8(struct Coord* _ UNUSED) {
     ClearBlink(136);
   }
 
-  if ((gOverworld.unk_1c8.tilesets[1] >> 8 == STAGE_ICE_BASE) && ((gOverworld.unk_1c8.tilesets[1] & 0xFF) == 1)) {
+  if ((gOverworld.tilesets[1] >> 8 == STAGE_ICE_BASE) && ((gOverworld.tilesets[1] & 0xFF) == 1)) {
     if ((gOverworld.work.iceBase.unk_000 & (1 << 3)) == 0) {
       gOverworld.work.iceBase.unk_000 |= (1 << 3);
       LoadBlink(134, 0);
@@ -77,7 +77,7 @@ static void FUN_08010eb8(struct Coord* _ UNUSED) {
     ClearBlink(135);
   }
 
-  if ((gOverworld.unk_1c8.tilesets[1] >> 8 == STAGE_ICE_BASE) && ((gOverworld.unk_1c8.tilesets[1] & 0xFF) == 3)) {
+  if ((gOverworld.tilesets[1] >> 8 == STAGE_ICE_BASE) && ((gOverworld.tilesets[1] & 0xFF) == 3)) {
     if ((gOverworld.work.iceBase.unk_000 & (1 << 4)) == 0) {
       gOverworld.work.iceBase.unk_000 |= (1 << 4);
       LoadBlink(137, 0);
@@ -165,13 +165,13 @@ INCASM("asm/stage_gfx/frostline_ice_base.inc");
 
 // ------------------------------------------------------------------------------------------------------------------------------------
 
-extern const struct ScreenLayout sScreenMap1;
+extern const struct ScreenMap sScreenMap1;
 INCBIN_STATIC(sScreenMap1, "data/stage/frostline_ice_base/layer1.bin");  // ./tools/dumper/bin.ts ./baserom.gba 0x083402f4 0x083404f8 ./data/stage/frostline_ice_base/layer1.bin
 
-extern const struct ScreenLayout sScreenMap2;
+extern const struct ScreenMap sScreenMap2;
 INCBIN_STATIC(sScreenMap2, "data/stage/frostline_ice_base/layer2.bin");  // ./tools/dumper/bin.ts ./baserom.gba 0x083404f8 0x083406fc ./data/stage/frostline_ice_base/layer2.bin
 
-extern const struct ScreenLayout sScreenMap3;
+extern const struct ScreenMap sScreenMap3;
 INCBIN_STATIC(sScreenMap3, "data/stage/frostline_ice_base/layer3.bin");  // ./tools/dumper/bin.ts ./baserom.gba 0x083406fc 0x08340900 ./data/stage/frostline_ice_base/layer3.bin
 
 extern const tileset_ofs_t sTilesetOffset[];

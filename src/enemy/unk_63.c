@@ -2,7 +2,7 @@
 #include "enemy.h"
 #include "global.h"
 
-INCASM("asm/enemy/enemy.inc");
+INCASM("asm/enemy/unk_63.inc");
 
 void Enemy63_Init(struct Enemy* p);
 void Enemy63_Update(struct Enemy* p);

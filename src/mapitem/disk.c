@@ -1,6 +1,7 @@
 #include "global.h"
 #include "mapitem.h"
 #include "overworld.h"
+#include "physics.h"
 
 /*
   マップ上に存在するアイテムとしてのシークレットディスク

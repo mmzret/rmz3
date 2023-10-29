@@ -42,7 +42,7 @@ const main = async () => {
 
   for (let i = 1; i <= 3; i++) {
     layerData += `
-extern const struct ScreenLayout sScreenMap${i};
+extern const struct ScreenMap sScreenMap${i};
 INCBIN_STATIC(sScreenMap${i}, "data/stage/${dir}/layer${i}.bin");
 `;
   }

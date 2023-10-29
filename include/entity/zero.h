@@ -190,7 +190,7 @@ struct Zero {
   u8 unk_149;
   u8 ALIGNED(1) unk_14a[2];
   struct Border border;  // ゼロが侵入不可能な境界座標を表す
-  u8 hazard[16];         // ゼロと干渉するHazardのidx(Overworld_1c8.blockingsのidx)が入る
+  u8 hazard[16];         // ゼロと干渉するHazardのidx(Overworld.hazard.dataのidx)が入る
   u16 hazardIDs[16];     // ゼロと干渉するHazardのEntityIDが入る
   u8 hazardCount;        // .hazard の長さ
   bool8 isGround;

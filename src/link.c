@@ -323,23 +323,22 @@ static void EnqueueSendCmd(u16 *sendCmd) {
   gLastSendQueueCount = gLink.sendQueue.count;
 }
 
-WIP static void DequeueRecvCmds(u16 (*recvCmds)[CMD_LENGTH]) {
-#if MODERN
+static void DequeueRecvCmds(u16 (*recvCmds)[4]) {
   u8 i, j;
 
   gLinkSavedIme = REG_IME;
   REG_IME = 0;
   if (gLink.recvQueue.count == 0) {
-    for (i = 0; i < gLink.playerCount; i++) {
-      for (j = 0; j < CMD_LENGTH; j++) {
+    for (i = 0; i < CMD_LENGTH; i++) {
+      for (j = 0; j < gLink.playerCount; j++) {
         recvCmds[i][j] = 0;
       }
     }
     gLink.receivedNothing = TRUE;
   } else {
-    for (i = 0; i < gLink.playerCount; i++) {
-      for (j = 0; j < CMD_LENGTH; j++) {
-        recvCmds[i][j] = gLink.recvQueue.data[i][j][gLink.recvQueue.pos];
+    for (i = 0; i < CMD_LENGTH; i++) {
+      for (j = 0; j < gLink.playerCount; j++) {
+        recvCmds[i][j] = gLink.recvQueue.data[j][i][gLink.recvQueue.pos];
       }
     }
     gLink.recvQueue.count--;
@@ -350,9 +349,6 @@ WIP static void DequeueRecvCmds(u16 (*recvCmds)[CMD_LENGTH]) {
     gLink.receivedNothing = FALSE;
   }
   REG_IME = gLinkSavedIme;
-#else
-  INCCODE("asm/wip/DequeueRecvCmds.inc");
-#endif
 }
 
 void LinkVSync(void) {

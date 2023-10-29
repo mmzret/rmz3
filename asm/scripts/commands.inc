@@ -138,7 +138,7 @@
   .4byte \input
 	.endm
 
-	.macro spawn slot b addr
+  .macro spawn slot addr b=0
   .byte 0x0b
 	.byte \slot
   .2byte \b
@@ -194,17 +194,13 @@
 	.endm
 
 	.macro emergency_on
-  .byte 0x10
-	.byte 0
-  .2byte 0
-  .4byte 0
+  .byte 0x10, 0
+  .2byte 0, 0, 0
 	.endm
 
 	.macro emergency_off
-  .byte 0x10
-	.byte 1
-  .2byte 0
-  .4byte 0
+  .byte 0x10, 1
+  .2byte 0, 0, 0
 	.endm
 
 	.macro quake a b c
@@ -307,11 +303,21 @@
 	.endm
 
 	.macro wait_msgbox_end
-  .byte 0x17
-	.byte 2
-  .2byte 0
-  .4byte 0x00
+  .byte 0x17, 2
+  .2byte 0x00, 0x00, 0x00
 	.endm
+
+	.macro triumphant_message slot textid
+  .byte 0x17, 3
+  .2byte \slot
+  .2byte \textid
+  .2byte 0x00
+	.endm
+
+  .macro kill_message
+  .byte 0x17, 7
+  .2byte 0x00, 0x00, 0x00
+  .endm
 
   .macro play_bgm song
   .byte 0x18

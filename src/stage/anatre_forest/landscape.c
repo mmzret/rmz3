@@ -28,7 +28,7 @@ static void FUN_080101f0(struct Coord* _ UNUSED) {
     gOverworld.work.anatreForest.leaf = CreateLeafBurn(1);
   }
 
-  if ((gOverworld.unk_1c8.tilesets[0] >> 8 == STAGE_ANATRE_FOREST) && ((gOverworld.unk_1c8.tilesets[0] & 0xFF) == 0)) {
+  if ((gOverworld.tilesets[0] >> 8 == STAGE_ANATRE_FOREST) && ((gOverworld.tilesets[0] & 0xFF) == 0)) {
     if ((gOverworld.work.anatreForest.unk_00c & 1) == 0) {
       gOverworld.work.anatreForest.unk_00c |= 1;
       LoadBlink(218, 0);
@@ -46,7 +46,7 @@ static void FUN_080101f0(struct Coord* _ UNUSED) {
     ClearBlink(220);
   }
 
-  if ((gOverworld.unk_1c8.tilesets[1] >> 8 == STAGE_ANATRE_FOREST) && ((gOverworld.unk_1c8.tilesets[1] & 0xFF) == 1)) {
+  if ((gOverworld.tilesets[1] >> 8 == STAGE_ANATRE_FOREST) && ((gOverworld.tilesets[1] & 0xFF) == 1)) {
     if ((gOverworld.work.anatreForest.unk_00c & (1 << 1)) == 0) {
       gOverworld.work.anatreForest.unk_00c |= (1 << 1);
       LoadBlink(221, 0);
@@ -58,7 +58,7 @@ static void FUN_080101f0(struct Coord* _ UNUSED) {
     ClearBlink(221);
   }
 
-  if ((gOverworld.unk_1c8.tilesets[0] >> 8 == STAGE_ANATRE_FOREST) && ((gOverworld.unk_1c8.tilesets[0] & 0xFF) == 2)) {
+  if ((gOverworld.tilesets[0] >> 8 == STAGE_ANATRE_FOREST) && ((gOverworld.tilesets[0] & 0xFF) == 2)) {
     if ((gOverworld.work.anatreForest.unk_00c & (1 << 2)) == 0) {
       gOverworld.work.anatreForest.unk_00c |= (1 << 2);
       LoadBlink(222, 0);
@@ -86,7 +86,7 @@ static void FUN_080101f0(struct Coord* _ UNUSED) {
     ClearBlink(226);
   }
 
-  if ((gOverworld.unk_1c8.tilesets[1] >> 8 == STAGE_ANATRE_FOREST) && ((gOverworld.unk_1c8.tilesets[1] & 0xFF) == 3)) {
+  if ((gOverworld.tilesets[1] >> 8 == STAGE_ANATRE_FOREST) && ((gOverworld.tilesets[1] & 0xFF) == 3)) {
     if ((gOverworld.work.anatreForest.unk_00c & (1 << 3)) == 0) {
       gOverworld.work.anatreForest.unk_00c |= (1 << 3);
       LoadBlink(227, 0);
@@ -279,13 +279,13 @@ static void LayerUpdate_4(struct StageLayer* l, const struct Stage* _ UNUSED) {
 
 INCASM("asm/stage_gfx/anatre_forest.inc");
 
-extern const struct ScreenLayout sScreenMap1;
+extern const struct ScreenMap sScreenMap1;
 INCBIN_STATIC(sScreenMap1, "data/stage/anatre_forest/layer1.bin");  // ./tools/dumper/bin.ts ./baserom.gba 0x0833f890 0x0833fa54 ./data/stage/anatre_forest/layer1.bin
 
-extern const struct ScreenLayout sScreenMap2;
+extern const struct ScreenMap sScreenMap2;
 INCBIN_STATIC(sScreenMap2, "data/stage/anatre_forest/layer2.bin");  // ./tools/dumper/bin.ts ./baserom.gba 0x0833fa54 0x0833fb98 ./data/stage/anatre_forest/layer2.bin
 
-extern const struct ScreenLayout sScreenMap3;
+extern const struct ScreenMap sScreenMap3;
 INCBIN_STATIC(sScreenMap3, "data/stage/anatre_forest/layer3.bin");  // ./tools/dumper/bin.ts ./baserom.gba 0x0833fb98 0x0833fcdc ./data/stage/anatre_forest/layer3.bin
 
 extern const tileset_ofs_t sTilesetOffset[];

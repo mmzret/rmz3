@@ -44,7 +44,7 @@ NON_MATCH static void Door2DBlue_Init(struct Solid* p) {
     (otherside->s).unk_28 = &p->s;
     (otherside->s).coord.x = (p->s).coord.x - PIXEL(1);
     (otherside->s).coord.y = (p->s).coord.y;
-    if ((gOverworld.unk_1c8.id & 0x7F) == STAGE_OCEAN) {
+    if ((gOverworld.id & 0x7F) == STAGE_OCEAN) {
       wStaticMotionPalIDs[SM018_DOOR_2D_BLUE] = 10;
     }
     LOAD_STATIC_GRAPHIC(SM018_DOOR_2D_BLUE);

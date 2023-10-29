@@ -27,7 +27,7 @@ static void initEFacility(struct Coord* _ UNUSED) {
   gOverworld.work.energyFacility.unk_016 = 0;
   gOverworld.work.energyFacility.unk_012[0] = 0;
   gOverworld.work.energyFacility.unk_012[1] = 0;
-  gOverworld.unk_1c8.work[0] = 0;
+  gOverworld.state[0] = 0;
   gOverworld.work.energyFacility.unk_004 = 0;
   gOverworld.work.energyFacility.unk_008 = 0;
 }
@@ -126,7 +126,7 @@ static void FUN_08011dd8(struct Coord* _ UNUSED) {
     gOverworld.work.energyFacility.unk_00c[1] = 0;
   }
 
-  if (gOverworld.unk_1c8.work[0] == 0) {
+  if (gOverworld.state[0] == 0) {
     gOverworld.work.energyFacility.unk_004++;
     if (gOverworld.work.energyFacility.unk_004 == 0xce200) {
       gOverworld.work.energyFacility.unk_004 = 0;
@@ -872,13 +872,13 @@ INCASM("asm/stage_gfx/energy_facility.inc");
 
 // ------------------------------------------------------------------------------------------------------------------------------------
 
-extern const struct ScreenLayout sScreenMap1;
+extern const struct ScreenMap sScreenMap1;
 INCBIN_STATIC(sScreenMap1, "data/stage/energy_facility/layer1.bin");  // ./tools/dumper/bin.ts ./baserom.gba 0x08341e6c 0x08341ff0 ./data/stage/energy_facility/layer1.bin
 
-extern const struct ScreenLayout sScreenMap2;
+extern const struct ScreenMap sScreenMap2;
 INCBIN_STATIC(sScreenMap2, "data/stage/energy_facility/layer2.bin");  // ./tools/dumper/bin.ts ./baserom.gba 0x08341ff0 0x08342174 ./data/stage/energy_facility/layer2.bin
 
-extern const struct ScreenLayout sScreenMap3;
+extern const struct ScreenMap sScreenMap3;
 INCBIN_STATIC(sScreenMap3, "data/stage/energy_facility/layer3.bin");  // ./tools/dumper/bin.ts ./baserom.gba 0x08342174 0x083422f8 ./data/stage/energy_facility/layer3.bin
 
 extern const tileset_ofs_t sTilesetOffset[];

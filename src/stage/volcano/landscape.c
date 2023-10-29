@@ -5,6 +5,8 @@
 #include "overworld.h"
 #include "solid.h"
 
+#define STAGE (gOverworld.work.volcano)
+
 static const struct Coord sLavaRiverPlatformCoords[2][6];
 
 struct Solid* CreateVolcanoCoffin(u8 n, s32 x, s32 y);
@@ -23,72 +25,72 @@ static const StageFunc sStageRoutine[4] = {
 };
 
 static void initVolcano(struct Coord* _ UNUSED) {
-  gOverworld.work.volcano.unk_000 = 0;
-  gOverworld.work.volcano.unk_004 = 0;
-  gOverworld.work.volcano.coffins[0] = NULL;
-  gOverworld.work.volcano.coffins[1] = NULL;
+  STAGE.unk_000 = 0;
+  STAGE.unk_004 = 0;
+  STAGE.coffins[0] = NULL;
+  STAGE.coffins[1] = NULL;
 }
 
 static void volcano_0800be3c(struct Coord* c) {
-  if ((gOverworld.unk_1c8.tilesets[0] >> 8 == STAGE_VOLCANO) && ((gOverworld.unk_1c8.tilesets[0] & 0xFF) == 0)) {
-    if ((gOverworld.work.volcano.unk_000 & (1 << 0)) == 0) {
-      gOverworld.work.volcano.unk_000 |= 1;
+  if ((TILESET_ID(0) == STAGE_VOLCANO) && (TILESET_IDX(0) == 0)) {
+    if ((STAGE.unk_000 & (1 << 0)) == 0) {
+      STAGE.unk_000 |= 1;
       LoadBlink(49, 0);
       LoadBlink(50, 0);
-      gOverworld.work.volcano.unk_001 = 0;
+      STAGE.unk_001 = 0;
     }
     UpdateBlinkMotionState(49);
     UpdateBlinkMotionState(50);
-    gOverworld.work.volcano.unk_001++;
-    if (gOverworld.work.volcano.unk_001 == 45) {
-      gOverworld.work.volcano.unk_001 = 0;
+    STAGE.unk_001++;
+    if (STAGE.unk_001 == 45) {
+      STAGE.unk_001 = 0;
     }
-  } else if (gOverworld.work.volcano.unk_000 & 1) {
-    gOverworld.work.volcano.unk_000 ^= 1;
+  } else if (STAGE.unk_000 & 1) {
+    STAGE.unk_000 ^= 1;
     ClearBlink(49);
     ClearBlink(50);
   }
 
-  if ((gOverworld.unk_1c8.tilesets[1] >> 8 == STAGE_VOLCANO) && ((gOverworld.unk_1c8.tilesets[1] & 0xFF) == 1)) {
-    if ((gOverworld.work.volcano.unk_000 & (1 << 1)) == 0) {
-      gOverworld.work.volcano.unk_000 |= (1 << 1);
+  if ((TILESET_ID(1) == STAGE_VOLCANO) && (TILESET_IDX(1) == 1)) {
+    if ((STAGE.unk_000 & (1 << 1)) == 0) {
+      STAGE.unk_000 |= (1 << 1);
       LoadBlink(60, 0);
     }
     UpdateBlinkMotionState(60);
-  } else if (gOverworld.work.volcano.unk_000 & (1 << 1)) {
-    gOverworld.work.volcano.unk_000 ^= (1 << 1);
+  } else if (STAGE.unk_000 & (1 << 1)) {
+    STAGE.unk_000 ^= (1 << 1);
     ClearBlink(60);
   }
 
-  if ((gOverworld.unk_1c8.tilesets[1] >> 8 == STAGE_VOLCANO) && ((gOverworld.unk_1c8.tilesets[1] & 0xFF) == 2)) {
-    if ((gOverworld.work.volcano.unk_000 & (1 << 2)) == 0) {
-      gOverworld.work.volcano.unk_000 |= (1 << 2);
+  if ((TILESET_ID(1) == STAGE_VOLCANO) && (TILESET_IDX(1) == 2)) {
+    if ((STAGE.unk_000 & (1 << 2)) == 0) {
+      STAGE.unk_000 |= (1 << 2);
       LoadBlink(51, 0);
       LoadBlink(52, 0);
-      gOverworld.work.volcano.unk_002 = 0;
+      STAGE.unk_002 = 0;
     }
     UpdateBlinkMotionState(51);
     UpdateBlinkMotionState(52);
-    gOverworld.work.volcano.unk_002++;
-    if (gOverworld.work.volcano.unk_002 == 16) {
-      gOverworld.work.volcano.unk_002 = 0;
+    STAGE.unk_002++;
+    if (STAGE.unk_002 == 16) {
+      STAGE.unk_002 = 0;
     }
-  } else if (gOverworld.work.volcano.unk_000 & (1 << 2)) {
-    gOverworld.work.volcano.unk_000 ^= (1 << 2);
+  } else if (STAGE.unk_000 & (1 << 2)) {
+    STAGE.unk_000 ^= (1 << 2);
     ClearBlink(51);
     ClearBlink(52);
   }
 
-  if ((gOverworld.unk_1c8.tilesets[0] >> 8 == STAGE_VOLCANO) && ((gOverworld.unk_1c8.tilesets[0] & 0xFF) == 3)) {
-    if ((gOverworld.work.volcano.unk_000 & (1 << 3)) == 0) {
-      gOverworld.work.volcano.unk_000 |= (1 << 3);
+  if ((TILESET_ID(0) == STAGE_VOLCANO) && (TILESET_IDX(0) == 3)) {
+    if ((STAGE.unk_000 & (1 << 3)) == 0) {
+      STAGE.unk_000 |= (1 << 3);
       LoadBlink(50, 0);
       LoadBlink(53, 0);
       LoadBlink(54, 0);
       LoadBlink(55, 0);
       LoadBlink(56, 0);
       LoadBlink(57, 0);
-      gOverworld.work.volcano.unk_001 = 0;
+      STAGE.unk_001 = 0;
     }
     UpdateBlinkMotionState(50);
     UpdateBlinkMotionState(53);
@@ -96,12 +98,12 @@ static void volcano_0800be3c(struct Coord* c) {
     UpdateBlinkMotionState(55);
     UpdateBlinkMotionState(56);
     UpdateBlinkMotionState(57);
-    gOverworld.work.volcano.unk_001++;
-    if (gOverworld.work.volcano.unk_001 == 45) {
-      gOverworld.work.volcano.unk_001 = 0;
+    STAGE.unk_001++;
+    if (STAGE.unk_001 == 45) {
+      STAGE.unk_001 = 0;
     }
-  } else if (gOverworld.work.volcano.unk_000 & (1 << 3)) {
-    gOverworld.work.volcano.unk_000 ^= (1 << 3);
+  } else if (STAGE.unk_000 & (1 << 3)) {
+    STAGE.unk_000 ^= (1 << 3);
     ClearBlink(50);
     ClearBlink(53);
     ClearBlink(54);
@@ -110,73 +112,73 @@ static void volcano_0800be3c(struct Coord* c) {
     ClearBlink(57);
   }
 
-  if ((gOverworld.unk_1c8.tilesets[1] >> 8 == STAGE_VOLCANO) && ((gOverworld.unk_1c8.tilesets[1] & 0xFF) == 4)) {
-    if ((gOverworld.work.volcano.unk_000 & (1 << 4)) == 0) {
-      gOverworld.work.volcano.unk_000 |= (1 << 4);
+  if ((TILESET_ID(1) == STAGE_VOLCANO) && (TILESET_IDX(1) == 4)) {
+    if ((STAGE.unk_000 & (1 << 4)) == 0) {
+      STAGE.unk_000 |= (1 << 4);
       LoadBlink(58, 0);
-      gOverworld.work.volcano.unk_002 = 0;
-      gOverworld.work.volcano.unk_003 = 0;
+      STAGE.unk_002 = 0;
+      STAGE.unk_003 = 0;
     }
     UpdateBlinkMotionState(58);
-    gOverworld.work.volcano.unk_002++;
-    if (gOverworld.work.volcano.unk_002 == 45) {
-      gOverworld.work.volcano.unk_002 = 0;
+    STAGE.unk_002++;
+    if (STAGE.unk_002 == 45) {
+      STAGE.unk_002 = 0;
     }
-    gOverworld.work.volcano.unk_003++;
-    if (gOverworld.work.volcano.unk_003 == 16) {
-      gOverworld.work.volcano.unk_003 = 0;
+    STAGE.unk_003++;
+    if (STAGE.unk_003 == 16) {
+      STAGE.unk_003 = 0;
     }
-  } else if (gOverworld.work.volcano.unk_000 & (1 << 4)) {
-    gOverworld.work.volcano.unk_000 ^= (1 << 4);
+  } else if (STAGE.unk_000 & (1 << 4)) {
+    STAGE.unk_000 ^= (1 << 4);
     ClearBlink(58);
   }
 
-  if ((gOverworld.unk_1c8.tilesets[0] >> 8 == STAGE_VOLCANO) && ((gOverworld.unk_1c8.tilesets[0] & 0xFF) == 5)) {
-    if ((gOverworld.work.volcano.unk_000 & (1 << 5)) == 0) {
-      gOverworld.work.volcano.unk_000 |= (1 << 5);
+  if ((TILESET_ID(0) == STAGE_VOLCANO) && (TILESET_IDX(0) == 5)) {
+    if ((STAGE.unk_000 & (1 << 5)) == 0) {
+      STAGE.unk_000 |= (1 << 5);
       LoadBlink(53, 0);
       LoadBlink(54, 0);
       LoadBlink(56, 0);
       LoadBlink(57, 0);
-      gOverworld.work.volcano.unk_001 = 0;
+      STAGE.unk_001 = 0;
     }
     UpdateBlinkMotionState(53);
     UpdateBlinkMotionState(54);
     UpdateBlinkMotionState(56);
     UpdateBlinkMotionState(57);
-    gOverworld.work.volcano.unk_001++;
-    if (gOverworld.work.volcano.unk_001 == 32) {
-      gOverworld.work.volcano.unk_001 = 0;
+    STAGE.unk_001++;
+    if (STAGE.unk_001 == 32) {
+      STAGE.unk_001 = 0;
     }
-  } else if (gOverworld.work.volcano.unk_000 & (1 << 5)) {
-    gOverworld.work.volcano.unk_000 ^= (1 << 5);
+  } else if (STAGE.unk_000 & (1 << 5)) {
+    STAGE.unk_000 ^= (1 << 5);
     ClearBlink(53);
     ClearBlink(54);
     ClearBlink(56);
     ClearBlink(57);
   }
 
-  if ((gOverworld.unk_1c8.tilesets[0] >> 8 == STAGE_VOLCANO) && ((gOverworld.unk_1c8.tilesets[0] & 0xFF) == 6)) {
-    if ((gOverworld.work.volcano.unk_000 & (1 << 6)) == 0) {
-      gOverworld.work.volcano.unk_000 |= (1 << 6);
+  if ((TILESET_ID(0) == STAGE_VOLCANO) && (TILESET_IDX(0) == 6)) {
+    if ((STAGE.unk_000 & (1 << 6)) == 0) {
+      STAGE.unk_000 |= (1 << 6);
       LoadBlink(59, 0);
     }
     UpdateBlinkMotionState(59);
-  } else if (gOverworld.work.volcano.unk_000 & (1 << 6)) {
-    gOverworld.work.volcano.unk_000 ^= (1 << 6);
+  } else if (STAGE.unk_000 & (1 << 6)) {
+    STAGE.unk_000 ^= (1 << 6);
     ClearBlink(59);
   }
 
-  if (c->x - 0x1E0000U < 0xE1000) {
-    if (gOverworld.work.volcano.coffins[0] == NULL) {
-      gOverworld.work.volcano.coffins[0] = CreateVolcanoCoffin(0, 0x1f3800, 0x1c000);
+  if (c->x - 0x1E0000U < PIXEL(3600)) {
+    if (STAGE.coffins[0] == NULL) {
+      STAGE.coffins[0] = CreateVolcanoCoffin(0, PIXEL(7992), PIXEL(448));
     }
-    if (gOverworld.work.volcano.coffins[1] == NULL) {
-      gOverworld.work.volcano.coffins[1] = CreateVolcanoCoffin(1, 0x20b800, 0x25000);
+    if (STAGE.coffins[1] == NULL) {
+      STAGE.coffins[1] = CreateVolcanoCoffin(1, PIXEL(8376), PIXEL(592));
     }
   } else {
     struct Solid* p;
-    if (p = gOverworld.work.volcano.coffins[0], p != NULL) {
+    if (p = STAGE.coffins[0], p != NULL) {
       (p->s).flags &= ~DISPLAY;
       (p->s).flags &= ~FLIPABLE;
       (p->body).status = 0;
@@ -184,9 +186,9 @@ static void volcano_0800be3c(struct Coord* c) {
       (p->body).invincibleTime = 0;
       (p->s).flags &= ~COLLIDABLE;
       SET_SOLID_ROUTINE(p, ENTITY_DISAPPEAR);
-      gOverworld.work.volcano.coffins[0] = NULL;
+      STAGE.coffins[0] = NULL;
     }
-    if (p = gOverworld.work.volcano.coffins[1], p != NULL) {
+    if (p = STAGE.coffins[1], p != NULL) {
       (p->s).flags &= ~DISPLAY;
       (p->s).flags &= ~FLIPABLE;
       (p->body).status = 0;
@@ -194,40 +196,40 @@ static void volcano_0800be3c(struct Coord* c) {
       (p->body).invincibleTime = 0;
       (p->s).flags &= ~COLLIDABLE;
       SET_SOLID_ROUTINE(p, ENTITY_DISAPPEAR);
-      gOverworld.work.volcano.coffins[1] = NULL;
+      STAGE.coffins[1] = NULL;
     }
   }
 
-  gOverworld.work.volcano.unk_004++;
+  STAGE.unk_004++;
 }
 
 static void volcano_0800c394(struct Coord* _ UNUSED) {
-  if ((gOverworld.unk_1c8.tilesets[0] >> 8 == STAGE_VOLCANO) && ((gOverworld.unk_1c8.tilesets[0] & 0xFF) == 0)) {
-    RequestGraphicTransfer(&(TILESETS(18, 0)[gOverworld.work.volcano.unk_001 / 9]).g, (void*)0x4000);
-    LoadPalette(&(TILESETS(18, 0)[gOverworld.work.volcano.unk_001 / 9]).pal, 0);
+  if ((TILESET_ID(0) == STAGE_VOLCANO) && (TILESET_IDX(0) == 0)) {
+    RequestGraphicTransfer(&(TILESETS(18, 0)[STAGE.unk_001 / 9]).g, (void*)0x4000);
+    LoadPalette(&(TILESETS(18, 0)[STAGE.unk_001 / 9]).pal, 0);
   }
 
-  if ((gOverworld.unk_1c8.tilesets[1] >> 8 == STAGE_VOLCANO) && ((gOverworld.unk_1c8.tilesets[1] & 0xFF) == 2)) {
-    RequestGraphicTransfer(&(TILESETS(18, 5)[gOverworld.work.volcano.unk_002 / 4]).g, (void*)0x4000);
-    LoadPalette(&(TILESETS(18, 5)[gOverworld.work.volcano.unk_002 / 4]).pal, 0);
+  if ((TILESET_ID(1) == STAGE_VOLCANO) && (TILESET_IDX(1) == 2)) {
+    RequestGraphicTransfer(&(TILESETS(18, 5)[STAGE.unk_002 / 4]).g, (void*)0x4000);
+    LoadPalette(&(TILESETS(18, 5)[STAGE.unk_002 / 4]).pal, 0);
   }
 
-  if ((gOverworld.unk_1c8.tilesets[0] >> 8 == STAGE_VOLCANO) && ((gOverworld.unk_1c8.tilesets[0] & 0xFF) == 3)) {
-    RequestGraphicTransfer(&(TILESETS(18, 0)[gOverworld.work.volcano.unk_001 / 9]).g, (void*)0x4000);
-    LoadPalette(&(TILESETS(18, 0)[gOverworld.work.volcano.unk_001 / 9]).pal, 0);
+  if ((TILESET_ID(0) == STAGE_VOLCANO) && (TILESET_IDX(0) == 3)) {
+    RequestGraphicTransfer(&(TILESETS(18, 0)[STAGE.unk_001 / 9]).g, (void*)0x4000);
+    LoadPalette(&(TILESETS(18, 0)[STAGE.unk_001 / 9]).pal, 0);
   }
 
-  if ((gOverworld.unk_1c8.tilesets[1] >> 8 == STAGE_VOLCANO) && ((gOverworld.unk_1c8.tilesets[1] & 0xFF) == 4)) {
-    RequestGraphicTransfer(&(TILESETS(18, 9)[gOverworld.work.volcano.unk_002 / 9]).g, (void*)0x4000);
-    LoadPalette(&(TILESETS(18, 9)[gOverworld.work.volcano.unk_002 / 9]).pal, 0);
+  if ((TILESET_ID(1) == STAGE_VOLCANO) && (TILESET_IDX(1) == 4)) {
+    RequestGraphicTransfer(&(TILESETS(18, 9)[STAGE.unk_002 / 9]).g, (void*)0x4000);
+    LoadPalette(&(TILESETS(18, 9)[STAGE.unk_002 / 9]).pal, 0);
 
-    RequestGraphicTransfer(&(TILESETS(18, 14)[gOverworld.work.volcano.unk_003 / 4]).g, (void*)0x4000);
-    LoadPalette(&(TILESETS(18, 14)[gOverworld.work.volcano.unk_003 / 4]).pal, 0);
+    RequestGraphicTransfer(&(TILESETS(18, 14)[STAGE.unk_003 / 4]).g, (void*)0x4000);
+    LoadPalette(&(TILESETS(18, 14)[STAGE.unk_003 / 4]).pal, 0);
   }
 
-  if ((gOverworld.unk_1c8.tilesets[0] >> 8 == STAGE_VOLCANO) && ((gOverworld.unk_1c8.tilesets[0] & 0xFF) == 5)) {
-    RequestGraphicTransfer(&(TILESETS(18, 25)[gOverworld.work.volcano.unk_001 / 8]).g, (void*)0x4000);
-    LoadPalette(&(TILESETS(18, 25)[gOverworld.work.volcano.unk_001 / 8]).pal, 0);
+  if ((TILESET_ID(0) == STAGE_VOLCANO) && (TILESET_IDX(0) == 5)) {
+    RequestGraphicTransfer(&(TILESETS(18, 25)[STAGE.unk_001 / 8]).g, (void*)0x4000);
+    LoadPalette(&(TILESETS(18, 25)[STAGE.unk_001 / 8]).pal, 0);
   }
 }
 
@@ -343,7 +345,7 @@ static void LayerUpdate_Volcano_4(struct StageLayer* l, const struct Stage* stag
   }
 }
 
-void CreateVolcanoBomb(s32 x, s32 y);
+struct Enemy* CreateVolcanoBomb(s32 x, s32 y);
 
 WIP static void LayerUpdate_VolcanoEruption(struct StageLayer* l, const struct Stage* stage) {
 #if MODERN
@@ -584,3 +586,5 @@ static const struct Coord sLavaRiverPlatformCoords[2][6] = {
     },
 };
 // clang-format on
+
+#undef STAGE

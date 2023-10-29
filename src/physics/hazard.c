@@ -100,7 +100,7 @@ _0800ACB6:\n\
 WIP s32 CalcPushout_Up(s32 x, s32 y) {
 #if MODERN
   s32 i;
-  for (i = 0; i < gOverworld.unk_1c8.hazardLength; i++) {
+  for (i = 0; i < HAZARD_LENGTH; i++) {
     struct Hazard *b = HAZARD(i);
     const u32 w = (u32)((u16)b->w);
     if ((u32)(x - (b->start).x) + w < (w << 1)) {
@@ -120,7 +120,7 @@ WIP s32 CalcPushout_Up(s32 x, s32 y) {
 WIP s32 CalcPushout_Down(s32 x, s32 y) {
 #if MODERN
   s32 i;
-  for (i = 0; i < gOverworld.unk_1c8.hazardLength; i++) {
+  for (i = 0; i < HAZARD_LENGTH; i++) {
     struct Hazard *b = HAZARD(i);
     const u32 w = (u32)((u16)b->w);
     if ((u32)(x - (b->start).x) + w < (w << 1)) {

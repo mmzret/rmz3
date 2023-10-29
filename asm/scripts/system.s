@@ -8,7 +8,7 @@
 .global Script_MissionFail
 Script_MissionFail: @ 0x0834d0b4
     forcekeyinput 0xFFFF
-    message 7 0 0
+    kill_message
     stop_bgm
     wait SECOND
     message 5 0 0
@@ -26,7 +26,7 @@ Script_MissionFail: @ 0x0834d0b4
 .global Script_MissionFail2
 Script_MissionFail2: @ 0x0834d12c
     forcekeyinput 0xFFFF
-    message 7 0 0
+    kill_message
     stop_bgm
     wait_screeneffect
     normal_screen

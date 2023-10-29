@@ -18,19 +18,21 @@ const sequence: string[] = [];
 const Parser = new _Parser().endianness('little');
 
 const main = async () => {
-  const { args } = await new Command()
+  const { args, options } = await new Command()
     .name('script.ts')
     .version('1.0.0')
     .description(`Dump Zero3 command scripts`)
-    .arguments('<start> <length:number>')
+    .arguments('<start:string>')
+    .option('--max', 'Max command length', { default: 1000 })
     .usage('0x08354908 17')
     .parse(Deno.args);
 
   const rom = Deno.readFileSync('baserom.gba');
   const start = Number(args[0]);
-  const length = args[1];
+  let reachEnd = false;
+  const max = Number(options.max);
 
-  for (let i = 0; i < length; i++) {
+  for (let i = 0; !reachEnd && (i < max); i++) {
     const addr = start + (i * SIZE) - BASE;
     const cmd = rom.subarray(addr, addr + SIZE);
     const args = cmd.subarray(1);
@@ -140,7 +142,7 @@ const main = async () => {
             break;
           }
           case 0x02: {
-            sequence.push(`forcekeyinput 0x${toHex(result.arg3, 8)}`);
+            sequence.push(`forcekeyinput 0x${toHex(result.arg3, 4)}`);
             break;
           }
           default: {
@@ -152,7 +154,11 @@ const main = async () => {
       }
 
       case 0x0B: {
-        sequence.push(`spawn ${result.arg1}, ${result.arg2}, Entity_${toHex(result.arg3, 8).toLowerCase()}`);
+        if (result.arg2 === 0) {
+          sequence.push(`spawn ${result.arg1}, Entity_${toHex(result.arg3, 8).toLowerCase()}`);
+        } else {
+          sequence.push(`spawn ${result.arg1}, Entity_${toHex(result.arg3, 8).toLowerCase()}, ${result.arg2}`);
+        }
         break;
       }
 
@@ -322,7 +328,11 @@ const main = async () => {
             break;
           }
           case 0x03: {
-            sequence.push(`message 3, ${result.arg2}, 0x${toHex(result.arg3, 4)}`);
+            sequence.push(`triumphant_message ${result.arg2}, 0x${toHex(result.arg3, 4)}`);
+            break;
+          }
+          case 0x07: {
+            sequence.push(`kill_message`);
             break;
           }
           default: {
@@ -469,6 +479,7 @@ const main = async () => {
       }
 
       case 0xFF: {
+        reachEnd = true;
         sequence.push(`end`);
         break;
       }

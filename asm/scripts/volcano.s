@@ -2,6 +2,7 @@
 .include "asm/scripts/commands.inc"
 .include "asm/scripts/constants.inc"
 #include "constants/entity.h"
+#include "constants/song.h"
 
     .balign 4
     .section .rodata
@@ -62,7 +63,7 @@ Entity_0834eda8:
 
 Script_0834edb8:
   eventflag 0, 5, 0
-  spawn 0, 0, Entity_0834ed28
+  spawn 0, Entity_0834ed28
   reset_camera Camera_0834ecfc
   lock
   normal_screen
@@ -80,33 +81,33 @@ Script_0834edb8:
   eventflag 1, 0, 0
   indicator 1, 2, 0
   wait 45
-  play_bgm 171
+  play_bgm BGM_VOLCANO
   wait_indicator_end
   release
   resume 0
   end
 
 Script_0834ee78:
-  spawn 0, 0, Entity_0834ed28
+  spawn 0, Entity_0834ed28
   reset_camera Camera_0834ecfc
   lock
   normal_screen
   wait_screeneffect
   indicator 1, 2, 0
   wait 45
-  play_bgm 171
+  play_bgm BGM_VOLCANO
   wait_indicator_end
   release
   resume 0
   end
 
 Script_0834eed8:
-  spawn 0, 0, Entity_0834ed28
+  spawn 0, Entity_0834ed28
   reset_camera Camera_0834ecfc
   lock
   screeneffect 9
   wait_screeneffect
-  play_bgm 171
+  play_bgm BGM_VOLCANO
   indicator 1, 0, 0
   wait_indicator_end
   release
@@ -114,12 +115,12 @@ Script_0834eed8:
   end
 
 Script_0834ef30:
-  spawn 0, 0, Entity_0834ed38
+  spawn 0, Entity_0834ed38
   reset_camera Camera_0834ecfc
   lock
   screeneffect 9
   wait_screeneffect
-  play_bgm 171
+  play_bgm BGM_VOLCANO
   indicator 1, 0, 0
   wait_indicator_end
   release
@@ -127,12 +128,12 @@ Script_0834ef30:
   end
 
 Script_0834ef88:
-  spawn 0, 0, Entity_0834ed48
+  spawn 0, Entity_0834ed48
   reset_camera Camera_0834ecfc
   lock
   screeneffect 9
   wait_screeneffect
-  play_bgm 171
+  play_bgm BGM_VOLCANO
   indicator 1, 0, 0
   wait_indicator_end
   release
@@ -140,7 +141,7 @@ Script_0834ef88:
   end
 
 Script_0834efe0:
-  forcekeyinput 0x00000010
+  forcekeyinput DPAD_RIGHT
   pause
   wait 8
   lock
@@ -148,25 +149,25 @@ Script_0834efe0:
   stop_bgm
   wait 120
   release
-  play_bgm 189
+  play_bgm BGM_MIDDLE_BOSS
   resume 1
   end
 
 Script_0834f038:
   lock
   wait 30
-  play_bgm 171
+  play_bgm BGM_VOLCANO
   release
   resume 1
   end
 
 Script_0834f068:
-  spawn 0, 0, Entity_0834ed58
+  spawn 0, Entity_0834ed58
   reset_camera Camera_0834ecfc
   lock
   screeneffect 9
   wait_screeneffect
-  play_bgm 171
+  play_bgm BGM_VOLCANO
   indicator 1, 0, 0
   wait_indicator_end
   release
@@ -174,12 +175,12 @@ Script_0834f068:
   end
 
 Script_0834f0c0:
-  spawn 0, 0, Entity_0834ed68
+  spawn 0, Entity_0834ed68
   reset_camera Camera_0834ecfc
   lock
   screeneffect 9
   wait_screeneffect
-  play_bgm 161
+  play_bgm BGM_GUARDER_ROOM
   indicator 1, 0, 0
   wait_indicator_end
   release
@@ -187,12 +188,12 @@ Script_0834f0c0:
   end
 
 Script_0834f118:
-  play_se 224
-  spawn 3, 0, Entity_0834ed98
-  forcekeyinput 0x00000010
+  play_se SE_UNK_e0
+  spawn 3, Entity_0834ed98
+  forcekeyinput DPAD_RIGHT
   pause
   eventflag 0, 6, 0
-  force 9, 0, 2961408
+  force 9, 0, 11568*PX
   lock
   emotion 0, 0x1000, 0x00FFD800, 0
   wait 75
@@ -201,10 +202,10 @@ Script_0834f118:
   wait 15
   entityflag 3, 0, TRUE
   wait 90
-  spawn 1, 0, Entity_0834eda8
+  spawn 1, Entity_0834eda8
   wait 60
   destroy 3
-  message 3, 0, 1028
+  triumphant_message 0, 0x0404
   message 1, 0, 0x0403
   wait_msgbox_end
   eventflag 1, 0, 0
@@ -219,15 +220,15 @@ Script_0834f118:
   end
 
 Script_0834f208:
-  play_se 224
-  spawn 1, 0, Entity_0834eda8
-  forcekeyinput 0x00000010
+  play_se SE_UNK_e0
+  spawn 1, Entity_0834eda8
+  forcekeyinput DPAD_RIGHT
   pause
   eventflag 0, 6, 0
-  force 9, 0, 2961408
+  force 9, 0, 11568*PX
   lock
   eventflag 1, 0, 0
-  message 3, 0, 1028
+  triumphant_message 0, 0x0404
   entityflag 1, 0, TRUE
   stop_bgm
   wait 120
@@ -239,14 +240,14 @@ Script_0834f208:
   end
 
 Script_0834f298:
-  play_se 224
-  spawn 0, 0, Entity_0834ed78
-  spawn 1, 0, Entity_0834eda8
+  play_se SE_UNK_e0
+  spawn 0, Entity_0834ed78
+  spawn 1, Entity_0834eda8
   reset_camera Camera_0834ecfc
   lock
   normal_screen
   wait_screeneffect
-  message 3, 0, 1028
+  triumphant_message 0, 0x0404
   entityflag 1, 0, TRUE
   wait 120
   warning_indicator
@@ -258,7 +259,7 @@ Script_0834f298:
   end
 
 Script_0834f320:
-  forcekeyinput 0x0000FFFF
+  forcekeyinput 0xFFFF
   stop_bgm
   wait 1
   lock
@@ -272,7 +273,7 @@ Script_0834f320:
   screeneffect 6
   wait_screeneffect
   wait 32
-  fadeout_se 90, 224
+  fadeout_se 90, SE_UNK_e0
   destroy 1
   destroy 0
   cmd20 0, 0, 0
@@ -285,24 +286,24 @@ Script_0834f320:
   end
 
 Script_0834f3e8:
-  spawn 0, 0, Entity_0834ed88
+  spawn 0, Entity_0834ed88
   reset_camera Camera_0834ecfc
   lock
   screeneffect 9
-  play_bgm 171
+  play_bgm BGM_VOLCANO
   release
   resume 0
   end
 
 Script_0834f428:
-  spawn 0, 0, Entity_0834ed28
+  spawn 0, Entity_0834ed28
   reset_camera Camera_0834ecfc
   lock
   wait 1
   visible 0, FALSE
   normal_screen
   wait_screeneffect
-  play_bgm 171
+  play_bgm BGM_VOLCANO
   indicator 1, 0, 0
   wait 15
   force 6, 0, 0
@@ -312,17 +313,17 @@ Script_0834f428:
   end
 
 Script_0834f4a0:
-  play_se 224
-  forcekeyinput 0x0000FFFF
+  play_se SE_UNK_e0
+  forcekeyinput 0xFFFF
   stop_bgm
   pause
-  force 9, 0, 2979840
+  force 9, 0, 11640*PX
   lock
   wait 16
   force 4, 0, 0
   wait 30
   force 5, 0, 0
-  fadeout_se 120, 224
+  fadeout_se 120, SE_UNK_e0
   wait 60
   blackout_screen
   wait_screeneffect
@@ -333,6 +334,8 @@ Script_0834f4a0:
   end
 
 @;@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+
+.balign 4, 0
 
 .global gVolcanoScriptList
 gVolcanoScriptList: @ 0x0834f538

@@ -1,6 +1,7 @@
 #include "collision.h"
 #include "global.h"
 #include "overworld.h"
+#include "physics.h"
 #include "weapon.h"
 #include "zero.h"
 

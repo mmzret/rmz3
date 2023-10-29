@@ -2,6 +2,8 @@
 #include "global.h"
 #include "overworld.h"
 
+#define STAGE (gOverworld.work.weilLabo)
+
 static void initWeilLabo(struct Coord* _ UNUSED);
 static void FUN_08015010(struct Coord* _ UNUSED);
 static void nop_08015244(struct Coord* _ UNUSED);
@@ -15,28 +17,28 @@ static const StageFunc sStageRoutine[4] = {
 };
 
 static void initWeilLabo(struct Coord* _ UNUSED) {
-  gOverworld.work.weilLabo.unk_000 = 0;
-  gOverworld.unk_1c8.work[2] = 0;
-  gOverworld.unk_1c8.work[3] = 0;
-  gOverworld.unk_1c8.work[0] = 0;
-  gOverworld.unk_1c8.work[1] = 0;
-  gOverworld.work.weilLabo.unk_00c = 0;
-  gOverworld.work.weilLabo.unk_010.x = 0x1dd000;
-  gOverworld.work.weilLabo.unk_010.y = 0x55000;
-  gOverworld.work.weilLabo.unk_018 = 0;
-  gOverworld.work.weilLabo.unk_01c = 0;
-  gOverworld.work.weilLabo.unk_020 = 0;
-  gOverworld.work.weilLabo.unk_024.x = 0x1dd000;
-  gOverworld.work.weilLabo.unk_024.y = 0x55000;
-  gOverworld.work.weilLabo.unk_02c.x = 0x1dd000;
-  gOverworld.work.weilLabo.unk_02c.y = 0x55000;
-  gOverworld.work.weilLabo.unk_008 = 0;
+  STAGE.unk_000 = 0;
+  gOverworld.state[2] = 0;
+  gOverworld.state[3] = 0;
+  gOverworld.state[0] = 0;
+  gOverworld.state[1] = 0;
+  STAGE.unk_00c = 0;
+  STAGE.unk_010.x = PIXEL(7632);
+  STAGE.unk_010.y = PIXEL(1360);
+  STAGE.unk_018 = 0;
+  STAGE.unk_01c = 0;
+  STAGE.unk_020 = 0;
+  STAGE.unk_024.x = PIXEL(7632);
+  STAGE.unk_024.y = PIXEL(1360);
+  STAGE.unk_02c.x = PIXEL(7632);
+  STAGE.unk_02c.y = PIXEL(1360);
+  STAGE.unk_008 = 0;
 }
 
 static void FUN_08015010(struct Coord* _ UNUSED) {
-  if ((gOverworld.unk_1c8.tilesets[0] >> 8 == STAGE_WEILS_LABO) && ((gOverworld.unk_1c8.tilesets[0] & 0xFF) == 0) && (gOverworld.unk_1c8.work[0] == 0)) {
-    if ((gOverworld.work.weilLabo.unk_000 & (1 << 0)) == 0) {
-      gOverworld.work.weilLabo.unk_000 |= (1 << 0);
+  if ((TILESET_ID(0) == STAGE_WEILS_LABO) && (TILESET_IDX(0) == 0) && (gOverworld.state[0] == 0)) {
+    if ((STAGE.unk_000 & (1 << 0)) == 0) {
+      STAGE.unk_000 |= (1 << 0);
       LoadBlink(259, 0);
       LoadBlink(260, 0);
       LoadBlink(261, 0);
@@ -46,17 +48,17 @@ static void FUN_08015010(struct Coord* _ UNUSED) {
     UpdateBlinkMotionState(260);
     UpdateBlinkMotionState(261);
     UpdateBlinkMotionState(262);
-  } else if (gOverworld.work.weilLabo.unk_000 & (1 << 0)) {
-    gOverworld.work.weilLabo.unk_000 ^= (1 << 0);
+  } else if (STAGE.unk_000 & (1 << 0)) {
+    STAGE.unk_000 ^= (1 << 0);
     ClearBlink(259);
     ClearBlink(260);
     ClearBlink(261);
     ClearBlink(262);
   }
 
-  if ((gOverworld.unk_1c8.tilesets[1] >> 8 == STAGE_WEILS_LABO) && ((gOverworld.unk_1c8.tilesets[1] & 0xFF) == 1)) {
-    if ((gOverworld.work.weilLabo.unk_000 & (1 << 1)) == 0) {
-      gOverworld.work.weilLabo.unk_000 |= (1 << 1);
+  if ((TILESET_ID(1) == STAGE_WEILS_LABO) && (TILESET_IDX(1) == 1)) {
+    if ((STAGE.unk_000 & (1 << 1)) == 0) {
+      STAGE.unk_000 |= (1 << 1);
       LoadBlink(263, 0);
       LoadBlink(264, 0);
       LoadBlink(265, 0);
@@ -66,52 +68,52 @@ static void FUN_08015010(struct Coord* _ UNUSED) {
     UpdateBlinkMotionState(264);
     UpdateBlinkMotionState(265);
     UpdateBlinkMotionState(266);
-  } else if (gOverworld.work.weilLabo.unk_000 & (1 << 1)) {
-    gOverworld.work.weilLabo.unk_000 ^= (1 << 1);
+  } else if (STAGE.unk_000 & (1 << 1)) {
+    STAGE.unk_000 ^= (1 << 1);
     ClearBlink(263);
     ClearBlink(264);
     ClearBlink(265);
     ClearBlink(266);
   }
 
-  if ((gOverworld.unk_1c8.tilesets[1] >> 8 == STAGE_WEILS_LABO) && ((gOverworld.unk_1c8.tilesets[1] & 0xFF) == 3) && (gOverworld.unk_1c8.work[0] == 0)) {
-    if ((gOverworld.work.weilLabo.unk_000 & (1 << 2)) == 0) {
-      gOverworld.work.weilLabo.unk_000 |= (1 << 2);
+  if ((TILESET_ID(1) == STAGE_WEILS_LABO) && (TILESET_IDX(1) == 3) && (gOverworld.state[0] == 0)) {
+    if ((STAGE.unk_000 & (1 << 2)) == 0) {
+      STAGE.unk_000 |= (1 << 2);
       LoadBlink(267, 0);
       LoadBlink(268, 0);
     }
     UpdateBlinkMotionState(267);
     UpdateBlinkMotionState(268);
-  } else if (gOverworld.work.weilLabo.unk_000 & (1 << 2)) {
-    gOverworld.work.weilLabo.unk_000 ^= (1 << 2);
+  } else if (STAGE.unk_000 & (1 << 2)) {
+    STAGE.unk_000 ^= (1 << 2);
     ClearBlink(267);
     ClearBlink(268);
   }
 
-  gOverworld.work.weilLabo.unk_008++;
+  STAGE.unk_008++;
 }
 
 static void nop_08015244(struct Coord* _ UNUSED) { return; }
 
 static void exitWeilLabo(struct Coord* _ UNUSED) {
-  ClearBlink(0x103);
-  ClearBlink(0x104);
-  ClearBlink(0x105);
-  ClearBlink(0x106);
-  ClearBlink(0x107);
-  ClearBlink(0x108);
-  ClearBlink(0x109);
-  ClearBlink(0x10a);
-  ClearBlink(0x10b);
-  ClearBlink(0x10c);
-  ClearBlink(0x10d);
-  ClearBlink(0x10e);
+  ClearBlink(259);
+  ClearBlink(260);
+  ClearBlink(261);
+  ClearBlink(262);
+  ClearBlink(263);
+  ClearBlink(264);
+  ClearBlink(265);
+  ClearBlink(266);
+  ClearBlink(267);
+  ClearBlink(268);
+  ClearBlink(269);
+  ClearBlink(270);
 }
 
 // ------------------------------------------------------------------------------------------------------------------------------------
 
 static void LayerUpdate_2(struct StageLayer* l, const struct Stage* _ UNUSED);
-static void FUN_0801534c(struct StageLayer* l UNUSED, const struct Stage* _ UNUSED);
+static void LayerExit_2(struct StageLayer* l UNUSED, const struct Stage* _ UNUSED);
 static void FUN_08015378(struct StageLayer* l, const struct Stage* _ UNUSED);
 static void FUN_08015390(struct StageLayer* l, const struct Stage* _ UNUSED);
 static void FUN_080153cc(struct StageLayer* l, const struct Stage* _ UNUSED);
@@ -143,7 +145,7 @@ static const StageLayerRoutine sLayerRoutine[11] = {
     [2] = {
       [LAYER_UPDATE] = LayerUpdate_2,
       [LAYER_DRAW]   = DrawGeneralStageLayer,
-      [LAYER_EXIT]   = FUN_0801534c,
+      [LAYER_EXIT]   = LayerExit_2,
     },
     [3] = {
       [LAYER_UPDATE] = FUN_08015378,
@@ -224,10 +226,10 @@ static void LayerUpdate_2(struct StageLayer* l, const struct Stage* _ UNUSED) {
 }
 
 // 0x0801534c
-static void FUN_0801534c(struct StageLayer* l UNUSED, const struct Stage* _ UNUSED) {
+static void LayerExit_2(struct StageLayer* l UNUSED, const struct Stage* _ UNUSED) {
   ClearBlink(234);
   gBlendRegBuffer.bldclt = 0;
-  SEA = PIXEL(10240);
+  SEA = MAX_Y;
 }
 
 // 0x08015378
@@ -264,15 +266,17 @@ static void FUN_080153cc(struct StageLayer* l, const struct Stage* _ UNUSED) {
 
 INCASM("asm/stage_gfx/weil_labo.inc");
 
+#undef STAGE
+
 // ------------------------------------------------------------------------------------------------------------------------------------
 
-extern const struct ScreenLayout sScreenMap1;
+extern const struct ScreenMap sScreenMap1;
 INCBIN_STATIC(sScreenMap1, "data/stage/weil_labo/layer1.bin");  // ./tools/dumper/bin.ts ./baserom.gba 0x08346ab0 0x08346c14 ./data/stage/weil_labo/layer1.bin
 
-extern const struct ScreenLayout sScreenMap2;
+extern const struct ScreenMap sScreenMap2;
 INCBIN_STATIC(sScreenMap2, "data/stage/weil_labo/layer2.bin");  // ./tools/dumper/bin.ts ./baserom.gba 0x08346c14 0x08346d58 ./data/stage/weil_labo/layer2.bin
 
-extern const struct ScreenLayout sScreenMap3;
+extern const struct ScreenMap sScreenMap3;
 INCBIN_STATIC(sScreenMap3, "data/stage/weil_labo/layer3.bin");  // ./tools/dumper/bin.ts ./baserom.gba 0x08346d58 0x08346e9c ./data/stage/weil_labo/layer3.bin
 
 extern const tileset_ofs_t sTilesetOffset[];

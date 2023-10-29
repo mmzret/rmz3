@@ -55,14 +55,12 @@ const main = async () => {
 
   // mml
   const size = h - (hdr.mml[0] - BASE);
-  const cmd = `./tools/dumper/byte.ts baserom.gba 0x${toHex(hdr.mml[0], 8)} ${size} -f=u8`;
-  const p = await Deno.run({
-    cmd: cmd.split(
-      ' ',
-    ),
+  const cmd = new Deno.Command('./tools/dumper/mml.ts', {
+    args: [`0x${toHex(hdr.mml[0], 8)}`, `${size}`],
     stdout: 'piped',
   });
-  const mmlData = await (new TextDecoder().decode(await p.output())).trim();
+  const { stdout } = await cmd.output();
+  const mmlData = await (new TextDecoder().decode(stdout)).trim();
   console.log(buildAsm(name, hdr, mmlData));
 };
 
@@ -80,10 +78,12 @@ ${name}_1:
 
 @;@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 
+.balign 4, 0
+
 ${name}:
   .byte	${hdr.trackCount}	@ NumTrks
   .byte	${hdr.blockCount}	@ NumBlks
-  .byte 0x${toHex(hdr.priority, 2)}
+  .byte ${hdr.priority}
   .byte ${hdr.reverb}
   .word voicegroup${toHex(g, 3)}
 `;

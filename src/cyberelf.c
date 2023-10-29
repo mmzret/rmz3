@@ -582,7 +582,7 @@ motion_t GetElfMotion(u8 category) {
 
 // 立ち止まっていると回復するエルフのためのチェック関数
 bool8 CheckPlayerStandStill(struct Zero *z) {
-  if (!(z->last & 0x8000) && ((gOverworld.unk_1c8.id & 0x7F) != STAGE_BASE)) {
+  if (!(z->last & 0x8000) && ((gOverworld.id & 0x7F) != STAGE_BASE)) {
     return TRUE;
   }
   return FALSE;

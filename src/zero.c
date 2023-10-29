@@ -1,10 +1,9 @@
 #include "zero.h"
 
 #include "cyberelf.h"
-#include "entity.h"
-#include "gba/gba.h"
 #include "gfx.h"
 #include "overworld.h"
+#include "physics.h"
 #include "sound.h"
 
 static void appendHazardID(struct Zero *z, u16 target);

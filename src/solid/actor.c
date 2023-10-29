@@ -286,7 +286,7 @@ static void deleteActor(struct Solid* p);
 
 void Actor_Die(struct Solid* p) {
   // clang-format off
-  static SolidFunc const sDeinitalizer[] = {
+  static const SolidFunc sDeinitalizer[] = {
       [0] =  deleteActor,
       [ACTOR_ZERO_WALK] =  deleteActor,
       [ACTOR_CIEL_WALK] =  deleteActor,

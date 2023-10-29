@@ -38,7 +38,6 @@
 		src/stage/sub_arcadia/landscape.o (.text);
 		src/stage/weil_labo/landscape.o (.text);
 		src/stage/resistance_base/landscape.o (.text);
-		src/stage/util.o (.text);
 
 		src/entity.o (.text);
 		src/entity_motion.o (.text);
@@ -211,6 +210,9 @@
 			src/enemy/unk_61.o (.text);
 			src/enemy/shotloid.o (.text);
 			src/enemy/unk_63.o (.text);
+			src/enemy/pantheon_fist.o (.text);
+			src/enemy/shellcrawler.o (.text);
+			src/enemy/cannon_hopper.o (.text);
 
 		src/projectile.o (.text);
       src/projectile/lemon.o (.text);

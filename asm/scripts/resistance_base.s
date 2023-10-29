@@ -1,208 +1,143 @@
+.include "asm/macros.inc"
 .include "asm/scripts/commands.inc"
 .include "asm/scripts/constants.inc"
 #include "constants/song.h"
 #include "constants/entity.h"
+#include "constants/flag.h"
 
   .balign 4
   .section .rodata
 
 Camera_0835bdec: @ 0x0835bdec
-  .byte 3
-  .byte 8
-  .byte 0, 0
-  .4byte 0x0, 0x0
-  .4byte 0x0, 0x0
+  .byte 3, 8, 0, 0
+  .4byte 0*PX, 0*PX
+  .4byte 0*PX, 0*PX
   .2byte 0x0, 0x0, 0x0, 0x0
-  .4byte 0x0, 0x3C0000, 0x0, 0x280000
+  .4byte 0*PX, MAX_X, 0*PX, MAX_Y
 
 Camera_0835be18: @ 0x0835be18
-  .byte 1
-  .byte 8
-  .byte 0, 0
-  .4byte 0x16800, 0x19000
-  .4byte 0x0, 0x0
+  .byte 1, 8, 0, 0
+  .4byte 360*PX, 400*PX
+  .4byte 0*PX, 0*PX
   .2byte 0x0, 0x0, 0x0, 0x0
-  .4byte 0x0, 0x3C0000, 0x0, 0x280000
+  .4byte 0*PX, MAX_X, 0*PX, MAX_Y
 
 Camera_0835be44: @ 0x0835be44
-  .byte 1
-  .byte 8
-  .byte 0, 0
-  .4byte 0x10A800, 0x19000
-  .4byte 0x0, 0x0
+  .byte 1, 8, 0, 0
+  .4byte 4264*PX, 400*PX
+  .4byte 0*PX, 0*PX
   .2byte 0x0, 0x0, 0x0, 0x0
-  .4byte 0x0, 0x3C0000, 0x0, 0x280000
+  .4byte 0*PX, MAX_X, 0*PX, MAX_Y
 
 EntityTemplate_Zero_0835be70: @ 0x0835be70
-  .byte 0
-  .byte 0
-  .byte 0
-  .byte 0
-  .4byte 0x19000, 0x1D000
+  .byte PLAYER, ZERO, 0, 0
+  .4byte 0x19000, 464*PX
   .4byte DIR_LEFT
 
 EntityTemplate_Zero_0835be80: @ 0x0835be80
-  .byte 0
-  .byte 0
-  .byte 0
-  .byte 0
-  .4byte 0xDB000, 0x13000
+  .byte PLAYER, ZERO, 0, 0
+  .4byte 0xDB000, 304*PX
   .4byte DIR_LEFT
 
 EntityTemplate_Ciel_0835be90: @ 0x0835be90
-  .byte SOLID
-  .byte 21
-  .byte ACTOR_SAVE_SELECT_CIEL
-  .byte 0
-  .4byte 0xD8000, 0x13000
+  .byte SOLID, SOLID_SCRIPT_ACTOR, ACTOR_SAVE_SELECT_CIEL, 0
+  .4byte 0xD8000, 304*PX
   .4byte DIR_RIGHT
 
 EntityTemplate_Zero_0835bea0: @ 0x0835bea0
-  .byte 0
-  .byte 0
-  .byte 0
-  .byte 0
-  .4byte 0x16800, 0x1D000
+  .byte PLAYER, ZERO, 0, 0
+  .4byte 360*PX, 464*PX
   .4byte DIR_LEFT
 
 EntityTemplate_0835beb0: @ 0x0835beb0
-  .byte SOLID
-  .byte SOLID_SCRIPT_ACTOR
-  .byte 22
-  .byte 0
-  .4byte 0x11000, 0x1C000
+  .byte SOLID, SOLID_SCRIPT_ACTOR, 22, 0
+  .4byte 0x11000, 448*PX
   .4byte DIR_RIGHT
 
 EntityTemplate_0835bec0: @ 0x0835bec0
-  .byte SOLID
-  .byte SOLID_SCRIPT_ACTOR
-  .byte 22
-  .byte 1
-  .4byte 0x11C00, 0x1C000
+  .byte SOLID, SOLID_SCRIPT_ACTOR, 22, 1
+  .4byte 0x11C00, 448*PX
   .4byte DIR_RIGHT
 
 Entity_Zero_0835bed0: @ 0x0835bed0
-  .byte 0
-  .byte 0
-  .byte 0
-  .byte 1
-  .4byte 0x16800, 0x13000
+  .byte PLAYER, ZERO, 0, 1
+  .4byte 360*PX, 304*PX
   .4byte DIR_LEFT
 
 Entity_0835bee0: @ 0x0835bee0
-  .byte SOLID
-  .byte SOLID_SCRIPT_ACTOR
-  .byte 48
-  .byte 0
-  .4byte 0x10B100, 0x1C000
+  .byte SOLID, SOLID_SCRIPT_ACTOR, 48, 0
+  .4byte 0x10B100, 448*PX
   .4byte DIR_RIGHT
 
 Entity_0835bef0: @ 0x0835bef0
-  .byte SOLID
-  .byte SOLID_SCRIPT_ACTOR
-  .byte 49
-  .byte 0
-  .4byte 0x106000, 0x1C000
+  .byte SOLID, SOLID_SCRIPT_ACTOR, 49, 0
+  .4byte 0x106000, 448*PX
   .4byte DIR_RIGHT
 
 Entity_0835bf00: @ 0x0835bf00
-  .byte SOLID
-  .byte SOLID_SCRIPT_ACTOR
-  .byte 50
-  .byte 0
-  .4byte 0x10CC00, 0x1C000
+  .byte SOLID, SOLID_SCRIPT_ACTOR, 50, 0
+  .4byte 0x10CC00, 448*PX
   .4byte DIR_LEFT
 
 Entity_0835bf10: @ 0x0835bf10
-  .byte 0
-  .byte 0
-  .byte 0
-  .byte 0
-  .4byte 0x19000, 0x1D000
+  .byte PLAYER, ZERO, 0, 0
+  .4byte 0x19000, 464*PX
   .4byte DIR_LEFT
 
 Entity_0835bf20: @ 0x0835bf20
-  .byte 0
-  .byte 0
-  .byte 0
-  .byte 0
-  .4byte 0x17800, 0x1D000
+  .byte PLAYER, ZERO, 0, 0
+  .4byte 0x17800, 464*PX
   .4byte DIR_LEFT
 
 Entity_0835bf30: @ 0x0835bf30
-  .byte SOLID
-  .byte SOLID_SCRIPT_ACTOR
-  .byte 61
-  .byte 0
-  .4byte 0xBD000, 0x26000
+  .byte SOLID, SOLID_SCRIPT_ACTOR, 61, 0
+  .4byte 0xBD000, 608*PX
   .4byte DIR_LEFT
 
 Entity_0835bf40: @ 0x0835bf40
-  .byte SOLID
-  .byte SOLID_SCRIPT_ACTOR
-  .byte 62
-  .byte 0
-  .4byte 0xB6000, 0x26000
+  .byte SOLID, SOLID_SCRIPT_ACTOR, 62, 0
+  .4byte 0xB6000, 608*PX
   .4byte DIR_RIGHT
 
 Entity_0835bf50: @ 0x0835bf50
-  .byte SOLID
-  .byte SOLID_SCRIPT_ACTOR
-  .byte 63
-  .byte 0
-  .4byte 0xB3000, 0x26000
+  .byte SOLID, SOLID_SCRIPT_ACTOR, 63, 0
+  .4byte 0xB3000, 608*PX
   .4byte DIR_RIGHT
 
 Entity_0835bf60: @ 0x0835bf60
-  .byte 0
-  .byte 0
-  .byte 0
-  .byte 0
+  .byte PLAYER, ZERO, 0, 0
   .4byte 0x77000, 0x39000
   .4byte DIR_RIGHT
 
 Entity_0835bf70: @ 0x0835bf70
-  .byte SOLID
-  .byte 21
-  .byte 64
-  .byte 0
-  .4byte 0x1C800, 0x1D000
+  .byte SOLID, SOLID_SCRIPT_ACTOR, 64, 0
+  .4byte 0x1C800, 464*PX
   .4byte DIR_LEFT
 
 Entity_0835bf80: @ 0x0835bf80
-  .byte SOLID
-  .byte 21
-  .byte 64
-  .byte 1
-  .4byte 0x10800, 0x1D000
+  .byte SOLID, SOLID_SCRIPT_ACTOR, 64, 1
+  .4byte 0x10800, 464*PX
   .4byte DIR_RIGHT
 
 Entity_0835bf90: @ 0x0835bf90
-  .byte SOLID
-  .byte 21
-  .byte 64
-  .byte 2
-  .4byte 0x1B400, 0x1D000
+  .byte SOLID, SOLID_SCRIPT_ACTOR, 64, 2
+  .4byte 0x1B400, 464*PX
   .4byte DIR_LEFT
 
 Entity_0835bfa0: @ 0x0835bfa0
-  .byte SOLID
-  .byte 21
-  .byte 64
-  .byte 3
-  .4byte 0x11C00, 0x1D000
+  .byte SOLID, SOLID_SCRIPT_ACTOR, 64, 3
+  .4byte 0x11C00, 464*PX
   .4byte DIR_RIGHT
 
 Entity_0835bfb0: @ 0x0835bfb0
-  .byte SOLID
-  .byte 21
-  .byte 65
-  .byte 0
-  .4byte 0x16800, 0x1C000
+  .byte SOLID, SOLID_SCRIPT_ACTOR, 65, 0
+  .4byte 360*PX, 448*PX
   .4byte DIR_RIGHT
 
+@;@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+
 Script_0835bfc0:
-  spawn 0, 0, EntityTemplate_Zero_0835be70
+  spawn 0, EntityTemplate_Zero_0835be70
   reset_camera Camera_0835bdec
   lock
   screeneffect 9
@@ -213,8 +148,8 @@ Script_0835bfc0:
   end
 
 Script_ContinueGameSaveSelect:
-  spawn 0, 0, EntityTemplate_Zero_0835be80
-  spawn 3, 0, EntityTemplate_Ciel_0835be90
+  spawn 0, EntityTemplate_Zero_0835be80
+  spawn 3, EntityTemplate_Ciel_0835be90
   reset_camera Camera_0835bdec
   lock
   normal_screen
@@ -226,7 +161,7 @@ Script_ContinueGameSaveSelect:
   end
 
 Script_0835c060:
-  spawn 0, 0, EntityTemplate_Zero_0835bea0
+  spawn 0, EntityTemplate_Zero_0835bea0
   reset_camera Camera_0835bdec
   lock
   normal_screen
@@ -242,8 +177,8 @@ Script_ReturnFromStageRun:
   reset_camera Camera_0835be18
   normal_screen
   wait FRAME
-  spawn 3, 0, EntityTemplate_0835beb0
-  spawn 4, 0, EntityTemplate_0835bec0
+  spawn 3, EntityTemplate_0835beb0
+  spawn 4, EntityTemplate_0835bec0
   gimmick 1, 0, 1
   cmd1c 1, 0, 0
   wait_screeneffect
@@ -251,7 +186,7 @@ Script_ReturnFromStageRun:
   wait_msgbox_end
   play_se SE_TENSOU_VOICE
   wait SECOND
-  spawn 0, 1, Entity_Zero_0835bed0
+  spawn 0, Entity_Zero_0835bed0, 1
   lock
   wait FRAME
   force 6, 0, 0
@@ -371,7 +306,7 @@ Script_0835c480:
   force 1, 0, 0
   end_talk
   wait SECOND/4
-  walkto 0x16800
+  walkto 360*PX
   wait SECOND/4
   turn_left 0
   message 1, 0, 0x46
@@ -418,7 +353,7 @@ Script_0835c5b0:
   wait_msgbox_end
   play_se SE_TENSOU_VOICE
   wait SECOND
-  spawn 0, 1, Entity_Zero_0835bed0
+  spawn 0, Entity_Zero_0835bed0, 1
   lock
   wait FRAME
   force 6, 0, 0
@@ -446,7 +381,7 @@ Script_FreeRunTransport:
   force 1, 0, 0
   end_talk
   wait SECOND/4
-  walkto 0x16800
+  walkto 360*PX
   wait SECOND/4
   turn_left 0
   stop_bgm
@@ -482,7 +417,7 @@ Script_0835c7b0:
   gimmick 1, 0, 1
   cmd1c 1, 0, 0
   wait_screeneffect
-  spawn 0, 1, Entity_Zero_0835bed0
+  spawn 0, Entity_Zero_0835bed0, 1
   lock
   wait FRAME
   force 6, 0, 0
@@ -506,8 +441,8 @@ Script_0835c868:
   wait 1
   cmd1c 0, 0, 0
   gimmick 0, 10, 0
-  spawn 3, 0, Entity_0835bee0
-  spawn 4, 0, Entity_0835bef0
+  spawn 3, Entity_0835bee0
+  spawn 4, Entity_0835bef0
   screeneffect 9
   wait_screeneffect
   play_bgm 164
@@ -519,7 +454,7 @@ Script_0835c868:
   message 1, 0, 0x1316
   wait_msgbox_end
   wait 15
-  spawn 5, 0, Entity_0835bf00
+  spawn 5, Entity_0835bf00
   wait 60
   message 1, 0, 0x1317
   wait_msgbox_end
@@ -568,7 +503,7 @@ Script_0835ca60:
   cmd1c 1, 0, 0
   wait 1
   gimmick 0, 17, 0
-  spawn 0, 0, Entity_0835bf10
+  spawn 0, Entity_0835bf10
   reset_camera Camera_0835bdec
   lock
   screeneffect 9
@@ -643,7 +578,7 @@ Script_0835ca60:
   end
 
 Script_0835ccc8:
-  spawn 0, 0, Entity_0835bf20
+  spawn 0, Entity_0835bf20
   lock
   sweep 2, 0, 0
   wait 1
@@ -675,7 +610,7 @@ Script_0835ccc8:
   end
 
 Script_0835cdb8:
-  spawn 0, 0, Entity_0835bf20
+  spawn 0, Entity_0835bf20
   reset_camera Camera_0835bdec
   lock
   normal_screen
@@ -771,7 +706,7 @@ Script_0835cdf0:
   end
 
 Script_0835d098:
-  spawn 0, 0, Entity_0835bf20
+  spawn 0, Entity_0835bf20
   reset_camera Camera_0835bdec
   lock
   normal_screen
@@ -824,11 +759,11 @@ Script_0835d1a8:
 
 Script_0835d208:
   cmd1c 3, 0, 40960
-  gameflag 20, 1
+  gameflag FLAG_BRAIN_CONTROL, TRUE
   destroy 0
   eventflag 0, 44, 0
-  spawn 3, 0, Entity_0835bf30
-  spawn 4, 0, Entity_0835bf40
+  spawn 3, Entity_0835bf30
+  spawn 4, Entity_0835bf40
   wait_screeneffect
   stop_bgm
   wait 15
@@ -843,7 +778,7 @@ Script_0835d208:
   message 1, 0, 0x133D
   wait_msgbox_end
   wait 15
-  spawn 5, 0, Entity_0835bf50
+  spawn 5, Entity_0835bf50
   wait 105
   message 1, 0, 0x133E
   wait_msgbox_end
@@ -875,9 +810,9 @@ Script_0835d208:
   destroy 5
   wait 30
   eventflag 1, 0, 0
-  spawn 0, 0, Entity_0835bf60
+  spawn 0, Entity_0835bf60
   reset_camera Camera_0835bdec
-  forcekeyinput 0x0000FFFF
+  forcekeyinput 0xFFFF
   normal_screen
   wait 1
   release
@@ -886,7 +821,7 @@ Script_0835d208:
   end
 
 Script_0835d3f0:
-  spawn 0, 0, Entity_0835bf60
+  spawn 0, Entity_0835bf60
   reset_camera Camera_0835bdec
   lock
   normal_screen
@@ -901,7 +836,7 @@ Script_0835d438:
   lock
   message 1, 1, 0x1346
   message 2, 1, 0
-  message 7, 0, 0
+  kill_message
   wait_msgbox_end
   stop_bgm
   wait 15
@@ -992,7 +927,7 @@ Script_0835d438:
   wait 15
   message 1, 1, 0x1351
   message 2, 1, 0
-  message 7, 0, 0
+  kill_message
   wait_msgbox_end
   wait 15
   screeneffect 6
@@ -1009,7 +944,7 @@ Script_0835d438:
   message 1, 0, 0x1353
   wait_msgbox_end
   wait 15
-  spawn 3, 0, Entity_0835bf70
+  spawn 3, Entity_0835bf70
   wait 60
   emotion 0, 0x0C00, 0x00FFD800, 0
   wait 75
@@ -1023,7 +958,7 @@ Script_0835d438:
   message 1, 0, 0x1355
   wait_msgbox_end
   wait 15
-  spawn 4, 0, Entity_0835bf80
+  spawn 4, Entity_0835bf80
   wait 60
   message 1, 0, 0x1356
   wait_msgbox_end
@@ -1033,8 +968,8 @@ Script_0835d438:
   message 1, 0, 0x1357
   wait_msgbox_end
   wait 15
-  spawn 5, 0, Entity_0835bf90
-  spawn 6, 0, Entity_0835bfa0
+  spawn 5, Entity_0835bf90
+  spawn 6, Entity_0835bfa0
   wait 75
   message 1, 0, 0x1358
   wait_msgbox_end
@@ -1042,7 +977,7 @@ Script_0835d438:
   message 1, 0, 0x1359
   wait_msgbox_end
   wait 30
-  spawn 7, 0, Entity_0835bfb0
+  spawn 7, Entity_0835bfb0
   wait 150
   play_se 333
   entityflag 3, 0, TRUE
@@ -1126,6 +1061,8 @@ Script_0835dae0:
   wait_msgbox_end
   wait SECOND/4
   end
+
+@;@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 
 .global gResistanceBaseScriptList
 gResistanceBaseScriptList:
