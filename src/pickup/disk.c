@@ -1,7 +1,7 @@
 #include "global.h"
-#include "mapitem.h"
 #include "overworld.h"
 #include "physics.h"
+#include "pickup.h"
 
 /*
   マップ上に存在するアイテムとしてのシークレットディスク
@@ -13,21 +13,21 @@ bool8 CreateSmallNumber(s32 x, s32 y, u8 value);
 
 static void onCollision(struct Body *body, struct Coord *r1 UNUSED, struct Coord *r2 UNUSED);
 
-static void MapDisk_Init(struct MapItem *p);
-static void MapDisk_Update(struct MapItem *p);
-static void MapDisk_Die(struct MapItem *p);
+static void MapDisk_Init(struct Pickup *p);
+static void MapDisk_Update(struct Pickup *p);
+static void MapDisk_Die(struct Pickup *p);
 
 // clang-format off
-const MapItemRoutine gMapDiskRoutine = {
+const PickupRoutine gPickupDiskRoutine = {
     [ENTITY_INIT] =      MapDisk_Init,
     [ENTITY_UPDATE] =    MapDisk_Update,
     [ENTITY_DIE] =       MapDisk_Die,
-    [ENTITY_DISAPPEAR] = DeleteMapItem,
-    [ENTITY_EXIT] =      (MapItemFunc)DeleteEntity,
+    [ENTITY_DISAPPEAR] = DeletePickup,
+    [ENTITY_EXIT] =      (PickupFunc)DeleteEntity,
 };
 // clang-format on
 
-NAKED struct MapItem *CreateMapDisk(u8 diskNo, struct Coord *c, u8 r2) {
+NAKED struct Pickup *CreateMapDisk(u8 diskNo, struct Coord *c, u8 r2) {
   asm(".syntax unified\n\
 	push {r4, r5, r6, r7, lr}\n\
 	mov r7, sl\n\
@@ -44,7 +44,7 @@ NAKED struct MapItem *CreateMapDisk(u8 diskNo, struct Coord *c, u8 r2) {
 	ldr r1, [r1, #4]\n\
 	mov r8, r1\n\
 	mov r6, r8\n\
-	ldr r0, _080E0FBC @ =gMapItemHeaderPtr\n\
+	ldr r0, _080E0FBC @ =gPickupHeaderPtr\n\
 	ldr r0, [r0]\n\
 	bl AllocEntityFirst\n\
 	adds r4, r0, #0\n\
@@ -55,7 +55,7 @@ NAKED struct MapItem *CreateMapDisk(u8 diskNo, struct Coord *c, u8 r2) {
 	movs r2, #0\n\
 	movs r0, #1\n\
 	strb r0, [r1]\n\
-	ldr r1, _080E0FC0 @ =gMapItemFnTable\n\
+	ldr r1, _080E0FC0 @ =gPickupFnTable\n\
 	strb r0, [r4, #9]\n\
 	ldr r0, [r1, #4]\n\
 	ldr r0, [r0]\n\
@@ -80,8 +80,8 @@ NAKED struct MapItem *CreateMapDisk(u8 diskNo, struct Coord *c, u8 r2) {
 	bl FUN_080e1394\n\
 	b _080E0FF2\n\
 	.align 2, 0\n\
-_080E0FBC: .4byte gMapItemHeaderPtr\n\
-_080E0FC0: .4byte gMapItemFnTable\n\
+_080E0FBC: .4byte gPickupHeaderPtr\n\
+_080E0FC0: .4byte gPickupFnTable\n\
 _080E0FC4:\n\
 	adds r0, r7, #0\n\
 	mov r1, r8\n\
@@ -124,7 +124,7 @@ _080E0FFC:\n\
  .syntax divided\n");
 }
 
-static void MapDisk_Init(struct MapItem *p) {
+static void MapDisk_Init(struct Pickup *p) {
   motion_t m;
   u8 *disks = gStageDiskManager.disk;
   const s32 diskID = (p->s).work[0] - 1;
@@ -158,7 +158,7 @@ static void MapDisk_Init(struct MapItem *p) {
   MapDisk_Update(p);
 }
 
-NAKED static void MapDisk_Update(struct MapItem *p) {
+NAKED static void MapDisk_Update(struct Pickup *p) {
   asm(".syntax unified\n\
 	push {r4, r5, r6, lr}\n\
 	adds r4, r0, #0\n\
@@ -220,7 +220,7 @@ _080E1144:\n\
 	movs r0, #0xfb\n\
 	ands r0, r1\n\
 	strb r0, [r4, #0xa]\n\
-	ldr r1, _080E11A0 @ =gMapItemFnTable\n\
+	ldr r1, _080E11A0 @ =gPickupFnTable\n\
 	ldrb r0, [r4, #9]\n\
 	lsls r0, r0, #2\n\
 	adds r0, r0, r1\n\
@@ -233,7 +233,7 @@ _080E1144:\n\
 	bl MapDisk_Die\n\
 	b _080E12FC\n\
 	.align 2, 0\n\
-_080E11A0: .4byte gMapItemFnTable\n\
+_080E11A0: .4byte gPickupFnTable\n\
 _080E11A4:\n\
 	ldrh r0, [r4, #0x12]\n\
 	cmp r0, #0\n\
@@ -264,7 +264,7 @@ _080E11BC:\n\
 	movs r0, #0xfb\n\
 	ands r0, r1\n\
 	strb r0, [r4, #0xa]\n\
-	ldr r1, _080E11F8 @ =gMapItemFnTable\n\
+	ldr r1, _080E11F8 @ =gPickupFnTable\n\
 	ldrb r0, [r4, #9]\n\
 	lsls r0, r0, #2\n\
 	adds r0, r0, r1\n\
@@ -276,7 +276,7 @@ _080E11BC:\n\
 	b _080E12FC\n\
 	.align 2, 0\n\
 _080E11F4: .4byte gStageRun+232\n\
-_080E11F8: .4byte gMapItemFnTable\n\
+_080E11F8: .4byte gPickupFnTable\n\
 _080E11FC:\n\
 	ldrb r6, [r4, #0xd]\n\
 	cmp r6, #0\n\
@@ -415,7 +415,7 @@ _080E1308: .4byte 0xFFFFFC00\n\
  .syntax divided\n");
 }
 
-static void MapDisk_Die(struct MapItem *p) {
+static void MapDisk_Die(struct Pickup *p) {
   const bool8 ok = CreateSmallNumber((p->s).coord.x, (p->s).coord.y, (p->s).work[0]);
   if (ok) {
     PlaySound(SE_GAIN_DISK);
@@ -425,7 +425,7 @@ static void MapDisk_Die(struct MapItem *p) {
 
 // 0x080e1344
 static void onCollision(struct Body *body, struct Coord *r1 UNUSED, struct Coord *r2 UNUSED) {
-  struct MapItem *item = (struct MapItem *)body->parent;
+  struct Pickup *item = (struct Pickup *)body->parent;
   struct CollidableEntity *p = body->enemy->parent;
   if ((p->s).kind == ENTITY_PLAYER) {
     item->z = (struct Zero *)p;

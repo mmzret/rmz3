@@ -145,7 +145,7 @@ _080F9058:
 	ldr r4, _080F91A0 @ =gWeaponHeaderPtr
 	ldr r0, [r4]
 	bl UpdateEntities
-	ldr r0, _080F91A4 @ =gMapItemHeaderPtr
+	ldr r0, _080F91A4 @ =gPickupHeaderPtr
 	mov sb, r0
 	ldr r0, [r0]
 	bl UpdateEntities
@@ -258,7 +258,7 @@ _080F9194: .4byte gSolidHeaderPtr
 _080F9198: .4byte gZakoHeaderPtr
 _080F919C: .4byte 0x0203029C
 _080F91A0: .4byte gWeaponHeaderPtr
-_080F91A4: .4byte gMapItemHeaderPtr
+_080F91A4: .4byte gPickupHeaderPtr
 _080F91A8: .4byte gProjectileHeaderPtr
 _080F91AC: .4byte 0x00000DC4
 _080F91B0: .4byte gVFXHeaderPtr

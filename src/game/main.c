@@ -303,7 +303,7 @@ static void GameLoop_PreOverworld(struct GameState *p) {
   InitProjectileHeader(&p->entityHeaders[ENTITY_PROJECTILE], gProjectiles, 24);
   InitVFXHeader(&p->entityHeaders[ENTITY_VFX], gVFXs, 64);
   InitSolidHeader(&p->entityHeaders[ENTITY_SOLID], gSolids, 22);
-  InitMapItemHeader(&p->entityHeaders[ENTITY_ITEM], gMapItems, 10);
+  InitPickupHeader(&p->entityHeaders[ENTITY_ITEM], gPickups, 10);
   InitElfHeader(&p->entityHeaders[ENTITY_ELF], gElfEntities, 16);
   FUN_080250b8();
   ResetHUD((u16 *)gGameState.bg0);
@@ -381,7 +381,7 @@ WIP static void GameLoop_Overworld(struct GameState *p) {
       UpdateEntities(gZeroHeaderPtr);
       UpdateProjectiles();
       UpdateEntities(gWeaponHeaderPtr);
-      UpdateEntities(gMapItemHeaderPtr);
+      UpdateEntities(gPickupHeaderPtr);
     }
     UpdateHazardEntities(gElfHeaderPtr);
     UpdateVFXs();
@@ -393,7 +393,7 @@ WIP static void GameLoop_Overworld(struct GameState *p) {
       RegisterHitboxes(gZeroHeaderPtr);
       RegisterHitboxes(gProjectileHeaderPtr);
       RegisterHitboxes(gWeaponHeaderPtr);
-      RegisterHitboxes(gMapItemHeaderPtr);
+      RegisterHitboxes(gPickupHeaderPtr);
       RegisterHitboxes(gElfHeaderPtr);
     }
   }
@@ -403,7 +403,7 @@ WIP static void GameLoop_Overworld(struct GameState *p) {
   RunDamageEffect(gBossHeaderPtr);
   RunDamageEffect(gZakoHeaderPtr);
   RunDamageEffect(gZeroHeaderPtr);
-  RunDamageEffect(gMapItemHeaderPtr);
+  RunDamageEffect(gPickupHeaderPtr);
 
   struct TaskManager *tm = &p->taskManager;
   DrawCollidableEntity(gSolidHeaderPtr, tm);
@@ -414,7 +414,7 @@ WIP static void GameLoop_Overworld(struct GameState *p) {
   DrawWeapon(tm);
   DrawEntity(gProjectileHeaderPtr, tm);
   DrawEntity(gVFXHeaderPtr, tm);
-  DrawCollidableEntity(gMapItemHeaderPtr, tm);
+  DrawCollidableEntity(gPickupHeaderPtr, tm);
   DrawHUD(p);
   UpdateTextWindow();
   RunOverworldLoop(p);
@@ -471,7 +471,7 @@ static void GameLoop_OpenMenu(struct GameState *p) {
     DrawWeapon(tm);
     DrawEntity(gProjectileHeaderPtr, tm);
     DrawEntity(gVFXHeaderPtr, tm);
-    DrawCollidableEntity(gMapItemHeaderPtr, tm);
+    DrawCollidableEntity(gPickupHeaderPtr, tm);
     CameraUpdate(TRUE);
     DrawHUD(p);
     UpdateTextWindow();
@@ -535,7 +535,7 @@ WIP static void GameLoop_CloseMenu(struct GameState *p) {
   DrawWeapon(tm);
   DrawEntity(gProjectileHeaderPtr, tm);
   DrawEntity(gVFXHeaderPtr, tm);
-  DrawCollidableEntity(gMapItemHeaderPtr, tm);
+  DrawCollidableEntity(gPickupHeaderPtr, tm);
   CameraUpdate(TRUE);
   DrawHUD(p);
   UpdateTextWindow();

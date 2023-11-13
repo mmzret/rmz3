@@ -171,7 +171,7 @@ EWRAM_DATA s32 s32_020302e8 = 0;
 
 EWRAM_DATA struct EntityHeader* gVFXHeaderPtr = NULL;
 EWRAM_DATA struct EntityHeader* gSolidHeaderPtr = NULL;  // 0x02031460 -> 0x0203A5F0
-EWRAM_DATA struct EntityHeader* gMapItemHeaderPtr = NULL;
+EWRAM_DATA struct EntityHeader* gPickupHeaderPtr = NULL;
 
 EWRAM_DATA struct EntityHeader* gElfHeaderPtr = NULL;
 EWRAM_DATA u8 (*gUnlockedElfPtr)[CYBERELF_LENGTH] = NULL;  // 0x02036ed8 を指す
@@ -189,7 +189,7 @@ EWRAM_DATA struct GameState gGameState = {};
 EWRAM_DATA struct Elf gElfEntities[16] = {};
 EWRAM_DATA struct Zero gZero = {};
 EWRAM_DATA u32 _padding_02037eec = 0;
-EWRAM_DATA struct MapItem gMapItems[10] = {};
+EWRAM_DATA struct Pickup gPickups[10] = {};
 EWRAM_DATA u8 _unused_02038698[2360] = {};
 EWRAM_DATA struct Weapon gWeapons[24] = {};  // 武器というよりはゼロの武器による攻撃
 EWRAM_DATA struct Solid gSolids[22] = {};

@@ -449,7 +449,7 @@ _080EF32C:
 	ldr r0, [r0]
 	adds r1, r4, #0
 	bl DrawEntity
-	ldr r0, _080EF3FC @ =gMapItemHeaderPtr
+	ldr r0, _080EF3FC @ =gPickupHeaderPtr
 	ldr r0, [r0]
 	adds r1, r4, #0
 	bl DrawCollidableEntity
@@ -474,4 +474,4 @@ _080EF3EC: .4byte gBossHeaderPtr
 _080EF3F0: .4byte gZakoHeaderPtr
 _080EF3F4: .4byte gProjectileHeaderPtr
 _080EF3F8: .4byte gVFXHeaderPtr
-_080EF3FC: .4byte gMapItemHeaderPtr
+_080EF3FC: .4byte gPickupHeaderPtr

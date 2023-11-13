@@ -1,6 +1,6 @@
 #include "enemy.h"
 #include "global.h"
-#include "mapitem.h"
+#include "pickup.h"
 #include "reward.h"
 #include "stagerun.h"
 #include "story.h"
@@ -46,7 +46,7 @@ u32 TryDropItem(u32 table, struct Coord *c) {
     }
   }
   if (n != 0) {
-    CreateMapItem(n - 1, c, 0);
+    CreatePickupItem(n - 1, c, 0);
   }
   return n;
 }
@@ -181,7 +181,7 @@ _08024FFA:\n\
 	ands r4, r0\n\
 	cmp r4, #0\n\
 	bne _080250A6\n\
-	ldr r0, _0802507C @ =gMapItemHeaderPtr\n\
+	ldr r0, _0802507C @ =gPickupHeaderPtr\n\
 	ldr r0, [r0]\n\
 	ldrb r2, [r6]\n\
 	movs r1, #1\n\
@@ -210,7 +210,7 @@ _0802506C: .4byte gCurStory\n\
 _08025070: .4byte sEnemyDiskDrops\n\
 _08025074: .4byte gOverworld\n\
 _08025078: .4byte gStageDiskManager\n\
-_0802507C: .4byte gMapItemHeaderPtr\n\
+_0802507C: .4byte gPickupHeaderPtr\n\
 _08025080:\n\
 	movs r1, #0\n\
 	ldrsh r0, [r5, r1]\n\

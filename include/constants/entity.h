@@ -39,7 +39,7 @@
 // VFX.id
 #include "constants/entity/vfx.h"
 
-// MapItem.id
+// Pickup.id
 #include "constants/entity/item.h"
 
 #endif  // GUARD_RMZ3_CONST_ENTITY_H

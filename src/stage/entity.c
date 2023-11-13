@@ -5,8 +5,8 @@
 #include "enemy.h"
 #include "gfx.h"
 #include "global.h"
-#include "mapitem.h"
 #include "overworld.h"
+#include "pickup.h"
 #include "projectile.h"
 #include "solid.h"
 #include "vfx.h"
@@ -1134,10 +1134,10 @@ struct Entity* CreateStageEntity(u8 kind, u8 id) {
     }
 
     case ENTITY_ITEM: {
-      p = AllocEntityFirst(gMapItemHeaderPtr);
+      p = AllocEntityFirst(gPickupHeaderPtr);
       if (p != NULL) {
         p->taskCol = 1;
-        INIT_ITEM_ROUTINE((struct MapItem*)p, id);
+        INIT_ITEM_ROUTINE((struct Pickup*)p, id);
         p->tileNum = 0;
         p->palID = 0;
         p->flags2 |= WHITE_PAINTABLE;
@@ -1242,7 +1242,7 @@ void DeleteStageEntity(struct CollidableEntity* p) {
       (p->body).prevStatus = 0;
       (p->body).invincibleTime = 0;
       (p->s).flags &= ~COLLIDABLE;
-      SET_ITEM_ROUTINE((struct MapItem*)p, ENTITY_DISAPPEAR);
+      SET_ITEM_ROUTINE((struct Pickup*)p, ENTITY_DISAPPEAR);
       break;
     }
 

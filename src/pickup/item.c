@@ -1,25 +1,25 @@
 #include "entity.h"
 #include "global.h"
-#include "mapitem.h"
+#include "pickup.h"
 
 static const struct Collision sCollision;
 static void onCollision(struct Body *body, struct Coord *r1 UNUSED, struct Coord *r2 UNUSED);
 
-static void MapItem_Init(struct MapItem *p);
-static void MapItem_Update(struct MapItem *p);
-static void MapItem_Die(struct MapItem *p);
+static void MapItem_Init(struct Pickup *p);
+static void MapItem_Update(struct Pickup *p);
+static void MapItem_Die(struct Pickup *p);
 
 // clang-format off
-const MapItemRoutine gMapItemRoutine = {
+const PickupRoutine gPickupItemRoutine = {
     [ENTITY_INIT] =      MapItem_Init,
     [ENTITY_UPDATE] =    MapItem_Update,
     [ENTITY_DIE] =       MapItem_Die,
-    [ENTITY_DISAPPEAR] = DeleteMapItem,
-    [ENTITY_EXIT] =      (MapItemFunc)DeleteEntity,
+    [ENTITY_DISAPPEAR] = DeletePickup,
+    [ENTITY_EXIT] =      (PickupFunc)DeleteEntity,
 };
 // clang-format on
 
-NAKED struct MapItem *CreateMapItem(u8 itemID, struct Coord *c, u8 param_3) {
+NAKED struct Pickup *CreatePickupItem(u8 itemID, struct Coord *c, u8 param_3) {
   asm(".syntax unified\n\
 	push {r4, r5, r6, r7, lr}\n\
 	mov r7, sl\n\
@@ -36,7 +36,7 @@ NAKED struct MapItem *CreateMapItem(u8 itemID, struct Coord *c, u8 param_3) {
 	ldr r1, [r1, #4]\n\
 	mov r8, r1\n\
 	mov r7, r8\n\
-	ldr r0, _080E09EC @ =gMapItemHeaderPtr\n\
+	ldr r0, _080E09EC @ =gPickupHeaderPtr\n\
 	ldr r1, [r0]\n\
 	movs r2, #0xa\n\
 	ldrsh r0, [r1, r2]\n\
@@ -45,7 +45,7 @@ NAKED struct MapItem *CreateMapItem(u8 itemID, struct Coord *c, u8 param_3) {
 	movs r0, #0\n\
 	b _080E0A76\n\
 	.align 2, 0\n\
-_080E09EC: .4byte gMapItemHeaderPtr\n\
+_080E09EC: .4byte gPickupHeaderPtr\n\
 _080E09F0:\n\
 	adds r0, r1, #0\n\
 	bl AllocEntityFirst\n\
@@ -57,7 +57,7 @@ _080E09F0:\n\
 	movs r1, #0\n\
 	movs r0, #1\n\
 	strb r0, [r2]\n\
-	ldr r0, _080E0A38 @ =gMapItemFnTable\n\
+	ldr r0, _080E0A38 @ =gPickupFnTable\n\
 	strb r1, [r4, #9]\n\
 	ldr r0, [r0]\n\
 	ldr r0, [r0]\n\
@@ -82,7 +82,7 @@ _080E09F0:\n\
 	bl FUN_08009f6c\n\
 	b _080E0A6A\n\
 	.align 2, 0\n\
-_080E0A38: .4byte gMapItemFnTable\n\
+_080E0A38: .4byte gPickupFnTable\n\
 _080E0A3C:\n\
 	adds r0, r5, #0\n\
 	mov r1, r8\n\
@@ -126,7 +126,7 @@ _080E0A76:\n\
  .syntax divided\n");
 }
 
-NAKED static void MapItem_Init(struct MapItem *p) {
+NAKED static void MapItem_Init(struct Pickup *p) {
   asm(".syntax unified\n\
 	push {r4, r5, r6, lr}\n\
 	adds r6, r0, #0\n\
@@ -166,7 +166,7 @@ _080E0AA0:\n\
 	movs r0, #0xfb\n\
 	ands r0, r1\n\
 	strb r0, [r6, #0xa]\n\
-	ldr r1, _080E0AE8 @ =gMapItemFnTable\n\
+	ldr r1, _080E0AE8 @ =gPickupFnTable\n\
 	ldrb r0, [r6, #9]\n\
 	lsls r0, r0, #2\n\
 	adds r0, r0, r1\n\
@@ -178,7 +178,7 @@ _080E0AA0:\n\
 	b _080E0BFC\n\
 	.align 2, 0\n\
 _080E0AE4: .4byte pZero2\n\
-_080E0AE8: .4byte gMapItemFnTable\n\
+_080E0AE8: .4byte gPickupFnTable\n\
 _080E0AEC:\n\
 	ldr r4, _080E0B40 @ =0x000011E4\n\
 	ldr r1, _080E0B44 @ =gStaticMotionGraphics\n\
@@ -295,7 +295,7 @@ _080E0BDC:\n\
 _080E0BE0:\n\
 	movs r0, #0xf0\n\
 	strb r0, [r6, #0x12]\n\
-	ldr r1, _080E0C08 @ =gMapItemFnTable\n\
+	ldr r1, _080E0C08 @ =gPickupFnTable\n\
 	ldrb r0, [r6, #9]\n\
 	lsls r0, r0, #2\n\
 	adds r0, r0, r1\n\
@@ -312,11 +312,11 @@ _080E0BFC:\n\
 	bx r0\n\
 	.align 2, 0\n\
 _080E0C04: .4byte 0xFFFFFC00\n\
-_080E0C08: .4byte gMapItemFnTable\n\
+_080E0C08: .4byte gPickupFnTable\n\
  .syntax divided\n");
 }
 
-NAKED static void MapItem_Update(struct MapItem *p) {
+NAKED static void MapItem_Update(struct Pickup *p) {
   asm(".syntax unified\n\
 	push {r4, r5, r6, lr}\n\
 	adds r4, r0, #0\n\
@@ -538,7 +538,7 @@ _080E0D94:\n\
 	movs r0, #0xfb\n\
 	ands r0, r1\n\
 	strb r0, [r4, #0xa]\n\
-	ldr r1, _080E0DD0 @ =gMapItemFnTable\n\
+	ldr r1, _080E0DD0 @ =gPickupFnTable\n\
 	ldrb r0, [r4, #9]\n\
 	lsls r0, r0, #2\n\
 	adds r0, r0, r1\n\
@@ -550,7 +550,7 @@ _080E0D94:\n\
 	b _080E0F08\n\
 	.align 2, 0\n\
 _080E0DCC: .4byte pZero2\n\
-_080E0DD0: .4byte gMapItemFnTable\n\
+_080E0DD0: .4byte gPickupFnTable\n\
 _080E0DD4:\n\
 	ldrb r0, [r4, #0x12]\n\
 	cmp r0, #0\n\
@@ -564,7 +564,7 @@ _080E0DD4:\n\
 	cmp r0, r1\n\
 	bls _080E0DFE\n\
 _080E0DEC:\n\
-	ldr r1, _080E0E3C @ =gMapItemFnTable\n\
+	ldr r1, _080E0E3C @ =gPickupFnTable\n\
 	ldrb r0, [r4, #9]\n\
 	lsls r0, r0, #2\n\
 	adds r0, r0, r1\n\
@@ -602,7 +602,7 @@ _080E0DFE:\n\
 	b _080E0E6C\n\
 	.align 2, 0\n\
 _080E0E38: .4byte gStageRun+232\n\
-_080E0E3C: .4byte gMapItemFnTable\n\
+_080E0E3C: .4byte gPickupFnTable\n\
 _080E0E40:\n\
 	ldr r0, [r4, #0x54]\n\
 	ldr r1, [r5]\n\
@@ -714,13 +714,13 @@ _080E0F14: .4byte 0xFFFFFC00\n\
  .syntax divided\n");
 }
 
-static void MapItem_Die(struct MapItem *p) {
+static void MapItem_Die(struct Pickup *p) {
   (p->s).flags &= ~DISPLAY;
   SET_ITEM_ROUTINE(p, ENTITY_EXIT);
 }
 
 static void onCollision(struct Body *body, struct Coord *r1 UNUSED, struct Coord *r2 UNUSED) {
-  struct MapItem *item = (struct MapItem *)body->parent;
+  struct Pickup *item = (struct Pickup *)body->parent;
   struct CollidableEntity *p = body->enemy->parent;
   if ((p->s).kind == ENTITY_PLAYER) {
     item->z = (struct Zero *)p;

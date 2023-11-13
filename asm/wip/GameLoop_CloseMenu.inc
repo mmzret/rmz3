@@ -137,7 +137,7 @@ _080EEEB2:
 	ldr r0, [r0]
 	adds r1, r4, #0
 	bl DrawEntity
-	ldr r0, _080EEFAC @ =gMapItemHeaderPtr
+	ldr r0, _080EEFAC @ =gPickupHeaderPtr
 	ldr r0, [r0]
 	adds r1, r4, #0
 	bl DrawCollidableEntity
@@ -188,7 +188,7 @@ _080EEF9C: .4byte 0x0203029C
 _080EEFA0: .4byte gElfHeaderPtr
 _080EEFA4: .4byte gProjectileHeaderPtr
 _080EEFA8: .4byte gVFXHeaderPtr
-_080EEFAC: .4byte gMapItemHeaderPtr
+_080EEFAC: .4byte gPickupHeaderPtr
 _080EEFB0: .4byte gPaletteManager
 _080EEFB4: .4byte 0x00000402
 _080EEFB8: .4byte 0x00001EDC

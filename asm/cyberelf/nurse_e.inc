@@ -971,7 +971,7 @@ _080E3320:
 	adds r1, #0x54
 	movs r0, #0
 	movs r2, #0
-	bl CreateMapItem
+	bl CreatePickupItem
 _080E332E:
 	ldr r0, [r5, #0x60]
 	adds r1, r0, #0

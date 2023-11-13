@@ -5,7 +5,7 @@
 #include "entity/zero.h"
 #include "global.h"
 
-struct MapItem {
+struct Pickup {
   struct Entity s;
   struct Body body;
   s32 y;
@@ -13,7 +13,7 @@ struct MapItem {
   u8 work[8];
 };  // 196 bytes
 
-typedef void (*MapItemFunc)(struct MapItem*);
-typedef MapItemFunc MapItemRoutine[5];
+typedef void (*PickupFunc)(struct Pickup*);
+typedef PickupFunc PickupRoutine[5];
 
 #endif  // GUARD_RMZ3_ENTITY_MAPITEM_H

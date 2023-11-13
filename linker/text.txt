@@ -369,9 +369,9 @@
       src/solid/sea_level_button.o (.text);
       src/solid/childre_ship.o (.text);
 
-		src/mapitem.o (.text);
-      src/mapitem/item.o (.text);
-      src/mapitem/disk.o (.text);
+		src/pickup.o (.text);
+      src/pickup/item.o (.text);
+      src/pickup/disk.o (.text);
 
 		src/cyberelf.o (.text);
 			src/cyberelf/unk_0.o (.text);

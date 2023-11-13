@@ -231,7 +231,7 @@ _080391CE:\n\
 	adds r1, r5, #0\n\
 	adds r1, #0x64\n\
 	movs r2, #0\n\
-	bl CreateMapItem\n\
+	bl CreatePickupItem\n\
 	adds r0, r4, #1\n\
 	lsls r0, r0, #0x18\n\
 	lsrs r4, r0, #0x18\n\

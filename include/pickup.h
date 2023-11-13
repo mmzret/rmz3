@@ -9,10 +9,10 @@
 #define SET_ITEM_ROUTINE(item, routine)           \
   {                                               \
     u32 tbl, id;                                  \
-    MapItemFunc **r;                              \
-    tbl = (u32)gMapItemFnTable;                   \
+    PickupFunc **r;                               \
+    tbl = (u32)gPickupFnTable;                    \
     id = (((item)->s).id) << 2;                   \
-    r = (MapItemFunc **)(tbl + id);               \
+    r = (PickupFunc **)(tbl + id);                \
                                                   \
     *(u32 *)((item)->s).mode = routine;           \
     ((item)->s).onUpdate = (void *)(*r)[routine]; \
@@ -21,22 +21,22 @@
 #define INIT_ITEM_ROUTINE(item, itemID)               \
   {                                                   \
     u32 tbl;                                          \
-    MapItemFunc **r;                                  \
-    tbl = (u32)gMapItemFnTable;                       \
+    PickupFunc **r;                                   \
+    tbl = (u32)gPickupFnTable;                        \
     ((item)->s).id = itemID;                          \
                                                       \
-    r = (MapItemFunc **)(tbl + (itemID << 2));        \
+    r = (PickupFunc **)(tbl + (itemID << 2));         \
     ((item)->s).onUpdate = (void *)(*r)[ENTITY_INIT]; \
   }
 
-extern const MapItemRoutine *const gMapItemFnTable[2];
+extern const PickupRoutine *const gPickupFnTable[2];
 
-extern const MapItemRoutine gMapItemRoutine;
-extern const MapItemRoutine gMapDiskRoutine;
+extern const PickupRoutine gPickupItemRoutine;
+extern const PickupRoutine gPickupDiskRoutine;
 
-void DeleteMapItem(struct MapItem *p);
+void DeletePickup(struct Pickup *p);
 
-struct MapItem *CreateMapItem(u8 itemID, struct Coord *c, u8 param_3);
-struct MapItem *CreateMapDisk(u8 diskNo, struct Coord *c, u8 r2);
+struct Pickup *CreatePickupItem(u8 itemID, struct Coord *c, u8 param_3);
+struct Pickup *CreateMapDisk(u8 diskNo, struct Coord *c, u8 r2);
 
 #endif  // GUARD_RMZ3_MAP_ITEM_H

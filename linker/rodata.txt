@@ -495,9 +495,9 @@
       src/solid/sea_level_button.o (.rodata);
       src/solid/childre_ship.o (.rodata);
 
-		src/mapitem.o (.rodata);
-      src/mapitem/item.o (.rodata);
-      src/mapitem/disk.o (.rodata);
+		src/pickup.o (.rodata);
+      src/pickup/item.o (.rodata);
+      src/pickup/disk.o (.rodata);
 
 		src/cyberelf.o (.rodata);
       src/cyberelf/unk_0.o (.rodata);

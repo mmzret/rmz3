@@ -61,7 +61,7 @@ static void MinigameLoop_InitMinigame(struct GameState *g) {
   InitProjectileHeader(&g->entityHeaders[ENTITY_PROJECTILE], gProjectiles, 24);
   InitVFXHeader(&g->entityHeaders[ENTITY_VFX], gVFXs, 64);
   InitSolidHeader(&g->entityHeaders[ENTITY_SOLID], gSolids, 22);
-  InitMapItemHeader(&g->entityHeaders[ENTITY_ITEM], gMapItems, 10);
+  InitPickupHeader(&g->entityHeaders[ENTITY_ITEM], gPickups, 10);
   ResetHUD((u16 *)gGameState.bg0);
 
   // Fill by white for damaged entity palette (OBJ13)

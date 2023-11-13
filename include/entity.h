@@ -5,7 +5,7 @@
 #include "entity/elf.h"
 #include "entity/enemy.h"
 #include "entity/entity.h"
-#include "entity/mapitem.h"
+#include "entity/pickup.h"
 #include "entity/projectile.h"
 #include "entity/solid.h"
 #include "entity/vfx.h"
@@ -75,7 +75,7 @@ extern struct EntityHeader *gVFXHeaderPtr;
 extern struct EntityHeader *gProjectileHeaderPtr;
 extern struct EntityHeader *gZakoHeaderPtr;
 extern struct EntityHeader *gElfHeaderPtr;
-extern struct EntityHeader *gMapItemHeaderPtr;
+extern struct EntityHeader *gPickupHeaderPtr;
 extern struct EntityHeader *gWidgetHeaderPtr;
 
 extern struct Zero gZero;
@@ -85,7 +85,7 @@ extern struct Enemy gEnemies[18];
 extern struct Projectile gProjectiles[24];
 extern struct VFX gVFXs[64];
 extern struct Solid gSolids[22];
-extern struct MapItem gMapItems[10];
+extern struct Pickup gPickups[10];
 extern struct Elf gElfEntities[16];
 extern struct Widget gWidgets[64];
 extern u8 gEntityIDGenerator;

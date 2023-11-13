@@ -211,7 +211,7 @@ _080EEA04:
 	ldr r0, _080EEAB8 @ =gWeaponHeaderPtr
 	ldr r0, [r0]
 	bl UpdateEntities
-	ldr r0, _080EEABC @ =gMapItemHeaderPtr
+	ldr r0, _080EEABC @ =gPickupHeaderPtr
 	ldr r0, [r0]
 	bl UpdateEntities
 _080EEA42:
@@ -241,7 +241,7 @@ _080EEA42:
 	ldr r0, _080EEAB8 @ =gWeaponHeaderPtr
 	ldr r0, [r0]
 	bl RegisterHitboxes
-	ldr r0, _080EEABC @ =gMapItemHeaderPtr
+	ldr r0, _080EEABC @ =gPickupHeaderPtr
 	ldr r0, [r0]
 	bl RegisterHitboxes
 	ldr r0, [r4]
@@ -257,7 +257,7 @@ _080EEAAC: .4byte gBossHeaderPtr
 _080EEAB0: .4byte gZakoHeaderPtr
 _080EEAB4: .4byte 0x0203029C
 _080EEAB8: .4byte gWeaponHeaderPtr
-_080EEABC: .4byte gMapItemHeaderPtr
+_080EEABC: .4byte gPickupHeaderPtr
 _080EEAC0: .4byte gElfHeaderPtr
 _080EEAC4: .4byte gProjectileHeaderPtr
 _080EEAC8:
@@ -279,7 +279,7 @@ _080EEACC:
 	mov r8, r3
 	ldr r0, [r3]
 	bl RunDamageEffect
-	ldr r0, _080EEC70 @ =gMapItemHeaderPtr
+	ldr r0, _080EEC70 @ =gPickupHeaderPtr
 	mov sb, r0
 	ldr r0, [r0]
 	bl RunDamageEffect
@@ -455,7 +455,7 @@ _080EEC60: .4byte gSolidHeaderPtr
 _080EEC64: .4byte gBossHeaderPtr
 _080EEC68: .4byte gZakoHeaderPtr
 _080EEC6C: .4byte 0x0203029C
-_080EEC70: .4byte gMapItemHeaderPtr
+_080EEC70: .4byte gPickupHeaderPtr
 _080EEC74: .4byte gElfHeaderPtr
 _080EEC78: .4byte gProjectileHeaderPtr
 _080EEC7C: .4byte gVFXHeaderPtr

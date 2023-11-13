@@ -1,11 +1,11 @@
 #ifndef GUARD_RMZ3_CONST_ENT_ITEM_H
 #define GUARD_RMZ3_CONST_ENT_ITEM_H
 
-// MapItem.id
+// Pickup.id
 #define ITEM_GENERAL 0
 #define ITEM_DISK 1
 
-// ITEM_GENERAL: (MapItem->s).work[0]
+// ITEM_GENERAL: (Pickup->s).work[0]
 #define ITEM_LIFE_S 0
 #define ITEM_LIFE_M 1
 #define ITEM_LIFE_L 2

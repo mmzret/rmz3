@@ -383,7 +383,7 @@ _080DCAE0:
 	adds r1, #0x54
 	movs r0, #4
 	movs r2, #0
-	bl CreateMapItem
+	bl CreatePickupItem
 _080DCB1C:
 	ldrb r0, [r4, #0xd]
 	adds r0, #1

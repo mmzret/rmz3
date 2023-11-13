@@ -1,7 +1,7 @@
 #include "collision.h"
 #include "global.h"
-#include "mapitem.h"
 #include "overworld.h"
+#include "pickup.h"
 #include "solid.h"
 #include "vfx.h"
 
