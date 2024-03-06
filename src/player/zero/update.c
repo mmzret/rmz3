@@ -128,7 +128,7 @@ static void zeroIdle_0802a30c(struct Zero* z) {
 static void zeroIdleStep0(struct Zero* z) {
   struct Zero_b4* b4;
   if ((z->prevPosture == POSTURE_DASH) || (z->prevPosture == POSTURE_SHADOW)) {
-    SetMotion(&z->s, MOTION(DM003_ZERO_DASH, 0x01));
+    SetMotion(&z->s, MOTION(DM003_ZERO_DASH, 1));
   } else {
     SetMotion(&z->s, GetDefaultMotion(z));
   }
@@ -151,7 +151,7 @@ static void zeroIdleStep1(struct Zero* z) {
   bool8 sliped;
   bool8 isIdle = TRUE;
   motion_t m = MOTION_VALUE(z);
-  if (m == MOTION(DM003_ZERO_DASH, 0x01)) {
+  if (m == MOTION(DM003_ZERO_DASH, 1)) {
     if ((z->s).motion.state == MOTION_END) {
       m = GetDefaultMotion(z);
       SetMotion(&z->s, m);
@@ -224,11 +224,11 @@ static void zeroStartWalk0(struct Zero* z) {
   }
 
   if ((z->s).d.x == 0) {
-    SetMotion(&z->s, MOTION(DM002_ZERO_RUN, 0x00));
+    SetMotion(&z->s, MOTION(DM002_ZERO_RUN, 0));
     (z->s).mode[3] = 1;
     zeroStartWalk1(z);
   } else {
-    GotoMotion(&z->s, MOTION(DM002_ZERO_RUN, 0x00), 1, 4);
+    GotoMotion(&z->s, MOTION(DM002_ZERO_RUN, 0), 1, 4);
     (z->s).mode[3] = 2;
     zeroStartWalk2(z);
   }
@@ -236,7 +236,7 @@ static void zeroStartWalk0(struct Zero* z) {
 
 static void zeroStartWalk1(struct Zero* z) {
   motion_t m = MOTION_VALUE(z);
-  if ((m != MOTION(DM002_ZERO_RUN, 0x00)) || ((z->s).motion.duration < 2)) {
+  if ((m != MOTION(DM002_ZERO_RUN, 0)) || ((z->s).motion.duration < 2)) {
     (z->s).mode[3] = 2;
   }
 
@@ -443,7 +443,7 @@ WIP static void initZeroJump(struct Zero* z) {
 
   switch ((z->s).mode[3]) {
     case NORMAL_JUMP: {
-      SetMotion(&z->s, MOTION(DM004_ZERO_AIR, 0x03));
+      SetMotion(&z->s, MOTION(DM004_ZERO_AIR, 3));
       (z->s).d.y = -getZeroJumpingPower(z);
       if (abs((z->s).d.x) < CalcDx(z)) {
         (z->s).d.x = CalcDx(z);
@@ -453,7 +453,7 @@ WIP static void initZeroJump(struct Zero* z) {
     }
 
     case DOUBLE_JUMP: {
-      SetMotion(&z->s, MOTION(DM004_ZERO_AIR, 0x00));
+      SetMotion(&z->s, MOTION(DM004_ZERO_AIR, 0));
       (z->s).d.y = -getZeroRisingDy(z);
       b4 = &z->unk_b4;
       if (b4->blownSpeed != 0) {
@@ -470,7 +470,7 @@ WIP static void initZeroJump(struct Zero* z) {
       FUN_080b388c(&(z->s).coord, ((z->s).flags >> 4) & 1);
       key = &z->zeroInput;
       if (*key & ZERO_INPUT_DASH) {
-        SetMotion(&z->s, MOTION(DM006_ZERO_WALL_AIR, 0x01));
+        SetMotion(&z->s, MOTION(DM006_ZERO_WALL_AIR, 1));
         if ((z->s).flags & X_FLIP) {
           if (*key & DPAD_RIGHT) {
             (z->s).coord.x += PIXEL(16);
@@ -496,7 +496,7 @@ WIP static void initZeroJump(struct Zero* z) {
           b4->shadow = (struct Entity*)CreateAfterImages(&z->s);
         }
       } else {
-        SetMotion(&z->s, MOTION(DM005_ZERO_WALL, 0x01));
+        SetMotion(&z->s, MOTION(DM005_ZERO_WALL, 1));
         if ((z->s).flags & X_FLIP) {
           dx = -CalcDx(z);
         } else {
@@ -579,8 +579,8 @@ NON_MATCH static void zeroNormalJumpRise(struct Zero* z) {
   bool8* dashable;
   metatile_attr_t attr;
   motion_t m = MOTION_VALUE(z);
-  if ((m != MOTION(DM004_ZERO_AIR, 0x03)) && ((z->s).motion.state == MOTION_END)) {
-    GotoMotion(&z->s, MOTION(DM004_ZERO_AIR, 0x03), 1, 4);
+  if ((m != MOTION(DM004_ZERO_AIR, 3)) && ((z->s).motion.state == MOTION_END)) {
+    GotoMotion(&z->s, MOTION(DM004_ZERO_AIR, 3), 1, 4);
   }
 
   dashable = &(z->unk_b4).dashable;
@@ -624,6 +624,7 @@ NON_MATCH static void zeroNormalJumpRise(struct Zero* z) {
   (z->s).coord.y += (z->s).d.y;
   (z->s).d.y += getFallAcceleration(z);
 
+  // Start falling
   attr = PushoutByCeiling(z, &gZeroRanges[z->posture], FALSE);
   if (attr == 0) {
     attr = PushoutByFloor2(z, &gZeroRanges[z->posture], TRUE);
@@ -644,8 +645,8 @@ static void zeroDoubleJumpRise(struct Zero* z) {
   s16 g;
   metatile_attr_t attr;
   motion_t m = MOTION_VALUE(z);
-  if ((m != MOTION(DM004_ZERO_AIR, 0x00)) && ((z->s).motion.state == MOTION_END)) {
-    GotoMotion(&z->s, MOTION(DM004_ZERO_AIR, 0x00), 1, 4);
+  if ((m != MOTION(DM004_ZERO_AIR, 0)) && ((z->s).motion.state == MOTION_END)) {
+    GotoMotion(&z->s, MOTION(DM004_ZERO_AIR, 0), 1, 4);
   }
 
   if (z->zeroInput & ZERO_INPUT_DPAD_LEFT) {
@@ -693,9 +694,9 @@ WIP static void zeroWallJumpRise(struct Zero* z) {
 
   // Dash jump from wall
   motion_t m = MOTION_VALUE(z);
-  if ((m == MOTION(DM005_ZERO_WALL, 0x01)) && ((z->s).motion.cmdIdx == 0) && (z->zeroInput & ZERO_INPUT_DASH)) {
+  if ((m == MOTION(DM005_ZERO_WALL, 1)) && ((z->s).motion.cmdIdx == 0) && (z->zeroInput & ZERO_INPUT_DASH)) {
     struct Zero_b4* b4;
-    GotoMotion(&z->s, MOTION(DM006_ZERO_WALL_AIR, 0x01), 1, 4);
+    GotoMotion(&z->s, MOTION(DM006_ZERO_WALL_AIR, 1), 1, 4);
     if ((z->s).flags & X_FLIP) {
       (z->s).spr.xflip = FALSE;
       (z->s).spr.oam.xflip = FALSE;
@@ -733,12 +734,12 @@ WIP static void zeroWallJumpRise(struct Zero* z) {
     b4 = &(z->unk_b4);
     if (b4->shadow == NULL) {
       if (((flags >> 4) & 1) != (((z->s).flags >> 4) & 1)) {
-        SetMotion(&z->s, MOTION(DM005_ZERO_WALL, 0x02));
+        SetMotion(&z->s, MOTION(DM005_ZERO_WALL, 2));
         (z->s).mode[3] = 0;
       }
 
     } else if (dx != (z->s).d.x) {
-      SetMotion(&z->s, MOTION(DM006_ZERO_WALL_AIR, 0x02));
+      SetMotion(&z->s, MOTION(DM006_ZERO_WALL_AIR, 2));
       (z->s).mode[3] = 0;
     }
   }
@@ -796,6 +797,7 @@ static void zeroRecoilJumpRise(struct Zero* z) {
   (z->s).coord.y += (z->s).d.y;
   (z->s).d.y += getFallAcceleration(z);
 
+  // Start falling
   attr = PushoutByCeiling(z, &gZeroRanges[z->posture], 0);
   if ((0 < (z->s).d.y) || (attr != 0)) {
     (z->s).mode[2] = 2;
@@ -862,11 +864,11 @@ static void zeroJumpFallStep0(struct Zero* z) {
   s32 old, dx;
   if (z->airJumpped == 0) {
     motion_t m = MOTION_VALUE(z);
-    if (m != MOTION(DM004_ZERO_AIR, 0x04)) {
-      SetMotion(&z->s, MOTION(DM004_ZERO_AIR, 0x04));
+    if (m != MOTION(DM004_ZERO_AIR, 4)) {
+      SetMotion(&z->s, MOTION(DM004_ZERO_AIR, 4));
     }
   } else {
-    SetMotion(&z->s, MOTION(DM004_ZERO_AIR, 0x01));
+    SetMotion(&z->s, MOTION(DM004_ZERO_AIR, 1));
   }
 
   old = (z->s).d.x;
@@ -908,7 +910,7 @@ static void zeroJumpFallStep1(struct Zero* z) {
   (z->s).coord.y += (z->s).d.y;
   PushoutByCeiling(z, &gZeroRanges[z->posture], 0);
 
-  // landing
+  // Landing
   if (((!z->unk_b4.softPlatform) && (PushoutByFloor1(z, &gZeroRanges[z->posture], 1) != 0)) && (PushoutByFloor2(z, &gZeroRanges[z->posture], 0) != 0)) {
     (z->s).mode[1] = ZERO_GROUND;
     (z->s).mode[2] = 0;
@@ -1506,9 +1508,9 @@ void FUN_0802c010(struct Zero* z) {
 
   xflip = (((z->s).flags & X_FLIP) != 0);
   if (xflip != z->isRightDir) {
-    SetMotion(&z->s, MOTION(DM050_ZERO_STUN, 0x00));
+    SetMotion(&z->s, MOTION(DM050_ZERO_STUN, 0));
   } else {
-    SetMotion(&z->s, MOTION(DM049_ZERO_STUN, 0x00));
+    SetMotion(&z->s, MOTION(DM049_ZERO_STUN, 0));
   }
 
   (z->s).mode[3] = 1;

@@ -8,6 +8,9 @@ static void ocean_0800cbe8(struct Coord* _ UNUSED);
 static void ocean_0800cfac(struct Coord* _ UNUSED);
 static void exitOcean(struct Coord* _ UNUSED);
 
+static const s32 sOceanSeaLevels[5];
+static const struct Coord sSeaLevelButtonCoords[4];
+
 static const StageFunc sStageRoutine[4] = {
     initOcean,
     ocean_0800cbe8,
@@ -59,7 +62,7 @@ _0800CB9C:\n\
 _0800CB9E:\n\
 	ldr r1, _0800CBD8 @ =0x0002C00C\n\
 	adds r2, r5, r1\n\
-	ldr r1, _0800CBDC @ =0x0833CCDC\n\
+	ldr r1, _0800CBDC @ =sOceanSeaLevels\n\
 	lsls r0, r0, #2\n\
 	adds r0, r0, r1\n\
 	ldr r0, [r0]\n\
@@ -70,7 +73,7 @@ _0800CBAE:\n\
 	lsrs r0, r4, #0x18\n\
 	asrs r4, r4, #0x18\n\
 	lsls r1, r4, #3\n\
-	ldr r2, _0800CBE0 @ =0x0833CD08\n\
+	ldr r2, _0800CBE0 @ =sSeaLevelButtonCoords\n\
 	adds r1, r1, r2\n\
 	bl CreateSeaLevelButton\n\
 	lsls r1, r4, #2\n\
@@ -88,8 +91,8 @@ _0800CBAE:\n\
 	bx r0\n\
 	.align 2, 0\n\
 _0800CBD8: .4byte 0x0002C00C\n\
-_0800CBDC: .4byte 0x0833CCDC\n\
-_0800CBE0: .4byte 0x0833CD08\n\
+_0800CBDC: .4byte sOceanSeaLevels\n\
+_0800CBE0: .4byte sSeaLevelButtonCoords\n\
 _0800CBE4: .4byte 0x0202F22C\n\
  .syntax divided\n");
 }
@@ -389,7 +392,7 @@ _0800CE6C:\n\
 	ldr r2, _0800CF80 @ =gOverworld\n\
 	ldr r0, _0800CF8C @ =0x0002C00C\n\
 	adds r4, r2, r0\n\
-	ldr r0, _0800CF90 @ =0x0833CCDC\n\
+	ldr r0, _0800CF90 @ =sOceanSeaLevels\n\
 	lsls r1, r1, #2\n\
 	adds r1, r1, r0\n\
 	ldr r3, [r4]\n\
@@ -420,7 +423,7 @@ _0800CE86:\n\
 	lsls r0, r0, #1\n\
 	cmp r1, r0\n\
 	bne _0800CEC6\n\
-	ldr r4, _0800CF94 @ =0x0833CCF0\n\
+	ldr r4, _0800CF94 @ =MetatilePatch_0833ccf0\n\
 	movs r0, #0xb6\n\
 	movs r1, #0x34\n\
 	adds r2, r4, #0\n\
@@ -456,7 +459,7 @@ _0800CEC6:\n\
 	cmp r1, r0\n\
 	bne _0800CF0E\n\
 	subs r0, #0xa0\n\
-	ldr r4, _0800CF94 @ =0x0833CCF0\n\
+	ldr r4, _0800CF94 @ =MetatilePatch_0833ccf0\n\
 	movs r1, #0x37\n\
 	adds r2, r4, #0\n\
 	bl PatchMetatileMap\n\
@@ -489,7 +492,7 @@ _0800CF0E:\n\
 	cmp r1, r0\n\
 	bne _0800CF44\n\
 	adds r0, #0x59\n\
-	ldr r2, _0800CFA4 @ =0x0833CCFC\n\
+	ldr r2, _0800CFA4 @ =MetatilePatch_0833ccfc\n\
 	movs r1, #0x38\n\
 	bl PatchMetatileMap\n\
 _0800CF44:\n\
@@ -516,7 +519,7 @@ _0800CF44:\n\
 	cmp r1, r0\n\
 	bne _0800CF7A\n\
 	adds r0, #0xc4\n\
-	ldr r2, _0800CF94 @ =0x0833CCF0\n\
+	ldr r2, _0800CF94 @ =MetatilePatch_0833ccf0\n\
 	movs r1, #0x36\n\
 	bl PatchMetatileMap\n\
 _0800CF7A:\n\
@@ -528,12 +531,12 @@ _0800CF80: .4byte gOverworld\n\
 _0800CF84: .4byte 0x0002D028\n\
 _0800CF88: .4byte gCurStory\n\
 _0800CF8C: .4byte 0x0002C00C\n\
-_0800CF90: .4byte 0x0833CCDC\n\
-_0800CF94: .4byte 0x0833CCF0\n\
+_0800CF90: .4byte sOceanSeaLevels\n\
+_0800CF94: .4byte MetatilePatch_0833ccf0\n\
 _0800CF98: .4byte 0x00000139\n\
 _0800CF9C: .4byte 0x00000137\n\
 _0800CFA0: .4byte 0x0000043A\n\
-_0800CFA4: .4byte 0x0833CCFC\n\
+_0800CFA4: .4byte MetatilePatch_0833ccfc\n\
 _0800CFA8: .4byte 0x00000286\n\
  .syntax divided\n");
 }

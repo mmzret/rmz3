@@ -34,7 +34,7 @@ _0802067A:\n\
 	adds r4, #0x10\n\
 	mov sb, r4\n\
 	ldr r7, _080206F0 @ =gStageScriptList\n\
-	ldr r6, _080206F4 @ =0x0834CFC4\n\
+	ldr r6, _080206F4 @ =u16_ARRAY_0834cfc4\n\
 	adds r5, r2, #4\n\
 _080206A0:\n\
 	lsls r2, r0, #0x10\n\
@@ -73,7 +73,7 @@ _080206A0:\n\
 _080206E8: .4byte gStageRun\n\
 _080206EC: .4byte gCurStory\n\
 _080206F0: .4byte gStageScriptList\n\
-_080206F4: .4byte 0x0834CFC4\n\
+_080206F4: .4byte u16_ARRAY_0834cfc4\n\
 _080206F8:\n\
 	cmp r5, #1\n\
 	bne _08020710\n\
@@ -506,7 +506,7 @@ _08020A68:\n\
 	orrs r1, r0\n\
 	strh r1, [r6, #8]\n\
 	ldr r5, _08020B08 @ =gCurStory\n\
-	ldr r1, _08020B0C @ =0x0834CFC4\n\
+	ldr r1, _08020B0C @ =u16_ARRAY_0834cfc4\n\
 	ldr r4, _08020B10 @ =0x0000017D\n\
 	add r4, r8\n\
 	ldrb r0, [r4]\n\
@@ -553,7 +553,7 @@ _08020AFC: .4byte gCollisionManager\n\
 _08020B00: .4byte 0x0000FFFD\n\
 _08020B04: .4byte 0x0000FFEF\n\
 _08020B08: .4byte gCurStory\n\
-_08020B0C: .4byte 0x0834CFC4\n\
+_08020B0C: .4byte u16_ARRAY_0834cfc4\n\
 _08020B10: .4byte 0x0000017D\n\
 _08020B14: .4byte gStageScriptList\n\
 _08020B18:\n\
@@ -932,7 +932,7 @@ _08020E00:\n\
 	orrs r1, r0\n\
 	strh r1, [r6, #8]\n\
 	ldr r5, _08020E9C @ =gCurStory\n\
-	ldr r1, _08020EA0 @ =0x0834CFC4\n\
+	ldr r1, _08020EA0 @ =u16_ARRAY_0834cfc4\n\
 	ldr r4, _08020EA4 @ =0x0000017D\n\
 	add r4, r8\n\
 	ldrb r0, [r4]\n\
@@ -978,7 +978,7 @@ _08020E90: .4byte gCollisionManager\n\
 _08020E94: .4byte 0x0000FFFD\n\
 _08020E98: .4byte 0x0000FFEF\n\
 _08020E9C: .4byte gCurStory\n\
-_08020EA0: .4byte 0x0834CFC4\n\
+_08020EA0: .4byte u16_ARRAY_0834cfc4\n\
 _08020EA4: .4byte 0x0000017D\n\
 _08020EA8: .4byte gStageScriptList\n\
 _08020EAC:\n\

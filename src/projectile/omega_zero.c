@@ -18,6 +18,9 @@ const ProjectileRoutine gOmegaZeroProjectileRoutine = {
 };
 // clang-format on
 
+static const u8 sOmegaZeroProjectileInitModes[8];
+static const struct Collision gOmegaZeroProjectileCollisions_0836c9c0[41];
+
 NAKED static void OmegaZeroProjectile_Init(struct Projectile *p) {
   asm(".syntax unified\n\
 	push {r4, r5, lr}\n\
@@ -66,8 +69,8 @@ NAKED static void OmegaZeroProjectile_Init(struct Projectile *p) {
 	bx r0\n\
 	.align 2, 0\n\
 _080AE53C: .4byte gProjectileFnTable\n\
-_080AE540: .4byte 0x0836D264\n\
-_080AE544: .4byte 0x0836C9C0\n\
+_080AE540: .4byte sOmegaZeroProjectileInitModes\n\
+_080AE544: .4byte gOmegaZeroProjectileCollisions_0836c9c0\n\
 _080AE548: .4byte nop_080ae4d8\n\
  .syntax divided\n");
 }
@@ -147,7 +150,7 @@ _080AE5CA:\n\
 	adds r1, #0x22\n\
 	movs r0, #5\n\
 	strb r0, [r1]\n\
-	ldr r1, _080AE604 @ =0x0836D26C\n\
+	ldr r1, _080AE604 @ =gOmegaZeroSaberMotions\n\
 	ldrb r0, [r4, #0x11]\n\
 	lsls r0, r0, #1\n\
 	adds r0, r0, r1\n\
@@ -165,7 +168,7 @@ _080AE5CA:\n\
 	orrs r0, r1\n\
 	b _080AE60E\n\
 	.align 2, 0\n\
-_080AE604: .4byte 0x0836D26C\n\
+_080AE604: .4byte gOmegaZeroSaberMotions\n\
 _080AE608:\n\
 	ldrb r1, [r4, #0xa]\n\
 	movs r0, #0xef\n\
@@ -207,7 +210,7 @@ _080AE64C:\n\
 _080AE652:\n\
 	adds r0, r4, #0\n\
 	adds r0, #0x74\n\
-	ldr r1, _080AE6D4 @ =0x0836D28C\n\
+	ldr r1, _080AE6D4 @ =PTR_ARRAY_0836d28c\n\
 	ldrb r2, [r4, #0x11]\n\
 	lsls r2, r2, #2\n\
 	adds r2, r2, r1\n\
@@ -271,7 +274,7 @@ _080AE6CC:\n\
 	pop {r0}\n\
 	bx r0\n\
 	.align 2, 0\n\
-_080AE6D4: .4byte 0x0836D28C\n\
+_080AE6D4: .4byte PTR_ARRAY_0836d28c\n\
 _080AE6D8: .4byte gProjectileFnTable\n\
  .syntax divided\n");
 }
@@ -1777,10 +1780,8 @@ const struct Collision gOmegaZeroProjectileCollisions_0836ce84[5] = {
       special : HALFABLE,
       damage : 3,
       atkType : ATK_SABER,
-      element : 0x00,
       nature : 0x80,
-      comboLv : 0x07,
-      hitzone : 0x00,
+      comboLv : 7,
       remaining : 1,
       layer : 0x00000020,
       range : {-0x1B00, -0x0600, 0x1C00, 0x1000},
@@ -1791,10 +1792,8 @@ const struct Collision gOmegaZeroProjectileCollisions_0836ce84[5] = {
       special : HALFABLE,
       damage : 3,
       atkType : ATK_SABER,
-      element : 0x00,
       nature : 0x80,
-      comboLv : 0x07,
-      hitzone : 0x00,
+      comboLv : 7,
       remaining : 0,
       layer : 0x00000020,
       range : {0x0100, -0x0E00, 0x1C00, 0x0D00},
@@ -1805,10 +1804,8 @@ const struct Collision gOmegaZeroProjectileCollisions_0836ce84[5] = {
       special : HALFABLE,
       damage : 3,
       atkType : ATK_SABER,
-      element : 0x00,
       nature : 0x80,
-      comboLv : 0x04,
-      hitzone : 0x00,
+      comboLv : 4,
       remaining : 1,
       layer : 0x00000020,
       range : {-0x1800, -0x1000, 0x1D00, 0x3900},
@@ -1819,10 +1816,8 @@ const struct Collision gOmegaZeroProjectileCollisions_0836ce84[5] = {
       special : HALFABLE,
       damage : 3,
       atkType : ATK_SABER,
-      element : 0x00,
       nature : 0x80,
-      comboLv : 0x04,
-      hitzone : 0x00,
+      comboLv : 4,
       remaining : 0,
       layer : 0x00000020,
       range : {-0x1100, -0x2900, 0x2000, 0x1500},
@@ -1833,10 +1828,8 @@ const struct Collision gOmegaZeroProjectileCollisions_0836ce84[5] = {
       special : HALFABLE,
       damage : 3,
       atkType : ATK_SABER,
-      element : 0x00,
       nature : 0x80,
-      comboLv : 0x04,
-      hitzone : 0x00,
+      comboLv : 4,
       remaining : 0,
       layer : 0x00000020,
       range : {-0x0D00, -0x2B00, 0x1A00, 0x1100},
@@ -1867,10 +1860,8 @@ const struct Collision gOmegaZeroProjectileCollisions_0836cf1c[12] = {
       special : HALFABLE,
       damage : 4,
       atkType : ATK_SABER,
-      element : 0x00,
       nature : 0x80,
-      comboLv : 0x03,
-      hitzone : 0x00,
+      comboLv : 3,
       remaining : 0,
       layer : 0x00000020,
       range : {0x0F00, -0x0C00, 0x0E00, 0x0800},
@@ -1881,10 +1872,8 @@ const struct Collision gOmegaZeroProjectileCollisions_0836cf1c[12] = {
       special : HALFABLE,
       damage : 4,
       atkType : ATK_SABER,
-      element : 0x00,
       nature : 0x80,
       comboLv : 0x03,
-      hitzone : 0x00,
       remaining : 1,
       layer : 0x00000020,
       range : {-0x0F00, -0x0D00, 0x3A00, 0x2400},
@@ -1895,10 +1884,8 @@ const struct Collision gOmegaZeroProjectileCollisions_0836cf1c[12] = {
       special : HALFABLE,
       damage : 4,
       atkType : ATK_SABER,
-      element : 0x00,
       nature : 0x80,
       comboLv : 0x03,
-      hitzone : 0x00,
       remaining : 0,
       layer : 0x00000020,
       range : {-0x1A00, -0x3000, 0x2100, 0x2200},
@@ -1909,10 +1896,8 @@ const struct Collision gOmegaZeroProjectileCollisions_0836cf1c[12] = {
       special : HALFABLE,
       damage : 4,
       atkType : ATK_SABER,
-      element : 0x00,
       nature : 0x80,
       comboLv : 0x03,
-      hitzone : 0x00,
       remaining : 0,
       layer : 0x00000020,
       range : {-0x1000, -0x3200, 0x0D00, 0x1C00},
@@ -1923,10 +1908,8 @@ const struct Collision gOmegaZeroProjectileCollisions_0836cf1c[12] = {
       special : HALFABLE,
       damage : 1,
       atkType : ATK_SABER,
-      element : 0x00,
       nature : 0x80,
       comboLv : 0x03,
-      hitzone : 0x00,
       remaining : 0,
       layer : 0x00000020,
       range : {0x0F00, -0x0C00, 0x0E00, 0x0800},
@@ -1937,10 +1920,8 @@ const struct Collision gOmegaZeroProjectileCollisions_0836cf1c[12] = {
       special : HALFABLE,
       damage : 1,
       atkType : ATK_SABER,
-      element : 0x00,
       nature : 0x80,
       comboLv : 0x03,
-      hitzone : 0x00,
       remaining : 1,
       layer : 0x00000020,
       range : {-0x0F00, -0x0D00, 0x3A00, 0x2400},
@@ -1951,10 +1932,8 @@ const struct Collision gOmegaZeroProjectileCollisions_0836cf1c[12] = {
       special : HALFABLE,
       damage : 1,
       atkType : ATK_SABER,
-      element : 0x00,
       nature : 0x80,
       comboLv : 0x03,
-      hitzone : 0x00,
       remaining : 0,
       layer : 0x00000020,
       range : {-0x1A00, -0x3000, 0x2100, 0x2200},
@@ -1965,10 +1944,8 @@ const struct Collision gOmegaZeroProjectileCollisions_0836cf1c[12] = {
       special : HALFABLE,
       damage : 1,
       atkType : ATK_SABER,
-      element : 0x00,
       nature : 0x80,
       comboLv : 0x03,
-      hitzone : 0x00,
       remaining : 0,
       layer : 0x00000020,
       range : {-0x1000, -0x3200, 0x0D00, 0x1C00},
@@ -1979,10 +1956,8 @@ const struct Collision gOmegaZeroProjectileCollisions_0836cf1c[12] = {
       special : HALFABLE,
       damage : 1,
       atkType : ATK_SABER,
-      element : 0x00,
       nature : 0x80,
       comboLv : 0x06,
-      hitzone : 0x00,
       remaining : 0,
       layer : 0x00000020,
       range : {0x0F00, -0x0C00, 0x0E00, 0x0800},
@@ -1993,10 +1968,8 @@ const struct Collision gOmegaZeroProjectileCollisions_0836cf1c[12] = {
       special : HALFABLE,
       damage : 1,
       atkType : ATK_SABER,
-      element : 0x00,
       nature : 0x80,
       comboLv : 0x06,
-      hitzone : 0x00,
       remaining : 1,
       layer : 0x00000020,
       range : {-0x0F00, -0x0D00, 0x3A00, 0x2400},
@@ -2007,10 +1980,8 @@ const struct Collision gOmegaZeroProjectileCollisions_0836cf1c[12] = {
       special : HALFABLE,
       damage : 1,
       atkType : 0x00,
-      element : 0x00,
       nature : 0x80,
       comboLv : 0x06,
-      hitzone : 0x00,
       remaining : 0,
       layer : 0x00000001,
       range : {-0x1A00, -0x3000, 0x2100, 0x2200},
@@ -2021,10 +1992,8 @@ const struct Collision gOmegaZeroProjectileCollisions_0836cf1c[12] = {
       special : HALFABLE,
       damage : 1,
       atkType : ATK_SABER,
-      element : 0x00,
       nature : 0x80,
       comboLv : 0x06,
-      hitzone : 0x00,
       remaining : 0,
       layer : 0x00000020,
       range : {-0x1000, -0x3200, 0x0D00, 0x1C00},
@@ -2321,28 +2290,28 @@ static const struct Collision *const PTR_ARRAY_0836d25c[2] = {
 };
 
 // (p->s).work[0] -> (p->s).mode[1]
-const u8 gOmegaZeroProjectileInitModes[8] = {
+static const u8 sOmegaZeroProjectileInitModes[8] = {
     0, 1, 2, 3, 4, 5, 6, 0,
 };
 
 // clang-format off
 const motion_t gOmegaZeroSaberMotions[16] = {
-    MOTION(0x58, 0x00),
-    MOTION(0x59, 0x00),
-    MOTION(0x5A, 0x00),
-    MOTION(0x5B, 0x00),
-    MOTION(0x5C, 0x00),
-    MOTION(0x5C, 0x01),
-    MOTION(0x5C, 0x02),
-    MOTION(0x40, 0x00),
-    MOTION(0x63, 0x00),
-    MOTION(0x62, 0x01),
-    MOTION(0x58, 0x00),
-    MOTION(0x59, 0x00),
-    MOTION(0x5B, 0x00),
-    MOTION(0x59, 0x00),
-    MOTION(0x5A, 0x00),
-    MOTION(0x5B, 0x00),
+    MOTION(DM088_TRIPLE_SLASH_1, 0),
+    MOTION(DM089_TRIPLE_SLASH_2, 0),
+    MOTION(DM090_TRIPLE_SLASH_3, 0),
+    MOTION(DM091_SLUSH_UP, 0),
+    MOTION(DM092_TENRETSUJIN, 0),
+    MOTION(DM092_TENRETSUJIN, 1),
+    MOTION(DM092_TENRETSUJIN, 2),
+    MOTION(DM064_SABER_CHARGE, 0),
+    MOTION(DM099_SABER, 0),
+    MOTION(DM098_SABER_CHARGE, 1),
+    MOTION(DM088_TRIPLE_SLASH_1, 0),
+    MOTION(DM089_TRIPLE_SLASH_2, 0),
+    MOTION(DM091_SLUSH_UP, 0),
+    MOTION(DM089_TRIPLE_SLASH_2, 0),
+    MOTION(DM090_TRIPLE_SLASH_3, 0),
+    MOTION(DM091_SLUSH_UP, 0),
 };
 // clang-format on
 

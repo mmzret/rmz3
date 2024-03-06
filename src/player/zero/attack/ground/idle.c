@@ -205,16 +205,16 @@ static void saber_8(struct Zero* z);
 // 0x0802d374
 void onSaber_GroundIdle(struct Zero* z) {
   // clang-format off
-  static ZeroFunc const gZeroSaberRoutine[] = {
-      handle_saber_input,
-			triple_slash_1st,
-			triple_slash_2nd,
-			triple_slash_3rd,
-			charge_saber_ground,
-			slash_up,
-			throw_blade,
-			split_heavens,
-			saber_8,
+  static ZeroFunc const sRoutines[] = {
+      [0] = handle_saber_input,
+      [1] = triple_slash_1st,
+      [2] = triple_slash_2nd,
+      [3] = triple_slash_3rd,
+      [4] = charge_saber_ground,
+      [5] = slash_up,
+      [6] = throw_blade,
+      [7] = split_heavens,
+      [8] = saber_8,
   };
   // clang-format on
 
@@ -231,7 +231,7 @@ void onSaber_GroundIdle(struct Zero* z) {
   } else {
     (z->restriction).subCharge = TRUE;
   }
-  (gZeroSaberRoutine[(z->unk_b4).attackMode[1]])(z);
+  (sRoutines[(z->unk_b4).attackMode[1]])(z);
 }
 
 // 0x0802d3d0
@@ -324,14 +324,14 @@ WIP static void triple_slash_2nd(struct Zero* z) {
   weapon_t w[4];
 
   if ((z->unk_b4).attackMode[2] == 0) {
-    SetMotion(&z->s, MOTION(DM015_ZERO_SABER_TRIPLE2, 0x00));
+    SetMotion(&z->s, MOTION(DM015_ZERO_SABER_TRIPLE2, 0));
     CreateWeaponSaber(z, SABER_TRIPLE_2);
     (z->unk_b4).attackMode[2]++;
   } else {
     if (IsAttackOK(z, w) && (w[0] == WEAPON_SABER)) {
       z->tripleSlashCounter++;
     }
-    KeepMotion(z, MOTION(DM015_ZERO_SABER_TRIPLE2, 0x00));
+    KeepMotion(z, MOTION(DM015_ZERO_SABER_TRIPLE2, 0));
   }
 
   if (((z->s).motion.cmdIdx >= 4) && (z->tripleSlashCounter > 1)) {
@@ -367,14 +367,14 @@ static void triple_slash_3rd(struct Zero* z) {
   weapon_t w[4];
 
   if ((z->unk_b4).attackMode[2] == 0) {
-    SetMotion(&z->s, MOTION(DM016_ZERO_SABER_TRIPLE3, 0x00));
+    SetMotion(&z->s, MOTION(DM016_ZERO_SABER_TRIPLE3, 0));
     CreateWeaponSaber(z, SABER_TRIPLE_3);
     (z->unk_b4).attackMode[2]++;
   } else {
     if (IsAttackOK(z, w) && (w[0] == WEAPON_SABER)) {
       z->tripleSlashCounter++;
     }
-    KeepMotion(z, MOTION(DM016_ZERO_SABER_TRIPLE3, 0x00));
+    KeepMotion(z, MOTION(DM016_ZERO_SABER_TRIPLE3, 0));
   }
 
   if ((z->s).motion.cmdIdx >= 6) {
@@ -400,15 +400,15 @@ static void triple_slash_3rd(struct Zero* z) {
 
 void charge_saber_ground(struct Zero* z) {
   if ((z->unk_b4).attackMode[2] == 0) {
-    SetMotion(&z->s, MOTION(DM020_ZERO_SABER_CHARGE, 0x00));
+    SetMotion(&z->s, MOTION(DM020_ZERO_SABER_CHARGE, 0));
     CreateWeaponSaber(z, SABER_CHARGE);
     (z->unk_b4).attackMode[2]++;
 
   } else {
     if ((z->restriction).b6) {
-      GotoMotion(&z->s, MOTION(DM020_ZERO_SABER_CHARGE, 0x00), z->motionCmdIdx, z->motionDuration);
+      GotoMotion(&z->s, MOTION(DM020_ZERO_SABER_CHARGE, 0), z->motionCmdIdx, z->motionDuration);
     } else {
-      KeepMotion(z, MOTION(DM020_ZERO_SABER_CHARGE, 0x00));
+      KeepMotion(z, MOTION(DM020_ZERO_SABER_CHARGE, 0));
     }
   }
 
@@ -545,11 +545,11 @@ static void split_heavens(struct Zero* z) {
   struct Zero_b4* b4 = &(z->unk_b4);
 
   if ((z->unk_b4).attackMode[2] == 0) {
-    SetMotion(&z->s, MOTION(DM018_ZERO_SABER_TENRETSUJIN, 0x00));
+    SetMotion(&z->s, MOTION(DM018_ZERO_SABER_TENRETSUJIN, 0));
     (z->unk_b4).attackMode[2]++;
 
   } else {
-    KeepMotion(z, MOTION(DM018_ZERO_SABER_TENRETSUJIN, 0x00));
+    KeepMotion(z, MOTION(DM018_ZERO_SABER_TENRETSUJIN, 0));
     if (((z->unk_b4).attackMode[2] == 1) && ((z->s).motion.duration < 2)) {
       if ((b4->status).element == ELEMENT_FLAME) {
         CreateWeaponSaber(z, SABER_TENRETUJIN_FIRE);
@@ -572,14 +572,14 @@ static void split_heavens(struct Zero* z) {
 static void saber_8(struct Zero* z) {
   motion_t m;
   if ((z->unk_b4).attackMode[2] == 0) {
-    SetMotion(&z->s, MOTION(DM027_ZERO_SABER_SMASH, 0x01));
+    SetMotion(&z->s, MOTION(DM027_ZERO_SABER_SMASH, 1));
     (z->unk_b4).attackMode[2]++;
   }
 
-  KeepMotion(z, MOTION(DM027_ZERO_SABER_SMASH, 0x01));
+  KeepMotion(z, MOTION(DM027_ZERO_SABER_SMASH, 1));
   m = MOTION_VALUE(z);
-  if (m != MOTION(DM027_ZERO_SABER_SMASH, 0x01)) {
-    GotoMotion(&z->s, MOTION(DM027_ZERO_SABER_SMASH, 0x01), z->motionCmdIdx, z->motionDuration);
+  if (m != MOTION(DM027_ZERO_SABER_SMASH, 1)) {
+    GotoMotion(&z->s, MOTION(DM027_ZERO_SABER_SMASH, 1), z->motionCmdIdx, z->motionDuration);
   }
 
   if ((z->s).motion.state == MOTION_END) {
@@ -609,19 +609,19 @@ void FUN_080325e8(struct Zero* z, motion_t m);
 // 0x0802da20
 void recoilAttack(struct Zero* z) {
   // clang-format off
-  static ZeroFunc const routine[] = {
-      handle_rod_input,
-      rod_horizontal0,
-      rod_horizontal1,
-      rod_up0,
-      rod_up1,
-      rod_down0,
-      rod_down1,
-      rod_charge_down,
-      rod_charge_up,
-      rod_charge_horizontal,
-      nop_0802dd84,
-      rod_1000slash,
+  static ZeroFunc const sRoutines[] = {
+      [0]  = handle_rod_input,
+      [1]  = rod_horizontal0,
+      [2]  = rod_horizontal1,
+      [3]  = rod_up0,
+      [4]  = rod_up1,
+      [5]  = rod_down0,
+      [6]  = rod_down1,
+      [7]  = rod_charge_down,
+      [8]  = rod_charge_up,
+      [9]  = rod_charge_horizontal,
+      [10] = nop_0802dd84,
+      [11] = rod_1000slash,
   };
   // clang-format on
 
@@ -633,7 +633,7 @@ void recoilAttack(struct Zero* z) {
   } else {
     (z->restriction).subCharge = TRUE;
   }
-  (routine[(z->unk_b4).attackMode[1]])(z);
+  (sRoutines[(z->unk_b4).attackMode[1]])(z);
 }
 
 // 0x0802da64

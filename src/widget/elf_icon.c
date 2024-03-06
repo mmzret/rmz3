@@ -202,7 +202,7 @@ _080E8050:\n\
 	lsls r0, r1, #2\n\
 	adds r0, r0, r1\n\
 	lsls r0, r0, #2\n\
-	ldr r1, _080E80A0 @ =0x08636280\n\
+	ldr r1, _080E80A0 @ =gElfMugshotGraphics+43*20\n\
 	adds r0, r0, r1\n\
 	ldrh r2, [r0, #6]\n\
 	lsrs r2, r2, #6\n\
@@ -217,7 +217,7 @@ _080E8050:\n\
 	lsls r0, r1, #2\n\
 	adds r0, r0, r1\n\
 	lsls r0, r0, #2\n\
-	ldr r1, _080E80A8 @ =0x0863628C\n\
+	ldr r1, _080E80A8 @ =gElfMugshotGraphics+43*20+12\n\
 	adds r0, r0, r1\n\
 	ldrb r2, [r0, #7]\n\
 	movs r1, #0xb\n\
@@ -232,9 +232,9 @@ _080E8050:\n\
 	strb r0, [r4, #0xd]\n\
 	b _080E81E0\n\
 	.align 2, 0\n\
-_080E80A0: .4byte 0x08636280\n\
+_080E80A0: .4byte gElfMugshotGraphics+43*20\n\
 _080E80A4: .4byte 0x0000035F\n\
-_080E80A8: .4byte 0x0863628C\n\
+_080E80A8: .4byte gElfMugshotGraphics+43*20+12\n\
 _080E80AC:\n\
 	cmp r0, #3\n\
 	beq _080E80B2\n\

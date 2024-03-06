@@ -276,7 +276,7 @@ WIP void Zero_Update(struct Zero* z) {
     if (z->chargeSaber != 0) {
       tmp = TRUE;
     } else {
-      (z->unk_b4).attackMode[0] = 0;
+      (z->unk_b4).attackMode[0] = 0;  // Cancel Attack (e.g. Air saber at landing)
     }
   }
 LAB_080296fe:
@@ -296,6 +296,7 @@ LAB_080296fe:
     z->posture = POSTURE_SHADOW;
   }
 
+  // Attack
   if ((z->s).mode[1] < 4) {
     (sZeroAttacks[(z->s).mode[1]])(z);
     if (z->elfMotion != 0) {
