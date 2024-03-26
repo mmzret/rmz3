@@ -9,10 +9,10 @@
 Init:
 	mov r0, #0x12
 	msr cpsr_fc, r0
-	ldr sp, _080000F8 @ =0x03007FA0
+	ldr sp, sp_irq @ =0x03007FA0
 	mov r0, #0x1f
 	msr cpsr_fc, r0
-	ldr sp, _080000F4 @ =0x03007DA0
+	ldr sp, sp_sys @ =0x03007DA0
 	ldr r1, _080001B4 @ =0x03007FFC
 	add r0, pc, #0x18 @ =MaybeIntrMain
 	str r0, [r1]
@@ -20,8 +20,8 @@ Init:
 	mov lr, pc
 	bx r1
 	b Init
-_080000F4: .4byte 0x03007DA0
-_080000F8: .4byte 0x03007FA0
+sp_sys: .4byte 0x03007DA0
+sp_irq: .4byte 0x03007FA0
 
 	arm_func_start MaybeIntrMain
 MaybeIntrMain: @ 0x080000FC
