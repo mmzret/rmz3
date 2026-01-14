@@ -14,9 +14,13 @@ const main = async () => {
     .usage('0x0836ed80 2')
     .parse(Deno.args);
 
-  const cmd = [SCRIPT, args[0], args[1], `-p=void PROTOTYPE(struct VFX* vfx)`, `--functype=${FUNCTYPE}`];
-  const p = await Deno.run({ cmd, stdout: 'piped' });
-  const result = await (new TextDecoder().decode(await p.output()));
+  const params = [args[0], args[1], `-p=void PROTOTYPE(struct VFX* vfx)`, `--functype=${FUNCTYPE}`];
+  const cmd = new Deno.Command(SCRIPT, {
+    args: params,
+    stdout: 'piped',
+  });
+  const { stdout } = await cmd.output();
+  const result = await (new TextDecoder().decode(stdout));
   console.log(result);
 };
 

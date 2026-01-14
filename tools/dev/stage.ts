@@ -1,8 +1,10 @@
-#!/usr/bin/env -S deno run --allow-read --allow-write --unstable
+#!/usr/bin/env -S deno run --allow-read --allow-write
 
-import { dirname, join } from 'https://deno.land/std/path/mod.ts';
-import { Command } from 'https://deno.land/x/cliffy@v0.25.4/command/mod.ts';
+import { join } from 'https://deno.land/std/path/mod.ts';
+import { Command } from '@cliffy/command';
 import { camelToSnakeCase } from '../common/index.ts';
+
+const OUTDIR = './include/stage';
 
 type Layer = {
   bg: number;
@@ -23,7 +25,7 @@ const main = async () => {
     .name('stage.ts')
     .version('1.0.0')
     .description(
-      'Create a Header file from a stage.json.',
+      'Create "layer.h" & "landscape.h" from a stage.json.',
     )
     .arguments('<json:string>')
     .option('--verbose', 'verbose')
@@ -56,8 +58,8 @@ INCBIN_STATIC(sTilesetOffset, "data/stage/${dir}/tileset_offset.bin");
 extern const u16 sScreenBehavior[];
 INCBIN_STATIC(sScreenBehavior, "data/stage/${dir}/screen_behavior.bin");
 `;
-
-  Deno.writeTextFileSync(join(dirname(args[0]), 'layer.h'), layerData);
+  // e.g. data/stage/spacecraft/stage.json -> include/stage/spacecraft/layer.h
+  Deno.writeTextFileSync(join(OUTDIR, dir, 'layer.h'), layerData);
 
   const landscape = `
 const struct Stage g${s.name}Landscape = {
@@ -77,7 +79,7 @@ const struct Stage g${s.name}Landscape = {
 };
 `;
 
-  Deno.writeTextFileSync(join(dirname(args[0]), 'landscape.h'), landscape);
+  Deno.writeTextFileSync(join(OUTDIR, dir, 'landscape.h'), landscape);
 };
 
 const scrollPower = (val: number): number => {

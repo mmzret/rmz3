@@ -488,9 +488,9 @@ void FUN_0800e370(struct Coord* c) {
 
 // ------------------------------------------------------------------------------------------------------------------------------------
 
-#include "../../../data/stage/old_residential/layer.h"
+#include "stage/old_residential/layer.h"
 //
-#include "../../../data/stage/old_residential/landscape.h"
+#include "stage/old_residential/landscape.h"
 
 // clang-format off
 static const u8 u8_ARRAY_0833dfac[9][2] = {

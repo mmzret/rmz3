@@ -5,5 +5,6 @@ EE_BINS := $(subst .txt,.bin,$(EE_TXTS))
 
 elf-effect: $(EE_BINS)
 
+.PHONY: clean-elf-effect
 clean-elf-effect:
 	rm -f $(EE_DIR)/*.bin

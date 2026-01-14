@@ -1,6 +1,37 @@
-#!/usr/bin/env -S deno run --allow-read --allow-write --unstable
+#!/usr/bin/env -S deno run --allow-read --allow-write
 
-import { Command } from 'https://deno.land/x/cliffy@v0.25.4/command/mod.ts';
+import { Command } from '@cliffy/command';
+
+/**
+ * metasprite.json から アセンブリファイル を生成するスクリプト (metasprite.json のフォーマット後述の型定義を参照)
+ * 実行すると次のようなファイルが生成されます
+ * 生成したファイルは .inc として、 sprites/dynamic/anim.s もしくは sprites/static/anim.s に使用されます
+ *
+ * .section .rodata
+ * .balign 4, 0
+ * .global gXXXX
+ * gXXXX:
+ *   @ ヘッダ列 (include/motion.h の MetaspriteHeader)
+ *     @ metasprite.json の data[0] のヘッダ
+ *       .2byte ofs                 @ $+ofs = Subsprite[]のアドレス
+ *       .byte  subspriteCount      @ メタスプライトを構成するスプライト数
+ *       .byte  sheetIdx            @ 使用するテクスチャ
+ *     @ metasprite.json の data[1] のヘッダ
+ *       .2byte ofs                 @ $+ofs = Subsprite[]のアドレス
+ *       .byte  subspriteCount      @ メタスプライトを構成するスプライト数
+ *       .byte  sheetIdx            @ 使用するテクスチャ
+ *     @ 以下略
+ *       ...
+ *  @ Subsprite列 (include/motion.h の Subsprite)
+ *    @ 0
+ *      .2byte attr
+ *      .byte  x, y
+ *    @ 1
+ *      .2byte attr
+ *      .byte  x, y
+ *    @ 以下略
+ *      ...
+ */
 
 const SUPRITE_SIZE: [number, number][] = [
   [8, 8],
@@ -19,16 +50,20 @@ const SUPRITE_SIZE: [number, number][] = [
   [32, 64],
 ];
 
+// metasprite.json の型定義
+// TODO: metasprite.json は メタスプライト　を複数定義しているので metasprite.json という名前は適切でないかも
 type JsonData = {
   label?: string;
   data: Metasprite[];
 };
 
+// 1枚のメタスプライト
 type Metasprite = {
-  sheetIdx: number;
-  subsprites: Subsprite[];
+  sheetIdx: number; // 使用するテクスチャ
+  subsprites: Subsprite[]; // 構成するスプライト群
 };
 
+// メタスプライトを構成するGBAスプライト (OAMそのままのフォーマットではないことに注意)
 type Subsprite = {
   tileNum: number;
   xflip: boolean;
@@ -43,7 +78,7 @@ const main = async () => {
     .name('metasprite.ts')
     .version('1.0.0')
     .description(
-      'Create a Asm file from a metasprite.json.',
+      'Create a assembly file from a metasprite.json.\nPrint result to stdout, so this project redirect it to ".inc" file.',
     )
     .arguments('<json:string>')
     .option('--verbose', 'verbose')
@@ -69,7 +104,7 @@ const main = async () => {
     if (i > 0) {
       ofs += sum(sizes.slice(0, i));
     }
-    let header = `
+    const header = `
   .2byte ${ofs}
   .byte ${metasprite.subsprites.length}
   .byte ${metasprite.sheetIdx}

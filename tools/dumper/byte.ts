@@ -1,4 +1,4 @@
-#!/usr/bin/env -S deno run --allow-read --unstable
+#!/usr/bin/env -S deno run --allow-read
 
 import { Command } from 'https://deno.land/x/cliffy@v0.25.4/command/mod.ts';
 import { loadI16, loadI32, loadI8, loadU16, loadU32, loadU8, toHex } from '../common/index.ts';
@@ -56,7 +56,7 @@ const main = async () => {
     .option('-m, --mode=[mode]', 'dump mode', { default: 'asm' })
     .option('-w, --width=[n]', 'a number of data by line')
     .option('--prefix=[p:string]', 'prefix of data')
-    .option('-i, --index', 'add index prefix as \'[idx] = \' (only C)')
+    .option('-i, --index', "add index prefix as '[idx] = ' (only C)")
     .arguments('<rom> <addr> <length>')
     .usage('rmz3.gba 0x085222a0 134 -f=u8 -m=c')
     .parse(Deno.args);

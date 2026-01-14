@@ -5,5 +5,7 @@ ELFMUGSHOT_LZ_PNGS := $(wildcard $(ELFMUGSHOT_DIR)/*/*.lz.png) $(wildcard $(ELFM
 ELFMUGSHOT_GFX := $(subst .png,.4bpp,$(ELFMUGSHOT_PNGS)) $(subst .lz.png,.lz,$(ELFMUGSHOT_LZ_PNGS))
 ELFMUGSHOT_PAL := $(subst .png,.gbapal,$(ELFMUGSHOT_PNGS)) $(subst .lz.png,.lz.gbapal,$(ELFMUGSHOT_LZ_PNGS))
 
-elf-mugshot: $(ELFMUGSHOT_GFX) $(ELFMUGSHOT_PAL)
+ELFMUGSHOTS := $(ELFMUGSHOT_GFX) $(ELFMUGSHOT_PAL)
+
+elf-mugshot: $(ELFMUGSHOTS)
 

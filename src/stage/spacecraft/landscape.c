@@ -1001,8 +1001,8 @@ static const StageLayerRoutine sLayerRoutine[6] = {
 };
 // clang-format on
 
-#include "../../../data/stage/spacecraft/layer.h"
+#include "stage/spacecraft/layer.h"
 // ...
-#include "../../../data/stage/spacecraft/landscape.h"
+#include "stage/spacecraft/landscape.h"
 
 static const u8 u8_ARRAY_0833b200[6] = {0, 1, 2, 3, 2, 1};

@@ -681,7 +681,7 @@ static const StageLayerRoutine sLayerRoutine[7] = {
 };
 // clang-format on
 
-#include "../../../data/stage/ocean/layer.h"
+#include "stage/ocean/layer.h"
 
 static const s32 sOceanSeaLevels[5] = {
     0x30000, 0x2C000, 0x28000, 0x24000, 0x20000,
@@ -706,7 +706,7 @@ static const struct Coord sSeaLevelButtonCoords[4] = {
     [3] = {0x260800, 0x38000},
 };
 
-#include "../../../data/stage/ocean/landscape.h"
+#include "stage/ocean/landscape.h"
 
 const struct MetatilePatch MetatilePatch_0833cda8 = {
   w : 2,

@@ -444,7 +444,9 @@ static void LayerUpdate_Volcano_6(struct StageLayer* l, const struct Stage* stag
     l->unk_10 = 0;
   }
 
-  { vu32 _; }
+  {
+    vu32 _;
+  }
 }
 
 static void LayerDraw_Volcano_6(struct StageLayer* l, const struct Stage* stage) {
@@ -539,9 +541,9 @@ static void LayerExit_Volcano_8(struct StageLayer* l, const struct Stage* _) {
 
 // ------------------------------------------------------------------------------------------------------------------------------------
 
-#include "../../../data/stage/volcano/layer.h"
+#include "stage/volcano/layer.h"
 //
-#include "../../../data/stage/volcano/landscape.h"
+#include "stage/volcano/landscape.h"
 
 // clang-format off
 static const u8 u8_ARRAY_ARRAY_0833bf1c[18][2] = {

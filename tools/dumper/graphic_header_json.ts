@@ -1,4 +1,4 @@
-#!/usr/bin/env -S deno run --allow-read --allow-write --allow-run --unstable
+#!/usr/bin/env -S deno run --allow-read --allow-write --allow-run
 
 import { Command } from 'https://deno.land/x/cliffy@v0.25.4/command/mod.ts';
 import { loadU16, loadU8 } from '../common/index.ts';

@@ -24,43 +24,23 @@ echo "export DEVKITARM=$DEVKITARM" >> ~/.bashrc
 > ./build.sh
 > ./install.sh ../rmz3
 > cd ../
-> rm -rf ./agbcc
 
 # install agbasm(custom arm-none-eabi-as)
-> git clone https://github.com/luckytyphlosion/agbcc -b new_layout_with_libs
-> cd agbcc
+> git clone https://github.com/luckytyphlosion/agbcc -b new_layout_with_libs agbasm
+> cd agbasm
 > make binutils
-> cp ./gas/as-new ../rmz3/tools/binutils/bin/arm-none-eabi-as
-
-# build gbagfx
-> cd ../rmz3/tools/gbagfx
-> make
+> cp ./gas/as-new ../rmz3/tools/agbasm # if windows, add .exe
 
 # install mmzret/rmz-text-compiler
-> cd ../../../
+> cd ../
 > git clone https://github.com/mmzret/rmz-text-compiler
 > cd ./rmz-text-compiler
 > cargo build --release
 > cp ./target/release/rmz-text-compiler ../rmz3/tools/rmz-text-compiler
-```
 
-To build **rmz3.gba**:
-
-```sh
+# Build rmz3
+> cd ../rmz3
 > make
-```
-
-## macOS
-
-Run `xcode-select --install` in Terminal, then proceed by executing the commands.
-
-If `pret/agbcc` build doesn't success in Apple Silicon, please try it.
-
-```sh
-# patch for https://github.com/pret/agbcc/blob/d59cfb5ac1ce13d4bc9875ffef1666b118338d33/gcc_arm/configure#L587
-
-# pret/agbcc
-> git apply ../rmz3/tools/agbcc.patch
 ```
 
 ## Old Windows

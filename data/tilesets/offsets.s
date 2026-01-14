@@ -1,6 +1,7 @@
 .section .rodata
 .balign 4, 0
 
+# 現在のアドレスから gXXXTilesetGraphics までのオフセットを格納している . は現在のアドレス
 .global gStageTilesetOffsets
 gStageTilesetOffsets:
   .word gSnowTilesetGraphics-.

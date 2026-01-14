@@ -1,9 +1,35 @@
-#!/usr/bin/env -S deno run --allow-read --allow-write --unstable
+#!/usr/bin/env -S deno run --allow-read --allow-write
 
-import { Command } from 'https://deno.land/x/cliffy@v0.25.4/command/mod.ts';
+import { Command } from '@cliffy/command';
 import { dirname, extname, join } from 'https://deno.land/std/path/mod.ts';
 import { existsSync } from 'https://deno.land/std/fs/mod.ts';
 import { GraphicHeader } from '../common/index.ts';
+
+/**
+ * header.json から アセンブリファイル を生成するスクリプト (e.g. sprites/dynamic/anubis/sheet/header.json)
+ * 実行すると次のようなファイルが生成されます (正確には標準出力に出力されるのでリダイレクトしてください)
+ * グラフィックデータ(.incbinしてるやつら)のサイズからオフセットを計算する必要があるので、 このスクリプトの実行前に、グラフィックデータをビルドする必要があります。
+ *
+ * .section .rodata
+ * .balign 4, 0
+ * .global gGraphicHeader_XXX
+ * gGraphicHeader_XXX:
+ * @ ヘッダ列 (include/gfx.h の Graphic[])
+ *   @ include/gfx.h の Graphic
+ *     .4byte offset
+ *     .4byte xxxxxxxx
+ *     .2byte xxxx, xxxx
+ *     @ パレットがあるなら
+ *       .4byte xxxxxxxx
+ *       .2byte xxxx
+ *       .byte xx, xx
+ *   @ header.json の data の要素数だけ繰り返し
+ *     ...
+ * @ グラフィックデータ
+ *   .incbin "aaa/bbb.4bpp" (もしくは .lz)
+ *   .incbin "aaa/bbb.gbapal" (もしあれば)
+ *   ...
+ */
 
 type JsonData = {
   label?: string;

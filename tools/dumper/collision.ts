@@ -1,4 +1,4 @@
-#!/usr/bin/env -S deno run --allow-read --unstable
+#!/usr/bin/env -S deno run --allow-read
 
 import { Command } from 'https://deno.land/x/cliffy@v0.25.4/command/mod.ts';
 import { Parser } from 'npm:binary-parser@2.2.1';
@@ -59,7 +59,7 @@ const main = async () => {
     .version('1.0.0')
     .description(`En: Dump Collision C struct array from <start>\nJa: 開始アドレス(start) から 長さNだけ、 C言語のCollision構造体としてダンプします。`)
     .arguments('<start> <length:number>')
-    .option('-i, --index', 'add index prefix as \'[idx] = \'')
+    .option('-i, --index', "add index prefix as '[idx] = '")
     .usage('0x08361c68 15')
     .parse(Deno.args);
 

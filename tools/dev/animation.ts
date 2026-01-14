@@ -1,7 +1,13 @@
-#!/usr/bin/env -S deno run --allow-read --allow-write --unstable
+#!/usr/bin/env -S deno run --allow-read --allow-write
 
-import { Command } from 'https://deno.land/x/cliffy@v0.25.4/command/mod.ts';
+import { Command } from '@cliffy/command';
 import { join } from 'https://deno.land/std/path/mod.ts';
+
+/**
+ * sprite.json から anim.s を生成するスクリプト
+ * anim.s は 内部で metasprite.ts と sequence.ts の生成物をインクルードしているが
+ * sprite.json に書いてあるパスに従ったインクルードパスを書いているだけであり、 anim.s の生成前に metasprite.ts や sequence.ts を実行する必要はない
+ */
 
 type SpriteMetadata = { id: number; name: string; path: string; noAnimation?: boolean };
 

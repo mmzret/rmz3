@@ -1,4 +1,4 @@
-#!/usr/bin/env -S deno run --allow-read --allow-write --unstable
+#!/usr/bin/env -S deno run --allow-read --allow-write
 
 import { Command } from 'https://deno.land/x/cliffy@v0.25.4/command/mod.ts';
 import { Parser } from 'npm:binary-parser@2.2.1';

@@ -284,6 +284,6 @@ _0800DB7C:\n\
 
 // ------------------------------------------------------------------------------------------------------------------------------------
 
-#include "../../../data/stage/repair_factory/layer.h"
+#include "stage/repair_factory/layer.h"
 //
-#include "../../../data/stage/repair_factory/landscape.h"
+#include "stage/repair_factory/landscape.h"

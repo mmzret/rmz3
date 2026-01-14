@@ -1,4 +1,4 @@
-#!/usr/bin/env -S deno run --allow-read --allow-write --allow-run --unstable
+#!/usr/bin/env -S deno run --allow-read --allow-write --allow-run
 
 import { Command } from 'https://deno.land/x/cliffy@v0.25.4/command/mod.ts';
 import { toHex } from '../../common/index.ts';
@@ -27,9 +27,11 @@ const main = async () => {
     if (!existsSync(dir)) {
       Deno.mkdirSync(dir, { recursive: true });
     }
-    const cmd = `${TOOL} 0x${toHex(header + (20 * i), 8)} -o ${dir}`;
-    console.log(cmd);
-    await Deno.run({ cmd: cmd.split(' ') }).status();
+    const params = `0x${toHex(header + (20 * i), 8)} -o ${dir}`;
+    const process = new Deno.Command(TOOL, {
+      args: [...params.split(' ')],
+    });
+    await process.output();
   }
 };
 

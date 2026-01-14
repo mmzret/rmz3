@@ -8,7 +8,6 @@ static void loadStageLandscape(const struct Stage* p, const struct ScreenMap* ma
 static void TaskCB_UpdateOwGraphic(struct Overworld* ow, struct DrawPivot* tc);
 
 void ResetTerrain(struct Terrain* terrain, metatile_attr_t* attr, Metatile* tiles, Screen* m, const struct ScreenMap* map);
-
 // clang-format off
 static const struct Stage* const gStageLandscape[STAGE_COUNT] = { // 0x0833a2e8
     [STAGE_NONE] =            &gStage0Landscape,

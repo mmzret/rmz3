@@ -1,3 +1,5 @@
+GBAGFX := tools/gbagfx/gbagfx$(EXE)
+
 GFX_OPTS :=
 
 include graphics/elf/mugshot/mugshot.mk
@@ -14,8 +16,8 @@ include graphics/elf/mugshot/mugshot.mk
 %.lz:     %.lz.4bpp          ; @$(GBAGFX) $< $@ $(GFX_OPTS)
 %.lz:     %.lz.8bpp          ; @$(GBAGFX) $< $@ $(GFX_OPTS)
 
-FONT_DIR := ./graphics/font
-font: $(subst .png,.4bpp,$(wildcard $(FONT_DIR)/*.png))
+# FONT_4BPP: graphics/font/font.4bpp graphics/font/font_big.4bpp graphics/font/font_bold.4bpp
+FONT_4BPP := $(subst .png,.4bpp,$(wildcard graphics/font/*.png))
 
 BG_DIR = ./graphics/bg
 MSGBOX_DIR = ./graphics/dialog/*
@@ -31,9 +33,10 @@ GRAPHICS_8BPP_PNGS := $(filter %.lz.8bpp.png, $(GRAPHICS_ALL_PNGS))
 GRAPHICS_4BPP := $(subst .png,.4bpp,$(GRAPHICS_PNGS)) $(subst .png,.gbapal,$(GRAPHICS_PNGS))
 GRAPHICS_LZ := $(subst .lz.png,.lz, $(GRAPHICS_LZ_PNGS)) $(subst .lz.png,.lz.gbapal,$(GRAPHICS_LZ_PNGS)) $(subst .lz.8bpp.png,.lz,$(GRAPHICS_8BPP_PNGS))
 
-graphics: elf-mugshot $(GRAPHICS_4BPP) $(GRAPHICS_LZ)
+ALL_GRAPHICS := $(GRAPHICS_4BPP) $(GRAPHICS_LZ) $(FONT_4BPP) $(ELFMUGSHOTS)
 
-asm/font.o: asm/font.s font
+graphics: $(ALL_GRAPHICS)
 
+.PHONY: clean-graphics
 clean-graphics:
-	@rm -f graphics/*/*.{gbapal,lz,4bpp} graphics/*/*/*.{gbapal,lz,4bpp}  graphics/*/*/*.{gbapal,lz,4bpp} graphics/*/*/*/*.{gbapal,lz,4bpp} ${FONT_DIR}/*.4bpp
+	@rm -f $(shell find graphics -type f -name "*.gbapal" -o -name "*.lz" -o -name '*.4bpp')
