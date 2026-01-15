@@ -1,6 +1,6 @@
 #!/usr/bin/env -S deno run --allow-read --unstable
 
-import { Command } from 'https://deno.land/x/cliffy@v0.25.4/command/mod.ts';
+import { Command } from '@cliffy/command';
 import { loadI16, loadU16, loadU8, toHex } from '../common/index.ts';
 
 const BASE = 0x0800_0000;
@@ -12,7 +12,7 @@ const main = async () => {
     .version('1.0.0')
     .description('Dump SlashedEnemy C struct array from <start>')
     .arguments('<start> <length:number>')
-    .option('-i, --index', 'add index prefix as \'[idx] = \'')
+    .option('-i, --index', "add index prefix as '[idx] = '")
     .usage('0x08366720 4')
     .parse(Deno.args);
 

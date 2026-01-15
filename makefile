@@ -150,17 +150,22 @@ ifneq (,$(MAKECMDGOALS))
 	endif
 endif
 
+# SHELLSTATUS: 直前に実行したコマンドの終了ステータスを格納する特殊変数 (GNU Make 4.3 以降のみらしいので、未定義なら互換性のために 0 を設定しておく)
+.SHELLSTATUS ?= 0
+
 # ビルドを伴うルールの場合は tool と assets をビルドする
 ifeq ($(DO_BUILD),1)
-EXIT_CODE = $(shell $(MAKE) -f make_tools.mk > /dev/null 2>&1; echo $$?)
-ifneq ($(EXIT_CODE),0)
-  $(error make_tools.mkが終了コード $(EXIT_CODE) で失敗しました)
-endif
-
-EXIT_CODE = $(shell $(MAKE) -j8 assets > /dev/null 2>&1; echo $$?)
-ifneq ($(EXIT_CODE),0)
-  $(error make assets が終了コード $(EXIT_CODE) で失敗しました)
-endif
+  # やっていることは単なる make -f make_tools.mk
+  # あとの仰々しい部分は make -f make_tools.mk のコマンドをターミナルに出すのと、 エラーが起きたときに終了するためのもの
+  $(foreach line, $(shell $(MAKE) -f make_tools.mk | sed "s/ /__SPACE__/g"), $(info $(subst __SPACE__, ,$(line))))
+  ifneq ($(.SHELLSTATUS),0)
+    $(error Errors occurred while building tools. See error messages above for more details)
+  endif
+  # Oh and also generate mapjson sources before we use `SCANINC`.
+  $(foreach line, $(shell $(MAKE) -j8 assets | sed "s/ /__SPACE__/g"), $(info $(subst __SPACE__, ,$(line))))
+  ifneq ($(.SHELLSTATUS),0)
+    $(error Errors occurred while building assets. See error messages above for more details)
+  endif
 endif
 
 check: $(ROM) compare

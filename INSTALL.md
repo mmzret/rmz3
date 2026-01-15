@@ -1,17 +1,14 @@
 # Installation
 
-Run the following commands (first, see [this](#macos) if you are on **macOS** or [this](#old-windows) if you are on **old Windows**):
+> [!NOTE]
+> `rmz3` uses the same toolchain as [pret](https://github.com/pret), so follow [pret's INSTALL.md](https://github.com/pret/pokeemerald/blob/6eb688876d34d43096a276e690ae46b8853e03ac/INSTALL.md).
 
 ## Prerequisites
 
-You must install the devkitARM toolchain of devkitPro and add its environment variables.
+In addition to [pret's toolchain](https://github.com/pret/pokeemerald/blob/6eb688876d34d43096a276e690ae46b8853e03ac/INSTALL.md), `rmz3` requires the additional software.
 
-```sh
-export DEVKITPRO=/opt/devkitpro
-echo "export DEVKITPRO=$DEVKITPRO" >> ~/.bashrc
-export DEVKITARM=$DEVKITPRO/devkitARM
-echo "export DEVKITARM=$DEVKITARM" >> ~/.bashrc
-```
+- [Deno](https://deno.com/): Used as a build script.
+- [Rust](https://rust-lang.org/): Used for text build, I'll remove it in the future.
 
 ## Installation
 
@@ -43,28 +40,7 @@ echo "export DEVKITARM=$DEVKITARM" >> ~/.bashrc
 > make
 ```
 
-## Old Windows
+## Modern
 
-*For Windows 8.1 and earlier*
-
-Download and run the [Cygwin](https://www.cygwin.com/install.html) setup, leaving the default settings intact. At "Select Packages", set the view to "Full" and choose to install the following:
-
-- `make`
-- `git`
-- `gcc-core`
-- `gcc-g++`
-- `libpng-devel`
-
-Additionally, there are extra optional tools which require installing the following packages, although they are not necessary to build:
-
-- `python-3`
-
-In the Cygwin command prompt, enter the commands.
-
-If the command for building rmz3.gba does not work, run `nproc` and use that value instead of `$(nproc)` for `make`.
-
-
-## Windows 10
-
-Install the [Windows Subsystem for Linux](https://docs.microsoft.com/windows/wsl/install-win10), and run the commands.
-
+There is a `modern` option to build using the latest C compiler instead of the original C compiler (agbcc), but ROMs built this way are currently unplayable.  
+This is because some addresses are still hardcoded, and relocation causes them to function incorrectly.

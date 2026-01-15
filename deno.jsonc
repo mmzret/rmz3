@@ -23,6 +23,7 @@
     }
   },
   "imports": {
-    "@cliffy/command": "jsr:@cliffy/command@1.0.0-rc.8"
+    "@cliffy/command": "jsr:@cliffy/command@1.0.0-rc.8",
+    "@binary-parser": "npm:binary-parser@2.3.0"
   }
 }

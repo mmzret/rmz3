@@ -1,6 +1,6 @@
 #!/usr/bin/env -S deno run --allow-read --allow-write --allow-run --unstable
 
-import { Command } from 'https://deno.land/x/cliffy@v0.25.4/command/mod.ts';
+import { Command } from '@cliffy/command';
 
 const FUNCTYPE = 'VFXFunc';
 const SCRIPT = './tools/dumper/tbl/tbl.ts';

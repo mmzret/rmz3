@@ -29,7 +29,6 @@ sprites/**/metasprite.inc
 sprites/**/sequence.inc
 data/tilesets/*/header.s
 graphics/**/header.s
-*.gfx
 tools/mgba
 tools/tmp
 

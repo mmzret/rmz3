@@ -1,6 +1,6 @@
 #!/usr/bin/env -S deno run --allow-read --allow-write --allow-run
 
-import { Command } from 'https://deno.land/x/cliffy@v0.25.4/command/mod.ts';
+import { Command } from '@cliffy/command';
 import { loadU16, loadU32, loadU8, toHex } from '../../common/index.ts';
 
 const main = async () => {
@@ -12,7 +12,7 @@ const main = async () => {
     )
     .arguments('<rom:string> <addr:string> <length:number>')
     .option('--nopal', 'graphic header only')
-    .option('--index', 'add \'[i] =\' as entry prefix')
+    .option('--index', "add '[i] =' as entry prefix")
     .usage('rmz3.gba 0x085d78f8 254')
     .parse(Deno.args);
 

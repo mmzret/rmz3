@@ -1,6 +1,6 @@
 #!/usr/bin/env -S deno run --allow-read --allow-write --allow-run
 
-import { Command } from 'https://deno.land/x/cliffy@v0.25.4/command/mod.ts';
+import { Command } from '@cliffy/command';
 import { toHex } from '../../common/index.ts';
 import { join } from 'https://deno.land/std/path/mod.ts';
 import { existsSync } from 'https://deno.land/std/fs/exists.ts';

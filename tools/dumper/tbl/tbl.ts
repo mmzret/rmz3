@@ -1,7 +1,7 @@
 #!/usr/bin/env -S deno run --allow-read --allow-write --unstable
 
-import { Command } from 'https://deno.land/x/cliffy@v0.25.4/command/mod.ts';
-import { Parser } from 'npm:binary-parser@2.2.1';
+import { Command } from '@cliffy/command';
+import { Parser } from '@binary-parser';
 import { toHex } from '../../common/index.ts';
 
 /*
@@ -27,9 +27,9 @@ const main = async () => {
     .version('1.0.0')
     .description('Dump function pointer table')
     .arguments('<start> <length:number>')
-    .usage('0x082523e8 4 -p=\'void PROTOTYPE(struct Entity* p)\'')
+    .usage("0x082523e8 4 -p='void PROTOTYPE(struct Entity* p)'")
     .option('-p, --prototype=[s:string]', 'Generate prototype declaration too')
-    .option('-i, --index', 'add index prefix as \'[idx] = \'')
+    .option('-i, --index', "add index prefix as '[idx] = '")
     .option('--functype=[s:string]', 'function type for table type', {
       default: 'FUNCTYPE',
     })
@@ -47,7 +47,7 @@ const main = async () => {
 
   for (let i = 0; i < len; i++) {
     const addr = start + (i * SIZE) - BASE;
-    const result = (Func.parse(rom.slice(addr, addr + SIZE)) as ParseResult);
+    const result = Func.parse(rom.slice(addr, addr + SIZE)) as ParseResult;
     const fn = result.val & ~1;
     const symbol = fn === 0 ? `NULL` : `FUN_${toHex(fn, 8).toLowerCase()}`;
     table += `    ${options.index ? `[${i}] = ` : ''}${symbol},\n`;

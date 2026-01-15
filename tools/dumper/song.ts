@@ -1,8 +1,8 @@
 #!/usr/bin/env -S deno run --allow-read --allow-write --allow-run --unstable
 
-import { Command } from 'https://deno.land/x/cliffy@v0.25.4/command/mod.ts';
+import { Command } from '@cliffy/command';
 import { loadU32, toHex } from '../common/index.ts';
-import { Parser } from 'npm:binary-parser@2.2.1';
+import { Parser } from '@binary-parser';
 
 type ParseResult = {
   trackCount: number;

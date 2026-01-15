@@ -1,6 +1,6 @@
 #!/usr/bin/env deno run
 
-import { Command } from 'https://deno.land/x/cliffy@v0.25.4/command/mod.ts';
+import { Command } from '@cliffy/command';
 
 const unitname: { [unit: number]: string } = {
   2: 'hword',

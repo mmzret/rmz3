@@ -1,7 +1,7 @@
 #!/usr/bin/env -S deno run --allow-read --unstable
 
-import { Command } from 'https://deno.land/x/cliffy@v0.25.4/command/mod.ts';
-import { Parser as _Parser } from 'npm:binary-parser@2.2.1';
+import { Command } from '@cliffy/command';
+import { Parser as _Parser } from '@binary-parser';
 import { Coord, toHex } from '../common/index.ts';
 
 const BASE = 0x0800_0000;

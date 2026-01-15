@@ -1,7 +1,7 @@
 #!/usr/bin/env -S deno run --allow-read --allow-write
 
-import { Command } from 'https://deno.land/x/cliffy@v0.25.4/command/mod.ts';
-import { Parser } from 'npm:binary-parser@2.2.1';
+import { Command } from '@cliffy/command';
+import { Parser } from '@binary-parser';
 import { join } from 'https://deno.land/std/path/mod.ts';
 
 // All tileset dump are completed, so this tool is no longer needed.

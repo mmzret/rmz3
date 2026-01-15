@@ -1,6 +1,6 @@
 #!/usr/bin/env -S deno run --allow-read --allow-write --allow-run
 
-import { Command } from 'https://deno.land/x/cliffy@v0.25.4/command/mod.ts';
+import { Command } from '@cliffy/command';
 import { loadU16, loadU32, loadU8, toHex } from '../../common/index.ts';
 
 const GBAGFX = './tools/gbagfx/gbagfx';
