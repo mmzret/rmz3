@@ -111,14 +111,14 @@ INCASM("asm/stage_gfx/snowy_plains.inc");
 
 // ------------------------------------------------------------------------------------------------------------------------------------
 
-extern const struct ScreenMap sScreenMap1;
-INCBIN_STATIC(sScreenMap1, "data/stage/snowy_plains/layer1.bin");  // ./tools/dumper/bin.ts ./baserom.gba 0x083428b8 0x08342abc ./data/stage/snowy_plains/layer1.bin
+extern const struct ChunkMap sChunkMap1;
+INCBIN_STATIC(sChunkMap1, "data/stage/snowy_plains/layer1.bin");  // ./tools/dumper/bin.ts ./baserom.gba 0x083428b8 0x08342abc ./data/stage/snowy_plains/layer1.bin
 
-extern const struct ScreenMap sScreenMap2;
-INCBIN_STATIC(sScreenMap2, "data/stage/snowy_plains/layer2.bin");  // ./tools/dumper/bin.ts ./baserom.gba 0x08342abc 0x08342ec0 ./data/stage/snowy_plains/layer2.bin
+extern const struct ChunkMap sChunkMap2;
+INCBIN_STATIC(sChunkMap2, "data/stage/snowy_plains/layer2.bin");  // ./tools/dumper/bin.ts ./baserom.gba 0x08342abc 0x08342ec0 ./data/stage/snowy_plains/layer2.bin
 
-extern const struct ScreenMap sScreenMap3;
-INCBIN_STATIC(sScreenMap3, "data/stage/snowy_plains/layer3.bin");  // ./tools/dumper/bin.ts ./baserom.gba 0x08342ec0 0x083432c4 ./data/stage/snowy_plains/layer3.bin
+extern const struct ChunkMap sChunkMap3;
+INCBIN_STATIC(sChunkMap3, "data/stage/snowy_plains/layer3.bin");  // ./tools/dumper/bin.ts ./baserom.gba 0x08342ec0 0x083432c4 ./data/stage/snowy_plains/layer3.bin
 
 extern const tileset_ofs_t sTilesetOffset[];
 INCBIN_STATIC(sTilesetOffset, "data/stage/snowy_plains/tileset_offset.bin");  // ./tools/dumper/bin.ts ./baserom.gba 0x083432c4 0x083436c8 ./data/stage/snowy_plains/tileset_offset.bin
@@ -130,7 +130,7 @@ const struct Stage gSnowyPlainsLandscape = {
   id : STAGE_SNOWY_PLAINS,
   fn : sStageRoutine,
   terrainHdr : &gStageTerrains[STAGE_SNOWY_PLAINS],
-  maps : {&sScreenMap1, &sScreenMap2, &sScreenMap3},
+  maps : {&sChunkMap1, &sChunkMap2, &sChunkMap3},
   bgIdx : {USE_BG2, USE_BG1, USE_BG3},
   prio : {2, 1, 3},
   screenBase : {BGMAP_BLOCK(2), BGMAP_BLOCK(4), BGMAP_BLOCK(6)},
@@ -139,7 +139,7 @@ const struct Stage gSnowyPlainsLandscape = {
   tilesetOffset : sTilesetOffset,
   bgFns : sLayerRoutine,
   behavior : sScreenBehavior,
-  unk_78 : {0x0, 0x0},
+  conveyor : {0x0, 0x0},
 };
 
 const struct MetatilePatch MetatilePatch_08343f50 = {w : 2, h : 1};

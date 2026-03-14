@@ -175,13 +175,13 @@ WIP bool32 OverworldUpdate(bool8 paused) {
   // Update hazards
   {
     u32 fastcopysize = (HAZARD_LENGTH * sizeof(struct Hazard)) & ~(0x1F);
-    CpuFastCopy(gOverworld.hazard.data, gOverworld.hazard.prev, fastcopysize);
+    CpuFastCopy(gOverworld.objects, gOverworld.objectsPrev, fastcopysize);
 
     u32 copysize = (HAZARD_LENGTH * sizeof(struct Hazard)) & 0x1F;
     if (copysize > 0) {
-      CpuCopy32((void*)gOverworld.hazard.data + fastcopysize, (void*)gOverworld.hazard.prev + fastcopysize, copysize);
+      CpuCopy32((void*)gOverworld.objects + fastcopysize, (void*)gOverworld.objectsPrev + fastcopysize, copysize);
     }
-    gOverworld.hazard.prevLen = HAZARD_LENGTH;
+    gOverworld.objectLenPrev = HAZARD_LENGTH;
     HAZARD_LENGTH = 0;
   }
 

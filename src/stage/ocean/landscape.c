@@ -18,83 +18,27 @@ static const StageFunc sStageRoutine[4] = {
     exitOcean,
 };
 
-NAKED static void initOcean(struct Coord* _ UNUSED) {
-  asm(".syntax unified\n\
-	push {r4, r5, r6, lr}\n\
-	ldr r5, _0800CB8C @ =gOverworld\n\
-	ldr r1, _0800CB90 @ =0x0002D028\n\
-	adds r0, r5, r1\n\
-	movs r1, #0\n\
-	strb r1, [r0]\n\
-	ldr r2, _0800CB94 @ =0x0002D029\n\
-	adds r0, r5, r2\n\
-	strb r1, [r0]\n\
-	adds r2, #1\n\
-	adds r0, r5, r2\n\
-	strb r1, [r0]\n\
-	ldr r0, _0800CB98 @ =gCurStory\n\
-	ldrb r6, [r0, #9]\n\
-	lsls r3, r6, #0x18\n\
-	lsrs r0, r3, #0x19\n\
-	movs r1, #1\n\
-	adds r2, r1, #0\n\
-	bics r2, r0\n\
-	lsrs r4, r3, #0x1a\n\
-	adds r0, r1, #0\n\
-	bics r0, r4\n\
-	adds r2, r2, r0\n\
-	lsrs r3, r3, #0x1b\n\
-	bics r1, r3\n\
-	adds r2, r2, r1\n\
-	movs r0, #0x10\n\
-	ands r0, r6\n\
-	cmp r0, #0\n\
-	bne _0800CB9C\n\
-	adds r0, r2, #1\n\
-	b _0800CB9E\n\
-	.align 2, 0\n\
-_0800CB8C: .4byte gOverworld\n\
-_0800CB90: .4byte 0x0002D028\n\
-_0800CB94: .4byte 0x0002D029\n\
-_0800CB98: .4byte gCurStory\n\
-_0800CB9C:\n\
-	adds r0, r2, #0\n\
-_0800CB9E:\n\
-	ldr r1, _0800CBD8 @ =0x0002C00C\n\
-	adds r2, r5, r1\n\
-	ldr r1, _0800CBDC @ =sOceanSeaLevels\n\
-	lsls r0, r0, #2\n\
-	adds r0, r0, r1\n\
-	ldr r0, [r0]\n\
-	str r0, [r2]\n\
-	movs r0, #0\n\
-_0800CBAE:\n\
-	lsls r4, r0, #0x18\n\
-	lsrs r0, r4, #0x18\n\
-	asrs r4, r4, #0x18\n\
-	lsls r1, r4, #3\n\
-	ldr r2, _0800CBE0 @ =sSeaLevelButtonCoords\n\
-	adds r1, r1, r2\n\
-	bl CreateSeaLevelButton\n\
-	lsls r1, r4, #2\n\
-	ldr r2, _0800CBE4 @ =0x0202F22C\n\
-	adds r1, r1, r2\n\
-	str r0, [r1]\n\
-	adds r4, #1\n\
-	lsls r4, r4, #0x18\n\
-	lsrs r0, r4, #0x18\n\
-	asrs r4, r4, #0x18\n\
-	cmp r4, #3\n\
-	ble _0800CBAE\n\
-	pop {r4, r5, r6}\n\
-	pop {r0}\n\
-	bx r0\n\
-	.align 2, 0\n\
-_0800CBD8: .4byte 0x0002C00C\n\
-_0800CBDC: .4byte sOceanSeaLevels\n\
-_0800CBE0: .4byte sSeaLevelButtonCoords\n\
-_0800CBE4: .4byte 0x0202F22C\n\
- .syntax divided\n");
+struct Solid* CreateSeaLevelButton(u8 idx, struct Coord* c);
+
+static void initOcean(struct Coord* _ UNUSED) {
+  s8 i;
+  u8 pressed_count;
+  struct Coord* c;
+  struct Solid** btn;
+  struct Solid* b;
+  gOverworld.work.ocean.unk_000 = 0;
+  gOverworld.work.ocean.unk_001 = 0;
+  gOverworld.work.ocean.unk_002 = 0;
+  pressed_count = (FLAG(gCurStory.s.gameflags, FLAG_OCEAN_BTN_1) == 0) + (FLAG(gCurStory.s.gameflags, FLAG_OCEAN_BTN_2) == 0) + (FLAG(gCurStory.s.gameflags, FLAG_OCEAN_BTN_3) == 0) + (FLAG(gCurStory.s.gameflags, FLAG_OCEAN_BTN_4) == 0);
+  gOverworld.sea = sOceanSeaLevels[pressed_count];
+
+  for (i = 0; i < 4; i++) {
+    u8 idx = i;
+    c = (struct Coord*)&sSeaLevelButtonCoords[i];
+    b = CreateSeaLevelButton(idx, c);
+    btn = &gOverworld.work.ocean.btns[i];
+    *btn = b;
+  }
 }
 
 NAKED static void ocean_0800cbe8(struct Coord* _ UNUSED) {

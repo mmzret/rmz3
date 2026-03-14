@@ -51,6 +51,20 @@ struct Unk32Props {
   u16 unk_e;
 };
 
+struct Unk39Props {
+  u8 unk_0[8];
+  u8 winin1;
+  u8 winout;
+  u16 _;
+  u8 unk_c[4];
+};
+
+struct ElfParticleProps {
+  u8 unk_0[4];
+  s32 x;
+  u8 unk_8[8];
+};
+
 struct Unk69Props {
   struct Coord c;
   u8 unk_8[8];
@@ -79,8 +93,16 @@ struct BubbleProps {
   u8 unk_8[8];
 };
 
+struct Unk83Props {
+  s32 unk_0;
+  s32 unk_4[2];
+  u8 unk_c[4];
+};
+
 struct VFX {
   struct Entity s;
+
+  // 0x74
   union {
     u8 raw[16];
     struct BubbleProps bubble;
@@ -94,7 +116,10 @@ struct VFX {
     struct Unk25Props unk25;
     struct Unk28Props unk28;
     struct Unk32Props unk32;
+    struct Unk39Props unk39;
+    struct ElfParticleProps ep;
     struct Unk69Props unk69;
+    struct Unk83Props unk83;
     struct TempProps tmp;
   } props;
 };  // 132 bytes

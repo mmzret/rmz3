@@ -3,7 +3,7 @@
 
 #include "types.h"
 
-// 8x8タイルが2x2枚集まった論理タイル(16x16px)
+// GBAのBGマップデータ x4枚分(16x16px)
 typedef u16 Metatile[4];
 
 struct MetatileShift {
@@ -40,7 +40,7 @@ struct MetatilePatch2x2 {
 // ------------------------------------------------------------------------------------------------------------------------------------
 
 metatile_attr_t GetMetatileAttr(s32 x, s32 y);
-void ShiftMetatile(s32 x, s32 y, const struct MetatileShift *s);
-void PatchMetatileMap(u32 x, u32 y, struct MetatilePatch *p);
+void ShiftMetatile(s32 x, s32 y, const struct MetatileShift* s);
+void PatchMetatileMap(u32 x, u32 y, struct MetatilePatch* p);
 
 #endif  // GUARD_RMZ3_OW_METATILE_H

@@ -165,14 +165,14 @@ INCASM("asm/stage_gfx/frostline_ice_base.inc");
 
 // ------------------------------------------------------------------------------------------------------------------------------------
 
-extern const struct ScreenMap sScreenMap1;
-INCBIN_STATIC(sScreenMap1, "data/stage/frostline_ice_base/layer1.bin");  // ./tools/dumper/bin.ts ./baserom.gba 0x083402f4 0x083404f8 ./data/stage/frostline_ice_base/layer1.bin
+extern const struct ChunkMap sChunkMap1;
+INCBIN_STATIC(sChunkMap1, "data/stage/frostline_ice_base/layer1.bin");  // ./tools/dumper/bin.ts ./baserom.gba 0x083402f4 0x083404f8 ./data/stage/frostline_ice_base/layer1.bin
 
-extern const struct ScreenMap sScreenMap2;
-INCBIN_STATIC(sScreenMap2, "data/stage/frostline_ice_base/layer2.bin");  // ./tools/dumper/bin.ts ./baserom.gba 0x083404f8 0x083406fc ./data/stage/frostline_ice_base/layer2.bin
+extern const struct ChunkMap sChunkMap2;
+INCBIN_STATIC(sChunkMap2, "data/stage/frostline_ice_base/layer2.bin");  // ./tools/dumper/bin.ts ./baserom.gba 0x083404f8 0x083406fc ./data/stage/frostline_ice_base/layer2.bin
 
-extern const struct ScreenMap sScreenMap3;
-INCBIN_STATIC(sScreenMap3, "data/stage/frostline_ice_base/layer3.bin");  // ./tools/dumper/bin.ts ./baserom.gba 0x083406fc 0x08340900 ./data/stage/frostline_ice_base/layer3.bin
+extern const struct ChunkMap sChunkMap3;
+INCBIN_STATIC(sChunkMap3, "data/stage/frostline_ice_base/layer3.bin");  // ./tools/dumper/bin.ts ./baserom.gba 0x083406fc 0x08340900 ./data/stage/frostline_ice_base/layer3.bin
 
 extern const tileset_ofs_t sTilesetOffset[];
 INCBIN_STATIC(sTilesetOffset, "data/stage/frostline_ice_base/tileset_offset.bin");  // ./tools/dumper/bin.ts ./baserom.gba 0x08340900 0x08340b04 ./data/stage/frostline_ice_base/tileset_offset.bin
@@ -184,7 +184,7 @@ const struct Stage gFrostlineIceBaseLandscape = {
   id : STAGE_ICE_BASE,
   fn : sStageRoutine,
   terrainHdr : &gStageTerrains[STAGE_ICE_BASE],
-  maps : {&sScreenMap1, &sScreenMap2, &sScreenMap3},
+  maps : {&sChunkMap1, &sChunkMap2, &sChunkMap3},
   bgIdx : {USE_BG1, USE_BG2, USE_BG3},
   prio : {2, 3, 3},
   screenBase : {BGMAP_BLOCK(2), BGMAP_BLOCK(4), BGMAP_BLOCK(6)},
@@ -193,5 +193,4 @@ const struct Stage gFrostlineIceBaseLandscape = {
   tilesetOffset : sTilesetOffset,
   bgFns : sLayerRoutine,
   behavior : sScreenBehavior,
-  unk_78 : {0x0, 0x0},
 };

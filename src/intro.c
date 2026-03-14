@@ -870,7 +870,7 @@ static void InitTitleAnimation(struct Intro* p) {
   ClearBlinkings();
   gBlendRegBuffer.bldclt = 0;
   gWindowRegBuffer.dispcnt = 0;
-  gWindowRegBuffer.unk_0c[2] = 0xFF;
+  gWindowRegBuffer.winin[2] = 0xFF;
   wMOSAIC = 0x0;
   PALETTE16(0) = RGB_BLACK;
   text_080e9730();
@@ -1152,7 +1152,7 @@ static void HandleTitleAction(struct Intro* p) {
   gVideoRegBuffer.dispcnt &= 0xB0FF;
   BGCNT16(0) = 0x4008;
   gWindowRegBuffer.dispcnt &= 0xBFFF;
-  gWindowRegBuffer.unk_0c[2] |= 0xE;
+  gWindowRegBuffer.winin[2] |= 0xE;
   gBlendRegBuffer.bldclt = 0;
   ClearBlink(0xf0);
   sio_0800100c();
@@ -2035,7 +2035,7 @@ static void IntroLoop_080ed8dc(struct Intro* p) {
       ClearBlinkings();
       gBlendRegBuffer.bldclt = 0;
       gWindowRegBuffer.dispcnt = 0;
-      gWindowRegBuffer.unk_0c[2] = 0xFF;
+      gWindowRegBuffer.winin[2] = 0xFF;
       wMOSAIC = 0;
       PALETTE16(0) = RGB_BLACK;
       text_080e9730();
@@ -2072,7 +2072,7 @@ static void FUN_080ed9c0(struct Intro* p) {
   ClearBlinkings();
   gBlendRegBuffer.bldclt = 0;
   gWindowRegBuffer.dispcnt = 0;
-  gWindowRegBuffer.unk_0c[2] = 0xFF;
+  gWindowRegBuffer.winin[2] = 0xFF;
   wMOSAIC = 0;
   PALETTE16(0) = RGB_BLACK;
   text_080e9730();
@@ -2689,7 +2689,7 @@ static void FUN_080edf04(struct Intro* p) {
       ClearBlinkings();
       gBlendRegBuffer.bldclt = 0;
       gWindowRegBuffer.dispcnt = 0;
-      gWindowRegBuffer.unk_0c[2] = 0xFF;
+      gWindowRegBuffer.winin[2] = 0xFF;
       wMOSAIC = 0;
       PALETTE16(0) = RGB_BLACK;
       text_080e9730();

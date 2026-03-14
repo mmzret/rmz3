@@ -454,11 +454,11 @@ void FUN_0800e2c4(s32 x, s32 y) {
   s32 mx, my;
 
   if (y < PIXEL(1280)) {
-    val = gOverworld.unk_2c000;
+    val = gOverworld.tilemap_duty;
     mx = METACOORD(x);
     my = METACOORD(y + PIXEL(1600));
     PatchMetatileMap(mx, my, (struct MetatilePatch*)&sMetatilePatch2x1_0833dfda);
-    gOverworld.unk_2c000 = val;
+    gOverworld.tilemap_duty = val;
     STAGE.unk_004[0] = 1;
   }
 }

@@ -332,49 +332,23 @@ s32 FUN_0800aa6c(s32 x, s32 y) {
 
 s32 FUN_0800aaac(s32 x, s32 y) {
   s32 Y;
-  if (x < PIXEL(8)) {
-    return 0;
-  }
-  if (x >= PIXEL(12)) {
-    return ~y;
-  }
+  if (x < PIXEL(8)) return 0;
+  if (x >= PIXEL(12)) return ~y;
 
   y -= PIXEL(16);
   Y = y + ((x - PIXEL(8)) << 2);
-  if (Y > 0) {
-    return -Y;
-  }
+  if (Y > 0) return -Y;
   return 0;
 }
 
-NAKED s32 FUN_0800aaec(s32 x, s32 y) {
-  asm(".syntax unified\n\
-	push {lr}\n\
-	adds r2, r0, #0\n\
-	ldr r0, _0800AB0C @ =0x00000BFF\n\
-	cmp r2, r0\n\
-	ble _0800AB06\n\
-	ldr r0, _0800AB10 @ =0xFFFFF000\n\
-	adds r1, r1, r0\n\
-	ldr r3, _0800AB14 @ =0xFFFFF400\n\
-	adds r0, r2, r3\n\
-	lsls r0, r0, #2\n\
-	adds r0, r1, r0\n\
-	cmp r0, #0\n\
-	bgt _0800AB18\n\
-_0800AB06:\n\
-	movs r0, #0\n\
-	b _0800AB1A\n\
-	.align 2, 0\n\
-_0800AB0C: .4byte 0x00000BFF\n\
-_0800AB10: .4byte 0xFFFFF000\n\
-_0800AB14: .4byte 0xFFFFF400\n\
-_0800AB18:\n\
-	rsbs r0, r0, #0\n\
-_0800AB1A:\n\
-	pop {r1}\n\
-	bx r1\n\
- .syntax divided\n");
+s32 FUN_0800aaec(s32 x, s32 y) {
+  s32 Y;
+  if (x < PIXEL(12)) return 0;
+
+  y -= PIXEL(16);
+  Y = y + ((x - PIXEL(12)) << 2);
+  if (Y > 0) return -Y;
+  return 0;
 }
 
 NAKED s32 FUN_0800ab20(s32 x, s32 y) {

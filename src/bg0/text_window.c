@@ -6,20 +6,20 @@
 
 extern const struct ColorGraphic gDialogGraphics[];
 
-static void resetTextWindow(struct TextWindowText *t);
-static void setupTextWindow(struct TextWindowText *t);
-static void updateTextWindow(struct TextWindowText *t);
-static bool32 isMugshotChanged(struct TextWindowText *t);
+static void resetTextWindow(struct TextWindowText* t);
+static void setupTextWindow(struct TextWindowText* t);
+static void updateTextWindow(struct TextWindowText* t);
+static bool32 isMugshotChanged(struct TextWindowText* t);
 
-void ClearTextWindow(void *bg0) {
-  struct TextWindowText *t;
+void ClearTextWindow(void* bg0) {
+  struct TextWindowText* t;
   gTextPrinter.startX = 0;
   gTextPrinter.endX = 30;
   gTextPrinter.startY = 0;
   gTextPrinter.endY = 22;
   gTextWindow.frame = 0;
   gTextWindow.bg0Mask = bg0;
-  *(u32 *)&gTextWindow.text.props = 0;
+  *(u32*)&gTextWindow.text.props = 0;
   t = &gTextWindow.text;
   t->mode = 0;
 }
@@ -35,7 +35,7 @@ static void unused_080ea664(void) { gWindowRegBuffer.dispcnt &= 0xdfff; }
 
 #if MODERN == 0
 static void unused_080ea678(TextID n) {
-  struct TextWindowText *t;
+  struct TextWindowText* t;
   PrintTextWindow(n, TW_OPTION);
   t = &gTextWindow.text;
   t->flag |= 1;
@@ -168,7 +168,7 @@ _080EA786:\n\
 }
 
 void PrintOptionMessage2(TextID n) {
-  struct TextWindowText *t;
+  struct TextWindowText* t;
   PrintOptionMessage1(n);
   t = &gTextWindow.text;
   t->textType = 0;
@@ -176,10 +176,10 @@ void PrintOptionMessage2(TextID n) {
 
 WIP void PrintResultInline(TextID t, bool16 ng) {
 #if MODERN
-  struct TextWindowText *tw = &gTextWindow.text;
-  const char_t *table = gTextTable[t >> 8];
+  struct TextWindowText* tw = &gTextWindow.text;
+  const char_t* table = gTextTable[t >> 8];
   const u16 ofs = gTextOffsetTable[t >> 8][t & 0xFF];
-  const char_t *s = &table[ofs];
+  const char_t* s = &table[ofs];
 
   if (!ng) {
     PlaySound(SE_NOTIFICATION);
@@ -187,17 +187,17 @@ WIP void PrintResultInline(TextID t, bool16 ng) {
     PlaySound(SE_NOT_ALLOWED);
   }
 
-  tw->start = (char_t *)s;
+  tw->start = (char_t*)s;
   tw->textType = 0;
   resetTextWindow(tw);
   setupTextWindow(tw);
-  *((u32 *)&tw->props) = 3;
+  *((u32*)&tw->props) = 3;
 #else
   INCCODE("asm/wip/PrintResultInline.inc");
 #endif
 }
 
-static void resetTextWindow(struct TextWindowText *t) {
+static void resetTextWindow(struct TextWindowText* t) {
   t->flag = 0;
   t->mode = 1;
   t->mugshot = 0;
@@ -219,7 +219,7 @@ static void resetTextWindow(struct TextWindowText *t) {
   - TOP: w.y を 1 に
   - BOTTOM: w.y を 13
 */
-NAKED static void setupTextWindow(struct TextWindowText *t) {
+NAKED static void setupTextWindow(struct TextWindowText* t) {
   asm(".syntax unified\n\
 	push {r4, r5, r6, lr}\n\
 	adds r3, r0, #0\n\
@@ -335,12 +335,12 @@ _080EA8E2:\n\
 
 // --------------------------------------------
 
-static void doNoTextWindow(struct TextWindowText *t);
-static void mugshotMessage(struct TextWindowText *t);
-static void inlineMessage(struct TextWindowText *t);
-static void text_080eb6e8(struct TextWindowText *t);
+static void doNoTextWindow(struct TextWindowText* t);
+static void mugshotMessage(struct TextWindowText* t);
+static void inlineMessage(struct TextWindowText* t);
+static void text_080eb6e8(struct TextWindowText* t);
 
-static void updateTextWindow(struct TextWindowText *t) {
+static void updateTextWindow(struct TextWindowText* t) {
   static const TextFunc routine[] = {
       doNoTextWindow,
       mugshotMessage,
@@ -350,8 +350,8 @@ static void updateTextWindow(struct TextWindowText *t) {
   (routine[(t->props).kind])(t);
 }
 
-static bool32 isMugshotChanged(struct TextWindowText *t) {
-  char_t *s = t->next;
+static bool32 isMugshotChanged(struct TextWindowText* t) {
+  char_t* s = t->next;
   bool32 result = FALSE;
   for (; *s < CHAR_NEXT; s++) {
     if (*s == CHAR_MUGSHOT) {
@@ -364,7 +364,7 @@ static bool32 isMugshotChanged(struct TextWindowText *t) {
   return result;
 }
 
-NAKED void loadMugshot(struct TextWindowText *t, u8 mugshot) {
+NAKED void loadMugshot(struct TextWindowText* t, u8 mugshot) {
   asm(".syntax unified\n\
 	push {r4, r5, r6, lr}\n\
 	adds r6, r0, #0\n\
@@ -455,7 +455,7 @@ _080EA9EC: .4byte gDialogGraphics+12\n\
  .syntax divided\n");
 }
 
-NAKED void transferMugshotTileMap(struct TextWindowText *t) {
+NAKED void transferMugshotTileMap(struct TextWindowText* t) {
   asm(".syntax unified\n\
 	push {r4, r5, lr}\n\
 	adds r1, r0, #0\n\
@@ -485,7 +485,7 @@ _080EAA14:\n\
 	adds r0, r0, r1\n\
 	adds r1, r5, #0\n\
 	movs r2, #0xc\n\
-	bl Transfer30Bytes\n\
+	bl CopyMemory\n\
 	adds r4, #1\n\
 	lsls r4, r4, #0x10\n\
 	adds r5, #0x40\n\
@@ -513,7 +513,7 @@ _080EAA4E:\n\
 	adds r0, r0, r1\n\
 	adds r1, r5, #0\n\
 	movs r2, #0xc\n\
-	bl Transfer30Bytes\n\
+	bl CopyMemory\n\
 	adds r4, #1\n\
 	lsls r4, r4, #0x10\n\
 	adds r5, #0x40\n\
@@ -530,7 +530,7 @@ _080EAA78: .4byte MugshotRightTileMasks\n\
  .syntax divided\n");
 }
 
-NAKED void text_080eaa7c(struct TextWindowText *t, u16 r1) {
+NAKED void text_080eaa7c(struct TextWindowText* t, u16 r1) {
   asm(".syntax unified\n\
 	push {r4, r5, r6, r7, lr}\n\
 	mov r7, sl\n\
@@ -1076,16 +1076,16 @@ _080EAEF8: .4byte 0x0000059B\n\
  .syntax divided\n");
 }
 
-void text_080eaefc(struct TextWindowText *t, u32 len) {
-  tile_id_t *bgmap;
+void text_080eaefc(struct TextWindowText* t, u32 len) {
+  tile_id_t* bgmap;
   s32 size;
-  struct WramWindowRegister *win;
+  struct WramWindowRegister* win;
   s32 sin = ((gSineTable[(u8)len] * 7) >> 3) + 7;
   bgmap = gTextWindow.bg0Mask;
 
   win = &gWindowRegBuffer;
   size = sin >> 3;
-  *(u16 *)&win->winH.word = 0x400 | (((size << 3) + 12) & 0xFF);
+  *(u16*)&win->winH.word = 0x400 | (((size << 3) + 12) & 0xFF);
   if (size != 0) {
     FillMemory(709, &bgmap[513], size << 1);
     FillMemory(710, &bgmap[609], size << 1);
@@ -1100,12 +1100,12 @@ void text_080eaefc(struct TextWindowText *t, u32 len) {
   bgmap[609 + size] = 0x6c4;
 }
 
-static void doNoTextWindow(struct TextWindowText *t) {
+static void doNoTextWindow(struct TextWindowText* t) {
   t->mode = 0;
   return;
 }
 
-NAKED static void mugshotMessage(struct TextWindowText *t) {
+NAKED static void mugshotMessage(struct TextWindowText* t) {
   asm(".syntax unified\n\
 	push {r4, r5, r6, lr}\n\
 	adds r5, r0, #0\n\
@@ -1699,7 +1699,7 @@ _080EB470: .4byte 0x00000599\n\
  .syntax divided\n");
 }
 
-NAKED static void inlineMessage(struct TextWindowText *t) {
+NAKED static void inlineMessage(struct TextWindowText* t) {
   asm(".syntax unified\n\
 	push {r4, r5, r6, lr}\n\
 	adds r6, r0, #0\n\
@@ -2013,7 +2013,7 @@ _080EB6E0:\n\
  .syntax divided\n");
 }
 
-NAKED static void text_080eb6e8(struct TextWindowText *t) {
+NAKED static void text_080eb6e8(struct TextWindowText* t) {
   asm(".syntax unified\n\
 	push {r4, r5, r6, lr}\n\
 	adds r6, r0, #0\n\

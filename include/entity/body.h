@@ -5,7 +5,7 @@
 #include "gba/gba.h"
 
 // Body.status, Body.hitboxFlags
-#define BODY_STATUS_WHITE (1 << 0)
+#define BODY_STATUS_WHITE (1 << 0)  // 真っ白にする 被ダメの無敵エフェクト用
 #define BODY_STATUS_B1 (1 << 1)
 #define BODY_STATUS_B2 (1 << 2)
 #define BODY_STATUS_B3 (1 << 3)
@@ -14,20 +14,20 @@
 #define BODY_STATUS_B6 (1 << 6)
 #define BODY_STATUS_B7 (1 << 7)
 #define BODY_STATUS_B8 (1 << 8)
-#define BODY_STATUS_DEAD (1 << 9)
+#define BODY_STATUS_DEAD (1 << 9)  // ボディのHPが0になるとセット、ゼロのときにこのフラグを立てるとミッション失敗になるのでおそらく死亡判定
 #define BODY_STATUS_BINDED (1 << 10)
 #define BODY_STATUS_BINDING (1 << 11)
-#define BODY_STATUS_BLOCKED (1 << 12)
+#define BODY_STATUS_BLOCKED (1 << 12)  // 硬いものにあたって無効化されたか
 #define BODY_STATUS_B13 (1 << 13)
 #define BODY_STATUS_B14 (1 << 14)
 #define BODY_STATUS_B15 (1 << 15)
-#define BODY_STATUS_SLASHED (1 << 16)
+#define BODY_STATUS_SLASHED (1 << 16)   // 死亡時の切断演出の有無？
 #define BODY_STATUS_RECOILED (1 << 17)  // Pushed by recoil rod
 #define BODY_STATUS_B22 (1 << 22)
 #define BODY_STATUS_B23 (1 << 23)
 #define BODY_STATUS_B28 (1 << 28)
-#define BODY_STATUS_CHAT (1 << 29)
-#define BODY_STATUS_DOOR (1 << 30)
+#define BODY_STATUS_CHAT (1 << 29)  // 上ボタンで会話ができるときに立つ
+#define BODY_STATUS_DOOR (1 << 30)  // 上ボタンでドアに入れるときに立つ
 #define BODY_STATUS_TELEPORTAL (1 << 31)
 
 #define BODY_NATURE_B0 (1 << 0)
@@ -56,20 +56,10 @@ struct Body {
 
   u32 hitboxFlags;  // .status と同じ内容？
 
-  /*
-    bit 0:  真っ白にする 被ダメの無敵エフェクト用
-    bit 9:  ボディのHPが0になるとセット、ゼロのときにこのフラグを立てるとミッション失敗になるのでおそらく死亡判定
-    bit 12: 硬いものにあたって無効化されたか
-    bit 16: 死亡時の切断演出の有無？
-    bit 29: 上ボタンで会話ができるときに立つ
-    bit 30: 上ボタンでドアに入れるときに立つ
-  */
   u32 status;
   u32 prevStatus;
 
-  // bit0..6: invincible frame
-  // bit7:    ???
-  u8 invincibleTime;
+  u8 invincibleTime;  // bit0..6: invincible frame, bit7: ???
   u8 unk_21;
   u8 invincibleLv;  // 無敵レベル(防御側の連鎖値)
   u8 unk_23 : 4;

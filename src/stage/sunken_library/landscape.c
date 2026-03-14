@@ -160,8 +160,8 @@ static void LayerUpdate_2(struct StageLayer* l, const struct Stage* _ UNUSED) {
     gBlendRegBuffer.bldclt = 0x3B44;
     gBlendRegBuffer.bldalpha = 0xC04;
     gWindowRegBuffer.dispcnt |= 0x4000;
-    gWindowRegBuffer.unk_0c[1] = 0xF3;
-    gWindowRegBuffer.unk_0c[2] |= 0xE;
+    gWindowRegBuffer.winin[1] = 0xF3;
+    gWindowRegBuffer.winin[2] |= 0xE;
     *((u16*)&gWindowRegBuffer.winH + 1) = 0xFF;
     l->unk_10 = 0;
     l->phase++;
@@ -190,7 +190,7 @@ static void FUN_08013898(struct StageLayer* l, const struct Stage* _ UNUSED) {
 static void FUN_08013908(struct StageLayer* l UNUSED, const struct Stage* _ UNUSED) {
   gBlendRegBuffer.bldclt = 0;
   gWindowRegBuffer.dispcnt &= 0xBFFF;
-  gWindowRegBuffer.unk_0c[2] |= 0xE;
+  gWindowRegBuffer.winin[2] |= 0xE;
 }
 
 #undef STAGE
@@ -199,14 +199,14 @@ INCASM("asm/stage_gfx/sunken_library.inc");
 
 // ------------------------------------------------------------------------------------------------------------------------------------
 
-extern const struct ScreenMap sScreenMap1;
-INCBIN_STATIC(sScreenMap1, "data/stage/sunken_library/layer1.bin");  // ./tools/dumper/bin.ts ./baserom.gba 0x08343fc8 0x083440ec ./data/stage/sunken_library/layer1.bin
+extern const struct ChunkMap sChunkMap1;
+INCBIN_STATIC(sChunkMap1, "data/stage/sunken_library/layer1.bin");  // ./tools/dumper/bin.ts ./baserom.gba 0x08343fc8 0x083440ec ./data/stage/sunken_library/layer1.bin
 
-extern const struct ScreenMap sScreenMap2;
-INCBIN_STATIC(sScreenMap2, "data/stage/sunken_library/layer2.bin");  // ./tools/dumper/bin.ts ./baserom.gba 0x083440ec 0x08344210 ./data/stage/sunken_library/layer2.bin
+extern const struct ChunkMap sChunkMap2;
+INCBIN_STATIC(sChunkMap2, "data/stage/sunken_library/layer2.bin");  // ./tools/dumper/bin.ts ./baserom.gba 0x083440ec 0x08344210 ./data/stage/sunken_library/layer2.bin
 
-extern const struct ScreenMap sScreenMap3;
-INCBIN_STATIC(sScreenMap3, "data/stage/sunken_library/layer3.bin");  // ./tools/dumper/bin.ts ./baserom.gba 0x08344210 0x08344334 ./data/stage/sunken_library/layer3.bin
+extern const struct ChunkMap sChunkMap3;
+INCBIN_STATIC(sChunkMap3, "data/stage/sunken_library/layer3.bin");  // ./tools/dumper/bin.ts ./baserom.gba 0x08344210 0x08344334 ./data/stage/sunken_library/layer3.bin
 
 extern const tileset_ofs_t sTilesetOffset[];
 INCBIN_STATIC(sTilesetOffset, "data/stage/sunken_library/tileset_offset.bin");  // ./tools/dumper/bin.ts ./baserom.gba 0x08344334 0x08344458 ./data/stage/sunken_library/tileset_offset.bin
@@ -218,7 +218,7 @@ const struct Stage gSunkenLibraryLandscape = {
   id : STAGE_SUNKEN_LIBRARY,
   fn : sGfxRoutine,
   terrainHdr : &gStageTerrains[STAGE_SUNKEN_LIBRARY],
-  maps : {&sScreenMap1, &sScreenMap2, &sScreenMap3},
+  maps : {&sChunkMap1, &sChunkMap2, &sChunkMap3},
   bgIdx : {USE_BG1, USE_BG2, USE_BG3},
   prio : {2, 0, 3},
   screenBase : {BGMAP_BLOCK(2), BGMAP_BLOCK(4), BGMAP_BLOCK(6)},
@@ -227,5 +227,5 @@ const struct Stage gSunkenLibraryLandscape = {
   tilesetOffset : sTilesetOffset,
   bgFns : sLayerRoutine,
   behavior : sScreenBehavior,
-  unk_78 : {0x0, 0x0},
+  conveyor : {0x0, 0x0},
 };

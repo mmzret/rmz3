@@ -296,31 +296,3 @@ _080D8EE8: .4byte 0x000006FF
 _080D8EEC: .4byte gStageRun+232
 _080D8EF0: .4byte gSolidFnTable
 
-	thumb_func_start IceBlock_Disappear
-IceBlock_Disappear: @ 0x080D8EF4
-	push {r4, lr}
-	adds r4, r0, #0
-	ldrb r0, [r4, #0x10]
-	cmp r0, #1
-	bne _080D8F08
-	ldr r0, [r4, #0x54]
-	ldr r1, [r4, #0x58]
-	bl FUN_08009f6c
-	str r0, [r4, #0x58]
-_080D8F08:
-	ldrb r0, [r4, #0x10]
-	cmp r0, #0
-	beq _080D8F1A
-	ldr r0, [r4, #0x54]
-	ldr r1, [r4, #0x58]
-	ldr r2, _080D8F28 @ =0xFFFFF800
-	adds r1, r1, r2
-	bl FUN_0800bdd4
-_080D8F1A:
-	adds r0, r4, #0
-	bl DeleteSolid
-	pop {r4}
-	pop {r0}
-	bx r0
-	.align 2, 0
-_080D8F28: .4byte 0xFFFFF800

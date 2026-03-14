@@ -55,15 +55,23 @@ else
 EXE :=
 endif
 
-# Enabled by `make modern`
+NAME := rmz3
+# MODIFIERS はデバッグビルドなどで debug のように設定されることがあるので、 MODIFIERS を使う場合は := ではなく = で遅延評価すること
+MODIFIERS := 
+
+ifeq ($(filter modern,$(MAKECMDGOALS)),modern)
+MODIFIERS := $(MODIFIERS)-modern
+MODERN := 1
+endif
+
 MODERN ?= 0
 
-all: $(ROM) compare
-
 # Build target
-NAME := rmz3
-ROM := $(NAME).gba
-ELF := $(NAME).elf
+RONNAME = ${NAME}${MODIFIERS}
+ROM = ${RONNAME}.gba
+ELF = ${RONNAME}.elf
+
+all: $(ROM) compare
 
 # Tools
 TOOL = $(DEVKITARM)/bin
@@ -137,7 +145,7 @@ endif
 
 # RULES_NO_SCAN: ビルドを伴わないルールの一覧
 RULES_NO_SCAN := assets clean clean-code clean-assets
-.PHONY: all check compare compile $(RULES_NO_SCAN)
+.PHONY: all modern compare compile $(RULES_NO_SCAN)
 
 # ビルドを伴うルールの場合は、アセットの生成 と 依存関係ファイル　の読み込み が必要になる。
 # 現在、アセットが .h　ファイルを生成したり、　agbcc に依存関係ファイルを生成させる機能がなかったりと、　アセットの生成に依存するコードの依存関係を正しくMakeに伝えるのが難しいため、　ビルドを伴うルールの場合は必ず make assets を実行してからビルドするようにしている。
@@ -168,10 +176,8 @@ ifeq ($(DO_BUILD),1)
   endif
 endif
 
-check: $(ROM) compare
+modern: $(ROM)
 
-# This is a build method for romhacks and builds with gcc specified by the user.
-modern: ; @$(MAKE) $(ROM) -j8 MODERN=1
 compare: $(ROM)
 	@sha1sum -c $(NAME).sha1
 

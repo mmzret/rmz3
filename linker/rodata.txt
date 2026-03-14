@@ -346,11 +346,27 @@
       src/projectile/unk_20.o (.rodata);
       src/projectile/pantheon_aqua_mod.o (.rodata);
       src/projectile/cubit.o (.rodata);
+      src/projectile/unk_23.o (.rodata);
+      src/projectile/copy_x.o (.rodata);
+      src/projectile/unk_25.o (.rodata);
+      src/projectile/unk_26.o (.rodata);
+      src/projectile/unk_27.o (.rodata);
+      src/projectile/unk_28.o (.rodata);
+      src/projectile/unk_29.o (.rodata);
+      src/projectile/unk_30.o (.rodata);
+      src/projectile/unk_31.o (.rodata);
+      src/projectile/unk_32.o (.rodata);
+      src/projectile/omega_gold.o (.rodata);
+      src/projectile/unk_34.o (.rodata);
+      src/projectile/pantheon_bomber.o (.rodata);
+      src/projectile/unk_36.o (.rodata);
+      src/projectile/unk_37.o (.rodata);
       src/projectile/omega_zero.o (.rodata);
       src/projectile/claveker_yellow_balls.o (.rodata);
       src/projectile/phantom.o (.rodata);
       src/projectile/omega_zx.o (.rodata);
       src/projectile/unk_42.o (.rodata);
+      src/projectile/unk_43.o (.rodata);
 
 		src/vfx.o (.rodata);
       src/vfx/smoke.o (.rodata);

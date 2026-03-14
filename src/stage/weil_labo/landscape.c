@@ -270,14 +270,14 @@ INCASM("asm/stage_gfx/weil_labo.inc");
 
 // ------------------------------------------------------------------------------------------------------------------------------------
 
-extern const struct ScreenMap sScreenMap1;
-INCBIN_STATIC(sScreenMap1, "data/stage/weil_labo/layer1.bin");  // ./tools/dumper/bin.ts ./baserom.gba 0x08346ab0 0x08346c14 ./data/stage/weil_labo/layer1.bin
+extern const struct ChunkMap sChunkMap1;
+INCBIN_STATIC(sChunkMap1, "data/stage/weil_labo/layer1.bin");  // ./tools/dumper/bin.ts ./baserom.gba 0x08346ab0 0x08346c14 ./data/stage/weil_labo/layer1.bin
 
-extern const struct ScreenMap sScreenMap2;
-INCBIN_STATIC(sScreenMap2, "data/stage/weil_labo/layer2.bin");  // ./tools/dumper/bin.ts ./baserom.gba 0x08346c14 0x08346d58 ./data/stage/weil_labo/layer2.bin
+extern const struct ChunkMap sChunkMap2;
+INCBIN_STATIC(sChunkMap2, "data/stage/weil_labo/layer2.bin");  // ./tools/dumper/bin.ts ./baserom.gba 0x08346c14 0x08346d58 ./data/stage/weil_labo/layer2.bin
 
-extern const struct ScreenMap sScreenMap3;
-INCBIN_STATIC(sScreenMap3, "data/stage/weil_labo/layer3.bin");  // ./tools/dumper/bin.ts ./baserom.gba 0x08346d58 0x08346e9c ./data/stage/weil_labo/layer3.bin
+extern const struct ChunkMap sChunkMap3;
+INCBIN_STATIC(sChunkMap3, "data/stage/weil_labo/layer3.bin");  // ./tools/dumper/bin.ts ./baserom.gba 0x08346d58 0x08346e9c ./data/stage/weil_labo/layer3.bin
 
 extern const tileset_ofs_t sTilesetOffset[];
 INCBIN_STATIC(sTilesetOffset, "data/stage/weil_labo/tileset_offset.bin");  // ./tools/dumper/bin.ts ./baserom.gba 0x08346e9c 0x08346fe0 ./data/stage/weil_labo/tileset_offset.bin
@@ -289,7 +289,7 @@ const struct Stage gWeilLaboLandscape = {
   id : STAGE_WEILS_LABO,
   fn : sStageRoutine,
   terrainHdr : &gStageTerrains[STAGE_WEILS_LABO],
-  maps : {&sScreenMap1, &sScreenMap2, &sScreenMap3},
+  maps : {&sChunkMap1, &sChunkMap2, &sChunkMap3},
   bgIdx : {USE_BG1, USE_BG2, USE_BG3},
   prio : {3, 3, 3},
   screenBase : {BGMAP_BLOCK(2), BGMAP_BLOCK(4), BGMAP_BLOCK(6)},
@@ -298,5 +298,5 @@ const struct Stage gWeilLaboLandscape = {
   tilesetOffset : sTilesetOffset,
   bgFns : sLayerRoutine,
   behavior : sScreenBehavior,
-  unk_78 : {0x0, 0x0},
+  conveyor : {0x0, 0x0},
 };

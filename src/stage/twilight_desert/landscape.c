@@ -60,15 +60,40 @@ static void exitTwilightDesert(struct Coord* _ UNUSED) {
   ClearBlink(132);
 }
 
+static void LayerUpdate_TwilightDesert_2(struct StageLayer* l, const struct Stage* stage) {
+  if (l->phase == 0) {
+    const u16 n = l->bgIdx;
+    BGCNT16(n >> 4) = l->prio | l->screenBase | (BGCNT_MOSAIC | BGCNT_CHARBASE(1));
+    *(u32*)gVideoRegBuffer.bgofs[n >> 4] = 0;
+    CpuFastCopy(BGMAP(61), (void*)(VRAM + SCREEN_BASE_16(n >> 4)), 2048);
+    l->phase++;
+  }
+}
+
+INCASM("asm/stage_gfx/twilight_desert.inc");
+
+static void LayerExit_TwilightDesert_4(struct StageLayer* l, const struct Stage* stage) {
+  gBlendRegBuffer.bldclt = 0;
+  gWindowRegBuffer.dispcnt &= ~(DISPCNT_WIN1_ON);
+  gWindowRegBuffer.winin[2] |= 0xE;
+}
+
+static void LayerUpdate_TwilightDesert_5(struct StageLayer* l, const struct Stage* stage) {
+  if (l->phase == 0) {
+    const u16 n = l->bgIdx;
+    (l->scrollPower).x = 0xE0;
+    (l->scroll).x = 0x3C0;
+    BGCNT16(n >> 4) = (BGCNT16(n >> 4) & 0xFFFC) | 3;
+    l->phase++;
+  }
+}
+
 // ------------------------------------------------------------------------------------------------------------------------------------
 
-void desert_0800f9d4(struct StageLayer* l, const struct Stage* stage);
 void FUN_0800fa34(struct StageLayer* l, const struct Stage* stage);
 void desert_0800fb88(struct StageLayer* l, const struct Stage* stage);
 void desert_0800ff98(struct StageLayer* l, const struct Stage* stage);
 void FUN_08010044(struct StageLayer* l, const struct Stage* stage);
-void FUN_08010120(struct StageLayer* l, const struct Stage* stage);
-void FUN_08010148(struct StageLayer* l, const struct Stage* stage);
 
 // clang-format off
 static const StageLayerRoutine sLayerRoutine[6] = {
@@ -83,7 +108,7 @@ static const StageLayerRoutine sLayerRoutine[6] = {
       [LAYER_EXIT]   = NULL,
     },
     [2] = {
-      [LAYER_UPDATE] = desert_0800f9d4,
+      [LAYER_UPDATE] = LayerUpdate_TwilightDesert_2,
       [LAYER_DRAW]   = FUN_0800fa34,
       [LAYER_EXIT]   = NULL,
     },
@@ -95,26 +120,33 @@ static const StageLayerRoutine sLayerRoutine[6] = {
     [4] = {
       [LAYER_UPDATE] = desert_0800ff98,
       [LAYER_DRAW]   = FUN_08010044,
-      [LAYER_EXIT]   = FUN_08010120,
+      [LAYER_EXIT]   = LayerExit_TwilightDesert_4,
     },
     [5] = {
-      [LAYER_UPDATE] = FUN_08010148,
+      [LAYER_UPDATE] = LayerUpdate_TwilightDesert_5,
       [LAYER_DRAW]   = DrawGeneralStageLayer,
       [LAYER_EXIT]   = NULL,
     },
 };
 // clang-format on
 
-INCASM("asm/stage_gfx/twilight_desert.inc");
+// ------------------------------------------------------------------------------------------------------------------------------------
 
-extern const struct ScreenMap sScreenMap1;
-INCBIN_STATIC(sScreenMap1, "data/stage/twilight_desert/layer1.bin");  // ./tools/dumper/bin.ts ./baserom.gba 0x0833ee94 0x0833f018 ./data/stage/twilight_desert/layer1.bin
+void FUN_08010188(u8 val) {
+  gOverworld.work.twilightDesert.unk_000 = val;
+  gOverworld.work.twilightDesert.unk_001 = 1;
+}
 
-extern const struct ScreenMap sScreenMap2;
-INCBIN_STATIC(sScreenMap2, "data/stage/twilight_desert/layer2.bin");  // ./tools/dumper/bin.ts ./baserom.gba 0x0833f018 0x0833f19c ./data/stage/twilight_desert/layer2.bin
+u16 FUN_080101a8(void) { return (u16)gOverworld.work.twilightDesert.unk_001; }
 
-extern const struct ScreenMap sScreenMap3;
-INCBIN_STATIC(sScreenMap3, "data/stage/twilight_desert/layer3.bin");  // ./tools/dumper/bin.ts ./baserom.gba 0x0833f19c 0x0833f320 ./data/stage/twilight_desert/layer3.bin
+extern const struct ChunkMap sChunkMap1;
+INCBIN_STATIC(sChunkMap1, "data/stage/twilight_desert/layer1.bin");  // ./tools/dumper/bin.ts ./baserom.gba 0x0833ee94 0x0833f018 ./data/stage/twilight_desert/layer1.bin
+
+extern const struct ChunkMap sChunkMap2;
+INCBIN_STATIC(sChunkMap2, "data/stage/twilight_desert/layer2.bin");  // ./tools/dumper/bin.ts ./baserom.gba 0x0833f018 0x0833f19c ./data/stage/twilight_desert/layer2.bin
+
+extern const struct ChunkMap sChunkMap3;
+INCBIN_STATIC(sChunkMap3, "data/stage/twilight_desert/layer3.bin");  // ./tools/dumper/bin.ts ./baserom.gba 0x0833f19c 0x0833f320 ./data/stage/twilight_desert/layer3.bin
 
 extern const tileset_ofs_t sTilesetOffset[];
 INCBIN_STATIC(sTilesetOffset, "data/stage/twilight_desert/tileset_offset.bin");  // ./tools/dumper/bin.ts ./baserom.gba 0x0833f320 0x0833f4a4 ./data/stage/twilight_desert/tileset_offset.bin
@@ -126,7 +158,7 @@ const struct Stage gTwilightDesertLandscape = {
   id : STAGE_TWILIGHT_DESERT,
   fn : sStageRoutine,
   terrainHdr : &gStageTerrains[STAGE_TWILIGHT_DESERT],
-  maps : {&sScreenMap1, &sScreenMap2, &sScreenMap3},
+  maps : {&sChunkMap1, &sChunkMap2, &sChunkMap3},
   bgIdx : {USE_BG2, USE_BG1, USE_BG3},
   prio : {2, 1, 3},
   screenBase : {BGMAP_BLOCK(2), BGMAP_BLOCK(4), BGMAP_BLOCK(6)},
@@ -135,5 +167,5 @@ const struct Stage gTwilightDesertLandscape = {
   tilesetOffset : sTilesetOffset,
   bgFns : sLayerRoutine,
   behavior : sScreenBehavior,
-  unk_78 : {-0x100, 0x100},
+  conveyor : {-PIXEL(1), PIXEL(1)},
 };

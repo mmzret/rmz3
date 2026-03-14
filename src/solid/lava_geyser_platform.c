@@ -2,6 +2,8 @@
 #include "global.h"
 #include "solid.h"
 
+// 溶岩の間欠泉の上にある岩の足場
+
 static const u8 sInitModes[4];
 static const struct Rect sSize;
 

@@ -61,16 +61,17 @@ static void repairFactory_0800d6b4(struct Coord* c) {
   UpdateBlinkMotionState(43);
   UpdateBlinkMotionState(44);
 
+  // Toggle Conveyor Direction
   if (gOverworld.state[0] == 0) {
-    gOverworld.unk_2c004.x = -0x155;
-    gOverworld.unk_2c004.y = 0x155;
+    gOverworld.conveyor[0] = -0x155;
+    gOverworld.conveyor[1] = 0x155;
     STAGE.unk_001++;
     if (STAGE.unk_001 == 6) {
       STAGE.unk_001 = gOverworld.state[0];
     }
   } else {
-    gOverworld.unk_2c004.x = 0x155;
-    gOverworld.unk_2c004.y = -0x155;
+    gOverworld.conveyor[0] = 0x155;
+    gOverworld.conveyor[1] = -0x155;
     STAGE.unk_001--;
     if (STAGE.unk_001 < 0) {
       STAGE.unk_001 = 5;

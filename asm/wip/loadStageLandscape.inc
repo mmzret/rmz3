@@ -101,7 +101,7 @@ _08009092:
 	adds r1, r3, #0
 	movs r2, #0x1e
 	str r3, [sp, #0x28]
-	bl Transfer30Bytes
+	bl CopyMemory
 	ldr r3, [sp, #0x28]
 	adds r3, r3, r7
 	adds r4, #0x1e

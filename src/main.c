@@ -14,7 +14,7 @@ void clear0x02001ee0(void);
 void ClearVRAM(void);
 void InitPaletteManager(void);
 void InitSound(void);
-void InitTextPrinter(u32 *);
+void InitTextPrinter(u32*);
 void InitScheduler(bool32 ok);
 void GameLoop(void);
 void usrHBlankCallback(void);
@@ -49,7 +49,7 @@ WIP void AgbMain(void) {
   gIntro.unk_12 = 0;
 
   InitScheduler(TRUE);
-  ResetProcess(0, Process_SoftReset);
+  ResetProcess(0, Process_SoftReset);  // Process_SoftReset -> Process_Intro -> Process_Game
   ResetProcess(2, Process_System);
 
   GameLoop();

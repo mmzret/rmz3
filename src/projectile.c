@@ -4,7 +4,7 @@
 #include "global.h"
 #include "overworld.h"
 
-void InitProjectileHeader(struct EntityHeader *h, struct Projectile *p, s16 len) {
+void InitProjectileHeader(struct EntityHeader* h, struct Projectile* p, s16 len) {
   s16 i;
 
   InitEntityHeader(h, ENTITY_PROJECTILE, &p->s, sizeof(struct Projectile), len);
@@ -16,8 +16,8 @@ void InitProjectileHeader(struct EntityHeader *h, struct Projectile *p, s16 len)
 }
 
 void UpdateProjectiles(void) {
-  struct Entity *p;
-  struct EntityHeader *h = gProjectileHeaderPtr;
+  struct Entity* p;
+  struct EntityHeader* h = gProjectileHeaderPtr;
   if ((gStageRun.id != STAGE_SPACE_CRAFT) && (((!(gStageRun.missionStatus & MISSION_STAY)) || (gStageRun.vm.active & 1) || (gStageRun.vm.unk_004 & 1)) || gInChat || gIsUsingDoor3D)) {
     gIsLemonCollisionRemoved = TRUE;
   } else {
@@ -27,21 +27,21 @@ void UpdateProjectiles(void) {
   setCurProcessedEntityHeader(h);
   p = h->last->prev;
   h->last = p;
-  while (p != (struct Entity *)&h->next) {
+  while (p != (struct Entity*)&h->next) {
     ((EntityFunc)p->onUpdate)(p);
     p = h->last->prev;
     h->last = p;
   }
 }
 
-void DeleteProjectile(struct Projectile *p) {
+void DeleteProjectile(struct Projectile* p) {
   (p->s).flags &= ~DISPLAY;
   SET_PROJECTILE_ROUTINE(p, ENTITY_EXIT);
 }
 
 #if MODERN == 0
-static struct Coord *unused_0809c978(struct Projectile *p) {
-  struct Weapon *w = (struct Weapon *)GetNearestEntity(gWeaponHeaderPtr, &(p->s).coord);
+static struct Coord* unused_0809c978(struct Projectile* p) {
+  struct Weapon* w = (struct Weapon*)GetNearestEntity(gWeaponHeaderPtr, &(p->s).coord);
   if (w != NULL) return &(w->s).coord;
   return NULL;
 }
@@ -72,30 +72,30 @@ const ProjectileRoutine *const gProjectileFnTable[PROJECTILE_ENTITY_COUNT] = {
     [20] = &gProjectile20Routine,
     [21] = &gPantheonAquaModProjectileRoutine,
     [22] = &gCubitProjectileRoutine,
-    [23] = (const ProjectileRoutine*)0x0836BE38,
-    [24] = (const ProjectileRoutine*)0x0836BED0,
-    [25] = (const ProjectileRoutine*)0x0836BF54,
-    [26] = (const ProjectileRoutine*)0x0836C008,
-    [27] = (const ProjectileRoutine*)0x0836C0BC,
-    [28] = (const ProjectileRoutine*)0x0836C1F8,
-    [29] = (const ProjectileRoutine*)0x0836C28C,
-    [30] = (const ProjectileRoutine*)0x0836C2D0,
-    [31] = (const ProjectileRoutine*)0x0836C318,
-    [32] = (const ProjectileRoutine*)0x0836C3AC,
-    [33] = (const ProjectileRoutine*)0x0836C5F4,
-    [34] = (const ProjectileRoutine*)0x0836C704,
-    [35] = (const ProjectileRoutine*)0x0836C830,
-    [36] = (const ProjectileRoutine*)0x0836C8AC,
-    [37] = (const ProjectileRoutine*)0x0836C910,
+    [23] = &gProjectile23Routine,
+    [24] = &gCopyXProjectileRoutine,
+    [25] = &gProjectile25Routine,
+    [26] = &gProjectile26Routine,
+    [27] = &gProjectile27Routine,
+    [28] = &gProjectile28Routine,
+    [29] = &gProjectile29Routine,
+    [30] = &gProjectile30Routine,
+    [31] = &gProjectile31Routine,
+    [32] = &gProjectile32Routine,
+    [33] = &gOmegaGoldProjectileRoutine,
+    [34] = &gProjectile34Routine,
+    [35] = &gPantheonBombProjectileRoutine,
+    [36] = &gProjectile36Routine,
+    [37] = &gProjectile37Routine,
     [38] = &gOmegaZeroProjectileRoutine,
     [39] = &gClavekerYellowBallsRoutine,
     [40] = &gPhantomProjectileRoutine,
     [41] = &gOmegaZXProjectileRoutine,
     [42] = &gProjectile42Routine,
-    [43] = (const ProjectileRoutine*)0x0836D734,
-    [44] = (const ProjectileRoutine*)0x0836D780,
-    [45] = (const ProjectileRoutine*)0x0836D7B8,
-    [46] = (const ProjectileRoutine*)0x0836D89C,
-    [47] = (const ProjectileRoutine*)0x0836D8D4,
+    [43] = &gProjectile43Routine,
+    [44] = &gProjectile44Routine,
+    [45] = &gProjectile45Routine,
+    [46] = &gProjectile46Routine,
+    [47] = &gProjectile47Routine,
 };
 // clang-format on

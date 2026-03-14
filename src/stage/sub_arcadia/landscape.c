@@ -193,14 +193,14 @@ INCASM("asm/stage_gfx/sub_arcadia.inc");
 
 // ------------------------------------------------------------------------------------------------------------------------------------
 
-extern const struct ScreenMap sScreenMap1;
-INCBIN_STATIC(sScreenMap1, "data/stage/sub_arcadia/layer1.bin");  // ./tools/dumper/bin.ts ./baserom.gba 0x08345904 0x08345bc8 ./data/stage/sub_arcadia/layer1.bin
+extern const struct ChunkMap sChunkMap1;
+INCBIN_STATIC(sChunkMap1, "data/stage/sub_arcadia/layer1.bin");  // ./tools/dumper/bin.ts ./baserom.gba 0x08345904 0x08345bc8 ./data/stage/sub_arcadia/layer1.bin
 
-extern const struct ScreenMap sScreenMap2;
-INCBIN_STATIC(sScreenMap2, "data/stage/sub_arcadia/layer2.bin");  // ./tools/dumper/bin.ts ./baserom.gba 0x08345bc8 0x08345e8c ./data/stage/sub_arcadia/layer2.bin
+extern const struct ChunkMap sChunkMap2;
+INCBIN_STATIC(sChunkMap2, "data/stage/sub_arcadia/layer2.bin");  // ./tools/dumper/bin.ts ./baserom.gba 0x08345bc8 0x08345e8c ./data/stage/sub_arcadia/layer2.bin
 
-extern const struct ScreenMap sScreenMap3;
-INCBIN_STATIC(sScreenMap3, "data/stage/sub_arcadia/layer3.bin");  // ./tools/dumper/bin.ts ./baserom.gba 0x08345e8c 0x08346150 ./data/stage/sub_arcadia/layer3.bin
+extern const struct ChunkMap sChunkMap3;
+INCBIN_STATIC(sChunkMap3, "data/stage/sub_arcadia/layer3.bin");  // ./tools/dumper/bin.ts ./baserom.gba 0x08345e8c 0x08346150 ./data/stage/sub_arcadia/layer3.bin
 
 extern const tileset_ofs_t sTilesetOffset[];
 INCBIN_STATIC(sTilesetOffset, "data/stage/sub_arcadia/tileset_offset.bin");  // ./tools/dumper/bin.ts ./baserom.gba 0x08346150 0x08346414 ./data/stage/sub_arcadia/tileset_offset.bin
@@ -212,7 +212,7 @@ const struct Stage gSubArcadiaLandscape = {
   id : STAGE_SUB_ARCADIA,
   fn : sStageRoutine,
   terrainHdr : &gStageTerrains[STAGE_SUB_ARCADIA],
-  maps : {&sScreenMap1, &sScreenMap2, &sScreenMap3},
+  maps : {&sChunkMap1, &sChunkMap2, &sChunkMap3},
   bgIdx : {USE_BG1, USE_BG2, USE_BG3},
   prio : {2, 2, 3},
   screenBase : {BGMAP_BLOCK(2), BGMAP_BLOCK(4), BGMAP_BLOCK(6)},
@@ -221,7 +221,7 @@ const struct Stage gSubArcadiaLandscape = {
   tilesetOffset : sTilesetOffset,
   bgFns : sLayerRoutine,
   behavior : sScreenBehavior,
-  unk_78 : {0x0, 0x0},
+  conveyor : {0x0, 0x0},
 };
 
 #undef STAGE

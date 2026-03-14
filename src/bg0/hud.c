@@ -18,7 +18,7 @@ void ResetHUD(u16* bg0) {
 }
 
 void DrawStatus(void) {
-  gWindowRegBuffer.unk_0c[2] |= 1;
+  gWindowRegBuffer.winin[2] |= 1;
   if (gHUD.unk_02 == 0) {
     if (!FLAG(gCurStory.s.gameflags, DEMO_PLAY)) {
       LoadGraphic(BG_GRAPHIC(BG_UNK_17), (void*)CHAR_BASE(0));
@@ -47,7 +47,7 @@ void DrawStatus(void) {
 
 void DrawLeftTime(void) {
   if (gHUD.timeLeft != NULL) {
-    gWindowRegBuffer.unk_0c[2] |= 1;
+    gWindowRegBuffer.winin[2] |= 1;
     drawLeftTime(&gHUD);
   }
 }

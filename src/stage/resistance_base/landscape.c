@@ -1074,7 +1074,7 @@ static const StageLayerRoutine sLayerRoutine[11] = {
 };
 // clang-format on
 
-static const struct ScreenMap sScreenMap1 = {
+static const struct ChunkMap sChunkMap1 = {
   realWidth : WIDTH,
   skip : 1,
   width : 16,
@@ -1100,7 +1100,7 @@ static const u8 sScreenMapData1[HEIGHT][WIDTH] = {
 };
 // clang-format on
 
-static const struct ScreenMap sScreenMap2 = {
+static const struct ChunkMap sChunkMap2 = {
   realWidth : WIDTH,
   skip : 1,
   width : 16,
@@ -1126,7 +1126,7 @@ static const u8 sScreenMapData2[HEIGHT][WIDTH] = {
 };
 // clang-format on
 
-static const struct ScreenMap sScreenMap3 = {
+static const struct ChunkMap sChunkMap3 = {
   realWidth : WIDTH,
   skip : 1,
   width : 16,
@@ -1197,7 +1197,7 @@ const struct Stage gResistanceBaseLandscape = {
   id : STAGE_BASE,
   fn : sStageRoutine,
   terrainHdr : &gStageTerrains[STAGE_BASE],
-  maps : {&sScreenMap1, &sScreenMap2, &sScreenMap3},
+  maps : {&sChunkMap1, &sChunkMap2, &sChunkMap3},
   bgIdx : {USE_BG1, USE_BG2, USE_BG3},
   prio : {3, 2, 3},
   screenBase : {BGMAP_BLOCK(2), BGMAP_BLOCK(4), BGMAP_BLOCK(6)},
@@ -1206,7 +1206,6 @@ const struct Stage gResistanceBaseLandscape = {
   tilesetOffset : sTilesetOffset,
   bgFns : sLayerRoutine,
   behavior : u16_ARRAY_0834770c,
-  unk_78 : {0, 0},
 };
 
 #undef HEIGHT

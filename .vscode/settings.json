@@ -42,6 +42,9 @@
         "src/**/*.s": { "when": "$(basename).c" },
         "sound/songs/midi/*.s": false,
     },
+    "search.exclude": {
+        "src/**/*.s": false,
+    },
     "files.associations": {
         "*.ino": "cpp",
         "*.tsx": "typescriptreact",

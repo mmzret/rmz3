@@ -10,11 +10,11 @@ struct ScriptEntity;
 
 #define INIT_BODY(p, collisions, hp, onCollision)  \
   {                                                \
-    struct Body *body;                             \
+    struct Body* body;                             \
     (p->s).flags |= COLLIDABLE;                    \
     body = &p->body;                               \
     InitBody(body, collisions, &(p->s).coord, hp); \
-    body->parent = (struct CollidableEntity *)p;   \
+    body->parent = (struct CollidableEntity*)p;    \
     body->fn = onCollision;                        \
   }
 
@@ -52,12 +52,13 @@ struct __attribute__((packed, aligned(1))) EntityOamData_06 {
 };
 
 // Entityを表す複数のスプライトが集まったメタスプライト(モーションによっては複数のメタスプライトを持つ時もある)
+// TODO: この構造は間違い (Task関係の構造体っぽい)
 struct Sprite {
-  struct Sprite *p;
-  void (*fn)(struct Sprite *, struct DrawPivot *);  // 関数 0x08004eb0 で呼び出し
+  struct Sprite* p;
+  void (*fn)(struct Sprite*, struct DrawPivot*);  // 関数 0x08004eb0 で呼び出し
 
-  struct MetaspriteHeader *sprites;  // メタスプライト(のヘッダ)の配列 (VFX* が入る時も)
-  struct Coord *c;
+  struct MetaspriteHeader* sprites;  // メタスプライト(のヘッダ)の配列 (VFX* が入る時も)
+  struct Coord* c;
   struct EntityOamData oam;
   bool8 xflip;
   bool8 yflip;
@@ -81,8 +82,8 @@ struct __attribute__((packed, aligned(1))) EntityFlags {
 };
 
 struct Entity {
-  struct Entity *next;
-  struct Entity *prev;
+  struct Entity* next;
+  struct Entity* prev;
 
   s8 kind;
   u8 id;
@@ -99,8 +100,8 @@ struct Entity {
   u8 mode[4];
 
   u8 work[4];      // general purpose
-  void *onUpdate;  // EntityFunc
-  struct ScriptEntity *scriptEntity;
+  void* onUpdate;  // EntityFunc
+  struct ScriptEntity* scriptEntity;
   u8 uniqueID;      // すべてのEntityを区別するためのID
   u8 invincibleID;  // 被ダメ時の無敵を表す白塗りをEntityに適用する際にEntityの区別に用いるID
 
@@ -114,9 +115,9 @@ struct Entity {
   u8 angle;  // Affine spriteのときの回転度合い
   u8 taskCol;
   metatile_attr_t hazardAttr;
-  struct Entity *unk_28;
-  struct Entity *unk_2c;
-  const struct Rect *size;
+  struct Entity* unk_28;
+  struct Entity* unk_2c;
+  const struct Rect* size;
   struct Sprite spr;
   struct Coord coord;
   struct Coord d;  // 移動速度
@@ -128,11 +129,11 @@ struct CollidableEntity {
   struct Entity s;
   struct Body body;
   u8 work[16];  // general purpose buffer
-};              // 196 bytes
+};  // 196 bytes
 
-typedef void (*EntityFunc)(struct Entity *);
+typedef void (*EntityFunc)(struct Entity*);
 
-#define ENTITY(p) (((struct CollidableEntity *)p)->s)
+#define ENTITY(p) (((struct CollidableEntity*)p)->s)
 
 // --------------------------------------------
 

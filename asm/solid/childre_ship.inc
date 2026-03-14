@@ -536,7 +536,7 @@ _080E06E2:
 	beq _080E071C
 	ldr r0, [sp]
 	ldr r1, [r6, #4]
-	bl FUN_080e086c
+	bl ChildreShip_CreateBubbles
 	movs r0, #0xc0
 	str r0, [r7, #0x5c]
 	movs r0, #2
@@ -575,7 +575,7 @@ _080E072C:
 	beq _080E076C
 	ldr r0, [sp]
 	ldr r1, [r6, #4]
-	bl FUN_080e086c
+	bl ChildreShip_CreateBubbles
 	movs r0, #0xc0
 	str r0, [r7, #0x5c]
 	movs r0, #2
@@ -614,7 +614,7 @@ _080E077C:
 	beq _080E07BC
 	ldr r0, [sp]
 	ldr r1, [r6, #4]
-	bl FUN_080e086c
+	bl ChildreShip_CreateBubbles
 	movs r0, #0xc0
 	str r0, [r7, #0x5c]
 	movs r0, #2
@@ -705,100 +705,5 @@ _080E0856:
 	.align 2, 0
 _080E0864: .4byte pZero2
 
-	thumb_func_start ChildreShip_Die
-ChildreShip_Die: @ 0x080E0868
-	bx lr
-	.align 2, 0
 
-	thumb_func_start FUN_080e086c
-FUN_080e086c: @ 0x080E086C
-	push {r4, r5, r6, r7, lr}
-	mov r7, sl
-	mov r6, sb
-	mov r5, r8
-	push {r5, r6, r7}
-	sub sp, #0xc
-	str r0, [sp, #8]
-	mov sl, r1
-	str r0, [sp]
-	str r1, [sp, #4]
-	movs r4, #6
-	ldr r0, _080E0910 @ =gStageRun+232
-	mov r1, sp
-	bl CalcFromCamera
-	movs r1, #0x80
-	lsls r1, r1, #8
-	cmp r0, r1
-	bhi _080E08FE
-	ldr r0, _080E0914 @ =gVFXHeaderPtr
-	ldr r0, [r0]
-	movs r1, #0xa
-	ldrsh r0, [r0, r1]
-	cmp r0, #0x17
-	ble _080E08FE
-	cmp r0, #0x2f
-	bgt _080E08A4
-	movs r4, #2
-_080E08A4:
-	cmp r4, #0
-	beq _080E08FE
-	ldr r2, _080E0918 @ =RNG_0202f388
-	mov sb, r2
-	ldr r6, _080E091C @ =0x000343FD
-	ldr r5, _080E0920 @ =0x00269EC3
-	ldr r3, _080E0924 @ =0x00001FFF
-	mov r8, r3
-_080E08B4:
-	mov r7, sb
-	ldr r0, [r7]
-	muls r0, r6, r0
-	adds r0, r0, r5
-	lsls r0, r0, #1
-	lsrs r1, r0, #1
-	lsrs r0, r0, #0x11
-	mov r2, r8
-	ands r0, r2
-	ldr r3, _080E0928 @ =0xFFFFF000
-	adds r0, r0, r3
-	ldr r7, [sp, #8]
-	adds r0, r7, r0
-	muls r1, r6, r1
-	adds r1, r1, r5
-	lsls r1, r1, #1
-	lsrs r2, r1, #1
-	lsrs r1, r1, #0x11
-	mov r3, r8
-	ands r1, r3
-	ldr r7, _080E0928 @ =0xFFFFF000
-	adds r1, r1, r7
-	add r1, sl
-	muls r2, r6, r2
-	adds r2, r2, r5
-	lsls r2, r2, #1
-	lsrs r3, r2, #1
-	mov r7, sb
-	str r3, [r7]
-	lsrs r2, r2, #0x11
-	movs r3, #3
-	ands r2, r3
-	bl CreateBubble
-	subs r4, #1
-	cmp r4, #0
-	bne _080E08B4
-_080E08FE:
-	add sp, #0xc
-	pop {r3, r4, r5}
-	mov r8, r3
-	mov sb, r4
-	mov sl, r5
-	pop {r4, r5, r6, r7}
-	pop {r0}
-	bx r0
-	.align 2, 0
-_080E0910: .4byte gStageRun+232
-_080E0914: .4byte gVFXHeaderPtr
-_080E0918: .4byte RNG_0202f388
-_080E091C: .4byte 0x000343FD
-_080E0920: .4byte 0x00269EC3
-_080E0924: .4byte 0x00001FFF
-_080E0928: .4byte 0xFFFFF000
+

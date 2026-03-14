@@ -1127,7 +1127,7 @@ _0806D9F0:
 	movs r2, #0xc0
 	lsls r2, r2, #4
 	adds r1, r1, r2
-	bl FUN_0809e25c
+	bl CreateProjectile8
 	movs r0, #6
 	strb r0, [r4, #0xd]
 	movs r0, #0

@@ -7,6 +7,7 @@
 #include "zero.h"
 
 /*
+  Z軸方向にある上ボタンで入れるドア
   水没した図書館のデータの落ちてる部屋のドアの一部分(スプライト部分)
 */
 
@@ -791,7 +792,7 @@ static void FUN_080cd720(struct Door3D* p) {
         (p->z)->isAreaChange = FALSE;
         gStageRun.vm.screenEffect = SCREEN_EFFECT_01;
 
-        if ((p->s).work[0] != 2) {
+        if ((p->s).work[0] != 2) {  // 水没した図書館 かどうか？
           p->c = FUN_08019dd0(&(p->s).coord);
         } else {
           p->c = FUN_0801f7a4(&(p->s).coord);

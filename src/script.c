@@ -10,18 +10,18 @@
 
 extern const s32 s32_ARRAY_080fece4[2];
 
-static bool32 runFieldScript(struct VM *vm);
-static void updateScreenEffectZ(struct VM *vm);
-static void writeRune(struct VM *vm);
-static void readInput(struct VM *vm);
-static void filterEmergencyRed(struct VM *vm);
-static void quakeScreen(struct VM *vm);
-static void FUN_08021f2c(struct VM *vm);
-static void tryDeleteIndicator(struct VM *vm);
-static void tryForceZeroXCoord(struct VM *vm);
-static void NoEntryZero(struct VM *vm);
+static bool32 runFieldScript(struct VM* vm);
+static void updateScreenEffectZ(struct VM* vm);
+static void writeRune(struct VM* vm);
+static void readInput(struct VM* vm);
+static void filterEmergencyRed(struct VM* vm);
+static void quakeScreen(struct VM* vm);
+static void FUN_08021f2c(struct VM* vm);
+static void tryDeleteIndicator(struct VM* vm);
+static void tryForceZeroXCoord(struct VM* vm);
+static void NoEntryZero(struct VM* vm);
 
-void ClearVM(struct VM *vm, u32 stageID) {
+void ClearVM(struct VM* vm, u32 stageID) {
   s32 i;
 
   vm->unk_000 = stageID;
@@ -51,22 +51,22 @@ void ClearVM(struct VM *vm, u32 stageID) {
   StopAllMusics();
 }
 
-void FUN_08021b88(struct VM *_ UNUSED) {
+void FUN_08021b88(struct VM* _ UNUSED) {
   gPaletteManager.filter[0] = gPaletteManager.filter[1] = gPaletteManager.filter[2] = 0x20;
   gPaletteManager.unk_408 = NULL;
   ClearBlinkings();
   gBlendRegBuffer.bldclt = 0;
   gWindowRegBuffer.dispcnt = 0;
-  gWindowRegBuffer.unk_0c[2] = 0xFF;
+  gWindowRegBuffer.winin[2] = 0xFF;
   wMOSAIC = 0;
   PALETTE16(0) = RGB_BLACK;
   gVideoRegBuffer.dispcnt &= ~(DISPCNT_BG1_ON | DISPCNT_BG2_ON | DISPCNT_BG3_ON | DISPCNT_OBJ_ON | DISPCNT_WIN0_ON);
   StopAllMusics();
 }
 
-void SetScript(struct VM *vm, const struct Command *script) {
-  vm->pc = (struct Command *)script;
-  vm->start = (struct Command *)script;
+void SetScript(struct VM* vm, const struct Command* script) {
+  vm->pc = (struct Command*)script;
+  vm->start = (struct Command*)script;
   gStageRun.vm.active |= TRUE;
   wMOSAIC = 0;
   if (gTimeElfTimer != 0) {
@@ -84,7 +84,7 @@ void SetScript(struct VM *vm, const struct Command *script) {
   0: まだコマンドが残ってる
   1: 終端コマンド(0xFF)まで実行完了
 */
-bool32 RunVM(struct VM *vm) {
+bool32 RunVM(struct VM* vm) {
   bool32 done = FALSE;
   if (gStageRun.vm.active & 1) {
     done = runFieldScript(vm);
@@ -101,13 +101,13 @@ bool32 RunVM(struct VM *vm) {
   return done;
 }
 
-void FUN_08021ca0(struct VM *vm) {
+void FUN_08021ca0(struct VM* vm) {
   updateScreenEffectZ(vm);
   writeRune(vm);
 }
 
-void FUN_08021cb4(struct VM *vm, const struct Command *script, struct Entity *e) {
-  struct ScriptEntity *se = &vm->entities[2];
+void FUN_08021cb4(struct VM* vm, const struct Command* script, struct Entity* e) {
+  struct ScriptEntity* se = &vm->entities[2];
   if (se->entity == NULL) {
     e->flags |= SCRIPTED;
     e->scriptEntity = se;
@@ -119,16 +119,16 @@ void FUN_08021cb4(struct VM *vm, const struct Command *script, struct Entity *e)
   }
 }
 
-void CreateScriptEntity(u8 n, struct ScriptEntityTemplate *template) {
-  struct ScriptEntity *se = &gStageRun.vm.entities[n];
+void CreateScriptEntity(u8 n, struct ScriptEntityTemplate* template) {
+  struct ScriptEntity* se = &gStageRun.vm.entities[n];
   if (se->entity == NULL) {
-    struct Entity *e;
+    struct Entity* e;
 
     if ((template->kind == ENTITY_PLAYER) && (template->work[0] != PLAYER_ZERO)) {
-      e = (struct Entity *)AllocPlayer2();
+      e = (struct Entity*)AllocPlayer2();
       if (e != NULL) {
         e->taskCol = 16;
-        INIT_PLAYER_ROUTINE(((struct Zero *)e), template->variant);
+        INIT_PLAYER_ROUTINE(((struct Zero*)e), template->variant);
       }
     } else {
       e = CreateStageEntity(template->kind, template->variant);
@@ -156,10 +156,10 @@ void CreateScriptEntity(u8 n, struct ScriptEntityTemplate *template) {
       se->flags = 0;
       se->unk_0A[0] = se->unk_0A[1] = se->unk_0A[2] = 0;
       if (n == 0) {
-        pZero2 = (struct Zero *)e;
-        gHUD.z = (struct Zero *)e;
-        SaveZeroStatus((struct Zero *)e, &gGameState.save.status);
-        LoadZeroPalette(e, ((&((struct Zero *)e)->unk_b4)->status).body);
+        pZero2 = (struct Zero*)e;
+        gHUD.z = (struct Zero*)e;
+        SaveZeroStatus((struct Zero*)e, &gGameState.save.status);
+        LoadZeroPalette(e, ((&((struct Zero*)e)->unk_b4)->status).body);
       }
       if (n == 1) {
         CLEAR_FLAG(gCurStory.s.gameflags, TIME_ELF_ENABLED);
@@ -169,8 +169,8 @@ void CreateScriptEntity(u8 n, struct ScriptEntityTemplate *template) {
 }
 
 void DeleteScriptEntity(u8 n) {
-  struct ScriptEntity *s = &gStageRun.vm.entities[n];
-  struct Entity *e = s->entity;
+  struct ScriptEntity* s = &gStageRun.vm.entities[n];
+  struct Entity* e = s->entity;
   if (e != NULL) {
     if ((gStageRun.id != 0) && (n == 0)) {
       gHUD.z = NULL;
@@ -180,7 +180,7 @@ void DeleteScriptEntity(u8 n) {
     if (n == 1) {
       gHUD.unk_0c = NULL;
     }
-    DeleteStageEntity((struct CollidableEntity *)e);
+    DeleteStageEntity((struct CollidableEntity*)e);
     s->entity = NULL;
   }
 }
@@ -192,7 +192,7 @@ RunVM(08021e5c) で終端(0xFF)までループして実行される
   0: ループ続行
   1: ループから抜ける 再び runFieldScript が実行されるとき、次のコマンドから再開
 */
-static bool32 runFieldScript(struct VM *vm) {
+static bool32 runFieldScript(struct VM* vm) {
   if (vm->wait != 0) {
     vm->wait--;
     return FALSE;
@@ -212,8 +212,8 @@ static bool32 runFieldScript(struct VM *vm) {
 }
 
 // 0x08021ec4
-static void readInput(struct VM *vm) {
-  struct Zero *z = (struct Zero *)vm->entities[0].entity;
+static void readInput(struct VM* vm) {
+  struct Zero* z = (struct Zero*)vm->entities[0].entity;
   if (vm->forcedKey == 0) {
     gStageRun.input = gJoypad[0].input & 0x7FFF;
     gStageRun.unk_06 = gJoypad[1].input & 0x7FFF;
@@ -231,7 +231,7 @@ static void readInput(struct VM *vm) {
   }
 }
 
-NAKED static void FUN_08021f2c(struct VM *vm) {
+NAKED static void FUN_08021f2c(struct VM* vm) {
   asm(".syntax unified\n\
 	push {r4, r5, r6, r7, lr}\n\
 	mov r7, r8\n\
@@ -372,7 +372,7 @@ _0802203C: .4byte 0x00400005\n\
 }
 
 // Zマークを作りながらの暗転(or Zマークを作りながらの暗転からの復帰)
-NAKED static void updateScreenEffectZ(struct VM *vm) {
+NAKED static void updateScreenEffectZ(struct VM* vm) {
   asm(".syntax unified\n\
 	push {r4, r5, r6, r7, lr}\n\
 	movs r1, #0xa2\n\
@@ -540,7 +540,7 @@ _08022170:\n\
  .syntax divided\n");
 }
 
-static void writeRune(struct VM *vm) {
+static void writeRune(struct VM* vm) {
   const s32 rune = vm->rune.raw;
   if (rune != 0) {
     u8 x = rune >> 16;
@@ -549,32 +549,32 @@ static void writeRune(struct VM *vm) {
   }
 }
 
-static void tryDeleteIndicator(struct VM *vm) {
-  struct VFX *z = vm->indicator;
+static void tryDeleteIndicator(struct VM* vm) {
+  struct VFX* z = vm->indicator;
   if ((z != NULL) && (ENTITY_UPDATE < (z->s).mode[0])) {
     vm->indicator = NULL;
   }
 }
 
-static void tryForceZeroXCoord(struct VM *vm) {
+static void tryForceZeroXCoord(struct VM* vm) {
   s32 x;
-  struct Entity *e = vm->entities[0].entity;
+  struct Entity* e = vm->entities[0].entity;
   if ((e != NULL) && (x = (vm->forceCoord).x, 0 < x)) {
     (e->coord).x = x;
   }
 }
 
 // gOverworld.range の見えない壁に阻まれる処理
-WIP static void NoEntryZero(struct VM *vm) {
+WIP static void NoEntryZero(struct VM* vm) {
 #if MODERN
   s32 top = 0;
   s32 left = 0;
   s32 right = s32_ARRAY_080fece4[0];
   s32 bottom = s32_ARRAY_080fece4[1];
 
-  struct Zero *z = (struct Zero *)vm->entities[0].entity;
+  struct Zero* z = (struct Zero*)vm->entities[0].entity;
   if (z != NULL) {
-    struct Camera *camera = &gStageRun.vm.camera;
+    struct Camera* camera = &gStageRun.vm.camera;
     if (camera->mode > 3) {
       left = camera->left;
       top = camera->top;
@@ -596,7 +596,7 @@ WIP static void NoEntryZero(struct VM *vm) {
     }
     SetDisableArea(z, left, top, right, bottom);
 
-    z = (struct Zero *)vm->entities[1].entity;
+    z = (struct Zero*)vm->entities[1].entity;
     if ((z != NULL) && ((z->s).kind == ENTITY_PLAYER)) {
       SetDisableArea(z, left, top, right, bottom);
     }
@@ -606,7 +606,7 @@ WIP static void NoEntryZero(struct VM *vm) {
 #endif
 }
 
-NAKED static void filterEmergencyRed(struct VM *vm) {
+NAKED static void filterEmergencyRed(struct VM* vm) {
   asm(".syntax unified\n\
 	push {r4, r5, r6, lr}\n\
 	movs r1, #0xa6\n\
@@ -672,7 +672,7 @@ _08022320: .4byte 0x00000402\n\
  .syntax divided\n");
 }
 
-static void quakeScreen(struct VM *vm) {
+static void quakeScreen(struct VM* vm) {
   struct Coord c;
   s32 rng;
 

@@ -17,7 +17,7 @@ type JsonData = {
   name: string;
   id: number;
   layers: Layer[];
-  unk_78: [number, number];
+  conveyor?: [number, number];
 };
 
 const main = async () => {
@@ -44,8 +44,8 @@ const main = async () => {
 
   for (let i = 1; i <= 3; i++) {
     layerData += `
-extern const struct ScreenMap sScreenMap${i};
-INCBIN_STATIC(sScreenMap${i}, "data/stage/${dir}/layer${i}.bin");
+extern const struct ChunkMap sChunkMap${i};
+INCBIN_STATIC(sChunkMap${i}, "data/stage/${dir}/layer${i}.bin");
 `;
   }
 
@@ -66,7 +66,7 @@ const struct Stage g${s.name}Landscape = {
   id : ${s.id},
   fn : sStageRoutine,
   terrainHdr : &gStageTerrains[${s.id}],
-  maps : {&sScreenMap1, &sScreenMap2, &sScreenMap3},
+  maps : {&sChunkMap1, &sChunkMap2, &sChunkMap3},
   bgIdx : {${bgIdxs[0]}, ${bgIdxs[1]}, ${bgIdxs[2]}},
   prio : {${l[0].prio}, ${l[1].prio}, ${l[2].prio}},
   screenBase : {BGMAP_BLOCK(2), BGMAP_BLOCK(4), BGMAP_BLOCK(6)},
@@ -75,7 +75,7 @@ const struct Stage g${s.name}Landscape = {
   tilesetOffset : sTilesetOffset,
   bgFns : sLayerRoutine,
   behavior : sScreenBehavior,
-  unk_78 : {${s.unk_78[0]}, ${s.unk_78[1]}},
+  conveyor: {${s.conveyor?.[0] ?? 0}, ${s.conveyor?.[1] ?? 0}},
 };
 `;
 

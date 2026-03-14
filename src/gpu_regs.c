@@ -157,7 +157,7 @@ void FlashBlendRegister(void) {
  */
 void ResetWindow(void) {
   gWindowRegBuffer.dispcnt = 0;
-  gWindowRegBuffer.unk_0c[2] = 0xFF;
+  gWindowRegBuffer.winin[2] = 0xFF;
 }
 
 /**
@@ -171,7 +171,7 @@ void FlashWinRegister(void) {
 
   (*(vu32*)REG_ADDR_WIN0H) = gWindowRegBuffer.winH.word;
   (*(vu32*)REG_ADDR_WIN0V) = gWindowRegBuffer.winV.word;
-  (*(vu32*)REG_ADDR_WININ) = *((u32*)&gWindowRegBuffer.unk_0c);
+  (*(vu32*)REG_ADDR_WININ) = *((u32*)&gWindowRegBuffer.winin);
 }
 
 void ClearMOSAIC(void) {

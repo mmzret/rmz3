@@ -16,6 +16,70 @@ const ProjectileRoutine gOmegaZXProjectileRoutine = {
 };
 // clang-format on
 
+struct Projectile* FUN_080afe84(struct Entity* parent, struct Coord* c, u8 n) {
+  struct Projectile* p = (struct Projectile*)AllocEntityFirst(gProjectileHeaderPtr);
+  if (p != NULL) {
+    (p->s).taskCol = 8;
+    INIT_PROJECTILE_ROUTINE(p, 41);
+    (p->s).tileNum = 0;
+    (p->s).palID = 0;
+    (p->s).work[0] = 0;
+    (p->s).work[1] = n;
+    (p->s).coord.x = c->x;
+    (p->s).coord.y = c->y;
+    (p->s).unk_28 = parent;
+  }
+  return p;
+}
+
+struct Projectile* FUN_080afedc(struct Entity* parent, struct Coord* c, u8 n) {
+  struct Projectile* p = (struct Projectile*)AllocEntityFirst(gProjectileHeaderPtr);
+  if (p != NULL) {
+    (p->s).taskCol = 8;
+    INIT_PROJECTILE_ROUTINE(p, 41);
+    (p->s).tileNum = 0;
+    (p->s).palID = 0;
+    (p->s).work[0] = n;
+    (p->s).coord.x = c->x;
+    (p->s).coord.y = c->y;
+    (p->s).unk_28 = parent;
+  }
+  return p;
+}
+
+struct Projectile* FUN_080aff34(struct Entity* parent, struct Coord* c) {
+  struct Projectile* p = (struct Projectile*)AllocEntityFirst(gProjectileHeaderPtr);
+  if (p != NULL) {
+    (p->s).taskCol = 8;
+    INIT_PROJECTILE_ROUTINE(p, 41);
+    (p->s).tileNum = 0;
+    (p->s).palID = 0;
+    (p->s).work[0] = 4;
+    (p->s).coord.x = c->x;
+    (p->s).coord.y = c->y;
+    (p->s).unk_28 = parent;
+  }
+  return p;
+}
+
+struct Projectile* FUN_080aff88(struct Entity* parent, struct Coord* c, u8 n) {
+  struct Projectile* p = (struct Projectile*)AllocEntityFirst(gProjectileHeaderPtr);
+  if (p != NULL) {
+    (p->s).taskCol = 8;
+    INIT_PROJECTILE_ROUTINE(p, 41);
+    (p->s).tileNum = 0;
+    (p->s).palID = 0;
+    (p->s).work[0] = 5;
+    (p->s).work[1] = n;
+    (p->s).coord.x = c->x;
+    (p->s).coord.y = c->y;
+    (p->s).unk_28 = parent;
+  }
+  return p;
+}
+
+INCASM("asm/projectile/omega_zx.inc");
+
 void FUN_080b0168(struct Projectile* p);
 void FUN_080b0214(struct Projectile* p);
 void FUN_080b02dc(struct Projectile* p);

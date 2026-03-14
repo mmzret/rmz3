@@ -7,8 +7,8 @@
 #include "story.h"
 
 // clear Motion struct
-void ResetMotion(struct Motion *p, const struct MotionCmd *const *const cmds) {
-  p->cmds = (const struct MotionCmd **)cmds;  // cmds is overwritten later
+void ResetMotion(struct Motion* p, const struct MotionCmd* const* const cmds) {
+  p->cmds = (const struct MotionCmd**)cmds;  // cmds is overwritten later
   p->step = 0;
   p->cmdIdx = 0;
   p->duration = (*cmds)->frame + 1;
@@ -16,7 +16,7 @@ void ResetMotion(struct Motion *p, const struct MotionCmd *const *const cmds) {
 }
 
 // step: モーションのstep(剣を振るモーションなら今のstepでは剣を振りかぶったみたいな)
-void setMotionStep(struct Motion *p, u8 step) {
+void setMotionStep(struct Motion* p, u8 step) {
   s8 frame;
 
   p->step = step;
@@ -45,7 +45,7 @@ void setMotionStep(struct Motion *p, u8 step) {
   p->state = MOTION_STATE_0;
 }
 
-WIP void UpdateMotionState(struct Motion *m) {
+WIP void UpdateMotionState(struct Motion* m) {
 #if MODERN
   u8 p;
   m->duration--;
@@ -112,15 +112,4 @@ WIP void UpdateMotionState(struct Motion *m) {
 #else
   INCCODE("asm/wip/UpdateMotionState.inc");
 #endif
-}
-
-// TODO: 後で src/overworld_layer.c に
-void ResetLayerGraphic(struct LayerGraphic *l, struct Coord *c, u16 *_, Metatile *tiledata, Screen *screens, const struct ScreenMap *map) {
-  (l->c).x = c->x;
-  (l->c).y = c->y;
-  l->tiledata = tiledata;
-  l->screens = screens;
-  l->map = map;
-  l->bgofs[0] = c->x & 0x1FF;
-  l->bgofs[1] = c->y & 0x1FF;
 }

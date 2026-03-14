@@ -668,14 +668,14 @@ static void LayerExit_6(struct StageLayer* l UNUSED, const struct Stage* _ UNUSE
 
 // ------------------------------------------------------------------------------------------------------------------------------------
 
-extern const struct ScreenMap sScreenMap1;
-INCBIN_STATIC(sScreenMap1, "data/stage/area_x2/layer1.bin");  // ./tools/dumper/bin.ts ./baserom.gba 0x08340ff0 0x08341234 ./data/stage/area_x2/layer1.bin
+extern const struct ChunkMap sChunkMap1;
+INCBIN_STATIC(sChunkMap1, "data/stage/area_x2/layer1.bin");  // ./tools/dumper/bin.ts ./baserom.gba 0x08340ff0 0x08341234 ./data/stage/area_x2/layer1.bin
 
-extern const struct ScreenMap sScreenMap2;
-INCBIN_STATIC(sScreenMap2, "data/stage/area_x2/layer2.bin");  // ./tools/dumper/bin.ts ./baserom.gba 0x08341234 0x08341478 ./data/stage/area_x2/layer2.bin
+extern const struct ChunkMap sChunkMap2;
+INCBIN_STATIC(sChunkMap2, "data/stage/area_x2/layer2.bin");  // ./tools/dumper/bin.ts ./baserom.gba 0x08341234 0x08341478 ./data/stage/area_x2/layer2.bin
 
-extern const struct ScreenMap sScreenMap3;
-INCBIN_STATIC(sScreenMap3, "data/stage/area_x2/layer3.bin");  // ./tools/dumper/bin.ts ./baserom.gba 0x08341478 0x083416bc ./data/stage/area_x2/layer3.bin
+extern const struct ChunkMap sChunkMap3;
+INCBIN_STATIC(sChunkMap3, "data/stage/area_x2/layer3.bin");  // ./tools/dumper/bin.ts ./baserom.gba 0x08341478 0x083416bc ./data/stage/area_x2/layer3.bin
 
 extern const tileset_ofs_t sTilesetOffset[];
 INCBIN_STATIC(sTilesetOffset, "data/stage/area_x2/tileset_offset.bin");  // ./tools/dumper/bin.ts ./baserom.gba 0x083416bc 0x08341900 ./data/stage/area_x2/tileset_offset.bin
@@ -687,7 +687,7 @@ const struct Stage gAreaX2Landscape = {
   id : STAGE_AREA_X2,
   fn : sStageRoutine,
   terrainHdr : &gStageTerrains[STAGE_AREA_X2],
-  maps : {&sScreenMap1, &sScreenMap2, &sScreenMap3},
+  maps : {&sChunkMap1, &sChunkMap2, &sChunkMap3},
   bgIdx : {USE_BG1, USE_BG2, USE_BG3},
   prio : {2, 3, 3},
   screenBase : {BGMAP_BLOCK(2), BGMAP_BLOCK(4), BGMAP_BLOCK(6)},
@@ -696,5 +696,4 @@ const struct Stage gAreaX2Landscape = {
   tilesetOffset : sTilesetOffset,
   bgFns : sLayerRoutine,
   behavior : sScreenBehavior,
-  unk_78 : {0x0, 0x0},
 };

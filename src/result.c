@@ -34,7 +34,7 @@ void PrepareResultScreen(struct ResultState* p) {
 
   FUN_08024db4();
   gWindowRegBuffer.dispcnt = 0;
-  gWindowRegBuffer.unk_0c[2] = 0xFF;
+  gWindowRegBuffer.winin[2] = 0xFF;
   gBlendRegBuffer.bldclt = 0;
   LOAD_STATIC_GRAPHIC(SM014_CHIPICON);
   LOAD_STATIC_GRAPHIC(SM127_DISABLED_DISK);

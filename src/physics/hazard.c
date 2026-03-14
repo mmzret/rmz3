@@ -96,224 +96,88 @@ _0800ACB6:\n\
  .syntax divided\n");
 }
 
-// めり込んでた時の上への押し出し距離を返す
-WIP s32 CalcPushout_Up(s32 x, s32 y) {
-#if MODERN
+// 座標(x, y) が Hazard(物理的に干渉するEntity) によって上に押し出された後の Y 座標を返す
+s32 CalcPushout_Up(s32 x, s32 y) {
   s32 i;
-  for (i = 0; i < HAZARD_LENGTH; i++) {
-    struct Hazard *b = HAZARD(i);
-    const u32 w = (u32)((u16)b->w);
-    if ((u32)(x - (b->start).x) + w < (w << 1)) {
-      const u32 h = (u32)((u16)b->h);
-      u32 unk = (u32)(y - (b->start).y) + h - 1;
-      if (unk < (h * 2)) {
-        return (b->start).y - h;  // 押し出し量 = ((b->start).y - b->h) - y
+  for (i = 0; i < gOverworld.objectLen; i++) {
+    const u32 w = gOverworld.objects[i].w << 1;
+    const u32 _x = (u32)(x - (gOverworld.objects[i].start).x) + gOverworld.objects[i].w;
+    if (w > _x) {
+      const u32 h = gOverworld.objects[i].h << 1;
+      const u32 _y = (u32)(y - (gOverworld.objects[i].start).y) + gOverworld.objects[i].h - 1;
+      if (h > _y) {
+        y = (gOverworld.objects[i].start).y - gOverworld.objects[i].h;
+        return CalcPushout_Up(x, y);
       }
     }
   }
-  return y;  // 押し出しなし
-#else
-  INCCODE("asm/wip/CalcPushout_Up.inc");
-#endif
+  return y;
 }
 
-WIP s32 CalcPushout_Down(s32 x, s32 y) {
-#if MODERN
+/**
+ * @brief 座標(x, y) が Hazard(物理的に干渉するEntity) によって下に押し出された後の Y 座標を返す
+ * @param x Coord X
+ * @param y Coord Y
+ * @return 押し出し処理後の Y (干渉する Entity がない場合は引数の y と同じ値)
+ * @note 0x0800ad50
+ */
+s32 CalcPushout_Down(s32 x, s32 y) {
   s32 i;
-  for (i = 0; i < HAZARD_LENGTH; i++) {
-    struct Hazard *b = HAZARD(i);
-    const u32 w = (u32)((u16)b->w);
-    if ((u32)(x - (b->start).x) + w < (w << 1)) {
-      const u32 h = (u32)((u16)b->h);
-      u32 unk = (u32)(y - (b->start).y) + h - 1;
-      if (unk < (h * 2) && ((b->attr & 0x8400) == 0)) {
-        return (b->start).y + h + 1;  // 押し出し量 = ((b->start).y - b->h) - y
+  for (i = 0; i < gOverworld.objectLen; i++) {
+    const u32 w = gOverworld.objects[i].w << 1;
+    const u32 _x = (u32)(x - (gOverworld.objects[i].start).x) + gOverworld.objects[i].w;
+    if (w > _x) {
+      const u32 h = gOverworld.objects[i].h << 1;
+      const u32 _y = (u32)(y - (gOverworld.objects[i].start).y) + gOverworld.objects[i].h - 1;
+      if (h > _y) {
+        if ((gOverworld.objects[i].attr & (METATILE_SOFT_PLATFORM | METATILE_ANTTRAP)) == 0) {
+          y = (gOverworld.objects[i].start).y + gOverworld.objects[i].h + 1;
+          return CalcPushout_Down(x, y);  // 押し出した先に、別のHazardがあるかもしれないので、押し出した先で再度チェックが必要
+        }
       }
     }
   }
-  return y;  // 押し出しなし
-#else
-  INCCODE("asm/wip/CalcPushout_Down.inc");
-#endif
+  return y;
 }
 
-NAKED s32 CalcPushout_Left(s32 x, s32 y) {
-  asm(".syntax unified\n\
-	push {r4, r5, r6, r7, lr}\n\
-	mov r7, sl\n\
-	mov r6, sb\n\
-	mov r5, r8\n\
-	push {r5, r6, r7}\n\
-	sub sp, #8\n\
-	adds r6, r0, #0\n\
-	str r1, [sp]\n\
-	ldr r0, _0800AE6C @ =gOverworld\n\
-	str r0, [sp, #4]\n\
-_0800AE00:\n\
-	movs r5, #0\n\
-	ldr r1, [sp, #4]\n\
-	movs r2, #0xe9\n\
-	lsls r2, r2, #1\n\
-	adds r0, r1, r2\n\
-	ldrb r0, [r0]\n\
-	cmp r5, r0\n\
-	bge _0800AE7E\n\
-	movs r7, #0xf0\n\
-	lsls r7, r7, #1\n\
-	adds r7, r7, r1\n\
-	mov sb, r7\n\
-	adds r2, #0xa\n\
-	adds r2, r2, r1\n\
-	mov r8, r2\n\
-	mov ip, r1\n\
-	mov sl, r0\n\
-_0800AE22:\n\
-	movs r0, #0xec\n\
-	lsls r0, r0, #1\n\
-	add r0, ip\n\
-	ldrh r3, [r0]\n\
-	lsls r1, r3, #1\n\
-	mov r7, r8\n\
-	ldr r4, [r7]\n\
-	subs r0, r6, r4\n\
-	adds r0, r0, r3\n\
-	cmp r1, r0\n\
-	bls _0800AE70\n\
-	movs r0, #0xed\n\
-	lsls r0, r0, #1\n\
-	add r0, ip\n\
-	ldrh r0, [r0]\n\
-	lsls r2, r0, #1\n\
-	mov r7, sb\n\
-	ldr r1, [r7]\n\
-	ldr r7, [sp]\n\
-	subs r1, r7, r1\n\
-	adds r1, r1, r0\n\
-	subs r1, #1\n\
-	cmp r2, r1\n\
-	bls _0800AE70\n\
-	movs r0, #0xeb\n\
-	lsls r0, r0, #1\n\
-	add r0, ip\n\
-	ldrh r1, [r0]\n\
-	movs r0, #0x84\n\
-	lsls r0, r0, #8\n\
-	ands r0, r1\n\
-	cmp r0, #0\n\
-	bne _0800AE70\n\
-	subs r0, r4, r3\n\
-	subs r6, r0, #1\n\
-	b _0800AE00\n\
-	.align 2, 0\n\
-_0800AE6C: .4byte gOverworld\n\
-_0800AE70:\n\
-	movs r0, #0x18\n\
-	add sb, r0\n\
-	add r8, r0\n\
-	add ip, r0\n\
-	adds r5, #1\n\
-	cmp r5, sl\n\
-	blt _0800AE22\n\
-_0800AE7E:\n\
-	adds r0, r6, #0\n\
-	add sp, #8\n\
-	pop {r3, r4, r5}\n\
-	mov r8, r3\n\
-	mov sb, r4\n\
-	mov sl, r5\n\
-	pop {r4, r5, r6, r7}\n\
-	pop {r1}\n\
-	bx r1\n\
- .syntax divided\n");
+// 座標(x, y) が Hazard(物理的に干渉するEntity) によって左に押し出された後の X 座標を返す
+s32 CalcPushout_Left(s32 x, s32 y) {
+  s32 i;
+  for (i = 0; i < gOverworld.objectLen; i++) {
+    const u32 w = gOverworld.objects[i].w << 1;
+    const u32 _x = (u32)(x - (gOverworld.objects[i].start).x) + gOverworld.objects[i].w;
+    if (w > _x) {
+      const u32 h = gOverworld.objects[i].h << 1;
+      const u32 _y = (u32)(y - (gOverworld.objects[i].start).y) + gOverworld.objects[i].h - 1;
+      if (h > _y) {
+        if ((gOverworld.objects[i].attr & (METATILE_SOFT_PLATFORM | METATILE_ANTTRAP)) == 0) {
+          x = ((gOverworld.objects[i].start).x - gOverworld.objects[i].w) - 1;
+          return CalcPushout_Left(x, y);  // 押し出した先に、別のHazardがあるかもしれないので、押し出した先で再度チェックが必要
+        }
+      }
+    }
+  }
+  return x;
 }
 
-NAKED s32 CalcPushout_Right(s32 x, s32 y) {
-  asm(".syntax unified\n\
-	push {r4, r5, r6, r7, lr}\n\
-	mov r7, sl\n\
-	mov r6, sb\n\
-	mov r5, r8\n\
-	push {r5, r6, r7}\n\
-	sub sp, #8\n\
-	adds r6, r0, #0\n\
-	str r1, [sp]\n\
-	ldr r0, _0800AF0C @ =gOverworld\n\
-	str r0, [sp, #4]\n\
-_0800AEA4:\n\
-	movs r5, #0\n\
-	ldr r1, [sp, #4]\n\
-	movs r2, #0xe9\n\
-	lsls r2, r2, #1\n\
-	adds r0, r1, r2\n\
-	ldrb r0, [r0]\n\
-	cmp r5, r0\n\
-	bge _0800AF1E\n\
-	movs r7, #0xf0\n\
-	lsls r7, r7, #1\n\
-	adds r7, r7, r1\n\
-	mov sb, r7\n\
-	adds r2, #0xa\n\
-	adds r2, r2, r1\n\
-	mov r8, r2\n\
-	mov ip, r1\n\
-	mov sl, r0\n\
-_0800AEC6:\n\
-	movs r0, #0xec\n\
-	lsls r0, r0, #1\n\
-	add r0, ip\n\
-	ldrh r3, [r0]\n\
-	lsls r1, r3, #1\n\
-	mov r7, r8\n\
-	ldr r4, [r7]\n\
-	subs r0, r6, r4\n\
-	adds r0, r0, r3\n\
-	cmp r1, r0\n\
-	bls _0800AF10\n\
-	movs r0, #0xed\n\
-	lsls r0, r0, #1\n\
-	add r0, ip\n\
-	ldrh r0, [r0]\n\
-	lsls r2, r0, #1\n\
-	mov r7, sb\n\
-	ldr r1, [r7]\n\
-	ldr r7, [sp]\n\
-	subs r1, r7, r1\n\
-	adds r1, r1, r0\n\
-	subs r1, #1\n\
-	cmp r2, r1\n\
-	bls _0800AF10\n\
-	movs r0, #0xeb\n\
-	lsls r0, r0, #1\n\
-	add r0, ip\n\
-	ldrh r1, [r0]\n\
-	movs r0, #0x84\n\
-	lsls r0, r0, #8\n\
-	ands r0, r1\n\
-	cmp r0, #0\n\
-	bne _0800AF10\n\
-	adds r6, r4, r3\n\
-	b _0800AEA4\n\
-	.align 2, 0\n\
-_0800AF0C: .4byte gOverworld\n\
-_0800AF10:\n\
-	movs r0, #0x18\n\
-	add sb, r0\n\
-	add r8, r0\n\
-	add ip, r0\n\
-	adds r5, #1\n\
-	cmp r5, sl\n\
-	blt _0800AEC6\n\
-_0800AF1E:\n\
-	adds r0, r6, #0\n\
-	add sp, #8\n\
-	pop {r3, r4, r5}\n\
-	mov r8, r3\n\
-	mov sb, r4\n\
-	mov sl, r5\n\
-	pop {r4, r5, r6, r7}\n\
-	pop {r1}\n\
-	bx r1\n\
- .syntax divided\n");
+// 座標(x, y) が Hazard(物理的に干渉するEntity) によって右に押し出された後の X 座標を返す
+s32 CalcPushout_Right(s32 x, s32 y) {
+  s32 i;
+  for (i = 0; i < gOverworld.objectLen; i++) {
+    const u32 w = gOverworld.objects[i].w << 1;
+    const u32 _x = (u32)(x - (gOverworld.objects[i].start).x) + gOverworld.objects[i].w;
+    if (w > _x) {
+      const u32 h = gOverworld.objects[i].h << 1;
+      const u32 _y = (u32)(y - (gOverworld.objects[i].start).y) + gOverworld.objects[i].h - 1;
+      if (h > _y) {
+        if ((gOverworld.objects[i].attr & (METATILE_SOFT_PLATFORM | METATILE_ANTTRAP)) == 0) {
+          x = (gOverworld.objects[i].start).x + gOverworld.objects[i].w;
+          return CalcPushout_Right(x, y);  // 押し出した先に、別のHazardがあるかもしれないので、押し出した先で再度チェックが必要
+        }
+      }
+    }
+  }
+  return x;
 }
 
 // ------------------------------------------------------------------------------------------------------------------------------------

@@ -45,7 +45,7 @@ struct WramWindowRegister {
   u16 _;
   union WindowRegister winH;
   union WindowRegister winV;
-  u8 unk_0c[3];
+  u8 winin[4];  // 0x04000048, 0x04000049, 0x0400004A, 0x0400004B
 };  // 16 bytes
 
 // --------------------------------------------

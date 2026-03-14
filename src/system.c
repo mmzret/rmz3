@@ -42,7 +42,7 @@ WIP void Process_SoftReset(struct Process* _ UNUSED) {
   ClearBlinkings();
   gBlendRegBuffer.bldclt = 0;
   gWindowRegBuffer.dispcnt = 0;
-  gWindowRegBuffer.unk_0c[2] = 0xFF;
+  gWindowRegBuffer.winin[2] = 0xFF;
   wMOSAIC = 0x00;
   PALETTE16(0) = RGB_BLACK;
   StopAllMusics();
@@ -83,7 +83,7 @@ WIP NORETURN void Process_System(struct Process* p) {
     FlashWinRegister();
     FlashMOSAIC();
     transferData();
-    FUN_080e98ec();
+    FUN_080e98ec();  // Fontデータ関連
     flashPalette_08003b24();
     doGraphicTransferTasks();
     if (gSramState.unk_00 == 0) {
@@ -141,137 +141,47 @@ void* Malloc(u32 byteSize) {
   return NULL;
 }
 
-NAKED void FillMemory(u16 fillval, u16* dst, u32 bytesize) {
-  asm(".syntax unified\n\
-	push {r4, r5, r6, r7, lr}\n\
-	sub sp, #8\n\
-	adds r6, r1, #0\n\
-	adds r5, r2, #0\n\
-	lsls r0, r0, #0x10\n\
-	lsrs r1, r0, #0x10\n\
-	adds r7, r1, #0\n\
-	movs r0, #2\n\
-	rsbs r0, r0, #0\n\
-	ands r5, r0\n\
-	cmp r5, #0\n\
-	beq _08001BC6\n\
-	ands r6, r0\n\
-	movs r0, #2\n\
-	ands r0, r6\n\
-	cmp r0, #0\n\
-	beq _08001B84\n\
-	strh r1, [r6]\n\
-	subs r5, #2\n\
-	cmp r5, #0\n\
-	beq _08001BC6\n\
-	adds r6, #2\n\
-_08001B84:\n\
-	cmp r5, #0x20\n\
-	bls _08001BB2\n\
-	lsls r0, r1, #0x10\n\
-	orrs r0, r1\n\
-	str r0, [sp]\n\
-	movs r4, #0x20\n\
-	rsbs r4, r4, #0\n\
-	ands r4, r5\n\
-	lsrs r2, r4, #2\n\
-	ldr r0, _08001BD0 @ =0x001FFFFF\n\
-	ands r2, r0\n\
-	movs r0, #0x80\n\
-	lsls r0, r0, #0x11\n\
-	orrs r2, r0\n\
-	mov r0, sp\n\
-	adds r1, r6, #0\n\
-	bl CpuFastSet\n\
-	adds r6, r6, r4\n\
-	movs r0, #0x1f\n\
-	ands r5, r0\n\
-	cmp r5, #0\n\
-	beq _08001BC6\n\
-_08001BB2:\n\
-	add r0, sp, #4\n\
-	strh r7, [r0]\n\
-	lsls r2, r5, #0xa\n\
-	lsrs r2, r2, #0xb\n\
-	movs r1, #0x80\n\
-	lsls r1, r1, #0x11\n\
-	orrs r2, r1\n\
-	adds r1, r6, #0\n\
-	bl CpuSet\n\
-_08001BC6:\n\
-	add sp, #8\n\
-	pop {r4, r5, r6, r7}\n\
-	pop {r0}\n\
-	bx r0\n\
-	.align 2, 0\n\
-_08001BD0: .4byte 0x001FFFFF\n\
- .syntax divided\n");
+// サイズに応じた高速な memfill
+void FillMemory(u16 fillval, u16* dst, u32 bytesize) {
+  bytesize &= ~1;
+  if (bytesize) {
+    dst = (u16*)(((u32)dst) & ~1);
+    if (((u32)dst) & 2) {
+      *dst = fillval;
+      bytesize -= 2;
+      if (bytesize == 0) return;
+      dst++;
+    }
+
+    if (bytesize > 32) {
+      CpuFastFill16(fillval, dst, bytesize & ~31);
+      dst += (bytesize & ~31) / 2;
+      bytesize &= 31;
+      if (bytesize == 0) return;
+    }
+    CpuFill16(fillval, dst, bytesize);
+  }
 }
 
-NAKED void Transfer30Bytes(void* src, void* dst, u32 bytesize) {
-  asm(".syntax unified\n\
-	push {r4, r5, r6, lr}\n\
-	adds r5, r0, #0\n\
-	adds r6, r1, #0\n\
-	adds r4, r2, #0\n\
-	movs r0, #2\n\
-	rsbs r0, r0, #0\n\
-	ands r4, r0\n\
-	cmp r4, #0\n\
-	beq _08001C42\n\
-	ands r5, r0\n\
-	ands r6, r0\n\
-	movs r1, #2\n\
-	adds r0, r5, #0\n\
-	ands r0, r1\n\
-	cmp r0, #0\n\
-	bne _08001BFC\n\
-	adds r0, r6, #0\n\
-	ands r0, r1\n\
-	cmp r0, #0\n\
-	beq _08001C0A\n\
-_08001BFC:\n\
-	lsls r2, r4, #0xa\n\
-	lsrs r2, r2, #0xb\n\
-	adds r0, r5, #0\n\
-	adds r1, r6, #0\n\
-	bl CpuSet\n\
-	b _08001C42\n\
-_08001C0A:\n\
-	cmp r4, #0x1f\n\
-	bls _08001C2A\n\
-	movs r2, #0x20\n\
-	rsbs r2, r2, #0\n\
-	ands r2, r4\n\
-	lsrs r2, r2, #2\n\
-	ldr r0, _08001C48 @ =0x001FFFFF\n\
-	ands r2, r0\n\
-	adds r0, r5, #0\n\
-	adds r1, r6, #0\n\
-	bl CpuFastSet\n\
-	movs r0, #0x1f\n\
-	ands r0, r4\n\
-	cmp r0, #0\n\
-	beq _08001C42\n\
-_08001C2A:\n\
-	movs r0, #0x20\n\
-	rsbs r0, r0, #0\n\
-	ands r0, r4\n\
-	adds r5, r5, r0\n\
-	adds r6, r6, r0\n\
-	movs r2, #0x1f\n\
-	ands r2, r4\n\
-	lsrs r2, r2, #1\n\
-	adds r0, r5, #0\n\
-	adds r1, r6, #0\n\
-	bl CpuSet\n\
-_08001C42:\n\
-	pop {r4, r5, r6}\n\
-	pop {r0}\n\
-	bx r0\n\
-	.align 2, 0\n\
-_08001C48: .4byte 0x001FFFFF\n\
- .syntax divided\n");
+// サイズに応じた高速なメモリコピー
+void CopyMemory(void* src, void* dst, u32 bytesize) {
+  bytesize &= ~1;
+  if (bytesize) {
+    src = (void*)(((u32)src) & ~1);
+    dst = (void*)(((u32)dst) & ~1);
+    if ((((u32)src) & 2) || (((u32)dst) & 2)) {
+      CpuCopy16(src, dst, bytesize);
+      return;
+    }
+
+    if (bytesize > 31) {
+      CpuFastCopy(src, dst, bytesize & 0xFFFFFFE0);
+      if ((bytesize & 0x1F) == 0) return;
+    }
+    src += (bytesize & ~0x1F);
+    dst += (bytesize & ~0x1F);
+    CpuCopy16(src, dst, bytesize & 0x1F);
+  }
 }
 
 NAKED void InitIntrHandlers(void) {
@@ -388,76 +298,34 @@ static void unused_08001d30(void) {
 }
 
 // 毎フレーム、転送予約されたデータを転送する
-NAKED static void transferData(void) {
-  asm(".syntax unified\n\
-	push {r4, lr}\n\
-	ldr r4, _08001D6C @ =gIntrManager+384\n\
-	subs r2, r4, #4\n\
-	ldr r3, [r2]\n\
-	cmp r3, #0\n\
-	beq _08001D70\n\
-	adds r1, r4, #0\n\
-	subs r1, #0x18\n\
-	adds r0, r4, #0\n\
-	subs r0, #0xc\n\
-	ldr r0, [r0]\n\
-	str r0, [r1]\n\
-	adds r1, #4\n\
-	adds r0, r4, #0\n\
-	subs r0, #8\n\
-	ldr r0, [r0]\n\
-	str r0, [r1]\n\
-	adds r1, #4\n\
-	ldr r0, [r2]\n\
-	str r0, [r1]\n\
-	movs r0, #0\n\
-	str r0, [r2]\n\
-	b _08001D94\n\
-	.align 2, 0\n\
-_08001D6C: .4byte gIntrManager+384\n\
-_08001D70:\n\
-	ldr r0, [r4, #0x18]\n\
-	cmp r0, #0\n\
-	beq _08001D8E\n\
-	adds r1, r4, #0\n\
-	subs r1, #0x18\n\
-	ldr r0, [r4, #0x10]\n\
-	str r0, [r1]\n\
-	adds r1, #4\n\
-	ldr r0, [r4, #0x14]\n\
-	str r0, [r1]\n\
-	adds r1, #4\n\
-	ldr r0, [r4, #0x18]\n\
-	str r0, [r1]\n\
-	str r3, [r4, #0x18]\n\
-	b _08001D94\n\
-_08001D8E:\n\
-	adds r1, r4, #0\n\
-	subs r1, #0x10\n\
-	str r0, [r1]\n\
-_08001D94:\n\
-	bl runDMA0\n\
-	ldr r0, [r4, #0x10]\n\
-	str r0, [r4]\n\
-	ldr r0, [r4, #0x14]\n\
-	str r0, [r4, #4]\n\
-	ldr r0, [r4, #0x18]\n\
-	str r0, [r4, #8]\n\
-	movs r1, #0\n\
-	str r1, [r4, #0x18]\n\
-	adds r4, #0x24\n\
-	ldr r0, [r4, #0x10]\n\
-	str r0, [r4]\n\
-	ldr r0, [r4, #0x14]\n\
-	str r0, [r4, #4]\n\
-	ldr r0, [r4, #0x18]\n\
-	str r0, [r4, #8]\n\
-	str r1, [r4, #0x18]\n\
-	bl transferByHand\n\
-	pop {r4}\n\
-	pop {r0}\n\
-	bx r0\n\
- .syntax divided\n");
+static void transferData(void) {
+  struct TransferReservation* tr = gIntrManager.tr;
+  if (gIntrManager.reservedDma0[2]) {
+    gIntrManager.dma0[0] = gIntrManager.reservedDma0[0];
+    gIntrManager.dma0[1] = gIntrManager.reservedDma0[1];
+    gIntrManager.dma0[2] = gIntrManager.reservedDma0[2];
+    gIntrManager.reservedDma0[2] = 0;
+  } else if (tr->DMA0CNT) {
+    gIntrManager.dma0[0] = (u32)tr->DMA0SAD;
+    gIntrManager.dma0[1] = (u32)tr->DMA0DAD;
+    gIntrManager.dma0[2] = tr->DMA0CNT;
+    tr->DMA0CNT = 0;
+  } else {
+    gIntrManager.dma0[2] = 0;
+  }
+  runDMA0();
+
+  tr->start = tr->DMA0SAD;
+  tr->dst = tr->DMA0DAD;
+  tr->count = (u32)tr->DMA0CNT;
+  tr->DMA0CNT = 0;
+
+  tr = &tr[1];
+  tr->start = tr->DMA0SAD;
+  tr->dst = tr->DMA0DAD;
+  tr->count = (u32)tr->DMA0CNT;
+  tr->DMA0CNT = 0;
+  transferByHand();
 }
 
 static void HBlankIntrDummy(void) { return; }
@@ -774,6 +642,14 @@ void InitScheduler(bool32 ok) {
   いわゆるスケジューラ的な役割
   Process を見ていって、実行可能なものがあったら、そっちに処理を渡す
   Process が自発的に Process を中断するとここに処理が戻る
+
+  実際の処理内容は
+    - 1. Process_SoftReset or Process_Intro or Process_Game を実行
+    - 2. Process_System を実行
+    -  a. PPU に関わらない処理を実行
+    -  b. VBlank(ly=161) までビジーループで待機
+    -  c. PPU 関連の処理を実行
+    - 3. 1に戻る (ly=0 まで待機とかはしないで、すぐに1に戻る)
 */
 WIP void GameLoop(void) {
 #if MODERN

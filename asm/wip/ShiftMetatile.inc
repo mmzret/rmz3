@@ -49,7 +49,7 @@ _08009170:
 	ldrsh r2, [r6, r1]
 	lsls r2, r2, #1
 	adds r1, r7, #0
-	bl Transfer30Bytes
+	bl CopyMemory
 	adds r5, #1
 	movs r3, #6
 	ldrsh r0, [r6, r3]

@@ -6,9 +6,9 @@
 #include "sprite.h"
 #include "zero.h"
 
-static void MinigameLoop_InitMinigame(struct GameState *g);
+static void MinigameLoop_InitMinigame(struct GameState* g);
 
-void MainLoop_Minigame(struct GameState *g) {
+void MainLoop_Minigame(struct GameState* g) {
   static const MinigameLoopFunc MinigameLoops[3] = {
       MinigameLoop_InitMinigame,
       MinigameLoop_Main,
@@ -29,14 +29,14 @@ static const MinigameLoopFunc sMinigameInitializers[MINIGAME_COUNT] = {
 };
 // clang-format on
 
-static void MinigameLoop_InitMinigame(struct GameState *g) {
-  struct Pivot *pivot = &g->unk_0db8;
+static void MinigameLoop_InitMinigame(struct GameState* g) {
+  struct Pivot* pivot = &g->unk_0db8;
   gPaletteManager.filter[0] = gPaletteManager.filter[1] = gPaletteManager.filter[2] = 0x20;
   gPaletteManager.unk_408 = NULL;
   ClearBlinkings();
   gBlendRegBuffer.bldclt = 0;
   gWindowRegBuffer.dispcnt = 0;
-  gWindowRegBuffer.unk_0c[2] = 0xFF;
+  gWindowRegBuffer.winin[2] = 0xFF;
   wMOSAIC = 0x0;
   PALETTE16(0) = RGB_BLACK;
   gPaletteManager.filter[0] = gPaletteManager.filter[1] = gPaletteManager.filter[2] = 0x00;
@@ -62,10 +62,10 @@ static void MinigameLoop_InitMinigame(struct GameState *g) {
   InitVFXHeader(&g->entityHeaders[ENTITY_VFX], gVFXs, 64);
   InitSolidHeader(&g->entityHeaders[ENTITY_SOLID], gSolids, 22);
   InitPickupHeader(&g->entityHeaders[ENTITY_ITEM], gPickups, 10);
-  ResetHUD((u16 *)gGameState.bg0);
+  ResetHUD((u16*)gGameState.bg0);
 
   // Fill by white for damaged entity palette (OBJ13)
-  *(u32 *)&gPaletteManager.buf[464] = *(u32 *)&gPaletteManager.buf[466] = *(u32 *)&gPaletteManager.buf[468] = *(u32 *)&gPaletteManager.buf[470] = *(u32 *)&gPaletteManager.buf[472] = *(u32 *)&gPaletteManager.buf[474] = *(u32 *)&gPaletteManager.buf[476] = *(u32 *)&gPaletteManager.buf[478] = 0xFFFFFFFF;
+  *(u32*)&gPaletteManager.buf[464] = *(u32*)&gPaletteManager.buf[466] = *(u32*)&gPaletteManager.buf[468] = *(u32*)&gPaletteManager.buf[470] = *(u32*)&gPaletteManager.buf[472] = *(u32*)&gPaletteManager.buf[474] = *(u32*)&gPaletteManager.buf[476] = *(u32*)&gPaletteManager.buf[478] = 0xFFFFFFFF;
 
   (sMinigameInitializers[g->mode[1]])(g);
   g->frames = 0;

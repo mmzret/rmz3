@@ -13,7 +13,7 @@ void FUN_0800bd78(s32 x, s32 y);
 static void IceBlock_Init(struct Solid* p);
 void IceBlock_Update(struct Solid* p);
 void IceBlock_Die(struct Solid* p);
-void IceBlock_Disappear(struct Solid* p);
+static void IceBlock_Disappear(struct Solid* p);
 
 // clang-format off
 const SolidRoutine gIceBlockRoutine = {
@@ -68,6 +68,18 @@ NON_MATCH static void IceBlock_Init(struct Solid* p) {
 }
 
 INCASM("asm/solid/ice_block.inc");
+
+void FUN_0800bdd4(s32 x, s32 y);
+
+static void IceBlock_Disappear(struct Solid* p) {
+  if ((p->s).work[0] == 1) {
+    (p->s).coord.y = FUN_08009f6c((p->s).coord.x, (p->s).coord.y);
+  }
+  if ((p->s).work[0] != 0) {
+    FUN_0800bdd4((p->s).coord.x, (p->s).coord.y - PIXEL(8));
+  }
+  DeleteSolid(p);
+}
 
 static const struct Collision sCollisions[2] = {
     {

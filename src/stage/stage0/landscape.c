@@ -23,7 +23,7 @@ static const StageLayerRoutine sLayerRoutine[2] = {
     {NULL, DrawGeneralStageLayer, NULL},
 };
 
-const struct ScreenMap ScreenMap_0833a358 = {
+const struct ChunkMap ScreenMap_0833a358 = {
   realWidth : 16,
   skip : 1,
   width : 16,
@@ -44,7 +44,7 @@ const u8 ScreenMapData_0833a358[HEIGHT][WIDTH] = {
 };
 // clang-format on
 
-const struct ScreenMap ScreenMap_0833a3ec = {
+const struct ChunkMap ScreenMap_0833a3ec = {
   realWidth : 16,
   skip : 1,
   width : 16,
@@ -65,7 +65,7 @@ const u8 ScreenMapData_0833a3ec[HEIGHT][WIDTH] = {
 };
 // clang-format on
 
-const struct ScreenMap ScreenMap_0833a480 = {
+const struct ChunkMap ScreenMap_0833a480 = {
   realWidth : 16,
   skip : 1,
   width : 16,
@@ -134,7 +134,7 @@ const struct Stage gStage0Landscape = {
   tilesetOffset : sTilesetOffset,
   bgFns : sLayerRoutine,
   behavior : sScreenBehavior,
-  unk_78 : {0, 0},
+  conveyor : {0, 0},
 };
 
 #undef HEIGHT

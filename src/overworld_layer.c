@@ -3,7 +3,17 @@
 
 // ステージのグラフィック情報をbgmapとかオフセットレジスタに反映させる処理
 
-NAKED void FUN_080050b0(struct LayerGraphic *l, struct Coord *c, u32 mapAddr) {
+void ResetLayerGraphic(struct LayerGraphic* l, struct Coord* c, u16* _, Metatile* tiledata, Screen* chunks, const struct ChunkMap* map) {
+  (l->c).x = c->x;
+  (l->c).y = c->y;
+  l->tiledata = tiledata;
+  l->chunks = chunks;
+  l->map = map;
+  l->bgofs[0] = c->x & 0x1FF;
+  l->bgofs[1] = c->y & 0x1FF;
+}
+
+NAKED void FUN_080050b0(struct LayerGraphic* l, struct Coord* c, u32 mapAddr) {
   asm(".syntax unified\n\
 	push {r4, r5, r6, r7, lr}\n\
 	mov r7, sl\n\
@@ -642,12 +652,12 @@ _08005580: .4byte 0x000001FF\n\
 }
 
 #if MODERN == 0
-NAKED static void unused_08005584(struct LayerGraphic *r0, struct Coord *c, u32 mapAddr) { INCCODE("asm/unused/unused_08005584.inc"); }
-NAKED static void unused_080055e8(struct LayerGraphic *r0, struct Coord *c, u32 mapAddr) { INCCODE("asm/unused/unused_080055e8.inc"); }
-NAKED static void unused_08005674(struct LayerGraphic *r0, struct Coord *c, u32 mapAddr) { INCCODE("asm/unused/unused_08005674.inc"); }
+NAKED static void unused_08005584(struct LayerGraphic* r0, struct Coord* c, u32 mapAddr) { INCCODE("asm/unused/unused_08005584.inc"); }
+NAKED static void unused_080055e8(struct LayerGraphic* r0, struct Coord* c, u32 mapAddr) { INCCODE("asm/unused/unused_080055e8.inc"); }
+NAKED static void unused_08005674(struct LayerGraphic* r0, struct Coord* c, u32 mapAddr) { INCCODE("asm/unused/unused_08005674.inc"); }
 #endif
 
-NAKED void FUN_08005a70(struct LayerGraphic *l, struct Coord *c, u32 mapAddr) {
+NAKED void FUN_08005a70(struct LayerGraphic* l, struct Coord* c, u32 mapAddr) {
   asm(".syntax unified\n\
 	push {r4, r5, r6, r7, lr}\n\
 	mov r7, sl\n\
@@ -1030,7 +1040,7 @@ NAKED static void unused_08006738(void) { INCCODE("asm/unused/unused_08006738.in
 NAKED static void unused_080069e0(void) { INCCODE("asm/unused/unused_080069e0.inc"); }
 #endif
 
-NAKED void FUN_08006a10(struct LayerGraphic *l, struct Coord *c, u32 *bgmap, struct MetatileMap *mm) {
+NAKED void FUN_08006a10(struct LayerGraphic* l, struct Coord* c, u32* bgmap, struct MetatileMap* mm) {
   asm(".syntax unified\n\
 	push {r4, r5, r6, r7, lr}\n\
 	mov r7, sl\n\
@@ -1142,23 +1152,23 @@ _08006ADC: .4byte 0x000001FF\n\
 }
 
 // bgmap.c　の処理を知るためにとりあえずCにしたもの、多分ロジックおかしなっとる
-WIP void FUN_08006ae0(struct LayerGraphic *l, struct Coord *c, u32 *bgmap, struct MetatileMap *mm) {
+WIP void FUN_08006ae0(struct LayerGraphic* l, struct Coord* c, u32* bgmap, struct MetatileMap* mm) {
 #if MODERN
   s16 i;
   s32 x = c->x >> 4;
   s32 y = c->y >> 4;
-  metatile_id_t *id = &mm->map[y * mm->width + x];
+  metatile_id_t* id = &mm->map[y * mm->width16 + x];
   for (i = 0; i < 12; i++) {
     s16 X = x + i;
     while (X < 18) {
       s32 Y = (y & 0xF) + i;
-      Metatile *mt = &l->tiledata[*id];
-      bgmap[(Y + (X & 0x10)) * 32 + (X & 0xF)] = *(u32 *)&((*mt)[0]);
-      bgmap[(Y + (X & 0x10)) * 32 + (X & 0xF) + 16] = *(u32 *)&((*mt)[2]);
+      Metatile* mt = &l->tiledata[*id];
+      bgmap[(Y + (X & 0x10)) * 32 + (X & 0xF)] = *(u32*)&((*mt)[0]);
+      bgmap[(Y + (X & 0x10)) * 32 + (X & 0xF) + 16] = *(u32*)&((*mt)[2]);
       id++;
       X++;
     }
-    id += (mm->width - 18);
+    id += (mm->width16 - 18);
   }
   l->bgofs[0] = c->x & 0x1FF;
   l->bgofs[1] = c->y & 0x1FF;
@@ -1169,7 +1179,7 @@ WIP void FUN_08006ae0(struct LayerGraphic *l, struct Coord *c, u32 *bgmap, struc
 #endif
 }
 
-NAKED void FUN_08006bb4(struct LayerGraphic *l, struct Coord *c, u32 *bgmap, struct MetatileMap *mm) {
+NAKED void FUN_08006bb4(struct LayerGraphic* l, struct Coord* c, u32* bgmap, struct MetatileMap* mm) {
   asm(".syntax unified\n\
 	push {r4, r5, r6, r7, lr}\n\
 	mov r7, sl\n\
@@ -1387,14 +1397,16 @@ _08006D40: .4byte 0x000001FF\n\
 }
 
 #if MODERN == 0
-static void unused_Clear2KB(u32 *dst) {  // dstから2048バイトを0クリア
+static void unused_Clear2KB(u32* dst) {  // dstから2048バイトを0クリア
   CpuFastFill(0, dst, 2048);
-  { vu32 _; }
+  {
+    vu32 _;
+  }
 }
 #endif
 
 #if MODERN == 0
-static void unused_FastCopy(void *dst, const void *src, u32 bytesize) {  // CpuFastSetとCpuSetを組み合わせて細かい単位でも高速にコピー
+static void unused_FastCopy(void* dst, const void* src, u32 bytesize) {  // CpuFastSetとCpuSetを組み合わせて細かい単位でも高速にコピー
   u32 n = (bytesize & 0xFFFFFFE0);
   CpuFastCopy(src, dst, n);
 
@@ -1404,7 +1416,7 @@ static void unused_FastCopy(void *dst, const void *src, u32 bytesize) {  // CpuF
 }
 #endif
 
-void UpdateBGOFS(struct LayerGraphic *l, struct BgOfs *bgofs) {
+void UpdateBGOFS(struct LayerGraphic* l, struct BgOfs* bgofs) {
   bgofs->x = l->bgofs[0];
   bgofs->y = l->bgofs[1];
 }
@@ -1416,7 +1428,7 @@ void UpdateBGOFS(struct LayerGraphic *l, struct BgOfs *bgofs) {
       r2 = 0863c638 + (0863c638)[0]
       r3 = 0863c638 + (0863c638)[2]
 */
-void ResetTerrain(struct Terrain *terrain, metatile_attr_t *attr, Metatile *tiles, Screen *m, const struct ScreenMap *map) {
+void ResetTerrain(struct Terrain* terrain, metatile_attr_t* attr, Metatile* tiles, Screen* m, const struct ChunkMap* map) {
   terrain->attrs = attr;
   terrain->tiles = tiles;
   terrain->screens = m;
@@ -1424,7 +1436,7 @@ void ResetTerrain(struct Terrain *terrain, metatile_attr_t *attr, Metatile *tile
 }
 
 #if MODERN == 0
-NAKED static u8 unused_08006dcc(void *p, struct Coord *c) { INCCODE("asm/unused/unused_08006dcc.inc"); }
-NAKED static u8 unused_08006e3c(void *p, u32 unk_x, u32 unk_y) { INCCODE("asm/unused/unused_08006e3c.inc"); }  // unk_x, unk_y の単位不明(pixel?)
-NAKED static u8 unused_08006ea8(void *p, u32 r1, s32 r2, s32 r3) { INCCODE("asm/unused/unused_08006ea8.inc"); }
+NAKED static u8 unused_08006dcc(void* p, struct Coord* c) { INCCODE("asm/unused/unused_08006dcc.inc"); }
+NAKED static u8 unused_08006e3c(void* p, u32 unk_x, u32 unk_y) { INCCODE("asm/unused/unused_08006e3c.inc"); }  // unk_x, unk_y の単位不明(pixel?)
+NAKED static u8 unused_08006ea8(void* p, u32 r1, s32 r2, s32 r3) { INCCODE("asm/unused/unused_08006ea8.inc"); }
 #endif

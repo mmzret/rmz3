@@ -326,6 +326,22 @@ static void icebon_080ca0e0(struct Solid* p) {
 
 INCASM("asm/solid/icebon.inc");
 
+void icebon_080ca550(struct Entity* e, u8 n) {
+  struct Solid* p = (struct Solid*)AllocEntityLast(gSolidHeaderPtr);
+  if (p != NULL) {
+    (p->s).taskCol = 30;
+    INIT_SOLID_ROUTINE(p, SOLID_ICEBON_ICE);
+    (p->s).tileNum = 0;
+    (p->s).palID = 0;
+    (p->s).flags2 |= WHITE_PAINTABLE;
+    (p->s).invincibleID = (p->s).uniqueID;
+    (p->s).coord.x = (e->coord).x;
+    (p->s).coord.y = (e->coord).y - PIXEL(21);
+    (p->s).work[0] = n;
+    (p->s).unk_28 = e;
+  }
+}
+
 const struct Collision sIcebonCollisions[3] = {
     {
       kind : DRP,

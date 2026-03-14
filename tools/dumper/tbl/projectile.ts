@@ -1,4 +1,4 @@
-#!/usr/bin/env -S deno run --allow-read --allow-write --allow-run --unstable
+#!/usr/bin/env -S deno run --allow-read --allow-write --allow-run
 
 import { Command } from '@cliffy/command';
 
@@ -14,9 +14,12 @@ const main = async () => {
     .usage('0x0836b350 2')
     .parse(Deno.args);
 
-  const cmd = [SCRIPT, args[0], args[1], `-p=void PROTOTYPE(struct Projectile* p)`, `--functype=${FUNCTYPE}`];
-  const p = await Deno.run({ cmd, stdout: 'piped' });
-  const result = await (new TextDecoder().decode(await p.output()));
+  const cmd = new Deno.Command(SCRIPT, {
+    args: [args[0], args[1], `-p=void PROTOTYPE(struct Projectile* p)`, `--functype=${FUNCTYPE}`],
+    stdout: 'piped',
+  });
+  const { stdout } = await cmd.output();
+  const result = await (new TextDecoder().decode(stdout));
   console.log(result);
 };
 

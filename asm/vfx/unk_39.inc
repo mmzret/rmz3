@@ -4,112 +4,6 @@
 	
 	.text
 
-	thumb_func_start CreateVFX39
-CreateVFX39: @ 0x080BD3BC
-	push {r4, r5, r6, lr}
-	adds r6, r0, #0
-	lsls r1, r1, #0x18
-	lsrs r5, r1, #0x18
-	lsls r2, r2, #0x18
-	lsrs r4, r2, #0x18
-	ldr r0, _080BD41C @ =gVFXHeaderPtr
-	ldr r0, [r0]
-	bl AllocEntityFirst
-	adds r3, r0, #0
-	cmp r3, #0
-	beq _080BD412
-	adds r1, r3, #0
-	adds r1, #0x25
-	movs r2, #0
-	movs r0, #1
-	strb r0, [r1]
-	ldr r0, _080BD420 @ =gVFXFnTable
-	movs r1, #0x27
-	strb r1, [r3, #9]
-	adds r0, #0x9c
-	ldr r0, [r0]
-	ldr r0, [r0]
-	str r0, [r3, #0x14]
-	movs r0, #0
-	strh r2, [r3, #0x20]
-	adds r1, r3, #0
-	adds r1, #0x22
-	strb r0, [r1]
-	ldr r0, [r6]
-	ldr r1, [r6, #4]
-	str r0, [r3, #0x54]
-	str r1, [r3, #0x58]
-	strb r5, [r3, #0x10]
-	strb r4, [r3, #0x11]
-	adds r1, r3, #0
-	adds r1, #0x7c
-	movs r0, #0x31
-	strb r0, [r1]
-	adds r1, #1
-	movs r0, #0xe
-	strb r0, [r1]
-_080BD412:
-	adds r0, r3, #0
-	pop {r4, r5, r6}
-	pop {r1}
-	bx r1
-	.align 2, 0
-_080BD41C: .4byte gVFXHeaderPtr
-_080BD420: .4byte gVFXFnTable
-
-	thumb_func_start VFX39_Init
-VFX39_Init: @ 0x080BD424
-	push {r4, lr}
-	adds r4, r0, #0
-	adds r0, #0x34
-	ldr r1, _080BD46C @ =FUN_080bd610
-	bl SetTaskCallback
-	str r4, [r4, #0x3c]
-	ldrb r1, [r4, #0xa]
-	movs r0, #0xf7
-	ands r0, r1
-	movs r2, #0
-	movs r1, #1
-	orrs r0, r1
-	movs r1, #2
-	orrs r0, r1
-	strb r0, [r4, #0xa]
-	adds r0, r4, #0
-	adds r0, #0x77
-	strb r2, [r0]
-	str r2, [r4, #0x60]
-	ldr r1, _080BD470 @ =gVFXFnTable
-	ldrb r0, [r4, #9]
-	lsls r0, r0, #2
-	adds r0, r0, r1
-	movs r1, #1
-	str r1, [r4, #0xc]
-	ldr r0, [r0]
-	ldr r0, [r0, #4]
-	str r0, [r4, #0x14]
-	adds r0, r4, #0
-	bl VFX39_Update
-	pop {r4}
-	pop {r0}
-	bx r0
-	.align 2, 0
-_080BD46C: .4byte FUN_080bd610
-_080BD470: .4byte gVFXFnTable
-
-	thumb_func_start VFX39_Update
-VFX39_Update: @ 0x080BD474
-	push {lr}
-	ldr r2, _080BD488 @ =0x0836EEB0
-	ldrb r1, [r0, #0x10]
-	lsls r1, r1, #2
-	adds r1, r1, r2
-	ldr r1, [r1]
-	bl _call_via_r1
-	pop {r0}
-	bx r0
-	.align 2, 0
-_080BD488: .4byte 0x0836EEB0
-
 	thumb_func_start FUN_080bd48c
 FUN_080bd48c: @ 0x080BD48C
 	push {lr}
@@ -318,8 +212,8 @@ _080BD604: .4byte gWindowRegBuffer
 _080BD608: .4byte 0x0000BFFF
 _080BD60C: .4byte gVFXFnTable
 
-	thumb_func_start FUN_080bd610
-FUN_080bd610: @ 0x080BD610
+	thumb_func_start TaskCB_080bd610
+TaskCB_080bd610: @ 0x080BD610
 	push {r4, r5, r6, r7, lr}
 	mov r7, sl
 	mov r6, sb

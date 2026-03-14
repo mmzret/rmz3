@@ -872,14 +872,14 @@ INCASM("asm/stage_gfx/energy_facility.inc");
 
 // ------------------------------------------------------------------------------------------------------------------------------------
 
-extern const struct ScreenMap sScreenMap1;
-INCBIN_STATIC(sScreenMap1, "data/stage/energy_facility/layer1.bin");  // ./tools/dumper/bin.ts ./baserom.gba 0x08341e6c 0x08341ff0 ./data/stage/energy_facility/layer1.bin
+extern const struct ChunkMap sChunkMap1;
+INCBIN_STATIC(sChunkMap1, "data/stage/energy_facility/layer1.bin");  // ./tools/dumper/bin.ts ./baserom.gba 0x08341e6c 0x08341ff0 ./data/stage/energy_facility/layer1.bin
 
-extern const struct ScreenMap sScreenMap2;
-INCBIN_STATIC(sScreenMap2, "data/stage/energy_facility/layer2.bin");  // ./tools/dumper/bin.ts ./baserom.gba 0x08341ff0 0x08342174 ./data/stage/energy_facility/layer2.bin
+extern const struct ChunkMap sChunkMap2;
+INCBIN_STATIC(sChunkMap2, "data/stage/energy_facility/layer2.bin");  // ./tools/dumper/bin.ts ./baserom.gba 0x08341ff0 0x08342174 ./data/stage/energy_facility/layer2.bin
 
-extern const struct ScreenMap sScreenMap3;
-INCBIN_STATIC(sScreenMap3, "data/stage/energy_facility/layer3.bin");  // ./tools/dumper/bin.ts ./baserom.gba 0x08342174 0x083422f8 ./data/stage/energy_facility/layer3.bin
+extern const struct ChunkMap sChunkMap3;
+INCBIN_STATIC(sChunkMap3, "data/stage/energy_facility/layer3.bin");  // ./tools/dumper/bin.ts ./baserom.gba 0x08342174 0x083422f8 ./data/stage/energy_facility/layer3.bin
 
 extern const tileset_ofs_t sTilesetOffset[];
 INCBIN_STATIC(sTilesetOffset, "data/stage/energy_facility/tileset_offset.bin");  // ./tools/dumper/bin.ts ./baserom.gba 0x083422f8 0x0834247c ./data/stage/energy_facility/tileset_offset.bin
@@ -904,7 +904,7 @@ const struct Stage gEnergyFacilityLandscape = {
   id : STAGE_E_FACILITY,
   fn : sStageRoutine,
   terrainHdr : &gStageTerrains[STAGE_E_FACILITY],
-  maps : {&sScreenMap1, &sScreenMap2, &sScreenMap3},
+  maps : {&sChunkMap1, &sChunkMap2, &sChunkMap3},
   bgIdx : {USE_BG1, USE_BG2, USE_BG3},
   prio : {2, 1, 1},
   screenBase : {BGMAP_BLOCK(2), BGMAP_BLOCK(4), BGMAP_BLOCK(6)},
@@ -913,7 +913,6 @@ const struct Stage gEnergyFacilityLandscape = {
   tilesetOffset : sTilesetOffset,
   bgFns : sLayerRoutine,
   behavior : sScreenBehavior,
-  unk_78 : {0x0, 0x0},
 };
 
 const u8 u8_ARRAY_0834283c[9] = {

@@ -4,2356 +4,6 @@
 	
 	.text
 
-	thumb_func_start CreateProjectile7
-CreateProjectile7: @ 0x0809E064
-	push {r4, r5, r6, lr}
-	adds r6, r0, #0
-	adds r5, r1, #0
-	lsls r2, r2, #0x18
-	lsrs r4, r2, #0x18
-	ldr r0, _0809E0EC @ =gProjectileHeaderPtr
-	ldr r0, [r0]
-	bl AllocEntityFirst
-	adds r3, r0, #0
-	cmp r3, #0
-	beq _0809E0E4
-	adds r1, r3, #0
-	adds r1, #0x25
-	movs r2, #0
-	movs r0, #8
-	strb r0, [r1]
-	ldr r1, _0809E0F0 @ =gProjectileFnTable
-	movs r0, #7
-	strb r0, [r3, #9]
-	ldr r0, [r1, #0x1c]
-	ldr r0, [r0]
-	str r0, [r3, #0x14]
-	movs r0, #0
-	strh r2, [r3, #0x20]
-	adds r1, r3, #0
-	adds r1, #0x22
-	strb r0, [r1]
-	ldr r0, [r6]
-	str r0, [r3, #0x54]
-	ldr r0, [r6, #4]
-	str r0, [r3, #0x58]
-	adds r0, r4, #0
-	adds r0, #0x80
-	lsls r0, r0, #0x18
-	lsrs r0, r0, #0x18
-	adds r4, r0, #0
-	adds r0, r3, #0
-	adds r0, #0xb4
-	str r5, [r0]
-	ldr r2, _0809E0F4 @ =gSineTable
-	adds r0, r4, #0
-	adds r0, #0x40
-	lsls r0, r0, #0x18
-	lsrs r0, r0, #0x17
-	adds r0, r0, r2
-	movs r1, #0
-	ldrsh r0, [r0, r1]
-	muls r0, r5, r0
-	cmp r0, #0
-	bge _0809E0CC
-	adds r0, #0xff
-_0809E0CC:
-	asrs r0, r0, #8
-	str r0, [r3, #0x5c]
-	lsls r0, r4, #1
-	adds r0, r0, r2
-	movs r1, #0
-	ldrsh r0, [r0, r1]
-	muls r0, r5, r0
-	cmp r0, #0
-	bge _0809E0E0
-	adds r0, #0xff
-_0809E0E0:
-	asrs r0, r0, #8
-	str r0, [r3, #0x60]
-_0809E0E4:
-	adds r0, r3, #0
-	pop {r4, r5, r6}
-	pop {r1}
-	bx r1
-	.align 2, 0
-_0809E0EC: .4byte gProjectileHeaderPtr
-_0809E0F0: .4byte gProjectileFnTable
-_0809E0F4: .4byte gSineTable
-
-	thumb_func_start Projectile7_Init
-Projectile7_Init: @ 0x0809E0F8
-	push {r4, r5, r6, lr}
-	mov r6, r8
-	push {r6}
-	adds r4, r0, #0
-	bl InitNonAffineMotion
-	ldrb r1, [r4, #0xa]
-	movs r0, #1
-	movs r2, #0
-	mov r8, r2
-	orrs r0, r1
-	movs r1, #2
-	orrs r0, r1
-	movs r6, #4
-	orrs r0, r6
-	strb r0, [r4, #0xa]
-	adds r5, r4, #0
-	adds r5, #0x74
-	ldr r1, _0809E170 @ =0x0836AC9C
-	adds r2, r4, #0
-	adds r2, #0x54
-	adds r0, r5, #0
-	movs r3, #0
-	bl InitBody
-	str r4, [r5, #0x2c]
-	mov r0, r8
-	str r0, [r5, #0x24]
-	adds r0, r4, #0
-	movs r1, #1
-	bl SetMotion
-	movs r0, #0xff
-	strb r0, [r4, #0x12]
-	adds r2, r4, #0
-	adds r2, #0x49
-	ldrb r1, [r2]
-	movs r0, #0xd
-	rsbs r0, r0, #0
-	ands r0, r1
-	orrs r0, r6
-	strb r0, [r2]
-	ldr r1, _0809E174 @ =gProjectileFnTable
-	ldrb r0, [r4, #9]
-	lsls r0, r0, #2
-	adds r0, r0, r1
-	movs r1, #1
-	str r1, [r4, #0xc]
-	ldr r0, [r0]
-	ldr r0, [r0, #4]
-	str r0, [r4, #0x14]
-	adds r0, r4, #0
-	bl Projectile7_Update
-	pop {r3}
-	mov r8, r3
-	pop {r4, r5, r6}
-	pop {r0}
-	bx r0
-	.align 2, 0
-_0809E170: .4byte 0x0836AC9C
-_0809E174: .4byte gProjectileFnTable
-
-	thumb_func_start Projectile7_Update
-Projectile7_Update: @ 0x0809E178
-	push {r4, r5, lr}
-	adds r4, r0, #0
-	ldr r0, _0809E1C4 @ =gCurStory
-	ldrb r1, [r0, #8]
-	movs r0, #0x40
-	ands r0, r1
-	lsls r0, r0, #0x18
-	lsrs r5, r0, #0x18
-	cmp r5, #0
-	beq _0809E1CC
-	ldrb r1, [r4, #0xa]
-	movs r0, #0xfe
-	ands r0, r1
-	movs r2, #0
-	movs r1, #0xfd
-	ands r0, r1
-	strb r0, [r4, #0xa]
-	adds r0, r4, #0
-	adds r0, #0x8c
-	str r2, [r0]
-	adds r0, #4
-	str r2, [r0]
-	adds r0, #4
-	strb r2, [r0]
-	ldrb r1, [r4, #0xa]
-	movs r0, #0xfb
-	ands r0, r1
-	strb r0, [r4, #0xa]
-	ldr r1, _0809E1C8 @ =gProjectileFnTable
-	ldrb r0, [r4, #9]
-	lsls r0, r0, #2
-	adds r0, r0, r1
-	movs r1, #3
-	str r1, [r4, #0xc]
-	ldr r0, [r0]
-	ldr r0, [r0, #0xc]
-	b _0809E212
-	.align 2, 0
-_0809E1C4: .4byte gCurStory
-_0809E1C8: .4byte gProjectileFnTable
-_0809E1CC:
-	ldr r0, [r4, #0x54]
-	ldr r1, [r4, #0x5c]
-	adds r0, r0, r1
-	str r0, [r4, #0x54]
-	ldr r0, [r4, #0x58]
-	ldr r1, [r4, #0x60]
-	adds r0, r0, r1
-	str r0, [r4, #0x58]
-	adds r0, r4, #0
-	bl UpdateMotionGraphic
-	adds r0, r4, #0
-	adds r0, #0x73
-	ldrb r0, [r0]
-	cmp r0, #3
-	bne _0809E214
-	adds r0, r4, #0
-	adds r0, #0x8c
-	str r5, [r0]
-	adds r0, #4
-	str r5, [r0]
-	adds r0, #4
-	strb r5, [r0]
-	ldrb r1, [r4, #0xa]
-	movs r0, #0xfb
-	ands r0, r1
-	strb r0, [r4, #0xa]
-	ldr r1, _0809E21C @ =gProjectileFnTable
-	ldrb r0, [r4, #9]
-	lsls r0, r0, #2
-	adds r0, r0, r1
-	movs r1, #2
-	str r1, [r4, #0xc]
-	ldr r0, [r0]
-	ldr r0, [r0, #8]
-_0809E212:
-	str r0, [r4, #0x14]
-_0809E214:
-	pop {r4, r5}
-	pop {r0}
-	bx r0
-	.align 2, 0
-_0809E21C: .4byte gProjectileFnTable
-
-	thumb_func_start Projectile7_Die
-Projectile7_Die:
-	.byte 0x02, 0x1C, 0x91, 0x7A, 0xFE, 0x20, 0x08, 0x40, 0x00, 0x21, 0x90, 0x72, 0x10, 0x1C, 0x8C, 0x30
-	.byte 0x01, 0x60, 0x04, 0x30, 0x01, 0x60, 0x04, 0x30, 0x01, 0x70, 0x91, 0x7A, 0xFB, 0x20, 0x08, 0x40
-	.byte 0x90, 0x72, 0x05, 0x49, 0x50, 0x7A, 0x80, 0x00, 0x40, 0x18, 0x04, 0x21, 0xD1, 0x60, 0x00, 0x68
-	.byte 0x00, 0x69, 0x50, 0x61, 0x70, 0x47, 0x00, 0x00, 0x0C, 0xA9, 0x36, 0x08
-
-	thumb_func_start FUN_0809e25c
-FUN_0809e25c: @ 0x0809E25C
-	push {r4, r5, lr}
-	adds r4, r0, #0
-	adds r5, r1, #0
-	ldr r0, _0809E298 @ =gProjectileHeaderPtr
-	ldr r0, [r0]
-	bl AllocEntityFirst
-	adds r3, r0, #0
-	cmp r3, #0
-	beq _0809E292
-	adds r1, r3, #0
-	adds r1, #0x25
-	movs r2, #0
-	movs r0, #8
-	strb r0, [r1]
-	ldr r1, _0809E29C @ =gProjectileFnTable
-	strb r0, [r3, #9]
-	ldr r0, [r1, #0x20]
-	ldr r0, [r0]
-	str r0, [r3, #0x14]
-	movs r0, #0
-	strh r2, [r3, #0x20]
-	adds r1, r3, #0
-	adds r1, #0x22
-	strb r0, [r1]
-	str r4, [r3, #0x54]
-	str r5, [r3, #0x58]
-_0809E292:
-	pop {r4, r5}
-	pop {r0}
-	bx r0
-	.align 2, 0
-_0809E298: .4byte gProjectileHeaderPtr
-_0809E29C: .4byte gProjectileFnTable
-
-	thumb_func_start Projectile8_Init
-Projectile8_Init: @ 0x0809E2A0
-	push {r4, r5, r6, lr}
-	mov r6, r8
-	push {r6}
-	adds r4, r0, #0
-	bl InitNonAffineMotion
-	ldrb r1, [r4, #0xa]
-	movs r0, #1
-	orrs r0, r1
-	movs r1, #2
-	orrs r0, r1
-	strb r0, [r4, #0xa]
-	ldr r1, _0809E324 @ =0x00001709
-	adds r0, r4, #0
-	bl SetMotion
-	movs r6, #0
-	ldrb r1, [r4, #0xa]
-	movs r0, #0xef
-	ands r0, r1
-	strb r0, [r4, #0xa]
-	movs r0, #1
-	mov r8, r0
-	adds r0, r4, #0
-	adds r0, #0x4c
-	strb r6, [r0]
-	adds r2, r4, #0
-	adds r2, #0x4a
-	ldrb r1, [r2]
-	movs r0, #0x11
-	rsbs r0, r0, #0
-	ands r0, r1
-	strb r0, [r2]
-	ldrb r1, [r4, #0xa]
-	movs r0, #4
-	orrs r0, r1
-	strb r0, [r4, #0xa]
-	adds r5, r4, #0
-	adds r5, #0x74
-	ldr r1, _0809E328 @ =0x0836ACE0
-	adds r2, #0xa
-	adds r0, r5, #0
-	movs r3, #8
-	bl InitBody
-	str r4, [r5, #0x2c]
-	str r6, [r5, #0x24]
-	str r6, [r4, #0x60]
-	ldr r1, _0809E32C @ =gProjectileFnTable
-	ldrb r0, [r4, #9]
-	lsls r0, r0, #2
-	adds r0, r0, r1
-	mov r1, r8
-	str r1, [r4, #0xc]
-	ldr r0, [r0]
-	ldr r0, [r0, #4]
-	str r0, [r4, #0x14]
-	adds r0, r4, #0
-	bl Projectile8_Update
-	pop {r3}
-	mov r8, r3
-	pop {r4, r5, r6}
-	pop {r0}
-	bx r0
-	.align 2, 0
-_0809E324: .4byte 0x00001709
-_0809E328: .4byte 0x0836ACE0
-_0809E32C: .4byte gProjectileFnTable
-
-	thumb_func_start Projectile8_Update
-Projectile8_Update: @ 0x0809E330
-	push {r4, r5, lr}
-	adds r4, r0, #0
-	ldr r0, _0809E37C @ =gCurStory
-	ldrb r1, [r0, #8]
-	movs r0, #0x40
-	ands r0, r1
-	lsls r0, r0, #0x18
-	lsrs r5, r0, #0x18
-	cmp r5, #0
-	beq _0809E384
-	ldrb r1, [r4, #0xa]
-	movs r0, #0xfe
-	ands r0, r1
-	movs r2, #0
-	movs r1, #0xfd
-	ands r0, r1
-	strb r0, [r4, #0xa]
-	adds r0, r4, #0
-	adds r0, #0x8c
-	str r2, [r0]
-	adds r0, #4
-	str r2, [r0]
-	adds r0, #4
-	strb r2, [r0]
-	ldrb r1, [r4, #0xa]
-	movs r0, #0xfb
-	ands r0, r1
-	strb r0, [r4, #0xa]
-	ldr r1, _0809E380 @ =gProjectileFnTable
-	ldrb r0, [r4, #9]
-	lsls r0, r0, #2
-	adds r0, r0, r1
-	movs r1, #3
-	str r1, [r4, #0xc]
-	ldr r0, [r0]
-	ldr r0, [r0, #0xc]
-	str r0, [r4, #0x14]
-	b _0809E43A
-	.align 2, 0
-_0809E37C: .4byte gCurStory
-_0809E380: .4byte gProjectileFnTable
-_0809E384:
-	adds r0, r4, #0
-	bl UpdateMotionGraphic
-	ldrb r0, [r4, #0xe]
-	cmp r0, #0
-	bne _0809E3F4
-	ldr r1, [r4, #0x60]
-	ldr r0, _0809E3E8 @ =0x000006FF
-	cmp r1, r0
-	bgt _0809E39E
-	adds r0, r1, #0
-	adds r0, #0x40
-	str r0, [r4, #0x60]
-_0809E39E:
-	ldr r1, [r4, #0x58]
-	ldr r0, [r4, #0x60]
-	adds r2, r1, r0
-	str r2, [r4, #0x58]
-	adds r0, r4, #0
-	adds r0, #0x8c
-	ldr r0, [r0]
-	movs r1, #4
-	ands r0, r1
-	cmp r0, #0
-	bne _0809E3C2
-	ldr r0, [r4, #0x54]
-	adds r1, r2, #0
-	bl FUN_080098a4
-	lsls r0, r0, #0x10
-	cmp r0, #0
-	beq _0809E43A
-_0809E3C2:
-	ldr r1, _0809E3EC @ =0x0000170A
-	adds r0, r4, #0
-	bl SetMotion
-	adds r0, r4, #0
-	bl UpdateMotionGraphic
-	movs r0, #0x35
-	bl PlaySound
-	adds r0, r4, #0
-	adds r0, #0x74
-	ldr r1, _0809E3F0 @ =0x0836ACF8
-	bl SetDDP
-	ldrb r0, [r4, #0xe]
-	adds r0, #1
-	strb r0, [r4, #0xe]
-	b _0809E43A
-	.align 2, 0
-_0809E3E8: .4byte 0x000006FF
-_0809E3EC: .4byte 0x0000170A
-_0809E3F0: .4byte 0x0836ACF8
-_0809E3F4:
-	adds r0, r4, #0
-	adds r0, #0x71
-	ldrb r0, [r0]
-	lsls r0, r0, #0x18
-	asrs r0, r0, #0x18
-	cmp r0, #2
-	bne _0809E418
-	adds r0, r4, #0
-	adds r0, #0x8c
-	str r5, [r0]
-	adds r0, #4
-	str r5, [r0]
-	adds r0, #4
-	strb r5, [r0]
-	ldrb r1, [r4, #0xa]
-	movs r0, #0xfb
-	ands r0, r1
-	strb r0, [r4, #0xa]
-_0809E418:
-	adds r0, r4, #0
-	adds r0, #0x73
-	ldrb r0, [r0]
-	cmp r0, #3
-	bne _0809E43A
-	ldr r1, _0809E440 @ =gProjectileFnTable
-	ldrb r0, [r4, #9]
-	lsls r0, r0, #2
-	adds r0, r0, r1
-	movs r1, #2
-	str r1, [r4, #0xc]
-	ldr r0, [r0]
-	ldr r0, [r0, #8]
-	str r0, [r4, #0x14]
-	adds r0, r4, #0
-	bl Projectile8_Die
-_0809E43A:
-	pop {r4, r5}
-	pop {r0}
-	bx r0
-	.align 2, 0
-_0809E440: .4byte gProjectileFnTable
-
-	thumb_func_start Projectile8_Die
-Projectile8_Die: @ 0x0809E444
-	push {lr}
-	adds r3, r0, #0
-	ldr r0, _0809E48C @ =gCurStory
-	ldrb r1, [r0, #8]
-	movs r0, #0x40
-	ands r0, r1
-	cmp r0, #0
-	beq _0809E494
-	ldrb r1, [r3, #0xa]
-	movs r0, #0xfe
-	ands r0, r1
-	movs r2, #0
-	movs r1, #0xfd
-	ands r0, r1
-	strb r0, [r3, #0xa]
-	adds r0, r3, #0
-	adds r0, #0x8c
-	str r2, [r0]
-	adds r0, #4
-	str r2, [r0]
-	adds r0, #4
-	strb r2, [r0]
-	ldrb r1, [r3, #0xa]
-	movs r0, #0xfb
-	ands r0, r1
-	strb r0, [r3, #0xa]
-	ldr r1, _0809E490 @ =gProjectileFnTable
-	ldrb r0, [r3, #9]
-	lsls r0, r0, #2
-	adds r0, r0, r1
-	movs r1, #3
-	str r1, [r3, #0xc]
-	ldr r0, [r0]
-	ldr r0, [r0, #0xc]
-	b _0809E4A4
-	.align 2, 0
-_0809E48C: .4byte gCurStory
-_0809E490: .4byte gProjectileFnTable
-_0809E494:
-	ldr r1, _0809E4AC @ =gProjectileFnTable
-	ldrb r0, [r3, #9]
-	lsls r0, r0, #2
-	adds r0, r0, r1
-	movs r1, #4
-	str r1, [r3, #0xc]
-	ldr r0, [r0]
-	ldr r0, [r0, #0x10]
-_0809E4A4:
-	str r0, [r3, #0x14]
-	pop {r0}
-	bx r0
-	.align 2, 0
-_0809E4AC: .4byte gProjectileFnTable
-
-	thumb_func_start FUN_0809e4b0
-FUN_0809e4b0: @ 0x0809E4B0
-	push {r4, r5, lr}
-	adds r5, r0, #0
-	adds r4, r1, #0
-	ldr r0, _0809E4F8 @ =gProjectileHeaderPtr
-	ldr r0, [r0]
-	bl AllocEntityFirst
-	adds r3, r0, #0
-	cmp r3, #0
-	beq _0809E4F0
-	adds r1, r3, #0
-	adds r1, #0x25
-	movs r2, #0
-	movs r0, #8
-	strb r0, [r1]
-	ldr r1, _0809E4FC @ =gProjectileFnTable
-	movs r0, #9
-	strb r0, [r3, #9]
-	ldr r0, [r1, #0x24]
-	ldr r0, [r0]
-	str r0, [r3, #0x14]
-	movs r0, #0
-	strh r2, [r3, #0x20]
-	adds r1, r3, #0
-	adds r1, #0x22
-	strb r0, [r1]
-	strb r0, [r3, #0x10]
-	ldr r0, [r4]
-	ldr r1, [r4, #4]
-	str r0, [r3, #0x54]
-	str r1, [r3, #0x58]
-	str r5, [r3, #0x28]
-_0809E4F0:
-	adds r0, r3, #0
-	pop {r4, r5}
-	pop {r1}
-	bx r1
-	.align 2, 0
-_0809E4F8: .4byte gProjectileHeaderPtr
-_0809E4FC: .4byte gProjectileFnTable
-
-	thumb_func_start FUN_0809e500
-FUN_0809e500: @ 0x0809E500
-	push {r4, r5, r6, lr}
-	adds r6, r0, #0
-	adds r5, r1, #0
-	adds r4, r2, #0
-	ldr r0, _0809E554 @ =gProjectileHeaderPtr
-	ldr r0, [r0]
-	bl AllocEntityFirst
-	adds r3, r0, #0
-	cmp r3, #0
-	beq _0809E54C
-	adds r1, r3, #0
-	adds r1, #0x25
-	movs r2, #0
-	movs r0, #8
-	strb r0, [r1]
-	ldr r1, _0809E558 @ =gProjectileFnTable
-	movs r0, #9
-	strb r0, [r3, #9]
-	ldr r0, [r1, #0x24]
-	ldr r0, [r0]
-	str r0, [r3, #0x14]
-	movs r0, #0
-	strh r2, [r3, #0x20]
-	adds r1, r3, #0
-	adds r1, #0x22
-	strb r0, [r1]
-	movs r0, #1
-	strb r0, [r3, #0x10]
-	ldr r0, [r4]
-	ldr r1, [r4, #4]
-	str r0, [r3, #0x5c]
-	str r1, [r3, #0x60]
-	ldr r0, [r5]
-	ldr r1, [r5, #4]
-	str r0, [r3, #0x54]
-	str r1, [r3, #0x58]
-	str r6, [r3, #0x28]
-_0809E54C:
-	adds r0, r3, #0
-	pop {r4, r5, r6}
-	pop {r1}
-	bx r1
-	.align 2, 0
-_0809E554: .4byte gProjectileHeaderPtr
-_0809E558: .4byte gProjectileFnTable
-
-	thumb_func_start FUN_0809e55c
-FUN_0809e55c: @ 0x0809E55C
-	push {r4, r5, r6, lr}
-	adds r6, r0, #0
-	adds r4, r1, #0
-	adds r5, r2, #0
-	ldr r0, _0809E5B0 @ =gProjectileHeaderPtr
-	ldr r0, [r0]
-	bl AllocEntityFirst
-	adds r3, r0, #0
-	cmp r3, #0
-	beq _0809E5A8
-	adds r1, r3, #0
-	adds r1, #0x25
-	movs r2, #0
-	movs r0, #8
-	strb r0, [r1]
-	ldr r1, _0809E5B4 @ =gProjectileFnTable
-	movs r0, #9
-	strb r0, [r3, #9]
-	ldr r0, [r1, #0x24]
-	ldr r0, [r0]
-	str r0, [r3, #0x14]
-	movs r0, #0
-	strh r2, [r3, #0x20]
-	adds r1, r3, #0
-	adds r1, #0x22
-	strb r0, [r1]
-	movs r0, #2
-	strb r0, [r3, #0x10]
-	ldr r0, [r4]
-	ldr r1, [r4, #4]
-	str r0, [r3, #0x54]
-	str r1, [r3, #0x58]
-	ldr r0, [r5]
-	ldr r1, [r5, #4]
-	str r0, [r3, #0x64]
-	str r1, [r3, #0x68]
-	str r6, [r3, #0x28]
-_0809E5A8:
-	adds r0, r3, #0
-	pop {r4, r5, r6}
-	pop {r1}
-	bx r1
-	.align 2, 0
-_0809E5B0: .4byte gProjectileHeaderPtr
-_0809E5B4: .4byte gProjectileFnTable
-
-	thumb_func_start _createBlazinEXFireBall
-_createBlazinEXFireBall: @ 0x0809E5B8
-	push {r4, r5, r6, r7, lr}
-	adds r7, r0, #0
-	adds r5, r1, #0
-	adds r6, r2, #0
-	lsls r3, r3, #0x18
-	lsrs r4, r3, #0x18
-	ldr r0, _0809E618 @ =gProjectileHeaderPtr
-	ldr r0, [r0]
-	bl AllocEntityFirst
-	adds r3, r0, #0
-	cmp r3, #0
-	beq _0809E60E
-	adds r1, r3, #0
-	adds r1, #0x25
-	movs r2, #0
-	movs r0, #8
-	strb r0, [r1]
-	ldr r1, _0809E61C @ =gProjectileFnTable
-	movs r0, #9
-	strb r0, [r3, #9]
-	ldr r0, [r1, #0x24]
-	ldr r0, [r0]
-	str r0, [r3, #0x14]
-	movs r0, #0
-	strh r2, [r3, #0x20]
-	adds r1, r3, #0
-	adds r1, #0x22
-	strb r0, [r1]
-	movs r0, #3
-	strb r0, [r3, #0x10]
-	adds r0, r3, #0
-	adds r0, #0xb4
-	strb r4, [r0]
-	ldr r0, [r5]
-	ldr r1, [r5, #4]
-	str r0, [r3, #0x54]
-	str r1, [r3, #0x58]
-	ldr r0, [r6]
-	ldr r1, [r6, #4]
-	str r0, [r3, #0x5c]
-	str r1, [r3, #0x60]
-	str r7, [r3, #0x28]
-_0809E60E:
-	adds r0, r3, #0
-	pop {r4, r5, r6, r7}
-	pop {r1}
-	bx r1
-	.align 2, 0
-_0809E618: .4byte gProjectileHeaderPtr
-_0809E61C: .4byte gProjectileFnTable
-
-	thumb_func_start blazin_0809e620
-blazin_0809e620: @ 0x0809E620
-	push {r4, r5, r6, lr}
-	adds r6, r0, #0
-	adds r5, r1, #0
-	adds r4, r2, #0
-	ldr r0, _0809E674 @ =gProjectileHeaderPtr
-	ldr r0, [r0]
-	bl AllocEntityFirst
-	adds r3, r0, #0
-	cmp r3, #0
-	beq _0809E66C
-	adds r1, r3, #0
-	adds r1, #0x25
-	movs r2, #0
-	movs r0, #8
-	strb r0, [r1]
-	ldr r1, _0809E678 @ =gProjectileFnTable
-	movs r0, #9
-	strb r0, [r3, #9]
-	ldr r0, [r1, #0x24]
-	ldr r0, [r0]
-	str r0, [r3, #0x14]
-	movs r0, #0
-	strh r2, [r3, #0x20]
-	adds r1, r3, #0
-	adds r1, #0x22
-	strb r0, [r1]
-	movs r0, #4
-	strb r0, [r3, #0x10]
-	ldr r0, [r4]
-	ldr r1, [r4, #4]
-	str r0, [r3, #0x5c]
-	str r1, [r3, #0x60]
-	ldr r0, [r5]
-	ldr r1, [r5, #4]
-	str r0, [r3, #0x54]
-	str r1, [r3, #0x58]
-	str r6, [r3, #0x28]
-_0809E66C:
-	adds r0, r3, #0
-	pop {r4, r5, r6}
-	pop {r1}
-	bx r1
-	.align 2, 0
-_0809E674: .4byte gProjectileHeaderPtr
-_0809E678: .4byte gProjectileFnTable
-
-	thumb_func_start Projectile9_Init
-Projectile9_Init: @ 0x0809E67C
-	push {r4, r5, r6, lr}
-	adds r5, r0, #0
-	bl InitNonAffineMotion
-	ldrb r0, [r5, #0xa]
-	movs r1, #1
-	movs r4, #0
-	movs r6, #0
-	orrs r1, r0
-	movs r0, #2
-	orrs r1, r0
-	strb r1, [r5, #0xa]
-	adds r0, r5, #0
-	bl ResetDynamicMotion
-	ldrb r0, [r5, #0x10]
-	cmp r0, #0
-	bne _0809E6BC
-	ldrb r0, [r5, #0xa]
-	movs r1, #4
-	orrs r0, r1
-	strb r0, [r5, #0xa]
-	adds r4, r5, #0
-	adds r4, #0x74
-	ldr r1, _0809E6B8 @ =0x0836AD60
-	adds r2, r5, #0
-	adds r2, #0x54
-	adds r0, r4, #0
-	movs r3, #0x10
-	b _0809E71E
-	.align 2, 0
-_0809E6B8: .4byte 0x0836AD60
-_0809E6BC:
-	cmp r0, #1
-	bne _0809E6D4
-	ldrb r0, [r5, #0xa]
-	movs r1, #4
-	orrs r0, r1
-	strb r0, [r5, #0xa]
-	adds r4, r5, #0
-	adds r4, #0x74
-	ldr r1, _0809E6D0 @ =0x0836ADF0
-	b _0809E716
-	.align 2, 0
-_0809E6D0: .4byte 0x0836ADF0
-_0809E6D4:
-	cmp r0, #2
-	bne _0809E6EC
-	ldrb r0, [r5, #0xa]
-	movs r1, #4
-	orrs r0, r1
-	strb r0, [r5, #0xa]
-	adds r4, r5, #0
-	adds r4, #0x74
-	ldr r1, _0809E6E8 @ =0x0836ADC0
-	b _0809E716
-	.align 2, 0
-_0809E6E8: .4byte 0x0836ADC0
-_0809E6EC:
-	cmp r0, #3
-	bne _0809E704
-	ldrb r0, [r5, #0xa]
-	movs r1, #4
-	orrs r0, r1
-	strb r0, [r5, #0xa]
-	adds r4, r5, #0
-	adds r4, #0x74
-	ldr r1, _0809E700 @ =0x0836ADA8
-	b _0809E716
-	.align 2, 0
-_0809E700: .4byte 0x0836ADA8
-_0809E704:
-	cmp r0, #4
-	bne _0809E726
-	ldrb r0, [r5, #0xa]
-	movs r1, #4
-	orrs r0, r1
-	strb r0, [r5, #0xa]
-	adds r4, r5, #0
-	adds r4, #0x74
-	ldr r1, _0809E750 @ =0x0836AE80
-_0809E716:
-	adds r2, r5, #0
-	adds r2, #0x54
-	adds r0, r4, #0
-	movs r3, #1
-_0809E71E:
-	bl InitBody
-	str r5, [r4, #0x2c]
-	str r6, [r4, #0x24]
-_0809E726:
-	movs r0, #0xff
-	strb r0, [r5, #0x12]
-	ldr r1, _0809E754 @ =gProjectileFnTable
-	ldrb r0, [r5, #9]
-	lsls r0, r0, #2
-	adds r0, r0, r1
-	movs r1, #1
-	str r1, [r5, #0xc]
-	ldr r0, [r0]
-	ldr r0, [r0, #4]
-	str r0, [r5, #0x14]
-	movs r0, #0
-	strb r1, [r5, #0xd]
-	strb r0, [r5, #0xe]
-	strb r0, [r5, #0xf]
-	adds r0, r5, #0
-	bl Projectile9_Update
-	pop {r4, r5, r6}
-	pop {r0}
-	bx r0
-	.align 2, 0
-_0809E750: .4byte 0x0836AE80
-_0809E754: .4byte gProjectileFnTable
-
-	thumb_func_start Projectile9_Update
-Projectile9_Update: @ 0x0809E758
-	push {lr}
-	ldr r2, _0809E774 @ =0x0836AD4C
-	ldrb r1, [r0, #0x10]
-	lsls r1, r1, #2
-	adds r1, r1, r2
-	ldrb r2, [r0, #0xd]
-	ldr r1, [r1]
-	lsls r2, r2, #2
-	adds r2, r2, r1
-	ldr r1, [r2]
-	bl _call_via_r1
-	pop {r0}
-	bx r0
-	.align 2, 0
-_0809E774: .4byte 0x0836AD4C
-
-	thumb_func_start Projectile9_Die
-Projectile9_Die:
-	.byte 0x02, 0x1C, 0x91, 0x7A, 0xFE, 0x20, 0x08, 0x40
-	.byte 0x00, 0x21, 0x90, 0x72, 0x10, 0x1C, 0x8C, 0x30, 0x01, 0x60, 0x04, 0x30, 0x01, 0x60, 0x04, 0x30
-	.byte 0x01, 0x70, 0x91, 0x7A, 0xFB, 0x20, 0x08, 0x40, 0x90, 0x72, 0x05, 0x49, 0x50, 0x7A, 0x80, 0x00
-	.byte 0x40, 0x18, 0x04, 0x21, 0xD1, 0x60, 0x00, 0x68, 0x00, 0x69, 0x50, 0x61, 0x70, 0x47
-	.align 2, 0
-	.4byte gProjectileFnTable
-
-	thumb_func_start FUN_0809e7b4
-FUN_0809e7b4:
-	.byte 0x00, 0x22, 0x01, 0x21, 0x41, 0x73, 0x82, 0x73, 0x70, 0x47
-	.align 2, 0
-
-	thumb_func_start FUN_0809e7c0
-FUN_0809e7c0: @ 0x0809E7C0
-	push {r4, r5, lr}
-	sub sp, #8
-	adds r4, r0, #0
-	ldr r0, [r4, #0x28]
-	ldrb r0, [r0, #0xc]
-	cmp r0, #1
-	bhi _0809E824
-	adds r0, r4, #0
-	adds r0, #0x8c
-	ldr r0, [r0]
-	movs r1, #0x80
-	lsls r1, r1, #2
-	ands r0, r1
-	cmp r0, #0
-	beq _0809E818
-	ldr r0, [r4, #0x54]
-	ldr r1, [r4, #0x58]
-	str r0, [sp]
-	str r1, [sp, #4]
-	ldr r0, [sp]
-	ldr r1, _0809E810 @ =0xFFFFF800
-	adds r0, r0, r1
-	str r0, [sp]
-	movs r0, #2
-	mov r1, sp
-	bl CreateSmoke
-	ldr r0, [sp]
-	movs r1, #0x80
-	lsls r1, r1, #4
-	adds r0, r0, r1
-	str r0, [sp]
-	ldr r0, [sp, #4]
-	ldr r1, _0809E814 @ =0xFFFFFC00
-	adds r0, r0, r1
-	str r0, [sp, #4]
-	movs r0, #2
-	mov r1, sp
-	b _0809E82A
-	.align 2, 0
-_0809E810: .4byte 0xFFFFF800
-_0809E814: .4byte 0xFFFFFC00
-_0809E818:
-	ldrb r0, [r4, #0x12]
-	subs r0, #1
-	strb r0, [r4, #0x12]
-	lsls r0, r0, #0x18
-	cmp r0, #0
-	bne _0809E848
-_0809E824:
-	adds r1, r4, #0
-	adds r1, #0x54
-	movs r0, #2
-_0809E82A:
-	bl CreateSmoke
-	ldr r1, _0809E844 @ =gProjectileFnTable
-	ldrb r0, [r4, #9]
-	lsls r0, r0, #2
-	adds r0, r0, r1
-	movs r1, #2
-	str r1, [r4, #0xc]
-	ldr r0, [r0]
-	ldr r0, [r0, #8]
-	str r0, [r4, #0x14]
-	b _0809E9AE
-	.align 2, 0
-_0809E844: .4byte gProjectileFnTable
-_0809E848:
-	ldrb r0, [r4, #0xe]
-	cmp r0, #0
-	beq _0809E854
-	cmp r0, #1
-	beq _0809E8C8
-	b _0809E9AE
-_0809E854:
-	ldr r1, _0809E890 @ =0x0000A304
-	adds r0, r4, #0
-	bl SetMotion
-	ldr r0, [r4, #0x28]
-	ldrb r1, [r0, #0xa]
-	movs r3, #0x10
-	adds r0, r3, #0
-	ands r0, r1
-	lsls r0, r0, #0x18
-	lsrs r2, r0, #0x18
-	cmp r2, #0
-	bne _0809E894
-	movs r0, #0xc0
-	str r0, [r4, #0x5c]
-	ldrb r1, [r4, #0xa]
-	movs r0, #0xef
-	ands r0, r1
-	strb r0, [r4, #0xa]
-	adds r0, r4, #0
-	adds r0, #0x4c
-	strb r2, [r0]
-	adds r2, r4, #0
-	adds r2, #0x4a
-	ldrb r1, [r2]
-	movs r0, #0x11
-	rsbs r0, r0, #0
-	ands r0, r1
-	b _0809E8B8
-	.align 2, 0
-_0809E890: .4byte 0x0000A304
-_0809E894:
-	movs r0, #0xc0
-	rsbs r0, r0, #0
-	str r0, [r4, #0x5c]
-	movs r2, #1
-	ldrb r0, [r4, #0xa]
-	movs r1, #0x10
-	orrs r0, r1
-	strb r0, [r4, #0xa]
-	adds r0, r4, #0
-	adds r0, #0x4c
-	strb r2, [r0]
-	adds r2, r4, #0
-	adds r2, #0x4a
-	ldrb r1, [r2]
-	movs r0, #0x11
-	rsbs r0, r0, #0
-	ands r0, r1
-	orrs r0, r3
-_0809E8B8:
-	strb r0, [r2]
-	ldr r0, _0809E948 @ =0xFFFFFC00
-	str r0, [r4, #0x60]
-	movs r0, #0x28
-	strb r0, [r4, #0x13]
-	ldrb r0, [r4, #0xe]
-	adds r0, #1
-	strb r0, [r4, #0xe]
-_0809E8C8:
-	ldrb r0, [r4, #0x13]
-	cmp r0, #0
-	beq _0809E8E2
-	subs r0, #1
-	strb r0, [r4, #0x13]
-	lsls r0, r0, #0x18
-	cmp r0, #0
-	bne _0809E8E2
-	adds r0, r4, #0
-	adds r0, #0x74
-	ldr r1, _0809E94C @ =0x0836AD78
-	bl SetDDP
-_0809E8E2:
-	ldr r0, [r4, #0x60]
-	adds r0, #0x40
-	str r0, [r4, #0x60]
-	movs r1, #0xe0
-	lsls r1, r1, #3
-	cmp r0, r1
-	ble _0809E8F2
-	str r1, [r4, #0x60]
-_0809E8F2:
-	ldr r0, [r4, #0x54]
-	ldr r1, [r4, #0x5c]
-	adds r0, r0, r1
-	str r0, [r4, #0x54]
-	ldr r1, [r4, #0x58]
-	ldr r2, [r4, #0x60]
-	adds r1, r1, r2
-	str r1, [r4, #0x58]
-	bl PushoutToUp1
-	adds r1, r0, #0
-	cmp r1, #0
-	beq _0809E916
-	ldr r0, [r4, #0x58]
-	adds r0, r0, r1
-	str r0, [r4, #0x58]
-	ldr r0, _0809E950 @ =0xFFFFFD00
-	str r0, [r4, #0x60]
-_0809E916:
-	ldr r0, [r4, #0x5c]
-	cmp r0, #0
-	ble _0809E954
-	ldr r0, [r4, #0x54]
-	movs r1, #0x80
-	lsls r1, r1, #4
-	adds r0, r0, r1
-	ldr r1, [r4, #0x58]
-	bl PushoutToLeft1
-	adds r5, r0, #0
-	cmp r5, #0
-	beq _0809E9A8
-	ldr r0, [r4, #0x5c]
-	rsbs r0, r0, #0
-	str r0, [r4, #0x5c]
-	ldrb r2, [r4, #0xa]
-	lsrs r0, r2, #4
-	movs r1, #1
-	bics r1, r0
-	cmp r1, #0
-	beq _0809E984
-	movs r0, #0x10
-	orrs r0, r2
-	b _0809E988
-	.align 2, 0
-_0809E948: .4byte 0xFFFFFC00
-_0809E94C: .4byte 0x0836AD78
-_0809E950: .4byte 0xFFFFFD00
-_0809E954:
-	ldr r0, [r4, #0x54]
-	ldr r1, _0809E980 @ =0xFFFFF800
-	adds r0, r0, r1
-	ldr r1, [r4, #0x58]
-	bl PushoutToRight1
-	adds r5, r0, #0
-	cmp r5, #0
-	beq _0809E9A8
-	ldr r0, [r4, #0x5c]
-	rsbs r0, r0, #0
-	str r0, [r4, #0x5c]
-	ldrb r2, [r4, #0xa]
-	lsrs r0, r2, #4
-	movs r1, #1
-	bics r1, r0
-	cmp r1, #0
-	beq _0809E984
-	movs r0, #0x10
-	orrs r0, r2
-	b _0809E988
-	.align 2, 0
-_0809E980: .4byte 0xFFFFF800
-_0809E984:
-	movs r0, #0xef
-	ands r0, r2
-_0809E988:
-	strb r0, [r4, #0xa]
-	adds r0, r4, #0
-	adds r0, #0x4c
-	strb r1, [r0]
-	adds r3, r4, #0
-	adds r3, #0x4a
-	lsls r1, r1, #4
-	ldrb r2, [r3]
-	movs r0, #0x11
-	rsbs r0, r0, #0
-	ands r0, r2
-	orrs r0, r1
-	strb r0, [r3]
-	ldr r0, [r4, #0x54]
-	adds r0, r0, r5
-	str r0, [r4, #0x54]
-_0809E9A8:
-	adds r0, r4, #0
-	bl UpdateMotionGraphic
-_0809E9AE:
-	add sp, #8
-	pop {r4, r5}
-	pop {r0}
-	bx r0
-	.align 2, 0
-
-	thumb_func_start FUN_0809e9b8
-FUN_0809e9b8:
-	.byte 0x00, 0x22, 0x01, 0x21, 0x41, 0x73, 0x82, 0x73
-	.byte 0x70, 0x47
-	.align 2, 0
-
-	thumb_func_start FUN_0809e9c4
-FUN_0809e9c4: @ 0x0809E9C4
-	push {r4, r5, lr}
-	adds r5, r0, #0
-	ldrb r0, [r5, #0xe]
-	cmp r0, #0
-	beq _0809E9D4
-	cmp r0, #1
-	beq _0809EA2A
-	b _0809EACA
-_0809E9D4:
-	adds r0, r5, #0
-	bl InitScalerotMotion1
-	adds r0, r5, #0
-	bl ResetDynamicMotion
-	adds r2, r5, #0
-	adds r2, #0xbc
-	movs r1, #0x80
-	lsls r1, r1, #1
-	str r1, [r2]
-	adds r0, r5, #0
-	adds r0, #0x50
-	movs r4, #0
-	strh r1, [r0]
-	ldr r0, [r2]
-	adds r1, r5, #0
-	adds r1, #0x52
-	strh r0, [r1]
-	ldr r1, _0809EAD0 @ =0x0000A301
-	adds r0, r5, #0
-	bl SetMotion
-	adds r2, r5, #0
-	adds r2, #0xb8
-	movs r0, #0x80
-	lsls r0, r0, #3
-	str r0, [r2]
-	ldr r0, [r5, #0x5c]
-	lsls r0, r0, #0xa
-	asrs r0, r0, #8
-	str r0, [r5, #0x64]
-	ldr r1, [r5, #0x60]
-	ldr r0, [r2]
-	muls r0, r1, r0
-	asrs r0, r0, #8
-	str r0, [r5, #0x68]
-	movs r0, #0x28
-	strb r0, [r5, #0x12]
-	strb r4, [r5, #0x13]
-	ldrb r0, [r5, #0xe]
-	adds r0, #1
-	strb r0, [r5, #0xe]
-_0809EA2A:
-	adds r3, r5, #0
-	adds r3, #0xb8
-	ldr r2, [r3]
-	rsbs r1, r2, #0
-	lsls r0, r1, #2
-	adds r0, r0, r1
-	lsls r0, r0, #1
-	asrs r0, r0, #8
-	adds r2, r2, r0
-	str r2, [r3]
-	ldr r0, [r5, #0x5c]
-	muls r0, r2, r0
-	asrs r0, r0, #8
-	str r0, [r5, #0x64]
-	ldr r1, [r5, #0x60]
-	ldr r0, [r3]
-	muls r0, r1, r0
-	asrs r0, r0, #8
-	str r0, [r5, #0x68]
-	adds r3, #4
-	ldr r2, [r3]
-	movs r1, #0xe0
-	lsls r1, r1, #1
-	subs r1, r1, r2
-	lsls r0, r1, #2
-	adds r0, r0, r1
-	lsls r0, r0, #2
-	asrs r0, r0, #8
-	adds r2, r2, r0
-	str r2, [r3]
-	adds r0, r5, #0
-	adds r0, #0x50
-	strh r2, [r0]
-	ldr r0, [r3]
-	adds r1, r5, #0
-	adds r1, #0x52
-	strh r0, [r1]
-	ldr r1, [r3]
-	movs r0, #0xd0
-	lsls r0, r0, #1
-	cmp r1, r0
-	ble _0809EA92
-	ldrb r0, [r5, #0x13]
-	cmp r0, #0
-	bne _0809EA92
-	adds r0, #1
-	strb r0, [r5, #0x13]
-	adds r0, r5, #0
-	adds r0, #0x74
-	ldr r1, _0809EAD4 @ =0x0836AE38
-	bl SetDDP
-_0809EA92:
-	ldr r0, [r5, #0x54]
-	ldr r1, [r5, #0x64]
-	adds r0, r0, r1
-	str r0, [r5, #0x54]
-	ldr r0, [r5, #0x58]
-	ldr r1, [r5, #0x68]
-	adds r0, r0, r1
-	str r0, [r5, #0x58]
-	adds r0, r5, #0
-	bl UpdateMotionGraphic
-	ldrb r0, [r5, #0x12]
-	cmp r0, #0
-	beq _0809EAB8
-	subs r0, #1
-	strb r0, [r5, #0x12]
-	lsls r0, r0, #0x18
-	cmp r0, #0
-	bne _0809EACA
-_0809EAB8:
-	ldr r1, _0809EAD8 @ =gProjectileFnTable
-	ldrb r0, [r5, #9]
-	lsls r0, r0, #2
-	adds r0, r0, r1
-	movs r1, #2
-	str r1, [r5, #0xc]
-	ldr r0, [r0]
-	ldr r0, [r0, #8]
-	str r0, [r5, #0x14]
-_0809EACA:
-	pop {r4, r5}
-	pop {r0}
-	bx r0
-	.align 2, 0
-_0809EAD0: .4byte 0x0000A301
-_0809EAD4: .4byte 0x0836AE38
-_0809EAD8: .4byte gProjectileFnTable
-
-	thumb_func_start FUN_0809eadc
-FUN_0809eadc:
-	.byte 0x00, 0x22, 0x01, 0x21
-	.byte 0x41, 0x73, 0x82, 0x73, 0x70, 0x47
-	.align 2, 0
-
-	thumb_func_start FUN_0809eae8
-FUN_0809eae8: @ 0x0809EAE8
-	push {r4, lr}
-	adds r4, r0, #0
-	ldrb r0, [r4, #0xe]
-	cmp r0, #1
-	beq _0809EB3E
-	cmp r0, #1
-	bgt _0809EAFC
-	cmp r0, #0
-	beq _0809EB06
-	b _0809EC04
-_0809EAFC:
-	cmp r0, #2
-	beq _0809EBC6
-	cmp r0, #3
-	beq _0809EBE2
-	b _0809EC04
-_0809EB06:
-	ldr r1, _0809EB74 @ =0x0000A302
-	adds r0, r4, #0
-	bl SetMotion
-	ldr r0, [r4, #0x64]
-	movs r1, #0x36
-	strb r1, [r4, #0x12]
-	ldr r1, [r4, #0x54]
-	subs r0, r0, r1
-	movs r1, #0x36
-	bl __divsi3
-	str r0, [r4, #0x5c]
-	ldr r0, _0809EB78 @ =0x00016C80
-	ldr r1, [r4, #0x68]
-	ldr r2, [r4, #0x58]
-	subs r1, r1, r2
-	subs r0, r0, r1
-	movs r1, #0x36
-	bl __divsi3
-	rsbs r0, r0, #0
-	str r0, [r4, #0x60]
-	movs r0, #0x35
-	strb r0, [r4, #0x12]
-	ldrb r0, [r4, #0xe]
-	adds r0, #1
-	strb r0, [r4, #0xe]
-_0809EB3E:
-	ldr r2, [r4, #0x60]
-	adds r2, #0x40
-	str r2, [r4, #0x60]
-	ldr r0, [r4, #0x54]
-	ldr r1, [r4, #0x5c]
-	adds r0, r0, r1
-	str r0, [r4, #0x54]
-	ldr r0, [r4, #0x58]
-	adds r0, r0, r2
-	str r0, [r4, #0x58]
-	adds r0, r4, #0
-	bl UpdateMotionGraphic
-	ldrb r0, [r4, #0x12]
-	cmp r0, #0
-	beq _0809EB6A
-	subs r0, #1
-	movs r3, #0
-	strb r0, [r4, #0x12]
-	lsls r0, r0, #0x18
-	cmp r0, #0
-	bne _0809EB7C
-_0809EB6A:
-	ldrb r0, [r4, #0xe]
-	adds r0, #1
-	strb r0, [r4, #0xe]
-	b _0809EC04
-	.align 2, 0
-_0809EB74: .4byte 0x0000A302
-_0809EB78: .4byte 0x00016C80
-_0809EB7C:
-	adds r2, r4, #0
-	adds r2, #0x8c
-	ldr r0, [r2]
-	movs r1, #4
-	ands r0, r1
-	cmp r0, #0
-	beq _0809EBA0
-	str r3, [r2]
-	adds r0, r4, #0
-	adds r0, #0x90
-	str r3, [r0]
-	adds r0, #4
-	strb r3, [r0]
-	ldrb r1, [r4, #0xa]
-	movs r0, #0xfb
-	ands r0, r1
-	strb r0, [r4, #0xa]
-	b _0809EBF2
-_0809EBA0:
-	ldr r0, [r4, #0x54]
-	ldr r1, [r4, #0x58]
-	bl FUN_080098a4
-	lsls r0, r0, #0x10
-	lsrs r1, r0, #0x10
-	cmp r1, #0
-	beq _0809EC04
-	movs r0, #0x80
-	lsls r0, r0, #8
-	ands r0, r1
-	cmp r0, #0
-	bne _0809EC04
-	adds r1, r4, #0
-	adds r1, #0x54
-	movs r0, #2
-	bl CreateSmoke
-	b _0809EBF2
-_0809EBC6:
-	ldr r1, _0809EC0C @ =0x0000A303
-	adds r0, r4, #0
-	bl SetMotion
-	adds r0, r4, #0
-	adds r0, #0x74
-	ldr r1, _0809EC10 @ =0x0836ADD8
-	bl SetDDP
-	movs r0, #0x3c
-	strb r0, [r4, #0x12]
-	ldrb r0, [r4, #0xe]
-	adds r0, #1
-	strb r0, [r4, #0xe]
-_0809EBE2:
-	adds r0, r4, #0
-	bl UpdateMotionGraphic
-	adds r0, r4, #0
-	adds r0, #0x73
-	ldrb r0, [r0]
-	cmp r0, #3
-	bne _0809EC04
-_0809EBF2:
-	ldr r1, _0809EC14 @ =gProjectileFnTable
-	ldrb r0, [r4, #9]
-	lsls r0, r0, #2
-	adds r0, r0, r1
-	movs r1, #2
-	str r1, [r4, #0xc]
-	ldr r0, [r0]
-	ldr r0, [r0, #8]
-	str r0, [r4, #0x14]
-_0809EC04:
-	pop {r4}
-	pop {r0}
-	bx r0
-	.align 2, 0
-_0809EC0C: .4byte 0x0000A303
-_0809EC10: .4byte 0x0836ADD8
-_0809EC14: .4byte gProjectileFnTable
-
-	thumb_func_start FUN_0809ec18
-FUN_0809ec18:
-	.byte 0x00, 0x22, 0x01, 0x21, 0x41, 0x73, 0x82, 0x73
-	.byte 0x70, 0x47
-	.align 2, 0
-
-	thumb_func_start FUN_0809ec24
-FUN_0809ec24: @ 0x0809EC24
-	push {r4, r5, lr}
-	adds r5, r0, #0
-	ldrb r0, [r5, #0xe]
-	cmp r0, #1
-	beq _0809EC8A
-	cmp r0, #1
-	bgt _0809EC38
-	cmp r0, #0
-	beq _0809EC3E
-	b _0809EDF0
-_0809EC38:
-	cmp r0, #2
-	beq _0809ED36
-	b _0809EDF0
-_0809EC3E:
-	adds r0, r5, #0
-	bl InitRotatableMotion
-	adds r0, r5, #0
-	bl ResetDynamicMotion
-	adds r0, r5, #0
-	adds r0, #0x50
-	movs r4, #0x80
-	lsls r4, r4, #1
-	strh r4, [r0]
-	adds r0, #2
-	strh r4, [r0]
-	adds r0, #0x62
-	ldrb r1, [r0]
-	subs r0, #0x90
-	strb r1, [r0]
-	ldr r1, _0809ECEC @ =0x0000A301
-	adds r0, r5, #0
-	bl SetMotion
-	adds r2, r5, #0
-	adds r2, #0xb8
-	str r4, [r2]
-	ldr r0, [r5, #0x5c]
-	lsls r0, r0, #8
-	asrs r0, r0, #8
-	str r0, [r5, #0x64]
-	ldr r1, [r5, #0x60]
-	ldr r0, [r2]
-	muls r0, r1, r0
-	asrs r0, r0, #8
-	str r0, [r5, #0x68]
-	movs r0, #6
-	strb r0, [r5, #0x12]
-	ldrb r0, [r5, #0xe]
-	adds r0, #1
-	strb r0, [r5, #0xe]
-_0809EC8A:
-	adds r1, r5, #0
-	adds r1, #0xbc
-	ldr r0, [r1]
-	cmp r0, #0
-	ble _0809EC9C
-	subs r0, #1
-	str r0, [r1]
-	cmp r0, #0
-	bgt _0809ECCE
-_0809EC9C:
-	adds r3, r5, #0
-	adds r3, #0xb8
-	ldr r2, [r3]
-	rsbs r1, r2, #0
-	lsls r0, r1, #3
-	adds r0, r0, r1
-	lsls r0, r0, #2
-	asrs r0, r0, #8
-	adds r2, r2, r0
-	str r2, [r3]
-	ldr r0, [r5, #0x5c]
-	muls r2, r0, r2
-	asrs r2, r2, #8
-	str r2, [r5, #0x64]
-	ldr r1, [r5, #0x60]
-	ldr r0, [r3]
-	muls r1, r0, r1
-	asrs r1, r1, #8
-	str r1, [r5, #0x68]
-	ldr r0, [r5, #0x54]
-	adds r0, r0, r2
-	str r0, [r5, #0x54]
-	ldr r0, [r5, #0x58]
-	adds r0, r0, r1
-	str r0, [r5, #0x58]
-_0809ECCE:
-	ldrb r0, [r5, #0x12]
-	cmp r0, #0
-	beq _0809ECE0
-	subs r0, #1
-	movs r3, #0
-	strb r0, [r5, #0x12]
-	lsls r0, r0, #0x18
-	cmp r0, #0
-	bne _0809ECF0
-_0809ECE0:
-	movs r0, #0xff
-	strb r0, [r5, #0x12]
-	ldrb r0, [r5, #0xe]
-	adds r0, #1
-	strb r0, [r5, #0xe]
-	b _0809ED2E
-	.align 2, 0
-_0809ECEC: .4byte 0x0000A301
-_0809ECF0:
-	adds r2, r5, #0
-	adds r2, #0x8c
-	ldr r0, [r2]
-	movs r1, #4
-	ands r0, r1
-	cmp r0, #0
-	beq _0809ED14
-	str r3, [r2]
-	adds r0, r5, #0
-	adds r0, #0x90
-	str r3, [r0]
-	adds r0, #4
-	strb r3, [r0]
-	ldrb r1, [r5, #0xa]
-	movs r0, #0xfb
-	ands r0, r1
-	strb r0, [r5, #0xa]
-	b _0809EDDE
-_0809ED14:
-	ldr r0, [r5, #0x54]
-	ldr r1, [r5, #0x58]
-	bl FUN_080098a4
-	lsls r0, r0, #0x10
-	lsrs r1, r0, #0x10
-	cmp r1, #0
-	beq _0809ED2E
-	movs r0, #0x80
-	lsls r0, r0, #8
-	ands r0, r1
-	cmp r0, #0
-	beq _0809EDD4
-_0809ED2E:
-	adds r0, r5, #0
-	bl UpdateMotionGraphic
-	b _0809EDF0
-_0809ED36:
-	adds r1, r5, #0
-	adds r1, #0xbc
-	ldr r0, [r1]
-	cmp r0, #0
-	ble _0809ED48
-	subs r0, #1
-	str r0, [r1]
-	cmp r0, #0
-	bgt _0809ED7E
-_0809ED48:
-	adds r3, r5, #0
-	adds r3, #0xb8
-	ldr r2, [r3]
-	movs r1, #0xc0
-	lsls r1, r1, #2
-	subs r1, r1, r2
-	lsls r0, r1, #1
-	adds r0, r0, r1
-	lsls r0, r0, #4
-	asrs r0, r0, #8
-	adds r2, r2, r0
-	str r2, [r3]
-	ldr r0, [r5, #0x5c]
-	muls r2, r0, r2
-	asrs r2, r2, #8
-	str r2, [r5, #0x64]
-	ldr r1, [r5, #0x60]
-	ldr r0, [r3]
-	muls r1, r0, r1
-	asrs r1, r1, #8
-	str r1, [r5, #0x68]
-	ldr r0, [r5, #0x54]
-	adds r0, r0, r2
-	str r0, [r5, #0x54]
-	ldr r0, [r5, #0x58]
-	adds r0, r0, r1
-	str r0, [r5, #0x58]
-_0809ED7E:
-	adds r0, r5, #0
-	bl UpdateMotionGraphic
-	ldrb r0, [r5, #0x12]
-	cmp r0, #0
-	beq _0809EDDE
-	subs r0, #1
-	movs r3, #0
-	strb r0, [r5, #0x12]
-	lsls r0, r0, #0x18
-	cmp r0, #0
-	beq _0809EDDE
-	adds r2, r5, #0
-	adds r2, #0x8c
-	ldr r0, [r2]
-	movs r1, #4
-	ands r0, r1
-	cmp r0, #0
-	beq _0809EDBA
-	str r3, [r2]
-	adds r0, r5, #0
-	adds r0, #0x90
-	str r3, [r0]
-	adds r0, #4
-	strb r3, [r0]
-	ldrb r1, [r5, #0xa]
-	movs r0, #0xfb
-	ands r0, r1
-	strb r0, [r5, #0xa]
-	b _0809EDDE
-_0809EDBA:
-	ldr r0, [r5, #0x54]
-	ldr r1, [r5, #0x58]
-	bl FUN_080098a4
-	lsls r0, r0, #0x10
-	lsrs r1, r0, #0x10
-	cmp r1, #0
-	beq _0809EDF0
-	movs r0, #0x80
-	lsls r0, r0, #8
-	ands r0, r1
-	cmp r0, #0
-	bne _0809EDF0
-_0809EDD4:
-	adds r1, r5, #0
-	adds r1, #0x54
-	movs r0, #2
-	bl CreateSmoke
-_0809EDDE:
-	ldr r1, _0809EDF8 @ =gProjectileFnTable
-	ldrb r0, [r5, #9]
-	lsls r0, r0, #2
-	adds r0, r0, r1
-	movs r1, #2
-	str r1, [r5, #0xc]
-	ldr r0, [r0]
-	ldr r0, [r0, #8]
-	str r0, [r5, #0x14]
-_0809EDF0:
-	pop {r4, r5}
-	pop {r0}
-	bx r0
-	.align 2, 0
-_0809EDF8: .4byte gProjectileFnTable
-
-	thumb_func_start FUN_0809edfc
-FUN_0809edfc: @ 0x0809EDFC
-	movs r2, #0
-	movs r1, #1
-	strb r1, [r0, #0xd]
-	strb r2, [r0, #0xe]
-	bx lr
-	.align 2, 0
-
-	thumb_func_start FUN_0809ee08
-FUN_0809ee08: @ 0x0809EE08
-	push {r4, r5, r6, lr}
-	sub sp, #0x10
-	adds r5, r0, #0
-	ldr r0, [r5, #0x28]
-	ldrb r0, [r0, #0xc]
-	cmp r0, #1
-	bls _0809EE22
-	adds r1, r5, #0
-	adds r1, #0x54
-	movs r0, #1
-	bl CreateSmoke
-	b _0809EFEE
-_0809EE22:
-	ldrb r0, [r5, #0xe]
-	cmp r0, #1
-	beq _0809EE6E
-	cmp r0, #1
-	bgt _0809EE32
-	cmp r0, #0
-	beq _0809EE40
-	b _0809F000
-_0809EE32:
-	cmp r0, #2
-	bne _0809EE38
-	b _0809EF4E
-_0809EE38:
-	cmp r0, #3
-	bne _0809EE3E
-	b _0809EFC4
-_0809EE3E:
-	b _0809F000
-_0809EE40:
-	ldr r1, _0809EEE0 @ =0x0000A305
-	adds r0, r5, #0
-	bl SetMotion
-	adds r2, r5, #0
-	adds r2, #0xb8
-	movs r1, #0xa0
-	lsls r1, r1, #3
-	str r1, [r2]
-	ldr r0, [r5, #0x5c]
-	muls r0, r1, r0
-	asrs r0, r0, #8
-	str r0, [r5, #0x64]
-	ldr r1, [r5, #0x60]
-	ldr r0, [r2]
-	muls r0, r1, r0
-	asrs r0, r0, #8
-	str r0, [r5, #0x68]
-	movs r0, #4
-	strb r0, [r5, #0x12]
-	ldrb r0, [r5, #0xe]
-	adds r0, #1
-	strb r0, [r5, #0xe]
-_0809EE6E:
-	ldr r0, [r5, #0x54]
-	ldr r1, [r5, #0x64]
-	adds r0, r0, r1
-	str r0, [r5, #0x54]
-	ldr r0, [r5, #0x58]
-	ldr r1, [r5, #0x68]
-	adds r0, r0, r1
-	str r0, [r5, #0x58]
-	adds r0, r5, #0
-	bl UpdateMotionGraphic
-	movs r6, #0
-	ldr r0, [r5, #0x54]
-	ldr r1, [r5, #0x58]
-	movs r4, #0x80
-	lsls r4, r4, #4
-	adds r1, r1, r4
-	bl PushoutToUp1
-	str r0, [sp]
-	ldr r0, [r5, #0x54]
-	ldr r1, [r5, #0x58]
-	ldr r2, _0809EEE4 @ =0xFFFFF800
-	adds r1, r1, r2
-	bl PushoutToDown1
-	str r0, [sp, #4]
-	ldr r0, [r5, #0x54]
-	adds r0, r0, r4
-	ldr r1, [r5, #0x58]
-	bl PushoutToLeft1
-	str r0, [sp, #8]
-	ldr r0, [r5, #0x54]
-	ldr r3, _0809EEE4 @ =0xFFFFF800
-	adds r0, r0, r3
-	ldr r1, [r5, #0x58]
-	bl PushoutToRight1
-	adds r2, r0, #0
-	str r2, [sp, #0xc]
-	ldr r1, [sp]
-	cmp r1, #0
-	beq _0809EEEE
-	ldr r0, [r5, #0x68]
-	rsbs r0, r0, #0
-	str r0, [r5, #0x68]
-	ldr r0, [r5, #0x58]
-	adds r0, r0, r1
-	str r0, [r5, #0x58]
-	ldr r1, [sp, #8]
-	cmp r1, #0
-	beq _0809EEE8
-	ldr r0, [r5, #0x54]
-	adds r0, r0, r1
-	b _0809EF26
-	.align 2, 0
-_0809EEE0: .4byte 0x0000A305
-_0809EEE4: .4byte 0xFFFFF800
-_0809EEE8:
-	cmp r2, #0
-	beq _0809EF2E
-	b _0809EF22
-_0809EEEE:
-	ldr r1, [sp, #4]
-	cmp r1, #0
-	beq _0809EF12
-	ldr r0, [r5, #0x68]
-	rsbs r0, r0, #0
-	str r0, [r5, #0x68]
-	ldr r0, [r5, #0x58]
-	adds r0, r0, r1
-	str r0, [r5, #0x58]
-	ldr r1, [sp, #8]
-	cmp r1, #0
-	beq _0809EF0C
-	ldr r0, [r5, #0x54]
-	adds r0, r0, r1
-	b _0809EF26
-_0809EF0C:
-	cmp r2, #0
-	beq _0809EF2E
-	b _0809EF22
-_0809EF12:
-	ldr r1, [sp, #8]
-	cmp r1, #0
-	beq _0809EF1E
-	ldr r0, [r5, #0x54]
-	adds r0, r0, r1
-	b _0809EF26
-_0809EF1E:
-	cmp r2, #0
-	beq _0809EF30
-_0809EF22:
-	ldr r0, [r5, #0x54]
-	adds r0, r0, r2
-_0809EF26:
-	str r0, [r5, #0x54]
-	ldr r0, [r5, #0x64]
-	rsbs r0, r0, #0
-	str r0, [r5, #0x64]
-_0809EF2E:
-	movs r6, #1
-_0809EF30:
-	cmp r6, #1
-	bne _0809F000
-	movs r0, #0
-	bl PlaySound
-	ldrb r0, [r5, #0x12]
-	subs r0, #1
-	strb r0, [r5, #0x12]
-	lsls r0, r0, #0x18
-	cmp r0, #0
-	bne _0809F000
-	ldrb r0, [r5, #0xe]
-	adds r0, #1
-	strb r0, [r5, #0xe]
-	b _0809F000
-_0809EF4E:
-	adds r6, r5, #0
-	adds r6, #0xb8
-	movs r0, #0xa0
-	lsls r0, r0, #3
-	str r0, [r6]
-	ldr r1, [r5, #0x28]
-	ldr r2, [r1, #0x54]
-	ldr r0, [r5, #0x54]
-	subs r2, r2, r0
-	str r2, [r5, #0x5c]
-	ldr r0, [r5, #0x58]
-	movs r3, #0x80
-	lsls r3, r3, #5
-	adds r0, r0, r3
-	ldr r1, [r1, #0x58]
-	subs r1, r1, r0
-	str r1, [r5, #0x60]
-	asrs r2, r2, #2
-	adds r0, r2, #0
-	muls r0, r2, r0
-	asrs r1, r1, #2
-	adds r2, r1, #0
-	muls r2, r1, r2
-	adds r1, r2, #0
-	adds r0, r0, r1
-	bl Sqrt
-	lsls r0, r0, #0x10
-	lsrs r4, r0, #0xe
-	cmp r4, #0
-	beq _0809EFA4
-	ldr r0, [r5, #0x5c]
-	lsls r0, r0, #8
-	adds r1, r4, #0
-	bl __divsi3
-	str r0, [r5, #0x5c]
-	ldr r0, [r5, #0x60]
-	lsls r0, r0, #8
-	adds r1, r4, #0
-	bl __divsi3
-	str r0, [r5, #0x60]
-_0809EFA4:
-	ldr r1, [r5, #0x5c]
-	ldr r0, [r6]
-	muls r0, r1, r0
-	asrs r0, r0, #8
-	str r0, [r5, #0x64]
-	ldr r1, [r5, #0x60]
-	ldr r0, [r6]
-	muls r0, r1, r0
-	asrs r0, r0, #8
-	str r0, [r5, #0x68]
-	adds r0, r5, #0
-	adds r0, #0xbc
-	str r4, [r0]
-	ldrb r0, [r5, #0xe]
-	adds r0, #1
-	strb r0, [r5, #0xe]
-_0809EFC4:
-	ldr r0, [r5, #0x54]
-	ldr r1, [r5, #0x64]
-	adds r0, r0, r1
-	str r0, [r5, #0x54]
-	ldr r0, [r5, #0x58]
-	ldr r1, [r5, #0x68]
-	adds r0, r0, r1
-	str r0, [r5, #0x58]
-	adds r0, r5, #0
-	bl UpdateMotionGraphic
-	adds r2, r5, #0
-	adds r2, #0xbc
-	adds r1, r5, #0
-	adds r1, #0xb8
-	ldr r0, [r2]
-	ldr r1, [r1]
-	subs r0, r0, r1
-	str r0, [r2]
-	cmp r0, #0
-	bgt _0809F000
-_0809EFEE:
-	ldr r1, _0809F008 @ =gProjectileFnTable
-	ldrb r0, [r5, #9]
-	lsls r0, r0, #2
-	adds r0, r0, r1
-	movs r1, #2
-	str r1, [r5, #0xc]
-	ldr r0, [r0]
-	ldr r0, [r0, #8]
-	str r0, [r5, #0x14]
-_0809F000:
-	add sp, #0x10
-	pop {r4, r5, r6}
-	pop {r0}
-	bx r0
-	.align 2, 0
-_0809F008: .4byte gProjectileFnTable
-
-	thumb_func_start createBlazinTail
-createBlazinTail: @ 0x0809F00C
-	push {r4, r5, lr}
-	adds r4, r0, #0
-	adds r5, r1, #0
-	ldr r0, _0809F054 @ =gProjectileHeaderPtr
-	ldr r0, [r0]
-	bl AllocEntityFirst
-	adds r3, r0, #0
-	cmp r3, #0
-	beq _0809F04A
-	adds r1, r3, #0
-	adds r1, #0x25
-	movs r2, #0
-	movs r0, #8
-	strb r0, [r1]
-	ldr r1, _0809F058 @ =gProjectileFnTable
-	movs r0, #0xa
-	strb r0, [r3, #9]
-	ldr r0, [r1, #0x28]
-	ldr r0, [r0]
-	str r0, [r3, #0x14]
-	movs r0, #0
-	strh r2, [r3, #0x20]
-	adds r1, r3, #0
-	adds r1, #0x22
-	strb r0, [r1]
-	strb r0, [r3, #0x10]
-	str r4, [r3, #0x28]
-	adds r0, r3, #0
-	adds r0, #0xb4
-	str r5, [r0]
-_0809F04A:
-	adds r0, r3, #0
-	pop {r4, r5}
-	pop {r1}
-	bx r1
-	.align 2, 0
-_0809F054: .4byte gProjectileHeaderPtr
-_0809F058: .4byte gProjectileFnTable
-
-	thumb_func_start BlazinTail_Init
-BlazinTail_Init: @ 0x0809F05C
-	push {r4, r5, r6, r7, lr}
-	adds r4, r0, #0
-	ldrb r1, [r4, #0xa]
-	movs r0, #2
-	movs r6, #0
-	orrs r0, r1
-	movs r1, #4
-	orrs r0, r1
-	strb r0, [r4, #0xa]
-	adds r5, r4, #0
-	adds r5, #0x74
-	ldr r1, _0809F0B0 @ =0x0836AEC8
-	adds r2, r4, #0
-	adds r2, #0x54
-	adds r0, r4, #0
-	adds r0, #0xb4
-	movs r7, #0
-	ldrsh r3, [r0, r7]
-	adds r0, r5, #0
-	bl InitBody
-	str r4, [r5, #0x2c]
-	ldr r0, _0809F0B4 @ =FUN_0809f23c
-	str r0, [r5, #0x24]
-	ldr r1, _0809F0B8 @ =gProjectileFnTable
-	ldrb r0, [r4, #9]
-	lsls r0, r0, #2
-	adds r0, r0, r1
-	movs r1, #1
-	str r1, [r4, #0xc]
-	ldr r0, [r0]
-	ldr r0, [r0, #4]
-	str r0, [r4, #0x14]
-	strb r6, [r4, #0xd]
-	strb r6, [r4, #0xe]
-	strb r6, [r4, #0xf]
-	adds r0, r4, #0
-	bl BlazinTail_Update
-	pop {r4, r5, r6, r7}
-	pop {r0}
-	bx r0
-	.align 2, 0
-_0809F0B0: .4byte 0x0836AEC8
-_0809F0B4: .4byte FUN_0809f23c
-_0809F0B8: .4byte gProjectileFnTable
-
-	thumb_func_start BlazinTail_Update
-BlazinTail_Update: @ 0x0809F0BC
-	push {lr}
-	adds r3, r0, #0
-	adds r0, #0xa4
-	movs r1, #0
-	ldrsh r0, [r0, r1]
-	cmp r0, #0
-	bgt _0809F0E8
-	ldr r1, _0809F0E4 @ =gProjectileFnTable
-	ldrb r0, [r3, #9]
-	lsls r0, r0, #2
-	adds r0, r0, r1
-	movs r1, #2
-	str r1, [r3, #0xc]
-	ldr r0, [r0]
-	ldr r0, [r0, #8]
-	str r0, [r3, #0x14]
-	adds r0, r3, #0
-	bl BlazinTail_Die
-	b _0809F108
-	.align 2, 0
-_0809F0E4: .4byte gProjectileFnTable
-_0809F0E8:
-	adds r2, r3, #0
-	adds r2, #0xb8
-	ldr r0, [r3, #0x28]
-	ldrb r0, [r0, #0xa]
-	lsrs r0, r0, #4
-	movs r1, #1
-	ands r0, r1
-	str r0, [r2]
-	ldr r1, _0809F10C @ =0x0836AEC4
-	ldrb r0, [r3, #0xd]
-	lsls r0, r0, #2
-	adds r0, r0, r1
-	ldr r1, [r0]
-	adds r0, r3, #0
-	bl _call_via_r1
-_0809F108:
-	pop {r0}
-	bx r0
-	.align 2, 0
-_0809F10C: .4byte 0x0836AEC4
-
-	thumb_func_start BlazinTail_Die
-BlazinTail_Die: @ 0x0809F110
-	adds r2, r0, #0
-	adds r0, #0x8c
-	movs r1, #0
-	str r1, [r0]
-	adds r0, #4
-	str r1, [r0]
-	adds r0, #4
-	strb r1, [r0]
-	ldrb r1, [r2, #0xa]
-	movs r0, #0xfb
-	ands r0, r1
-	strb r0, [r2, #0xa]
-	ldr r1, _0809F13C @ =gProjectileFnTable
-	ldrb r0, [r2, #9]
-	lsls r0, r0, #2
-	adds r0, r0, r1
-	movs r1, #4
-	str r1, [r2, #0xc]
-	ldr r0, [r0]
-	ldr r0, [r0, #0x10]
-	str r0, [r2, #0x14]
-	bx lr
-	.align 2, 0
-_0809F13C: .4byte gProjectileFnTable
-
-	thumb_func_start FUN_0809f140
-FUN_0809f140: @ 0x0809F140
-	push {r4, lr}
-	adds r4, r0, #0
-	ldr r1, [r4, #0x28]
-	ldrb r0, [r1, #0xc]
-	cmp r0, #1
-	bls _0809F164
-	ldr r1, _0809F160 @ =gProjectileFnTable
-	ldrb r0, [r4, #9]
-	lsls r0, r0, #2
-	adds r0, r0, r1
-	movs r1, #2
-	str r1, [r4, #0xc]
-	ldr r0, [r0]
-	ldr r0, [r0, #8]
-	str r0, [r4, #0x14]
-	b _0809F236
-	.align 2, 0
-_0809F160: .4byte gProjectileFnTable
-_0809F164:
-	ldrb r0, [r4, #0xe]
-	cmp r0, #1
-	beq _0809F18A
-	cmp r0, #1
-	bgt _0809F174
-	cmp r0, #0
-	beq _0809F17A
-	b _0809F236
-_0809F174:
-	cmp r0, #2
-	beq _0809F1EC
-	b _0809F236
-_0809F17A:
-	adds r0, r4, #0
-	adds r0, #0x74
-	ldr r1, _0809F1A0 @ =0x0836AEE0
-	bl SetDDP
-	ldrb r0, [r4, #0xe]
-	adds r0, #1
-	strb r0, [r4, #0xe]
-_0809F18A:
-	ldr r0, [r4, #0x28]
-	ldrb r0, [r0, #0xa]
-	lsrs r2, r0, #4
-	movs r0, #1
-	ands r2, r0
-	cmp r2, #0
-	beq _0809F1A4
-	ldrb r1, [r4, #0xa]
-	movs r0, #0x10
-	orrs r0, r1
-	b _0809F1AA
-	.align 2, 0
-_0809F1A0: .4byte 0x0836AEE0
-_0809F1A4:
-	ldrb r1, [r4, #0xa]
-	movs r0, #0xef
-	ands r0, r1
-_0809F1AA:
-	strb r0, [r4, #0xa]
-	adds r1, r2, #0
-	adds r0, r4, #0
-	adds r0, #0x4c
-	strb r1, [r0]
-	adds r3, r4, #0
-	adds r3, #0x4a
-	lsls r1, r1, #4
-	ldrb r2, [r3]
-	movs r0, #0x11
-	rsbs r0, r0, #0
-	ands r0, r2
-	orrs r0, r1
-	strb r0, [r3]
-	ldr r1, [r4, #0x28]
-	ldr r0, [r1, #0x54]
-	str r0, [r4, #0x54]
-	ldr r0, [r1, #0x58]
-	str r0, [r4, #0x58]
-	ldrb r0, [r1, #0xd]
-	cmp r0, #9
-	bne _0809F236
-	adds r0, r4, #0
-	adds r0, #0x74
-	ldr r1, _0809F1E8 @ =0x0836AEC8
-	bl SetDDP
-	ldrb r0, [r4, #0xe]
-	adds r0, #1
-	b _0809F234
-	.align 2, 0
-_0809F1E8: .4byte 0x0836AEC8
-_0809F1EC:
-	ldrb r0, [r1, #0xa]
-	lsrs r2, r0, #4
-	movs r0, #1
-	ands r2, r0
-	cmp r2, #0
-	beq _0809F200
-	ldrb r1, [r4, #0xa]
-	movs r0, #0x10
-	orrs r0, r1
-	b _0809F206
-_0809F200:
-	ldrb r1, [r4, #0xa]
-	movs r0, #0xef
-	ands r0, r1
-_0809F206:
-	strb r0, [r4, #0xa]
-	adds r1, r2, #0
-	adds r0, r4, #0
-	adds r0, #0x4c
-	strb r1, [r0]
-	adds r3, r4, #0
-	adds r3, #0x4a
-	lsls r1, r1, #4
-	ldrb r2, [r3]
-	movs r0, #0x11
-	rsbs r0, r0, #0
-	ands r0, r2
-	orrs r0, r1
-	strb r0, [r3]
-	ldr r1, [r4, #0x28]
-	ldr r0, [r1, #0x54]
-	str r0, [r4, #0x54]
-	ldr r0, [r1, #0x58]
-	str r0, [r4, #0x58]
-	ldrb r0, [r1, #0xd]
-	cmp r0, #9
-	beq _0809F236
-	movs r0, #0
-_0809F234:
-	strb r0, [r4, #0xe]
-_0809F236:
-	pop {r4}
-	pop {r0}
-	bx r0
-
-	thumb_func_start FUN_0809f23c
-FUN_0809f23c: @ 0x0809F23C
-	push {lr}
-	movs r3, #0
-	ldr r2, [r0, #0x2c]
-	adds r0, #0x23
-	ldrb r0, [r0]
-	movs r1, #0xf
-	ands r1, r0
-	cmp r1, #1
-	beq _0809F252
-	cmp r1, #3
-	bne _0809F282
-_0809F252:
-	adds r0, r2, #0
-	adds r0, #0xb8
-	ldr r0, [r0]
-	cmp r0, #0
-	bne _0809F270
-	ldr r0, _0809F26C @ =pZero2
-	ldr r0, [r0]
-	ldr r1, [r0, #0x54]
-	ldr r0, [r2, #0x54]
-	cmp r1, r0
-	ble _0809F282
-	b _0809F28E
-	.align 2, 0
-_0809F26C: .4byte pZero2
-_0809F270:
-	cmp r0, #1
-	bne _0809F282
-	ldr r0, _0809F294 @ =pZero2
-	ldr r0, [r0]
-	ldr r1, [r0, #0x54]
-	ldr r0, [r2, #0x54]
-	cmp r1, r0
-	bge _0809F282
-	movs r3, #1
-_0809F282:
-	cmp r3, #0
-	bne _0809F28E
-	adds r1, r2, #0
-	adds r1, #0xa4
-	movs r0, #1
-	strh r0, [r1]
-_0809F28E:
-	pop {r0}
-	bx r0
-	.align 2, 0
-_0809F294: .4byte pZero2
-
 	thumb_func_start createEarShot
 createEarShot: @ 0x0809F298
 	push {r4, r5, r6, r7, lr}
@@ -19888,8 +17538,8 @@ FUN_080a7d00: @ 0x080A7D00
 	bx lr
 	.align 2, 0
 
-	thumb_func_start FUN_080a7d04
-FUN_080a7d04: @ 0x080A7D04
+	thumb_func_start Projectile23_Init
+Projectile23_Init: @ 0x080A7D04
 	push {r4, r5, lr}
 	adds r4, r0, #0
 	ldr r1, _080A7D64 @ =gProjectileFnTable
@@ -19930,7 +17580,7 @@ FUN_080a7d04: @ 0x080A7D04
 	ldr r0, _080A7D70 @ =FUN_080a7d00
 	str r0, [r5, #0x24]
 	adds r0, r4, #0
-	bl FUN_080a7d74
+	bl Projectile23_Update
 	pop {r4, r5}
 	pop {r0}
 	bx r0
@@ -19940,8 +17590,8 @@ _080A7D68: .4byte 0x0836BEC4
 _080A7D6C: .4byte 0x0836BE64
 _080A7D70: .4byte FUN_080a7d00
 
-	thumb_func_start FUN_080a7d74
-FUN_080a7d74: @ 0x080A7D74
+	thumb_func_start Projectile23_Update
+Projectile23_Update: @ 0x080A7D74
 	push {r4, lr}
 	adds r4, r0, #0
 	ldr r1, _080A7DA0 @ =0x0836BE4C
@@ -19965,8 +17615,8 @@ FUN_080a7d74: @ 0x080A7D74
 _080A7DA0: .4byte 0x0836BE4C
 _080A7DA4: .4byte 0x0836BE58
 
-	thumb_func_start FUN_080a7da8
-FUN_080a7da8: @ 0x080A7DA8
+	thumb_func_start Projectile23_Die
+Projectile23_Die: @ 0x080A7DA8
 	push {r4, lr}
 	adds r4, r0, #0
 	adds r0, #0x8c
@@ -19998,8 +17648,11 @@ FUN_080a7da8: @ 0x080A7DA8
 	bx r0
 	.align 2, 0
 _080A7DE4: .4byte gProjectileFnTable
-_080A7DE8:
-	.byte 0x70, 0x47, 0x00, 0x00
+
+	thumb_func_start FUN_080a7de8
+FUN_080a7de8:
+  bx lr
+  .align 2, 0
 
 	thumb_func_start FUN_080a7dec
 FUN_080a7dec: @ 0x080A7DEC
@@ -20020,7 +17673,9 @@ _080A7E06:
 	pop {r0}
 	bx r0
 	.align 2, 0
-_080A7E0C:
+
+	thumb_func_start FUN_080a7e0c
+FUN_080a7e0c:
 	.byte 0x30, 0xB5, 0x82, 0xB0
 	.byte 0x04, 0x1C, 0x25, 0x1C, 0x8C, 0x35, 0x28, 0x68, 0x80, 0x21, 0x09, 0x01, 0x08, 0x40, 0x00, 0x28
 	.byte 0x07, 0xD0, 0x1A, 0x48, 0x00, 0x68, 0x8C, 0x30, 0x00, 0x68, 0x01, 0x21, 0x08, 0x40, 0x00, 0x28
@@ -20031,6 +17686,7 @@ _080A7E0C:
 	.byte 0xA0, 0x72, 0x09, 0x49, 0x60, 0x7A, 0x80, 0x00, 0x40, 0x18, 0x03, 0x21, 0xE1, 0x60, 0x00, 0x68
 	.byte 0xC0, 0x68, 0x60, 0x61, 0x02, 0xB0, 0x30, 0xBC, 0x01, 0xBC, 0x00, 0x47, 0x40, 0xF3, 0x02, 0x02
 	.byte 0x00, 0xF0, 0xFF, 0xFF, 0xC6, 0xBE, 0x36, 0x08, 0x0C, 0xA9, 0x36, 0x08
+
 
 	thumb_func_start FUN_080a7e9c
 FUN_080a7e9c: @ 0x080A7E9C
@@ -20396,8 +18052,8 @@ _080A8160:
 _080A8168: .4byte gProjectileHeaderPtr
 _080A816C: .4byte gProjectileFnTable
 
-	thumb_func_start initCopyXSonicBoom
-initCopyXSonicBoom: @ 0x080A8170
+	thumb_func_start CopyXProjectile_Init
+CopyXProjectile_Init: @ 0x080A8170
 	push {lr}
 	ldr r2, _080A8184 @ =0x0836BEE4
 	ldrb r1, [r0, #0x10]
@@ -20410,8 +18066,8 @@ initCopyXSonicBoom: @ 0x080A8170
 	.align 2, 0
 _080A8184: .4byte 0x0836BEE4
 
-	thumb_func_start FUN_080a8188
-FUN_080a8188: @ 0x080A8188
+	thumb_func_start CopyXProjectile_Update
+CopyXProjectile_Update: @ 0x080A8188
 	push {lr}
 	ldr r2, _080A819C @ =0x0836BEEC
 	ldrb r1, [r0, #0x10]
@@ -20424,8 +18080,8 @@ FUN_080a8188: @ 0x080A8188
 	.align 2, 0
 _080A819C: .4byte 0x0836BEEC
 
-	thumb_func_start FUN_080a81a0
-FUN_080a81a0: @ 0x080A81A0
+	thumb_func_start CopyXProjectile_Die
+CopyXProjectile_Die: @ 0x080A81A0
 	adds r2, r0, #0
 	adds r0, #0x8c
 	movs r1, #0
@@ -20531,7 +18187,7 @@ _080A822A:
 	strb r0, [r7, #0x12]
 	strb r5, [r7, #0xe]
 	adds r0, r7, #0
-	bl FUN_080a8188
+	bl CopyXProjectile_Update
 	pop {r4, r5, r6, r7}
 	pop {r0}
 	bx r0
@@ -20669,7 +18325,7 @@ _080A8336:
 	strb r0, [r7, #0x12]
 	strb r5, [r7, #0xe]
 	adds r0, r7, #0
-	bl FUN_080a8188
+	bl CopyXProjectile_Update
 	pop {r4, r5, r6, r7}
 	pop {r0}
 	bx r0
@@ -20767,8 +18423,8 @@ _080A842C:
 _080A8434: .4byte gProjectileHeaderPtr
 _080A8438: .4byte gProjectileFnTable
 
-	thumb_func_start FUN_080a843c
-FUN_080a843c: @ 0x080A843C
+	thumb_func_start Projectile25_Init
+Projectile25_Init: @ 0x080A843C
 	push {lr}
 	ldr r2, _080A8450 @ =0x0836BF68
 	ldrb r1, [r0, #0x10]
@@ -20781,8 +18437,8 @@ FUN_080a843c: @ 0x080A843C
 	.align 2, 0
 _080A8450: .4byte 0x0836BF68
 
-	thumb_func_start FUN_080a8454
-FUN_080a8454: @ 0x080A8454
+	thumb_func_start Projectile25_Update
+Projectile25_Update: @ 0x080A8454
 	push {r4, lr}
 	adds r4, r0, #0
 	bl UpdateMotionGraphic
@@ -20813,7 +18469,9 @@ _080A8488:
 	bx r0
 	.align 2, 0
 _080A8490: .4byte gProjectileFnTable
-_080A8494:
+
+	thumb_func_start Projectile25_Die
+Projectile25_Die:
 	.byte 0x02, 0x1C, 0x8C, 0x30, 0x00, 0x21, 0x01, 0x60, 0x04, 0x30, 0x01, 0x60
 	.byte 0x04, 0x30, 0x01, 0x70, 0x91, 0x7A, 0xFB, 0x20, 0x08, 0x40, 0x90, 0x72, 0x04, 0x49, 0x50, 0x7A
 	.byte 0x80, 0x00, 0x40, 0x18, 0x04, 0x21, 0xD1, 0x60, 0x00, 0x68, 0x00, 0x69, 0x50, 0x61, 0x70, 0x47
@@ -20918,7 +18576,7 @@ _080A8556:
 	str r6, [r4, #0x2c]
 	str r5, [r4, #0x24]
 	adds r0, r6, #0
-	bl FUN_080a8454
+	bl Projectile25_Update
 	pop {r4, r5, r6, r7}
 	pop {r0}
 	bx r0
@@ -21029,7 +18687,7 @@ _080A863A:
 	str r6, [r4, #0x2c]
 	str r5, [r4, #0x24]
 	adds r0, r6, #0
-	bl FUN_080a8454
+	bl Projectile25_Update
 	pop {r4, r5, r6, r7}
 	pop {r0}
 	bx r0
@@ -21162,7 +18820,7 @@ _080A873E:
 	str r6, [r4, #0x2c]
 	str r5, [r4, #0x24]
 	adds r0, r6, #0
-	bl FUN_080a8454
+	bl Projectile25_Update
 	pop {r4, r5, r6, r7}
 	pop {r0}
 	bx r0
@@ -21295,7 +18953,7 @@ _080A884E:
 	str r6, [r4, #0x2c]
 	str r5, [r4, #0x24]
 	adds r0, r6, #0
-	bl FUN_080a8454
+	bl Projectile25_Update
 	pop {r4, r5, r6, r7}
 	pop {r0}
 	bx r0
@@ -21395,8 +19053,8 @@ _080A8944:
 _080A894C: .4byte gProjectileHeaderPtr
 _080A8950: .4byte gProjectileFnTable
 
-	thumb_func_start FUN_080a8954
-FUN_080a8954: @ 0x080A8954
+	thumb_func_start Projectile26_Init
+Projectile26_Init: @ 0x080A8954
 	push {lr}
 	ldr r2, _080A8968 @ =0x0836C01C
 	ldrb r1, [r0, #0x10]
@@ -21409,8 +19067,8 @@ FUN_080a8954: @ 0x080A8954
 	.align 2, 0
 _080A8968: .4byte 0x0836C01C
 
-	thumb_func_start FUN_080a896c
-FUN_080a896c: @ 0x080A896C
+	thumb_func_start Projectile26_Update
+Projectile26_Update: @ 0x080A896C
 	push {r4, lr}
 	adds r4, r0, #0
 	ldr r1, _080A898C @ =0x0836C034
@@ -21428,8 +19086,8 @@ FUN_080a896c: @ 0x080A896C
 	.align 2, 0
 _080A898C: .4byte 0x0836C034
 
-	thumb_func_start FUN_080a8990
-FUN_080a8990: @ 0x080A8990
+	thumb_func_start Projectile26_Die
+Projectile26_Die: @ 0x080A8990
 	push {lr}
 	adds r2, r0, #0
 	ldr r3, [r2, #0x28]
@@ -21638,7 +19296,7 @@ _080A8AE2:
 	movs r0, #2
 	strb r0, [r6, #0x12]
 	adds r0, r6, #0
-	bl FUN_080a896c
+	bl Projectile26_Update
 	pop {r4, r5, r6, r7}
 	pop {r0}
 	bx r0
@@ -21778,7 +19436,7 @@ _080A8C04:
 	movs r0, #2
 	strb r0, [r6, #0x12]
 	adds r0, r6, #0
-	bl FUN_080a896c
+	bl Projectile26_Update
 	pop {r4, r5, r6, r7}
 	pop {r0}
 	bx r0
@@ -21906,7 +19564,7 @@ _080A8D34:
 	movs r0, #2
 	strb r0, [r6, #0x12]
 	adds r0, r6, #0
-	bl FUN_080a896c
+	bl Projectile26_Update
 	pop {r4, r5, r6, r7}
 	pop {r0}
 	bx r0
@@ -22022,7 +19680,7 @@ _080A8E0A:
 	str r6, [r4, #0x2c]
 	str r5, [r4, #0x24]
 	adds r0, r6, #0
-	bl FUN_080a896c
+	bl Projectile26_Update
 	pop {r4, r5, r6, r7}
 	pop {r0}
 	bx r0
@@ -22110,7 +19768,7 @@ _080A8EBA:
 	str r5, [r4, #0x24]
 	strb r5, [r6, #0x12]
 	adds r0, r6, #0
-	bl FUN_080a896c
+	bl Projectile26_Update
 	pop {r4, r5, r6, r7}
 	pop {r0}
 	bx r0
@@ -22371,8 +20029,8 @@ _080A90E8:
 _080A90F0: .4byte gProjectileHeaderPtr
 _080A90F4: .4byte gProjectileFnTable
 
-	thumb_func_start FUN_080a90f8
-FUN_080a90f8: @ 0x080A90F8
+	thumb_func_start Projectile27_Init
+Projectile27_Init: @ 0x080A90F8
 	push {lr}
 	ldr r2, _080A910C @ =0x0836C0D0
 	ldrb r1, [r0, #0x10]
@@ -22385,8 +20043,8 @@ FUN_080a90f8: @ 0x080A90F8
 	.align 2, 0
 _080A910C: .4byte 0x0836C0D0
 
-	thumb_func_start FUN_080a9110
-FUN_080a9110: @ 0x080A9110
+	thumb_func_start Projectile27_Update
+Projectile27_Update: @ 0x080A9110
 	push {lr}
 	ldr r2, _080A9124 @ =0x0836C0EC
 	ldrb r1, [r0, #0x10]
@@ -22398,7 +20056,9 @@ FUN_080a9110: @ 0x080A9110
 	bx r0
 	.align 2, 0
 _080A9124: .4byte 0x0836C0EC
-_080A9128:
+
+	thumb_func_start Projectile27_Die
+Projectile27_Die:
 	.byte 0x02, 0x1C, 0x8C, 0x30, 0x00, 0x21, 0x01, 0x60
 	.byte 0x04, 0x30, 0x01, 0x60, 0x04, 0x30, 0x01, 0x70, 0x91, 0x7A, 0xFB, 0x20, 0x08, 0x40, 0x90, 0x72
 	.byte 0x04, 0x49, 0x50, 0x7A, 0x80, 0x00, 0x40, 0x18, 0x04, 0x21, 0xD1, 0x60, 0x00, 0x68, 0x00, 0x69
@@ -22518,7 +20178,7 @@ _080A91FE:
 	str r6, [r4, #0x2c]
 	str r5, [r4, #0x24]
 	adds r0, r6, #0
-	bl FUN_080a9110
+	bl Projectile27_Update
 	pop {r4, r5, r6, r7}
 	pop {r0}
 	bx r0
@@ -22646,7 +20306,7 @@ _080A9300:
 	movs r0, #0xff
 	strb r0, [r6, #0x12]
 	adds r0, r6, #0
-	bl FUN_080a9110
+	bl Projectile27_Update
 	pop {r4, r5, r6, r7}
 	pop {r0}
 	bx r0
@@ -22904,7 +20564,7 @@ _080A9506:
 	str r6, [r4, #0x2c]
 	str r5, [r4, #0x24]
 	adds r0, r6, #0
-	bl FUN_080a9110
+	bl Projectile27_Update
 	pop {r4, r5, r6}
 	pop {r0}
 	bx r0
@@ -23121,7 +20781,7 @@ _080A969A:
 	str r6, [r4, #0x2c]
 	str r5, [r4, #0x24]
 	adds r0, r6, #0
-	bl FUN_080a9110
+	bl Projectile27_Update
 	pop {r4, r5, r6, r7}
 	pop {r0}
 	bx r0
@@ -23257,7 +20917,7 @@ _080A97AE:
 	str r6, [r4, #0x2c]
 	str r5, [r4, #0x24]
 	adds r0, r6, #0
-	bl FUN_080a9110
+	bl Projectile27_Update
 	pop {r4, r5, r6, r7}
 	pop {r0}
 	bx r0
@@ -23468,7 +21128,7 @@ FUN_080a9920: @ 0x080A9920
 	str r4, [r5, #0x2c]
 	str r6, [r5, #0x24]
 	adds r0, r4, #0
-	bl FUN_080a9110
+	bl Projectile27_Update
 	pop {r4, r5, r6}
 	pop {r0}
 	bx r0
@@ -23550,7 +21210,7 @@ FUN_080a9a30: @ 0x080A9A30
 	ldr r0, [r0, #4]
 	str r0, [r4, #0x14]
 	adds r0, r4, #0
-	bl FUN_080a9110
+	bl Projectile27_Update
 	pop {r4}
 	pop {r0}
 	bx r0
@@ -23626,8 +21286,8 @@ _080A9AE8:
 _080A9AF0: .4byte gProjectileHeaderPtr
 _080A9AF4: .4byte gProjectileFnTable
 
-	thumb_func_start FUN_080a9af8
-FUN_080a9af8: @ 0x080A9AF8
+	thumb_func_start Projectile28_Init
+Projectile28_Init: @ 0x080A9AF8
 	push {lr}
 	ldr r2, _080A9B0C @ =0x0836C20C
 	ldrb r1, [r0, #0x10]
@@ -23640,8 +21300,8 @@ FUN_080a9af8: @ 0x080A9AF8
 	.align 2, 0
 _080A9B0C: .4byte 0x0836C20C
 
-	thumb_func_start FUN_080a9b10
-FUN_080a9b10: @ 0x080A9B10
+	thumb_func_start Projectile28_Update
+Projectile28_Update: @ 0x080A9B10
 	push {lr}
 	ldr r2, _080A9B24 @ =0x0836C21C
 	ldrb r1, [r0, #0x10]
@@ -23654,8 +21314,8 @@ FUN_080a9b10: @ 0x080A9B10
 	.align 2, 0
 _080A9B24: .4byte 0x0836C21C
 
-	thumb_func_start FUN_080a9b28
-FUN_080a9b28: @ 0x080A9B28
+	thumb_func_start Projectile28_Die
+Projectile28_Die: @ 0x080A9B28
 	push {lr}
 	mov ip, r0
 	ldrb r0, [r0, #0x10]
@@ -23821,7 +21481,7 @@ _080A9C30:
 	movs r0, #1
 	strb r0, [r6, #0xe]
 	adds r0, r6, #0
-	bl FUN_080a9b10
+	bl Projectile28_Update
 	pop {r4, r5, r6, r7}
 	pop {r0}
 	bx r0
@@ -23984,7 +21644,7 @@ FUN_080a9d88: @ 0x080A9D88
 	bl SetMotion
 	strb r5, [r4, #0xe]
 	adds r0, r4, #0
-	bl FUN_080a9b10
+	bl Projectile28_Update
 	pop {r4, r5}
 	pop {r0}
 	bx r0
@@ -24133,7 +21793,7 @@ FUN_080a9e74: @ 0x080A9E74
 	strb r3, [r4, #0x13]
 	strb r3, [r4, #0x12]
 	adds r0, r4, #0
-	bl FUN_080a9b10
+	bl Projectile28_Update
 	pop {r4, r5}
 	pop {r0}
 	bx r0
@@ -24166,7 +21826,7 @@ FUN_080a9ef8: @ 0x080A9EF8
 	ldr r0, [r0, #8]
 	str r0, [r5, #0x14]
 	adds r0, r5, #0
-	bl FUN_080a9b28
+	bl Projectile28_Die
 	b _080A9FD8
 	.align 2, 0
 _080A9F28: .4byte gStageRun
@@ -24253,7 +21913,7 @@ _080A9FB0:
 	ldr r0, [r0, #8]
 	str r0, [r5, #0x14]
 	adds r0, r5, #0
-	bl FUN_080a9b28
+	bl Projectile28_Die
 _080A9FD2:
 	ldrb r0, [r5, #0xf]
 	adds r0, #1
@@ -24418,7 +22078,7 @@ FUN_080aa08c: @ 0x080AA08C
 	strb r3, [r4, #0x13]
 	strb r3, [r4, #0x12]
 	adds r0, r4, #0
-	bl FUN_080a9b10
+	bl Projectile28_Update
 	pop {r4, r5}
 	pop {r0}
 	bx r0
@@ -24454,7 +22114,7 @@ FUN_080aa120: @ 0x080AA120
 	ldr r0, [r0, #8]
 	str r0, [r3, #0x14]
 	adds r0, r3, #0
-	bl FUN_080a9b28
+	bl Projectile28_Die
 _080AA152:
 	pop {r0}
 	bx r0
@@ -24633,8 +22293,8 @@ _080AA28C:
 _080AA294: .4byte gProjectileHeaderPtr
 _080AA298: .4byte gProjectileFnTable
 
-	thumb_func_start FUN_080aa29c
-FUN_080aa29c: @ 0x080AA29C
+	thumb_func_start Projectile29_Init
+Projectile29_Init: @ 0x080AA29C
 	push {r4, r5, r6, r7, lr}
 	mov r7, r8
 	push {r7}
@@ -24808,7 +22468,7 @@ _080AA3E6:
 	strb r0, [r7, #0x12]
 	strb r1, [r7, #0x13]
 	adds r0, r7, #0
-	bl FUN_080aa40c
+	bl Projectile29_Update
 	pop {r3}
 	mov r8, r3
 	pop {r4, r5, r6, r7}
@@ -24819,8 +22479,8 @@ _080AA400: .4byte 0xFFFFEF00
 _080AA404: .4byte 0xFFFFF200
 _080AA408: .4byte gSineTable
 
-	thumb_func_start FUN_080aa40c
-FUN_080aa40c: @ 0x080AA40C
+	thumb_func_start Projectile29_Update
+Projectile29_Update: @ 0x080AA40C
 	push {r4, r5, lr}
 	adds r4, r0, #0
 	ldr r5, [r4, #0x28]
@@ -25033,7 +22693,7 @@ _080AA56C:
 	ldr r0, [r0, #8]
 	str r0, [r4, #0x14]
 	adds r0, r4, #0
-	bl FUN_080aa5c8
+	bl Projectile29_Die
 _080AA5BC:
 	pop {r4, r5}
 	pop {r0}
@@ -25041,8 +22701,8 @@ _080AA5BC:
 	.align 2, 0
 _080AA5C4: .4byte gProjectileFnTable
 
-	thumb_func_start FUN_080aa5c8
-FUN_080aa5c8: @ 0x080AA5C8
+	thumb_func_start Projectile29_Die
+Projectile29_Die: @ 0x080AA5C8
 	ldrb r2, [r0, #0xa]
 	movs r1, #0xfe
 	ands r1, r2
@@ -25107,8 +22767,8 @@ nop_080aa638: @ 0x080AA638
 	bx lr
 	.align 2, 0
 
-	thumb_func_start FUN_080aa63c
-FUN_080aa63c: @ 0x080AA63C
+	thumb_func_start Projectile30_Init
+Projectile30_Init: @ 0x080AA63C
 	push {r4, r5, lr}
 	adds r4, r0, #0
 	ldr r1, _080AA69C @ =gProjectileFnTable
@@ -25149,7 +22809,7 @@ FUN_080aa63c: @ 0x080AA63C
 	ldr r0, _080AA6A8 @ =nop_080aa638
 	str r0, [r5, #0x24]
 	adds r0, r4, #0
-	bl FUN_080aa6ac
+	bl Projectile30_Update
 	pop {r4, r5}
 	pop {r0}
 	bx r0
@@ -25159,8 +22819,8 @@ _080AA6A0: .4byte 0x0836C304
 _080AA6A4: .4byte 0x0836C2EC
 _080AA6A8: .4byte nop_080aa638
 
-	thumb_func_start FUN_080aa6ac
-FUN_080aa6ac: @ 0x080AA6AC
+	thumb_func_start Projectile30_Update
+Projectile30_Update: @ 0x080AA6AC
 	push {r4, lr}
 	adds r4, r0, #0
 	ldr r1, _080AA6D8 @ =0x0836C2E4
@@ -25184,12 +22844,15 @@ FUN_080aa6ac: @ 0x080AA6AC
 _080AA6D8: .4byte 0x0836C2E4
 _080AA6DC: .4byte 0x0836C2E8
 
-	thumb_func_start FUN_080aa6e0
-FUN_080aa6e0:
+	thumb_func_start Projectile30_Die
+Projectile30_Die:
 	.byte 0x02, 0x1C, 0x8C, 0x30, 0x00, 0x21, 0x01, 0x60, 0x04, 0x30, 0x01, 0x60, 0x04, 0x30, 0x01, 0x70
 	.byte 0x91, 0x7A, 0xFB, 0x20, 0x08, 0x40, 0x90, 0x72, 0x04, 0x49, 0x50, 0x7A, 0x80, 0x00, 0x40, 0x18
 	.byte 0x04, 0x21, 0xD1, 0x60, 0x00, 0x68, 0x00, 0x69, 0x50, 0x61, 0x70, 0x47, 0x0C, 0xA9, 0x36, 0x08
-	.byte 0x70, 0x47
+
+	thumb_func_start FUN_080aa710
+FUN_080aa710:
+	bx lr
 	.align 2, 0
 
 	thumb_func_start FUN_080aa714
@@ -25317,8 +22980,8 @@ _080AA7FC:
 	.align 2, 0
 _080AA804: .4byte gProjectileFnTable
 
-	thumb_func_start FUN_080aa808
-FUN_080aa808: @ 0x080AA808
+	thumb_func_start Projectile31_Init
+Projectile31_Init: @ 0x080AA808
 	push {r4, r5, r6, r7, lr}
 	adds r6, r0, #0
 	ldr r7, [r6, #0x28]
@@ -25446,7 +23109,7 @@ _080AA8C4:
 	ldr r0, [r0, #4]
 	str r0, [r6, #0x14]
 	adds r0, r6, #0
-	bl FUN_080aa930
+	bl Projectile31_Update
 	pop {r4, r5, r6, r7}
 	pop {r0}
 	bx r0
@@ -25457,8 +23120,8 @@ _080AA924: .4byte 0xFFFFD000
 _080AA928: .4byte 0x0836C38C
 _080AA92C: .4byte gProjectileFnTable
 
-	thumb_func_start FUN_080aa930
-FUN_080aa930: @ 0x080AA930
+	thumb_func_start Projectile31_Update
+Projectile31_Update: @ 0x080AA930
 	push {r4, r5, r6, r7, lr}
 	mov r7, sl
 	mov r6, sb
@@ -25594,7 +23257,9 @@ _080AAA40: .4byte 0x000343FD
 _080AAA44: .4byte 0x00269EC3
 _080AAA48: .4byte 0x000003FF
 _080AAA4C: .4byte gProjectileFnTable
-_080AAA50:
+
+	thumb_func_start Projectile31_Die
+Projectile31_Die:
 	.byte 0x02, 0x1C, 0x8C, 0x30, 0x00, 0x21, 0x01, 0x60, 0x04, 0x30, 0x01, 0x60, 0x04, 0x30, 0x01, 0x70
 	.byte 0x91, 0x7A, 0xFB, 0x20, 0x08, 0x40, 0x90, 0x72, 0x04, 0x49, 0x50, 0x7A, 0x80, 0x00, 0x40, 0x18
 	.byte 0x04, 0x21, 0xD1, 0x60, 0x00, 0x68, 0x00, 0x69, 0x50, 0x61, 0x70, 0x47, 0x0C, 0xA9, 0x36, 0x08
@@ -26135,8 +23800,8 @@ _080AAE7A:
 	.align 2, 0
 _080AAE80: .4byte gProjectileFnTable
 
-	thumb_func_start FUN_080aae84
-FUN_080aae84: @ 0x080AAE84
+	thumb_func_start Projectile32_Init
+Projectile32_Init: @ 0x080AAE84
 	push {lr}
 	ldr r2, _080AAE98 @ =0x0836C3C0
 	ldrb r1, [r0, #0x10]
@@ -26149,8 +23814,8 @@ FUN_080aae84: @ 0x080AAE84
 	.align 2, 0
 _080AAE98: .4byte 0x0836C3C0
 
-	thumb_func_start FUN_080aae9c
-FUN_080aae9c: @ 0x080AAE9C
+	thumb_func_start Projectile32_Update
+Projectile32_Update: @ 0x080AAE9C
 	push {lr}
 	ldr r2, _080AAEB0 @ =0x0836C3E4
 	ldrb r1, [r0, #0x10]
@@ -26163,8 +23828,8 @@ FUN_080aae9c: @ 0x080AAE9C
 	.align 2, 0
 _080AAEB0: .4byte 0x0836C3E4
 
-	thumb_func_start FUN_080aaeb4
-FUN_080aaeb4: @ 0x080AAEB4
+	thumb_func_start Projectile32_Die
+Projectile32_Die: @ 0x080AAEB4
 	push {lr}
 	ldr r2, _080AAEC8 @ =0x0836C408
 	ldrb r1, [r0, #0x10]
@@ -26334,7 +23999,7 @@ _080AAFC6:
 	adds r0, r0, r1
 	str r0, [r7, #0x60]
 	adds r0, r7, #0
-	bl FUN_080aae9c
+	bl Projectile32_Update
 	pop {r3, r4}
 	mov r8, r3
 	mov sb, r4
@@ -26593,7 +24258,7 @@ FUN_080ab190: @ 0x080AB190
 	adds r0, #1
 	strb r0, [r6]
 	adds r0, r4, #0
-	bl FUN_080aae9c
+	bl Projectile32_Update
 	pop {r3}
 	mov r8, r3
 	pop {r4, r5, r6}
@@ -27134,7 +24799,7 @@ _080AB616:
 	ldr r0, [r0, #4]
 	str r0, [r5, #0x14]
 	adds r0, r5, #0
-	bl FUN_080aae9c
+	bl Projectile32_Update
 	pop {r4, r5}
 	pop {r0}
 	bx r0
@@ -27225,7 +24890,7 @@ _080AB6EE:
 	ldr r0, [r0, #8]
 	str r0, [r4, #0x14]
 	adds r0, r4, #0
-	bl FUN_080aaeb4
+	bl Projectile32_Die
 _080AB706:
 	add sp, #8
 	pop {r4, r5}
@@ -27427,7 +25092,7 @@ _080AB84A:
 	ldr r0, [r0, #4]
 	str r0, [r5, #0x14]
 	adds r0, r5, #0
-	bl FUN_080aae9c
+	bl Projectile32_Update
 	pop {r4, r5}
 	pop {r0}
 	bx r0
@@ -27526,7 +25191,7 @@ _080AB962:
 	ldr r0, [r0, #8]
 	str r0, [r5, #0x14]
 	adds r0, r5, #0
-	bl FUN_080aaeb4
+	bl Projectile32_Die
 _080AB97A:
 	add sp, #8
 	pop {r4, r5, r6, r7}
@@ -27626,7 +25291,7 @@ FUN_080ab9f0: @ 0x080AB9F0
 	ldr r0, [r0, #4]
 	str r0, [r4, #0x14]
 	adds r0, r4, #0
-	bl FUN_080aae9c
+	bl Projectile32_Update
 	pop {r4, r5, r6}
 	pop {r0}
 	bx r0
@@ -27804,7 +25469,7 @@ FUN_080abb44: @ 0x080ABB44
 	strb r6, [r4, #0x12]
 	strb r6, [r4, #0x13]
 	adds r0, r4, #0
-	bl FUN_080aae9c
+	bl Projectile32_Update
 	pop {r4, r5, r6}
 	pop {r0}
 	bx r0
@@ -28154,7 +25819,7 @@ FUN_080abdf8: @ 0x080ABDF8
 	ldr r0, [r0, #4]
 	str r0, [r4, #0x14]
 	adds r0, r4, #0
-	bl FUN_080aae9c
+	bl Projectile32_Update
 	pop {r4, r5}
 	pop {r0}
 	bx r0
@@ -28291,7 +25956,7 @@ _080ABF0A:
 	ldr r0, [r0, #4]
 	str r0, [r5, #0x14]
 	adds r0, r5, #0
-	bl FUN_080aae9c
+	bl Projectile32_Update
 	pop {r4, r5}
 	pop {r0}
 	bx r0
@@ -28950,8 +26615,8 @@ _080AC438:
 _080AC440: .4byte gProjectileHeaderPtr
 _080AC444: .4byte gProjectileFnTable
 
-	thumb_func_start initGoldOmega1Atk
-initGoldOmega1Atk: @ 0x080AC448
+	thumb_func_start OmegaGoldProjectile_Init
+OmegaGoldProjectile_Init: @ 0x080AC448
 	push {r4, r5, r6, lr}
 	adds r6, r0, #0
 	ldrb r5, [r6, #0x10]
@@ -29034,7 +26699,7 @@ _080AC4E8:
 	movs r0, #0xff
 	strb r0, [r6, #0x12]
 	adds r0, r6, #0
-	bl FUN_080ac508
+	bl OmegaGoldProjectile_Update
 	pop {r4, r5, r6}
 	pop {r0}
 	bx r0
@@ -29043,8 +26708,8 @@ _080AC4FC: .4byte 0x0836C614
 _080AC500: .4byte 0xFFFFFF00
 _080AC504: .4byte gProjectileFnTable
 
-	thumb_func_start FUN_080ac508
-FUN_080ac508: @ 0x080AC508
+	thumb_func_start OmegaGoldProjectile_Update
+OmegaGoldProjectile_Update: @ 0x080AC508
 	push {lr}
 	ldr r2, _080AC51C @ =0x0836C608
 	ldrb r1, [r0, #0xd]
@@ -29057,8 +26722,8 @@ FUN_080ac508: @ 0x080AC508
 	.align 2, 0
 _080AC51C: .4byte 0x0836C608
 
-	thumb_func_start FUN_080ac520
-FUN_080ac520: @ 0x080AC520
+	thumb_func_start OmegaGoldProjectile_Die
+OmegaGoldProjectile_Die: @ 0x080AC520
 	adds r2, r0, #0
 	ldrb r1, [r2, #0xa]
 	movs r0, #0xfe
@@ -29704,8 +27369,8 @@ _080ACA06:
 _080ACA10: .4byte gProjectileHeaderPtr
 _080ACA14: .4byte gProjectileFnTable
 
-	thumb_func_start FUN_080aca18
-FUN_080aca18: @ 0x080ACA18
+	thumb_func_start Projectile34_Init
+Projectile34_Init: @ 0x080ACA18
 	push {r4, r5, r6, r7, lr}
 	adds r5, r0, #0
 	bl InitNonAffineMotion
@@ -29808,7 +27473,7 @@ _080ACAE6:
 	strb r6, [r5, #0xe]
 	strb r6, [r5, #0xf]
 	adds r0, r5, #0
-	bl FUN_080acb00
+	bl Projectile34_Update
 	pop {r4, r5, r6, r7}
 	pop {r0}
 	bx r0
@@ -29816,8 +27481,8 @@ _080ACAE6:
 _080ACAF8: .4byte 0x0836C728
 _080ACAFC: .4byte gProjectileFnTable
 
-	thumb_func_start FUN_080acb00
-FUN_080acb00: @ 0x080ACB00
+	thumb_func_start Projectile34_Update
+Projectile34_Update: @ 0x080ACB00
 	push {lr}
 	ldr r2, _080ACB14 @ =0x0836C718
 	ldrb r1, [r0, #0xd]
@@ -29829,7 +27494,9 @@ FUN_080acb00: @ 0x080ACB00
 	bx r0
 	.align 2, 0
 _080ACB14: .4byte 0x0836C718
-_080ACB18:
+
+	thumb_func_start Projectile34_Die
+Projectile34_Die:
 	.byte 0x02, 0x1C, 0x91, 0x7A, 0xFE, 0x20, 0x08, 0x40
 	.byte 0x00, 0x21, 0x90, 0x72, 0x10, 0x1C, 0x8C, 0x30, 0x01, 0x60, 0x04, 0x30, 0x01, 0x60, 0x04, 0x30
 	.byte 0x01, 0x70, 0x91, 0x7A, 0xFB, 0x20, 0x08, 0x40, 0x90, 0x72, 0x05, 0x49, 0x50, 0x7A, 0x80, 0x00
@@ -30525,8 +28192,8 @@ _080AD0AA:
 _080AD0B4: .4byte gProjectileHeaderPtr
 _080AD0B8: .4byte gProjectileFnTable
 
-	thumb_func_start initPantheonBomb
-initPantheonBomb: @ 0x080AD0BC
+	thumb_func_start PantheonBombProjectile_Init
+PantheonBombProjectile_Init: @ 0x080AD0BC
 	push {r4, r5, r6, r7, lr}
 	mov r7, r8
 	push {r7}
@@ -30621,7 +28288,7 @@ _080AD17A:
 	movs r0, #0xff
 	strb r0, [r7, #0x12]
 	adds r0, r7, #0
-	bl pantheonBombAI
+	bl PantheonBombProjectile_Update
 	pop {r3}
 	mov r8, r3
 	pop {r4, r5, r6, r7}
@@ -30631,8 +28298,8 @@ _080AD17A:
 _080AD190: .4byte 0x0836C84C
 _080AD194: .4byte gProjectileFnTable
 
-	thumb_func_start pantheonBombAI
-pantheonBombAI: @ 0x080AD198
+	thumb_func_start PantheonBombProjectile_Update
+PantheonBombProjectile_Update: @ 0x080AD198
 	push {lr}
 	adds r2, r0, #0
 	ldr r0, _080AD1E4 @ =gCurStory
@@ -30667,7 +28334,7 @@ pantheonBombAI: @ 0x080AD198
 	ldr r0, [r0, #8]
 	str r0, [r2, #0x14]
 	adds r0, r2, #0
-	bl FUN_080ad204
+	bl PantheonBombProjectile_Die
 	b _080AD1FC
 	.align 2, 0
 _080AD1E4: .4byte gCurStory
@@ -30686,8 +28353,8 @@ _080AD1FC:
 	.align 2, 0
 _080AD200: .4byte 0x0836C844
 
-	thumb_func_start FUN_080ad204
-FUN_080ad204: @ 0x080AD204
+	thumb_func_start PantheonBombProjectile_Die
+PantheonBombProjectile_Die: @ 0x080AD204
 	adds r2, r0, #0
 	ldrb r1, [r2, #0xa]
 	movs r0, #0xfe
@@ -31243,8 +28910,8 @@ _080AD63A:
 _080AD640: .4byte gProjectileHeaderPtr
 _080AD644: .4byte gProjectileFnTable
 
-	thumb_func_start FUN_080ad648
-FUN_080ad648: @ 0x080AD648
+	thumb_func_start Projectile36_Init
+Projectile36_Init: @ 0x080AD648
 	push {lr}
 	ldr r2, _080AD65C @ =0x0836C8C0
 	ldrb r1, [r0, #0x10]
@@ -31257,8 +28924,8 @@ FUN_080ad648: @ 0x080AD648
 	.align 2, 0
 _080AD65C: .4byte 0x0836C8C0
 
-	thumb_func_start FUN_080ad660
-FUN_080ad660: @ 0x080AD660
+	thumb_func_start Projectile36_Update
+Projectile36_Update: @ 0x080AD660
 	push {lr}
 	ldr r2, _080AD674 @ =0x0836C8D0
 	ldrb r1, [r0, #0x10]
@@ -31270,7 +28937,9 @@ FUN_080ad660: @ 0x080AD660
 	bx r0
 	.align 2, 0
 _080AD674: .4byte 0x0836C8D0
-_080AD678:
+
+	thumb_func_start Projectile36_Die
+Projectile36_Die:
 	.byte 0x82, 0x7A, 0xFE, 0x21, 0x11, 0x40, 0x81, 0x72
 	.byte 0x04, 0x4A, 0x41, 0x7A, 0x89, 0x00, 0x89, 0x18, 0x04, 0x22, 0xC2, 0x60, 0x09, 0x68, 0x09, 0x69
 	.byte 0x41, 0x61, 0x70, 0x47, 0x0C, 0xA9, 0x36, 0x08
@@ -31373,7 +29042,7 @@ _080AD70C:
 	ldr r0, [r0, #4]
 	str r0, [r6, #0x14]
 	adds r0, r6, #0
-	bl FUN_080ad660
+	bl Projectile36_Update
 	pop {r4, r5, r6}
 	pop {r0}
 	bx r0
@@ -31474,7 +29143,7 @@ FUN_080ad7d0: @ 0x080AD7D0
 	ldr r0, [r0, #4]
 	str r0, [r4, #0x14]
 	adds r0, r4, #0
-	bl FUN_080ad660
+	bl Projectile36_Update
 	pop {r4, r5}
 	pop {r0}
 	bx r0
@@ -31623,7 +29292,7 @@ _080AD934:
 	ldr r0, [r0, #4]
 	str r0, [r5, #0x14]
 	adds r0, r5, #0
-	bl FUN_080ad660
+	bl Projectile36_Update
 	pop {r4, r5, r6}
 	pop {r0}
 	bx r0
@@ -31750,7 +29419,7 @@ _080ADA28:
 	ldr r0, [r0, #4]
 	str r0, [r5, #0x14]
 	adds r0, r5, #0
-	bl FUN_080ad660
+	bl Projectile36_Update
 	pop {r4, r5, r6}
 	pop {r0}
 	bx r0
@@ -31870,8 +29539,8 @@ _080ADB14:
 _080ADB1C: .4byte gProjectileHeaderPtr
 _080ADB20: .4byte gProjectileFnTable
 
-	thumb_func_start FUN_080adb24
-FUN_080adb24: @ 0x080ADB24
+	thumb_func_start Projectile37_Init
+Projectile37_Init: @ 0x080ADB24
 	push {r4, r5, r6, r7, lr}
 	adds r6, r0, #0
 	ldrb r7, [r6, #0x11]
@@ -31951,7 +29620,7 @@ _080ADBC4:
 	movs r0, #0xff
 	strb r0, [r6, #0x12]
 	adds r0, r6, #0
-	bl FUN_080adbdc
+	bl Projectile37_Update
 	pop {r4, r5, r6, r7}
 	pop {r0}
 	bx r0
@@ -31959,8 +29628,8 @@ _080ADBC4:
 _080ADBD4: .4byte 0x0836C92C
 _080ADBD8: .4byte gProjectileFnTable
 
-	thumb_func_start FUN_080adbdc
-FUN_080adbdc: @ 0x080ADBDC
+	thumb_func_start Projectile37_Update
+Projectile37_Update: @ 0x080ADBDC
 	push {lr}
 	adds r2, r0, #0
 	ldr r0, _080ADC28 @ =gCurStory
@@ -31995,7 +29664,7 @@ FUN_080adbdc: @ 0x080ADBDC
 	ldr r0, [r0, #8]
 	str r0, [r2, #0x14]
 	adds r0, r2, #0
-	bl FUN_080adc48
+	bl Projectile37_Die
 	b _080ADC40
 	.align 2, 0
 _080ADC28: .4byte gCurStory
@@ -32014,8 +29683,8 @@ _080ADC40:
 	.align 2, 0
 _080ADC44: .4byte 0x0836C924
 
-	thumb_func_start FUN_080adc48
-FUN_080adc48: @ 0x080ADC48
+	thumb_func_start Projectile37_Die
+Projectile37_Die: @ 0x080ADC48
 	adds r2, r0, #0
 	ldrb r1, [r2, #0xa]
 	movs r0, #0xfe

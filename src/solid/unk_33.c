@@ -33,7 +33,7 @@ static void Solid33_Init(struct Solid* p) {
   INIT_BODY(p, &sCollisions[0], 0, NULL);
   (p->s).flags2 |= ENTITY_HAZARD;
   (p->s).size = &sSize;
-  (p->s).hazardAttr = 0x2001;
+  (p->s).hazardAttr = (METATILE_CONVEYOR1 | METATILE_GROUND);
 
   d = &(p->s).d;
   d->y = 0;

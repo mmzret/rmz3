@@ -750,7 +750,7 @@ WIP static void LayerDraw_FixOmegaWhiteCoord(struct StageLayer* l, const struct 
     gVideoRegBuffer.dispcnt &= ~(dispcnt << 8);
   }
   n = dispcnt >> 4;
-  if (gOverworld.unk_2c002) {
+  if (gOverworld.reload_graphic) {
     vu32 _;
     CpuFastCopy(BGMAP(42), (void*)(VRAM + SCREEN_BASE_16(n)), 2048);
     CpuFastFill(0, (void*)(VRAM + 0x800 + SCREEN_BASE_16(n)), 2048);
@@ -822,7 +822,7 @@ static void LayerDraw_SpaceCraft_4(struct StageLayer* l, const struct Stage* _ U
 }
 
 // 0x0800bc7c
-static void LayerExit_DisableBlend(struct StageLayer* l UNUSED, const struct Stage* _ UNUSED) {
+static void LayerExit_SpaceCraft_4(struct StageLayer* l UNUSED, const struct Stage* _ UNUSED) {
   gBlendRegBuffer.bldclt = 0;
   return;
 }
@@ -866,97 +866,56 @@ static void LayerUpdate_SpaceCraft_5(struct StageLayer* l, const struct Stage* _
 
 void omegaWhite_0800bd24(struct Boss* p) { gOverworld.work.spacecraft.omega = p; }
 
-// For Iceblock
-WIP bool16 FUN_0800bd38(s32 x, s32 y) {
-#if MODERN
-  s16 mx = METACOORD(x) - 1;
-  s16 my = METACOORD(y) - 1;
-  struct MetatileMap* tm = &gOverworld.tilemap;
-  metatile_id_t a = tm->map[my * tm->width + mx];
-  metatile_id_t b = tm->map[my * tm->width + mx + 120];
-  return ((u32)(-(a ^ b) | (a ^ b))) >> 31;
-#else
-  INCCODE("asm/wip/FUN_0800bd38.inc");
-#endif
+// 落ちてくる氷ブロック
+bool16 FUN_0800bd38(s32 x, s32 y) {
+  u16* map;
+  struct Overworld* ow;
+  s32 row;
+  register s32 col asm("r0");
+  s32 offset;
+  s32 idx1, idx2;
+  metatile_id_t *block1, *block2;
+
+  const s32 mx = METACOORD(x) - 1;
+  const s32 my = METACOORD(y) - 1;
+
+  ow = &gOverworld;
+  map = (u16*)&ow->tilemap;
+  row = (map[0] * (s16)my);
+  col = (s16)mx;
+
+  idx1 = row + col + 2;
+  block1 = &map[idx1];
+  idx2 = row + col + (2 + 120);
+  block2 = &map[idx2];
+  return (*block1 != *block2);
 }
 
-NAKED void FUN_0800bd78(s32 x, s32 y) {
-  asm(".syntax unified\n\
-	push {r4, r5, r6, lr}\n\
-	sub sp, #8\n\
-	asrs r2, r0, #0xc\n\
-	subs r2, #1\n\
-	asrs r3, r1, #0xc\n\
-	subs r3, #1\n\
-	lsls r2, r2, #0x10\n\
-	asrs r6, r2, #0x10\n\
-	movs r4, #0xf0\n\
-	lsls r4, r4, #0xf\n\
-	adds r2, r2, r4\n\
-	lsls r4, r3, #0x10\n\
-	ldr r5, _0800BDCC @ =0x0000FFFF\n\
-	lsrs r2, r2, #0x10\n\
-	orrs r2, r4\n\
-	str r2, [sp]\n\
-	ldr r2, _0800BDD0 @ =0x00020002\n\
-	str r2, [sp, #4]\n\
-	movs r2, #0xc0\n\
-	lsls r2, r2, #6\n\
-	adds r1, r1, r2\n\
-	bl FUN_0800bd38\n\
-	lsls r0, r0, #0x10\n\
-	cmp r0, #0\n\
-	bne _0800BDB8\n\
-	ldr r0, [sp, #4]\n\
-	ands r0, r5\n\
-	movs r1, #0xc0\n\
-	lsls r1, r1, #0xa\n\
-	orrs r0, r1\n\
-	str r0, [sp, #4]\n\
-_0800BDB8:\n\
-	asrs r1, r4, #0x10\n\
-	adds r0, r6, #0\n\
-	mov r2, sp\n\
-	bl ShiftMetatile\n\
-	add sp, #8\n\
-	pop {r4, r5, r6}\n\
-	pop {r0}\n\
-	bx r0\n\
-	.align 2, 0\n\
-_0800BDCC: .4byte 0x0000FFFF\n\
-_0800BDD0: .4byte 0x00020002\n\
- .syntax divided\n");
+// 落ちてくる氷ブロック
+void FUN_0800bd78(s32 x, s32 y) {
+  bool16 b;
+  struct MetatileShift s;
+  s16 x16 = METACOORD(x) - 1;
+  s16 y16 = METACOORD(y) - 1;
+  s.x = x16 + 120;
+  s.y = y16;
+  *((u32*)&s.block) = (2 << 16) | 2;
+  b = FUN_0800bd38(x, y + PIXEL(48));
+  if (!b) {
+    *((u32*)&s.block) = (3 << 16) | (*((u32*)&s.block) & 0xFFFF);
+  }
+  ShiftMetatile(x16, y16, &s);
 }
 
-NAKED void FUN_0800bdd4(s32 x, s32 y) {
-  asm(".syntax unified\n\
-	push {lr}\n\
-	sub sp, #8\n\
-	asrs r0, r0, #0xc\n\
-	subs r0, #1\n\
-	asrs r1, r1, #0xc\n\
-	subs r1, #1\n\
-	lsls r0, r0, #0x10\n\
-	asrs r2, r0, #0x10\n\
-	movs r3, #0xf0\n\
-	lsls r3, r3, #0xe\n\
-	adds r0, r0, r3\n\
-	lsls r1, r1, #0x10\n\
-	lsrs r0, r0, #0x10\n\
-	orrs r0, r1\n\
-	str r0, [sp]\n\
-	ldr r0, _0800BE08 @ =0x00020002\n\
-	str r0, [sp, #4]\n\
-	asrs r1, r1, #0x10\n\
-	adds r0, r2, #0\n\
-	mov r2, sp\n\
-	bl ShiftMetatile\n\
-	add sp, #8\n\
-	pop {r0}\n\
-	bx r0\n\
-	.align 2, 0\n\
-_0800BE08: .4byte 0x00020002\n\
- .syntax divided\n");
+// 落ちてくる氷ブロック
+void FUN_0800bdd4(s32 x, s32 y) {
+  struct MetatileShift s;
+  s16 x16 = METACOORD(x) - 1;
+  s16 y16 = METACOORD(y) - 1;
+  s.x = x16 + 60;
+  s.y = y16;
+  *((u32*)&s.block) = (2 << 16) | 2;
+  ShiftMetatile(x16, y16, &s);
 }
 
 static const StageFunc sStageRoutine[4] = {
@@ -991,7 +950,7 @@ static const StageLayerRoutine sLayerRoutine[6] = {
     [4] = {
       [LAYER_UPDATE] = LayerUpdate_SnowFall,
       [LAYER_DRAW]   = LayerDraw_SpaceCraft_4,
-      [LAYER_EXIT]   = LayerExit_DisableBlend,
+      [LAYER_EXIT]   = LayerExit_SpaceCraft_4,
     },
     [5] = {
       [LAYER_UPDATE] = LayerUpdate_SpaceCraft_5,

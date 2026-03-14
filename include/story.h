@@ -65,6 +65,8 @@ struct PlayInfo {
 struct Story {
   u16 id;  // stage ID
   u16 pad_02;
+
+  // 0x0202fdc4
   u8 gameflags[8];
   /*
     0..28: 会話の進行度
@@ -72,7 +74,7 @@ struct Story {
     70..71: 火山のリコイルで動かす棺桶みたいなコンテナの移動量
   */
   u8 counts[29 + 41 + 2];  // chatProgress[29] + zakoCounts[41] + volcanoCoffinX[2]
-};                         // 84 bytes
+};  // 84 bytes
 
 // 0202fdc0
 struct Story96 {

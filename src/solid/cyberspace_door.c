@@ -215,7 +215,7 @@ _080DBBF0:\n\
 	str r0, [r1]\n\
 	adds r0, r4, #0\n\
 	adds r0, #0x34\n\
-	ldr r1, _080DBC8C @ =FUN_080dbdf4\n\
+	ldr r1, _080DBC8C @ =TaskCB_080dbdf4\n\
 	bl SetTaskCallback\n\
 	str r4, [r4, #0x3c]\n\
 	ldrb r1, [r4, #0xa]\n\
@@ -285,7 +285,7 @@ _080DBC62:\n\
 	str r0, [r5, #0x60]\n\
 	b _080DBCB4\n\
 	.align 2, 0\n\
-_080DBC8C: .4byte FUN_080dbdf4\n\
+_080DBC8C: .4byte TaskCB_080dbdf4\n\
 _080DBC90: .4byte sCollisions\n\
 _080DBC94: .4byte gStageRun+232\n\
 _080DBC98: .4byte 0xFFFF5800\n\
@@ -455,7 +455,7 @@ _080DBDF0: .4byte gStageRun\n\
  .syntax divided\n");
 }
 
-void FUN_080dbdf4(struct Sprite* s, struct DrawPivot* dp) {
+void TaskCB_080dbdf4(struct Sprite* s, struct DrawPivot* dp) {
   struct Solid* p = (struct Solid*)s->sprites;
   if (!FLAG(gCurStory.s.gameflags, IN_CYBERSPACE)) {
     if ((p->s).work[0] != 0) {

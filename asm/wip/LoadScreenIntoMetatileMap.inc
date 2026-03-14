@@ -43,7 +43,7 @@ _080092A2:
 	adds r0, r4, #0
 	adds r1, r5, #0
 	movs r2, #0x1e
-	bl Transfer30Bytes
+	bl CopyMemory
 	adds r5, r5, r7
 	adds r4, #0x1e
 	lsls r0, r6, #0x10

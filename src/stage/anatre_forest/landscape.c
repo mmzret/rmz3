@@ -279,14 +279,14 @@ static void LayerUpdate_4(struct StageLayer* l, const struct Stage* _ UNUSED) {
 
 INCASM("asm/stage_gfx/anatre_forest.inc");
 
-extern const struct ScreenMap sScreenMap1;
-INCBIN_STATIC(sScreenMap1, "data/stage/anatre_forest/layer1.bin");  // ./tools/dumper/bin.ts ./baserom.gba 0x0833f890 0x0833fa54 ./data/stage/anatre_forest/layer1.bin
+extern const struct ChunkMap sChunkMap1;
+INCBIN_STATIC(sChunkMap1, "data/stage/anatre_forest/layer1.bin");  // ./tools/dumper/bin.ts ./baserom.gba 0x0833f890 0x0833fa54 ./data/stage/anatre_forest/layer1.bin
 
-extern const struct ScreenMap sScreenMap2;
-INCBIN_STATIC(sScreenMap2, "data/stage/anatre_forest/layer2.bin");  // ./tools/dumper/bin.ts ./baserom.gba 0x0833fa54 0x0833fb98 ./data/stage/anatre_forest/layer2.bin
+extern const struct ChunkMap sChunkMap2;
+INCBIN_STATIC(sChunkMap2, "data/stage/anatre_forest/layer2.bin");  // ./tools/dumper/bin.ts ./baserom.gba 0x0833fa54 0x0833fb98 ./data/stage/anatre_forest/layer2.bin
 
-extern const struct ScreenMap sScreenMap3;
-INCBIN_STATIC(sScreenMap3, "data/stage/anatre_forest/layer3.bin");  // ./tools/dumper/bin.ts ./baserom.gba 0x0833fb98 0x0833fcdc ./data/stage/anatre_forest/layer3.bin
+extern const struct ChunkMap sChunkMap3;
+INCBIN_STATIC(sChunkMap3, "data/stage/anatre_forest/layer3.bin");  // ./tools/dumper/bin.ts ./baserom.gba 0x0833fb98 0x0833fcdc ./data/stage/anatre_forest/layer3.bin
 
 extern const tileset_ofs_t sTilesetOffset[];
 INCBIN_STATIC(sTilesetOffset, "data/stage/anatre_forest/tileset_offset.bin");  // ./tools/dumper/bin.ts ./baserom.gba 0x0833fcdc 0x0833fe20 ./data/stage/anatre_forest/tileset_offset.bin
@@ -298,7 +298,7 @@ const struct Stage gAnatreForestLandscape = {
   id : STAGE_ANATRE_FOREST,
   fn : sStageRoutine,
   terrainHdr : &gStageTerrains[STAGE_ANATRE_FOREST],
-  maps : {&sScreenMap1, &sScreenMap2, &sScreenMap3},
+  maps : {&sChunkMap1, &sChunkMap2, &sChunkMap3},
   bgIdx : {USE_BG1, USE_BG2, USE_BG3},
   prio : {3, 3, 3},
   screenBase : {BGMAP_BLOCK(2), BGMAP_BLOCK(4), BGMAP_BLOCK(6)},
@@ -307,7 +307,6 @@ const struct Stage gAnatreForestLandscape = {
   tilesetOffset : sTilesetOffset,
   bgFns : sLayerRoutine,
   behavior : sScreenBehavior,
-  unk_78 : {0x0, 0x0},
 };
 
 // ./tools/dumper/bin.ts ./baserom.gba 0x08340128 0x08340290 ./data/landscape_anatre_forest.bin

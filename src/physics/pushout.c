@@ -5,165 +5,126 @@
 #include "task.h"
 
 // GetGroundMetatileAttr と似た処理だが、空中判定を受けた際に、Hazardチェックもする(GetGroundMetatileAttrより厳しい)
-WIP metatile_attr_t FUN_080098a4(s32 x, s32 y) {
-#if MODERN
+metatile_attr_t FUN_080098a4(s32 x, s32 y) {
   const s32 mx = METACOORD(x);
   const s32 my = METACOORD(y);
-  if ((mx < 0x771) && (my < 0x4F6)) {
-    struct MetatileMap* tm = &gOverworld.tilemap;
-    metatile_attr_t attr = gOverworld.terrain.attrs[tm->map[(my * tm->width) + mx]];
-    if ((gShapeCheckerUp[attr & 0xF])(x & 0xFFF, y & 0xFFF) == 0) {
-      return GetHazardMetatileAttr(x, y);
+  if (((u32)mx >= 0x771) || ((u32)my >= 0x4F6)) {
+    return 0x0A01;
+  } else {
+    struct TerrainV2* terrain = (struct TerrainV2*)&gOverworld.terrain;
+    const s32 offset = (terrain->tilemap[0] * my) + mx + 2;
+    metatile_attr_t attr = (terrain->hdr).attrs[terrain->tilemap[offset]];
+    if ((gShapeCheckerUp[attr & 0xF])(x & 0xFFF, y & 0xFFF)) {
+      return attr;
     }
-    return attr;
+    return GetHazardMetatileAttr(x, y);
   }
-  return 0x0A01;
-#else
-  INCCODE("asm/wip/FUN_080098a4.inc");
-#endif
 }
 
 // 現在立っている地面部分(x, y)のmetatile_attr_tを取得 (空中にいる場合は0)
-WIP metatile_attr_t GetGroundMetatileAttr(s32 x, s32 y) {
-#if MODERN
+metatile_attr_t GetGroundMetatileAttr(s32 x, s32 y) {
   const s32 mx = METACOORD(x);
   const s32 my = METACOORD(y);
-  struct MetatileMap* tm = &gOverworld.tilemap;
-  metatile_attr_t attr = gOverworld.terrain.attrs[tm->map[(my * tm->width) + mx]];
+
+  struct TerrainV2* terrain = (struct TerrainV2*)&gOverworld.terrain;
+  s32 idx = (my * terrain->tilemap[0]) + mx + 2;
+  metatile_attr_t attr = (terrain->hdr).attrs[terrain->tilemap[idx]];
   if ((attr & 0x0F) == 0) {
     return 0;
   }
   if ((attr & 0x0F) == METATILE_GROUND) {
-    return attr;  // ここで間違えて0を返すと、ゼロが床をすり抜けて落下死する
+    return attr;  // ここで間違えて0を返すと、ゼロが床をすり抜けて落下死した
   }
-  if ((gShapeCheckerUp[attr & 0xF])(x & 0xFFF, y & 0xFFF) == 0) {  // (坂道の)空中部分
-    return 0;
+  if ((gShapeCheckerUp[attr & 0xF])(x & 0xFFF, y & 0xFFF) != 0) {  // (坂道の)空中部分
+    return attr;
   }
-  return attr;
-#else
-  INCCODE("asm/wip/GetGroundMetatileAttr.inc");
-#endif
+  return 0;
 }
 
 s32 CalcPushout_Up(s32 x, s32 y);
 
-WIP s32 PushoutToUp1(s32 x, s32 y) {
-#if MODERN
-  s32 newY;
-  s32 i = 0;
-  s32 Y = y;
-  struct MetatileMap* tm = &gOverworld.tilemap;
-  while (TRUE) {
-    metatile_attr_t attr = gOverworld.terrain.attrs[tm->map[METACOORD(Y) * tm->width + METACOORD(x)]];
+s32 PushoutToUp1(s32 x, s32 y) {
+  s32 i;
+  s32 prev_y = y;
+  for (i = 0; i < 16; i++) {
+    struct TerrainV2* terrain = (struct TerrainV2*)&gOverworld.terrain;
+    u16* map = terrain->tilemap;
+
+    s32 offset = (map[0] * METACOORD(y)) + METACOORD(x) + 2;
+    metatile_attr_t attr = (terrain->hdr).attrs[map[offset]];
     u32 shape = attr & 0xF;
-    newY = Y;
-    if ((shape == 0) || (attr == 0x800F)) {
-      break;
-    }
+    if ((shape == 0) || (attr == 0x800F)) break;
+
     if (shape == METATILE_GROUND) {
-      newY = COORD(METACOORD(Y)) - 1;
+      y = (y & 0xFFFFF000) - 1;
     } else {
-      s32 dy = (gShapeCheckerUp[shape])(x & 0xFFF, Y & 0xFFF);
-      if (dy == 0) {
-        break;
-      }
-      newY = Y + dy;
-      if (((Y ^ newY) & PIXEL(16)) == 0) {  // yのmetacorrdが変化しない
-        break;
-      }
+      s32 tmp;
+      s32 dy = (gShapeCheckerUp[shape])(x & 0xFFF, y & 0xFFF);
+      if (dy == 0) break;
+      tmp = y;
+      y += dy;
+      if (((tmp ^ y) & PIXEL(16)) == 0) break;  // yのmetacorrdが変化しない
     }
-    Y = newY;
-    i++;
-
-    if (i > 15) break;
   }
 
-  if (i < 16) {
-    return CalcPushout_Up(x, Y) - y;
-  }
-  return 1;
-#else
-  INCCODE("asm/wip/PushoutToUp1.inc");
-#endif
+  return (i > 15) ? 1 : (CalcPushout_Up(x, y) - prev_y);
 }
 
-// おそらく壁にめり込んだ際の上方向への押し出し処理(結構チェックしたからロジックは大丈夫...？)
-NON_MATCH s32 PushoutToUp2(s32 x, s32 y) {
-#if MODERN
-  s32 newY;
-  s32 i = 0;
-  s32 Y = y;
-  struct MetatileMap* tm = &gOverworld.tilemap;
-  while (TRUE) {
-    metatile_attr_t attr = gOverworld.terrain.attrs[tm->map[METACOORD(Y) * tm->width + METACOORD(x)]];
-    u32 shape = attr & 0xF;
-    newY = Y;
-    if ((shape == 0) || (attr == 0x800F)) {
-      break;
-    }
-    if (shape == METATILE_GROUND) {
-      newY = (Y & 0xFFFFF000) - 1;
-    } else {
-      s32 dy = (gShapeCheckerUp[shape])(x & 0xFFF, Y & 0xFFF);
-      if (dy == 0) {
-        break;
-      }
-      newY = Y + dy;
-      if (((Y ^ newY) & PIXEL(16)) == 0) {  // yのmetacorrdが変化しない
-        break;
-      }
-    }
-    Y = newY;
-    i++;
+// おそらく壁にめり込んだ際の上方向への押し出し処理
+s32 PushoutToUp2(s32 x, s32 y) {
+  s32 i;
+  s32 prev_y = y;
+  for (i = 0; i < 16; i++) {
+    struct TerrainV2* terrain = (struct TerrainV2*)&gOverworld.terrain;
+    u16* map = terrain->tilemap;
 
-    if (i > 15) {
-      return 1;
+    s32 offset = (map[0] * METACOORD(y)) + METACOORD(x) + 2;
+    metatile_attr_t attr = (terrain->hdr).attrs[map[offset]];
+    u32 shape = attr & 0xF;
+
+    if ((shape == 0) || (attr == 0x800F)) return y - prev_y;
+
+    if (shape == METATILE_GROUND) {
+      y = (y & 0xFFFFF000) - 1;
+    } else {
+      s32 tmp;
+      s32 dy = (gShapeCheckerUp[shape])(x & 0xFFF, y & 0xFFF);
+      if (dy == 0) return y - prev_y;
+      tmp = y;
+      y += dy;
+      if (((tmp ^ y) & PIXEL(16)) == 0) return y - prev_y;  // yのmetacorrdが変化しない
     }
   }
-  return newY - y;
-#else
-  INCCODE("asm/wip/PushoutToUp2.inc");
-#endif
+  return 1;
 }
 
 s32 CalcPushout_Down(s32 x, s32 y);
 
 // おそらく壁にめり込んだ際の下方向への押し出し処理
-WIP s32 PushoutToDown1(s32 x, s32 y) {
-#if MODERN
-  s32 newY;
-  s32 i = 0;
-  s32 Y = y;
-  struct MetatileMap* tm = &gOverworld.tilemap;
-  while (TRUE) {
-    metatile_attr_t attr = gOverworld.terrain.attrs[tm->map[METACOORD(Y) * tm->width + METACOORD(x)]];
+s32 PushoutToDown1(s32 x, s32 y) {
+  s32 i;
+  s32 prev_y = y;
+  for (i = 0; i < 16; i++) {
+    struct TerrainV2* terrain = (struct TerrainV2*)&gOverworld.terrain;
+    u16* map = terrain->tilemap;
+
+    s32 offset = (map[0] * METACOORD(y)) + METACOORD(x) + 2;
+    metatile_attr_t attr = (terrain->hdr).attrs[map[offset]];
     u32 shape = attr & 0xF;
-    newY = Y;
-    if ((shape == 0) || (attr & 0x8400)) {
-      break;
-    }
+    if ((shape == 0) || (attr & 0x8400)) break;
+
     if (shape == METATILE_GROUND) {
-      newY = (Y + PIXEL(16)) & 0xFFFFF000;
+      y = (y + PIXEL(16)) & 0xFFFFF000;
     } else {
-      s32 dy = (gShapeCheckerDown[shape])(x & 0xFFF, (~Y) & 0xFFF);
-      if (dy == 0) {
-        break;
-      }
-      newY = Y - dy;
-      if (((Y ^ newY) & PIXEL(16)) == 0) {  // yのmetacorrdが変化しない
-        break;
-      }
+      s32 tmp;
+      s32 dy = (gShapeCheckerDown[shape])(x & 0xFFF, (~y) & 0xFFF);
+      if (dy == 0) break;
+      tmp = y;
+      y -= dy;
+      if (((tmp ^ y) & PIXEL(16)) == 0) break;  // yのmetacorrdが変化しない
     }
-    Y = newY;
-    i++;
-    if (i > 15) {
-      return -1;
-    };
   }
-  return CalcPushout_Down(x, Y) - y;
-#else
-  INCCODE("asm/wip/PushoutToDown1.inc");
-#endif
+  return (i > 15) ? -1 : (CalcPushout_Down(x, y) - prev_y);
 }
 
 // おそらく壁にめり込んだ際の下方向への押し出し処理
@@ -174,7 +135,7 @@ WIP s32 PushoutToDown2(s32 x, s32 y) {
   s32 Y = y;
   struct MetatileMap* tm = &gOverworld.tilemap;
   while (TRUE) {
-    metatile_attr_t attr = gOverworld.terrain.attrs[tm->map[METACOORD(Y) * tm->width + METACOORD(x)]];
+    metatile_attr_t attr = gOverworld.terrain.attrs[tm->map[METACOORD(Y) * tm->width16 + METACOORD(x)]];
     u32 shape = attr & 0xF;
     newY = Y;
     if ((shape == 0) || (attr & 0x8400)) {
@@ -207,248 +168,86 @@ WIP s32 PushoutToDown2(s32 x, s32 y) {
 
 s32 CalcPushout_Left(s32 x, s32 y);
 
-WIP s32 PushoutToLeft1(s32 x, s32 y) {
-#if MODERN
-  s32 newX;
-  s32 i = 0;
-  s32 X = x;
-  struct MetatileMap* tm = &gOverworld.tilemap;
-  while (TRUE) {
-    metatile_attr_t attr = gOverworld.terrain.attrs[tm->map[METACOORD(y) * tm->width + METACOORD(X)]];
+s32 PushoutToLeft1(s32 x, s32 y) {
+  s32 i;
+  s32 prev_x = x;
+  for (i = 0; i < 16; i++) {
+    struct TerrainV2* terrain = (struct TerrainV2*)&gOverworld.terrain;
+    u16* map = terrain->tilemap;
+
+    s32 offset = (map[0] * METACOORD(y)) + METACOORD(x) + 2;
+    metatile_attr_t attr = (terrain->hdr).attrs[map[offset]];
     u32 shape = attr & 0xF;
-    newX = X;
-    if ((shape == 0) || (attr & 0x8400)) {
-      break;
-    }
+    if ((shape == 0) || (attr & 0x8400)) break;
+
     if (shape == METATILE_GROUND) {
-      newX = (X & 0xFFFFF000) - 1;
+      x = (x & 0xFFFFF000) - 1;
     } else {
-      s32 dx = (gShapeCheckerLeft[shape])(y & 0xFFF, X & 0xFFF);
-      if (dx == 0) {
-        break;
-      }
-      newX = X + dx;
-      if (((X ^ newX) & PIXEL(16)) == 0) {  // yのmetacorrdが変化しない
-        break;
-      }
+      s32 tmp;
+      s32 dx = (gShapeCheckerLeft[shape])(y & 0xFFF, x & 0xFFF);
+      if (dx == 0) break;
+      tmp = x;
+      x += dx;
+      if (((tmp ^ x) & PIXEL(16)) == 0) break;  // xのmetacorrdが変化しない
     }
-    X = newX;
-    i++;
-
-    if (i > 15) break;
   }
 
-  if (i < 16) {
-    return CalcPushout_Left(X, y) - x;
-  }
-  return 1;
-#else
-  INCCODE("asm/wip/PushoutToLeft1.inc");
-#endif
+  return (i > 15) ? 1 : (CalcPushout_Left(x, y) - prev_x);
 }
 
-NAKED s32 PushoutToLeft2(s32 x, s32 y) {
-  asm(".syntax unified\n\
-	push {r4, r5, r6, r7, lr}\n\
-	mov r7, sb\n\
-	mov r6, r8\n\
-	push {r6, r7}\n\
-	adds r4, r0, #0\n\
-	adds r6, r1, #0\n\
-	adds r5, r4, #0\n\
-	movs r7, #0\n\
-	ldr r0, _08009D94 @ =gOverworld+440\n\
-	mov sb, r0\n\
-	movs r2, #0xc5\n\
-	lsls r2, r2, #3\n\
-	add r2, sb\n\
-	mov r8, r2\n\
-_08009D54:\n\
-	mov r3, r8\n\
-	ldrh r1, [r3]\n\
-	asrs r0, r6, #0xc\n\
-	muls r0, r1, r0\n\
-	asrs r1, r4, #0xc\n\
-	adds r0, r0, r1\n\
-	adds r0, #2\n\
-	lsls r0, r0, #1\n\
-	add r0, r8\n\
-	ldrh r0, [r0]\n\
-	mov r2, sb\n\
-	ldr r1, [r2]\n\
-	lsls r0, r0, #1\n\
-	adds r0, r0, r1\n\
-	ldrh r1, [r0]\n\
-	movs r2, #0xf\n\
-	ands r2, r1\n\
-	cmp r2, #0\n\
-	beq _08009DC6\n\
-	movs r3, #0x84\n\
-	lsls r3, r3, #8\n\
-	adds r0, r3, #0\n\
-	ands r1, r0\n\
-	cmp r1, #0\n\
-	bne _08009DC6\n\
-	cmp r2, #1\n\
-	bne _08009D9C\n\
-	ldr r0, _08009D98 @ =0xFFFFF000\n\
-	ands r0, r4\n\
-	subs r4, r0, #1\n\
-	b _08009DD4\n\
-	.align 2, 0\n\
-_08009D94: .4byte gOverworld+440\n\
-_08009D98: .4byte 0xFFFFF000\n\
-_08009D9C:\n\
-	ldr r1, _08009DCC @ =gShapeCheckerLeft\n\
-	lsls r0, r2, #2\n\
-	adds r0, r0, r1\n\
-	ldr r2, _08009DD0 @ =0x00000FFF\n\
-	adds r1, r4, #0\n\
-	ands r1, r2\n\
-	ldr r3, [r0]\n\
-	adds r0, r6, #0\n\
-	ands r0, r2\n\
-	bl _call_via_r3\n\
-	cmp r0, #0\n\
-	beq _08009DC6\n\
-	adds r1, r4, #0\n\
-	adds r4, r4, r0\n\
-	eors r1, r4\n\
-	movs r0, #0x80\n\
-	lsls r0, r0, #5\n\
-	ands r1, r0\n\
-	cmp r1, #0\n\
-	bne _08009DD4\n\
-_08009DC6:\n\
-	subs r0, r4, r5\n\
-	b _08009DDC\n\
-	.align 2, 0\n\
-_08009DCC: .4byte gShapeCheckerLeft\n\
-_08009DD0: .4byte 0x00000FFF\n\
-_08009DD4:\n\
-	adds r7, #1\n\
-	cmp r7, #0xf\n\
-	ble _08009D54\n\
-	movs r0, #1\n\
-_08009DDC:\n\
-	pop {r3, r4}\n\
-	mov r8, r3\n\
-	mov sb, r4\n\
-	pop {r4, r5, r6, r7}\n\
-	pop {r1}\n\
-	bx r1\n\
- .syntax divided\n");
+s32 PushoutToLeft2(s32 x, s32 y) {
+  s32 i;
+  s32 prev_x = x;
+  for (i = 0; i < 16; i++) {
+    struct TerrainV2* terrain = (struct TerrainV2*)&gOverworld.terrain;
+    u16* map = terrain->tilemap;
+
+    s32 offset = (map[0] * METACOORD(y)) + METACOORD(x) + 2;
+    metatile_attr_t attr = (terrain->hdr).attrs[map[offset]];
+    u32 shape = attr & 0xF;
+    if ((shape == 0) || (attr & 0x8400)) return x - prev_x;
+
+    if (shape == METATILE_GROUND) {
+      x = (x & 0xFFFFF000) - 1;
+    } else {
+      s32 tmp;
+      s32 dx = (gShapeCheckerLeft[shape])(y & 0xFFF, x & 0xFFF);
+      if (dx == 0) return x - prev_x;
+      tmp = x;
+      x += dx;
+      if (((tmp ^ x) & PIXEL(16)) == 0) return x - prev_x;  // xのmetacorrdが変化しない
+    }
+  }
+
+  return 1;
 }
 
 s32 CalcPushout_Right(s32 x, s32 y);
 
-NAKED s32 PushoutToRight1(s32 x, s32 y) {
-  asm(".syntax unified\n\
-	push {r4, r5, r6, r7, lr}\n\
-	mov r7, sl\n\
-	mov r6, sb\n\
-	mov r5, r8\n\
-	push {r5, r6, r7}\n\
-	sub sp, #4\n\
-	adds r4, r0, #0\n\
-	adds r6, r1, #0\n\
-	mov sb, r4\n\
-	movs r5, #0\n\
-	ldr r0, _08009E4C @ =gOverworld+440\n\
-	mov r8, r0\n\
-	movs r1, #0xc5\n\
-	lsls r1, r1, #3\n\
-	add r1, r8\n\
-	mov sl, r1\n\
-	ldr r3, _08009E50 @ =0x00000FFF\n\
-_08009E0A:\n\
-	mov r2, sl\n\
-	ldrh r1, [r2]\n\
-	asrs r0, r6, #0xc\n\
-	muls r0, r1, r0\n\
-	asrs r1, r4, #0xc\n\
-	adds r0, r0, r1\n\
-	adds r0, #2\n\
-	lsls r0, r0, #1\n\
-	add r0, sl\n\
-	ldrh r0, [r0]\n\
-	mov r7, r8\n\
-	ldr r1, [r7]\n\
-	lsls r0, r0, #1\n\
-	adds r0, r0, r1\n\
-	ldrh r1, [r0]\n\
-	movs r2, #0xf\n\
-	ands r2, r1\n\
-	cmp r2, #0\n\
-	beq _08009E8A\n\
-	movs r7, #0x84\n\
-	lsls r7, r7, #8\n\
-	adds r0, r7, #0\n\
-	ands r1, r0\n\
-	cmp r1, #0\n\
-	bne _08009E8A\n\
-	cmp r2, #1\n\
-	bne _08009E58\n\
-	movs r0, #0x80\n\
-	lsls r0, r0, #5\n\
-	adds r4, r4, r0\n\
-	ldr r0, _08009E54 @ =0xFFFFF000\n\
-	ands r4, r0\n\
-	b _08009E84\n\
-	.align 2, 0\n\
-_08009E4C: .4byte gOverworld+440\n\
-_08009E50: .4byte 0x00000FFF\n\
-_08009E54: .4byte 0xFFFFF000\n\
-_08009E58:\n\
-	ldr r1, _08009E9C @ =gShapeCheckerRight\n\
-	lsls r0, r2, #2\n\
-	adds r0, r0, r1\n\
-	adds r1, r3, #0\n\
-	bics r1, r4\n\
-	ldr r2, [r0]\n\
-	adds r0, r6, #0\n\
-	ands r0, r3\n\
-	str r3, [sp]\n\
-	bl _call_via_r2\n\
-	ldr r3, [sp]\n\
-	cmp r0, #0\n\
-	beq _08009E8A\n\
-	adds r1, r4, #0\n\
-	subs r4, r4, r0\n\
-	eors r1, r4\n\
-	movs r0, #0x80\n\
-	lsls r0, r0, #5\n\
-	ands r1, r0\n\
-	cmp r1, #0\n\
-	beq _08009E8A\n\
-_08009E84:\n\
-	adds r5, #1\n\
-	cmp r5, #0xf\n\
-	ble _08009E0A\n\
-_08009E8A:\n\
-	cmp r5, #0xf\n\
-	bgt _08009EA0\n\
-	adds r0, r4, #0\n\
-	adds r1, r6, #0\n\
-	bl CalcPushout_Right\n\
-	mov r1, sb\n\
-	subs r0, r0, r1\n\
-	b _08009EA4\n\
-	.align 2, 0\n\
-_08009E9C: .4byte gShapeCheckerRight\n\
-_08009EA0:\n\
-	movs r0, #1\n\
-	rsbs r0, r0, #0\n\
-_08009EA4:\n\
-	add sp, #4\n\
-	pop {r3, r4, r5}\n\
-	mov r8, r3\n\
-	mov sb, r4\n\
-	mov sl, r5\n\
-	pop {r4, r5, r6, r7}\n\
-	pop {r1}\n\
-	bx r1\n\
- .syntax divided\n");
+s32 PushoutToRight1(s32 x, s32 y) {
+  s32 i;
+  s32 prev_x = x;
+  for (i = 0; i < 16; i++) {
+    struct TerrainV2* terrain = (struct TerrainV2*)&gOverworld.terrain;
+    u16* map = terrain->tilemap;
+
+    s32 offset = (map[0] * METACOORD(y)) + METACOORD(x) + 2;
+    metatile_attr_t attr = (terrain->hdr).attrs[map[offset]];
+    u32 shape = attr & 0xF;
+    if ((shape == 0) || (attr & 0x8400)) break;
+
+    if (shape == METATILE_GROUND) {
+      x = (x + PIXEL(16)) & 0xFFFFF000;
+    } else {
+      s32 tmp;
+      s32 dx = (gShapeCheckerRight[shape])(y & 0xFFF, (~x) & 0xFFF);
+      if (dx == 0) break;
+      tmp = x;
+      x -= dx;
+      if (((tmp ^ x) & PIXEL(16)) == 0) break;  // yのmetacorrdが変化しない
+    }
+  }
+  return (i > 15) ? -1 : (CalcPushout_Right(x, y) - prev_x);
 }
 
 NAKED s32 PushoutToRight2(s32 x, s32 y) {
@@ -1264,26 +1063,20 @@ _0800A4B8: .4byte s32_ARRAY_02000028\n\
  .syntax divided\n");
 }
 
-NON_MATCH s32 FUN_0800a4bc(s32 x, s32 y) {
-#if MODERN
+s32 FUN_0800a4bc(s32 x, s32 y) {
   const s32 mx = METACOORD(x);
   const s32 my = METACOORD(y);
-  if ((mx < 0x771) && (my < 0x4F6)) {
-    struct MetatileMap* tm = &gOverworld.tilemap;
-    metatile_attr_t attr = gOverworld.terrain.attrs[tm->map[my * tm->width + mx]];
-    if ((gShapeCheckerUp[attr & 0xF])(x & 0xFFF, y & 0xFFF) != 0) {
-      if (attr & 0x2000) {
-        return gOverworld.unk_2c004.y;
-      }
-      if (attr & 0x4000) {
-        return gOverworld.unk_2c004.x;
-      }
+  if (((u32)mx < 0x771) && ((u32)my < 0x4F6)) {
+    struct TerrainV2* terrain = (struct TerrainV2*)&gOverworld.terrain;
+    u16* map = terrain->tilemap;
+    const s32 offset = (map[0] * my) + mx + 2;
+    u32 attr = (terrain->hdr).attrs[map[offset]];
+    if ((gShapeCheckerUp[attr & 0xF])(x & 0xFFF, y & 0xFFF)) {
+      if (attr & METATILE_CONVEYOR1) return terrain->conveyor[1];
+      if (attr & METATILE_CONVEYOR0) return terrain->conveyor[0];
     }
   }
   return 0;
-#else
-  INCCODE("asm/wip/FUN_0800a4bc.inc");
-#endif
 }
 
 static s32 unused_0800a550(s32 x, s32 y) { return isStageBlocking(-1, x, y); }
@@ -1291,175 +1084,38 @@ static s32 unused_0800a550(s32 x, s32 y) { return isStageBlocking(-1, x, y); }
 // Used only in Phantom's minigame
 NAKED s32 isStageBlocking(s32 start, s32 x, s32 y) { INCCODE("asm/todo/isStageBlocking.inc"); }
 
-NAKED void AppendHazard(u16 id, u16 attr, const struct Coord* c, const struct Rect* size) {
-  asm(".syntax unified\n\
-	push {r4, r5, r6, r7, lr}\n\
-	mov r7, sl\n\
-	mov r6, sb\n\
-	mov r5, r8\n\
-	push {r5, r6, r7}\n\
-	mov sb, r2\n\
-	mov r8, r3\n\
-	lsls r0, r0, #0x10\n\
-	lsrs r5, r0, #0x10\n\
-	lsls r1, r1, #0x10\n\
-	lsrs r1, r1, #0x10\n\
-	ldr r2, _0800A6C4 @ =gOverworld\n\
-	movs r0, #0xe9\n\
-	lsls r0, r0, #1\n\
-	adds r4, r2, r0\n\
-	ldrb r3, [r4]\n\
-	adds r0, r3, #1\n\
-	mov ip, r2\n\
-	cmp r0, #0x1f\n\
-	ble _0800A61A\n\
-	b _0800A728\n\
-_0800A61A:\n\
-	strb r0, [r4]\n\
-	adds r6, r3, #0\n\
-	lsls r2, r6, #1\n\
-	mov sl, r2\n\
-	adds r0, r2, r6\n\
-	lsls r4, r0, #3\n\
-	mov r3, ip\n\
-	adds r0, r4, r3\n\
-	movs r2, #0xea\n\
-	lsls r2, r2, #1\n\
-	adds r7, r0, r2\n\
-	strh r5, [r7]\n\
-	movs r3, #0xeb\n\
-	lsls r3, r3, #1\n\
-	adds r0, r0, r3\n\
-	strh r1, [r0]\n\
-	movs r1, #0xee\n\
-	lsls r1, r1, #1\n\
-	add r1, ip\n\
-	adds r1, r4, r1\n\
-	mov r0, r8\n\
-	movs r3, #0\n\
-	ldrsh r2, [r0, r3]\n\
-	mov r3, sb\n\
-	ldr r0, [r3]\n\
-	adds r0, r0, r2\n\
-	str r0, [r1]\n\
-	movs r1, #0xf0\n\
-	lsls r1, r1, #1\n\
-	add r1, ip\n\
-	adds r1, r4, r1\n\
-	mov r0, r8\n\
-	movs r3, #2\n\
-	ldrsh r2, [r0, r3]\n\
-	mov r3, sb\n\
-	ldr r0, [r3, #4]\n\
-	adds r0, r0, r2\n\
-	str r0, [r1]\n\
-	movs r3, #0\n\
-	ldr r0, _0800A6C8 @ =0x000001D3\n\
-	add r0, ip\n\
-	ldrb r0, [r0]\n\
-	cmp r3, r0\n\
-	bge _0800A6D4\n\
-	mov r5, ip\n\
-	mov sb, r4\n\
-	ldrh r4, [r7]\n\
-	mov r1, ip\n\
-	ldr r7, _0800A6CC @ =0x000004D4\n\
-	adds r2, r0, #0\n\
-_0800A67E:\n\
-	adds r0, r1, r7\n\
-	ldrh r0, [r0]\n\
-	cmp r0, r4\n\
-	beq _0800A68E\n\
-	adds r1, #0x18\n\
-	adds r3, #1\n\
-	cmp r3, r2\n\
-	blt _0800A67E\n\
-_0800A68E:\n\
-	ldr r1, _0800A6C8 @ =0x000001D3\n\
-	adds r0, r5, r1\n\
-	ldrb r0, [r0]\n\
-	cmp r3, r0\n\
-	bge _0800A6D4\n\
-	movs r0, #0xf2\n\
-	lsls r0, r0, #1\n\
-	adds r2, r5, r0\n\
-	add r2, sb\n\
-	lsls r1, r3, #1\n\
-	adds r1, r1, r3\n\
-	lsls r1, r1, #3\n\
-	ldr r3, _0800A6D0 @ =0x000004DC\n\
-	adds r0, r5, r3\n\
-	adds r0, r1, r0\n\
-	ldr r0, [r0]\n\
-	str r0, [r2]\n\
-	movs r0, #0xf4\n\
-	lsls r0, r0, #1\n\
-	adds r2, r5, r0\n\
-	add r2, sb\n\
-	adds r3, #4\n\
-	adds r0, r5, r3\n\
-	adds r1, r1, r0\n\
-	ldr r0, [r1]\n\
-	str r0, [r2]\n\
-	b _0800A704\n\
-	.align 2, 0\n\
-_0800A6C4: .4byte gOverworld\n\
-_0800A6C8: .4byte 0x000001D3\n\
-_0800A6CC: .4byte 0x000004D4\n\
-_0800A6D0: .4byte 0x000004DC\n\
-_0800A6D4:\n\
-	lsls r3, r6, #1\n\
-	adds r1, r3, r6\n\
-	lsls r1, r1, #3\n\
-	movs r2, #0xf2\n\
-	lsls r2, r2, #1\n\
-	add r2, ip\n\
-	adds r2, r1, r2\n\
-	movs r0, #0xee\n\
-	lsls r0, r0, #1\n\
-	add r0, ip\n\
-	adds r0, r1, r0\n\
-	ldr r0, [r0]\n\
-	str r0, [r2]\n\
-	movs r2, #0xf4\n\
-	lsls r2, r2, #1\n\
-	add r2, ip\n\
-	adds r2, r1, r2\n\
-	movs r0, #0xf0\n\
-	lsls r0, r0, #1\n\
-	add r0, ip\n\
-	adds r1, r1, r0\n\
-	ldr r0, [r1]\n\
-	str r0, [r2]\n\
-	mov sl, r3\n\
-_0800A704:\n\
-	mov r1, sl\n\
-	adds r0, r1, r6\n\
-	lsls r0, r0, #3\n\
-	mov r3, ip\n\
-	adds r2, r0, r3\n\
-	mov r1, r8\n\
-	ldrh r0, [r1, #4]\n\
-	lsrs r0, r0, #1\n\
-	movs r3, #0xec\n\
-	lsls r3, r3, #1\n\
-	adds r1, r2, r3\n\
-	strh r0, [r1]\n\
-	mov r1, r8\n\
-	ldrh r0, [r1, #6]\n\
-	lsrs r0, r0, #1\n\
-	adds r3, #2\n\
-	adds r1, r2, r3\n\
-	strh r0, [r1]\n\
-_0800A728:\n\
-	pop {r3, r4, r5}\n\
-	mov r8, r3\n\
-	mov sb, r4\n\
-	mov sl, r5\n\
-	pop {r4, r5, r6, r7}\n\
-	pop {r0}\n\
-	bx r0\n\
- .syntax divided\n");
+WIP void AppendHazard(u16 id, u16 attr, const struct Coord* c, const struct Rect* size) {
+#if MODERN
+  s32 len = gOverworld.objectLen;
+  if (len + 1 < 32) {
+    s32 i;
+    gOverworld.objectLen = len + 1;
+
+    gOverworld.objects[len].id = id;
+    gOverworld.objects[len].attr = attr;
+    gOverworld.objects[len].start.x = c->x + size->x;
+    gOverworld.objects[len].start.y = c->y + size->y;
+
+    for (i = 0; i < gOverworld.objectLenPrev; i++) {
+      if (gOverworld.objectsPrev[i].id == id) {
+        break;
+      }
+    }
+
+    if (i < gOverworld.objectLenPrev) {
+      gOverworld.objects[len].unk_10.x = gOverworld.objectsPrev[i].start.x;
+      gOverworld.objects[len].unk_10.y = gOverworld.objectsPrev[i].start.y;
+    } else {
+      gOverworld.objects[len].unk_10.x = gOverworld.objects[len].start.x;
+      gOverworld.objects[len].unk_10.y = gOverworld.objects[len].start.y;
+    }
+
+    gOverworld.objects[len].w = ((u16)size->w) >> 1;
+    gOverworld.objects[len].h = ((u16)size->h) >> 1;
+  }
+#else
+  INCCODE("asm/wip/AppendHazard.inc");
+#endif
 }
 
 // TODO asm/hazard.o

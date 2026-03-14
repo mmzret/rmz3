@@ -4,10 +4,10 @@
 #include "system.h"
 #include "task.h"
 
-static void loadStageLandscape(const struct Stage* p, const struct ScreenMap* map);
+static void loadStageLandscape(const struct Stage* p, const struct ChunkMap* map);
 static void TaskCB_UpdateOwGraphic(struct Overworld* ow, struct DrawPivot* tc);
 
-void ResetTerrain(struct Terrain* terrain, metatile_attr_t* attr, Metatile* tiles, Screen* m, const struct ScreenMap* map);
+void ResetTerrain(struct Terrain* terrain, metatile_attr_t* attr, Metatile* tiles, Screen* m, const struct ChunkMap* map);
 // clang-format off
 static const struct Stage* const gStageLandscape[STAGE_COUNT] = { // 0x0833a2e8
     [STAGE_NONE] =            &gStage0Landscape,
@@ -52,7 +52,7 @@ WIP void ResetLandscape(s32 stageID, struct Coord* viewport) {
   gVideoRegBuffer.dispcnt &= ~(DISPCNT_BG1_ON | DISPCNT_BG2_ON | DISPCNT_BG3_ON | DISPCNT_OBJ_ON | DISPCNT_WIN0_ON);
   SetTaskCallback(&gOverworld.task, TaskCB_UpdateOwGraphic);
   gOverworld.p = &gOverworld.task;
-  gOverworld.unk_2c002 = FALSE;
+  gOverworld.reload_graphic = FALSE;
   gOverworld.id = stageID | (1 << 7);
 
   {
@@ -69,8 +69,8 @@ WIP void ResetLandscape(s32 stageID, struct Coord* viewport) {
   }
   gOverworld.tilesets[0] = -1;
   gOverworld.tilesets[1] = -1;
-  gOverworld.unk_2c004.x = (stage->unk_78).x;
-  gOverworld.unk_2c004.y = (stage->unk_78).y;
+  gOverworld.conveyor[0] = (stage->conveyor)[0];
+  gOverworld.conveyor[1] = (stage->conveyor)[1];
   loadStageLandscape(stage, stage->maps[0]);
 
   for (i = 0; i < 3; i++) {
@@ -84,7 +84,7 @@ WIP void ResetLandscape(s32 stageID, struct Coord* viewport) {
   gOverworld.range.right = MAX_X;
   gOverworld.range.bottom = MAX_Y;
   HAZARD_LENGTH = 0;
-  gOverworld.hazard.prevLen = 0;
+  gOverworld.objectLenPrev = 0;
 
   for (i = 0; i < 4; i++) {
     gOverworld.state[i] = 0;
@@ -187,7 +187,7 @@ WIP void RestoreBackground(void) {
   gVideoRegBuffer.bgcnt[1] = gOverworld.savedBgCnt[0];
   gVideoRegBuffer.bgcnt[2] = gOverworld.savedBgCnt[1];
   gVideoRegBuffer.bgcnt[3] = gOverworld.savedBgCnt[2];
-  gOverworld.unk_2c002 = TRUE;
+  gOverworld.reload_graphic = TRUE;
 #else
   INCCODE("asm/wip/RestoreBackground.inc");
 #endif
@@ -229,20 +229,18 @@ NAKED static u16 getMetatileID(s32 x, s32 y) { INCCODE("asm/unused/getMetatileID
 /*
   (x, y)のタイルブロックのBlockAttrを取得する
 */
-WIP metatile_attr_t GetMetatileAttr(s32 x, s32 y) {
-#if MODERN
-  struct MetatileMap* tm;
+metatile_attr_t GetMetatileAttr(s32 x, s32 y) {
+  s32 idx;
+  struct TerrainV2* terrain;
   const s32 mx = METACOORD(x);
   const s32 my = METACOORD(y);
   if (((u32)mx > 0x770) || (my < 0) || (my > 0x4F5)) {
     return 0x0A01;
   }
 
-  tm = &gOverworld.tilemap;
-  return gOverworld.terrain.attrs[tm->map[my * tm->width + mx]];
-#else
-  INCCODE("asm/wip/GetMetatileAttr.inc");
-#endif
+  terrain = (struct TerrainV2*)&gOverworld.terrain;
+  idx = (my * terrain->tilemap[0]) + mx + 2;
+  return (terrain->hdr).attrs[terrain->tilemap[idx]];
 }
 
 /*
@@ -309,7 +307,7 @@ WIP void CalcCameraDelta(struct Coord* c, struct Coord* d) {
     r0 = 0x08347268
     r1 = 0x08346ab0
 */
-WIP static void loadStageLandscape(const struct Stage* p, const struct ScreenMap* layout) {
+WIP static void loadStageLandscape(const struct Stage* p, const struct ChunkMap* layout) {
 #if MODERN
   u16 x, y;
   u8* screenIdxs;
@@ -318,8 +316,8 @@ WIP static void loadStageLandscape(const struct Stage* p, const struct ScreenMap
   metatile_id_t nullMetatile = screens[layout->skip][0];
   u32 fill = (((u32)nullMetatile) << 16) | nullMetatile;
   struct MetatileMap* tm = &gOverworld.tilemap;
-  tm->width = layout->width * 15;
-  CpuFastFill(fill, tm->map, sizeof(struct MetatileMap));  // 多分ミス, unk_2c000 も巻き込まれているが最後に0クリアされてるので問題なし
+  tm->width16 = layout->width * 15;
+  CpuFastFill(fill, tm->map, sizeof(struct MetatileMap));  // tilemap_duty も巻き込まれているが最後に0クリアされてるので問題なし
 
   screenIdxs = (u8*)(layout + 1);
   dst = tm->map;
@@ -333,7 +331,7 @@ WIP static void loadStageLandscape(const struct Stage* p, const struct ScreenMap
       } else {
         metatile_id_t* src = screens[screenIdx];
         for (s16 i = 0; i < 10; i++) {
-          Transfer30Bytes(src, dst, 30);
+          CopyMemory(src, dst, 30);
           src = &src[15];
           dst = &dst[layout->width * 15];
         }
@@ -343,7 +341,7 @@ WIP static void loadStageLandscape(const struct Stage* p, const struct ScreenMap
     screenIdxs = &screenIdxs[(layout->realWidth - layout->width)];
     dst = &dst[layout->width * 135];
   }
-  gOverworld.unk_2c000 = FALSE;
+  gOverworld.tilemap_duty = FALSE;
 #else
   INCCODE("asm/wip/loadStageLandscape.inc");
 #endif
@@ -353,13 +351,18 @@ WIP static void loadStageLandscape(const struct Stage* p, const struct ScreenMap
 WIP void ShiftMetatile(s32 x, s32 y, const struct MetatileShift* s) {
 #if MODERN
   s32 i;
-  const u16 w = gOverworld.tilemap.width;
+  u8 id = gOverworld.id & 0x7F;
+  const struct Stage* stage = gStageLandscape[id];
+  u16* map = gOverworld.tilemap.map;
+  u32 w = (u32)((stage->maps[0])->width) * 15;
+  u16* dst = &map[((s->row + y) * w) + x];
+  u16* src = &map[((s->row + s->y) * w) + s->x];
   for (i = 0; i < s->row; i++) {
-    u16* src = &gOverworld.tilemap.map[(w * (s->row + s->y + i)) + s->x];
-    u16* dst = &gOverworld.tilemap.map[(w * (s->row + y + i)) + x];
-    Transfer30Bytes(src, dst, s->block << 1);
+    dst -= w;
+    src -= w;
+    CopyMemory(src, dst, s->block << 1);
   }
-  gOverworld.unk_2c000 = TRUE;
+  gOverworld.tilemap_duty = TRUE;
 #else
   INCCODE("asm/wip/ShiftMetatile.inc");
 #endif
@@ -421,7 +424,7 @@ _08009208:\n\
 	adds r0, r5, #0\n\
 	adds r1, r7, #0\n\
 	asrs r2, r6, #0x10\n\
-	bl Transfer30Bytes\n\
+	bl CopyMemory\n\
 	add r5, sl\n\
 	add r7, sb\n\
 	lsls r1, r4, #0x10\n\
@@ -456,25 +459,25 @@ _0800924C: .4byte 0x000007E4\n\
 
 /**
  * @brief Screen構造体を gOverworld.tilemap にロードする
- * @param screenID 08649444 とかの Screen[] の idx
+ * @param chunkID 08649444 とかの Screen[] の idx
  * @note 0x08009250
  */
-WIP void LoadScreenIntoMetatileMap(s32 screenX, s32 screenY, u16 screenID) {
+WIP void LoadScreenIntoMetatileMap(s32 chunkX, s32 chunkY, u16 chunkID) {
 #if MODERN
   s16 i;
   const struct Stage* stage = gStageLandscape[gOverworld.id & 0x7F];
   const struct TerrainHeader* h = stage->terrainHdr;
   const Screen* screens = ((const Screen*)(PTR_U32(h) + h->screens));
-  metatile_id_t* src = (metatile_id_t*)screens[screenID];
+  metatile_id_t* src = (metatile_id_t*)screens[chunkID];
   const u32 w = (stage->maps[0])->width;
   struct MetatileMap* tm = &gOverworld.tilemap;
-  u16* dst = &tm->map[(screenY * (w * 15) * 10) + (screenX * 15)];
+  u16* dst = &tm->map[(chunkY * (w * 15) * 10) + (chunkX * 15)];
   for (i = 0; i < 10; i++) {
-    Transfer30Bytes(src, dst, 30);
+    CopyMemory(src, dst, 30);
     dst = &dst[w * 15];
     src = &src[15];
   }
-  gOverworld.unk_2c000 = TRUE;
+  gOverworld.tilemap_duty = TRUE;
 #else
   INCCODE("asm/wip/LoadScreenIntoMetatileMap.inc");
 #endif
@@ -482,7 +485,7 @@ WIP void LoadScreenIntoMetatileMap(s32 screenX, s32 screenY, u16 screenID) {
 
 /**
  * @brief Reset gOverworld.layer[n]
- * @param n 0(BG1) or 1(BG2) or 2(BG3)
+ * @param n このステージレイヤのタイプ(0: 地形データ, 1: 水面や草など(=前景?), 2: 雲などの背景)
  * @note 0x080092e0
  */
 WIP void ResetStageLayer(s32 n, const struct Stage* p) {
@@ -494,7 +497,7 @@ WIP void ResetStageLayer(s32 n, const struct Stage* p) {
 
   terrain = p->terrainHdr;
 
-  (&gOverworld.layer[n])->n = n;
+  (&gOverworld.layer[n])->type = n;
   (&gOverworld.layer[n])->unk_0f = 0;
   (&gOverworld.layer[n])->phase = 0;
   (&gOverworld.layer[n])->unk_10 = (&gOverworld.layer[n])->unk_12 = 0;
@@ -507,8 +510,8 @@ WIP void ResetStageLayer(s32 n, const struct Stage* p) {
   (&gOverworld.layer[n])->fn[2] = NULL;
   tiles = (Metatile*)(PTR_U32(&terrain->tiles) + terrain->tiles);
   screens = (Screen*)(PTR_U32(&terrain->tiles) + terrain->screens);
-  if (n == 0) {
-    ResetLayerGraphic(&gOverworld.layer[0].gfx, c, gOverworld.bgmap, tiles, screens, p->maps[0]);
+  if (n == STAGE_LAYER_TERRAIN) {
+    ResetLayerGraphic(&gOverworld.layer[STAGE_LAYER_TERRAIN].gfx, c, gOverworld.bgmap, tiles, screens, p->maps[STAGE_LAYER_TERRAIN]);
   } else {
     ResetLayerGraphic(&gOverworld.layer[n].gfx, c, (u16*)(VRAM + SCREEN_BASE(n)), tiles, screens, p->maps[n]);
   }
@@ -525,6 +528,8 @@ static void unused_080093a0(s32 n) {
 }
 #endif
 
+// ステージレイヤ の描画関数
+// TaskCB_UpdateOwGraphic から呼び出される
 WIP void DrawGeneralStageLayer(struct StageLayer* l, const struct Stage* _) {
 #if MODERN
   struct Coord c;
@@ -538,17 +543,18 @@ WIP void DrawGeneralStageLayer(struct StageLayer* l, const struct Stage* _) {
   c.x += ((l->drawPivotOffset).x >> 8);
   c.y += ((l->drawPivotOffset).y >> 8);
 
-  if (l->n == 0) {
-    if (((a < 31) && (b < 31)) && !gOverworld.unk_2c000) {
+  // STAGE_LAYER_TERRAIN は .tilemap から描画範囲を切り出して (GBAのBGマップ形式に変換して) .bgmap に書き込む(VRAMへの書き込みは別の関数で行う)
+  // 他のステージレイヤは 実VRAMに直接描画する (大丈夫?)
+  if (l->type == STAGE_LAYER_TERRAIN) {
+    if (((a < 31) && (b < 31)) && !gOverworld.tilemap_duty) {
       FUN_08006bb4(&l->gfx, &c, (u32*)gOverworld.bgmap, &gOverworld.tilemap);
     } else {
       FUN_08006a10(&l->gfx, &c, (u32*)gOverworld.bgmap, &gOverworld.tilemap);
     }
-    gOverworld.unk_2c000 = FALSE;
+    gOverworld.tilemap_duty = FALSE;
 
   } else if ((a < 31) && (b < 31)) {
     FUN_080050b0(&l->gfx, &c, VRAM + SCREEN_BASE(l->bgIdx >> 4));
-
   } else {
     FUN_08005a70(&l->gfx, &c, VRAM + SCREEN_BASE(l->bgIdx >> 4));
   }
@@ -655,7 +661,7 @@ static void TaskCB_UpdateOwGraphic(struct Overworld* ow, struct DrawPivot* dp) {
     }
   }
   RequestBgMapTransfer(gOverworld.bgmap, (void*)SCREEN_BASE_16(gOverworld.layer[0].bgIdx >> 4), 0x1000);
-  gOverworld.unk_2c002 = FALSE;
+  gOverworld.reload_graphic = FALSE;
 }
 
 WIP void UpdateStageLayer(struct StageLayer* l, const struct Stage* s, struct Coord* c) {
@@ -671,8 +677,8 @@ WIP void UpdateStageLayer(struct StageLayer* l, const struct Stage* s, struct Co
   X = gScreenX[METACOORD(c->x)];
   Y = gScreenY[METACOORD(c->y)];
   if ((X < s->tilesetOffset[2]) && (Y < s->tilesetOffset[3])) {
-    const u8 w = s->behavior[0];
-    const StageBgFunc* fns = s->bgFns[(s->behavior[(Y << w) + X + 4] >> ((2 - l->n) * 4)) & 0xF];
+    const u16 w = s->behavior[0];
+    const StageBgFunc* fns = s->bgFns[(s->behavior[(Y << w) + X + 4] >> ((2 - l->type) * 4)) & 0xF];
 
     if ((l->fn[0] != fns[0]) || (l->fn[1] != fns[1])) {
       if (l->fn[LAYER_EXIT] != NULL) {
@@ -682,15 +688,15 @@ WIP void UpdateStageLayer(struct StageLayer* l, const struct Stage* s, struct Co
       l->fn[LAYER_DRAW] = fns[LAYER_DRAW];
       l->fn[LAYER_EXIT] = fns[LAYER_EXIT];
 
-      l->bgIdx = s->bgIdx[l->n];
-      l->prio = s->prio[l->n];
-      l->screenBase = s->screenBase[l->n];
+      l->bgIdx = s->bgIdx[l->type];
+      l->prio = s->prio[l->type];
+      l->screenBase = s->screenBase[l->type];
 
-      (l->scrollPower).x = s->scrollPower[l->n].x;
-      (l->scrollPower).y = s->scrollPower[l->n].y;
+      (l->scrollPower).x = s->scrollPower[l->type].x;
+      (l->scrollPower).y = s->scrollPower[l->type].y;
 
-      (l->scroll).x = s->scroll[l->n].x;
-      (l->scroll).y = s->scroll[l->n].y;
+      (l->scroll).x = s->scroll[l->type].x;
+      (l->scroll).y = s->scroll[l->type].y;
 
       if ((l->fn[0] == NULL) && (l->fn[1] == NULL)) {
         gVideoRegBuffer.dispcnt &= ~(u16)(l->bgIdx << 8);

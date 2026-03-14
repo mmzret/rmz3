@@ -23,7 +23,7 @@ static const GameLoopFunc sGameLoops[16];
 
 static void FUN_080ee228(void);
 
-void FUN_08019678(struct Story *p);
+void FUN_08019678(struct Story* p);
 
 const u16 u16_ARRAY_083860b0[64] = {
     0x0000, 0x0000, 0x8000, 0x0020, 0x0020, 0x8020, 0x0040, 0x0040, 0x8040, 0x0060, 0x0060, 0x8060, 0x0080, 0x0080, 0x8080, 0x00A0, 0x00A0, 0x80A0, 0x00C0, 0x00C0, 0x80C0, 0x00E0, 0x00E0, 0x80E0, 0x0100, 0x0100, 0x8100, 0x0120, 0x0120, 0x8120, 0x0140, 0x0140, 0x8140, 0x0160, 0x0160, 0x8160, 0x0180, 0x0180, 0x8180, 0x01A0, 0x01A0, 0x81A0, 0x01C0, 0x01C0, 0x81C0, 0x01E0, 0x01E0, 0x81E0, 0x0200, 0x0200, 0x8200, 0x0220, 0x0220, 0x8220, 0x0240, 0x0240, 0x8240, 0x0260, 0x0260, 0x8260, 0x0280, 0x0280, 0x8280, 0x02A0,
@@ -180,7 +180,7 @@ _080EE324: .4byte 0x05000040\n\
  .syntax divided\n");
 }
 
-NAKED void FUN_080ee328(u32 *pal, u32 r1, u32 r2, u16 *src) {
+NAKED void FUN_080ee328(u32* pal, u32 r1, u32 r2, u16* src) {
   asm(".syntax unified\n\
 	lsrs r1, r1, #1\n\
 	push {r4, r5, r6, r7}\n\
@@ -215,14 +215,14 @@ _080EE32E:\n\
 
 // --------------------------------------------
 
-void MainLoop_Game(struct GameState *s) {
+void MainLoop_Game(struct GameState* s) {
   (sGameLoops[s->mode[1]])(s);
   return;
 }
 
-WIP void SaveGraphicState(struct GameState *p) {
+WIP void SaveGraphicState(struct GameState* p) {
 #if MODERN
-  p->savedColor0 = *((u16 *)&gPaletteManager.buf[0]);
+  p->savedColor0 = *((u16*)&gPaletteManager.buf[0]);
   SaveDispRegister();
 
   CpuFastCopy(&gBlendRegBuffer, &p->savedBlendRegister, sizeof(struct WramBlendRegister) / 32);
@@ -232,7 +232,7 @@ WIP void SaveGraphicState(struct GameState *p) {
   CpuFastCopy(&gWindowRegBuffer, &p->savedWindowRegister, sizeof(struct WramWindowRegister) / 32);
   CpuCopy32(&gWindowRegBuffer, &p->savedWindowRegister, sizeof(struct WramWindowRegister) % 32);
   gWindowRegBuffer.dispcnt = 0;
-  gWindowRegBuffer.unk_0c[2] = 0xFF;
+  gWindowRegBuffer.winin[2] = 0xFF;
 
   CpuFastCopy(OBJ_VRAM1, p->savedObjVRAM, 16384);
   CpuFastCopy(&gPaletteManager.buf[256], p->savedObjPal, 512);
@@ -241,7 +241,7 @@ WIP void SaveGraphicState(struct GameState *p) {
 #endif
 }
 
-WIP void RestoreGraphicState(struct GameState *p) {
+WIP void RestoreGraphicState(struct GameState* p) {
 #if MODERN
   RestoreBackground();
   CpuFastCopy(&p->savedBlendRegister, &gBlendRegBuffer, sizeof(struct WramBlendRegister) / 32);
@@ -250,17 +250,17 @@ WIP void RestoreGraphicState(struct GameState *p) {
   CpuCopy32(&p->savedWindowRegister, &gWindowRegBuffer, sizeof(struct WramWindowRegister) % 32);
   CpuFastCopy(p->savedObjVRAM, OBJ_VRAM1, 16384);
   CpuFastCopy(p->savedObjPal, &gPaletteManager.buf[256], 512);
-  *((u16 *)&gPaletteManager.buf[0]) = p->savedColor0;
+  *((u16*)&gPaletteManager.buf[0]) = p->savedColor0;
 #else
   INCCODE("asm/wip/RestoreGraphicState.inc");
 #endif
 }
 
 // 00 00 nn nn
-NAKED static void GameLoop_NewGame(struct GameState *p) { INCCODE("asm/todo/GameLoop_NewGame.inc"); }
+NAKED static void GameLoop_NewGame(struct GameState* p) { INCCODE("asm/todo/GameLoop_NewGame.inc"); }
 
 // 00 01 nn nn
-static void GameLoop_ContinueGame(struct GameState *p) {
+static void GameLoop_ContinueGame(struct GameState* p) {
   (p->save).stageID = STAGE_BASE;
   gGameState.z2 = gGameState.z3 = &gZero;
   FUN_08019678(&(p->save).story);
@@ -272,21 +272,21 @@ static void GameLoop_ContinueGame(struct GameState *p) {
   SetGameMode(p, GAMEMODE(MAINGAME, PRE_OVERWORLD, 1, 0x60));
 }
 
-static void GameLoop_Nop2(struct GameState *_) { return; }
+static void GameLoop_Nop2(struct GameState* _) { return; }
 
-static void GameLoop_PreOverworld(struct GameState *p) {
+static void GameLoop_PreOverworld(struct GameState* p) {
   gPaletteManager.filter[0] = gPaletteManager.filter[1] = gPaletteManager.filter[2] = 0x20;
   gPaletteManager.unk_408 = NULL;
   ClearBlinkings();
   gBlendRegBuffer.bldclt = 0;
   gWindowRegBuffer.dispcnt = 0;
-  gWindowRegBuffer.unk_0c[2] = 0xFF;
+  gWindowRegBuffer.winin[2] = 0xFF;
   wMOSAIC = 0;
   PALETTE16(0) = RGB_BLACK;
   gVideoRegBuffer.dispcnt &= BG_MODE_0;
   gVideoRegBuffer.dispcnt &= ~DISPCNT_BG_ALL_ON;
   gVideoRegBuffer.dispcnt |= DISPCNT_BG0_ON;
-  *(u32 *)gVideoRegBuffer.bgofs[0] = 0;
+  *(u32*)gVideoRegBuffer.bgofs[0] = 0;
   p->unk_1ed8 = 0xFFFFFFFF;
   p->inMenu = FALSE;
   ResetTaskManager(&p->taskManager);
@@ -294,7 +294,7 @@ static void GameLoop_PreOverworld(struct GameState *p) {
   ResetEntityEnvironment();
   RNG_0202f388 = (u32)(p->save).stageID;
   s32_0202f334 = -1;
-  PTR_0202f384 = (void *)&p->unk_1ed8;
+  PTR_0202f384 = (void*)&p->unk_1ed8;
   pZero2 = p->z2;
   InitPlayerHeader(&p->entityHeaders[ENTITY_PLAYER], &gZero, 1);
   InitWeaponHeader(&p->entityHeaders[ENTITY_WEAPON], gWeapons, 24);
@@ -306,14 +306,14 @@ static void GameLoop_PreOverworld(struct GameState *p) {
   InitPickupHeader(&p->entityHeaders[ENTITY_ITEM], gPickups, 10);
   InitElfHeader(&p->entityHeaders[ENTITY_ELF], gElfEntities, 16);
   FUN_080250b8();
-  ResetHUD((u16 *)gGameState.bg0);
-  ClearTextWindow((u16 *)gGameState.bg0);
+  ResetHUD((u16*)gGameState.bg0);
+  ClearTextWindow((u16*)gGameState.bg0);
   SaveZeroStatus(p->z2, &(p->save).status);
   ClearStageRun(&p->taskManager);
   p->mode[1]++;  // -> OVERWORLD
 }
 
-WIP static void GameLoop_Overworld(struct GameState *p) {
+WIP static void GameLoop_Overworld(struct GameState* p) {
 #if MODERN
   bool8 isPaused;
   bool32 escape;
@@ -373,7 +373,7 @@ WIP static void GameLoop_Overworld(struct GameState *p) {
         (gMission.unk_00)->playTime++;
       }
     }
-    FUN_0802511c();
+    FUN_0802511c();  // ゼロの属性(エレメント)　によるグラフィックデータ？
     if (!gPause) {
       UpdateHazardEntities(gSolidHeaderPtr);
       UpdateHazardEntities(gBossHeaderPtr);
@@ -405,7 +405,7 @@ WIP static void GameLoop_Overworld(struct GameState *p) {
   RunDamageEffect(gZeroHeaderPtr);
   RunDamageEffect(gPickupHeaderPtr);
 
-  struct TaskManager *tm = &p->taskManager;
+  struct TaskManager* tm = &p->taskManager;
   DrawCollidableEntity(gSolidHeaderPtr, tm);
   DrawCollidableEntity(gBossHeaderPtr, tm);
   DrawCollidableEntity(gZakoHeaderPtr, tm);
@@ -419,7 +419,7 @@ WIP static void GameLoop_Overworld(struct GameState *p) {
   UpdateTextWindow();
   RunOverworldLoop(p);
 
-  if ((((gJoypad[0].pressed & START_BUTTON) && (*(s32 *)p->mode == 0x400)) && ((((p->z2->body).status & BODY_STATUS_DEAD) == 0 && ((p->z2->body).hp != 0)))) && ((((gTextWindow.text.mode == 0 || (gTextWindow.text.mugshot == 0)) && ((gStageRun.missionStatus & DISABLE_MENU) == 0)) && ((((((gStageRun.missionStatus & MISSION_STAY) && ((gStageRun.vm.active & 1) == 0)) && (gStageRun.vm.screenEffect == NO_SCREEN_EFFECT)) && ((gGameState.mode[2] == 0 && (!gPause)))) && ((wMOSAIC == 0 && (gLifeRecoverAmount == 0)))))))) {
+  if ((((gJoypad[0].pressed & START_BUTTON) && (*(s32*)p->mode == 0x400)) && ((((p->z2->body).status & BODY_STATUS_DEAD) == 0 && ((p->z2->body).hp != 0)))) && ((((gTextWindow.text.mode == 0 || (gTextWindow.text.mugshot == 0)) && ((gStageRun.missionStatus & DISABLE_MENU) == 0)) && ((((((gStageRun.missionStatus & MISSION_STAY) && ((gStageRun.vm.active & 1) == 0)) && (gStageRun.vm.screenEffect == NO_SCREEN_EFFECT)) && ((gGameState.mode[2] == 0 && (!gPause)))) && ((wMOSAIC == 0 && (gLifeRecoverAmount == 0)))))))) {
     p->inMenu = TRUE;
     SetGameMode(p, GAMEMODE(MAINGAME, OPEN_MENU, 0, 0));
   }
@@ -437,7 +437,7 @@ WIP static void GameLoop_Overworld(struct GameState *p) {
 #endif
 }
 
-static void GameLoop_OpenMenu(struct GameState *p) {
+static void GameLoop_OpenMenu(struct GameState* p) {
   if (p->mode[3] == 0) {
     TurnDownBGM();
     p->frames = 32;
@@ -455,8 +455,8 @@ static void GameLoop_OpenMenu(struct GameState *p) {
     CancelCyberSpaceColorFilter();
     SetGameMode(p, GAMEMODE(MODE_MENU, 0, 0, 0));
   } else {
-    void *dst;
-    struct TaskManager *tm = &(p->taskManager);
+    void* dst;
+    struct TaskManager* tm = &(p->taskManager);
     ClearTaskBuffer(tm);
     ClearAllHitboxes();
     gMatrixCount = 0;
@@ -475,19 +475,21 @@ static void GameLoop_OpenMenu(struct GameState *p) {
     CameraUpdate(TRUE);
     DrawHUD(p);
     UpdateTextWindow();
-    { vu32 _; }
+    {
+      vu32 _;
+    }
   }
 }
 
-WIP static void GameLoop_CloseMenu(struct GameState *p) {
+WIP static void GameLoop_CloseMenu(struct GameState* p) {
 #if MODERN
-  struct TaskManager *tm;
-  void *dst;
+  struct TaskManager* tm;
+  void* dst;
   s16 frames;
 
   if (p->mode[3] == 0) {
-    struct Zero *z;
-    struct Zero_b4 *b4 = &p->z2->unk_b4;
+    struct Zero* z;
+    struct Zero_b4* b4 = &p->z2->unk_b4;
     u8 color = (b4->status).body;
 
     if (FLAG(gCurStory.s.gameflags, IN_CYBERSPACE)) {
@@ -539,7 +541,9 @@ WIP static void GameLoop_CloseMenu(struct GameState *p) {
   CameraUpdate(TRUE);
   DrawHUD(p);
   UpdateTextWindow();
-  { vu32 _; }
+  {
+    vu32 _;
+  }
 
   p->frames += 2;
   gPaletteManager.filter[0] = gPaletteManager.filter[1] = gPaletteManager.filter[2] = p->frames;
@@ -558,7 +562,7 @@ WIP static void GameLoop_CloseMenu(struct GameState *p) {
 #endif
 }
 
-NAKED static void GameLoop_SwitchCyberSpace(struct GameState *p) { INCCODE("asm/todo/GameLoop_SwitchCyberSpace.inc"); }
+NAKED static void GameLoop_SwitchCyberSpace(struct GameState* p) { INCCODE("asm/todo/GameLoop_SwitchCyberSpace.inc"); }
 
 /*
   00 08 -- --
@@ -566,7 +570,7 @@ NAKED static void GameLoop_SwitchCyberSpace(struct GameState *p) { INCCODE("asm/
   - デモプレイが終わってタイトル画面に戻る時
   - ティウンティウン後の次の残機でリトライするとき
 */
-WIP static void GameLoop_ChangeMap(struct GameState *p) {
+WIP static void GameLoop_ChangeMap(struct GameState* p) {
 #if MODERN
   UpdateStoryFlag();
   if (FLAG(gCurStory.s.gameflags, DEMO_PLAY)) {
@@ -696,19 +700,19 @@ xx (02030b62):
 
 02030b62 (処理フェイズ)に関わらず、選択肢の文字を描画する処理は行う(画面が真っ黒のときでも)
 */
-NAKED static void GameLoop_GameOver(struct GameState *p) { INCCODE("asm/todo/GameLoop_GameOver.inc"); }
+NAKED static void GameLoop_GameOver(struct GameState* p) { INCCODE("asm/todo/GameLoop_GameOver.inc"); }
 
-static void GameLoop_Nop10(struct GameState *p) { return; }  // 00 0a -- --
+static void GameLoop_Nop10(struct GameState* p) { return; }  // 00 0a -- --
 
-NAKED static void GameLoop_UnlockMinigame(struct GameState *p) { INCCODE("asm/todo/GameLoop_UnlockMinigame.inc"); }
-NAKED static void GameLoop_SystemSaveScreen(struct GameState *p) { INCCODE("asm/todo/GameLoop_SystemSaveScreen.inc"); }
+NAKED static void GameLoop_UnlockMinigame(struct GameState* p) { INCCODE("asm/todo/GameLoop_UnlockMinigame.inc"); }
+NAKED static void GameLoop_SystemSaveScreen(struct GameState* p) { INCCODE("asm/todo/GameLoop_SystemSaveScreen.inc"); }
 
 /*
   00 0D xx --
 
   ハードモードかアルティメットモードでゲームを始めた時に通知を鳴らしてゲームを開始させる
 */
-static void GameLoop_StartSpecialMode(struct GameState *p) {
+static void GameLoop_StartSpecialMode(struct GameState* p) {
   switch (p->mode[2]) {
     case 0: {
       PlaySound(SE_NOTIFICATION);
@@ -730,10 +734,10 @@ static void GameLoop_StartSpecialMode(struct GameState *p) {
   00 0e 00 00
   タイトル画面で放置した時のデモプレイと関係あり
 */
-static void GameLoop_demoplay_080f033c(struct GameState *p) {
+static void GameLoop_demoplay_080f033c(struct GameState* p) {
   struct ZeroStatus *status, *status2;
   u16 stageID;
-  struct SaveSlot *s = &p->save;
+  struct SaveSlot* s = &p->save;
 
   s->gamemode = 0;
   gGameState.z2 = gGameState.z3 = &gZero;
@@ -744,7 +748,7 @@ static void GameLoop_demoplay_080f033c(struct GameState *p) {
   status = &(p->save).status;
   ClearZeroStatus(status);
   SET_FLAG(gCurStory.s.gameflags, DEMO_PLAY);
-  *(u8 *)&(p->save).story.id = *(u8 *)&(p->save).story.id | 0x40;
+  *(u8*)&(p->save).story.id = *(u8*)&(p->save).story.id | 0x40;
 
   (status->keyMap).keys.jump = A_BUTTON;
   (status->keyMap).keys.dash = L_BUTTON;
@@ -785,13 +789,13 @@ static void GameLoop_demoplay_080f033c(struct GameState *p) {
 /*
   00 0f 00 00
 */
-static void GameLoop_SkieEventScene(struct GameState *p) {
+static void GameLoop_SkieEventScene(struct GameState* p) {
   gPaletteManager.filter[0] = gPaletteManager.filter[1] = gPaletteManager.filter[2] = 0x20;
   gPaletteManager.unk_408 = NULL;
   ClearBlinkings();
   gBlendRegBuffer.bldclt = 0;
   gWindowRegBuffer.dispcnt = 0;
-  gWindowRegBuffer.unk_0c[2] = 0xFF;
+  gWindowRegBuffer.winin[2] = 0xFF;
   wMOSAIC = 0;
   PALETTE16(0) = RGB_BLACK;
   gVideoRegBuffer.dispcnt &= BG_MODE_0;

@@ -3,9 +3,11 @@
 #include "task.h"
 #include "vfx.h"
 
-static void Ghost83_Init(struct VFX *p);
-static void Ghost83_Update(struct VFX *p);
-static void Ghost83_Die(struct VFX *p);
+extern struct Zero* pZero2;
+
+static void Ghost83_Init(struct VFX* p);
+static void Ghost83_Update(struct VFX* p);
+static void Ghost83_Die(struct VFX* p);
 
 // clang-format off
 const VFXRoutine gGhost83Routine = {
@@ -19,8 +21,8 @@ const VFXRoutine gGhost83Routine = {
 
 // --------------------------------------------
 
-struct VFX *CreateGhost83(struct Entity *p) {
-  struct VFX *g = (struct VFX *)AllocEntityFirst(gVFXHeaderPtr);
+struct VFX* CreateGhost83(struct Entity* p) {
+  struct VFX* g = (struct VFX*)AllocEntityFirst(gVFXHeaderPtr);
   if (g != NULL) {
     (g->s).taskCol = 1;
     INIT_VFX_ROUTINE(g, VFX_UNK_083);
@@ -35,11 +37,11 @@ struct VFX *CreateGhost83(struct Entity *p) {
 
 // --------------------------------------------
 
-static void FUN_080c9b4c(struct Sprite *p, struct DrawPivot *_);
+static void TaskCB_080c9b4c(struct Sprite* p, struct DrawPivot* _);
 
-static void Ghost83_Init(struct VFX *p) {
-  SetTaskCallback((struct Task *)&(p->s).spr, FUN_080c9b4c);
-  (p->s).spr.sprites = (struct MetaspriteHeader *)p;
+static void Ghost83_Init(struct VFX* p) {
+  SetTaskCallback((struct Task*)&(p->s).spr, TaskCB_080c9b4c);
+  (p->s).spr.sprites = (struct MetaspriteHeader*)p;
   (p->s).flags &= 0xF7;
   (p->s).flags |= DISPLAY;
   (p->s).flags |= FLIPABLE;
@@ -52,88 +54,47 @@ static void Ghost83_Init(struct VFX *p) {
 
 // --------------------------------------------
 
-NAKED static void Ghost83_Update(struct VFX *p) {
-  asm(".syntax unified\n\
-	push {lr}\n\
-	adds r2, r0, #0\n\
-	ldr r0, [r2, #0x28]\n\
-	ldrb r0, [r0, #0xc]\n\
-	cmp r0, #1\n\
-	bhi _080C9AE4\n\
-	cmp r0, #4\n\
-	beq _080C9AE4\n\
-	ldr r0, [r2, #0x2c]\n\
-	ldrb r1, [r0, #0xc]\n\
-	cmp r1, #1\n\
-	bhi _080C9AE4\n\
-	ldrb r0, [r0, #0xe]\n\
-	cmp r0, #9\n\
-	bhi _080C9AE4\n\
-	cmp r1, #4\n\
-	beq _080C9AE4\n\
-	ldr r0, _080C9B04 @ =pZero2\n\
-	ldr r0, [r0]\n\
-	ldrb r1, [r0, #0xa]\n\
-	movs r0, #1\n\
-	ands r0, r1\n\
-	cmp r0, #0\n\
-	bne _080C9B0C\n\
-_080C9AE4:\n\
-	ldrb r1, [r2, #0xa]\n\
-	movs r0, #0xfe\n\
-	ands r0, r1\n\
-	movs r1, #0xfd\n\
-	ands r0, r1\n\
-	strb r0, [r2, #0xa]\n\
-	ldr r1, _080C9B08 @ =gVFXFnTable\n\
-	ldrb r0, [r2, #9]\n\
-	lsls r0, r0, #2\n\
-	adds r0, r0, r1\n\
-	movs r1, #3\n\
-	str r1, [r2, #0xc]\n\
-	ldr r0, [r0]\n\
-	ldr r0, [r0, #0xc]\n\
-	str r0, [r2, #0x14]\n\
-	b _080C9B1C\n\
-	.align 2, 0\n\
-_080C9B04: .4byte pZero2\n\
-_080C9B08: .4byte gVFXFnTable\n\
-_080C9B0C:\n\
-	ldr r0, _080C9B20 @ =0x0836FAE0\n\
-	ldrb r1, [r2, #0xd]\n\
-	lsls r1, r1, #2\n\
-	adds r1, r1, r0\n\
-	ldr r1, [r1]\n\
-	adds r0, r2, #0\n\
-	bl _call_via_r1\n\
-_080C9B1C:\n\
-	pop {r0}\n\
-	bx r0\n\
-	.align 2, 0\n\
-_080C9B20: .4byte sUpdates\n\
- .syntax divided\n");
+static void FUN_080c9b44(struct VFX* p);
+static void FUN_080c9b48(struct VFX* p);
+
+static void Ghost83_Update(struct VFX* vfx) {
+  static const VFXFunc sUpdates[2] = {
+      FUN_080c9b44,
+      FUN_080c9b48,
+  };
+
+  if (((vfx->s).unk_28)->mode[0] < 2) {
+    if (((vfx->s).unk_28)->mode[0] != 4) {
+      if (((vfx->s).unk_2c)->mode[0] < 2) {
+        if ((((vfx->s).unk_2c)->mode[2] < 10) && (((vfx->s).unk_2c)->mode[0] != 4)) {
+          if ((pZero2->s).flags & DISPLAY) {
+            goto _Update;
+          }
+        }
+      }
+    }
+  }
+  (vfx->s).flags &= ~DISPLAY;
+  (vfx->s).flags &= ~FLIPABLE;
+  SET_VFX_ROUTINE(vfx, ENTITY_DISAPPEAR);
+  return;
+
+_Update:
+  (sUpdates[(vfx->s).mode[1]])(vfx);
 }
 
 // --------------------------------------------
 
-static void Ghost83_Die(struct VFX *p) {
+static void Ghost83_Die(struct VFX* p) {
   (p->s).flags &= ~DISPLAY;
   SET_VFX_ROUTINE(p, ENTITY_EXIT);
 }
 
 // --------------------------------------------
 
-static void FUN_080c9b44(struct VFX *p);
-static void FUN_080c9b48(struct VFX *p);
+static void FUN_080c9b44(struct VFX* p) { return; }
 
-static const VFXFunc sUpdates[2] = {
-    FUN_080c9b44,
-    FUN_080c9b48,
-};
-
-static void FUN_080c9b44(struct VFX *p) { return; }
-
-static void FUN_080c9b48(struct VFX *p) { return; }
+static void FUN_080c9b48(struct VFX* p) { return; }
 
 // --------------------------------------------
 
@@ -141,7 +102,7 @@ static const u8 u8_ARRAY_0836fae8[32] = {
     2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 2, 2, 2, 2, 1, 1, 1, 1, 1, 1,
 };
 
-NAKED static void FUN_080c9b4c(struct Sprite *p, struct DrawPivot *_) {
+NAKED static void TaskCB_080c9b4c(struct Sprite* p, struct DrawPivot* _) {
   asm(".syntax unified\n\
 	push {r4, r5, r6, r7, lr}\n\
 	sub sp, #4\n\

@@ -27,7 +27,7 @@ struct TransferReservation {
   u16* src;
   void* DMA0SAD;
   void* DMA0DAD;
-  void* DMA0CNT;
+  u32 DMA0CNT;
   s16 delta_src;
   s16 delta_dst;
   u16 remaining;
@@ -86,7 +86,7 @@ void disableProcess(s32 i);
 void SwitchProcess(bool32 b);
 void ExitProcess(void);
 void FUN_08002428(struct Process* p);
-void Transfer30Bytes(void* src, void* dst, u32 bytesize);
+void CopyMemory(void* src, void* dst, u32 bytesize);
 void FillMemory(u16 fillval, u16* dst, u32 bytesize);
 
 /*

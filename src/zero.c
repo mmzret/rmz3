@@ -6,20 +6,20 @@
 #include "physics.h"
 #include "sound.h"
 
-static void appendHazardID(struct Zero *z, u16 target);
-static s32 hazard_08028114(struct Zero *z, s32 x, s32 y);
-static metatile_attr_t AppendHazardID(struct Zero *z, s32 x, s32 y);
-static u16 AppendHazardID_2(struct Zero *z, s32 x, s32 y);
-static bool8 IsAgainstHazard(struct Zero *z, s32 x, s32 y);
-static u8 hazard_0802855c(struct Zero *z, s32 x, s32 y);
-static metatile_attr_t IsInHazard(struct Zero *z, s32 x, s32 y);
-static bool16 hazard_08028338(struct Zero *z, s32 x, s32 y);
+static void appendHazardID(struct Zero* z, u16 target);
+static s32 hazard_08028114(struct Zero* z, s32 x, s32 y);
+static metatile_attr_t AppendHazardID(struct Zero* z, s32 x, s32 y);
+static metatile_attr_t AppendHazardID_2(struct Zero* z, s32 x, s32 y);
+static bool8 IsAgainstHazard(struct Zero* z, s32 x, s32 y);
+static u8 hazard_0802855c(struct Zero* z, s32 x, s32 y);
+static metatile_attr_t IsInHazard(struct Zero* z, s32 x, s32 y);
+static bool16 hazard_08028338(struct Zero* z, s32 x, s32 y);
 
-static metatile_attr_t _pushoutHazardX1(struct Zero *z, s32 x, s32 y, struct Coord *c);
-static metatile_attr_t _pushoutHazardX2(struct Zero *z, s32 x, s32 y, struct Coord *c);
+static metatile_attr_t _pushoutHazardX1(struct Zero* z, s32 x, s32 y, struct Coord* c);
+static metatile_attr_t _pushoutHazardX2(struct Zero* z, s32 x, s32 y, struct Coord* c);
 
 // 0x08025628
-void InitPlayerHeader(struct EntityHeader *h, struct Zero *p, s16 len) {
+void InitPlayerHeader(struct EntityHeader* h, struct Zero* p, s16 len) {
   s16 i;
 
   InitEntityHeader(h, ENTITY_PLAYER, &p->s, sizeof(struct Zero), len);
@@ -31,11 +31,11 @@ void InitPlayerHeader(struct EntityHeader *h, struct Zero *p, s16 len) {
   pZero = p;
 }
 
-struct Zero *AllocPlayer(void) {
-  struct Zero *tmp;
-  struct Zero *z;
+struct Zero* AllocPlayer(void) {
+  struct Zero* tmp;
+  struct Zero* z;
 
-  z = (struct Zero *)AllocEntityLast(gZeroHeaderPtr);
+  z = (struct Zero*)AllocEntityLast(gZeroHeaderPtr);
   if ((z != NULL) && (z != pZero)) {  // not equal
     tmp = AllocPlayer();
     DeletePlayer(gZeroHeaderPtr, z);
@@ -49,11 +49,12 @@ struct Zero *AllocPlayer(void) {
   return z;
 }
 
-struct Zero *AllocPlayer2(void) {
-  struct Zero *tmp;
-  struct Zero *z;
+// ミニゲームの(ゼロのミニゲーム以外の)プレイヤー生成?
+struct Zero* AllocPlayer2(void) {
+  struct Zero* tmp;
+  struct Zero* z;
 
-  z = (struct Zero *)AllocEntityFirst(gZeroHeaderPtr);
+  z = (struct Zero*)AllocEntityFirst(gZeroHeaderPtr);
   if ((z != NULL) && (z == pZero)) {  // equal
     tmp = AllocPlayer2();
     DeletePlayer(gZeroHeaderPtr, z);
@@ -67,12 +68,12 @@ struct Zero *AllocPlayer2(void) {
   return z;
 }
 
-void RemovePlayer(struct Zero *z) {
+void RemovePlayer(struct Zero* z) {
   SET_PLAYER_ROUTINE(z, ENTITY_EXIT);
   return;
 }
 
-void LoadZeroPalette(struct Entity *_, u32 c) {
+void LoadZeroPalette(struct Entity* _, u32 c) {
   if (c == ZERO_COLOR_OMEGA) {
     CpuFastCopy(gZeroPalettes[c], &gPaletteManager.buf[256 + 64], 32);
     CpuFastCopy(gZeroShadowPalettes[c], &gPaletteManager.buf[256 + 128], 32);
@@ -84,7 +85,7 @@ void LoadZeroPalette(struct Entity *_, u32 c) {
   return;
 }
 
-void LoadShadowDashPalette(struct Zero *_, u32 c) {
+void LoadShadowDashPalette(struct Zero* _, u32 c) {
   CpuFastCopy(gZeroShadowDashPalette[c], &gPaletteManager.buf[256 + 0], 32);
   return;
 }
@@ -93,8 +94,8 @@ void LoadShadowDashPalette(struct Zero *_, u32 c) {
  * @retval TRUE: recovered
  * @retval FALSE: not recovered
  */
-bool8 UseSubtank(struct Zero *z) {
-  s16 *hp = &(z->body).hp;
+bool8 UseSubtank(struct Zero* z) {
+  s16* hp = &(z->body).hp;
   if (*hp >= (u8)GetMaxHP(z)) {
     return FALSE;
   }
@@ -110,8 +111,8 @@ bool8 UseSubtank(struct Zero *z) {
 /**
  * @brief Is Martina activated?
  */
-bool8 IsDoubleHP(struct Zero *z) {
-  const u8 *satelites;
+bool8 IsDoubleHP(struct Zero* z) {
+  const u8* satelites;
   if ((*gUnlockedElfPtr)[0] & ELF_AVABILITY_UNLOCKED) {
     if ((*gUnlockedElfPtr)[0] & ELF_AVABILITY_USED) return TRUE;
 
@@ -128,9 +129,9 @@ bool8 IsDoubleHP(struct Zero *z) {
 /**
  * @return Zero Max HP (affected by Nurse(+4) and Martina(x2))
  */
-NON_MATCH u8 GetMaxHP(struct Zero *z) {
+NON_MATCH u8 GetMaxHP(struct Zero* z) {
 #if MODERN
-  const u8 *satelites;
+  const u8* satelites;
   s32 i;
   u8 hp = 16;
 
@@ -166,7 +167,7 @@ NON_MATCH u8 GetMaxHP(struct Zero *z) {
 /**
  * @return Zero Max HP (affected by Nurse(+4))
  */
-u8 getMaxHP1x(struct Zero *z) {
+u8 getMaxHP1x(struct Zero* z) {
   bool8 martina;
   u8 maxHP;
 
@@ -184,8 +185,8 @@ u8 getMaxHP1x(struct Zero *z) {
  * @brief Gain E-Crystal
  * @return TRUE: success, FALSE: fail
  */
-bool8 AddECrystal(struct Zero *z, u16 amount) {
-  struct ZeroAsset *a = &((z->unk_b4).status.asset);
+bool8 AddECrystal(struct Zero* z, u16 amount) {
+  struct ZeroAsset* a = &((z->unk_b4).status.asset);
 
   u16 ec = a->EC;
   if (ec < 10000) {
@@ -204,9 +205,9 @@ bool8 AddECrystal(struct Zero *z, u16 amount) {
  * @brief increment Subtank HP
  * @return TRUE: success, FALSE: fail (No Subtank, or All Subtanks are filled)
  */
-bool8 incrementSubtankHP(struct Zero *z) {
-  u8 *tanks;
-  u8 *tank;
+bool8 incrementSubtankHP(struct Zero* z) {
+  u8* tanks;
+  u8* tank;
   u8 hp;
 
   u32 i;
@@ -228,7 +229,7 @@ bool8 incrementSubtankHP(struct Zero *z) {
   return FALSE;
 }
 
-u8 makeZeroSlower(struct Zero *z, u8 val) {
+u8 makeZeroSlower(struct Zero* z, u8 val) {
   if (0xff < z->slow + val) {
     z->slow = 0xff;
   } else {
@@ -237,7 +238,7 @@ u8 makeZeroSlower(struct Zero *z, u8 val) {
   return z->slow;
 }
 
-u8 makeZeroFaster(struct Zero *z, u8 val) {
+u8 makeZeroFaster(struct Zero* z, u8 val) {
   if (z->slow - val < 0) {
     z->slow = 0;
   } else {
@@ -246,7 +247,7 @@ u8 makeZeroFaster(struct Zero *z, u8 val) {
   return z->slow;
 }
 
-u8 CountButtonMashing(struct Zero *z) {
+u8 CountButtonMashing(struct Zero* z) {
   u8 result = 0;
   if (z->pressed & DPAD_UP) result++;
   if (z->pressed & DPAD_DOWN) result++;
@@ -257,19 +258,19 @@ u8 CountButtonMashing(struct Zero *z) {
   return result;
 }
 
-void ResetZeroInput(struct Zero *z) {
+void ResetZeroInput(struct Zero* z) {
   z->zeroInput = 0;
   (z->unk_b4).status.charge[0] = 0;
   (z->unk_b4).status.charge[1] = 0;
 }
 
-void resetSateliteElfPosition(struct Zero *z) {
+void resetSateliteElfPosition(struct Zero* z) {
   z->elfMotion = 2;
   return;
 }
 
 // u16 = struct Action
-motion_t GetDefaultMotion(struct Zero *z) {
+motion_t GetDefaultMotion(struct Zero* z) {
   if ((z->unk_b4).status.dying != 0) {
     return MOTION(DM001_ZERO_DYING, 0);
   }
@@ -277,7 +278,7 @@ motion_t GetDefaultMotion(struct Zero *z) {
 }
 
 // ゼロが壁にめり込んだときに横に押し出す処理(= ゼロが壁にぶつかったときにX方向にめり込まないようにする処理)
-WIP metatile_attr_t PushoutWallX(struct Zero *z, const struct Rect *p, u8 r2) {
+WIP metatile_attr_t PushoutWallX(struct Zero* z, const struct Rect* p, u8 r2) {
 #if MODERN
   metatile_attr_t attr;
   s32 x;
@@ -402,7 +403,7 @@ WIP metatile_attr_t PushoutWallX(struct Zero *z, const struct Rect *p, u8 r2) {
 #endif
 }
 
-NAKED metatile_attr_t PushoutByFloor1(struct Zero *z, const struct Rect *p, bool8 r2) {
+NAKED metatile_attr_t PushoutByFloor1(struct Zero* z, const struct Rect* p, bool8 r2) {
   asm(".syntax unified\n\
 	push {r4, r5, r6, r7, lr}\n\
 	mov r7, sl\n\
@@ -1035,7 +1036,7 @@ _08026214: .4byte 0x00000FFF\n\
  .syntax divided\n");
 }
 
-NAKED metatile_attr_t PushoutByCeiling(struct Zero *z, const struct Rect *p, bool8 r2) {
+NAKED metatile_attr_t PushoutByCeiling(struct Zero* z, const struct Rect* p, bool8 r2) {
   asm(".syntax unified\n\
 	push {r4, r5, r6, r7, lr}\n\
 	mov r7, sb\n\
@@ -1204,7 +1205,7 @@ _0802633E:\n\
  .syntax divided\n");
 }
 
-NAKED metatile_attr_t PushoutByCeilingOnLadder(struct Zero *z, const struct Rect *p, bool8 r2) {
+NAKED metatile_attr_t PushoutByCeilingOnLadder(struct Zero* z, const struct Rect* p, bool8 r2) {
   asm(".syntax unified\n\
 	push {r4, r5, r6, r7, lr}\n\
 	sub sp, #8\n\
@@ -1346,7 +1347,7 @@ _0802644A:\n\
   壁ずり中の壁というよりはゼロのいる座標のMetatile Attr
   Reg swapだけ解決できなかっただけでロジックはあってる
 */
-NON_MATCH metatile_attr_t GetWallMetatileAttr(struct Zero *z, const struct Rect *p, bool8 _ UNUSED) {
+NON_MATCH metatile_attr_t GetWallMetatileAttr(struct Zero* z, const struct Rect* p, bool8 _ UNUSED) {
 #if MODERN
   metatile_attr_t attr;
   struct Coord c;
@@ -1375,7 +1376,7 @@ NON_MATCH metatile_attr_t GetWallMetatileAttr(struct Zero *z, const struct Rect 
   r2 が TRUE の場合は、今のゼロが立っているところ(床)のMettaileAttrを返す(ただしすり抜け床のときは0)
   r2 が FALSE の場合は、　床からの押し出し処理を行う
 */
-NAKED metatile_attr_t PushoutByFloor2(struct Zero *z, const struct Rect *p, bool8 checkOnly) {
+NAKED metatile_attr_t PushoutByFloor2(struct Zero* z, const struct Rect* p, bool8 checkOnly) {
   asm(".syntax unified\n\
 	push {r4, r5, r6, r7, lr}\n\
 	mov r7, r8\n\
@@ -1645,7 +1646,7 @@ _080266F0: .4byte 0xFFFFF000\n\
  .syntax divided\n");
 }
 
-WIP metatile_attr_t IsOnSoftPlatform(struct Zero *z, const struct Rect *p, bool8 r2) {
+WIP metatile_attr_t IsOnSoftPlatform(struct Zero* z, const struct Rect* p, bool8 r2) {
 #if MODERN
   s32 i;
   s32 x[3];
@@ -1691,7 +1692,7 @@ WIP metatile_attr_t IsOnSoftPlatform(struct Zero *z, const struct Rect *p, bool8
 #endif
 }
 
-bool8 CanWallSlide(struct Zero *z, const struct Rect *p, bool8 r2) {
+bool8 CanWallSlide(struct Zero* z, const struct Rect* p, bool8 r2) {
   bool8 ok = IsForwardPressed(z, p, r2);
   if (ok && IsZeroAgainstWall(z, p, r2)) {
     return TRUE;
@@ -1699,7 +1700,7 @@ bool8 CanWallSlide(struct Zero *z, const struct Rect *p, bool8 r2) {
   return FALSE;
 }
 
-bool8 IsForwardPressed(struct Zero *z, const struct Rect *p UNUSED, bool8 _ UNUSED) {
+bool8 IsForwardPressed(struct Zero* z, const struct Rect* p UNUSED, bool8 _ UNUSED) {
   if ((z->s).flags & X_FLIP) {
     if (!(z->zeroInput & DPAD_RIGHT)) {
       return FALSE;
@@ -1715,7 +1716,7 @@ bool8 IsForwardPressed(struct Zero *z, const struct Rect *p UNUSED, bool8 _ UNUS
   return TRUE;
 }
 
-NON_MATCH bool8 IsZeroAgainstWall(struct Zero *z, const struct Rect *p, bool8 _) {
+NON_MATCH bool8 IsZeroAgainstWall(struct Zero* z, const struct Rect* p, bool8 _) {
 #if MODERN
   s32 x, y;
   metatile_attr_t attr;
@@ -1760,7 +1761,7 @@ NON_MATCH bool8 IsZeroAgainstWall(struct Zero *z, const struct Rect *p, bool8 _)
 #endif
 }
 
-NAKED u8 zero_08026970(struct Zero *z, const struct Rect *p, bool8 _) {
+NAKED u8 zero_08026970(struct Zero* z, const struct Rect* p, bool8 _) {
   asm(".syntax unified\n\
 	push {r4, r5, r6, r7, lr}\n\
 	mov r7, sb\n\
@@ -2049,7 +2050,7 @@ _08026BA2:\n\
  .syntax divided\n");
 }
 
-NON_MATCH u8 ladder_08026bb0(struct Zero *z, const struct Rect *range, bool8 _) {
+NON_MATCH u8 ladder_08026bb0(struct Zero* z, const struct Rect* range, bool8 _) {
 #if MODERN
   u8 val;
   metatile_attr_t attr;
@@ -2071,7 +2072,7 @@ NON_MATCH u8 ladder_08026bb0(struct Zero *z, const struct Rect *range, bool8 _) 
 /**
  * @return 0: fail, 1: success(continue) 2: success(end)
  */
-u8 TryLadderUp(struct Zero *z, const struct Rect *range, bool8 _) {
+u8 TryLadderUp(struct Zero* z, const struct Rect* range, bool8 _) {
   metatile_attr_t attr;
   s32 x;
   const s32 y = (z->s).coord.y + (int)range->y;
@@ -2121,7 +2122,7 @@ u8 TryLadderUp(struct Zero *z, const struct Rect *range, bool8 _) {
 }
 
 // 現在ハシゴ状態で、さらに下に梯子を降りれるか
-WIP u8 TryContinueLadderDown(struct Zero *z, const struct Rect *range, bool8 _) {
+WIP u8 TryContinueLadderDown(struct Zero* z, const struct Rect* range, bool8 _) {
 #if MODERN
   metatile_attr_t attr = GetGroundMetatileAttr((z->s).coord.x, (z->s).coord.y + range->y + (range->h / 2) + 1);
   if (attr != METTAILE_LADDER_FLOOR) {
@@ -2147,7 +2148,7 @@ WIP u8 TryContinueLadderDown(struct Zero *z, const struct Rect *range, bool8 _) 
  *  現在idle状態で、梯子下降状態に移行できるか
  * @return 0: fail, 2: success
  */
-WIP u8 TryLadderDown(struct Zero *z, const struct Rect *range, bool8 _) {
+WIP u8 TryLadderDown(struct Zero* z, const struct Rect* range, bool8 _) {
 #if MODERN
   s32 x;
   s32 y = (z->s).coord.y + range->y + (range->h / 2) + 1;
@@ -2185,7 +2186,7 @@ WIP u8 TryLadderDown(struct Zero *z, const struct Rect *range, bool8 _) {
 #endif
 }
 
-void SetDisableArea(struct Zero *z, s32 left, s32 top, s32 right, s32 bottom) {
+void SetDisableArea(struct Zero* z, s32 left, s32 top, s32 right, s32 bottom) {
   (z->border).left = left;
   (z->border).right = right;
   (z->border).top = top;
@@ -2193,7 +2194,7 @@ void SetDisableArea(struct Zero *z, s32 left, s32 top, s32 right, s32 bottom) {
 }
 
 // ゼロが border の外に行かないようにする
-WIP bool8 PushoutByBorder(struct Zero *z, const struct Rect *range, bool8 checkHazard) {
+WIP bool8 PushoutByBorder(struct Zero* z, const struct Rect* range, bool8 checkHazard) {
 #if MODERN
   if ((z->border).left < (z->border).right) {
     s32 x1, x2;
@@ -2254,7 +2255,7 @@ WIP bool8 PushoutByBorder(struct Zero *z, const struct Rect *range, bool8 checkH
 }
 
 // 夕闇の砂漠の流砂に沈んでいく処理関連
-u8 zero_08026f90(struct Zero *z, const struct Rect *range) {
+u8 zero_08026f90(struct Zero* z, const struct Rect* range) {
   metatile_attr_t attr;
   s32 x;
   s32 dy = PushoutToUp2((z->s).coord.x, (z->s).coord.y);
@@ -2296,14 +2297,14 @@ u8 zero_08026f90(struct Zero *z, const struct Rect *range) {
 // ------------------------------------------------------------------------------------------------------------------------------------
 
 // ゼロと干渉するhazardオブジェクトのインデックスと個数をチェックする
-WIP void CheckZeroHazard(struct Zero *z) {
+WIP void CheckZeroHazard(struct Zero* z) {
 #if MODERN
   u8 i;
   s32 x = (z->s).coord.x;
   s32 y = (z->s).coord.y;
   z->hazardCount = 0;
   for (i = 0; i < HAZARD_LENGTH; i++) {
-    struct Hazard *hz = HAZARD(i);
+    struct Hazard* hz = HAZARD(i);
     const u32 w = (u32)((u16)hz->w) + PIXEL(31);
     const u32 h = (u32)((u16)hz->h) + PIXEL(31);
     if ((u32)(x - hz->start.x) + w < (u32)(w * 2)) {
@@ -2319,13 +2320,13 @@ WIP void CheckZeroHazard(struct Zero *z) {
 }
 
 // Hazard となるEntity と プレイヤーが重なった時に、プレイヤーを弾き出す
-NAKED u8 RecoilFromHazards(struct Zero *z, const struct Rect *range) {
+NAKED u8 RecoilFromHazards(struct Zero* z, const struct Rect* range) {
   // TODO
   INCCODE("asm/wip/RecoilFromHazards.inc");
 }
 
 // Hazardによる横方向への押し出し処理っぽい
-NAKED static metatile_attr_t _pushoutHazardX2(struct Zero *z, s32 x, s32 y, struct Coord *c) {
+NAKED static metatile_attr_t _pushoutHazardX2(struct Zero* z, s32 x, s32 y, struct Coord* c) {
   asm(".syntax unified\n\
 	push {r4, r5, r6, r7, lr}\n\
 	mov r7, sl\n\
@@ -2917,64 +2918,68 @@ _08027DF8: .4byte 0x0000018F\n\
 // ------------------------------------------------------------------------------------------------------------------------------------
 
 // Hazardによる横方向への押し出し処理っぽい
-WIP static metatile_attr_t _pushoutHazardX1(struct Zero *z, s32 x, s32 y, struct Coord *c) {
-#if MODERN
+static metatile_attr_t _pushoutHazardX1(struct Zero* z, s32 x, s32 y, struct Coord* c) {
   u8 i;
   metatile_attr_t attr = 0;
   c->x = c->y = 0;
+
   for (i = 0; i < z->hazardCount; i++) {
-    struct Hazard *hz = HAZARD(z->hazard[i]);
-    const u32 w = (u32)((u16)hz->w);
-    const u32 h = (u32)((u16)hz->h);
-    if (((u32)(x - (hz->start).x) + w < (w << 1)) && ((u32)(y - (hz->start).y) + h < (h << 1))) {
-      appendHazardID(z, hz->id);
-      if ((hz->start).x < (z->s).coord.x) {
-        c->x = ((hz->start).x + w) - x;
-      } else {
-        c->x = ((hz->start).x - w) - x - 1;
-      }
-      if (c->x != 0) {
-        attr = hz->attr;
-        (z->s).coord.x += c->x;
-        x += c->x;
-        z->pushedOut = TRUE;
+    u8 n = z->hazard[i];
+    const u32 _x = (u32)(x - (gOverworld.objects[n].start).x);
+    const u32 w = gOverworld.objects[n].w;
+    if ((_x + w) < (w << 1)) {
+      const u32 _y = (y - (gOverworld.objects[n].start).y);
+      const u32 h = gOverworld.objects[n].h;
+      if ((_y + h) < (h << 1)) {
+        s32 start_x;
+        appendHazardID(z, gOverworld.objects[n].id);
+        start_x = (gOverworld.objects[n].start).x;
+        if (start_x < (z->s).coord.x) {
+          c->x = (start_x + gOverworld.objects[n].w) - x;
+        } else {
+          c->x = (start_x - gOverworld.objects[n].w) - x - 1;
+        }
+        if (c->x != 0) {
+          attr = gOverworld.objects[n].attr;
+          (z->s).coord.x += c->x;
+          x += c->x;
+          z->pushedOut = TRUE;
+        }
       }
     }
   }
   return attr;
-#else
-  INCCODE("asm/wip/_pushoutHazardX1.inc");
-#endif
 }
 
 // Hazardによる縦方向への押し出し処理っぽい
-WIP metatile_attr_t _pushoutHazardY(struct Zero *z, s32 x, s32 y, struct Coord *c) {
-#if MODERN
+metatile_attr_t _pushoutHazardY(struct Zero* z, s32 x, s32 y, struct Coord* c) {
   u8 i;
   metatile_attr_t attr = 0;
   c->x = c->y = 0;
+
   for (i = 0; i < z->hazardCount; i++) {
-    const u8 n = z->hazard[i];
-    struct Hazard *b = HAZARD(n);
-    const u32 w = (u32)((u16)b->w);
-
-    if (((u32)(x - (b->start).x) + w) < (w << 1)) {
-      const u32 h = (u32)((u16)b->h);
-
-      if (((u32)(y - (b->start).y) + h) < (h << 1)) {
-        appendHazardID(z, b->id);
-        if ((b->start).y < y) {
+    u8 n = z->hazard[i];
+    const u32 _x = (u32)(x - (gOverworld.objects[n].start).x);
+    const u32 w = gOverworld.objects[n].w;
+    if ((_x + w) < (w << 1)) {
+      const u32 _y = (y - (gOverworld.objects[n].start).y);
+      const u32 h = gOverworld.objects[n].h;
+      if ((_y + h) < (h << 1)) {
+        s32 start_y;
+        appendHazardID(z, gOverworld.objects[n].id);
+        start_y = (gOverworld.objects[n].start).y;
+        if (start_y < y) {
           if (y == (z->s).coord.y) {
-            c->y = (b->start).y - h - y - 1;
+            c->y = (start_y - gOverworld.objects[n].h) - y - 1;
           } else {
-            c->y = ((b->start).y + h) - y;
+            c->y = (start_y + gOverworld.objects[n].h) - y;
           }
         } else {
-          c->y = (b->start).y - h - y - 1;
+          c->y = (start_y - gOverworld.objects[n].h) - y - 1;
         }
 
         if (c->y != 0) {
-          attr = b->attr;
+          attr = gOverworld.objects[n].attr;
           (z->s).coord.y += c->y;
           y += c->y;
           z->pushedOut = TRUE;
@@ -2983,12 +2988,9 @@ WIP metatile_attr_t _pushoutHazardY(struct Zero *z, s32 x, s32 y, struct Coord *
     }
   }
   return attr;
-#else
-  INCCODE("asm/wip/_pushoutHazardY.inc");
-#endif
 }
 
-NAKED static s32 hazard_0802802c(struct Zero *z, s32 x, s32 y) {
+NAKED static s32 hazard_0802802c(struct Zero* z, s32 x, s32 y) {
   asm(".syntax unified\n\
 	push {r4, r5, r6, r7, lr}\n\
 	mov r7, sl\n\
@@ -3115,7 +3117,7 @@ _08028102:\n\
  .syntax divided\n");
 }
 
-NAKED static s32 hazard_08028114(struct Zero *z, s32 x, s32 y) {
+NAKED static s32 hazard_08028114(struct Zero* z, s32 x, s32 y) {
   asm(".syntax unified\n\
 	push {r4, r5, r6, r7, lr}\n\
 	mov r7, sl\n\
@@ -3229,118 +3231,43 @@ _080281D6:\n\
  .syntax divided\n");
 }
 
-WIP static metatile_attr_t AppendHazardID(struct Zero *z, s32 x, s32 y) {
-#if MODERN
+static metatile_attr_t AppendHazardID(struct Zero* z, s32 x, s32 y) {
   u8 i;
   for (i = 0; i < z->hazardCount; i++) {
     u8 n = z->hazard[i];
-    struct Hazard *h = HAZARD(n);
-    if ((u32)(x - (h->start.x)) + h->w < (u32)(h->w << 1)) {
-      if ((u32)(y - (h->start.y)) + h->h < (u32)(h->h << 1)) {
-        appendHazardID(z, h->id);
-        return h->attr;
+    const u32 _x = (u32)(x - (gOverworld.objects[n].start).x);
+    const u32 w = gOverworld.objects[n].w;
+    if ((_x + w) < (w << 1)) {
+      const u32 _y = (y - (gOverworld.objects[n].start).y);
+      const u32 h = gOverworld.objects[n].h;
+      if ((_y + h) < (h << 1)) {
+        appendHazardID(z, gOverworld.objects[n].id);
+        return gOverworld.objects[n].attr;
       }
     }
   }
   return 0;
-#else
-  INCCODE("asm/wip/AppendHazardID.inc");
-#endif
 }
 
-NAKED static u16 AppendHazardID_2(struct Zero *z, s32 x, s32 y) {
-  asm(".syntax unified\n\
-	push {r4, r5, r6, r7, lr}\n\
-	mov r7, sb\n\
-	mov r6, r8\n\
-	push {r6, r7}\n\
-	mov ip, r0\n\
-	mov sb, r1\n\
-	adds r6, r2, #0\n\
-	movs r2, #0\n\
-	movs r0, #0xc6\n\
-	lsls r0, r0, #1\n\
-	add r0, ip\n\
-	ldrb r0, [r0]\n\
-	cmp r2, r0\n\
-	bhs _0802832A\n\
-	ldr r5, _08028314 @ =gOverworld\n\
-	movs r0, #0xf4\n\
-	lsls r0, r0, #1\n\
-	adds r0, r0, r5\n\
-	mov r8, r0\n\
-_080282B6:\n\
-	movs r0, #0xae\n\
-	lsls r0, r0, #1\n\
-	add r0, ip\n\
-	adds r0, r0, r2\n\
-	ldrb r1, [r0]\n\
-	lsls r0, r1, #1\n\
-	adds r0, r0, r1\n\
-	lsls r3, r0, #3\n\
-	movs r1, #0xf2\n\
-	lsls r1, r1, #1\n\
-	adds r0, r5, r1\n\
-	adds r0, r3, r0\n\
-	ldr r1, [r0]\n\
-	mov r7, sb\n\
-	subs r1, r7, r1\n\
-	adds r4, r3, r5\n\
-	movs r7, #0xec\n\
-	lsls r7, r7, #1\n\
-	adds r0, r4, r7\n\
-	ldrh r0, [r0]\n\
-	adds r1, r1, r0\n\
-	lsls r0, r0, #1\n\
-	cmp r1, r0\n\
-	bhs _08028318\n\
-	mov r1, r8\n\
-	adds r0, r3, r1\n\
-	ldr r1, [r0]\n\
-	subs r1, r6, r1\n\
-	movs r3, #0xed\n\
-	lsls r3, r3, #1\n\
-	adds r0, r4, r3\n\
-	ldrh r0, [r0]\n\
-	adds r1, r1, r0\n\
-	lsls r0, r0, #1\n\
-	cmp r1, r0\n\
-	bhs _08028318\n\
-	subs r7, #4\n\
-	adds r0, r4, r7\n\
-	ldrh r1, [r0]\n\
-	mov r0, ip\n\
-	bl appendHazardID\n\
-	movs r1, #0xeb\n\
-	lsls r1, r1, #1\n\
-	adds r0, r4, r1\n\
-	ldrh r0, [r0]\n\
-	b _0802832C\n\
-	.align 2, 0\n\
-_08028314: .4byte gOverworld\n\
-_08028318:\n\
-	adds r0, r2, #1\n\
-	lsls r0, r0, #0x18\n\
-	lsrs r2, r0, #0x18\n\
-	movs r0, #0xc6\n\
-	lsls r0, r0, #1\n\
-	add r0, ip\n\
-	ldrb r0, [r0]\n\
-	cmp r2, r0\n\
-	blo _080282B6\n\
-_0802832A:\n\
-	movs r0, #0\n\
-_0802832C:\n\
-	pop {r3, r4}\n\
-	mov r8, r3\n\
-	mov sb, r4\n\
-	pop {r4, r5, r6, r7}\n\
-	pop {r1}\n\
-	bx r1\n\
- .syntax divided\n");
+static metatile_attr_t AppendHazardID_2(struct Zero* z, s32 x, s32 y) {
+  u8 i;
+  for (i = 0; i < z->hazardCount; i++) {
+    u8 n = z->hazard[i];
+    const u32 _x = (u32)(x - (gOverworld.objects[n].unk_10).x);
+    const u32 w = gOverworld.objects[n].w;
+    if ((_x + w) < (w << 1)) {
+      const u32 _y = (y - (gOverworld.objects[n].unk_10).y);
+      const u32 h = gOverworld.objects[n].h;
+      if ((_y + h) < (h << 1)) {
+        appendHazardID(z, gOverworld.objects[n].id);
+        return gOverworld.objects[n].attr;
+      }
+    }
+  }
+  return 0;
 }
 
-NAKED static bool16 hazard_08028338(struct Zero *z, s32 x, s32 y) {
+NAKED static bool16 hazard_08028338(struct Zero* z, s32 x, s32 y) {
   asm(".syntax unified\n\
 	push {r4, r5, r6, r7, lr}\n\
 	mov r7, sl\n\
@@ -3434,11 +3361,11 @@ _080283DC:\n\
 }
 
 // ゼロが Hazard の中にいる(めり込んでいる)場合は、そのMetatileAttr、そうでないなら0を返す
-WIP static metatile_attr_t IsInHazard(struct Zero *z, s32 x, s32 y) {
+WIP static metatile_attr_t IsInHazard(struct Zero* z, s32 x, s32 y) {
 #if MODERN
   u8 i;
   for (i = 0; i < z->hazardCount; i++) {
-    struct Hazard *b = HAZARD(z->hazard[i]);
+    struct Hazard* b = HAZARD(z->hazard[i]);
     const u32 w = (u32)((u16)b->w);
     if ((u32)(x - (b->start).x) + w < (w << 1)) {
       const u32 h = (u32)((u16)b->h);
@@ -3454,11 +3381,11 @@ WIP static metatile_attr_t IsInHazard(struct Zero *z, s32 x, s32 y) {
 }
 
 // Hazardに張り付いている判定か(地上の場合も)
-WIP static bool8 IsAgainstHazard(struct Zero *z, s32 x, s32 y) {
+WIP static bool8 IsAgainstHazard(struct Zero* z, s32 x, s32 y) {
 #if MODERN
   u8 i;
   for (i = 0; i < z->hazardCount; i++) {
-    struct Hazard *b = HAZARD(z->hazard[i]);
+    struct Hazard* b = HAZARD(z->hazard[i]);
     const u32 w = (u32)((u16)b->w);
     if ((u32)(x - (b->start).x) + w < (w << 1)) {
       const u32 h = (u32)((u16)b->h);
@@ -3483,7 +3410,7 @@ WIP static bool8 IsAgainstHazard(struct Zero *z, s32 x, s32 y) {
 #endif
 }
 
-NAKED static u8 hazard_0802855c(struct Zero *z, s32 x, s32 y) {
+NAKED static u8 hazard_0802855c(struct Zero* z, s32 x, s32 y) {
   asm(".syntax unified\n\
 	push {r4, r5, r6, r7, lr}\n\
 	mov r7, sl\n\
@@ -3591,7 +3518,7 @@ _0802861C:\n\
  .syntax divided\n");
 }
 
-static void appendHazardID(struct Zero *z, u16 id) {
+static void appendHazardID(struct Zero* z, u16 id) {
   s32 i;
   for (i = 0; i < ARRAY_COUNT(z->hazardIDs); i++) {
     if (z->hazardIDs[i] == 0xFFFF) {
@@ -3604,7 +3531,7 @@ static void appendHazardID(struct Zero *z, u16 id) {
   }
 }
 
-NAKED u8 RecoilFromFloor(struct Zero *z, const struct Rect *range) {
+NAKED u8 RecoilFromFloor(struct Zero* z, const struct Rect* range) {
   asm(".syntax unified\n\
 	push {r4, r5, r6, r7, lr}\n\
 	mov r7, sl\n\
@@ -4326,9 +4253,9 @@ _08028BBC:\n\
  .syntax divided\n");
 }
 
-NAKED bool8 unused_08028bcc(struct Zero *z, const struct Rect *range) { INCCODE("asm/unused/unused_08028bcc.inc"); }
+NAKED bool8 unused_08028bcc(struct Zero* z, const struct Rect* range) { INCCODE("asm/unused/unused_08028bcc.inc"); }
 
-NAKED bool8 TryGroundDash(struct Zero *z, const struct Rect *range, bool8 r2) {
+NAKED bool8 TryGroundDash(struct Zero* z, const struct Rect* range, bool8 r2) {
   asm(".syntax unified\n\
 	push {r4, r5, r6, r7, lr}\n\
 	mov r7, sb\n\

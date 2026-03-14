@@ -315,14 +315,14 @@ static void LayerUpdate_4(struct StageLayer* l, const struct Stage* _ UNUSED) {
 
 INCASM("asm/stage_gfx/missile_factory.inc");
 
-extern const struct ScreenMap sScreenMap1;
-INCBIN_STATIC(sScreenMap1, "data/stage/missile_factory/layer1.bin");  // ./tools/dumper/bin.ts ./baserom.gba 0x0833e1cc 0x0833e390 ./data/stage/missile_factory/layer1.bin
+extern const struct ChunkMap sChunkMap1;
+INCBIN_STATIC(sChunkMap1, "data/stage/missile_factory/layer1.bin");  // ./tools/dumper/bin.ts ./baserom.gba 0x0833e1cc 0x0833e390 ./data/stage/missile_factory/layer1.bin
 
-extern const struct ScreenMap sScreenMap2;
-INCBIN_STATIC(sScreenMap2, "data/stage/missile_factory/layer2.bin");  // ./tools/dumper/bin.ts ./baserom.gba 0x0833e390 0x0833e554 ./data/stage/missile_factory/layer2.bin
+extern const struct ChunkMap sChunkMap2;
+INCBIN_STATIC(sChunkMap2, "data/stage/missile_factory/layer2.bin");  // ./tools/dumper/bin.ts ./baserom.gba 0x0833e390 0x0833e554 ./data/stage/missile_factory/layer2.bin
 
-extern const struct ScreenMap sScreenMap3;
-INCBIN_STATIC(sScreenMap3, "data/stage/missile_factory/layer3.bin");  // ./tools/dumper/bin.ts ./baserom.gba 0x0833e554 0x0833e718 ./data/stage/missile_factory/layer3.bin
+extern const struct ChunkMap sChunkMap3;
+INCBIN_STATIC(sChunkMap3, "data/stage/missile_factory/layer3.bin");  // ./tools/dumper/bin.ts ./baserom.gba 0x0833e554 0x0833e718 ./data/stage/missile_factory/layer3.bin
 
 extern const tileset_ofs_t sTilesetOffset[4 + (HEIGHT * WIDTH)];
 INCBIN_STATIC(sTilesetOffset, "data/stage/missile_factory/tileset_offset.bin");  // ./tools/dumper/bin.ts ./baserom.gba 0x0833e718 0x0833e8dc ./data/stage/missile_factory/tileset_offset.bin
@@ -334,7 +334,7 @@ const struct Stage gMissileFactoryLandscape = {
   id : STAGE_MISSILE_FACTORY,
   fn : sStageRoutine,
   terrainHdr : &gStageTerrains[STAGE_MISSILE_FACTORY],
-  maps : {&sScreenMap1, &sScreenMap2, &sScreenMap3},
+  maps : {&sChunkMap1, &sChunkMap2, &sChunkMap3},
   bgIdx : {USE_BG1, USE_BG2, USE_BG3},
   prio : {2, 2, 3},
   screenBase : {BGMAP_BLOCK(2), BGMAP_BLOCK(4), BGMAP_BLOCK(6)},
@@ -343,7 +343,7 @@ const struct Stage gMissileFactoryLandscape = {
   tilesetOffset : sTilesetOffset,
   bgFns : sLayerRoutine,
   behavior : sScreenBehavior,
-  unk_78 : {-0x100, 0x100},
+  conveyor : {-PIXEL(1), PIXEL(1)},
 };
 
 static const struct MetatileShift sMetatileShift = {x : 255, y : 20, block : 135, row : 20};  // 0x0833ece4

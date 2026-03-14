@@ -2,6 +2,8 @@
 		src/link.o (.text);
 		src/input.o (.text);
 		src/sram.o (.text);
+
+    /* Graphics */
 		src/gfx.o (.text);
 		src/blink.o (.text);
 		src/gpu_regs.o (.text);
@@ -10,6 +12,7 @@
 		src/task.o (.text);
 		src/motion.o (.text);
 		src/overworld_layer.o (.text);
+
 		src/entity_manager.o (.text);
 		src/collision.o (.text);
 		src/syssav.o (.text);
@@ -223,8 +226,14 @@
       src/projectile/unk_05.o (.text);
       src/projectile/unk_06.o (.text);
       src/projectile/unk_07.o (.text);
+      src/projectile/unk_08.o (.text);
+      src/projectile/blazin.o (.text);
+      src/projectile/blazin_tail.o (.text);
       src/projectile/omega_zero.o (.text);
       src/projectile/claveker_yellow_balls.o (.text);
+      src/projectile/phantom.o (.text);
+      src/projectile/omega_zx.o (.text);
+      src/projectile/unk_42.o (.text);
 
 		src/vfx.o (.text);
       src/vfx/smoke.o (.text);

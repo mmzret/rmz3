@@ -44,14 +44,8 @@ struct KeyMap {
 
 struct KeyConfig {
   struct KeyMap keys;
-  // 0: タイプA
-  // 1: タイプB
-  // 2: カスタム
-  u8 btnMode;
-  // 0: タイプA
-  // 1: タイプB
-  // 2: タイプC
-  u8 attackMode;
+  u8 btnMode;     // 0: タイプA, 1: タイプB, 2: カスタム
+  u8 attackMode;  // 0: タイプA, 1: タイプB, 2: タイプC
   u8 unk_a;
   u8 _;
 };
@@ -109,6 +103,7 @@ struct Zero_b4 {
   // プロパティのアクセス方法から考えて、unk_114まで
 };
 
+// プレイヤー(ゼロ、ミニゲームの操作キャラ)
 struct Zero {
   struct Entity s;
   struct Body body;
@@ -182,11 +177,7 @@ struct Zero {
   } ALIGNED(1) PACKED unk_143;
   u8 ALIGNED(1) unk_144[3];
   u8 posture;
-  /*
-    bit0: dash now?
-    bit1: is shadow dash?
-  */
-  u8 prevPosture;
+  u8 prevPosture;  // bit0: dash now?, bit1: is shadow dash?
   u8 unk_149;
   u8 ALIGNED(1) unk_14a[2];
   struct Border border;  // ゼロが侵入不可能な境界座標を表す
