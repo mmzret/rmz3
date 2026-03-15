@@ -20,7 +20,11 @@ struct GyroCannonProps {
   u8 unk_004;
   u8 unk_005;
   u16 unk_006;
-  u8 unk_008[8];
+  bool8 is_right;
+  u8 unk_009;
+  u8 unk_00a;
+  u8 unk_00b;
+  u8 unk_00c[4];
 };
 
 struct ShrimporinProps {
@@ -37,6 +41,7 @@ struct FlopperProps {
 struct Enemy {
   struct Entity s;
   struct Body body;
+  // 0xB4..
   union {
     u8 raw[16];
     struct PantheonProps pantheon;

@@ -5,6 +5,7 @@
 #include "gfx.h"
 #include "global.h"
 #include "sprite.h"
+#include "text.h"
 #include "weapon.h"
 #include "zero.h"
 
@@ -797,55 +798,17 @@ _080F3CDA:\n\
  .syntax divided\n");
 }
 
-NAKED void PrintNumber(u16 n, u8 x, u8 y) {
-  asm(".syntax unified\n\
-	push {r4, r5, r6, r7, lr}\n\
-	mov r7, r8\n\
-	push {r7}\n\
-	lsls r0, r0, #0x10\n\
-	lsrs r4, r0, #0x10\n\
-	lsls r1, r1, #0x18\n\
-	lsrs r7, r1, #0x18\n\
-	lsls r2, r2, #0x18\n\
-	lsrs r6, r2, #0x18\n\
-	movs r5, #0\n\
-	ldr r0, _080F3D30 @ =StringOfsTable\n\
-	mov r8, r0\n\
-_080F3CF8:\n\
-	adds r0, r4, #0\n\
-	movs r1, #0xa\n\
-	bl __umodsi3\n\
-	lsls r0, r0, #0x10\n\
-	lsrs r0, r0, #0xf\n\
-	adds r0, #0x3c\n\
-	add r0, r8\n\
-	ldrh r0, [r0]\n\
-	ldr r1, _080F3D34 @ =gStringData\n\
-	adds r0, r0, r1\n\
-	subs r1, r7, r5\n\
-	adds r2, r6, #0\n\
-	bl PrintString\n\
-	adds r0, r4, #0\n\
-	movs r1, #0xa\n\
-	bl __udivsi3\n\
-	lsls r0, r0, #0x10\n\
-	lsrs r4, r0, #0x10\n\
-	cmp r4, #0\n\
-	beq _080F3D38\n\
-	adds r0, r5, #1\n\
-	lsls r0, r0, #0x18\n\
-	lsrs r5, r0, #0x18\n\
-	b _080F3CF8\n\
-	.align 2, 0\n\
-_080F3D30: .4byte StringOfsTable\n\
-_080F3D34: .4byte gStringData\n\
-_080F3D38:\n\
-	pop {r3}\n\
-	mov r8, r3\n\
-	pop {r4, r5, r6, r7}\n\
-	pop {r0}\n\
-	bx r0\n\
- .syntax divided\n");
+void PrintNumber(u16 n, u8 x, u8 y) {
+  u8 i = 0;
+  while (TRUE) {
+    u16 digit = n % 10;
+    PrintString(STRING(digit + 30), x - i, y);
+    n /= 10;
+    if (n == 0) {
+      break;
+    }
+    i++;
+  }
 }
 
 void FUN_080f3d44(struct Weapon* w) {

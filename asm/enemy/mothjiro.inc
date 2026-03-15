@@ -4,55 +4,6 @@
 	
 	.text
 
-	thumb_func_start CreateMothjiro
-CreateMothjiro: @ 0x08087B9C
-	push {r4, r5, lr}
-	adds r5, r0, #0
-	lsls r1, r1, #0x18
-	lsrs r4, r1, #0x18
-	ldr r0, _08087BF4 @ =gZakoHeaderPtr
-	ldr r0, [r0]
-	bl AllocEntityFirst
-	adds r3, r0, #0
-	cmp r3, #0
-	beq _08087BEA
-	adds r1, r3, #0
-	adds r1, #0x25
-	movs r2, #0
-	movs r0, #0x18
-	strb r0, [r1]
-	ldr r0, _08087BF8 @ =gEnemyFnTable
-	movs r1, #0x2f
-	strb r1, [r3, #9]
-	adds r0, #0xbc
-	ldr r0, [r0]
-	ldr r0, [r0]
-	str r0, [r3, #0x14]
-	movs r0, #0
-	strh r2, [r3, #0x20]
-	adds r1, r3, #0
-	adds r1, #0x22
-	strb r0, [r1]
-	ldrb r1, [r3, #0xb]
-	movs r0, #0x10
-	orrs r0, r1
-	strb r0, [r3, #0xb]
-	ldrb r0, [r3, #0x1c]
-	strb r0, [r3, #0x1d]
-	ldr r0, [r5]
-	ldr r1, [r5, #4]
-	str r0, [r3, #0x54]
-	str r1, [r3, #0x58]
-	strb r4, [r3, #0x10]
-_08087BEA:
-	adds r0, r3, #0
-	pop {r4, r5}
-	pop {r1}
-	bx r1
-	.align 2, 0
-_08087BF4: .4byte gZakoHeaderPtr
-_08087BF8: .4byte gEnemyFnTable
-
 	thumb_func_start Mothjiro_Init
 Mothjiro_Init: @ 0x08087BFC
 	push {r4, r5, r6, lr}

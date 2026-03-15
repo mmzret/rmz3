@@ -2,8 +2,6 @@
 #include "enemy.h"
 #include "global.h"
 
-INCASM("asm/enemy/mothjiro.inc");
-
 void Mothjiro_Init(struct Enemy* p);
 void Mothjiro_Update(struct Enemy* p);
 void Mothjiro_Die(struct Enemy* p);
@@ -17,6 +15,27 @@ const EnemyRoutine gMothjiroRoutine = {
     [ENTITY_EXIT] =      (EnemyFunc)DeleteEntity,
 };
 // clang-format on
+
+// --------------------------------------------
+
+struct Enemy* CreateMothjiro(struct Coord* c, u8 r1) {
+  struct Enemy* p = (struct Enemy*)AllocEntityFirst(gZakoHeaderPtr);
+  if (p != NULL) {
+    (p->s).taskCol = 24;
+    INIT_ZAKO_ROUTINE(p, ENEMY_MOTHJIRO);
+    (p->s).tileNum = 0;
+    (p->s).palID = 0;
+    (p->s).flags2 |= WHITE_PAINTABLE;
+    (p->s).invincibleID = (p->s).uniqueID;
+    (p->s).coord = *c;
+    (p->s).work[0] = r1;
+  }
+  return p;
+}
+
+INCASM("asm/enemy/mothjiro.inc");
+
+// --------------------------------------------
 
 void nop_080881d8(struct Enemy* p);
 void nop_080884a0(struct Enemy* p);

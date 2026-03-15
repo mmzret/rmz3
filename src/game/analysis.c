@@ -1,18 +1,30 @@
+#include "blink.h"
 #include "disk.h"
 #include "game.h"
 #include "gba/gba.h"
 
+void ResetPivot(struct Pivot* p, struct Coord* c, u32 _, void* nullVal);
+
 static const DiskLoopFunc sDiskLoops[5];
 
-void sd_analysis_080f8408(struct GameState *);
+static void DiskLoop_Init(struct GameState* g);
+static void DiskLoop_OpenScreen(struct GameState* g);
+static void DiskLoop_Run(struct GameState* g);
+static void DiskLoop_BlackOut(struct GameState* g);
+static void DiskLoop_Exit(struct GameState* g);
 
-void MainLoop_Disk(struct GameState *g) {
+static void sd_analysis_080f8408(struct GameState* g);
+
+void MainLoop_Disk(struct GameState* g) {
   sDiskLoops[g->mode[1]](g);
   sd_analysis_080f8408(g);
   return;
 }
 
-NAKED static void DiskLoop_Init(struct GameState *g) {
+static void sd_analysis_080f83ac(struct GameState* g);
+static void setSecretDiskPalette(struct GameState* g);
+
+NAKED static void DiskLoop_Init(struct GameState* g) {
   asm(".syntax unified\n\
 	push {r4, r5, r6, r7, lr}\n\
 	mov r7, sl\n\
@@ -238,7 +250,7 @@ _080F7F9C: .4byte gVideoRegBuffer+6\n\
  .syntax divided\n");
 }
 
-static void DiskLoop_OpenScreen(struct GameState *g) {
+static void DiskLoop_OpenScreen(struct GameState* g) {
   g->frames++;
   if (g->frames >= 16) {
     gPaletteManager.filter[0] = gPaletteManager.filter[1] = gPaletteManager.filter[2] = 0x20;
@@ -248,6 +260,597 @@ static void DiskLoop_OpenScreen(struct GameState *g) {
     gPaletteManager.filter[0] = gPaletteManager.filter[1] = gPaletteManager.filter[2] = g->frames;
   }
 }
+
+NAKED static void DiskLoop_Run(struct GameState* g) {
+  asm(".syntax unified\n\
+	push {r4, r5, r6, r7, lr}\n\
+	mov r7, sb\n\
+	mov r6, r8\n\
+	push {r6, r7}\n\
+	mov sb, r0\n\
+	ldr r4, _080F80A8 @ =0x00000DCC\n\
+	add r4, sb\n\
+	movs r0, #0\n\
+	strb r0, [r4, #0xc]\n\
+	ldr r1, _080F80AC @ =PTR_ARRAY_083864ac\n\
+	mov r2, sb\n\
+	ldrb r0, [r2, #2]\n\
+	lsls r0, r0, #2\n\
+	adds r0, r0, r1\n\
+	ldr r1, [r0]\n\
+	mov r0, sb\n\
+	bl _call_via_r1\n\
+	ldr r0, _080F80B0 @ =gJoypad\n\
+	ldrh r1, [r0, #4]\n\
+	movs r0, #8\n\
+	ands r0, r1\n\
+	cmp r0, #0\n\
+	beq _080F8046\n\
+	movs r0, #3\n\
+	mov r3, sb\n\
+	strb r0, [r3, #1]\n\
+_080F8046:\n\
+	ldr r7, _080F80B4 @ =StringOfsTable\n\
+	movs r1, #0xef\n\
+	lsls r1, r1, #2\n\
+	adds r0, r7, r1\n\
+	ldrh r0, [r0]\n\
+	ldr r2, _080F80B8 @ =gStringData\n\
+	mov r8, r2\n\
+	add r0, r8\n\
+	movs r1, #0x11\n\
+	movs r2, #1\n\
+	bl PrintString\n\
+	ldrb r0, [r4, #0xa]\n\
+	adds r0, #1\n\
+	movs r1, #0x16\n\
+	movs r2, #1\n\
+	bl printThreeDigitNumber\n\
+	ldr r0, _080F80BC @ =gStageDiskManager\n\
+	ldr r1, [r0]\n\
+	ldrb r2, [r4, #0xa]\n\
+	lsls r0, r2, #0x18\n\
+	lsrs r3, r0, #0x18\n\
+	lsrs r0, r0, #0x1a\n\
+	adds r5, r1, r0\n\
+	ldrb r1, [r5]\n\
+	movs r0, #0xf\n\
+	ands r0, r1\n\
+	movs r1, #3\n\
+	ands r1, r2\n\
+	asrs r0, r1\n\
+	movs r2, #1\n\
+	ands r0, r2\n\
+	cmp r0, #0\n\
+	bne _080F808E\n\
+	b _080F823C\n\
+_080F808E:\n\
+	ldrb r0, [r5]\n\
+	adds r1, #4\n\
+	asrs r0, r1\n\
+	ands r0, r2\n\
+	cmp r0, #0\n\
+	bne _080F809C\n\
+	b _080F8214\n\
+_080F809C:\n\
+	cmp r3, #5\n\
+	bhi _080F80C0\n\
+	movs r3, #0xaf\n\
+	lsls r3, r3, #2\n\
+	adds r0, r3, #0\n\
+	b _080F80CA\n\
+	.align 2, 0\n\
+_080F80A8: .4byte 0x00000DCC\n\
+_080F80AC: .4byte PTR_ARRAY_083864ac\n\
+_080F80B0: .4byte gJoypad\n\
+_080F80B4: .4byte StringOfsTable\n\
+_080F80B8: .4byte gStringData\n\
+_080F80BC: .4byte gStageDiskManager\n\
+_080F80C0:\n\
+	cmp r3, #0x13\n\
+	bhi _080F80E0\n\
+	movs r1, #0xaf\n\
+	lsls r1, r1, #2\n\
+	adds r0, r1, #0\n\
+_080F80CA:\n\
+	ldrb r4, [r4, #0xa]\n\
+	adds r0, r0, r4\n\
+	lsls r0, r0, #1\n\
+	adds r0, r0, r7\n\
+	ldrh r0, [r0]\n\
+	add r0, r8\n\
+	movs r1, #0x11\n\
+	movs r2, #4\n\
+	bl PrintString\n\
+	b _080F81F8\n\
+_080F80E0:\n\
+	cmp r3, #0x5d\n\
+	bhi _080F8140\n\
+	ldrb r0, [r4, #0xa]\n\
+	adds r6, r0, #0\n\
+	adds r6, #0x50\n\
+	movs r2, #0xb4\n\
+	lsls r2, r2, #3\n\
+	adds r0, r7, r2\n\
+	ldrh r0, [r0]\n\
+	add r0, r8\n\
+	movs r1, #0x11\n\
+	movs r2, #4\n\
+	bl PrintString\n\
+	lsls r4, r6, #1\n\
+	adds r4, r4, r7\n\
+	ldrh r0, [r4]\n\
+	add r0, r8\n\
+	movs r1, #0x11\n\
+	movs r2, #6\n\
+	bl PrintString\n\
+	ldr r3, _080F8138 @ =0x000005A2\n\
+	adds r0, r7, r3\n\
+	ldrh r5, [r0]\n\
+	add r5, r8\n\
+	ldrh r0, [r4]\n\
+	add r0, r8\n\
+	bl getStringLength\n\
+	adds r1, r0, #0\n\
+	lsls r1, r1, #0x10\n\
+	asrs r1, r1, #0x10\n\
+	adds r1, #0x11\n\
+	adds r0, r5, #0\n\
+	movs r2, #6\n\
+	bl PrintString\n\
+	ldr r1, _080F813C @ =0x000005A4\n\
+	adds r0, r7, r1\n\
+	ldrh r0, [r0]\n\
+	add r0, r8\n\
+	b _080F81BC\n\
+	.align 2, 0\n\
+_080F8138: .4byte 0x000005A2\n\
+_080F813C: .4byte 0x000005A4\n\
+_080F8140:\n\
+	cmp r3, #0x6d\n\
+	bhi _080F81E0\n\
+	ldr r2, _080F81C8 @ =0x000005A6\n\
+	adds r0, r7, r2\n\
+	ldrh r0, [r0]\n\
+	add r0, r8\n\
+	movs r1, #0x11\n\
+	movs r2, #4\n\
+	bl PrintString\n\
+	movs r6, #0\n\
+	ldr r1, _080F81CC @ =DiskECrystalAmounts\n\
+	ldrb r0, [r4, #0xa]\n\
+	subs r0, #0x5e\n\
+	lsls r0, r0, #1\n\
+	adds r0, r0, r1\n\
+	ldrh r2, [r0]\n\
+	cmp r2, #0\n\
+	beq _080F817C\n\
+_080F8166:\n\
+	adds r0, r2, #0\n\
+	movs r1, #0xa\n\
+	bl __udivsi3\n\
+	lsls r0, r0, #0x10\n\
+	lsrs r2, r0, #0x10\n\
+	adds r0, r6, #1\n\
+	lsls r0, r0, #0x10\n\
+	lsrs r6, r0, #0x10\n\
+	cmp r2, #0\n\
+	bne _080F8166\n\
+_080F817C:\n\
+	ldr r1, _080F81CC @ =DiskECrystalAmounts\n\
+	ldr r0, _080F81D0 @ =0x00000DCC\n\
+	add r0, sb\n\
+	ldrb r0, [r0, #0xa]\n\
+	subs r0, #0x5e\n\
+	lsls r0, r0, #1\n\
+	adds r0, r0, r1\n\
+	ldrh r2, [r0]\n\
+	adds r1, r6, #0\n\
+	adds r1, #0x11\n\
+	lsls r1, r1, #0x18\n\
+	lsrs r1, r1, #0x18\n\
+	adds r0, r2, #0\n\
+	movs r2, #6\n\
+	bl PrintNumber\n\
+	ldr r4, _080F81D4 @ =StringOfsTable\n\
+	movs r3, #0xb5\n\
+	lsls r3, r3, #3\n\
+	adds r0, r4, r3\n\
+	ldrh r0, [r0]\n\
+	ldr r5, _080F81D8 @ =gStringData\n\
+	adds r0, r0, r5\n\
+	adds r1, r6, #0\n\
+	adds r1, #0x12\n\
+	movs r2, #6\n\
+	bl PrintString\n\
+	ldr r0, _080F81DC @ =0x000005AA\n\
+	adds r4, r4, r0\n\
+	ldrh r0, [r4]\n\
+	adds r0, r0, r5\n\
+_080F81BC:\n\
+	movs r1, #0x11\n\
+	movs r2, #8\n\
+	bl PrintString\n\
+	b _080F81F8\n\
+	.align 2, 0\n\
+_080F81C8: .4byte 0x000005A6\n\
+_080F81CC: .4byte DiskECrystalAmounts\n\
+_080F81D0: .4byte 0x00000DCC\n\
+_080F81D4: .4byte StringOfsTable\n\
+_080F81D8: .4byte gStringData\n\
+_080F81DC: .4byte 0x000005AA\n\
+_080F81E0:\n\
+	ldrb r0, [r4, #0xa]\n\
+	movs r1, #0x9a\n\
+	lsls r1, r1, #2\n\
+	adds r0, r0, r1\n\
+	lsls r0, r0, #1\n\
+	adds r0, r0, r7\n\
+	ldrh r0, [r0]\n\
+	add r0, r8\n\
+	movs r1, #0x11\n\
+	movs r2, #4\n\
+	bl PrintString\n\
+_080F81F8:\n\
+	ldr r0, _080F8208 @ =StringOfsTable\n\
+	ldr r2, _080F820C @ =0x000003BA\n\
+	adds r0, r0, r2\n\
+	ldrh r0, [r0]\n\
+	ldr r1, _080F8210 @ =gStringData\n\
+	adds r0, r0, r1\n\
+	b _080F822E\n\
+	.align 2, 0\n\
+_080F8208: .4byte StringOfsTable\n\
+_080F820C: .4byte 0x000003BA\n\
+_080F8210: .4byte gStringData\n\
+_080F8214:\n\
+	ldr r3, _080F8238 @ =0x000003BE\n\
+	adds r0, r7, r3\n\
+	ldrh r0, [r0]\n\
+	add r0, r8\n\
+	movs r1, #0x11\n\
+	movs r2, #4\n\
+	bl PrintString\n\
+	movs r1, #0xee\n\
+	lsls r1, r1, #2\n\
+	adds r0, r7, r1\n\
+	ldrh r0, [r0]\n\
+	add r0, r8\n\
+_080F822E:\n\
+	movs r1, #1\n\
+	movs r2, #0x12\n\
+	bl PrintString\n\
+	b _080F824C\n\
+	.align 2, 0\n\
+_080F8238: .4byte 0x000003BE\n\
+_080F823C:\n\
+	ldr r2, _080F82AC @ =0x000003BA\n\
+	adds r0, r7, r2\n\
+	ldrh r0, [r0]\n\
+	add r0, r8\n\
+	movs r1, #1\n\
+	movs r2, #0x12\n\
+	bl PrintString\n\
+_080F824C:\n\
+	ldr r5, _080F82B0 @ =0x00000DCC\n\
+	add r5, sb\n\
+	ldrb r0, [r5, #0xe]\n\
+	cmp r0, #0\n\
+	beq _080F82BC\n\
+	ldr r2, _080F82B4 @ =gPaletteManager\n\
+	ldrb r1, [r5, #0x12]\n\
+	lsls r1, r1, #0xa\n\
+	ldrb r0, [r5, #0x11]\n\
+	lsls r0, r0, #5\n\
+	orrs r1, r0\n\
+	ldrb r0, [r5, #0x10]\n\
+	orrs r0, r1\n\
+	strh r0, [r2]\n\
+	ldr r2, _080F82B8 @ =gWindowRegBuffer\n\
+	ldrh r1, [r2]\n\
+	movs r3, #0x80\n\
+	lsls r3, r3, #6\n\
+	adds r0, r3, #0\n\
+	orrs r0, r1\n\
+	strh r0, [r2]\n\
+	movs r0, #0x10\n\
+	strb r0, [r2, #0xc]\n\
+	ldrb r1, [r2, #0xe]\n\
+	movs r0, #3\n\
+	orrs r0, r1\n\
+	strb r0, [r2, #0xe]\n\
+	ldrb r3, [r5, #0xe]\n\
+	adds r1, r3, #0\n\
+	adds r1, #0x40\n\
+	movs r4, #0xff\n\
+	ands r1, r4\n\
+	movs r0, #0x40\n\
+	subs r0, r0, r3\n\
+	lsls r0, r0, #8\n\
+	orrs r1, r0\n\
+	strh r1, [r2, #4]\n\
+	ldrb r3, [r5, #0xf]\n\
+	adds r1, r3, #0\n\
+	adds r1, #0x50\n\
+	ands r1, r4\n\
+	movs r0, #0x50\n\
+	subs r0, r0, r3\n\
+	lsls r0, r0, #8\n\
+	orrs r1, r0\n\
+	strh r1, [r2, #8]\n\
+	b _080F82CE\n\
+	.align 2, 0\n\
+_080F82AC: .4byte 0x000003BA\n\
+_080F82B0: .4byte 0x00000DCC\n\
+_080F82B4: .4byte gPaletteManager\n\
+_080F82B8: .4byte gWindowRegBuffer\n\
+_080F82BC:\n\
+	ldr r2, _080F82F0 @ =gWindowRegBuffer\n\
+	ldrh r1, [r2]\n\
+	ldr r0, _080F82F4 @ =0x0000DFFF\n\
+	ands r0, r1\n\
+	movs r1, #0\n\
+	strh r0, [r2]\n\
+	strb r1, [r5, #0x10]\n\
+	strb r1, [r5, #0x11]\n\
+	strb r1, [r5, #0x12]\n\
+_080F82CE:\n\
+	movs r0, #0x40\n\
+	bl UpdateBlinkMotionState\n\
+	ldr r0, _080F82F8 @ =0x00000DCC\n\
+	add r0, sb\n\
+	ldrb r0, [r0, #0xc]\n\
+	cmp r0, #0\n\
+	beq _080F82E4\n\
+	mov r0, sb\n\
+	bl setSecretDiskPalette\n\
+_080F82E4:\n\
+	pop {r3, r4}\n\
+	mov r8, r3\n\
+	mov sb, r4\n\
+	pop {r4, r5, r6, r7}\n\
+	pop {r0}\n\
+	bx r0\n\
+	.align 2, 0\n\
+_080F82F0: .4byte gWindowRegBuffer\n\
+_080F82F4: .4byte 0x0000DFFF\n\
+_080F82F8: .4byte 0x00000DCC\n\
+ .syntax divided\n");
+}
+
+static void DiskLoop_BlackOut(struct GameState* g) {
+  g->frames--;
+  if (g->frames == 0) {
+    gPaletteManager.filter[0] = gPaletteManager.filter[1] = gPaletteManager.filter[2] = 0x0;
+    g->mode[1] = 4;
+    DiskLoop_Exit(g);
+  } else {
+    gPaletteManager.filter[0] = gPaletteManager.filter[1] = gPaletteManager.filter[2] = g->frames;
+  }
+}
+
+static void DiskLoop_Exit(struct GameState* g) {
+  u8* s;
+  ClearBlink(64);
+  gWindowRegBuffer.dispcnt &= 0xDFFF;
+  PALETTE16(0) = 0;
+  s = (u8*)&(g->sceneState).menu;
+  s[13] = 1;
+  SetGameMode(g, GAMEMODE(MAINGAME, OVERWORLD, 3, 5));
+}
+
+// ------------------------------------------------------------------------------------------------------------------------------------
+
+static void sd_analysis_080f83ac(struct GameState* g) {
+  struct Coord* c = &g->unk_0dc4;
+  c->x = PIXEL(120);
+  c->y = PIXEL(80);
+  ResetPivot(&g->unk_0db8, c, 0, 0);
+  ResetTaskManager(&g->taskManager2);
+  SetTaskPivot(&g->taskManager2, &g->unk_0db8);
+  InitWidgetHeader(&g->entityHeaders[ENTITY_WIDGET], gWidgets, 64);
+}
+
+static void sd_analysis_080f8408(struct GameState* g) {
+  struct Coord* c = &g->unk_0dc4;
+  const u16* bg1ofs = gVideoRegBuffer.bgofs[1];
+  c->x = PIXEL(bg1ofs[0] & 0x1FF) + PIXEL(120);
+  ClearTaskBuffer(&g->taskManager2);
+  UpdateEntities(gWidgetHeaderPtr);
+  DrawEntity(gWidgetHeaderPtr, &g->taskManager2);
+  RunAllTasks(&g->taskManager2);
+}
+
+NAKED static void setSecretDiskPalette(struct GameState* g) {
+  asm(".syntax unified\n\
+	push {r4, r5, r6, r7, lr}\n\
+	mov r7, sl\n\
+	mov r6, sb\n\
+	mov r5, r8\n\
+	push {r5, r6, r7}\n\
+	mov r8, r0\n\
+	ldr r6, _080F84F8 @ =0x00000ED8\n\
+	add r6, r8\n\
+	movs r5, #0\n\
+	ldr r0, _080F84FC @ =gStageDiskManager\n\
+	mov sb, r0\n\
+	ldr r1, _080F8500 @ =gVideoRegBuffer+6\n\
+	mov sl, r1\n\
+	ldr r2, _080F8504 @ =0x000031A2\n\
+	adds r7, r2, #0\n\
+_080F847A:\n\
+	mov r3, sb\n\
+	ldr r2, [r3]\n\
+	ldr r0, _080F8508 @ =0x00000DCC\n\
+	add r0, r8\n\
+	ldrb r0, [r0, #0xb]\n\
+	lsls r1, r0, #2\n\
+	adds r1, r1, r0\n\
+	adds r1, r1, r5\n\
+	asrs r0, r1, #2\n\
+	adds r3, r2, r0\n\
+	ldrb r2, [r3]\n\
+	movs r0, #0xf\n\
+	ands r0, r2\n\
+	movs r2, #3\n\
+	ands r2, r1\n\
+	asrs r0, r2\n\
+	movs r4, #1\n\
+	ands r0, r4\n\
+	cmp r0, #0\n\
+	beq _080F856C\n\
+	ldrb r0, [r3]\n\
+	adds r1, r2, #4\n\
+	asrs r0, r1\n\
+	ands r0, r4\n\
+	cmp r0, #0\n\
+	beq _080F8514\n\
+	adds r0, r5, #0\n\
+	movs r1, #5\n\
+	bl __udivsi3\n\
+	adds r4, r0, #0\n\
+	lsls r4, r4, #0x18\n\
+	lsrs r4, r4, #0x18\n\
+	adds r0, r5, #0\n\
+	movs r1, #5\n\
+	bl __umodsi3\n\
+	lsls r0, r0, #0x18\n\
+	lsls r4, r4, #6\n\
+	lsrs r0, r0, #0x17\n\
+	adds r4, r4, r0\n\
+	lsls r4, r4, #1\n\
+	adds r2, r4, r6\n\
+	adds r1, r2, #0\n\
+	adds r1, #0xc6\n\
+	ldr r3, _080F850C @ =0x000080ED\n\
+	adds r0, r3, #0\n\
+	strh r0, [r1]\n\
+	adds r1, #2\n\
+	adds r3, #1\n\
+	adds r0, r3, #0\n\
+	strh r0, [r1]\n\
+	movs r0, #0x83\n\
+	lsls r0, r0, #1\n\
+	adds r1, r2, r0\n\
+	adds r3, #0x1f\n\
+	adds r0, r3, #0\n\
+	strh r0, [r1]\n\
+	movs r0, #0x84\n\
+	lsls r0, r0, #1\n\
+	adds r1, r2, r0\n\
+	ldr r2, _080F8510 @ =0x0000810E\n\
+	b _080F855C\n\
+	.align 2, 0\n\
+_080F84F8: .4byte 0x00000ED8\n\
+_080F84FC: .4byte gStageDiskManager\n\
+_080F8500: .4byte gVideoRegBuffer+6\n\
+_080F8504: .4byte 0x000031A2\n\
+_080F8508: .4byte 0x00000DCC\n\
+_080F850C: .4byte 0x000080ED\n\
+_080F8510: .4byte 0x0000810E\n\
+_080F8514:\n\
+	adds r0, r5, #0\n\
+	movs r1, #5\n\
+	bl __udivsi3\n\
+	adds r4, r0, #0\n\
+	lsls r4, r4, #0x18\n\
+	lsrs r4, r4, #0x18\n\
+	adds r0, r5, #0\n\
+	movs r1, #5\n\
+	bl __umodsi3\n\
+	lsls r0, r0, #0x18\n\
+	lsls r4, r4, #6\n\
+	lsrs r0, r0, #0x17\n\
+	adds r4, r4, r0\n\
+	lsls r4, r4, #1\n\
+	adds r2, r4, r6\n\
+	adds r1, r2, #0\n\
+	adds r1, #0xc6\n\
+	ldr r3, _080F8564 @ =0x000080EB\n\
+	adds r0, r3, #0\n\
+	strh r0, [r1]\n\
+	adds r1, #2\n\
+	adds r3, #1\n\
+	adds r0, r3, #0\n\
+	strh r0, [r1]\n\
+	movs r0, #0x83\n\
+	lsls r0, r0, #1\n\
+	adds r1, r2, r0\n\
+	adds r3, #0x1f\n\
+	adds r0, r3, #0\n\
+	strh r0, [r1]\n\
+	movs r0, #0x84\n\
+	lsls r0, r0, #1\n\
+	adds r1, r2, r0\n\
+	ldr r2, _080F8568 @ =0x0000810C\n\
+_080F855C:\n\
+	adds r0, r2, #0\n\
+	strh r0, [r1]\n\
+	b _080F85A8\n\
+	.align 2, 0\n\
+_080F8564: .4byte 0x000080EB\n\
+_080F8568: .4byte 0x0000810C\n\
+_080F856C:\n\
+	adds r0, r5, #0\n\
+	movs r1, #5\n\
+	bl __udivsi3\n\
+	adds r4, r0, #0\n\
+	lsls r4, r4, #0x18\n\
+	lsrs r4, r4, #0x18\n\
+	adds r0, r5, #0\n\
+	movs r1, #5\n\
+	bl __umodsi3\n\
+	lsls r0, r0, #0x18\n\
+	lsls r4, r4, #6\n\
+	lsrs r0, r0, #0x17\n\
+	adds r4, r4, r0\n\
+	lsls r4, r4, #1\n\
+	adds r1, r4, r6\n\
+	adds r0, r1, #0\n\
+	adds r0, #0xc6\n\
+	strh r7, [r0]\n\
+	adds r0, #2\n\
+	strh r7, [r0]\n\
+	movs r3, #0x83\n\
+	lsls r3, r3, #1\n\
+	adds r0, r1, r3\n\
+	strh r7, [r0]\n\
+	movs r2, #0x84\n\
+	lsls r2, r2, #1\n\
+	adds r0, r1, r2\n\
+	strh r7, [r0]\n\
+_080F85A8:\n\
+	adds r0, r5, #1\n\
+	lsls r0, r0, #0x18\n\
+	lsrs r5, r0, #0x18\n\
+	cmp r5, #0x1d\n\
+	bhi _080F85B4\n\
+	b _080F847A\n\
+_080F85B4:\n\
+	ldr r0, _080F85DC @ =0x00000ED8\n\
+	add r0, r8\n\
+	mov r3, sl\n\
+	ldrh r2, [r3]\n\
+	movs r1, #0xf8\n\
+	lsls r1, r1, #5\n\
+	ands r1, r2\n\
+	lsls r1, r1, #3\n\
+	movs r2, #0x80\n\
+	lsls r2, r2, #5\n\
+	bl RequestBgMapTransfer\n\
+	pop {r3, r4, r5}\n\
+	mov r8, r3\n\
+	mov sb, r4\n\
+	mov sl, r5\n\
+	pop {r4, r5, r6, r7}\n\
+	pop {r0}\n\
+	bx r0\n\
+	.align 2, 0\n\
+_080F85DC: .4byte 0x00000ED8\n\
+ .syntax divided\n");
+}
+
+INCASM("asm/analysis.inc");
 
 // ------------------------------------------------------------------------------------------------------------------------------------
 

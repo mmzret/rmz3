@@ -450,6 +450,5 @@
         src/game/menu/elf.o (.text);
         src/game/menu/exskill.o (.text);
       src/game/analysis.o (.text);
-        asm/analysis.o (.text);
       src/game/minigame.o (.text);
         asm/minigame.o (.text);
