@@ -72,6 +72,10 @@ static void MinigameLoop_InitMinigame(struct GameState* g) {
   g->mode[2]++;
 }
 
+INCASM("asm/minigame.inc");
+
+// ------------------------------------------------------------------------------------------------------------------------------------
+
 // clang-format off
 const MinigameLoopFunc gEachMinigameLoops[MINIGAME_COUNT] = {
     [MINIGAME_ZERO] = zeroMinigame,
@@ -84,8 +88,18 @@ const MinigameLoopFunc gEachMinigameLoops[MINIGAME_COUNT] = {
 };
 // clang-format on
 
+// ------------------------------------------------------------------------------------------------------------------------------------
+
+bool8 exitZeroMinigame(struct GameState* g);
+bool8 exitCielMinigame(struct GameState* g);
+bool8 exitCopyXMinigame(struct GameState* g);
+bool8 exitHarpuiaMinigame(struct GameState* g);
+bool8 exitFefnirMinigame(struct GameState* g);
+bool8 exitLeviathanMinigame(struct GameState* g);
+static bool8 exitPhantomMinigame(struct GameState* g);
+
 // clang-format off
-const MinigameLoopFunc MinigameDeinitializers[MINIGAME_COUNT] = {
+const MinigameExitFunc MinigameDeinitializers[MINIGAME_COUNT] = {
     [MINIGAME_ZERO] = exitZeroMinigame,
     [MINIGAME_CIEL] = exitCielMinigame,
     [MINIGAME_COPY_X] = exitCopyXMinigame,
@@ -95,6 +109,15 @@ const MinigameLoopFunc MinigameDeinitializers[MINIGAME_COUNT] = {
     [MINIGAME_PHANTOM] = exitPhantomMinigame,
 };
 // clang-format on
+
+static bool8 exitPhantomMinigame(struct GameState* g) {
+  u8* s = (u8*)&(g->sceneState).menu;
+  gSystemSavedataManager.minigameHiscores[MINIGAME_PHANTOM] = *((u32*)&s[60]);
+  SaveSystemData();
+  return FALSE;
+}
+
+// ------------------------------------------------------------------------------------------------------------------------------------
 
 const MinigameLoopFunc ZeroMinigameLoops[3] = {
     zeroMinigamePhase0,

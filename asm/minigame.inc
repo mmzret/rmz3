@@ -6454,18 +6454,3 @@ _080FC426:
 	pop {r1}
 	bx r1
 
-	thumb_func_start exitPhantomMinigame
-exitPhantomMinigame: @ 0x080FC42C
-	push {lr}
-	ldr r1, _080FC444 @ =0x00000DCC
-	adds r0, r0, r1
-	ldr r1, _080FC448 @ =gSystemSavedataManager
-	ldr r0, [r0, #0x3c]
-	str r0, [r1, #0x3c]
-	bl SaveSystemData
-	movs r0, #0
-	pop {r1}
-	bx r1
-	.align 2, 0
-_080FC444: .4byte 0x00000DCC
-_080FC448: .4byte gSystemSavedataManager
