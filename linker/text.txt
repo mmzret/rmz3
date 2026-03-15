@@ -216,6 +216,12 @@
 			src/enemy/pantheon_fist.o (.text);
 			src/enemy/shellcrawler.o (.text);
 			src/enemy/cannon_hopper.o (.text);
+			src/enemy/cattatank.o (.text);
+			src/enemy/minigame/leviathan.o (.text);
+			src/enemy/minigame/harpuia.o (.text);
+			src/enemy/minigame/ciel1.o (.text);
+			src/enemy/minigame/ciel2.o (.text);
+			src/enemy/unk_72.o (.text);
 
 		src/projectile.o (.text);
       src/projectile/lemon.o (.text);

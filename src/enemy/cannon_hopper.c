@@ -2,7 +2,7 @@
 #include "enemy.h"
 #include "global.h"
 
-INCASM("asm/enemy/enemy.inc");
+INCASM("asm/enemy/cannon_hopper.inc");
 
 void CannonHopper_Init(struct Enemy* p);
 void CannonHopper_Update(struct Enemy* p);

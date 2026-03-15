@@ -49,7 +49,7 @@ struct Zero* AllocPlayer(void) {
   return z;
 }
 
-// ミニゲームの(ゼロのミニゲーム以外の)プレイヤー生成?
+// スクリプトエンジンによるプレイヤー生成
 struct Zero* AllocPlayer2(void) {
   struct Zero* tmp;
   struct Zero* z;

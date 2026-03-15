@@ -2,7 +2,7 @@
 #include "enemy.h"
 #include "global.h"
 
-void Enemy14_Init(struct Enemy* p);
+static void Enemy14_Init(struct Enemy* p);
 void Enemy14_Update(struct Enemy* p);
 void Enemy14_Die(struct Enemy* p);
 
@@ -34,21 +34,26 @@ struct Enemy* CreateTopGabyoall(struct Coord* c, u8 r1, u8 r2) {
   }
 }
 
-INCASM("asm/enemy/unk_14.inc");
+// --------------------------------------------
 
 void FUN_0806f5d0(struct Enemy* p);
 void FUN_0806f6cc(struct Enemy* p);
 void FUN_0806f7dc(struct Enemy* p);
 void FUN_0806f89c(struct Enemy* p);
 
-static const EnemyFunc PTR_ARRAY_08366950[4] = {
-    FUN_0806f5d0,
-    FUN_0806f6cc,
-    FUN_0806f7dc,
-    FUN_0806f89c,
-};
+static void Enemy14_Init(struct Enemy* p) {
+  static const EnemyFunc sInitializers[4] = {
+      FUN_0806f5d0,
+      FUN_0806f6cc,
+      FUN_0806f7dc,
+      FUN_0806f89c,
+  };
+  (sInitializers[(p->s).work[0]])(p);
+}
 
 // --------------------------------------------
+
+INCASM("asm/enemy/unk_14.inc");
 
 void FUN_0806f964(struct Enemy* p);
 void FUN_0806fb08(struct Enemy* p);

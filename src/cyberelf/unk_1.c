@@ -2,9 +2,7 @@
 #include "entity.h"
 #include "global.h"
 
-INCASM("asm/cyberelf/unk_1.inc");
-
-// ------------------------------------------------------------------------------------------------------------------------------------
+struct Zero;
 
 void Elf1_Init(struct Elf* p);
 void Elf1_Update(struct Elf* p);
@@ -19,6 +17,24 @@ const ElfRoutine gElf1Routine = {
     [ENTITY_EXIT] =      (ElfFunc)DeleteEntity,
 };
 // clang-format on
+
+// --------------------------------------------
+
+struct Elf* CreateElf1(struct Zero* p, u8 breed, u8 availability, u8 _) {
+  struct Elf* e = (struct Elf*)AllocEntityFirst(gElfHeaderPtr);
+  if (e != NULL) {
+    (e->s).taskCol = 16;
+    INIT_ELF_ROUTINE(e, 1);
+    (e->s).tileNum = 0;
+    (e->s).palID = 0;
+    *(struct Zero**)(&(e->props.raw[0])) = p;
+    (e->s).work[0] = breed;
+    (e->s).work[1] = availability;
+  }
+  return e;
+}
+
+INCASM("asm/cyberelf/unk_1.inc");
 
 // --------------------------------------------
 

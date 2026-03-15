@@ -2,6 +2,8 @@
 #include "enemy.h"
 #include "global.h"
 
+INCASM("asm/enemy/minigame_harpuia.inc");
+
 void HarpuiaMinigameEnemy_Init(struct Enemy* p);
 void HarpuiaMinigameEnemy_Update(struct Enemy* p);
 void HarpuiaMinigameEnemy_Die(struct Enemy* p);

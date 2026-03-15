@@ -4,50 +4,6 @@
 	
 	.text
 
-	thumb_func_start FUN_080e20a4
-FUN_080e20a4: @ 0x080E20A4
-	push {r4, r5, r6, lr}
-	adds r6, r0, #0
-	lsls r1, r1, #0x18
-	lsrs r5, r1, #0x18
-	lsls r2, r2, #0x18
-	lsrs r4, r2, #0x18
-	ldr r0, _080E20F0 @ =gElfHeaderPtr
-	ldr r0, [r0]
-	bl AllocEntityFirst
-	adds r3, r0, #0
-	cmp r3, #0
-	beq _080E20E8
-	adds r1, r3, #0
-	adds r1, #0x25
-	movs r2, #0
-	movs r0, #0x10
-	strb r0, [r1]
-	ldr r1, _080E20F4 @ =gElfFnTable
-	movs r0, #1
-	strb r0, [r3, #9]
-	ldr r0, [r1, #4]
-	ldr r0, [r0]
-	str r0, [r3, #0x14]
-	movs r0, #0
-	strh r2, [r3, #0x20]
-	adds r1, r3, #0
-	adds r1, #0x22
-	strb r0, [r1]
-	adds r0, r3, #0
-	adds r0, #0xb4
-	str r6, [r0]
-	strb r5, [r3, #0x10]
-	strb r4, [r3, #0x11]
-_080E20E8:
-	adds r0, r3, #0
-	pop {r4, r5, r6}
-	pop {r1}
-	bx r1
-	.align 2, 0
-_080E20F0: .4byte gElfHeaderPtr
-_080E20F4: .4byte gElfFnTable
-
 	thumb_func_start Elf1_Init
 Elf1_Init: @ 0x080E20F8
 	push {r4, r5, r6, r7, lr}
