@@ -18,7 +18,7 @@ static const StageFunc sStageRoutine[4] = {
 static void initAnatreForest(struct Coord* _ UNUSED) {
   gOverworld.work.anatreForest.leaf = NULL;
   gOverworld.work.anatreForest.unk_004 = 0;
-  gOverworld.work.anatreForest.unk_008 = 0;
+  gOverworld.work.anatreForest.unk_008 = NULL;
   gOverworld.work.anatreForest.unk_00c = 0;
   gOverworld.work.anatreForest.unk_00d = 0;
 }
@@ -204,8 +204,8 @@ static void FUN_080104d4(struct Coord* _ UNUSED) {
 static void LayerUpdate_2(struct StageLayer* l, const struct Stage* _ UNUSED);
 static void LayerUpdate_3(struct StageLayer* l, const struct Stage* _ UNUSED);
 static void LayerUpdate_4(struct StageLayer* l, const struct Stage* _ UNUSED);
-void FUN_080105e4(struct StageLayer* l, const struct Stage* stage);
-void anatre_080106bc(struct StageLayer* l, const struct Stage* stage);
+static void LayerDraw_AnatreForest_4(struct StageLayer* l, const struct Stage* _ UNUSED);
+static void LayerUpdate_AnatreForest_5(struct StageLayer* l, const struct Stage* _ UNUSED);
 void FUN_080106e0(struct StageLayer* l, const struct Stage* stage);
 void anatre_08010738(struct StageLayer* l, const struct Stage* stage);
 void FUN_08010be0(struct StageLayer* l, const struct Stage* stage);
@@ -234,11 +234,11 @@ static const StageLayerRoutine sLayerRoutine[7] = {
     },
     [4] = {
       [LAYER_UPDATE] = LayerUpdate_4,
-      [LAYER_DRAW]   = FUN_080105e4,
+      [LAYER_DRAW]   = LayerDraw_AnatreForest_4,
       [LAYER_EXIT]   = NULL,
     },
     [5] = {
-      [LAYER_UPDATE] = anatre_080106bc,
+      [LAYER_UPDATE] = LayerUpdate_AnatreForest_5,
       [LAYER_DRAW]   = DrawGeneralStageLayer,
       [LAYER_EXIT]   = FUN_080106e0,
     },
@@ -274,6 +274,120 @@ static void LayerUpdate_4(struct StageLayer* l, const struct Stage* _ UNUSED) {
     BGCNT16(n >> 4) &= 0xFFFC;
     BGCNT16(n >> 4) |= 1;
     l->phase++;
+  }
+}
+
+NAKED static void LayerDraw_AnatreForest_4(struct StageLayer* l, const struct Stage* _ UNUSED) {
+  asm(".syntax unified\n\
+	push {r4, r5, r6, lr}\n\
+	sub sp, #8\n\
+	adds r4, r0, #0\n\
+	adds r6, r4, #0\n\
+	adds r6, #0x14\n\
+	ldr r3, [r4, #0x34]\n\
+	ldr r2, [r4, #0x38]\n\
+	ldr r1, [r4, #0x3c]\n\
+	subs r1, r3, r1\n\
+	adds r1, #0xf\n\
+	ldr r0, [r4, #0x40]\n\
+	subs r0, r2, r0\n\
+	adds r5, r0, #0\n\
+	adds r5, #0xf\n\
+	movs r0, #0xf0\n\
+	lsls r0, r0, #1\n\
+	adds r2, r2, r0\n\
+	ldr r0, [r4, #0x2c]\n\
+	asrs r0, r0, #8\n\
+	adds r0, r0, r3\n\
+	str r0, [sp]\n\
+	ldr r0, [r4, #0x30]\n\
+	asrs r0, r0, #8\n\
+	adds r0, r0, r2\n\
+	str r0, [sp, #4]\n\
+	cmp r1, #0x1e\n\
+	bhi _0801062A\n\
+	cmp r5, #0x1e\n\
+	bhi _0801062A\n\
+	ldr r3, _08010650 @ =gOverworld\n\
+	ldr r1, _08010654 @ =0x0002D02C\n\
+	adds r0, r3, r1\n\
+	ldrb r0, [r0]\n\
+	cmp r0, #0\n\
+	beq _08010660\n\
+_0801062A:\n\
+	ldr r0, [r4, #0x5c]\n\
+	lsrs r0, r0, #4\n\
+	lsls r0, r0, #1\n\
+	ldr r1, _08010658 @ =gVideoRegBuffer+4\n\
+	adds r0, r0, r1\n\
+	ldrh r0, [r0]\n\
+	movs r2, #0xf8\n\
+	lsls r2, r2, #5\n\
+	ands r2, r0\n\
+	lsls r2, r2, #3\n\
+	movs r0, #0xc0\n\
+	lsls r0, r0, #0x13\n\
+	adds r2, r2, r0\n\
+	ldr r3, _0801065C @ =0x020029E0\n\
+	adds r0, r6, #0\n\
+	mov r1, sp\n\
+	bl FUN_08006ae0\n\
+	b _08010688\n\
+	.align 2, 0\n\
+_08010650: .4byte gOverworld\n\
+_08010654: .4byte 0x0002D02C\n\
+_08010658: .4byte gVideoRegBuffer+4\n\
+_0801065C: .4byte 0x020029E0\n\
+_08010660:\n\
+	ldr r0, [r4, #0x5c]\n\
+	lsrs r0, r0, #4\n\
+	lsls r0, r0, #1\n\
+	ldr r1, _080106AC @ =gVideoRegBuffer+4\n\
+	adds r0, r0, r1\n\
+	ldrh r0, [r0]\n\
+	movs r2, #0xf8\n\
+	lsls r2, r2, #5\n\
+	ands r2, r0\n\
+	lsls r2, r2, #3\n\
+	movs r0, #0xc0\n\
+	lsls r0, r0, #0x13\n\
+	adds r2, r2, r0\n\
+	movs r0, #0xfc\n\
+	lsls r0, r0, #3\n\
+	adds r3, r3, r0\n\
+	adds r0, r6, #0\n\
+	mov r1, sp\n\
+	bl FUN_08006bb4\n\
+_08010688:\n\
+	ldr r0, _080106B0 @ =gOverworld\n\
+	ldr r1, _080106B4 @ =0x0002D02C\n\
+	adds r0, r0, r1\n\
+	movs r1, #0\n\
+	strb r1, [r0]\n\
+	ldr r1, [r4, #0x5c]\n\
+	lsrs r1, r1, #4\n\
+	lsls r1, r1, #2\n\
+	ldr r0, _080106B8 @ =gVideoRegBuffer+12\n\
+	adds r1, r1, r0\n\
+	adds r0, r6, #0\n\
+	bl UpdateBGOFS\n\
+	add sp, #8\n\
+	pop {r4, r5, r6}\n\
+	pop {r0}\n\
+	bx r0\n\
+	.align 2, 0\n\
+_080106AC: .4byte gVideoRegBuffer+4\n\
+_080106B0: .4byte gOverworld\n\
+_080106B4: .4byte 0x0002D02C\n\
+_080106B8: .4byte gVideoRegBuffer+12\n\
+ .syntax divided\n");
+}
+
+struct Solid* FUN_080cedc0(u8 n);
+
+static void LayerUpdate_AnatreForest_5(struct StageLayer* l, const struct Stage* _ UNUSED) {
+  if (gOverworld.work.anatreForest.unk_008 == NULL) {
+    gOverworld.work.anatreForest.unk_008 = FUN_080cedc0(0);
   }
 }
 

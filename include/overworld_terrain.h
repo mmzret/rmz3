@@ -334,7 +334,7 @@ struct Overworld {
     struct {
       struct Solid* leaf;
       u8 unk_004;
-      u32 unk_008;
+      struct Solid* unk_008;
       u8 unk_00c;
       u8 unk_00d;
       u16 unk_00e;
