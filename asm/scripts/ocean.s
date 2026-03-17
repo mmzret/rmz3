@@ -328,7 +328,7 @@ Script_0834fd24:
   lock
   stop_bgm
   wait 120
-  cmd08 1, 0, 2
+  cmd08 1, 2
   destroy 1
   spawn 3, Entity_0834f6cc
   entityflag 3, 1, TRUE
@@ -433,7 +433,7 @@ Script_0834ffec:
   message 1, 0, 0x050E
   wait_msgbox_end
   entityflag 1, 7, TRUE
-  cmd08 1, 0, 2
+  cmd08 1, 2
   force 4, 0, 0
   wait 8
   force 5, 0, 0

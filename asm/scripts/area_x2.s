@@ -287,7 +287,7 @@ Script_08354db0:
   wait 60
   entityflag 1, 2, TRUE
   play_se 48
-  cmd08 1, 0, 2
+  cmd08 1, 2
   wait 120
   screeneffect 6
   wait_screeneffect

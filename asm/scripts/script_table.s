@@ -16,9 +16,9 @@ gStageScriptList: @ 0x0834d06c
     .word gFrostlineIceBaseScriptList
     .word gAreaX2ScriptList
     .word gEnergyFacilityScriptList
-    .word 0x0835663C
-    .word 0x08357788
-    .word 0x08358088
-    .word 0x08358E08
-    .word 0x0835BD4C
+    .word gSnowyPlainsScriptList
+    .word gSunkenLibraryScriptList
+    .word gGiantElevatorScriptList
+    .word gSubArcadiaScriptList
+    .word gWeilLaboScriptList
     .word gResistanceBaseScriptList

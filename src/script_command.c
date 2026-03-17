@@ -269,12 +269,12 @@ WIP static bool32 Cmd_cmd06(struct VM* vm) {
   struct Command* c = vm->pc;
   switch (c->val2) {
     case 0: {
-      BGCNT16(1) = 0x284;
+      BGCNT16(1) = (BGCNT_SCREENBASE(2) | BGCNT_256COLOR | BGCNT_CHARBASE(1));  // 0x284
       *(u32*)gVideoRegBuffer.bgofs[1] = 0;
       gVideoRegBuffer.dispcnt |= (DISPCNT_OBJ_ON | DISPCNT_BG1_ON);
       LoadGraphic(BG_GRAPHIC(c->status), (void*)0x4000);
       LoadPalette(BG_PALETTE(c->status), 0);
-      LoadBgMap(18, gBgMapOffsets, c->status, 0, 0);
+      LoadBgMap(USE_BG1, gBgMapOffsets, c->status, 0, 0);
       PauseAllBlinks();
       break;
     }
@@ -285,7 +285,7 @@ WIP static bool32 Cmd_cmd06(struct VM* vm) {
       break;
     }
     case 2: {
-      BGCNT16(1) = 0x8284;
+      BGCNT16(1) = (BGCNT_AFF512x512 | BGCNT_SCREENBASE(2) | BGCNT_256COLOR | BGCNT_CHARBASE(1));  // 0x8284
       BGOFS(1)->x = 0;
       BGOFS(1)->y = 160;
       gVideoRegBuffer.dispcnt |= (DISPCNT_OBJ_ON | DISPCNT_BG1_ON);
@@ -293,20 +293,20 @@ WIP static bool32 Cmd_cmd06(struct VM* vm) {
       gVideoRegBuffer.dispcnt &= ~DISPCNT_BG0_ON;
       LoadGraphic(BG_GRAPHIC(c->status), (void*)0x4000);
       LoadPalette(BG_PALETTE(c->status), 0);
-      LoadBgMap(18, gBgMapOffsets, c->status, 0, 0);
+      LoadBgMap(USE_BG1, gBgMapOffsets, c->status, 0, 0);
       loadBgMap_08004248((u16*)(void*)(BG_SCREEN_ADDR(1) + SCREEN_BASE_16(1)), gBgMapOffsets, c->status + 1, 0, 0);
       PauseAllBlinks();
       break;
     }
     case 3: {
-      BGCNT16(1) = 0x8284;
+      BGCNT16(1) = (BGCNT_AFF512x512 | BGCNT_SCREENBASE(2) | BGCNT_256COLOR | BGCNT_CHARBASE(1));  // 0x8284
       BGOFS(1)->x = 0;
       BGOFS(1)->y = 96;
       gVideoRegBuffer.dispcnt |= (DISPCNT_OBJ_ON | DISPCNT_BG1_ON);
       gVideoRegBuffer.dispcnt &= ~DISPCNT_BG0_ON;
       LoadGraphic(BG_GRAPHIC(c->status), (void*)0x4000);
       LoadPalette(BG_PALETTE(c->status), 0);
-      LoadBgMap(18, gBgMapOffsets, c->status, 0, 0);
+      LoadBgMap(USE_BG1, gBgMapOffsets, c->status, 0, 0);
       PauseAllBlinks();
       break;
     }
@@ -324,12 +324,12 @@ WIP static bool32 Cmd_cmd06(struct VM* vm) {
       break;
     }
     case 6: {
-      BGCNT16(1) = 0x204;
+      BGCNT16(1) = (BGCNT_SCREENBASE(2) | BGCNT_16COLOR | BGCNT_CHARBASE(1));  // 0x204
       *(u32*)gVideoRegBuffer.bgofs[1] = 0;
       gVideoRegBuffer.dispcnt |= (DISPCNT_OBJ_ON | DISPCNT_BG1_ON);
       LoadGraphic(BG_GRAPHIC(c->status), (void*)0x4000);
       LoadPalette(BG_PALETTE(c->status), 0);
-      LoadBgMap(18, gBgMapOffsets, c->status, 0, 0);
+      LoadBgMap(USE_BG1, gBgMapOffsets, c->status, 0, 0);
       PauseAllBlinks();
       break;
     }

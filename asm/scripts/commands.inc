@@ -110,10 +110,10 @@
   .4byte 0
 	.endm
 
-	.macro cmd08 a b c
+	.macro cmd08 a c
   .byte 0x08
 	.byte \a
-  .2byte \b
+  .2byte 0x00
   .4byte \c
 	.endm
 
@@ -191,6 +191,13 @@
   .byte 0x0D, 0x00
   .2byte \n
   .4byte 0x02 + \val
+	.endm
+
+  .macro cmd0f a b c
+  .byte 0x0F
+  .byte \a
+  .2byte \b
+  .4byte \c
 	.endm
 
 	.macro emergency_on

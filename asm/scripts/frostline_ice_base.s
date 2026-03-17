@@ -208,7 +208,7 @@ Script_08354654:
   message 1, 0, 0x0B02
   wait_msgbox_end
   entityflag 1, 7, TRUE
-  cmd08 1, 0, 2
+  cmd08 1, 2
   force 4, 0, 0
   wait 8
   force 5, 0, 0
