@@ -2656,12 +2656,13 @@ static void zeroCyberDoor0(struct Zero* z) {
   (z->s).mode[3] = 0;
 }
 
-WIP static void zeroCyberDoor1(struct Zero* z) {
-#if MODERN
+// 0x0802cd60
+static void zeroCyberDoor1(struct Zero* z) {
   s16 n;
   switch ((z->s).mode[3]) {
     case 0: {
       SetMotion(&z->s, MOTION(DM054_ZERO_DOOR_3D, 0x01));
+      (z->s).mode[3]++;
       break;
     }
     case 1: {
@@ -2674,16 +2675,16 @@ WIP static void zeroCyberDoor1(struct Zero* z) {
         (z->unk_b4).sound = MUS_NONE;
       }
       (z->s).flags &= ~DISPLAY;
+      (z->s).mode[3]++;
+      break;
+    }
+    case 2: {
       break;
     }
     default: {
-      return;
+      break;
     }
   }
-  (z->s).mode[3]++;
-#else
-  INCCODE("asm/wip/zeroCyberDoor1.inc");
-#endif
 }
 
 NAKED static void zeroCyberDoor2(struct Zero* z) {
