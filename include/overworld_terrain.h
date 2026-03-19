@@ -260,6 +260,7 @@ struct Overworld {
   */
   u8 state[4];
 
+  // 0x2d028 ..
   // ステージごとに用途が変わる
   union {
     u8 raw[264];

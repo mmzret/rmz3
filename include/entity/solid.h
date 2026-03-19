@@ -37,7 +37,9 @@ struct CyberDoorProps {
 
 struct Solid {
   struct Entity s;
+  // 0x74..
   struct Body body;
+  // 0xB4..
   union {
     u8 raw[16];
     struct Solid8Props icebonIce;

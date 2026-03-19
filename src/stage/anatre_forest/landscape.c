@@ -206,7 +206,7 @@ static void LayerUpdate_3(struct StageLayer* l, const struct Stage* _ UNUSED);
 static void LayerUpdate_4(struct StageLayer* l, const struct Stage* _ UNUSED);
 static void LayerDraw_AnatreForest_4(struct StageLayer* l, const struct Stage* _ UNUSED);
 static void LayerUpdate_AnatreForest_5(struct StageLayer* l, const struct Stage* _ UNUSED);
-void FUN_080106e0(struct StageLayer* l, const struct Stage* stage);
+static void LayerExit_AnatreForest_5(struct StageLayer* l, const struct Stage* _ UNUSED);
 void anatre_08010738(struct StageLayer* l, const struct Stage* stage);
 void FUN_08010be0(struct StageLayer* l, const struct Stage* stage);
 
@@ -240,7 +240,7 @@ static const StageLayerRoutine sLayerRoutine[7] = {
     [5] = {
       [LAYER_UPDATE] = LayerUpdate_AnatreForest_5,
       [LAYER_DRAW]   = DrawGeneralStageLayer,
-      [LAYER_EXIT]   = FUN_080106e0,
+      [LAYER_EXIT]   = LayerExit_AnatreForest_5,
     },
     [6] = {
       [LAYER_UPDATE] = anatre_08010738,
@@ -388,6 +388,20 @@ struct Solid* FUN_080cedc0(u8 n);
 static void LayerUpdate_AnatreForest_5(struct StageLayer* l, const struct Stage* _ UNUSED) {
   if (gOverworld.work.anatreForest.unk_008 == NULL) {
     gOverworld.work.anatreForest.unk_008 = FUN_080cedc0(0);
+  }
+}
+
+static void LayerExit_AnatreForest_5(struct StageLayer* l, const struct Stage* _ UNUSED) {
+  struct Solid* p = gOverworld.work.anatreForest.unk_008;
+  if (p != NULL) {
+    (p->s).flags &= ~DISPLAY;
+    (p->s).flags &= ~FLIPABLE;
+    (p->body).status = 0;
+    (p->body).prevStatus = 0;
+    (p->body).invincibleTime = 0;
+    (p->s).flags &= ~COLLIDABLE;
+    SET_SOLID_ROUTINE(p, ENTITY_DISAPPEAR);
+    gOverworld.work.anatreForest.unk_008 = NULL;
   }
 }
 
