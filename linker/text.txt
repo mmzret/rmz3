@@ -235,6 +235,8 @@
       src/projectile/unk_08.o (.text);
       src/projectile/blazin.o (.text);
       src/projectile/blazin_tail.o (.text);
+      src/projectile/ear_shot.o (.text);
+      src/projectile/unk_12.o (.text);
       src/projectile/omega_zero.o (.text);
       src/projectile/claveker_yellow_balls.o (.text);
       src/projectile/phantom.o (.text);

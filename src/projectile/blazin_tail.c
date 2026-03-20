@@ -270,8 +270,6 @@ _0809F294: .4byte pZero2\n\
  .syntax divided\n");
 }
 
-INCASM("asm/projectile/projectile.inc");
-
 // --------------------------------------------
 
 static const struct Collision sCollisions[2] = {

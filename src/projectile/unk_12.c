@@ -2,6 +2,8 @@
 #include "global.h"
 #include "projectile.h"
 
+// for Volteel Biblio's thunder
+
 void Projectile12_Init(struct Projectile* p);
 void Projectile12_Update(struct Projectile* p);
 void Projectile12_Die(struct Projectile* p);
@@ -15,6 +17,42 @@ const ProjectileRoutine gProjectile12Routine = {
     [ENTITY_EXIT] =      (ProjectileFunc)DeleteEntity,
 };
 // clang-format on
+
+// --------------------------------------------
+
+struct Projectile* FUN_0809f48c(struct Entity* e, struct Coord* c) {
+  struct Projectile* p = (struct Projectile*)AllocEntityFirst(gProjectileHeaderPtr);
+  if (p != NULL) {
+    (p->s).taskCol = 8;
+    INIT_PROJECTILE_ROUTINE(p, 12);
+    (p->s).tileNum = 0;
+    (p->s).palID = 0;
+    (p->s).work[0] = 0;
+    (p->s).coord = *c;
+    (p->s).unk_28 = e;
+  }
+  return p;
+}
+
+struct Projectile* FUN_0809f4dc(struct Entity* e, struct Coord* c, struct Coord* d, u8 n) {
+  struct Projectile* p = (struct Projectile*)AllocEntityFirst(gProjectileHeaderPtr);
+  if (p != NULL) {
+    (p->s).taskCol = 8;
+    INIT_PROJECTILE_ROUTINE(p, 12);
+    (p->s).tileNum = 0;
+    (p->s).palID = 0;
+    (p->s).work[0] = 1;
+    (p->s).d = *d;
+    (p->s).coord = *c;
+    (p->s).unk_28 = e;
+    p->work[0] = n;
+  }
+  return p;
+}
+
+// --------------------------------------------
+
+INCASM("asm/projectile/projectile.inc");
 
 // --------------------------------------------
 
@@ -51,51 +89,43 @@ static const struct Collision sCollisions[4] = {
       faction : FACTION_ENEMY,
       special : CS_BOSS,
       damage : 4,
-      atkType : 0x00,
       element : ELEMENT_THUNDER,
       nature : BODY_NATURE_B7,
-      comboLv : 0,
       remaining : 0,
       layer : 0x00000002,
-      range : {0x0000, 0x0000, 0x0800, 0x0800},
+      range : {PIXEL(0), PIXEL(0), PIXEL(8), PIXEL(8)},
     },
     {
       kind : DDP,
       faction : FACTION_ENEMY,
       special : CS_BOSS,
       damage : 6,
-      atkType : 0x00,
       element : ELEMENT_THUNDER,
       nature : BODY_NATURE_B7,
-      comboLv : 0,
       remaining : 2,
       layer : 0x00000002,
-      range : {0x0000, 0x0000, 0x0A00, 0x0A00},
+      range : {PIXEL(0), PIXEL(0), PIXEL(10), PIXEL(10)},
     },
     {
       kind : DDP,
       faction : FACTION_ENEMY,
       special : CS_BOSS,
       damage : 6,
-      atkType : 0x00,
       element : ELEMENT_THUNDER,
       nature : BODY_NATURE_B7,
-      comboLv : 0,
       remaining : 1,
       layer : 0x00000002,
-      range : {0x0A00, 0x0000, 0x0A00, 0x0A00},
+      range : {PIXEL(10), PIXEL(0), PIXEL(10), PIXEL(10)},
     },
     {
       kind : DDP,
       faction : FACTION_ENEMY,
       special : CS_BOSS,
       damage : 6,
-      atkType : 0x00,
       element : ELEMENT_THUNDER,
       nature : BODY_NATURE_B7,
-      comboLv : 0,
       remaining : 0,
       layer : 0x00000002,
-      range : {0x1400, 0x0000, 0x0A00, 0x0A00},
+      range : {PIXEL(20), PIXEL(0), PIXEL(10), PIXEL(10)},
     },
 };
