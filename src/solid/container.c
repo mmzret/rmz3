@@ -5,6 +5,8 @@
 #include "solid.h"
 #include "vfx.h"
 
+// ゼロが壊すとアイテムとかディスクが出る箱
+
 static const struct Collision sCollision;
 static const struct SlashedEnemy sSlashedEnemies[4];
 static const struct Rect sSize;
@@ -67,7 +69,7 @@ static void FUN_080dc434(struct Solid* p);
 static void FUN_080dc524(struct Solid* p);
 
 static void Solid35_Die(struct Solid* p) {
-  static const SolidFunc PTR_ARRAY_08371550[2] = {
+  static const SolidFunc sDeads[2] = {
       FUN_080dc434,
       FUN_080dc524,
   };
@@ -84,7 +86,7 @@ static void Solid35_Die(struct Solid* p) {
     (p->s).flags &= ~COLLIDABLE;
     (p->s).flags2 &= ~ENTITY_HAZARD;
   }
-  (PTR_ARRAY_08371550[(p->s).mode[1]])(p);
+  (sDeads[(p->s).mode[1]])(p);
 }
 
 static void FUN_080dc434(struct Solid* p) {
@@ -166,10 +168,7 @@ static const struct Collision sCollision = {
   kind : DRP,
   faction : FACTION_ENEMY,
   damage : 0,
-  atkType : 0xFF,
-  element : 0xFF,
-  nature : 0xFF,
-  comboLv : 0xFF,
+  LAYER(0xFFFFFFFF),
   hitzone : 1,
   hardness : HARDNESS_B3,
   remaining : 0,

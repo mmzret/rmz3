@@ -1,6 +1,6 @@
 #include "entity.h"
-#include "vfx.h"
 #include "global.h"
+#include "vfx.h"
 
 /*
   !などの吹き出し
@@ -38,34 +38,30 @@ static struct VFX* unused_CreateGhost15(u8 n, struct Coord* c) {
   return g;
 }
 
-WIP struct VFX* CreateEmotionBubble(u8 kind, struct Coord* target, struct Coord* c) {
-#if MODERN
-  struct VFX* g = (struct VFX*)AllocEntityFirst(gVFXHeaderPtr);
-  if (g != NULL) {
+struct VFX* CreateEmotionBubble(u8 kind, struct Coord* target, struct Coord* c) {
+  struct VFX* p = (struct VFX*)AllocEntityFirst(gVFXHeaderPtr);
+  if (p != NULL) {
     bool8 xflip;
-    (g->s).taskCol = 1;
-    INIT_VFX_ROUTINE(g, VFX_EMOTION_BUBBLE);
-    (g->s).tileNum = 0;
-    (g->s).palID = 0;
-    (g->s).unk_28 = (struct Entity*)target;
-    ((g->s).unk_coord).x = c->x;
-    ((g->s).unk_coord).y = c->y;
-    (g->s).work[0] = 1;
-    InitNonAffineMotion(&g->s);
-    SetMotion(&g->s, sMotions[kind]);
+    (p->s).taskCol = 1;
+    INIT_VFX_ROUTINE(p, VFX_EMOTION_BUBBLE);
+    (p->s).tileNum = 0;
+    (p->s).palID = 0;
+    (p->s).unk_28 = (struct Entity*)target;
+    ((p->s).unk_coord).x = c->x;
+    ((p->s).unk_coord).y = c->y;
+    (p->s).work[0] = 1;
+    InitNonAffineMotion(&p->s);
+    SetMotion(&p->s, sMotions[kind]);
     xflip = (c->x < 0);
     if (xflip) {
-      (g->s).flags |= X_FLIP;
+      (p->s).flags |= X_FLIP;
     } else {
-      (g->s).flags &= ~X_FLIP;
+      (p->s).flags &= ~X_FLIP;
     }
-    (g->s).spr.xflip = xflip;
-    (g->s).spr.oam.xflip = xflip;
+    (p->s).spr.xflip = xflip & 1;
+    (p->s).spr.oam.xflip = xflip;
   }
-  return g;
-#else
-  INCCODE("asm/wip/CreateEmotionBubble.inc");
-#endif
+  return p;
 }
 
 // ------------------------------------------------------------------------------------------------------------------------------------

@@ -27,10 +27,10 @@ const VFXRoutine gParticleRoutine = {
 
 // ------------------------------------------------------------------------------------------------------------------------------------
 
-NON_MATCH void CreateParticle(struct Coord* c, u8 kind, bool8 isRight) {
-#if MODERN
+void CreateParticle(struct Coord* c, u8 kind, bool8 isRight) {
   struct VFX* p = (struct VFX*)AllocEntityFirst(gVFXHeaderPtr);
   if (p != NULL) {
+    bool8 xflip;
     (p->s).taskCol = 1;
     INIT_VFX_ROUTINE(p, VFX_PARTICLE);
     (p->s).tileNum = 0;
@@ -38,16 +38,15 @@ NON_MATCH void CreateParticle(struct Coord* c, u8 kind, bool8 isRight) {
     (p->s).work[0] = kind;
     (p->s).work[1] = 0;
     (p->s).coord = *c;
-    if (isRight) {
+    xflip = isRight;
+    if (xflip) {
       (p->s).flags |= X_FLIP;
     } else {
       (p->s).flags &= ~X_FLIP;
     }
-    (p->s).spr.oam.xflip = (p->s).spr.xflip = isRight;
+    (p->s).spr.xflip = xflip & 1;
+    (p->s).spr.oam.xflip = xflip;
   }
-#else
-  INCCODE("asm/wip/CreateParticle.inc");
-#endif
 }
 
 void oz_080b3820(struct Coord* omegaCoord, bool8 isRight) {
@@ -105,9 +104,9 @@ static void FUN_080b3b20(struct VFX* p);
 static void FUN_080b3b8c(struct VFX* p);
 static void FUN_080b3c40(struct VFX* p);
 static void initRicochet(struct VFX* p);
-void initWallDust(struct VFX* p);
-void FUN_080b3e08(struct VFX* p);
-void FUN_080b3e4c(struct VFX* p);
+static void initWallDust(struct VFX* p);
+static void FUN_080b3e08(struct VFX* p);
+static void FUN_080b3e4c(struct VFX* p);
 void FUN_080b3ee0(struct VFX* p);
 
 static void Ghost5_Init(struct VFX* p) {
@@ -288,6 +287,59 @@ static void initRicochet(struct VFX* p) {
   (p->s).flags |= DISPLAY;
   (p->s).flags |= FLIPABLE;
   SetMotion(&p->s, MOTION(SM000_BATTLE_EFFECT, 0x09));
+  SET_VFX_ROUTINE(p, ENTITY_UPDATE);
+  Ghost5_Update(p);
+}
+
+WIP static void initWallDust(struct VFX* p) {
+#if MODERN
+  InitNonAffineMotion(&p->s);
+  (p->s).flags |= DISPLAY;
+  (p->s).flags |= FLIPABLE;
+
+  RNG_0202f388 = LCG(RNG_0202f388);
+  SetMotion(&p->s, MOTION(SM000_BATTLE_EFFECT, 27));
+  RNG_0202f388 = LCG(RNG_0202f388);
+
+  (p->s).flags &= ~Y_FLIP;
+  (p->s).spr.yflip = FALSE;
+  (p->s).spr.oam.yflip = FALSE;
+  {
+    RNG_0202f388 = LCG(RNG_0202f388);
+    (p->s).coord.x += PIXEL(((RNG_0202f388 >> 16) & 3) - 2);
+    RNG_0202f388 = LCG(RNG_0202f388);
+    (p->s).coord.y += PIXEL(((RNG_0202f388 >> 16) & 7) - 4);
+  }
+  SET_VFX_ROUTINE(p, ENTITY_UPDATE);
+  Ghost5_Update(p);
+#else
+  INCCODE("asm/wip/initWallDust.inc");
+#endif
+}
+
+static void FUN_080b3e08(struct VFX* p) {
+  InitNonAffineMotion(&p->s);
+  (p->s).flags |= DISPLAY;
+  (p->s).flags |= FLIPABLE;
+  SetMotion(&p->s, MOTION(SM000_BATTLE_EFFECT, 5));
+  (p->s).work[2] = 4;
+  SET_VFX_ROUTINE(p, ENTITY_UPDATE);
+  Ghost5_Update(p);
+}
+
+static void FUN_080b3e4c(struct VFX* p) {
+  InitNonAffineMotion(&p->s);
+  (p->s).flags |= DISPLAY;
+  (p->s).flags |= FLIPABLE;
+  SetMotion(&p->s, MOTION(SM000_BATTLE_EFFECT, 13));
+
+  RNG_0202f388 = LCG(RNG_0202f388);
+  (p->s).work[2] = 60 + ((RNG_0202f388 >> 16) & 7);
+  RNG_0202f388 = LCG(RNG_0202f388);
+  (p->s).coord.x += PIXEL(((RNG_0202f388 >> 16) & 3) - 2);
+  RNG_0202f388 = LCG(RNG_0202f388);
+  (p->s).d.y = 0xC0 + ((RNG_0202f388 >> 16) & 0x3F);
+
   SET_VFX_ROUTINE(p, ENTITY_UPDATE);
   Ghost5_Update(p);
 }
