@@ -41,16 +41,7 @@ static void CyberSpaceElf_Init(struct VFX* p) {
   (p->s).flags |= DISPLAY;
   (p->s).flags |= FLIPABLE;
   SetMotion(&p->s, GetElfMotion((p->s).work[0]));
-  {
-    bool8 xflip = FALSE;
-    if (xflip) {
-      (p->s).flags |= X_FLIP;
-    } else {
-      (p->s).flags &= ~X_FLIP;
-    }
-    (p->s).spr.xflip = xflip & 1;
-    (p->s).spr.oam.xflip = xflip;
-  }
+  SET_XFLIP(p, FALSE);
   y = (p->s).coord.y - PIXEL(18);
   (p->s).coord.y = y;
   (p->props).tmp.c.x = (p->s).coord.x;

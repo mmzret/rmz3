@@ -31,8 +31,7 @@ const EnemyRoutine gGrandCannonRoutine = {
 // clang-format on
 
 // グランドキャノンの砲台の方を生成
-WIP void CreateGrandCannonBattery(struct Enemy* p) {
-#if MODERN
+void CreateGrandCannonBattery(struct Enemy* p) {
   struct Enemy* battery = (struct Enemy*)AllocEntityLast(gZakoHeaderPtr);
   if (battery != NULL) {
     (battery->s).unk_28 = &p->s;
@@ -43,11 +42,9 @@ WIP void CreateGrandCannonBattery(struct Enemy* p) {
     (battery->s).flags2 |= WHITE_PAINTABLE;
     (battery->s).invincibleID = (battery->s).uniqueID;
     (battery->s).work[0] = GRAND_CANNON_BATTERY;
+    (battery->s).flags2 |= WHITE_PAINTABLE;
     (battery->s).invincibleID = (p->s).uniqueID;
   }
-#else
-  INCCODE("asm/wip/CreateGrandCannonBattery.inc");
-#endif
 }
 
 static void onCollision(struct Body* body, struct Coord* r1 UNUSED, struct Coord* r2 UNUSED) {

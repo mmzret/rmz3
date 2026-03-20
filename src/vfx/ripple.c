@@ -25,9 +25,7 @@ const VFXRoutine gRippleRoutine = {
 
 // ------------------------------------------------------------------------------------------------------------------------------------
 
-NON_MATCH struct VFX* CreateRipple(struct Zero* z, bool8 outOfSea) {
-#if MODERN
-  bool8 yflip;
+struct VFX* CreateRipple(struct Zero* z, bool8 outOfSea) {
   struct VFX* vfx = (struct VFX*)AllocEntityFirst(gVFXHeaderPtr);
   if (vfx != NULL) {
     (vfx->s).taskCol = 1;
@@ -35,34 +33,39 @@ NON_MATCH struct VFX* CreateRipple(struct Zero* z, bool8 outOfSea) {
     (vfx->s).tileNum = 0;
     (vfx->s).palID = 0;
     (vfx->s).unk_28 = &z->s;
-    if (outOfSea) {
-      (vfx->s).flags |= Y_FLIP;
-    } else {
-      (vfx->s).flags &= ~Y_FLIP;
+    {
+      bool8 yflip = outOfSea;
+      if (yflip) {
+        (vfx->s).flags |= Y_FLIP;
+      } else {
+        (vfx->s).flags &= ~Y_FLIP;
+      }
+      (vfx->s).spr.yflip = yflip & 1;
+      (vfx->s).spr.oam.yflip = yflip;
     }
-    yflip = outOfSea & 1;
-    (vfx->s).spr.yflip = yflip;
-    (vfx->s).spr.oam.yflip = yflip;
     (vfx->s).work[0] = 0;
     (vfx->s).work[1] = 0;
     z->ripple = TRUE;
   }
   return vfx;
-#else
-  INCCODE("asm/wip/CreateRipple.inc");
-#endif
 }
 
-NON_MATCH static void Ripple_Init(struct VFX* p) {
-#if MODERN
+static void Ripple_Init(struct VFX* p) {
   struct Zero* z = (struct Zero*)(p->s).unk_28;
   InitNonAffineMotion(&p->s);
   (p->s).flags |= FLIPABLE;
   SetMotion(&p->s, MOTION(SM000_BATTLE_EFFECT, 0x13));
   (p->s).flags |= DISPLAY;
-  (p->s).flags &= ~X_FLIP;
-  (p->s).spr.xflip = FALSE;
-  (p->s).spr.oam.xflip = FALSE;
+  {
+    bool8 xflip = FALSE;
+    if (xflip) {
+      (p->s).flags |= X_FLIP;
+    } else {
+      (p->s).flags &= ~X_FLIP;
+    }
+    (p->s).spr.xflip = xflip & 1;
+    (p->s).spr.oam.xflip = xflip;
+  }
   if (!((z->body).status & BODY_STATUS_DEAD) && ((z->body).hp != 0)) {
     PlaySound(SE_WATER_SURFACE);
   }
@@ -70,9 +73,6 @@ NON_MATCH static void Ripple_Init(struct VFX* p) {
   (p->s).coord.y = SEA;
   SET_VFX_ROUTINE(p, ENTITY_UPDATE);
   Ripple_Update(p);
-#else
-  INCCODE("asm/wip/Ripple_Init.inc");
-#endif
 }
 
 INCASM("asm/vfx/ripple.inc");

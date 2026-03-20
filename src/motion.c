@@ -16,7 +16,7 @@ void ResetMotion(struct Motion* p, const struct MotionCmd* const* const cmds) {
 }
 
 // step: モーションのstep(剣を振るモーションなら今のstepでは剣を振りかぶったみたいな)
-void setMotionStep(struct Motion* p, u8 step) {
+void setMotionStep(struct Motion* p, motion_sub_id_t step) {
   s8 frame;
 
   p->step = step;

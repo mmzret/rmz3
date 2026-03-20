@@ -13,9 +13,9 @@ various:
   3: 火球
 */
 
-void BossExplosion_Init(struct VFX *p);
-void BossExplosion_Update(struct VFX *p);
-void BossExplosion_Die(struct VFX *p);
+void BossExplosion_Init(struct VFX* p);
+void BossExplosion_Update(struct VFX* p);
+void BossExplosion_Die(struct VFX* p);
 
 // clang-format off
 const VFXRoutine gBossExplosionRoutine = {
@@ -27,8 +27,8 @@ const VFXRoutine gBossExplosionRoutine = {
 };
 // clang-format on
 
-struct VFX *CreateBossExplosion(struct Boss *boss, struct Coord *c) {
-  struct VFX *p = (struct VFX *)AllocEntityFirst(gVFXHeaderPtr);
+struct VFX* CreateBossExplosion(struct Boss* boss, struct Coord* c) {
+  struct VFX* p = (struct VFX*)AllocEntityFirst(gVFXHeaderPtr);
   if (p != NULL) {
     (p->s).taskCol = 1;
     INIT_VFX_ROUTINE(p, VFX_BOSS_EXPLOSION);
@@ -46,30 +46,33 @@ INCASM("asm/vfx/boss_explosion.inc");
 
 // --------------------------------------------
 
-NON_MATCH static void initFireball(struct VFX *p) {
-#if MODERN
+static void initFireball(struct VFX* p) {
   InitScalerotMotion1(&p->s);
   (p->s).flags |= DISPLAY;
   ResetDynamicMotion(&p->s);
   (p->s).flags |= FLIPABLE;
   SetMotion(&p->s, MOTION(DM199_BOSS_EXPLOSION, 0));
   UpdateMotionGraphic(&p->s);
-  (p->s).flags &= ~X_FLIP;
-  (p->s).spr.xflip = FALSE;
-  (p->s).spr.oam.xflip = FALSE;
+  {
+    bool8 xflip = FALSE;
+    if (xflip) {
+      (p->s).flags |= X_FLIP;
+    } else {
+      (p->s).flags &= ~X_FLIP;
+    }
+    (p->s).spr.xflip = xflip & 1;
+    (p->s).spr.oam.xflip = xflip;
+  }
   (p->s).spr.oam.priority = 1;
   (p->s).spr.mag.y = (p->s).spr.mag.x = 0x10;
   (p->s).angle = 0;
   SET_VFX_ROUTINE(p, ENTITY_UPDATE);
   BossExplosion_Update(p);
-#else
-  INCCODE("asm/wip/initFireball.inc");
-#endif
 }
 
 // --------------------------------------------
 
-NAKED static void FUN_080c7cc0(struct VFX *p) {
+NAKED static void FUN_080c7cc0(struct VFX* p) {
   asm(".syntax unified\n\
 	push {r4, r5, r6, r7, lr}\n\
 	mov r7, sl\n\
@@ -409,7 +412,7 @@ _080C7F74: .4byte gVFXFnTable\n\
  .syntax divided\n");
 }
 
-NAKED static void FUN_080c7f78(struct VFX *p) {
+NAKED static void FUN_080c7f78(struct VFX* p) {
   asm(".syntax unified\n\
 	push {r4, r5, lr}\n\
 	adds r4, r0, #0\n\
@@ -476,7 +479,7 @@ _080C7FEC: .4byte gVFXFnTable\n\
  .syntax divided\n");
 }
 
-static void FUN_080c7ff0(struct VFX *p) {
+static void FUN_080c7ff0(struct VFX* p) {
   UpdateMotionGraphic(&p->s);
   (p->s).coord.x += (p->s).d.x;
   (p->s).coord.y += (p->s).d.y;
@@ -485,7 +488,7 @@ static void FUN_080c7ff0(struct VFX *p) {
   }
 }
 
-NAKED static void updateFireball(struct VFX *p) {
+NAKED static void updateFireball(struct VFX* p) {
   asm(".syntax unified\n\
 	push {r4, r5, lr}\n\
 	adds r4, r0, #0\n\
@@ -533,7 +536,7 @@ _080C8080: .4byte gVFXFnTable\n\
 
 // --------------------------------------------
 
-NAKED static void FUN_080c8084(struct VFX *p) {
+NAKED static void FUN_080c8084(struct VFX* p) {
   asm(".syntax unified\n\
 	push {r4, r5, r6, lr}\n\
 	adds r5, r0, #0\n\
@@ -608,18 +611,18 @@ _080C8108: .4byte gVFXFnTable\n\
    .syntax divided\n");
 }
 
-static void FUN_080c810c(struct VFX *p) { SET_VFX_ROUTINE(p, ENTITY_EXIT); }
+static void FUN_080c810c(struct VFX* p) { SET_VFX_ROUTINE(p, ENTITY_EXIT); }
 
-static void FUN_080c8124(struct VFX *p) { SET_VFX_ROUTINE(p, ENTITY_EXIT); }
+static void FUN_080c8124(struct VFX* p) { SET_VFX_ROUTINE(p, ENTITY_EXIT); }
 
-static void deleteFireball(struct VFX *p) { SET_VFX_ROUTINE(p, ENTITY_EXIT); }
+static void deleteFireball(struct VFX* p) { SET_VFX_ROUTINE(p, ENTITY_EXIT); }
 
 // --------------------------------------------
 
-void FUN_080c7a28(struct VFX *p);
-void FUN_080c7a90(struct VFX *p);
-void FUN_080c7bc4(struct VFX *p);
-void initFireball(struct VFX *p);
+void FUN_080c7a28(struct VFX* p);
+void FUN_080c7a90(struct VFX* p);
+void FUN_080c7bc4(struct VFX* p);
+void initFireball(struct VFX* p);
 
 static const VFXFunc sInitializers[4] = {
     FUN_080c7a28,
@@ -630,10 +633,10 @@ static const VFXFunc sInitializers[4] = {
 
 // --------------------------------------------
 
-static void FUN_080c7cc0(struct VFX *p);
-static void FUN_080c7f78(struct VFX *p);
-static void FUN_080c7ff0(struct VFX *p);
-static void updateFireball(struct VFX *p);
+static void FUN_080c7cc0(struct VFX* p);
+static void FUN_080c7f78(struct VFX* p);
+static void FUN_080c7ff0(struct VFX* p);
+static void updateFireball(struct VFX* p);
 
 static const VFXFunc sUpdates[4] = {
     FUN_080c7cc0,
@@ -644,10 +647,10 @@ static const VFXFunc sUpdates[4] = {
 
 // --------------------------------------------
 
-static void FUN_080c8084(struct VFX *p);
-static void FUN_080c810c(struct VFX *p);
-static void FUN_080c8124(struct VFX *p);
-static void deleteFireball(struct VFX *p);
+static void FUN_080c8084(struct VFX* p);
+static void FUN_080c810c(struct VFX* p);
+static void FUN_080c8124(struct VFX* p);
+static void deleteFireball(struct VFX* p);
 
 static const VFXFunc sDeinitializers[4] = {
     FUN_080c8084,

@@ -43,7 +43,7 @@ struct EntityTemplateCoord {
   例えば、雑魚敵みたいな複数同じEntityが存在しうるやつとかが該当する？
 */
 struct PreloadEntity {
-  motion_id_t id;
+  motion_id_t id;  // gDynamicMotionCmdTable または gStaticMotionCmdTable の idx (Dynamic: 0..162, Static: 0..252)
   u8 habitat;
   u16 tileBase;
   u8 palID;

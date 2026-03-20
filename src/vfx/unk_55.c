@@ -75,24 +75,24 @@ static void VFX55_Die(struct VFX* vfx) {
 // --------------------------------------------
 
 static void FUN_080c11e0(struct VFX* vfx) {
-  struct Boss* copyx;
-#if MODERN
-  bool8 xflip;
-#else
-  register bool8 xflip asm("r2");
-#endif
-
-  copyx = (struct Boss*)(vfx->s).unk_28;
+  struct Entity* copyx = (vfx->s).unk_28;
   (vfx->s).flags &= ~DISPLAY;
   SetMotion(&vfx->s, MOTION(SM097_COPYX_UNK, 2));
   UpdateMotionGraphic(&vfx->s);
 
-  xflip = FALSE;
-  (vfx->s).flags &= ~X_FLIP;
-  (vfx->s).spr.xflip = xflip;
-  (vfx->s).spr.oam.xflip = xflip;
+  {
+    bool8 xflip = FALSE;
+    if (xflip) {
+      (vfx->s).flags |= X_FLIP;
+    } else {
+      (vfx->s).flags &= ~X_FLIP;
+    }
+    (vfx->s).spr.xflip = xflip & 1;
+    (vfx->s).spr.oam.xflip = xflip;
+  }
+
   (vfx->s).spr.oam.priority = 3;
-  (vfx->s).coord = (copyx->s).coord;
+  (vfx->s).coord = copyx->coord;
   (vfx->s).work[2] = 42;
 }
 

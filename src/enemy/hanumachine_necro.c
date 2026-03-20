@@ -71,54 +71,25 @@ static void HanumachineNecro_Init(struct Enemy* p) {
   HanumachineNecro_Update(p);
 }
 
-NAKED static void HanumachineNecro_Update(struct Enemy* p) {
-  asm(".syntax unified\n\
-	push {r4, lr}\n\
-	adds r4, r0, #0\n\
-	bl UpdateMotionGraphic\n\
-	ldrb r2, [r4, #0xf]\n\
-	adds r3, r2, #0\n\
-	cmp r3, #0\n\
-	bne _0808A810\n\
-	ldr r0, [r4, #0x54]\n\
-	ldr r1, [r4, #0x5c]\n\
-	adds r0, r0, r1\n\
-	str r0, [r4, #0x54]\n\
-	ldr r0, [r4, #0x64]\n\
-	adds r1, r1, r0\n\
-	str r1, [r4, #0x5c]\n\
-	ldrb r0, [r4, #0x12]\n\
-	adds r1, r0, #1\n\
-	strb r1, [r4, #0x12]\n\
-	lsls r0, r0, #0x18\n\
-	lsrs r0, r0, #0x18\n\
-	cmp r0, #0x40\n\
-	bls _0808A82A\n\
-	adds r0, r2, #1\n\
-	strb r0, [r4, #0xf]\n\
-	strb r3, [r4, #0x12]\n\
-	b _0808A82A\n\
-_0808A810:\n\
-	ldr r0, [r4, #0x28]\n\
-	ldrb r0, [r0, #0xd]\n\
-	cmp r0, #2\n\
-	bls _0808A82A\n\
-	ldr r1, _0808A830 @ =gEnemyFnTable\n\
-	ldrb r0, [r4, #9]\n\
-	lsls r0, r0, #2\n\
-	adds r0, r0, r1\n\
-	movs r1, #3\n\
-	str r1, [r4, #0xc]\n\
-	ldr r0, [r0]\n\
-	ldr r0, [r0, #0xc]\n\
-	str r0, [r4, #0x14]\n\
-_0808A82A:\n\
-	pop {r4}\n\
-	pop {r0}\n\
-	bx r0\n\
-	.align 2, 0\n\
-_0808A830: .4byte gEnemyFnTable\n\
- .syntax divided\n");
+static void HanumachineNecro_Update(struct Enemy* p) {
+  struct Entity* hanu;
+  UpdateMotionGraphic(&p->s);
+  if ((p->s).mode[3] == 0) {
+    u8 frame;
+    (p->s).coord.x += (p->s).d.x;
+    (p->s).d.x += (p->s).unk_coord.x;
+    frame = (p->s).work[2]++;
+    if (frame > 64) {
+      (p->s).mode[3]++;
+      (p->s).work[2] = 0;
+    }
+    return;
+  }
+
+  hanu = (struct Entity*)(p->s).unk_28;
+  if (hanu->mode[1] > 2) {
+    SET_ZAKO_ROUTINE(p, ENTITY_DISAPPEAR);
+  }
 }
 
 static void HanumachineNecro_Die(struct Enemy* p) {

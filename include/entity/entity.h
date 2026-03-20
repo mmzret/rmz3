@@ -106,8 +106,8 @@ struct Entity {
   u8 invincibleID;  // 被ダメ時の無敵を表す白塗りをEntityに適用する際にEntityの区別に用いるID
 
   // motion_t
-  motion_id_t motionID;  // upper byte for motion_t
-  u8 motionStep;         // lower byte for motion_t
+  motion_id_t motionID;         // upper byte for motion_t, gDynamicMotionCmdTable または gStaticMotionCmdTable の idx (Dynamic: 0..162, Static: 0..252)
+  motion_sub_id_t motionSubID;  // lower byte for motion_t
 
   u16 tileNum;
   u8 palID;  // これを変えると色が変わる
