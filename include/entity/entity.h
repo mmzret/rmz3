@@ -4,6 +4,7 @@
 #include "entity/body.h"
 #include "gba/gba.h"
 #include "global.h"
+#include "metatile.h"
 #include "motion.h"
 
 struct ScriptEntity;

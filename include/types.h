@@ -23,13 +23,10 @@ typedef u8 motion_sub_id_t;  // mmz3e の preview で選ぶやつ
 // (motion_id_t << 8) | motion_sub_id_t
 typedef u16 motion_t;
 
-typedef u8 weapon_t;        // WeaponID (0=バスター, 1=セイバー, 2=ロッド, 3=シールド)
-typedef u32 zero_input_t;   // ZERO_INPUT_XXX
-typedef u16 metatile_id_t;  // Metatile を識別するためのID
+typedef u8 weapon_t;       // WeaponID (0=バスター, 1=セイバー, 2=ロッド, 3=シールド)
+typedef u32 zero_input_t;  // ZERO_INPUT_XXX
 
 typedef u16 tileset_t;     // (StageID << 8) | TilesetIdx
 typedef u8 tileset_ofs_t;  // ((TilesetIdx_0 << 4) | TilesetIdx_1), TilesetIdx_n = gOverworld.tilesets[n] の TilesetIdx
-
-typedef u16 metatile_attr_t;  // blocking_attr_t と同じ説がある
 
 #endif  // GUARD_RMZ3_TYPES_H

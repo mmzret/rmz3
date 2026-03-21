@@ -1176,7 +1176,7 @@ static bool32 Cmd_gimmick(struct VM* vm) {
   switch (pc->status) {
     case 0: {
       ExitStageLandscape();
-      ResetLandscape(vm->pc->val2, &gOverworld.viewport);
+      ResetLandscape(vm->pc->val2, &W_TERRAIN_V2.viewport);
       break;
     }
 

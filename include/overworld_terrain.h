@@ -2,58 +2,26 @@
 #define GUARD_RMZ3_OW_MANAGER_H
 
 #include "boss.h"
+#include "chunk.h"
 #include "gfx.h"
 #include "global.h"
 #include "metatile.h"
+#include "overworld_layer.h"
+#include "overworld_layer_gfx.h"
 #include "solid.h"
 
 #define USE_BG1 0x12
 #define USE_BG2 0x24
 #define USE_BG3 0x38
 
-// StageLayer.type
-#define STAGE_LAYER_TERRAIN 0  // 地形レイヤ (足場や坂道などの物理的な地形データを持つメインのステージレイヤ)
-#define STAGE_LAYER_1 1        // 物理的な地形データを持たない装飾用レイヤ, 旧居住区の ツタやキノコ, 水面　など
-#define STAGE_LAYER_2 2        // 物理的な地形データを持たない装飾用レイヤ, STAGE_LAYER_1 と用途を区別しているかは不明
-#define STAGE_LAYER_NUM 3
+#define W_TERRAIN_V2 gOverworld.terrain
 
-enum LayerRoutine {
-  LAYER_UPDATE,
-  LAYER_DRAW,
-  LAYER_EXIT,
-};
-
-#define HAZARD_LENGTH (gOverworld.objectLen)
-#define HAZARD(n) (&gOverworld.objects[n])
+#define HAZARD(n) (&gOverworld.terrain.objects[n])
 
 // マップデータ(2KB単位)を置くブロック -> 0x0600_0000 + (0x800)*n
 #define BGMAP_BLOCK(n) (n << 8)
 
 typedef void (*StageFunc)(struct Coord*);
-
-struct StageLayer;
-struct Stage;
-typedef void (*StageBgFunc)(struct StageLayer*, const struct Stage*);
-typedef StageBgFunc StageLayerRoutine[3];  // [update1, update2, exit], LayerRoutine
-
-// Metatile(のID)を 15x10ブロック集めて画面全体のグラフィックを表すようにしたもの
-// TODO: チャンクに名前変える予定
-typedef metatile_id_t Screen[15 * 10];
-
-/*
-  MetatileのTileMapである、Overworld.map(0x020029e4)に チャンク をどう配置するかのデータ
-*/
-// ステージ全体 の　チャンクマップ
-struct ChunkMap {
-  // Layout
-  u8 realWidth;
-  u8 skip;    // そのステージでのSKIP値を格納する
-  u8 width;   // ステージの横幅が画面何枚分か
-  u8 height;  // ステージの縦幅が画面何枚分か
-
-  // ここからチャンクマップデータ
-  // u8 data[height][realWidth];
-};
 
 /*
   例: 0x0863c638
@@ -82,65 +50,8 @@ struct Stage {
   s32 conveyor[2];                       // Overworld.conveyor
 };
 
-// StageLayer構造体のうち、BGマップへの描画に必要な情報
-struct LayerGraphic {
-  struct Coord c;
-  u16 bgofs[2];  // BGOFS(x, y) 参照: 08006dac
-  // 以下のポインタは 全部ROMのアドレスを指す読み取り専用のもの
-  Metatile* tiledata;          // 02002240, 020022c8, e.g. 086f9fec, メタタイルID を GBAのタイルマップx4 への変換テーブル (4bppデータとかではない)
-  Screen* chunks;              // chunks[ChankID] -> 15x10のメタタイルIDの配列
-  const struct ChunkMap* map;  // このステージレイヤ　のチャンクマップ (ステージ全体分)
-};  // 24 bytes
-
-// ステージレイヤ
-struct StageLayer {
-  StageLayerRoutine fn;
-  u16 type;  // このステージレイヤのタイプ(0: 地形データ, 1,2: 水面や草, 雲などの見栄えのための汎用レイヤ?)
-
-  u8 phase;  // StageLayerの状態を表す
-  u8 unk_0f;
-  u16 unk_10;
-  u16 unk_12;
-  struct LayerGraphic gfx;
-  struct Coord drawPivotOffset;          // 画面の振動時に0以外になってた
-  struct Coord viewportCenterPixel;      // 現在の画面中央のワールド座標(ピクセル単位)
-  struct Coord prevViewportCenterPixel;  // 1フレーム?前の.viewportCenterPixel
-  struct Coord scrollPower;              // ゼロが1px動く時に、画面がどれくらいスクロールするか(256で1px動くと1pxスクロール,つまり1倍, 512で1px動くと2pxスクロール,つまり2倍)
-  struct Coord scroll;
-  struct Coord scrollCopy;
-
-  u32 bgIdx;  // このステージレイヤが、実際のGBAのどのBGレイヤに割り当てられるか  bit4-8がbgcntのn(BGnか), そしてbit0-4 は (1 << n) したもの
-  u32 prio;   // BGCNTn の bit0-1　部分でもある
-  u32 screenBase;
-
-  // ステージによる
-  union {
-    u8 raw[32];
-    struct {
-      u8 frameCounter;  // 例: 壊れた宇宙船で背景の雲の流れと連動
-      u8 _[3];
-      u8 unk_6c[28];
-    } resistanceBase;
-    struct {
-      u32 frameCounter;  // 例: 壊れた宇宙船で背景の雲の流れと連動
-      u8 unk_6c[28];
-    } spacecraft;
-    struct {
-      s32 eruptionX[3];
-      u8 unk_74[20];
-    } volcano;
-    struct {
-      s32 scrollTimer;
-      struct Coord c;
-      u8 unk_74[20];
-    } missile;
-  } work;
-
-  // ステージによる？
-};  // 136 bytes
-
 // ステージのROMデータ
-struct Terrain {
+struct TerrainROMPointer {
   metatile_attr_t* attrs;
   Metatile* tiles;
   Screen* screens;             // TerrainHeader.screens
@@ -179,10 +90,10 @@ struct MetatileMap {
 };
 
 //
-struct TerrainV2 {
-  struct Terrain hdr;     // 0x020023b8, 現在のステージの地形ROMデータ
-  struct Coord viewport;  // 現在写っているの画面中央の座標
-  u16 id;                 // ステージID (Bit7(0x80)は、initRBaseとかの初期化関数が実行されていないことを示す)
+struct Terrain {
+  struct TerrainROMPointer hdr;  // 0x020023b8, 現在のステージの地形ROMデータ
+  struct Coord viewport;         // 現在写っているの画面中央の座標
+  u16 id;                        // ステージID (Bit7(0x80)は、initRBaseとかの初期化関数が実行されていないことを示す)
 
   // 0x020023D2, 現在読み込まれている Entity　の中で物理判定を持つものの管理データ
   u8 objectLen;
@@ -206,7 +117,6 @@ struct TerrainV2 {
 };
 
 // gOverworld, ステージの動的な地形情報
-// TODO: この辺のプロパティにアクセスするコードのオフセット処理が一致しないので構造体のレイアウトが間違っていると思われる
 struct Overworld {
   struct Task task;
   struct Task* p;
@@ -216,29 +126,7 @@ struct Overworld {
   // NOTE: 1枚のステージレイヤは1枚のBGレイヤに対応するが、 layer[0] が BG1, layer[1] が BG2, layer[2] が BG3 とは限らない
   struct StageLayer layer[STAGE_LAYER_NUM];
 
-  // 多分ここから .conveyor までは1つの構造体 と考えられる (= TerrainV2)
-  // TerrainV2 でコンパイル結果がうまくいくことが多々あるなら、TerrainV2 に変える
-  struct Terrain terrain;  // 0x020023b8, 現在のステージの地形ROMデータ
-  struct Coord viewport;   // 現在写っているの画面中央の座標
-  u16 id;                  // ステージID (Bit7(0x80)は、initRBaseとかの初期化関数が実行されていないことを示す)
-
-  // 0x020023D2, 現在読み込まれている Entity　の中で物理判定を持つものの管理データ
-  u8 objectLen;
-  u8 objectLenPrev;
-  struct Hazard objects[32];
-  struct Hazard objectsPrev[32];
-
-  tileset_t tilesets[2];
-
-  u16 enabledBg;  // DISPCNTの bit8..11 つまり BGn有効フラグ
-  struct BgCnt savedBgCnt[3];
-
-  struct MetatileMap tilemap;  // 0x020029e0 .layer[STAGE_LAYER_TERRAIN]のステージ全体のMetatileのマップ, 壁との押し出し判定などで参照される (他のステージレイヤは描画用で参照しないので STAGE_LAYER_TERRAIN だけでいい)
-  bool16 tilemap_duty;         // 0x0202E200 tilemap がロード時以降書きかわった際にTRUEになるフラグ?
-
-  bool16 reload_graphic;  // メニュー画面などに入って、ワールドで使っていたタイルデータやBGマップが破壊されたときに、ワールドから戻った後、それらを再ロードさせるためのフラグ
-
-  s32 conveyor[2];  // 0x0202E204 工場のベルトコンベアや砂漠の流砂などのスピード(どちらもX方向で基本的に正負が違うだけで同じ値) Stage.conveyor
+  struct Terrain terrain;  // 0x020023b8, 現在のステージの地形データ
 
   s32 sea;  // 海面のY座標
   s32 unused_2c010;
@@ -284,7 +172,7 @@ struct Overworld {
     struct {
       u8 unk_000;
       u8 unk_001;
-      u8 unk_002;
+      s8 unk_002;
       u8 unk_003;
       struct Solid* btns[4];
       u8 unk_014[244];
@@ -447,27 +335,8 @@ void SaveDispRegister(void);
 void RestoreBackground(void);
 void ExitStageLandscape(void);
 bool8 IsVoidSpace(s32 x, s32 y);
-void FUN_08008eb8(s32 x, s32 y, struct Coord* c);
-void CalcCameraDelta(struct Coord* c1, struct Coord* c2);
 void LoadScreenIntoMetatileMap(s32 screenX, s32 screenY, u16 screenID);
-void ResetStageLayer(s32 n, const struct Stage* p);
-void DrawGeneralStageLayer(struct StageLayer* p, const struct Stage* _);
-u8 FUN_080094f0(s32 x, s32 y);
-const struct Stage* UpdateStageTileset(struct Coord* c);
-void UpdateStageLayer(struct StageLayer* p, const struct Stage* s, struct Coord* c);
-metatile_attr_t FUN_080098a4(s32 x, s32 y);
 void AppendHazard(u16 id, u16 attr, const struct Coord* c, const struct Rect* size);
-metatile_attr_t GetGroundMetatileAttr(s32 x, s32 y);
-
-void UpdateBGOFS(struct LayerGraphic* p, struct BgOfs* bgofs);
-void ResetTerrain(struct Terrain* terrain, metatile_attr_t* attr, Metatile* tiles, Screen* m, const struct ChunkMap* map);
-void FUN_08006bb4(struct LayerGraphic* l, struct Coord* c, u32* bgmap, struct MetatileMap* mm);
-void FUN_08006a10(struct LayerGraphic* l, struct Coord* c, u32* bgmap, struct MetatileMap* mm);
-void FUN_08006ae0(struct LayerGraphic* l, struct Coord* c, u32* bgmap, struct MetatileMap* mm);
-void FUN_080050b0(struct LayerGraphic* l, struct Coord* c, u32 mapAddr);
-void FUN_08005a70(struct LayerGraphic* l, struct Coord* c, u32 mapAddr);
-
-void ResetLayerGraphic(struct LayerGraphic* p, struct Coord* c, u16* _, Metatile* tiledata, Screen* chunks, const struct ChunkMap* map);
 
 /**
  * @brief (x, y)がgStageのBlocking領域に含まれるかどうか

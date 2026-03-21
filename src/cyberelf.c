@@ -24,7 +24,7 @@ const ElfRoutine *const gElfFnTable[13] = {
 };
 // clang-format on
 
-void InitElfHeader(struct EntityHeader *h, struct Elf *p, s16 len) {
+void InitElfHeader(struct EntityHeader* h, struct Elf* p, s16 len) {
   s16 i;
 
   InitEntityHeader(h, ENTITY_ELF, &p->s, sizeof(struct Elf), len);
@@ -35,17 +35,17 @@ void InitElfHeader(struct EntityHeader *h, struct Elf *p, s16 len) {
   gElfHeaderPtr = h;
 }
 
-void DeleteElf(struct Elf *p) {
+void DeleteElf(struct Elf* p) {
   (p->s).flags &= ~DISPLAY;
   SET_ELF_ROUTINE(p, ENTITY_EXIT);
 }
 
 #if MODERN == 0
-NAKED static struct Elf *unused_080e14d4(u8 r0, struct Entity *e) { INCCODE("asm/unused/unused_080e14d4.inc"); }
+NAKED static struct Elf* unused_080e14d4(u8 r0, struct Entity* e) { INCCODE("asm/unused/unused_080e14d4.inc"); }
 #endif
 
-static struct Enemy *getNearestEnemy(struct Coord *c) {
-  struct Enemy *p = (struct Enemy *)GetNearestEntity(gZakoHeaderPtr, c);
+static struct Enemy* getNearestEnemy(struct Coord* c) {
+  struct Enemy* p = (struct Enemy*)GetNearestEntity(gZakoHeaderPtr, c);
   if (p == NULL) {
     return NULL;
   }
@@ -53,8 +53,8 @@ static struct Enemy *getNearestEnemy(struct Coord *c) {
 }
 
 #if MODERN == 0
-static struct Boss *getNearestBoss(struct Coord *c) {
-  struct Boss *p = (struct Boss *)GetNearestEntity(gBossHeaderPtr, c);
+static struct Boss* getNearestBoss(struct Coord* c) {
+  struct Boss* p = (struct Boss*)GetNearestEntity(gBossHeaderPtr, c);
   if (p == NULL) {
     return NULL;
   }
@@ -63,20 +63,20 @@ static struct Boss *getNearestBoss(struct Coord *c) {
 #endif
 
 void close_menu_080e1540(ElfFunc fn) {
-  struct Entity *p;
-  struct EntityHeader *h = gElfHeaderPtr;
+  struct Entity* p;
+  struct EntityHeader* h = gElfHeaderPtr;
   ignoreEntityFn(h);
 
   h->last = h->last->prev;
   p = h->last;
-  while (p != (struct Entity *)&h->next) {
-    fn((struct Elf *)p);
+  while (p != (struct Entity*)&h->next) {
+    fn((struct Elf*)p);
     p = h->last->prev;
     h->last = p;
   }
 }
 
-NAKED bool8 FUN_080e1578(struct Coord *c1, struct Coord *c2, struct Coord *c3, u8 *param_4, s16 param_5) {
+NAKED bool8 FUN_080e1578(struct Coord* c1, struct Coord* c2, struct Coord* c3, u8* param_4, s16 param_5) {
   asm(".syntax unified\n\
 	push {r4, r5, r6, r7, lr}\n\
 	adds r5, r0, #0\n\
@@ -154,7 +154,7 @@ _080E1604: .4byte gSineTable\n\
  .syntax divided\n");
 }
 
-NAKED struct Enemy *FUN_080e1608(struct Coord *c) {
+NAKED struct Enemy* FUN_080e1608(struct Coord* c) {
   asm(".syntax unified\n\
 	push {r4, r5, r6, r7, lr}\n\
 	sub sp, #8\n\
@@ -261,7 +261,7 @@ _080E16B8:\n\
  .syntax divided\n");
 }
 
-NAKED void FUN_080e16c4(struct Coord *c, struct CollidableEntity *p) {
+NAKED void FUN_080e16c4(struct Coord* c, struct CollidableEntity* p) {
   asm(".syntax unified\n\
 	push {r4, r5, r6, r7, lr}\n\
 	mov ip, r0\n\
@@ -346,7 +346,7 @@ _080E174A:\n\
  .syntax divided\n");
 }
 
-NAKED void CreateSateliteElf(struct Zero *z, cyberelf_t e, bool8 isSatelite2) {
+NAKED void CreateSateliteElf(struct Zero* z, cyberelf_t e, bool8 isSatelite2) {
   asm(".syntax unified\n\
 	push {r4, r5, r6, lr}\n\
 	adds r3, r0, #0\n\
@@ -519,7 +519,7 @@ _080E18A8:\n\
 }
 
 // リザルトでのエルフ減点を計算
-u8 CalcElfPenalty(struct Zero *z) {
+u8 CalcElfPenalty(struct Zero* z) {
   u16 penalty = 0;
 
   if (((&z->unk_b4)->status).menuZeroColor == MZC_ULTIMATE) {
@@ -569,7 +569,7 @@ u8 CalcElfPenalty(struct Zero *z) {
 */
 motion_t GetElfMotion(u8 category) {
   u16 buf[4];
-  u8 *flags;
+  u8* flags;
 
   memcpy(buf, ElfActions, 6);
   flags = gSystemSavedataManager.flags;
@@ -581,26 +581,26 @@ motion_t GetElfMotion(u8 category) {
 }
 
 // 立ち止まっていると回復するエルフのためのチェック関数
-bool8 CheckPlayerStandStill(struct Zero *z) {
-  if (!(z->last & 0x8000) && ((gOverworld.id & 0x7F) != STAGE_BASE)) {
+bool8 CheckPlayerStandStill(struct Zero* z) {
+  if (!(z->last & 0x8000) && ((W_TERRAIN_V2.id & 0x7F) != STAGE_BASE)) {
     return TRUE;
   }
   return FALSE;
 }
 
-void clearUnlockedCyberElfData(u8 *p) {
-  gUnlockedElfPtr = (void *)p;
+void clearUnlockedCyberElfData(u8* p) {
+  gUnlockedElfPtr = (void*)p;
   CpuFastFill16(0, p, 64);
   CpuFill32(0, &p[64], 12);
 }
 
-void clearUnlockedCyberElfDataHard(u8 *p) {
-  gUnlockedElfPtr = (void *)p;
+void clearUnlockedCyberElfDataHard(u8* p) {
+  gUnlockedElfPtr = (void*)p;
   CpuFastFill16(0, p, 64);
   CpuFill32(0, &p[64], 12);
 }
 
-NAKED void unlockAllElvesForUltimate(u8 *p) {
+NAKED void unlockAllElvesForUltimate(u8* p) {
   asm(".syntax unified\n\
 	push {r4, r5, r6, r7, lr}\n\
 	mov r7, sb\n\
@@ -722,7 +722,7 @@ _080E1CA8: .4byte gElfBreedInfo\n\
 
 bool8 FUN_080e1cac(cyberelf_t n) {
   register u8 m asm("r3") = n;  // m = n;
-  const struct ElfBreedInfo *infos = gElfBreedInfo;
+  const struct ElfBreedInfo* infos = gElfBreedInfo;
   if (((infos[n].unk_0 >> 7) == 0) && (n != ELF_ARTAN) && (m != ELF_ZICTAN)) {
     return FALSE;
   }

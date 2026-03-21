@@ -190,9 +190,9 @@ static void LayerDraw_2(struct StageLayer* l, const struct Stage* _ UNUSED) {
   c.y = COORD_TO_PIXEL((l->drawPivotOffset).y) + y;
 
   if ((dx >= 31) || (dy >= 31) || (STAGE.unk_004[0] != 0)) {
-    FUN_08006ae0(g, &c, (u32*)(VRAM + SCREEN_BASE_16(l->bgIdx >> 4)), &gOverworld.tilemap);
+    FUN_08006ae0(g, &c, (u32*)(VRAM + SCREEN_BASE_16(l->bgIdx >> 4)), (struct MetatileMap*)gOverworld.terrain.tilemap);
   } else {
-    FUN_08006bb4(g, &c, (u32*)(VRAM + SCREEN_BASE_16(l->bgIdx >> 4)), &gOverworld.tilemap);
+    FUN_08006bb4(g, &c, (u32*)(VRAM + SCREEN_BASE_16(l->bgIdx >> 4)), (struct MetatileMap*)gOverworld.terrain.tilemap);
   }
 
   STAGE.unk_004[0] = 0;
@@ -447,6 +447,11 @@ _0800E2C0: .4byte gOverworld\n\
  .syntax divided\n");
 }
 
+struct MetatilePatch2x1 {
+  struct MetatilePatch size;
+  metatile_id_t data[2 * 1];
+};
+
 static const struct MetatilePatch2x1 ALIGNED(2) sMetatilePatch2x1_0833dfda;
 
 void FUN_0800e2c4(s32 x, s32 y) {
@@ -454,16 +459,21 @@ void FUN_0800e2c4(s32 x, s32 y) {
   s32 mx, my;
 
   if (y < PIXEL(1280)) {
-    val = gOverworld.tilemap_duty;
+    val = gOverworld.terrain.tilemap_duty;
     mx = METACOORD(x);
     my = METACOORD(y + PIXEL(1600));
     PatchMetatileMap(mx, my, (struct MetatilePatch*)&sMetatilePatch2x1_0833dfda);
-    gOverworld.tilemap_duty = val;
+    gOverworld.terrain.tilemap_duty = val;
     STAGE.unk_004[0] = 1;
   }
 }
 
 INCASM("asm/stage_gfx/old_residential.inc");
+
+struct MetatilePatch2x2 {
+  struct MetatilePatch size;
+  metatile_id_t data[2 * 2];
+};
 
 static const struct MetatilePatch2x2 ALIGNED(2) sDefaultMetatilePatch2x2;
 static const struct Coord sMetatilePatch2x2Coords[12];

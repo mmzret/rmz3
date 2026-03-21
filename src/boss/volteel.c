@@ -80,7 +80,7 @@ NAKED static void Volteel_Init(struct Boss* p) {
 	movs r0, #0xef\n\
 	ands r0, r1\n\
 	strb r0, [r7, #0xa]\n\
-	ldr r1, _08043444 @ =0x08362330\n\
+	ldr r1, _08043444 @ =sCollisions\n\
 	adds r0, r7, #0\n\
 	movs r2, #0x40\n\
 	bl ResetBossBody\n\
@@ -173,7 +173,7 @@ NAKED static void Volteel_Init(struct Boss* p) {
 	strb r0, [r7, #0xf]\n\
 	b _08043470\n\
 	.align 2, 0\n\
-_08043444: .4byte 0x08362330\n\
+_08043444: .4byte sCollisions\n\
 _08043448: .4byte FUN_0804586c\n\
 _0804344C: .4byte 0xFFFFC000\n\
 _08043450: .4byte gBossFnTable\n\

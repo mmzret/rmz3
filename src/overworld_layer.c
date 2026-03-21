@@ -1396,16 +1396,13 @@ _08006D40: .4byte 0x000001FF\n\
  .syntax divided\n");
 }
 
-#if MODERN == 0
 static void unused_Clear2KB(u32* dst) {  // dstから2048バイトを0クリア
   CpuFastFill(0, dst, 2048);
   {
     vu32 _;
   }
 }
-#endif
 
-#if MODERN == 0
 static void unused_FastCopy(void* dst, const void* src, u32 bytesize) {  // CpuFastSetとCpuSetを組み合わせて細かい単位でも高速にコピー
   u32 n = (bytesize & 0xFFFFFFE0);
   CpuFastCopy(src, dst, n);
@@ -1414,7 +1411,6 @@ static void unused_FastCopy(void* dst, const void* src, u32 bytesize) {  // CpuF
     CpuCopy32(src + n, dst + n, bytesize & 0x1F);
   }
 }
-#endif
 
 void UpdateBGOFS(struct LayerGraphic* l, struct BgOfs* bgofs) {
   bgofs->x = l->bgofs[0];
@@ -1428,15 +1424,15 @@ void UpdateBGOFS(struct LayerGraphic* l, struct BgOfs* bgofs) {
       r2 = 0863c638 + (0863c638)[0]
       r3 = 0863c638 + (0863c638)[2]
 */
-void ResetTerrain(struct Terrain* terrain, metatile_attr_t* attr, Metatile* tiles, Screen* m, const struct ChunkMap* map) {
+void ResetTerrain(struct TerrainROMPointer* terrain, metatile_attr_t* attr, Metatile* tiles, Screen* m, const struct ChunkMap* map) {
   terrain->attrs = attr;
   terrain->tiles = tiles;
   terrain->screens = m;
   terrain->map = map;
 }
 
-#if MODERN == 0
 NAKED static u8 unused_08006dcc(void* p, struct Coord* c) { INCCODE("asm/unused/unused_08006dcc.inc"); }
+
 NAKED static u8 unused_08006e3c(void* p, u32 unk_x, u32 unk_y) { INCCODE("asm/unused/unused_08006e3c.inc"); }  // unk_x, unk_y の単位不明(pixel?)
+
 NAKED static u8 unused_08006ea8(void* p, u32 r1, s32 r2, s32 r3) { INCCODE("asm/unused/unused_08006ea8.inc"); }
-#endif

@@ -15,17 +15,17 @@ static const struct Collision sCollisions[6];
 static const struct Coord sExplosionCoords[2];
 
 void CreateOzChargeSaberRock(s32 x, u8 r1);
-void oz_080b3820(struct Coord *c, bool8 isRight);
-void oz_080c3b44(struct Boss *p);
-void oz_080c3b9c(struct Boss *p);
-struct Projectile *CreateOmegaZeroSaber(struct Boss *p, u8 kind);
+void oz_080b3820(struct Coord* c, bool8 isRight);
+void oz_080c3b44(struct Boss* p);
+void oz_080c3b9c(struct Boss* p);
+struct Projectile* CreateOmegaZeroSaber(struct Boss* p, u8 kind);
 
 static const BossFunc gOmegaZeroMainRoutine1[24];
 static const BossFunc gOmegaZeroMainRoutine2[24];
 
-static void OmegaZero_Init(struct Boss *p);
-static void OmegaZero_Update(struct Boss *p);
-static void OmegaZero_Die(struct Boss *p);
+static void OmegaZero_Init(struct Boss* p);
+static void OmegaZero_Update(struct Boss* p);
+static void OmegaZero_Die(struct Boss* p);
 
 // clang-format off
 const BossRoutine gOmegaZeroRoutine = {
@@ -37,7 +37,7 @@ const BossRoutine gOmegaZeroRoutine = {
 };
 // clang-format on
 
-NON_MATCH static void calcNextOmegaZeroAction(struct Boss *p) {
+NON_MATCH static void calcNextOmegaZeroAction(struct Boss* p) {
 #if MODERN
   s32 d = abs((p->s).coord.x - (pZero2->s).coord.x);
   if (d < PIXEL(80)) {
@@ -75,7 +75,7 @@ NON_MATCH static void calcNextOmegaZeroAction(struct Boss *p) {
 #endif
 }
 
-static void oz_0805d6a8(struct Boss *p) {
+static void oz_0805d6a8(struct Boss* p) {
   {
     s32 x = (p->props.oz).x - PIXEL(224);
     if ((p->s).coord.x < x) {
@@ -92,20 +92,20 @@ static void oz_0805d6a8(struct Boss *p) {
 }
 
 // 0x0805d6d8
-static void onCollision(struct Body *body, struct Coord *c1, struct Coord *c2) {
-  struct Zero *z = (struct Zero *)body->enemy->parent;
-  struct Boss *oz = (struct Boss *)body->parent;
+static void onCollision(struct Body* body, struct Coord* c1, struct Coord* c2) {
+  struct Zero* z = (struct Zero*)body->enemy->parent;
+  struct Boss* oz = (struct Boss*)body->parent;
 
   if (body->hitboxFlags & BODY_STATUS_WHITE) {
     (oz->props.oz).isRight = (oz->s).coord.x < (z->s).coord.x;
   }
 }
 
-static bool8 tryKillOmegaZero(struct Boss *p) {
-  u32 *status = &(p->body).status;
+static bool8 tryKillOmegaZero(struct Boss* p) {
+  u32* status = &(p->body).status;
 
   if (((*status & BODY_STATUS_DEAD) || ((p->body).hp == 0)) && ((gStageRun.missionStatus & MISSION_FAIL) == 0)) {
-    struct VFX *shadow = (p->props.oz).vfx;
+    struct VFX* shadow = (p->props.oz).vfx;
     if (shadow != NULL) {
       (shadow->s).work[1] = 1;
       (p->props.oz).vfx = NULL;
@@ -124,9 +124,9 @@ static bool8 tryKillOmegaZero(struct Boss *p) {
   return FALSE;
 }
 
-NON_MATCH static void OmegaZero_Init(struct Boss *p) {
+NON_MATCH static void OmegaZero_Init(struct Boss* p) {
 #if MODERN
-  struct Body *body;
+  struct Body* body;
   SET_BOSS_ROUTINE(p, ENTITY_UPDATE);
   (p->s).mode[1] = sInitModes[(p->s).work[0]];
   (p->s).flags |= FLIPABLE;
@@ -159,34 +159,34 @@ NON_MATCH static void OmegaZero_Init(struct Boss *p) {
 
 // --------------------------------------------
 
-static void nop_0805d950(struct Boss *_);
-static void tryMakeFlinch(struct Boss *p);
-static void ozNeutral(struct Boss *p);
-static void ozMode1(struct Boss *p);
-static void ozDash(struct Boss *p);
-static void ozDoubleJump1(struct Boss *p);
-static void ozDoubleJump2(struct Boss *p);
-static void ozTripleSlash1(struct Boss *p);
-static void ozTripleSlash2(struct Boss *p);
-static void ozTripleSlash3(struct Boss *p);
-static void double_charge_wave_1(struct Boss *p);
-static void double_charge_wave_2(struct Boss *p);
-static void double_charge_wave_3(struct Boss *p);
-static void ozRyuenjin1(struct Boss *p);
-static void ozRyuenjin2(struct Boss *p);
-static void ozRyuenjin3(struct Boss *p);
-static void messenkou(struct Boss *p);
-static void rekkoha(struct Boss *p);
-static void charge_saber(struct Boss *p);
-static void arc_blade_1(struct Boss *p);
-static void arc_blade_2(struct Boss *p);
-static void flinched(struct Boss *p);
-static void ozRanbu1(struct Boss *p);
-static void ozRanbu2(struct Boss *p);
-static void ozRanbu3(struct Boss *p);
-static void ozRanbu4(struct Boss *p);
+static void nop_0805d950(struct Boss* _);
+static void tryMakeFlinch(struct Boss* p);
+static void ozNeutral(struct Boss* p);
+static void ozMode1(struct Boss* p);
+static void ozDash(struct Boss* p);
+static void ozDoubleJump1(struct Boss* p);
+static void ozDoubleJump2(struct Boss* p);
+static void ozTripleSlash1(struct Boss* p);
+static void ozTripleSlash2(struct Boss* p);
+static void ozTripleSlash3(struct Boss* p);
+static void double_charge_wave_1(struct Boss* p);
+static void double_charge_wave_2(struct Boss* p);
+static void double_charge_wave_3(struct Boss* p);
+static void ozRyuenjin1(struct Boss* p);
+static void ozRyuenjin2(struct Boss* p);
+static void ozRyuenjin3(struct Boss* p);
+static void messenkou(struct Boss* p);
+static void rekkoha(struct Boss* p);
+static void charge_saber(struct Boss* p);
+static void arc_blade_1(struct Boss* p);
+static void arc_blade_2(struct Boss* p);
+static void flinched(struct Boss* p);
+static void ozRanbu1(struct Boss* p);
+static void ozRanbu2(struct Boss* p);
+static void ozRanbu3(struct Boss* p);
+static void ozRanbu4(struct Boss* p);
 
-static void OmegaZero_Update(struct Boss *p) {
+static void OmegaZero_Update(struct Boss* p) {
   // clang-format off
   static const BossFunc sUpdates1[24] = {
       tryMakeFlinch,
@@ -248,10 +248,10 @@ static void OmegaZero_Update(struct Boss *p) {
   }
 }
 
-static void ozDeath0(struct Boss *p);
-static void ozDeath1(struct Boss *p);
+static void ozDeath0(struct Boss* p);
+static void ozDeath1(struct Boss* p);
 
-static void OmegaZero_Die(struct Boss *p) {
+static void OmegaZero_Die(struct Boss* p) {
   static const BossFunc sDeads[2] = {
       ozDeath0,
       ozDeath1,
@@ -260,13 +260,13 @@ static void OmegaZero_Die(struct Boss *p) {
   return;
 }
 
-static void nop_0805d950(struct Boss *_) {
+static void nop_0805d950(struct Boss* _) {
   // nop
   return;
 }
 
 // 0x0805d954
-static void tryMakeFlinch(struct Boss *p) {
+static void tryMakeFlinch(struct Boss* p) {
   if ((p->body).status & BODY_STATUS_WHITE) {
     (p->s).mode[1] = 19;
     (p->s).mode[2] = 0;
@@ -274,7 +274,7 @@ static void tryMakeFlinch(struct Boss *p) {
 }
 
 // 01 00 -- --
-static void ozNeutral(struct Boss *p) {
+static void ozNeutral(struct Boss* p) {
   switch ((p->s).mode[2]) {
     case 0: {
       if ((u32)((pZero2->s).coord.x - (p->s).coord.x) + PIXEL(208) > PIXEL(416)) {
@@ -307,7 +307,7 @@ static void ozNeutral(struct Boss *p) {
 }
 
 // 01 01 xx --
-NAKED static void ozMode1(struct Boss *p) {
+NAKED static void ozMode1(struct Boss* p) {
   asm(".syntax unified\n\
 	push {r4, lr}\n\
 	adds r4, r0, #0\n\
@@ -420,7 +420,7 @@ _0805DB30: .4byte gStageRun\n\
 }
 
 // 01 02 xx --
-NAKED static void ozDash(struct Boss *p) {
+NAKED static void ozDash(struct Boss* p) {
   asm(".syntax unified\n\
 	push {r4, lr}\n\
 	adds r4, r0, #0\n\
@@ -563,7 +563,7 @@ _0805DC4C: .4byte 0x00000301\n\
 }
 
 // 01 03 xx --
-NAKED static void ozDoubleJump1(struct Boss *p) {
+NAKED static void ozDoubleJump1(struct Boss* p) {
   asm(".syntax unified\n\
 	push {r4, lr}\n\
 	adds r4, r0, #0\n\
@@ -672,7 +672,7 @@ _0805DD18: .4byte 0xFFFFFC00\n\
 }
 
 // 01 04 xx --
-static void ozDoubleJump2(struct Boss *p) {
+static void ozDoubleJump2(struct Boss* p) {
   switch ((p->s).mode[2]) {
     case 0: {
       SetMotion(&p->s, MOTION(DM004_ZERO_AIR, 0x01));
@@ -705,7 +705,7 @@ static void ozDoubleJump2(struct Boss *p) {
 }
 
 // 01 05 xx --
-static void ozTripleSlash1(struct Boss *p) {
+static void ozTripleSlash1(struct Boss* p) {
   switch ((p->s).mode[2]) {
     case 0: {
       PlaySound(SE_OMEGAZERO_VOICE_ea);
@@ -730,7 +730,7 @@ static void ozTripleSlash1(struct Boss *p) {
 }
 
 // 01 06 xx --
-static void ozTripleSlash2(struct Boss *p) {
+static void ozTripleSlash2(struct Boss* p) {
   switch ((p->s).mode[2]) {
     case 0: {
       PlaySound(SE_OMEGAZERO_VOICE_eb);
@@ -755,7 +755,7 @@ static void ozTripleSlash2(struct Boss *p) {
 }
 
 // 01 07 xx --
-static void ozTripleSlash3(struct Boss *p) {
+static void ozTripleSlash3(struct Boss* p) {
   switch ((p->s).mode[2]) {
     case 0: {
       PlaySound(SE_OMEGAZERO_VOICE_ec);
@@ -780,7 +780,7 @@ static void ozTripleSlash3(struct Boss *p) {
 }
 
 // 01 08 xx --
-static void double_charge_wave_1(struct Boss *p) {
+static void double_charge_wave_1(struct Boss* p) {
   switch ((p->s).mode[2]) {
     case 0: {
       (p->s).work[2] = 24;
@@ -815,7 +815,7 @@ static void double_charge_wave_1(struct Boss *p) {
 }
 
 // 0x0805dee8
-NAKED static void double_charge_wave_2(struct Boss *p) {
+NAKED static void double_charge_wave_2(struct Boss* p) {
   asm(".syntax unified\n\
 	push {r4, lr}\n\
 	adds r4, r0, #0\n\
@@ -919,7 +919,7 @@ _0805DFB4: .4byte 0x00000802\n\
 }
 
 // 01 0A xx --
-NAKED static void double_charge_wave_3(struct Boss *p) {
+NAKED static void double_charge_wave_3(struct Boss* p) {
   asm(".syntax unified\n\
 	push {r4, lr}\n\
 	adds r4, r0, #0\n\
@@ -1017,7 +1017,7 @@ _0805E06C: .4byte 0x00010300\n\
 }
 
 // 01 0B xx --
-NAKED static void ozRyuenjin1(struct Boss *p) {
+NAKED static void ozRyuenjin1(struct Boss* p) {
   asm(".syntax unified\n\
 	push {r4, lr}\n\
 	adds r4, r0, #0\n\
@@ -1185,7 +1185,7 @@ _0805E1B4: .4byte sCollisions+24\n\
   01 0C xx --
   Jump up
 */
-NAKED static void ozRyuenjin2(struct Boss *p) {
+NAKED static void ozRyuenjin2(struct Boss* p) {
   asm(".syntax unified\n\
 	push {r4, lr}\n\
 	adds r4, r0, #0\n\
@@ -1293,7 +1293,7 @@ _0805E27C: .4byte gProjectileFnTable\n\
   01 0D xx --
   Fall down
 */
-static void ozRyuenjin3(struct Boss *p) {
+static void ozRyuenjin3(struct Boss* p) {
   switch ((p->s).mode[2]) {
     case 0: {
       CreateOmegaZeroSaber(p, 6);
@@ -1324,7 +1324,7 @@ static void ozRyuenjin3(struct Boss *p) {
   01 0E xx --
   滅閃光
 */
-NAKED static void messenkou(struct Boss *p) {
+NAKED static void messenkou(struct Boss* p) {
   asm(".syntax unified\n\
 	push {r4, r5, lr}\n\
 	adds r4, r0, #0\n\
@@ -1419,7 +1419,7 @@ _0805E398: .4byte 0x00003F01\n\
   01 0F xx --
   裂光覇
 */
-NAKED static void rekkoha(struct Boss *p) {
+NAKED static void rekkoha(struct Boss* p) {
   asm(".syntax unified\n\
 	push {r4, r5, lr}\n\
 	adds r5, r0, #0\n\
@@ -1493,7 +1493,7 @@ _0805E422:\n\
 	bl UpdateMotionGraphic\n\
 	b _0805E454\n\
 	.align 2, 0\n\
-_0805E42C: .4byte 0x083651A4\n\
+_0805E42C: .4byte sCollisions+(24*5)\n\
 _0805E430:\n\
 	ldr r1, _0805E45C @ =0x00003F01\n\
 	adds r0, r5, #0\n\
@@ -1522,7 +1522,7 @@ _0805E45C: .4byte 0x00003F01\n\
 }
 
 // 01 10 xx --
-static void charge_saber(struct Boss *p) {
+static void charge_saber(struct Boss* p) {
   switch ((p->s).mode[2]) {
     case 0: {
       (p->s).work[2] = 24;
@@ -1549,7 +1549,7 @@ static void charge_saber(struct Boss *p) {
     }
     case 3: {
       UpdateMotionGraphic(&p->s);
-      if ((*(u32 *)&(p->s).motion.step & 0xffff00) == 0x10300) {
+      if ((*(u32*)&(p->s).motion.step & 0xffff00) == 0x10300) {
         s32 x = (p->s).coord.x - PIXEL(48);
         if ((p->s).flags & X_FLIP) {
           x = (p->s).coord.x + PIXEL(48);
@@ -1568,7 +1568,7 @@ static void charge_saber(struct Boss *p) {
 }
 
 // 01 11 xx --
-NAKED static void arc_blade_1(struct Boss *p) {
+NAKED static void arc_blade_1(struct Boss* p) {
   asm(".syntax unified\n\
 	push {r4, lr}\n\
 	adds r4, r0, #0\n\
@@ -1677,7 +1677,7 @@ _0805E604: .4byte 0xFFFFFC00\n\
 }
 
 // 01 12 xx --
-NAKED static void arc_blade_2(struct Boss *p) {
+NAKED static void arc_blade_2(struct Boss* p) {
   asm(".syntax unified\n\
 	push {r4, r5, lr}\n\
 	adds r4, r0, #0\n\
@@ -1780,7 +1780,7 @@ _0805E6C8: .4byte 0x00001901\n\
 }
 
 // 0x0805e6cc
-NAKED static void flinched(struct Boss *p) {
+NAKED static void flinched(struct Boss* p) {
   asm(".syntax unified\n\
 	push {r4, r5, lr}\n\
 	adds r4, r0, #0\n\
@@ -1889,7 +1889,7 @@ _0805E794:\n\
 }
 
 // 01 14 xx --
-NAKED static void ozRanbu1(struct Boss *p) {
+NAKED static void ozRanbu1(struct Boss* p) {
   asm(".syntax unified\n\
 	push {r4, r5, lr}\n\
 	adds r4, r0, #0\n\
@@ -2005,7 +2005,7 @@ _0805E86C: .4byte 0xFFFFFF00\n\
 }
 
 // 01 15 xx --
-NAKED static void ozRanbu2(struct Boss *p) {
+NAKED static void ozRanbu2(struct Boss* p) {
   asm(".syntax unified\n\
 	push {r4, r5, lr}\n\
 	adds r4, r0, #0\n\
@@ -2152,7 +2152,7 @@ _0805E98C: .4byte pZero2\n\
 }
 
 // 01 16 xx --
-NAKED static void ozRanbu3(struct Boss *p) {
+NAKED static void ozRanbu3(struct Boss* p) {
   asm(".syntax unified\n\
 	push {r4, r5, lr}\n\
 	adds r4, r0, #0\n\
@@ -2252,7 +2252,7 @@ _0805EA50: .4byte pZero2\n\
 }
 
 // 01 17 xx --
-static void ozRanbu4(struct Boss *p) {
+static void ozRanbu4(struct Boss* p) {
   switch ((p->s).mode[2]) {
     case 0: {
       PlaySound(SE_OMEGAZERO_VOICE_ec);
@@ -2301,7 +2301,7 @@ static void ozRanbu4(struct Boss *p) {
 }
 
 // 02 00 xx --
-static void ozDeath0(struct Boss *p) {
+static void ozDeath0(struct Boss* p) {
   switch ((p->s).mode[2]) {
     case 0: {
       (p->body).status = 0;
@@ -2327,7 +2327,7 @@ static void ozDeath0(struct Boss *p) {
     }
 
     case 2: {
-      (p->s).unk_2c = (struct Entity *)CreateBossExplosion(p, (struct Coord *)sExplosionCoords);
+      (p->s).unk_2c = (struct Entity*)CreateBossExplosion(p, (struct Coord*)sExplosionCoords);
       (p->s).mode[2]++;
       FALLTHROUGH;
     }
@@ -2346,7 +2346,7 @@ static void ozDeath0(struct Boss *p) {
 }
 
 // 02 01 xx --
-static void ozDeath1(struct Boss *p) {
+static void ozDeath1(struct Boss* p) {
   switch ((p->s).mode[2]) {
     case 0: {
       (p->body).status = 0;
@@ -2372,7 +2372,7 @@ static void ozDeath1(struct Boss *p) {
     }
 
     case 2: {
-      (p->s).unk_2c = (struct Entity *)CreateBossExplosion(p, (struct Coord *)&sExplosionCoords[1]);
+      (p->s).unk_2c = (struct Entity*)CreateBossExplosion(p, (struct Coord*)&sExplosionCoords[1]);
       (p->s).mode[2]++;
       FALLTHROUGH;
     }

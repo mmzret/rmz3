@@ -2303,7 +2303,7 @@ WIP void CheckZeroHazard(struct Zero* z) {
   s32 x = (z->s).coord.x;
   s32 y = (z->s).coord.y;
   z->hazardCount = 0;
-  for (i = 0; i < HAZARD_LENGTH; i++) {
+  for (i = 0; i < W_TERRAIN_V2.objectLen; i++) {
     struct Hazard* hz = HAZARD(i);
     const u32 w = (u32)((u16)hz->w) + PIXEL(31);
     const u32 h = (u32)((u16)hz->h) + PIXEL(31);
@@ -2925,22 +2925,22 @@ static metatile_attr_t _pushoutHazardX1(struct Zero* z, s32 x, s32 y, struct Coo
 
   for (i = 0; i < z->hazardCount; i++) {
     u8 n = z->hazard[i];
-    const u32 _x = (u32)(x - (gOverworld.objects[n].start).x);
-    const u32 w = gOverworld.objects[n].w;
+    const u32 _x = (u32)(x - (W_TERRAIN_V2.objects[n].start).x);
+    const u32 w = W_TERRAIN_V2.objects[n].w;
     if ((_x + w) < (w << 1)) {
-      const u32 _y = (y - (gOverworld.objects[n].start).y);
-      const u32 h = gOverworld.objects[n].h;
+      const u32 _y = (y - (W_TERRAIN_V2.objects[n].start).y);
+      const u32 h = W_TERRAIN_V2.objects[n].h;
       if ((_y + h) < (h << 1)) {
         s32 start_x;
-        appendHazardID(z, gOverworld.objects[n].id);
-        start_x = (gOverworld.objects[n].start).x;
+        appendHazardID(z, W_TERRAIN_V2.objects[n].id);
+        start_x = (W_TERRAIN_V2.objects[n].start).x;
         if (start_x < (z->s).coord.x) {
-          c->x = (start_x + gOverworld.objects[n].w) - x;
+          c->x = (start_x + W_TERRAIN_V2.objects[n].w) - x;
         } else {
-          c->x = (start_x - gOverworld.objects[n].w) - x - 1;
+          c->x = (start_x - W_TERRAIN_V2.objects[n].w) - x - 1;
         }
         if (c->x != 0) {
-          attr = gOverworld.objects[n].attr;
+          attr = W_TERRAIN_V2.objects[n].attr;
           (z->s).coord.x += c->x;
           x += c->x;
           z->pushedOut = TRUE;
@@ -2959,27 +2959,27 @@ metatile_attr_t _pushoutHazardY(struct Zero* z, s32 x, s32 y, struct Coord* c) {
 
   for (i = 0; i < z->hazardCount; i++) {
     u8 n = z->hazard[i];
-    const u32 _x = (u32)(x - (gOverworld.objects[n].start).x);
-    const u32 w = gOverworld.objects[n].w;
+    const u32 _x = (u32)(x - (W_TERRAIN_V2.objects[n].start).x);
+    const u32 w = W_TERRAIN_V2.objects[n].w;
     if ((_x + w) < (w << 1)) {
-      const u32 _y = (y - (gOverworld.objects[n].start).y);
-      const u32 h = gOverworld.objects[n].h;
+      const u32 _y = (y - (W_TERRAIN_V2.objects[n].start).y);
+      const u32 h = W_TERRAIN_V2.objects[n].h;
       if ((_y + h) < (h << 1)) {
         s32 start_y;
-        appendHazardID(z, gOverworld.objects[n].id);
-        start_y = (gOverworld.objects[n].start).y;
+        appendHazardID(z, W_TERRAIN_V2.objects[n].id);
+        start_y = (W_TERRAIN_V2.objects[n].start).y;
         if (start_y < y) {
           if (y == (z->s).coord.y) {
-            c->y = (start_y - gOverworld.objects[n].h) - y - 1;
+            c->y = (start_y - W_TERRAIN_V2.objects[n].h) - y - 1;
           } else {
-            c->y = (start_y + gOverworld.objects[n].h) - y;
+            c->y = (start_y + W_TERRAIN_V2.objects[n].h) - y;
           }
         } else {
-          c->y = (start_y - gOverworld.objects[n].h) - y - 1;
+          c->y = (start_y - W_TERRAIN_V2.objects[n].h) - y - 1;
         }
 
         if (c->y != 0) {
-          attr = gOverworld.objects[n].attr;
+          attr = W_TERRAIN_V2.objects[n].attr;
           (z->s).coord.y += c->y;
           y += c->y;
           z->pushedOut = TRUE;
@@ -3235,14 +3235,14 @@ static metatile_attr_t AppendHazardID(struct Zero* z, s32 x, s32 y) {
   u8 i;
   for (i = 0; i < z->hazardCount; i++) {
     u8 n = z->hazard[i];
-    const u32 _x = (u32)(x - (gOverworld.objects[n].start).x);
-    const u32 w = gOverworld.objects[n].w;
+    const u32 _x = (u32)(x - (W_TERRAIN_V2.objects[n].start).x);
+    const u32 w = W_TERRAIN_V2.objects[n].w;
     if ((_x + w) < (w << 1)) {
-      const u32 _y = (y - (gOverworld.objects[n].start).y);
-      const u32 h = gOverworld.objects[n].h;
+      const u32 _y = (y - (W_TERRAIN_V2.objects[n].start).y);
+      const u32 h = W_TERRAIN_V2.objects[n].h;
       if ((_y + h) < (h << 1)) {
-        appendHazardID(z, gOverworld.objects[n].id);
-        return gOverworld.objects[n].attr;
+        appendHazardID(z, W_TERRAIN_V2.objects[n].id);
+        return W_TERRAIN_V2.objects[n].attr;
       }
     }
   }
@@ -3253,14 +3253,14 @@ static metatile_attr_t AppendHazardID_2(struct Zero* z, s32 x, s32 y) {
   u8 i;
   for (i = 0; i < z->hazardCount; i++) {
     u8 n = z->hazard[i];
-    const u32 _x = (u32)(x - (gOverworld.objects[n].unk_10).x);
-    const u32 w = gOverworld.objects[n].w;
+    const u32 _x = (u32)(x - (W_TERRAIN_V2.objects[n].unk_10).x);
+    const u32 w = W_TERRAIN_V2.objects[n].w;
     if ((_x + w) < (w << 1)) {
-      const u32 _y = (y - (gOverworld.objects[n].unk_10).y);
-      const u32 h = gOverworld.objects[n].h;
+      const u32 _y = (y - (W_TERRAIN_V2.objects[n].unk_10).y);
+      const u32 h = W_TERRAIN_V2.objects[n].h;
       if ((_y + h) < (h << 1)) {
-        appendHazardID(z, gOverworld.objects[n].id);
-        return gOverworld.objects[n].attr;
+        appendHazardID(z, W_TERRAIN_V2.objects[n].id);
+        return W_TERRAIN_V2.objects[n].attr;
       }
     }
   }

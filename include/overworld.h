@@ -10,7 +10,7 @@
 #include "stage.h"
 #include "stagerun.h"
 
-#define TILESET_ID(n) (gOverworld.tilesets[n] >> 8)
-#define TILESET_IDX(n) ((gOverworld.tilesets[n] & 0xFF))
+#define TILESET_ID(n) (W_TERRAIN_V2.tilesets[n] >> 8)
+#define TILESET_IDX(n) ((W_TERRAIN_V2.tilesets[n] & 0xFF))
 
 #endif  // GUARD_RMZ3_OW_H

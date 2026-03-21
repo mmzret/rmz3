@@ -194,7 +194,7 @@ WIP void Zero_Update(struct Zero* z) {
   }
 
   if (z->unk_234 == 0) {
-    if (((gOverworld.id & 0x7F) == STAGE_TWILIGHT_DESERT) && (FUN_080101a8() != 0)) {
+    if (((W_TERRAIN_V2.id & 0x7F) == STAGE_TWILIGHT_DESERT) && (FUN_080101a8() != 0)) {
       z->unk_234 = 16;
     }
   } else {

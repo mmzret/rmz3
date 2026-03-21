@@ -28,7 +28,7 @@ static void FUN_080101f0(struct Coord* _ UNUSED) {
     gOverworld.work.anatreForest.leaf = CreateLeafBurn(1);
   }
 
-  if ((gOverworld.tilesets[0] >> 8 == STAGE_ANATRE_FOREST) && ((gOverworld.tilesets[0] & 0xFF) == 0)) {
+  if ((W_TERRAIN_V2.tilesets[0] >> 8 == STAGE_ANATRE_FOREST) && ((W_TERRAIN_V2.tilesets[0] & 0xFF) == 0)) {
     if ((gOverworld.work.anatreForest.unk_00c & 1) == 0) {
       gOverworld.work.anatreForest.unk_00c |= 1;
       LoadBlink(218, 0);
@@ -46,7 +46,7 @@ static void FUN_080101f0(struct Coord* _ UNUSED) {
     ClearBlink(220);
   }
 
-  if ((gOverworld.tilesets[1] >> 8 == STAGE_ANATRE_FOREST) && ((gOverworld.tilesets[1] & 0xFF) == 1)) {
+  if ((W_TERRAIN_V2.tilesets[1] >> 8 == STAGE_ANATRE_FOREST) && ((W_TERRAIN_V2.tilesets[1] & 0xFF) == 1)) {
     if ((gOverworld.work.anatreForest.unk_00c & (1 << 1)) == 0) {
       gOverworld.work.anatreForest.unk_00c |= (1 << 1);
       LoadBlink(221, 0);
@@ -58,7 +58,7 @@ static void FUN_080101f0(struct Coord* _ UNUSED) {
     ClearBlink(221);
   }
 
-  if ((gOverworld.tilesets[0] >> 8 == STAGE_ANATRE_FOREST) && ((gOverworld.tilesets[0] & 0xFF) == 2)) {
+  if ((W_TERRAIN_V2.tilesets[0] >> 8 == STAGE_ANATRE_FOREST) && ((W_TERRAIN_V2.tilesets[0] & 0xFF) == 2)) {
     if ((gOverworld.work.anatreForest.unk_00c & (1 << 2)) == 0) {
       gOverworld.work.anatreForest.unk_00c |= (1 << 2);
       LoadBlink(222, 0);
@@ -86,7 +86,7 @@ static void FUN_080101f0(struct Coord* _ UNUSED) {
     ClearBlink(226);
   }
 
-  if ((gOverworld.tilesets[1] >> 8 == STAGE_ANATRE_FOREST) && ((gOverworld.tilesets[1] & 0xFF) == 3)) {
+  if ((W_TERRAIN_V2.tilesets[1] >> 8 == STAGE_ANATRE_FOREST) && ((W_TERRAIN_V2.tilesets[1] & 0xFF) == 3)) {
     if ((gOverworld.work.anatreForest.unk_00c & (1 << 3)) == 0) {
       gOverworld.work.anatreForest.unk_00c |= (1 << 3);
       LoadBlink(227, 0);
@@ -437,5 +437,73 @@ const struct Stage gAnatreForestLandscape = {
   behavior : sScreenBehavior,
 };
 
-// ./tools/dumper/bin.ts ./baserom.gba 0x08340128 0x08340290 ./data/landscape_anatre_forest.bin
-INCBIN("data/landscape_anatre_forest.bin");
+static const u8 u8_ARRAY_ARRAY_08340128[6][2] = {
+    {160, 0}, {176, 1}, {180, 2}, {184, 0}, {251, 1}, {255, 2},
+};
+
+// clang-format off
+static const struct Coord Coord_ARRAY_ARRAY_08340134[10][2] = {
+    [0] = {{PIXEL(2912), PIXEL(480)}, {PIXEL(3008), PIXEL(592)}},
+    [1] = {{PIXEL(3264), PIXEL(480)}, {PIXEL(3360), PIXEL(608)}},
+    [2] = {{PIXEL(3600), PIXEL(512)}, {PIXEL(3696), PIXEL(640)}},
+    [3] = {{PIXEL(3936), PIXEL(448)}, {PIXEL(4032), PIXEL(576)}},
+    [4] = {{PIXEL(4272), PIXEL(480)}, {PIXEL(4368), PIXEL(576)}},
+    [5] = {{PIXEL(4672), PIXEL(464)}, {PIXEL(4768), PIXEL(560)}},
+    [6] = {{PIXEL(5072), PIXEL(496)}, {PIXEL(5168), PIXEL(592)}},
+    [7] = {{PIXEL(5584), PIXEL(496)}, {PIXEL(5680), PIXEL(592)}},
+    [8] = {{PIXEL(5936), PIXEL(304)}, {PIXEL(6032), PIXEL(400)}},
+    [9] = {{PIXEL(6336), PIXEL(176)}, {PIXEL(6432), PIXEL(272)}},
+};
+// clang-format on
+
+static const u8 u8_ARRAY_083401d4[20] = {
+    0x00, 0x00, 0x01, 0x00, 0x01, 0x01, 0x01, 0x00, 0x02, 0x03, 0x02, 0x03, 0x02, 0x01, 0x02, 0x02, 0x02, 0x03, 0x02, 0x01,
+};
+
+static const struct Rect Rect_ARRAY_083401e8[3] = {
+    {PIXEL(48), PIXEL(56), PIXEL(96), PIXEL(112)},
+    {PIXEL(48), PIXEL(64), PIXEL(96), PIXEL(128)},
+    {PIXEL(48), PIXEL(48), PIXEL(96), PIXEL(96)},
+};
+
+static const struct Coord Coord_ARRAY_08340200[4] = {
+    {PIXEL(3152), PIXEL(560)},
+    {PIXEL(3472), PIXEL(592)},
+    {PIXEL(4160), PIXEL(608)},
+    {PIXEL(5968), PIXEL(576)},
+};
+
+// clang-format off
+static const struct Coord Coord_ARRAY_08340220[10] = {
+    {PIXEL(2872), PIXEL(560)},
+    {PIXEL(3192), PIXEL(592)},
+    {PIXEL(3544), PIXEL(608)},
+    {PIXEL(3880), PIXEL(592)},
+    {PIXEL(4256), PIXEL(600)},
+    {PIXEL(4568), PIXEL(592)},
+    {PIXEL(4952), PIXEL(592)},
+    {PIXEL(5464), PIXEL(576)},
+    {PIXEL(5928), PIXEL(448)},
+    {PIXEL(6312), PIXEL(464)},
+};
+// clang-format on
+
+struct MetatilePatch1x1 {
+  struct MetatilePatch size;
+  metatile_id_t data[1 * 1];
+};
+
+static const struct MetatilePatch1x1 MetatilePatch_08340270 = {
+    .size = {1, 1},
+    .data = {0},
+};
+
+struct MetatilePatch3x3 {
+  struct MetatilePatch size;
+  metatile_id_t data[3 * 3];
+};
+
+static const struct MetatilePatch3x3 MetatilePatch_08340278 = {
+    .size = {3, 3},
+    .data = {0, 0, 0, 0, 0, 0, 0, 0, 0},
+};

@@ -6,6 +6,8 @@
 #include "syssav.h"
 #include "zero.h"
 
+void FUN_08008eb8(s32 x, s32 y, struct Coord* c);
+
 /*
   Z軸方向にある上ボタンで入れるドア
   水没した図書館のデータの落ちてる部屋のドアの一部分(スプライト部分)

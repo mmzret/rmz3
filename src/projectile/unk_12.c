@@ -4,9 +4,11 @@
 
 // for Volteel Biblio's thunder
 
-void Projectile12_Init(struct Projectile* p);
-void Projectile12_Update(struct Projectile* p);
-void Projectile12_Die(struct Projectile* p);
+static const struct Collision sCollisions[4];
+
+static void Projectile12_Init(struct Projectile* p);
+static void Projectile12_Update(struct Projectile* p);
+static void Projectile12_Die(struct Projectile* p);
 
 // clang-format off
 const ProjectileRoutine gProjectile12Routine = {
@@ -52,34 +54,70 @@ struct Projectile* FUN_0809f4dc(struct Entity* e, struct Coord* c, struct Coord*
 
 // --------------------------------------------
 
-INCASM("asm/projectile/projectile.inc");
+static void Projectile12_Init(struct Projectile* p) {
+  InitScalerotMotion1(&p->s);
+  (p->s).angle = 0;
+  (p->s).spr.mag.x = 0x100;
+  (p->s).spr.mag.y = 0x100;
+  (p->s).flags |= DISPLAY;
+  (p->s).flags |= FLIPABLE;
+  ResetDynamicMotion(&p->s);
+  if ((p->s).work[0] == 0) {
+    INIT_BODY(p, &sCollisions[0], 1, NULL);
+  } else if ((p->s).work[0] == 1) {
+    INIT_BODY(p, &sCollisions[1], 1, NULL);
+  }
+  (p->s).work[2] = 0xFF;
+  SET_PROJECTILE_ROUTINE(p, ENTITY_UPDATE);
+  (p->s).mode[1] = 1;
+  (p->s).mode[2] = 0;
+  (p->s).mode[3] = 0;
+  Projectile12_Update(p);
+}
 
 // --------------------------------------------
 
-void FUN_0809f640(struct Projectile* p);
+static void FUN_0809f640(struct Projectile* p);
 void FUN_0809f64c(struct Projectile* p);
-
-static const ProjectileFunc sUpdates1[2] = {
-    FUN_0809f640,
-    FUN_0809f64c,
-};
-
-// --------------------------------------------
 
 void FUN_0809f7c8(struct Projectile* p);
 void FUN_0809f7d4(struct Projectile* p);
 
-static const ProjectileFunc sUpdates2[2] = {
-    FUN_0809f7c8,
-    FUN_0809f7d4,
-};
+static void Projectile12_Update(struct Projectile* p) {
+  static const ProjectileFunc sUpdates1[2] = {
+      FUN_0809f640,
+      FUN_0809f64c,
+  };
+  static const ProjectileFunc sUpdates2[2] = {
+      FUN_0809f7c8,
+      FUN_0809f7d4,
+  };
+  static const ProjectileFunc* const sUpdates[2] = {
+      sUpdates1,
+      sUpdates2,
+  };
+  ((sUpdates[(p->s).work[0]])[(p->s).mode[1]])(p);
+}
 
 // --------------------------------------------
 
-static const ProjectileFunc* const sUpdates[2] = {
-    sUpdates1,
-    sUpdates2,
-};
+static void Projectile12_Die(struct Projectile* p) {
+  (p->s).flags &= ~DISPLAY;
+  (p->body).status = 0;
+  (p->body).prevStatus = 0;
+  (p->body).invincibleTime = 0;
+  (p->s).flags &= ~COLLIDABLE;
+  SET_PROJECTILE_ROUTINE(p, ENTITY_EXIT);
+}
+
+// --------------------------------------------
+
+static void FUN_0809f640(struct Projectile* p) {
+  (p->s).mode[1] = 1;
+  (p->s).mode[2] = 0;
+}
+
+INCASM("asm/projectile/projectile.inc");
 
 // --------------------------------------------
 

@@ -22,7 +22,7 @@ static void FUN_08014b28(struct Coord* _ UNUSED) {
 }
 
 static void subAracadia_08014b48(struct Coord* _ UNUSED) {
-  if ((gOverworld.tilesets[0] >> 8 == STAGE_SUB_ARCADIA) && ((gOverworld.tilesets[0] & 0xFF) == 0)) {
+  if ((W_TERRAIN_V2.tilesets[0] >> 8 == STAGE_SUB_ARCADIA) && ((W_TERRAIN_V2.tilesets[0] & 0xFF) == 0)) {
     if ((STAGE.unk_000 & (1 << 0)) == 0) {
       STAGE.unk_000 |= (1 << 0);
       LoadBlink(124, 0);
@@ -46,7 +46,7 @@ static void subAracadia_08014b48(struct Coord* _ UNUSED) {
     ClearBlink(166);
   }
 
-  if ((gOverworld.tilesets[1] >> 8 == STAGE_SUB_ARCADIA) && ((gOverworld.tilesets[1] & 0xFF) == 1)) {
+  if ((W_TERRAIN_V2.tilesets[1] >> 8 == STAGE_SUB_ARCADIA) && ((W_TERRAIN_V2.tilesets[1] & 0xFF) == 1)) {
     if ((STAGE.unk_000 & (1 << 1)) == 0) {
       STAGE.unk_000 |= (1 << 1);
       LoadBlink(127, 0);
@@ -64,7 +64,7 @@ static void subAracadia_08014b48(struct Coord* _ UNUSED) {
     ClearBlink(129);
   }
 
-  if ((gOverworld.tilesets[0] >> 8 == STAGE_SUB_ARCADIA) && ((gOverworld.tilesets[0] & 0xFF) == 2)) {
+  if ((W_TERRAIN_V2.tilesets[0] >> 8 == STAGE_SUB_ARCADIA) && ((W_TERRAIN_V2.tilesets[0] & 0xFF) == 2)) {
     if ((STAGE.unk_000 & (1 << 2)) == 0) {
       STAGE.unk_000 |= (1 << 2);
       LoadBlink(161, 0);
@@ -88,7 +88,7 @@ static void subAracadia_08014b48(struct Coord* _ UNUSED) {
     ClearBlink(165);
   }
 
-  if ((gOverworld.tilesets[1] >> 8 == STAGE_SUB_ARCADIA) && ((gOverworld.tilesets[1] & 0xFF) == 3)) {
+  if ((W_TERRAIN_V2.tilesets[1] >> 8 == STAGE_SUB_ARCADIA) && ((W_TERRAIN_V2.tilesets[1] & 0xFF) == 3)) {
     if ((STAGE.unk_000 & (1 << 3)) == 0) {
       STAGE.unk_000 |= (1 << 3);
       LoadBlink(154, 0);

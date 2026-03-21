@@ -6,7 +6,6 @@
 
 static const EnemyFunc sUpdates1[8];
 static const EnemyFunc sUpdates2[8];
-static const EnemyFunc sDies[4];
 static const struct Collision sCollisions[6];
 static const struct Coord sElementCoord;
 static const u8 sInitModes[4];
@@ -399,7 +398,7 @@ void shrimporin_0806a544(struct Enemy* p);
 void shrimporin_0806a4ec(struct Enemy* p);
 
 static void Shrimporin_Die(struct Enemy* p) {
-  static const EnemyFunc sDies[4] = {
+  static const EnemyFunc sDeads[4] = {
       explodeShrimpolin,
       slashShrimporin,
       shrimporin_0806a544,
@@ -416,7 +415,7 @@ static void Shrimporin_Die(struct Enemy* p) {
     SET_ZAKO_ROUTINE(p, ENTITY_DISAPPEAR);
     return;
   }
-  (sDies[(p->s).mode[1]])(p);
+  (sDeads[(p->s).mode[1]])(p);
 }
 
 // --------------------------------------------
@@ -493,7 +492,6 @@ static const struct Collision sCollisions[6] = {
     [5] = {
       kind : DDP,
       faction : FACTION_NEUTRAL,
-      special : 0,
       damage : 2,
       hitzone : 0x00,
       remaining : 0,

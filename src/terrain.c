@@ -4,10 +4,15 @@
 #include "system.h"
 #include "task.h"
 
+static const struct Stage* UpdateStageTileset(struct Coord* c);
 static void loadStageLandscape(const struct Stage* p, const struct ChunkMap* map);
 static void TaskCB_UpdateOwGraphic(struct Overworld* ow, struct DrawPivot* tc);
+static void UpdateStageLayer(struct StageLayer* l, const struct Stage* s, struct Coord* c);
+static u8 FUN_080094f0(s32 x, s32 y);
+static void ResetStageLayer(s32 n, const struct Stage* s);
 
-void ResetTerrain(struct Terrain* terrain, metatile_attr_t* attr, Metatile* tiles, Screen* m, const struct ChunkMap* map);
+void ResetTerrain(struct TerrainROMPointer* terrain, metatile_attr_t* attr, Metatile* tiles, Screen* m, const struct ChunkMap* map);
+
 // clang-format off
 static const struct Stage* const gStageLandscape[STAGE_COUNT] = { // 0x0833a2e8
     [STAGE_NONE] =            &gStage0Landscape,
@@ -43,7 +48,7 @@ WIP void ResetLandscape(s32 stageID, struct Coord* viewport) {
   const struct Stage* stage;
   struct Coord* vp;
 
-  vp = &gOverworld.viewport;
+  vp = &W_TERRAIN_V2.viewport;
   vp->x = viewport->x;
   vp->y = viewport->y;
 
@@ -52,8 +57,8 @@ WIP void ResetLandscape(s32 stageID, struct Coord* viewport) {
   gVideoRegBuffer.dispcnt &= ~(DISPCNT_BG1_ON | DISPCNT_BG2_ON | DISPCNT_BG3_ON | DISPCNT_OBJ_ON | DISPCNT_WIN0_ON);
   SetTaskCallback(&gOverworld.task, TaskCB_UpdateOwGraphic);
   gOverworld.p = &gOverworld.task;
-  gOverworld.reload_graphic = FALSE;
-  gOverworld.id = stageID | (1 << 7);
+  gOverworld.terrain.reload_graphic = FALSE;
+  W_TERRAIN_V2.id = stageID | (1 << 7);
 
   {
     const struct TerrainHeader* hdr;
@@ -67,10 +72,10 @@ WIP void ResetLandscape(s32 stageID, struct Coord* viewport) {
     attrs = (metatile_attr_t*)((void*)hdr + hdr->attrs);
     ResetTerrain(&gOverworld.terrain, attrs, tiles, screens, stage->maps[0]);
   }
-  gOverworld.tilesets[0] = -1;
-  gOverworld.tilesets[1] = -1;
-  gOverworld.conveyor[0] = (stage->conveyor)[0];
-  gOverworld.conveyor[1] = (stage->conveyor)[1];
+  W_TERRAIN_V2.tilesets[0] = -1;
+  W_TERRAIN_V2.tilesets[1] = -1;
+  W_TERRAIN_V2.conveyor[0] = (stage->conveyor)[0];
+  W_TERRAIN_V2.conveyor[1] = (stage->conveyor)[1];
   loadStageLandscape(stage, stage->maps[0]);
 
   for (i = 0; i < 3; i++) {
@@ -83,8 +88,8 @@ WIP void ResetLandscape(s32 stageID, struct Coord* viewport) {
   gOverworld.range.top = 0;
   gOverworld.range.right = MAX_X;
   gOverworld.range.bottom = MAX_Y;
-  HAZARD_LENGTH = 0;
-  gOverworld.objectLenPrev = 0;
+  W_TERRAIN_V2.objectLen = 0;
+  W_TERRAIN_V2.objectLenPrev = 0;
 
   for (i = 0; i < 4; i++) {
     gOverworld.state[i] = 0;
@@ -107,7 +112,7 @@ void UpdateStageLandscape(struct Coord* viewport) {
   const struct Stage* s;
   s32 i;
   struct Coord lefttop;
-  struct Coord* vp = &gOverworld.viewport;
+  struct Coord* vp = &W_TERRAIN_V2.viewport;
   vp->x = viewport->x;
   vp->y = viewport->y;
   lefttop.x = SCREEN_LEFT(viewport->x);
@@ -115,8 +120,8 @@ void UpdateStageLandscape(struct Coord* viewport) {
   s = UpdateStageTileset(&lefttop);
 
   // If bit7 is set, do initialization
-  if (gOverworld.id != s->id) {
-    gOverworld.id = s->id;
+  if (W_TERRAIN_V2.id != s->id) {
+    W_TERRAIN_V2.id = s->id;
     ((s->fn)[0])(&lefttop);  // e.g. initRBase
   }
 
@@ -137,10 +142,10 @@ void DrawOverworld(struct TaskManager* tm) {
 }
 
 void SaveDispRegister(void) {
-  gOverworld.enabledBg = (gVideoRegBuffer.dispcnt & 0xF00) >> 8;
-  gOverworld.savedBgCnt[0] = gVideoRegBuffer.bgcnt[1];
-  gOverworld.savedBgCnt[1] = gVideoRegBuffer.bgcnt[2];
-  gOverworld.savedBgCnt[2] = gVideoRegBuffer.bgcnt[3];
+  gOverworld.terrain.enabledBg = (gVideoRegBuffer.dispcnt & 0xF00) >> 8;
+  gOverworld.terrain.savedBgCnt[0] = gVideoRegBuffer.bgcnt[1];
+  gOverworld.terrain.savedBgCnt[1] = gVideoRegBuffer.bgcnt[2];
+  gOverworld.terrain.savedBgCnt[2] = gVideoRegBuffer.bgcnt[3];
 }
 
 // メニューやイベントからOverworldに戻ってきたときに呼び出されてる
@@ -152,7 +157,7 @@ WIP void RestoreBackground(void) {
   const u32* tilesets;
   gVideoRegBuffer.dispcnt &= ~(DISPCNT_BG1_ON | DISPCNT_BG2_ON | DISPCNT_BG3_ON | DISPCNT_OBJ_ON | DISPCNT_WIN0_ON);
 
-  t = gOverworld.tilesets[0];
+  t = W_TERRAIN_V2.tilesets[0];
   if (((t >> 8) != 0xFF) && (((u8)t) != 0xFF)) {
     tilesets = &gStageTilesetOffsets[(t >> 8)];
     g = (struct ColorGraphic*)((u32)(void*)tilesets + *tilesets) + (u8)t;
@@ -163,7 +168,7 @@ WIP void RestoreBackground(void) {
     LoadPalette(&g->pal, 0);
   }
 
-  t = gOverworld.tilesets[1];
+  t = W_TERRAIN_V2.tilesets[1];
   if (((t >> 8) != 0xFF) && (((u8)t) != 0xFF)) {
     tilesets = &gStageTilesetOffsets[(t >> 8)];
     g = (struct ColorGraphic*)((u32)(void*)tilesets + *tilesets) + (u8)t;
@@ -183,11 +188,11 @@ WIP void RestoreBackground(void) {
   }
 
   gVideoRegBuffer.dispcnt &= ~DISPCNT_BG_ALL_ON;
-  gVideoRegBuffer.dispcnt |= (gOverworld.enabledBg << 8);
-  gVideoRegBuffer.bgcnt[1] = gOverworld.savedBgCnt[0];
-  gVideoRegBuffer.bgcnt[2] = gOverworld.savedBgCnt[1];
-  gVideoRegBuffer.bgcnt[3] = gOverworld.savedBgCnt[2];
-  gOverworld.reload_graphic = TRUE;
+  gVideoRegBuffer.dispcnt |= (gOverworld.terrain.enabledBg << 8);
+  gVideoRegBuffer.bgcnt[1] = gOverworld.terrain.savedBgCnt[0];
+  gVideoRegBuffer.bgcnt[2] = gOverworld.terrain.savedBgCnt[1];
+  gVideoRegBuffer.bgcnt[3] = gOverworld.terrain.savedBgCnt[2];
+  gOverworld.terrain.reload_graphic = TRUE;
 #else
   INCCODE("asm/wip/RestoreBackground.inc");
 #endif
@@ -205,11 +210,11 @@ void ExitStageLandscape(void) {
   const struct Stage* s;
   s32 i;
   struct Coord c;
-  const struct Coord* screenCoord = &gOverworld.viewport;
+  const struct Coord* screenCoord = &W_TERRAIN_V2.viewport;
   u16 id;
   c.x = SCREEN_LEFT(screenCoord->x);
   c.y = SCREEN_TOP(screenCoord->y);
-  id = gOverworld.id & 0x7F;
+  id = W_TERRAIN_V2.id & 0x7F;
   s = gStageLandscape[id];
   ((s->fn)[3])(&c);
 
@@ -231,14 +236,14 @@ NAKED static u16 getMetatileID(s32 x, s32 y) { INCCODE("asm/unused/getMetatileID
 */
 metatile_attr_t GetMetatileAttr(s32 x, s32 y) {
   s32 idx;
-  struct TerrainV2* terrain;
+  struct Terrain* terrain;
   const s32 mx = METACOORD(x);
   const s32 my = METACOORD(y);
   if (((u32)mx > 0x770) || (my < 0) || (my > 0x4F5)) {
     return 0x0A01;
   }
 
-  terrain = (struct TerrainV2*)&gOverworld.terrain;
+  terrain = &gOverworld.terrain;
   idx = (my * terrain->tilemap[0]) + mx + 2;
   return (terrain->hdr).attrs[terrain->tilemap[idx]];
 }
@@ -341,7 +346,7 @@ WIP static void loadStageLandscape(const struct Stage* p, const struct ChunkMap*
     screenIdxs = &screenIdxs[(layout->realWidth - layout->width)];
     dst = &dst[layout->width * 135];
   }
-  gOverworld.tilemap_duty = FALSE;
+  gOverworld.terrain.tilemap_duty = FALSE;
 #else
   INCCODE("asm/wip/loadStageLandscape.inc");
 #endif
@@ -351,7 +356,7 @@ WIP static void loadStageLandscape(const struct Stage* p, const struct ChunkMap*
 WIP void ShiftMetatile(s32 x, s32 y, const struct MetatileShift* s) {
 #if MODERN
   s32 i;
-  u8 id = gOverworld.id & 0x7F;
+  u8 id = W_TERRAIN_V2.id & 0x7F;
   const struct Stage* stage = gStageLandscape[id];
   u16* map = gOverworld.tilemap.map;
   u32 w = (u32)((stage->maps[0])->width) * 15;
@@ -362,7 +367,7 @@ WIP void ShiftMetatile(s32 x, s32 y, const struct MetatileShift* s) {
     src -= w;
     CopyMemory(src, dst, s->block << 1);
   }
-  gOverworld.tilemap_duty = TRUE;
+  gOverworld.terrain.tilemap_duty = TRUE;
 #else
   INCCODE("asm/wip/ShiftMetatile.inc");
 #endif
@@ -465,7 +470,7 @@ _0800924C: .4byte 0x000007E4\n\
 WIP void LoadScreenIntoMetatileMap(s32 chunkX, s32 chunkY, u16 chunkID) {
 #if MODERN
   s16 i;
-  const struct Stage* stage = gStageLandscape[gOverworld.id & 0x7F];
+  const struct Stage* stage = gStageLandscape[W_TERRAIN_V2.id & 0x7F];
   const struct TerrainHeader* h = stage->terrainHdr;
   const Screen* screens = ((const Screen*)(PTR_U32(h) + h->screens));
   metatile_id_t* src = (metatile_id_t*)screens[chunkID];
@@ -477,7 +482,7 @@ WIP void LoadScreenIntoMetatileMap(s32 chunkX, s32 chunkY, u16 chunkID) {
     dst = &dst[w * 15];
     src = &src[15];
   }
-  gOverworld.tilemap_duty = TRUE;
+  gOverworld.terrain.tilemap_duty = TRUE;
 #else
   INCCODE("asm/wip/LoadScreenIntoMetatileMap.inc");
 #endif
@@ -546,12 +551,12 @@ WIP void DrawGeneralStageLayer(struct StageLayer* l, const struct Stage* _) {
   // STAGE_LAYER_TERRAIN は .tilemap から描画範囲を切り出して (GBAのBGマップ形式に変換して) .bgmap に書き込む(VRAMへの書き込みは別の関数で行う)
   // 他のステージレイヤは 実VRAMに直接描画する (大丈夫?)
   if (l->type == STAGE_LAYER_TERRAIN) {
-    if (((a < 31) && (b < 31)) && !gOverworld.tilemap_duty) {
+    if (((a < 31) && (b < 31)) && !gOverworld.terrain.tilemap_duty) {
       FUN_08006bb4(&l->gfx, &c, (u32*)gOverworld.bgmap, &gOverworld.tilemap);
     } else {
       FUN_08006a10(&l->gfx, &c, (u32*)gOverworld.bgmap, &gOverworld.tilemap);
     }
-    gOverworld.tilemap_duty = FALSE;
+    gOverworld.terrain.tilemap_duty = FALSE;
 
   } else if ((a < 31) && (b < 31)) {
     FUN_080050b0(&l->gfx, &c, VRAM + SCREEN_BASE(l->bgIdx >> 4));
@@ -567,7 +572,7 @@ WIP void DrawGeneralStageLayer(struct StageLayer* l, const struct Stage* _) {
 /**
  * @return 0..15: カメラに関する値, 0xF0: Void Space
  */
-u8 FUN_080094f0(s32 x, s32 y) {
+static u8 FUN_080094f0(s32 x, s32 y) {
   const u16* arr;
   u32 row, col;
   u16 result;
@@ -577,7 +582,7 @@ u8 FUN_080094f0(s32 x, s32 y) {
   if (x >= COORD(0x771)) return 0x0F;
   if (y >= COORD(0x4F6)) return 0x0F;
 
-  s = gStageLandscape[gOverworld.id & 0x7F];
+  s = gStageLandscape[W_TERRAIN_V2.id & 0x7F];
   col = gScreenX[METACOORD(x)];
   row = gScreenY[METACOORD(y)];
   arr = s->behavior;
@@ -591,11 +596,11 @@ u8 FUN_080094f0(s32 x, s32 y) {
 /*
   引数のCoord(c)は画面左上の座標
 */
-WIP const struct Stage* UpdateStageTileset(struct Coord* c) {
+WIP static const struct Stage* UpdateStageTileset(struct Coord* c) {
 #if MODERN
   tileset_ofs_t tileset;
   const struct ColorGraphic* g;
-  const u8 stageID = gOverworld.id & 0x7F;
+  const u8 stageID = W_TERRAIN_V2.id & 0x7F;
   const struct Stage* stage = gStageLandscape[stageID];
   const u32 screenX = gScreenX[METACOORD(c->x)];
   const u32 screenY = gScreenY[METACOORD(c->y)];
@@ -609,8 +614,8 @@ WIP const struct Stage* UpdateStageTileset(struct Coord* c) {
   tileset = stage->tilesetOffset[4 + (screenY << stage->tilesetOffset[0]) + screenX];
 
   // Tileset 0
-  if ((gOverworld.tilesets[0] >> 8) == stageID) {
-    if ((gOverworld.tilesets[0] & 0xFF) == HI_NIBBLE(tileset)) {
+  if ((W_TERRAIN_V2.tilesets[0] >> 8) == stageID) {
+    if ((W_TERRAIN_V2.tilesets[0] & 0xFF) == HI_NIBBLE(tileset)) {
       goto SKIP;
     }
   } else if (HI_NIBBLE(tileset) == 0xFF) {
@@ -619,12 +624,12 @@ WIP const struct Stage* UpdateStageTileset(struct Coord* c) {
   g = &((const struct ColorGraphic*)OFFSET_TABLE(gStageTilesetOffsets, stageID))[HI_NIBBLE(tileset)];
   RequestGraphicTransfer(&g->g, (void*)0x4000);
   LoadPalette(&g->pal, 0);
-  gOverworld.tilesets[0] = (((u16)stageID) << 8) | HI_NIBBLE(tileset);
+  W_TERRAIN_V2.tilesets[0] = (((u16)stageID) << 8) | HI_NIBBLE(tileset);
 
 SKIP:
   // Tileset 1
-  if ((gOverworld.tilesets[1] >> 8) == stageID) {
-    if ((gOverworld.tilesets[1] & 0xFF) == LO_NIBBLE(tileset)) {
+  if ((W_TERRAIN_V2.tilesets[1] >> 8) == stageID) {
+    if ((W_TERRAIN_V2.tilesets[1] & 0xFF) == LO_NIBBLE(tileset)) {
       return stage;
     }
   } else if (LO_NIBBLE(tileset) == 0xFF) {
@@ -633,7 +638,7 @@ SKIP:
   g = &((const struct ColorGraphic*)OFFSET_TABLE(gStageTilesetOffsets, stageID))[LO_NIBBLE(tileset)];
   RequestGraphicTransfer(&g->g, (void*)0x4000);
   LoadPalette(&g->pal, 0);
-  gOverworld.tilesets[1] = (((u16)stageID) << 8) | LO_NIBBLE(tileset);
+  W_TERRAIN_V2.tilesets[1] = (((u16)stageID) << 8) | LO_NIBBLE(tileset);
 
   return stage;
 #else
@@ -648,7 +653,7 @@ SKIP:
 static void TaskCB_UpdateOwGraphic(struct Overworld* ow, struct DrawPivot* dp) {
   s32 i;
   struct StageLayer* layer;
-  const u32 id = gOverworld.id & 0x7F;
+  const u32 id = W_TERRAIN_V2.id & 0x7F;
   const struct Stage* s = gStageLandscape[id];
   (s->fn[2])(&dp->coord);  // e.g. sResistanceBaseGfxRoutine[2] (ほとんどの場合が nop)
 
@@ -661,10 +666,10 @@ static void TaskCB_UpdateOwGraphic(struct Overworld* ow, struct DrawPivot* dp) {
     }
   }
   RequestBgMapTransfer(gOverworld.bgmap, (void*)SCREEN_BASE_16(gOverworld.layer[0].bgIdx >> 4), 0x1000);
-  gOverworld.reload_graphic = FALSE;
+  gOverworld.terrain.reload_graphic = FALSE;
 }
 
-WIP void UpdateStageLayer(struct StageLayer* l, const struct Stage* s, struct Coord* c) {
+WIP static void UpdateStageLayer(struct StageLayer* l, const struct Stage* s, struct Coord* c) {
 #if MODERN
   u8 X, Y;
   (l->prevViewportCenterPixel).x = (l->viewportCenterPixel).x;

@@ -99,14 +99,14 @@ _0800ACB6:\n\
 // 座標(x, y) が Hazard(物理的に干渉するEntity) によって上に押し出された後の Y 座標を返す
 s32 CalcPushout_Up(s32 x, s32 y) {
   s32 i;
-  for (i = 0; i < gOverworld.objectLen; i++) {
-    const u32 w = gOverworld.objects[i].w << 1;
-    const u32 _x = (u32)(x - (gOverworld.objects[i].start).x) + gOverworld.objects[i].w;
+  for (i = 0; i < W_TERRAIN_V2.objectLen; i++) {
+    const u32 w = W_TERRAIN_V2.objects[i].w << 1;
+    const u32 _x = (u32)(x - (W_TERRAIN_V2.objects[i].start).x) + W_TERRAIN_V2.objects[i].w;
     if (w > _x) {
-      const u32 h = gOverworld.objects[i].h << 1;
-      const u32 _y = (u32)(y - (gOverworld.objects[i].start).y) + gOverworld.objects[i].h - 1;
+      const u32 h = W_TERRAIN_V2.objects[i].h << 1;
+      const u32 _y = (u32)(y - (W_TERRAIN_V2.objects[i].start).y) + W_TERRAIN_V2.objects[i].h - 1;
       if (h > _y) {
-        y = (gOverworld.objects[i].start).y - gOverworld.objects[i].h;
+        y = (W_TERRAIN_V2.objects[i].start).y - W_TERRAIN_V2.objects[i].h;
         return CalcPushout_Up(x, y);
       }
     }
@@ -123,15 +123,15 @@ s32 CalcPushout_Up(s32 x, s32 y) {
  */
 s32 CalcPushout_Down(s32 x, s32 y) {
   s32 i;
-  for (i = 0; i < gOverworld.objectLen; i++) {
-    const u32 w = gOverworld.objects[i].w << 1;
-    const u32 _x = (u32)(x - (gOverworld.objects[i].start).x) + gOverworld.objects[i].w;
+  for (i = 0; i < W_TERRAIN_V2.objectLen; i++) {
+    const u32 w = W_TERRAIN_V2.objects[i].w << 1;
+    const u32 _x = (u32)(x - (W_TERRAIN_V2.objects[i].start).x) + W_TERRAIN_V2.objects[i].w;
     if (w > _x) {
-      const u32 h = gOverworld.objects[i].h << 1;
-      const u32 _y = (u32)(y - (gOverworld.objects[i].start).y) + gOverworld.objects[i].h - 1;
+      const u32 h = W_TERRAIN_V2.objects[i].h << 1;
+      const u32 _y = (u32)(y - (W_TERRAIN_V2.objects[i].start).y) + W_TERRAIN_V2.objects[i].h - 1;
       if (h > _y) {
-        if ((gOverworld.objects[i].attr & (METATILE_SOFT_PLATFORM | METATILE_ANTTRAP)) == 0) {
-          y = (gOverworld.objects[i].start).y + gOverworld.objects[i].h + 1;
+        if ((W_TERRAIN_V2.objects[i].attr & (METATILE_SOFT_PLATFORM | METATILE_ANTTRAP)) == 0) {
+          y = (W_TERRAIN_V2.objects[i].start).y + W_TERRAIN_V2.objects[i].h + 1;
           return CalcPushout_Down(x, y);  // 押し出した先に、別のHazardがあるかもしれないので、押し出した先で再度チェックが必要
         }
       }
@@ -143,15 +143,15 @@ s32 CalcPushout_Down(s32 x, s32 y) {
 // 座標(x, y) が Hazard(物理的に干渉するEntity) によって左に押し出された後の X 座標を返す
 s32 CalcPushout_Left(s32 x, s32 y) {
   s32 i;
-  for (i = 0; i < gOverworld.objectLen; i++) {
-    const u32 w = gOverworld.objects[i].w << 1;
-    const u32 _x = (u32)(x - (gOverworld.objects[i].start).x) + gOverworld.objects[i].w;
+  for (i = 0; i < W_TERRAIN_V2.objectLen; i++) {
+    const u32 w = W_TERRAIN_V2.objects[i].w << 1;
+    const u32 _x = (u32)(x - (W_TERRAIN_V2.objects[i].start).x) + W_TERRAIN_V2.objects[i].w;
     if (w > _x) {
-      const u32 h = gOverworld.objects[i].h << 1;
-      const u32 _y = (u32)(y - (gOverworld.objects[i].start).y) + gOverworld.objects[i].h - 1;
+      const u32 h = W_TERRAIN_V2.objects[i].h << 1;
+      const u32 _y = (u32)(y - (W_TERRAIN_V2.objects[i].start).y) + W_TERRAIN_V2.objects[i].h - 1;
       if (h > _y) {
-        if ((gOverworld.objects[i].attr & (METATILE_SOFT_PLATFORM | METATILE_ANTTRAP)) == 0) {
-          x = ((gOverworld.objects[i].start).x - gOverworld.objects[i].w) - 1;
+        if ((W_TERRAIN_V2.objects[i].attr & (METATILE_SOFT_PLATFORM | METATILE_ANTTRAP)) == 0) {
+          x = ((W_TERRAIN_V2.objects[i].start).x - W_TERRAIN_V2.objects[i].w) - 1;
           return CalcPushout_Left(x, y);  // 押し出した先に、別のHazardがあるかもしれないので、押し出した先で再度チェックが必要
         }
       }
@@ -163,15 +163,15 @@ s32 CalcPushout_Left(s32 x, s32 y) {
 // 座標(x, y) が Hazard(物理的に干渉するEntity) によって右に押し出された後の X 座標を返す
 s32 CalcPushout_Right(s32 x, s32 y) {
   s32 i;
-  for (i = 0; i < gOverworld.objectLen; i++) {
-    const u32 w = gOverworld.objects[i].w << 1;
-    const u32 _x = (u32)(x - (gOverworld.objects[i].start).x) + gOverworld.objects[i].w;
+  for (i = 0; i < W_TERRAIN_V2.objectLen; i++) {
+    const u32 w = W_TERRAIN_V2.objects[i].w << 1;
+    const u32 _x = (u32)(x - (W_TERRAIN_V2.objects[i].start).x) + W_TERRAIN_V2.objects[i].w;
     if (w > _x) {
-      const u32 h = gOverworld.objects[i].h << 1;
-      const u32 _y = (u32)(y - (gOverworld.objects[i].start).y) + gOverworld.objects[i].h - 1;
+      const u32 h = W_TERRAIN_V2.objects[i].h << 1;
+      const u32 _y = (u32)(y - (W_TERRAIN_V2.objects[i].start).y) + W_TERRAIN_V2.objects[i].h - 1;
       if (h > _y) {
-        if ((gOverworld.objects[i].attr & (METATILE_SOFT_PLATFORM | METATILE_ANTTRAP)) == 0) {
-          x = (gOverworld.objects[i].start).x + gOverworld.objects[i].w;
+        if ((W_TERRAIN_V2.objects[i].attr & (METATILE_SOFT_PLATFORM | METATILE_ANTTRAP)) == 0) {
+          x = (W_TERRAIN_V2.objects[i].start).x + W_TERRAIN_V2.objects[i].w;
           return CalcPushout_Right(x, y);  // 押し出した先に、別のHazardがあるかもしれないので、押し出した先で再度チェックが必要
         }
       }

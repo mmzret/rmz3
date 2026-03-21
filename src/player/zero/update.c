@@ -81,7 +81,7 @@ NO_RECOVER:
   z->isGround = TRUE;
   (gZeroMode0Actions2[(z->s).mode[2]])(z);
 
-  if ((((gOverworld.id & 0x7F) == STAGE_TWILIGHT_DESERT) && (hp = FUN_080101a8(), hp != 0)) || (z->unk_234 != 0)) {
+  if ((((W_TERRAIN_V2.id & 0x7F) == STAGE_TWILIGHT_DESERT) && (hp = FUN_080101a8(), hp != 0)) || (z->unk_234 != 0)) {
     zero_08026f90(z, gZeroRanges);
   }
 
@@ -568,7 +568,7 @@ static void zeroJumpRise(struct Zero* z) {
   };
   // clang-format on
 
-  if ((((gOverworld.id & 0x7F) == STAGE_TWILIGHT_DESERT) && (FUN_080101a8() > 0)) || (z->unk_234 != 0)) {
+  if ((((W_TERRAIN_V2.id & 0x7F) == STAGE_TWILIGHT_DESERT) && (FUN_080101a8() > 0)) || (z->unk_234 != 0)) {
     zero_08026f90(z, gZeroRanges);
   }
   gZeroJumpRise[(z->s).mode[3]](z);
@@ -854,7 +854,7 @@ static void zeroJumpFall(struct Zero* z) {
       zeroJumpFallStep2,
   };
 
-  if ((((gOverworld.id & 0x7F) == STAGE_TWILIGHT_DESERT) && (FUN_080101a8() > 0)) || (z->unk_234 != 0)) {
+  if ((((W_TERRAIN_V2.id & 0x7F) == STAGE_TWILIGHT_DESERT) && (FUN_080101a8() > 0)) || (z->unk_234 != 0)) {
     zero_08026f90(z, gZeroRanges);
   }
   gZeroJumpFallSeq[(z->s).mode[3]](z);
@@ -1447,7 +1447,7 @@ void zeroKnockBack(struct Zero* z) {
   (z->s).d.y = 0;
   z->isGround = TRUE;
 
-  if ((((gOverworld.id & 0x7F) == STAGE_TWILIGHT_DESERT) && (hp = FUN_080101a8(), hp != 0)) || (z->unk_234 != 0)) {
+  if ((((W_TERRAIN_V2.id & 0x7F) == STAGE_TWILIGHT_DESERT) && (hp = FUN_080101a8(), hp != 0)) || (z->unk_234 != 0)) {
     zero_08026f90(z, gZeroRanges);
   }
 
@@ -1468,7 +1468,7 @@ void zeroKnockBack(struct Zero* z) {
 static void zeroAirKnockBack(struct Zero* z) {
   struct Zero_b4* b4;
   s16 hp;
-  if ((((gOverworld.id & 0x7F) == STAGE_TWILIGHT_DESERT) && (hp = FUN_080101a8(), hp != 0)) || (z->unk_234 != 0)) {
+  if ((((W_TERRAIN_V2.id & 0x7F) == STAGE_TWILIGHT_DESERT) && (hp = FUN_080101a8(), hp != 0)) || (z->unk_234 != 0)) {
     zero_08026f90(z, gZeroRanges);
   }
   (z->s).coord.x += (z->s).d.x;
