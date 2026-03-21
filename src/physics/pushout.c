@@ -133,9 +133,9 @@ WIP s32 PushoutToDown2(s32 x, s32 y) {
   s32 newY;
   s32 i = 0;
   s32 Y = y;
-  struct MetatileMap* tm = &gOverworld.tilemap;
+  MetatileMap* tm = &gOverworld.tilemap;
   while (TRUE) {
-    metatile_attr_t attr = gOverworld.terrain.attrs[tm->map[METACOORD(Y) * tm->width16 + METACOORD(x)]];
+    metatile_attr_t attr = gOverworld.terrain.attrs[tm[2 + METACOORD(Y) * tm[0] + METACOORD(x)]];
     u32 shape = attr & 0xF;
     newY = Y;
     if ((shape == 0) || (attr & 0x8400)) {

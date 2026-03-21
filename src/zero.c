@@ -1345,31 +1345,28 @@ _0802644A:\n\
 
 /*
   壁ずり中の壁というよりはゼロのいる座標のMetatile Attr
-  Reg swapだけ解決できなかっただけでロジックはあってる
 */
-NON_MATCH metatile_attr_t GetWallMetatileAttr(struct Zero* z, const struct Rect* p, bool8 _ UNUSED) {
-#if MODERN
+metatile_attr_t GetWallMetatileAttr(struct Zero* z, const struct Rect* p, bool8 _ UNUSED) {
   metatile_attr_t attr;
   struct Coord c;
+  u32 shape;
 
   const s32 y = (z->s).coord.y + p->y - (p->h >> 1);  // Zero's center Y
   if (z->hazardCount != 0) {
     metatile_attr_t attr = AppendHazardID(z, (z->s).coord.x, y);
-    if (((attr & METATILE_SOFT_PLATFORM) == 0) || ((attr & 0xF) == 0) || ((attr & 0xF) == 0xF)) {
+    if (((attr & METATILE_SOFT_PLATFORM) == 0) || ((attr & 0xF) == 0) || ((attr & 0xF) > 0xE)) {
       _pushoutHazardY(z, (z->s).coord.x, y, &c);
     }
   }
 
   attr = GetMetatileAttr((z->s).coord.x, y);
+  shape = attr & 0xF;
 
   // めり込んでる?(すり抜け床と重なってる場合は除く)
-  if (((attr & 0xF) == METATILE_GROUND) && !(attr & METATILE_SOFT_PLATFORM)) {
+  if ((shape == METATILE_GROUND) && ((attr & METATILE_SOFT_PLATFORM) == 0)) {
     (z->s).coord.y += PushoutToDown2((z->s).coord.x, y);
   }
   return attr;
-#else
-  INCCODE("asm/wip/GetWallMetatileAttr.inc");
-#endif
 }
 
 /*

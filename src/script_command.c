@@ -1355,6 +1355,7 @@ static bool32 Cmd_killtimeelf(struct VM* vm) {
   return FALSE;
 }
 
+// helper for Cmd_cutscene?
 NAKED static void FUN_080237c4(u32 r0, s32 x, s32 y, u16 r3) {
   asm(".syntax unified\n\
 	push {r4, r5, r6, r7, lr}\n\

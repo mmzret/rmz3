@@ -8,6 +8,7 @@
 #include "metatile.h"
 #include "overworld_layer.h"
 #include "overworld_layer_gfx.h"
+#include "overworld_stage.h"
 #include "solid.h"
 
 #define USE_BG1 0x12
@@ -20,35 +21,6 @@
 
 // マップデータ(2KB単位)を置くブロック -> 0x0600_0000 + (0x800)*n
 #define BGMAP_BLOCK(n) (n << 8)
-
-typedef void (*StageFunc)(struct Coord*);
-
-/*
-  例: 0x0863c638
-  チャンクID から メタタイルID と　そのメタタイル属性 を取得するために必要な情報 (へのアクセスに必要なメモリオフセット)
-*/
-struct TerrainHeader {
-  s32 tiles;    // Metatileの配列 e.g. 0x086ee6b0
-  s32 attrs;    // metatile_attr_t の配列
-  s32 screens;  // Screenの配列
-};
-
-// ROMが保持しているステージの静的な情報
-struct Stage {
-  u32 id;               // ステージID
-  const StageFunc* fn;  // ステージ自体に割り当てられたルーチン
-  const struct TerrainHeader* terrainHdr;
-  const struct ChunkMap* maps[STAGE_LAYER_NUM];  // ステージ全体でチャンクをどう配置するかのデータ (ステージレイヤ3枚分)
-  u32 bgIdx[STAGE_LAYER_NUM];                    // ステージレイヤが実際のGBAのどのBGレイヤに割り当てられるか  bit4-8がbgcntのn(BGnか), そしてbit0-4 は (1 << n) したもの
-  u32 prio[STAGE_LAYER_NUM];                     // BG Priority for layer
-  u32 screenBase[STAGE_LAYER_NUM];               // 各ステージレイヤのBGマップデータの配置先アドレス
-  struct Coord scrollPower[STAGE_LAYER_NUM];
-  struct Coord scroll[STAGE_LAYER_NUM];  // レイヤに常に加算されるスクロール値(ピクセル単位) つまりxに16を加えるとレイヤが16pxずれる(あくまでずれるのはレイヤの見た目で地形はずれない)
-  const tileset_ofs_t* tilesetOffset;    // tilesetOffset[n] >> 4 が
-  const StageLayerRoutine* bgFns;        // ステージレイヤに割り当てられるルーチンのテーブル, 全部のステージレイヤのルーチンがまとまっており、 ステージレイヤの種類,現在のチャンク から どのルーチンを割り当てるかが決まる
-  const u16* behavior;                   // 現在の座標から bgFns のインデックスを得るためのテーブル
-  s32 conveyor[2];                       // Overworld.conveyor
-};
 
 // ステージのROMデータ
 struct TerrainROMPointer {
@@ -70,25 +42,6 @@ struct Hazard {
 };  // 24 bytes
 static_assert(sizeof(struct Hazard) == 24);
 
-// 地形レイヤのMetatileのマップデータ (ステージ全体分)
-struct MetatileMap {
-  u16 width16;  // ステージ全体の横幅(メタタイル単位)
-  u16 _;
-
-  /*
-    0..width16:           MetaCoord is 0 (y= 0px)
-    width16..width16*2:     MetaCoord is 1 (y=16px)
-    width16*2..width16*3:   MetaCoord is 2 (y=32px)
-    ...
-    width16*10..width16*11: MetaCoord is 10 (y=160px)
-    ...
-
-    so, map is metatile_id_t map[89100/width16][width16]
-  */
-  metatile_id_t map[89100];
-  u32 unused;
-};
-
 //
 struct Terrain {
   struct TerrainROMPointer hdr;  // 0x020023b8, 現在のステージの地形ROMデータ
@@ -106,9 +59,7 @@ struct Terrain {
   u16 enabledBg;  // DISPCNTの bit8..11 つまり BGn有効フラグ
   struct BgCnt savedBgCnt[3];
 
-  u16 tilemap[2 + 89100 + 2];  // 0x020029e0 .layer[STAGE_LAYER_TERRAIN]のステージ全体のMetatileのマップ, 壁との押し出し判定などで参照される (他のステージレイヤは描画用で参照しないので STAGE_LAYER_TERRAIN だけでいい)
-  // struct MetatileMap tilemap;  // 0x020029e0 .layer[STAGE_LAYER_TERRAIN]のステージ全体のMetatileのマップ, 壁との押し出し判定などで参照される (他のステージレイヤは描画用で参照しないので STAGE_LAYER_TERRAIN だけでいい)
-
+  MetatileMap tilemap;  // 0x020029e0 .layer[STAGE_LAYER_TERRAIN]のステージ全体のMetatileのマップ, 壁との押し出し判定などで参照される (他のステージレイヤは描画用で参照しないので STAGE_LAYER_TERRAIN だけでいい)
   bool16 tilemap_duty;  // 0x0202E200 tilemap がロード時以降書きかわった際にTRUEになるフラグ?
 
   bool16 reload_graphic;  // メニュー画面などに入って、ワールドで使っていたタイルデータやBGマップが破壊されたときに、ワールドから戻った後、それらを再ロードさせるためのフラグ
@@ -121,11 +72,7 @@ struct Overworld {
   struct Task task;
   struct Task* p;
   u8 unk_0c[20];
-
-  // ステージは最大3枚のレイヤ(ステージレイヤ)を持つ, layer[0] は地形データ, layer[1] は水面や草など(プレイヤーの行動によって変化しうるものがココ？), layer[2] は雲などの背景
-  // NOTE: 1枚のステージレイヤは1枚のBGレイヤに対応するが、 layer[0] が BG1, layer[1] が BG2, layer[2] が BG3 とは限らない
   struct StageLayer layer[STAGE_LAYER_NUM];
-
   struct Terrain terrain;  // 0x020023b8, 現在のステージの地形データ
 
   s32 sea;  // 海面のY座標
@@ -308,25 +255,6 @@ extern struct Overworld gOverworld;
 extern const u8 gScreenY[2048];
 extern const u8 gScreenX[3072];
 extern const struct TerrainHeader gStageTerrains[STAGE_COUNT];
-
-extern const struct Stage gStage0Landscape;
-extern const struct Stage gSpacecraftLandscape;
-extern const struct Stage gVolcanoLandscape;
-extern const struct Stage gOceanLandscape;
-extern const struct Stage gRepairFactoryLandscape;
-extern const struct Stage gOldResidentialLandscape;
-extern const struct Stage gResistanceBaseLandscape;
-extern const struct Stage gMissileFactoryLandscape;
-extern const struct Stage gTwilightDesertLandscape;
-extern const struct Stage gAnatreForestLandscape;
-extern const struct Stage gFrostlineIceBaseLandscape;
-extern const struct Stage gAreaX2Landscape;
-extern const struct Stage gEnergyFacilityLandscape;
-extern const struct Stage gSnowyPlainsLandscape;
-extern const struct Stage gSunkenLibraryLandscape;
-extern const struct Stage gGiantElevatorLandscape;
-extern const struct Stage gSubArcadiaLandscape;
-extern const struct Stage gWeilLaboLandscape;
 
 void ResetLandscape(s32 stageID, struct Coord* c);
 void UpdateStageLandscape(struct Coord* c);

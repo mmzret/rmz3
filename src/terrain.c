@@ -320,9 +320,9 @@ WIP static void loadStageLandscape(const struct Stage* p, const struct ChunkMap*
   Screen* screens = (Screen*)(PTR_U32(&(p->terrainHdr)->tiles) + (p->terrainHdr)->screens);
   metatile_id_t nullMetatile = screens[layout->skip][0];
   u32 fill = (((u32)nullMetatile) << 16) | nullMetatile;
-  struct MetatileMap* tm = &gOverworld.tilemap;
-  tm->width16 = layout->width * 15;
-  CpuFastFill(fill, tm->map, sizeof(struct MetatileMap));  // tilemap_duty も巻き込まれているが最後に0クリアされてるので問題なし
+  MetatileMap* tm = &gOverworld.tilemap;
+  tm[0] = layout->width * 15;
+  CpuFastFill(fill, &tm[2], sizeof(MetatileMap));  // tilemap_duty も巻き込まれているが最後に0クリアされてるので問題なし
 
   screenIdxs = (u8*)(layout + 1);
   dst = tm->map;
@@ -467,21 +467,27 @@ _0800924C: .4byte 0x000007E4\n\
  * @param chunkID 08649444 とかの Screen[] の idx
  * @note 0x08009250
  */
-WIP void LoadScreenIntoMetatileMap(s32 chunkX, s32 chunkY, u16 chunkID) {
+NON_MATCH void LoadScreenIntoMetatileMap(s32 chunkX, s32 chunkY, u16 chunkID) {
 #if MODERN
   s16 i;
-  const struct Stage* stage = gStageLandscape[W_TERRAIN_V2.id & 0x7F];
+  s32 id = (u8)W_TERRAIN_V2.id & 0x7F;
+  const struct Stage* stage = gStageLandscape[id];
+  metatile_id_t* tm = &gOverworld.terrain.tilemap[2];
+
   const struct TerrainHeader* h = stage->terrainHdr;
-  const Screen* screens = ((const Screen*)(PTR_U32(h) + h->screens));
-  metatile_id_t* src = (metatile_id_t*)screens[chunkID];
-  const u32 w = (stage->maps[0])->width;
-  struct MetatileMap* tm = &gOverworld.tilemap;
-  u16* dst = &tm->map[(chunkY * (w * 15) * 10) + (chunkX * 15)];
+  const Screen* chunks = (const Screen*)(((void*)h) + h->screens);  // ここのレジスタ割り当てがうまくいかない以外は、問題なさそう
+  metatile_id_t* src = (metatile_id_t*)chunks[chunkID];
+
+  const u32 chunkW = (stage->maps[0])->width;  // チャンク単位
+  const u32 w16 = chunkW * 15;                 // メタタイル単位
+  metatile_id_t* dst = &tm[((w16 * chunkY) * 10) + (chunkX * 15)];
+
   for (i = 0; i < 10; i++) {
     CopyMemory(src, dst, 30);
-    dst = &dst[w * 15];
+    dst = &dst[chunkW * 15];
     src = &src[15];
   }
+
   gOverworld.terrain.tilemap_duty = TRUE;
 #else
   INCCODE("asm/wip/LoadScreenIntoMetatileMap.inc");

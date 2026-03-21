@@ -4,7 +4,12 @@
 #include "chunk.h"
 #include "metatile.h"
 
-struct MetatileMap;
+// 地形レイヤのMetatileのマップデータ (ステージ全体分)
+//   MetatileMap[0]:            ステージ全体の横幅(メタタイル単位)
+//   MetatileMap[1]:            使われてない(Alignment?)
+//   MetatileMap[2..89099]:     ステージ全体のメタタイルIDのマップデータ (89100個分, つまり横幅*縦幅分) = (metatile_id_t map[89100/width16][width16])
+//   MetatileMap[89100..89101]: 使われてない(CpuFastSet のために32バイトアラインメントされる必要があるためそのパディング？)
+typedef u16 MetatileMap[2 + 89100 + 2];
 
 // StageLayer構造体のうち、BGマップへの描画に必要な情報
 struct LayerGraphic {
@@ -18,9 +23,9 @@ struct LayerGraphic {
 
 void UpdateBGOFS(struct LayerGraphic* p, struct BgOfs* bgofs);
 
-void FUN_08006bb4(struct LayerGraphic* l, struct Coord* c, u32* bgmap, struct MetatileMap* mm);
-void FUN_08006a10(struct LayerGraphic* l, struct Coord* c, u32* bgmap, struct MetatileMap* mm);
-void FUN_08006ae0(struct LayerGraphic* l, struct Coord* c, u32* bgmap, struct MetatileMap* mm);
+void FUN_08006bb4(struct LayerGraphic* l, struct Coord* c, u32* bgmap, MetatileMap* mm);
+void FUN_08006a10(struct LayerGraphic* l, struct Coord* c, u32* bgmap, MetatileMap* mm);
+void FUN_08006ae0(struct LayerGraphic* l, struct Coord* c, u32* bgmap, MetatileMap* mm);
 void FUN_080050b0(struct LayerGraphic* l, struct Coord* c, u32 mapAddr);
 void FUN_08005a70(struct LayerGraphic* l, struct Coord* c, u32 mapAddr);
 

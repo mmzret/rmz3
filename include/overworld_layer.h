@@ -5,6 +5,9 @@
 #include "metatile.h"
 #include "overworld_layer_gfx.h"
 
+// ステージは最大3枚のレイヤ(ステージレイヤ)を持つ, layer[0] は地形データ, layer[1] は水面や草など(プレイヤーの行動によって変化しうるものがココ？), layer[2] は雲などの背景
+// NOTE: 1枚のステージレイヤは1枚のBGレイヤに対応するが、 layer[0] が BG1, layer[1] が BG2, layer[2] が BG3 とは限らない
+
 // StageLayer.type
 #define STAGE_LAYER_TERRAIN 0  // 地形レイヤ (足場や坂道などの物理的な地形データを持つメインのステージレイヤ)
 #define STAGE_LAYER_1 1        // 物理的な地形データを持たない装飾用レイヤ, 旧居住区の ツタやキノコ, 水面　など

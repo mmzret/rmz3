@@ -1040,7 +1040,7 @@ NAKED static void unused_08006738(void) { INCCODE("asm/unused/unused_08006738.in
 NAKED static void unused_080069e0(void) { INCCODE("asm/unused/unused_080069e0.inc"); }
 #endif
 
-NAKED void FUN_08006a10(struct LayerGraphic* l, struct Coord* c, u32* bgmap, struct MetatileMap* mm) {
+NAKED void FUN_08006a10(struct LayerGraphic* l, struct Coord* c, u32* bgmap, MetatileMap* mm) {
   asm(".syntax unified\n\
 	push {r4, r5, r6, r7, lr}\n\
 	mov r7, sl\n\
@@ -1152,12 +1152,12 @@ _08006ADC: .4byte 0x000001FF\n\
 }
 
 // bgmap.c　の処理を知るためにとりあえずCにしたもの、多分ロジックおかしなっとる
-WIP void FUN_08006ae0(struct LayerGraphic* l, struct Coord* c, u32* bgmap, struct MetatileMap* mm) {
+WIP void FUN_08006ae0(struct LayerGraphic* l, struct Coord* c, u32* bgmap, MetatileMap* mm) {
 #if MODERN
   s16 i;
   s32 x = c->x >> 4;
   s32 y = c->y >> 4;
-  metatile_id_t* id = &mm->map[y * mm->width16 + x];
+  metatile_id_t* id = &mm[2 + y * mm[0] + x];
   for (i = 0; i < 12; i++) {
     s16 X = x + i;
     while (X < 18) {
@@ -1168,7 +1168,7 @@ WIP void FUN_08006ae0(struct LayerGraphic* l, struct Coord* c, u32* bgmap, struc
       id++;
       X++;
     }
-    id += (mm->width16 - 18);
+    id += (mm[0] - 18);
   }
   l->bgofs[0] = c->x & 0x1FF;
   l->bgofs[1] = c->y & 0x1FF;
@@ -1179,7 +1179,7 @@ WIP void FUN_08006ae0(struct LayerGraphic* l, struct Coord* c, u32* bgmap, struc
 #endif
 }
 
-NAKED void FUN_08006bb4(struct LayerGraphic* l, struct Coord* c, u32* bgmap, struct MetatileMap* mm) {
+NAKED void FUN_08006bb4(struct LayerGraphic* l, struct Coord* c, u32* bgmap, MetatileMap* mm) {
   asm(".syntax unified\n\
 	push {r4, r5, r6, r7, lr}\n\
 	mov r7, sl\n\

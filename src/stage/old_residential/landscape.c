@@ -190,9 +190,9 @@ static void LayerDraw_2(struct StageLayer* l, const struct Stage* _ UNUSED) {
   c.y = COORD_TO_PIXEL((l->drawPivotOffset).y) + y;
 
   if ((dx >= 31) || (dy >= 31) || (STAGE.unk_004[0] != 0)) {
-    FUN_08006ae0(g, &c, (u32*)(VRAM + SCREEN_BASE_16(l->bgIdx >> 4)), (struct MetatileMap*)gOverworld.terrain.tilemap);
+    FUN_08006ae0(g, &c, (u32*)(VRAM + SCREEN_BASE_16(l->bgIdx >> 4)), &gOverworld.terrain.tilemap);
   } else {
-    FUN_08006bb4(g, &c, (u32*)(VRAM + SCREEN_BASE_16(l->bgIdx >> 4)), (struct MetatileMap*)gOverworld.terrain.tilemap);
+    FUN_08006bb4(g, &c, (u32*)(VRAM + SCREEN_BASE_16(l->bgIdx >> 4)), &gOverworld.terrain.tilemap);
   }
 
   STAGE.unk_004[0] = 0;
