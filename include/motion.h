@@ -74,7 +74,7 @@ extern const u32 gDynamicMotionGraphicOffsets[DYNAMIC_MOTION_COUNT];
 extern u16 wDynamicGraphicTilenums[DYNAMIC_MOTION_COUNT + 56];
 
 void ResetMotion(struct Motion* p, const struct MotionCmd* const* const cmds);
-void setMotionStep(struct Motion* p, motion_sub_id_t step);
+void SetMotionSubID(struct Motion* p, motion_sub_id_t step);
 void SetMotion(struct Entity* p, motion_t m);
 void GotoMotion(struct Entity* p, motion_t m, u16 r2, u16 r3);
 void ResetDynamicMotion(struct Entity* p);

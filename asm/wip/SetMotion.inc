@@ -88,7 +88,7 @@ _0801760C:
 	adds r0, #0x6c
 	lsls r1, r5, #0x18
 	lsrs r1, r1, #0x18
-	bl setMotionStep
+	bl SetMotionSubID
 	pop {r4, r5}
 	pop {r0}
 	bx r0

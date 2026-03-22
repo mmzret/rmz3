@@ -374,92 +374,31 @@ WIP void ShiftMetatile(s32 x, s32 y, const struct MetatileShift* s) {
 }
 
 /*
-  ステージのメタタイルマップ (x, y)から(x+p.w, y+p.h) の内容を変更する
-
-  x, y は メタタイル単位
-  つまり、ピクセルで言うとステージの左上(0, 0)から(x*16, y*16)離れたところ
+  ステージのメタタイルマップ (x16, y16)から(x16+p.w, y16+p.h) の内容を変更する
 */
-NAKED void PatchMetatileMap(u32 x, u32 y, struct MetatilePatch* p) {
-  asm(".syntax unified\n\
-	push {r4, r5, r6, r7, lr}\n\
-	mov r7, sl\n\
-	mov r6, sb\n\
-	mov r5, r8\n\
-	push {r5, r6, r7}\n\
-	adds r5, r2, #0\n\
-	ldr r4, _08009244 @ =gOverworld\n\
-	movs r3, #0xe8\n\
-	lsls r3, r3, #1\n\
-	adds r2, r4, r3\n\
-	ldrb r3, [r2]\n\
-	movs r2, #0x7f\n\
-	ands r2, r3\n\
-	ldr r3, _08009248 @ =gStageLandscape\n\
-	lsls r2, r2, #2\n\
-	adds r2, r2, r3\n\
-	ldr r3, [r2]\n\
-	ldr r2, _0800924C @ =0x000007E4\n\
-	adds r7, r4, r2\n\
-	ldrh r2, [r5]\n\
-	lsls r2, r2, #0x11\n\
-	lsrs r6, r2, #0x10\n\
-	adds r5, #2\n\
-	ldrh r2, [r5]\n\
-	mov r8, r2\n\
-	adds r5, #2\n\
-	ldr r2, [r3, #0xc]\n\
-	ldrb r3, [r2, #2]\n\
-	lsls r2, r3, #4\n\
-	subs r2, r2, r3\n\
-	muls r1, r2, r1\n\
-	adds r1, r1, r0\n\
-	lsls r1, r1, #1\n\
-	adds r7, r1, r7\n\
-	mov r3, r8\n\
-	lsls r0, r3, #0x10\n\
-	movs r4, #0\n\
-	cmp r0, #0\n\
-	ble _08009228\n\
-	lsls r6, r6, #0x10\n\
-	asrs r0, r6, #0x10\n\
-	mov sl, r0\n\
-	lsls r2, r2, #1\n\
-	mov sb, r2\n\
-_08009208:\n\
-	adds r0, r5, #0\n\
-	adds r1, r7, #0\n\
-	asrs r2, r6, #0x10\n\
-	bl CopyMemory\n\
-	add r5, sl\n\
-	add r7, sb\n\
-	lsls r1, r4, #0x10\n\
-	movs r2, #0x80\n\
-	lsls r2, r2, #9\n\
-	adds r1, r1, r2\n\
-	lsrs r4, r1, #0x10\n\
-	mov r3, r8\n\
-	lsls r0, r3, #0x10\n\
-	cmp r1, r0\n\
-	blt _08009208\n\
-_08009228:\n\
-	ldr r0, _08009244 @ =gOverworld\n\
-	movs r1, #0xb0\n\
-	lsls r1, r1, #0xa\n\
-	adds r0, r0, r1\n\
-	movs r1, #1\n\
-	strh r1, [r0]\n\
-	pop {r3, r4, r5}\n\
-	mov r8, r3\n\
-	mov sb, r4\n\
-	mov sl, r5\n\
-	pop {r4, r5, r6, r7}\n\
-	pop {r0}\n\
-	bx r0\n\
-	.align 2, 0\n\
-_08009244: .4byte gOverworld\n\
-_08009248: .4byte gStageLandscape\n\
-_0800924C: .4byte 0x000007E4\n\
-	 .syntax divided\n");
+WIP void PatchMetatileMap(u32 x16, u32 y16, struct MetatilePatch* p) {
+#if MODERN
+  s16 i;
+  u8 id = W_TERRAIN_V2.id & 0x7F;
+  const struct Stage* stage = gStageLandscape[id];
+  u16* map = &gOverworld.terrain.tilemap[2];
+
+  u32 rowsize = (u32)p->w * 2;  // bytesize
+  u32 row = (u32)p->h;
+  u8* src = ((u8*)p) + sizeof(struct MetatilePatch);
+
+  u32 w16 = stage->maps[0]->width * 15;
+  u8* dst = (u8*)&map[(y16 * w16) + x16];
+
+  for (i = 0; i < row; i++) {
+    CopyMemory(src, dst, rowsize);
+    src = &src[rowsize];
+    dst = &dst[w16 * 2];
+  }
+  gOverworld.terrain.tilemap_duty = TRUE;
+#else
+  INCCODE("asm/wip/PatchMetatileMap.inc");
+#endif
 }
 
 /**
@@ -541,38 +480,39 @@ static void unused_080093a0(s32 n) {
 
 // ステージレイヤ の描画関数
 // TaskCB_UpdateOwGraphic から呼び出される
-WIP void DrawGeneralStageLayer(struct StageLayer* l, const struct Stage* _) {
-#if MODERN
+void DrawGeneralStageLayer(struct StageLayer* l, const struct Stage* _) {
   struct Coord c;
-  u32 a, b;
-  s32 scpx = (l->scrollPower).x;
-  s32 scpy = (l->scrollPower).y;
-  c.x = ((scpx * (l->viewportCenterPixel).x) >> 8) + (l->scroll).x;
-  c.y = ((scpy * (l->viewportCenterPixel).y) >> 8) + (l->scroll).y;
-  a = (c.x - (((scpx * (l->prevViewportCenterPixel).x) >> 8) + (l->scrollCopy).x)) + 15;
-  b = (c.y - (((scpy * (l->prevViewportCenterPixel).y) >> 8) + (l->scrollCopy).y)) + 15;
+  struct Coord prev_c;
+  s32 dx, dy;
+  struct LayerGraphic* g = &l->gfx;
+  c.x = (((l->viewportCenterPixel).x * (l->scrollPower).x) >> 8) + (l->scroll).x;
+  c.y = (((l->viewportCenterPixel).y * (l->scrollPower).y) >> 8) + (l->scroll).y;
+
+  prev_c.x = (((l->prevViewportCenterPixel).x * (l->scrollPower).x) >> 8) + (l->scrollCopy).x;
+  prev_c.y = (((l->prevViewportCenterPixel).y * (l->scrollPower).y) >> 8) + (l->scrollCopy).y;
+
+  dx = c.x - prev_c.x + 15;
+  dy = c.y - prev_c.y + 15;
   c.x += ((l->drawPivotOffset).x >> 8);
   c.y += ((l->drawPivotOffset).y >> 8);
 
   // STAGE_LAYER_TERRAIN は .tilemap から描画範囲を切り出して (GBAのBGマップ形式に変換して) .bgmap に書き込む(VRAMへの書き込みは別の関数で行う)
   // 他のステージレイヤは 実VRAMに直接描画する (大丈夫?)
-  if (l->type == STAGE_LAYER_TERRAIN) {
-    if (((a < 31) && (b < 31)) && !gOverworld.terrain.tilemap_duty) {
-      FUN_08006bb4(&l->gfx, &c, (u32*)gOverworld.bgmap, &gOverworld.tilemap);
+  if (l->type != STAGE_LAYER_TERRAIN) {
+    if (((u32)dx >= 31) || ((u32)dy >= 31)) {
+      FUN_08005a70(g, &c, VRAM + (u32)SCREEN_BASE_16(l->bgIdx >> 4));
     } else {
-      FUN_08006a10(&l->gfx, &c, (u32*)gOverworld.bgmap, &gOverworld.tilemap);
+      FUN_080050b0(g, &c, VRAM + (u32)SCREEN_BASE_16(l->bgIdx >> 4));
+    }
+  } else {
+    if ((((u32)dx >= 31) || ((u32)dy >= 31)) || gOverworld.terrain.tilemap_duty) {
+      FUN_08006a10(g, &c, (u32*)gOverworld.bgmap, &gOverworld.terrain.tilemap);
+    } else {
+      FUN_08006bb4(g, &c, (u32*)gOverworld.bgmap, &gOverworld.terrain.tilemap);
     }
     gOverworld.terrain.tilemap_duty = FALSE;
-
-  } else if ((a < 31) && (b < 31)) {
-    FUN_080050b0(&l->gfx, &c, VRAM + SCREEN_BASE(l->bgIdx >> 4));
-  } else {
-    FUN_08005a70(&l->gfx, &c, VRAM + SCREEN_BASE(l->bgIdx >> 4));
   }
-  UpdateBGOFS(&l->gfx, BGOFS(l->bgIdx >> 4));
-#else
-  INCCODE("asm/wip/DrawGeneralStageLayer.inc");
-#endif
+  UpdateBGOFS(g, BGOFS(l->bgIdx >> 4));
 }
 
 /**

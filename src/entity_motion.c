@@ -95,29 +95,30 @@ void ResetDynamicMotion(struct Entity* p) {
 
 NON_MATCH void SetMotion(struct Entity* p, motion_t m) {
 #if MODERN
-  motion_id_t id = (m >> 8) & 0xFF;
+  motion_id_t id = m >> 8;
   if (id != p->motionID) {
     if (p->flags2 & DYNAMIC) {
-      (p->motion).cmds = gDynamicMotionCmdTable[id];
+      (p->motion).cmds = *(const struct MotionCmd***)((void*)gDynamicMotionCmdTable + ((u32)id << 2));  // = gDynamicMotionCmdTable[id]
       p->motionSubID = 0xFF;
     } else {
-      (p->motion).cmds = gStaticMotionCmdTable[id];
-      (p->spr).sprites = (struct MetaspriteHeader*)gStaticMotionMetaspriteTable[id];
+      (p->motion).cmds = *(const struct MotionCmd***)((void*)gStaticMotionCmdTable + ((u32)id << 2));         // = gStaticMotionCmdTable[id]
+      (p->spr).sprites = *(struct MetaspriteHeader**)((void*)gStaticMotionMetaspriteTable + ((u32)id << 2));  // = gStaticMotionMetaspriteTable[id];
     }
     p->motionID = id;
   }
 
-  if (!(p->flags2 & DYNAMIC)) {
+  if ((p->flags2 & DYNAMIC) == 0) {
     struct Sprite* spr = &p->spr;
-    u16 palID = (u16)p->palID + wStaticMotionPalIDs[id];
+    u16 tileNum = p->tileNum + wStaticGraphicTilenums[id];
+    u16 palID = p->palID + wStaticMotionPalIDs[id];
 
-    (spr->oam).tileNum = wStaticGraphicTilenums[id] + p->tileNum;
-    if (!(p->flags2 & PALETTE_FORCED)) {
+    (spr->oam).tileNum = tileNum;
+    if ((p->flags2 & PALETTE_FORCED) == 0) {
       (spr->oam).paletteNum = palID;
-      p->savedPalID = palID;
+      p->savedPalID = (u8)palID;
     }
   }
-  setMotionStep(&p->motion, (motion_sub_id_t)(m & 0xFF));
+  SetMotionSubID(&p->motion, (motion_sub_id_t)m);
 #else
   INCCODE("asm/wip/SetMotion.inc");
 #endif

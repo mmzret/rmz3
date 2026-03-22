@@ -36,14 +36,19 @@ void FlashVideoRegister(void) {
  */
 WIP void LoadBgMap(u8 bg16, const u32* tbl, u8 idx, s8 x, s8 y) {
 #if MODERN
-  s32 i;
+  u16* base = (void*)(VRAM + SCREEN_BASE_16(bg16 >> 4));
+  u16* dst = &base[(y * 32) + x];
 
-  u32 n = (bg16 >> 4) & 0x3;
-  u32 dst = VRAM + SCREEN_BASE_16(n) + ((y * 32 + x) * 2);
   struct BgMapHeader* hdr = (struct BgMapHeader*)OFFSET_TABLE(tbl, idx);
+  u32 w = hdr->w * 2;
+  u16 row = hdr->h;
   u16* src = (u16*)&hdr[1];
-  for (i = 0; i < hdr->h; i++) {
-    CpuCopy16(&src[hdr->w * i], (void*)(dst + (64 * i)), hdr->w * 2);
+
+  while (row != 0) {
+    CpuCopy16(src, dst, w);
+    row--;
+    src += (w / 2);
+    dst += 32;
   }
 #else
   INCCODE("asm/wip/LoadBgMap.inc");

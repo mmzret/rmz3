@@ -15,14 +15,14 @@ void ResetMotion(struct Motion* p, const struct MotionCmd* const* const cmds) {
   p->state = MOTION_STATE_0;
 }
 
-// step: モーションのstep(剣を振るモーションなら今のstepでは剣を振りかぶったみたいな)
-void setMotionStep(struct Motion* p, motion_sub_id_t step) {
+// subid: モーションのstep(剣を振るモーションなら今のstepでは剣を振りかぶったみたいな)
+void SetMotionSubID(struct Motion* p, motion_sub_id_t subid) {
   s8 frame;
 
-  p->step = step;
+  p->step = subid;
   p->cmdIdx = 0;
 
-  p->duration = p->cmds[step]->frame + 1;
+  p->duration = p->cmds[subid]->frame + 1;
 
   frame = p->cmds[p->step][1].frame;
   if (frame < 0) {
