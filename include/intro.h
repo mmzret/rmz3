@@ -8,7 +8,7 @@ struct Intro {
   u8 unk_00[4];
   u8 mode[4];
   s16 titleFrame;  // タイトル画面用のフレームカウンタ
-  u16 frame;
+  s16 frame;
   u32 rng;
   u16 saveOK;  // ストーリーのセーブデータが正常
   s16 unk_12;
@@ -35,9 +35,6 @@ struct Intro {
   u8 unk_253;
 };  // 596 bytes
 
-typedef void (*IntroLoopFunc)(struct Intro*);
-
-extern const IntroLoopFunc gIntroLoops[7];
 extern struct Intro gIntro;
 
 extern const struct Graphic gGraphic_Inti;

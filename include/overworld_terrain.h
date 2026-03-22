@@ -10,6 +10,22 @@
 #include "overworld_layer_gfx.h"
 #include "overworld_stage.h"
 #include "solid.h"
+#include "stage/anatre_forest/props.h"
+#include "stage/area_x2/props.h"
+#include "stage/energy_facility/props.h"
+#include "stage/frostline_ice_base/props.h"
+#include "stage/giant_elevator/props.h"
+#include "stage/missile_factory/props.h"
+#include "stage/ocean/props.h"
+#include "stage/old_residential/props.h"
+#include "stage/repair_factory/props.h"
+#include "stage/resistance_base/props.h"
+#include "stage/spacecraft/props.h"
+#include "stage/sub_arcadia/props.h"
+#include "stage/sunken_library/props.h"
+#include "stage/twilight_desert/props.h"
+#include "stage/volcano/props.h"
+#include "stage/weil_labo/props.h"
 
 #define USE_BG1 0x12
 #define USE_BG2 0x24
@@ -88,164 +104,33 @@ struct Overworld {
   u16 bgmap[2048];  // .tilemap をカメラ座標 に応じて (GBAのBGマップ形式に変換して)切り出したもの
 
   /*
-    汎用データ領域
+    汎用データ領域 (用途はステージごとに変わるが、数値として扱うのは共通っぽく、 entity.mode みたいな感じかも？)
       壊れた宇宙船
         0:    雪を降らすか
         1..3: ???
   */
   u8 state[4];
 
-  // 0x2d028 ..
+  // 0x0202f228 (offset: 0x2d028 ..
   // ステージごとに用途が変わる
   union {
     u8 raw[264];
-    struct {
-      struct Boss* omega;
-      struct Coord omegaCoord;
-      u8 unk_00c[2];
-      u16 unk_00e;
-      u8 unk_010[248];
-    } spacecraft;
-    struct {
-      u8 unk_000;
-      u8 unk_001;
-      u8 unk_002;
-      u8 unk_003;
-      u16 unk_004;
-      u16 unk_006;
-      struct Solid* coffins[2];
-      u8 unk_010[248];
-    } volcano;
-    struct {
-      u8 unk_000;
-      u8 unk_001;
-      s8 unk_002;
-      u8 unk_003;
-      struct Solid* btns[4];
-      u8 unk_014[244];
-    } ocean;
-    struct {
-      u8 unk_000;
-      s8 unk_001;
-      u8 unk_002;
-      u8 unk_003;
-      u8 unk_004[260];
-    } repairFactory;
-    struct {
-      struct Solid* leaf;
-      u8 unk_004[4];
-      u16 unk_008;
-      u16 unk_00a;
-      u16 unk_00c;
-      u16 unk_00e;
-      u16 unk_010;
-      u16 unk_012;
-      u8 unk_014[244];
-    } oldResidential;
-    struct {
-      u8 unk_000;
-      u8 unk_001;
-      s8 unk_002;
-      u8 unk_003;
-      u16 unk_004;
-      u16 unk_006;
-      u8 unk_008;
-      u8 unk_009;
-      u8 unk_00a;
-      u8 unk_00b;
-      u32 unk_00c;
-      u32 unk_010;
-      struct Coord unk_014;
-      u8 unk_01c[236];
-    } missileFactory;
-    struct {
-      u8 unk_000;
-      u8 unk_001;
-      u8 unk_002;
-      u8 unk_003;
-      u8 unk_004;
-      u8 unk_005;
-      u8 unk_006[258];
-    } twilightDesert;
-    struct {
-      struct Solid* leaf;
-      u8 unk_004;
-      struct Solid* unk_008;
-      u8 unk_00c;
-      u8 unk_00d;
-      u16 unk_00e;
-      u8 unk_010[248];
-    } anatreForest;
-    struct {
-      u16 unk_000;
-      u8 unk_002[262];
-    } iceBase;
-    struct {
-      u16 unk_000;
-      u16 unk_002;
-      u8 unk_004[2];
-      u8 unk_006[2];
-      u16 unk_008;
-      u8 unk_00a[254];
-    } areaX2;
-    struct {
-      u8 unk_000[4];
-      s32 unk_004;
-      s32 unk_008;
-      u8 unk_00c[2];
-      u16 unk_00e;
-      u8 unk_010[2];
-      u8 unk_012[2];
-      u16 unk_014;
-      u16 unk_016;
-      u8 unk_018[240];
-    } energyFacility;
-    struct {
-      u8 unk_000;
-      u8 unk_001;
-      u8 unk_002;
-      u8 unk_003;
-      u32 rng;
-      u16 unk_008;
-      u16 theta;
-      u16 unk_00c;
-      u8 unk_00e[250];
-    } sunkenLib;
-    struct {
-      u8 unk_000[4];
-      u16 unk_004;
-      u16 unk_006;
-      u8 unk_008[256];
-    } giantElevator;
-    struct {
-      u8 unk_000;
-      u8 unk_001;
-      u8 unk_002;
-      u8 unk_003;
-      u8 unk_004[260];
-    } subArcadia;
-    struct {
-      u8 unk_000;
-      u8 unk_001[3];
-      u32 unk_004;
-      u16 unk_008;
-      u16 unk_00a;
-      u32 unk_00c;
-      struct Coord unk_010;
-      u32 unk_018;
-      u32 unk_01c;
-      u32 unk_020;
-      struct Coord unk_024;
-      struct Coord unk_02c;
-      u8 unk_34[212];
-    } weilLabo;
-    struct {
-      u8 unk_000;
-      u8 weather;
-      u8 unk_002;
-      u8 unk_003;
-      u8 unk_004[260];
-    } resistanceBase;
+    struct SpaceCraftState spacecraft;
+    struct VolcanoState volcano;
+    struct OceanState ocean;
+    struct RepairFactoryState repairFactory;
+    struct OldResidentialState oldResidential;
+    struct MissileFactoryState missileFactory;
+    struct TwilightDesertState twilightDesert;
+    struct AnatreForestState anatreForest;
+    struct FrostlineIceBaseState iceBase;
+    struct AreaX2State areaX2;
+    struct EnergyFacilityState energyFacility;
+    struct SunkenLibraryState sunkenLib;
+    struct GiantElevatorState giantElevator;
+    struct SubArcadiaState subArcadia;
+    struct WeilLaboState weilLabo;
+    struct ResistanceBaseState resistanceBase;
   } work;  // ステージごとに用途が変わる
 };  // 184360 bytes
 

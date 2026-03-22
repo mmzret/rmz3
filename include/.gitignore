@@ -1,4 +1,4 @@
 # Generated header files
-stage/*/landscape.h
-stage/*/layer.h
+stage/*/*.h
 
+!stage/*/props.h

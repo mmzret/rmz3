@@ -12,6 +12,8 @@
 #include "system.h"
 #include "text.h"
 
+typedef void (*IntroLoopFunc)(struct Intro*);
+
 static const KEY_INPUT* const sDemoplayKeyInputs[4];
 static const u8* const sDemoplayKeyFrames[4];
 static const u8 sDemoplayStageIDs[4];
@@ -44,8 +46,8 @@ static void intro_080ed770(struct Intro* p, u8 r1);
 
 /*
   Process の1つ
-  無限ループとして、 gIntroLoops を実行し続ける
-  ただし、 gIntroLoops の実行後は GameLoop に処理を戻し、別のProcessを挟む
+  無限ループとして、 sIntroLoops を実行し続ける
+  ただし、 sIntroLoops の実行後は GameLoop に処理を戻し、別のProcessを挟む
 */
 void Process_Intro(struct Process* p) {
   // clang-format off
@@ -2514,206 +2516,6 @@ _080EDDB4: .4byte 0x00000241\n\
  .syntax divided\n");
 }
 
-NAKED static void FUN_080eddb8(struct Intro* p) {
-  asm(".syntax unified\n\
-	push {r4, r5, r6, lr}\n\
-	adds r6, r0, #0\n\
-	ldrb r0, [r6, #6]\n\
-	cmp r0, #1\n\
-	beq _080EDDE2\n\
-	cmp r0, #1\n\
-	bgt _080EDDCC\n\
-	cmp r0, #0\n\
-	beq _080EDDD6\n\
-	b _080EDEB2\n\
-_080EDDCC:\n\
-	cmp r0, #2\n\
-	beq _080EDE3A\n\
-	cmp r0, #3\n\
-	beq _080EDE88\n\
-	b _080EDEB2\n\
-_080EDDD6:\n\
-	strh r0, [r6, #8]\n\
-	movs r0, #0x20\n\
-	strh r0, [r6, #0xa]\n\
-	ldrb r0, [r6, #6]\n\
-	adds r0, #1\n\
-	strb r0, [r6, #6]\n\
-_080EDDE2:\n\
-	ldrh r2, [r6, #8]\n\
-	movs r1, #8\n\
-	ldrsh r0, [r6, r1]\n\
-	cmp r0, #0xf\n\
-	bgt _080EDE00\n\
-	adds r2, #1\n\
-	strh r2, [r6, #8]\n\
-	ldr r3, _080EDE1C @ =gBlendRegBuffer\n\
-	movs r1, #0x1f\n\
-	ands r1, r2\n\
-	movs r0, #0x10\n\
-	subs r0, r0, r2\n\
-	lsls r0, r0, #8\n\
-	orrs r1, r0\n\
-	strh r1, [r3, #2]\n\
-_080EDE00:\n\
-	ldr r0, _080EDE20 @ =gJoypad\n\
-	ldrh r1, [r0, #4]\n\
-	movs r0, #9\n\
-	ands r0, r1\n\
-	cmp r0, #0\n\
-	beq _080EDE24\n\
-	movs r0, #2\n\
-	bl PlaySound\n\
-	ldrb r0, [r6, #6]\n\
-	adds r0, #1\n\
-	strb r0, [r6, #6]\n\
-	b _080EDEB2\n\
-	.align 2, 0\n\
-_080EDE1C: .4byte gBlendRegBuffer\n\
-_080EDE20: .4byte gJoypad\n\
-_080EDE24:\n\
-	movs r0, #2\n\
-	ands r0, r1\n\
-	cmp r0, #0\n\
-	beq _080EDEB2\n\
-	movs r0, #3\n\
-	bl PlaySound\n\
-	ldrb r0, [r6, #6]\n\
-	adds r0, #2\n\
-	strb r0, [r6, #6]\n\
-	b _080EDEB2\n\
-_080EDE3A:\n\
-	ldrh r0, [r6, #0xa]\n\
-	movs r2, #0xa\n\
-	ldrsh r4, [r6, r2]\n\
-	cmp r4, #0\n\
-	beq _080EDE70\n\
-	subs r0, #1\n\
-	adds r1, r0, #0\n\
-	strh r0, [r6, #0xa]\n\
-	ldr r2, _080EDE68 @ =gPaletteManager\n\
-	ldr r3, _080EDE6C @ =0x00000402\n\
-	adds r0, r2, r3\n\
-	strb r1, [r0]\n\
-	movs r0, #0xff\n\
-	ands r0, r1\n\
-	subs r3, #1\n\
-	adds r1, r2, r3\n\
-	strb r0, [r1]\n\
-	movs r1, #0x80\n\
-	lsls r1, r1, #3\n\
-	adds r2, r2, r1\n\
-	strb r0, [r2]\n\
-	b _080EDEB2\n\
-	.align 2, 0\n\
-_080EDE68: .4byte gPaletteManager\n\
-_080EDE6C: .4byte 0x00000402\n\
-_080EDE70:\n\
-	movs r0, #0x40\n\
-	bl ClearBlink\n\
-	ldr r0, _080EDE84 @ =gBlendRegBuffer\n\
-	movs r1, #0\n\
-	strh r4, [r0]\n\
-	strb r1, [r6, #6]\n\
-	movs r0, #3\n\
-	b _080EDEB0\n\
-	.align 2, 0\n\
-_080EDE84: .4byte gBlendRegBuffer\n\
-_080EDE88:\n\
-	ldrh r2, [r6, #8]\n\
-	movs r3, #8\n\
-	ldrsh r0, [r6, r3]\n\
-	cmp r0, #0\n\
-	beq _080EDEAC\n\
-	subs r2, #1\n\
-	strh r2, [r6, #8]\n\
-	ldr r3, _080EDEA8 @ =gBlendRegBuffer\n\
-	movs r1, #0x1f\n\
-	ands r1, r2\n\
-	movs r0, #0x10\n\
-	subs r0, r0, r2\n\
-	lsls r0, r0, #8\n\
-	orrs r1, r0\n\
-	strh r1, [r3, #2]\n\
-	b _080EDEB2\n\
-	.align 2, 0\n\
-_080EDEA8: .4byte gBlendRegBuffer\n\
-_080EDEAC:\n\
-	movs r0, #1\n\
-	strb r0, [r6, #6]\n\
-_080EDEB0:\n\
-	strb r0, [r6, #5]\n\
-_080EDEB2:\n\
-	movs r0, #0x40\n\
-	bl UpdateBlinkMotionState\n\
-	ldr r5, _080EDEF4 @ =StringOfsTable\n\
-	movs r1, #0x88\n\
-	lsls r1, r1, #4\n\
-	adds r0, r5, r1\n\
-	ldrh r0, [r0]\n\
-	ldr r4, _080EDEF8 @ =gStringData\n\
-	adds r0, r0, r4\n\
-	movs r1, #0xd\n\
-	movs r2, #2\n\
-	bl PrintString\n\
-	ldr r1, _080EDEFC @ =0x08386092\n\
-	ldr r2, _080EDF00 @ =0x00000242\n\
-	adds r0, r6, r2\n\
-	ldrb r0, [r0]\n\
-	lsls r0, r0, #1\n\
-	adds r0, r0, r1\n\
-	ldrh r0, [r0]\n\
-	lsls r0, r0, #1\n\
-	adds r0, r0, r5\n\
-	ldrh r0, [r0]\n\
-	adds r0, r0, r4\n\
-	movs r1, #3\n\
-	movs r2, #4\n\
-	bl PrintString\n\
-	pop {r4, r5, r6}\n\
-	pop {r0}\n\
-	bx r0\n\
-	.align 2, 0\n\
-_080EDEF4: .4byte StringOfsTable\n\
-_080EDEF8: .4byte gStringData\n\
-_080EDEFC: .4byte u16_ARRAY_08386092\n\
-_080EDF00: .4byte 0x00000242\n\
- .syntax divided\n");
-}
-
-static void FUN_080edf04(struct Intro* p) {
-  switch (p->mode[2]) {
-    case 0: {
-      gPaletteManager.filter[0] = gPaletteManager.filter[1] = gPaletteManager.filter[2] = 0x20;
-      gPaletteManager.unk_408 = NULL;
-      ClearBlinkings();
-      gBlendRegBuffer.bldclt = 0;
-      gWindowRegBuffer.dispcnt = 0;
-      gWindowRegBuffer.winin[2] = 0xFF;
-      wMOSAIC = 0;
-      PALETTE16(0) = RGB_BLACK;
-      text_080e9730();
-      gVideoRegBuffer.dispcnt &= BG_MODE_0;
-      gVideoRegBuffer.dispcnt &= ~DISPCNT_BG_ALL_ON;
-      gVideoRegBuffer.dispcnt |= DISPCNT_BG0_ON;
-      SwitchProcess(TRUE);
-      SetGameMode(&gGameState, (p->unk_242 << 8) + 3);
-      ResetProcess(1, Process_Game);
-      p->mode[2]++;
-      FALLTHROUGH;
-    }
-    case 1: {
-      if (gProcessManager.processes[1].status == PROCESS_DISABLED) {
-        p->mode[2] = 0;
-        p->mode[1] = 1;
-      }
-      break;
-    }
-  }
-}
-
-// ------------------------------------------------------------------------------------------------------------------------------------
-
 const TextID ALIGNED(4) ModCardTextIDs[120] = {
     0x0079, 0x007A, 0x007B, 0x007C, 0x007D, 0x007E, 0x007F, 0x0080, 0x0081, 0x0082, 0x0083, 0x0084, 0x0085, 0x0086, 0x0086, 0x0087, 0x0086, 0x0080, 0x0088, 0x0089, 0x008A, 0x008B, 0x008C, 0x008D, 0x008E, 0x008F, 0x0090, 0x0091, 0x0092, 0x0093, 0x0094, 0x0095, 0x0089, 0x008F, 0x0096, 0x0086, 0x0097, 0x0098, 0x0099, 0x009A, 0x008A, 0x009B, 0x009C, 0x009D, 0x007B, 0x009E, 0x0081, 0x0080, 0x009F, 0x0086, 0x008F, 0x0079, 0x00A0, 0x0080, 0x008C, 0x0080, 0x0080, 0x0086, 0x0090, 0x0089, 0x00A1, 0x00A2, 0x0089, 0x0082, 0x00A3, 0x00A4, 0x00A5, 0x00A6, 0x00A7, 0x00A8, 0x00A9, 0x008F, 0x009C, 0x00AA, 0x0086, 0x007A, 0x0086, 0x00AB, 0x00AC, 0x00AD, 0x00AD, 0x00AE, 0x00AF, 0x00AD, 0x00B0, 0x00AD, 0x00AD, 0x0087, 0x00B1, 0x0079, 0x00B2, 0x0079, 0x00B3, 0x00B4, 0x00B5, 0x00B6, 0x00B7, 0x00B8, 0x00B9, 0x00BA, 0x00BB, 0x00BC, 0x00BD, 0x00BE, 0x00BF, 0x00C0, 0x00C1, 0x00C2, 0x00C3, 0x00C4, 0x00C5, 0x00C6, 0x00C7, 0x00C8, 0x00C9, 0x00CA, 0x00CB, 0x00CC, 0x00CD, 0x00CE,
 };
@@ -2749,12 +2551,19 @@ static const struct Coord s32_ARRAY_ARRAY_0838604c[4] = {
     {0x3400, 0x5C00},
 };
 
+// --------------------------------------------
+
+static void FUN_080eddb8(struct Intro* p);
+static void FUN_080edf04(struct Intro* p);
+
 static const IntroLoopFunc sIntroMinigameScripts[4] = {
     FUN_080ed9c0,
     minigameSelectScript,
     FUN_080eddb8,
     FUN_080edf04,
 };
+
+// --------------------------------------------
 
 const u8 ALIGNED(4) u8_ARRAY_0838607c[8] = {
     0xF2, 0xF3, 0xF4, 0xF5, 0xF6, 0xF7, 0xF8, 0x00,
@@ -2764,6 +2573,94 @@ const u16 ALIGNED(4) u16_ARRAY_08386084[7] = {
     0x020E, 0x0210, 0x0212, 0x0214, 0x0216, 0x0218, 0x021A,
 };
 
-const u16 ALIGNED(2) u16_ARRAY_08386092[7] = {
-    0x0441, 0x0442, 0x0443, 0x0444, 0x0445, 0x0446, 0x0447,
-};
+// ------------------------------------------------------------------------------------------------------------------------------------
+
+// draw minigame rules
+static void FUN_080eddb8(struct Intro* p) {
+  static const u16 ALIGNED(2) sMinigameRuleStrings[7] = {
+      0x0441, 0x0442, 0x0443, 0x0444, 0x0445, 0x0446, 0x0447,
+  };
+
+  switch (p->mode[2]) {
+    case 0: {
+      p->titleFrame = 0;
+      p->frame = 32;
+      p->mode[2]++;
+      FALLTHROUGH;
+    }
+    case 1: {
+      if (p->titleFrame < 16) {
+        p->titleFrame++;
+        gBlendRegBuffer.bldalpha = BLDALPHA_BLEND1(p->titleFrame & 0x1F, 16 - p->titleFrame);
+      }
+      if (gJoypad[0].pressed & (A_BUTTON | START_BUTTON)) {
+        PlaySound(SE_YES);
+        p->mode[2]++;
+      } else if (gJoypad[0].pressed & B_BUTTON) {
+        PlaySound(SE_NO);
+        p->mode[2] += 2;
+      }
+      break;
+    }
+    case 2: {
+      if (p->frame != 0) {
+        p->frame--;
+        gPaletteManager.filter[0] = gPaletteManager.filter[1] = gPaletteManager.filter[2] = p->frame;
+      } else {
+        ClearBlink(0x40);
+        gBlendRegBuffer.bldclt = 0;
+        p->mode[2] = 0;
+        p->mode[1] = 3;
+      }
+      break;
+    }
+    case 3: {
+      if (p->titleFrame != 0) {
+        p->titleFrame--;
+        gBlendRegBuffer.bldalpha = BLDALPHA_BLEND1(p->titleFrame & 0x1F, 16 - p->titleFrame);
+      } else {
+        p->mode[2] = 1;
+        p->mode[1] = 1;
+      }
+      break;
+    }
+    default: {
+      break;
+    }
+  }
+
+  UpdateBlinkMotionState(0x40);
+  PrintString(STRING(1088), 13, 2);  // sMinigameRules (0x083763c4)
+  PrintString(STRING(sMinigameRuleStrings[p->unk_242]), 3, 4);
+}
+
+static void FUN_080edf04(struct Intro* p) {
+  switch (p->mode[2]) {
+    case 0: {
+      gPaletteManager.filter[0] = gPaletteManager.filter[1] = gPaletteManager.filter[2] = 0x20;
+      gPaletteManager.unk_408 = NULL;
+      ClearBlinkings();
+      gBlendRegBuffer.bldclt = 0;
+      gWindowRegBuffer.dispcnt = 0;
+      gWindowRegBuffer.winin[2] = 0xFF;
+      wMOSAIC = 0;
+      PALETTE16(0) = RGB_BLACK;
+      text_080e9730();
+      gVideoRegBuffer.dispcnt &= BG_MODE_0;
+      gVideoRegBuffer.dispcnt &= ~DISPCNT_BG_ALL_ON;
+      gVideoRegBuffer.dispcnt |= DISPCNT_BG0_ON;
+      SwitchProcess(TRUE);
+      SetGameMode(&gGameState, (p->unk_242 << 8) + 3);
+      ResetProcess(1, Process_Game);
+      p->mode[2]++;
+      FALLTHROUGH;
+    }
+    case 1: {
+      if (gProcessManager.processes[1].status == PROCESS_DISABLED) {
+        p->mode[2] = 0;
+        p->mode[1] = 1;
+      }
+      break;
+    }
+  }
+}
