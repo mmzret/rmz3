@@ -3,11 +3,11 @@
 #include "pickup.h"
 
 static const struct Collision sCollision;
-static void onCollision(struct Body *body, struct Coord *r1 UNUSED, struct Coord *r2 UNUSED);
+static void onCollision(struct Body* body, struct Coord* r1 UNUSED, struct Coord* r2 UNUSED);
 
-static void MapItem_Init(struct Pickup *p);
-static void MapItem_Update(struct Pickup *p);
-static void MapItem_Die(struct Pickup *p);
+static void MapItem_Init(struct Pickup* p);
+static void MapItem_Update(struct Pickup* p);
+static void MapItem_Die(struct Pickup* p);
 
 // clang-format off
 const PickupRoutine gPickupItemRoutine = {
@@ -19,7 +19,7 @@ const PickupRoutine gPickupItemRoutine = {
 };
 // clang-format on
 
-NAKED struct Pickup *CreatePickupItem(u8 itemID, struct Coord *c, u8 param_3) {
+NAKED struct Pickup* CreatePickupItem(u8 itemID, struct Coord* c, u8 param_3) {
   asm(".syntax unified\n\
 	push {r4, r5, r6, r7, lr}\n\
 	mov r7, sl\n\
@@ -126,7 +126,7 @@ _080E0A76:\n\
  .syntax divided\n");
 }
 
-NAKED static void MapItem_Init(struct Pickup *p) {
+NAKED static void MapItem_Init(struct Pickup* p) {
   asm(".syntax unified\n\
 	push {r4, r5, r6, lr}\n\
 	adds r6, r0, #0\n\
@@ -316,7 +316,7 @@ _080E0C08: .4byte gPickupFnTable\n\
  .syntax divided\n");
 }
 
-NAKED static void MapItem_Update(struct Pickup *p) {
+NAKED static void MapItem_Update(struct Pickup* p) {
   asm(".syntax unified\n\
 	push {r4, r5, r6, lr}\n\
 	adds r4, r0, #0\n\
@@ -714,16 +714,16 @@ _080E0F14: .4byte 0xFFFFFC00\n\
  .syntax divided\n");
 }
 
-static void MapItem_Die(struct Pickup *p) {
+static void MapItem_Die(struct Pickup* p) {
   (p->s).flags &= ~DISPLAY;
   SET_ITEM_ROUTINE(p, ENTITY_EXIT);
 }
 
-static void onCollision(struct Body *body, struct Coord *r1 UNUSED, struct Coord *r2 UNUSED) {
-  struct Pickup *item = (struct Pickup *)body->parent;
-  struct CollidableEntity *p = body->enemy->parent;
-  if ((p->s).kind == ENTITY_PLAYER) {
-    item->z = (struct Zero *)p;
+static void onCollision(struct Body* body, struct Coord* r1 UNUSED, struct Coord* r2 UNUSED) {
+  struct Pickup* self = (struct Pickup*)body->parent;
+  struct Entity* p = (struct Entity*)body->enemy->parent;
+  if (p->kind == ENTITY_PLAYER) {
+    self->z = (struct Zero*)p;
   }
 }
 

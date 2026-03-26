@@ -31,8 +31,7 @@ const EnemyRoutine gGrandCannonRoutine = {
 // clang-format on
 
 // グランドキャノンの砲台の方を生成
-WIP void CreateGrandCannonBattery(struct Enemy* p) {
-#if MODERN
+void CreateGrandCannonBattery(struct Enemy* p) {
   struct Enemy* battery = (struct Enemy*)AllocEntityLast(gZakoHeaderPtr);
   if (battery != NULL) {
     (battery->s).unk_28 = &p->s;
@@ -43,20 +42,18 @@ WIP void CreateGrandCannonBattery(struct Enemy* p) {
     (battery->s).flags2 |= WHITE_PAINTABLE;
     (battery->s).invincibleID = (battery->s).uniqueID;
     (battery->s).work[0] = GRAND_CANNON_BATTERY;
+    (battery->s).flags2 |= WHITE_PAINTABLE;
     (battery->s).invincibleID = (p->s).uniqueID;
   }
-#else
-  INCCODE("asm/wip/CreateGrandCannonBattery.inc");
-#endif
 }
 
 static void onCollision(struct Body* body, struct Coord* r1 UNUSED, struct Coord* r2 UNUSED) {
   if (body->hitboxFlags & BODY_STATUS_WHITE) {
-    struct CollidableEntity* e = body->enemy->parent;
-    struct Enemy* parent = (struct Enemy*)body->parent;
-    if (*((u16*)&(e->s).kind) == 0x304) {
-      SET_ZAKO_ROUTINE(parent, ENTITY_DIE);
-      (parent->s).mode[1] = 0;
+    struct Entity* e = (struct Entity*)body->enemy->parent;
+    struct Enemy* self = (struct Enemy*)body->parent;
+    if (*((u16*)&e->kind) == 0x304) {
+      SET_ZAKO_ROUTINE(self, ENTITY_DIE);
+      (self->s).mode[1] = 0;
     }
   }
 }

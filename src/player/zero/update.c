@@ -81,7 +81,7 @@ NO_RECOVER:
   z->isGround = TRUE;
   (gZeroMode0Actions2[(z->s).mode[2]])(z);
 
-  if ((((gOverworld.id & 0x7F) == STAGE_TWILIGHT_DESERT) && (hp = FUN_080101a8(), hp != 0)) || (z->unk_234 != 0)) {
+  if ((((W_TERRAIN_V2.id & 0x7F) == STAGE_TWILIGHT_DESERT) && (hp = FUN_080101a8(), hp != 0)) || (z->unk_234 != 0)) {
     zero_08026f90(z, gZeroRanges);
   }
 
@@ -568,7 +568,7 @@ static void zeroJumpRise(struct Zero* z) {
   };
   // clang-format on
 
-  if ((((gOverworld.id & 0x7F) == STAGE_TWILIGHT_DESERT) && (FUN_080101a8() > 0)) || (z->unk_234 != 0)) {
+  if ((((W_TERRAIN_V2.id & 0x7F) == STAGE_TWILIGHT_DESERT) && (FUN_080101a8() > 0)) || (z->unk_234 != 0)) {
     zero_08026f90(z, gZeroRanges);
   }
   gZeroJumpRise[(z->s).mode[3]](z);
@@ -854,7 +854,7 @@ static void zeroJumpFall(struct Zero* z) {
       zeroJumpFallStep2,
   };
 
-  if ((((gOverworld.id & 0x7F) == STAGE_TWILIGHT_DESERT) && (FUN_080101a8() > 0)) || (z->unk_234 != 0)) {
+  if ((((W_TERRAIN_V2.id & 0x7F) == STAGE_TWILIGHT_DESERT) && (FUN_080101a8() > 0)) || (z->unk_234 != 0)) {
     zero_08026f90(z, gZeroRanges);
   }
   gZeroJumpFallSeq[(z->s).mode[3]](z);
@@ -1447,7 +1447,7 @@ void zeroKnockBack(struct Zero* z) {
   (z->s).d.y = 0;
   z->isGround = TRUE;
 
-  if ((((gOverworld.id & 0x7F) == STAGE_TWILIGHT_DESERT) && (hp = FUN_080101a8(), hp != 0)) || (z->unk_234 != 0)) {
+  if ((((W_TERRAIN_V2.id & 0x7F) == STAGE_TWILIGHT_DESERT) && (hp = FUN_080101a8(), hp != 0)) || (z->unk_234 != 0)) {
     zero_08026f90(z, gZeroRanges);
   }
 
@@ -1468,7 +1468,7 @@ void zeroKnockBack(struct Zero* z) {
 static void zeroAirKnockBack(struct Zero* z) {
   struct Zero_b4* b4;
   s16 hp;
-  if ((((gOverworld.id & 0x7F) == STAGE_TWILIGHT_DESERT) && (hp = FUN_080101a8(), hp != 0)) || (z->unk_234 != 0)) {
+  if ((((W_TERRAIN_V2.id & 0x7F) == STAGE_TWILIGHT_DESERT) && (hp = FUN_080101a8(), hp != 0)) || (z->unk_234 != 0)) {
     zero_08026f90(z, gZeroRanges);
   }
   (z->s).coord.x += (z->s).d.x;
@@ -2656,12 +2656,13 @@ static void zeroCyberDoor0(struct Zero* z) {
   (z->s).mode[3] = 0;
 }
 
-WIP static void zeroCyberDoor1(struct Zero* z) {
-#if MODERN
+// 0x0802cd60
+static void zeroCyberDoor1(struct Zero* z) {
   s16 n;
   switch ((z->s).mode[3]) {
     case 0: {
       SetMotion(&z->s, MOTION(DM054_ZERO_DOOR_3D, 0x01));
+      (z->s).mode[3]++;
       break;
     }
     case 1: {
@@ -2674,16 +2675,16 @@ WIP static void zeroCyberDoor1(struct Zero* z) {
         (z->unk_b4).sound = MUS_NONE;
       }
       (z->s).flags &= ~DISPLAY;
+      (z->s).mode[3]++;
+      break;
+    }
+    case 2: {
       break;
     }
     default: {
-      return;
+      break;
     }
   }
-  (z->s).mode[3]++;
-#else
-  INCCODE("asm/wip/zeroCyberDoor1.inc");
-#endif
 }
 
 NAKED static void zeroCyberDoor2(struct Zero* z) {

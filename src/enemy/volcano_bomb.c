@@ -99,7 +99,7 @@ static void VolcanoBomb_Die(struct Enemy* p) {
   (p->s).flags &= ~DISPLAY;
   c.x = (p->s).coord.x;
   c.y = (p->s).coord.y;
-  FUN_080b7ffc((struct CollidableEntity*)p, &c, (motion_t*)sMotions, 4);
+  FUN_080b7ffc((struct Entity*)p, &c, (motion_t*)sMotions, 4);
   PlaySound(SE_UNK_41);
   SET_ZAKO_ROUTINE(p, ENTITY_EXIT);
 }

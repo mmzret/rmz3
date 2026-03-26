@@ -2,8 +2,6 @@
 #include "enemy.h"
 #include "global.h"
 
-INCASM("asm/enemy/omega_gold_sword.inc");
-
 void OmegaGoldSword_Init(struct Enemy* p);
 void OmegaGoldSword_Update(struct Enemy* p);
 void OmegaGoldSword_Die(struct Enemy* p);
@@ -17,6 +15,26 @@ const EnemyRoutine gOmegaGoldSwordRoutine = {
     [ENTITY_EXIT] =      (EnemyFunc)DeleteEntity,
 };
 // clang-format on
+
+// --------------------------------------------
+
+struct Enemy* CreateOmegaGoldSword(struct Coord* c, u8 r1, struct Entity* e) {
+  struct Enemy* p = (struct Enemy*)AllocEntityFirst(gZakoHeaderPtr);
+  if (p != NULL) {
+    (p->s).taskCol = 24;
+    INIT_ZAKO_ROUTINE(p, ENEMY_OMEGA_GOLD_SWORD);
+    (p->s).tileNum = 0;
+    (p->s).palID = 0;
+    (p->s).flags2 |= WHITE_PAINTABLE;
+    (p->s).invincibleID = (p->s).uniqueID;
+    (p->s).coord = *c;
+    (p->s).work[0] = r1;
+    (p->s).unk_28 = e;
+  }
+  return p;
+}
+
+INCASM("asm/enemy/omega_gold_sword.inc");
 
 // --------------------------------------------
 

@@ -130,7 +130,7 @@ C_DEPS := $(C_SRCS:.c=.d)
 
 ifneq ($(MODERN),1)
 # Special configurations required for lib files
-src/mmbn4.o: CFLAGS += -mno-thumb-interwork
+src/mmbn4.o: CFLAGS := -O -mno-thumb-interwork
 src/libs/agb_sram.o: CFLAGS := -O -mthumb-interwork
 src/libs/m4a.o: AGBCC := tools/agbcc/bin/old_agbcc$(EXE)
 endif

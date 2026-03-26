@@ -8,12 +8,12 @@
 
 #define SCRIPT_ENTITY_COUNT 12
 
-// vm.screenEffect
-enum ScreenEffect {
-  NO_SCREEN_EFFECT,
-  SCREEN_EFFECT_01,
-  BLACKOUT,
-};
+// vm.transition
+#define TRANSITION_NONE 0
+#define TRANSITION_REVERSE (1 << 0)
+#define TRANSITION_BLACKOUT (1 << 1)
+#define TRANSITION_WHITEOUT (1 << 2)
+#define TRANSITION_Z (1 << 3)  // wipe by Z
 
 /**
  * @brief Script Command
@@ -24,7 +24,7 @@ struct Command {
   u8 status;
   s16 val2;
   u32 work;  // コマンドハンドラ用の汎用データ コマンドによって用途が異なる
-};           // 8 bytes
+};  // 8 bytes
 
 struct Command0D {
   u8 cmd;  // コマンドID
@@ -56,7 +56,7 @@ struct ScriptEntity {
 
 union ScriptString {
   u32 raw;
-  s16 n;
+  s16 n;  // strings.s
   u8 x;
   u8 y;
 };
@@ -75,7 +75,7 @@ struct VM {
   u32 time;  // Frame count from ClearVM
   u32 wait;  // waitコマンドで設定する待機時間
   struct Camera camera;
-  u32 screenEffect;
+  u32 transition;  // bit0..15: transition flags, bit16..31: transition parameter
   KEY_INPUT forcedKey;
   u16 unk_14a;
 
@@ -87,13 +87,13 @@ struct VM {
       0x80: ずっと赤いまま
   */
   u16 emergency;
-  u16 magnitude;  // 0xFFにするほど揺れが強い
-  union ScriptString rune;
-  struct VFX* indicator;  // ステージへオペレータに転送されたとき(もしくはミッション開始時に)右下に出てくる "Z x 9" や `MISSION START`などのオーバーレイ
+  u16 magnitude;              // 0xFFにするほど揺れが強い
+  union ScriptString string;  // ((string_id << 16) | (y << 8) | x)
+  struct VFX* indicator;      // ステージへオペレータに転送されたとき(もしくはミッション開始時に)右下に出てくる "Z x 9" や `MISSION START`などのオーバーレイ
   SoundID32 bgm;
   TextID zeroDeathTextIDs[2];  // ゼロがボス戦で死んだ時にボスが喋るメッセージのテキストID配列
   struct Coord forceCoord;     // 0xFFFFFFFF以外に設定するとそこにゼロが瞬間移動 & 座標固定される(侵入可能エリアなら死)
-};                             // 360 bytes
+};  // 360 bytes
 
 struct ScriptEntityTemplate {
   u8 kind;
@@ -114,7 +114,7 @@ extern const struct Command Script_MissionFail2[];
 
 extern const TextID CielGoodluckTextIDs[];
 
-void FUN_08021ca0(struct VM* vm);
+void RenderWipeZ(struct VM* vm);
 void SetScript(struct VM* vm, const struct Command* script);
 void CreateScriptEntity(u8 t, struct ScriptEntityTemplate* arg);
 bool32 RunVM(struct VM* vm);

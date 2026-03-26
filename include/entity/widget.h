@@ -44,7 +44,4 @@ struct Widget {
   } props;
 };  // 132 bytes
 
-typedef void (*WidgetFunc)(struct Widget*);
-typedef WidgetFunc WidgetRoutine[5];
-
 #endif  // GUARD_RMZ3_ENTITY_UI_WIDGET_H

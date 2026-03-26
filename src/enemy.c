@@ -28,7 +28,6 @@ bool32 isFrozen(struct Enemy* p) {
   return result;
 }
 
-#if MODERN == 0
 static struct Enemy* unused_08063674(struct Entity* e) {
   struct Enemy* p = (struct Enemy*)GetNearestEntity(gZeroHeaderPtr, &e->coord);
   if (p == NULL) {
@@ -36,9 +35,7 @@ static struct Enemy* unused_08063674(struct Entity* e) {
   }
   return p;
 }
-#endif
 
-#if MODERN == 0
 static struct Enemy* unused_08063690(u8 n) {
   struct Entity* p;
   struct EntityHeader* h = gZeroHeaderPtr;
@@ -54,9 +51,7 @@ static struct Enemy* unused_08063690(u8 n) {
   }
   return NULL;
 }
-#endif
 
-#if MODERN == 0
 static struct Weapon* unused_080636d4(struct Entity* e) {
   struct Weapon* p = (struct Weapon*)GetNearestEntity(gWeaponHeaderPtr, &e->coord);
   if (p == NULL) {
@@ -64,23 +59,16 @@ static struct Weapon* unused_080636d4(struct Entity* e) {
   }
   return p;
 }
-#endif
 
-#if MODERN == 0
 static struct Coord* unused_080636f0(struct Entity* p) {
   struct Entity* w = GetNearestEntity(gWeaponHeaderPtr, &p->coord);
   if (w != NULL) return &w->coord;
   return NULL;
 }
-#endif
 
-#if MODERN == 0
 static u16 unused_CountSpecificZako(void* _ UNUSED, u8 id) { return countSpecificEntities1(gZakoHeaderPtr, id); }
-#endif
 
-#if MODERN == 0
 static u16 unused_CountSpecificProjectile(void* _ UNUSED, u8 id, u8 r2, u8 r3) { return countSpecificEntities2(gProjectileHeaderPtr, id, r2, r3); }
-#endif
 
 // ------------------------------------------------------------------------------------------------------------------------------------
 

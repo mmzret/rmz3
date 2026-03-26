@@ -46,7 +46,7 @@ WIP void Process_SoftReset(struct Process* _ UNUSED) {
   wMOSAIC = 0x00;
   PALETTE16(0) = RGB_BLACK;
   StopAllMusics();
-  text_080e9730();
+  LoadAsciiBold();
   LoadKatakanaBold();
   gVideoRegBuffer.dispcnt &= BG_MODE_0;
   gVideoRegBuffer.dispcnt &= ~DISPCNT_BG_ALL_ON;

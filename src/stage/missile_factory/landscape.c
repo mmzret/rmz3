@@ -348,8 +348,60 @@ const struct Stage gMissileFactoryLandscape = {
 
 static const struct MetatileShift sMetatileShift = {x : 255, y : 20, block : 135, row : 20};  // 0x0833ece4
 
-// ./tools/dumper/bin.ts ./baserom.gba 0x0833ecec 0x0833ee3c ./data/landscape_missile_factory.bin
-INCBIN("data/landscape_missile_factory.bin");
+// clang-format off
+const struct Rect Rect_ARRAY_0833ecec[6] = {
+  { PIXEL(0), PIXEL(0), -PIXEL(16),  PIXEL(16) },
+  { PIXEL(0), PIXEL(0),  PIXEL(112), PIXEL(16) },
+  { PIXEL(0), PIXEL(0), -PIXEL(80),  PIXEL(16) },
+  { PIXEL(0), PIXEL(0),  PIXEL(16), -PIXEL(96) },
+  { PIXEL(0), PIXEL(0),  PIXEL(80),  PIXEL(16) },
+  { PIXEL(0), PIXEL(0),  PIXEL(16),  PIXEL(48) },
+};
+// clang-format on
+
+struct Struct_0833ed1c {
+  struct Coord c;
+  s32 unk_8;
+  s32 unk_c;
+};
+
+// clang-format off
+const struct Struct_0833ed1c Struct_0833ed1c_ARRAY_0833ed1c[12] = {
+    [0]  = {{PIXEL(4680), PIXEL(1592)}, 0, 1},
+    [1]  = {{PIXEL(4664), PIXEL(1704)}, 1, 1},
+    [2]  = {{PIXEL(4680), PIXEL(1816)}, 0, 0},
+    [3]  = {{PIXEL(5400), PIXEL(1592)}, 0, 1},
+    [4]  = {{PIXEL(5368), PIXEL(1656)}, 2, 1},
+    [5]  = {{PIXEL(5368), PIXEL(1752)}, 2, 1},
+    [6]  = {{PIXEL(5400), PIXEL(1816)}, 0, 0},
+    [7]  = {{PIXEL(6120), PIXEL(1592)}, 0, 1},
+    [8]  = {{PIXEL(6056), PIXEL(1688)}, 3, 1},
+    [9]  = {{PIXEL(6104), PIXEL(1688)}, 4, 1},
+    [10] = {{PIXEL(6136), PIXEL(1784)}, 5, 1},
+    [11] = {{PIXEL(6120), PIXEL(1816)}, 0, 0},
+};
+// clang-format on
+
+static const struct MetatileShift sMetatileShifts1[4] = {
+    {x : 255, y : 50, block : 135, row : 30},
+    {x : 195, y : 70, block : 10, row : 10},
+    {x : 195, y : 80, block : 10, row : 10},
+    {x : 195, y : 90, block : 10, row : 10},
+};
+
+static const struct MetatileShift sMetatileShifts2[4] = {
+    {x : 195, y : 100, block : 10, row : 10},
+    {x : 195, y : 100, block : 10, row : 10},
+    {x : 195, y : 110, block : 10, row : 10},
+    {x : 195, y : 120, block : 10, row : 10},
+};
+
+static const struct MetatileShift sMetatileShifts3[4] = {
+    {x : 195, y : 100, block : 5, row : 10},
+    {x : 195, y : 100, block : 5, row : 10},
+    {x : 195, y : 110, block : 5, row : 10},
+    {x : 195, y : 120, block : 5, row : 10},
+};
 
 #undef HEIGHT
 #undef WIDTH

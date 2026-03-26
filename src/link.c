@@ -12,7 +12,7 @@ static void DoSend(void);
 static void SendRecvDone(void);
 static bool8 DoHandshake(void);
 
-#define SIO_MULTI_CNT ((struct SioMultiCnt *)REG_ADDR_SIOCNT)
+#define SIO_MULTI_CNT ((struct SioMultiCnt*)REG_ADDR_SIOCNT)
 
 void DisableSerial(void) {
   gLinkSavedIme = REG_IME;
@@ -28,102 +28,36 @@ void DisableSerial(void) {
   u8_ARRAY_020014fc[1] = 0;
 }
 
-NAKED static void EnableSerial(void) {
-  asm(".syntax unified\n\
-	push {r4, r5, r6, r7, lr}\n\
-	sub sp, #8\n\
-	ldr r6, _08002560 @ =0x02000004\n\
-	ldr r3, _08002564 @ =0x04000208\n\
-	ldrh r2, [r3]\n\
-	movs r4, #0\n\
-	strh r4, [r3]\n\
-	ldr r5, _08002568 @ =0x04000200\n\
-	ldrh r1, [r5]\n\
-	ldr r0, _0800256C @ =0x0000FF3F\n\
-	ands r0, r1\n\
-	strh r0, [r5]\n\
-	strh r2, [r3]\n\
-	ldr r0, _08002570 @ =0x04000134\n\
-	strh r4, [r0]\n\
-	ldr r2, _08002574 @ =0x04000128\n\
-	movs r1, #0x80\n\
-	lsls r1, r1, #6\n\
-	adds r0, r1, #0\n\
-	strh r0, [r2]\n\
-	ldrh r0, [r2]\n\
-	ldr r7, _08002578 @ =0x00004003\n\
-	adds r1, r7, #0\n\
-	orrs r0, r1\n\
-	strh r0, [r2]\n\
-	ldrh r2, [r3]\n\
-	strh r2, [r6]\n\
-	strh r4, [r3]\n\
-	ldrh r0, [r5]\n\
-	movs r1, #0x80\n\
-	orrs r0, r1\n\
-	strh r0, [r5]\n\
-	strh r2, [r3]\n\
-	ldr r0, _0800257C @ =0x0400012A\n\
-	strh r4, [r0]\n\
-	ldr r2, _08002580 @ =0x04000120\n\
-	movs r0, #0\n\
-	movs r1, #0\n\
-	str r0, [r2]\n\
-	str r1, [r2, #4]\n\
-	movs r5, #0\n\
-	str r5, [sp]\n\
-	ldr r1, _08002584 @ =gLink\n\
-	ldr r2, _08002588 @ =0x05000266\n\
-	mov r0, sp\n\
-	bl CpuSet\n\
-	add r0, sp, #4\n\
-	strh r5, [r0]\n\
-	ldr r1, _0800258C @ =0x020014FC\n\
-	ldr r2, _08002590 @ =0x01000002\n\
-	bl CpuSet\n\
-	ldr r0, _08002594 @ =0x02000006\n\
-	strb r4, [r0]\n\
-	ldr r0, _08002598 @ =0x02000007\n\
-	strb r4, [r0]\n\
-	ldr r0, _0800259C @ =0x02000008\n\
-	strb r4, [r0]\n\
-	ldr r0, _080025A0 @ =0x020014F0\n\
-	strb r4, [r0]\n\
-	ldr r0, _080025A4 @ =gLastRecvQueueCount\n\
-	strb r4, [r0]\n\
-	ldr r0, _080025A8 @ =0x02000009\n\
-	strb r4, [r0]\n\
-	ldr r0, _080025AC @ =0x0200000A\n\
-	strh r5, [r0]\n\
-	ldr r0, _080025B0 @ =0x0200000C\n\
-	strh r5, [r0]\n\
-	add sp, #8\n\
-	pop {r4, r5, r6, r7}\n\
-	pop {r0}\n\
-	bx r0\n\
-	.align 2, 0\n\
-_08002560: .4byte 0x02000004\n\
-_08002564: .4byte 0x04000208\n\
-_08002568: .4byte 0x04000200\n\
-_0800256C: .4byte 0x0000FF3F\n\
-_08002570: .4byte 0x04000134\n\
-_08002574: .4byte 0x04000128\n\
-_08002578: .4byte 0x00004003\n\
-_0800257C: .4byte 0x0400012A\n\
-_08002580: .4byte 0x04000120\n\
-_08002584: .4byte gLink\n\
-_08002588: .4byte 0x05000266\n\
-_0800258C: .4byte 0x020014FC\n\
-_08002590: .4byte 0x01000002\n\
-_08002594: .4byte 0x02000006\n\
-_08002598: .4byte 0x02000007\n\
-_0800259C: .4byte 0x02000008\n\
-_080025A0: .4byte 0x020014F0\n\
-_080025A4: .4byte gLastRecvQueueCount\n\
-_080025A8: .4byte 0x02000009\n\
-_080025AC: .4byte 0x0200000A\n\
-_080025B0: .4byte 0x0200000C\n\
- .syntax divided\n");
+static void EnableSerial(void) {
+  gLinkSavedIme = REG_IME;
+  REG_IME = 0;
+  REG_IE &= ~(INTR_FLAG_TIMER3 | INTR_FLAG_SERIAL);
+  REG_IME = gLinkSavedIme;
+
+  REG_RCNT = 0;
+
+  REG_SIOCNT = SIO_MULTI_MODE;
+  REG_SIOCNT |= SIO_INTR_ENABLE | SIO_115200_BPS;
+
+  gLinkSavedIme = REG_IME;
+  REG_IME = 0;
+  REG_IE |= INTR_FLAG_SERIAL;
+  REG_IME = gLinkSavedIme;
+
+  REG_SIOMLT_SEND = 0;
+  REG_SIOMLT_RECV = 0;
+
+  CpuFill32(0, &gLink, sizeof(gLink));
+  CpuFill16(0, u8_ARRAY_020014fc, 4);
+
+  sNumVBlanksWithoutSerialIntr = 0;
+  sSendBufferEmpty = 0;
+  u8_02000008 = 0;
+  gLastSendQueueCount = 0;
+  gLastRecvQueueCount = 0;
+  sChecksumAvailable = FALSE;
+  sSendNonzeroCheck = 0;
+  sRecvNonzeroCheck = 0;
 }
 
 void ResetSerial(void) {
@@ -131,7 +65,7 @@ void ResetSerial(void) {
   DisableSerial();
 }
 
-NAKED u32 LinkMain1(u8 *shouldAdvanceLinkState, u16 *sendCmd, u16 (*recvCmds)[CMD_LENGTH]) {
+NAKED u32 LinkMain1(u8* shouldAdvanceLinkState, u16* sendCmd, u16 (*recvCmds)[CMD_LENGTH]) {
   asm(".syntax unified\n\
 	push {r4, r5, r6, r7, lr}\n\
 	adds r4, r0, #0\n\
@@ -278,7 +212,7 @@ _080026DA:\n\
 static void CheckMasterOrSlave(void) {
   u32 terminals;
 
-  terminals = *(vu32 *)REG_ADDR_SIOCNT & (SIO_MULTI_SD | SIO_MULTI_SI);
+  terminals = *(vu32*)REG_ADDR_SIOCNT & (SIO_MULTI_SD | SIO_MULTI_SI);
   if (terminals == SIO_MULTI_SD && gLink.localId == 0)
     gLink.isMaster = LINK_MASTER;
   else
@@ -296,7 +230,7 @@ static void InitTimer(void) {
   }
 }
 
-static void EnqueueSendCmd(u16 *sendCmd) {
+static void EnqueueSendCmd(u16* sendCmd) {
   u8 i;
   u8 offset;
 
@@ -697,7 +631,7 @@ static void DoRecv(void) {
   u8 i;
   u8 index;
 
-  *(u64 *)recv = REG_SIOMLT_RECV;
+  *(u64*)recv = REG_SIOMLT_RECV;
 
   for (i = 0; i < 4; i++) {
     FUN_08000eac(recv[i], i, gLink.recvCmdIndex);

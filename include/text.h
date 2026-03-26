@@ -54,7 +54,7 @@ extern const struct PlttData gFontPalette[96];
 extern const u16* const gTextOffsetTable[20];
 extern const char_t* const gTextTable[20];
 
-void text_080e9730(void);
+void LoadAsciiBold(void);
 void ResetCharTiles(void);
 void LoadKatakanaBold(void);
 void FUN_080e981c(void);

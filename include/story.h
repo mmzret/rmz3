@@ -30,7 +30,7 @@
 
 struct PlayInfo {
   u8 extraLife;
-  u8 rank;
+  u8 rank;  // 0: F, 1: E, ... A: 5, S: 6
   u8 codenameSuffix;
   u8 pad_03;
   u8 codenamePrefix;
@@ -46,7 +46,7 @@ struct PlayInfo {
   u8 clearCodenameSuffix;  // ストーリークリア時に適用される
   u8 clearCodenamePrefix;  // ストーリークリア時に適用される
 
-  u16 scoreSum;         // 今までクリアしたステージのスコアの合計
+  s16 scoreSum;         // 今までクリアしたステージのスコアの合計
   u32 playTime;         // フレーム単位のプレイ時間
   u8 clearCount;        // 今までクリアしたステージの数
   u8 unusedClearCount;  // clearCountと全く同じ内容

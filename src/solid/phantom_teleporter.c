@@ -137,10 +137,10 @@ static void PhantomTeleporter_Die(struct Solid* p) {
 }
 
 static void onCollision(struct Body* body, struct Coord* r1 UNUSED, struct Coord* r2 UNUSED) {
-  struct CollidableEntity* parent = body->parent;
+  struct Solid* self = (struct Solid*)body->parent;
   struct Zero* z = (struct Zero*)(body->enemy)->parent;
   if ((z->s).kind == ENTITY_PLAYER) {
-    *((struct Zero**)parent->work) = z;
+    *((struct Zero**)self->props.raw) = z;
   }
 }
 

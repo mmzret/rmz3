@@ -7,45 +7,45 @@
 #include "types.h"
 
 #if MODERN
-#define SET_VFX_ROUTINE(vfx, routine)                                         \
-  {                                                                           \
-    *(u32 *)(&((vfx)->s).mode[0]) = routine;                                  \
-    ((vfx)->s).onUpdate = (void *)((*gVFXFnTable[(((vfx)->s).id)])[routine]); \
+#define SET_VFX_ROUTINE(vfx, routine)                                        \
+  {                                                                          \
+    *(u32*)(&((vfx)->s).mode[0]) = routine;                                  \
+    ((vfx)->s).onUpdate = (void*)((*gVFXFnTable[(((vfx)->s).id)])[routine]); \
   }
 #else
-#define SET_VFX_ROUTINE(vfx, routine)            \
-  {                                              \
-    u32 tbl, id;                                 \
-    VFXFunc **r;                                 \
-    tbl = (u32)gVFXFnTable;                      \
-    id = (((vfx)->s).id) << 2;                   \
-    r = (VFXFunc **)(tbl + id);                  \
-                                                 \
-    *(u32 *)((vfx)->s).mode = routine;           \
-    ((vfx)->s).onUpdate = (void *)(*r)[routine]; \
+#define SET_VFX_ROUTINE(vfx, routine)           \
+  {                                             \
+    u32 tbl, id;                                \
+    VFXFunc** r;                                \
+    tbl = (u32)gVFXFnTable;                     \
+    id = (((vfx)->s).id) << 2;                  \
+    r = (VFXFunc**)(tbl + id);                  \
+                                                \
+    *(u32*)((vfx)->s).mode = routine;           \
+    ((vfx)->s).onUpdate = (void*)(*r)[routine]; \
   }
 #endif
 
 #if MODERN
-#define INIT_VFX_ROUTINE(vfx, ghostID)                                            \
-  {                                                                               \
-    ((vfx)->s).id = ghostID;                                                      \
-    ((vfx)->s).onUpdate = (void *)((*gVFXFnTable[(((vfx)->s).id)])[ENTITY_INIT]); \
+#define INIT_VFX_ROUTINE(vfx, ghostID)                                           \
+  {                                                                              \
+    ((vfx)->s).id = ghostID;                                                     \
+    ((vfx)->s).onUpdate = (void*)((*gVFXFnTable[(((vfx)->s).id)])[ENTITY_INIT]); \
   }
 #else
-#define INIT_VFX_ROUTINE(vfx, ghostID)               \
-  {                                                  \
-    u32 tbl;                                         \
-    VFXFunc **r;                                     \
-    tbl = (u32)gVFXFnTable;                          \
-    ((vfx)->s).id = ghostID;                         \
-                                                     \
-    r = (VFXFunc **)(tbl + (ghostID << 2));          \
-    ((vfx)->s).onUpdate = (void *)(*r)[ENTITY_INIT]; \
+#define INIT_VFX_ROUTINE(vfx, ghostID)              \
+  {                                                 \
+    u32 tbl;                                        \
+    VFXFunc** r;                                    \
+    tbl = (u32)gVFXFnTable;                         \
+    ((vfx)->s).id = ghostID;                        \
+                                                    \
+    r = (VFXFunc**)(tbl + (ghostID << 2));          \
+    ((vfx)->s).onUpdate = (void*)(*r)[ENTITY_INIT]; \
   }
 #endif
 
-extern const VFXRoutine *const gVFXFnTable[85];
+extern const VFXRoutine* const gVFXFnTable[85];
 extern const VFXRoutine gSmokeRoutine;
 extern const VFXRoutine gBubbleRoutine;
 extern const VFXRoutine gChargeEffectRoutine;
@@ -130,25 +130,25 @@ extern const VFXRoutine gGhost82Routine;
 extern const VFXRoutine gGhost83Routine;
 extern const VFXRoutine gGhost84Routine;
 
-void DeleteVFX(struct VFX *p);
+void DeleteVFX(struct VFX* p);
 
-struct VFX *CreateSmoke(u8 kind, struct Coord *c);
-struct VFX *CreateChargeEffect(struct Zero *z, struct VFX *v, u8 r2);
-struct VFX *CreateAfterImages(struct Entity *p);
-void CreateParticle(struct Coord *c, u8 action, bool8 isRight);
-void oz_080b3820(struct Coord *omegaCoord, bool8 isRight);
-void CreateWallDust(struct Coord *c, bool8 isRight);
-struct VFX *CreateRipple(struct Zero *z, bool8 outOfSea);
-struct VFX *CreateEmotionBubble(u8 kind, struct Coord *target, struct Coord *c);
-struct VFX *CreateCopyXIcon(struct Zero *z, struct Coord *c, u8 n);
-struct VFX *CreateExlifeIndicator(u8 extraLife);
-struct VFX *CreateMissionAlert(u8 kind);
-struct VFX *CreateSlashedEnemy(struct Coord *c, const struct SlashedEnemy *data, u8 r2, u8 r3);
-struct VFX *FUN_080bfce8(struct Coord *c, u8 r1);
-struct VFX *CreateBossExplosion(struct Boss *boss, struct Coord *c);
+struct VFX* CreateSmoke(u8 kind, struct Coord* c);
+struct VFX* CreateChargeEffect(struct Zero* z, struct VFX* v, u8 r2);
+struct VFX* CreateAfterImages(struct Entity* p);
+void CreateParticle(struct Coord* c, u8 action, bool8 isRight);
+void oz_080b3820(struct Coord* omegaCoord, bool8 isRight);
+void CreateWallDust(struct Coord* c, bool8 isRight);
+struct VFX* CreateRipple(struct Zero* z, bool8 outOfSea);
+struct VFX* CreateEmotionBubble(u8 kind, struct Coord* target, struct Coord* c);
+struct VFX* CreateCopyXIcon(struct Zero* z, struct Coord* c, u8 n);
+struct VFX* CreateExlifeIndicator(u8 extraLife);
+struct VFX* CreateMissionAlert(u8 kind);
+struct VFX* CreateSlashedEnemy(struct Coord* c, const struct SlashedEnemy* data, u8 r2, u8 r3);
+struct VFX* FUN_080bfce8(struct Coord* c, u8 r1);
+struct VFX* CreateBossExplosion(struct Boss* boss, struct Coord* c);
 void CreateVFX31_1(s32 x, s32 y);
 void CreateVFX31_2(s32 x, s32 y);
-void FUN_080b81a0(struct CollidableEntity *p, struct Coord *c, motion_t *motions, u8 len);
-void FUN_080b7ffc(struct CollidableEntity *p, struct Coord *c, motion_t *motions, u8 len);
+void FUN_080b81a0(struct Entity* e, struct Coord* c, motion_t* motions, u8 len);
+void FUN_080b7ffc(struct Entity* e, struct Coord* c, motion_t* motions, u8 len);
 
 #endif  // GUARD_RMZ3_VFX_H

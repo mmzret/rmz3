@@ -4,6 +4,7 @@
 #include "entity/body.h"
 #include "gba/gba.h"
 #include "global.h"
+#include "metatile.h"
 #include "motion.h"
 
 struct ScriptEntity;
@@ -106,8 +107,8 @@ struct Entity {
   u8 invincibleID;  // 被ダメ時の無敵を表す白塗りをEntityに適用する際にEntityの区別に用いるID
 
   // motion_t
-  motion_id_t motionID;  // upper byte for motion_t
-  u8 motionStep;         // lower byte for motion_t
+  motion_id_t motionID;         // upper byte for motion_t, gDynamicMotionCmdTable または gStaticMotionCmdTable の idx (Dynamic: 0..162, Static: 0..252)
+  motion_sub_id_t motionSubID;  // lower byte for motion_t
 
   u16 tileNum;
   u8 palID;  // これを変えると色が変わる
@@ -125,15 +126,13 @@ struct Entity {
   struct Motion motion;
 };  // 116 bytes
 
+// 当たり判定のある Entity
 struct CollidableEntity {
   struct Entity s;
   struct Body body;
-  u8 work[16];  // general purpose buffer
-};  // 196 bytes
+};  // 180 bytes (0xB4..)
 
 typedef void (*EntityFunc)(struct Entity*);
-
-#define ENTITY(p) (((struct CollidableEntity*)p)->s)
 
 // --------------------------------------------
 

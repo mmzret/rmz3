@@ -182,7 +182,7 @@ void doGraphicTransferTasks(void);
 void LoadGraphic(const struct Graphic* g, void* dst);
 void LoadPalette(const struct Palette* p, u32 r1);
 s32 RequestGraphicTransfer(const struct Graphic* g, void* dst);
-s32 RequestBgMapTransfer(u16* src, void* dst, s32 r2);
+s32 RequestBgMapTransfer(u16* src, void* dst, s32 bytesize);
 void MaskBg0(u32* bg0, u32 bg0map, u32 bytesize, u16 mask);
 void UnmaskBg0(void);
 void flashPalette_08003b24(void);

@@ -141,7 +141,7 @@ Script_0835346c:
 Script_083534fc:
   stop_bgm
   wait 120
-  cmd08 1, 0, 2
+  cmd08 1, 2
   destroy 1
   change_camera_mode 6
   adjust_camera 1, 0, 4
@@ -270,7 +270,7 @@ Script_0835387c:
   message 1, 0, 0x0902
   wait_msgbox_end
   entityflag 1, 7, TRUE
-  cmd08 1, 0, 2
+  cmd08 1, 2
   force 4, 0, 0
   wait 8
   force 5, 0, 0

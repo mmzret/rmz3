@@ -212,7 +212,7 @@ _08022778:
 	.align 2, 0
 _08022790: .4byte gVideoRegBuffer+18
 _08022794:
-	bl text_080e9730
+	bl LoadAsciiBold
 	b _08022800
 _0802279A:
 	ldr r1, _080227A4 @ =gPaletteManager

@@ -55,7 +55,7 @@
 	strh r5, [r0]
 	strh r5, [r6]
 	bl StopAllMusics
-	bl text_080e9730
+	bl LoadAsciiBold
 	bl LoadKatakanaBold
 	subs r4, #4
 	ldrh r1, [r4]

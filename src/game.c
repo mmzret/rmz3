@@ -5,16 +5,16 @@
 #include "system.h"
 
 void Process_Game(struct Process* p) {
-  static const GameLoopFunc loop[4] = {
+  static const GameLoopFunc scenes[4] = {
       MainLoop_Game,
-      MainLoop_Menu,
-      MainLoop_Disk,
+      MainLoop_Menu,  // メニュー画面
+      MainLoop_Disk,  // "シークレットディスクのカイセキ"のシーン
       MainLoop_Minigame,
   };
 
   FUN_08002428(p);
   do {
-    loop[gGameState.mode[0]](&gGameState);
+    scenes[gGameState.mode[0]](&gGameState);
     SwitchProcess(TRUE);
   } while (TRUE);
 }

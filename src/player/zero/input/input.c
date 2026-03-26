@@ -12,6 +12,8 @@ enum ZeroLadder {
 
 // ------------------------------------------------------------------------------------------------------------------------------------
 
+bool8 TryGroundDash(struct Zero* z, const struct Rect* range);
+
 static void inIdle(struct Zero* z);
 static void inWalk(struct Zero* z);
 static void inDash(struct Zero* z);
@@ -90,7 +92,7 @@ WIP static void inIdle(struct Zero* z) {
     return;
   }
 
-  if ((!(z->restriction).dash) && (key & ZERO_INPUT_PRESS_DASH) && TryGroundDash(z, &gZeroRanges[1], 0)) {
+  if ((!(z->restriction).dash) && (key & ZERO_INPUT_PRESS_DASH) && TryGroundDash(z, &gZeroRanges[1])) {
     (z->s).mode[2] = GROUND_DASH;
     (z->s).mode[3] = 0;
     return;
@@ -162,7 +164,7 @@ WIP static void inWalk(struct Zero* z) {
   }
 
   if (!(z->restriction).dash) {
-    if ((key & ZERO_INPUT_PRESS_DASH) && TryGroundDash(z, &gZeroRanges[1], 0)) {
+    if ((key & ZERO_INPUT_PRESS_DASH) && TryGroundDash(z, &gZeroRanges[1])) {
       (z->s).mode[2] = GROUND_DASH;
       (z->s).mode[3] = 0;
       return;

@@ -5,22 +5,46 @@
 #include "gfx.h"
 #include "global.h"
 #include "sprite.h"
+#include "text.h"
 #include "weapon.h"
 #include "zero.h"
 
-static const MenuLoopFunc gEachMenuLoops[4];
+void EachMenuLoop_MainMenu(struct GameState* p);
+void EachMenuLoop_ExSkill(struct GameState* g);
+void EachMenuLoop_KeyConfig(struct GameState* p);
+void EachMenuLoop_Elf(struct GameState* p);
 
-static void menu_080f394c(struct GameState *g);
-static void menu_080f39a8(struct GameState *m);
+// idx is BYTE[0x02031978]
+static const MenuLoopFunc sEachMenuLoops[4] = {
+    EachMenuLoop_MainMenu,
+    EachMenuLoop_ExSkill,
+    EachMenuLoop_KeyConfig,
+    EachMenuLoop_Elf,
+};
 
-void MainLoop_Menu(struct GameState *m) {
-  (gMenuLoops[m->mode[1]])(m);
+// --------------------------------------------
+
+static void MenuLoop_InitMenu(struct GameState* p);
+static void MenuLoop_OpenMenu(struct GameState* p);
+static void MenuLoop_Update(struct GameState* p);
+static void MenuLoop_BlackOut(struct GameState* p);
+static void MenuLoop_ExitMenu(struct GameState* m);
+
+static void menu_080f39a8(struct GameState* m);
+
+void MainLoop_Menu(struct GameState* m) {
+  static const MenuLoopFunc sMenuLoops[5] = {
+      MenuLoop_InitMenu, MenuLoop_OpenMenu, MenuLoop_Update, MenuLoop_BlackOut, MenuLoop_ExitMenu,
+  };
+  (sMenuLoops[m->mode[1]])(m);
   menu_080f39a8(m);
 }
 
+static void menu_080f394c(struct GameState* g);
+
 // 01 00 xx xx
-void MenuLoop_InitMenu(struct GameState *g) {
-  struct Zero *z;
+static void MenuLoop_InitMenu(struct GameState* g) {
+  struct Zero* z;
 
   z = g->z2;
   g->frames = 0;
@@ -37,14 +61,14 @@ void MenuLoop_InitMenu(struct GameState *g) {
   gVideoRegBuffer.dispcnt &= 0xF0FF;
   gVideoRegBuffer.dispcnt |= 0x1300;
   BGCNT16(1) = 0x4206;
-  *(u32 *)gVideoRegBuffer.bgofs[1] = 0;
-  (gEachMenuLoops[MENU->unk_4c])(g);
+  *(u32*)gVideoRegBuffer.bgofs[1] = 0;
+  (sEachMenuLoops[MENU->unk_4c])(g);
   g->mode[1] = g->mode[2] = 1;
   MenuLoop_OpenMenu(g);
 }
 
 // 01 01 xx xx
-NAKED void MenuLoop_OpenMenu(struct GameState *m) {
+NAKED static void MenuLoop_OpenMenu(struct GameState* m) {
   asm(".syntax unified\n\
 	push {r4, lr}\n\
 	adds r4, r0, #0\n\
@@ -104,7 +128,7 @@ _080F3728: .4byte 0x00000402\n\
 }
 
 // 01 02 xx xx
-NAKED void MenuLoop_Update(struct GameState *m) {
+NAKED static void MenuLoop_Update(struct GameState* m) {
   asm(".syntax unified\n\
 	push {r4, r5, lr}\n\
 	adds r5, r0, #0\n\
@@ -112,7 +136,7 @@ NAKED void MenuLoop_Update(struct GameState *m) {
 	adds r4, r5, r0\n\
 	movs r0, #0\n\
 	strb r0, [r4]\n\
-	ldr r1, _080F3770 @ =gEachMenuLoops\n\
+	ldr r1, _080F3770 @ =sEachMenuLoops\n\
 	ldr r2, _080F3774 @ =0x00000E18\n\
 	adds r0, r5, r2\n\
 	ldrb r0, [r0]\n\
@@ -139,14 +163,14 @@ _080F3764:\n\
 	bx r0\n\
 	.align 2, 0\n\
 _080F376C: .4byte 0x00000E1D\n\
-_080F3770: .4byte gEachMenuLoops\n\
+_080F3770: .4byte sEachMenuLoops\n\
 _080F3774: .4byte 0x00000E18\n\
 _080F3778: .4byte gJoypad\n\
  .syntax divided\n");
 }
 
 // 01 03 xx xx
-NAKED void MenuLoop_BlackOut(struct GameState *m) {
+NAKED static void MenuLoop_BlackOut(struct GameState* m) {
   asm(".syntax unified\n\
 	push {r4, lr}\n\
 	adds r2, r0, #0\n\
@@ -202,8 +226,34 @@ _080F37E4: .4byte 0x00000401\n\
  .syntax divided\n");
 }
 
+// --------------------------------------------
+
+struct Elf* CreateElf1(struct Zero* z, u8 breed, u8 availability, u8 _);
+struct Elf* CreateElf5(struct Zero* z, u8 breed, u8 availability, u8 _);
+struct Elf* CreateElf6(struct Zero* z, u8 breed, u8 availability, u8 _);
+struct Elf* CreateElf7(struct Zero* z, u8 breed, u8 availability, u8 _);
+struct Elf* elf_080e4bf4(struct Zero* z, u8 breed, u8 availability, u8 _);
+
+// clang-format off
+const MenuElfFunc gExitMenuScripts[13] = {
+    CreateElf0,
+    CreateElf1,
+    CreateNurseBElf, 
+    CreateNurseBElf, 
+    CreateNurseEElf, 
+    CreateElf5, 
+    CreateElf6, 
+    CreateElf7, 
+    CreateFollowerElf, 
+    CreateSeaotterElf, 
+    elf_080e4bf4, 
+    elf_080e4bf4, 
+    CreateBirdElf,
+};
+// clang-format on
+
 // 01 04 xx xx
-NAKED void MenuLoop_ExitMenu(struct GameState *m) {
+NAKED static void MenuLoop_ExitMenu(struct GameState* m) {
   asm(".syntax unified\n\
 	push {r4, r5, r6, r7, lr}\n\
 	mov r7, sl\n\
@@ -334,7 +384,7 @@ _080F38D2:\n\
 	mov r3, sb\n\
 	strh r0, [r3]\n\
 _080F38F4:\n\
-	ldr r1, _080F3940 @ =gEachMenuLoops\n\
+	ldr r1, _080F3940 @ =sEachMenuLoops\n\
 	mov r2, sl\n\
 	ldrb r0, [r2]\n\
 	lsls r0, r0, #2\n\
@@ -363,14 +413,16 @@ _080F3930: .4byte gExitMenuScripts\n\
 _080F3934: .4byte gElfBreedInfo\n\
 _080F3938: .4byte gUnlockedElfPtr\n\
 _080F393C: .4byte gPause\n\
-_080F3940: .4byte gEachMenuLoops\n\
+_080F3940: .4byte sEachMenuLoops\n\
 _080F3944: .4byte FUN_080f3d44\n\
 _080F3948: .4byte close_menu_080f3d64\n\
  .syntax divided\n");
 }
 
-static void menu_080f394c(struct GameState *g) {
-  struct Coord *c = &g->unk_0dc4;
+// --------------------------------------------
+
+static void menu_080f394c(struct GameState* g) {
+  struct Coord* c = &g->unk_0dc4;
   c->x = PIXEL(120);
   c->y = PIXEL(80);
   ResetPivot(&g->unk_0db8, c, 0, 0);
@@ -379,7 +431,7 @@ static void menu_080f394c(struct GameState *g) {
   InitWidgetHeader(&g->entityHeaders[ENTITY_WIDGET], gWidgets, 64);
 }
 
-static void menu_080f39a8(struct GameState *g) {
+static void menu_080f39a8(struct GameState* g) {
   g->unk_0dc4.x = PIXEL(BGOFS(1)->x & 0x1FF) + PIXEL(120);
   ClearTaskBuffer(&g->taskManager2);
   UpdateEntities(gWidgetHeaderPtr);
@@ -387,7 +439,7 @@ static void menu_080f39a8(struct GameState *g) {
   RunAllTasks(&g->taskManager2);
 }
 
-NAKED void menu_080f39fc(struct GameState *m) {
+NAKED void menu_080f39fc(struct GameState* m) {
   asm(".syntax unified\n\
 	push {r4, r5, r6, r7, lr}\n\
 	adds r1, r0, #0\n\
@@ -489,7 +541,9 @@ _080F3AA8:\n\
  .syntax divided\n");
 }
 
-NAKED void menu_080f3ab0(struct GameState *m) {
+static const u8 u8_ARRAY_083862fc[4] = {1, 2, 4, 8};
+
+NAKED void menu_080f3ab0(struct GameState* m) {
   asm(".syntax unified\n\
 	push {r4, r5, r6, r7, lr}\n\
 	mov r7, sl\n\
@@ -660,7 +714,7 @@ _080F3BE8:\n\
 /**
  * @return TRUE: B,L,Rのいずれかが押されてメニューが遷移, FALSE: 何もなし
  */
-NAKED bool8 TrySlideMenu(struct GameState *g) {
+NAKED bool8 TrySlideMenu(struct GameState* g) {
   asm(".syntax unified\n\
 	push {r4, lr}\n\
 	adds r3, r0, #0\n\
@@ -720,7 +774,7 @@ _080F3C52:\n\
 	strb r0, [r1]\n\
 	strb r4, [r3, #2]\n\
 _080F3C66:\n\
-	ldr r2, _080F3C8C @ =gEachMenuLoops\n\
+	ldr r2, _080F3C8C @ =sEachMenuLoops\n\
 	ldrb r0, [r1]\n\
 	lsls r0, r0, #2\n\
 	adds r0, r0, r2\n\
@@ -738,7 +792,7 @@ _080F3C7E:\n\
 	.align 2, 0\n\
 _080F3C84: .4byte 0x00000E18\n\
 _080F3C88: .4byte 0x00000E19\n\
-_080F3C8C: .4byte gEachMenuLoops\n\
+_080F3C8C: .4byte sEachMenuLoops\n\
  .syntax divided\n");
 }
 
@@ -748,7 +802,7 @@ _080F3C8C: .4byte gEachMenuLoops\n\
  * @param x Start X Tile
  * @param y Start Y Tile
  */
-NAKED void CopyBgMap(u16 *dst, struct BgMapHeader *src, u8 x, u8 y) {
+NAKED void CopyBgMap(u16* dst, struct BgMapHeader* src, u8 x, u8 y) {
   asm(".syntax unified\n\
 	push {r4, r5, r6, r7, lr}\n\
 	mov ip, r0\n\
@@ -797,117 +851,22 @@ _080F3CDA:\n\
  .syntax divided\n");
 }
 
-NAKED void PrintNumber(u16 n, u8 x, u8 y) {
-  asm(".syntax unified\n\
-	push {r4, r5, r6, r7, lr}\n\
-	mov r7, r8\n\
-	push {r7}\n\
-	lsls r0, r0, #0x10\n\
-	lsrs r4, r0, #0x10\n\
-	lsls r1, r1, #0x18\n\
-	lsrs r7, r1, #0x18\n\
-	lsls r2, r2, #0x18\n\
-	lsrs r6, r2, #0x18\n\
-	movs r5, #0\n\
-	ldr r0, _080F3D30 @ =StringOfsTable\n\
-	mov r8, r0\n\
-_080F3CF8:\n\
-	adds r0, r4, #0\n\
-	movs r1, #0xa\n\
-	bl __umodsi3\n\
-	lsls r0, r0, #0x10\n\
-	lsrs r0, r0, #0xf\n\
-	adds r0, #0x3c\n\
-	add r0, r8\n\
-	ldrh r0, [r0]\n\
-	ldr r1, _080F3D34 @ =gStringData\n\
-	adds r0, r0, r1\n\
-	subs r1, r7, r5\n\
-	adds r2, r6, #0\n\
-	bl PrintString\n\
-	adds r0, r4, #0\n\
-	movs r1, #0xa\n\
-	bl __udivsi3\n\
-	lsls r0, r0, #0x10\n\
-	lsrs r4, r0, #0x10\n\
-	cmp r4, #0\n\
-	beq _080F3D38\n\
-	adds r0, r5, #1\n\
-	lsls r0, r0, #0x18\n\
-	lsrs r5, r0, #0x18\n\
-	b _080F3CF8\n\
-	.align 2, 0\n\
-_080F3D30: .4byte StringOfsTable\n\
-_080F3D34: .4byte gStringData\n\
-_080F3D38:\n\
-	pop {r3}\n\
-	mov r8, r3\n\
-	pop {r4, r5, r6, r7}\n\
-	pop {r0}\n\
-	bx r0\n\
- .syntax divided\n");
-}
-
-void FUN_080f3d44(struct Weapon *w) {
-  if (PTR_ARRAY_08386300[(w->s).id] != NULL) {
-    (PTR_ARRAY_08386300[(w->s).id])(w);
+void PrintNumber(u16 n, u8 x, u8 y) {
+  u8 i = 0;
+  while (TRUE) {
+    u16 digit = n % 10;
+    PrintString(STRING(digit + 30), x - i, y);
+    n /= 10;
+    if (n == 0) {
+      break;
+    }
+    i++;
   }
 }
 
-void close_menu_080f3d64(struct Elf *p) {
-  if (PTR_ARRAY_08386344[(p->s).id] != NULL) {
-    (PTR_ARRAY_08386344[(p->s).id])(p);
-  }
-}
-
-// ------------------------------------------------------------------------------------------------------------------------------------
-
-// idx is BYTE[0x02031978]
-static const MenuLoopFunc gEachMenuLoops[4] = {
-    EachMenuLoop_MainMenu,
-    EachMenuLoop_ExSkill,
-    EachMenuLoop_KeyConfig,
-    EachMenuLoop_Elf,
-};
-
-// 01 xx nn nn
-const MenuLoopFunc gMenuLoops[5] = {
-    MenuLoop_InitMenu, MenuLoop_OpenMenu, MenuLoop_Update, MenuLoop_BlackOut, MenuLoop_ExitMenu,
-};
-
-struct Elf *FUN_080e20a4(struct Zero *z, u8 breed, u8 availability, u8 _);
-struct Elf *CreateElf5(struct Zero *z, u8 breed, u8 availability, u8 _);
-struct Elf *CreateElf6(struct Zero *z, u8 breed, u8 availability, u8 _);
-struct Elf *CreateElf7(struct Zero *z, u8 breed, u8 availability, u8 _);
-struct Elf *elf_080e4bf4(struct Zero *z, u8 breed, u8 availability, u8 _);
-
-// clang-format off
-const MenuElfFunc gExitMenuScripts[13] = {
-    CreateElf0,
-    FUN_080e20a4,
-    CreateNurseBElf, 
-    CreateNurseBElf, 
-    CreateNurseEElf, 
-    CreateElf5, 
-    CreateElf6, 
-    CreateElf7, 
-    CreateFollowerElf, 
-    CreateSeaotterElf, 
-    elf_080e4bf4, 
-    elf_080e4bf4, 
-    CreateBirdElf,
-};
-// clang-format on
-
-const u8 u8_ARRAY_083862fc[4] = {
-    1,
-    2,
-    4,
-    8,
-};
-
-// clang-format off
-const WeaponFunc PTR_ARRAY_08386300[WEAPON_MOVE_COUNT] = {
+void FUN_080f3d44(struct Weapon* w) {
+  // clang-format off
+  static const WeaponFunc PTR_ARRAY_08386300[WEAPON_MOVE_COUNT] = {
     [WEAPON_MOVE_Z_BUSTER]     =      MenuExit_Buster, 
     [WEAPON_MOVE_Z_SABER]      =      NULL, 
     [WEAPON_MOVE_SHIELD_GUARD] =      MenuExit_ShieldGuard, 
@@ -924,21 +883,26 @@ const WeaponFunc PTR_ARRAY_08386300[WEAPON_MOVE_COUNT] = {
     [WEAPON_MOVE_13] =                MenuExit_Weapon13, 
     [WEAPON_MOVE_RAKUSAIGA] =         MenuExit_SaberSmash, 
     [WEAPON_MOVE_SHIELD_SWEEP_ELEC] = MenuExit_ShieldSweepElec, 
-    [WEAPON_MOVE_MINIGAME_ROD] =                NULL,
-};
-// clang-format on
+    [WEAPON_MOVE_MINIGAME_ROD] =      NULL,
+  };
+  // clang-format on
+  if (PTR_ARRAY_08386300[(w->s).id] != NULL) {
+    (PTR_ARRAY_08386300[(w->s).id])(w);
+  }
+}
 
 // --------------------------------------------
 
-void FUN_080e2510(struct Elf *e);
-void FUN_080e2b78(struct Elf *e);
-void MenuExit_FollowerElf(struct Elf *e);
-void MenuExit_SeaOtterElf(struct Elf *e);
-void FUN_080e4b88(struct Elf *e);
-void FUN_080e58bc(struct Elf *e);
+void FUN_080e2510(struct Elf* e);
+void FUN_080e2b78(struct Elf* e);
+void MenuExit_FollowerElf(struct Elf* e);
+void MenuExit_SeaOtterElf(struct Elf* e);
+void FUN_080e4b88(struct Elf* e);
+void FUN_080e58bc(struct Elf* e);
 
-// clang-format off
-const ElfFunc PTR_ARRAY_08386344[13] = {
+void close_menu_080f3d64(struct Elf* e) {
+  // clang-format off
+  static const ElfFunc PTR_ARRAY_08386344[13] = {
     [0]  = NULL, 
     [1]  = NULL, 
     [2]  = FUN_080e2510, 
@@ -952,5 +916,9 @@ const ElfFunc PTR_ARRAY_08386344[13] = {
     [10] = FUN_080e4b88, 
     [11] = NULL, 
     [12] = FUN_080e58bc,
-};
-// clang-format on
+  };
+  // clang-format on
+  if (PTR_ARRAY_08386344[(e->s).id] != NULL) {
+    (PTR_ARRAY_08386344[(e->s).id])(e);
+  }
+}

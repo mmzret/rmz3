@@ -216,6 +216,12 @@
 			src/enemy/pantheon_fist.o (.text);
 			src/enemy/shellcrawler.o (.text);
 			src/enemy/cannon_hopper.o (.text);
+			src/enemy/cattatank.o (.text);
+			src/enemy/minigame/leviathan.o (.text);
+			src/enemy/minigame/harpuia.o (.text);
+			src/enemy/minigame/ciel1.o (.text);
+			src/enemy/minigame/ciel2.o (.text);
+			src/enemy/unk_72.o (.text);
 
 		src/projectile.o (.text);
       src/projectile/lemon.o (.text);
@@ -229,6 +235,8 @@
       src/projectile/unk_08.o (.text);
       src/projectile/blazin.o (.text);
       src/projectile/blazin_tail.o (.text);
+      src/projectile/ear_shot.o (.text);
+      src/projectile/unk_12.o (.text);
       src/projectile/omega_zero.o (.text);
       src/projectile/claveker_yellow_balls.o (.text);
       src/projectile/phantom.o (.text);
@@ -444,6 +452,4 @@
         src/game/menu/elf.o (.text);
         src/game/menu/exskill.o (.text);
       src/game/analysis.o (.text);
-        asm/analysis.o (.text);
       src/game/minigame.o (.text);
-        asm/minigame.o (.text);

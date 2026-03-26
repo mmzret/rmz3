@@ -62,7 +62,7 @@ _080EF968:
 	adds r1, r3, #0
 	orrs r0, r1
 	strh r0, [r2]
-	bl text_080e9730
+	bl LoadAsciiBold
 	bl FUN_080e981c
 	ldr r0, _080EFC30 @ =gGameState+16
 	bl ClearTextWindow

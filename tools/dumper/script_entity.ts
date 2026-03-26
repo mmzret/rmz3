@@ -1,4 +1,4 @@
-#!/usr/bin/env -S deno run --allow-read --allow-write --unstable
+#!/usr/bin/env -S deno run --allow-read --allow-write
 
 import { Command } from '@cliffy/command';
 import { Parser } from '@binary-parser';
@@ -32,7 +32,10 @@ const main = async () => {
     console.log('');
     const addr = start + (i * SIZE) - BASE;
     const result = ScriptEntityTemplate.parse(rom.slice(addr, addr + SIZE));
-    console.log(`Entity_${toHex(start + (i * SIZE), 8).toLowerCase()}:`);
+
+    const hexaddr = toHex(start + (i * SIZE), 8).toLowerCase();
+    console.log(`Entity_${hexaddr}: @ 0x${hexaddr}`);
+
     switch (result.kind) {
       case 0: {
         console.log(`  .byte PLAYER, ZERO, 0, 0`);

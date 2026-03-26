@@ -2,6 +2,8 @@
 #include "enemy.h"
 #include "global.h"
 
+INCASM("asm/enemy/unk_72.inc");
+
 void Enemy72_Init(struct Enemy* p);
 void Enemy72_Update(struct Enemy* p);
 void Enemy72_Die(struct Enemy* p);

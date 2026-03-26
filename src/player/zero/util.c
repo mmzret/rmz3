@@ -7,7 +7,7 @@
 
 #define PUTITED_DAMAGE 8
 
-void ClearZeroStatus(struct ZeroStatus *p) {
+void ClearZeroStatus(struct ZeroStatus* p) {
   p->mainWeapon = WEAPON_BUSTER;
   p->subWeapon = WEAPON_SABER;
   p->element = 0;
@@ -42,7 +42,7 @@ void ClearZeroStatus(struct ZeroStatus *p) {
   p->menuZeroColor = MZC_NORMAL;
 }
 
-void ClearZeroStatusHard(struct ZeroStatus *p) {
+void ClearZeroStatusHard(struct ZeroStatus* p) {
   p->mainWeapon = WEAPON_BUSTER;
   p->subWeapon = WEAPON_SABER;
   p->element = 0;
@@ -77,7 +77,7 @@ void ClearZeroStatusHard(struct ZeroStatus *p) {
   p->menuZeroColor = MZC_HARD;
 }
 
-void ClearZeroStatusUltimate(struct ZeroStatus *p) {
+void ClearZeroStatusUltimate(struct ZeroStatus* p) {
   p->mainWeapon = WEAPON_BUSTER;
   p->subWeapon = WEAPON_SABER;
   p->element = 0;
@@ -112,7 +112,7 @@ void ClearZeroStatusUltimate(struct ZeroStatus *p) {
   p->menuZeroColor = MZC_ULTIMATE;
 }
 
-void FUN_080321d4(struct ZeroStatus *p) {
+void FUN_080321d4(struct ZeroStatus* p) {
   u8 i;
   p->mainWeapon = WEAPON_BUSTER;
   p->subWeapon = WEAPON_SABER;
@@ -137,24 +137,24 @@ void FUN_080321d4(struct ZeroStatus *p) {
   p->dying = FALSE;
 }
 
-void SaveZeroStatus(struct Zero *z, struct ZeroStatus *src) {
+void SaveZeroStatus(struct Zero* z, struct ZeroStatus* src) {
   CpuFastCopy(src, &(&z->unk_b4)->status, 32);
-  CpuCopy32((void *)src + 32, &(z->unk_b4).status.keyMap.keys.main, 16);
+  CpuCopy32((void*)src + 32, &(z->unk_b4).status.keyMap.keys.main, 16);
   (z->body).hp = 64;
 }
 
-void CopyZeroStatus(struct Zero *z, struct ZeroStatus *dst) {
+void CopyZeroStatus(struct Zero* z, struct ZeroStatus* dst) {
   CpuFastCopy(&(&z->unk_b4)->status, dst, 32);
-  CpuCopy32(&(z->unk_b4).status.keyMap.keys.main, (void *)dst + 32, 16);
+  CpuCopy32(&(z->unk_b4).status.keyMap.keys.main, (void*)dst + 32, 16);
 }
 
-void skipEventScene(struct Zero *z, struct ZeroStatus *status) {
+void skipEventScene(struct Zero* z, struct ZeroStatus* status) {
   status->maxHP = (z->body).hp;
   status->charge[0] = (z->unk_b4).status.charge[0];
   status->charge[1] = (z->unk_b4).status.charge[1];
 }
 
-void FUN_080322c4(struct ZeroStatus *status) {
+void FUN_080322c4(struct ZeroStatus* status) {
   status->maxHP = 64;
   status->charge[0] = 0;
   status->charge[1] = 0;
@@ -164,7 +164,7 @@ static const u8 u8_ARRAY_0835e84c[2] = {2, 1};
 static const u8 u8_ARRAY_0835e84e[2] = {4, 3};
 static const u8 u8_ARRAY_0835e850[2] = {6, 5};
 
-WIP void FUN_080322dc(struct Zero *z, motion_t m, u8 r2) {
+WIP void FUN_080322dc(struct Zero* z, motion_t m, u8 r2) {
 #if MODERN
   motion_t zm;
   weapon_t w[4];
@@ -183,7 +183,7 @@ WIP void FUN_080322dc(struct Zero *z, motion_t m, u8 r2) {
   }
 
   if ((z->s).motion.cmdIdx > 5) {
-    zero_input_t *input;
+    zero_input_t* input;
     if (Is1000Slash(z)) {
       if (r2 == 0) {
         z->rodToggle = 0x10;
@@ -259,7 +259,7 @@ WIP void FUN_080322dc(struct Zero *z, motion_t m, u8 r2) {
 #endif
 }
 
-void FUN_08032504(struct Zero *z, motion_t m) {
+void FUN_08032504(struct Zero* z, motion_t m) {
   motion_t zm;
 
   z->rodToggle = 0x10;
@@ -294,7 +294,7 @@ void FUN_08032504(struct Zero *z, motion_t m) {
   }
 }
 
-void FUN_080325e8(struct Zero *z, motion_t m) {
+void FUN_080325e8(struct Zero* z, motion_t m) {
   motion_t zm;
 
   if ((z->unk_b4).attackMode[2] == 0) {
@@ -318,7 +318,7 @@ void FUN_080325e8(struct Zero *z, motion_t m) {
   }
 }
 
-void FUN_0803267c(struct Zero *z, motion_t m) {
+void FUN_0803267c(struct Zero* z, motion_t m) {
   motion_t zm;
 
   if ((z->unk_b4).attackMode[2] == 0) {
@@ -346,7 +346,7 @@ void FUN_0803267c(struct Zero *z, motion_t m) {
   }
 }
 
-void zero_08032724(struct Zero *z) {
+void zero_08032724(struct Zero* z) {
   if ((z->unk_b4).attackMode[0] == 3) {
     if (z->usingWeapon == WEAPON_SABER) {
       if ((z->s).mode[1] == ZERO_AIR) {
@@ -359,7 +359,7 @@ void zero_08032724(struct Zero *z) {
   }
 }
 
-WIP void setStageElfFlags(struct Zero *z) {
+WIP void setStageElfFlags(struct Zero* z) {
 #if MODERN
   if (((*gUnlockedElfPtr)[ELF_BYSE] & ELF_AVABILITY_UNLOCKED) && (((*gUnlockedElfPtr)[ELF_BYSE] & ELF_AVABILITY_USED) || z->inCyberSpace || SATELITE_1 == ELF_BYSE || SATELITE_2 == ELF_BYSE)) {
     SET_FLAG(gCurStory.s.gameflags, BYSE_ENABLED);
@@ -387,13 +387,13 @@ WIP void setStageElfFlags(struct Zero *z) {
 #endif
 }
 
-static const cyberelf_t sSatelitableElfIDs[23] = {
-    ELF_MARTINA, ELF_MILVY, ELF_ELPHY, ELF_SYLPHY, ELF_RILPHY, ELF_PUTITE, ELF_BALETTE, ELF_MAYA, ELF_KWAPPA, ELF_GAMBUL, ELF_BYSE, ELF_DYLPHINA, ELF_LIZETUS, ELF_COTTUS, ELF_SHUTHAS, ELF_MALTHAS, ELF_ILETHAS, ELF_ENETHAS, ELF_BUSRAS, ELF_SABRAS, ELF_RODERAS, ELF_BOOMERAS, ELF_CLOKKLE,
-};
+u8 FUN_08032880(struct Zero* z, u8 r1) {
+  static const cyberelf_t sSatelitableElfIDs[23] = {
+      ELF_MARTINA, ELF_MILVY, ELF_ELPHY, ELF_SYLPHY, ELF_RILPHY, ELF_PUTITE, ELF_BALETTE, ELF_MAYA, ELF_KWAPPA, ELF_GAMBUL, ELF_BYSE, ELF_DYLPHINA, ELF_LIZETUS, ELF_COTTUS, ELF_SHUTHAS, ELF_MALTHAS, ELF_ILETHAS, ELF_ENETHAS, ELF_BUSRAS, ELF_SABRAS, ELF_RODERAS, ELF_BOOMERAS, ELF_CLOKKLE,
+  };
 
-u8 FUN_08032880(struct Zero *z, u8 r1) {
   u8 i;
-  u8 *arr;
+  u8* arr;
   u8 ctr = 0;
   if (r1 == 0xFF) {
     for (i = 0; i < ARRAY_COUNT(sSatelitableElfIDs); i++) {
@@ -425,23 +425,23 @@ u8 FUN_08032880(struct Zero *z, u8 r1) {
   return 0;
 }
 
-s16 getFallAcceleration(struct Zero *z) {
+s16 getFallAcceleration(struct Zero* z) {
   if ((z->s).coord.y - (gZeroRanges[z->posture].h >> 1) > SEA) {
     return 0x20;
   }
   return 0x40;
 }
 
-s16 calcMaxFallSpeed(struct Zero *z) {
+s16 calcMaxFallSpeed(struct Zero* z) {
   if ((z->s).coord.y - (gZeroRanges[z->posture].h >> 1) > SEA) {
     return 0x380;
   }
   return 0x700;
 }
 
-s16 getWallFallSpeed(struct Zero *z) {
+s16 getWallFallSpeed(struct Zero* z) {
   s16 dy = 0x180;
-  struct Zero_b4 *b4 = &z->unk_b4;
+  struct Zero_b4* b4 = &z->unk_b4;
 
   if (!(z->zeroInput & DPAD_DOWN)) {
     if (((b4->status).foot == FOOT_CHIP_FROG) || ((b4->status).foot == FOOT_CHIP_ULTIMA)) {
@@ -464,31 +464,27 @@ s16 getWallFallSpeed(struct Zero *z) {
   return dy;
 }
 
-WIP s16 CalcDx(struct Zero *z) {
-#if MODERN
-  struct Zero_b4 *b4 = &(z->unk_b4);
+s16 CalcDx(struct Zero* z) {
+  struct Zero_b4* b4 = &(z->unk_b4);
   s16 dx;
 
   if (z->last & INPUT_DISABLED) {
-    return 0x200;
+    return PIXEL(2);
   }
 
-  dx = 0x200;
+  dx = PIXEL(2);
   if (((b4->status).foot == FOOT_CHIP_QUICK) || ((b4->status).foot == FOOT_CHIP_ULTIMA) || (IsElfUsed(z, ELF_BALETTE))) {
-    dx = 0x280;
+    dx = PIXEL(2) + (PIXEL(1) / 2);
   }
 
   if (z->slow != 0) {
-    return (((0x100 - z->slow) * dx) >> 8) >> z->antlion;
+    return ((dx * (s32)(0x100 - z->slow)) >> 8) >> z->antlion;
   } else {
     return dx >> z->antlion;
   }
-#else
-  INCCODE("asm/wip/CalcDx.inc");
-#endif
 }
 
-s16 CalcMaxWalkSpeed(struct Zero *z) {
+s16 CalcMaxWalkSpeed(struct Zero* z) {
   if (z->last & INPUT_DISABLED) {
     return 0x200;
   }
@@ -500,7 +496,7 @@ s16 CalcMaxWalkSpeed(struct Zero *z) {
   }
 }
 
-s16 GetDashSpeed(struct Zero *z) {
+s16 GetDashSpeed(struct Zero* z) {
   if (z->last & INPUT_DISABLED) {
     return 0x380;
   }
@@ -513,37 +509,38 @@ s16 GetDashSpeed(struct Zero *z) {
 }
 
 // ジャンプ始めの上昇速度を取得
-s16 getZeroJumpingPower(struct Zero *z) {
+s16 getZeroJumpingPower(struct Zero* z) {
   if (z->slow != 0) return (0x100 - z->slow) * 5;
   return 0x500;
 }
 
-s16 getZeroRisingDy(struct Zero *z) {
+s16 getZeroRisingDy(struct Zero* z) {
   if (z->slow != 0) return (0x100 - z->slow) * 4;
   return 0x400;
 }
 
-s16 FUN_08032bac(struct Zero *z) {
+s16 FUN_08032bac(struct Zero* z) {
   if (z->slow != 0) return ((0x100 - z->slow) * 19) >> 2;
   return 0x4c0;
 }
 
-s16 GetRodJumpPower(struct Zero *z) {
+s16 GetRodJumpPower(struct Zero* z) {
   if (z->slow != 0) return (0x100 - z->slow) * 7;
   return 0x700;
 }
 
-s16 FUN_08032c04(struct Zero *z) {
+s16 FUN_08032c04(struct Zero* z) {
   if (z->slow != 0) return ((0x100 - z->slow) * 9) >> 1;
   return 0x480;
 }
 
-s16 FUN_08032c30(struct Zero *z) {
+s16 FUN_08032c30(struct Zero* z) {
   if (z->slow != 0) return ((0x100 - z->slow) * 21) >> 2;
   return 0x540;
 }
 
-WIP s16 GetSplitHeavenSpeed(struct Zero *z) {
+// くっそ単純なコードなのにどうしてもコンパイル結果合わない なんでえ？
+NON_MATCH s16 GetSplitHeavenSpeed(struct Zero* z) {
 #if MODERN
   if (z->slow != 0) {
     return 0x100 - z->slow;
@@ -554,12 +551,12 @@ WIP s16 GetSplitHeavenSpeed(struct Zero *z) {
 #endif
 }
 
-WIP bool8 IsElfUsed(struct Zero *z, cyberelf_t elfID) {
+WIP bool8 IsElfUsed(struct Zero* z, cyberelf_t elfID) {
 #if MODERN
   const u8 availability = (*gUnlockedElfPtr)[elfID];
   if (availability & ELF_AVABILITY_UNLOCKED) {
-    struct Zero_b4 *b4;
-    cyberelf_t *satelites;
+    struct Zero_b4* b4;
+    cyberelf_t* satelites;
 
     if (availability & ELF_AVABILITY_USED) {
       return TRUE;
@@ -580,8 +577,8 @@ WIP bool8 IsElfUsed(struct Zero *z, cyberelf_t elfID) {
 #endif
 }
 
-u8 GetZeroColor(struct Zero *z) {
-  struct Zero_b4 *b4 = &(z->unk_b4);
+u8 GetZeroColor(struct Zero* z) {
+  struct Zero_b4* b4 = &(z->unk_b4);
   u8 c = (b4->status).menuZeroColor;
   if (c == MZC_ULTIMATE) {
     return BODY_CHIP_ULTIMA;
@@ -592,7 +589,7 @@ u8 GetZeroColor(struct Zero *z) {
   return (b4->status).body;
 }
 
-void InstantlyKilling(struct Zero *z) {
+void InstantlyKilling(struct Zero* z) {
   if ((z->body).hp != 0) {
     if (((z->body).invincibleTime == 0) || (z->unk_149 != 0)) {
       if (IsElfUsed(z, ELF_PUTITE)) {

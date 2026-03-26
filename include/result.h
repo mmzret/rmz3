@@ -5,7 +5,7 @@
 #include "global.h"
 
 struct ResultState {
-  u8 unk_00[4];
+  u8 mode[4];  // 現在実行する処理を決める
   u16 frame;
   u16 unk_06;
   u16 unk_08;

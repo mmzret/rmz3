@@ -19,7 +19,6 @@ struct SramState {
   u16 health;
 };  // 32 bytes
 
-typedef void (*sramFunc)(const u8* src, u8* dest, u32 size);
 typedef void (*saveFunc)(struct SramState* s);
 
 extern struct SramState gSramState;

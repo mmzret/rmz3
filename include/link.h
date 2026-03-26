@@ -73,6 +73,7 @@ struct Link {
 extern u16 gLinkSavedIme;
 extern u8 sNumVBlanksWithoutSerialIntr;
 extern bool8 sSendBufferEmpty;
+extern u8 u8_02000008;
 extern u8 sChecksumAvailable;
 extern u16 sSendNonzeroCheck;
 extern u16 sRecvNonzeroCheck;

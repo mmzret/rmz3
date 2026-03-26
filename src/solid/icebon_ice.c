@@ -98,7 +98,7 @@ static void IcebonIce_Die(struct Solid* p) {
 
   c.x = (p->s).coord.x;
   c.y = (p->s).coord.y + PIXEL(16);
-  FUN_080b81a0((struct CollidableEntity*)p, &c, (motion_t*)sMotions, 4);
+  FUN_080b81a0((struct Entity*)p, &c, (motion_t*)sMotions, 4);
   SET_SOLID_ROUTINE(p, ENTITY_EXIT);
 }
 

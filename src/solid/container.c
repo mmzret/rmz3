@@ -5,6 +5,8 @@
 #include "solid.h"
 #include "vfx.h"
 
+// ゼロが壊すとアイテムとかディスクが出る箱
+
 static const struct Collision sCollision;
 static const struct SlashedEnemy sSlashedEnemies[4];
 static const struct Rect sSize;
@@ -23,8 +25,7 @@ const SolidRoutine gContainerRoutine = {
 };
 // clang-format on
 
-WIP static void Container_Init(struct Solid* p) {
-#if MODERN
+static void Container_Init(struct Solid* p) {
   const s32 n = SM226_CRASH_CONTAINER + (p->s).work[0];
   LOAD_STATIC_GRAPHIC(n);
 
@@ -32,9 +33,16 @@ WIP static void Container_Init(struct Solid* p) {
   (p->s).flags |= DISPLAY;
   (p->s).flags |= FLIPABLE;
   SetMotion(&p->s, MOTION(SM226_CRASH_CONTAINER, 0x00));
-  (p->s).flags &= ~X_FLIP;
-  (p->s).spr.xflip = FALSE;
-  (p->s).spr.oam.xflip = FALSE;
+  {
+    bool8 xflip = FALSE;
+    if (xflip) {
+      (p->s).flags |= X_FLIP;
+    } else {
+      (p->s).flags &= ~X_FLIP;
+    }
+    (p->s).spr.xflip = xflip & 1;
+    (p->s).spr.oam.xflip = xflip;
+  }
   INIT_BODY(p, &sCollision, 6, NULL);
   (p->s).flags2 |= ENTITY_HAZARD;
   (p->s).size = &sSize;
@@ -49,9 +57,6 @@ WIP static void Container_Init(struct Solid* p) {
   }
   SET_SOLID_ROUTINE(p, ENTITY_UPDATE);
   Solid35_Update(p);
-#else
-  INCCODE("asm/wip/Container_Init.inc");
-#endif
 }
 
 static void Solid35_Update(struct Solid* p) {
@@ -67,7 +72,7 @@ static void FUN_080dc434(struct Solid* p);
 static void FUN_080dc524(struct Solid* p);
 
 static void Solid35_Die(struct Solid* p) {
-  static const SolidFunc PTR_ARRAY_08371550[2] = {
+  static const SolidFunc sDeads[2] = {
       FUN_080dc434,
       FUN_080dc524,
   };
@@ -84,7 +89,7 @@ static void Solid35_Die(struct Solid* p) {
     (p->s).flags &= ~COLLIDABLE;
     (p->s).flags2 &= ~ENTITY_HAZARD;
   }
-  (PTR_ARRAY_08371550[(p->s).mode[1]])(p);
+  (sDeads[(p->s).mode[1]])(p);
 }
 
 static void FUN_080dc434(struct Solid* p) {
@@ -166,10 +171,7 @@ static const struct Collision sCollision = {
   kind : DRP,
   faction : FACTION_ENEMY,
   damage : 0,
-  atkType : 0xFF,
-  element : 0xFF,
-  nature : 0xFF,
-  comboLv : 0xFF,
+  LAYER(0xFFFFFFFF),
   hitzone : 1,
   hardness : HARDNESS_B3,
   remaining : 0,

@@ -390,11 +390,11 @@ static void ShieldGuard_Die(struct Weapon* w) {
 
 static void onCollision(struct Body* body, struct Coord* c1 UNUSED, struct Coord* c2 UNUSED) {
   if (body->hitboxFlags & BODY_STATUS_B6) {
-    struct CollidableEntity* enemy;
-    if ((enemy = body->enemy->parent, (enemy->s).kind == ENTITY_PROJECTILE) && ((enemy->s).id == PROJECTILE_LEMON)) {
+    struct Entity* enemy;
+    if ((enemy = (struct Entity*)body->enemy->parent, enemy->kind == ENTITY_PROJECTILE) && (enemy->id == PROJECTILE_LEMON)) {
       struct Weapon_b4* b4;
       struct Weapon* shield = (struct Weapon*)body->parent;
-      (shield->s).unk_coord = (enemy->s).coord;
+      (shield->s).unk_coord = enemy->coord;
       b4 = &shield->props.common;
       b4->props[1][1]++;
     }

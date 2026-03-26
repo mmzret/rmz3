@@ -47,7 +47,7 @@ struct TextWindowText {
   u16 len;   // .current の文字数
   u16 done;  // 処理済みの文字数
   u16 frame;
-  u16 unk_16;
+  s16 unk_16;
   char_t* start;
   char_t* current;
   char_t* next;

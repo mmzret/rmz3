@@ -8,10 +8,16 @@ struct Intro {
   u8 unk_00[4];
   u8 mode[4];
   s16 titleFrame;  // タイトル画面用のフレームカウンタ
-  u16 frame;
+  s16 frame;
   u32 rng;
   u16 saveOK;  // ストーリーのセーブデータが正常
-  s16 unk_12;
+
+  // どのデモプレイを再生するかを決める
+  //  bit0:    0なら デモプレイ1(プロローグ)、 1ならデモプレイ2(最初の4ステージのお手本)
+  //  bit1..2: デモプレイ2の場合(bit0 = 1) にどのステージでのデモプレイを流すか
+  //  bit4.. : 不使用
+  s16 demo_id;
+
   u8 unk_14[544];
   u8 unk_234;
   u8 unk_235;
@@ -24,7 +30,10 @@ struct Intro {
   u16 unk_240;
   u8 unk_242;
   u8 unk_243;
-  u8 unk_244[4];
+  u8 unk_244;
+  u8 unk_245;
+  u8 unk_246;
+  u8 unk_247;
   u16 demoKeyIdx;      // 例: 08385714 のidx (080ebe84)
   u8 demoKeyFrame;     // 現在の DemoKeyIdx で経過したフレーム
   u8 demoKeyFrameEnd;  // .demoKeyFrame がこの値と等しくなったら次のidxへ
@@ -35,9 +44,6 @@ struct Intro {
   u8 unk_253;
 };  // 596 bytes
 
-typedef void (*IntroLoopFunc)(struct Intro*);
-
-extern const IntroLoopFunc gIntroLoops[7];
 extern struct Intro gIntro;
 
 extern const struct Graphic gGraphic_Inti;

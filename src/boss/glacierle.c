@@ -10,6 +10,7 @@ void CreateSolidGlacierleArm(struct Boss* glacierle, s32 x, s32 y);
 static const u8 u8_ARRAY_08364aac[2];
 static const struct Collision sCollisions[135];
 static const struct Coord sElementCoord;
+static const u8 sGlacierleModes[48];
 
 static void Glacierle_Init(struct Boss* p);
 static void Glacierle_Update(struct Boss* p);
@@ -71,7 +72,7 @@ _080579AA:\n\
 	b _080579CE\n\
 	.align 2, 0\n\
 _080579BC: .4byte RNG_0202f388\n\
-_080579C0: .4byte 0x08364A7C\n\
+_080579C0: .4byte sGlacierleModes\n\
 _080579C4:\n\
 	ldr r0, _08057A0C @ =gMission\n\
 	ldr r0, [r0]\n\
@@ -138,13 +139,13 @@ _08057A1C:\n\
 }
 
 static void onCollision(struct Body* body, struct Coord* r1 UNUSED, struct Coord* r2 UNUSED) {
-  struct CollidableEntity* e = (struct CollidableEntity*)body->enemy->parent;
+  struct Entity* e = (struct Entity*)body->enemy->parent;
   struct Boss* p = (struct Boss*)body->parent;
 
   if (body->hitboxFlags & BODY_STATUS_WHITE) {
-    (p->props.glacierle).unk_c8.x = (e->s).coord.x;
-    (p->props.glacierle).unk_c8.y = (e->s).coord.y;
-    (p->props.glacierle).shouldRightDir = (p->s).coord.x < (e->s).coord.x;
+    (p->props.glacierle).unk_c8.x = (e->coord).x;
+    (p->props.glacierle).unk_c8.y = (e->coord).y;
+    (p->props.glacierle).shouldRightDir = (p->s).coord.x < (e->coord).x;
   }
 }
 

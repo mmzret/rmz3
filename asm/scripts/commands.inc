@@ -110,10 +110,10 @@
   .4byte 0
 	.endm
 
-	.macro cmd08 a b c
+	.macro cmd08 a c
   .byte 0x08
 	.byte \a
-  .2byte \b
+  .2byte 0x00
   .4byte \c
 	.endm
 
@@ -193,6 +193,13 @@
   .4byte 0x02 + \val
 	.endm
 
+  .macro cmd0f a b c
+  .byte 0x0F
+  .byte \a
+  .2byte \b
+  .4byte \c
+	.endm
+
 	.macro emergency_on
   .byte 0x10, 0
   .2byte 0, 0, 0
@@ -257,13 +264,20 @@
   .2byte 0, 0, 0
 	.endm
 
-	.macro rune x y string
+  @ string_id で指定した文字列(string.s) を描画させる (print_string_end を呼ぶまで表示し続ける)
+	.macro print_string x y string_id
   .byte 0x15
 	.byte \x
   .2byte \y
-  .2byte \string
+  .2byte \string_id
   .2byte 0x00
 	.endm
+
+  @ print_string で表示した文字列　はこのコマンドを呼ぶまで消えない
+  .macro print_string_end
+  .byte 0x15, 0x00
+  .2byte 0x00, 0x00, 0x00
+  .endm
 
 	.macro indicator a b c
   .byte 0x16

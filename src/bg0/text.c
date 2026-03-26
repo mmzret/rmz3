@@ -5,25 +5,25 @@
 
 #define FONT_BOLD 0x7800
 
-static s32 printStringWithLen(u8 startX, u8 startY, char_t *s, u16 len);
+static s32 printStringWithLen(u8 startX, u8 startY, char_t* s, u16 len);
 
-void InitTextPrinter(u32 *bg0) {
-  gTextPrinter.bg0 = (tile_id_t *)bg0;
+void InitTextPrinter(u32* bg0) {
+  gTextPrinter.bg0 = (tile_id_t*)bg0;
   gTextPrinter.inserted = &gTerminateCharCode;
   gTextPrinter.startX = 0;
   gTextPrinter.endX = 30;
   gTextPrinter.startY = 0;
   gTextPrinter.endY = 22;
-  text_080e9730();
+  LoadAsciiBold();
 }
 
-void text_080e9730(void) {
+void LoadAsciiBold(void) {
   static const ALIGNED(4) u16 sDefaultBGPalette[SLOT_4BPP] = {
       0x0000, 0xFFFF, 0xB9CE, 0x8421, 0xC21F, 0xABFF, 0xC3EC, 0x9E80, 0xA110, 0xF3F3, 0xF68A, 0xD14A, 0xA8FC, 0x8537, 0x908D, 0xCEB5,
   };
 
   u8 val;
-  CpuFastCopy(gFontBold, (void *)(CHAR_BASE(0) + VRAM + FONT_BOLD), 2048);
+  CpuFastCopy(gFontBold, (void*)(CHAR_BASE(0) + VRAM + FONT_BOLD), 2048);
   val = 0;
   CpuFastCopy(sDefaultBGPalette, gPaletteManager.buf, 32);
   gTextPrinter.startX = val;
@@ -35,7 +35,7 @@ void text_080e9730(void) {
 
 WIP void ResetCharTiles(void) {
 #if MODERN
-  struct CharTile *tile;
+  struct CharTile* tile;
   gTextPrinter.freelist = NULL;
   for (s32 i = 79; i >= 0; i--) {
     tile = &gTextPrinter.tilelist[i];
@@ -51,9 +51,9 @@ WIP void ResetCharTiles(void) {
 }
 
 void LoadKatakanaBold(void) {
-  const void *src = &gFontBold[0x40];
-  const u16 charBase = (*((u16 *)&gVideoRegBuffer.bgcnt[0]) & 0xc) << 12;
-  CpuFastCopy(src, (void *)(VRAM + 0x7000 + charBase), 2048);
+  const void* src = &gFontBold[0x40];
+  const u16 charBase = (*((u16*)&gVideoRegBuffer.bgcnt[0]) & 0xc) << 12;
+  CpuFastCopy(src, (void*)(VRAM + 0x7000 + charBase), 2048);
 }
 
 void FUN_080e981c(void) {
@@ -342,7 +342,7 @@ _080E9A70: .4byte gFontBig+32\n\
  .syntax divided\n");
 }
 
-s16 getStringLength(char_t *s) {
+s16 getStringLength(char_t* s) {
   s16 len = 0;
   for (; *s < CHAR_NEXT; s++) {
     if (*s == CHAR_INSERT) {  // Insert
@@ -356,7 +356,7 @@ s16 getStringLength(char_t *s) {
 }
 
 // Unused
-static s16 GetLineCount(char_t *s) {
+static s16 GetLineCount(char_t* s) {
   s16 line = 1;
   for (; *s < CHAR_NEXT; s++) {
     if (*s == CHAR_LF) {
@@ -366,9 +366,9 @@ static s16 GetLineCount(char_t *s) {
   return line;
 }
 
-void PrintString(const char_t *s, u32 x, u32 y) {
+void PrintString(const char_t* s, u32 x, u32 y) {
   if (gTextPrinter.len < MAX_STRING_COUNT) {
-    gTextPrinter.strings[gTextPrinter.len] = (char_t *)s;
+    gTextPrinter.strings[gTextPrinter.len] = (char_t*)s;
     gTextPrinter.x[gTextPrinter.len] = x;
     gTextPrinter.y[gTextPrinter.len] = y;
     gTextPrinter.progress[gTextPrinter.len] = -1;
@@ -376,9 +376,9 @@ void PrintString(const char_t *s, u32 x, u32 y) {
   }
 }
 
-void text_080e9b40(const char_t *s, u32 x, u32 y, u16 count) {
+void text_080e9b40(const char_t* s, u32 x, u32 y, u16 count) {
   if (gTextPrinter.len < MAX_STRING_COUNT) {
-    gTextPrinter.strings[gTextPrinter.len] = (char_t *)s;
+    gTextPrinter.strings[gTextPrinter.len] = (char_t*)s;
     gTextPrinter.x[gTextPrinter.len] = x;
     gTextPrinter.y[gTextPrinter.len] = y;
     gTextPrinter.progress[gTextPrinter.len] = count;
@@ -387,7 +387,7 @@ void text_080e9b40(const char_t *s, u32 x, u32 y, u16 count) {
 }
 
 // 文字列のうち、 rowStart行 から rowEnd行 までを描画
-void PrintRows(char_t *s, u32 x, u32 y, u16 rowStart, u16 rowEnd) {
+void PrintRows(char_t* s, u32 x, u32 y, u16 rowStart, u16 rowEnd) {
   if (gTextPrinter.len < MAX_STRING_COUNT) {
     u16 line = 0;
     for (; (line < rowStart) && (*s < CHAR_NEXT); s++) {
@@ -421,7 +421,7 @@ void PrintRows(char_t *s, u32 x, u32 y, u16 rowStart, u16 rowEnd) {
 }
 
 // 文字列を skipBytesize だけ読み飛ばす
-char_t *SkipString(char_t *s, s32 skipBytesize) {
+char_t* SkipString(char_t* s, s32 skipBytesize) {
   for (; (*s < CHAR_NEXT) && (skipBytesize != 0); s++) {
     if (*s < CHAR_KANJI) {
       skipBytesize--;
@@ -438,20 +438,22 @@ char_t *SkipString(char_t *s, s32 skipBytesize) {
 }
 
 // x, y is 8x8 tile unit
-WIP void PrintUnicodeString(u8 *s, u32 x, u32 y) {
+WIP void PrintUnicodeString(u8* s, u32 x, u32 y) {
 #if MODERN
+  tile_id_t* dst = gTextPrinter.bg0;
   if (y < 32) {
-    tile_id_t *bg0 = &gTextPrinter.bg0[x + (y * 32)];
-    for (; *s != 0; s++, bg0++) {
-      if (x < 32) {
-        if (*s < UNICODE_A) {
-          *bg0 = 928 + *s;
-        } else if (*s < UNICODE_NBSP) {
-          *bg0 = 896 + *s;
-        } else {
-          *bg0 = 736 + *s;
-        }
+    dst = &dst[x + (y * 32)];
+    while (*s != 0) {
+      if (x > 31) return;
+      if (*s < UNICODE_A) {
+        *dst = 928 + *s;
+      } else if (*s < UNICODE_NBSP) {
+        *dst = 896 + *s;
+      } else {
+        *dst = 736 + *s;
       }
+      s++;
+      dst++;
     }
   }
 #else
@@ -465,7 +467,7 @@ NAKED void minigame_str_080e9d04(s32 r0, u16 r1, u16 r2) { INCCODE("asm/todo/min
 NAKED void unused_080e9d94(s32 r0, u16 r1, u16 r2) { INCCODE("asm/unused/unused_080e9d94.inc"); };
 #endif
 
-NAKED static s32 printStringWithLen(u8 startX, u8 startY, char_t *s, u16 len) {
+NAKED static s32 printStringWithLen(u8 startX, u8 startY, char_t* s, u16 len) {
   asm(".syntax unified\n\
 	push {r4, r5, r6, r7, lr}\n\
 	mov r7, sl\n\
@@ -718,7 +720,7 @@ _080E9FDC: .4byte 0x000003FF\n\
  .syntax divided\n");
 }
 
-NAKED static struct CharTile *getFreeCharTile(u16 styledChar) {
+NAKED static struct CharTile* getFreeCharTile(u16 styledChar) {
   asm(".syntax unified\n\
 	push {r4, r5, r6, r7, lr}\n\
 	lsls r0, r0, #0x10\n\

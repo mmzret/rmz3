@@ -4,6 +4,11 @@
 #include "global.h"
 #include "sram.h"
 
+/**
+ * Manages the saving of system data.
+ * Specifically, it manages high scores for mini-games, unlocking Hard Mode and Ultimate Mode, and usage flags for The Modification Cards.
+ */
+
 // 0x08338dc4
 static const mod_t MsgBoxModIDs[8] = {76, 77, 79, 98, 112, 120, 137, 139};
 static const mod_t TitleScreenModIDs[4] = {63, 114, 152, 154};

@@ -11,12 +11,11 @@
 extern const s32 s32_ARRAY_080fece4[2];
 
 static bool32 runFieldScript(struct VM* vm);
-static void updateScreenEffectZ(struct VM* vm);
-static void writeRune(struct VM* vm);
+static void PrintScriptString(struct VM* vm);
 static void readInput(struct VM* vm);
 static void filterEmergencyRed(struct VM* vm);
 static void quakeScreen(struct VM* vm);
-static void FUN_08021f2c(struct VM* vm);
+static void StepTransition(struct VM* vm);
 static void tryDeleteIndicator(struct VM* vm);
 static void tryForceZeroXCoord(struct VM* vm);
 static void NoEntryZero(struct VM* vm);
@@ -35,11 +34,11 @@ void ClearVM(struct VM* vm, u32 stageID) {
   vm->time = 0;
   vm->wait = 0;
   vm->forcedKey = 0;
-  vm->screenEffect = NO_SCREEN_EFFECT;
+  vm->transition = TRANSITION_NONE;
   vm->unk_14a = 0;
   vm->emergency = 0;
   vm->magnitude = 0;
-  vm->rune.raw = 0;
+  vm->string.raw = 0;
   vm->indicator = NULL;
   vm->bgm = MUS_NONE;
   vm->zeroDeathTextIDs[0] = vm->zeroDeathTextIDs[1] = 0xFFFF;
@@ -94,16 +93,18 @@ bool32 RunVM(struct VM* vm) {
   readInput(vm);
   filterEmergencyRed(vm);
   quakeScreen(vm);
-  FUN_08021f2c(vm);
+  StepTransition(vm);
   tryDeleteIndicator(vm);
   tryForceZeroXCoord(vm);
   NoEntryZero(vm);
   return done;
 }
 
-void FUN_08021ca0(struct VM* vm) {
-  updateScreenEffectZ(vm);
-  writeRune(vm);
+static void _RenderWipeZ(struct VM* vm);
+
+void RenderWipeZ(struct VM* vm) {
+  _RenderWipeZ(vm);
+  PrintScriptString(vm);
 }
 
 void FUN_08021cb4(struct VM* vm, const struct Command* script, struct Entity* e) {
@@ -231,148 +232,41 @@ static void readInput(struct VM* vm) {
   }
 }
 
-NAKED static void FUN_08021f2c(struct VM* vm) {
-  asm(".syntax unified\n\
-	push {r4, r5, r6, r7, lr}\n\
-	mov r7, r8\n\
-	push {r7}\n\
-	adds r4, r0, #0\n\
-	movs r0, #0xa2\n\
-	lsls r0, r0, #1\n\
-	adds r5, r4, r0\n\
-	ldr r3, [r5]\n\
-	lsrs r1, r3, #0x10\n\
-	cmp r3, #0\n\
-	beq _0802202A\n\
-	movs r0, #8\n\
-	ands r0, r3\n\
-	cmp r0, #0\n\
-	beq _08021FB0\n\
-	ldr r1, _08021F9C @ =gPaletteManager\n\
-	ldr r2, _08021FA0 @ =0x00000402\n\
-	adds r2, r2, r1\n\
-	mov r8, r2\n\
-	movs r4, #0\n\
-	movs r0, #0x20\n\
-	strb r0, [r2]\n\
-	ldr r6, _08021FA4 @ =0x00000401\n\
-	adds r7, r1, r6\n\
-	strb r0, [r7]\n\
-	movs r2, #0x80\n\
-	lsls r2, r2, #3\n\
-	adds r6, r1, r2\n\
-	strb r0, [r6]\n\
-	movs r0, #0xc0\n\
-	lsls r0, r0, #0xa\n\
-	adds r1, r3, r0\n\
-	str r1, [r5]\n\
-	movs r0, #0x80\n\
-	lsls r0, r0, #0xf\n\
-	cmp r1, r0\n\
-	bls _0802202A\n\
-	movs r0, #1\n\
-	ands r1, r0\n\
-	cmp r1, #0\n\
-	bne _08021F8C\n\
-	movs r0, #0xc7\n\
-	bl PlaySound\n\
-	mov r1, r8\n\
-	strb r4, [r1]\n\
-	strb r4, [r7]\n\
-	strb r4, [r6]\n\
-_08021F8C:\n\
-	str r4, [r5]\n\
-	ldr r2, _08021FA8 @ =gWindowRegBuffer\n\
-	ldrh r1, [r2]\n\
-	ldr r0, _08021FAC @ =0x0000DFFF\n\
-	ands r0, r1\n\
-	strh r0, [r2]\n\
-	b _0802202A\n\
-	.align 2, 0\n\
-_08021F9C: .4byte gPaletteManager\n\
-_08021FA0: .4byte 0x00000402\n\
-_08021FA4: .4byte 0x00000401\n\
-_08021FA8: .4byte gWindowRegBuffer\n\
-_08021FAC: .4byte 0x0000DFFF\n\
-_08021FB0:\n\
-	movs r0, #1\n\
-	ands r0, r3\n\
-	cmp r0, #0\n\
-	bne _08021FBC\n\
-	movs r0, #0x40\n\
-	subs r1, r0, r1\n\
-_08021FBC:\n\
-	movs r0, #4\n\
-	ands r0, r3\n\
-	cmp r0, #0\n\
-	beq _08021FF4\n\
-	ldr r2, _08021FEC @ =gPaletteManager\n\
-	lsrs r1, r1, #1\n\
-	movs r0, #0x40\n\
-	subs r0, r0, r1\n\
-	ldr r6, _08021FF0 @ =0x00000402\n\
-	adds r1, r2, r6\n\
-	strb r0, [r1]\n\
-	movs r1, #0xff\n\
-	ands r0, r1\n\
-	subs r6, #1\n\
-	adds r1, r2, r6\n\
-	strb r0, [r1]\n\
-	movs r1, #0x80\n\
-	lsls r1, r1, #3\n\
-	adds r2, r2, r1\n\
-	strb r0, [r2]\n\
-	movs r2, #0x80\n\
-	lsls r2, r2, #9\n\
-	adds r0, r3, r2\n\
-	b _08022016\n\
-	.align 2, 0\n\
-_08021FEC: .4byte gPaletteManager\n\
-_08021FF0: .4byte 0x00000402\n\
-_08021FF4:\n\
-	ldr r2, _08022034 @ =gPaletteManager\n\
-	lsrs r1, r1, #1\n\
-	ldr r6, _08022038 @ =0x00000402\n\
-	adds r0, r2, r6\n\
-	strb r1, [r0]\n\
-	movs r0, #0xff\n\
-	ands r1, r0\n\
-	subs r6, #1\n\
-	adds r0, r2, r6\n\
-	strb r1, [r0]\n\
-	movs r0, #0x80\n\
-	lsls r0, r0, #3\n\
-	adds r2, r2, r0\n\
-	strb r1, [r2]\n\
-	movs r1, #0x80\n\
-	lsls r1, r1, #0xa\n\
-	adds r0, r3, r1\n\
-_08022016:\n\
-	str r0, [r5]\n\
-	movs r6, #0xa2\n\
-	lsls r6, r6, #1\n\
-	adds r2, r4, r6\n\
-	ldr r1, [r2]\n\
-	ldr r0, _0802203C @ =0x00400005\n\
-	cmp r1, r0\n\
-	bls _0802202A\n\
-	movs r0, #0\n\
-	str r0, [r2]\n\
-_0802202A:\n\
-	pop {r3}\n\
-	mov r8, r3\n\
-	pop {r4, r5, r6, r7}\n\
-	pop {r0}\n\
-	bx r0\n\
-	.align 2, 0\n\
-_08022034: .4byte gPaletteManager\n\
-_08022038: .4byte 0x00000402\n\
-_0802203C: .4byte 0x00400005\n\
- .syntax divided\n");
+static void StepTransition(struct VM* vm) {
+  u32 mode = vm->transition;
+  u32 counter = mode >> 16;
+  if (mode != TRANSITION_NONE) {
+    if (mode & TRANSITION_Z) {
+      gPaletteManager.filter[0] = gPaletteManager.filter[1] = gPaletteManager.filter[2] = 0x20;
+      vm->transition += (0x3 << 16);
+      if (vm->transition > (64 << 16)) {
+        if (!(vm->transition & TRANSITION_REVERSE)) {
+          PlaySound(SE_UNK_c7);
+          gPaletteManager.filter[0] = gPaletteManager.filter[1] = gPaletteManager.filter[2] = 0x0;
+        }
+        vm->transition = TRANSITION_NONE;
+        gWindowRegBuffer.dispcnt &= ~DISPCNT_WIN0_ON;
+      }
+    } else {
+      if (!(mode & TRANSITION_REVERSE)) {
+        counter = 64 - counter;
+      }
+      if (mode & TRANSITION_WHITEOUT) {
+        gPaletteManager.filter[0] = gPaletteManager.filter[1] = gPaletteManager.filter[2] = 0x40 - (counter >> 1);
+        vm->transition += (0x1 << 16);
+      } else {
+        gPaletteManager.filter[0] = gPaletteManager.filter[1] = gPaletteManager.filter[2] = (counter >> 1);
+        vm->transition += (0x2 << 16);
+      }
+      if (vm->transition > ((64 << 16) | 5)) {
+        vm->transition = TRANSITION_NONE;
+      }
+    }
+  }
 }
 
 // Zマークを作りながらの暗転(or Zマークを作りながらの暗転からの復帰)
-NAKED static void updateScreenEffectZ(struct VM* vm) {
+NAKED static void _RenderWipeZ(struct VM* vm) {
   asm(".syntax unified\n\
 	push {r4, r5, r6, r7, lr}\n\
 	movs r1, #0xa2\n\
@@ -540,12 +434,13 @@ _08022170:\n\
  .syntax divided\n");
 }
 
-static void writeRune(struct VM* vm) {
-  const s32 rune = vm->rune.raw;
-  if (rune != 0) {
-    u8 x = rune >> 16;
-    u8 y = rune >> 24;
-    PrintString(STRING(rune & 0xFFFF), x, y);
+// print_string (Cmd_printstring) でリクエストされた文字列があれば描画する (コマンド側で文字列の描画の終了がリクエストされるまで毎フレーム描画される)
+static void PrintScriptString(struct VM* vm) {
+  const s32 s = vm->string.raw;
+  if (s != 0) {
+    u8 x = s >> 16;
+    u8 y = s >> 24;
+    PrintString(STRING(s & 0xFFFF), x, y);
   }
 }
 

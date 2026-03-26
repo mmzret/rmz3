@@ -51,7 +51,7 @@ Solid17_Init: @ 0x080CF0FC
 	strb r0, [r4, #0xb]
 	ldrb r0, [r4, #0x1c]
 	strb r0, [r4, #0x1d]
-	ldr r0, _080CF19C @ =FUN_080cf098
+	ldr r0, _080CF19C @ =onCollision
 	str r0, [r5, #0x24]
 	ldrb r1, [r4, #0xb]
 	movs r0, #8
@@ -81,7 +81,7 @@ Solid17_Init: @ 0x080CF0FC
 _080CF190: .4byte gSolidFnTable
 _080CF194: .4byte 0x08370624
 _080CF198: .4byte 0x083705BC
-_080CF19C: .4byte FUN_080cf098
+_080CF19C: .4byte onCollision
 _080CF1A0: .4byte 0x0837061C
 _080CF1A4: .4byte 0x00002001
 _080CF1A8: .4byte 0xFFFFF800

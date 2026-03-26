@@ -174,12 +174,17 @@ void PrintOptionMessage2(TextID n) {
   t->textType = 0;
 }
 
-WIP void PrintResultInline(TextID t, bool16 ng) {
-#if MODERN
+void PrintResultInline(TextID t, bool16 ng) {
+  // const char_t* table = gTextTable[t >> 8];
+  // const u16 ofs = gTextOffsetTable[t >> 8][t & 0xFF];
+  // const char_t* s = &table[ofs];
+  u16 ofs;
+  char_t* s;
   struct TextWindowText* tw = &gTextWindow.text;
-  const char_t* table = gTextTable[t >> 8];
-  const u16 ofs = gTextOffsetTable[t >> 8][t & 0xFF];
-  const char_t* s = &table[ofs];
+  char_t** table = (char_t**)gTextTable;
+  table = &table[t >> 8];
+  ofs = gTextOffsetTable[t >> 8][t & 0xFF];
+  s = &((*table)[ofs]);
 
   if (!ng) {
     PlaySound(SE_NOTIFICATION);
@@ -192,9 +197,6 @@ WIP void PrintResultInline(TextID t, bool16 ng) {
   resetTextWindow(tw);
   setupTextWindow(tw);
   *((u32*)&tw->props) = 3;
-#else
-  INCCODE("asm/wip/PrintResultInline.inc");
-#endif
 }
 
 static void resetTextWindow(struct TextWindowText* t) {

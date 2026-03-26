@@ -419,7 +419,7 @@ WIP static void GameLoop_Overworld(struct GameState* p) {
   UpdateTextWindow();
   RunOverworldLoop(p);
 
-  if ((((gJoypad[0].pressed & START_BUTTON) && (*(s32*)p->mode == 0x400)) && ((((p->z2->body).status & BODY_STATUS_DEAD) == 0 && ((p->z2->body).hp != 0)))) && ((((gTextWindow.text.mode == 0 || (gTextWindow.text.mugshot == 0)) && ((gStageRun.missionStatus & DISABLE_MENU) == 0)) && ((((((gStageRun.missionStatus & MISSION_STAY) && ((gStageRun.vm.active & 1) == 0)) && (gStageRun.vm.screenEffect == NO_SCREEN_EFFECT)) && ((gGameState.mode[2] == 0 && (!gPause)))) && ((wMOSAIC == 0 && (gLifeRecoverAmount == 0)))))))) {
+  if ((((gJoypad[0].pressed & START_BUTTON) && (*(s32*)p->mode == 0x400)) && ((((p->z2->body).status & BODY_STATUS_DEAD) == 0 && ((p->z2->body).hp != 0)))) && ((((gTextWindow.text.mode == 0 || (gTextWindow.text.mugshot == 0)) && ((gStageRun.missionStatus & DISABLE_MENU) == 0)) && ((((((gStageRun.missionStatus & MISSION_STAY) && ((gStageRun.vm.active & 1) == 0)) && (gStageRun.vm.transition == TRANSITION_NONE)) && ((gGameState.mode[2] == 0 && (!gPause)))) && ((wMOSAIC == 0 && (gLifeRecoverAmount == 0)))))))) {
     p->inMenu = TRUE;
     SetGameMode(p, GAMEMODE(MAINGAME, OPEN_MENU, 0, 0));
   }
@@ -801,7 +801,7 @@ static void GameLoop_SkieEventScene(struct GameState* p) {
   gVideoRegBuffer.dispcnt &= BG_MODE_0;
   gVideoRegBuffer.dispcnt &= ~DISPCNT_BG_ALL_ON;
   gVideoRegBuffer.dispcnt |= DISPCNT_BG0_ON;
-  text_080e9730();
+  LoadAsciiBold();
   SetGameMode(p, GAMEMODE(MAINGAME, PRE_OVERWORLD, 0, 0));
 }
 

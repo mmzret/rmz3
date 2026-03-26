@@ -4,6 +4,7 @@
 // gGameState.mode[0]
 #define MAINGAME 0
 #define MODE_MENU 1
+#define DISK_ANALYSIS 2
 
 // gGameState.mode[1]
 #define NEW_GAME 0
@@ -15,6 +16,7 @@
 #define GAMEOVER 9
 #define GAMEMODE_11 11
 #define START_SPECIAL_MODE 13
+#define DEMOPLAY 14
 #define SKIP_EVENT 15
 
 #endif  // GUARD_RMZ3_CONST_GAME_H

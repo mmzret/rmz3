@@ -276,7 +276,7 @@ Script_08351150:
   adjust_camera 1, 0, 4
   adjust_camera 11, 0, 0
   adjust_camera 12, 0, 3932160
-  cmd08 1, 0, 2
+  cmd08 1, 2
   destroy 1
   play_bgm 174
   release
@@ -494,7 +494,7 @@ Script_083517c0:
   message 1, 0, 0x0702
   wait_msgbox_end
   entityflag 1, 7, TRUE
-  cmd08 1, 0, 2
+  cmd08 1, 2
   screeneffect 6
   wait_screeneffect
   wait 32

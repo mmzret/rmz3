@@ -186,7 +186,6 @@ metatile_attr_t PushoutByCeilingOnLadder(struct Zero* z, const struct Rect* r1, 
 metatile_attr_t GetWallMetatileAttr(struct Zero* z, const struct Rect* r1, bool8 _ UNUSED);
 u8 ladder_08026bb0(struct Zero* z, const struct Rect* range, bool8 _);
 u8 TryLadderDown(struct Zero* z, const struct Rect* p, bool8 _);
-bool8 TryGroundDash(struct Zero* z, const struct Rect* range, bool8 _);
 u8 TryLadderUp(struct Zero* z, const struct Rect* p, bool8 r2);
 metatile_attr_t IsOnSoftPlatform(struct Zero* z, const struct Rect* p, bool8 r2);
 s16 getFallAcceleration(struct Zero* z);

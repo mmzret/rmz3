@@ -12,50 +12,37 @@
 #include "system.h"
 #include "text.h"
 
-static const KEY_INPUT* const sDemoplayKeyInputs[4];
-static const u8* const sDemoplayKeyFrames[4];
-static const u8 sDemoplayStageIDs[4];
-static const struct Coord Coord_ARRAY_08385fa4[9];
-static const IntroLoopFunc sIntroMinigameScripts[4];
+typedef void (*IntroLoopFunc)(struct Intro*);
+
 static const u8 u8_ARRAY_08385f9c[7];
 static const s32 s32_ARRAY_08385fec[8];
 static const s32 s32_ARRAY_ARRAY_0838600c[16];
 static const struct Coord s32_ARRAY_ARRAY_0838604c[4];
 
+// --------------------------------------------
+
 static void IntroLoop_CapcomInti(struct Intro* p);
 static void IntroLoop_ComeBackTitle(struct Intro* p);
-static void IntroLoop_sram_080ebb74(struct Intro* p);
-static void IntroLoop_sram_080ebcd4(struct Intro* p);
+static void IntroLoop_DemoPlay1(struct Intro* p);
+static void IntroLoop_DemoPlay2(struct Intro* p);
 static void IntroLoop_TitleScreen(struct Intro* p);
-static void IntroLoop_080ed8dc(struct Intro* p);
+static void IntroLoop_StartMainGame(struct Intro* p);
 static void IntroLoop_Minigame(struct Intro* p);
-static void initGameSavedata(struct Intro* p);
-static void demoplay_080ebe84(struct Intro* p);
-static u8 intro_080ecd28(struct Intro* p);
-static void loadTitleScreen(struct Intro* _ UNUSED);
-static void FUN_080ed07c(struct Intro* p);
-static void intro_080ed108(struct Intro* p);
-static void intro_080ed1d4(struct Intro* p);
-static void intro_080ed2a0(struct Intro* p);
-static void intro_080ed480(struct Intro* p, u8 step);
-static void FUN_080ed57c(motion_t m, s32 x, s32 y, u16 r3, u8 r4);
-static void FUN_080ed6c4(struct Intro* p);
-static void intro_080ed770(struct Intro* p, u8 r1);
 
 /*
   Process の1つ
-  無限ループとして、 gIntroLoops を実行し続ける
-  ただし、 gIntroLoops の実行後は GameLoop に処理を戻し、別のProcessを挟む
+  無限ループとして、 sIntroLoops を実行し続ける
+  ただし、 sIntroLoops の実行後は GameLoop に処理を戻し、別のProcessを挟む
 */
 void Process_Intro(struct Process* p) {
   // clang-format off
   static const IntroLoopFunc sIntroLoops[7] = {
       [0] = IntroLoop_CapcomInti,
       [1] = IntroLoop_ComeBackTitle,
-      [2] = IntroLoop_sram_080ebb74,
-      [3] = IntroLoop_sram_080ebcd4,
+      [2] = IntroLoop_DemoPlay1,
+      [3] = IntroLoop_DemoPlay2,
       [4] = IntroLoop_TitleScreen,
-      [5] = IntroLoop_080ed8dc,
+      [5] = IntroLoop_StartMainGame,
       [6] = IntroLoop_Minigame,
   };
   // clang-format on
@@ -66,343 +53,101 @@ void Process_Intro(struct Process* p) {
   } while (TRUE);
 }
 
-static const KEY_INPUT sDemoplayKeyInputs_Volcano[144] = {
-    0x0000, 0xFC02, 0xFC12, 0xFE12, 0xFE13, 0xFE12, 0xFC02, 0xFE12, 0xFE13, 0xFE12, 0xFF12, 0xFE12, 0xFC12, 0xFC02, 0xFC12, 0xFE12, 0xFE13, 0xFE12, 0xFC12, 0xFC02, 0xFE12, 0xFE13, 0xFE12, 0xFE13, 0xFE12, 0xFC12, 0xFC02, 0xFC12, 0xFE12, 0xFF12, 0xFE12, 0xFC02, 0xFC22, 0xFE22, 0xFC22, 0xFC02, 0xFC12, 0xFC02, 0xFC12, 0xFE12, 0xFE13, 0xFE12, 0xFC02, 0xFE12, 0xFE13, 0xFE12, 0xFC12, 0xFE12, 0xFC12, 0xFC02, 0xFC00, 0xFC02, 0xFC12, 0xFC92, 0xFC82, 0xFCA2, 0xFC22, 0xFD22, 0xFC22, 0xFC02, 0xFC12, 0xFE12, 0xFE13, 0xFE12, 0xFE10, 0xFC12, 0xFC02, 0xFC12, 0xFE12, 0xFC12, 0xFE12, 0xFC12,
-    0xFC02, 0xFD02, 0xFC02, 0xFD02, 0xFC02, 0xFC03, 0xFC13, 0xFC93, 0xFC92, 0xFC90, 0xFC80, 0xFC82, 0xFCA2, 0xFC22, 0xFE23, 0xFE22, 0xFC22, 0xFC02, 0xFC12, 0xFE12, 0xFE13, 0xFE93, 0xFE92, 0xFE90, 0xFE80, 0xFE82, 0xFE92, 0xFC92, 0xFE92, 0xFE12, 0xFE13, 0xFC12, 0xFC02, 0xFE12, 0xFC12, 0xFC02, 0xFC12, 0xFE12, 0xFE13, 0xFE12, 0xFC12, 0xFC02, 0xFC12, 0xFE12, 0xFE13, 0xFE12, 0xFC12, 0xFC02, 0xFC12, 0xFE12, 0xFE13, 0xFE12, 0xFC12, 0xFC02, 0xFC12, 0xFE12, 0xFE13, 0xFE12, 0xFC12, 0xFC02, 0xFC12, 0xFE12, 0xFE13, 0xFE12, 0xFC12, 0xFC02, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000,
-};
-
-static const u8 sDemoplayFrames_Volcano[144] = {
-    0, 36, 2, 2, 10, 20, 90, 3, 6, 4, 11, 9, 1, 8, 1, 3, 15, 13, 6, 195, 4, 21, 7, 19, 2, 1, 8, 1, 3, 11, 1, 12, 10, 26, 1, 24, 14, 12, 1, 2, 14, 16, 9, 4, 23, 7, 13, 24, 46, 4, 4, 28, 54, 2, 1, 2, 1, 9, 38, 8, 1, 18, 18, 1, 4, 2, 26, 4, 19, 5, 32, 31, 5, 5, 5, 6, 62, 8, 10, 1, 1, 3, 1, 17, 12, 10, 13, 10, 4, 14, 3, 9, 44, 3, 3, 2, 2, 1, 42, 8, 2, 1, 28, 21, 174, 23, 1, 6, 2, 3, 17, 12, 2, 11, 1, 4, 17, 15, 3, 8, 1, 2, 18, 14, 2, 10, 1, 3, 20, 11, 2, 12, 1, 2, 18, 12, 3, 5, 0, 0, 0, 0, 0, 0,
-};
-
-static const KEY_INPUT sDemoplayKeyInputs_Ocean[160] = {
-    0x0000, 0xFC02, 0xFE12, 0xFE13, 0xFE12, 0xFC12, 0xFC13, 0xFC12, 0xFE12, 0xFE13, 0xFE12, 0xFC12, 0xFE12, 0xFC12, 0xFC02, 0xFC12, 0xFC02, 0xFC12, 0xFC02, 0xFE22, 0xFE23, 0xFE22, 0xFC22, 0xFC02, 0xFE12, 0xFE13, 0xFE12, 0xFE92, 0xFCA2, 0xFC22, 0xFC92, 0xFD12, 0xFC12, 0xFE12, 0xFE13, 0xFE12, 0xFC12, 0xFE12, 0xFC12, 0xFE12, 0xFE13, 0xFC13, 0xFC12, 0xFC02, 0xFC22, 0xFD22, 0xFD02, 0xFC02, 0xFC22, 0xFC02, 0xFC03, 0xFC02, 0xFC12, 0xFE12, 0xFE13, 0xFE12, 0xFC12, 0xFC13, 0xFC12, 0xFD12, 0xFC12, 0xFC22, 0xFC20, 0xFC00, 0xFC02, 0xFC12, 0xFE12, 0xFC12, 0xFC02, 0xFC22, 0xFC62, 0xFC42, 0xFC12, 0xFD02, 0xFC02, 0xFC12, 0xFE12, 0xFC12, 0xFE12, 0xFC12,
-    0xFE12, 0xFC10, 0xFC02, 0xFC12, 0xFE12, 0xFC12, 0xFC22, 0xFC02, 0xFC03, 0xFD03, 0xFD13, 0xFC13, 0xFC12, 0xFE12, 0xFE13, 0xFE12, 0xFC12, 0xFC10, 0xFC00, 0xFC02, 0xFC22, 0xFC62, 0xFC02, 0xFC12, 0xFD12, 0xFD02, 0xFC02, 0xFC12, 0xFE12, 0xFC12, 0xFE12, 0xFE10, 0xFE12, 0xFC12, 0xFC13, 0xFC12, 0xFC92, 0xFCA2, 0xFC22, 0xFC92, 0xFC12, 0xFD12, 0xFD02, 0xFC02, 0xFC12, 0xFE12, 0xFC12, 0xFE12, 0xFE13, 0xFC13, 0xFC10, 0xFC12, 0xFC02, 0xFC22, 0xFE22, 0xFC22, 0xFC23, 0xFC22, 0xFC02, 0xFC12, 0xFE12, 0xFC12, 0xFE12, 0xFC13, 0xFC03, 0xFC12, 0xFC13, 0xFC12, 0xFC13, 0xFC12, 0xFE12, 0xFE13, 0xFE12, 0xFC12, 0xFC02, 0xFE02, 0xFE23, 0xFE63, 0x0000, 0x0000,
-};
-
-static const u8 sDemoplayFrames_Ocean[160] = {
-    0, 31, 7, 21, 4, 3, 11, 19, 11, 11, 3, 20, 12, 2, 62, 43, 25, 15, 39, 1, 29, 5, 3, 10, 5, 19, 2, 1, 1, 2, 1, 10, 11, 3, 9, 5, 20, 21, 6, 16, 38, 1, 42, 10, 3, 7, 8, 13, 24, 4, 12, 38, 1, 2, 24, 1, 5, 14, 11, 10, 23, 10, 1, 4, 19, 5, 41, 61, 4, 3, 1, 1, 6, 10, 10, 5, 18, 5, 15, 7, 19, 5, 27, 3, 22, 7, 5, 8, 6, 11, 12, 1, 21, 9, 13, 4, 14, 3, 2, 16, 3, 2, 1, 3, 4, 6, 8, 7, 19, 6, 7, 2, 14, 15, 14, 12, 2, 1, 3, 2, 6, 4, 6, 14, 6, 21, 6, 18, 3, 2, 5, 10, 49, 23, 20, 1, 6, 6, 48, 1, 17, 6, 26, 4, 28, 8, 16, 18, 9, 23, 26, 18, 8, 4, 20, 1, 4, 1, 0, 0,
-};
-
-static const KEY_INPUT sDemoplayKeyInputs_RepairFactory[136] = {
-    0x0000, 0xFD00, 0xFD10, 0xFF10, 0xFF11, 0xFF10, 0xFF11, 0xFF91, 0xFF81, 0xFF21, 0xFF20, 0xFD00, 0xFD02, 0xFD00, 0xFD02, 0xFD00, 0xFD20, 0xFF20, 0xFF61, 0xFF41, 0xFD40, 0xFD50, 0xFD40, 0xFD50, 0xFD10, 0xFF10, 0xFD10, 0xFF10, 0xFD10, 0xFF10, 0xFF11, 0xFF10, 0xFD10, 0xFC10, 0xFC00, 0xFD00, 0xFD10, 0xFF10, 0xFD10, 0xFF10, 0xFF11, 0xFD11, 0xFD10, 0xFD00, 0xFD01, 0xFD03, 0xFD02, 0xFD03, 0xFC03, 0xFC02, 0xFC12, 0xFE12, 0xFE13, 0xFC13, 0xFC12, 0xFC10, 0xFC12, 0xFC02, 0xFC03, 0xFC13, 0xFC12, 0xFC13, 0xFC12, 0xFC02, 0xFC22, 0xFC02, 0xFC12, 0xFC13,
-    0xFC12, 0xFC02, 0xFC12, 0xFE12, 0xFE13, 0xFC12, 0xFC02, 0xFC00, 0xFC02, 0xFC12, 0xFC13, 0xFC12, 0xFC10, 0xFC12, 0xFE12, 0xFC12, 0xFC92, 0xFC82, 0xFC83, 0xFC03, 0xFC02, 0xFC22, 0xFC02, 0xFC12, 0xFC02, 0xFC22, 0xFC02, 0xFC12, 0xFC02, 0xFC12, 0xFC92, 0xFC82, 0xFC22, 0xFC00, 0xFC02, 0xFC22, 0xFC23, 0xFC22, 0xFC23, 0xFC22, 0xFC02, 0xFC12, 0xFC02, 0xFC22, 0xFC02, 0xFC12, 0xFE12, 0xFE13, 0xFC13, 0xFC12, 0xFC13, 0xFC12, 0xFC13, 0xFC12, 0xFC13, 0xFC12, 0xFC10, 0xFC00, 0xFC02, 0xFC12, 0xFE12, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000,
-};
-
-static const u8 sDemoplayFrames_RepairFactory[136] = {
-    0, 14, 13, 20, 12, 6, 1, 2, 1, 12, 14, 6, 5, 4, 6, 19, 10, 3, 22, 1, 3, 22, 24, 3, 4, 25, 7, 32, 24, 2, 11, 9, 64, 1, 4, 11, 23, 27, 6, 17, 19, 2, 8, 15, 11, 7, 79, 8, 3, 33, 1, 7, 27, 2, 3, 5, 1, 33, 12, 10, 16, 24, 16, 7, 32, 2, 47, 13, 14, 8, 3, 6, 21, 13, 30, 5, 42, 1, 12, 1, 4, 25, 21, 1, 2, 2, 8, 2, 34, 53, 27, 49, 21, 47, 28, 40, 17, 19, 1, 1, 9, 3, 31, 1, 29, 11, 23, 7, 11, 20, 15, 8, 19, 3, 3, 26, 1, 32, 22, 6, 10, 5, 9, 1, 2, 3, 40, 16, 26, 0, 0, 0, 0, 0, 0, 0,
-};
-
-static const KEY_INPUT sDemoplayKeyInputs_OldLifeArea[144] = {
-    0x0000, 0xFC10, 0xFE10, 0xFC10, 0xFE10, 0xFC10, 0xFE10, 0xFE11, 0xFC11, 0xFC10, 0xFC11, 0xFC10, 0xFC11, 0xFE11, 0xFE81, 0xFE21, 0xFC21, 0xFC20, 0xFC00, 0xFC02, 0xFC00, 0xFC20, 0xFE20, 0xFC20, 0xFE20, 0xFE21, 0xFE20, 0xFE21, 0xFE20, 0xFE21, 0xFE61, 0xFE11, 0xFE10, 0xFC10, 0xFC00, 0xFC02, 0xFC00, 0xFC10, 0xFE10, 0xFC10, 0xFE10, 0xFE11, 0xFC11, 0xFC10, 0xFC11, 0xFC10, 0xFC11, 0xFE91, 0xFE21, 0xFE20, 0xFC20, 0xFC00, 0xFC02, 0xFC22, 0xFC02, 0xFC00, 0xFC20, 0xFC21, 0xFC20, 0xFC21, 0xFC20, 0xFC21, 0xFC20, 0xFC81, 0xFC91, 0xFE11, 0xFE10, 0xFC10, 0xFC11, 0xFC10, 0xFC00, 0xFC01,
-    0xFC11, 0xFD11, 0xFC11, 0xFC10, 0xFE10, 0xFC10, 0xFC00, 0xFC10, 0xFC11, 0xFC10, 0xFE10, 0xFC10, 0xFE10, 0xFC10, 0xFE10, 0xFE11, 0xFC11, 0xFC10, 0xFC00, 0xFD00, 0xFC00, 0xFC10, 0xFD00, 0xFC00, 0xFC10, 0xFC00, 0xFD00, 0xFC00, 0xFC10, 0xFE10, 0xFC10, 0xFE10, 0xFC10, 0xFE10, 0xFC10, 0xFC00, 0xFC01, 0xFD01, 0xFC00, 0xFC10, 0xFE10, 0xFC10, 0xFC00, 0xFC01, 0xFD01, 0xFC00, 0xFC10, 0xFE10, 0xFC10, 0xFE10, 0xFE11, 0xFE10, 0xFC10, 0xFC90, 0xFC80, 0xFC81, 0xFC01, 0xFC00, 0xFC20, 0xFE20, 0xFF20, 0xFD20, 0xFD00, 0xFC00, 0xFC01, 0xFC21, 0xFD21, 0xFD20, 0xFD00, 0xFC00, 0xFC20, 0x0000,
-};
-
-static const u8 sDemoplayFrames_OldLifeArea[144] = {
-    0, 3, 26, 6, 29, 7, 24, 1, 14, 3, 15, 6, 4, 9, 1, 8, 4, 6, 2, 32, 6, 10, 18, 6, 4, 14, 3, 14, 6, 1, 2, 11, 4, 4, 6, 39, 4, 5, 12, 5, 7, 13, 2, 3, 14, 7, 1, 2, 13, 5, 7, 2, 45, 82, 18, 26, 56, 11, 4, 17, 28, 15, 4, 1, 1, 20, 2, 7, 21, 1, 94, 1, 13, 12, 1, 29, 10, 3, 53, 16, 22, 15, 27, 7, 23, 8, 14, 5, 8, 9, 1, 9, 24, 36, 15, 10, 21, 11, 18, 8, 5, 36, 28, 23, 5, 11, 2, 40, 1, 13, 17, 7, 21, 3, 1, 1, 14, 27, 2, 23, 7, 10, 22, 8, 16, 2, 3, 9, 3, 20, 28, 12, 4, 2, 4, 24, 19, 6, 2, 1, 10, 33, 14, 0,
-};
-
-// Demoplay Key inputs
-static const KEY_INPUT* const sDemoplayKeyInputs[4] = {
-    sDemoplayKeyInputs_Volcano,
-    sDemoplayKeyInputs_Ocean,
-    sDemoplayKeyInputs_RepairFactory,
-    sDemoplayKeyInputs_OldLifeArea,
-};
-
-// Demoplay Key inputs
-static const u8* const sDemoplayKeyFrames[4] = {
-    sDemoplayFrames_Volcano,
-    sDemoplayFrames_Ocean,
-    sDemoplayFrames_RepairFactory,
-    sDemoplayFrames_OldLifeArea,
-};
-
-static const u8 sDemoplayStageIDs[4] = {
-    STAGE_VOLCANO,
-    STAGE_OCEAN,
-    STAGE_REPAIR_FACTORY,
-    STAGE_OLD_RESIDENTIAL,
-};
-
 void SetIntroMode(struct Intro* intro, u32 mode) {
   *(u32*)(&intro->mode) = mode;
   *(u32*)(&intro->titleFrame) = 0;
 }
 
-NAKED static void IntroLoop_CapcomInti(struct Intro* p) {
-  asm(".syntax unified\n\
-	push {r4, r5, r6, lr}\n\
-	sub sp, #4\n\
-	adds r5, r0, #0\n\
-	ldr r0, _080EB90C @ =gJoypad\n\
-	ldrh r0, [r0, #4]\n\
-	cmp r0, #0\n\
-	beq _080EB8FA\n\
-	movs r0, #3\n\
-	strh r0, [r5, #8]\n\
-_080EB8FA:\n\
-	ldrb r0, [r5, #5]\n\
-	cmp r0, #6\n\
-	bls _080EB902\n\
-	b _080EBAE2\n\
-_080EB902:\n\
-	lsls r0, r0, #2\n\
-	ldr r1, _080EB910 @ =_080EB914\n\
-	adds r0, r0, r1\n\
-	ldr r0, [r0]\n\
-	mov pc, r0\n\
-	.align 2, 0\n\
-_080EB90C: .4byte gJoypad\n\
-_080EB910: .4byte _080EB914\n\
-_080EB914: @ jump table\n\
-	.4byte _080EB930 @ case 0\n\
-	.4byte _080EB984 @ case 1\n\
-	.4byte _080EB9C6 @ case 2\n\
-	.4byte _080EB9E6 @ case 3\n\
-	.4byte _080EBA42 @ case 4\n\
-	.4byte _080EBA80 @ case 5\n\
-	.4byte _080EBA9E @ case 6\n\
-_080EB930:\n\
-	adds r0, r5, #0\n\
-	bl initGameSavedata\n\
-	ldr r2, _080EBAEC @ =gVideoRegBuffer\n\
-	ldrh r1, [r2]\n\
-	ldr r0, _080EBAF0 @ =0x0000FFF8\n\
-	ands r0, r1\n\
-	movs r4, #0\n\
-	ldr r1, _080EBAF4 @ =0x0000F0FF\n\
-	ands r0, r1\n\
-	movs r3, #0xe4\n\
-	lsls r3, r3, #6\n\
-	adds r1, r3, #0\n\
-	orrs r0, r1\n\
-	strh r0, [r2]\n\
-	ldr r6, _080EBAF8 @ =0x00000206\n\
-	adds r0, r6, #0\n\
-	strh r0, [r2, #0xa]\n\
-	str r4, [r2, #0x18]\n\
-	ldr r0, _080EBAFC @ =gPaletteManager\n\
-	strh r4, [r0]\n\
-	ldr r0, _080EBB00 @ =0x08547280\n\
-	movs r1, #0x80\n\
-	lsls r1, r1, #7\n\
-	bl LoadGraphic\n\
-	ldr r0, _080EBB04 @ =0x0854728C\n\
-	movs r1, #0\n\
-	bl LoadPalette\n\
-	ldr r1, _080EBB08 @ =gBgMapOffsets\n\
-	str r4, [sp]\n\
-	movs r0, #0x38\n\
-	movs r2, #0\n\
-	movs r3, #0\n\
-	bl LoadBgMap\n\
-	strh r4, [r5, #8]\n\
-	strh r4, [r5, #0xa]\n\
-	ldrb r0, [r5, #5]\n\
-	adds r0, #1\n\
-	strb r0, [r5, #5]\n\
-_080EB984:\n\
-	ldrh r1, [r5, #0xa]\n\
-	adds r1, #1\n\
-	ldrh r0, [r5, #8]\n\
-	adds r1, r1, r0\n\
-	strh r1, [r5, #0xa]\n\
-	ldr r3, _080EBAFC @ =gPaletteManager\n\
-	movs r0, #0x40\n\
-	subs r0, r0, r1\n\
-	ldr r2, _080EBB0C @ =0x00000402\n\
-	adds r4, r3, r2\n\
-	strb r0, [r4]\n\
-	movs r2, #0xff\n\
-	ands r0, r2\n\
-	ldr r6, _080EBB10 @ =0x00000401\n\
-	adds r2, r3, r6\n\
-	strb r0, [r2]\n\
-	subs r6, #1\n\
-	adds r3, r3, r6\n\
-	strb r0, [r3]\n\
-	lsls r1, r1, #0x10\n\
-	asrs r1, r1, #0x10\n\
-	cmp r1, #0x1f\n\
-	bgt _080EB9B4\n\
-	b _080EBAE2\n\
-_080EB9B4:\n\
-	movs r0, #0x20\n\
-	strb r0, [r4]\n\
-	strb r0, [r2]\n\
-	strb r0, [r3]\n\
-	movs r0, #0x78\n\
-	strh r0, [r5, #0xa]\n\
-	ldrb r0, [r5, #5]\n\
-	adds r0, #1\n\
-	strb r0, [r5, #5]\n\
-_080EB9C6:\n\
-	ldrh r0, [r5, #0xa]\n\
-	subs r0, #1\n\
-	strh r0, [r5, #0xa]\n\
-	lsls r0, r0, #0x10\n\
-	cmp r0, #0\n\
-	beq _080EB9DC\n\
-	movs r1, #8\n\
-	ldrsh r0, [r5, r1]\n\
-	cmp r0, #0\n\
-	bne _080EB9DC\n\
-	b _080EBAE2\n\
-_080EB9DC:\n\
-	movs r0, #0x20\n\
-	strh r0, [r5, #0xa]\n\
-	ldrb r0, [r5, #5]\n\
-	adds r0, #1\n\
-	strb r0, [r5, #5]\n\
-_080EB9E6:\n\
-	ldrh r2, [r5, #0xa]\n\
-	subs r2, #1\n\
-	ldrh r0, [r5, #8]\n\
-	subs r2, r2, r0\n\
-	movs r4, #0\n\
-	adds r1, r2, #0\n\
-	strh r2, [r5, #0xa]\n\
-	ldr r3, _080EBAFC @ =gPaletteManager\n\
-	ldr r6, _080EBB0C @ =0x00000402\n\
-	adds r0, r3, r6\n\
-	strb r1, [r0]\n\
-	movs r0, #0xff\n\
-	ands r0, r1\n\
-	subs r6, #1\n\
-	adds r1, r3, r6\n\
-	strb r0, [r1]\n\
-	movs r1, #0x80\n\
-	lsls r1, r1, #3\n\
-	adds r3, r3, r1\n\
-	strb r0, [r3]\n\
-	lsls r2, r2, #0x10\n\
-	cmp r2, #0\n\
-	bgt _080EBAE2\n\
-	ldr r0, _080EBB14 @ =0x08547294\n\
-	ldr r1, _080EBB18 @ =0x0200214A\n\
-	ldrh r2, [r1]\n\
-	movs r1, #0xc\n\
-	ands r1, r2\n\
-	lsls r1, r1, #0xc\n\
-	bl LoadGraphic\n\
-	ldr r0, _080EBB1C @ =0x085472A0\n\
-	movs r1, #0\n\
-	bl LoadPalette\n\
-	ldr r1, _080EBB08 @ =gBgMapOffsets\n\
-	str r4, [sp]\n\
-	movs r0, #0x38\n\
-	movs r2, #1\n\
-	movs r3, #0\n\
-	bl LoadBgMap\n\
-	strh r4, [r5, #0xa]\n\
-	ldrb r0, [r5, #5]\n\
-	adds r0, #1\n\
-	strb r0, [r5, #5]\n\
-_080EBA42:\n\
-	ldrh r0, [r5, #0xa]\n\
-	adds r0, #1\n\
-	ldrh r2, [r5, #8]\n\
-	adds r0, r0, r2\n\
-	adds r3, r0, #0\n\
-	strh r0, [r5, #0xa]\n\
-	ldr r2, _080EBAFC @ =gPaletteManager\n\
-	ldr r6, _080EBB0C @ =0x00000402\n\
-	adds r4, r2, r6\n\
-	strb r3, [r4]\n\
-	movs r1, #0xff\n\
-	ands r1, r3\n\
-	subs r6, #1\n\
-	adds r3, r2, r6\n\
-	strb r1, [r3]\n\
-	subs r6, #1\n\
-	adds r2, r2, r6\n\
-	strb r1, [r2]\n\
-	lsls r0, r0, #0x10\n\
-	asrs r0, r0, #0x10\n\
-	cmp r0, #0x1f\n\
-	ble _080EBAE2\n\
-	movs r0, #0x20\n\
-	strb r0, [r4]\n\
-	strb r0, [r3]\n\
-	strb r0, [r2]\n\
-	movs r0, #0x78\n\
-	strh r0, [r5, #0xa]\n\
-	ldrb r0, [r5, #5]\n\
-	adds r0, #1\n\
-	strb r0, [r5, #5]\n\
-_080EBA80:\n\
-	ldrh r0, [r5, #0xa]\n\
-	subs r0, #1\n\
-	strh r0, [r5, #0xa]\n\
-	lsls r0, r0, #0x10\n\
-	cmp r0, #0\n\
-	beq _080EBA94\n\
-	movs r1, #8\n\
-	ldrsh r0, [r5, r1]\n\
-	cmp r0, #0\n\
-	beq _080EBAE2\n\
-_080EBA94:\n\
-	movs r0, #0x20\n\
-	strh r0, [r5, #0xa]\n\
-	ldrb r0, [r5, #5]\n\
-	adds r0, #1\n\
-	strb r0, [r5, #5]\n\
-_080EBA9E:\n\
-	ldrh r1, [r5, #0xa]\n\
-	subs r1, #1\n\
-	ldrh r0, [r5, #8]\n\
-	subs r1, r1, r0\n\
-	adds r3, r1, #0\n\
-	strh r1, [r5, #0xa]\n\
-	ldr r2, _080EBAFC @ =gPaletteManager\n\
-	ldr r6, _080EBB0C @ =0x00000402\n\
-	adds r4, r2, r6\n\
-	strb r3, [r4]\n\
-	movs r0, #0xff\n\
-	ands r0, r3\n\
-	subs r6, #1\n\
-	adds r3, r2, r6\n\
-	strb r0, [r3]\n\
-	subs r6, #1\n\
-	adds r2, r2, r6\n\
-	strb r0, [r2]\n\
-	lsls r1, r1, #0x10\n\
-	cmp r1, #0\n\
-	bgt _080EBAE2\n\
-	movs r0, #0x20\n\
-	strb r0, [r4]\n\
-	strb r0, [r3]\n\
-	strb r0, [r2]\n\
-	ldr r2, _080EBAEC @ =gVideoRegBuffer\n\
-	ldrh r1, [r2]\n\
-	ldr r0, _080EBB20 @ =0x0000C7FF\n\
-	ands r0, r1\n\
-	strh r0, [r2]\n\
-	adds r0, r5, #0\n\
-	movs r1, #4\n\
-	bl SetIntroMode\n\
-_080EBAE2:\n\
-	add sp, #4\n\
-	pop {r4, r5, r6}\n\
-	pop {r0}\n\
-	bx r0\n\
-	.align 2, 0\n\
-_080EBAEC: .4byte gVideoRegBuffer\n\
-_080EBAF0: .4byte 0x0000FFF8\n\
-_080EBAF4: .4byte 0x0000F0FF\n\
-_080EBAF8: .4byte 0x00000206\n\
-_080EBAFC: .4byte gPaletteManager\n\
-_080EBB00: .4byte gGraphic_Capcom\n\
-_080EBB04: .4byte gPalette_Capcom\n\
-_080EBB08: .4byte gBgMapOffsets\n\
-_080EBB0C: .4byte 0x00000402\n\
-_080EBB10: .4byte 0x00000401\n\
-_080EBB14: .4byte gGraphic_Inti\n\
-_080EBB18: .4byte gVideoRegBuffer+10\n\
-_080EBB1C: .4byte gPalette_Inti\n\
-_080EBB20: .4byte 0x0000C7FF\n\
- .syntax divided\n");
+// --------------------------------------------
+
+static void initGameSavedata(struct Intro* p);
+
+static void IntroLoop_CapcomInti(struct Intro* p) {
+  if (gJoypad[0].pressed) {
+    p->titleFrame = 3;
+  }
+  switch (p->mode[1]) {
+    case 0: {
+      initGameSavedata(p);
+      gVideoRegBuffer.dispcnt &= 0xFFF8;
+      gVideoRegBuffer.dispcnt &= ~DISPCNT_BG_ALL_ON;
+      gVideoRegBuffer.dispcnt |= (DISPCNT_BG0_ON | DISPCNT_BG3_ON | DISPCNT_OBJ_ON | DISPCNT_WIN0_ON);
+      BGCNT16(3) = 0x206;
+      *(u32*)gVideoRegBuffer.bgofs[3] = 0;
+      PALETTE16(0) = RGB_BLACK;
+      LoadGraphic(BG_GRAPHIC(BG_CAPCOM), (void*)0x4000);
+      LoadPalette(BG_PALETTE(BG_CAPCOM), 0);
+      LoadBgMap(USE_BG3, gBgMapOffsets, BG_CAPCOM, 0, 0);
+      p->titleFrame = 0;
+      p->frame = 0;
+      p->mode[1]++;
+      FALLTHROUGH;
+    }
+    case 1: {
+      p->frame += 1 + p->titleFrame;
+      gPaletteManager.filter[0] = gPaletteManager.filter[1] = gPaletteManager.filter[2] = 0x40 - p->frame;
+      if (p->frame < 32) {
+        break;
+      }
+      gPaletteManager.filter[0] = gPaletteManager.filter[1] = gPaletteManager.filter[2] = 0x20;
+      p->frame = 120;
+      p->mode[1]++;
+      FALLTHROUGH;
+    }
+    case 2: {
+      p->frame--;
+      if ((p->frame != 0) && (p->titleFrame == 0)) {
+        break;
+      }
+      p->frame = 32;
+      p->mode[1]++;
+      FALLTHROUGH;
+    }
+    case 3: {
+      p->frame -= 1 + p->titleFrame;
+      gPaletteManager.filter[0] = gPaletteManager.filter[1] = gPaletteManager.filter[2] = p->frame;
+      if (p->frame > 0) {
+        break;
+      }
+      LoadGraphic(BG_GRAPHIC(BG_INTI), (void*)CHAR_BASE(3));
+      LoadPalette(BG_PALETTE(BG_INTI), 0);
+      LoadBgMap(USE_BG3, gBgMapOffsets, BG_INTI, 0, 0);
+      p->frame = 0;
+      p->mode[1]++;
+      FALLTHROUGH;
+    }
+    case 4: {
+      p->frame += 1 + p->titleFrame;
+      gPaletteManager.filter[0] = gPaletteManager.filter[1] = gPaletteManager.filter[2] = p->frame;
+      if (p->frame < 32) {
+        break;
+      }
+      gPaletteManager.filter[0] = gPaletteManager.filter[1] = gPaletteManager.filter[2] = 0x20;
+      p->frame = 120;
+      p->mode[1]++;
+      FALLTHROUGH;
+    }
+    case 5: {
+      p->frame--;
+      if ((p->frame != 0) && (p->titleFrame == 0)) {
+        break;
+      }
+      p->frame = 32;
+      p->mode[1]++;
+      FALLTHROUGH;
+    }
+    case 6: {
+      p->frame -= 1 + p->titleFrame;
+      gPaletteManager.filter[0] = gPaletteManager.filter[1] = gPaletteManager.filter[2] = p->frame;
+      if (p->frame > 0) {
+        break;
+      }
+      gPaletteManager.filter[0] = gPaletteManager.filter[1] = gPaletteManager.filter[2] = 0x20;
+      gVideoRegBuffer.dispcnt &= 0xC7FF;
+      SetIntroMode(p, 4);
+      break;
+    }
+  }
 }
 
 // ソフトリセット時、セーブデータ選択画面でBボタンを押した時
@@ -426,418 +171,184 @@ static void initGameSavedata(struct Intro* p) {
   } while (saveIdx < 5);
 }
 
-// 02 xx nn nn
-NAKED static void IntroLoop_sram_080ebb74(struct Intro* p) {
-  asm(".syntax unified\n\
-	push {r4, r5, r6, lr}\n\
-	adds r6, r0, #0\n\
-	ldrb r5, [r6, #5]\n\
-	cmp r5, #0\n\
-	beq _080EBB84\n\
-	cmp r5, #1\n\
-	beq _080EBBFA\n\
-	b _080EBCA8\n\
-_080EBB84:\n\
-	ldr r4, _080EBC10 @ =gPaletteManager\n\
-	ldr r1, _080EBC14 @ =0x00000402\n\
-	adds r0, r4, r1\n\
-	movs r1, #0x20\n\
-	strb r1, [r0]\n\
-	ldr r2, _080EBC18 @ =0x00000401\n\
-	adds r0, r4, r2\n\
-	strb r1, [r0]\n\
-	movs r3, #0x80\n\
-	lsls r3, r3, #3\n\
-	adds r0, r4, r3\n\
-	strb r1, [r0]\n\
-	movs r1, #0x81\n\
-	lsls r1, r1, #3\n\
-	adds r0, r4, r1\n\
-	str r5, [r0]\n\
-	bl ClearBlinkings\n\
-	ldr r0, _080EBC1C @ =gBlendRegBuffer\n\
-	strh r5, [r0]\n\
-	ldr r1, _080EBC20 @ =gWindowRegBuffer\n\
-	strh r5, [r1]\n\
-	movs r0, #0xff\n\
-	strb r0, [r1, #0xe]\n\
-	ldr r0, _080EBC24 @ =wMOSAIC\n\
-	strh r5, [r0]\n\
-	strh r5, [r4]\n\
-	bl text_080e9730\n\
-	ldr r2, _080EBC28 @ =gVideoRegBuffer\n\
-	ldrh r1, [r2]\n\
-	ldr r0, _080EBC2C @ =0x0000FFF8\n\
-	ands r0, r1\n\
-	ldr r1, _080EBC30 @ =0x0000F0FF\n\
-	ands r0, r1\n\
-	movs r3, #0x80\n\
-	lsls r3, r3, #1\n\
-	adds r1, r3, #0\n\
-	orrs r0, r1\n\
-	strh r0, [r2]\n\
-	movs r0, #1\n\
-	bl SwitchProcess\n\
-	ldr r4, _080EBC34 @ =gGameState\n\
-	movs r1, #0xe0\n\
-	lsls r1, r1, #4\n\
-	adds r0, r4, #0\n\
-	bl SetGameMode\n\
-	ldr r0, _080EBC38 @ =0x00006260\n\
-	adds r4, r4, r0\n\
-	movs r0, #1\n\
-	strh r0, [r4]\n\
-	ldr r1, _080EBC3C @ =Process_Game\n\
-	bl ResetProcess\n\
-	ldrb r0, [r6, #5]\n\
-	adds r0, #1\n\
-	strb r0, [r6, #5]\n\
-_080EBBFA:\n\
-	ldr r2, _080EBC40 @ =gJoypad\n\
-	ldrh r0, [r2, #4]\n\
-	movs r1, #0xb\n\
-	ands r1, r0\n\
-	cmp r1, #0\n\
-	beq _080EBC44\n\
-	movs r0, #1\n\
-	bl disableProcess\n\
-	b _080EBC4A\n\
-	.align 2, 0\n\
-_080EBC10: .4byte gPaletteManager\n\
-_080EBC14: .4byte 0x00000402\n\
-_080EBC18: .4byte 0x00000401\n\
-_080EBC1C: .4byte gBlendRegBuffer\n\
-_080EBC20: .4byte gWindowRegBuffer\n\
-_080EBC24: .4byte wMOSAIC\n\
-_080EBC28: .4byte gVideoRegBuffer\n\
-_080EBC2C: .4byte 0x0000FFF8\n\
-_080EBC30: .4byte 0x0000F0FF\n\
-_080EBC34: .4byte gGameState\n\
-_080EBC38: .4byte 0x00006260\n\
-_080EBC3C: .4byte Process_Game\n\
-_080EBC40: .4byte gJoypad\n\
-_080EBC44:\n\
-	strh r1, [r2]\n\
-	strh r1, [r2, #4]\n\
-	strh r1, [r2, #6]\n\
-_080EBC4A:\n\
-	ldr r0, _080EBCB0 @ =gProcessManager\n\
-	movs r1, #0x99\n\
-	lsls r1, r1, #5\n\
-	adds r0, r0, r1\n\
-	ldrb r0, [r0]\n\
-	cmp r0, #1\n\
-	bne _080EBCA8\n\
-	ldr r5, _080EBCB4 @ =gPaletteManager\n\
-	ldr r2, _080EBCB8 @ =0x00000402\n\
-	adds r0, r5, r2\n\
-	movs r4, #0\n\
-	movs r1, #0x20\n\
-	strb r1, [r0]\n\
-	ldr r3, _080EBCBC @ =0x00000401\n\
-	adds r0, r5, r3\n\
-	strb r1, [r0]\n\
-	subs r2, #2\n\
-	adds r0, r5, r2\n\
-	strb r1, [r0]\n\
-	adds r3, #7\n\
-	adds r0, r5, r3\n\
-	str r4, [r0]\n\
-	bl ClearBlinkings\n\
-	ldr r0, _080EBCC0 @ =gBlendRegBuffer\n\
-	strh r4, [r0]\n\
-	ldr r1, _080EBCC4 @ =gWindowRegBuffer\n\
-	strh r4, [r1]\n\
-	movs r0, #0xff\n\
-	strb r0, [r1, #0xe]\n\
-	ldr r0, _080EBCC8 @ =wMOSAIC\n\
-	strh r4, [r0]\n\
-	strh r4, [r5]\n\
-	bl text_080e9730\n\
-	bl StopAllMusics\n\
-	ldrh r0, [r6, #0x12]\n\
-	adds r0, #1\n\
-	strh r0, [r6, #0x12]\n\
-	ldr r0, _080EBCCC @ =gIntro\n\
-	movs r1, #1\n\
-	bl SetIntroMode\n\
-	ldr r0, _080EBCD0 @ =Process_SoftReset\n\
-	bl exec\n\
-_080EBCA8:\n\
-	pop {r4, r5, r6}\n\
-	pop {r0}\n\
-	bx r0\n\
-	.align 2, 0\n\
-_080EBCB0: .4byte gProcessManager\n\
-_080EBCB4: .4byte gPaletteManager\n\
-_080EBCB8: .4byte 0x00000402\n\
-_080EBCBC: .4byte 0x00000401\n\
-_080EBCC0: .4byte gBlendRegBuffer\n\
-_080EBCC4: .4byte gWindowRegBuffer\n\
-_080EBCC8: .4byte wMOSAIC\n\
-_080EBCCC: .4byte gIntro\n\
-_080EBCD0: .4byte Process_SoftReset\n\
-	 .syntax divided\n");
+// デモプレイ1 (ゲームのプロローグを垂れ流して、プレイヤーが A,B,START のいずれかを押すとタイトルに戻る)
+static void IntroLoop_DemoPlay1(struct Intro* p) {
+  switch (p->mode[1]) {
+    case 0: {
+      gPaletteManager.filter[0] = gPaletteManager.filter[1] = gPaletteManager.filter[2] = 0x20;
+      gPaletteManager.unk_408 = NULL;
+      ClearBlinkings();
+      gBlendRegBuffer.bldclt = 0;
+      gWindowRegBuffer.dispcnt = 0;
+      gWindowRegBuffer.winin[2] = 0xFF;
+      wMOSAIC = 0x0;
+      PALETTE16(0) = RGB_BLACK;
+      LoadAsciiBold();
+      gVideoRegBuffer.dispcnt &= 0xFFF8;
+      gVideoRegBuffer.dispcnt &= ~DISPCNT_BG_ALL_ON;
+      gVideoRegBuffer.dispcnt |= DISPCNT_BG0_ON;
+      SwitchProcess(1);
+      SetGameMode(&gGameState, GAMEMODE(MAINGAME, DEMOPLAY, 0, 0));
+      gGameState.save.stageID = STAGE_SPACE_CRAFT;
+      ResetProcess(1, Process_Game);  // P0 は このプロセスで使っているので デモプレイは P1 で実行される
+      p->mode[1]++;
+      FALLTHROUGH;
+    }
+    case 1: {
+      if (gJoypad[0].pressed & (A_BUTTON | B_BUTTON | START_BUTTON)) {
+        disableProcess(1);
+      } else {
+        gJoypad[0].field3_0x6 = gJoypad[0].pressed = gJoypad[0].input = 0;
+      }
+      if (gProcessManager.processes[1].status == PROCESS_DISABLED) {
+        gPaletteManager.filter[0] = gPaletteManager.filter[1] = gPaletteManager.filter[2] = 0x20;
+        gPaletteManager.unk_408 = NULL;
+        ClearBlinkings();
+        gBlendRegBuffer.bldclt = 0;
+        gWindowRegBuffer.dispcnt = 0;
+        gWindowRegBuffer.winin[2] = 0xFF;
+        wMOSAIC = 0x0;
+        PALETTE16(0) = RGB_BLACK;
+        LoadAsciiBold();
+        StopAllMusics();
+        p->demo_id++;
+        SetIntroMode(&gIntro, 1);
+        exec(Process_SoftReset);
+      }
+      break;
+    }
+    default: {
+      break;
+    }
+  }
 }
 
-// 03 xx nn nn
-NAKED static void IntroLoop_sram_080ebcd4(struct Intro* p) {
-  asm(".syntax unified\n\
-	push {r4, r5, r6, r7, lr}\n\
-	adds r7, r0, #0\n\
-	ldrb r6, [r7, #5]\n\
-	cmp r6, #0\n\
-	beq _080EBCE4\n\
-	cmp r6, #1\n\
-	beq _080EBD90\n\
-	b _080EBE5A\n\
-_080EBCE4:\n\
-	ldr r4, _080EBDB0 @ =gPaletteManager\n\
-	ldr r1, _080EBDB4 @ =0x00000402\n\
-	adds r0, r4, r1\n\
-	movs r1, #0x20\n\
-	strb r1, [r0]\n\
-	ldr r2, _080EBDB8 @ =0x00000401\n\
-	adds r0, r4, r2\n\
-	strb r1, [r0]\n\
-	movs r3, #0x80\n\
-	lsls r3, r3, #3\n\
-	adds r0, r4, r3\n\
-	strb r1, [r0]\n\
-	movs r1, #0x81\n\
-	lsls r1, r1, #3\n\
-	adds r0, r4, r1\n\
-	str r6, [r0]\n\
-	bl ClearBlinkings\n\
-	ldr r0, _080EBDBC @ =gBlendRegBuffer\n\
-	movs r5, #0\n\
-	strh r6, [r0]\n\
-	ldr r1, _080EBDC0 @ =gWindowRegBuffer\n\
-	strh r6, [r1]\n\
-	movs r0, #0xff\n\
-	strb r0, [r1, #0xe]\n\
-	ldr r0, _080EBDC4 @ =wMOSAIC\n\
-	strh r6, [r0]\n\
-	strh r6, [r4]\n\
-	bl text_080e9730\n\
-	ldr r2, _080EBDC8 @ =gVideoRegBuffer\n\
-	ldrh r1, [r2]\n\
-	ldr r0, _080EBDCC @ =0x0000FFF8\n\
-	ands r0, r1\n\
-	ldr r1, _080EBDD0 @ =0x0000F0FF\n\
-	ands r0, r1\n\
-	movs r3, #0x80\n\
-	lsls r3, r3, #1\n\
-	adds r1, r3, #0\n\
-	orrs r0, r1\n\
-	strh r0, [r2]\n\
-	movs r0, #1\n\
-	bl SwitchProcess\n\
-	ldr r4, _080EBDD4 @ =gGameState\n\
-	movs r1, #0xe0\n\
-	lsls r1, r1, #4\n\
-	adds r0, r4, #0\n\
-	bl SetGameMode\n\
-	ldr r2, _080EBDD8 @ =0x08385E0C\n\
-	ldrh r0, [r7, #0x12]\n\
-	lsrs r0, r0, #1\n\
-	movs r1, #3\n\
-	ands r0, r1\n\
-	adds r0, r0, r2\n\
-	ldrb r0, [r0]\n\
-	ldr r1, _080EBDDC @ =0x00006260\n\
-	adds r4, r4, r1\n\
-	strh r0, [r4]\n\
-	ldr r1, _080EBDE0 @ =Process_Game\n\
-	movs r0, #1\n\
-	bl ResetProcess\n\
-	movs r2, #0x92\n\
-	lsls r2, r2, #2\n\
-	adds r1, r7, r2\n\
-	movs r0, #1\n\
-	strh r0, [r1]\n\
-	ldr r3, _080EBDE4 @ =0x0000024A\n\
-	adds r0, r7, r3\n\
-	strb r5, [r0]\n\
-	ldr r1, _080EBDE8 @ =0x0000024B\n\
-	adds r0, r7, r1\n\
-	strb r5, [r0]\n\
-	adds r2, #4\n\
-	adds r0, r7, r2\n\
-	strh r6, [r0]\n\
-	ldr r0, _080EBDEC @ =gJoypad\n\
-	ldrh r1, [r0]\n\
-	adds r3, #4\n\
-	adds r0, r7, r3\n\
-	strh r1, [r0]\n\
-	ldrb r0, [r7, #5]\n\
-	adds r0, #1\n\
-	strb r0, [r7, #5]\n\
-_080EBD90:\n\
-	ldr r0, _080EBDF0 @ =0x0000024E\n\
-	adds r3, r7, r0\n\
-	ldr r0, _080EBDEC @ =gJoypad\n\
-	ldrh r1, [r3]\n\
-	ldrh r2, [r0]\n\
-	eors r1, r2\n\
-	ands r1, r2\n\
-	movs r0, #0xb\n\
-	ands r1, r0\n\
-	cmp r1, #0\n\
-	beq _080EBDF4\n\
-	movs r0, #1\n\
-	bl disableProcess\n\
-	b _080EBDFC\n\
-	.align 2, 0\n\
-_080EBDB0: .4byte gPaletteManager\n\
-_080EBDB4: .4byte 0x00000402\n\
-_080EBDB8: .4byte 0x00000401\n\
-_080EBDBC: .4byte gBlendRegBuffer\n\
-_080EBDC0: .4byte gWindowRegBuffer\n\
-_080EBDC4: .4byte wMOSAIC\n\
-_080EBDC8: .4byte gVideoRegBuffer\n\
-_080EBDCC: .4byte 0x0000FFF8\n\
-_080EBDD0: .4byte 0x0000F0FF\n\
-_080EBDD4: .4byte gGameState\n\
-_080EBDD8: .4byte sDemoplayStageIDs\n\
-_080EBDDC: .4byte 0x00006260\n\
-_080EBDE0: .4byte Process_Game\n\
-_080EBDE4: .4byte 0x0000024A\n\
-_080EBDE8: .4byte 0x0000024B\n\
-_080EBDEC: .4byte gJoypad\n\
-_080EBDF0: .4byte 0x0000024E\n\
-_080EBDF4:\n\
-	strh r2, [r3]\n\
-	adds r0, r7, #0\n\
-	bl demoplay_080ebe84\n\
-_080EBDFC:\n\
-	ldr r0, _080EBE60 @ =gProcessManager\n\
-	movs r1, #0x99\n\
-	lsls r1, r1, #5\n\
-	adds r0, r0, r1\n\
-	ldrb r0, [r0]\n\
-	cmp r0, #1\n\
-	bne _080EBE5A\n\
-	ldr r5, _080EBE64 @ =gPaletteManager\n\
-	ldr r2, _080EBE68 @ =0x00000402\n\
-	adds r0, r5, r2\n\
-	movs r4, #0\n\
-	movs r1, #0x20\n\
-	strb r1, [r0]\n\
-	ldr r3, _080EBE6C @ =0x00000401\n\
-	adds r0, r5, r3\n\
-	strb r1, [r0]\n\
-	subs r2, #2\n\
-	adds r0, r5, r2\n\
-	strb r1, [r0]\n\
-	adds r3, #7\n\
-	adds r0, r5, r3\n\
-	str r4, [r0]\n\
-	bl ClearBlinkings\n\
-	ldr r0, _080EBE70 @ =gBlendRegBuffer\n\
-	strh r4, [r0]\n\
-	ldr r1, _080EBE74 @ =gWindowRegBuffer\n\
-	strh r4, [r1]\n\
-	movs r0, #0xff\n\
-	strb r0, [r1, #0xe]\n\
-	ldr r0, _080EBE78 @ =wMOSAIC\n\
-	strh r4, [r0]\n\
-	strh r4, [r5]\n\
-	bl text_080e9730\n\
-	bl StopAllMusics\n\
-	ldrh r0, [r7, #0x12]\n\
-	adds r0, #1\n\
-	strh r0, [r7, #0x12]\n\
-	ldr r0, _080EBE7C @ =gIntro\n\
-	movs r1, #1\n\
-	bl SetIntroMode\n\
-	ldr r0, _080EBE80 @ =Process_SoftReset\n\
-	bl exec\n\
-_080EBE5A:\n\
-	pop {r4, r5, r6, r7}\n\
-	pop {r0}\n\
-	bx r0\n\
-	.align 2, 0\n\
-_080EBE60: .4byte gProcessManager\n\
-_080EBE64: .4byte gPaletteManager\n\
-_080EBE68: .4byte 0x00000402\n\
-_080EBE6C: .4byte 0x00000401\n\
-_080EBE70: .4byte gBlendRegBuffer\n\
-_080EBE74: .4byte gWindowRegBuffer\n\
-_080EBE78: .4byte wMOSAIC\n\
-_080EBE7C: .4byte gIntro\n\
-_080EBE80: .4byte Process_SoftReset\n\
- .syntax divided\n");
+static const KEY_INPUT sDemoplayKeyInputs_Volcano[144] = {
+    0x0000, 0xFC02, 0xFC12, 0xFE12, 0xFE13, 0xFE12, 0xFC02, 0xFE12, 0xFE13, 0xFE12, 0xFF12, 0xFE12, 0xFC12, 0xFC02, 0xFC12, 0xFE12, 0xFE13, 0xFE12, 0xFC12, 0xFC02, 0xFE12, 0xFE13, 0xFE12, 0xFE13, 0xFE12, 0xFC12, 0xFC02, 0xFC12, 0xFE12, 0xFF12, 0xFE12, 0xFC02, 0xFC22, 0xFE22, 0xFC22, 0xFC02, 0xFC12, 0xFC02, 0xFC12, 0xFE12, 0xFE13, 0xFE12, 0xFC02, 0xFE12, 0xFE13, 0xFE12, 0xFC12, 0xFE12, 0xFC12, 0xFC02, 0xFC00, 0xFC02, 0xFC12, 0xFC92, 0xFC82, 0xFCA2, 0xFC22, 0xFD22, 0xFC22, 0xFC02, 0xFC12, 0xFE12, 0xFE13, 0xFE12, 0xFE10, 0xFC12, 0xFC02, 0xFC12, 0xFE12, 0xFC12, 0xFE12, 0xFC12,
+    0xFC02, 0xFD02, 0xFC02, 0xFD02, 0xFC02, 0xFC03, 0xFC13, 0xFC93, 0xFC92, 0xFC90, 0xFC80, 0xFC82, 0xFCA2, 0xFC22, 0xFE23, 0xFE22, 0xFC22, 0xFC02, 0xFC12, 0xFE12, 0xFE13, 0xFE93, 0xFE92, 0xFE90, 0xFE80, 0xFE82, 0xFE92, 0xFC92, 0xFE92, 0xFE12, 0xFE13, 0xFC12, 0xFC02, 0xFE12, 0xFC12, 0xFC02, 0xFC12, 0xFE12, 0xFE13, 0xFE12, 0xFC12, 0xFC02, 0xFC12, 0xFE12, 0xFE13, 0xFE12, 0xFC12, 0xFC02, 0xFC12, 0xFE12, 0xFE13, 0xFE12, 0xFC12, 0xFC02, 0xFC12, 0xFE12, 0xFE13, 0xFE12, 0xFC12, 0xFC02, 0xFC12, 0xFE12, 0xFE13, 0xFE12, 0xFC12, 0xFC02, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000,
+};
+static const u8 sDemoplayFrames_Volcano[144] = {
+    0, 36, 2, 2, 10, 20, 90, 3, 6, 4, 11, 9, 1, 8, 1, 3, 15, 13, 6, 195, 4, 21, 7, 19, 2, 1, 8, 1, 3, 11, 1, 12, 10, 26, 1, 24, 14, 12, 1, 2, 14, 16, 9, 4, 23, 7, 13, 24, 46, 4, 4, 28, 54, 2, 1, 2, 1, 9, 38, 8, 1, 18, 18, 1, 4, 2, 26, 4, 19, 5, 32, 31, 5, 5, 5, 6, 62, 8, 10, 1, 1, 3, 1, 17, 12, 10, 13, 10, 4, 14, 3, 9, 44, 3, 3, 2, 2, 1, 42, 8, 2, 1, 28, 21, 174, 23, 1, 6, 2, 3, 17, 12, 2, 11, 1, 4, 17, 15, 3, 8, 1, 2, 18, 14, 2, 10, 1, 3, 20, 11, 2, 12, 1, 2, 18, 12, 3, 5, 0, 0, 0, 0, 0, 0,
+};
+
+static const KEY_INPUT sDemoplayKeyInputs_Ocean[160] = {
+    0x0000, 0xFC02, 0xFE12, 0xFE13, 0xFE12, 0xFC12, 0xFC13, 0xFC12, 0xFE12, 0xFE13, 0xFE12, 0xFC12, 0xFE12, 0xFC12, 0xFC02, 0xFC12, 0xFC02, 0xFC12, 0xFC02, 0xFE22, 0xFE23, 0xFE22, 0xFC22, 0xFC02, 0xFE12, 0xFE13, 0xFE12, 0xFE92, 0xFCA2, 0xFC22, 0xFC92, 0xFD12, 0xFC12, 0xFE12, 0xFE13, 0xFE12, 0xFC12, 0xFE12, 0xFC12, 0xFE12, 0xFE13, 0xFC13, 0xFC12, 0xFC02, 0xFC22, 0xFD22, 0xFD02, 0xFC02, 0xFC22, 0xFC02, 0xFC03, 0xFC02, 0xFC12, 0xFE12, 0xFE13, 0xFE12, 0xFC12, 0xFC13, 0xFC12, 0xFD12, 0xFC12, 0xFC22, 0xFC20, 0xFC00, 0xFC02, 0xFC12, 0xFE12, 0xFC12, 0xFC02, 0xFC22, 0xFC62, 0xFC42, 0xFC12, 0xFD02, 0xFC02, 0xFC12, 0xFE12, 0xFC12, 0xFE12, 0xFC12,
+    0xFE12, 0xFC10, 0xFC02, 0xFC12, 0xFE12, 0xFC12, 0xFC22, 0xFC02, 0xFC03, 0xFD03, 0xFD13, 0xFC13, 0xFC12, 0xFE12, 0xFE13, 0xFE12, 0xFC12, 0xFC10, 0xFC00, 0xFC02, 0xFC22, 0xFC62, 0xFC02, 0xFC12, 0xFD12, 0xFD02, 0xFC02, 0xFC12, 0xFE12, 0xFC12, 0xFE12, 0xFE10, 0xFE12, 0xFC12, 0xFC13, 0xFC12, 0xFC92, 0xFCA2, 0xFC22, 0xFC92, 0xFC12, 0xFD12, 0xFD02, 0xFC02, 0xFC12, 0xFE12, 0xFC12, 0xFE12, 0xFE13, 0xFC13, 0xFC10, 0xFC12, 0xFC02, 0xFC22, 0xFE22, 0xFC22, 0xFC23, 0xFC22, 0xFC02, 0xFC12, 0xFE12, 0xFC12, 0xFE12, 0xFC13, 0xFC03, 0xFC12, 0xFC13, 0xFC12, 0xFC13, 0xFC12, 0xFE12, 0xFE13, 0xFE12, 0xFC12, 0xFC02, 0xFE02, 0xFE23, 0xFE63, 0x0000, 0x0000,
+};
+static const u8 sDemoplayFrames_Ocean[160] = {
+    0, 31, 7, 21, 4, 3, 11, 19, 11, 11, 3, 20, 12, 2, 62, 43, 25, 15, 39, 1, 29, 5, 3, 10, 5, 19, 2, 1, 1, 2, 1, 10, 11, 3, 9, 5, 20, 21, 6, 16, 38, 1, 42, 10, 3, 7, 8, 13, 24, 4, 12, 38, 1, 2, 24, 1, 5, 14, 11, 10, 23, 10, 1, 4, 19, 5, 41, 61, 4, 3, 1, 1, 6, 10, 10, 5, 18, 5, 15, 7, 19, 5, 27, 3, 22, 7, 5, 8, 6, 11, 12, 1, 21, 9, 13, 4, 14, 3, 2, 16, 3, 2, 1, 3, 4, 6, 8, 7, 19, 6, 7, 2, 14, 15, 14, 12, 2, 1, 3, 2, 6, 4, 6, 14, 6, 21, 6, 18, 3, 2, 5, 10, 49, 23, 20, 1, 6, 6, 48, 1, 17, 6, 26, 4, 28, 8, 16, 18, 9, 23, 26, 18, 8, 4, 20, 1, 4, 1, 0, 0,
+};
+
+static const KEY_INPUT sDemoplayKeyInputs_RepairFactory[136] = {
+    0x0000, 0xFD00, 0xFD10, 0xFF10, 0xFF11, 0xFF10, 0xFF11, 0xFF91, 0xFF81, 0xFF21, 0xFF20, 0xFD00, 0xFD02, 0xFD00, 0xFD02, 0xFD00, 0xFD20, 0xFF20, 0xFF61, 0xFF41, 0xFD40, 0xFD50, 0xFD40, 0xFD50, 0xFD10, 0xFF10, 0xFD10, 0xFF10, 0xFD10, 0xFF10, 0xFF11, 0xFF10, 0xFD10, 0xFC10, 0xFC00, 0xFD00, 0xFD10, 0xFF10, 0xFD10, 0xFF10, 0xFF11, 0xFD11, 0xFD10, 0xFD00, 0xFD01, 0xFD03, 0xFD02, 0xFD03, 0xFC03, 0xFC02, 0xFC12, 0xFE12, 0xFE13, 0xFC13, 0xFC12, 0xFC10, 0xFC12, 0xFC02, 0xFC03, 0xFC13, 0xFC12, 0xFC13, 0xFC12, 0xFC02, 0xFC22, 0xFC02, 0xFC12, 0xFC13,
+    0xFC12, 0xFC02, 0xFC12, 0xFE12, 0xFE13, 0xFC12, 0xFC02, 0xFC00, 0xFC02, 0xFC12, 0xFC13, 0xFC12, 0xFC10, 0xFC12, 0xFE12, 0xFC12, 0xFC92, 0xFC82, 0xFC83, 0xFC03, 0xFC02, 0xFC22, 0xFC02, 0xFC12, 0xFC02, 0xFC22, 0xFC02, 0xFC12, 0xFC02, 0xFC12, 0xFC92, 0xFC82, 0xFC22, 0xFC00, 0xFC02, 0xFC22, 0xFC23, 0xFC22, 0xFC23, 0xFC22, 0xFC02, 0xFC12, 0xFC02, 0xFC22, 0xFC02, 0xFC12, 0xFE12, 0xFE13, 0xFC13, 0xFC12, 0xFC13, 0xFC12, 0xFC13, 0xFC12, 0xFC13, 0xFC12, 0xFC10, 0xFC00, 0xFC02, 0xFC12, 0xFE12, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000,
+};
+static const u8 sDemoplayFrames_RepairFactory[136] = {
+    0, 14, 13, 20, 12, 6, 1, 2, 1, 12, 14, 6, 5, 4, 6, 19, 10, 3, 22, 1, 3, 22, 24, 3, 4, 25, 7, 32, 24, 2, 11, 9, 64, 1, 4, 11, 23, 27, 6, 17, 19, 2, 8, 15, 11, 7, 79, 8, 3, 33, 1, 7, 27, 2, 3, 5, 1, 33, 12, 10, 16, 24, 16, 7, 32, 2, 47, 13, 14, 8, 3, 6, 21, 13, 30, 5, 42, 1, 12, 1, 4, 25, 21, 1, 2, 2, 8, 2, 34, 53, 27, 49, 21, 47, 28, 40, 17, 19, 1, 1, 9, 3, 31, 1, 29, 11, 23, 7, 11, 20, 15, 8, 19, 3, 3, 26, 1, 32, 22, 6, 10, 5, 9, 1, 2, 3, 40, 16, 26, 0, 0, 0, 0, 0, 0, 0,
+};
+
+static const KEY_INPUT sDemoplayKeyInputs_OldLifeArea[144] = {
+    0x0000, 0xFC10, 0xFE10, 0xFC10, 0xFE10, 0xFC10, 0xFE10, 0xFE11, 0xFC11, 0xFC10, 0xFC11, 0xFC10, 0xFC11, 0xFE11, 0xFE81, 0xFE21, 0xFC21, 0xFC20, 0xFC00, 0xFC02, 0xFC00, 0xFC20, 0xFE20, 0xFC20, 0xFE20, 0xFE21, 0xFE20, 0xFE21, 0xFE20, 0xFE21, 0xFE61, 0xFE11, 0xFE10, 0xFC10, 0xFC00, 0xFC02, 0xFC00, 0xFC10, 0xFE10, 0xFC10, 0xFE10, 0xFE11, 0xFC11, 0xFC10, 0xFC11, 0xFC10, 0xFC11, 0xFE91, 0xFE21, 0xFE20, 0xFC20, 0xFC00, 0xFC02, 0xFC22, 0xFC02, 0xFC00, 0xFC20, 0xFC21, 0xFC20, 0xFC21, 0xFC20, 0xFC21, 0xFC20, 0xFC81, 0xFC91, 0xFE11, 0xFE10, 0xFC10, 0xFC11, 0xFC10, 0xFC00, 0xFC01,
+    0xFC11, 0xFD11, 0xFC11, 0xFC10, 0xFE10, 0xFC10, 0xFC00, 0xFC10, 0xFC11, 0xFC10, 0xFE10, 0xFC10, 0xFE10, 0xFC10, 0xFE10, 0xFE11, 0xFC11, 0xFC10, 0xFC00, 0xFD00, 0xFC00, 0xFC10, 0xFD00, 0xFC00, 0xFC10, 0xFC00, 0xFD00, 0xFC00, 0xFC10, 0xFE10, 0xFC10, 0xFE10, 0xFC10, 0xFE10, 0xFC10, 0xFC00, 0xFC01, 0xFD01, 0xFC00, 0xFC10, 0xFE10, 0xFC10, 0xFC00, 0xFC01, 0xFD01, 0xFC00, 0xFC10, 0xFE10, 0xFC10, 0xFE10, 0xFE11, 0xFE10, 0xFC10, 0xFC90, 0xFC80, 0xFC81, 0xFC01, 0xFC00, 0xFC20, 0xFE20, 0xFF20, 0xFD20, 0xFD00, 0xFC00, 0xFC01, 0xFC21, 0xFD21, 0xFD20, 0xFD00, 0xFC00, 0xFC20, 0x0000,
+};
+static const u8 sDemoplayFrames_OldLifeArea[144] = {
+    0, 3, 26, 6, 29, 7, 24, 1, 14, 3, 15, 6, 4, 9, 1, 8, 4, 6, 2, 32, 6, 10, 18, 6, 4, 14, 3, 14, 6, 1, 2, 11, 4, 4, 6, 39, 4, 5, 12, 5, 7, 13, 2, 3, 14, 7, 1, 2, 13, 5, 7, 2, 45, 82, 18, 26, 56, 11, 4, 17, 28, 15, 4, 1, 1, 20, 2, 7, 21, 1, 94, 1, 13, 12, 1, 29, 10, 3, 53, 16, 22, 15, 27, 7, 23, 8, 14, 5, 8, 9, 1, 9, 24, 36, 15, 10, 21, 11, 18, 8, 5, 36, 28, 23, 5, 11, 2, 40, 1, 13, 17, 7, 21, 3, 1, 1, 14, 27, 2, 23, 7, 10, 22, 8, 16, 2, 3, 9, 3, 20, 28, 12, 4, 2, 4, 24, 19, 6, 2, 1, 10, 33, 14, 0,
+};
+
+static const KEY_INPUT* const sDemoplayKeyInputs[4] = {
+    sDemoplayKeyInputs_Volcano,
+    sDemoplayKeyInputs_Ocean,
+    sDemoplayKeyInputs_RepairFactory,
+    sDemoplayKeyInputs_OldLifeArea,
+};  // Demoplay Key inputs
+static const u8* const sDemoplayKeyFrames[4] = {
+    sDemoplayFrames_Volcano,
+    sDemoplayFrames_Ocean,
+    sDemoplayFrames_RepairFactory,
+    sDemoplayFrames_OldLifeArea,
+};  // Demoplay Key inputs
+
+static void stepDemoPlay2(struct Intro* p);
+
+// デモプレイ2 (最初の4ステージでのお手本プレイが流れて、プレイヤーが A,B,START のいずれかを押すとタイトルに戻る)
+static void IntroLoop_DemoPlay2(struct Intro* p) {
+  static const u8 sDemoPlay2StageIDs[4] = {
+      STAGE_VOLCANO,
+      STAGE_OCEAN,
+      STAGE_REPAIR_FACTORY,
+      STAGE_OLD_RESIDENTIAL,
+  };
+
+  switch (p->mode[1]) {
+    case 0: {
+      gPaletteManager.filter[0] = gPaletteManager.filter[1] = gPaletteManager.filter[2] = 0x20;
+      gPaletteManager.unk_408 = NULL;
+      ClearBlinkings();
+      gBlendRegBuffer.bldclt = 0;
+      gWindowRegBuffer.dispcnt = 0;
+      gWindowRegBuffer.winin[2] = 0xFF;
+      wMOSAIC = 0x0;
+      PALETTE16(0) = RGB_BLACK;
+      LoadAsciiBold();
+      gVideoRegBuffer.dispcnt &= 0xFFF8;
+      gVideoRegBuffer.dispcnt &= ~DISPCNT_BG_ALL_ON;
+      gVideoRegBuffer.dispcnt |= DISPCNT_BG0_ON;
+      SwitchProcess(1);
+      SetGameMode(&gGameState, GAMEMODE(MAINGAME, DEMOPLAY, 0, 0));
+      gGameState.save.stageID = sDemoPlay2StageIDs[((u16)p->demo_id >> 1) & 3];
+      ResetProcess(1, Process_Game);  // P0 は このプロセスで使っているので デモプレイは P1 で実行される
+      p->demoKeyIdx = 1;
+      p->demoKeyFrame = 0;
+      p->demoKeyFrameEnd = 0;
+      p->unk_24c = 0;
+      p->unk_24e = gJoypad[0].input;
+      p->mode[1]++;
+      FALLTHROUGH;
+    }
+    case 1: {
+      if ((p->unk_24e ^ gJoypad[0].input) & gJoypad[0].input & (A_BUTTON | B_BUTTON | START_BUTTON)) {
+        disableProcess(1);
+      } else {
+        p->unk_24e = gJoypad[0].input;
+        stepDemoPlay2(p);
+      }
+      if (gProcessManager.processes[1].status == PROCESS_DISABLED) {
+        gPaletteManager.filter[0] = gPaletteManager.filter[1] = gPaletteManager.filter[2] = 0x20;
+        gPaletteManager.unk_408 = NULL;
+        ClearBlinkings();
+        gBlendRegBuffer.bldclt = 0;
+        gWindowRegBuffer.dispcnt = 0;
+        gWindowRegBuffer.winin[2] = 0xFF;
+        wMOSAIC = 0x0;
+        PALETTE16(0) = RGB_BLACK;
+        LoadAsciiBold();
+        StopAllMusics();
+        p->demo_id++;
+        SetIntroMode(&gIntro, 1);
+        exec(Process_SoftReset);
+      }
+      break;
+    }
+    default: {
+      break;
+    }
+  }
 }
 
-// タイトル画面で放置したときのデモプレイの入力処理
-NAKED static void demoplay_080ebe84(struct Intro* p) {
-  asm(".syntax unified\n\
-	push {r4, r5, r6, r7, lr}\n\
-	adds r3, r0, #0\n\
-	movs r0, #0x93\n\
-	lsls r0, r0, #2\n\
-	adds r7, r3, r0\n\
-	ldrh r5, [r7]\n\
-	ldr r1, _080EBEF8 @ =0x0000024A\n\
-	adds r6, r3, r1\n\
-	ldr r2, _080EBEFC @ =0x0000024B\n\
-	adds r2, r2, r3\n\
-	mov ip, r2\n\
-	ldrb r0, [r6]\n\
-	ldrb r1, [r2]\n\
-	cmp r0, r1\n\
-	bne _080EBED8\n\
-	ldr r2, _080EBF00 @ =0x08385DEC\n\
-	ldrh r1, [r3, #0x12]\n\
-	lsrs r1, r1, #1\n\
-	movs r0, #3\n\
-	ands r1, r0\n\
-	lsls r1, r1, #2\n\
-	adds r2, r1, r2\n\
-	movs r0, #0x92\n\
-	lsls r0, r0, #2\n\
-	adds r3, r3, r0\n\
-	ldrh r4, [r3]\n\
-	ldr r2, [r2]\n\
-	lsls r0, r4, #1\n\
-	adds r0, r0, r2\n\
-	ldrh r5, [r0]\n\
-	ldr r0, _080EBF04 @ =0x08385DFC\n\
-	adds r1, r1, r0\n\
-	ldr r0, [r1]\n\
-	adds r0, r0, r4\n\
-	ldrb r0, [r0]\n\
-	movs r1, #0\n\
-	mov r2, ip\n\
-	strb r0, [r2]\n\
-	strb r1, [r6]\n\
-	ldrh r0, [r3]\n\
-	adds r0, #1\n\
-	strh r0, [r3]\n\
-_080EBED8:\n\
-	ldrb r0, [r6]\n\
-	adds r0, #1\n\
-	movs r3, #0\n\
-	strb r0, [r6]\n\
-	ldr r1, _080EBF08 @ =gJoypad\n\
-	strh r5, [r1]\n\
-	ldrh r2, [r7]\n\
-	adds r0, r5, #0\n\
-	bics r0, r2\n\
-	strh r0, [r1, #4]\n\
-	strh r3, [r1, #6]\n\
-	strh r5, [r7]\n\
-	pop {r4, r5, r6, r7}\n\
-	pop {r0}\n\
-	bx r0\n\
-	.align 2, 0\n\
-_080EBEF8: .4byte 0x0000024A\n\
-_080EBEFC: .4byte 0x0000024B\n\
-_080EBF00: .4byte sDemoplayKeyInputs\n\
-_080EBF04: .4byte sDemoplayKeyFrames\n\
-_080EBF08: .4byte gJoypad\n\
- .syntax divided\n");
+// デモプレイの入力処理, 0x080ebe84
+static void stepDemoPlay2(struct Intro* p) {
+  KEY_INPUT tmp = p->unk_24c;
+  if (p->demoKeyFrame == p->demoKeyFrameEnd) {
+    tmp = sDemoplayKeyInputs[((u16)p->demo_id >> 1) & 3][p->demoKeyIdx];
+    p->demoKeyFrameEnd = sDemoplayKeyFrames[((u16)p->demo_id >> 1) & 3][p->demoKeyIdx];
+    p->demoKeyFrame = 0;
+    p->demoKeyIdx++;
+  }
+  p->demoKeyFrame++;
+  gJoypad[0].input = tmp;
+  gJoypad[0].pressed = tmp & ~p->unk_24c;
+  gJoypad[0].field3_0x6 = 0;
+  p->unk_24c = tmp;
 }
 
 // --------------------------------------------
@@ -873,7 +384,7 @@ static void InitTitleAnimation(struct Intro* p) {
   gWindowRegBuffer.winin[2] = 0xFF;
   wMOSAIC = 0x0;
   PALETTE16(0) = RGB_BLACK;
-  text_080e9730();
+  LoadAsciiBold();
   gVideoRegBuffer.dispcnt &= BG_MODE_0;
   gVideoRegBuffer.dispcnt &= ~DISPCNT_BG_ALL_ON;
   p->unk_236 = 0;
@@ -882,6 +393,14 @@ static void InitTitleAnimation(struct Intro* p) {
   p->mode[2] = 0;
   p->mode[1] = 1;
 }
+
+static void FUN_080ed07c(struct Intro* p);
+static void intro_080ed1d4(struct Intro* p);
+static void intro_080ed108(struct Intro* p);
+static void intro_080ed2a0(struct Intro* p);
+static void intro_080ed480(struct Intro* p, u8 step);
+static void FUN_080ed6c4(struct Intro* p);
+static void intro_080ed770(struct Intro* p, u8 r1);
 
 WIP static void updateTitleAnimation(struct Intro* p) {
 #if MODERN
@@ -971,6 +490,8 @@ WIP static void updateTitleAnimation(struct Intro* p) {
   INCCODE("asm/wip/updateTitleAnimation.inc");
 #endif
 }
+
+static void loadTitleScreen(struct Intro* _ UNUSED);
 
 NAKED static void InitTitleScreen(struct Intro* p) {
   asm(".syntax unified\n\
@@ -1173,7 +694,7 @@ static void HandleTitleAction(struct Intro* p) {
       return;
     }
     case 3: {
-      if ((p->unk_12 & 1) == 0) {
+      if ((p->demo_id & 1) == 0) {
         SetIntroMode(p, 2);
       } else {
         SetIntroMode(p, 3);
@@ -1220,6 +741,9 @@ static void intro_080ed1d4(struct Intro* p) {
   p->unk_240 = 0;
   p->unk_243 = 10;
 }
+
+static const struct Coord Coord_ARRAY_08385fa4[9];
+static void FUN_080ed57c(motion_t m, s32 x, s32 y, u16 r3, u8 r4);
 
 NAKED static void intro_080ed2a0(struct Intro* p) {
   asm(".syntax unified\n\
@@ -1749,84 +1273,29 @@ _080ED6B6:\n\
    .syntax divided\n");
 }
 
-NAKED static void FUN_080ed6c4(struct Intro* p) {
-  asm(".syntax unified\n\
-	push {r4, r5, r6, lr}\n\
-	sub sp, #0xc\n\
-	adds r6, r0, #0\n\
-	ldr r4, _080ED750 @ =gVideoRegBuffer\n\
-	ldrh r1, [r4]\n\
-	movs r2, #0xe0\n\
-	lsls r2, r2, #6\n\
-	adds r0, r2, #0\n\
-	movs r5, #0\n\
-	orrs r0, r1\n\
-	strh r0, [r4]\n\
-	ldr r3, _080ED754 @ =0x00005A42\n\
-	adds r0, r3, #0\n\
-	strh r0, [r4, #0xa]\n\
-	str r5, [r4, #0x18]\n\
-	movs r1, #0xf8\n\
-	lsls r1, r1, #5\n\
-	ands r1, r0\n\
-	lsls r1, r1, #3\n\
-	movs r0, #0xc0\n\
-	lsls r0, r0, #0x13\n\
-	adds r1, r1, r0\n\
-	str r5, [sp, #4]\n\
-	ldr r2, _080ED758 @ =0x01000400\n\
-	add r0, sp, #4\n\
-	bl CpuFastSet\n\
-	ldr r0, _080ED75C @ =0x085472BC\n\
-	ldrh r2, [r4, #0xa]\n\
-	movs r1, #0xc\n\
-	ands r1, r2\n\
-	lsls r1, r1, #0xc\n\
-	bl LoadGraphic\n\
-	ldr r0, _080ED760 @ =0x085472C8\n\
-	movs r1, #0\n\
-	bl LoadPalette\n\
-	ldr r1, _080ED764 @ =gBgMapOffsets\n\
-	str r5, [sp]\n\
-	movs r0, #0x38\n\
-	movs r2, #3\n\
-	movs r3, #0\n\
-	bl LoadBgMap\n\
-	ldr r2, _080ED768 @ =gWindowRegBuffer\n\
-	ldrh r1, [r2]\n\
-	movs r3, #0x80\n\
-	lsls r3, r3, #7\n\
-	adds r0, r3, #0\n\
-	orrs r0, r1\n\
-	strh r0, [r2]\n\
-	movs r0, #0xff\n\
-	strb r0, [r2, #0xd]\n\
-	ldrb r1, [r2, #0xe]\n\
-	movs r0, #6\n\
-	orrs r0, r1\n\
-	movs r1, #0xf7\n\
-	ands r0, r1\n\
-	strb r0, [r2, #0xe]\n\
-	movs r0, #0xa0\n\
-	strh r0, [r2, #0xa]\n\
-	ldr r0, _080ED76C @ =0x00000246\n\
-	adds r6, r6, r0\n\
-	movs r0, #0xa\n\
-	strb r0, [r6]\n\
-	add sp, #0xc\n\
-	pop {r4, r5, r6}\n\
-	pop {r0}\n\
-	bx r0\n\
-	.align 2, 0\n\
-_080ED750: .4byte gVideoRegBuffer\n\
-_080ED754: .4byte 0x00005A42\n\
-_080ED758: .4byte 0x01000400\n\
-_080ED75C: .4byte gGraphic_Capcom+3*20\n\
-_080ED760: .4byte gPalette_Capcom+3*20\n\
-_080ED764: .4byte gBgMapOffsets\n\
-_080ED768: .4byte gWindowRegBuffer\n\
-_080ED76C: .4byte 0x00000246\n\
- .syntax divided\n");
+static void FUN_080ed6c4(struct Intro* p) {
+  gVideoRegBuffer.dispcnt |= (DISPCNT_BG3_ON | DISPCNT_OBJ_ON | DISPCNT_WIN0_ON);
+  BGCNT16(3) = (BGCNT_PRIORITY(2) | BGCNT_MOSAIC | BGCNT_SCREENBASE(26) | BGCNT_TXT512x256);
+  *(u32*)gVideoRegBuffer.bgofs[3] = 0;
+
+  {
+    void* dst = (void*)(VRAM + SCREEN_BASE_16(3));
+    CpuFastFill(0, dst, 4096);
+    {
+      vu32 _;
+    }
+  }
+
+  LoadGraphic(BG_GRAPHIC(BG_TITLE_ZERO), (void*)CHAR_BASE(3));
+  LoadPalette(BG_PALETTE(BG_TITLE_ZERO), 0);
+  LoadBgMap(56, gBgMapOffsets, BG_TITLE_ZERO, 0, 0);
+
+  gWindowRegBuffer.dispcnt |= DISPCNT_WIN1_ON;
+  gWindowRegBuffer.winin[1] = 0xFF;
+  gWindowRegBuffer.winin[2] |= (WINOUT_WIN01_BG1 | WINOUT_WIN01_BG2);
+  gWindowRegBuffer.winin[2] &= ~WINOUT_WIN01_BG3;
+  gWindowRegBuffer.winV.half[1] = 160;
+  p->unk_246 = 10;
 }
 
 NAKED static void intro_080ed770(struct Intro* p, u8 r1) {
@@ -2027,7 +1496,9 @@ _080ED8D8: .4byte gWindowRegBuffer\n\
 
 // ------------------------------------------------------------------------------------------------------------------------------------
 
-static void IntroLoop_080ed8dc(struct Intro* p) {
+// タイトル画面で、"はじめから" または "つづきから" を選ぶとここにくる。 ここでゲーム開始の準備をして、ゲーム開始のプロセスに切り替える。
+// 05 xx 00 00
+static void IntroLoop_StartMainGame(struct Intro* p) {
   switch (p->mode[1]) {
     case 0: {
       gPaletteManager.filter[0] = gPaletteManager.filter[1] = gPaletteManager.filter[2] = 0x20;
@@ -2038,12 +1509,12 @@ static void IntroLoop_080ed8dc(struct Intro* p) {
       gWindowRegBuffer.winin[2] = 0xFF;
       wMOSAIC = 0;
       PALETTE16(0) = RGB_BLACK;
-      text_080e9730();
+      LoadAsciiBold();
       gVideoRegBuffer.dispcnt &= BG_MODE_0;
       gVideoRegBuffer.dispcnt &= ~DISPCNT_BG_ALL_ON;
       gVideoRegBuffer.dispcnt |= DISPCNT_BG0_ON;
       SwitchProcess(TRUE);
-      ResetProcess(1, Process_Game);
+      ResetProcess(1, Process_Game);  // P0 は このプロセスで使っているので デモプレイは P1 で実行される
       p->mode[1]++;
       FALLTHROUGH;
     }
@@ -2059,12 +1530,57 @@ static void IntroLoop_080ed8dc(struct Intro* p) {
 
 // --------------------------------------------
 
-static void IntroLoop_Minigame(struct Intro* p) {
-  (sIntroMinigameScripts[p->mode[1]])(p);
-  return;
-}
+const TextID ALIGNED(4) ModCardTextIDs[120] = {
+    0x0079, 0x007A, 0x007B, 0x007C, 0x007D, 0x007E, 0x007F, 0x0080, 0x0081, 0x0082, 0x0083, 0x0084, 0x0085, 0x0086, 0x0086, 0x0087, 0x0086, 0x0080, 0x0088, 0x0089, 0x008A, 0x008B, 0x008C, 0x008D, 0x008E, 0x008F, 0x0090, 0x0091, 0x0092, 0x0093, 0x0094, 0x0095, 0x0089, 0x008F, 0x0096, 0x0086, 0x0097, 0x0098, 0x0099, 0x009A, 0x008A, 0x009B, 0x009C, 0x009D, 0x007B, 0x009E, 0x0081, 0x0080, 0x009F, 0x0086, 0x008F, 0x0079, 0x00A0, 0x0080, 0x008C, 0x0080, 0x0080, 0x0086, 0x0090, 0x0089, 0x00A1, 0x00A2, 0x0089, 0x0082, 0x00A3, 0x00A4, 0x00A5, 0x00A6, 0x00A7, 0x00A8, 0x00A9, 0x008F, 0x009C, 0x00AA, 0x0086, 0x007A, 0x0086, 0x00AB, 0x00AC, 0x00AD, 0x00AD, 0x00AE, 0x00AF, 0x00AD, 0x00B0, 0x00AD, 0x00AD, 0x0087, 0x00B1, 0x0079, 0x00B2, 0x0079, 0x00B3, 0x00B4, 0x00B5, 0x00B6, 0x00B7, 0x00B8, 0x00B9, 0x00BA, 0x00BB, 0x00BC, 0x00BD, 0x00BE, 0x00BF, 0x00C0, 0x00C1, 0x00C2, 0x00C3, 0x00C4, 0x00C5, 0x00C6, 0x00C7, 0x00C8, 0x00C9, 0x00CA, 0x00CB, 0x00CC, 0x00CD, 0x00CE,
+};
+
+const u8 MaybeCharTable[122] = {
+    0x00, 0x01, 0x02, 0x03, 0x04, 0x07, 0x08, 0x09, 0x0A, 0x0B, 0x0E, 0x0F, 0x10, 0x11, 0x12, 0x13, 0x14, 0x15, 0x16, 0x17, 0x18, 0x1A, 0x1B, 0x1C, 0x1D, 0x1E, 0x1F, 0x21, 0x22, 0x23, 0x24, 0x2B, 0x2C, 0x30, 0x31, 0x34, 0x35, 0x36, 0x38, 0x39, 0x53, 0x0D, 0x20, 0x25, 0x26, 0x28, 0x29, 0x2D, 0x2E, 0x2F, 0x32, 0x33, 0x37, 0x3A, 0x3B, 0x3C, 0x3D, 0x3E, 0x3F, 0x40, 0x41, 0x42, 0x43, 0x46, 0x47, 0x48, 0x49, 0x4B, 0x4C, 0x4D, 0x4E, 0x4F, 0x50, 0x51, 0x54, 0x56, 0x57, 0x58, 0x5A, 0x5B, 0x5C, 0x05, 0x06, 0x0C, 0x19, 0x27, 0x2A, 0x44, 0x45, 0x4A, 0x52, 0x55, 0x59, 0x5D, 0x5E, 0x5F, 0x60, 0x61, 0x62, 0x63, 0x64, 0x65, 0x66, 0x67, 0x68, 0x69, 0x6A, 0x6B, 0x6C, 0x6D, 0x6E, 0x6F, 0x70, 0x71, 0x72, 0x73, 0x74, 0x75, 0x76, 0x77, 0x78, 0x00,
+};
+
+const TextID ALIGNED(2) UnlockMinigameTextIDs[7] = {
+    0x00D2, 0x00D3, 0x00D4, 0x00D5, 0x00D6, 0x00D7, 0x00D8,
+};
+
+static const u8 u8_ARRAY_08385f9c[7] = {
+    0xF2, 0xF3, 0xF4, 0xF5, 0xF6, 0xF7, 0xF8,
+};
+
+static const struct Coord Coord_ARRAY_08385fa4[9] = {
+    {0x1900, 0x3000}, {0x2D00, 0x3000}, {0x4200, 0x3000}, {0x5800, 0x3000}, {0x6F00, 0x3000}, {0x8B00, 0x3200}, {0xA200, 0x3000}, {0xC600, 0x3000}, {0x9800, 0x3000},
+};
+
+static const s32 s32_ARRAY_08385fec[8] = {
+    0xA000, 0xA000, 0xA000, 0xA000, 0xA000, 0x5000, 0x5000, 0x5000,
+};
+
+static const s32 s32_ARRAY_ARRAY_0838600c[16] = {
+    0x00001900, 0x00003000, 0x00002D00, 0x00003000, 0x00004200, 0x00003000, 0x00005800, 0x00003000, 0x00006F00, 0x00003000, 0x00008B00, 0x00003200, 0x0000A200, 0x00003000, 0x0000C600, 0x00003000,
+};
+
+static const struct Coord s32_ARRAY_ARRAY_0838604c[4] = {
+    {0x3400, -0x1E00},
+    {-0xA00, 0x5C00},
+    {-0xA00, -0x1E00},
+    {0x3400, 0x5C00},
+};
 
 // --------------------------------------------
+
+static void FUN_080ed9c0(struct Intro* p);
+static void minigameSelectScript(struct Intro* p);
+static void FUN_080eddb8(struct Intro* p);
+static void FUN_080edf04(struct Intro* p);
+
+static void IntroLoop_Minigame(struct Intro* p) {
+  static const IntroLoopFunc sIntroMinigameScripts[4] = {
+      FUN_080ed9c0,
+      minigameSelectScript,
+      FUN_080eddb8,
+      FUN_080edf04,
+  };
+  (sIntroMinigameScripts[p->mode[1]])(p);
+}
 
 static void FUN_080ed9c0(struct Intro* p) {
   gPaletteManager.filter[0] = gPaletteManager.filter[1] = gPaletteManager.filter[2] = 0x20;
@@ -2075,7 +1591,7 @@ static void FUN_080ed9c0(struct Intro* p) {
   gWindowRegBuffer.winin[2] = 0xFF;
   wMOSAIC = 0;
   PALETTE16(0) = RGB_BLACK;
-  text_080e9730();
+  LoadAsciiBold();
   gVideoRegBuffer.dispcnt &= BG_MODE_0;
   gVideoRegBuffer.dispcnt &= ~DISPCNT_BG_ALL_ON;
   gVideoRegBuffer.dispcnt |= DISPCNT_BG0_ON;
@@ -2083,6 +1599,13 @@ static void FUN_080ed9c0(struct Intro* p) {
   p->mode[2] = 0;
   p->mode[1] = 1;
 }
+
+static const u8 ALIGNED(4) u8_ARRAY_0838607c[8] = {
+    0xF2, 0xF3, 0xF4, 0xF5, 0xF6, 0xF7, 0xF8, 0x00,
+};
+static const u16 ALIGNED(4) u16_ARRAY_08386084[7] = {
+    0x020E, 0x0210, 0x0212, 0x0214, 0x0216, 0x0218, 0x021A,
+};
 
 NAKED static void minigameSelectScript(struct Intro* p) {
   asm(".syntax unified\n\
@@ -2157,7 +1680,7 @@ _080EDA8E:\n\
 	mov sl, r2\n\
 	mov r3, sl\n\
 	strh r3, [r1, #2]\n\
-	bl text_080e9730\n\
+	bl LoadAsciiBold\n\
 	bl FUN_080e9840\n\
 	movs r1, #0\n\
 	ldr r6, _080EDC10 @ =gSystemSavedataManager\n\
@@ -2514,171 +2037,63 @@ _080EDDB4: .4byte 0x00000241\n\
  .syntax divided\n");
 }
 
-NAKED static void FUN_080eddb8(struct Intro* p) {
-  asm(".syntax unified\n\
-	push {r4, r5, r6, lr}\n\
-	adds r6, r0, #0\n\
-	ldrb r0, [r6, #6]\n\
-	cmp r0, #1\n\
-	beq _080EDDE2\n\
-	cmp r0, #1\n\
-	bgt _080EDDCC\n\
-	cmp r0, #0\n\
-	beq _080EDDD6\n\
-	b _080EDEB2\n\
-_080EDDCC:\n\
-	cmp r0, #2\n\
-	beq _080EDE3A\n\
-	cmp r0, #3\n\
-	beq _080EDE88\n\
-	b _080EDEB2\n\
-_080EDDD6:\n\
-	strh r0, [r6, #8]\n\
-	movs r0, #0x20\n\
-	strh r0, [r6, #0xa]\n\
-	ldrb r0, [r6, #6]\n\
-	adds r0, #1\n\
-	strb r0, [r6, #6]\n\
-_080EDDE2:\n\
-	ldrh r2, [r6, #8]\n\
-	movs r1, #8\n\
-	ldrsh r0, [r6, r1]\n\
-	cmp r0, #0xf\n\
-	bgt _080EDE00\n\
-	adds r2, #1\n\
-	strh r2, [r6, #8]\n\
-	ldr r3, _080EDE1C @ =gBlendRegBuffer\n\
-	movs r1, #0x1f\n\
-	ands r1, r2\n\
-	movs r0, #0x10\n\
-	subs r0, r0, r2\n\
-	lsls r0, r0, #8\n\
-	orrs r1, r0\n\
-	strh r1, [r3, #2]\n\
-_080EDE00:\n\
-	ldr r0, _080EDE20 @ =gJoypad\n\
-	ldrh r1, [r0, #4]\n\
-	movs r0, #9\n\
-	ands r0, r1\n\
-	cmp r0, #0\n\
-	beq _080EDE24\n\
-	movs r0, #2\n\
-	bl PlaySound\n\
-	ldrb r0, [r6, #6]\n\
-	adds r0, #1\n\
-	strb r0, [r6, #6]\n\
-	b _080EDEB2\n\
-	.align 2, 0\n\
-_080EDE1C: .4byte gBlendRegBuffer\n\
-_080EDE20: .4byte gJoypad\n\
-_080EDE24:\n\
-	movs r0, #2\n\
-	ands r0, r1\n\
-	cmp r0, #0\n\
-	beq _080EDEB2\n\
-	movs r0, #3\n\
-	bl PlaySound\n\
-	ldrb r0, [r6, #6]\n\
-	adds r0, #2\n\
-	strb r0, [r6, #6]\n\
-	b _080EDEB2\n\
-_080EDE3A:\n\
-	ldrh r0, [r6, #0xa]\n\
-	movs r2, #0xa\n\
-	ldrsh r4, [r6, r2]\n\
-	cmp r4, #0\n\
-	beq _080EDE70\n\
-	subs r0, #1\n\
-	adds r1, r0, #0\n\
-	strh r0, [r6, #0xa]\n\
-	ldr r2, _080EDE68 @ =gPaletteManager\n\
-	ldr r3, _080EDE6C @ =0x00000402\n\
-	adds r0, r2, r3\n\
-	strb r1, [r0]\n\
-	movs r0, #0xff\n\
-	ands r0, r1\n\
-	subs r3, #1\n\
-	adds r1, r2, r3\n\
-	strb r0, [r1]\n\
-	movs r1, #0x80\n\
-	lsls r1, r1, #3\n\
-	adds r2, r2, r1\n\
-	strb r0, [r2]\n\
-	b _080EDEB2\n\
-	.align 2, 0\n\
-_080EDE68: .4byte gPaletteManager\n\
-_080EDE6C: .4byte 0x00000402\n\
-_080EDE70:\n\
-	movs r0, #0x40\n\
-	bl ClearBlink\n\
-	ldr r0, _080EDE84 @ =gBlendRegBuffer\n\
-	movs r1, #0\n\
-	strh r4, [r0]\n\
-	strb r1, [r6, #6]\n\
-	movs r0, #3\n\
-	b _080EDEB0\n\
-	.align 2, 0\n\
-_080EDE84: .4byte gBlendRegBuffer\n\
-_080EDE88:\n\
-	ldrh r2, [r6, #8]\n\
-	movs r3, #8\n\
-	ldrsh r0, [r6, r3]\n\
-	cmp r0, #0\n\
-	beq _080EDEAC\n\
-	subs r2, #1\n\
-	strh r2, [r6, #8]\n\
-	ldr r3, _080EDEA8 @ =gBlendRegBuffer\n\
-	movs r1, #0x1f\n\
-	ands r1, r2\n\
-	movs r0, #0x10\n\
-	subs r0, r0, r2\n\
-	lsls r0, r0, #8\n\
-	orrs r1, r0\n\
-	strh r1, [r3, #2]\n\
-	b _080EDEB2\n\
-	.align 2, 0\n\
-_080EDEA8: .4byte gBlendRegBuffer\n\
-_080EDEAC:\n\
-	movs r0, #1\n\
-	strb r0, [r6, #6]\n\
-_080EDEB0:\n\
-	strb r0, [r6, #5]\n\
-_080EDEB2:\n\
-	movs r0, #0x40\n\
-	bl UpdateBlinkMotionState\n\
-	ldr r5, _080EDEF4 @ =StringOfsTable\n\
-	movs r1, #0x88\n\
-	lsls r1, r1, #4\n\
-	adds r0, r5, r1\n\
-	ldrh r0, [r0]\n\
-	ldr r4, _080EDEF8 @ =gStringData\n\
-	adds r0, r0, r4\n\
-	movs r1, #0xd\n\
-	movs r2, #2\n\
-	bl PrintString\n\
-	ldr r1, _080EDEFC @ =0x08386092\n\
-	ldr r2, _080EDF00 @ =0x00000242\n\
-	adds r0, r6, r2\n\
-	ldrb r0, [r0]\n\
-	lsls r0, r0, #1\n\
-	adds r0, r0, r1\n\
-	ldrh r0, [r0]\n\
-	lsls r0, r0, #1\n\
-	adds r0, r0, r5\n\
-	ldrh r0, [r0]\n\
-	adds r0, r0, r4\n\
-	movs r1, #3\n\
-	movs r2, #4\n\
-	bl PrintString\n\
-	pop {r4, r5, r6}\n\
-	pop {r0}\n\
-	bx r0\n\
-	.align 2, 0\n\
-_080EDEF4: .4byte StringOfsTable\n\
-_080EDEF8: .4byte gStringData\n\
-_080EDEFC: .4byte u16_ARRAY_08386092\n\
-_080EDF00: .4byte 0x00000242\n\
- .syntax divided\n");
+// draw minigame rules
+static void FUN_080eddb8(struct Intro* p) {
+  static const u16 ALIGNED(2) sMinigameRuleStrings[7] = {
+      0x0441, 0x0442, 0x0443, 0x0444, 0x0445, 0x0446, 0x0447,
+  };
+
+  switch (p->mode[2]) {
+    case 0: {
+      p->titleFrame = 0;
+      p->frame = 32;
+      p->mode[2]++;
+      FALLTHROUGH;
+    }
+    case 1: {
+      if (p->titleFrame < 16) {
+        p->titleFrame++;
+        gBlendRegBuffer.bldalpha = BLDALPHA_BLEND1(p->titleFrame & 0x1F, 16 - p->titleFrame);
+      }
+      if (gJoypad[0].pressed & (A_BUTTON | START_BUTTON)) {
+        PlaySound(SE_YES);
+        p->mode[2]++;
+      } else if (gJoypad[0].pressed & B_BUTTON) {
+        PlaySound(SE_NO);
+        p->mode[2] += 2;
+      }
+      break;
+    }
+    case 2: {
+      if (p->frame != 0) {
+        p->frame--;
+        gPaletteManager.filter[0] = gPaletteManager.filter[1] = gPaletteManager.filter[2] = p->frame;
+      } else {
+        ClearBlink(0x40);
+        gBlendRegBuffer.bldclt = 0;
+        p->mode[2] = 0;
+        p->mode[1] = 3;
+      }
+      break;
+    }
+    case 3: {
+      if (p->titleFrame != 0) {
+        p->titleFrame--;
+        gBlendRegBuffer.bldalpha = BLDALPHA_BLEND1(p->titleFrame & 0x1F, 16 - p->titleFrame);
+      } else {
+        p->mode[2] = 1;
+        p->mode[1] = 1;
+      }
+      break;
+    }
+    default: {
+      break;
+    }
+  }
+
+  UpdateBlinkMotionState(0x40);
+  PrintString(STRING(1088), 13, 2);  // sMinigameRules (0x083763c4)
+  PrintString(STRING(sMinigameRuleStrings[p->unk_242]), 3, 4);
 }
 
 static void FUN_080edf04(struct Intro* p) {
@@ -2692,13 +2107,13 @@ static void FUN_080edf04(struct Intro* p) {
       gWindowRegBuffer.winin[2] = 0xFF;
       wMOSAIC = 0;
       PALETTE16(0) = RGB_BLACK;
-      text_080e9730();
+      LoadAsciiBold();
       gVideoRegBuffer.dispcnt &= BG_MODE_0;
       gVideoRegBuffer.dispcnt &= ~DISPCNT_BG_ALL_ON;
       gVideoRegBuffer.dispcnt |= DISPCNT_BG0_ON;
       SwitchProcess(TRUE);
       SetGameMode(&gGameState, (p->unk_242 << 8) + 3);
-      ResetProcess(1, Process_Game);
+      ResetProcess(1, Process_Game);  // P0 は このプロセスで使っているので デモプレイは P1 で実行される
       p->mode[2]++;
       FALLTHROUGH;
     }
@@ -2711,59 +2126,3 @@ static void FUN_080edf04(struct Intro* p) {
     }
   }
 }
-
-// ------------------------------------------------------------------------------------------------------------------------------------
-
-const TextID ALIGNED(4) ModCardTextIDs[120] = {
-    0x0079, 0x007A, 0x007B, 0x007C, 0x007D, 0x007E, 0x007F, 0x0080, 0x0081, 0x0082, 0x0083, 0x0084, 0x0085, 0x0086, 0x0086, 0x0087, 0x0086, 0x0080, 0x0088, 0x0089, 0x008A, 0x008B, 0x008C, 0x008D, 0x008E, 0x008F, 0x0090, 0x0091, 0x0092, 0x0093, 0x0094, 0x0095, 0x0089, 0x008F, 0x0096, 0x0086, 0x0097, 0x0098, 0x0099, 0x009A, 0x008A, 0x009B, 0x009C, 0x009D, 0x007B, 0x009E, 0x0081, 0x0080, 0x009F, 0x0086, 0x008F, 0x0079, 0x00A0, 0x0080, 0x008C, 0x0080, 0x0080, 0x0086, 0x0090, 0x0089, 0x00A1, 0x00A2, 0x0089, 0x0082, 0x00A3, 0x00A4, 0x00A5, 0x00A6, 0x00A7, 0x00A8, 0x00A9, 0x008F, 0x009C, 0x00AA, 0x0086, 0x007A, 0x0086, 0x00AB, 0x00AC, 0x00AD, 0x00AD, 0x00AE, 0x00AF, 0x00AD, 0x00B0, 0x00AD, 0x00AD, 0x0087, 0x00B1, 0x0079, 0x00B2, 0x0079, 0x00B3, 0x00B4, 0x00B5, 0x00B6, 0x00B7, 0x00B8, 0x00B9, 0x00BA, 0x00BB, 0x00BC, 0x00BD, 0x00BE, 0x00BF, 0x00C0, 0x00C1, 0x00C2, 0x00C3, 0x00C4, 0x00C5, 0x00C6, 0x00C7, 0x00C8, 0x00C9, 0x00CA, 0x00CB, 0x00CC, 0x00CD, 0x00CE,
-};
-
-const u8 MaybeCharTable[122] = {
-    0x00, 0x01, 0x02, 0x03, 0x04, 0x07, 0x08, 0x09, 0x0A, 0x0B, 0x0E, 0x0F, 0x10, 0x11, 0x12, 0x13, 0x14, 0x15, 0x16, 0x17, 0x18, 0x1A, 0x1B, 0x1C, 0x1D, 0x1E, 0x1F, 0x21, 0x22, 0x23, 0x24, 0x2B, 0x2C, 0x30, 0x31, 0x34, 0x35, 0x36, 0x38, 0x39, 0x53, 0x0D, 0x20, 0x25, 0x26, 0x28, 0x29, 0x2D, 0x2E, 0x2F, 0x32, 0x33, 0x37, 0x3A, 0x3B, 0x3C, 0x3D, 0x3E, 0x3F, 0x40, 0x41, 0x42, 0x43, 0x46, 0x47, 0x48, 0x49, 0x4B, 0x4C, 0x4D, 0x4E, 0x4F, 0x50, 0x51, 0x54, 0x56, 0x57, 0x58, 0x5A, 0x5B, 0x5C, 0x05, 0x06, 0x0C, 0x19, 0x27, 0x2A, 0x44, 0x45, 0x4A, 0x52, 0x55, 0x59, 0x5D, 0x5E, 0x5F, 0x60, 0x61, 0x62, 0x63, 0x64, 0x65, 0x66, 0x67, 0x68, 0x69, 0x6A, 0x6B, 0x6C, 0x6D, 0x6E, 0x6F, 0x70, 0x71, 0x72, 0x73, 0x74, 0x75, 0x76, 0x77, 0x78, 0x00,
-};
-
-const TextID ALIGNED(2) UnlockMinigameTextIDs[7] = {
-    0x00D2, 0x00D3, 0x00D4, 0x00D5, 0x00D6, 0x00D7, 0x00D8,
-};
-
-static const u8 u8_ARRAY_08385f9c[7] = {
-    0xF2, 0xF3, 0xF4, 0xF5, 0xF6, 0xF7, 0xF8,
-};
-
-static const struct Coord Coord_ARRAY_08385fa4[9] = {
-    {0x1900, 0x3000}, {0x2D00, 0x3000}, {0x4200, 0x3000}, {0x5800, 0x3000}, {0x6F00, 0x3000}, {0x8B00, 0x3200}, {0xA200, 0x3000}, {0xC600, 0x3000}, {0x9800, 0x3000},
-};
-
-static const s32 s32_ARRAY_08385fec[8] = {
-    0xA000, 0xA000, 0xA000, 0xA000, 0xA000, 0x5000, 0x5000, 0x5000,
-};
-
-static const s32 s32_ARRAY_ARRAY_0838600c[16] = {
-    0x00001900, 0x00003000, 0x00002D00, 0x00003000, 0x00004200, 0x00003000, 0x00005800, 0x00003000, 0x00006F00, 0x00003000, 0x00008B00, 0x00003200, 0x0000A200, 0x00003000, 0x0000C600, 0x00003000,
-};
-
-static const struct Coord s32_ARRAY_ARRAY_0838604c[4] = {
-    {0x3400, -0x1E00},
-    {-0xA00, 0x5C00},
-    {-0xA00, -0x1E00},
-    {0x3400, 0x5C00},
-};
-
-static const IntroLoopFunc sIntroMinigameScripts[4] = {
-    FUN_080ed9c0,
-    minigameSelectScript,
-    FUN_080eddb8,
-    FUN_080edf04,
-};
-
-const u8 ALIGNED(4) u8_ARRAY_0838607c[8] = {
-    0xF2, 0xF3, 0xF4, 0xF5, 0xF6, 0xF7, 0xF8, 0x00,
-};
-
-const u16 ALIGNED(4) u16_ARRAY_08386084[7] = {
-    0x020E, 0x0210, 0x0212, 0x0214, 0x0216, 0x0218, 0x021A,
-};
-
-const u16 ALIGNED(2) u16_ARRAY_08386092[7] = {
-    0x0441, 0x0442, 0x0443, 0x0444, 0x0445, 0x0446, 0x0447,
-};

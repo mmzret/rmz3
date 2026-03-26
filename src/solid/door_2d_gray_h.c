@@ -66,6 +66,61 @@ static void Solid22_Die(struct Solid* p) {
 
 // --------------------------------------------
 
+NAKED void FUN_080d7e5c(struct Body* body, struct Coord* r1 UNUSED, struct Coord* r2 UNUSED) {
+  asm(".syntax unified\n\
+	push {r4, r5, lr}\n\
+	ldr r3, [r0, #0x2c]\n\
+	ldr r0, [r0, #0xc]\n\
+	ldr r4, [r0, #0x2c]\n\
+	movs r2, #8\n\
+	ldrsb r2, [r4, r2]\n\
+	cmp r2, #0\n\
+	bne _080D7EAA\n\
+	ldr r1, [r3, #0x58]\n\
+	ldr r0, [r4, #0x58]\n\
+	cmp r1, r0\n\
+	ble _080D7E84\n\
+	ldrb r1, [r3, #0x10]\n\
+	movs r5, #1\n\
+	adds r0, r5, #0\n\
+	ands r0, r1\n\
+	cmp r0, #0\n\
+	bne _080D7EAA\n\
+	strb r5, [r3, #0xd]\n\
+	b _080D7E92\n\
+_080D7E84:\n\
+	ldrb r1, [r3, #0x10]\n\
+	movs r0, #1\n\
+	ands r0, r1\n\
+	cmp r0, #0\n\
+	beq _080D7EAA\n\
+	movs r0, #2\n\
+	strb r0, [r3, #0xd]\n\
+_080D7E92:\n\
+	strb r2, [r3, #0xe]\n\
+	ldr r0, _080D7EB0 @ =0x00000119\n\
+	adds r1, r4, r0\n\
+	movs r0, #1\n\
+	strb r0, [r1]\n\
+	ldr r2, _080D7EB4 @ =gStageRun\n\
+	ldrh r1, [r2, #0x14]\n\
+	orrs r0, r1\n\
+	strh r0, [r2, #0x14]\n\
+	adds r0, r3, #0\n\
+	adds r0, #0xb4\n\
+	str r4, [r0]\n\
+_080D7EAA:\n\
+	pop {r4, r5}\n\
+	pop {r0}\n\
+	bx r0\n\
+	.align 2, 0\n\
+_080D7EB0: .4byte 0x00000119\n\
+_080D7EB4: .4byte gStageRun\n\
+ .syntax divided\n");
+}
+
+// --------------------------------------------
+
 INCASM("asm/solid/unk_22.inc");
 
 // --------------------------------------------

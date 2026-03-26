@@ -73,11 +73,11 @@ static void CreateSolid7_Unused(s32 x, u8 n) {
 bool8 FUN_080cc814(struct Solid* p) { return (p->s).mode[1] == ENTITY_EXIT; }
 
 static void onCollision(struct Body* body, struct Coord* r1 UNUSED, struct Coord* r2 UNUSED) {
-  struct CollidableEntity* enemy = (body->enemy)->parent;
+  struct Entity* enemy = (struct Entity*)(body->enemy)->parent;
   struct Solid* self = (struct Solid*)body->parent;
 
   if (body->hitboxFlags & BODY_STATUS_B3) {
-    *(s32*)(&(self->props).raw[8]) = (enemy->s).coord.y;
+    *(s32*)(&(self->props).raw[8]) = (enemy->coord).y;
   }
 }
 

@@ -121,7 +121,7 @@ static void exitAreaX2(struct Coord* _ UNUSED) {
 // ------------------------------------------------------------------------------------------------------------------------------------
 
 static void LayerUpdate_2(struct StageLayer* l, const struct Stage* _ UNUSED);
-static void LayerDraw_2(struct StageLayer* l, const struct Stage* stage);
+static void LayerDraw_AreaX2_2(struct StageLayer* l, const struct Stage* stage);
 static void LayerExit_2(struct StageLayer* l UNUSED, const struct Stage* _ UNUSED);
 static void LayerUpdate_3(struct StageLayer* l, const struct Stage* _ UNUSED);
 static void LayerDraw_3(struct StageLayer* l, const struct Stage* _ UNUSED);
@@ -144,7 +144,7 @@ static const StageLayerRoutine sLayerRoutine[7] = {
     },
     [2] = {
       [LAYER_UPDATE] = LayerUpdate_2,
-      [LAYER_DRAW]   = LayerDraw_2,
+      [LAYER_DRAW]   = LayerDraw_AreaX2_2,
       [LAYER_EXIT]   = LayerExit_2,
     },
     [3] = {
@@ -178,7 +178,8 @@ static void LayerUpdate_2(struct StageLayer* l, const struct Stage* _ UNUSED) {
 }
 
 // 0x08011820
-WIP static void LayerDraw_2(struct StageLayer* l, const struct Stage* stage) {
+// レジスタの割り当てがうまくいかないだけ
+WIP static void LayerDraw_AreaX2_2(struct StageLayer* l, const struct Stage* stage) {
 #if MODERN
   u16 eva;
   struct Overworld* ow = &gOverworld;
@@ -190,7 +191,7 @@ WIP static void LayerDraw_2(struct StageLayer* l, const struct Stage* stage) {
   } else if (n < 192) {
     eva = 16;
   } else {
-    eva = 16 - ((n - 192) >> 2);
+    eva = 16 - ((s32)(n - 192) >> 2);
   }
   gBlendRegBuffer.bldalpha = (eva & 0x1F) | ((16 - eva) << 8);
   DrawGeneralStageLayer(l, stage);

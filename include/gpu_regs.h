@@ -4,6 +4,10 @@
 #include "constants/constants.h"
 #include "gba/gba.h"
 
+#define USE_BG1 0x12
+#define USE_BG2 0x24
+#define USE_BG3 0x38
+
 #define BGOFS(n) ((struct BgOfs*)gVideoRegBuffer.bgofs[(n)])
 
 struct BgOfs {

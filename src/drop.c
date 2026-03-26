@@ -1,26 +1,37 @@
 #include "enemy.h"
 #include "global.h"
 #include "pickup.h"
-#include "reward.h"
 #include "stagerun.h"
 #include "story.h"
+
+// Disk drop from enemy
+struct DiskDrop {
+  u16 stageID;
+  u16 stageID2;
+  u16 zakoOfs;  // 0x0202fde5 + (.zakoOfs-0x19)
+  u16 type;     // entity type (e.g. Solid, Enemy, ...)
+  u16 id;       // entity id (e.g. Enemy.id)
+  u16 kind;     // Enemy.s.work[0] (セーメランの場合は本体だけカウントするみたいな用途で使う)
+  u16 count;    // シークレットディスクを落とすのに必要な撃破数
+  u16 diskNo;   // ディスク番号(not ID)
+};  // 16 bytes
 
 static const s8 sMiddleBossDiskNo[8];
 static const u16 sItemDropRates[ITEM_COUNT][7];
 static const ALIGNED(2) struct DiskDrop sEnemyDiskDrops[42];
 static const u8 sStageEnemyDiskDrops[STAGE_COUNT];
 
-u32 TryDropItem(u32 table, struct Coord *c) {
+u32 TryDropItem(u32 table, struct Coord* c) {
   u16 n;
   u8 rng;
-  const u16 *tbl;
+  const u16* tbl;
 
   RNG_0202f388 = LCG(RNG_0202f388);
   rng = (u8)((RNG_0202f388 >> 16));
 
   // Secret Disk
   if (table >= ITEM_COUNT) {
-    u8 *disks;
+    u8* disks;
     s32 diskID;
 
     n = table - 9;
@@ -51,7 +62,7 @@ u32 TryDropItem(u32 table, struct Coord *c) {
   return n;
 }
 
-NAKED void TryDropZakoDisk(struct Enemy *p, struct Coord *c) {
+NAKED void TryDropZakoDisk(struct Enemy* p, struct Coord* c) {
   asm(".syntax unified\n\
 	push {r4, r5, r6, r7, lr}\n\
 	mov r7, sl\n\
@@ -447,6 +458,8 @@ static const ALIGNED(2) struct DiskDrop sEnemyDiskDrops[42] = {
       count : 4,
       diskNo : DISK_PANTHEON_GUARDIAN,
     },
+
+    // TODO:
     {0x0006, 0x0006, 0x002E, 0x0003, 0x0036, 0x0000, 0x0003, 0x008A},
     {0x0006, 0x0006, 0x002F, 0x0003, 0x0029, 0xFFFF, 0x0004, 0x008B},
     {0x0007, 0x0007, 0x0030, 0x0003, 0x0033, 0xFFFF, 0x0002, 0x0041},

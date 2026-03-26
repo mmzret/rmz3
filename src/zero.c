@@ -38,18 +38,18 @@ struct Zero* AllocPlayer(void) {
   z = (struct Zero*)AllocEntityLast(gZeroHeaderPtr);
   if ((z != NULL) && (z != pZero)) {  // not equal
     tmp = AllocPlayer();
-    DeletePlayer(gZeroHeaderPtr, z);
+    DeleteEntityEx(gZeroHeaderPtr, (struct Entity*)z);
     z = tmp;
   }
-  ENTITY(z).work[0] = 0;
+  (z->s).work[0] = 0;
   (z->s).tileNum = 0;
   (z->s).palID = 0;
-  ENTITY(z).flags2 |= WHITE_PAINTABLE;
-  ENTITY(z).invincibleID = ENTITY(z).uniqueID;
+  (z->s).flags2 |= WHITE_PAINTABLE;
+  (z->s).invincibleID = (z->s).uniqueID;
   return z;
 }
 
-// ミニゲームの(ゼロのミニゲーム以外の)プレイヤー生成?
+// スクリプトエンジンによるプレイヤー生成
 struct Zero* AllocPlayer2(void) {
   struct Zero* tmp;
   struct Zero* z;
@@ -57,14 +57,14 @@ struct Zero* AllocPlayer2(void) {
   z = (struct Zero*)AllocEntityFirst(gZeroHeaderPtr);
   if ((z != NULL) && (z == pZero)) {  // equal
     tmp = AllocPlayer2();
-    DeletePlayer(gZeroHeaderPtr, z);
+    DeleteEntityEx(gZeroHeaderPtr, (struct Entity*)z);
     z = tmp;
   }
-  ENTITY(z).work[0] = 1;
+  (z->s).work[0] = 1;
   (z->s).tileNum = 512;
   (z->s).palID = 4;
-  ENTITY(z).flags2 |= WHITE_PAINTABLE;
-  ENTITY(z).invincibleID = ENTITY(z).uniqueID;
+  (z->s).flags2 |= WHITE_PAINTABLE;
+  (z->s).invincibleID = (z->s).uniqueID;
   return z;
 }
 
@@ -1345,31 +1345,28 @@ _0802644A:\n\
 
 /*
   壁ずり中の壁というよりはゼロのいる座標のMetatile Attr
-  Reg swapだけ解決できなかっただけでロジックはあってる
 */
-NON_MATCH metatile_attr_t GetWallMetatileAttr(struct Zero* z, const struct Rect* p, bool8 _ UNUSED) {
-#if MODERN
+metatile_attr_t GetWallMetatileAttr(struct Zero* z, const struct Rect* p, bool8 _ UNUSED) {
   metatile_attr_t attr;
   struct Coord c;
+  u32 shape;
 
   const s32 y = (z->s).coord.y + p->y - (p->h >> 1);  // Zero's center Y
   if (z->hazardCount != 0) {
     metatile_attr_t attr = AppendHazardID(z, (z->s).coord.x, y);
-    if (((attr & METATILE_SOFT_PLATFORM) == 0) || ((attr & 0xF) == 0) || ((attr & 0xF) == 0xF)) {
+    if (((attr & METATILE_SOFT_PLATFORM) == 0) || ((attr & 0xF) == 0) || ((attr & 0xF) > 0xE)) {
       _pushoutHazardY(z, (z->s).coord.x, y, &c);
     }
   }
 
   attr = GetMetatileAttr((z->s).coord.x, y);
+  shape = attr & 0xF;
 
   // めり込んでる?(すり抜け床と重なってる場合は除く)
-  if (((attr & 0xF) == METATILE_GROUND) && !(attr & METATILE_SOFT_PLATFORM)) {
+  if ((shape == METATILE_GROUND) && ((attr & METATILE_SOFT_PLATFORM) == 0)) {
     (z->s).coord.y += PushoutToDown2((z->s).coord.x, y);
   }
   return attr;
-#else
-  INCCODE("asm/wip/GetWallMetatileAttr.inc");
-#endif
 }
 
 /*
@@ -2303,7 +2300,7 @@ WIP void CheckZeroHazard(struct Zero* z) {
   s32 x = (z->s).coord.x;
   s32 y = (z->s).coord.y;
   z->hazardCount = 0;
-  for (i = 0; i < HAZARD_LENGTH; i++) {
+  for (i = 0; i < W_TERRAIN_V2.objectLen; i++) {
     struct Hazard* hz = HAZARD(i);
     const u32 w = (u32)((u16)hz->w) + PIXEL(31);
     const u32 h = (u32)((u16)hz->h) + PIXEL(31);
@@ -2925,22 +2922,22 @@ static metatile_attr_t _pushoutHazardX1(struct Zero* z, s32 x, s32 y, struct Coo
 
   for (i = 0; i < z->hazardCount; i++) {
     u8 n = z->hazard[i];
-    const u32 _x = (u32)(x - (gOverworld.objects[n].start).x);
-    const u32 w = gOverworld.objects[n].w;
+    const u32 _x = (u32)(x - (W_TERRAIN_V2.objects[n].start).x);
+    const u32 w = W_TERRAIN_V2.objects[n].w;
     if ((_x + w) < (w << 1)) {
-      const u32 _y = (y - (gOverworld.objects[n].start).y);
-      const u32 h = gOverworld.objects[n].h;
+      const u32 _y = (y - (W_TERRAIN_V2.objects[n].start).y);
+      const u32 h = W_TERRAIN_V2.objects[n].h;
       if ((_y + h) < (h << 1)) {
         s32 start_x;
-        appendHazardID(z, gOverworld.objects[n].id);
-        start_x = (gOverworld.objects[n].start).x;
+        appendHazardID(z, W_TERRAIN_V2.objects[n].id);
+        start_x = (W_TERRAIN_V2.objects[n].start).x;
         if (start_x < (z->s).coord.x) {
-          c->x = (start_x + gOverworld.objects[n].w) - x;
+          c->x = (start_x + W_TERRAIN_V2.objects[n].w) - x;
         } else {
-          c->x = (start_x - gOverworld.objects[n].w) - x - 1;
+          c->x = (start_x - W_TERRAIN_V2.objects[n].w) - x - 1;
         }
         if (c->x != 0) {
-          attr = gOverworld.objects[n].attr;
+          attr = W_TERRAIN_V2.objects[n].attr;
           (z->s).coord.x += c->x;
           x += c->x;
           z->pushedOut = TRUE;
@@ -2959,27 +2956,27 @@ metatile_attr_t _pushoutHazardY(struct Zero* z, s32 x, s32 y, struct Coord* c) {
 
   for (i = 0; i < z->hazardCount; i++) {
     u8 n = z->hazard[i];
-    const u32 _x = (u32)(x - (gOverworld.objects[n].start).x);
-    const u32 w = gOverworld.objects[n].w;
+    const u32 _x = (u32)(x - (W_TERRAIN_V2.objects[n].start).x);
+    const u32 w = W_TERRAIN_V2.objects[n].w;
     if ((_x + w) < (w << 1)) {
-      const u32 _y = (y - (gOverworld.objects[n].start).y);
-      const u32 h = gOverworld.objects[n].h;
+      const u32 _y = (y - (W_TERRAIN_V2.objects[n].start).y);
+      const u32 h = W_TERRAIN_V2.objects[n].h;
       if ((_y + h) < (h << 1)) {
         s32 start_y;
-        appendHazardID(z, gOverworld.objects[n].id);
-        start_y = (gOverworld.objects[n].start).y;
+        appendHazardID(z, W_TERRAIN_V2.objects[n].id);
+        start_y = (W_TERRAIN_V2.objects[n].start).y;
         if (start_y < y) {
           if (y == (z->s).coord.y) {
-            c->y = (start_y - gOverworld.objects[n].h) - y - 1;
+            c->y = (start_y - W_TERRAIN_V2.objects[n].h) - y - 1;
           } else {
-            c->y = (start_y + gOverworld.objects[n].h) - y;
+            c->y = (start_y + W_TERRAIN_V2.objects[n].h) - y;
           }
         } else {
-          c->y = (start_y - gOverworld.objects[n].h) - y - 1;
+          c->y = (start_y - W_TERRAIN_V2.objects[n].h) - y - 1;
         }
 
         if (c->y != 0) {
-          attr = gOverworld.objects[n].attr;
+          attr = W_TERRAIN_V2.objects[n].attr;
           (z->s).coord.y += c->y;
           y += c->y;
           z->pushedOut = TRUE;
@@ -3235,14 +3232,14 @@ static metatile_attr_t AppendHazardID(struct Zero* z, s32 x, s32 y) {
   u8 i;
   for (i = 0; i < z->hazardCount; i++) {
     u8 n = z->hazard[i];
-    const u32 _x = (u32)(x - (gOverworld.objects[n].start).x);
-    const u32 w = gOverworld.objects[n].w;
+    const u32 _x = (u32)(x - (W_TERRAIN_V2.objects[n].start).x);
+    const u32 w = W_TERRAIN_V2.objects[n].w;
     if ((_x + w) < (w << 1)) {
-      const u32 _y = (y - (gOverworld.objects[n].start).y);
-      const u32 h = gOverworld.objects[n].h;
+      const u32 _y = (y - (W_TERRAIN_V2.objects[n].start).y);
+      const u32 h = W_TERRAIN_V2.objects[n].h;
       if ((_y + h) < (h << 1)) {
-        appendHazardID(z, gOverworld.objects[n].id);
-        return gOverworld.objects[n].attr;
+        appendHazardID(z, W_TERRAIN_V2.objects[n].id);
+        return W_TERRAIN_V2.objects[n].attr;
       }
     }
   }
@@ -3253,14 +3250,14 @@ static metatile_attr_t AppendHazardID_2(struct Zero* z, s32 x, s32 y) {
   u8 i;
   for (i = 0; i < z->hazardCount; i++) {
     u8 n = z->hazard[i];
-    const u32 _x = (u32)(x - (gOverworld.objects[n].unk_10).x);
-    const u32 w = gOverworld.objects[n].w;
+    const u32 _x = (u32)(x - (W_TERRAIN_V2.objects[n].unk_10).x);
+    const u32 w = W_TERRAIN_V2.objects[n].w;
     if ((_x + w) < (w << 1)) {
-      const u32 _y = (y - (gOverworld.objects[n].unk_10).y);
-      const u32 h = gOverworld.objects[n].h;
+      const u32 _y = (y - (W_TERRAIN_V2.objects[n].unk_10).y);
+      const u32 h = W_TERRAIN_V2.objects[n].h;
       if ((_y + h) < (h << 1)) {
-        appendHazardID(z, gOverworld.objects[n].id);
-        return gOverworld.objects[n].attr;
+        appendHazardID(z, W_TERRAIN_V2.objects[n].id);
+        return W_TERRAIN_V2.objects[n].attr;
       }
     }
   }
@@ -4255,7 +4252,7 @@ _08028BBC:\n\
 
 NAKED bool8 unused_08028bcc(struct Zero* z, const struct Rect* range) { INCCODE("asm/unused/unused_08028bcc.inc"); }
 
-NAKED bool8 TryGroundDash(struct Zero* z, const struct Rect* range, bool8 r2) {
+NAKED bool8 TryGroundDash(struct Zero* z, const struct Rect* range) {
   asm(".syntax unified\n\
 	push {r4, r5, r6, r7, lr}\n\
 	mov r7, sb\n\

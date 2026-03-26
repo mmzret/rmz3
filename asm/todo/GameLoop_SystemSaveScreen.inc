@@ -45,7 +45,7 @@ _080EFD54:
 	orrs r0, r1
 	strh r0, [r2]
 	str r4, [r2, #0xc]
-	bl text_080e9730
+	bl LoadAsciiBold
 	strh r4, [r6, #6]
 	ldrb r0, [r6, #2]
 	adds r0, #1

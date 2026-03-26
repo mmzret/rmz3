@@ -6,6 +6,7 @@
 struct GameState;
 
 typedef void (*MinigameLoopFunc)(struct GameState*);
+typedef bool8 (*MinigameExitFunc)(struct GameState*);
 
 struct MinigameState {
   u8 unk_00[4];
@@ -34,14 +35,6 @@ void harpuiaMinigame(struct GameState* p);
 void fefnirMinigame(struct GameState* p);
 void leviathanMinigame(struct GameState* p);
 void phantomMinigame(struct GameState* p);
-
-void exitZeroMinigame(struct GameState* p);
-void exitCielMinigame(struct GameState* p);
-void exitCopyXMinigame(struct GameState* p);
-void exitHarpuiaMinigame(struct GameState* p);
-void exitFefnirMinigame(struct GameState* p);
-void exitLeviathanMinigame(struct GameState* p);
-void exitPhantomMinigame(struct GameState* p);
 
 void zeroMinigamePhase0(struct GameState* p);
 void zeroMinigamePhase1(struct GameState* p);

@@ -6,6 +6,8 @@
 #include "syssav.h"
 #include "zero.h"
 
+void FUN_08008eb8(s32 x, s32 y, struct Coord* c);
+
 /*
   Z軸方向にある上ボタンで入れるドア
   水没した図書館のデータの落ちてる部屋のドアの一部分(スプライト部分)
@@ -783,14 +785,14 @@ static void FUN_080cd720(struct Door3D* p) {
       if (p->z == NULL) {
         return;
       }
-      gStageRun.vm.screenEffect = BLACKOUT;
+      gStageRun.vm.transition = TRANSITION_BLACKOUT;
       (p->s).mode[2]++;
       FALLTHROUGH;
     }
     case 1: {
-      if (gStageRun.vm.screenEffect == NO_SCREEN_EFFECT) {
+      if (gStageRun.vm.transition == TRANSITION_NONE) {
         (p->z)->isAreaChange = FALSE;
-        gStageRun.vm.screenEffect = SCREEN_EFFECT_01;
+        gStageRun.vm.transition = TRANSITION_REVERSE;
 
         if ((p->s).work[0] != 2) {  // 水没した図書館 かどうか？
           p->c = FUN_08019dd0(&(p->s).coord);

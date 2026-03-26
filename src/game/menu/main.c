@@ -50,7 +50,7 @@ static void MainMenuLoop_SlideOut(struct GameState* p);
 static void MainMenuLoop_Exit(struct GameState* p);
 
 // 01 02 xx xx (BYTE[0x02031978] = 0)
-const MenuLoopFunc gMainManuLoops[4] = {
+static const MenuLoopFunc sMainManuLoops[4] = {
     MainMenuLoop_Init,
     MainMenuLoop_Update,
     MainMenuLoop_SlideOut,
@@ -86,7 +86,7 @@ const MenuLoopFunc gMainMenuFocusLoops[8] = {
 
 // 01 02 xx xx
 void EachMenuLoop_MainMenu(struct GameState* g) {
-  (gMainManuLoops[g->mode[2]])(g);
+  (sMainManuLoops[g->mode[2]])(g);
   return;
 }
 

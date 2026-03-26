@@ -32,77 +32,35 @@ void CreateProjectile8(s32 x, s32 y) {
 
 static const struct Collision sCollisions[2];
 
-NAKED static void Projectile8_Init(struct Projectile* p) {
-  asm(".syntax unified\n\
-	push {r4, r5, r6, lr}\n\
-	mov r6, r8\n\
-	push {r6}\n\
-	adds r4, r0, #0\n\
-	bl InitNonAffineMotion\n\
-	ldrb r1, [r4, #0xa]\n\
-	movs r0, #1\n\
-	orrs r0, r1\n\
-	movs r1, #2\n\
-	orrs r0, r1\n\
-	strb r0, [r4, #0xa]\n\
-	ldr r1, _0809E324 @ =0x00001709\n\
-	adds r0, r4, #0\n\
-	bl SetMotion\n\
-	movs r6, #0\n\
-	ldrb r1, [r4, #0xa]\n\
-	movs r0, #0xef\n\
-	ands r0, r1\n\
-	strb r0, [r4, #0xa]\n\
-	movs r0, #1\n\
-	mov r8, r0\n\
-	adds r0, r4, #0\n\
-	adds r0, #0x4c\n\
-	strb r6, [r0]\n\
-	adds r2, r4, #0\n\
-	adds r2, #0x4a\n\
-	ldrb r1, [r2]\n\
-	movs r0, #0x11\n\
-	rsbs r0, r0, #0\n\
-	ands r0, r1\n\
-	strb r0, [r2]\n\
-	ldrb r1, [r4, #0xa]\n\
-	movs r0, #4\n\
-	orrs r0, r1\n\
-	strb r0, [r4, #0xa]\n\
-	adds r5, r4, #0\n\
-	adds r5, #0x74\n\
-	ldr r1, _0809E328 @ =0x0836ACE0\n\
-	adds r2, #0xa\n\
-	adds r0, r5, #0\n\
-	movs r3, #8\n\
-	bl InitBody\n\
-	str r4, [r5, #0x2c]\n\
-	str r6, [r5, #0x24]\n\
-	str r6, [r4, #0x60]\n\
-	ldr r1, _0809E32C @ =gProjectileFnTable\n\
-	ldrb r0, [r4, #9]\n\
-	lsls r0, r0, #2\n\
-	adds r0, r0, r1\n\
-	mov r1, r8\n\
-	str r1, [r4, #0xc]\n\
-	ldr r0, [r0]\n\
-	ldr r0, [r0, #4]\n\
-	str r0, [r4, #0x14]\n\
-	adds r0, r4, #0\n\
-	bl Projectile8_Update\n\
-	pop {r3}\n\
-	mov r8, r3\n\
-	pop {r4, r5, r6}\n\
-	pop {r0}\n\
-	bx r0\n\
-	.align 2, 0\n\
-_0809E324: .4byte 0x00001709\n\
-_0809E328: .4byte sCollisions\n\
-_0809E32C: .4byte gProjectileFnTable\n\
- .syntax divided\n");
+static void Projectile8_Init(struct Projectile* p) {
+  static const struct Collision sCollision = {
+    kind : DDP,
+    faction : FACTION_ENEMY,
+    damage : 2,
+    layer : 0x00000001,
+    range : {PIXEL(0), PIXEL(0), PIXEL(8), PIXEL(8)},
+  };
+
+  InitNonAffineMotion(&p->s);
+  (p->s).flags |= DISPLAY;
+  (p->s).flags |= FLIPABLE;
+  SetMotion(&p->s, MOTION(SM023_GYRO_CANNON, 9));
+  SET_XFLIP(p, FALSE);
+  INIT_BODY(p, &sCollision, 8, NULL);
+  (p->s).d.y = 0;
+  SET_PROJECTILE_ROUTINE(p, ENTITY_UPDATE);
+  Projectile8_Update(p);
 }
 
 static void Projectile8_Update(struct Projectile* p) {
+  static const struct Collision sCollision = {
+    kind : DDP,
+    faction : FACTION_ENEMY,
+    damage : 2,
+    layer : 0x00000001,
+    range : {PIXEL(0), -PIXEL(12), PIXEL(26), PIXEL(28)},
+  };
+
   if (IS_METTAUR) {
     (p->s).flags &= ~DISPLAY;
     (p->s).flags &= ~FLIPABLE;
@@ -122,7 +80,7 @@ static void Projectile8_Update(struct Projectile* p) {
       SetMotion(&p->s, MOTION(SM023_GYRO_CANNON, 10));
       UpdateMotionGraphic(&p->s);
       PlaySound(SE_UNK_35);
-      SetDDP(&p->body, &sCollisions[1]);
+      SetDDP(&p->body, &sCollision);
       (p->s).mode[2]++;
     }
   } else {
@@ -152,24 +110,3 @@ static void Projectile8_Die(struct Projectile* p) {
   }
   SET_PROJECTILE_ROUTINE(p, ENTITY_EXIT);
 }
-
-static const struct Collision sCollisions[2] = {
-    {
-      kind : DDP,
-      faction : FACTION_ENEMY,
-      damage : 2,
-      hitzone : 0x00,
-      remaining : 0,
-      layer : 0x00000001,
-      range : {0x0000, 0x0000, 0x0800, 0x0800},
-    },
-    {
-      kind : DDP,
-      faction : FACTION_ENEMY,
-      damage : 2,
-      hitzone : 0x00,
-      remaining : 0,
-      layer : 0x00000001,
-      range : {0x0000, -0x0C00, 0x1A00, 0x1C00},
-    },
-};

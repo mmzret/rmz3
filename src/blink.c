@@ -232,7 +232,7 @@ _08003F6E:\n\
 	bl ResetMotion\n\
 	adds r0, r4, #0\n\
 	movs r1, #0\n\
-	bl setMotionStep\n\
+	bl SetMotionSubID\n\
 	ldr r2, [r5]\n\
 	ldrb r0, [r2, #2]\n\
 	ldrb r4, [r2, #1]\n\

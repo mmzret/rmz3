@@ -4,20 +4,6 @@
 	
 	.text
 
-	thumb_func_start Enemy14_Init
-Enemy14_Init: @ 0x0806F430
-	push {lr}
-	ldr r2, _0806F444 @ =0x08366950
-	ldrb r1, [r0, #0x10]
-	lsls r1, r1, #2
-	adds r1, r1, r2
-	ldr r1, [r1]
-	bl _call_via_r1
-	pop {r0}
-	bx r0
-	.align 2, 0
-_0806F444: .4byte 0x08366950
-
 	thumb_func_start Enemy14_Update
 Enemy14_Update: @ 0x0806F448
 	push {r4, r5, r6, lr}

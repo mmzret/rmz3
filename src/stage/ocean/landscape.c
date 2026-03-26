@@ -485,95 +485,14 @@ _0800CFA8: .4byte 0x00000286\n\
  .syntax divided\n");
 }
 
-NAKED static void ocean_0800cfac(struct Coord* _ UNUSED) {
-  asm(".syntax unified\n\
-	push {r4, r5, r6, r7, lr}\n\
-	mov r7, r8\n\
-	push {r7}\n\
-	ldr r7, _0800D054 @ =gOverworld\n\
-	ldr r1, _0800D058 @ =0x000007D4\n\
-	adds r0, r7, r1\n\
-	ldrh r1, [r0]\n\
-	lsrs r0, r1, #8\n\
-	cmp r0, #3\n\
-	bne _0800D04A\n\
-	movs r0, #0xff\n\
-	ands r0, r1\n\
-	cmp r0, #2\n\
-	bne _0800D04A\n\
-	ldr r6, _0800D05C @ =gStageTilesetOffsets+(18*4)\n\
-	ldr r0, _0800D060 @ =0x0002D029\n\
-	adds r5, r7, r0\n\
-	ldrb r0, [r5]\n\
-	lsrs r0, r0, #3\n\
-	lsls r1, r0, #2\n\
-	adds r1, r1, r0\n\
-	lsls r1, r1, #2\n\
-	ldr r4, _0800D064 @ =0x0870518C\n\
-	adds r1, r1, r4\n\
-	ldr r0, [r6]\n\
-	adds r0, r0, r1\n\
-	movs r1, #0x80\n\
-	lsls r1, r1, #7\n\
-	mov r8, r1\n\
-	bl RequestGraphicTransfer\n\
-	ldrb r0, [r5]\n\
-	lsrs r0, r0, #3\n\
-	lsls r1, r0, #2\n\
-	adds r1, r1, r0\n\
-	lsls r1, r1, #2\n\
-	adds r1, r1, r4\n\
-	ldr r0, [r6]\n\
-	adds r0, r0, r1\n\
-	adds r0, #0xc\n\
-	movs r1, #0\n\
-	bl LoadPalette\n\
-	ldr r0, _0800D068 @ =0x0002D02A\n\
-	adds r5, r7, r0\n\
-	movs r0, #0\n\
-	ldrsb r0, [r5, r0]\n\
-	movs r1, #3\n\
-	bl __divsi3\n\
-	lsls r0, r0, #0x18\n\
-	asrs r0, r0, #0x18\n\
-	lsls r1, r0, #2\n\
-	adds r1, r1, r0\n\
-	lsls r1, r1, #2\n\
-	adds r4, #0xa0\n\
-	adds r1, r1, r4\n\
-	ldr r0, [r6]\n\
-	adds r0, r0, r1\n\
-	mov r1, r8\n\
-	bl RequestGraphicTransfer\n\
-	movs r0, #0\n\
-	ldrsb r0, [r5, r0]\n\
-	movs r1, #3\n\
-	bl __divsi3\n\
-	lsls r0, r0, #0x18\n\
-	asrs r0, r0, #0x18\n\
-	lsls r1, r0, #2\n\
-	adds r1, r1, r0\n\
-	lsls r1, r1, #2\n\
-	adds r1, r1, r4\n\
-	ldr r0, [r6]\n\
-	adds r0, r0, r1\n\
-	adds r0, #0xc\n\
-	movs r1, #0\n\
-	bl LoadPalette\n\
-_0800D04A:\n\
-	pop {r3}\n\
-	mov r8, r3\n\
-	pop {r4, r5, r6, r7}\n\
-	pop {r0}\n\
-	bx r0\n\
-	.align 2, 0\n\
-_0800D054: .4byte gOverworld\n\
-_0800D058: .4byte 0x000007D4\n\
-_0800D05C: .4byte gStageTilesetOffsets+(18*4)\n\
-_0800D060: .4byte 0x0002D029\n\
-_0800D064: .4byte 0x0870518C\n\
-_0800D068: .4byte 0x0002D02A\n\
- .syntax divided\n");
+static void ocean_0800cfac(struct Coord* _ UNUSED) {
+  if ((TILESET_ID(0) == STAGE_OCEAN) && (TILESET_IDX(0) == 2)) {
+    RequestGraphicTransfer(&(TILESETS(18, 161)[gOverworld.work.ocean.unk_001 >> 3]).g, (void*)0x4000);
+    LoadPalette(&(TILESETS(18, 161)[gOverworld.work.ocean.unk_001 >> 3]).pal, 0);
+
+    RequestGraphicTransfer(&(TILESETS(18, 169)[gOverworld.work.ocean.unk_002 / 3]).g, (void*)0x4000);
+    LoadPalette(&(TILESETS(18, 169)[gOverworld.work.ocean.unk_002 / 3]).pal, 0);
+  }
 }
 
 static void exitOcean(struct Coord* _ UNUSED) {

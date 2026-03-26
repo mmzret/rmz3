@@ -39,18 +39,20 @@ struct VFX* CreateChargeEffect(struct Zero* z, struct VFX* v, u8 r2) {
 
 // ------------------------------------------------------------------------------------------------------------------------------------
 
-NON_MATCH static void ChargeEffect_Init(struct VFX* p) {
-#if MODERN
+static void ChargeEffect_Init(struct VFX* p) {
+  bool8 xflip;
   InitNonAffineMotion(&p->s);
   (p->s).flags |= FLIPABLE;
-  (p->s).flags &= ~X_FLIP;
-  (p->s).spr.xflip = FALSE;
-  (p->s).spr.oam.xflip = FALSE;
+  xflip = FALSE;
+  if (xflip) {
+    (p->s).flags |= X_FLIP;
+  } else {
+    (p->s).flags &= ~X_FLIP;
+  }
+  (p->s).spr.xflip = xflip & 1;
+  (p->s).spr.oam.xflip = xflip;
   SET_VFX_ROUTINE(p, ENTITY_UPDATE);
   ChargeEffect_Update(p);
-#else
-  INCCODE("asm/wip/ChargeEffect_Init.inc");
-#endif
 }
 
 // --------------------------------------------

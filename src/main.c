@@ -46,7 +46,7 @@ WIP void AgbMain(void) {
   gIntrManager.vblankCallback = usrVBlankCallback;
   gGameState.unk_00c = TRUE;
   SetIntroMode(&gIntro, 0);
-  gIntro.unk_12 = 0;
+  gIntro.demo_id = 0;
 
   InitScheduler(TRUE);
   ResetProcess(0, Process_SoftReset);  // Process_SoftReset -> Process_Intro -> Process_Game

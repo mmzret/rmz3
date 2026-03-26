@@ -336,7 +336,7 @@ _08020914:\n\
 	ldrb r0, [r1]\n\
 	movs r0, #2\n\
 	strb r0, [r1]\n\
-	bl text_080e9730\n\
+	bl LoadAsciiBold\n\
 	ldr r2, _08020970 @ =gVideoRegBuffer\n\
 	ldrh r1, [r2]\n\
 	ldr r0, _08020974 @ =0x0000F0FF\n\
@@ -1722,7 +1722,7 @@ _080214C0:\n\
 	ldrb r0, [r1]\n\
 	movs r0, #2\n\
 	strb r0, [r1]\n\
-	bl text_080e9730\n\
+	bl LoadAsciiBold\n\
 	ldr r2, _08021508 @ =gVideoRegBuffer\n\
 	ldrh r1, [r2]\n\
 	ldr r0, _0802150C @ =0x0000F0FF\n\

@@ -174,15 +174,15 @@ WIP bool32 OverworldUpdate(bool8 paused) {
 
   // Update hazards
   {
-    u32 fastcopysize = (HAZARD_LENGTH * sizeof(struct Hazard)) & ~(0x1F);
-    CpuFastCopy(gOverworld.objects, gOverworld.objectsPrev, fastcopysize);
+    u32 fastcopysize = (W_TERRAIN_V2.objectLen * sizeof(struct Hazard)) & ~(0x1F);
+    CpuFastCopy(W_TERRAIN_V2.objects, W_TERRAIN_V2.objectsPrev, fastcopysize);
 
-    u32 copysize = (HAZARD_LENGTH * sizeof(struct Hazard)) & 0x1F;
+    u32 copysize = (W_TERRAIN_V2.objectLen * sizeof(struct Hazard)) & 0x1F;
     if (copysize > 0) {
-      CpuCopy32((void*)gOverworld.objects + fastcopysize, (void*)gOverworld.objectsPrev + fastcopysize, copysize);
+      CpuCopy32((void*)W_TERRAIN_V2.objects + fastcopysize, (void*)W_TERRAIN_V2.objectsPrev + fastcopysize, copysize);
     }
-    gOverworld.objectLenPrev = HAZARD_LENGTH;
-    HAZARD_LENGTH = 0;
+    W_TERRAIN_V2.objectLenPrev = W_TERRAIN_V2.objectLen;
+    W_TERRAIN_V2.objectLen = 0;
   }
 
   if (gStageRun.vm.camera.mode != 0) {
@@ -214,7 +214,7 @@ void CameraUpdate(bool8 paused) {
   if (camera->mode != 0) {
     DrawOverworld(tm);
   }
-  FUN_08021ca0(&ow->vm);
+  RenderWipeZ(&ow->vm);  // wipe by "Z" and print string (if any)
   RunAllDrawTasks(camera);
 }
 
@@ -322,7 +322,7 @@ static bool8 CheckMissionFail(struct StageRun* p) {
       gHUD.timeLeft = NULL;
       c = (p->vm).start;
       if ((c != Script_MissionFail) && (c != Script_MissionFail2)) {
-        if (gStageRun.vm.screenEffect != NO_SCREEN_EFFECT) {
+        if (gStageRun.vm.transition != TRANSITION_NONE) {
           SetScript(&gStageRun.vm, Script_MissionFail2);
         } else {
           SetScript(&gStageRun.vm, Script_MissionFail);

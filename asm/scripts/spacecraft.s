@@ -283,13 +283,13 @@ Script_0834d590:
 Script_0834d608: @ 0x0834d608
   eventflag 0, 1, 0
   play_bgm BGM_INTRO_STARSHIP
-  rune 11, 8, 11
+  print_string 11, 8, 11 @ あれから2ヶ月後
   normal_screen
   wait_screeneffect
   wait SECOND*3
   blackout_screen
   wait_screeneffect
-  rune 0, 0, 0
+  print_string_end
   wait SECOND*2
   reset_camera Camera_0834d294
   time 0

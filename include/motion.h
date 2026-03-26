@@ -27,7 +27,7 @@ struct MetaspriteHeader {
   u16 ofs;            // $+ofs = Subsprite[]のアドレス
   s8 subspriteCount;  // ゼロのモーションならゼロを構成するスプライトの数(死にかけ状態だと基本的に、頭、体、腕、足の4つのスプライト、つまりこの値は 4)
   u8 step;            // lower byte of motion_t
-};                    // 4 bytes
+};  // 4 bytes
 
 // 複数のスプライトを組み合わせて巨大な論理スプライト(メタスプライト)作る際、パーツとなる1つ1つのスプライトのこと
 struct Subsprite {
@@ -45,8 +45,8 @@ struct Motion {
    * モーションは action_tの上位1バイトに依存
    * cmds[.step][.cmdIdx];
    */
-  const struct MotionCmd **cmds;  // 085D6EE8
-  u8 step;                        // motion_t の下位1バイト
+  const struct MotionCmd** cmds;  // 085D6EE8
+  motion_sub_id_t step;           // motion_t の下位1バイト
   s8 cmdIdx;
 
   s8 duration;
@@ -62,26 +62,26 @@ struct MotionPltt {
   // u16 pltt[len*n]; n = 次の MotionPltt構造体までの長さによって変動
 };  // 4 bytes;
 
-extern const struct MotionCmd **gDynamicMotionCmdTable[DYNAMIC_MOTION_COUNT];
-extern struct MotionCmd *gMotionCmd_SM000[];
+extern const struct MotionCmd** gDynamicMotionCmdTable[DYNAMIC_MOTION_COUNT];
+extern struct MotionCmd* gMotionCmd_SM000[];
 
-extern const struct MotionCmd **gStaticMotionCmdTable[STATIC_MOTION_COUNT];
-extern const struct MetaspriteHeader *gStaticMotionMetaspriteTable[STATIC_MOTION_COUNT];
-extern struct MetaspriteHeader *gDynamicMotionMetaspriteTable[DYNAMIC_MOTION_COUNT];
+extern const struct MotionCmd** gStaticMotionCmdTable[STATIC_MOTION_COUNT];
+extern const struct MetaspriteHeader* gStaticMotionMetaspriteTable[STATIC_MOTION_COUNT];
+extern struct MetaspriteHeader* gDynamicMotionMetaspriteTable[DYNAMIC_MOTION_COUNT];
 extern u16 wDynamicMotionPalIDs[DYNAMIC_MOTION_COUNT + 56];
 extern u16 wStaticMotionPalIDs[STATIC_MOTION_COUNT + 2];
 extern const u32 gDynamicMotionGraphicOffsets[DYNAMIC_MOTION_COUNT];
 extern u16 wDynamicGraphicTilenums[DYNAMIC_MOTION_COUNT + 56];
 
-void ResetMotion(struct Motion *p, const struct MotionCmd *const *const cmds);
-void setMotionStep(struct Motion *p, u8 step);
-void SetMotion(struct Entity *p, motion_t m);
-void GotoMotion(struct Entity *p, motion_t m, u16 r2, u16 r3);
-void ResetDynamicMotion(struct Entity *p);
-void UpdateMotionGraphic(struct Entity *p);
+void ResetMotion(struct Motion* p, const struct MotionCmd* const* const cmds);
+void SetMotionSubID(struct Motion* p, motion_sub_id_t step);
+void SetMotion(struct Entity* p, motion_t m);
+void GotoMotion(struct Entity* p, motion_t m, u16 r2, u16 r3);
+void ResetDynamicMotion(struct Entity* p);
+void UpdateMotionGraphic(struct Entity* p);
 void InitMotionLocation(void);
-void InitScalerotMotion1(struct Entity *p);
-void UpdateMotionState(struct Motion *p);
-void ForceEntityPalette(struct Entity *p, u8 palID);
+void InitScalerotMotion1(struct Entity* p);
+void UpdateMotionState(struct Motion* p);
+void ForceEntityPalette(struct Entity* p, u8 palID);
 
 #endif  // GUARD_RMZ3_MOTION_H

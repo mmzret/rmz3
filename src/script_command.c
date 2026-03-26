@@ -37,7 +37,7 @@ static bool32 Cmd_quake(struct VM* vm);
 static bool32 Cmd_emotion(struct VM* vm);
 static bool32 Cmd_scroll(struct VM* vm);
 static bool32 Cmd_screeneffect(struct VM* vm);
-static bool32 Cmd_rune(struct VM* vm);
+static bool32 Cmd_printstring(struct VM* vm);
 static bool32 Cmd_indicator(struct VM* vm);
 static bool32 Cmd_message(struct VM* vm);
 static bool32 Cmd_bgm(struct VM* vm);
@@ -57,44 +57,44 @@ static bool32 Cmd_cutscene(struct VM* vm);
 
 // clang-format off
 const CommandHandler gScriptCommands[38] = {
-    Cmd_goto,
-    Cmd_wait,
-    Cmd_time,
-    Cmd_nop,
-    Cmd_reset_camera,
-    Cmd_adjust_camera,
-    Cmd_cmd06,
-    Cmd_resume,
-    Cmd_cmd08,
-    Cmd_disablekeyinput,
-    Cmd_loadgraphic,
-    Cmd_spawn,
-    Cmd_entity,
-    Cmd_flag,
-    Cmd_cmd0e,
-    Cmd_cmd0f,
-    Cmd_emergency,
-    Cmd_quake,
-    Cmd_emotion,
-    Cmd_scroll,
-    Cmd_screeneffect,
-    Cmd_rune,
-    Cmd_indicator,
-    Cmd_message,
-    Cmd_bgm,
-    Cmd_se,
-    Cmd_force,
-    Cmd_gimmick,
-    Cmd_cmd1c,
-    Cmd_sweep,
-    Cmd_lockmenu,
-    Cmd_eventflag,
-    Cmd_cmd20,
-    Cmd_drop,
-    Cmd_missionresult,
-    Cmd_goodluck,
-    Cmd_killtimeelf,
-    Cmd_cutscene,
+    [0]  = Cmd_goto,
+    [1]  = Cmd_wait,
+    [2]  = Cmd_time,
+    [3]  = Cmd_nop,
+    [4]  = Cmd_reset_camera,
+    [5]  = Cmd_adjust_camera,
+    [6]  = Cmd_cmd06,
+    [7]  = Cmd_resume,
+    [8]  = Cmd_cmd08,
+    [9]  = Cmd_disablekeyinput,
+    [10] = Cmd_loadgraphic,
+    [11] = Cmd_spawn,
+    [12] = Cmd_entity,
+    [13] = Cmd_flag,
+    [14] = Cmd_cmd0e,
+    [15] = Cmd_cmd0f,
+    [16] = Cmd_emergency,
+    [17] = Cmd_quake,
+    [18] = Cmd_emotion,
+    [19] = Cmd_scroll,
+    [20] = Cmd_screeneffect,
+    [21] = Cmd_printstring,
+    [22] = Cmd_indicator,
+    [23] = Cmd_message,
+    [24] = Cmd_bgm,
+    [25] = Cmd_se,
+    [26] = Cmd_force,
+    [27] = Cmd_gimmick,
+    [28] = Cmd_cmd1c,
+    [29] = Cmd_sweep,
+    [30] = Cmd_lockmenu,
+    [31] = Cmd_eventflag,
+    [32] = Cmd_cmd20,
+    [33] = Cmd_drop,
+    [34] = Cmd_missionresult,
+    [35] = Cmd_goodluck,
+    [36] = Cmd_killtimeelf,
+    [37] = Cmd_cutscene,
 };
 // clang-format on
 
@@ -269,12 +269,12 @@ WIP static bool32 Cmd_cmd06(struct VM* vm) {
   struct Command* c = vm->pc;
   switch (c->val2) {
     case 0: {
-      BGCNT16(1) = 0x284;
+      BGCNT16(1) = (BGCNT_SCREENBASE(2) | BGCNT_256COLOR | BGCNT_CHARBASE(1));  // 0x284
       *(u32*)gVideoRegBuffer.bgofs[1] = 0;
       gVideoRegBuffer.dispcnt |= (DISPCNT_OBJ_ON | DISPCNT_BG1_ON);
       LoadGraphic(BG_GRAPHIC(c->status), (void*)0x4000);
       LoadPalette(BG_PALETTE(c->status), 0);
-      LoadBgMap(18, gBgMapOffsets, c->status, 0, 0);
+      LoadBgMap(USE_BG1, gBgMapOffsets, c->status, 0, 0);
       PauseAllBlinks();
       break;
     }
@@ -285,7 +285,7 @@ WIP static bool32 Cmd_cmd06(struct VM* vm) {
       break;
     }
     case 2: {
-      BGCNT16(1) = 0x8284;
+      BGCNT16(1) = (BGCNT_AFF512x512 | BGCNT_SCREENBASE(2) | BGCNT_256COLOR | BGCNT_CHARBASE(1));  // 0x8284
       BGOFS(1)->x = 0;
       BGOFS(1)->y = 160;
       gVideoRegBuffer.dispcnt |= (DISPCNT_OBJ_ON | DISPCNT_BG1_ON);
@@ -293,20 +293,20 @@ WIP static bool32 Cmd_cmd06(struct VM* vm) {
       gVideoRegBuffer.dispcnt &= ~DISPCNT_BG0_ON;
       LoadGraphic(BG_GRAPHIC(c->status), (void*)0x4000);
       LoadPalette(BG_PALETTE(c->status), 0);
-      LoadBgMap(18, gBgMapOffsets, c->status, 0, 0);
+      LoadBgMap(USE_BG1, gBgMapOffsets, c->status, 0, 0);
       loadBgMap_08004248((u16*)(void*)(BG_SCREEN_ADDR(1) + SCREEN_BASE_16(1)), gBgMapOffsets, c->status + 1, 0, 0);
       PauseAllBlinks();
       break;
     }
     case 3: {
-      BGCNT16(1) = 0x8284;
+      BGCNT16(1) = (BGCNT_AFF512x512 | BGCNT_SCREENBASE(2) | BGCNT_256COLOR | BGCNT_CHARBASE(1));  // 0x8284
       BGOFS(1)->x = 0;
       BGOFS(1)->y = 96;
       gVideoRegBuffer.dispcnt |= (DISPCNT_OBJ_ON | DISPCNT_BG1_ON);
       gVideoRegBuffer.dispcnt &= ~DISPCNT_BG0_ON;
       LoadGraphic(BG_GRAPHIC(c->status), (void*)0x4000);
       LoadPalette(BG_PALETTE(c->status), 0);
-      LoadBgMap(18, gBgMapOffsets, c->status, 0, 0);
+      LoadBgMap(USE_BG1, gBgMapOffsets, c->status, 0, 0);
       PauseAllBlinks();
       break;
     }
@@ -316,7 +316,7 @@ WIP static bool32 Cmd_cmd06(struct VM* vm) {
         vm->pc--;
         return TRUE;
       }
-      text_080e9730();
+      LoadAsciiBold();
       break;
     }
     case 5: {
@@ -324,12 +324,12 @@ WIP static bool32 Cmd_cmd06(struct VM* vm) {
       break;
     }
     case 6: {
-      BGCNT16(1) = 0x204;
+      BGCNT16(1) = (BGCNT_SCREENBASE(2) | BGCNT_16COLOR | BGCNT_CHARBASE(1));  // 0x204
       *(u32*)gVideoRegBuffer.bgofs[1] = 0;
       gVideoRegBuffer.dispcnt |= (DISPCNT_OBJ_ON | DISPCNT_BG1_ON);
       LoadGraphic(BG_GRAPHIC(c->status), (void*)0x4000);
       LoadPalette(BG_PALETTE(c->status), 0);
-      LoadBgMap(18, gBgMapOffsets, c->status, 0, 0);
+      LoadBgMap(USE_BG1, gBgMapOffsets, c->status, 0, 0);
       PauseAllBlinks();
       break;
     }
@@ -797,32 +797,34 @@ _08022DEC: .4byte 0x0000FEFF\n\
 
 /*
 status:
-  0:       ScreenEffect が NONE　になるまで待つ
-  それ以外: ScreenEffect に status をセット
+  0:       transition が NONE　になるまで待つ
+  それ以外: transition に status をセット
 */
 static bool32 Cmd_screeneffect(struct VM* vm) {
   struct Command* c = vm->pc;
   if (c->status == 0) {
-    if (vm->screenEffect != NO_SCREEN_EFFECT) {
+    if (vm->transition != TRANSITION_NONE) {
       vm->pc = c - 1;
       return TRUE;
     }
   } else {
-    vm->screenEffect = c->status;
-    if (vm->screenEffect & (1 << 3)) {
+    vm->transition = c->status;
+    if (vm->transition & (1 << 3)) {
       *(u16*)(&gPaletteManager.buf[0]) = 0;
     }
   }
   return FALSE;
 }
 
-static bool32 Cmd_rune(struct VM* vm) {
+// 文字列(string.s) を表示させる
+// プロローグの "あれから2ヶ月後" の表示でしか使われていない (トランジションと組み合わせて使われることを想定されてる？)
+static bool32 Cmd_printstring(struct VM* vm) {
   struct Command* c = vm->pc;
-  if (c->work == 0) {
-    *(u32*)&vm->rune = 0;
-    gVideoRegBuffer.dispcnt &= 0xFEFF;
+  if (c->work == 0) {  // print_string_end
+    *(u32*)&vm->string = 0;
+    gVideoRegBuffer.dispcnt &= ~DISPCNT_BG0_ON;
   } else {
-    *(u32*)&vm->rune = ((c->work & 0xFFFF) | ((u32)c->status << 16) | ((u32)c->val2 << 24));
+    *(u32*)&vm->string = ((c->work & 0xFFFF) | ((u32)c->status << 16) | ((u32)c->val2 << 24));
     gVideoRegBuffer.dispcnt |= DISPCNT_BG0_ON;
   }
   return FALSE;
@@ -1176,7 +1178,7 @@ static bool32 Cmd_gimmick(struct VM* vm) {
   switch (pc->status) {
     case 0: {
       ExitStageLandscape();
-      ResetLandscape(vm->pc->val2, &gOverworld.viewport);
+      ResetLandscape(vm->pc->val2, &W_TERRAIN_V2.viewport);
       break;
     }
 
@@ -1355,6 +1357,7 @@ static bool32 Cmd_killtimeelf(struct VM* vm) {
   return FALSE;
 }
 
+// helper for Cmd_cutscene?
 NAKED static void FUN_080237c4(u32 r0, s32 x, s32 y, u16 r3) {
   asm(".syntax unified\n\
 	push {r4, r5, r6, r7, lr}\n\
@@ -2056,7 +2059,7 @@ _08023D84:\n\
 _08023D94:\n\
 	ldr r0, _08023DBC @ =0x00000111\n\
 	bl ClearBlink\n\
-	bl text_080e9730\n\
+	bl LoadAsciiBold\n\
 _08023D9E:\n\
 	ldr r2, _08023DC0 @ =gVideoRegBuffer\n\
 	ldrh r1, [r2]\n\
@@ -2191,7 +2194,7 @@ _08023EA8:\n\
 	lsls r3, r3, #2\n\
 	bl MaskBg0\n\
 _08023EC2:\n\
-	bl text_080e9730\n\
+	bl LoadAsciiBold\n\
 	b _08023EE6\n\
 	.align 2, 0\n\
 _08023EC8: .4byte gGameState+16\n\

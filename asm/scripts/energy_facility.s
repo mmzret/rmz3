@@ -133,7 +133,7 @@ Script_083555a8:
   end
 
 Script_08355600:
-  cmd08 1, 0, 2
+  cmd08 1, 2
   play_se SE_UNK_91
   quake 2, 0, 2
   resume 1
@@ -171,7 +171,7 @@ Script_08355680:
 Script_083556f0:
   stop_bgm
   wait 60
-  cmd08 1, 0, 2
+  cmd08 1, 2
   play_bgm BGM_ENERGY_FACTORY
   resume 1
   end
@@ -203,7 +203,7 @@ Script_08355778:
   end
 
 Script_083557d0:
-  cmd08 1, 0, 2
+  cmd08 1, 2
   play_se 145
   quake 2, 0, 2
   resume 1
@@ -302,7 +302,7 @@ Script_08355a60:
   message 1, 0, 0x0D05
   wait_msgbox_end
   entityflag 1, 7, TRUE
-  cmd08 1, 0, 2
+  cmd08 1, 2
   force 4, 0, 0
   wait 8
   force 5, 0, 0

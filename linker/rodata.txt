@@ -173,7 +173,9 @@
       asm/scripts/area_x2.o (.rodata);
       asm/scripts/energy_facility.o (.rodata);
       asm/scripts/snowy_plains.o (.rodata);
-      asm/scripts/todo.o (.rodata);
+      asm/scripts/sunken_library.o (.rodata);
+      asm/scripts/giant_elevator.o (.rodata);
+      asm/scripts/sub_arcadia.o (.rodata);
       asm/scripts/weil_labo.o (.rodata);
       asm/scripts/resistance_base.o (.rodata);
 		

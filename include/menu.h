@@ -74,24 +74,8 @@ struct MenuState {
   u8 unk_4e[178];
 };
 
-extern const MenuLoopFunc gMenuLoops[5];
-extern const WeaponFunc PTR_ARRAY_08386300[17];
-extern const ElfFunc PTR_ARRAY_08386344[13];
-extern const MenuLoopFunc gMainManuLoops[4];
-
 void InitWidgetHeader(struct EntityHeader* h, struct Widget* p, s16 len);
 void MainLoop_Menu(struct GameState* p);
-
-void EachMenuLoop_MainMenu(struct GameState* p);
-void EachMenuLoop_ExSkill(struct GameState* g);
-void EachMenuLoop_KeyConfig(struct GameState* p);
-void EachMenuLoop_Elf(struct GameState* p);
-
-void MenuLoop_InitMenu(struct GameState* p);
-void MenuLoop_OpenMenu(struct GameState* p);
-void MenuLoop_Update(struct GameState* p);
-void MenuLoop_BlackOut(struct GameState* p);
-void MenuLoop_ExitMenu(struct GameState* p);
 
 bool8 TrySlideMenu(struct GameState* g);
 

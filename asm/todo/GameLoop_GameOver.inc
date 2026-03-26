@@ -82,7 +82,7 @@ _080EF5CA:
 	movs r2, #0x66
 	movs r3, #0
 	bl LoadBgMap
-	bl text_080e9730
+	bl LoadAsciiBold
 	bl FUN_080e981c
 	strh r4, [r6, #4]
 	ldrb r0, [r6, #2]

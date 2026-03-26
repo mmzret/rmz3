@@ -33,7 +33,7 @@ const BossRoutine* const gBossFnTable[BOSS_ENTITY_COUNT] = {
 };
 // clang-format on
 
-void InitBossHeader(struct EntityHeader *h, struct Boss *p, s16 len) {
+void InitBossHeader(struct EntityHeader* h, struct Boss* p, s16 len) {
   s16 i;
 
   InitEntityHeader(h, ENTITY_BOSS, &p->s, sizeof(struct Boss), len);
@@ -44,25 +44,21 @@ void InitBossHeader(struct EntityHeader *h, struct Boss *p, s16 len) {
   gBossHeaderPtr = h;
 }
 
-void DeleteBoss(struct Boss *p) {
+void DeleteBoss(struct Boss* p) {
   (p->s).flags &= ~DISPLAY;
   SET_BOSS_ROUTINE(p, ENTITY_EXIT);
 }
 
-#if MODERN == 0
-static struct Weapon *unused_0803d120(struct Entity *p) {
-  struct Weapon *w = (struct Weapon *)GetNearestEntity(gWeaponHeaderPtr, &p->coord);
+static struct Weapon* unused_0803d120(struct Entity* p) {
+  struct Weapon* w = (struct Weapon*)GetNearestEntity(gWeaponHeaderPtr, &p->coord);
   if (w == NULL) return NULL;
   return w;
 }
-#endif
 
-#if MODERN == 0
-static struct Coord *unused_0803d13c(struct Entity *p) {
-  struct Entity *w = GetNearestEntity(gWeaponHeaderPtr, &p->coord);
+static struct Coord* unused_0803d13c(struct Entity* p) {
+  struct Entity* w = GetNearestEntity(gWeaponHeaderPtr, &p->coord);
   if (w != NULL) return &w->coord;
   return NULL;
 }
-#endif
 
-void ResetBossBody(struct Boss *p, const struct Collision *collisions, s16 hp) { INIT_BODY(p, &collisions[0], hp, NULL); }
+void ResetBossBody(struct Boss* p, const struct Collision* collisions, s16 hp) { INIT_BODY(p, &collisions[0], hp, NULL); }

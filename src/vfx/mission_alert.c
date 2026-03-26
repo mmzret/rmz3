@@ -13,6 +13,9 @@
 #define GAME_OVER 4
 
 static const u8 u8_ARRAY_0836e810[3];
+static const u8 u8_ARRAY_0836e460[11];
+static const u8 u8_ARRAY_0836e5a5[13];
+static const u8* const PTR_ARRAY_0836e7b8[22];
 
 static void MissionAlert_Init(struct VFX* p);
 static void MissionAlert_Update(struct VFX* p);
@@ -450,76 +453,49 @@ static void initWarning(struct VFX* vfx) {
   MissionAlert_Update(vfx);
 }
 
-NAKED static void updateWarning(struct VFX* vfx) {
-  asm(".syntax unified\n\
-	push {lr}\n\
-	adds r2, r0, #0\n\
-	ldrb r0, [r2, #0x12]\n\
-	adds r0, #1\n\
-	strb r0, [r2, #0x12]\n\
-	ldrb r0, [r2, #0xe]\n\
-	cmp r0, #4\n\
-	bhi _080B5B88\n\
-	lsls r0, r0, #2\n\
-	ldr r1, _080B5B28 @ =_080B5B2C\n\
-	adds r0, r0, r1\n\
-	ldr r0, [r0]\n\
-	mov pc, r0\n\
-	.align 2, 0\n\
-_080B5B28: .4byte _080B5B2C\n\
-_080B5B2C: @ jump table\n\
-	.4byte _080B5B50 @ case 0\n\
-	.4byte _080B5B40 @ case 1\n\
-	.4byte _080B5B48 @ case 2\n\
-	.4byte _080B5B50 @ case 3\n\
-	.4byte _080B5B62 @ case 4\n\
-_080B5B40:\n\
-	ldrb r0, [r2, #0x12]\n\
-	cmp r0, #0x19\n\
-	bls _080B5B88\n\
-	b _080B5B56\n\
-_080B5B48:\n\
-	ldrb r0, [r2, #0x12]\n\
-	cmp r0, #0x3f\n\
-	bls _080B5B88\n\
-	b _080B5B56\n\
-_080B5B50:\n\
-	ldrb r0, [r2, #0x12]\n\
-	cmp r0, #0x1b\n\
-	bls _080B5B88\n\
-_080B5B56:\n\
-	ldrb r0, [r2, #0xe]\n\
-	adds r0, #1\n\
-	movs r1, #0\n\
-	strb r0, [r2, #0xe]\n\
-	strb r1, [r2, #0x12]\n\
-	b _080B5B88\n\
-_080B5B62:\n\
-	ldrb r0, [r2, #0x12]\n\
-	cmp r0, #0x19\n\
-	bls _080B5B88\n\
-	ldr r1, _080B5B8C @ =gVFXFnTable\n\
-	ldrb r0, [r2, #9]\n\
-	lsls r0, r0, #2\n\
-	adds r0, r0, r1\n\
-	movs r1, #3\n\
-	str r1, [r2, #0xc]\n\
-	ldr r0, [r0]\n\
-	ldr r0, [r0, #0xc]\n\
-	str r0, [r2, #0x14]\n\
-	ldrb r1, [r2, #0xa]\n\
-	movs r0, #0xfe\n\
-	ands r0, r1\n\
-	strb r0, [r2, #0xa]\n\
-	ldrb r0, [r2, #0xe]\n\
-	adds r0, #1\n\
-	strb r0, [r2, #0xe]\n\
-_080B5B88:\n\
-	pop {r0}\n\
-	bx r0\n\
-	.align 2, 0\n\
-_080B5B8C: .4byte gVFXFnTable\n\
- .syntax divided\n");
+static void updateWarning(struct VFX* p) {
+  (p->s).work[2]++;
+  switch ((p->s).mode[2]) {
+    case 0: {
+      if ((p->s).work[2] >= 28) {
+        (p->s).mode[2]++;
+        (p->s).work[2] = 0;
+      }
+      break;
+    }
+    case 1: {
+      if ((p->s).work[2] >= 26) {
+        (p->s).mode[2]++;
+        (p->s).work[2] = 0;
+      }
+      break;
+    }
+    case 2: {
+      if ((p->s).work[2] >= 64) {
+        (p->s).mode[2]++;
+        (p->s).work[2] = 0;
+      }
+      break;
+    }
+    case 3: {
+      if ((p->s).work[2] >= 28) {
+        (p->s).mode[2]++;
+        (p->s).work[2] = 0;
+      }
+      break;
+    }
+    case 4: {
+      if ((p->s).work[2] > 25) {
+        SET_VFX_ROUTINE(p, ENTITY_DISAPPEAR);
+        (p->s).flags &= ~DISPLAY;
+        (p->s).mode[2]++;
+      }
+      break;
+    }
+    default: {
+      break;
+    }
+  }
 }
 
 NAKED static void TaskCB_Unk080b5b90(struct Sprite* p, struct DrawPivot* _ UNUSED) {
@@ -735,7 +711,7 @@ _080B5D28:\n\
 	cmp r0, #5\n\
 	ble _080B5CCC\n\
 	movs r1, #0\n\
-	ldr r6, _080B5DD0 @ =0x0836E460\n\
+	ldr r6, _080B5DD0 @ =u8_ARRAY_0836e460\n\
 	movs r5, #0xd\n\
 _080B5D3C:\n\
 	lsls r2, r1, #0x10\n\
@@ -811,7 +787,7 @@ _080B5D3C:\n\
 	.align 2, 0\n\
 _080B5DC8: .4byte PTR_ARRAY_0836e42c\n\
 _080B5DCC: .4byte gGameState+16\n\
-_080B5DD0: .4byte 0x0836E460\n\
+_080B5DD0: .4byte u8_ARRAY_0836e460\n\
 _080B5DD4: .4byte 0x0000035E\n\
 _080B5DD8: .4byte 0x0000039E\n\
 _080B5DDC:\n\
@@ -882,7 +858,7 @@ _080B5E4C:\n\
 	cmp r0, #5\n\
 	ble _080B5DF0\n\
 	movs r1, #0\n\
-	ldr r6, _080B5ECC @ =0x0836E5A5\n\
+	ldr r6, _080B5ECC @ =u8_ARRAY_0836e5a5\n\
 _080B5E5E:\n\
 	lsls r3, r1, #0x10\n\
 	asrs r3, r3, #0x10\n\
@@ -937,7 +913,7 @@ _080B5E5E:\n\
 	.align 2, 0\n\
 _080B5EC4: .4byte PTR_ARRAY_0836e42c\n\
 _080B5EC8: .4byte gGameState+16\n\
-_080B5ECC: .4byte 0x0836E5A5\n\
+_080B5ECC: .4byte u8_ARRAY_0836e5a5\n\
 _080B5ED0: .4byte 0x0000035E\n\
 _080B5ED4: .4byte 0x0000039E\n\
 _080B5ED8:\n\
@@ -1015,7 +991,7 @@ _080B5F56:\n\
 	cmp r0, #5\n\
 	ble _080B5EFA\n\
 	movs r1, #0\n\
-	ldr r6, _080B5FD4 @ =0x0836E5A5\n\
+	ldr r6, _080B5FD4 @ =u8_ARRAY_0836e5a5\n\
 _080B5F68:\n\
 	lsls r3, r1, #0x10\n\
 	asrs r3, r3, #0x10\n\
@@ -1070,12 +1046,12 @@ _080B5F68:\n\
 	.align 2, 0\n\
 _080B5FCC: .4byte PTR_ARRAY_0836e42c\n\
 _080B5FD0: .4byte gGameState+16\n\
-_080B5FD4: .4byte 0x0836E5A5\n\
+_080B5FD4: .4byte u8_ARRAY_0836e5a5\n\
 _080B5FD8: .4byte 0x0000035E\n\
 _080B5FDC: .4byte 0x0000039E\n\
 _080B5FE0:\n\
 	movs r1, #0\n\
-	ldr r3, _080B608C @ =0x0836E460\n\
+	ldr r3, _080B608C @ =u8_ARRAY_0836e460\n\
 	mov r8, r3\n\
 	movs r6, #0x19\n\
 	movs r5, #0xd\n\
@@ -1163,7 +1139,7 @@ _080B607C:\n\
 	pop {r0}\n\
 	bx r0\n\
 	.align 2, 0\n\
-_080B608C: .4byte 0x0836E460\n\
+_080B608C: .4byte u8_ARRAY_0836e460\n\
 _080B6090: .4byte gGameState+16\n\
 _080B6094: .4byte 0x0000035E\n\
 _080B6098: .4byte 0x0000039E\n\
@@ -1207,6 +1183,7 @@ static void updateGameOver(struct VFX* p) {
   }
 }
 
+// 0x080b614c
 NAKED static void updateGameOverTile(struct Sprite* p, struct DrawPivot* _ UNUSED) {
   asm(".syntax unified\n\
 	push {r4, r5, r6, r7, lr}\n\
@@ -1255,7 +1232,7 @@ _080B6190:\n\
 	ble _080B61A8\n\
 	movs r0, #9\n\
 _080B61A8:\n\
-	ldr r1, _080B6214 @ =0x0836E7B8\n\
+	ldr r1, _080B6214 @ =PTR_ARRAY_0836e7b8\n\
 	lsls r0, r0, #2\n\
 	adds r0, r0, r1\n\
 	ldr r0, [r0]\n\
@@ -1307,7 +1284,7 @@ _080B6204: .4byte gGameState+16\n\
 _080B6208: .4byte gVideoRegBuffer\n\
 _080B620C: .4byte gGraphic_Capcom+16*20\n\
 _080B6210: .4byte gPalette_Capcom+16*20\n\
-_080B6214: .4byte 0x0836E7B8\n\
+_080B6214: .4byte PTR_ARRAY_0836e7b8\n\
 _080B6218:\n\
 	cmp r0, #1\n\
 	bne _080B62C8\n\
@@ -1367,7 +1344,7 @@ _080B624C:\n\
 	blt _080B624C\n\
 	b _080B62C8\n\
 	.align 2, 0\n\
-_080B6288: .4byte 0x0836E7E0\n\
+_080B6288: .4byte PTR_ARRAY_0836e7b8+(4*10)\n\
 _080B628C:\n\
 	lsrs r0, r1, #0x19\n\
 	cmp r0, #0xa\n\
@@ -1408,7 +1385,7 @@ _080B62C8:\n\
 	pop {r0}\n\
 	bx r0\n\
 	.align 2, 0\n\
-_080B62D4: .4byte 0x0836E7F4\n\
+_080B62D4: .4byte PTR_ARRAY_0836e7b8+(4*15)\n\
  .syntax divided\n");
 }
 
@@ -1484,7 +1461,7 @@ const u8* const PTR_ARRAY_0836e444[7] = {
     u8_ARRAY_0836e1b2, u8_ARRAY_0836e250, u8_ARRAY_0836e2d6, u8_ARRAY_0836e344, u8_ARRAY_0836e3a0, u8_ARRAY_0836e3de, u8_ARRAY_0836e410,
 };
 
-const u8 u8_ARRAY_0836e460[11] = {
+static const u8 u8_ARRAY_0836e460[11] = {
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 };
 
@@ -1493,7 +1470,7 @@ const u8 u8_ARRAY_0836e46b[314] = {
     24, 0,  0, 0, 0, 0, 0, 24, 24, 24, 24, 24, 24, 24, 0,  0, 0, 0, 0, 23, 24, 24, 24, 24, 24, 24, 24, 0,  0, 0, 0, 0, 24, 24, 24, 24, 24, 24, 24, 24, 0,  0, 0, 0, 23, 24, 24, 24, 24, 24, 24, 24, 24, 0,  0, 0, 0, 24, 24, 24, 24, 24, 24, 24, 24, 24, 0,  0, 0, 23, 24, 24, 24, 24, 24, 24, 24, 24, 24, 0,  0, 0, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 0,  0, 23, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 0,  0, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 0,  23, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 0,  24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 23, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24,
 };
 
-const u8 u8_ARRAY_0836e5a5[13] = {
+static const u8 u8_ARRAY_0836e5a5[13] = {
     24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24,
 };
 
@@ -1504,7 +1481,7 @@ const u8 u8_ARRAY_0836e5b2[518] = {
 };
 
 // clang-format off
-const u8* const PTR_ARRAY_0836e7b8[22] = {
+static const u8* const PTR_ARRAY_0836e7b8[22] = {
     &u8_ARRAY_0836e5b2[0],
     &u8_ARRAY_0836e5b2[6],
     &u8_ARRAY_0836e5b2[16],

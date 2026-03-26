@@ -39,13 +39,62 @@ void DeleteProjectile(struct Projectile* p) {
   SET_PROJECTILE_ROUTINE(p, ENTITY_EXIT);
 }
 
-#if MODERN == 0
 static struct Coord* unused_0809c978(struct Projectile* p) {
   struct Weapon* w = (struct Weapon*)GetNearestEntity(gWeaponHeaderPtr, &(p->s).coord);
   if (w != NULL) return &(w->s).coord;
   return NULL;
 }
-#endif
+
+// -----------------------------------------------------------------------------
+
+extern const ProjectileRoutine gLemonRoutine;
+extern const ProjectileRoutine gShotcounterBulletRoutine;
+extern const ProjectileRoutine gProjectile2Routine;
+extern const ProjectileRoutine gGrandCannonBombRoutine;
+extern const ProjectileRoutine gOmegaWhiteProjectileRoutine;
+extern const ProjectileRoutine gProjectile5Routine;
+extern const ProjectileRoutine gProjectile6Routine;
+extern const ProjectileRoutine gProjectile7Routine;
+extern const ProjectileRoutine gProjectile8Routine;
+extern const ProjectileRoutine gBlazinProjectileRoutine;
+extern const ProjectileRoutine gBlazinTailRoutine;
+extern const ProjectileRoutine gEarShotRoutine;
+extern const ProjectileRoutine gProjectile12Routine;
+extern const ProjectileRoutine gProjectile13Routine;
+extern const ProjectileRoutine gProjectile14Routine;
+extern const ProjectileRoutine gHellbatProjectileRoutine;
+extern const ProjectileRoutine gProjectile16Routine;
+extern const ProjectileRoutine gProjectile17Routine;
+extern const ProjectileRoutine gProjectile18Routine;
+extern const ProjectileRoutine gTretistaProjectileRoutine;
+extern const ProjectileRoutine gProjectile20Routine;
+extern const ProjectileRoutine gPantheonAquaModProjectileRoutine;
+extern const ProjectileRoutine gCubitProjectileRoutine;
+extern const ProjectileRoutine gProjectile23Routine;
+extern const ProjectileRoutine gCopyXProjectileRoutine;
+extern const ProjectileRoutine gProjectile25Routine;
+extern const ProjectileRoutine gProjectile26Routine;
+extern const ProjectileRoutine gProjectile27Routine;
+extern const ProjectileRoutine gProjectile28Routine;
+extern const ProjectileRoutine gProjectile29Routine;
+extern const ProjectileRoutine gProjectile30Routine;
+extern const ProjectileRoutine gProjectile31Routine;
+extern const ProjectileRoutine gProjectile32Routine;
+extern const ProjectileRoutine gOmegaGoldProjectileRoutine;
+extern const ProjectileRoutine gProjectile34Routine;
+extern const ProjectileRoutine gPantheonBombProjectileRoutine;
+extern const ProjectileRoutine gProjectile36Routine;
+extern const ProjectileRoutine gProjectile37Routine;
+extern const ProjectileRoutine gOmegaZeroProjectileRoutine;
+extern const ProjectileRoutine gClavekerYellowBallsRoutine;
+extern const ProjectileRoutine gPhantomProjectileRoutine;
+extern const ProjectileRoutine gOmegaZXProjectileRoutine;
+extern const ProjectileRoutine gProjectile42Routine;
+extern const ProjectileRoutine gProjectile43Routine;
+extern const ProjectileRoutine gProjectile44Routine;
+extern const ProjectileRoutine gProjectile45Routine;
+extern const ProjectileRoutine gProjectile46Routine;
+extern const ProjectileRoutine gProjectile47Routine;
 
 // clang-format off
 const ProjectileRoutine *const gProjectileFnTable[PROJECTILE_ENTITY_COUNT] = {

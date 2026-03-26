@@ -111,11 +111,11 @@ s32 RequestGraphicTransfer(const struct Graphic* g, void* dst) {
  * @return 0(success), -1(fail)
  * @note 0x080039ac
  */
-s32 RequestBgMapTransfer(u16* src, void* dst, s32 r2) {
+s32 RequestBgMapTransfer(u16* src, void* dst, s32 bytesize) {
   const s32 len = gGraphicTransferManager.len;
   if (len < 16) {
     gGraphicTransferManager.tasks[len].type = 1;
-    gGraphicTransferManager.tasks[len].unk = r2;
+    gGraphicTransferManager.tasks[len].unk = bytesize;
     gGraphicTransferManager.tasks[len].dst = dst;
     gGraphicTransferManager.tasks[len].src = src;
     gGraphicTransferManager.len++;

@@ -150,6 +150,7 @@ static const StageLayerRoutine sLayerRoutine[6] = {
 };
 // clang-format on
 
+// 0x080137c0
 static void LayerUpdate_2(struct StageLayer* l, const struct Stage* _ UNUSED) {
   if (l->phase == 0) {
     const u16 n = l->bgIdx;

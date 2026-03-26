@@ -7,7 +7,7 @@
 struct Mission {
   struct PlayInfo* unk_00;
   u8 currentStageID;
-  u8 currentStageScore;
+  s8 currentStageScore;
   u8 unk_06;
 
   // Current mission evaluation

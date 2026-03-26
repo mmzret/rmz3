@@ -2,6 +2,8 @@
 #include "enemy.h"
 #include "global.h"
 
+INCASM("asm/enemy/cattatank.inc");
+
 void Cattatank_Init(struct Enemy* p);
 void Cattatank_Update(struct Enemy* p);
 void Cattatank_Die(struct Enemy* p);

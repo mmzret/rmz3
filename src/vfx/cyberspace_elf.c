@@ -6,9 +6,9 @@
   ゼロがサイバー空間に入った時にゼロの周りを飛ぶエルフ
 */
 
-static void CyberSpaceElf_Init(struct VFX *vfx);
-void CyberSpaceElf_Update(struct VFX *vfx);
-void CyberSpaceElf_Die(struct VFX *vfx);
+static void CyberSpaceElf_Init(struct VFX* vfx);
+void CyberSpaceElf_Update(struct VFX* vfx);
+void CyberSpaceElf_Die(struct VFX* vfx);
 
 // clang-format off
 const VFXRoutine gCyberSpaceElfRoutine = {
@@ -20,8 +20,8 @@ const VFXRoutine gCyberSpaceElfRoutine = {
 };
 // clang-format on
 
-void CreateCyberSpaceElf(struct Coord *c, u8 kind, u8 r2) {
-  struct VFX *p = (struct VFX *)AllocEntityFirst(gVFXHeaderPtr);
+void CreateCyberSpaceElf(struct Coord* c, u8 kind, u8 r2) {
+  struct VFX* p = (struct VFX*)AllocEntityFirst(gVFXHeaderPtr);
   if (p != NULL) {
     (p->s).taskCol = 1;
     INIT_VFX_ROUTINE(p, VFX_CS_ELF);
@@ -33,28 +33,22 @@ void CreateCyberSpaceElf(struct Coord *c, u8 kind, u8 r2) {
   }
 }
 
-WIP static void CyberSpaceElf_Init(struct VFX *vfx) {
-#if MODERN
-  SET_VFX_ROUTINE(vfx, ENTITY_UPDATE);
-  InitNonAffineMotion(&vfx->s);
-  ResetDynamicMotion(&vfx->s);
-  (vfx->s).flags |= DISPLAY;
-  (vfx->s).flags |= FLIPABLE;
-  SetMotion(&vfx->s, GetElfMotion((vfx->s).work[0]));
-  {
-    const bool8 xflip = FALSE;
-    (vfx->s).flags &= ~X_FLIP;
-    (vfx->s).spr.xflip = xflip;
-    (vfx->s).spr.oam.xflip = xflip;
-  }
-  (vfx->s).coord.y -= PIXEL(18);
-  (vfx->props).afterImage.c = (vfx->s).coord;
-  (vfx->s).work[2] = 0;
-  (vfx->s).work[3] = 0x80;
-  CyberSpaceElf_Update(vfx);
-#else
-  INCCODE("asm/wip/CyberSpaceElf_Init.inc");
-#endif
+static void CyberSpaceElf_Init(struct VFX* p) {
+  s32 y;
+  SET_VFX_ROUTINE(p, ENTITY_UPDATE);
+  InitNonAffineMotion(&p->s);
+  ResetDynamicMotion(&p->s);
+  (p->s).flags |= DISPLAY;
+  (p->s).flags |= FLIPABLE;
+  SetMotion(&p->s, GetElfMotion((p->s).work[0]));
+  SET_XFLIP(p, FALSE);
+  y = (p->s).coord.y - PIXEL(18);
+  (p->s).coord.y = y;
+  (p->props).tmp.c.x = (p->s).coord.x;
+  (p->props).tmp.c.y = y;
+  (p->s).work[2] = 0;
+  (p->s).work[3] = 0x80;
+  CyberSpaceElf_Update(p);
 }
 
 INCASM("asm/vfx/cyberspace_elf.inc");

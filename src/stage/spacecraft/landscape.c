@@ -750,7 +750,7 @@ WIP static void LayerDraw_FixOmegaWhiteCoord(struct StageLayer* l, const struct 
     gVideoRegBuffer.dispcnt &= ~(dispcnt << 8);
   }
   n = dispcnt >> 4;
-  if (gOverworld.reload_graphic) {
+  if (gOverworld.terrain.reload_graphic) {
     vu32 _;
     CpuFastCopy(BGMAP(42), (void*)(VRAM + SCREEN_BASE_16(n)), 2048);
     CpuFastFill(0, (void*)(VRAM + 0x800 + SCREEN_BASE_16(n)), 2048);
@@ -880,7 +880,7 @@ bool16 FUN_0800bd38(s32 x, s32 y) {
   const s32 my = METACOORD(y) - 1;
 
   ow = &gOverworld;
-  map = (u16*)&ow->tilemap;
+  map = (u16*)&ow->terrain.tilemap;
   row = (map[0] * (s16)my);
   col = (s16)mx;
 

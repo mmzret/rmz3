@@ -3,12 +3,10 @@
 #include "task.h"
 #include "vfx.h"
 
-static const motion_t sMotions[10];
-
 static void TaskCB_080be5d0(struct Sprite* s, struct DrawPivot* c);
 
 static void ExlifeIndicator_Init(struct VFX* vfx);
-void ExlifeIndicator_Update(struct VFX* vfx);
+static void ExlifeIndicator_Update(struct VFX* vfx);
 static void ExlifeIndicator_Die(struct VFX* vfx);
 
 // clang-format off
@@ -46,7 +44,69 @@ static void ExlifeIndicator_Init(struct VFX* vfx) {
   ExlifeIndicator_Update(vfx);
 }
 
-INCASM("asm/vfx/exlife_indicator.inc");
+NAKED static void ExlifeIndicator_Update(struct VFX* vfx) {
+  asm(".syntax unified\n\
+	push {r4, lr}\n\
+	adds r3, r0, #0\n\
+	ldrb r4, [r3, #0x12]\n\
+	adds r2, r4, #1\n\
+	strb r2, [r3, #0x12]\n\
+	lsls r0, r2, #0x18\n\
+	lsrs r0, r0, #0x18\n\
+	cmp r0, #0x20\n\
+	bhi _080BE568\n\
+	ldr r1, _080BE564 @ =gSineTable\n\
+	lsls r0, r2, #0x19\n\
+	lsrs r0, r0, #0x17\n\
+	adds r0, r0, r1\n\
+	movs r2, #0\n\
+	ldrsh r1, [r0, r2]\n\
+	movs r0, #0xdc\n\
+	muls r0, r1, r0\n\
+	b _080BE588\n\
+	.align 2, 0\n\
+_080BE564: .4byte gSineTable\n\
+_080BE568:\n\
+	cmp r0, #0x7e\n\
+	bls _080BE58A\n\
+	ldr r1, _080BE5A8 @ =gSineTable\n\
+	lsls r0, r4, #0x19\n\
+	movs r2, #0x84\n\
+	lsls r2, r2, #0x17\n\
+	adds r0, r0, r2\n\
+	lsrs r0, r0, #0x17\n\
+	adds r0, r0, r1\n\
+	movs r2, #0\n\
+	ldrsh r1, [r0, r2]\n\
+	movs r0, #0xdc\n\
+	muls r1, r0, r1\n\
+	movs r0, #0xdc\n\
+	lsls r0, r0, #9\n\
+	subs r0, r0, r1\n\
+_080BE588:\n\
+	str r0, [r3, #0x54]\n\
+_080BE58A:\n\
+	ldrb r0, [r3, #0x12]\n\
+	cmp r0, #0xa0\n\
+	bne _080BE5A2\n\
+	ldr r1, _080BE5AC @ =gVFXFnTable\n\
+	ldrb r0, [r3, #9]\n\
+	lsls r0, r0, #2\n\
+	adds r0, r0, r1\n\
+	movs r1, #2\n\
+	str r1, [r3, #0xc]\n\
+	ldr r0, [r0]\n\
+	ldr r0, [r0, #8]\n\
+	str r0, [r3, #0x14]\n\
+_080BE5A2:\n\
+	pop {r4}\n\
+	pop {r0}\n\
+	bx r0\n\
+	.align 2, 0\n\
+_080BE5A8: .4byte gSineTable\n\
+_080BE5AC: .4byte gVFXFnTable\n\
+ .syntax divided\n");
+}
 
 static void ExlifeIndicator_Die(struct VFX* vfx) {
   (vfx->s).flags &= ~DISPLAY;

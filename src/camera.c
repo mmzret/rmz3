@@ -6,6 +6,8 @@
 
 static void focus(struct Camera* camera, u8 r1);
 
+void CalcCameraDelta(struct Coord* c1, struct Coord* c2);
+
 void ResetCamera(struct Camera* camera, const struct CameraTemplate* template, struct TaskManager* tm) {
   camera->template = template;
   camera->taskManager = tm;
