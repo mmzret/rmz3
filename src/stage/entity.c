@@ -1150,7 +1150,7 @@ struct Entity* CreateStageEntity(u8 kind, u8 id) {
       p = AllocEntityFirst(gElfHeaderPtr);
       if (p != NULL) {
         p->taskCol = 16;
-        INIT_ELF_ROUTINE((struct Elf*)p, id);
+        INIT_ELF_ROUTINE(p, id);
         p->tileNum = 0;
         p->palID = 0;
       }
@@ -1253,7 +1253,7 @@ void DeleteStageEntity(struct CollidableEntity* p) {
       (p->body).prevStatus = 0;
       (p->body).invincibleTime = 0;
       (p->s).flags &= ~COLLIDABLE;
-      SET_ELF_ROUTINE((struct Elf*)p, ENTITY_DISAPPEAR);
+      SET_ELF_ROUTINE(p, ENTITY_DISAPPEAR);
       break;
     }
   }

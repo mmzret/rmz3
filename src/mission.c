@@ -662,11 +662,13 @@ _08019D1C: .4byte gCodeNameSuffixs\n\
 // ------------------------------------------------------------------------------------------------------------------------------------
 
 static const struct Coord Coord_ARRAY_0834ca10[37] = {
-    {PIXEL(2992), PIXEL(928)}, {0x0007D000, 0x0003A000}, {0x000D7000, 0x0003A000}, {0x000D1000, 0x0003A000}, {0x00077000, 0x0003A000}, {0x0004E000, 0x0003A000}, {0x0004E000, 0x00044000}, {0x0004A000, 0x00058000}, {0x0007C000, 0x00058000}, {0x00048000, 0x0004E000}, {0x00058000, 0x0004E000}, {0x0007D000, 0x00044000}, {0x00080000, 0x0004E000}, {0x00015000, 0x0006D000}, {0x0001B000, 0x0006D000}, {0x00021000, 0x0006D000}, {0x00027000, 0x0006D000}, {0x00042000, 0x0006D000}, {0x00048000, 0x0006D000}, {0x0004E000, 0x0006D000}, {0x00054000, 0x0006D000}, {0x00053000, 0x00030000}, {0x00060000, 0x00024000}, {0x00070000, 0x00013000}, {0x00082000, 0x0002F000}, {0x000E7000, 0x0000E000}, {0x00171000, 0x0001A000}, {0x00171000, 0x0004E000}, {0x000B6000, 0x0001E000}, {0x000BF000, 0x0001E000}, {0x000B7000, 0x00028000}, {0x000BE000, 0x00028000}, {0x0016A000, 0x00014000}, {0x00173000, 0x00014000}, {0x0016B000, 0x0001E000}, {0x00172000, 0x0001E000}, {0x00016000, 0x00042000},
+    {PIXEL(2992), PIXEL(928)},  {PIXEL(2000), PIXEL(928)},  {PIXEL(3440), PIXEL(928)}, {PIXEL(3344), PIXEL(928)}, {PIXEL(1904), PIXEL(928)}, {PIXEL(1248), PIXEL(928)}, {PIXEL(1248), PIXEL(1088)}, {PIXEL(1184), PIXEL(1408)}, {PIXEL(1984), PIXEL(1408)}, {PIXEL(1152), PIXEL(1248)}, {PIXEL(1408), PIXEL(1248)}, {PIXEL(2000), PIXEL(1088)}, {PIXEL(2048), PIXEL(1248)}, {PIXEL(336), PIXEL(1744)}, {PIXEL(432), PIXEL(1744)}, {PIXEL(528), PIXEL(1744)}, {PIXEL(624), PIXEL(1744)}, {PIXEL(1056), PIXEL(1744)}, {PIXEL(1152), PIXEL(1744)},
+    {PIXEL(1248), PIXEL(1744)}, {PIXEL(1344), PIXEL(1744)}, {PIXEL(1328), PIXEL(768)}, {PIXEL(1536), PIXEL(576)}, {PIXEL(1792), PIXEL(304)}, {PIXEL(2080), PIXEL(752)}, {PIXEL(3696), PIXEL(224)},  {PIXEL(5904), PIXEL(416)},  {PIXEL(5904), PIXEL(1248)}, {PIXEL(2912), PIXEL(480)},  {PIXEL(3056), PIXEL(480)},  {PIXEL(2928), PIXEL(640)},  {PIXEL(3040), PIXEL(640)},  {PIXEL(5792), PIXEL(320)}, {PIXEL(5936), PIXEL(320)}, {PIXEL(5808), PIXEL(480)}, {PIXEL(5920), PIXEL(480)}, {PIXEL(352), PIXEL(1056)},
 };
 
 static const struct Coord Coord_ARRAY_0834cb38[37] = {
-    {PIXEL(448), PIXEL(464)}, {PIXEL(272), PIXEL(464)}, {0x000B6000, 0x00013000}, {0x000D4000, 0x00027000}, {0x000B6000, 0x00027000}, {0x000C5000, 0x00059000}, {0x00011000, 0x00031000}, {0x00011000, 0x00059000}, {0x0006B000, 0x0006D000}, {0x00098000, 0x0006D000}, {0x000B2000, 0x0006D000}, {0x00011000, 0x0006D000}, {0x0003E000, 0x0006D000}, {0x00011000, 0x00081000}, {0x0002F000, 0x00081000}, {0x0004D000, 0x00081000}, {0x0006B000, 0x00081000}, {0x00089000, 0x00081000}, {0x000A7000, 0x00081000}, {0x000C5000, 0x00081000}, {0x000C5000, 0x0006D000}, {0x00011000, 0x0004F000}, {0x0003E000, 0x0004F000}, {0x000A7000, 0x00031000}, {0x0006B000, 0x0004F000}, {0x00089000, 0x0004F000}, {0x000D4000, 0x00024000}, {0x000D4000, 0x00058000}, {0x00012000, 0x00043000}, {0x00033800, 0x00057000}, {0x00030000, 0x00043000}, {0x00012000, 0x00057000}, {0x00064800, 0x00043000}, {0x0008A000, 0x00057000}, {0x00060800, 0x00057000}, {0x0008A000, 0x00039000}, {0x00073800, 0x0001B000},
+    {PIXEL(448), PIXEL(464)},   {PIXEL(272), PIXEL(464)},   {PIXEL(2912), PIXEL(304)}, {PIXEL(3392), PIXEL(624)}, {PIXEL(2912), PIXEL(624)}, {PIXEL(3152), PIXEL(1424)}, {PIXEL(272), PIXEL(784)},   {PIXEL(272), PIXEL(1424)}, {PIXEL(1712), PIXEL(1744)}, {PIXEL(2432), PIXEL(1744)}, {PIXEL(2848), PIXEL(1744)}, {PIXEL(272), PIXEL(1744)}, {PIXEL(992), PIXEL(1744)}, {PIXEL(272), PIXEL(2064)},  {PIXEL(752), PIXEL(2064)},  {PIXEL(1232), PIXEL(2064)}, {PIXEL(1712), PIXEL(2064)}, {PIXEL(2192), PIXEL(2064)}, {PIXEL(2672), PIXEL(2064)},
+    {PIXEL(3152), PIXEL(2064)}, {PIXEL(3152), PIXEL(1744)}, {PIXEL(272), PIXEL(1264)}, {PIXEL(992), PIXEL(1264)}, {PIXEL(2672), PIXEL(784)}, {PIXEL(1712), PIXEL(1264)}, {PIXEL(2192), PIXEL(1264)}, {PIXEL(3392), PIXEL(576)}, {PIXEL(3392), PIXEL(1408)}, {PIXEL(288), PIXEL(1072)},  {PIXEL(824), PIXEL(1392)},  {PIXEL(768), PIXEL(1072)}, {PIXEL(288), PIXEL(1392)}, {PIXEL(1608), PIXEL(1072)}, {PIXEL(2208), PIXEL(1392)}, {PIXEL(1544), PIXEL(1392)}, {PIXEL(2208), PIXEL(912)},  {PIXEL(1848), PIXEL(432)},
 };
 
 // ミッション開始地点？
@@ -769,74 +771,24 @@ _08019DCA:\n\
 }
 
 // 水没した図書館のドア のつながり関連?
-NAKED struct Coord* FUN_08019dd0(struct Coord* c) {
-  asm(".syntax unified\n\
-	push {r4, r5, r6, lr}\n\
-	adds r5, r0, #0\n\
-	movs r4, #0\n\
-	ldr r0, _08019E3C @ =Coord_ARRAY_0834cb38\n\
-	ldr r1, [r0]\n\
-	ldr r2, [r5]\n\
-	subs r1, r1, r2\n\
-	movs r2, #0x80\n\
-	lsls r2, r2, #6\n\
-	adds r1, r1, r2\n\
-	movs r2, #0x80\n\
-	lsls r2, r2, #7\n\
-	adds r6, r0, #0\n\
-	cmp r1, r2\n\
-	bhi _08019DFE\n\
-	ldr r0, [r6, #4]\n\
-	ldr r1, [r5, #4]\n\
-	subs r0, r0, r1\n\
-	movs r1, #0x80\n\
-	lsls r1, r1, #6\n\
-	adds r0, r0, r1\n\
-	cmp r0, r2\n\
-	bls _08019E30\n\
-_08019DFE:\n\
-	adds r4, #1\n\
-	cmp r4, #0x24\n\
-	bgt _08019E30\n\
-	lsls r2, r4, #3\n\
-	adds r0, r2, r6\n\
-	ldr r1, [r0]\n\
-	ldr r0, [r5]\n\
-	subs r1, r1, r0\n\
-	movs r0, #0x80\n\
-	lsls r0, r0, #6\n\
-	adds r1, r1, r0\n\
-	movs r3, #0x80\n\
-	lsls r3, r3, #7\n\
-	cmp r1, r3\n\
-	bhi _08019DFE\n\
-	adds r0, r6, #4\n\
-	adds r0, r2, r0\n\
-	ldr r0, [r0]\n\
-	ldr r1, [r5, #4]\n\
-	subs r0, r0, r1\n\
-	movs r1, #0x80\n\
-	lsls r1, r1, #6\n\
-	adds r0, r0, r1\n\
-	cmp r0, r3\n\
-	bhi _08019DFE\n\
-_08019E30:\n\
-	cmp r4, #0x25\n\
-	beq _08019E44\n\
-	lsls r0, r4, #3\n\
-	ldr r1, _08019E40 @ =Coord_ARRAY_0834ca10\n\
-	adds r0, r0, r1\n\
-	b _08019E46\n\
-	.align 2, 0\n\
-_08019E3C: .4byte Coord_ARRAY_0834cb38\n\
-_08019E40: .4byte Coord_ARRAY_0834ca10\n\
-_08019E44:\n\
-	movs r0, #0\n\
-_08019E46:\n\
-	pop {r4, r5, r6}\n\
-	pop {r1}\n\
-	bx r1\n\
- .syntax divided\n");
+// Coord_ARRAY_0834cb38 の座標で、引数の座標から PIXEL(32) の範囲に収まるものがあれば、 (Coord_ARRAY_0834cb38 ではなく) Coord_ARRAY_0834ca10 の同じインデックスの座標を返す
+struct Coord* FUN_08019dd0(struct Coord* c) {
+  s32 i;
+  for (i = 0; i < (s32)ARRAY_COUNT(Coord_ARRAY_0834cb38); i++) {
+    u32 x = (u32)(Coord_ARRAY_0834cb38[i].x - c->x) + PIXEL(32);
+    if (x <= PIXEL(64)) {
+      u32 y = (u32)(Coord_ARRAY_0834cb38[i].y - c->y) + PIXEL(32);
+      if (y <= PIXEL(64)) {
+        break;
+      }
+    }
+  }
+
+  if (i == 37) {
+    return NULL;
+  } else {
+    return (struct Coord*)&Coord_ARRAY_0834ca10[i];
+  }
 }
 
 // ------------------------------------------------------------------------------------------------------------------------------------

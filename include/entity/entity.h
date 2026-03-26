@@ -7,17 +7,27 @@
 #include "metatile.h"
 #include "motion.h"
 
-struct ScriptEntity;
+// Entity.flags
+#define DISPLAY (1 << 0)
+#define FLIPABLE (1 << 1)
+#define COLLIDABLE (1 << 2)
+#define OAM_PRIO (1 << 3)  // このフラグがセットされていたらOAMの優先度に従う セットされてないなら優先度0扱い
+// X_FLIP (1 << 4)
+// Y_FLIP (1 << 5)
+#define AFFINE (1 << 6)
+#define SCRIPTED (1 << 7)  // ScriptedEntityか
 
-#define INIT_BODY(p, collisions, hp, onCollision)  \
-  {                                                \
-    struct Body* body;                             \
-    (p->s).flags |= COLLIDABLE;                    \
-    body = &p->body;                               \
-    InitBody(body, collisions, &(p->s).coord, hp); \
-    body->parent = (struct CollidableEntity*)p;    \
-    body->fn = onCollision;                        \
-  }
+// Entity.flags2
+#define SCALEROT (1 << 0)
+#define ENTITY_FLAG2_B1 (1 << 1)  // 意味のないフラグに見える(どちらにしろScalerotSpriteするので)
+#define DYNAMIC (1 << 2)          // Entity has "Dynamic sprite" (See sprites/README.md)
+#define ENTITY_HAZARD (1 << 3)
+#define WHITE_PAINTABLE (1 << 4)  // (if damaged) white painted by RunDamageEffect
+#define PALETTE_FORCED (1 << 5)
+#define ENTITY_FLAGS2_B6 (1 << 6)
+#define STOPPED (1 << 7)
+
+struct ScriptEntity;
 
 struct EntityOamData {
   /*0x00*/ u32 y : 8;
@@ -44,14 +54,6 @@ struct EntityOamData {
   /*    */ u8 : 8;
 };
 
-struct __attribute__((packed, aligned(1))) EntityOamData_06 {
-  /*0x06*/ u8 unused : 4;
-  /*    */ u8 xflip : 1;
-  /*    */ u8 yflip : 1;
-  /*    */ u8 size : 2;
-  /*    */ u8 : 8;
-};
-
 // Entityを表す複数のスプライトが集まったメタスプライト(モーションによっては複数のメタスプライトを持つ時もある)
 // TODO: この構造は間違い (Task関係の構造体っぽい)
 struct Sprite {
@@ -69,17 +71,6 @@ struct Sprite {
     u16 x;
     u16 y;
   } mag;  // size magnification (x, y)
-};
-
-struct __attribute__((packed, aligned(1))) EntityFlags {
-  u8 display : 1;
-  u8 flipable : 1;
-  u8 collidable : 1;
-  u8 oamprio : 1;
-  u8 xflip : 1;
-  u8 yflip : 1;
-  u8 affine : 1;
-  u8 b7 : 1;
 };
 
 struct Entity {
@@ -132,8 +123,8 @@ struct CollidableEntity {
   struct Body body;
 };  // 180 bytes (0xB4..)
 
-typedef void (*EntityFunc)(struct Entity*);
-
 // --------------------------------------------
+
+typedef void (*EntityFunc)(struct Entity*);
 
 #endif  // GUARD_RMZ3_ENTITY_ENTITY_H

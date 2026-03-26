@@ -63,7 +63,7 @@ struct PlayInfo {
 };  // 80 bytes
 
 struct Story {
-  u16 id;  // stage ID
+  u16 id;  // stageID と思ってたけど違うかもしれない
   u16 pad_02;
 
   // 0x0202fdc4

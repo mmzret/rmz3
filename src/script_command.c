@@ -16,6 +16,8 @@
 #include "vfx.h"
 #include "zero.h"
 
+void FUN_080251a8(void);
+
 static bool32 Cmd_goto(struct VM* vm);
 static bool32 Cmd_wait(struct VM* vm);
 static bool32 Cmd_time(struct VM* vm);
@@ -424,6 +426,15 @@ static bool32 Cmd_spawn(struct VM* vm) {
   }
   return FALSE;
 }
+
+// なんかこれ用意したらコンパイル結果がやっと一致してくれた
+struct __attribute__((packed, aligned(1))) EntityOamData_06 {
+  /*0x06*/ u8 unused : 4;
+  /*    */ u8 xflip : 1;
+  /*    */ u8 yflip : 1;
+  /*    */ u8 size : 2;
+  /*    */ u8 : 8;
+};
 
 static bool32 Cmd_entity(struct VM* vm) {
   struct EntityOamData_06* fxxk;

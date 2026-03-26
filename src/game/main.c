@@ -23,6 +23,7 @@ static const GameLoopFunc sGameLoops[16];
 
 static void FUN_080ee228(void);
 
+void FUN_080250b8(void);
 void FUN_08019678(struct Story* p);
 
 const u16 u16_ARRAY_083860b0[64] = {
@@ -257,7 +258,40 @@ WIP void RestoreGraphicState(struct GameState* p) {
 }
 
 // 00 00 nn nn
-NAKED static void GameLoop_NewGame(struct GameState* p) { INCCODE("asm/todo/GameLoop_NewGame.inc"); }
+WIP static void GameLoop_NewGame(struct GameState* g) {
+#if MODERN
+  (&(g->save))->gamemode = 0;
+  gGameState.z2 = gGameState.z3 = &gZero;
+  (g->save).stageID = STAGE_SPACE_CRAFT;
+  (&(g->save))->lap = 0;
+  FUN_08019678(&(g->save).story);
+  ClearPlayInfo(&(g->save).playinfo);
+  clearSecretDiskData((g->save).disk);
+  clearUnlockedCyberElfData((g->save).elf);
+  ClearZeroStatus(&(g->save).status);
+  if ((gSystemSavedataManager.hardmodeLock == (gSineTable[8] & 0xFF)) && (gJoypad[0].input & L_BUTTON)) {
+    (&(g->save))->gamemode = 1;
+    *((u8*)&(&(g->save).story)->id) |= 1;
+    clearSecretDiskDataHard((g->save).disk);
+    clearUnlockedCyberElfDataHard((g->save).elf);
+    ClearZeroStatusHard(&(g->save).status);
+  }
+  if ((gSystemSavedataManager.ultimateModeLock == (gSineTable[9] & 0xFF)) && (gJoypad[0].input & R_BUTTON)) {
+    *((u8*)&(&(g->save).story)->id) |= ((&(g->save))->gamemode = 2);
+    unlockAllSecretDisk((g->save).disk);
+    unlockAllElvesForUltimate((g->save).elf);
+    ClearZeroStatusUltimate(&(g->save).status);
+  }
+  InitStageRun((g->save).stageID);
+  if ((&(g->save))->gamemode == 0) {
+    SetGameMode(g, GAMEMODE(MAINGAME, PRE_OVERWORLD, 0, 0));
+  } else {
+    SetGameMode(g, GAMEMODE(MAINGAME, START_SPECIAL_MODE, 0, 0));
+  }
+#else
+  INCCODE("asm/wip/GameLoop_NewGame.inc");
+#endif
+}
 
 // 00 01 nn nn
 static void GameLoop_ContinueGame(struct GameState* p) {

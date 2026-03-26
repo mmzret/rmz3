@@ -40,9 +40,7 @@ void DeleteElf(struct Elf* p) {
   SET_ELF_ROUTINE(p, ENTITY_EXIT);
 }
 
-#if MODERN == 0
-NAKED static struct Elf* unused_080e14d4(u8 r0, struct Entity* e) { INCCODE("asm/unused/unused_080e14d4.inc"); }
-#endif
+NAKED static struct Entity* unused_080e14d4(u8 r0, struct Entity* e) { INCCODE("asm/unused/unused_080e14d4.inc"); }
 
 static struct Enemy* getNearestEnemy(struct Coord* c) {
   struct Enemy* p = (struct Enemy*)GetNearestEntity(gZakoHeaderPtr, c);
@@ -52,15 +50,13 @@ static struct Enemy* getNearestEnemy(struct Coord* c) {
   return p;
 }
 
-#if MODERN == 0
-static struct Boss* getNearestBoss(struct Coord* c) {
-  struct Boss* p = (struct Boss*)GetNearestEntity(gBossHeaderPtr, c);
+static struct Entity* unused_GetNearestBoss(struct Coord* c) {
+  struct Entity* p = GetNearestEntity(gBossHeaderPtr, c);
   if (p == NULL) {
     return NULL;
   }
   return p;
 }
-#endif
 
 void close_menu_080e1540(ElfFunc fn) {
   struct Entity* p;
