@@ -6,28 +6,8 @@
 #include "entity.h"
 #include "types.h"
 
-#define SET_PROJECTILE_ROUTINE(p, routine)    \
-  {                                           \
-    u32 tbl, id;                              \
-    ProjectileFunc** r;                       \
-    tbl = (u32)gProjectileFnTable;            \
-    id = (((p)->s).id) << 2;                  \
-    r = (ProjectileFunc**)(tbl + id);         \
-                                              \
-    *(u32*)((p)->s).mode = routine;           \
-    ((p)->s).onUpdate = (void*)(*r)[routine]; \
-  }
-
-#define INIT_PROJECTILE_ROUTINE(p, projectileID)       \
-  {                                                    \
-    u32 tbl;                                           \
-    ProjectileFunc** r;                                \
-    tbl = (u32)gProjectileFnTable;                     \
-    ((p)->s).id = projectileID;                        \
-                                                       \
-    r = (ProjectileFunc**)(tbl + (projectileID << 2)); \
-    ((p)->s).onUpdate = (void*)(*r)[ENTITY_INIT];      \
-  }
+#define INIT_PROJECTILE_ROUTINE(entity, entityID) INIT_ENTITY_ROUTINE(gProjectileFnTable, entity, entityID)
+#define SET_PROJECTILE_ROUTINE(entity, modeID) SET_ENTITY_ROUTINE(gProjectileFnTable, entity, modeID)
 
 extern const ProjectileRoutine* const gProjectileFnTable[PROJECTILE_ENTITY_COUNT];
 

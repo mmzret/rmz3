@@ -3,6 +3,129 @@
 #include "entity.h"
 #include "global.h"
 
+void InitVFXHeader(struct EntityHeader* h, struct VFX* p, s16 len) {
+  s16 i;
+
+  InitEntityHeader(h, ENTITY_VFX, &p->s, sizeof(struct VFX), len);
+  for (i = 0; i < len; i++) {
+    p[i].s.uniqueID = gEntityIDGenerator + i;
+  }
+  gEntityIDGenerator += len;
+  gVFXHeaderPtr = h;
+}
+
+void UpdateVFXs(void) {
+  struct Entity* p;
+  struct EntityHeader* h = gVFXHeaderPtr;
+  setCurProcessedEntityHeader(h);
+
+  while (TRUE) {
+    p = h->last = h->last->prev;
+    if (p == (struct Entity*)&h->next) {
+      break;
+    }
+
+    if (gPause) {
+      if (p->id == 48) {
+        ((EntityFunc)(p->onUpdate))(p);
+      }
+    } else {
+      ((EntityFunc)(p->onUpdate))(p);
+    }
+  }
+}
+
+void DeleteVFX(struct VFX* p) {
+  (p->s).flags &= ~DISPLAY;
+  SET_VFX_ROUTINE(p, ENTITY_EXIT);
+}
+
+// --------------------------------------------
+
+extern const VFXRoutine gSmokeRoutine;
+extern const VFXRoutine gBubbleRoutine;
+extern const VFXRoutine gChargeEffectRoutine;
+extern const VFXRoutine gZeroDeathEffectRoutine;
+extern const VFXRoutine gParticleRoutine;
+extern const VFXRoutine gDashAfterImageRoutine;
+extern const VFXRoutine gGhost7Routine;
+extern const VFXRoutine gGhost8Routine;
+extern const VFXRoutine gThunderEffectRoutine;
+extern const VFXRoutine gFlameEffectRoutine;
+extern const VFXRoutine gIceEffectRoutine;
+extern const VFXRoutine gRippleRoutine;
+extern const VFXRoutine gMissionAlertRoutine;
+extern const VFXRoutine gEmotionBubbleRoutine;
+extern const VFXRoutine gSlashedEnemyRoutine;
+extern const VFXRoutine gGhost17Routine;
+extern const VFXRoutine gGhost18Routine;
+extern const VFXRoutine gGhost19Routine;
+extern const VFXRoutine gGhost20Routine;
+extern const VFXRoutine gBatringNecroRoutine;
+extern const VFXRoutine gGhost22Routine;
+extern const VFXRoutine gNecroRoutine;
+extern const VFXRoutine gShrimporinVFXRoutine;
+extern const VFXRoutine gVFX25Routine;
+extern const VFXRoutine gIcebonIcedustRoutine;
+extern const VFXRoutine gGhost27Routine;
+extern const VFXRoutine gGhost28Routine;
+extern const VFXRoutine gGhost29Routine;
+extern const VFXRoutine gGhost30Routine;
+extern const VFXRoutine gGhost31Routine;
+extern const VFXRoutine gGhost32Routine;
+extern const VFXRoutine gGhost33Routine;
+extern const VFXRoutine gGhost34Routine;
+extern const VFXRoutine gVFX35Routine;
+extern const VFXRoutine gVFX36Routine;
+extern const VFXRoutine gVFX37Routine;
+extern const VFXRoutine gVFX38Routine;
+extern const VFXRoutine gVFX39Routine;
+extern const VFXRoutine gVFX40Routine;
+extern const VFXRoutine gVFX41Routine;
+extern const VFXRoutine gExlifeIndicatorRoutine;
+extern const VFXRoutine gVFX43Routine;
+extern const VFXRoutine gVFX44Routine;
+extern const VFXRoutine gVFX45Routine;
+extern const VFXRoutine gVFX46Routine;
+extern const VFXRoutine gVFX47Routine;
+extern const VFXRoutine gElfParticleRoutine;
+extern const VFXRoutine gVFX49Routine;
+extern const VFXRoutine gVFX50Routine;
+extern const VFXRoutine gVFX51Routine;
+extern const VFXRoutine gVFX52Routine;
+extern const VFXRoutine gVFX53Routine;
+extern const VFXRoutine gVFX54Routine;
+extern const VFXRoutine gVFX55Routine;
+extern const VFXRoutine gVFX56Routine;
+extern const VFXRoutine gVFX57Routine;
+extern const VFXRoutine gVFX58Routine;
+extern const VFXRoutine gVFX59Routine;
+extern const VFXRoutine gVFX60Routine;
+extern const VFXRoutine gVFX61Routine;
+extern const VFXRoutine gVFX62Routine;
+extern const VFXRoutine gVFX63Routine;
+extern const VFXRoutine gGhost64Routine;
+extern const VFXRoutine gGhost65Routine;
+extern const VFXRoutine gGhost66Routine;
+extern const VFXRoutine gGhost67Routine;
+extern const VFXRoutine gGhost68Routine;
+extern const VFXRoutine gGhost69Routine;
+extern const VFXRoutine gGhost70Routine;
+extern const VFXRoutine gGhost71Routine;
+extern const VFXRoutine gGhost72Routine;
+extern const VFXRoutine gGhost73Routine;
+extern const VFXRoutine gCyberSpaceElfRoutine;
+extern const VFXRoutine gGhost75Routine;
+extern const VFXRoutine gBossExplosionRoutine;
+extern const VFXRoutine gMinigameIconRoutine;
+extern const VFXRoutine gGhost78Routine;
+extern const VFXRoutine gGhost79Routine;
+extern const VFXRoutine gSnowRoutine;
+extern const VFXRoutine gSmallNumberRoutine;
+extern const VFXRoutine gGhost82Routine;
+extern const VFXRoutine gGhost83Routine;
+extern const VFXRoutine gGhost84Routine;
+
 // clang-format off
 const VFXRoutine* const gVFXFnTable[VFX_COUNT] = {
     [VFX_SMOKE] =  &gSmokeRoutine,
@@ -92,40 +215,3 @@ const VFXRoutine* const gVFXFnTable[VFX_COUNT] = {
     [VFX_UNK_084] = &gGhost84Routine,
 };
 // clang-format on
-
-void InitVFXHeader(struct EntityHeader *h, struct VFX *p, s16 len) {
-  s16 i;
-
-  InitEntityHeader(h, ENTITY_VFX, &p->s, sizeof(struct VFX), len);
-  for (i = 0; i < len; i++) {
-    p[i].s.uniqueID = gEntityIDGenerator + i;
-  }
-  gEntityIDGenerator += len;
-  gVFXHeaderPtr = h;
-}
-
-void UpdateVFXs(void) {
-  struct Entity *p;
-  struct EntityHeader *h = gVFXHeaderPtr;
-  setCurProcessedEntityHeader(h);
-
-  while (TRUE) {
-    p = h->last = h->last->prev;
-    if (p == (struct Entity *)&h->next) {
-      break;
-    }
-
-    if (gPause) {
-      if (p->id == 48) {
-        ((EntityFunc)(p->onUpdate))(p);
-      }
-    } else {
-      ((EntityFunc)(p->onUpdate))(p);
-    }
-  }
-}
-
-void DeleteVFX(struct VFX *p) {
-  (p->s).flags &= ~DISPLAY;
-  SET_VFX_ROUTINE(p, ENTITY_EXIT);
-}

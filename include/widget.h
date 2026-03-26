@@ -1,31 +1,12 @@
 #ifndef GUARD_RMZ3_WIDGET_H
 #define GUARD_RMZ3_WIDGET_H
 
+#include "entity.h"
 #include "entity/widget.h"
 #include "types.h"
 
-#define SET_WIDGET_ROUTINE(widget, routine)      \
-  {                                              \
-    u32 tbl, id;                                 \
-    WidgetFunc** r;                              \
-    tbl = (u32)gWidgetFnTable;                   \
-    id = ((widget->s).id) << 2;                  \
-    r = (WidgetFunc**)(tbl + id);                \
-                                                 \
-    *(u32*)(widget->s).mode = routine;           \
-    (widget->s).onUpdate = (void*)(*r)[routine]; \
-  }
-
-#define INIT_WIDGET_ROUTINE(widget, mcID)            \
-  {                                                  \
-    u32 tbl;                                         \
-    WidgetFunc** r;                                  \
-    tbl = (u32)gWidgetFnTable;                       \
-    (widget->s).id = mcID;                           \
-                                                     \
-    r = (WidgetFunc**)(tbl + (mcID << 2));           \
-    (widget->s).onUpdate = (void*)(*r)[ENTITY_INIT]; \
-  }
+#define INIT_WIDGET_ROUTINE(entity, entityID) INIT_ENTITY_ROUTINE(gWidgetFnTable, entity, entityID)
+#define SET_WIDGET_ROUTINE(entity, modeID) SET_ENTITY_ROUTINE(gWidgetFnTable, entity, modeID)
 
 // --------------------------------------------
 

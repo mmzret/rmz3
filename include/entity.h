@@ -34,8 +34,48 @@
 #define ENTITY_FLAGS2_B6 (1 << 6)
 #define STOPPED (1 << 7)
 
-// EntityHeader linklist end
-#define END (&h->next)
+typedef void (*EntityUpdateFunc)(void*);
+
+// このMacroを使わないとコンパイル結果が一致しない (遅いので MODERNオプション では書き方を変えてる)
+#if MODERN
+#define INIT_ENTITY_ROUTINE(functable, entity, entityID)                                                   \
+  {                                                                                                        \
+    ((struct Entity*)entity)->id = entityID;                                                               \
+    ((struct Entity*)entity)->onUpdate = (void*)((*functable[((struct Entity*)entity)->id])[ENTITY_INIT]); \
+  }
+#else
+#define INIT_ENTITY_ROUTINE(functable, entity, entityID)                       \
+  {                                                                            \
+    u32 tbl;                                                                   \
+    EntityUpdateFunc** routine_table;                                          \
+    tbl = (u32)functable;                                                      \
+    ((struct Entity*)entity)->id = entityID;                                   \
+                                                                               \
+    routine_table = (EntityUpdateFunc**)(tbl + (entityID << 2));               \
+    ((struct Entity*)entity)->onUpdate = (void*)(*routine_table)[ENTITY_INIT]; \
+  }
+#endif
+
+// このMacroを使わないとコンパイル結果が一致しない (遅いので MODERNオプション では書き方を変えてる)
+#if MODERN
+#define SET_ENTITY_ROUTINE(functable, entity, modeID)                                                 \
+  {                                                                                                   \
+    *(u32*)(((struct Entity*)entity)->mode) = modeID;                                                 \
+    ((struct Entity*)entity)->onUpdate = (void*)((*functable[((struct Entity*)entity)->id])[modeID]); \
+  }
+#else
+#define SET_ENTITY_ROUTINE(functable, entity, modeID)                     \
+  {                                                                       \
+    u32 tbl, id;                                                          \
+    EntityUpdateFunc** routine_table;                                     \
+    tbl = (u32)(functable);                                               \
+    id = (((struct Entity*)entity)->id) << 2;                             \
+    routine_table = (EntityUpdateFunc**)(tbl + id);                       \
+                                                                          \
+    *(u32*)(((struct Entity*)entity)->mode) = modeID;                     \
+    ((struct Entity*)entity)->onUpdate = (void*)(*routine_table)[modeID]; \
+  }
+#endif
 
 #define SET_XFLIP(enti, value)                           \
   {                                                      \
@@ -61,20 +101,6 @@ struct EntityHeader {
   struct Entity* next;
   struct Entity* prev;
   u32 unk[3];
-};
-
-// 0x02031370
-struct EntityHeaders {
-  struct EntityHeader zero;           // 02037c60
-  struct EntityHeader weapon;         // 02038fd0
-  struct EntityHeader boss;           // 0203b6d0
-  struct EntityHeader zako;           // 03004b80
-  struct EntityHeader projectile;     // 03003920
-  struct EntityHeader vfx;            // 03005950
-  struct EntityHeader solid;          // 0203a5f0
-  struct EntityHeader item;           // 02037ef0
-  struct EntityHeader elf;            // 02037020
-  struct EntityHeader menuComponent;  // 0203bb50
 };
 
 extern struct Zero gZero;

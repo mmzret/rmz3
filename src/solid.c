@@ -3,6 +3,86 @@
 #include "entity.h"
 #include "global.h"
 
+void InitSolidHeader(struct EntityHeader* h, struct Solid* p, s16 len) {
+  s16 i;
+
+  InitEntityHeader(h, ENTITY_SOLID, &p->s, sizeof(struct Solid), len);
+  for (i = 0; i < len; i++) {
+    p[i].s.uniqueID = gEntityIDGenerator + i;
+  }
+  gEntityIDGenerator += len;
+  gSolidHeaderPtr = h;
+}
+
+void DeleteSolid(struct Solid* p) {
+  (p->s).flags &= ~DISPLAY;
+  (p->body).status = 0;
+  (p->body).prevStatus = 0;
+  (p->body).invincibleTime = 0;
+  (p->s).flags &= ~(COLLIDABLE);
+  (p->s).flags2 &= ~ENTITY_HAZARD;
+  SET_SOLID_ROUTINE(p, ENTITY_EXIT);
+}
+
+// --------------------------------------------
+
+extern const SolidRoutine gIcebonRoutine;
+extern const SolidRoutine gIcebonIceRoutine;
+extern const SolidRoutine gDoor2DBlueRoutine;
+extern const SolidRoutine gSolid3Routine;
+extern const SolidRoutine gIronStarRoutine;
+extern const SolidRoutine gHeavyCannonRoutine;
+extern const SolidRoutine gLavaGeyserPlatformRoutine;
+extern const SolidRoutine gLavaGeyserRoutine;
+extern const SolidRoutine gLavaRiverPlatformRoutine;
+extern const SolidRoutine gDoor3DRoutine;
+extern const SolidRoutine gSolid10Routine;
+extern const SolidRoutine gSolid11Routine;
+extern const SolidRoutine gAnubisCoffinRoutine;
+extern const SolidRoutine gSolid13Routine;
+extern const SolidRoutine gLocomoIFPlatformRoutine;
+extern const SolidRoutine gGlacierleArmRoutine;
+extern const SolidRoutine gSolid16Routine;
+extern const SolidRoutine gSolid17Routine;
+extern const SolidRoutine gSnowboardRoutine;
+extern const SolidRoutine gBaseElevatorRoutine;
+extern const SolidRoutine gDoor2DGrayVRoutine;
+extern const SolidRoutine gScriptActorRoutine;
+extern const SolidRoutine gDoor2DGrayHRoutine;
+extern const SolidRoutine gSolid23Routine;
+extern const SolidRoutine gPhantomTeleporterRoutine;
+extern const SolidRoutine gSolid25Routine;
+extern const SolidRoutine gIceBlockRoutine;
+extern const SolidRoutine gSolid27Routine;
+extern const SolidRoutine gMinigameNinjaStarRoutine;
+extern const SolidRoutine gMobNPCRoutine;
+extern const SolidRoutine gMainNPCRoutine;
+extern const SolidRoutine gCyberSpaceDoorRoutine;
+extern const SolidRoutine gLightSwitchRoutine;
+extern const SolidRoutine gSolid33Routine;
+extern const SolidRoutine gSolid34Routine;
+extern const SolidRoutine gContainerRoutine;
+extern const SolidRoutine gSolid36Routine;
+extern const SolidRoutine gSolid37Routine;
+extern const SolidRoutine gSeagullsRoutine;
+extern const SolidRoutine gCatRoutine;
+extern const SolidRoutine gModPlantRoutine;
+extern const SolidRoutine gVolcanoCoffinRoutine;
+extern const SolidRoutine gCielMinigameObjRoutine;
+extern const SolidRoutine gSolid43Routine;
+extern const SolidRoutine gSolid44Routine;
+extern const SolidRoutine gGiantElevatorPierRoutine;
+extern const SolidRoutine gGiantElevatorPlatformRoutine;
+extern const SolidRoutine gAnatreCubeRoutine;
+extern const SolidRoutine gCielComputerRoutine;
+extern const SolidRoutine gGraffitiRoutine;
+extern const SolidRoutine gStructuralSteelRoutine;
+extern const SolidRoutine gModElfRoutine;
+extern const SolidRoutine gSolid52Routine;
+extern const SolidRoutine gOceanRodWallRoutine;
+extern const SolidRoutine gSeaLevelButtonRoutine;
+extern const SolidRoutine gChildreShipRoutine;
+
 // clang-format off
 const SolidRoutine* const gSolidFnTable[SOLID_ENTITY_COUNT] = {
     [SOLID_ICEBON] =                 &gIcebonRoutine,
@@ -63,24 +143,3 @@ const SolidRoutine* const gSolidFnTable[SOLID_ENTITY_COUNT] = {
     [SOLID_CHILDRE_SHIP] =           &gChildreShipRoutine,
 };
 // clang-format on
-
-void InitSolidHeader(struct EntityHeader *h, struct Solid *p, s16 len) {
-  s16 i;
-
-  InitEntityHeader(h, ENTITY_SOLID, &p->s, sizeof(struct Solid), len);
-  for (i = 0; i < len; i++) {
-    p[i].s.uniqueID = gEntityIDGenerator + i;
-  }
-  gEntityIDGenerator += len;
-  gSolidHeaderPtr = h;
-}
-
-void DeleteSolid(struct Solid *p) {
-  (p->s).flags &= ~DISPLAY;
-  (p->body).status = 0;
-  (p->body).prevStatus = 0;
-  (p->body).invincibleTime = 0;
-  (p->s).flags &= ~(COLLIDABLE);
-  (p->s).flags2 &= ~ENTITY_HAZARD;
-  SET_SOLID_ROUTINE(p, ENTITY_EXIT);
-}

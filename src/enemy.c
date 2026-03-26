@@ -42,7 +42,7 @@ static struct Enemy* unused_08063690(u8 n) {
   ignoreEntityFn(h);
 
   p = h->last = h->last->prev;
-  while (p != (struct Entity*)END) {
+  while (p != (struct Entity*)(&h->next)) {  // &h->next = EntityHeader linklist end
     if (p->work[0] == n) {
       return (struct Enemy*)p;
     }
@@ -71,6 +71,80 @@ static u16 unused_CountSpecificZako(void* _ UNUSED, u8 id) { return countSpecifi
 static u16 unused_CountSpecificProjectile(void* _ UNUSED, u8 id, u8 r2, u8 r3) { return countSpecificEntities2(gProjectileHeaderPtr, id, r2, r3); }
 
 // ------------------------------------------------------------------------------------------------------------------------------------
+
+extern const EnemyRoutine gPantheonGuardianRoutine;
+extern const EnemyRoutine gPantheonHunterRoutine;
+extern const EnemyRoutine gMegamilpaNodeRoutine;
+extern const EnemyRoutine gShotcounterRoutine;
+extern const EnemyRoutine gBatringRoutine;
+extern const EnemyRoutine gPillerCannonRoutine;
+extern const EnemyRoutine gGrandCannonRoutine;
+extern const EnemyRoutine gShrimporinRoutine;
+extern const EnemyRoutine gOmegaWhiteHandRoutine;
+extern const EnemyRoutine gFlopperRoutine;
+extern const EnemyRoutine gLamplortRoutine;
+extern const EnemyRoutine gGyroCannonRoutine;
+extern const EnemyRoutine gLemminglesNestRoutine;
+extern const EnemyRoutine gLemminglesRoutine;
+extern const EnemyRoutine gTopGabyoallRoutine;
+extern const EnemyRoutine gSharksealXRoutine;
+extern const EnemyRoutine gVolcanoBombRoutine;
+extern const EnemyRoutine gCarryArmRoutine;
+extern const EnemyRoutine gPantheonAquaRoutine;
+extern const EnemyRoutine gChildreObjRoutine;
+extern const EnemyRoutine gSnakecordRoutine;
+extern const EnemyRoutine gHammerRoutine;
+extern const EnemyRoutine gPurpleNerpleRoutine;
+extern const EnemyRoutine gWormerRockDroneRoutine;
+extern const EnemyRoutine gVolcaireRoutine;
+extern const EnemyRoutine gTileCannonRoutine;
+extern const EnemyRoutine gShellunoRoutine;
+extern const EnemyRoutine gDeathtanzRockRoutine;
+extern const EnemyRoutine gHeavyCannonBallRoutine;
+extern const EnemyRoutine gWormerSnowBallRoutine;
+extern const EnemyRoutine gBeetankRoutine;
+extern const EnemyRoutine gSwordyRoutine;
+extern const EnemyRoutine gPuffyRoutine;
+extern const EnemyRoutine gCrossbyneRoutine;
+extern const EnemyRoutine gBurnableWoodRoutine;
+extern const EnemyRoutine gMellnetRoutine;
+extern const EnemyRoutine gHellBouncerRoutine;
+extern const EnemyRoutine gPantheonZombieRoutine;
+extern const EnemyRoutine gPantheonAquaModObjRoutine;
+extern const EnemyRoutine gGlacierleAtkArmRoutine;
+extern const EnemyRoutine gOmegaGoldHandRoutine;
+extern const EnemyRoutine gEyeCannonRoutine;
+extern const EnemyRoutine gEnemy42Routine;
+extern const EnemyRoutine gCapsuleCannonRoutine;
+extern const EnemyRoutine gPantheonBomberRoutine;
+extern const EnemyRoutine gHanumachineObjRoutine;
+extern const EnemyRoutine gGallisniRoutine;
+extern const EnemyRoutine gMothjiroRoutine;
+extern const EnemyRoutine gMettaurSwimRoutine;
+extern const EnemyRoutine gPantheonBaseRoutine;
+extern const EnemyRoutine gHanumachineNecroRoutine;
+extern const EnemyRoutine gCarrybeeGRoutine;
+extern const EnemyRoutine gOmegaZeroRockRoutine;
+extern const EnemyRoutine gOmegaGoldSwordRoutine;
+extern const EnemyRoutine gGeneratorCannonRoutine;
+extern const EnemyRoutine gDeathlockRoutine;
+extern const EnemyRoutine gClavekerRoutine;
+extern const EnemyRoutine gSeimeranRoutine;
+extern const EnemyRoutine gPetatriaRoutine;
+extern const EnemyRoutine gEnemy59Routine;
+extern const EnemyRoutine gEnemy60Routine;
+extern const EnemyRoutine gEnemy61Routine;
+extern const EnemyRoutine gShotloidRoutine;
+extern const EnemyRoutine gEnemy63Routine;
+extern const EnemyRoutine gPantheonFistRoutine;
+extern const EnemyRoutine gShellcrawlerRoutine;
+extern const EnemyRoutine gCannonHopperRoutine;
+extern const EnemyRoutine gCattatankRoutine;
+extern const EnemyRoutine gLeviathanMinigameEnemyRoutine;
+extern const EnemyRoutine gHarpuiaMinigameEnemyRoutine;
+extern const EnemyRoutine gCielMinigameEnemy1Routine;
+extern const EnemyRoutine gCielMinigameEnemy2Routine;
+extern const EnemyRoutine gEnemy72Routine;
 
 // clang-format off
 const EnemyRoutine* const gEnemyFnTable[ENEMY_COUNT] = {

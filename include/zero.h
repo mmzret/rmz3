@@ -18,44 +18,8 @@ enum ZeroPosture {
   POSTURE_COUNT,
 };
 
-#if MODERN
-#define SET_PLAYER_ROUTINE(player, routine)                                            \
-  {                                                                                    \
-    *(u32*)(&((player)->s).mode[0]) = routine;                                         \
-    ((player)->s).onUpdate = (ZeroFunc)((*gZeroFnTable[(((player)->s).id)])[routine]); \
-  }
-#else
-#define SET_PLAYER_ROUTINE(player, routine)        \
-  {                                                \
-    u32 tbl, id;                                   \
-    ZeroFunc** r;                                  \
-    tbl = (u32)gZeroFnTable;                       \
-    id = (((player)->s).id) << 2;                  \
-    r = (ZeroFunc**)(tbl + id);                    \
-                                                   \
-    *(u32*)((player)->s).mode = routine;           \
-    ((player)->s).onUpdate = (void*)(*r)[routine]; \
-  }
-#endif
-
-#if MODERN
-#define INIT_PLAYER_ROUTINE(player, playerID)                                           \
-  {                                                                                     \
-    ((player)->s).id = playerID;                                                        \
-    ((player)->s).onUpdate = (void*)((*gZeroFnTable[(((player)->s).id)])[ENTITY_INIT]); \
-  }
-#else
-#define INIT_PLAYER_ROUTINE(player, playerID)          \
-  {                                                    \
-    u32 tbl;                                           \
-    ZeroFunc** r;                                      \
-    tbl = (u32)gZeroFnTable;                           \
-    ((player)->s).id = playerID;                       \
-                                                       \
-    r = (ZeroFunc**)(tbl + (playerID << 2));           \
-    ((player)->s).onUpdate = (void*)(*r)[ENTITY_INIT]; \
-  }
-#endif
+#define INIT_PLAYER_ROUTINE(entity, entityID) INIT_ENTITY_ROUTINE(gZeroFnTable, entity, entityID)
+#define SET_PLAYER_ROUTINE(entity, modeID) SET_ENTITY_ROUTINE(gZeroFnTable, entity, modeID)
 
 enum ZeroGround {
   GROUND_IDLE,

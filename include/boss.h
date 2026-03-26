@@ -12,28 +12,8 @@
     body->fn = fn;                                    \
   }
 
-#define SET_BOSS_ROUTINE(boss, routine)          \
-  {                                              \
-    u32 tbl, id;                                 \
-    BossFunc** r;                                \
-    tbl = (u32)gBossFnTable;                     \
-    id = (((boss)->s).id) << 2;                  \
-    r = (BossFunc**)(tbl + id);                  \
-                                                 \
-    *(u32*)((boss)->s).mode = routine;           \
-    ((boss)->s).onUpdate = (void*)(*r)[routine]; \
-  }
-
-#define INIT_BOSS_ROUTINE(boss, bossID)              \
-  {                                                  \
-    u32 tbl;                                         \
-    BossFunc** r;                                    \
-    tbl = (u32)gBossFnTable;                         \
-    ((boss)->s).id = bossID;                         \
-                                                     \
-    r = (BossFunc**)(tbl + (bossID << 2));           \
-    ((boss)->s).onUpdate = (void*)(*r)[ENTITY_INIT]; \
-  }
+#define INIT_BOSS_ROUTINE(entity, entityID) INIT_ENTITY_ROUTINE(gBossFnTable, entity, entityID)
+#define SET_BOSS_ROUTINE(entity, modeID) SET_ENTITY_ROUTINE(gBossFnTable, entity, modeID)
 
 // --------------------------------------------
 

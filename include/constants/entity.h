@@ -1,7 +1,7 @@
 #ifndef GUARD_RMZ3_CONST_ENTITY_H
 #define GUARD_RMZ3_CONST_ENTITY_H
 
-// Entity.kind
+// Entity.kind ( GameState.entityHeaders の idx でもある)
 #define ENTITY_PLAYER 0
 #define ENTITY_WEAPON 1
 #define ENTITY_BOSS 2

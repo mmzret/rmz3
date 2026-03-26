@@ -74,10 +74,10 @@ struct GameState {
   */
   u32 bg0[512];
 
-  struct EntityHeader entityHeaders[10];
-  struct TaskManager taskManager;   // 02031500
-  struct TaskManager taskManager2;  // 0203170c
-  struct Pivot unk_0db8;            // 02031918, メニュー画面、リザルト画面のスプライトの位置を管理する
+  struct EntityHeader entityHeaders[10];  // 02031370, index は include/constants/entity.h の ENTITY_XXX と対応
+  struct TaskManager taskManager;         // 02031500
+  struct TaskManager taskManager2;        // 0203170c
+  struct Pivot unk_0db8;                  // 02031918, メニュー画面、リザルト画面のスプライトの位置を管理する
 
   /*
     02031924
