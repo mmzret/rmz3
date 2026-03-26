@@ -15,6 +15,10 @@
 #define TRANSITION_WHITEOUT (1 << 2)
 #define TRANSITION_Z (1 << 3)  // wipe by Z
 
+// vm.emergency
+#define EMERGENCY_TEMPORARY (1 << 14)
+#define EMERGENCY_ENABLED (1 << 15)
+
 /**
  * @brief Script Command
  * @see gScriptCommands
@@ -78,15 +82,7 @@ struct VM {
   u32 transition;  // bit0..15: transition flags, bit16..31: transition parameter
   KEY_INPUT forcedKey;
   u16 unk_14a;
-
-  /*
-    緊急事態に画面が赤くなるエフェクトを設定するフラグ
-    画面エフェクトのみでアラートのような音はならない 08022bb4 によってセットされる
-    0202ffbd が
-      0x40: 0202ffbcがFFになったら画面が赤くなるの解除
-      0x80: ずっと赤いまま
-  */
-  u16 emergency;
+  u16 emergency;              // 緊急事態に画面が赤くなるエフェクト (bit0..7: intensity, bit8..13: unused?, bit14: temporary, bit15: enabled)
   u16 magnitude;              // 0xFFにするほど揺れが強い
   union ScriptString string;  // ((string_id << 16) | (y << 8) | x)
   struct VFX* indicator;      // ステージへオペレータに転送されたとき(もしくはミッション開始時に)右下に出てくる "Z x 9" や `MISSION START`などのオーバーレイ

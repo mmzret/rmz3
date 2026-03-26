@@ -5,10 +5,10 @@
 #define Q_8_8(n) ((s16)((n) * 256))
 
 #define SIN(index) (gSineTable[(u8)(index)])
-#define COS(index) (gSineTable[(u8)(index + 64)])
+#define COS(index) (gSineTable[(u8)((index) + 64)])
 
 #define SINX(index, amplitude) ((amplitude * gSineTable[index]))
-#define COSX(index, amplitude) ((amplitude * gSineTable[(u8)(index + 64)]))
+#define COSX(index, amplitude) ((amplitude * gSineTable[(u8)((index) + 64)]))
 
 extern const s16 gSineTable[256];
 

@@ -553,11 +553,11 @@ static bool32 Cmd_cmd0f(struct VM* vm) {
 static bool32 Cmd_emergency(struct VM* vm) {
   switch (vm->pc->status) {
     case 0: {
-      vm->emergency = (u16)(vm->pc->work) | 0x8000;
+      vm->emergency = (u16)(vm->pc->work) | EMERGENCY_ENABLED;
       break;
     }
     case 1: {
-      vm->emergency |= 0x4000;
+      vm->emergency |= EMERGENCY_TEMPORARY;
       break;
     }
   }
