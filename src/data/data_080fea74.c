@@ -10,15 +10,9 @@ const struct Coord Coord_080fecc4 = {
 const struct Coord gSnowyPlainMetatileShift1 = {0x500000, 0x4500F0};
 const struct Coord gSnowyPlainMetatileShift2 = {0x6E00F0, 0x310096};
 
-const struct Coord Coord_080fecdc = {
-    0x16000,
-    0x42000,
-};
+const struct Coord Coord_080fecdc = {PIXEL(352), PIXEL(1056)};
 
-const s32 s32_ARRAY_080fece4[2] = {
-    MAX_X,
-    MAX_Y,
-};
+const struct Coord gMaxCoords = {MAX_X, MAX_Y};
 
 const ALIGNED(4) u8 u8_ARRAY_080fecec[6] = {
     0x0e, 0x20, 0x2a, 0x2a, 0x20, 0x0e,

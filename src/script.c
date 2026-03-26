@@ -8,7 +8,7 @@
 #include "text.h"
 #include "zero.h"
 
-extern const s32 s32_ARRAY_080fece4[2];
+extern const struct Coord gMaxCoords;
 
 static bool32 runFieldScript(struct VM* vm);
 static void PrintScriptString(struct VM* vm);
@@ -18,7 +18,7 @@ static void quakeScreen(struct VM* vm);
 static void StepTransition(struct VM* vm);
 static void tryDeleteIndicator(struct VM* vm);
 static void tryForceZeroXCoord(struct VM* vm);
-static void NoEntryZero(struct VM* vm);
+static void UpdatePlayerMovableArea(struct VM* vm);
 
 void ClearVM(struct VM* vm, u32 stageID) {
   s32 i;
@@ -96,7 +96,7 @@ bool32 RunVM(struct VM* vm) {
   StepTransition(vm);
   tryDeleteIndicator(vm);
   tryForceZeroXCoord(vm);
-  NoEntryZero(vm);
+  UpdatePlayerMovableArea(vm);
   return done;
 }
 
@@ -460,45 +460,39 @@ static void tryForceZeroXCoord(struct VM* vm) {
 }
 
 // gOverworld.range の見えない壁に阻まれる処理
-WIP static void NoEntryZero(struct VM* vm) {
-#if MODERN
-  s32 top = 0;
-  s32 left = 0;
-  s32 right = s32_ARRAY_080fece4[0];
-  s32 bottom = s32_ARRAY_080fece4[1];
+static void UpdatePlayerMovableArea(struct VM* vm) {
+  struct Zero* player = (struct Zero*)vm->entities[0].entity;
+  struct Coord c1 = {x : 0, y : 0};
+  struct Coord c2 = {x : gMaxCoords.x, y : gMaxCoords.y};
 
-  struct Zero* z = (struct Zero*)vm->entities[0].entity;
-  if (z != NULL) {
+  if (player != NULL) {
     struct Camera* camera = &gStageRun.vm.camera;
     if (camera->mode > 3) {
-      left = camera->left;
-      top = camera->top;
-      right = camera->right;
-      bottom = camera->bottom;
+      c1.x = camera->left;
+      c1.y = camera->top;
+      c2.x = camera->right;
+      c2.y = camera->bottom;
     }
 
-    if (left < gOverworld.range.left) {
-      left = gOverworld.range.left;
+    if (c1.x < gOverworld.range.left) {
+      c1.x = gOverworld.range.left;
     }
-    if (top < gOverworld.range.top) {
-      top = gOverworld.range.top;
+    if (c1.y < gOverworld.range.top) {
+      c1.y = gOverworld.range.top;
     }
-    if (right > gOverworld.range.right) {
-      right = gOverworld.range.right;
+    if (c2.x > gOverworld.range.right) {
+      c2.x = gOverworld.range.right;
     }
-    if (bottom > gOverworld.range.bottom) {
-      bottom = gOverworld.range.bottom;
+    if (c2.y > gOverworld.range.bottom) {
+      c2.y = gOverworld.range.bottom;
     }
-    SetDisableArea(z, left, top, right, bottom);
+    SetDisableArea(player, c1.x, c1.y, c2.x, c2.y);
 
-    z = (struct Zero*)vm->entities[1].entity;
-    if ((z != NULL) && ((z->s).kind == ENTITY_PLAYER)) {
-      SetDisableArea(z, left, top, right, bottom);
+    player = (struct Zero*)vm->entities[1].entity;
+    if ((player != NULL) && ((player->s).kind == ENTITY_PLAYER)) {
+      SetDisableArea(player, c1.x, c1.y, c2.x, c2.y);
     }
   }
-#else
-  INCCODE("asm/wip/NoEntryZero.inc");
-#endif
 }
 
 // update Emergency effect (blend red)
