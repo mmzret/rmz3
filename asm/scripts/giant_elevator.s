@@ -297,7 +297,7 @@ Script_12_08357ec0: @ 0x08357ec0
   wait 32
   destroy 1
   destroy 0
-  cmd20 0, 0, 0
+  load_graphic_primitive
   stop_camera
   cmd06 0, 5, 65535
   screeneffect 5

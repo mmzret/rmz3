@@ -492,7 +492,7 @@ Script_4_0835950c: @ 0x0835950c
   spawn 6, Entity_08358fe4
   entity 6, 7, 0
   wait_screeneffect
-  cmd20 0, 0, 0
+  load_graphic_primitive
   play_bgm 185
   release
   end
@@ -833,7 +833,7 @@ Script_15_08359ef4: @ 0x08359ef4
   spawn 6, Entity_083590ec
   entity 6, 7, 0
   wait_screeneffect
-  cmd20 0, 0, 0
+  load_graphic_primitive
   play_bgm 185
   release
   end
@@ -1282,7 +1282,7 @@ Script_29_0835ac4c: @ 0x0835ac4c
   destroy 1
   wait 2
   spawn 3, Entity_0835922c
-  cmd20 0, 0, 0
+  load_graphic_primitive
   eventflag 1, 0, 0
   gimmick 1, 0, 1
   gimmick 1, 1, 0
@@ -1331,7 +1331,7 @@ Script_30_0835adf4: @ 0x0835adf4
   destroy 1
   wait 2
   spawn 3, Entity_0835922c
-  cmd20 0, 0, 0
+  load_graphic_primitive
   eventflag 1, 0, 0
   gimmick 1, 0, 1
   gimmick 1, 1, 0
@@ -1393,7 +1393,7 @@ Script_32_0835b024: @ 0x0835b024
   wait_screeneffect
   entityflag 3, 1, TRUE
   destroy 1
-  cmd20 0, 0, 0
+  load_graphic_primitive
   wait 120
   reset_camera Camera_08358efc
   screeneffect 5
@@ -1494,7 +1494,7 @@ Script_33_0835b33c: @ 0x0835b33c
   wait_screeneffect
   entityflag 3, 1, TRUE
   destroy 1
-  cmd20 0, 0, 0
+  load_graphic_primitive
   wait 120
   reset_camera Camera_08358efc
   screeneffect 5
@@ -1566,7 +1566,7 @@ Script_35_0835b55c: @ 0x0835b55c
   wait 90
   prepare_missionresult
   missionresult
-  cmd20 0, 0, 0
+  load_graphic_primitive
   lockmenu
   end
 
@@ -1672,7 +1672,7 @@ Script_37_0835b8dc: @ 0x0835b8dc
   screeneffect 6
   wait_screeneffect
   wait 32
-  cmd20 0, 0, 0
+  load_graphic_primitive
   destroy 0
   destroy 4
   destroy 5

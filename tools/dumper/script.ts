@@ -469,7 +469,7 @@ const printScript = (rom: Uint8Array<ArrayBuffer>, start: number, max_size: numb
       }
 
       case 0x20: {
-        sequence.push(`cmd20 ${result.arg1}, ${result.arg2}, ${result.arg3}`);
+        sequence.push(`load_graphic_primitive`);
         break;
       }
 

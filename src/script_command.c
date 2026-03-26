@@ -48,7 +48,7 @@ static bool32 Cmd_cmd1c(struct VM* vm);
 static bool32 Cmd_sweep(struct VM* vm);
 static bool32 Cmd_lockmenu(struct VM* vm);
 static bool32 Cmd_eventflag(struct VM* vm);
-static bool32 Cmd_cmd20(struct VM* vm);
+static bool32 Cmd_load_graphic_primitive(struct VM* vm);
 static bool32 Cmd_drop(struct VM* vm);
 static bool32 Cmd_missionresult(struct VM* vm);
 static bool32 Cmd_goodluck(struct VM* vm);
@@ -89,7 +89,7 @@ const CommandHandler gScriptCommands[38] = {
     [29] = Cmd_sweep,
     [30] = Cmd_lockmenu,
     [31] = Cmd_eventflag,
-    [32] = Cmd_cmd20,
+    [32] = Cmd_load_graphic_primitive,
     [33] = Cmd_drop,
     [34] = Cmd_missionresult,
     [35] = Cmd_goodluck,
@@ -1284,11 +1284,12 @@ static bool32 Cmd_eventflag(struct VM* vm) {
   return FALSE;
 }
 
-static bool32 Cmd_cmd20(struct VM* vm) {
+// 汎用的なグラフィックデータを読み込んでおくためのコマンド
+static bool32 Cmd_load_graphic_primitive(struct VM* vm) {
   LOAD_STATIC_GRAPHIC(SM000_BATTLE_EFFECT);
   LOAD_STATIC_GRAPHIC(SM003_EMOTION_BUBBLE);
   LOAD_STATIC_GRAPHIC(SM209_NUMBER);
-  FUN_080251a8();
+  FUN_080251a8();  // Load element graphics
   return FALSE;
 }
 

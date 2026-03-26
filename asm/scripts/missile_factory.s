@@ -504,7 +504,7 @@ Script_08352844:
   eventflag 1, 0, 0
   prepare_missionresult
   missionresult
-  cmd20 0, 0, 0
+  load_graphic_primitive
   destroy 0
   wait 60
   end

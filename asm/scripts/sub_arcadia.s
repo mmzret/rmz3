@@ -227,7 +227,7 @@ Script_7_08358550: @ 0x08358550
   wait_screeneffect
   wait 32
   destroy 1
-  cmd20 0, 0, 0
+  load_graphic_primitive
   stop_camera
   cmd06 0, 5, 65535
   blackout_screen

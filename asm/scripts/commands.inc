@@ -452,11 +452,10 @@
   .4byte \c
 	.endm
 
-	.macro cmd20 a b c
-  .byte 0x20
-	.byte \a
-  .2byte \b
-  .4byte \c
+  @ 汎用的なグラフィックデータ (戦闘エフェクト、吹き出し、数字、エレメントエフェクト) の読み込み
+	.macro load_graphic_primitive
+  .byte 0x20, 0x0
+	.2byte 0x00, 0x00, 0x00
 	.endm
 
 	.macro prepare_missionresult
