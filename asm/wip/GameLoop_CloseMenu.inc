@@ -15,7 +15,7 @@
 	ands r0, r1
 	cmp r0, #0
 	beq _080EEE16
-	bl ApplyCyberSpaceColorFilter
+	bl EnableCyberSpaceColorFilter
 _080EEE16:
 	adds r0, r5, #0
 	bl RestoreGraphicState

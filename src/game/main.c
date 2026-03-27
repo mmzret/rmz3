@@ -21,7 +21,8 @@
 static const u16 u16_ARRAY_08386130[32];
 static const GameLoopFunc sGameLoops[16];
 
-static void FUN_080ee228(void);
+static void PostProcess_CyberSpaceColorFilter(void);
+static void FUN_080ee328(u32* pal, u32 length, u32 r2, u16* lut);
 
 void FUN_080250b8(void);
 void FUN_08019678(struct Story* p);
@@ -44,20 +45,20 @@ static const u16 u16_ARRAY_08386130[32] = {
 */
 NAKED void printSaveDataRowText(s32 idx, u8 rank, u32 playTime, u8 playLaps, u32 mode, u8 y) { INCCODE("asm/todo/printSaveDataRowText.inc"); }
 
-void ApplyCyberSpaceColorFilter(void) {
+void EnableCyberSpaceColorFilter(void) {
   u8 val;
-  CpuFastCopy(u16_ARRAY_08386130, CopyFrom_08386130, 64);
+  CpuFastCopy(u16_ARRAY_08386130, &gCyberSpaceColorHashtable[64], 64);
   val = 0;
   gUnkSineTableIdx = val;
-  gPaletteManager.unk_408 = FUN_080ee228;
+  gPaletteManager.post_process = PostProcess_CyberSpaceColorFilter;
 }
 
-void CancelCyberSpaceColorFilter(void) {
-  gPaletteManager.unk_408 = NULL;
+void DisableCyberSpaceColorFilter(void) {
+  gPaletteManager.post_process = NULL;
   return;
 }
 
-NAKED static void FUN_080ee228(void) {
+NAKED static void PostProcess_CyberSpaceColorFilter(void) {
   asm(".syntax unified\n\
 	push {r4, r5, r6, r7, lr}\n\
 	movs r5, #0\n\
@@ -77,7 +78,7 @@ NAKED static void FUN_080ee228(void) {
 	adds r0, r0, r1\n\
 	asrs r4, r0, #1\n\
 	movs r1, #0\n\
-	ldr r7, _080EE308 @ =0x02000048\n\
+	ldr r7, _080EE308 @ =gCyberSpaceColorHashtable\n\
 	ldr r6, _080EE30C @ =u16_ARRAY_083860b0\n\
 _080EE250:\n\
 	lsls r1, r1, #0x10\n\
@@ -104,7 +105,7 @@ _080EE250:\n\
 	lsrs r4, r0, #5\n\
 	cmp r3, #0x3f\n\
 	bgt _080EE2A0\n\
-	ldr r6, _080EE308 @ =0x02000048\n\
+	ldr r6, _080EE308 @ =gCyberSpaceColorHashtable\n\
 	ldr r3, _080EE30C @ =u16_ARRAY_083860b0\n\
 _080EE284:\n\
 	asrs r2, r2, #0x10\n\
@@ -138,7 +139,7 @@ _080EE2A4:\n\
 	adds r0, r0, r1\n\
 	movs r1, #0x10\n\
 	ldr r2, _080EE318 @ =0x001F001F\n\
-	ldr r3, _080EE308 @ =0x02000048\n\
+	ldr r3, _080EE308 @ =gCyberSpaceColorHashtable\n\
 	bl FUN_080ee328\n\
 _080EE2C4:\n\
 	adds r0, r4, #1\n\
@@ -149,7 +150,7 @@ _080EE2C4:\n\
 	ble _080EE2A4\n\
 	ldr r0, _080EE31C @ =0x05000240\n\
 	ldr r4, _080EE318 @ =0x001F001F\n\
-	ldr r5, _080EE308 @ =0x02000048\n\
+	ldr r5, _080EE308 @ =gCyberSpaceColorHashtable\n\
 	movs r1, #0x10\n\
 	adds r2, r4, #0\n\
 	adds r3, r5, #0\n\
@@ -170,7 +171,7 @@ _080EE2C4:\n\
 	.align 2, 0\n\
 _080EE300: .4byte 0x02000108\n\
 _080EE304: .4byte gSineTable\n\
-_080EE308: .4byte 0x02000048\n\
+_080EE308: .4byte gCyberSpaceColorHashtable\n\
 _080EE30C: .4byte u16_ARRAY_083860b0\n\
 _080EE310: .4byte 0x0202FDBA\n\
 _080EE314: .4byte 0x05000200\n\
@@ -181,7 +182,14 @@ _080EE324: .4byte 0x05000040\n\
  .syntax divided\n");
 }
 
-NAKED void FUN_080ee328(u32* pal, u32 r1, u32 r2, u16* src) {
+/**
+ * @brief サイバー空間用のテーブルを使った色の変換処理
+ * @param length 2byte 単位の長さ = 色数
+ * @param lut gCyberSpaceColorHashtable
+ * @note 0x080ee328
+ * @warning asm直書きかもしれない　(push の前に length >>= 1 のアセンブリが入ってたり, ループの終了判定で subs して(cmpせず) すぐに bne はあまりみない気がする)
+ */
+NAKED static void FUN_080ee328(u32* pal, u32 length, u32 r2, u16* lut) {
   asm(".syntax unified\n\
 	lsrs r1, r1, #1\n\
 	push {r4, r5, r6, r7}\n\
@@ -310,7 +318,7 @@ static void GameLoop_Nop2(struct GameState* _) { return; }
 
 static void GameLoop_PreOverworld(struct GameState* p) {
   gPaletteManager.filter[0] = gPaletteManager.filter[1] = gPaletteManager.filter[2] = 0x20;
-  gPaletteManager.unk_408 = NULL;
+  gPaletteManager.post_process = NULL;
   ClearBlinkings();
   gBlendRegBuffer.bldclt = 0;
   gWindowRegBuffer.dispcnt = 0;
@@ -486,7 +494,7 @@ static void GameLoop_OpenMenu(struct GameState* p) {
     gVideoRegBuffer.dispcnt &= 0xc1ff;
     wMOSAIC = 0;
     PauseAllBlinks();
-    CancelCyberSpaceColorFilter();
+    DisableCyberSpaceColorFilter();
     SetGameMode(p, GAMEMODE(MODE_MENU, 0, 0, 0));
   } else {
     void* dst;
@@ -527,7 +535,7 @@ WIP static void GameLoop_CloseMenu(struct GameState* p) {
     u8 color = (b4->status).body;
 
     if (FLAG(gCurStory.s.gameflags, IN_CYBERSPACE)) {
-      ApplyCyberSpaceColorFilter();
+      EnableCyberSpaceColorFilter();
     }
     RestoreGraphicState(p);
     ResumeAllBlinks();
@@ -768,44 +776,49 @@ static void GameLoop_StartSpecialMode(struct GameState* p) {
   00 0e 00 00
   タイトル画面で放置した時のデモプレイと関係あり
 */
-static void GameLoop_demoplay_080f033c(struct GameState* p) {
+
+/**
+ * @brief ゲームをデモプレイ用の状態で初期化
+ * @note 0x080f033c
+ */
+static void GameLoop_StartDemoPlay(struct GameState* g) {
   struct ZeroStatus *status, *status2;
   u16 stageID;
-  struct SaveSlot* s = &p->save;
+  struct SaveSlot* s = &g->save;
 
   s->gamemode = 0;
   gGameState.z2 = gGameState.z3 = &gZero;
-  FUN_08019678(&(p->save).story);
-  ClearPlayInfo(&(p->save).playinfo);
-  clearSecretDiskData((p->save).disk);
-  clearUnlockedCyberElfData((p->save).elf);
-  status = &(p->save).status;
+  FUN_08019678(&(g->save).story);
+  ClearPlayInfo(&(g->save).playinfo);
+  clearSecretDiskData((g->save).disk);
+  clearUnlockedCyberElfData((g->save).elf);
+  status = &(g->save).status;
   ClearZeroStatus(status);
   SET_FLAG(gCurStory.s.gameflags, DEMO_PLAY);
-  *(u8*)&(p->save).story.id = *(u8*)&(p->save).story.id | 0x40;
+  *(u8*)&(g->save).story.id = *(u8*)&(g->save).story.id | 0x40;
 
   (status->keyMap).keys.jump = A_BUTTON;
   (status->keyMap).keys.dash = L_BUTTON;
   (status->keyMap).keys.main = B_BUTTON;
   (status->keyMap).keys.sub = R_BUTTON;
 
-  (p->save).status.keyMap.btnMode = 0;     // Type A
-  (p->save).status.keyMap.attackMode = 1;  // Type B
-  (p->save).status.keyMap.unk_a = 0;
+  (g->save).status.keyMap.btnMode = 0;     // Type A
+  (g->save).status.keyMap.attackMode = 1;  // Type B
+  (g->save).status.keyMap.unk_a = 0;
 
   status2 = &gGameState.save.status;
   status2->unlockedWeapon |= (1 << 2);
   status2->unlockedWeapon |= (1 << 3);
 
-  if ((p->save).stageID == STAGE_VOLCANO) {
+  if ((g->save).stageID == STAGE_VOLCANO) {
     status2->mainWeapon = WEAPON_ROD;
     status2->subWeapon = WEAPON_SABER;
 
-  } else if ((p->save).stageID == STAGE_OCEAN) {
+  } else if ((g->save).stageID == STAGE_OCEAN) {
     status2->mainWeapon = WEAPON_BUSTER;
     status2->subWeapon = WEAPON_SABER;
 
-  } else if ((p->save).stageID == STAGE_REPAIR_FACTORY) {
+  } else if ((g->save).stageID == STAGE_REPAIR_FACTORY) {
     status2->mainWeapon = WEAPON_SABER;
     status2->subWeapon = WEAPON_ROD;
 
@@ -816,8 +829,8 @@ static void GameLoop_demoplay_080f033c(struct GameState* p) {
     status2->element = ELEMENT_FLAME;
   }
 
-  InitStageRun((p->save).stageID);
-  SetGameMode(p, GAMEMODE(MAINGAME, PRE_OVERWORLD, 0, 0));
+  InitStageRun((g->save).stageID);
+  SetGameMode(g, GAMEMODE(MAINGAME, PRE_OVERWORLD, 0, 0));
 }
 
 /*
@@ -825,7 +838,7 @@ static void GameLoop_demoplay_080f033c(struct GameState* p) {
 */
 static void GameLoop_SkieEventScene(struct GameState* p) {
   gPaletteManager.filter[0] = gPaletteManager.filter[1] = gPaletteManager.filter[2] = 0x20;
-  gPaletteManager.unk_408 = NULL;
+  gPaletteManager.post_process = NULL;
   ClearBlinkings();
   gBlendRegBuffer.bldclt = 0;
   gWindowRegBuffer.dispcnt = 0;
@@ -856,7 +869,7 @@ static const GameLoopFunc sGameLoops[16] = {
 		GameLoop_UnlockMinigame,
 		GameLoop_SystemSaveScreen,
 		GameLoop_StartSpecialMode,
-		GameLoop_demoplay_080f033c,
+		GameLoop_StartDemoPlay,
 		GameLoop_SkieEventScene,
 };
 // clang-format on

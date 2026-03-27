@@ -52,7 +52,7 @@ void ClearVM(struct VM* vm, u32 stageID) {
 
 void FUN_08021b88(struct VM* _ UNUSED) {
   gPaletteManager.filter[0] = gPaletteManager.filter[1] = gPaletteManager.filter[2] = 0x20;
-  gPaletteManager.unk_408 = NULL;
+  gPaletteManager.post_process = NULL;
   ClearBlinkings();
   gBlendRegBuffer.bldclt = 0;
   gWindowRegBuffer.dispcnt = 0;

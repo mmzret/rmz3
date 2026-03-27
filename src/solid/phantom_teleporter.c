@@ -2,6 +2,7 @@
 #include "entity.h"
 #include "global.h"
 #include "solid.h"
+#include "story.h"
 
 static const u16 u16_ARRAY_08371064[10];
 static const struct Collision sCollisions[2];
@@ -20,102 +21,27 @@ const SolidRoutine gPhantomTeleporterRoutine = {
 };
 // clang-format on
 
-NAKED static void PhantomTeleporter_Init(struct Solid* p) {
-  asm(".syntax unified\n\
-	push {r4, r5, lr}\n\
-	adds r5, r0, #0\n\
-	ldrb r0, [r5, #0x10]\n\
-	cmp r0, #8\n\
-	bne _080D8714\n\
-	ldr r0, _080D870C @ =gCurStory\n\
-	ldrb r1, [r0, #4]\n\
-	movs r0, #0x10\n\
-	ands r0, r1\n\
-	lsls r0, r0, #0x18\n\
-	lsrs r2, r0, #0x18\n\
-	cmp r2, #0\n\
-	bne _080D8714\n\
-	ldrb r1, [r5, #0xa]\n\
-	movs r0, #0xfe\n\
-	ands r0, r1\n\
-	movs r1, #0xfd\n\
-	ands r0, r1\n\
-	strb r0, [r5, #0xa]\n\
-	adds r0, r5, #0\n\
-	adds r0, #0x8c\n\
-	str r2, [r0]\n\
-	adds r0, #4\n\
-	str r2, [r0]\n\
-	adds r0, #4\n\
-	strb r2, [r0]\n\
-	ldrb r1, [r5, #0xa]\n\
-	movs r0, #0xfb\n\
-	ands r0, r1\n\
-	strb r0, [r5, #0xa]\n\
-	ldr r1, _080D8710 @ =gSolidFnTable\n\
-	ldrb r0, [r5, #9]\n\
-	lsls r0, r0, #2\n\
-	adds r0, r0, r1\n\
-	movs r1, #3\n\
-	str r1, [r5, #0xc]\n\
-	ldr r0, [r0]\n\
-	ldr r0, [r0, #0xc]\n\
-	str r0, [r5, #0x14]\n\
-	b _080D8770\n\
-	.align 2, 0\n\
-_080D870C: .4byte gCurStory\n\
-_080D8710: .4byte gSolidFnTable\n\
-_080D8714:\n\
-	adds r0, r5, #0\n\
-	bl InitNonAffineMotion\n\
-	adds r2, r5, #0\n\
-	adds r2, #0x49\n\
-	ldrb r1, [r2]\n\
-	movs r0, #0xd\n\
-	rsbs r0, r0, #0\n\
-	ands r0, r1\n\
-	movs r1, #4\n\
-	orrs r0, r1\n\
-	strb r0, [r2]\n\
-	ldrb r1, [r5, #0xa]\n\
-	movs r0, #1\n\
-	movs r4, #0\n\
-	orrs r0, r1\n\
-	movs r1, #2\n\
-	orrs r0, r1\n\
-	strb r0, [r5, #0xa]\n\
-	ldr r0, [r5, #0x54]\n\
-	movs r1, #0x80\n\
-	lsls r1, r1, #4\n\
-	adds r0, r0, r1\n\
-	str r0, [r5, #0x54]\n\
-	ldr r1, [r5, #0x58]\n\
-	bl FUN_08009f6c\n\
-	movs r1, #0x80\n\
-	lsls r1, r1, #1\n\
-	adds r0, r0, r1\n\
-	str r0, [r5, #0x58]\n\
-	ldr r1, _080D8778 @ =gSolidFnTable\n\
-	ldrb r0, [r5, #9]\n\
-	lsls r0, r0, #2\n\
-	adds r0, r0, r1\n\
-	movs r1, #1\n\
-	str r1, [r5, #0xc]\n\
-	ldr r0, [r0]\n\
-	ldr r0, [r0, #4]\n\
-	str r0, [r5, #0x14]\n\
-	strb r4, [r5, #0xd]\n\
-	strb r4, [r5, #0xf]\n\
-	strb r4, [r5, #0xe]\n\
-	adds r0, r5, #0\n\
-	bl PhantomTeleporter_Update\n\
-_080D8770:\n\
-	pop {r4, r5}\n\
-	pop {r0}\n\
-	bx r0\n\
-	.align 2, 0\n\
-_080D8778: .4byte gSolidFnTable\n\
- .syntax divided\n");
+static void PhantomTeleporter_Init(struct Solid* p) {
+  if (((p->s).work[0] == 8) && (!FLAG(gCurStory.s.gameflags, IN_CYBERSPACE))) {
+    (p->s).flags &= ~DISPLAY;
+    (p->s).flags &= ~FLIPABLE;
+    (p->body).status = 0;
+    (p->body).prevStatus = 0;
+    (p->body).invincibleTime = 0;
+    (p->s).flags &= ~COLLIDABLE;
+    SET_SOLID_ROUTINE(p, ENTITY_DISAPPEAR);
+    return;
+  }
+  InitNonAffineMotion(&p->s);
+  (p->s).spr.oam.priority = 1;
+  (p->s).flags |= DISPLAY;
+  (p->s).flags |= FLIPABLE;
+  (p->s).coord.x += PIXEL(8);
+  (p->s).coord.y = FUN_08009f6c((p->s).coord.x, (p->s).coord.y) + PIXEL(1);
+  SET_SOLID_ROUTINE(p, ENTITY_UPDATE);
+  (p->s).mode[1] = 0;
+  (p->s).mode[2] = (p->s).mode[3] = 0;
+  PhantomTeleporter_Update(p);
 }
 
 static void updatePhantomTeleporter(struct Solid* p);

@@ -128,7 +128,7 @@ static void MapDisk_Init(struct Pickup* p) {
   motion_t m;
   u8* disks = gStageDiskManager.disk;
   const s32 diskID = (p->s).work[0] - 1;
-  if (((disks[diskID >> 2] & 0x0F) >> (diskID & 3)) & 1) {
+  if (IS_DISK_UNLOCKED(disks, diskID) & 1) {
     (p->s).flags &= ~DISPLAY;
     (p->s).flags &= ~FLIPABLE;
     (p->body).status = 0;
@@ -452,53 +452,18 @@ s32 FUN_080e13c4(s32 x, s32 y) {
   return y2;
 }
 
-NAKED s32 FUN_080e13f4(s32 x, s32 y) {
-  asm(".syntax unified\n\
-	push {r4, r5, r6, lr}\n\
-	adds r4, r0, #0\n\
-	adds r5, r1, #0\n\
-	ldr r1, _080E1428 @ =0xFFFFF900\n\
-	adds r0, r4, r1\n\
-	adds r1, r5, #0\n\
-	bl FUN_0800a40c\n\
-	adds r6, r0, #0\n\
-	movs r0, #0xe0\n\
-	lsls r0, r0, #3\n\
-	adds r4, r4, r0\n\
-	adds r0, r4, #0\n\
-	adds r1, r5, #0\n\
-	bl FUN_0800a40c\n\
-	cmp r6, #0\n\
-	bge _080E141C\n\
-	cmp r0, #0\n\
-	bgt _080E1424\n\
-_080E141C:\n\
-	cmp r6, #0\n\
-	ble _080E142C\n\
-	cmp r0, #0\n\
-	bge _080E142C\n\
-_080E1424:\n\
-	movs r0, #0\n\
-	b _080E143E\n\
-	.align 2, 0\n\
-_080E1428: .4byte 0xFFFFF900\n\
-_080E142C:\n\
-	cmp r6, #0\n\
-	bge _080E1434\n\
-	cmp r6, r0\n\
-	blt _080E143C\n\
-_080E1434:\n\
-	cmp r6, #0\n\
-	ble _080E143E\n\
-	cmp r6, r0\n\
-	ble _080E143E\n\
-_080E143C:\n\
-	adds r0, r6, #0\n\
-_080E143E:\n\
-	pop {r4, r5, r6}\n\
-	pop {r1}\n\
-	bx r1\n\
- .syntax divided\n");
+s32 FUN_0800a40c(s32 x, s32 y);
+
+s32 FUN_080e13f4(s32 x, s32 y) {
+  s32 y1 = FUN_0800a40c(x - PIXEL(7), y);
+  s32 y2 = FUN_0800a40c(x + PIXEL(7), y);
+  if (((y1 < 0) && (y2 > 0)) || ((y1 > 0) && (y2 < 0))) {
+    return 0;
+  }
+  if (((y1 < 0) && (y1 < y2)) || ((y1 > 0) && (y1 > y2))) {
+    return y1;
+  }
+  return y2;
 }
 
 // ------------------------------------------------------------------------------------------------------------------------------------

@@ -1,9 +1,12 @@
 #include "blink.h"
 #include "disk.h"
 #include "game.h"
-#include "gba/gba.h"
+#include "global.h"
+#include "text.h"
 
 // "シークレットディスクのカイセキ"のシーン
+
+typedef void (*DiskLoopFunc)(struct GameState*);
 
 void ResetPivot(struct Pivot* p, struct Coord* c, u32 _, void* nullVal);
 
@@ -262,6 +265,8 @@ static void DiskLoop_OpenScreen(struct GameState* g) {
     gPaletteManager.filter[0] = gPaletteManager.filter[1] = gPaletteManager.filter[2] = g->frames;
   }
 }
+
+static void printThreeDigitNumber(u16 n, u8 x, u8 y);
 
 NAKED static void DiskLoop_Run(struct GameState* g) {
   asm(".syntax unified\n\
@@ -852,9 +857,846 @@ _080F85DC: .4byte 0x00000ED8\n\
  .syntax divided\n");
 }
 
-INCASM("asm/analysis.inc");
+NAKED static void sd_analysis_080f85e0(struct GameState* g) {
+  asm(".syntax unified\n\
+	push {r4, r5, r6, lr}\n\
+	adds r6, r0, #0\n\
+	ldrb r0, [r6, #3]\n\
+	cmp r0, #0\n\
+	bne _080F8638\n\
+	ldr r0, _080F8634 @ =0x00000DCC\n\
+	adds r5, r6, r0\n\
+	movs r0, #1\n\
+	strb r0, [r5, #0xc]\n\
+	adds r0, r6, #0\n\
+	movs r1, #0\n\
+	movs r2, #0\n\
+	bl CreateMenuComp2\n\
+	adds r4, r0, #0\n\
+	str r4, [r5, #4]\n\
+	ldrb r0, [r5, #0xa]\n\
+	movs r1, #5\n\
+	bl __umodsi3\n\
+	lsls r0, r0, #0x18\n\
+	lsrs r0, r0, #0x14\n\
+	adds r0, #0x18\n\
+	adds r4, #0x74\n\
+	strh r0, [r4]\n\
+	ldr r4, [r5, #4]\n\
+	ldrb r0, [r5, #0xa]\n\
+	movs r1, #5\n\
+	bl __udivsi3\n\
+	lsls r0, r0, #0x18\n\
+	lsrs r0, r0, #0x18\n\
+	ldrb r1, [r5, #0xb]\n\
+	subs r0, r0, r1\n\
+	lsls r0, r0, #4\n\
+	adds r0, #0x18\n\
+	adds r4, #0x76\n\
+	strh r0, [r4]\n\
+	ldrb r0, [r6, #3]\n\
+	adds r0, #1\n\
+	strb r0, [r6, #3]\n\
+	b _080F8754\n\
+	.align 2, 0\n\
+_080F8634: .4byte 0x00000DCC\n\
+_080F8638:\n\
+	ldr r0, _080F8654 @ =0x00000DCC\n\
+	adds r3, r6, r0\n\
+	ldrb r1, [r3, #0xa]\n\
+	ldr r0, _080F8658 @ =gJoypad\n\
+	ldrh r2, [r0, #6]\n\
+	movs r0, #0x20\n\
+	ands r0, r2\n\
+	cmp r0, #0\n\
+	beq _080F865C\n\
+	cmp r1, #0\n\
+	beq _080F868C\n\
+	subs r0, r1, #1\n\
+	b _080F868A\n\
+	.align 2, 0\n\
+_080F8654: .4byte 0x00000DCC\n\
+_080F8658: .4byte gJoypad\n\
+_080F865C:\n\
+	movs r0, #0x10\n\
+	ands r0, r2\n\
+	cmp r0, #0\n\
+	beq _080F866C\n\
+	cmp r1, #0xb2\n\
+	bhi _080F868C\n\
+	adds r0, r1, #1\n\
+	b _080F868A\n\
+_080F866C:\n\
+	movs r0, #0x40\n\
+	ands r0, r2\n\
+	cmp r0, #0\n\
+	beq _080F867C\n\
+	cmp r1, #4\n\
+	bls _080F868C\n\
+	subs r0, r1, #5\n\
+	b _080F868A\n\
+_080F867C:\n\
+	movs r0, #0x80\n\
+	ands r0, r2\n\
+	cmp r0, #0\n\
+	beq _080F868C\n\
+	cmp r1, #0xae\n\
+	bhi _080F868C\n\
+	adds r0, r1, #5\n\
+_080F868A:\n\
+	strb r0, [r3, #0xa]\n\
+_080F868C:\n\
+	ldr r0, _080F86B4 @ =0x00000DCC\n\
+	adds r4, r6, r0\n\
+	ldrb r0, [r4, #0xa]\n\
+	cmp r1, r0\n\
+	beq _080F869C\n\
+	movs r0, #1\n\
+	bl PlaySound\n\
+_080F869C:\n\
+	ldrb r0, [r4, #0xa]\n\
+	movs r1, #5\n\
+	bl __udivsi3\n\
+	adds r2, r0, #0\n\
+	ldrb r1, [r4, #0xb]\n\
+	lsls r0, r2, #0x18\n\
+	lsrs r0, r0, #0x18\n\
+	cmp r1, r0\n\
+	bls _080F86B8\n\
+	strb r2, [r4, #0xb]\n\
+	b _080F86C4\n\
+	.align 2, 0\n\
+_080F86B4: .4byte 0x00000DCC\n\
+_080F86B8:\n\
+	ldrb r1, [r4, #0xb]\n\
+	subs r0, #5\n\
+	cmp r1, r0\n\
+	bge _080F86C8\n\
+	subs r0, r2, #5\n\
+	strb r0, [r4, #0xb]\n\
+_080F86C4:\n\
+	movs r0, #1\n\
+	strb r0, [r4, #0xc]\n\
+_080F86C8:\n\
+	ldr r0, _080F8734 @ =0x00000DCC\n\
+	adds r5, r6, r0\n\
+	ldr r4, [r5, #4]\n\
+	ldrb r0, [r5, #0xa]\n\
+	movs r1, #5\n\
+	bl __umodsi3\n\
+	lsls r0, r0, #0x18\n\
+	lsrs r0, r0, #0x14\n\
+	adds r0, #0x18\n\
+	adds r4, #0x74\n\
+	strh r0, [r4]\n\
+	ldr r4, [r5, #4]\n\
+	ldrb r0, [r5, #0xa]\n\
+	movs r1, #5\n\
+	bl __udivsi3\n\
+	lsls r0, r0, #0x18\n\
+	lsrs r0, r0, #0x18\n\
+	ldrb r1, [r5, #0xb]\n\
+	subs r0, r0, r1\n\
+	lsls r0, r0, #4\n\
+	adds r0, #0x18\n\
+	adds r4, #0x76\n\
+	strh r0, [r4]\n\
+	ldr r0, _080F8738 @ =gJoypad\n\
+	ldrh r1, [r0, #4]\n\
+	movs r4, #1\n\
+	movs r3, #1\n\
+	adds r0, r3, #0\n\
+	ands r0, r1\n\
+	cmp r0, #0\n\
+	beq _080F8748\n\
+	ldr r0, _080F873C @ =gStageDiskManager\n\
+	ldr r0, [r0]\n\
+	ldrb r2, [r5, #0xa]\n\
+	lsrs r1, r2, #2\n\
+	adds r0, r0, r1\n\
+	ldrb r1, [r0]\n\
+	movs r0, #0xf\n\
+	ands r0, r1\n\
+	movs r1, #3\n\
+	ands r1, r2\n\
+	asrs r0, r1\n\
+	ands r0, r3\n\
+	cmp r0, #0\n\
+	beq _080F8740\n\
+	ldr r0, [r5, #4]\n\
+	adds r0, #0x78\n\
+	strb r4, [r0]\n\
+	strb r4, [r6, #2]\n\
+	movs r0, #0\n\
+	strb r0, [r6, #3]\n\
+	b _080F8754\n\
+	.align 2, 0\n\
+_080F8734: .4byte 0x00000DCC\n\
+_080F8738: .4byte gJoypad\n\
+_080F873C: .4byte gStageDiskManager\n\
+_080F8740:\n\
+	movs r0, #4\n\
+	bl PlaySound\n\
+	b _080F8754\n\
+_080F8748:\n\
+	movs r0, #2\n\
+	ands r0, r1\n\
+	cmp r0, #0\n\
+	beq _080F8754\n\
+	movs r0, #3\n\
+	strb r0, [r6, #1]\n\
+_080F8754:\n\
+	pop {r4, r5, r6}\n\
+	pop {r0}\n\
+	bx r0\n\
+ .syntax divided\n");
+}
+
+NAKED static void sd_analysis_080f875c(struct GameState* g) {
+  asm(".syntax unified\n\
+	push {r4, r5, r6, r7, lr}\n\
+	mov r7, sl\n\
+	mov r6, sb\n\
+	mov r5, r8\n\
+	push {r5, r6, r7}\n\
+	sub sp, #0x10\n\
+	mov r8, r0\n\
+	ldrb r0, [r0, #3]\n\
+	cmp r0, #0\n\
+	bne _080F880C\n\
+	ldr r0, _080F8798 @ =gStageDiskManager\n\
+	ldr r1, [r0]\n\
+	ldr r0, _080F879C @ =0x00000DCC\n\
+	add r0, r8\n\
+	ldrb r2, [r0, #0xa]\n\
+	lsrs r0, r2, #2\n\
+	adds r1, r1, r0\n\
+	ldrb r1, [r1]\n\
+	movs r0, #3\n\
+	ands r0, r2\n\
+	adds r0, #4\n\
+	asrs r1, r0\n\
+	movs r0, #1\n\
+	ands r1, r0\n\
+	cmp r1, #0\n\
+	beq _080F87A0\n\
+	movs r0, #2\n\
+	bl PlaySound\n\
+	b _080F87A6\n\
+	.align 2, 0\n\
+_080F8798: .4byte gStageDiskManager\n\
+_080F879C: .4byte 0x00000DCC\n\
+_080F87A0:\n\
+	movs r0, #0xe\n\
+	bl PlaySound\n\
+_080F87A6:\n\
+	ldr r4, _080F87CC @ =0x00000DCC\n\
+	add r4, r8\n\
+	ldrb r1, [r4, #0xa]\n\
+	mov r0, r8\n\
+	movs r2, #0\n\
+	bl OpenSecretDisk\n\
+	ldrb r0, [r4, #0xa]\n\
+	cmp r0, #0x13\n\
+	bls _080F87F4\n\
+	cmp r0, #0x2e\n\
+	bhi _080F87D0\n\
+	movs r0, #0x13\n\
+	strb r0, [r4, #0x10]\n\
+	movs r0, #2\n\
+	strb r0, [r4, #0x11]\n\
+	movs r0, #9\n\
+	strb r0, [r4, #0x12]\n\
+	b _080F87FC\n\
+	.align 2, 0\n\
+_080F87CC: .4byte 0x00000DCC\n\
+_080F87D0:\n\
+	cmp r0, #0x3b\n\
+	bhi _080F87E2\n\
+	movs r0, #2\n\
+	strb r0, [r4, #0x10]\n\
+	movs r0, #0x11\n\
+	strb r0, [r4, #0x11]\n\
+	movs r0, #7\n\
+	strb r0, [r4, #0x12]\n\
+	b _080F87FC\n\
+_080F87E2:\n\
+	cmp r0, #0x5d\n\
+	bhi _080F87F4\n\
+	movs r0, #8\n\
+	strb r0, [r4, #0x10]\n\
+	movs r0, #0xb\n\
+	strb r0, [r4, #0x11]\n\
+	movs r0, #0x16\n\
+	strb r0, [r4, #0x12]\n\
+	b _080F87FC\n\
+_080F87F4:\n\
+	movs r0, #0\n\
+	strb r0, [r4, #0x12]\n\
+	strb r0, [r4, #0x11]\n\
+	strb r0, [r4, #0x10]\n\
+_080F87FC:\n\
+	ldr r1, _080F88E0 @ =0x00000DCC\n\
+	add r1, r8\n\
+	movs r0, #1\n\
+	strb r0, [r1, #0xc]\n\
+	mov r1, r8\n\
+	ldrb r0, [r1, #3]\n\
+	adds r0, #1\n\
+	strb r0, [r1, #3]\n\
+_080F880C:\n\
+	movs r7, #2\n\
+	ldr r2, _080F88E4 @ =0x03002BC0\n\
+	mov sl, r2\n\
+	movs r4, #0x1f\n\
+	mov sb, r4\n\
+	movs r5, #0x1f\n\
+	mov ip, r5\n\
+_080F881A:\n\
+	lsls r0, r7, #1\n\
+	mov r1, sl\n\
+	adds r6, r0, r1\n\
+	ldrh r1, [r6]\n\
+	adds r4, r1, #0\n\
+	ldr r2, _080F88E8 @ =0x03002BE0\n\
+	adds r0, r0, r2\n\
+	ldrh r2, [r0]\n\
+	str r2, [sp, #0xc]\n\
+	movs r0, #0x1f\n\
+	adds r3, r1, #0\n\
+	ands r3, r0\n\
+	adds r0, r2, #0\n\
+	mov r5, ip\n\
+	ands r0, r5\n\
+	lsrs r0, r0, #1\n\
+	cmp r3, r0\n\
+	bls _080F8844\n\
+	subs r0, r3, #1\n\
+	lsls r0, r0, #0x18\n\
+	lsrs r3, r0, #0x18\n\
+_080F8844:\n\
+	lsrs r1, r1, #5\n\
+	mov r0, ip\n\
+	ands r1, r0\n\
+	lsrs r0, r2, #5\n\
+	mov r2, sb\n\
+	ands r0, r2\n\
+	lsrs r0, r0, #1\n\
+	cmp r1, r0\n\
+	bls _080F885C\n\
+	subs r0, r1, #1\n\
+	lsls r0, r0, #0x18\n\
+	lsrs r1, r0, #0x18\n\
+_080F885C:\n\
+	lsrs r2, r4, #0xa\n\
+	mov r4, ip\n\
+	ands r2, r4\n\
+	ldr r5, [sp, #0xc]\n\
+	lsrs r0, r5, #0xa\n\
+	mov r4, sb\n\
+	ands r0, r4\n\
+	lsrs r0, r0, #1\n\
+	cmp r2, r0\n\
+	bls _080F8876\n\
+	subs r0, r2, #1\n\
+	lsls r0, r0, #0x18\n\
+	lsrs r2, r0, #0x18\n\
+_080F8876:\n\
+	lsls r0, r2, #0xa\n\
+	lsls r1, r1, #5\n\
+	orrs r0, r1\n\
+	orrs r0, r3\n\
+	strh r0, [r6]\n\
+	adds r0, r7, #1\n\
+	lsls r0, r0, #0x10\n\
+	lsrs r7, r0, #0x10\n\
+	cmp r7, #0xf\n\
+	bls _080F881A\n\
+	ldr r5, _080F88EC @ =u8_ARRAY_ARRAY_083864d8\n\
+	ldr r4, _080F88E0 @ =0x00000DCC\n\
+	add r4, r8\n\
+	ldrb r0, [r4, #0xa]\n\
+	lsls r0, r0, #3\n\
+	adds r1, r0, r5\n\
+	ldrh r0, [r1]\n\
+	cmp r0, #0\n\
+	beq _080F8950\n\
+	ldrb r0, [r1, #5]\n\
+	lsls r0, r0, #0x18\n\
+	lsrs r2, r0, #0x19\n\
+	ldrb r3, [r4, #0xe]\n\
+	cmp r3, r2\n\
+	bhs _080F88F0\n\
+	lsrs r1, r0, #0x1c\n\
+	adds r1, r3, r1\n\
+	strb r1, [r4, #0xe]\n\
+	ldrb r0, [r4, #0xa]\n\
+	lsls r0, r0, #3\n\
+	adds r0, r0, r5\n\
+	ldrb r0, [r0, #6]\n\
+	lsrs r0, r0, #4\n\
+	ldrb r2, [r4, #0xf]\n\
+	adds r0, r0, r2\n\
+	strb r0, [r4, #0xf]\n\
+	ldrb r0, [r4, #0xa]\n\
+	lsls r0, r0, #3\n\
+	adds r2, r0, r5\n\
+	ldrb r0, [r2, #5]\n\
+	lsrs r0, r0, #1\n\
+	lsls r1, r1, #0x18\n\
+	lsrs r1, r1, #0x18\n\
+	cmp r1, r0\n\
+	bls _080F88D2\n\
+	strb r0, [r4, #0xe]\n\
+_080F88D2:\n\
+	ldrb r0, [r2, #6]\n\
+	lsrs r1, r0, #1\n\
+	ldrb r0, [r4, #0xf]\n\
+	cmp r0, r1\n\
+	bls _080F8950\n\
+	strb r1, [r4, #0xf]\n\
+	b _080F8950\n\
+	.align 2, 0\n\
+_080F88E0: .4byte 0x00000DCC\n\
+_080F88E4: .4byte 0x03002BC0\n\
+_080F88E8: .4byte 0x03002BE0\n\
+_080F88EC: .4byte u8_ARRAY_ARRAY_083864d8\n\
+_080F88F0:\n\
+	strb r2, [r4, #0xe]\n\
+	ldrb r0, [r4, #0xa]\n\
+	lsls r0, r0, #3\n\
+	ldr r5, _080F897C @ =u8_ARRAY_ARRAY_083864d8\n\
+	adds r0, r0, r5\n\
+	ldrb r0, [r0, #6]\n\
+	lsrs r0, r0, #1\n\
+	strb r0, [r4, #0xf]\n\
+	mov r1, r8\n\
+	ldrb r0, [r1, #3]\n\
+	ldrb r5, [r4, #0xa]\n\
+	cmp r0, #1\n\
+	bne _080F8950\n\
+	lsls r0, r5, #3\n\
+	ldr r2, _080F897C @ =u8_ARRAY_ARRAY_083864d8\n\
+	adds r0, r0, r2\n\
+	ldrb r2, [r0, #4]\n\
+	ldrh r3, [r0]\n\
+	movs r1, #2\n\
+	ldrsb r1, [r0, r1]\n\
+	movs r0, #0x40\n\
+	subs r0, r0, r1\n\
+	lsls r0, r0, #8\n\
+	str r0, [sp]\n\
+	ldrb r0, [r4, #0xa]\n\
+	lsls r0, r0, #3\n\
+	ldr r1, _080F897C @ =u8_ARRAY_ARRAY_083864d8\n\
+	adds r0, r0, r1\n\
+	movs r1, #3\n\
+	ldrsb r1, [r0, r1]\n\
+	movs r0, #0x50\n\
+	subs r0, r0, r1\n\
+	lsls r0, r0, #8\n\
+	str r0, [sp, #4]\n\
+	ldrb r0, [r4, #0xa]\n\
+	lsls r0, r0, #3\n\
+	ldr r4, _080F897C @ =u8_ARRAY_ARRAY_083864d8\n\
+	adds r0, r0, r4\n\
+	ldrb r0, [r0, #7]\n\
+	str r0, [sp, #8]\n\
+	mov r0, r8\n\
+	adds r1, r5, #0\n\
+	bl FUN_080e83d0\n\
+	mov r5, r8\n\
+	ldrb r0, [r5, #3]\n\
+	adds r0, #1\n\
+	strb r0, [r5, #3]\n\
+_080F8950:\n\
+	ldr r0, _080F8980 @ =gJoypad\n\
+	ldrh r1, [r0, #4]\n\
+	movs r0, #3\n\
+	ands r0, r1\n\
+	cmp r0, #0\n\
+	beq _080F896A\n\
+	movs r0, #3\n\
+	bl PlaySound\n\
+	mov r1, r8\n\
+	ldrb r0, [r1, #2]\n\
+	adds r0, #1\n\
+	strb r0, [r1, #2]\n\
+_080F896A:\n\
+	add sp, #0x10\n\
+	pop {r3, r4, r5}\n\
+	mov r8, r3\n\
+	mov sb, r4\n\
+	mov sl, r5\n\
+	pop {r4, r5, r6, r7}\n\
+	pop {r0}\n\
+	bx r0\n\
+	.align 2, 0\n\
+_080F897C: .4byte u8_ARRAY_ARRAY_083864d8\n\
+_080F8980: .4byte gJoypad\n\
+ .syntax divided\n");
+}
+
+NAKED static void sd_analysis_080f8984(struct GameState* g) {
+  asm(".syntax unified\n\
+	push {r4, r5, lr}\n\
+	adds r3, r0, #0\n\
+	ldr r0, _080F89B8 @ =0x00000DCC\n\
+	adds r2, r3, r0\n\
+	ldrb r0, [r2, #0xe]\n\
+	cmp r0, #0\n\
+	beq _080F89F4\n\
+	adds r4, r0, #0\n\
+	ldr r1, _080F89BC @ =u8_ARRAY_ARRAY_083864d8\n\
+	ldrb r0, [r2, #0xa]\n\
+	lsls r0, r0, #3\n\
+	adds r5, r0, r1\n\
+	ldrb r0, [r5, #5]\n\
+	lsrs r1, r0, #4\n\
+	subs r0, r4, r1\n\
+	cmp r0, #0\n\
+	ble _080F89C6\n\
+	strb r0, [r2, #0xe]\n\
+	ldrb r3, [r2, #0xf]\n\
+	ldrb r0, [r5, #6]\n\
+	lsrs r1, r0, #4\n\
+	subs r0, r3, r1\n\
+	cmp r0, #0\n\
+	ble _080F89C0\n\
+	strb r0, [r2, #0xf]\n\
+	b _080F8A18\n\
+	.align 2, 0\n\
+_080F89B8: .4byte 0x00000DCC\n\
+_080F89BC: .4byte u8_ARRAY_ARRAY_083864d8\n\
+_080F89C0:\n\
+	movs r0, #0\n\
+	strb r0, [r2, #0xf]\n\
+	b _080F8A18\n\
+_080F89C6:\n\
+	movs r0, #0\n\
+	strb r0, [r2, #0xe]\n\
+	strb r0, [r2, #0xf]\n\
+	strb r0, [r3, #2]\n\
+	strb r0, [r3, #3]\n\
+	movs r2, #2\n\
+	ldr r3, _080F89F0 @ =0x03002BC0\n\
+	adds r4, r3, #0\n\
+	adds r4, #0x20\n\
+_080F89D8:\n\
+	lsls r0, r2, #1\n\
+	adds r1, r0, r3\n\
+	adds r0, r0, r4\n\
+	ldrh r0, [r0]\n\
+	strh r0, [r1]\n\
+	adds r0, r2, #1\n\
+	lsls r0, r0, #0x18\n\
+	lsrs r2, r0, #0x18\n\
+	cmp r2, #0xf\n\
+	bls _080F89D8\n\
+	b _080F8A18\n\
+	.align 2, 0\n\
+_080F89F0: .4byte 0x03002BC0\n\
+_080F89F4:\n\
+	strb r0, [r2, #0xe]\n\
+	strb r0, [r2, #0xf]\n\
+	strb r0, [r3, #2]\n\
+	strb r0, [r3, #3]\n\
+	movs r2, #2\n\
+	ldr r3, _080F8A20 @ =0x03002BC0\n\
+	adds r4, r3, #0\n\
+	adds r4, #0x20\n\
+_080F8A04:\n\
+	lsls r0, r2, #1\n\
+	adds r1, r0, r3\n\
+	adds r0, r0, r4\n\
+	ldrh r0, [r0]\n\
+	strh r0, [r1]\n\
+	adds r0, r2, #1\n\
+	lsls r0, r0, #0x18\n\
+	lsrs r2, r0, #0x18\n\
+	cmp r2, #0xf\n\
+	bls _080F8A04\n\
+_080F8A18:\n\
+	pop {r4, r5}\n\
+	pop {r0}\n\
+	bx r0\n\
+	.align 2, 0\n\
+_080F8A20: .4byte 0x03002BC0\n\
+ .syntax divided\n");
+}
+
+static void printThreeDigitNumber(u16 n, u8 x, u8 y) {
+  u8 i;
+  for (i = 0; i < 3; i++) {
+    u32 digit = n % 10;
+    PrintString(STRING(digit + 30), x - i, y);
+    n /= 10;
+  }
+}
+
+/**
+ * @brief シークレットディスクを開ける処理
+ * @param disk_no ディスク番号
+ * @param is_result 1(リザルト画面) or 0(セルヴォの解析)
+ * @note 0x080f8a84
+ */
+NAKED u16 OpenSecretDisk(struct GameState* g, u8 disk_no, bool8 is_result) {
+  asm(".syntax unified\n\
+	push {r4, r5, r6, lr}\n\
+	lsls r1, r1, #0x18\n\
+	lsrs r5, r1, #0x18\n\
+	lsls r2, r2, #0x18\n\
+	ldr r1, _080F8AD8 @ =0x000064AC\n\
+	adds r0, r0, r1\n\
+	ldr r4, [r0]\n\
+	cmp r2, #0\n\
+	beq _080F8AA4\n\
+	subs r0, r5, #6\n\
+	lsls r0, r0, #0x18\n\
+	lsrs r0, r0, #0x18\n\
+	cmp r0, #0xd\n\
+	bls _080F8B6C\n\
+	cmp r5, #0x6d\n\
+	bhi _080F8B6C\n\
+_080F8AA4:\n\
+	ldr r0, _080F8ADC @ =gStageDiskManager\n\
+	ldr r1, [r0]\n\
+	lsrs r0, r5, #2\n\
+	adds r6, r1, r0\n\
+	ldrb r2, [r6]\n\
+	movs r3, #3\n\
+	ands r3, r5\n\
+	adds r1, r3, #4\n\
+	adds r0, r2, #0\n\
+	asrs r0, r1\n\
+	movs r1, #1\n\
+	ands r0, r1\n\
+	cmp r0, #0\n\
+	bne _080F8B6C\n\
+	movs r0, #0x10\n\
+	lsls r0, r3\n\
+	orrs r2, r0\n\
+	strb r2, [r6]\n\
+	cmp r5, #5\n\
+	bhi _080F8B48\n\
+	lsls r0, r5, #2\n\
+	ldr r1, _080F8AE0 @ =_080F8AE4\n\
+	adds r0, r0, r1\n\
+	ldr r0, [r0]\n\
+	mov pc, r0\n\
+	.align 2, 0\n\
+_080F8AD8: .4byte 0x000064AC\n\
+_080F8ADC: .4byte gStageDiskManager\n\
+_080F8AE0: .4byte _080F8AE4\n\
+_080F8AE4: @ jump table\n\
+	.4byte _080F8AFC @ case 0\n\
+	.4byte _080F8B06 @ case 1\n\
+	.4byte _080F8B10 @ case 2\n\
+	.4byte _080F8B1E @ case 3\n\
+	.4byte _080F8B28 @ case 4\n\
+	.4byte _080F8B32 @ case 5\n\
+_080F8AFC:\n\
+	adds r2, r4, #0\n\
+	adds r2, #0xb4\n\
+	ldrb r1, [r2, #0x17]\n\
+	movs r0, #4\n\
+	b _080F8B18\n\
+_080F8B06:\n\
+	adds r2, r4, #0\n\
+	adds r2, #0xb4\n\
+	ldrb r1, [r2, #0x17]\n\
+	movs r0, #2\n\
+	b _080F8B18\n\
+_080F8B10:\n\
+	adds r2, r4, #0\n\
+	adds r2, #0xb4\n\
+	ldrb r1, [r2, #0x17]\n\
+	movs r0, #8\n\
+_080F8B18:\n\
+	orrs r0, r1\n\
+	strb r0, [r2, #0x17]\n\
+	b _080F8B3E\n\
+_080F8B1E:\n\
+	adds r2, r4, #0\n\
+	adds r2, #0xb4\n\
+	ldrb r1, [r2, #0x19]\n\
+	movs r0, #0x40\n\
+	b _080F8B3A\n\
+_080F8B28:\n\
+	adds r2, r4, #0\n\
+	adds r2, #0xb4\n\
+	ldrb r1, [r2, #0x19]\n\
+	movs r0, #2\n\
+	b _080F8B3A\n\
+_080F8B32:\n\
+	adds r2, r4, #0\n\
+	adds r2, #0xb4\n\
+	ldrb r1, [r2, #0x19]\n\
+	movs r0, #0x80\n\
+_080F8B3A:\n\
+	orrs r0, r1\n\
+	strb r0, [r2, #0x19]\n\
+_080F8B3E:\n\
+	ldr r1, _080F8B44 @ =0x0000017B\n\
+	b _080F8B84\n\
+	.align 2, 0\n\
+_080F8B44: .4byte 0x0000017B\n\
+_080F8B48:\n\
+	cmp r5, #0x13\n\
+	bls _080F8B6C\n\
+	cmp r5, #0x5d\n\
+	bhi _080F8B68\n\
+	ldr r0, _080F8B64 @ =gUnlockedElfPtr\n\
+	ldr r1, [r0]\n\
+	adds r1, r5, r1\n\
+	subs r1, #0x14\n\
+	ldrb r0, [r1]\n\
+	movs r2, #1\n\
+	orrs r0, r2\n\
+	strb r0, [r1]\n\
+	b _080F8B82\n\
+	.align 2, 0\n\
+_080F8B64: .4byte gUnlockedElfPtr\n\
+_080F8B68:\n\
+	cmp r5, #0x6d\n\
+	bls _080F8B70\n\
+_080F8B6C:\n\
+	movs r0, #0\n\
+	b _080F8B86\n\
+_080F8B70:\n\
+	ldr r1, _080F8B8C @ =DiskECrystalAmounts\n\
+	adds r0, r5, #0\n\
+	subs r0, #0x5e\n\
+	lsls r0, r0, #1\n\
+	adds r0, r0, r1\n\
+	ldrh r1, [r0]\n\
+	adds r0, r4, #0\n\
+	bl AddECrystal\n\
+_080F8B82:\n\
+	ldr r1, _080F8B90 @ =0x0000010D\n\
+_080F8B84:\n\
+	adds r0, r5, r1\n\
+_080F8B86:\n\
+	pop {r4, r5, r6}\n\
+	pop {r1}\n\
+	bx r1\n\
+	.align 2, 0\n\
+_080F8B8C: .4byte DiskECrystalAmounts\n\
+_080F8B90: .4byte 0x0000010D\n\
+ .syntax divided\n");
+}
+
+/**
+ * @param flagbits &SaveSlot.disk[0] (addr: 0x02036e78)
+ * @note 0x080f8b94
+ */
+void clearSecretDiskData(u8* flagbits) {
+  gStageDiskManager.disk = flagbits;
+  CpuFastFill(0, flagbits, 32);
+  CpuFill32(0, &flagbits[32], 16);
+  clearStageDisk();
+}
+
+/**
+ * @brief clearSecretDiskData のハードモード版
+ * @note 0x080f8bd4, 処理は clearSecretDiskData と完全に同じ
+ */
+void clearSecretDiskDataHard(u8* flagbits) {
+  gStageDiskManager.disk = flagbits;
+  CpuFastFill(0, flagbits, 32);
+  CpuFill32(0, &flagbits[32], 16);
+  clearStageDisk();
+}
+
+/**
+ * @brief clearSecretDiskData のアルティメットモード版
+ * @note 0x080f8c14
+ */
+NAKED void unlockAllSecretDisk(u8* flagbits) {
+  asm(".syntax unified\n\
+	push {r4, r5, r6, r7, lr}\n\
+	sub sp, #8\n\
+	adds r4, r0, #0\n\
+	ldr r6, _080F8C74 @ =gStageDiskManager\n\
+	str r4, [r6]\n\
+	movs r5, #0\n\
+	str r5, [sp]\n\
+	ldr r2, _080F8C78 @ =0x01000008\n\
+	mov r0, sp\n\
+	adds r1, r4, #0\n\
+	bl CpuFastSet\n\
+	str r5, [sp, #4]\n\
+	add r0, sp, #4\n\
+	adds r4, #0x20\n\
+	ldr r2, _080F8C7C @ =0x05000004\n\
+	adds r1, r4, #0\n\
+	bl CpuSet\n\
+	movs r7, #3\n\
+_080F8C3C:\n\
+	ldr r2, [r6]\n\
+	lsrs r4, r5, #2\n\
+	adds r2, r2, r4\n\
+	adds r3, r5, #0\n\
+	ands r3, r7\n\
+	movs r0, #1\n\
+	lsls r0, r3\n\
+	ldrb r1, [r2]\n\
+	orrs r0, r1\n\
+	strb r0, [r2]\n\
+	ldr r2, [r6]\n\
+	adds r2, r2, r4\n\
+	movs r0, #0x10\n\
+	lsls r0, r3\n\
+	ldrb r1, [r2]\n\
+	orrs r0, r1\n\
+	strb r0, [r2]\n\
+	adds r0, r5, #1\n\
+	lsls r0, r0, #0x18\n\
+	lsrs r5, r0, #0x18\n\
+	cmp r5, #0xb3\n\
+	bls _080F8C3C\n\
+	bl clearStageDisk\n\
+	add sp, #8\n\
+	pop {r4, r5, r6, r7}\n\
+	pop {r0}\n\
+	bx r0\n\
+	.align 2, 0\n\
+_080F8C74: .4byte gStageDiskManager\n\
+_080F8C78: .4byte 0x01000008\n\
+_080F8C7C: .4byte 0x05000004\n\
+ .syntax divided\n");
+}
+
+void clearStageDisk(void) {
+  u8 i;
+  for (i = 0; i < 10; i++) {
+    gStageDiskManager.stageDiskIDs[i] = 0xFF;
+  }
+  gStageDiskManager.stageDiskCount = 0;
+}
+
+void getDiskInStageRun(u8 disk_id) {
+  u8* flagbits = gStageDiskManager.disk;
+  UNLOCK_DISK(flagbits, disk_id);
+  gStageDiskManager.stageDiskIDs[gStageDiskManager.stageDiskCount] = disk_id;
+  gStageDiskManager.stageDiskCount++;
+}
+
+bool8 allSecretDiskFound(void) {
+  u8 i;
+  for (i = 0; i < DISK_COUNT; i++) {
+    if ((IS_DISK_UNLOCKED(gStageDiskManager.disk, i) & 1) == 0) {
+      return FALSE;
+    }
+  }
+  return TRUE;
+}
 
 // ------------------------------------------------------------------------------------------------------------------------------------
+
+static void sd_analysis_080f85e0(struct GameState* g);
+static void sd_analysis_080f875c(struct GameState* g);
+static void sd_analysis_080f8984(struct GameState* g);
 
 const DiskLoopFunc PTR_ARRAY_083864ac[3] = {
     sd_analysis_080f85e0,

@@ -37,7 +37,7 @@ u32 TryDropItem(u32 table, struct Coord* c) {
     n = table - 9;
     disks = gStageDiskManager.disk;
     diskID = sMiddleBossDiskNo[n] - 1;
-    if (((disks[diskID >> 2] & 0x0F) >> (diskID & 3)) & 1) {
+    if (IS_DISK_UNLOCKED(disks, diskID) & 1) {
       return FALSE;
     }
     CreateMapDisk(sMiddleBossDiskNo[n], c, 1);

@@ -85,7 +85,7 @@ struct PaletteManager {
   u8 filter[3];  // 画面にかけるRGB555で指定する色のフィルター(0x20でその色のフィルターなし)
   u16 unk_404;
   u16 unk_406;
-  VoidFunc unk_408;
+  void (*post_process)(void);  // 最終的なパレットに対して、適用される関数, このゲームでは、サイバー空間 で画面を緑っぽくする用途でのみ使われている
   u32 _;
 };  // 1040 bytes
 

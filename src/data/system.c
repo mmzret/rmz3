@@ -19,7 +19,8 @@ const ALIGNED(4) sramFunc Jt_08338c80[4] = {
     (sramFunc)VerifySram,
 };
 
-const VoidFunc HBlankIntrs[4] = {
+// 0x08338c90
+const VoidFunc gHBlankIntrs[4] = {
     NULL,
     HBlankIntr1,
     HBlankIntr2,

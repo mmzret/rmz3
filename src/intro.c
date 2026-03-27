@@ -176,7 +176,7 @@ static void IntroLoop_DemoPlay1(struct Intro* p) {
   switch (p->mode[1]) {
     case 0: {
       gPaletteManager.filter[0] = gPaletteManager.filter[1] = gPaletteManager.filter[2] = 0x20;
-      gPaletteManager.unk_408 = NULL;
+      gPaletteManager.post_process = NULL;
       ClearBlinkings();
       gBlendRegBuffer.bldclt = 0;
       gWindowRegBuffer.dispcnt = 0;
@@ -202,7 +202,7 @@ static void IntroLoop_DemoPlay1(struct Intro* p) {
       }
       if (gProcessManager.processes[1].status == PROCESS_DISABLED) {
         gPaletteManager.filter[0] = gPaletteManager.filter[1] = gPaletteManager.filter[2] = 0x20;
-        gPaletteManager.unk_408 = NULL;
+        gPaletteManager.post_process = NULL;
         ClearBlinkings();
         gBlendRegBuffer.bldclt = 0;
         gWindowRegBuffer.dispcnt = 0;
@@ -282,7 +282,7 @@ static void IntroLoop_DemoPlay2(struct Intro* p) {
   switch (p->mode[1]) {
     case 0: {
       gPaletteManager.filter[0] = gPaletteManager.filter[1] = gPaletteManager.filter[2] = 0x20;
-      gPaletteManager.unk_408 = NULL;
+      gPaletteManager.post_process = NULL;
       ClearBlinkings();
       gBlendRegBuffer.bldclt = 0;
       gWindowRegBuffer.dispcnt = 0;
@@ -314,7 +314,7 @@ static void IntroLoop_DemoPlay2(struct Intro* p) {
       }
       if (gProcessManager.processes[1].status == PROCESS_DISABLED) {
         gPaletteManager.filter[0] = gPaletteManager.filter[1] = gPaletteManager.filter[2] = 0x20;
-        gPaletteManager.unk_408 = NULL;
+        gPaletteManager.post_process = NULL;
         ClearBlinkings();
         gBlendRegBuffer.bldclt = 0;
         gWindowRegBuffer.dispcnt = 0;
@@ -377,7 +377,7 @@ static void IntroLoop_TitleScreen(struct Intro* p) {
 static void InitTitleAnimation(struct Intro* p) {
   UnmaskBg0();
   gPaletteManager.filter[0] = gPaletteManager.filter[1] = gPaletteManager.filter[2] = 0x20;
-  gPaletteManager.unk_408 = NULL;
+  gPaletteManager.post_process = NULL;
   ClearBlinkings();
   gBlendRegBuffer.bldclt = 0;
   gWindowRegBuffer.dispcnt = 0;
@@ -1502,7 +1502,7 @@ static void IntroLoop_StartMainGame(struct Intro* p) {
   switch (p->mode[1]) {
     case 0: {
       gPaletteManager.filter[0] = gPaletteManager.filter[1] = gPaletteManager.filter[2] = 0x20;
-      gPaletteManager.unk_408 = NULL;
+      gPaletteManager.post_process = NULL;
       ClearBlinkings();
       gBlendRegBuffer.bldclt = 0;
       gWindowRegBuffer.dispcnt = 0;
@@ -1584,7 +1584,7 @@ static void IntroLoop_Minigame(struct Intro* p) {
 
 static void FUN_080ed9c0(struct Intro* p) {
   gPaletteManager.filter[0] = gPaletteManager.filter[1] = gPaletteManager.filter[2] = 0x20;
-  gPaletteManager.unk_408 = NULL;
+  gPaletteManager.post_process = NULL;
   ClearBlinkings();
   gBlendRegBuffer.bldclt = 0;
   gWindowRegBuffer.dispcnt = 0;
@@ -2100,7 +2100,7 @@ static void FUN_080edf04(struct Intro* p) {
   switch (p->mode[2]) {
     case 0: {
       gPaletteManager.filter[0] = gPaletteManager.filter[1] = gPaletteManager.filter[2] = 0x20;
-      gPaletteManager.unk_408 = NULL;
+      gPaletteManager.post_process = NULL;
       ClearBlinkings();
       gBlendRegBuffer.bldclt = 0;
       gWindowRegBuffer.dispcnt = 0;

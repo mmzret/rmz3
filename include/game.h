@@ -120,7 +120,7 @@ struct GameState {
 
 extern struct GameState gGameState;
 extern u8 gUnkSineTableIdx;
-extern u16 CopyFrom_08386130[32];
+extern u16 gCyberSpaceColorHashtable[96];
 extern void* PTR_0202f384;
 extern struct SaveSlot SaveState_020003a8;
 

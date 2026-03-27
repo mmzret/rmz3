@@ -18,6 +18,8 @@
 #include "system.h"
 #include "text.h"
 
+// TODO: ewram.c ではなく、それぞれのファイルで定義して後で リンカでまとめたほうがいい (構造体の定義が面倒くさい)
+
 /*
   Process(s) 中に GameLoop のspを退避しておくためのもの e.g. 03007d58
 
@@ -56,9 +58,7 @@ EWRAM_DATA struct Zero* pZero = NULL;
 EWRAM_DATA u16 gLastWeaponElements[4] = {};
 EWRAM_DATA u16 gWeaponElements[4] = {};
 
-EWRAM_DATA u16 u16_ARRAY_02000048[64] = {};
-EWRAM_DATA u16 CopyFrom_08386130[32] = {};  // 080ee1dc 参照
-
+EWRAM_DATA u16 gCyberSpaceColorHashtable[96] = {};  // 0x02000048, 元のRGB555 の各色　を足した値をインデックスにして、変換後のRGB555の色を返すテーブル
 EWRAM_DATA u8 gUnkSineTableIdx = 0;
 EWRAM_DATA ALIGNED(1) u8 _unused_02000109[7] = {};
 
@@ -198,25 +198,3 @@ EWRAM_DATA struct Boss gBosses[5] = {};
 EWRAM_DATA u8 _unused_0203bb44[12] = {};
 EWRAM_DATA struct Widget gWidgets[64] = {};
 EWRAM_DATA struct StageDiskManager gStageDiskManager = {};
-EWRAM_DATA struct SoundInfo gSoundInfo = {};
-EWRAM_DATA MPlayFunc gMPlayJumpTable[36] = {};
-EWRAM_DATA struct CgbChannel gCgbChans[4] = {};
-
-EWRAM_DATA struct MusicPlayerInfo gMPlayInfo_00 = {};
-EWRAM_DATA struct MusicPlayerInfo gMPlayInfo_01 = {};
-EWRAM_DATA struct MusicPlayerInfo gMPlayInfo_02 = {};
-EWRAM_DATA struct MusicPlayerInfo gMPlayInfo_03 = {};
-EWRAM_DATA struct MusicPlayerInfo gMPlayInfo_04 = {};
-EWRAM_DATA struct MusicPlayerInfo gMPlayInfo_05 = {};
-EWRAM_DATA struct MusicPlayerInfo gMPlayInfo_06 = {};
-EWRAM_DATA struct MusicPlayerInfo gMPlayInfo_07 = {};
-EWRAM_DATA struct MusicPlayerInfo gMPlayInfo_08 = {};
-EWRAM_DATA struct MusicPlayerInfo gMPlayInfo_09 = {};
-EWRAM_DATA struct MusicPlayerInfo gMPlayInfo_10 = {};
-EWRAM_DATA struct MusicPlayerInfo gMPlayInfo_11 = {};
-
-EWRAM_DATA u8 gMPlayMemAccArea[16] = {};
-
-EWRAM_DATA struct MusicPlayerInfo gMPlayInfo_12 = {};
-EWRAM_DATA struct MusicPlayerInfo gMPlayInfo_13 = {};
-EWRAM_DATA struct MusicPlayerInfo gMPlayInfo_14 = {};

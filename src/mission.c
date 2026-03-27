@@ -671,103 +671,33 @@ static const struct Coord Coord_ARRAY_0834cb38[37] = {
     {PIXEL(3152), PIXEL(2064)}, {PIXEL(3152), PIXEL(1744)}, {PIXEL(272), PIXEL(1264)}, {PIXEL(992), PIXEL(1264)}, {PIXEL(2672), PIXEL(784)}, {PIXEL(1712), PIXEL(1264)}, {PIXEL(2192), PIXEL(1264)}, {PIXEL(3392), PIXEL(576)}, {PIXEL(3392), PIXEL(1408)}, {PIXEL(288), PIXEL(1072)},  {PIXEL(824), PIXEL(1392)},  {PIXEL(768), PIXEL(1072)}, {PIXEL(288), PIXEL(1392)}, {PIXEL(1608), PIXEL(1072)}, {PIXEL(2208), PIXEL(1392)}, {PIXEL(1544), PIXEL(1392)}, {PIXEL(2208), PIXEL(912)},  {PIXEL(1848), PIXEL(432)},
 };
 
-// ミッション開始地点？
-NAKED struct Coord* FUN_08019d20(struct Coord* c) {
-  asm(".syntax unified\n\
-	push {r4, r5, r6, r7, lr}\n\
-	adds r5, r0, #0\n\
-	movs r4, #0\n\
-	ldr r0, _08019D3C @ =gOverworld\n\
-	movs r1, #0xe8\n\
-	lsls r1, r1, #1\n\
-	adds r0, r0, r1\n\
-	ldrh r0, [r0]\n\
-	movs r1, #0x7f\n\
-	ands r1, r0\n\
-	cmp r1, #5\n\
-	bne _08019D40\n\
-	movs r4, #0x15\n\
-	b _08019D4E\n\
-	.align 2, 0\n\
-_08019D3C: .4byte gOverworld\n\
-_08019D40:\n\
-	cmp r1, #0x10\n\
-	bne _08019D48\n\
-	movs r4, #0x1c\n\
-	b _08019D4E\n\
-_08019D48:\n\
-	cmp r1, #0xf\n\
-	bne _08019D4E\n\
-	movs r4, #0x24\n\
-_08019D4E:\n\
-	cmp r4, #0x24\n\
-	bgt _08019DB2\n\
-	ldr r2, _08019DC0 @ =Coord_ARRAY_0834ca10\n\
-	lsls r3, r4, #3\n\
-	adds r0, r3, r2\n\
-	ldr r0, [r0]\n\
-	ldr r1, [r5]\n\
-	subs r0, r0, r1\n\
-	movs r6, #0x80\n\
-	lsls r6, r6, #6\n\
-	adds r0, r0, r6\n\
-	movs r6, #0x80\n\
-	lsls r6, r6, #7\n\
-	adds r7, r1, #0\n\
-	cmp r0, r6\n\
-	bhi _08019D82\n\
-	adds r0, r2, #4\n\
-	adds r0, r3, r0\n\
-	ldr r0, [r0]\n\
-	ldr r1, [r5, #4]\n\
-	subs r0, r0, r1\n\
-	movs r1, #0x80\n\
-	lsls r1, r1, #6\n\
-	adds r0, r0, r1\n\
-	cmp r0, r6\n\
-	bls _08019DB2\n\
-_08019D82:\n\
-	adds r4, #1\n\
-	cmp r4, #0x24\n\
-	bgt _08019DB2\n\
-	lsls r1, r4, #3\n\
-	adds r0, r1, r2\n\
-	ldr r0, [r0]\n\
-	subs r0, r0, r7\n\
-	movs r3, #0x80\n\
-	lsls r3, r3, #6\n\
-	adds r0, r0, r3\n\
-	movs r3, #0x80\n\
-	lsls r3, r3, #7\n\
-	cmp r0, r3\n\
-	bhi _08019D82\n\
-	adds r0, r2, #4\n\
-	adds r0, r1, r0\n\
-	ldr r0, [r0]\n\
-	ldr r1, [r5, #4]\n\
-	subs r0, r0, r1\n\
-	movs r6, #0x80\n\
-	lsls r6, r6, #6\n\
-	adds r0, r0, r6\n\
-	cmp r0, r3\n\
-	bhi _08019D82\n\
-_08019DB2:\n\
-	cmp r4, #0x25\n\
-	beq _08019DC8\n\
-	lsls r0, r4, #3\n\
-	ldr r1, _08019DC4 @ =Coord_ARRAY_0834cb38\n\
-	adds r0, r0, r1\n\
-	b _08019DCA\n\
-	.align 2, 0\n\
-_08019DC0: .4byte Coord_ARRAY_0834ca10\n\
-_08019DC4: .4byte Coord_ARRAY_0834cb38\n\
-_08019DC8:\n\
-	movs r0, #0\n\
-_08019DCA:\n\
-	pop {r4, r5, r6, r7}\n\
-	pop {r1}\n\
-	bx r1\n\
- .syntax divided\n");
+// サイバー空間のドア　のつながり関連？
+struct Coord* FUN_08019d20(struct Coord* c) {
+  s32 i = 0;
+  u32 id = gOverworld.terrain.id & 0x7F;
+  if (id == STAGE_OLD_RESIDENTIAL) {
+    i = 21;
+  } else if (id == STAGE_WEILS_LABO) {
+    i = 28;
+  } else if (id == STAGE_SUB_ARCADIA) {
+    i = 36;
+  }
+
+  for (; i < (s32)ARRAY_COUNT(Coord_ARRAY_0834ca10); i++) {
+    u32 x = (u32)(Coord_ARRAY_0834ca10[i].x - c->x) + PIXEL(32);
+    if (x <= PIXEL(64)) {
+      u32 y = (u32)(Coord_ARRAY_0834ca10[i].y - c->y) + PIXEL(32);
+      if (y <= PIXEL(64)) {
+        break;
+      }
+    }
+  }
+
+  if (i == 37) {
+    return NULL;
+  } else {
+    return (struct Coord*)&Coord_ARRAY_0834cb38[i];
+  }
 }
 
 // 水没した図書館のドア のつながり関連?

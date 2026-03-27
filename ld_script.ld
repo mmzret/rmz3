@@ -14,7 +14,7 @@ SECTIONS {
 	ewram (NOLOAD) :
 	ALIGN(4)
     {
-      src/ewram.o(ewram_data);
+      INCLUDE "linker/ewram.txt"
     } >ewram = 0x00
 
 	. = 0x3000000;

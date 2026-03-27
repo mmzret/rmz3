@@ -128,7 +128,7 @@ _080201EC:\n\
 	movs r1, #0x10\n\
 	orrs r0, r1\n\
 	strb r0, [r6, #4]\n\
-	bl ApplyCyberSpaceColorFilter\n\
+	bl EnableCyberSpaceColorFilter\n\
 	ldr r1, _0802021C @ =0x0000017D\n\
 	adds r0, r7, r1\n\
 	mov r2, sl\n\
@@ -152,7 +152,7 @@ _08020220:\n\
 	movs r1, #0x10\n\
 	orrs r0, r1\n\
 	strb r0, [r6, #4]\n\
-	bl ApplyCyberSpaceColorFilter\n\
+	bl EnableCyberSpaceColorFilter\n\
 	ldr r0, _08020250 @ =0x0000017D\n\
 	adds r1, r7, r0\n\
 	movs r0, #2\n\

@@ -13,19 +13,22 @@
 #include "text.h"
 
 static void VBlankIntr(void);
-static void HBlankIntrDummy(void);
+static void IntrDummy(void);
 static void VCountIntr(void);
 static void runDMA0(void);
 static void transferByHand(void);
+static void _transferByHand(struct TransferReservation* t);
 void Timer3Intr(void);
 void SerialCB(void);
 
 static void InterruptSystemProcess(struct Process* p, bool32 b);
 static void transferData(void);
 
+extern const VoidFunc gHBlankIntrs[];
+
 // 0x080fec74
 static const VoidFunc gIntrTableTemplate[14] = {
-    VBlankIntr, HBlankIntrDummy, VCountIntr, HBlankIntrDummy, HBlankIntrDummy, HBlankIntrDummy, Timer3Intr, SerialCB, HBlankIntrDummy, HBlankIntrDummy, HBlankIntrDummy, HBlankIntrDummy, HBlankIntrDummy, HBlankIntrDummy,
+    VBlankIntr, IntrDummy, VCountIntr, IntrDummy, IntrDummy, IntrDummy, Timer3Intr, SerialCB, IntrDummy, IntrDummy, IntrDummy, IntrDummy, IntrDummy, IntrDummy,
 };
 
 WIP void Process_SoftReset(struct Process* _ UNUSED) {
@@ -38,7 +41,7 @@ WIP void Process_SoftReset(struct Process* _ UNUSED) {
   gJoypad[1].field6_0x14 = 24;
   gJoypad[1].field7_0x15 = 4;
   gPaletteManager.filter[0] = gPaletteManager.filter[1] = gPaletteManager.filter[2] = 0x20;
-  gPaletteManager.unk_408 = NULL;
+  gPaletteManager.post_process = NULL;
   ClearBlinkings();
   gBlendRegBuffer.bldclt = 0;
   gWindowRegBuffer.dispcnt = 0;
@@ -328,7 +331,7 @@ static void transferData(void) {
   transferByHand();
 }
 
-static void HBlankIntrDummy(void) { return; }
+static void IntrDummy(void) { return; }
 
 // 頻繁に呼び出される関数なので gIntrManager にコピーされる
 static void VBlankIntr(void) {
@@ -465,102 +468,45 @@ _08001F7C: .4byte 0x040000B0\n\
 }
 
 // 転送予約されたデータを(DMAを使わずに)手動で転送する
-NAKED static void transferByHand(void) {
-  asm(".syntax unified\n\
-	push {r4, r5, lr}\n\
-	movs r5, #0\n\
-	ldr r4, _08001FA0 @ =gIntrManager+384\n\
-	ldr r1, [r4, #8]\n\
-	cmp r1, #0\n\
-	beq _08001FC0\n\
-	ldr r0, [r4]\n\
-	str r0, [r4, #0xc]\n\
-	movs r0, #0x80\n\
-	lsls r0, r0, #0x11\n\
-	ands r1, r0\n\
-	cmp r1, #0\n\
-	beq _08001FA4\n\
-	strh r5, [r4, #0x1c]\n\
-	b _08001FA8\n\
-	.align 2, 0\n\
-_08001FA0: .4byte gIntrManager+384\n\
-_08001FA4:\n\
-	movs r0, #1\n\
-	strh r0, [r4, #0x1c]\n\
-_08001FA8:\n\
-	movs r0, #1\n\
-	strh r0, [r4, #0x1e]\n\
-	ldr r0, [r4, #8]\n\
-	strh r0, [r4, #0x20]\n\
-	adds r0, r4, #0\n\
-	bl _transferByHand\n\
-	lsls r0, r5, #0x10\n\
-	movs r1, #0x80\n\
-	lsls r1, r1, #9\n\
-	adds r0, r0, r1\n\
-	lsrs r5, r0, #0x10\n\
-_08001FC0:\n\
-	adds r4, #0x24\n\
-	ldr r1, [r4, #8]\n\
-	cmp r1, #0\n\
-	beq _08001FF6\n\
-	ldr r0, [r4]\n\
-	str r0, [r4, #0xc]\n\
-	movs r0, #0x80\n\
-	lsls r0, r0, #0x11\n\
-	ands r1, r0\n\
-	cmp r1, #0\n\
-	beq _08001FDA\n\
-	movs r0, #0\n\
-	b _08001FDC\n\
-_08001FDA:\n\
-	movs r0, #1\n\
-_08001FDC:\n\
-	strh r0, [r4, #0x1c]\n\
-	movs r0, #1\n\
-	strh r0, [r4, #0x1e]\n\
-	ldr r0, [r4, #8]\n\
-	strh r0, [r4, #0x20]\n\
-	adds r0, r4, #0\n\
-	bl _transferByHand\n\
-	lsls r0, r5, #0x10\n\
-	movs r1, #0x80\n\
-	lsls r1, r1, #0xa\n\
-	adds r0, r0, r1\n\
-	lsrs r5, r0, #0x10\n\
-_08001FF6:\n\
-	lsls r0, r5, #0x10\n\
-	asrs r3, r0, #0x10\n\
-	cmp r3, #0\n\
-	beq _08002022\n\
-	ldr r2, _08002028 @ =0x04000004\n\
-	ldrh r0, [r2]\n\
-	movs r1, #0x10\n\
-	orrs r0, r1\n\
-	strh r0, [r2]\n\
-	ldrh r0, [r2]\n\
-	ldr r2, _0800202C @ =gIntrManager\n\
-	ldr r1, _08002030 @ =0x08338C90\n\
-	lsls r0, r3, #2\n\
-	adds r0, r0, r1\n\
-	ldr r0, [r0]\n\
-	str r0, [r2, #4]\n\
-	ldr r2, _08002034 @ =0x04000200\n\
-	ldrh r0, [r2]\n\
-	movs r1, #2\n\
-	orrs r0, r1\n\
-	strh r0, [r2]\n\
-	ldrh r0, [r2]\n\
-_08002022:\n\
-	pop {r4, r5}\n\
-	pop {r0}\n\
-	bx r0\n\
-	.align 2, 0\n\
-_08002028: .4byte 0x04000004\n\
-_0800202C: .4byte gIntrManager\n\
-_08002030: .4byte HBlankIntrs\n\
-_08002034: .4byte 0x04000200\n\
- .syntax divided\n");
+static void transferByHand(void) {
+  s16 i = 0;
+  struct TransferReservation* tr = &gIntrManager.tr[0];
+  if (tr->count) {
+    tr->src = tr->start;
+    if (tr->count & (DMA_SRC_FIXED << 16)) {
+      tr->delta_src = 0;
+    } else {
+      tr->delta_src = 1;
+    }
+    tr->delta_dst = 1;
+    tr->remaining = tr->count & 0xFFFF;
+    _transferByHand(tr);
+    i += 1;
+  }
+
+  tr = &tr[1];
+  if (tr->count) {
+    tr->src = tr->start;
+    if (tr->count & (DMA_SRC_FIXED << 16)) {
+      tr->delta_src = 0;
+    } else {
+      tr->delta_src = 1;
+    }
+    tr->delta_dst = 1;
+    tr->remaining = tr->count & 0xFFFF;
+    _transferByHand(tr);
+    i += 2;
+  }
+
+  if (i != 0) {
+    REG_DISPSTAT |= DISPSTAT_HBLANK_INTR;
+    REG_DISPSTAT;
+
+    gIntrManager.table[1] = gHBlankIntrs[i];
+
+    REG_IE |= INTR_FLAG_HBLANK;
+    REG_IE;
+  }
 }
 
 // HBlankIntr2との違いは SlowTR の代わりに FastTR を転送することのみ
@@ -570,7 +516,7 @@ void HBlankIntr1(void) {
     REG_DISPSTAT &= ~DISPSTAT_HBLANK_INTR;
     REG_DISPSTAT;
 
-    gIntrManager.table[1] = HBlankIntrDummy;
+    gIntrManager.table[1] = IntrDummy;
 
     REG_IE &= ~INTR_FLAG_HBLANK;
     REG_IE;
@@ -584,7 +530,7 @@ void HBlankIntr2(void) {
     REG_DISPSTAT &= ~DISPSTAT_HBLANK_INTR;
     REG_DISPSTAT;
 
-    gIntrManager.table[1] = HBlankIntrDummy;
+    gIntrManager.table[1] = IntrDummy;
 
     REG_IE &= ~INTR_FLAG_HBLANK;
     REG_IE;
@@ -602,14 +548,14 @@ void FUN_08002110(void) {
     if (y == DISPLAY_HEIGHT) {
       REG_DISPSTAT &= ~DISPSTAT_HBLANK_INTR;
       REG_DISPSTAT;
-      gIntrManager.table[1] = HBlankIntrDummy;
+      gIntrManager.table[1] = IntrDummy;
       REG_IE &= ~INTR_FLAG_HBLANK;
       REG_IE;
     }
   }
 }
 
-void _transferByHand(struct TransferReservation* t) {
+static void _transferByHand(struct TransferReservation* t) {
   u16 i;
   u16* src = t->src;
   u16* dst = t->dst;
@@ -682,7 +628,6 @@ WIP void GameLoop(void) {
 #endif
 }
 
-#if MODERN == 0
 // Processes 全てに対して、GameLoop でスケジューリングされないようにする
 static void unused_DisableAllProcesses(void) {
   struct Process* proc = gProcessManager.processes;
@@ -695,7 +640,6 @@ static void unused_DisableAllProcesses(void) {
     proc = &proc[1];
   } while (i < 3);
 }
-#endif
 
 void ResetProcess(s32 i, void* fn) {
   struct Process* p = &gProcessManager.processes[i];

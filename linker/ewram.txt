@@ -1,0 +1,2 @@
+		src/ewram.o (ewram_data);
+		src/sound.o (ewram_data);

@@ -32,7 +32,7 @@ static const MinigameLoopFunc sMinigameInitializers[MINIGAME_COUNT] = {
 static void MinigameLoop_InitMinigame(struct GameState* g) {
   struct Pivot* pivot = &g->unk_0db8;
   gPaletteManager.filter[0] = gPaletteManager.filter[1] = gPaletteManager.filter[2] = 0x20;
-  gPaletteManager.unk_408 = NULL;
+  gPaletteManager.post_process = NULL;
   ClearBlinkings();
   gBlendRegBuffer.bldclt = 0;
   gWindowRegBuffer.dispcnt = 0;

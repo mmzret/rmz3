@@ -7,8 +7,6 @@ void getDiskInStageRun(u8 n);
 void SaveGraphicState(struct GameState* g);
 void RestoreGraphicState(struct GameState* g);
 
-#define IS_DISK_UNLOCKED(flags, diskid) ((flags[diskid >> 2] & 0x0F) >> (diskid & 3))
-
 void OverworldLoop_CerveauTalk(struct GameState* g) {
   switch (g->mode[3]) {
     default: {

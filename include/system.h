@@ -43,15 +43,17 @@ struct SystemBuffer {
 
 // 0x03001590
 struct InterruptManager {
-  VoidFunc table[14];  // 0x080fec74 の内容がコピーされる
+  VoidFunc table[14];  // 0x080fec74 の内容がコピーされる (idx = GBAの割り込み番号)
   u32 main[72];        // IntrMain(0x080001bc) が ここにコピーされる
-  VoidFunc vblankCallback;
-  VoidFunc hblankCallback;
+  void (*vblankCallback)(void);
+  void (*hblankCallback)(void);
   u32 frame;          // ゲーム開始時から経過したフレーム数
   vu8 frame2;         // ゲーム速度コントロール用のフレームカウンタ, VBlank割り込みのたびにインクリメントされる
   vu8 slowGameRatio;  // この値をxにするとゲームスピードが 1/x になる
   u8 lyc;
   u8 intrLock;
+
+  // PCM関連?
   u32 dma0[3];
   u32 reservedDma0[3];
   struct TransferReservation tr[2];
@@ -70,7 +72,6 @@ struct ProcessManager {
 
 extern void* StackFramePointer;
 extern struct SystemBuffer gSystemBuffer;
-extern const VoidFunc HBlankIntrs[3];
 extern struct InterruptManager gIntrManager;
 extern u32 u32_020014e0;
 extern struct ProcessManager gProcessManager;
@@ -110,7 +111,5 @@ void ReturnToGameLoop(void* p);
 void returnCallProcess(u32* fn, u32* sp, void* lr);
 void exec(void* fn);
 void CallProcess(struct Process* proc, void* fn, void* sp, void* pSp);
-
-void _transferByHand(struct TransferReservation* t);
 
 #endif  // GUARD_RMZ3_SYSTEM_H

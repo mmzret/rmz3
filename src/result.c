@@ -1219,7 +1219,7 @@ _0802498E:\n\
 	ldr r0, _080249E4 @ =gGameState\n\
 	adds r1, r2, #0\n\
 	movs r2, #1\n\
-	bl openSecretDisk\n\
+	bl OpenSecretDisk\n\
 	lsls r0, r0, #0x10\n\
 	lsrs r5, r0, #0x10\n\
 	cmp r5, #0\n\

@@ -173,7 +173,7 @@ void InitPaletteManager(void) {
   DmaCopy32(3, &gPaletteManager, PLTT, PLTT_SIZE);
   gPaletteManager.filter[0] = gPaletteManager.filter[1] = gPaletteManager.filter[2] = 0x20;
   gPaletteManager.unk_406 = 0;
-  gPaletteManager.unk_408 = NULL;
+  gPaletteManager.post_process = NULL;
 }
 
 static void gfx_08003cf0(struct PaletteManager* pal, u32* dst, u32 colorData, u32* mask);
@@ -228,8 +228,8 @@ WIP void flashPalette_08003b24(void) {
     DmaFill16(3, 0xFFFF, PLTT + gPaletteManager.unk_404, gPaletteManager.unk_406);
     gPaletteManager.unk_406 = 0;
   }
-  if (gPaletteManager.unk_408 != NULL) {
-    gPaletteManager.unk_408();
+  if (gPaletteManager.post_process != NULL) {
+    gPaletteManager.post_process();
   }
 #else
   INCCODE("asm/wip/flashPalette_08003b24.inc");

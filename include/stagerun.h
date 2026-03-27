@@ -9,6 +9,13 @@
 #include "script.h"
 #include "task.h"
 
+#define IS_DISK_UNLOCKED(flagbits, disk_id) ((flagbits[disk_id >> 2] & 0x0F) >> (disk_id & 3))
+
+#define UNLOCK_DISK(flagbits, disk_id)                    \
+  {                                                       \
+    (flagbits)[(disk_id) >> 2] |= (1 << ((disk_id) & 3)); \
+  }
+
 // StageRun.missionStatus
 #define MISSION_STAY (1 << 0)
 #define STOP_TIME_COUNT (1 << 2)
@@ -63,7 +70,7 @@ struct StageRun {
 
 // 0x0203dc50
 struct StageDiskManager {
-  u8* disk;             // -> 0x02036e78
+  u8* disk;             // = SaveSlot.disk (addr: 0x02036e78)
   u8 stageDiskIDs[10];  // ステージ中で取得したシークレットディスクのIDの配列, フリーランしたときに今まで取ったディスクのIDがなかったのでステージランごとの記録
   u8 stageDiskCount;    // ステージ中で取得したシークレットディスクの枚数
   u8 _;

@@ -122,7 +122,7 @@ _080EF082:
 	movs r2, #0x82
 	movs r3, #0
 	bl LoadBgMap
-	bl CancelCyberSpaceColorFilter
+	bl DisableCyberSpaceColorFilter
 	movs r0, #0x89
 	lsls r0, r0, #1
 	bl PlaySound
@@ -198,7 +198,7 @@ _080EF18C: .4byte gMission
 _080EF190:
 	strb r3, [r1, #7]
 _080EF192:
-	bl ApplyCyberSpaceColorFilter
+	bl EnableCyberSpaceColorFilter
 	b _080EF1D2
 _080EF198:
 	ldr r2, _080EF1C0 @ =gCurStory
@@ -206,7 +206,7 @@ _080EF198:
 	movs r0, #0xef
 	ands r0, r1
 	strb r0, [r2, #4]
-	bl CancelCyberSpaceColorFilter
+	bl DisableCyberSpaceColorFilter
 	ldr r0, _080EF1C4 @ =gOverworld
 	movs r2, #0xe8
 	lsls r2, r2, #1

@@ -62,6 +62,7 @@ struct PlayInfo {
   u8 _[3];
 };  // 80 bytes
 
+// これ全部 bitfield で struct じゃなくて u8[84] の方が適切かもしれん
 struct Story {
   u16 id;  // stageID と思ってたけど違うかもしれない
   u16 pad_02;
