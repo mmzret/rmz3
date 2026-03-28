@@ -291,8 +291,7 @@ static void initRicochet(struct VFX* p) {
   Ghost5_Update(p);
 }
 
-WIP static void initWallDust(struct VFX* p) {
-#if MODERN
+static void initWallDust(struct VFX* p) {
   InitNonAffineMotion(&p->s);
   (p->s).flags |= DISPLAY;
   (p->s).flags |= FLIPABLE;
@@ -301,9 +300,7 @@ WIP static void initWallDust(struct VFX* p) {
   SetMotion(&p->s, MOTION(SM000_BATTLE_EFFECT, 27));
   RNG_0202f388 = LCG(RNG_0202f388);
 
-  (p->s).flags &= ~Y_FLIP;
-  (p->s).spr.yflip = FALSE;
-  (p->s).spr.oam.yflip = FALSE;
+  SET_YFLIP(p, FALSE);
   {
     RNG_0202f388 = LCG(RNG_0202f388);
     (p->s).coord.x += PIXEL(((RNG_0202f388 >> 16) & 3) - 2);
@@ -312,9 +309,6 @@ WIP static void initWallDust(struct VFX* p) {
   }
   SET_VFX_ROUTINE(p, ENTITY_UPDATE);
   Ghost5_Update(p);
-#else
-  INCCODE("asm/wip/initWallDust.inc");
-#endif
 }
 
 static void FUN_080b3e08(struct VFX* p) {

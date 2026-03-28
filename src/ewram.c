@@ -42,7 +42,8 @@ EWRAM_DATA u8 u8_02000008 = 0;
 EWRAM_DATA u8 sChecksumAvailable = 0;
 EWRAM_DATA u16 sSendNonzeroCheck = 0;
 EWRAM_DATA u16 sRecvNonzeroCheck = 0;
-EWRAM_DATA ALIGNED(4) struct SaveHeader gSaveHeader = {};
+
+EWRAM_DATA ALIGNED(16) struct SaveHeader gSaveHeader = {};
 
 EWRAM_DATA SoundID SoundID1 = MUS_DUMMY;
 EWRAM_DATA SoundID SoundID2 = MUS_DUMMY;
@@ -86,10 +87,9 @@ EWRAM_DATA ALIGNED(16) struct Link gLink = {};  // 0x02001510
 EWRAM_DATA ALIGNED(16) struct KeyState gJoypad[2] = {};
 EWRAM_DATA struct SramState gSramState = {};  // 02001ee0
 
-EWRAM_DATA struct GraphicTransferManager gGraphicTransferManager = {};
-EWRAM_DATA u8 Unk_02001fd4[12] = {};  // gGraphicTransferManager の一部？
+EWRAM_DATA ALIGNED(16) struct GraphicTransferManager gGraphicTransferManager = {};
 
-EWRAM_DATA struct BlinkManager gBlinkManager = {};
+EWRAM_DATA ALIGNED(16) struct BlinkManager gBlinkManager = {};
 
 EWRAM_DATA struct WramVideoRegister gVideoRegBuffer = {};
 EWRAM_DATA u8 Unk_0200215c[36] = {};  // 0x0200215c..0x0200217F
@@ -174,15 +174,17 @@ EWRAM_DATA struct HUD gHUD = {};
 EWRAM_DATA struct TextWindow gTextWindow = {};
 
 EWRAM_DATA struct Intro gIntro = {};
-EWRAM_DATA struct UnkMmbn4 gUnkMmbn4 = {};
-EWRAM_DATA struct GameState gGameState = {};
-EWRAM_DATA struct Elf gElfEntities[16] = {};
-EWRAM_DATA struct Zero gZero = {};
-EWRAM_DATA u32 _padding_02037eec = 0;
-EWRAM_DATA struct Pickup gPickups[10] = {};
-EWRAM_DATA u8 _unused_02038698[2360] = {};
-EWRAM_DATA struct Weapon gWeapons[24] = {};  // 武器というよりはゼロの武器による攻撃
-EWRAM_DATA struct Solid gSolids[22] = {};
+EWRAM_DATA u32 gUnkMmbn4 = 0;  // 0x02030b54
+EWRAM_DATA ALIGNED(16) struct GameState gGameState = {};
+EWRAM_DATA ALIGNED(16) struct Elf gElfEntities[16] = {};
+EWRAM_DATA ALIGNED(16) struct Zero gZero = {};
+EWRAM_DATA ALIGNED(16) struct Pickup gPickups[10] = {};
+
+EWRAM_DATA ALIGNED(16) u8 _unused_020386a0[2352] = {};  // もともともう1種類Entityがあったのかも
+
+EWRAM_DATA ALIGNED(16) struct Weapon gWeapons[24] = {};  // 武器というよりはゼロの武器による攻撃
+EWRAM_DATA ALIGNED(16) struct Solid gSolids[22] = {};
 EWRAM_DATA ALIGNED(16) struct Boss gBosses[5] = {};
 EWRAM_DATA ALIGNED(16) struct Widget gWidgets[64] = {};
-EWRAM_DATA struct StageDiskManager gStageDiskManager = {};
+
+EWRAM_DATA ALIGNED(16) struct StageDiskManager gStageDiskManager = {};

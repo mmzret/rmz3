@@ -37,7 +37,7 @@ WIP void AgbMain(void) {
   ResetWindow();
   ClearMOSAIC();
   InitSound();
-  MaskBg0(gGameState.bg0, SCREEN_BASE(0), 1408, 0x3C0);
+  MaskBg0(gGameState.bg0, SCREEN_BASE_16(0), 1408, 0x3C0);
   InitTextPrinter(gGameState.bg0);
   PALETTE16(0) = RGB_WHITE;
   gIntrManager.slowGameRatio = 1;

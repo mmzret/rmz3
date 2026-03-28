@@ -54,6 +54,18 @@
     (((struct Entity*)enti)->spr).oam.xflip = __xflip__; \
   }
 
+#define SET_YFLIP(enti, value)                           \
+  {                                                      \
+    bool8 __yflip__ = (value);                           \
+    if (__yflip__) {                                     \
+      ((struct Entity*)enti)->flags |= Y_FLIP;           \
+    } else {                                             \
+      ((struct Entity*)enti)->flags &= ~Y_FLIP;          \
+    }                                                    \
+    (((struct Entity*)enti)->spr).yflip = __yflip__ & 1; \
+    (((struct Entity*)enti)->spr).oam.yflip = __yflip__; \
+  }
+
 #define INIT_BODY(p, collisions, hp, onCollision)  \
   {                                                \
     struct Body* body;                             \

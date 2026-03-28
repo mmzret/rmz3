@@ -4,12 +4,6 @@
 #include "constants/constants.h"
 #include "types.h"
 
-// 0x02030b54
-struct UnkMmbn4 {
-  u32 unk_00;
-  u8 _[8];
-};
-
 struct Unk_02000d50 {
   u8 unk_00;
   u8 unk_01;
@@ -45,7 +39,7 @@ struct Unk_080006c8 {
   u8 _[3];
 };
 
-extern struct UnkMmbn4 gUnkMmbn4;
+extern u32 gUnkMmbn4;
 extern struct Unk_02000d50 gUnk02000d50;
 
 void sio_0800100c(void);

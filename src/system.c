@@ -42,11 +42,10 @@ static const VoidFunc gIntrTableTemplate[14] = {
     VBlankIntr, IntrDummy, VCountIntr, IntrDummy, IntrDummy, IntrDummy, Timer3Intr, SerialCB, IntrDummy, IntrDummy, IntrDummy, IntrDummy, IntrDummy, IntrDummy,
 };
 
-WIP void Process_SoftReset(struct Process* _ UNUSED) {
-#if MODERN
+void Process_SoftReset(struct Process* _ UNUSED) {
   gIntrManager.slowGameRatio = 1;
   ResetVideoRegister();
-  MaskBg0(gGameState.bg0, SCREEN_BASE(0), 1408, 0x3C0);
+  MaskBg0(gGameState.bg0, SCREEN_BASE_16(0), 1408, 0x3C0);
   gJoypad[0].field6_0x14 = 24;
   gJoypad[0].field7_0x15 = 4;
   gJoypad[1].field6_0x14 = 24;
@@ -71,9 +70,6 @@ WIP void Process_SoftReset(struct Process* _ UNUSED) {
   }
   SwitchProcess(TRUE);
   exec(Process_Intro);
-#else
-  INCCODE("asm/wip/Process_SoftReset.inc");
-#endif
 }
 
 WIP NORETURN void Process_System(struct Process* p) {

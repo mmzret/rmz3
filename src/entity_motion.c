@@ -104,7 +104,7 @@ NON_MATCH void SetMotion(struct Entity* p, motion_t m) {
       (p->motion).cmds = *(const struct MotionCmd***)((void*)gStaticMotionCmdTable + ((u32)id << 2));         // = gStaticMotionCmdTable[id]
       (p->spr).sprites = *(struct MetaspriteHeader**)((void*)gStaticMotionMetaspriteTable + ((u32)id << 2));  // = gStaticMotionMetaspriteTable[id];
     }
-    p->motionID = id;
+    p->motionID = id;  // ここら辺のレジスタの割り当てがあわない
   }
 
   if ((p->flags2 & DYNAMIC) == 0) {
