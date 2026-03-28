@@ -558,13 +558,20 @@
         src/game/main_overworld.o (.rodata);
         src/game/main_overworld/cmd_room_talk.o (.rodata);
         src/game/main_overworld/sunken_library_search.o (.rodata);
-		  src/game/menu.o (.rodata);
-		    src/game/menu/main.o (.rodata);
-		    src/game/menu/keyconfig.o (.rodata);
-		    src/game/menu/elf.o (.rodata);
-		    src/game/menu/exskill.o (.rodata);
-		  src/game/analysis.o (.rodata);
-		  src/game/minigame.o (.rodata);
+      src/game/menu.o (.rodata);
+        src/game/menu/main.o (.rodata);
+        src/game/menu/keyconfig.o (.rodata);
+        src/game/menu/elf.o (.rodata);
+        src/game/menu/exskill.o (.rodata);
+      src/game/analysis.o (.rodata);
+      src/game/minigame.o (.rodata);
+        src/game/minigame/zero.o (.rodata);
+        src/game/minigame/ciel.o (.rodata);
+        src/game/minigame/copy_x.o (.rodata);
+        src/game/minigame/harpuia.o (.rodata);
+        src/game/minigame/fefnir.o (.rodata);
+        src/game/minigame/leviathan.o (.rodata);
+        src/game/minigame/phantom.o (.rodata);
 		FILL(0xFF)
 		. += 106244;
 

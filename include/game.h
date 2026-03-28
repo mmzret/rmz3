@@ -90,6 +90,7 @@ struct GameState {
   struct Coord unk_0dc4;
 
   union {
+    u8 raw[256];
     struct MenuState menu;
     struct ResultState result;
     struct MinigameState minigame;

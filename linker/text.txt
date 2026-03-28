@@ -453,3 +453,10 @@
         src/game/menu/exskill.o (.text);
       src/game/analysis.o (.text);
       src/game/minigame.o (.text);
+        src/game/minigame/zero.o (.text);
+        src/game/minigame/ciel.o (.text);
+        src/game/minigame/copy_x.o (.text);
+        src/game/minigame/harpuia.o (.text);
+        src/game/minigame/fefnir.o (.text);
+        src/game/minigame/leviathan.o (.text);
+        src/game/minigame/phantom.o (.text);
