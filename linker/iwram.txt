@@ -1,0 +1,5 @@
+		src/system.o (iwram_data);
+		src/gfx.o (iwram_data);
+		src/collision.o (iwram_data);
+		src/entity_manager.o (iwram_data);
+		src/iwram.o (iwram_data);

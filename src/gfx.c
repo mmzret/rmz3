@@ -4,6 +4,9 @@
 #include "global.h"
 #include "motion.h"
 
+IWRAM_DATA struct PaletteManager gPaletteManager = {};
+IWRAM_DATA struct OamManager gOamManager = {};
+
 /**
  * @brief VRAM全体を 0x11111111 で埋める (Reset VRAM by filling 0x11111111)
  */

@@ -60,9 +60,8 @@ EWRAM_DATA u16 gWeaponElements[4] = {};
 
 EWRAM_DATA u16 gCyberSpaceColorHashtable[96] = {};  // 0x02000048, 元のRGB555 の各色　を足した値をインデックスにして、変換後のRGB555の色を返すテーブル
 EWRAM_DATA u8 gUnkSineTableIdx = 0;
-EWRAM_DATA ALIGNED(1) u8 _unused_02000109[7] = {};
 
-EWRAM_DATA u8 Unk_02000110[664] = {};  // 0x2000110..0x020003a8
+EWRAM_DATA ALIGNED(16) u8 Unk_02000110[664] = {};  // 0x2000110..0x020003a8
 EWRAM_DATA struct SaveSlot SaveState_020003a8 = {};
 EWRAM_DATA struct SaveSlotInfo gSaveSlotInfo = {};
 
@@ -82,11 +81,9 @@ EWRAM_DATA ALIGNED(4) u16 u16_020014f4 = 0;
 EWRAM_DATA ALIGNED(4) u8 gLastRecvQueueCount = 0;
 EWRAM_DATA ALIGNED(4) u8 u8_ARRAY_020014fc[4] = {};
 EWRAM_DATA u8 u8_02001500 = 0;
-EWRAM_DATA ALIGNED(1) u8 unused_02001501[15] = {};
-EWRAM_DATA struct Link gLink = {};
-EWRAM_DATA u8 unused_02001ea8[8] = {};
+EWRAM_DATA ALIGNED(16) struct Link gLink = {};  // 0x02001510
 
-EWRAM_DATA struct KeyState gJoypad[2] = {};
+EWRAM_DATA ALIGNED(16) struct KeyState gJoypad[2] = {};
 EWRAM_DATA struct SramState gSramState = {};  // 02001ee0
 
 EWRAM_DATA struct GraphicTransferManager gGraphicTransferManager = {};
@@ -97,28 +94,22 @@ EWRAM_DATA struct BlinkManager gBlinkManager = {};
 EWRAM_DATA struct WramVideoRegister gVideoRegBuffer = {};
 EWRAM_DATA u8 Unk_0200215c[36] = {};  // 0x0200215c..0x0200217F
 EWRAM_DATA struct WramBlendRegister gBlendRegBuffer = {};
-EWRAM_DATA u8 _unused_02002188[8] = {};
-EWRAM_DATA struct WramWindowRegister gWindowRegBuffer = {};
+EWRAM_DATA ALIGNED(16) struct WramWindowRegister gWindowRegBuffer = {};
 EWRAM_DATA u16 wMOSAIC = 0;
 
 EWRAM_DATA u32 gSongCount = 0;
-EWRAM_DATA u8 Unk_020021a8[8] = {};
 
-EWRAM_DATA struct SystemSavedataManager gSystemSavedataManager = {};
-EWRAM_DATA struct Overworld gOverworld = {};
+EWRAM_DATA ALIGNED(16) struct SystemSavedataManager gSystemSavedataManager = {};  // 0x020021b0
+EWRAM_DATA ALIGNED(16) struct Overworld gOverworld = {};
+
+// ResetEntityEnvironment でリセットしてるので塊？ (オフセットではなく、個別のアドレスでそれぞれアクセスしているので構造体ではなさそうだ)
 EWRAM_DATA bool8 gIsPlayDamageSE = FALSE;
 EWRAM_DATA s32 s32_0202f334 = 0;
 EWRAM_DATA bool8 gInTransport = FALSE;        // オペレータによる転送 or ファントムトランスポータルによる転送中
 EWRAM_DATA ALIGNED(4) u16 gTimeElfTimer = 0;  // ストパーラ系の効果持続時間の残り
 EWRAM_DATA struct Zero* pZero2 = NULL;
-EWRAM_DATA u8 wPauseFrame = 0;  // 030032e2 のコピー
-
-/*
-  NPCと会話中に立つフラグ
-  会話中にここを0にするとメッセージウィンドウは消えないがゼロを自由に動かせるようになる
-  080232c8 と関連
-*/
-EWRAM_DATA ALIGNED(4) u8 gInChat = 0;
+EWRAM_DATA u8 wPauseFrame = 0;         // 030032e2 のコピー
+EWRAM_DATA ALIGNED(4) u8 gInChat = 0;  // NPCと会話中に立つフラグ? (会話中にここを0にするとメッセージウィンドウは消えないがゼロを自由に動かせるようになった, 080232c8 と関連)
 EWRAM_DATA ALIGNED(4) u8 gEntityIDGenerator = 0;
 EWRAM_DATA ALIGNED(4) bool8 gPause = 0;          // これがtrueのとき画面がpause状態(回復中のような状態)になる
 EWRAM_DATA ALIGNED(4) u8 gMatrixCount = 0;       // Affine変換を行うオブジェクトの数
@@ -177,9 +168,8 @@ EWRAM_DATA struct EntityHeader* gElfHeaderPtr = NULL;
 EWRAM_DATA u8 (*gUnlockedElfPtr)[CYBERELF_LENGTH] = NULL;  // 0x02036ed8 を指す
 
 EWRAM_DATA struct EntityHeader* gWidgetHeaderPtr = NULL;
-EWRAM_DATA u8 Unk_02030304[12] = {};
 
-EWRAM_DATA struct TextPrinter gTextPrinter = {};
+EWRAM_DATA ALIGNED(16) struct TextPrinter gTextPrinter = {};
 EWRAM_DATA struct HUD gHUD = {};
 EWRAM_DATA struct TextWindow gTextWindow = {};
 
@@ -193,8 +183,6 @@ EWRAM_DATA struct Pickup gPickups[10] = {};
 EWRAM_DATA u8 _unused_02038698[2360] = {};
 EWRAM_DATA struct Weapon gWeapons[24] = {};  // 武器というよりはゼロの武器による攻撃
 EWRAM_DATA struct Solid gSolids[22] = {};
-EWRAM_DATA u8 _unused_0203b6c8[8] = {};
-EWRAM_DATA struct Boss gBosses[5] = {};
-EWRAM_DATA u8 _unused_0203bb44[12] = {};
-EWRAM_DATA struct Widget gWidgets[64] = {};
+EWRAM_DATA ALIGNED(16) struct Boss gBosses[5] = {};
+EWRAM_DATA ALIGNED(16) struct Widget gWidgets[64] = {};
 EWRAM_DATA struct StageDiskManager gStageDiskManager = {};

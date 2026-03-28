@@ -26,6 +26,17 @@ static void transferData(void);
 
 extern const VoidFunc gHBlankIntrs[];
 
+// Malloc(0x08001b14)で確保される汎用メモリ領域
+struct SystemBuffer {
+  u32 buf[2][576];  // フレームごとにダブルバッファリングされる
+  u16 ofs;          // buf[.idx]で空の領域の先頭を指す
+  u16 idx;          // buf0とbuf1のどっちを使っているか
+};
+IWRAM_DATA struct SystemBuffer gSystemBuffer = {};  // 0x03000380..
+
+IWRAM_DATA ALIGNED(16) struct InterruptManager gIntrManager = {};
+IWRAM_DATA ALIGNED(16) struct ProcessManager gProcessManager = {};
+
 // 0x080fec74
 static const VoidFunc gIntrTableTemplate[14] = {
     VBlankIntr, IntrDummy, VCountIntr, IntrDummy, IntrDummy, IntrDummy, Timer3Intr, SerialCB, IntrDummy, IntrDummy, IntrDummy, IntrDummy, IntrDummy, IntrDummy,
@@ -118,16 +129,14 @@ void usrVBlankCallback(void) {
   FUN_080044a0();
 }
 
-// 0x0300_0000 ~ 0x0300_7e00 までを0クリア
 void ClearMemory(void) {
-  REG_WAITCNT = 0x45B7;
+  REG_WAITCNT = WAITCNT_PREFETCH_ENABLE | (WAITCNT_WS2_S_1 | WAITCNT_WS2_N_3) | (WAITCNT_WS1_S_1 | WAITCNT_WS1_N_3) | (WAITCNT_WS0_S_1 | WAITCNT_WS0_N_3) | WAITCNT_SRAM_8;
 #if MODERN
-  // TODO: ClearMemory
-  // スタックに戻り先を入れているがIWRAMがゼロクリアされるので戻り先も0クリアされクラッシュする
+  // Modern compilers are liberal with the stack on entry to AgbMain, so game crash if it resets IWRAM.
 #else
-  DmaFill32(3, 0, (void*)IWRAM, 0x7E00);
+  DmaFill32(3, 0, (void*)IWRAM, IWRAM_SIZE - 512);  // 0x0300_0000 ~ 0x0300_7e00 までを0クリア
 #endif
-  DmaFill32(3, 0, (void*)EWRAM, 0x40000);
+  DmaFill32(3, 0, (void*)EWRAM, EWRAM_SIZE);
   gSystemBuffer.idx = 0;
   gSystemBuffer.ofs = 0;
 }

@@ -34,13 +34,6 @@ struct TransferReservation {
   u16 _;
 };  // 36 bytes
 
-// Malloc(0x08001b14)で確保される汎用メモリ領域(0x03000380)
-struct SystemBuffer {
-  u32 buf[2][576];
-  u16 ofs;  // buf[.idx]で空の領域の先頭を指す
-  u16 idx;  // buf0とbuf1のどっちを使っているか
-};
-
 // 0x03001590
 struct InterruptManager {
   VoidFunc table[14];  // 0x080fec74 の内容がコピーされる (idx = GBAの割り込み番号)
@@ -71,7 +64,6 @@ struct ProcessManager {
 };
 
 extern void* StackFramePointer;
-extern struct SystemBuffer gSystemBuffer;
 extern struct InterruptManager gIntrManager;
 extern u32 u32_020014e0;
 extern struct ProcessManager gProcessManager;

@@ -1,9 +1,10 @@
 #include "entity.h"
 
-NON_MATCH void InitEntityHeader(struct EntityHeader* h, s8 kind, struct Entity* arr, s16 size, s16 count) {
-#if MODERN
-  struct Entity* free;
+IWRAM_DATA struct Projectile gProjectiles[24] = {};
+IWRAM_DATA struct Enemy gEnemies[18] = {};
+IWRAM_DATA ALIGNED(16) struct VFX gVFXs[64] = {};
 
+void InitEntityHeader(struct EntityHeader* h, s8 kind, struct Entity* arr, s16 size, s16 count) {
   h->arr = arr;
   h->type = kind;
   h->size = size;
@@ -13,19 +14,12 @@ NON_MATCH void InitEntityHeader(struct EntityHeader* h, s8 kind, struct Entity* 
   h->free = NULL;
   h->remaining = count;
 
-  free = h->free;
-  while (count > 0) {
-    struct Entity* cur = arr;
-    cur->next = free;
-    cur->kind = kind;
-    free = cur;
-    arr = (struct Entity*)((u8*)arr + size);
-    count--;
-    h->free = free;
+  for (; count > 0; --count) {
+    arr->next = h->free;
+    h->free = arr;
+    arr->kind = kind;
+    arr = (struct Entity*)((void*)arr + size);
   }
-#else
-  INCCODE("asm/wip/InitEntityHeader.inc");
-#endif
 }
 
 // 0x08006F24

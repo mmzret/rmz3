@@ -3,6 +3,8 @@
 #include "global.h"
 #include "task.h"
 
+// リンクされる場所的に カプコン か インティクリエイツ で使いまわしてるライブラリの可能性がある (= ビルドフラグとか色々違う可能性がある)
+
 extern const u8* const sSpriteSize[2];
 extern const u8* const sAffineSpriteSize[2];
 

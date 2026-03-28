@@ -3,11 +3,13 @@
 #include "global.h"
 #include "story.h"
 
+IWRAM_DATA struct CollisionManager gCollisionManager = {};
+
 static void TrySweepBodies(void);
-static void checkOverlap1(struct Hitbox *ah, struct Hitbox *dh);
-static void checkOverlap2(struct Hitbox *ah, struct Hitbox *dh);
-static void tryOverlapCallback1(struct Hitbox *ah, struct Hitbox *dh);
-static void tryOverlapCallback2(struct Hitbox *ah, struct Hitbox *dh);
+static void checkOverlap1(struct Hitbox* ah, struct Hitbox* dh);
+static void checkOverlap2(struct Hitbox* ah, struct Hitbox* dh);
+static void tryOverlapCallback1(struct Hitbox* ah, struct Hitbox* dh);
+static void tryOverlapCallback2(struct Hitbox* ah, struct Hitbox* dh);
 
 // atkにかけられる値(肉質,弱点属性)
 static const s32 sDamageScale[9][4] = {
@@ -15,7 +17,7 @@ static const s32 sDamageScale[9][4] = {
 };
 
 // 0x08007074
-static void unused_Clear24Bytes(u32 *p) {
+static void unused_Clear24Bytes(u32* p) {
   p[0] = p[1] = p[2] = p[3] = p[4] = p[5] = 0;
   return;
 }
@@ -29,7 +31,7 @@ void ResetCollisionManager(void) {
 
 // 030038e4 から 36バイト を0クリア
 void ClearAllHitboxes(void) {
-  void *dest;
+  void* dest;
   gCollisionManager.length = 0;
 
   dest = &gCollisionManager.list[0][0];
@@ -64,7 +66,7 @@ void CheckCollision(void) {
   checkOverlap2(gCollisionManager.list[DDP][FACTION_NEUTRAL], gCollisionManager.list[DRP][FACTION_NEUTRAL]);
 }
 
-void InitBody(struct Body *p, const struct Collision *collisions, struct Coord *coord, s16 hp) {
+void InitBody(struct Body* p, const struct Collision* collisions, struct Coord* coord, s16 hp) {
   p->status = 0;
   p->prevStatus = 0;
   p->invincibleTime = 0;
@@ -73,18 +75,18 @@ void InitBody(struct Body *p, const struct Collision *collisions, struct Coord *
   p->fn = NULL;
   p->unk_28 = 0;
   p->parent = NULL;
-  *(u32 *)&p->invincibleTime = 0;
+  *(u32*)&p->invincibleTime = 0;
 
   SetDDP(p, collisions);
 }
 
-void SetDDP(struct Body *p, const struct Collision *collisions) {
+void SetDDP(struct Body* p, const struct Collision* collisions) {
   p->collisions = collisions;
   p->hardness = 0;
   p->forceFlags = 0;
 }
 
-void InitWeaponBody(struct Body *o, const struct Collision *hitbox, s16 atk, s16 elementID, s16 nature, s16 comboLv) {
+void InitWeaponBody(struct Body* o, const struct Collision* hitbox, s16 atk, s16 elementID, s16 nature, s16 comboLv) {
   u32 forceFlags;
 
   o->collisions = hitbox;
@@ -102,7 +104,7 @@ void InitWeaponBody(struct Body *o, const struct Collision *hitbox, s16 atk, s16
 }
 
 #if MODERN == 0
-static void SetDDP_Unused(struct Body *o, const struct Collision *hitbox, u8 r2) {
+static void SetDDP_Unused(struct Body* o, const struct Collision* hitbox, u8 r2) {
   o->collisions = hitbox;
   o->hardness = r2;
   o->forceFlags = 0;
@@ -110,10 +112,10 @@ static void SetDDP_Unused(struct Body *o, const struct Collision *hitbox, u8 r2)
 #endif
 
 // 毎フレーム呼び出されて、gCollisionManager に body が持つ Collisionのリンクリストを1つずつ登録していく
-WIP void ResisterNonAffineHitbox(struct Body *body) {
+WIP void ResisterNonAffineHitbox(struct Body* body) {
 #if MODERN
-  struct Collision *collisions = (struct Collision *)body->collisions;
-  struct Coord *c = body->coord;
+  struct Collision* collisions = (struct Collision*)body->collisions;
+  struct Coord* c = body->coord;
   if ((body->invincibleTime & 0x7F) != 0) {
     body->invincibleTime = (body->invincibleTime & 0x80) | ((body->invincibleTime & 0x7F) - 1);
   }
@@ -123,7 +125,7 @@ WIP void ResisterNonAffineHitbox(struct Body *body) {
       body->status = 0;
     } else {
       u32 i;
-      struct Hitbox *h;
+      struct Hitbox* h;
       while (gCollisionManager.length < 64) {
         i = gCollisionManager.length;
         h = &gCollisionManager.buf[i];
@@ -151,10 +153,10 @@ WIP void ResisterNonAffineHitbox(struct Body *body) {
 #endif
 }
 
-WIP void RegisterFlipableHitbox(struct Body *body, u8 flip) {
+WIP void RegisterFlipableHitbox(struct Body* body, u8 flip) {
 #if MODERN
-  struct Collision *collisions = (struct Collision *)body->collisions;
-  struct Coord *c = body->coord;
+  struct Collision* collisions = (struct Collision*)body->collisions;
+  struct Coord* c = body->coord;
   if ((body->invincibleTime & 0x7F) != 0) {
     body->invincibleTime = (body->invincibleTime & 0x80) | ((body->invincibleTime & 0x7F) - 1);
   }
@@ -163,7 +165,7 @@ WIP void RegisterFlipableHitbox(struct Body *body, u8 flip) {
     if ((collisions[0].damage != 0) || (collisions[0].hitzone != 0)) {
       for (; gCollisionManager.length < 64;) {
         s32 i = gCollisionManager.length++;
-        struct Hitbox *h = &gCollisionManager.buf[i];
+        struct Hitbox* h = &gCollisionManager.buf[i];
         h->body = body;
         h->collisions = collisions;
         if (flip & (X_FLIP >> 4)) {
@@ -194,7 +196,7 @@ WIP void RegisterFlipableHitbox(struct Body *body, u8 flip) {
 #endif
 }
 
-NAKED void RegisterScalerotHitbox(struct Body *o, u32 r1, u32 r2) {
+NAKED void RegisterScalerotHitbox(struct Body* o, u32 r1, u32 r2) {
   asm(".syntax unified\n\
 	push {r4, r5, r6, r7, lr}\n\
 	mov r7, sl\n\
@@ -386,9 +388,9 @@ _080075BC: .4byte gCollisionManager\n\
       例: (r0, r1) = (0x030058F8, 0x02037CD4)
     返り値: 実際のダメージ
 */
-WIP u16 CalcDamage(struct Body *a, struct Body *d) {
+WIP u16 CalcDamage(struct Body* a, struct Body* d) {
 #if MODERN
-  const struct Collision *processing = d->processing;
+  const struct Collision* processing = d->processing;
   const u8 hardness = processing->hardness | d->hardness;
 
   if (!(gCollisionManager.disabled & 0x80) && (processing->hitzone != 0xFF) && !(hardness & NO_DAMAGE)) {
@@ -422,7 +424,7 @@ WIP u16 CalcDamage(struct Body *a, struct Body *d) {
 }
 
 // ドアフラグはここで立ててる
-WIP void hitbox_08007674(struct Body *a, struct Body *d) {
+WIP void hitbox_08007674(struct Body* a, struct Body* d) {
 #if MODERN
   if (gCollisionManager.disabled & (1 << 7)) {
     return;
@@ -636,7 +638,7 @@ WIP void hitbox_08007674(struct Body *a, struct Body *d) {
 #endif
 }
 
-static bool8 unused_08007b80(struct Body *a, struct Body *d) {
+static bool8 unused_08007b80(struct Body* a, struct Body* d) {
   const u8 hardness = (d->processing)->hardness | d->hardness;
   if (gCollisionManager.disabled & (1 << 7)) {
     return FALSE;
@@ -666,7 +668,7 @@ static bool8 unused_08007b80(struct Body *a, struct Body *d) {
   return TRUE;
 }
 
-u16 CalcPutitedSpikeDamage(struct Body *body, u8 damage) {
+u16 CalcPutitedSpikeDamage(struct Body* body, u8 damage) {
   const u8 hardness = (body->processing)->hardness | body->hardness;
   if (gCollisionManager.disabled & (1 << 7)) {
     return 0;
@@ -714,9 +716,9 @@ static void TrySweepBodies(void) {
   s32 faction;
   for (faction = 0; faction < 3; faction++) {
     if ((gCollisionManager.sweep >> faction) & 1) {
-      struct Hitbox *hitbox = gCollisionManager.list[DRP][faction];
+      struct Hitbox* hitbox = gCollisionManager.list[DRP][faction];
       for (; hitbox != NULL; hitbox = hitbox->next) {
-        struct Body *body;
+        struct Body* body;
         (hitbox->body)->elemented = 0;
 
         if (hitbox->body->hp != 0) {
@@ -736,11 +738,11 @@ static void TrySweepBodies(void) {
  * @param dh DRP2's hitbox info
  * @note 0x08007d38
  */
-static void checkOverlap1(struct Hitbox *a, struct Hitbox *drp2) {
+static void checkOverlap1(struct Hitbox* a, struct Hitbox* drp2) {
   u16 w, h;
   s32 x, y;
   u32 W, H;
-  struct Hitbox *d;
+  struct Hitbox* d;
 
   if ((a != NULL) && (drp2 != NULL)) {
     do {
@@ -773,11 +775,11 @@ static void checkOverlap1(struct Hitbox *a, struct Hitbox *drp2) {
  * @param dh DRP's hitbox info
  * @note 0x08007db0
  */
-static void checkOverlap2(struct Hitbox *a, struct Hitbox *drp1) {
+static void checkOverlap2(struct Hitbox* a, struct Hitbox* drp1) {
   u16 w, h;
   s32 x, y;
   u32 W, H;
-  struct Hitbox *d;
+  struct Hitbox* d;
 
   if ((a != NULL) && (drp1 != NULL)) {
     do {
@@ -808,10 +810,10 @@ static void checkOverlap2(struct Hitbox *a, struct Hitbox *drp1) {
  * @param ah DDP's hitbox info
  * @param dh DRP2's hitbox info
  */
-WIP static void tryOverlapCallback1(struct Hitbox *ah, struct Hitbox *dh) {
+WIP static void tryOverlapCallback1(struct Hitbox* ah, struct Hitbox* dh) {
 #if MODERN
-  struct Body *a = ah->body;
-  struct Body *d = dh->body;
+  struct Body* a = ah->body;
+  struct Body* d = dh->body;
 
   if ((gCollisionManager.disabled & (1 << 7)) || (ah->collisions->special == DOOR_3D)) {
     return;
@@ -899,11 +901,11 @@ WIP static void tryOverlapCallback1(struct Hitbox *ah, struct Hitbox *dh) {
  * @param ah Attacker's hitbox info
  * @param dh Defender's hitbox info
  */
-WIP static void tryOverlapCallback2(struct Hitbox *ah, struct Hitbox *dh) {
+WIP static void tryOverlapCallback2(struct Hitbox* ah, struct Hitbox* dh) {
 #if MODERN
   u8 atkType;
-  struct Body *a = ah->body;
-  struct Body *d = dh->body;
+  struct Body* a = ah->body;
+  struct Body* d = dh->body;
   if (a->status & BODY_STATUS_B8) {
     if (a->coord->x + PIXEL(a->unk_32[1]) < ((dh->c).x - dh->w)) {
       return;

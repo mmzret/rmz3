@@ -1,5 +1,6 @@
+#include "quake.h"
+
 #include "global.h"
-#include "overworld.h"
 
 static void clearQuakeManager(void);
 

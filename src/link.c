@@ -310,7 +310,7 @@ void LinkVSync(void) {
           gLink.lag = LAG_SLAVE;
           gLink.localId = 0;
           gLink.playerCount = 0;
-          gLink.link_field_F = FALSE;
+          gLink.link_field_11 = FALSE;
         }
         break;
       }
@@ -326,7 +326,7 @@ void LinkVSync(void) {
       if (gLink.state == LINK_STATE_HANDSHAKE) {
         gLink.localId = 0;
         gLink.playerCount = 0;
-        gLink.link_field_F = FALSE;
+        gLink.link_field_11 = FALSE;
       }
     }
   }
@@ -749,19 +749,17 @@ void ResetRecvBuffer(void) {
 u8 GetLinkState(void) { return gLink.state; }
 u8 get0x02001539(void) { return gLink.recvCmdIndex; }
 
-#if MODERN == 0
+// 0x08003090
 static void unused_Set0x02001500(u8 val) {
   u8_02001500 = val;
   return;
 }
-#endif
 
 u8 FUN_0800309c(u8 idx) { return gLink.unk_2a[idx]; }
 
 u8 GetLastSendQueueCount(void) { return gLastSendQueueCount; }
 u8 GetLastRecvQueueCount(void) { return gLastRecvQueueCount; }
 
-#if MODERN == 0
 static bool8 unused_080030c8(void) {
   if ((gLastSendQueueCount < 6) && (gLastRecvQueueCount < 6)) {
     return FALSE;
@@ -769,4 +767,3 @@ static bool8 unused_080030c8(void) {
     return TRUE;
   }
 }
-#endif

@@ -7,6 +7,8 @@
 #include "system.h"
 #include "zero.h"
 
+typedef bool32 (*MinigameFunc)(struct GameState*);
+
 void ExitStageLandscape(void);
 
 static void MinigameLoop_InitMinigame(struct GameState* g);
@@ -89,8 +91,16 @@ static void MinigameLoop_InitMinigame(struct GameState* g) {
 
 // ------------------------------------------------------------------------------------------------------------------------------------
 
+bool32 zeroMinigame(struct GameState* g);
+bool32 cielMinigame(struct GameState* g);
+bool32 copyXMinigame(struct GameState* g);
+bool32 harpuiaMinigame(struct GameState* g);
+bool32 fefnirMinigame(struct GameState* g);
+bool32 leviathanMinigame(struct GameState* g);
+bool32 phantomMinigame(struct GameState* g);
+
 // clang-format off
-static const GameLoopFunc sEachMinigameLoops[MINIGAME_COUNT] = {
+static const MinigameFunc sEachMinigameLoops[MINIGAME_COUNT] = {
     [MINIGAME_ZERO] = zeroMinigame,
     [MINIGAME_CIEL] = cielMinigame,
     [MINIGAME_COPY_X] = copyXMinigame,
@@ -366,8 +376,6 @@ _080F91B8: .4byte gCollisionManager\n\
 
 // ------------------------------------------------------------------------------------------------------------------------------------
 
-typedef bool32 (*MinigameExitFunc)(struct GameState*);
-
 bool32 exitZeroMinigame(struct GameState* g);
 bool32 exitCielMinigame(struct GameState* g);
 bool32 exitCopyXMinigame(struct GameState* g);
@@ -379,7 +387,7 @@ bool32 exitPhantomMinigame(struct GameState* g);
 static void MinigameLoop_ExitMinigame(struct GameState* g) {
   bool32 result;
   // clang-format off
-  static const MinigameExitFunc sMinigameDeinitializers[MINIGAME_COUNT] = {
+  static const MinigameFunc sMinigameDeinitializers[MINIGAME_COUNT] = {
       [MINIGAME_ZERO] = exitZeroMinigame,
       [MINIGAME_CIEL] = exitCielMinigame,
       [MINIGAME_COPY_X] = exitCopyXMinigame,

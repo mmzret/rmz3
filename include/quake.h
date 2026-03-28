@@ -2,7 +2,6 @@
 #define GUARD_RMZ3_OW_QUAKE_H
 
 #include "common.h"
-#include "entity.h"
 #include "gba/types.h"
 
 struct Quake {

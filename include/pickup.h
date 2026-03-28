@@ -1,8 +1,6 @@
 #ifndef GUARD_RMZ3_MAP_ITEM_H
 #define GUARD_RMZ3_MAP_ITEM_H
 
-#include "collision.h"
-#include "constants/constants.h"
 #include "entity.h"
 #include "types.h"
 
@@ -10,9 +8,6 @@
 #define SET_ITEM_ROUTINE(entity, modeID) SET_ENTITY_ROUTINE(gPickupFnTable, entity, modeID)
 
 extern const PickupRoutine* const gPickupFnTable[2];
-
-extern const PickupRoutine gPickupItemRoutine;
-extern const PickupRoutine gPickupDiskRoutine;
 
 void DeletePickup(struct Pickup* p);
 

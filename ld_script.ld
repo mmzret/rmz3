@@ -22,7 +22,7 @@ SECTIONS {
     ALIGN(4)
     {
         src/libs/m4a.o(.bss.code);
-        src/iwram.o(iwram_data);
+        INCLUDE "linker/iwram.txt"
     } >iwram = 0x00
 
     . = 0x8000000;

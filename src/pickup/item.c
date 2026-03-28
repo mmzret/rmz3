@@ -1,3 +1,4 @@
+#include "collision.h"
 #include "entity.h"
 #include "global.h"
 #include "pickup.h"

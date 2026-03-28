@@ -6,6 +6,7 @@
 #include "overworld.h"
 #include "task.h"
 
+// 0x08016db4
 void ResetEntityEnvironment(void) {
   InitMotionLocation();
   gEntityIDGenerator = 0;

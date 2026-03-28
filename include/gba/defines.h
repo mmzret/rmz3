@@ -24,10 +24,12 @@
 
 #define ALIGNED(n) __attribute__((aligned(n)))
 
-extern struct SoundInfo *SOUND_INFO_PTR;
+extern struct SoundInfo* SOUND_INFO_PTR;
 
 #define EWRAM 0x2000000
+#define EWRAM_SIZE 0x40000
 #define IWRAM 0x3000000
+#define IWRAM_SIZE 0x8000
 
 #define PLTT 0x5000000
 #define PLTT_SIZE 0x400
@@ -43,16 +45,16 @@ extern struct SoundInfo *SOUND_INFO_PTR;
 
 #define BG_VRAM VRAM
 #define BG_VRAM_SIZE 0x10000
-#define BG_CHAR_ADDR(n) (void *)(BG_VRAM + (0x4000 * (n)))
-#define BG_SCREEN_ADDR(n) (void *)(BG_VRAM + (0x800 * (n)))
-#define BG_TILE_ADDR(n) (void *)(BG_VRAM + (0x80 * (n)))
+#define BG_CHAR_ADDR(n) (void*)(BG_VRAM + (0x4000 * (n)))
+#define BG_SCREEN_ADDR(n) (void*)(BG_VRAM + (0x800 * (n)))
+#define BG_TILE_ADDR(n) (void*)(BG_VRAM + (0x80 * (n)))
 
 // text-mode BG
-#define OBJ_VRAM0 (void *)(VRAM + 0x10000)
+#define OBJ_VRAM0 (void*)(VRAM + 0x10000)
 #define OBJ_VRAM0_SIZE 0x8000
 
 // bitmap-mode BG
-#define OBJ_VRAM1 (void *)(VRAM + 0x14000)
+#define OBJ_VRAM1 (void*)(VRAM + 0x14000)
 #define OBJ_VRAM1_SIZE 0x4000
 
 #define OAM 0x7000000

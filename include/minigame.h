@@ -3,8 +3,6 @@
 
 #include "gba/gba.h"
 
-struct GameState;
-
 struct MinigameState {
   u8 unk_00[4];
   s16 unk_04;
@@ -20,13 +18,5 @@ struct MinigameState {
   u8 unk_40[192];
 };
 static_assert(sizeof(struct MinigameState) == 256);
-
-void zeroMinigame(struct GameState* p);
-void cielMinigame(struct GameState* p);
-void copyXMinigame(struct GameState* p);
-void harpuiaMinigame(struct GameState* p);
-void fefnirMinigame(struct GameState* p);
-void leviathanMinigame(struct GameState* p);
-void phantomMinigame(struct GameState* p);
 
 #endif  // GUARD_RMZ3_MINIGAME_H
