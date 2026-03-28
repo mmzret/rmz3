@@ -209,9 +209,21 @@ struct Zero {
   s32 unk_238;
   u8 unk_23c[64];
 
+  // 0x27C..
   // For minigame
   union {
     u8 raw[16];
+    struct {
+      u8 unk_27c;
+      u8 unk_27d;
+      u16 unk_27e;
+      u8 unk_280[4];
+      u8 unk_284;
+      u8 unk_285;
+      u8 unk_286;
+      u8 unk_287;
+      u8 unk_288[4];
+    } zero;
     struct {
       u8 unk_27c;
       u8 unk_27d;
@@ -234,6 +246,7 @@ struct Zero {
     } leviathan;
   } mg;
 };  // 652 bytes
+static_assert(sizeof(struct Zero) == 652);
 
 typedef void (*ZeroFunc)(struct Zero*);
 typedef ZeroFunc ZeroRoutine[5];

@@ -1,11 +1,13 @@
 #include "collision.h"
 #include "entity.h"
 #include "global.h"
+#include "physics.h"
+#include "weapon.h"
 #include "zero.h"
 
-// ------------------------------------------------------------------------------------------------------------------------------------
+static const struct Collision sCollisions[];
 
-void ZeroMini_Init(struct Zero* z);
+static void ZeroMini_Init(struct Zero* z);
 void ZeroMini_Update(struct Zero* z);
 void ZeroMini_Die(struct Zero* z);
 
@@ -29,6 +31,51 @@ struct Zero* CreateZeroMini(void* p, struct Coord* c, u8 n) {
     (z->s).unk_28 = p;
   }
   return z;
+}
+
+// --------------------------------------------
+
+static void ZeroMini_Init(struct Zero* z) {
+  struct Coord* c;
+  InitNonAffineMotion(&z->s);
+  ResetDynamicMotion(&z->s);
+  (z->s).flags |= DISPLAY;
+  (z->s).flags |= FLIPABLE;
+  {
+    bool8 xflip = FALSE;
+    (z->s).spr.xflip = xflip & 1;
+    (z->s).spr.oam.xflip = xflip;
+    if (xflip) {
+      (z->s).flags |= X_FLIP;
+    } else {
+      (z->s).flags &= ~X_FLIP;
+    }
+  }
+  INIT_BODY(z, &sCollisions[0], 32, NULL);
+  (z->s).coord.y = FUN_0800a05c((z->s).coord.x, (z->s).coord.y);
+  SET_PLAYER_ROUTINE(z, ENTITY_UPDATE);
+  (z->s).mode[1] = 0;
+  (z->s).mode[2] = 0;
+  (z->s).mode[3] = 0;
+  (z->mg).zero.unk_286 = 0;
+  LoadZeroPalette((struct Entity*)z, BODY_CHIP_NONE);
+  SetWeaponElement(WEAPON_BUSTER, 0);
+  SetWeaponElement(WEAPON_SABER, 0);
+  (z->mg).zero.unk_27c = 0;
+  (z->mg).zero.unk_27d = 0;
+  (z->s).work[3] = 0;
+  (z->mg).zero.unk_284 = 0;
+  (z->mg).zero.unk_285 = 0;
+
+  {
+    struct Coord* c;
+    c = &(z->s).d;
+    c->x = c->y = 0;
+    c = &(z->s).unk_coord;
+    c->x = c->y = 0;
+  }
+
+  ZeroMini_Update(z);
 }
 
 INCASM("asm/player/zero_minigame.inc");
@@ -69,9 +116,10 @@ const ZeroFunc sZeroMiniUpdates2[5] = {
 };
 // clang-format on
 
-// --------------------------------------------
+// ------------------------------------------------------------------------------------------------------------------------------------
 
-const struct Collision sZeroMiniCollisions[7] = {
+// 0x0835eca0
+static const struct Collision sCollisions[7] = {
     [0] = {
       kind : DRP,
       faction : FACTION_ALLY,
