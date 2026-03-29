@@ -4,36 +4,6 @@
 	
 	.text
 
-	thumb_func_start leviathan_minigame_080fb550
-leviathan_minigame_080fb550: @ 0x080FB550
-	push {r4, lr}
-	adds r4, r0, #0
-	ldr r0, _080FB588 @ =0x00000DCC
-	adds r4, r4, r0
-	ldr r0, _080FB58C @ =0x0810E298
-	movs r1, #1
-	movs r2, #0
-	bl PrintUnicodeString
-	ldr r0, [r4, #0x24]
-	movs r1, #0xc
-	movs r2, #0
-	bl minigame_str_080e9d04
-	ldr r0, _080FB590 @ =0x0810E2A0
-	movs r1, #0xf
-	movs r2, #0
-	bl PrintUnicodeString
-	ldr r0, [r4, #0x2c]
-	movs r1, #0x1c
-	movs r2, #0
-	bl minigame_str_080e9d04
-	pop {r4}
-	pop {r0}
-	bx r0
-	.align 2, 0
-_080FB588: .4byte 0x00000DCC
-_080FB58C: .4byte 0x0810E298
-_080FB590: .4byte 0x0810E2A0
-
 	thumb_func_start leviathan_minigame_080fb594
 leviathan_minigame_080fb594: @ 0x080FB594
 	push {r4, lr}
@@ -51,14 +21,14 @@ leviathan_minigame_080fb594: @ 0x080FB594
 	bl __modsi3
 	movs r1, #0x12
 	movs r2, #0x13
-	bl minigame_str_080e9d04
+	bl PrintMinigameNumber
 	ldr r0, [r4, #0x20]
 	movs r1, #0xe1
 	lsls r1, r1, #4
 	bl __divsi3
 	movs r1, #0xf
 	movs r2, #0x13
-	bl minigame_str_080e9d04
+	bl PrintMinigameNumber
 	pop {r4}
 	pop {r0}
 	bx r0
@@ -749,7 +719,7 @@ _080FBB88:
 	ldr r0, [r4, #0x24]
 	str r0, [r4, #0x28]
 	adds r0, r5, #0
-	bl leviathan_minigame_080fb550
+	bl MinigameLeviathan_DrawScoreHiscore
 	adds r0, r6, #0
 	pop {r4, r5, r6}
 	pop {r1}

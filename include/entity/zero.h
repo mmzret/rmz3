@@ -103,6 +103,7 @@ struct Zero_b4 {
   // プロパティのアクセス方法から考えて、unk_114まで
 };
 
+// 0x02037c60
 // プレイヤー(ゼロ、ミニゲームの操作キャラ)
 struct Zero {
   struct Entity s;
@@ -225,8 +226,8 @@ struct Zero {
       u8 unk_288[4];
     } zero;
     struct {
-      u8 unk_27c;
-      u8 unk_27d;
+      u8 element;  // 現在のXの属性(0: 炎 1: 雷, 2: 氷)
+      u8 life;     // 残機 = あと何回ミスできるか
       u8 unk_27e;
       u8 unk_27f;
       struct Entity* unk_280[3];

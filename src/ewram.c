@@ -179,7 +179,7 @@ EWRAM_DATA struct Intro gIntro = {};
 EWRAM_DATA u32 gUnkMmbn4 = 0;  // 0x02030b54
 EWRAM_DATA ALIGNED(16) struct GameState gGameState = {};
 EWRAM_DATA ALIGNED(16) struct Elf gElfEntities[16] = {};
-EWRAM_DATA ALIGNED(16) struct Zero gZero = {};
+EWRAM_DATA ALIGNED(16) struct Zero gZero = {};  // 02037c60
 EWRAM_DATA ALIGNED(16) struct Pickup gPickups[10] = {};
 
 EWRAM_DATA ALIGNED(16) u8 _unused_020386a0[2352] = {};  // もともともう1種類Entityがあったのかも

@@ -56,37 +56,37 @@ static void CopyXMini_Init(struct Zero* z) {
   (z->mg).copyx.unk_280[1] = (struct Entity*)CreateCopyXIcon(z, &c, 0);
   (z->mg).copyx.unk_280[0] = (struct Entity*)CreateCopyXIcon(z, &c, 1);
   (z->mg).copyx.unk_280[2] = (struct Entity*)CreateCopyXIcon(z, &c, 2);
-  (z->mg).copyx.unk_27d = 3;
+  (z->mg).copyx.life = 3;
   CopyXMini_Update(z);
 }
 
 // --------------------------------------------
 
-static bool8 nop_08035a40(struct Zero* z);
-static bool8 FUN_08035a9c(struct Zero* z);
-static bool8 FUN_08035b1c(struct Zero* z);
-static bool8 FUN_08035cd8(struct Zero* z);
+static bool32 Update1_0(struct Zero* z);
+static bool32 Update1_1(struct Zero* z);
+static bool32 Update1_2(struct Zero* z);
+static bool32 Update1_3(struct Zero* z);
 
-static void copyXMini_08035a44(struct Zero* z);
-static void FUN_08035af0(struct Zero* z);
-static void FUN_08035b44(struct Zero* z);
-static void FUN_08035d2c(struct Zero* z);
+static void Update2_0(struct Zero* z);
+static void Update2_1(struct Zero* z);
+static void Update2_2(struct Zero* z);
+static void Update2_3(struct Zero* z);
 
 #define STATE ((struct MinigameState*)(z->s).unk_28)
 
 // 0x080359a8
 static void CopyXMini_Update(struct Zero* z) {
   static const ZeroFunc sUpdates1[4] = {
-      (ZeroFunc)nop_08035a40,
-      (ZeroFunc)FUN_08035a9c,
-      (ZeroFunc)FUN_08035b1c,
-      (ZeroFunc)FUN_08035cd8,
+      (ZeroFunc)Update1_0,
+      (ZeroFunc)Update1_1,
+      (ZeroFunc)Update1_2,
+      (ZeroFunc)Update1_3,
   };
   static const ZeroFunc sUpdates2[4] = {
-      copyXMini_08035a44,
-      FUN_08035af0,
-      FUN_08035b44,
-      FUN_08035d2c,
+      Update2_0,
+      Update2_1,
+      Update2_2,
+      Update2_3,
   };
 
   if (STATE->unk_04 != 2) {
@@ -94,18 +94,18 @@ static void CopyXMini_Update(struct Zero* z) {
     (sUpdates2[(z->s).mode[1]])(z);
   }
 
-  if (z->mg.copyx.unk_27d != STATE->unk_0c) {
-    z->mg.copyx.unk_27d = STATE->unk_0c;
-    if (z->mg.copyx.unk_27d == 2) {
+  if ((z->mg).copyx.life != STATE->unk_0c) {
+    (z->mg).copyx.life = STATE->unk_0c;
+    if ((z->mg).copyx.life == 2) {
       PlaySound(SE_NOT_ALLOWED);
-    } else if (z->mg.copyx.unk_27d == 1) {
-      PlaySound(SE_COPYX_RECOVER_VOICE);
-    } else if (z->mg.copyx.unk_27d == 0) {
+    } else if ((z->mg).copyx.life == 1) {
+      PlaySound(SE_COPYX_RECOVER_VOICE);  // ﾓｳﾕﾙｻﾝ!
+    } else if ((z->mg).copyx.life == 0) {
       SetMotion(&z->s, MOTION(DM179_COPY_X, 19));
       UpdateMotionGraphic(&z->s);
       PlaySound(SE_COPYX_STUN);
     }
-  } else if (z->mg.copyx.unk_27d == 0) {
+  } else if ((z->mg).copyx.life == 0) {
     UpdateMotionGraphic(&z->s);
   }
 }
@@ -121,16 +121,15 @@ static void CopyXMini_Die(struct Zero* z) {
 
 // --------------------------------------------
 
-static bool8 nop_08035a40(struct Zero* z) {
-  // nop
-  return TRUE;
-}
+// 0x08035a40
+static bool32 Update1_0(struct Zero* z) { return TRUE; }
 
-static void copyXMini_08035a44(struct Zero* z) {
+// 0x08035a44
+static void Update2_0(struct Zero* z) {
   switch ((z->s).mode[2]) {
     case 0: {
       SetMotion(&z->s, MOTION(DM179_COPY_X, 0));
-      z->mg.copyx.unk_27c = 0;
+      z->mg.copyx.element = 0;  // flame
       LoadBlink(93, 640);
       (z->s).work[2] = 60;
       (z->s).mode[2]++;
@@ -147,7 +146,10 @@ static void copyXMini_08035a44(struct Zero* z) {
   }
 }
 
-static bool8 FUN_08035a9c(struct Zero* z) {
+// ----------------------------------------------
+
+// 0x08035a9c
+static bool32 Update1_1(struct Zero* z) {
   struct MinigameState* s = (struct MinigameState*)(z->s).unk_28;
   if (s->unk_04 == 1) {
     if (gJoypad[0].pressed & (R_BUTTON | L_BUTTON)) {
@@ -167,7 +169,8 @@ static bool8 FUN_08035a9c(struct Zero* z) {
   return TRUE;
 }
 
-static void FUN_08035af0(struct Zero* z) {
+// 0x08035af0
+static void Update2_1(struct Zero* z) {
   switch ((z->s).mode[2]) {
     case 0: {
       SetMotion(&z->s, MOTION(DM179_COPY_X, 0));
@@ -181,7 +184,10 @@ static void FUN_08035af0(struct Zero* z) {
   }
 }
 
-static bool8 FUN_08035b1c(struct Zero* z) {
+// ----------------------------------------------
+
+// 0x08035b1c
+static bool32 Update1_2(struct Zero* z) {
   if (((z->s).mode[2] >= 2) && (gJoypad[0].pressed & B_BUTTON)) {
     (z->s).mode[1] = 3;
     (z->s).mode[2] = 0;
@@ -189,7 +195,8 @@ static bool8 FUN_08035b1c(struct Zero* z) {
   return TRUE;
 }
 
-NAKED static void FUN_08035b44(struct Zero* z) {
+// 0x08035b44
+NAKED static void Update2_2(struct Zero* z) {
   asm(".syntax unified\n\
 	push {r4, r5, lr}\n\
 	adds r4, r0, #0\n\
@@ -394,7 +401,10 @@ _08035CD0:\n\
  .syntax divided\n");
 }
 
-static bool8 FUN_08035cd8(struct Zero* z) {
+// ----------------------------------------------
+
+// 0x08035cd8
+static bool32 Update1_3(struct Zero* z) {
   if ((z->s).mode[2] >= 5) {
     if (gJoypad[0].pressed & (R_BUTTON | L_BUTTON)) {
       (z->s).mode[1] = 2;
@@ -413,143 +423,78 @@ static bool8 FUN_08035cd8(struct Zero* z) {
   return TRUE;
 }
 
-NAKED static void FUN_08035d2c(struct Zero* z) {
-  asm(".syntax unified\n\
-	push {r4, lr}\n\
-	sub sp, #8\n\
-	adds r4, r0, #0\n\
-	ldrb r0, [r4, #0xe]\n\
-	cmp r0, #7\n\
-	bls _08035D3A\n\
-	b _08035E3A\n\
-_08035D3A:\n\
-	lsls r0, r0, #2\n\
-	ldr r1, _08035D44 @ =_08035D48\n\
-	adds r0, r0, r1\n\
-	ldr r0, [r0]\n\
-	mov pc, r0\n\
-	.align 2, 0\n\
-_08035D44: .4byte _08035D48\n\
-_08035D48: @ jump table\n\
-	.4byte _08035D68 @ case 0\n\
-	.4byte _08035DF8 @ case 1\n\
-	.4byte _08035D78 @ case 2\n\
-	.4byte _08035DF8 @ case 3\n\
-	.4byte _08035D88 @ case 4\n\
-	.4byte _08035DF8 @ case 5\n\
-	.4byte _08035E14 @ case 6\n\
-	.4byte _08035E22 @ case 7\n\
-_08035D68:\n\
-	ldr r1, _08035D74 @ =0x0000B301\n\
-	adds r0, r4, #0\n\
-	bl SetMotion\n\
-	b _08035DF2\n\
-	.align 2, 0\n\
-_08035D74: .4byte 0x0000B301\n\
-_08035D78:\n\
-	ldr r1, _08035D84 @ =0x0000B302\n\
-	adds r0, r4, #0\n\
-	bl SetMotion\n\
-	b _08035DF2\n\
-	.align 2, 0\n\
-_08035D84: .4byte 0x0000B302\n\
-_08035D88:\n\
-	ldr r1, _08035DA4 @ =0x0000B303\n\
-	adds r0, r4, #0\n\
-	bl SetMotion\n\
-	movs r1, #0x9f\n\
-	lsls r1, r1, #2\n\
-	adds r0, r4, r1\n\
-	ldrb r0, [r0]\n\
-	cmp r0, #0\n\
-	bne _08035DA8\n\
-	movs r0, #0x51\n\
-	bl PlaySound\n\
-	b _08035DC6\n\
-	.align 2, 0\n\
-_08035DA4: .4byte 0x0000B303\n\
-_08035DA8:\n\
-	cmp r0, #1\n\
-	bne _08035DB4\n\
-	movs r0, #0x49\n\
-	bl PlaySound\n\
-	b _08035DC6\n\
-_08035DB4:\n\
-	cmp r0, #2\n\
-	bne _08035DC0\n\
-	movs r0, #0x40\n\
-	bl PlaySound\n\
-	b _08035DC6\n\
-_08035DC0:\n\
-	movs r0, #0x51\n\
-	bl PlaySound\n\
-_08035DC6:\n\
-	ldr r0, [r4, #0x54]\n\
-	ldr r1, [r4, #0x58]\n\
-	str r0, [sp]\n\
-	str r1, [sp, #4]\n\
-	ldr r0, [sp]\n\
-	movs r2, #0xb0\n\
-	lsls r2, r2, #5\n\
-	adds r0, r0, r2\n\
-	str r0, [sp]\n\
-	ldr r0, [sp, #4]\n\
-	ldr r1, _08035E10 @ =0xFFFFEA00\n\
-	adds r0, r0, r1\n\
-	str r0, [sp, #4]\n\
-	adds r1, r4, #0\n\
-	adds r1, #0x54\n\
-	movs r2, #0x9f\n\
-	lsls r2, r2, #2\n\
-	adds r0, r4, r2\n\
-	ldrb r2, [r0]\n\
-	mov r0, sp\n\
-	bl FUN_080b18d4\n\
-_08035DF2:\n\
-	ldrb r0, [r4, #0xe]\n\
-	adds r0, #1\n\
-	strb r0, [r4, #0xe]\n\
-_08035DF8:\n\
-	adds r0, r4, #0\n\
-	bl UpdateMotionGraphic\n\
-	adds r0, r4, #0\n\
-	adds r0, #0x73\n\
-	ldrb r0, [r0]\n\
-	cmp r0, #3\n\
-	bne _08035E3A\n\
-	ldrb r0, [r4, #0xe]\n\
-	adds r0, #1\n\
-	strb r0, [r4, #0xe]\n\
-	b _08035E3A\n\
-	.align 2, 0\n\
-_08035E10: .4byte 0xFFFFEA00\n\
-_08035E14:\n\
-	ldr r1, _08035E44 @ =0x0000B304\n\
-	adds r0, r4, #0\n\
-	bl SetMotion\n\
-	ldrb r0, [r4, #0xe]\n\
-	adds r0, #1\n\
-	strb r0, [r4, #0xe]\n\
-_08035E22:\n\
-	adds r0, r4, #0\n\
-	bl UpdateMotionGraphic\n\
-	adds r0, r4, #0\n\
-	adds r0, #0x73\n\
-	ldrb r0, [r0]\n\
-	cmp r0, #3\n\
-	bne _08035E3A\n\
-	movs r1, #0\n\
-	movs r0, #1\n\
-	strb r0, [r4, #0xd]\n\
-	strb r1, [r4, #0xe]\n\
-_08035E3A:\n\
-	add sp, #8\n\
-	pop {r4}\n\
-	pop {r0}\n\
-	bx r0\n\
-	.align 2, 0\n\
-_08035E44: .4byte 0x0000B304\n\
- .syntax divided\n");
+void* FUN_080b18d4(struct Coord* c1, struct Coord* c2, u8 kind);
+
+// 0x08035d2c
+static void Update2_3(struct Zero* z) {
+  switch ((z->s).mode[2]) {
+    case 0: {
+      SetMotion(&z->s, MOTION(DM179_COPY_X, 1));
+      (z->s).mode[2]++;
+      FALLTHROUGH;
+    }
+    case 1: {
+      UpdateMotionGraphic(&z->s);
+      if ((z->s).motion.state == MOTION_END) {
+        (z->s).mode[2]++;
+      }
+      break;
+    }
+    case 2: {
+      SetMotion(&z->s, MOTION(DM179_COPY_X, 2));
+      (z->s).mode[2]++;
+      FALLTHROUGH;
+    }
+    case 3: {
+      UpdateMotionGraphic(&z->s);
+      if ((z->s).motion.state == MOTION_END) {
+        (z->s).mode[2]++;
+      }
+      break;
+    }
+    case 4: {
+      struct Coord coords;
+      SetMotion(&z->s, MOTION(DM179_COPY_X, 3));
+      if ((z->mg).copyx.element == 0) {
+        PlaySound(SE_HANU_TAILFIRE_SE);
+      } else if ((z->mg).copyx.element == 1) {
+        PlaySound(SE_COPYX_ELECSHOT);
+      } else if ((z->mg).copyx.element == 2) {
+        PlaySound(SE_ICE_40);
+      } else {
+        PlaySound(SE_HANU_TAILFIRE_SE);
+      }
+      *(&coords) = *(&(z->s).coord);
+      coords.x += PIXEL(22);
+      coords.y -= PIXEL(22);
+      FUN_080b18d4(&coords, &(z->s).coord, (z->mg).copyx.element);
+      (z->s).mode[2]++;
+      FALLTHROUGH;
+    }
+    case 5: {
+      UpdateMotionGraphic(&z->s);
+      if ((z->s).motion.state == MOTION_END) {
+        (z->s).mode[2]++;
+      }
+      break;
+    }
+    case 6: {
+      SetMotion(&z->s, MOTION(DM179_COPY_X, 4));
+      (z->s).mode[2]++;
+      FALLTHROUGH;
+    }
+    case 7: {
+      UpdateMotionGraphic(&z->s);
+      if ((z->s).motion.state == MOTION_END) {
+        (z->s).mode[1] = 1;
+        (z->s).mode[2] = 0;
+      }
+      break;
+    }
+    default: {
+      break;
+    }
+  }
 }
 
 // --------------------------------------------

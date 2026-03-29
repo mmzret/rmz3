@@ -10,9 +10,9 @@ void MinigameFefnir_DrawScoreHiscore(struct GameState* g) {
   struct MinigameState* s = (struct MinigameState*)(g->sceneState).raw;
 
   PrintUnicodeString(Unicode_SCORE_0810e284, 1, 0);
-  minigame_str_080e9d04(s->unk_20, 12, 0);
+  PrintMinigameNumber(s->unk_20, 12, 0);
   PrintUnicodeString(Unicode_HI_SCORE_0810e28c, 15, 0);
-  minigame_str_080e9d04(s->unk_28, 28, 0);
+  PrintMinigameNumber(s->unk_28, 28, 0);
 }
 
 INCASM("asm/minigame/fefnir.inc");

@@ -456,7 +456,7 @@ void PrintUnicodeString(const char_t* s, u32 x8, u32 y8) {
 }
 
 // 0x080e9d04
-NAKED void minigame_str_080e9d04(s32 score, u16 x, u16 y) { INCCODE("asm/todo/minigame_str_080e9d04.inc"); };
+NAKED void PrintMinigameNumber(s32 score, u16 x, u16 y) { INCCODE("asm/todo/PrintMinigameNumber.inc"); };
 
 #if MODERN == 0
 NAKED void unused_080e9d94(s32 r0, u16 r1, u16 r2) { INCCODE("asm/unused/unused_080e9d94.inc"); };

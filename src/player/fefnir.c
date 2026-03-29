@@ -30,7 +30,7 @@ void CreatePlayerFefnir(struct MinigameState* p, s32 x, s32 y) {
     (z->s).work[0] = 0;
     (z->s).coord.x = x;
     (z->s).coord.y = y;
-    (z->s).unk_28 = (struct Entity*)p;
+    (z->s).unk_28 = (void*)p;
   }
 }
 
@@ -75,8 +75,8 @@ static void Fefnir_Update(struct Zero* z) {
       fefnir_08034974,
   };
 
-  struct MinigameState* p = (struct MinigameState*)(z->s).unk_28;
-  if ((p->unk_00[47] != 0) && ((z->s).mode[1] != 3)) {
+  struct MinigameState* s = (struct MinigameState*)(z->s).unk_28;
+  if ((s->unk_00[0x2F] != 0) && ((z->s).mode[1] != 3)) {
     (z->s).mode[1] = 3;
     (z->s).mode[2] = 0;
   }
@@ -306,34 +306,29 @@ static const struct Collision sCollisions[3] = {
     {
       kind : DRP,
       faction : FACTION_ALLY,
-      special : 0,
-      damage : 0,
       LAYER(0xFFFFFFFF),
       hitzone : 0x00,
       hardness : HARDNESS_B3,
       remaining : 0,
-      range : {0x0000, 0x0000, 0x0800, 0x0800},
+      range : {PIXEL(0), PIXEL(0), PIXEL(8), PIXEL(8)},
     },
     {
       kind : DDP,
       faction : FACTION_ALLY,
-      special : 0,
       damage : 2,
       hitzone : 0x00,
       remaining : 1,
       layer : 0x00000001,
-      range : {0x0000, 0x0000, 0x2000, 0x2000},
+      range : {PIXEL(0), PIXEL(0), PIXEL(32), PIXEL(32)},
     },
     {
       kind : DRP,
       faction : FACTION_ALLY,
-      special : 0,
-      damage : 0,
       LAYER(0xFFFFFFFF),
       hitzone : 0x01,
       hardness : HARDNESS_B3,
       remaining : 0,
-      range : {0x0000, 0x0000, 0x2000, 0x2000},
+      range : {PIXEL(0), PIXEL(0), PIXEL(32), PIXEL(32)},
     },
 };
 

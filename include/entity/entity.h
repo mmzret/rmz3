@@ -91,22 +91,22 @@ struct Entity {
   // 場合によっては次の処理時のmode[0]をmode[3]に格納しておくなど汎用のバッファとしても使われる
   u8 mode[4];
 
-  u8 work[4];      // general purpose
-  void* onUpdate;  // EntityFunc
-  struct ScriptEntity* scriptEntity;
-  u8 uniqueID;      // すべてのEntityを区別するためのID
-  u8 invincibleID;  // 被ダメ時の無敵を表す白塗りをEntityに適用する際にEntityの区別に用いるID
+  u8 work[4];                         // 0x10, general purpose
+  void* onUpdate;                     // 0x14, EntityFunc
+  struct ScriptEntity* scriptEntity;  // 0x18
+  u8 uniqueID;                        // 0x1C, すべてのEntityを区別するためのID
+  u8 invincibleID;                    // 0x1D, 被ダメ時の無敵を表す白塗りをEntityに適用する際にEntityの区別に用いるID
 
   // motion_t
-  motion_id_t motionID;         // upper byte for motion_t, gDynamicMotionCmdTable または gStaticMotionCmdTable の idx (Dynamic: 0..162, Static: 0..252)
-  motion_sub_id_t motionSubID;  // lower byte for motion_t
+  motion_id_t motionID;         // 0x1E, upper byte for motion_t, gDynamicMotionCmdTable または gStaticMotionCmdTable の idx (Dynamic: 0..162, Static: 0..252)
+  motion_sub_id_t motionSubID;  // 0x1F, lower byte for motion_t
 
-  u16 tileNum;
-  u8 palID;  // これを変えると色が変わる
-  u8 savedPalID;
-  u8 angle;  // Affine spriteのときの回転度合い
-  u8 taskCol;
-  metatile_attr_t hazardAttr;
+  u16 tileNum;                 // 0x20
+  u8 palID;                    // 0x22, これを変えると色が変わる
+  u8 savedPalID;               // 0x23
+  u8 angle;                    // 0x24, Affine spriteのときの回転度合い
+  u8 taskCol;                  // 0x25
+  metatile_attr_t hazardAttr;  // 0x26
   struct Entity* unk_28;
   struct Entity* unk_2c;
   const struct Rect* size;

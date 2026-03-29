@@ -1,6 +1,20 @@
 #include "game.h"
 #include "global.h"
 #include "minigame.h"
+#include "text.h"
+
+extern const u8 Unicode_SCORE_0810e298[];
+extern const u8 Unicode_HI_SCORE_0810e2a0[];
+
+// 0x080fb550
+void MinigameLeviathan_DrawScoreHiscore(struct GameState* g) {
+  struct MinigameState* s = (struct MinigameState*)(g->sceneState).raw;
+
+  PrintUnicodeString(Unicode_SCORE_0810e298, 1, 0);
+  PrintMinigameNumber(s->unk_24, 12, 0);
+  PrintUnicodeString(Unicode_HI_SCORE_0810e2a0, 15, 0);
+  PrintMinigameNumber(s->unk_2c, 28, 0);
+}
 
 INCASM("asm/minigame/leviathan.inc");
 

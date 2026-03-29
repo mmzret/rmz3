@@ -351,7 +351,7 @@ _080FC0F8:
 	ldr r0, [r6, #0x34]
 	str r0, [r6, #0x38]
 	adds r0, r4, #0
-	bl phantomMinigame_080fbddc
+	bl MinigamePhantom_DrawScoreHiscore
 	movs r5, #0
 	adds r0, r6, #0
 	adds r0, #0xd5

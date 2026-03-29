@@ -1452,7 +1452,7 @@ _0809AA5A:
 	lsls r4, r4, #0x10
 	lsrs r4, r4, #0x10
 	adds r2, r4, #0
-	bl minigame_str_080e9d04
+	bl PrintMinigameNumber
 	pop {r4, r5, r6}
 	pop {r0}
 	bx r0
@@ -1515,7 +1515,7 @@ _0809AAE0:
 	lsrs r1, r1, #0x10
 	lsls r2, r4, #0x10
 	lsrs r2, r2, #0x10
-	bl minigame_str_080e9d04
+	bl PrintMinigameNumber
 	ldr r0, _0809AB20 @ =0x080FF070
 	adds r1, r5, #2
 	adds r2, r4, #0
@@ -1533,7 +1533,7 @@ _0809AAFC:
 	lsls r4, r4, #0x10
 	lsrs r4, r4, #0x10
 	adds r2, r4, #0
-	bl minigame_str_080e9d04
+	bl PrintMinigameNumber
 	pop {r4, r5, r6}
 	pop {r0}
 	bx r0

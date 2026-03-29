@@ -311,7 +311,7 @@ _080F9452:
 	adds r0, r4, #0
 	movs r1, #0xa
 	movs r2, #0
-	bl minigame_str_080e9d04
+	bl PrintMinigameNumber
 	ldr r0, [r5, #0x3c]
 	cmp r4, r0
 	bls _080F947A
@@ -330,7 +330,7 @@ _080F947A:
 	adds r0, r4, #0
 	movs r1, #0x1b
 	movs r2, #0
-	bl minigame_str_080e9d04
+	bl PrintMinigameNumber
 	movs r0, #1
 	add sp, #0x14
 	pop {r4, r5}
@@ -620,7 +620,7 @@ _080F96D4:
 	adds r0, r4, #0
 	movs r1, #0xa
 	movs r2, #0
-	bl minigame_str_080e9d04
+	bl PrintMinigameNumber
 	ldr r0, [r5, #0x3c]
 	cmp r4, r0
 	bls _080F970E
@@ -647,7 +647,7 @@ _080F970E:
 	adds r0, r4, #0
 	movs r1, #0x1b
 	movs r2, #0
-	bl minigame_str_080e9d04
+	bl PrintMinigameNumber
 	ldrb r1, [r5, #0xc]
 	cmp r1, #0
 	bne _080F973E
@@ -755,7 +755,7 @@ _080F97EC:
 	adds r0, r4, #0
 	movs r1, #0xa
 	movs r2, #0
-	bl minigame_str_080e9d04
+	bl PrintMinigameNumber
 	ldr r0, [r5, #0x3c]
 	cmp r4, r0
 	bls _080F9814
@@ -774,7 +774,7 @@ _080F9814:
 	adds r0, r4, #0
 	movs r1, #0x1b
 	movs r2, #0
-	bl minigame_str_080e9d04
+	bl PrintMinigameNumber
 	movs r0, #1
 _080F9838:
 	add sp, #0x14
