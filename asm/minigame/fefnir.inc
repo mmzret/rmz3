@@ -4,36 +4,6 @@
 	
 	.text
 
-	thumb_func_start fefnir_080fb018
-fefnir_080fb018: @ 0x080FB018
-	push {r4, lr}
-	adds r4, r0, #0
-	ldr r0, _080FB050 @ =0x00000DCC
-	adds r4, r4, r0
-	ldr r0, _080FB054 @ =0x0810E284
-	movs r1, #1
-	movs r2, #0
-	bl PrintUnicodeString
-	ldr r0, [r4, #0x20]
-	movs r1, #0xc
-	movs r2, #0
-	bl minigame_str_080e9d04
-	ldr r0, _080FB058 @ =0x0810E28C
-	movs r1, #0xf
-	movs r2, #0
-	bl PrintUnicodeString
-	ldr r0, [r4, #0x28]
-	movs r1, #0x1c
-	movs r2, #0
-	bl minigame_str_080e9d04
-	pop {r4}
-	pop {r0}
-	bx r0
-	.align 2, 0
-_080FB050: .4byte 0x00000DCC
-_080FB054: .4byte 0x0810E284
-_080FB058: .4byte 0x0810E28C
-
 	thumb_func_start initFefnirMinigame
 initFefnirMinigame: @ 0x080FB05C
 	push {r4, r5, r6, r7, lr}
@@ -313,7 +283,7 @@ _080FB2C0:
 	ldr r0, [r4, #0x20]
 	str r0, [r4, #0x24]
 	adds r0, r5, #0
-	bl fefnir_080fb018
+	bl MinigameFefnir_DrawScoreHiscore
 	adds r0, r6, #0
 	pop {r4, r5, r6}
 	pop {r1}

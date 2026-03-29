@@ -29,8 +29,8 @@ extern const VoidFunc gHBlankIntrs[];
 // Malloc(0x08001b14)で確保される汎用メモリ領域
 struct SystemBuffer {
   u32 buf[2][576];  // フレームごとにダブルバッファリングされる
-  u16 ofs;          // buf[.idx]で空の領域の先頭を指す
-  u16 idx;          // buf0とbuf1のどっちを使っているか
+  u16 ofs;          // 0x1200, buf[.idx]で空の領域の先頭を指す
+  u16 idx;          // 0x1202, buf0とbuf1のどっちを使っているか
 };
 IWRAM_DATA struct SystemBuffer gSystemBuffer = {};  // 0x03000380..
 
@@ -74,11 +74,14 @@ void Process_SoftReset(struct Process* _ UNUSED) {
 
 WIP NORETURN void Process_System(struct Process* p) {
 #if MODERN
+  struct SystemBuffer* heap = &gSystemBuffer;
+  u16* head = &heap->ofs;
   while (TRUE) {
     PrintAllStrings();
     ExecBlink();
-    gSystemBuffer.idx = (gSystemBuffer.idx == 0);
-    gSystemBuffer.ofs = 0;
+    // swap buffers
+    heap->idx = (heap->idx == 0);
+    *head = 0;
     UpdateSram();
     do {
       do {
@@ -577,6 +580,8 @@ void clear0x020014e0(void) {
   return;
 }
 
+// ------------------------------------------------------------
+
 void InitScheduler(bool32 ok) {
   s32 i;
   struct Process* proc = &gProcessManager.processes[0];
@@ -589,8 +594,9 @@ void InitScheduler(bool32 ok) {
 }
 
 /*
+  0x080021f4
   Returnされることはない
-  いわゆるスケジューラ的な役割
+  いわゆるUnixのスケジューラ的な役割
   Process を見ていって、実行可能なものがあったら、そっちに処理を渡す
   Process が自発的に Process を中断するとここに処理が戻る
 
@@ -602,8 +608,7 @@ void InitScheduler(bool32 ok) {
     -  c. PPU 関連の処理を実行
     - 3. 1に戻る (ly=0 まで待機とかはしないで、すぐに1に戻る)
 */
-WIP void GameLoop(void) {
-#if MODERN
+void RunScheduler(void) {
   struct Process* proc;
   do {
     gProcessManager.procID = 0;
@@ -628,12 +633,9 @@ WIP void GameLoop(void) {
 
     gProcessManager.masterFrame++;
   } while (gProcessManager.systemOK);
-#else
-  INCCODE("asm/wip/GameLoop.inc");
-#endif
 }
 
-// Processes 全てに対して、GameLoop でスケジューリングされないようにする
+// Processes 全てに対して、 RunScheduler でスケジューリングされないようにする
 static void unused_DisableAllProcesses(void) {
   struct Process* proc = gProcessManager.processes;
   s32 i = 0;
@@ -687,7 +689,7 @@ void ExitProcess(void) {
   returnCallProcess((u32*)&p->fn, (u32*)&p->sp, StackFramePointer);
 }
 
-// GameLoop で Process がスケジューリングされないようにする
+// RunScheduler で Process がスケジューリングされないようにする
 void disableProcess(s32 i) {
   struct Process* p = &gProcessManager.processes[i];
   if (p->status != PROCESS_DISABLED) {

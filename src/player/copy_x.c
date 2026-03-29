@@ -6,8 +6,6 @@
 #include "vfx.h"
 #include "zero.h"
 
-#define STATE ((struct MinigameState*)(z->s).unk_28)
-
 static const struct Collision sCollision;
 
 static void CopyXMini_Init(struct Zero* z);
@@ -74,6 +72,9 @@ static void FUN_08035af0(struct Zero* z);
 static void FUN_08035b44(struct Zero* z);
 static void FUN_08035d2c(struct Zero* z);
 
+#define STATE ((struct MinigameState*)(z->s).unk_28)
+
+// 0x080359a8
 static void CopyXMini_Update(struct Zero* z) {
   static const ZeroFunc sUpdates1[4] = {
       (ZeroFunc)nop_08035a40,
@@ -108,6 +109,8 @@ static void CopyXMini_Update(struct Zero* z) {
     UpdateMotionGraphic(&z->s);
   }
 }
+
+#undef STATE
 
 // --------------------------------------------
 
@@ -145,7 +148,8 @@ static void copyXMini_08035a44(struct Zero* z) {
 }
 
 static bool8 FUN_08035a9c(struct Zero* z) {
-  if (STATE->unk_04 == 1) {
+  struct MinigameState* s = (struct MinigameState*)(z->s).unk_28;
+  if (s->unk_04 == 1) {
     if (gJoypad[0].pressed & (R_BUTTON | L_BUTTON)) {
       (z->s).mode[1] = 2;
       (z->s).mode[2] = 0;
@@ -553,16 +557,10 @@ _08035E44: .4byte 0x0000B304\n\
 static const struct Collision sCollision = {
   kind : DRP,
   faction : FACTION_ALLY,
-  damage : 0,
-  atkType : 0xFF,
-  element : 0xFF,
-  nature : 0xFF,
-  comboLv : 0xFF,
-  hitzone : 1,
+  LAYER(0xFFFFFFFF),
+  hitzone : 0x01,
   hardness : METAL,
   remaining : 0,
   layer : 0xFFFFFFFF,
-  range : {0x0000, 0x0000, 0x1600, 0x1600},
+  range : {PIXEL(0), PIXEL(0), PIXEL(22), PIXEL(22)},
 };
-
-#undef STATE

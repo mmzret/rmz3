@@ -21,7 +21,7 @@
 // TODO: ewram.c ではなく、それぞれのファイルで定義して後で リンカでまとめたほうがいい (構造体の定義が面倒くさい)
 
 /*
-  Process(s) 中に GameLoop のspを退避しておくためのもの e.g. 03007d58
+  Process(s) 中に RunScheduler のspを退避しておくためのもの e.g. 03007d58
 
   sp -> r4
         r5
@@ -71,8 +71,10 @@ EWRAM_DATA struct MusicPlayerTrack gMPlayTracks[21] = {};
 EWRAM_DATA u8 gLinkRecvCmds[64] = {};
 EWRAM_DATA u8 gLinkSendCmds[64] = {};
 EWRAM_DATA struct Unk_02000d50 gUnk02000d50 = {};
-EWRAM_DATA u8 unused_02000da8[8] = {};
-EWRAM_DATA u8 Unk_02000db0[1840] = {};  // 0x02000db0..0x020014df
+EWRAM_DATA ALIGNED(16) struct Unk_02000db0 Unk02000db0 = {};
+EWRAM_DATA ALIGNED(16) struct Unk_02000db0 Unk02000dc0 = {};
+
+EWRAM_DATA ALIGNED(16) u8 Unk_02000db0[1808] = {};  // 0x02000dd0..0x020014df
 
 EWRAM_DATA u32 u32_020014e0 = 0;
 EWRAM_DATA u8 unused_020014e4[12] = {};

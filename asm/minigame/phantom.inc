@@ -4,36 +4,6 @@
 	
 	.text
 
-	thumb_func_start phantomMinigame_080fbddc
-phantomMinigame_080fbddc: @ 0x080FBDDC
-	push {r4, lr}
-	adds r4, r0, #0
-	ldr r0, _080FBE14 @ =0x00000DCC
-	adds r4, r4, r0
-	ldr r0, _080FBE18 @ =0x0810E2B8
-	movs r1, #1
-	movs r2, #0
-	bl PrintUnicodeString
-	ldr r0, [r4, #0x34]
-	movs r1, #0xc
-	movs r2, #0
-	bl minigame_str_080e9d04
-	ldr r0, _080FBE1C @ =0x0810E2C0
-	movs r1, #0xf
-	movs r2, #0
-	bl PrintUnicodeString
-	ldr r0, [r4, #0x3c]
-	movs r1, #0x1c
-	movs r2, #0
-	bl minigame_str_080e9d04
-	pop {r4}
-	pop {r0}
-	bx r0
-	.align 2, 0
-_080FBE14: .4byte 0x00000DCC
-_080FBE18: .4byte 0x0810E2B8
-_080FBE1C: .4byte 0x0810E2C0
-
 	thumb_func_start initPhantomMinigame
 initPhantomMinigame: @ 0x080FBE20
 	push {r4, r5, r6, r7, lr}

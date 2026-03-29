@@ -7,8 +7,6 @@
 #include "system.h"
 #include "zero.h"
 
-typedef bool32 (*MinigameFunc)(struct GameState*);
-
 void ExitStageLandscape(void);
 
 static void MinigameLoop_InitMinigame(struct GameState* g);
@@ -26,13 +24,13 @@ void MainLoop_Minigame(struct GameState* g) {
 
 // ------------------------------------------------------------------------------------------------------------------------------------
 
-void initZeroMinigame(struct GameState* p);
-void initCielMinigame(struct GameState* p);
-void initCopyXMinigame(struct GameState* p);
-void initHarpuiaMinigame(struct GameState* p);
-void initFefnirMinigame(struct GameState* p);
-void initLeviathanMinigame(struct GameState* p);
-void initPhantomMinigame(struct GameState* p);
+void initZeroMinigame(struct GameState* g);
+void initCielMinigame(struct GameState* g);
+void initCopyXMinigame(struct GameState* g);
+void initHarpuiaMinigame(struct GameState* g);
+void initFefnirMinigame(struct GameState* g);
+void initLeviathanMinigame(struct GameState* g);
+void initPhantomMinigame(struct GameState* g);
 
 static void MinigameLoop_InitMinigame(struct GameState* g) {
   // clang-format off

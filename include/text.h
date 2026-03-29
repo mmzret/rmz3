@@ -65,7 +65,7 @@ void PrintString(const char_t* s, u32 x, u32 y);
 s16 getStringLength(char_t* s);
 void text_080e9b40(const char_t* s, u32 x, u32 y, u16 count);
 void PrintRows(char_t* s, u32 x, u32 y, u16 count, u16 r4);
-void PrintUnicodeString(u8* s, u32 x, u32 y);
+void PrintUnicodeString(const char_t* s, u32 x8, u32 y8);
 char_t* SkipString(char_t* s, s32 skipBytesize);
 
 #endif  // GUARD_RMZ3_TEXT_H

@@ -2056,36 +2056,3 @@ FUN_08001670: @ 0x08001670
 _08001688: .4byte 0x02000FB0
 _0800168C: .4byte 0x4234574A
 
-	thumb_func_start FUN_08001690
-FUN_08001690: @ 0x08001690
-	push {r4, r6, r7, lr}
-	lsls r0, r0, #2
-	adds r7, r0, #0
-	bl FUN_08000784
-	beq _0800169E
-	movs r0, #1
-_0800169E:
-	ldr r4, _08001728 @ =0x020014C0
-	strb r0, [r4]
-	ldr r1, _0800172C @ =0x08001730
-	ldr r6, [r1, #4]
-	tst r0, r0
-	beq _080016AC
-	ldr r6, [r1]
-_080016AC:
-	ldr r0, [r6]
-	ldr r1, _08001738 @ =0x4234574A
-	cmp r0, r1
-	bne _080016C2
-	ldrh r0, [r6, #4]
-	ldr r1, _0800173C @ =0x08001740
-	ldr r1, [r1, r7]
-	cmp r0, r1
-	bne _080016C2
-	adds r0, r6, #0
-	b _080016C4
-_080016C2:
-	movs r0, #0xff
-_080016C4:
-	pop {r4, r6, r7, pc}
-	.align 2, 0

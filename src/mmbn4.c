@@ -85,6 +85,42 @@ _08000780: .4byte gUnk02000d50\n\
 
 INCASM("asm/mmbn4.inc");
 
+NAKED void* FUN_08001690(u32 r0) {
+  asm(".syntax unified\n\
+	push {r4, r6, r7, lr}\n\
+	lsls r0, r0, #2\n\
+	adds r7, r0, #0\n\
+	bl FUN_08000784\n\
+	beq _0800169E\n\
+	movs r0, #1\n\
+_0800169E:\n\
+	ldr r4, _08001728 @ =0x020014C0\n\
+	strb r0, [r4]\n\
+	ldr r1, _0800172C @ =0x08001730\n\
+	ldr r6, [r1, #4]\n\
+	tst r0, r0\n\
+	beq _080016AC\n\
+	ldr r6, [r1]\n\
+_080016AC:\n\
+	ldr r0, [r6]\n\
+	ldr r1, _08001738 @ =0x4234574A\n\
+	cmp r0, r1\n\
+	bne _080016C2\n\
+	ldrh r0, [r6, #4]\n\
+	ldr r1, _0800173C @ =0x08001740\n\
+	ldr r1, [r1, r7]\n\
+	cmp r0, r1\n\
+	bne _080016C2\n\
+	adds r0, r6, #0\n\
+	b _080016C4\n\
+_080016C2:\n\
+	movs r0, #0xff\n\
+_080016C4:\n\
+	pop {r4, r6, r7, pc}\n\
+	.align 2, 0\n\
+ .syntax divided\n");
+}
+
 NAKED static void* mmbn4_080016c8(void* r0) {
   asm(".syntax unified\n\
 	push {r4, r5, r6, r7, lr}\n\
@@ -143,8 +179,7 @@ _08001726:\n\
 	.align 2, 0\n\
 _08001728: .4byte 0x020014C0\n\
 _0800172C: .4byte _08001730\n\
-_08001730:\n\
-	.byte 0xB0, 0x0D, 0x00, 0x02, 0xC0, 0x0D, 0x00, 0x02\n\
+_08001730: .4byte Unk02000db0, Unk02000dc0\n\
 _08001738: .4byte 0x4234574A\n\
 _0800173C: .4byte _08001740\n\
 _08001740:\n\

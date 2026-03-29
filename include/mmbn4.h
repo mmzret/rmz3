@@ -1,8 +1,18 @@
 #ifndef GUARD_RMZ3_MMBN4_H
 #define GUARD_RMZ3_MMBN4_H
 
+// カードeもここかも？
+
 #include "constants/constants.h"
+#include "gba/gba.h"
 #include "types.h"
+
+// 0x02000db0, 0x02000dc0
+struct Unk_02000db0 {
+  u32 magic;
+  u16 field1_0x4;
+};
+static_assert(sizeof(struct Unk_02000db0) == 8);
 
 struct Unk_02000d50 {
   u8 unk_00;

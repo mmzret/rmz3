@@ -16,7 +16,7 @@ void InitPaletteManager(void);
 void InitSound(void);
 void InitTextPrinter(u32*);
 void InitScheduler(bool32 ok);
-void GameLoop(void);
+void RunScheduler(void);
 void usrHBlankCallback(void);
 void usrVBlankCallback(void);
 
@@ -52,7 +52,7 @@ WIP void AgbMain(void) {
   ResetProcess(0, Process_SoftReset);  // Process_SoftReset -> Process_Intro -> Process_Game
   ResetProcess(2, Process_System);
 
-  GameLoop();
+  RunScheduler();
 #else
   INCCODE("asm/wip/AgbMain.inc");
 #endif

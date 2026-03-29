@@ -437,31 +437,26 @@ char_t* SkipString(char_t* s, s32 skipBytesize) {
   return s;
 }
 
-// x, y is 8x8 tile unit
-WIP void PrintUnicodeString(u8* s, u32 x, u32 y) {
-#if MODERN
+void PrintUnicodeString(const char_t* s, u32 x8, u32 y8) {
   tile_id_t* dst = gTextPrinter.bg0;
-  if (y < 32) {
-    dst = &dst[x + (y * 32)];
+  if (y8 < 32) {
+    dst = &dst[x8 + (y8 * 32)];
     while (*s != 0) {
-      if (x > 31) return;
+      if (x8 > 31) return;
+
       if (*s < UNICODE_A) {
-        *dst = 928 + *s;
+        *dst++ = 928 + *s++;
       } else if (*s < UNICODE_NBSP) {
-        *dst = 896 + *s;
+        *dst++ = 896 + *s++;
       } else {
-        *dst = 736 + *s;
+        *dst++ = 736 + *s++;
       }
-      s++;
-      dst++;
     }
   }
-#else
-  INCCODE("asm/wip/PrintUnicodeString.inc");
-#endif
 }
 
-NAKED void minigame_str_080e9d04(s32 r0, u16 r1, u16 r2) { INCCODE("asm/todo/minigame_str_080e9d04.inc"); };
+// 0x080e9d04
+NAKED void minigame_str_080e9d04(s32 score, u16 x, u16 y) { INCCODE("asm/todo/minigame_str_080e9d04.inc"); };
 
 #if MODERN == 0
 NAKED void unused_080e9d94(s32 r0, u16 r1, u16 r2) { INCCODE("asm/unused/unused_080e9d94.inc"); };

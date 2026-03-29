@@ -13,7 +13,7 @@
 struct Process {
   u8 status;
   bool8 doReset;  // true なら Process がスケジューリングされる直前に 080022b0 が呼び出される
-  u16 sleep;      // フレームごとにデクリメントされていき、0になったら Process が実行される
+  s16 sleep;      // フレームごとにデクリメントされていき、0になったら Process が実行される
   void* fn;       // Process がスケジューリングされる際に 実際に行う処理
   u16* sp;        // この Process 用の sp
   u8 unk_0c[4];
@@ -40,9 +40,11 @@ struct InterruptManager {
   u32 main[72];        // IntrMain(0x080001bc) が ここにコピーされる
   void (*vblankCallback)(void);
   void (*hblankCallback)(void);
-  u32 frame;          // ゲーム開始時から経過したフレーム数
+  u32 frame;  // ゲーム開始時から経過したフレーム数
+
   vu8 frame2;         // ゲーム速度コントロール用のフレームカウンタ, VBlank割り込みのたびにインクリメントされる
   vu8 slowGameRatio;  // この値をxにするとゲームスピードが 1/x になる
+
   u8 lyc;
   u8 intrLock;
 

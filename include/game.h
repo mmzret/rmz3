@@ -93,7 +93,7 @@ struct GameState {
     u8 raw[256];
     struct MenuState menu;
     struct ResultState result;
-    struct MinigameState minigame;
+    struct MinigameState mg;
   } sceneState;  // 0203192c, 256 bytes
 
   // 02031a2c

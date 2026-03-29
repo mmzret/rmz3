@@ -3,7 +3,7 @@
 #include "global.h"
 #include "minigame.h"
 
-#define STATE (&(g->sceneState).minigame)
+#define STATE (&(g->sceneState).mg)
 
 INCASM("asm/minigame/ciel.inc");
 

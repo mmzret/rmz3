@@ -32,7 +32,7 @@ static void IntroLoop_Minigame(struct Intro* p);
 /*
   Process の1つ
   無限ループとして、 sIntroLoops を実行し続ける
-  ただし、 sIntroLoops の実行後は GameLoop に処理を戻し、別のProcessを挟む
+  ただし、 sIntroLoops の実行後は RunScheduler に処理を戻し、別のProcessを挟む
 */
 void Process_Intro(struct Process* p) {
   // clang-format off
