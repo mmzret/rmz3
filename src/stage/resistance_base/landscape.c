@@ -337,7 +337,7 @@ NAKED static void rbase_0801651c(struct StageLayer* l, const struct Stage* _) {
 	bx r0\n\
 	.align 2, 0\n\
 _0801657C: .4byte gStageTilesetOffsets+(18*4)\n\
-_08016580: .4byte gMiscTilesetGraphics+(58*20)-0xd1534\n\
+_08016580: .4byte gTilesetAnims+(58*20)-0xd1534\n\
  .syntax divided\n");
 }
 
@@ -358,22 +358,14 @@ static void rbase_08016584(struct StageLayer* l UNUSED, const struct Stage* _ UN
 
 void setBgPrio3(struct StageLayer* l, const struct Stage* _) {
   if (l->phase == 0) {
-    // Set 3 into Layer's BgPrio
-    u16* bgcnt = (u16*)&gVideoRegBuffer.bgcnt[l->bgIdx >> 4];
-    *bgcnt &= 0xFFFC;
-    *bgcnt |= 3;
-
+    BGCNT16(l->bgIdx >> 4) = (BGCNT16(l->bgIdx >> 4) & 0xFFFC) | BGCNT_PRIORITY(3);
     l->phase++;
   }
 }
 
 void rbase_0801660c(struct StageLayer* l, const struct Stage* _ UNUSED) {
   if (l->phase == 0) {
-    // Set 3 into Layer's BgPrio
-    u16* bgcnt = (u16*)&gVideoRegBuffer.bgcnt[l->bgIdx >> 4];
-    *bgcnt &= 0xFFFC;
-    *bgcnt |= 3;
-
+    BGCNT16(l->bgIdx >> 4) = (BGCNT16(l->bgIdx >> 4) & 0xFFFC) | BGCNT_PRIORITY(3);
     (l->prevViewportLeftTopPixel).y = 0;
     (l->prevViewportLeftTopPixel).x = 0;
     (l->scrollPower).x = 0x80;
@@ -461,11 +453,7 @@ static void rbase_080167dc(struct StageLayer* l, const struct Stage* _ UNUSED) {
 
 static void setBgPrio1(struct StageLayer* l, const struct Stage* _ UNUSED) {
   if (l->phase == 0) {
-    // Set 1 into Layer's BgPrio
-    u16* bgcnt = (u16*)&gVideoRegBuffer.bgcnt[l->bgIdx >> 4];
-    *bgcnt &= 0xFFFC;
-    *bgcnt |= 1;
-
+    BGCNT16(l->bgIdx >> 4) = (BGCNT16(l->bgIdx >> 4) & 0xFFFC) | BGCNT_PRIORITY(1);
     l->phase++;
   }
 }
@@ -990,10 +978,7 @@ static void rbase_08016d00(struct StageLayer* l, const struct Stage* _ UNUSED) {
 
 static void rbase_08016d2c(struct StageLayer* l, const struct Stage* _ UNUSED) {
   if (l->phase == 0) {
-    u16* bgcnt = (u16*)&gVideoRegBuffer.bgcnt[l->bgIdx >> 4];
-    *bgcnt &= 0xFFFC;
-    *bgcnt |= 1;
-
+    BGCNT16(l->bgIdx >> 4) = (BGCNT16(l->bgIdx >> 4) & 0xFFFC) | BGCNT_PRIORITY(1);
     gBlendRegBuffer.bldclt = 0x3748;
     gBlendRegBuffer.bldalpha = 0x808;
     l->phase++;
@@ -1007,9 +992,7 @@ static void rbase_08016d74(struct StageLayer* l UNUSED, const struct Stage* _ UN
 
 static void setBgPrio2(struct StageLayer* l, const struct Stage* _ UNUSED) {
   if (l->phase == 0) {
-    u16* bgcnt = (u16*)&gVideoRegBuffer.bgcnt[l->bgIdx >> 4];
-    *bgcnt &= 0xFFFC;
-    *bgcnt |= 2;
+    BGCNT16(l->bgIdx >> 4) = (BGCNT16(l->bgIdx >> 4) & 0xFFFC) | BGCNT_PRIORITY(2);
     l->phase++;
   }
 }
@@ -1075,7 +1058,7 @@ static const StageLayerRoutine sLayerRoutine[11] = {
 // clang-format on
 
 static const struct ChunkMap sChunkMap1 = {
-  realWidth : WIDTH,
+  stride : WIDTH,
   nullChunkID : 1,
   width : 16,
   height : HEIGHT,
@@ -1101,7 +1084,7 @@ static const u8 sScreenMapData1[HEIGHT][WIDTH] = {
 // clang-format on
 
 static const struct ChunkMap sChunkMap2 = {
-  realWidth : WIDTH,
+  stride : WIDTH,
   nullChunkID : 1,
   width : 16,
   height : HEIGHT,
@@ -1127,7 +1110,7 @@ static const u8 sScreenMapData2[HEIGHT][WIDTH] = {
 // clang-format on
 
 static const struct ChunkMap sChunkMap3 = {
-  realWidth : WIDTH,
+  stride : WIDTH,
   nullChunkID : 1,
   width : 16,
   height : HEIGHT,
@@ -1152,11 +1135,8 @@ static const u8 sScreenMapData3[HEIGHT][WIDTH] = {
 // clang-format on
 
 // clang-format off
-static const tileset_ofs_t sTilesetOffset[4+(HEIGHT * WIDTH)] = {
-  4, // 1 << sTilesetOffset[0] で WIDTH に等しい？
-  15,
-  WIDTH, HEIGHT,
-
+static const tileset_ofs_t sTilesetOffset[4 + (16 * 14)] = {
+  4, (1 << 4) - 1, 16, 14,  // [shift, mask?, stride, height]
   0x02, 0x02, 0x02, 0x12, 0x12, 0x12, 0x12, 0x12, 0x12, 0x12, 0x12, 0x42, 0x42, 0x02, 0x02, 0x02,
   0x02, 0x02, 0x02, 0x12, 0x12, 0x12, 0x12, 0x12, 0x12, 0x12, 0x12, 0x42, 0x42, 0x02, 0x02, 0x02,
   0x02, 0x02, 0x02, 0x12, 0x12, 0x12, 0x12, 0x12, 0x12, 0x12, 0x12, 0x42, 0x42, 0x42, 0x42, 0x42,
@@ -1176,11 +1156,8 @@ static const tileset_ofs_t sTilesetOffset[4+(HEIGHT * WIDTH)] = {
 
 // 0x0834770c
 // clang-format off
-static const u16 sScreenBehavior[4+(HEIGHT * WIDTH)] = {
-  4, // 1 << sTilesetOffset[0] で WIDTH に等しい？
-  15,
-  WIDTH, HEIGHT,
-
+static const u16 sScreenBehavior[4 + (16 * 14)] = {
+  4, (1 << 4) - 1, 16, 14,  // [shift, mask?, stride, height]
   0xF123, 0xF100, 0xF100, 0xF100, 0xF108, 0xF108, 0xF108, 0xF108, 0xF108, 0xF100, 0xF100, 0xF119, 0xF119, 0xF123, 0xF123, 0xF100,
   0xF123, 0xE123, 0xF100, 0xF100, 0xF108, 0x2108, 0x2108, 0x2108, 0x2108, 0xF100, 0xF100, 0xF119, 0x0119, 0xF123, 0x0123, 0xF100,
   0xF123, 0x0123, 0xF100, 0xF100, 0xF108, 0x2168, 0x2168, 0x2108, 0x2108, 0xF100, 0xF100, 0xF111, 0xF111, 0xF111, 0xF111, 0xF100,
@@ -1202,7 +1179,7 @@ const struct Stage gResistanceBaseLandscape = {
   id : STAGE_BASE,
   fn : sStageRoutine,
   terrainHdr : &gStageTerrains[STAGE_BASE],
-  maps : {&sChunkMap1, &sChunkMap2, &sChunkMap3},
+  maps : {(void*)&sChunkMap1, (void*)&sChunkMap2, (void*)&sChunkMap3},
   bgIdx : {USE_BG1, USE_BG2, USE_BG3},
   prio : {3, 2, 3},
   screenBase : {BGCNT_SCREENBASE(2), BGCNT_SCREENBASE(4), BGCNT_SCREENBASE(6)},

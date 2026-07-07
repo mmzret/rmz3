@@ -18,19 +18,17 @@ const WeaponRoutine gMinigameRodRoutine = {
 };
 // clang-format on
 
-struct Weapon* CreateWeaponMinigameRod(struct Entity* p, u8 r1, u8 r2) {
-  struct Weapon* w = (struct Weapon*)AllocEntityLast(gWeaponHeaderPtr);
-  if (w != NULL) {
-    INIT_WEAPON_ROUTINE(w, WEAPON_MOVE_MINIGAME_ROD);
-    (w->s).flags2 &= ~ENTITY_FLAGS2_B6;
-    (w->s).renderPrio = 16;
-    (w->s).tileNum = gWeaponTileNum[0];
-    (w->s).palID = gWeaponPalIDs[0];
-    (w->s).work[0] = r2;
-    (w->s).work[1] = r1;
-    (w->s).unk_28 = p;
+struct Weapon* CreateWeaponMinigameRod(struct Entity* q, u8 r1, u8 r2) {
+  struct Weapon* p = AllocEntityLast(gWeaponHeaderPtr);
+  if (p != NULL) {
+    INIT_WEAPON_ROUTINE(p, WEAPON_MOVE_MINIGAME_ROD);
+    (p->s).flags2 &= ~ENTITY_FLAGS2_B6;
+    (p->s).renderPrio = 16;
+    (p->s).tileNum = gWeaponTileNum[0], (p->s).palID = gWeaponPalIDs[0];
+    (p->s).work[0] = r2, (p->s).work[1] = r1;
+    (p->s).unk_28 = q;
   }
-  return w;
+  return p;
 }
 
 NAKED static void Weapon16_Init(struct Weapon* w) {
@@ -107,13 +105,13 @@ _0803CF2C: .4byte gWeaponFnTable\n\
  .syntax divided\n");
 }
 
-void weapon_0803cf84(struct Weapon* w);
+static void _Weapon16_Update(struct Weapon* p);
 
-static void Weapon16_Update(struct Weapon* w) {
+static void Weapon16_Update(struct Weapon* p) {
   static const WeaponFunc sUpdates[1] = {
-      weapon_0803cf84,
+      _Weapon16_Update,
   };
-  (sUpdates[(w->s).mode[1]])(w);
+  (sUpdates[(p->s).mode[1]])(p);
 }
 
 static void Weapon16_Die(Object* p) {
@@ -122,8 +120,153 @@ static void Weapon16_Die(Object* p) {
   SET_WEAPON_ROUTINE(p, ENTITY_EXIT);
 }
 
-INCASM("asm/weapon/minigame_rod.inc");
+// 0x0803CF84
+NAKED static void _Weapon16_Update(struct Weapon* p) {
+  asm(".syntax unified\n\
+	push {r4, r5, r6, r7, lr}\n\
+	adds r5, r0, #0\n\
+	ldrb r4, [r5, #0xe]\n\
+	cmp r4, #0\n\
+	beq _0803CF94\n\
+	cmp r4, #1\n\
+	beq _0803CFC2\n\
+	b _0803D086\n\
+_0803CF94:\n\
+	ldr r1, _0803CFE8 @ =gWeapon16Motions\n\
+	ldrb r0, [r5, #0x11]\n\
+	lsls r0, r0, #1\n\
+	adds r0, r0, r1\n\
+	ldrh r1, [r0]\n\
+	adds r0, r5, #0\n\
+	bl SetMotion\n\
+	adds r0, r5, #0\n\
+	adds r0, #0x8c\n\
+	str r4, [r0]\n\
+	adds r0, #4\n\
+	str r4, [r0]\n\
+	adds r0, #4\n\
+	strb r4, [r0]\n\
+	ldrb r1, [r5, #0xa]\n\
+	movs r0, #0xfb\n\
+	ands r0, r1\n\
+	strb r0, [r5, #0xa]\n\
+	strb r4, [r5, #0x12]\n\
+	ldrb r0, [r5, #0xe]\n\
+	adds r0, #1\n\
+	strb r0, [r5, #0xe]\n\
+_0803CFC2:\n\
+	ldr r1, [r5, #0x28]\n\
+	ldr r0, [r1, #0x54]\n\
+	str r0, [r5, #0x54]\n\
+	ldr r0, [r1, #0x58]\n\
+	str r0, [r5, #0x58]\n\
+	adds r0, r5, #0\n\
+	bl UpdateEntityAnim\n\
+	ldrb r0, [r5, #0x11]\n\
+	cmp r0, #5\n\
+	bhi _0803CFEC\n\
+	adds r0, r5, #0\n\
+	adds r0, #0x71\n\
+	movs r1, #0\n\
+	ldrsb r1, [r0, r1]\n\
+	adds r7, r0, #0\n\
+	cmp r1, #1\n\
+	bne _0803D02C\n\
+	b _0803CFFA\n\
+	.align 2, 0\n\
+_0803CFE8: .4byte gWeapon16Motions\n\
+_0803CFEC:\n\
+	adds r0, r5, #0\n\
+	adds r0, #0x71\n\
+	movs r1, #0\n\
+	ldrsb r1, [r0, r1]\n\
+	adds r7, r0, #0\n\
+	cmp r1, #2\n\
+	bne _0803D02C\n\
+_0803CFFA:\n\
+	ldrb r0, [r5, #0x12]\n\
+	adds r6, r0, #0\n\
+	cmp r6, #0\n\
+	bne _0803D02C\n\
+	adds r0, #1\n\
+	strb r0, [r5, #0x12]\n\
+	ldrb r1, [r5, #0xa]\n\
+	movs r0, #4\n\
+	orrs r0, r1\n\
+	strb r0, [r5, #0xa]\n\
+	adds r4, r5, #0\n\
+	adds r4, #0x74\n\
+	ldr r1, _0803D03C @ =gWeapon16Hitboxes\n\
+	ldrb r0, [r5, #0x11]\n\
+	lsls r0, r0, #2\n\
+	adds r0, r0, r1\n\
+	ldr r1, [r0]\n\
+	adds r2, r5, #0\n\
+	adds r2, #0x54\n\
+	adds r0, r4, #0\n\
+	movs r3, #1\n\
+	bl InitBody\n\
+	str r5, [r4, #0x2c]\n\
+	str r6, [r4, #0x24]\n\
+_0803D02C:\n\
+	ldrb r0, [r5, #0x11]\n\
+	cmp r0, #5\n\
+	bhi _0803D040\n\
+	movs r0, #0\n\
+	ldrsb r0, [r7, r0]\n\
+	cmp r0, #4\n\
+	bne _0803D06A\n\
+	b _0803D048\n\
+	.align 2, 0\n\
+_0803D03C: .4byte gWeapon16Hitboxes\n\
+_0803D040:\n\
+	movs r0, #0\n\
+	ldrsb r0, [r7, r0]\n\
+	cmp r0, #5\n\
+	bne _0803D06A\n\
+_0803D048:\n\
+	ldrb r0, [r5, #0x12]\n\
+	cmp r0, #1\n\
+	bne _0803D06A\n\
+	adds r0, #1\n\
+	movs r1, #0\n\
+	strb r0, [r5, #0x12]\n\
+	adds r0, r5, #0\n\
+	adds r0, #0x8c\n\
+	str r1, [r0]\n\
+	adds r0, #4\n\
+	str r1, [r0]\n\
+	adds r0, #4\n\
+	strb r1, [r0]\n\
+	ldrb r1, [r5, #0xa]\n\
+	movs r0, #0xfb\n\
+	ands r0, r1\n\
+	strb r0, [r5, #0xa]\n\
+_0803D06A:\n\
+	adds r0, r5, #0\n\
+	adds r0, #0x73\n\
+	ldrb r0, [r0]\n\
+	cmp r0, #3\n\
+	bne _0803D086\n\
+	ldr r1, _0803D08C @ =gWeaponFnTable\n\
+	ldrb r0, [r5, #9]\n\
+	lsls r0, r0, #2\n\
+	adds r0, r0, r1\n\
+	movs r1, #2\n\
+	str r1, [r5, #0xc]\n\
+	ldr r0, [r0]\n\
+	ldr r0, [r0, #8]\n\
+	str r0, [r5, #0x14]\n\
+_0803D086:\n\
+	pop {r4, r5, r6, r7}\n\
+	pop {r0}\n\
+	bx r0\n\
+	.align 2, 0\n\
+_0803D08C: .4byte gWeaponFnTable\n\
+ .syntax divided\n");
+}
 
+// 0x08361780
 const struct Collision gWeapon16Collisions[15] = {
     [0] = {
       kind : DDP,
@@ -339,16 +482,16 @@ const struct Collision gWeapon16Collisions[15] = {
 
 // clang-format off
 const motion_t gWeapon16Motions[9] = {
-    MOTION(0x75, 0x00),
-    MOTION(0x75, 0x01),
-    MOTION(0x76, 0x00),
-    MOTION(0x76, 0x01),
-    MOTION(0x77, 0x00),
-    MOTION(0x77, 0x01),
-    MOTION(0x7D, 0x00),
-    MOTION(0x7E, 0x00),
-    MOTION(0x7F, 0x01),
-};
+    MOTION(DM117_ROD_FORWARD_1000, 0),
+    MOTION(DM117_ROD_FORWARD_1000, 1),
+    MOTION(DM118_ROD_DIAGONAL_UP, 0),
+    MOTION(DM118_ROD_DIAGONAL_UP, 1),
+    MOTION(DM119_ROD_DIAGONAL_DOWN, 0),
+    MOTION(DM119_ROD_DIAGONAL_DOWN, 1),
+    MOTION(DM125_UNK, 0),
+    MOTION(DM126_UNK, 0),
+    MOTION(DM127_UNK, 1),
+}; // 0x083618e8
 // clang-format on
 
 // clang-format off
@@ -362,5 +505,5 @@ const struct Collision* const gWeapon16Hitboxes[9] = {
     &gWeapon16Collisions[9],
     &gWeapon16Collisions[11],
     &gWeapon16Collisions[13],
-};
+}; // 0x083618fc
 // clang-format on

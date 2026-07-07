@@ -180,7 +180,7 @@ EWRAM_DATA u8* gElfAvailability = NULL;  // 多分常に GameState.save.elf (= 0
 
 EWRAM_DATA struct EntityHeader* gWidgetHeaderPtr = NULL;
 
-EWRAM_DATA ALIGNED(16) struct TextPrinter gTextPrinter = {};
+EWRAM_DATA ALIGNED(16) TextPrinter gTextPrinter = {};
 EWRAM_DATA ALIGNED(16) struct HUD gHUD = {};
 EWRAM_DATA ALIGNED(16) struct TextWindow gTextWindow = {};
 
@@ -189,7 +189,7 @@ EWRAM_DATA u32 gUnkMmbn4 = 0;  // 0x02030b54
 EWRAM_DATA ALIGNED(16) struct GameState gGameState = {};
 EWRAM_DATA ALIGNED(16) struct Elf gElfEntities[16] = {};
 EWRAM_DATA ALIGNED(16) Player gPlayers[1] = {};  // 02037c60
-EWRAM_DATA ALIGNED(16) struct Pickup gPickups[10] = {};
+EWRAM_DATA ALIGNED(16) Pickup gPickups[10] = {};
 
 EWRAM_DATA ALIGNED(16) u8 _unused_020386a0[2352] = {};  // もともともう1種類Entityがあったのかも
 

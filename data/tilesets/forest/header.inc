@@ -3,84 +3,61 @@
 
 .global gForestTilesetGraphics
 gForestTilesetGraphics:
-	@ Graphic 0
-	.4byte gForestTilesetGraphics_0-. @ src offset
-	.4byte (0 << 22) | 10524 	@ size(bit0..21): 10524 Bytes, dst(bit22..) = VRAM+0
-	.2byte 256, (LZ77 | BPP4) 	@ chunk size, props
-		@ Palette
-		.4byte gForestTilesetGraphics_0_Palettes-. @ src offset
+
+ForestTileset0: @ 0x08775454
+	.4byte ForestTileset0_Tiles-. @ data: 0x087754A4 = .+80
+	.4byte 10524 | (0 << 22) 	@ bit0..21: bytesize, bit22..31: dst (VRAM TileID)
+	.2byte 256, (LZ77 | BPP4) 	@ rowsize(unused), props
+	@ Palette 0x08775460
+		.4byte ForestTileset0_Pal-. @ data: 0x08777DC0 = .+10592
 		.2byte 224 @ bytesize
 		.byte 0, 2 @ lz77(bool8), dst = PaletteID
 
-	@ Graphic 1
-	.4byte gForestTilesetGraphics_1-. @ src offset
-	.4byte (512 << 22) | 12880 	@ size(bit0..21): 12880 Bytes, dst(bit22..) = VRAM+512
-	.2byte 256, (LZ77 | BPP4) 	@ chunk size, props
-		@ Palette
-		.4byte gForestTilesetGraphics_1_Palettes-. @ src offset
+ForestTileset1: @ 0x08775468
+	.4byte ForestTileset1_Tiles-. @ data: 0x08777EA0 = .+10808
+	.4byte 12880 | (512 << 22) 	@ bit0..21: bytesize, bit22..31: dst (VRAM TileID)
+	.2byte 256, (LZ77 | BPP4) 	@ rowsize(unused), props
+	@ Palette 0x08775474
+		.4byte ForestTileset1_Pal-. @ data: 0x0877B0F0 = .+23676
 		.2byte 192 @ bytesize
 		.byte 0, 9 @ lz77(bool8), dst = PaletteID
 
-	@ Graphic 2
-	.4byte gForestTilesetGraphics_2-. @ src offset
-	.4byte (0 << 22) | 6672 	@ size(bit0..21): 6672 Bytes, dst(bit22..) = VRAM+0
-	.2byte 256, (LZ77 | BPP4) 	@ chunk size, props
-		@ Palette
-		.4byte gForestTilesetGraphics_2_Palettes-. @ src offset
+ForestTileset2: @ 0x0877547C
+	.4byte ForestTileset2_Tiles-. @ data: 0x0877B1B0 = .+23860
+	.4byte 6672 | (0 << 22) 	@ bit0..21: bytesize, bit22..31: dst (VRAM TileID)
+	.2byte 256, (LZ77 | BPP4) 	@ rowsize(unused), props
+	@ Palette 0x08775488
+		.4byte ForestTileset2_Pal-. @ data: 0x0877CBC0 = .+30520
 		.2byte 224 @ bytesize
 		.byte 0, 2 @ lz77(bool8), dst = PaletteID
 
-	@ Graphic 3
-	.4byte gForestTilesetGraphics_3-. @ src offset
-	.4byte (512 << 22) | 7516 	@ size(bit0..21): 7516 Bytes, dst(bit22..) = VRAM+512
-	.2byte 256, (LZ77 | BPP4) 	@ chunk size, props
-		@ Palette
-		.4byte gForestTilesetGraphics_3_Palettes-. @ src offset
+ForestTileset3: @ 0x08775490
+	.4byte ForestTileset3_Tiles-. @ data: 0x0877CCA0 = .+30736
+	.4byte 7516 | (512 << 22) 	@ bit0..21: bytesize, bit22..31: dst (VRAM TileID)
+	.2byte 256, (LZ77 | BPP4) 	@ rowsize(unused), props
+	@ Palette 0x0877549C
+		.4byte ForestTileset3_Pal-. @ data: 0x0877E9FC = .+38240
 		.2byte 224 @ bytesize
 		.byte 0, 9 @ lz77(bool8), dst = PaletteID
 
 @;@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 
-gForestTilesetGraphics_0:
-	.incbin "data/tilesets/forest/0/tiles.4bpp.lz"
-	gForestTilesetGraphics_0_Palettes:
-	.incbin "data/tilesets/forest/0/02.pal"
-	.incbin "data/tilesets/forest/0/03.pal"
-	.incbin "data/tilesets/forest/0/04.pal"
-	.incbin "data/tilesets/forest/0/05.pal"
-	.incbin "data/tilesets/forest/0/06.pal"
-	.incbin "data/tilesets/forest/0/07.pal"
-	.incbin "data/tilesets/forest/0/08.pal"
+ForestTileset0_Tiles:
+	.incbin "data/tilesets/forest/forest0.4bpp.lz"
+ForestTileset0_Pal:
+	.incbin "data/tilesets/forest/forest0.gbapal"
 
-gForestTilesetGraphics_1:
-	.incbin "data/tilesets/forest/1/tiles.4bpp.lz"
-	gForestTilesetGraphics_1_Palettes:
-	.incbin "data/tilesets/forest/1/09.pal"
-	.incbin "data/tilesets/forest/1/10.pal"
-	.incbin "data/tilesets/forest/1/11.pal"
-	.incbin "data/tilesets/forest/1/12.pal"
-	.incbin "data/tilesets/forest/1/13.pal"
-	.incbin "data/tilesets/forest/1/14.pal"
+ForestTileset1_Tiles:
+	.incbin "data/tilesets/forest/forest1.4bpp.lz"
+ForestTileset1_Pal:
+	.incbin "data/tilesets/forest/forest1.gbapal"
 
-gForestTilesetGraphics_2:
-	.incbin "data/tilesets/forest/2/tiles.4bpp.lz"
-	gForestTilesetGraphics_2_Palettes:
-	.incbin "data/tilesets/forest/2/02.pal"
-	.incbin "data/tilesets/forest/2/03.pal"
-	.incbin "data/tilesets/forest/2/04.pal"
-	.incbin "data/tilesets/forest/2/05.pal"
-	.incbin "data/tilesets/forest/2/06.pal"
-	.incbin "data/tilesets/forest/2/07.pal"
-	.incbin "data/tilesets/forest/2/08.pal"
+ForestTileset2_Tiles:
+	.incbin "data/tilesets/forest/forest2.4bpp.lz"
+ForestTileset2_Pal:
+	.incbin "data/tilesets/forest/forest2.gbapal"
 
-gForestTilesetGraphics_3:
-	.incbin "data/tilesets/forest/3/tiles.4bpp.lz"
-	gForestTilesetGraphics_3_Palettes:
-	.incbin "data/tilesets/forest/3/09.pal"
-	.incbin "data/tilesets/forest/3/10.pal"
-	.incbin "data/tilesets/forest/3/11.pal"
-	.incbin "data/tilesets/forest/3/12.pal"
-	.incbin "data/tilesets/forest/3/13.pal"
-	.incbin "data/tilesets/forest/3/14.pal"
-	.incbin "data/tilesets/forest/3/15.pal"
-
+ForestTileset3_Tiles:
+	.incbin "data/tilesets/forest/forest3.4bpp.lz"
+ForestTileset3_Pal:
+	.incbin "data/tilesets/forest/forest3.gbapal"

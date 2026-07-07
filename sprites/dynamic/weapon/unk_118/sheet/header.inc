@@ -33,7 +33,7 @@ gGraphicHeader_Sprite_weapon_unk_118_1:
 	gGraphicHeader_Sprite_weapon_unk_118_1_Palettes:
 
 gGraphicHeader_Sprite_weapon_unk_118_2:
-	.incbin "sprites/dynamic/weapon/unk_118/sheet/2.notrim.4bpp"
+	.incbin "sprites/dynamic/weapon/unk_118/sheet/2.4bpp"
 	gGraphicHeader_Sprite_weapon_unk_118_2_Palettes:
 
 gGraphicHeader_Sprite_weapon_unk_118_3:

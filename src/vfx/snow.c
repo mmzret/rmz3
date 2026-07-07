@@ -165,7 +165,7 @@ static void Snow_Update(struct SnowVFX* p) {
   u32 unk_0;
   UpdateSpriteAnimation(p);
   (p->s).coord.y += (p->s).d.y;
-  (p->s).coord.x = (p->s).unk_coord.x + SINX((p->s).work[2], 8);
+  (p->s).coord.x = (p->s).unk_coord.x + SIN((p->s).work[2]) * 8;
   (p->s).work[2] += 3;
   (p->s).coord.x += (p->s).d.x;
 

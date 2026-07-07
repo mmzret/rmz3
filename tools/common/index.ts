@@ -1,13 +1,12 @@
-import { BitField } from './types.ts';
-
-export * from './load.ts';
 export * from './parser.ts';
-export * from './types.ts';
 export * from './entity.ts';
+export * from './gba.ts';
+export * from './rmz3.ts';
+
+export type Nullable<T> = T | null | undefined;
+export type BitField = Record<number, string>;
 
 export const ROM_PATH = 'baserom.gba';
-export const VRAM = 0x0600_0000;
-export const BASE = 0x0800_0000;
 export const SEPARATOR = '@;@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@';
 
 export const toHex = (val: number, maxLength: number, prefix = ''): string => {

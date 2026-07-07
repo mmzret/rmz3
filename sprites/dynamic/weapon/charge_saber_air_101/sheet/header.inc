@@ -60,45 +60,34 @@ gGraphicHeader_Sprite_weapon_charge_saber_air_101:
 @;@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 
 gGraphicHeader_Sprite_weapon_charge_saber_air_101_0:
-	.incbin "sprites/dynamic/weapon/charge_saber_air_101/sheet/0.notrim.4bpp"
-	gGraphicHeader_Sprite_weapon_charge_saber_air_101_0_Palettes:
+	.incbin "sprites/dynamic/weapon/charge_saber_air_101/sheet/0.4bpp"
 
 gGraphicHeader_Sprite_weapon_charge_saber_air_101_1:
 	.incbin "sprites/dynamic/weapon/charge_saber_air_101/sheet/1.4bpp"
-	gGraphicHeader_Sprite_weapon_charge_saber_air_101_1_Palettes:
 
 gGraphicHeader_Sprite_weapon_charge_saber_air_101_2:
 	.incbin "sprites/dynamic/weapon/charge_saber_air_101/sheet/2.4bpp"
-	gGraphicHeader_Sprite_weapon_charge_saber_air_101_2_Palettes:
 
 gGraphicHeader_Sprite_weapon_charge_saber_air_101_3:
 	.incbin "sprites/dynamic/weapon/charge_saber_air_101/sheet/3.4bpp"
-	gGraphicHeader_Sprite_weapon_charge_saber_air_101_3_Palettes:
 
 gGraphicHeader_Sprite_weapon_charge_saber_air_101_4:
 	.incbin "sprites/dynamic/weapon/charge_saber_air_101/sheet/4.4bpp"
-	gGraphicHeader_Sprite_weapon_charge_saber_air_101_4_Palettes:
 
 gGraphicHeader_Sprite_weapon_charge_saber_air_101_5:
 	.incbin "sprites/dynamic/weapon/charge_saber_air_101/sheet/5.4bpp"
-	gGraphicHeader_Sprite_weapon_charge_saber_air_101_5_Palettes:
 
 gGraphicHeader_Sprite_weapon_charge_saber_air_101_6:
 	.incbin "sprites/dynamic/weapon/charge_saber_air_101/sheet/6.4bpp"
-	gGraphicHeader_Sprite_weapon_charge_saber_air_101_6_Palettes:
 
 gGraphicHeader_Sprite_weapon_charge_saber_air_101_7:
 	.incbin "sprites/dynamic/weapon/charge_saber_air_101/sheet/7.4bpp"
-	gGraphicHeader_Sprite_weapon_charge_saber_air_101_7_Palettes:
 
 gGraphicHeader_Sprite_weapon_charge_saber_air_101_8:
 	.incbin "sprites/dynamic/weapon/charge_saber_air_101/sheet/8.4bpp"
-	gGraphicHeader_Sprite_weapon_charge_saber_air_101_8_Palettes:
 
 gGraphicHeader_Sprite_weapon_charge_saber_air_101_9:
 	.incbin "sprites/dynamic/weapon/charge_saber_air_101/sheet/9.4bpp"
-	gGraphicHeader_Sprite_weapon_charge_saber_air_101_9_Palettes:
 
 gGraphicHeader_Sprite_weapon_charge_saber_air_101_10:
 	.incbin "sprites/dynamic/weapon/charge_saber_air_101/sheet/10.4bpp"
-	gGraphicHeader_Sprite_weapon_charge_saber_air_101_10_Palettes:

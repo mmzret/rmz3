@@ -38,23 +38,22 @@
 // LAYER(RECOIL_PUSHABLE)
 #define RECOIL_PUSHABLE 0x7800
 
+// CollisionManager.disabled
+#define COLLMAN_DISABLED (1 << 7)
+
 // Collision.atkType
 enum CollisionAtkType {
   ATK_NORMAL = 0,  // 通常攻撃
-
-  // --------------------------------------------
-
-  // 4フレームのヒットストップが発生する
-  ATK_SABER = 1,  // 特殊攻撃
-  ATK_ROD = 2,    // リコイルロッド
-
-  // --------------------------------------------
-
+  ATK_SABER = 1,   // 特殊攻撃, 4フレームのヒットストップが発生する
+  ATK_ROD = 2,     // リコイルロッド, 4フレームのヒットストップが発生する
   ATK_UNK3 = 3,
   ATK_UNK4 = 4,
-  // ...
+  ATK_UNK5 = 5,
+  ATK_UNK6 = 6,
+  ATK_UNK7 = 7,
   ATK_UNK8 = 8,
-  // ...
+  ATK_UNK9 = 9,
+  ATK_UNK10 = 10,
   ATK_UNK11 = 11,
   ATK_UNK12 = 12,
   ATK_SOUL_LAUNCHER = 13,
@@ -114,15 +113,15 @@ static_assert(sizeof(struct Hitbox) == 24);
 
 // 0x030032e0
 struct CollisionManager {
-  u8 disabled;                // 0x00, bitに対応するFACTIONの重なり検知をしない, bit0: FACTION_ALLY, bit1: FACTION_ENEMY, bit2: FACTION_NEUTRAL, bit3..6: Unused, bit7: 全部
-  u8 sweep;                   // 0x01, bitに対応するFACTIONのEntityを全てkillする, bit0: FACTION_ALLY, bit1: FACTION_ENEMY(Used for area change?), bit2: FACTION_NEUTRAL, bit3..7: Unused
-  u8 hitstop;                 // 0x02, この値がxxの場合、xxフレーム後まで画面が止まる 回復アイテム取った時とかに使う？
-  u8 length;                  // 0x03, 次に追加するコリジョンデータのidxでもある(毎フレーム0にセットされてその後、各エンティティのコリジョンデータが設定されるごとに増えていく)
-  struct Hitbox buf[64];      // Hitbox のバッファ
-  struct Hitbox* list[3][3];  // Hitbox linklist (.bufのデータのリンクリスト)
-  struct Body* talkTo;        // ゼロが上ボタンを押すと会話ができるキャラクター
-  struct Body* door;          // ゼロが上ボタンを押すと開ける範囲にあるドア
-  struct Body* teleportal;
+  u8 disabled;                // 0x000, bitに対応するFACTIONの重なり検知をしない, bit0: FACTION_ALLY, bit1: FACTION_ENEMY, bit2: FACTION_NEUTRAL, bit3..6: Unused, bit7: 全部
+  u8 sweep;                   // 0x001, bitに対応するFACTIONのEntityを全てkillする, bit0: FACTION_ALLY, bit1: FACTION_ENEMY(Used for area change?), bit2: FACTION_NEUTRAL, bit3..7: Unused
+  u8 hitstop;                 // 0x002, この値がxxの場合、xxフレーム後まで画面が止まる, セイバーとかの攻撃が当たった時にセット
+  u8 length;                  // 0x003, 次に追加するコリジョンデータのidxでもある(毎フレーム0にセットされてその後、各エンティティのコリジョンデータが設定されるごとに増えていく)
+  struct Hitbox buf[64];      // 0x004, Hitbox のバッファ
+  struct Hitbox* list[3][3];  // 0x604, Hitbox linklist (.bufのデータのリンクリスト)
+  struct Body* talkTo;        // 0x628, 会話可能なキャラが会話範囲にいるときにそのキャラのBodyがセットされる
+  struct Body* door;          // 0x62C, ドアの当たり判定に入ったときにそのドアのBodyがセットされる
+  struct Body* teleportal;    // 0x630, テレポータルの当たり判定に入ったときにそのテレポータルのBodyがセットされる
 };
 static_assert(sizeof(struct CollisionManager) == 1588);
 

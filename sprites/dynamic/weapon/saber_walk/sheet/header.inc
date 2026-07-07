@@ -40,29 +40,22 @@ gGraphicHeader_Sprite_weapon_saber_walk:
 @;@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 
 gGraphicHeader_Sprite_weapon_saber_walk_0:
-	.incbin "sprites/dynamic/weapon/saber_walk/sheet/0.notrim.4bpp"
-	gGraphicHeader_Sprite_weapon_saber_walk_0_Palettes:
+	.incbin "sprites/dynamic/weapon/saber_walk/sheet/0.4bpp"
 
 gGraphicHeader_Sprite_weapon_saber_walk_1:
-	.incbin "sprites/dynamic/weapon/saber_walk/sheet/1.notrim.4bpp"
-	gGraphicHeader_Sprite_weapon_saber_walk_1_Palettes:
+	.incbin "sprites/dynamic/weapon/saber_walk/sheet/1.4bpp"
 
 gGraphicHeader_Sprite_weapon_saber_walk_2:
 	.incbin "sprites/dynamic/weapon/saber_walk/sheet/2.4bpp"
-	gGraphicHeader_Sprite_weapon_saber_walk_2_Palettes:
 
 gGraphicHeader_Sprite_weapon_saber_walk_3:
 	.incbin "sprites/dynamic/weapon/saber_walk/sheet/3.4bpp"
-	gGraphicHeader_Sprite_weapon_saber_walk_3_Palettes:
 
 gGraphicHeader_Sprite_weapon_saber_walk_4:
 	.incbin "sprites/dynamic/weapon/saber_walk/sheet/4.4bpp"
-	gGraphicHeader_Sprite_weapon_saber_walk_4_Palettes:
 
 gGraphicHeader_Sprite_weapon_saber_walk_5:
 	.incbin "sprites/dynamic/weapon/saber_walk/sheet/5.4bpp"
-	gGraphicHeader_Sprite_weapon_saber_walk_5_Palettes:
 
 gGraphicHeader_Sprite_weapon_saber_walk_6:
 	.incbin "sprites/dynamic/weapon/saber_walk/sheet/6.4bpp"
-	gGraphicHeader_Sprite_weapon_saber_walk_6_Palettes:

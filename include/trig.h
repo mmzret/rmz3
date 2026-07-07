@@ -7,24 +7,17 @@
 #define SIN(index) (gSineTable[(u8)(index)])
 #define COS(index) (gSineTable[(u8)((index) + 64)])
 
-#define SINX(index, amplitude) ((amplitude * gSineTable[(u8)index]))
-#define COSX(index, amplitude) ((amplitude * gSineTable[(u8)((index) + 64)]))
-
 extern const s16 gSineTable[256];
 
 static inline s32 Sin(u8 index, s32 amplitude) {
-  s32 val = SINX(index, amplitude);
-  if (val < 0) {
-    val += 0xFF;
-  }
+  s32 val = amplitude * SIN(index);
+  if (val < 0) val += 0xFF;
   return (val >> 8);
 }
 
 static inline s32 Cos(u8 index, s32 amplitude) {
-  s32 val = COSX(index, amplitude);
-  if (val < 0) {
-    val += 0xFF;
-  }
+  s32 val = amplitude * COS(index);
+  if (val < 0) val += 0xFF;
   return (val >> 8);
 }
 

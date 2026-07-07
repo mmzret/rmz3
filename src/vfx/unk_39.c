@@ -45,7 +45,7 @@ struct Entity* CreateVFX39(Coords32* c, u8 r1, u8 r2) {
 void TaskCB_080bd610(struct Sprite* s, struct DrawPivot* c);
 
 static void VFX39_Init(struct VFX39* p) {
-  SetTaskCallback((struct Task*)&(p->s).spr, TaskCB_080bd610);
+  SetTaskCallback((void*)&(p->s).spr, TaskCB_080bd610);
   (p->s).spr.sprites = (struct MetaspriteHeader*)p;
   (p->s).flags &= ~USE_COMMON_OAM_RENDERER;
   (p->s).flags |= DISPLAY;

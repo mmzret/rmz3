@@ -1,0 +1,4 @@
+*/*.gbapal
+*/*.4bpp
+*/*.lz
+misc/**/*.4bpp

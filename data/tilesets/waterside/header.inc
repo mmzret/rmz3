@@ -3,142 +3,103 @@
 
 .global gWatersideTilesetGraphics
 gWatersideTilesetGraphics:
-	@ Graphic 0
-	.4byte gWatersideTilesetGraphics_0-. @ src offset
-	.4byte (0 << 22) | 11952 	@ size(bit0..21): 11952 Bytes, dst(bit22..) = VRAM+0
-	.2byte 256, (LZ77 | BPP4) 	@ chunk size, props
-		@ Palette
-		.4byte gWatersideTilesetGraphics_0_Palettes-. @ src offset
+
+WatersideTileset0: @ 0x08736538
+	.4byte WatersideTileset0_Tiles-. @ data: 0x087365C4 = .+140
+	.4byte 11952 | (0 << 22) 	@ bit0..21: bytesize, bit22..31: dst (VRAM TileID)
+	.2byte 256, (LZ77 | BPP4) 	@ rowsize(unused), props
+	@ Palette0 0x08736544
+		.4byte WatersideTileset0_Pal-. @ data: 0x08739474 = .+12080
 		.2byte 192 @ bytesize
 		.byte 0, 2 @ lz77(bool8), dst = PaletteID
 
-	@ Graphic 1
-	.4byte gWatersideTilesetGraphics_1-. @ src offset
-	.4byte (512 << 22) | 8032 	@ size(bit0..21): 8032 Bytes, dst(bit22..) = VRAM+512
-	.2byte 256, (LZ77 | BPP4) 	@ chunk size, props
-		@ Palette
-		.4byte gWatersideTilesetGraphics_1_Palettes-. @ src offset
+WatersideTileset1: @ 0x0873654C
+	.4byte WatersideTileset1_Tiles-. @ data: 0x08739534 = .+12264
+	.4byte 8032 | (512 << 22) 	@ bit0..21: bytesize, bit22..31: dst (VRAM TileID)
+	.2byte 256, (LZ77 | BPP4) 	@ rowsize(unused), props
+	@ Palette1 0x08736558
+		.4byte WatersideTileset1_Pal-. @ data: 0x0873B494 = .+20284
 		.2byte 224 @ bytesize
 		.byte 0, 9 @ lz77(bool8), dst = PaletteID
 
-	@ Graphic 2
-	.4byte gWatersideTilesetGraphics_2-. @ src offset
-	.4byte (0 << 22) | 10172 	@ size(bit0..21): 10172 Bytes, dst(bit22..) = VRAM+0
-	.2byte 256, (LZ77 | BPP4) 	@ chunk size, props
-		@ Palette
-		.4byte gWatersideTilesetGraphics_2_Palettes-. @ src offset
+WatersideTileset2: @ 0x08736560
+	.4byte WatersideTileset2_Tiles-. @ data: 0x0873B574 = .+20500
+	.4byte 10172 | (0 << 22) 	@ bit0..21: bytesize, bit22..31: dst (VRAM TileID)
+	.2byte 256, (LZ77 | BPP4) 	@ rowsize(unused), props
+	@ Palette2 0x0873656C
+		.4byte WatersideTileset2_Pal-. @ data: 0x0873DD30 = .+30660
 		.2byte 224 @ bytesize
 		.byte 0, 2 @ lz77(bool8), dst = PaletteID
 
-	@ Graphic 3
-	.4byte gWatersideTilesetGraphics_3-. @ src offset
-	.4byte (0 << 22) | 6664 	@ size(bit0..21): 6664 Bytes, dst(bit22..) = VRAM+0
-	.2byte 256, (LZ77 | BPP4) 	@ chunk size, props
-		@ Palette
-		.4byte gWatersideTilesetGraphics_3_Palettes-. @ src offset
+WatersideTileset3: @ 0x08736574
+	.4byte WatersideTileset3_Tiles-. @ data: 0x0873DE10 = .+30876
+	.4byte 6664 | (0 << 22) 	@ bit0..21: bytesize, bit22..31: dst (VRAM TileID)
+	.2byte 256, (LZ77 | BPP4) 	@ rowsize(unused), props
+	@ Palette3 0x08736580
+		.4byte WatersideTileset3_Pal-. @ data: 0x0873F818 = .+37528
 		.2byte 160 @ bytesize
 		.byte 0, 2 @ lz77(bool8), dst = PaletteID
 
-	@ Graphic 4
-	.4byte gWatersideTilesetGraphics_4-. @ src offset
-	.4byte (0 << 22) | 6940 	@ size(bit0..21): 6940 Bytes, dst(bit22..) = VRAM+0
-	.2byte 256, (LZ77 | BPP4) 	@ chunk size, props
-		@ Palette
-		.4byte gWatersideTilesetGraphics_4_Palettes-. @ src offset
+WatersideTileset4: @ 0x08736588
+	.4byte WatersideTileset4_Tiles-. @ data: 0x0873F8B8 = .+37680
+	.4byte 6940 | (0 << 22) 	@ bit0..21: bytesize, bit22..31: dst (VRAM TileID)
+	.2byte 256, (LZ77 | BPP4) 	@ rowsize(unused), props
+	@ Palette4 0x08736594
+		.4byte WatersideTileset4_Pal-. @ data: 0x087413D4 = .+44608
 		.2byte 224 @ bytesize
 		.byte 0, 2 @ lz77(bool8), dst = PaletteID
 
-	@ Graphic 5
-	.4byte gWatersideTilesetGraphics_5-. @ src offset
-	.4byte (512 << 22) | 6456 	@ size(bit0..21): 6456 Bytes, dst(bit22..) = VRAM+512
-	.2byte 256, (LZ77 | BPP4) 	@ chunk size, props
-		@ Palette
-		.4byte gWatersideTilesetGraphics_5_Palettes-. @ src offset
+WatersideTileset5: @ 0x0873659C
+	.4byte WatersideTileset5_Tiles-. @ data: 0x087414B4 = .+44824
+	.4byte 6456 | (512 << 22) 	@ bit0..21: bytesize, bit22..31: dst (VRAM TileID)
+	.2byte 256, (LZ77 | BPP4) 	@ rowsize(unused), props
+	@ Palette5 0x087365A8
+		.4byte WatersideTileset5_Pal-. @ data: 0x08742DEC = .+51268
 		.2byte 224 @ bytesize
 		.byte 0, 9 @ lz77(bool8), dst = PaletteID
 
-	@ Graphic 6
-	.4byte gWatersideTilesetGraphics_6-. @ src offset
-	.4byte (0 << 22) | 7304 	@ size(bit0..21): 7304 Bytes, dst(bit22..) = VRAM+0
-	.2byte 256, (LZ77 | BPP4) 	@ chunk size, props
-		@ Palette
-		.4byte gWatersideTilesetGraphics_6_Palettes-. @ src offset
+WatersideTileset6: @ 0x087365B0
+	.4byte WatersideTileset6_Tiles-. @ data: 0x08742ECC = .+51484
+	.4byte 7304 | (0 << 22) 	@ bit0..21: bytesize, bit22..31: dst (VRAM TileID)
+	.2byte 256, (LZ77 | BPP4) 	@ rowsize(unused), props
+	@ Palette6 0x087365BC
+		.4byte WatersideTileset6_Pal-. @ data: 0x08744B54 = .+58776
 		.2byte 224 @ bytesize
 		.byte 0, 2 @ lz77(bool8), dst = PaletteID
 
 @;@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 
-gWatersideTilesetGraphics_0:
-	.incbin "data/tilesets/waterside/0/tiles.4bpp.lz"
-	gWatersideTilesetGraphics_0_Palettes:
-	.incbin "data/tilesets/waterside/0/02.pal"
-	.incbin "data/tilesets/waterside/0/03.pal"
-	.incbin "data/tilesets/waterside/0/04.pal"
-	.incbin "data/tilesets/waterside/0/05.pal"
-	.incbin "data/tilesets/waterside/0/06.pal"
-	.incbin "data/tilesets/waterside/0/07.pal"
+WatersideTileset0_Tiles:
+	.incbin "data/tilesets/waterside/waterside0.4bpp.lz"
+WatersideTileset0_Pal:
+	.incbin "data/tilesets/waterside/waterside0.gbapal"
 
-gWatersideTilesetGraphics_1:
-	.incbin "data/tilesets/waterside/1/tiles.4bpp.lz"
-	gWatersideTilesetGraphics_1_Palettes:
-	.incbin "data/tilesets/waterside/1/09.pal"
-	.incbin "data/tilesets/waterside/1/10.pal"
-	.incbin "data/tilesets/waterside/1/11.pal"
-	.incbin "data/tilesets/waterside/1/12.pal"
-	.incbin "data/tilesets/waterside/1/13.pal"
-	.incbin "data/tilesets/waterside/1/14.pal"
-	.incbin "data/tilesets/waterside/1/15.pal"
+WatersideTileset1_Tiles:
+	.incbin "data/tilesets/waterside/waterside1.4bpp.lz"
+WatersideTileset1_Pal:
+	.incbin "data/tilesets/waterside/waterside1.gbapal"
 
-gWatersideTilesetGraphics_2:
-	.incbin "data/tilesets/waterside/2/tiles.4bpp.lz"
-	gWatersideTilesetGraphics_2_Palettes:
-	.incbin "data/tilesets/waterside/2/02.pal"
-	.incbin "data/tilesets/waterside/2/03.pal"
-	.incbin "data/tilesets/waterside/2/04.pal"
-	.incbin "data/tilesets/waterside/2/05.pal"
-	.incbin "data/tilesets/waterside/2/06.pal"
-	.incbin "data/tilesets/waterside/2/07.pal"
-	.incbin "data/tilesets/waterside/2/08.pal"
+WatersideTileset2_Tiles:
+	.incbin "data/tilesets/waterside/waterside2.4bpp.lz"
+WatersideTileset2_Pal:
+	.incbin "data/tilesets/waterside/waterside2.gbapal"
 
-gWatersideTilesetGraphics_3:
-	.incbin "data/tilesets/waterside/3/tiles.4bpp.lz"
-	gWatersideTilesetGraphics_3_Palettes:
-	.incbin "data/tilesets/waterside/3/02.pal"
-	.incbin "data/tilesets/waterside/3/03.pal"
-	.incbin "data/tilesets/waterside/3/04.pal"
-	.incbin "data/tilesets/waterside/3/05.pal"
-	.incbin "data/tilesets/waterside/3/06.pal"
+WatersideTileset3_Tiles:
+	.incbin "data/tilesets/waterside/waterside3.4bpp.lz"
+WatersideTileset3_Pal:
+	.incbin "data/tilesets/waterside/waterside3.gbapal"
 
-gWatersideTilesetGraphics_4:
-	.incbin "data/tilesets/waterside/4/tiles.4bpp.lz"
-	gWatersideTilesetGraphics_4_Palettes:
-	.incbin "data/tilesets/waterside/4/02.pal"
-	.incbin "data/tilesets/waterside/4/03.pal"
-	.incbin "data/tilesets/waterside/4/04.pal"
-	.incbin "data/tilesets/waterside/4/05.pal"
-	.incbin "data/tilesets/waterside/4/06.pal"
-	.incbin "data/tilesets/waterside/4/07.pal"
-	.incbin "data/tilesets/waterside/4/08.pal"
+WatersideTileset4_Tiles:
+	.incbin "data/tilesets/waterside/waterside4.4bpp.lz"
+WatersideTileset4_Pal:
+	.incbin "data/tilesets/waterside/waterside4.gbapal"
 
-gWatersideTilesetGraphics_5:
-	.incbin "data/tilesets/waterside/5/tiles.4bpp.lz"
-	gWatersideTilesetGraphics_5_Palettes:
-	.incbin "data/tilesets/waterside/5/09.pal"
-	.incbin "data/tilesets/waterside/5/10.pal"
-	.incbin "data/tilesets/waterside/5/11.pal"
-	.incbin "data/tilesets/waterside/5/12.pal"
-	.incbin "data/tilesets/waterside/5/13.pal"
-	.incbin "data/tilesets/waterside/5/14.pal"
-	.incbin "data/tilesets/waterside/5/15.pal"
+WatersideTileset5_Tiles:
+	.incbin "data/tilesets/waterside/waterside5.4bpp.lz"
+WatersideTileset5_Pal:
+	.incbin "data/tilesets/waterside/waterside5.gbapal"
 
-gWatersideTilesetGraphics_6:
-	.incbin "data/tilesets/waterside/6/tiles.4bpp.lz"
-	gWatersideTilesetGraphics_6_Palettes:
-	.incbin "data/tilesets/waterside/6/02.pal"
-	.incbin "data/tilesets/waterside/6/03.pal"
-	.incbin "data/tilesets/waterside/6/04.pal"
-	.incbin "data/tilesets/waterside/6/05.pal"
-	.incbin "data/tilesets/waterside/6/06.pal"
-	.incbin "data/tilesets/waterside/6/07.pal"
-	.incbin "data/tilesets/waterside/6/08.pal"
-
+WatersideTileset6_Tiles:
+	.incbin "data/tilesets/waterside/waterside6.4bpp.lz"
+WatersideTileset6_Pal:
+	.incbin "data/tilesets/waterside/waterside6.gbapal"

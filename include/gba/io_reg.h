@@ -570,8 +570,8 @@
 #define WINOUT_WINOBJ_OBJ (1 << 12)
 #define WINOUT_WINOBJ_CLR (1 << 13)
 
-#define WIN_RANGE(a, b) (((a) << 8) | (b))
-#define WIN_RANGE2(a, b) ((b) | ((a) << 8))
+#define WIN_RANGE(left_or_top, right_or_bottom) (((left_or_top) << 8) | (right_or_bottom))
+#define WIN_RANGE2(left_or_top, right_or_bottom) ((right_or_bottom) | ((left_or_top) << 8))
 
 // BLDCNT
 // Bits 0-5 select layers for the 1st target

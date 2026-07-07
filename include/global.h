@@ -95,6 +95,8 @@ static inline s32 abs(s32 n) {
   return val;
 }
 
-#define TILEMAP_PAL(pal) ((pal & 0xF) << 12)  // bits 12-15
+// GBA bgmap entry
+#define TILE_XFLIP (1 << 10)               // bits 10
+#define TILE_PAL(pal) ((pal & 0xF) << 12)  // bits 12-15
 
 #endif  // GUARD_RMZ3_GLOBAL_H

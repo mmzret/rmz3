@@ -7,6 +7,9 @@
 #include "widget/cursor_square.h"
 #include "widget/exskill_icons.h"
 
+extern const struct Graphic gGraphic_ExSkillMenu;
+extern const struct Palette gPalette_ExSkillMenu;
+
 static void ExMenuLoop_Init(struct GameState* g);
 static void ExMenuLoop_Update(struct GameState* g);
 static void ExMenuLoop_SlideOut(struct GameState* g);
@@ -33,8 +36,8 @@ static void ExMenuLoop_Init(struct GameState* g) {
   struct ExSkillMenuState* exskill = &((g->sceneState).menu).exskill;
   exskill->selected = 0;
   exskill->inactive = FALSE;
-  LoadGraphic(BG_GRAPHIC(BG_EXSKILL_MENU), (void*)CHAR_BASE(1));
-  LoadPalette(BG_PALETTE(BG_EXSKILL_MENU), 0);
+  LoadGraphic(&gGraphic_ExSkillMenu, (void*)CHAR_BASE(1));
+  LoadPalette(&gPalette_ExSkillMenu, 0);
   CpuFastCopy(BGMAP(BG_EXSKILL_MENU), g->menuBgMap2, 960 * 2);
   RequestBgMapTransfer(g->menuBgMap1, (void*)SCREEN_BASE(1), 0x1000);
   StartPaletteAnimation(62, 0);

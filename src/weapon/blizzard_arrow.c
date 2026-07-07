@@ -2,6 +2,7 @@
 #include "global.h"
 #include "weapon.h"
 
+// 0x083615e0
 static const struct Collision sCollisions[2] = {
     {
       kind : DDP,
@@ -29,9 +30,9 @@ static const struct Collision sCollisions[2] = {
 
 // --------------------------------------------
 
-void BlizzardArrow_Init(struct Weapon* w);
-void BlizzardArrow_Update(struct Weapon* w);
-void BlizzardArrow_Die(struct Weapon* w);
+void BlizzardArrow_Init(struct Weapon* p);
+void BlizzardArrow_Update(struct Weapon* p);
+void BlizzardArrow_Die(struct Weapon* p);
 
 // clang-format off
 const WeaponRoutine gBlizzardArrowRoutine = {
@@ -45,20 +46,20 @@ const WeaponRoutine gBlizzardArrowRoutine = {
 
 // --------------------------------------------
 
-void MenuExit_BlizzardArrow(struct Weapon* w) {
-  struct Zero* z = (struct Zero*)(w->s).unk_28;
+void MenuExit_BlizzardArrow(struct Weapon* p) {
+  Player* z = (Player*)(p->s).unk_28;
   if (((&z->unk_b4)->status).element != ELEMENT_ICE) {
-    (w->s).flags &= ~DISPLAY;
-    (w->s).flags &= ~FLIPABLE;
-    EXIT_BODY(w);
-    SET_WEAPON_ROUTINE(w, ENTITY_DISAPPEAR);
+    (p->s).flags &= ~DISPLAY;
+    (p->s).flags &= ~FLIPABLE;
+    EXIT_BODY(p);
+    SET_WEAPON_ROUTINE(p, ENTITY_DISAPPEAR);
     return;
   }
-  if (z->unk_136 & (1 << 0)) {
-    (w->s).flags &= ~DISPLAY;
-    (w->s).flags &= ~FLIPABLE;
-    EXIT_BODY(w);
-    SET_WEAPON_ROUTINE(w, ENTITY_DISAPPEAR);
+  if (z->unk_136 & (1 << WEAPON_BUSTER)) {
+    (p->s).flags &= ~DISPLAY;
+    (p->s).flags &= ~FLIPABLE;
+    EXIT_BODY(p);
+    SET_WEAPON_ROUTINE(p, ENTITY_DISAPPEAR);
   }
 }
 
@@ -66,4 +67,5 @@ INCASM("asm/weapon/blizzard_arrow.inc");
 
 // --------------------------------------------
 
-static const s32 sBulletYCoords[3] = {0x000, -0x400, 0x400};
+// 0x08361624
+static const s32 sBlizzardArrowYOffsets[3] = {PIXEL(0), -PIXEL(4), PIXEL(4)};

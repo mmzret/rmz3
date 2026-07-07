@@ -9,23 +9,24 @@
 #define MAX_PLTT_ANIM 16
 
 // e.g. 0x085ba244
-struct PlttAnimData {
-  u8 len;
-  u8 start;
-  u8 end;
-  u8 _;
-  // u16 pltt[len*n]; n = 次の PlttAnimData 構造体までの長さによって変動
-};  // 4 bytes;
-static_assert(sizeof(struct PlttAnimData) == 4);
+typedef struct {
+  u8 len;    // 0x0, パレットの個数
+  u8 start;  // 0x1, 転送先の色番号 [gPaletteManager.buf[.start], gPaletteManager.buf[.end]] に転送される, StartPaletteAnimation の ofs で .start をずらすことができる
+  u8 end;    // 0x2, 転送先の色番号(の終端(この色番号も含む)), StartPaletteAnimation の ofs で .start がずれた場合は、 .end も同じだけずれる
+  u8 _;      // 0x3, unused (padding?)
+  // この後に
+  // u16 pltt[.len * (.end - .start + 1)];
+} PlttAnimData;  // 4 bytes;
+static_assert(sizeof(PlttAnimData) == 4);
 
 // 0x02002000
 typedef struct {
-  struct PlttAnimData* pal;  // 0x00
-  AnimCmd** cmds;            // 0x04, cmds[0] が現在のAnimCmdのコマンド列の先頭 (でも使われてなさそう)
-  AnimState m;               // 0x08
-  bool16 paused;             // 0x10
-  u16 offsetByte;            // 0x12, PlttAnimData の示す 転送先　に加えるオフセット (バイト単位)
-} PaletteAnimation;          // 20 bytes;
+  PlttAnimData* pal;  // 0x00
+  AnimCmd** cmds;     // 0x04, cmds[0] が現在のAnimCmdのコマンド列の先頭 (でも使われてなさそう)
+  AnimState m;        // 0x08
+  bool16 paused;      // 0x10
+  u16 offsetByte;     // 0x12, PlttAnimData の示す 転送先　に加えるオフセット (バイト単位)
+} PaletteAnimation;   // 20 bytes;
 static_assert(sizeof(PaletteAnimation) == 20);
 
 // アニメーションのステート更新は各自 StepPaletteAnimation を呼び出す必要がある

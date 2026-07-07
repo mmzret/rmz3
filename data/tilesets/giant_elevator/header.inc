@@ -3,87 +3,76 @@
 
 .global gElevatorTilesetGraphics
 gElevatorTilesetGraphics:
-	@ Graphic 0
-	.4byte gElevatorTilesetGraphics_0-. @ src offset
-	.4byte (0 << 22) | 9316 	@ size(bit0..21): 9316 Bytes, dst(bit22..) = VRAM+0
-	.2byte 256, (LZ77 | BPP4) 	@ chunk size, props
-		@ Palette
-		.4byte gElevatorTilesetGraphics_0_Palettes-. @ src offset
+
+ElevatorTileset0: @ 0x087A2E2C
+	.4byte ElevatorTileset0_Tiles-. @ data: 0x087A2E90 = .+100
+	.4byte 9316 | (0 << 22) 	@ bit0..21: bytesize, bit22..31: dst (VRAM TileID)
+	.2byte 256, (LZ77 | BPP4) 	@ rowsize(unused), props
+	@ Palette 0x087A2E38
+		.4byte ElevatorTileset0_Pal-. @ data: 0x087A52F4 = .+9404
 		.2byte 160 @ bytesize
 		.byte 0, 2 @ lz77(bool8), dst = PaletteID
 
-	@ Graphic 1
-	.4byte gElevatorTilesetGraphics_1-. @ src offset
-	.4byte (512 << 22) | 8800 	@ size(bit0..21): 8800 Bytes, dst(bit22..) = VRAM+512
-	.2byte 256, (LZ77 | BPP4) 	@ chunk size, props
-		@ Palette
-		.4byte gElevatorTilesetGraphics_1_Palettes-. @ src offset
+ElevatorTileset1: @ 0x087A2E40
+	.4byte ElevatorTileset1_Tiles-. @ data: 0x087A5394 = .+9556
+	.4byte 8800 | (512 << 22) 	@ bit0..21: bytesize, bit22..31: dst (VRAM TileID)
+	.2byte 256, (LZ77 | BPP4) 	@ rowsize(unused), props
+	@ Palette 0x087A2E4C
+		.4byte ElevatorTileset1_Pal-. @ data: 0x087A75F4 = .+18344
 		.2byte 96 @ bytesize
 		.byte 0, 9 @ lz77(bool8), dst = PaletteID
 
-	@ Graphic 2
-	.4byte gElevatorTilesetGraphics_2-. @ src offset
-	.4byte (512 << 22) | 10928 	@ size(bit0..21): 10928 Bytes, dst(bit22..) = VRAM+512
-	.2byte 256, (LZ77 | BPP4) 	@ chunk size, props
-		@ Palette
-		.4byte gElevatorTilesetGraphics_2_Palettes-. @ src offset
+ElevatorTileset2: @ 0x087A2E54
+	.4byte ElevatorTileset2_Tiles-. @ data: 0x087A7654 = .+18432
+	.4byte 10928 | (512 << 22) 	@ bit0..21: bytesize, bit22..31: dst (VRAM TileID)
+	.2byte 256, (LZ77 | BPP4) 	@ rowsize(unused), props
+	@ Palette 0x087A2E60
+		.4byte ElevatorTileset2_Pal-. @ data: 0x087AA104 = .+29348
 		.2byte 96 @ bytesize
 		.byte 0, 9 @ lz77(bool8), dst = PaletteID
 
-	@ Graphic 3
-	.4byte gElevatorTilesetGraphics_3-. @ src offset
-	.4byte (512 << 22) | 9036 	@ size(bit0..21): 9036 Bytes, dst(bit22..) = VRAM+512
-	.2byte 256, (LZ77 | BPP4) 	@ chunk size, props
-		@ Palette
-		.4byte gElevatorTilesetGraphics_3_Palettes-. @ src offset
+ElevatorTileset3: @ 0x087A2E68
+	.4byte ElevatorTileset3_Tiles-. @ data: 0x087AA164 = .+29436
+	.4byte 9036 | (512 << 22) 	@ bit0..21: bytesize, bit22..31: dst (VRAM TileID)
+	.2byte 256, (LZ77 | BPP4) 	@ rowsize(unused), props
+	@ Palette 0x087A2E74
+		.4byte ElevatorTileset3_Pal-. @ data: 0x087AC4B0 = .+38460
 		.2byte 96 @ bytesize
 		.byte 0, 9 @ lz77(bool8), dst = PaletteID
 
-	@ Graphic 4
-	.4byte gElevatorTilesetGraphics_4-. @ src offset
-	.4byte (0 << 22) | 11380 	@ size(bit0..21): 11380 Bytes, dst(bit22..) = VRAM+0
-	.2byte 256, (LZ77 | BPP4) 	@ chunk size, props
-		@ Palette
-		.4byte gElevatorTilesetGraphics_4_Palettes-. @ src offset
+ElevatorTileset4: @ 0x087A2E7C
+	.4byte ElevatorTileset4_Tiles-. @ data: 0x087AC510 = .+38548
+	.4byte 11380 | (0 << 22) 	@ bit0..21: bytesize, bit22..31: dst (VRAM TileID)
+	.2byte 256, (LZ77 | BPP4) 	@ rowsize(unused), props
+	@ Palette 0x087A2E88
+		.4byte ElevatorTileset4_Pal-. @ data: 0x087AF184 = .+49916
 		.2byte 96 @ bytesize
 		.byte 0, 2 @ lz77(bool8), dst = PaletteID
 
 @;@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 
-gElevatorTilesetGraphics_0:
-	.incbin "data/tilesets/giant_elevator/0/tiles.4bpp.lz"
-	gElevatorTilesetGraphics_0_Palettes:
-	.incbin "data/tilesets/giant_elevator/0/02.pal"
-	.incbin "data/tilesets/giant_elevator/0/03.pal"
-	.incbin "data/tilesets/giant_elevator/0/04.pal"
-	.incbin "data/tilesets/giant_elevator/0/05.pal"
-	.incbin "data/tilesets/giant_elevator/0/06.pal"
+ElevatorTileset0_Tiles:
+	.incbin "data/tilesets/giant_elevator/giant_elevator0.4bpp.lz"
+ElevatorTileset0_Pal:
+	.incbin "data/tilesets/giant_elevator/giant_elevator0.gbapal"
 
-gElevatorTilesetGraphics_1:
-	.incbin "data/tilesets/giant_elevator/1/tiles.4bpp.lz"
-	gElevatorTilesetGraphics_1_Palettes:
-	.incbin "data/tilesets/giant_elevator/1/09.pal"
-	.incbin "data/tilesets/giant_elevator/1/10.pal"
-	.incbin "data/tilesets/giant_elevator/1/11.pal"
+ElevatorTileset1_Tiles:
+	.incbin "data/tilesets/giant_elevator/giant_elevator1.4bpp.lz"
+ElevatorTileset1_Pal:
+	.incbin "data/tilesets/giant_elevator/giant_elevator1.gbapal"
 
-gElevatorTilesetGraphics_2:
-	.incbin "data/tilesets/giant_elevator/2/tiles.4bpp.lz"
-	gElevatorTilesetGraphics_2_Palettes:
-	.incbin "data/tilesets/giant_elevator/2/09.pal"
-	.incbin "data/tilesets/giant_elevator/2/10.pal"
-	.incbin "data/tilesets/giant_elevator/2/11.pal"
+ElevatorTileset2_Tiles:
+	.incbin "data/tilesets/giant_elevator/giant_elevator2.4bpp.lz"
+ElevatorTileset2_Pal:
+	.incbin "data/tilesets/giant_elevator/giant_elevator2.gbapal"
 
-gElevatorTilesetGraphics_3:
-	.incbin "data/tilesets/giant_elevator/3/tiles.4bpp.lz"
-	gElevatorTilesetGraphics_3_Palettes:
-	.incbin "data/tilesets/giant_elevator/3/09.pal"
-	.incbin "data/tilesets/giant_elevator/3/10.pal"
-	.incbin "data/tilesets/giant_elevator/3/11.pal"
+ElevatorTileset3_Tiles:
+	.incbin "data/tilesets/giant_elevator/giant_elevator3.4bpp.lz"
+ElevatorTileset3_Pal:
+	.incbin "data/tilesets/giant_elevator/giant_elevator3.gbapal"
 
-gElevatorTilesetGraphics_4:
-	.incbin "data/tilesets/giant_elevator/4/tiles.4bpp.lz"
-	gElevatorTilesetGraphics_4_Palettes:
-	.incbin "data/tilesets/giant_elevator/4/02.pal"
-	.incbin "data/tilesets/giant_elevator/4/03.pal"
-	.incbin "data/tilesets/giant_elevator/4/04.pal"
+ElevatorTileset4_Tiles:
+	.incbin "data/tilesets/giant_elevator/giant_elevator4.4bpp.lz"
+ElevatorTileset4_Pal:
+	.incbin "data/tilesets/giant_elevator/giant_elevator4.gbapal"
 

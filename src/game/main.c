@@ -22,6 +22,9 @@
 static const u16 u16_ARRAY_08386130[32];
 static const GameLoopFunc sGameLoops[16];
 
+extern const struct Graphic gGraphic_GameOverString;
+extern const struct Palette gPalette_GameOverString;
+
 static void PostProcess_CyberSpaceColorFilter(void);
 static void FUN_080ee328(u32* pal, u32 length, u32 r2, u16* lut);
 
@@ -426,7 +429,7 @@ static void GameLoop_PreOverworld(struct GameState* g) {
   gVideoRegBuffer.dispcnt &= ~DISPCNT_BGMODE_MASK;
   gVideoRegBuffer.dispcnt &= ~DISPCNT_BG_ALL_ON;
   gVideoRegBuffer.dispcnt |= DISPCNT_BG0_ON;
-  *(u32*)gVideoRegBuffer.bgofs[0] = 0;
+  RESET_BGOFS(0);
   g->unk_1ed8 = 0xFFFFFFFF;
   g->inMenu = FALSE;
   Renderer_Init(&g->rendererMain);
@@ -820,11 +823,11 @@ static void GameLoop_GameOver(struct GameState* g) {
       gVideoRegBuffer.dispcnt &= ~DISPCNT_BG_ALL_ON;
       gVideoRegBuffer.dispcnt |= DISPCNT_WIN0_ON | DISPCNT_OBJ_ON | DISPCNT_BG3_ON | DISPCNT_BG2_ON | DISPCNT_BG0_ON;
       BGCNT16(2) = BGCNT_PRIORITY(2) | BGCNT_CHARBASE(1) | BGCNT_SCREENBASE(4);
-      *(u32*)gVideoRegBuffer.bgofs[2] = 0;
+      RESET_BGOFS(2);
       BGCNT16(3) = BGCNT_PRIORITY(2) | BGCNT_CHARBASE(1) | BGCNT_SCREENBASE(6);
-      *(u32*)gVideoRegBuffer.bgofs[3] = 0;
-      LoadGraphic(BG_GRAPHIC(BG_GAMEOVER_KATAKANA), (void*)BG_CHAR_OFFSET(1));
-      LoadPalette(BG_PALETTE(BG_GAMEOVER_KATAKANA), 0);
+      RESET_BGOFS(3);
+      LoadGraphic(&gGraphic_GameOverString, (void*)BG_CHAR_OFFSET(1));
+      LoadPalette(&gPalette_GameOverString, 0);
       LoadBgMap(USE_BG2, gBgMapOffsets, BG_GAMEOVER_103, 0, 0);
       LoadBgMap(USE_BG3, gBgMapOffsets, BG_GAMEOVER_KATAKANA, 0, 0);
       LoadAsciiBold();
@@ -917,9 +920,9 @@ static void GameLoop_GameOver(struct GameState* g) {
   PrintString(STRING((g->unk_006 != 1) ? 523 : 522), 0, 10);  // セーブした場所からやりなおす
   PrintString(STRING((g->unk_006 != 2) ? 525 : 524), 0, 12);  // ゲームをやめる
   if (gProcessManager.masterFrame & 1) {
-    u16* bg3ofs = gVideoRegBuffer.bgofs[3];
-    bg3ofs[0]++;
-    bg3ofs[1]--;
+    BgOfs* bg3ofs = (BgOfs*)gVideoRegBuffer.bgofs[3];
+    bg3ofs->x++;
+    bg3ofs->y--;
   }
 }
 

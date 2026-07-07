@@ -5,12 +5,6 @@
 #include "input.h"
 #include "types.h"
 
-union State32 {
-  u32 u32;
-  u16 u16[2];
-  u8 u8[4];
-};
-
 #define STAT_HDR                                              \
   u8 satelites[2]; /* 装備しているサテライトエルフ*/          \
   u16 unused;                                                 \
@@ -78,7 +72,7 @@ struct Zero_b4 {
   u8 prevMode;   // 0x34 (-> 0xE8)
   u8 prevPhase;  // 0x35 (-> 0xE9)
 
-  union State32 attackState;   // 0x38 (-> 0xEC), u8[4] だとアラインメントが4にならないので、 ただのu32 か union だと考えられる
+  State32 attackState;         // 0x38 (-> 0xEC), u8[4] だとアラインメントが4にならないので、 ただのu32 か union だと考えられる
   u8 ALIGNED(4) unused_f0[4];  // 0x3C (-> 0xF0), 直近の attackState　を保存する場所だと思うけど使われてないっぽい
 
   struct Entity* shadow;  // 0x40 (-> 0xF4), afterimage on dash(ダッシュ時の残像)

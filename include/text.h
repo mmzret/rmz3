@@ -7,15 +7,6 @@
 
 #define STRING(n) (&gStringData[StringOfsTable[(n)]])
 
-// gTextWindow.text.flag
-#define TEXT_FLAG_TERMINATE (1 << 1)  // セットすると会話が強制的に終わった
-
-// gTextWindow.text.mode
-#define TEXT_MODE_OPTION (1 << 2)
-
-// gTextWindow.props.kind
-#define MUGSHOT 1
-
 #define MAX_STRING_COUNT 96  // 文字数ではなく文字列の数
 
 struct CharTile {
@@ -26,32 +17,31 @@ struct CharTile {
 static_assert(sizeof(struct CharTile) == 8);
 
 // 02030310 , lenが1以上の時、配列96のテキストをidx=0からlen個画面に表示する
-struct TextPrinter {
-  tile_id_t* bg0;  // BG0's tilemap
-  s16 len;
-  s16 unk_002;
-  str_t strings[MAX_STRING_COUNT];  // 文字列の内容 e.g. 0x08374142, 0x0837c6da, 0x08377b60, 0x08376be6
-  u8 x8[MAX_STRING_COUNT];          // 1文字目のX (8px単位)
-  u8 y8[MAX_STRING_COUNT];          // 1文字目のY (8px単位)
-  u16 progress[MAX_STRING_COUNT];   // 描画をどれくらい終えたか(文字数単位)
-  struct CharTile tilelist[80];
-  struct CharTile* cur;   // 0x588, 次に描画する文字
-  struct CharTile* used;  // 0x58C, 一度curとして使われたもの
-  struct CharTile* freelist;
-  char_t* variable;  // 文字コードF9で挿入されるテキスト
-  u8 startX;
-  u8 startY;
-  u8 endX;
-  u8 endY;
-  u32 unk_598;
-};  // 1440 bytes
-static_assert(sizeof(struct TextPrinter) == 1440);
+typedef struct {
+  void* tilemap;                    // 0x000, BG0's tilemap
+  s16 len;                          // 0x004
+  s16 unk_002;                      // 0x006, 多分、(現在のフォントの)パレットID
+  str_t strings[MAX_STRING_COUNT];  // 0x008, 文字列の内容 e.g. 0x08374142, 0x0837c6da, 0x08377b60, 0x08376be6
+  u8 x8[MAX_STRING_COUNT];          // 0x188, 1文字目のX (8px単位)
+  u8 y8[MAX_STRING_COUNT];          // 0x1E8, 1文字目のY (8px単位)
+  u16 progress[MAX_STRING_COUNT];   // 0x248, 描画をどれくらい終えたか(文字数単位)
+  struct CharTile tilelist[80];     // 0x308
+  struct CharTile* cur;             // 0x588, 次に描画する文字
+  struct CharTile* used;            // 0x58C, 一度curとして使われたもの
+  struct CharTile* freelist;        // 0x590
+  char_t* variable;                 // 0x594, 文字コードF9で挿入されるテキスト
+  u8 startX;                        // 0x598
+  u8 startY;                        // 0x599
+  u8 endX;                          // 0x59A
+  u8 endY;                          // 0x59B
+  u32 unk_59c;                      // 0x59C
+} TextPrinter;
+static_assert(sizeof(TextPrinter) == 1440);
 
-extern struct TextPrinter gTextPrinter;
+extern TextPrinter gTextPrinter;
 extern char_t gTerminateCharCode;
 
 extern const u8 gFontBold[][TILE_SIZE_4BPP];
-extern const struct PlttData gFontPalette[96];
 
 void LoadAsciiBold(void);
 void ResetCharTiles(void);

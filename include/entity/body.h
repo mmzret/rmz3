@@ -30,6 +30,7 @@
 #define BODY_STATUS_DOOR (1 << 30)  // 上ボタンでドアに入れるときに立つ
 #define BODY_STATUS_TELEPORTAL (1 << 31)
 
+// Body.nature
 #define BODY_NATURE_B0 (1 << 0)
 #define ELEMENT_ENCHANTABLE (1 << 1)  // (ゼロ専用)エレメントチップで属性を付与できる
 #define BODY_NATURE_B2 (1 << 2)

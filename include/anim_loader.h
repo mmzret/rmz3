@@ -17,9 +17,9 @@
     const struct Graphic* g;                                                      \
     const struct Palette* pal;                                                    \
     u32 ofs;                                                                      \
-    ofs = (sizeof(struct ColorGraphic) * (n));                                    \
+    ofs = (sizeof(ColorGraphic) * (n));                                           \
     g = gStaticGraphic(ofs);                                                      \
-    fn((void*)g, (void*)((wStaticGraphicTilenums[(n)] - g->ofs) * 32 + 0x10000)); \
+    fn(g, (void*)((wStaticGraphicTilenums[(n)] - g->tileId) * 32 + 0x10000));     \
     pal = gStaticPalette(ofs);                                                    \
     LoadPalette(pal, (wStaticMotionPalIDs[(n)] - pal->dst) * 32 + PLTT_SIZE / 2); \
   }

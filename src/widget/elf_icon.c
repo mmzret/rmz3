@@ -2,6 +2,8 @@
 #include "global.h"
 #include "widget.h"
 
+extern const ColorGraphic* gCyberElfCategoryIcons;
+
 static const u8 u8_ARRAY_08372198[CYBERELF_LENGTH];
 
 static void ElfIcon_Init(struct Widget* w);
@@ -18,24 +20,24 @@ const WidgetRoutine gElfIconRoutine = {
 };
 // clang-format on
 
+// 0x080e7e5c
 struct Widget* CreateElfIcon(struct GameState* g) {
-  struct Widget* w = (struct Widget*)AllocEntityLast(gWidgetHeaderPtr);
-  if (w != NULL) {
-    INIT_WIDGET_ROUTINE(w, 11);
-    (w->s).unk_28 = (struct Entity*)g;
-    (w->s).work[0] = 0;
-    (w->s).work[1] = 0;
+  struct Widget* p = AllocEntityLast(gWidgetHeaderPtr);
+  if (p != NULL) {
+    INIT_WIDGET_ROUTINE(p, 11);
+    (p->s).unk_28 = (void*)g;
+    (p->s).work[0] = 0, (p->s).work[1] = 0;
   }
-  return w;
+  return p;
 }
 
 static void ElfIcon_Init(struct Widget* w) {
   SET_WIDGET_ROUTINE(w, ENTITY_UPDATE);
-  wStaticGraphicTilenums[143] = 863;
-  wStaticMotionPalIDs[143] = 11;
+  wStaticGraphicTilenums[SM143_CYBERELF_ICON] = 863;
+  wStaticMotionPalIDs[SM143_CYBERELF_ICON] = 11;
   InitNonAffineMotion(&w->s);
   (w->s).flags |= FLIPABLE;
-  SetSpriteAnimation(w, MOTION(0x8F, 0x00));
+  SetSpriteAnimation(w, MOTION(SM143_CYBERELF_ICON, 0));
   (w->s).spr.xflip = FALSE;
   (w->s).spr.oam.xflip = FALSE;
   (w->s).flags &= ~X_FLIP;
@@ -199,7 +201,7 @@ _080E8050:\n\
 	lsls r0, r1, #2\n\
 	adds r0, r0, r1\n\
 	lsls r0, r0, #2\n\
-	ldr r1, _080E80A0 @ =gElfMugshotGraphics+43*20\n\
+	ldr r1, _080E80A0 @ =gCyberElfCategoryIcons\n\
 	adds r0, r0, r1\n\
 	ldrh r2, [r0, #6]\n\
 	lsrs r2, r2, #6\n\
@@ -214,7 +216,7 @@ _080E8050:\n\
 	lsls r0, r1, #2\n\
 	adds r0, r0, r1\n\
 	lsls r0, r0, #2\n\
-	ldr r1, _080E80A8 @ =gElfMugshotGraphics+43*20+12\n\
+	ldr r1, _080E80A8 @ =gCyberElfCategoryIcons+12\n\
 	adds r0, r0, r1\n\
 	ldrb r2, [r0, #7]\n\
 	movs r1, #0xb\n\
@@ -229,9 +231,9 @@ _080E8050:\n\
 	strb r0, [r4, #0xd]\n\
 	b _080E81E0\n\
 	.align 2, 0\n\
-_080E80A0: .4byte gElfMugshotGraphics+43*20\n\
+_080E80A0: .4byte gCyberElfCategoryIcons\n\
 _080E80A4: .4byte 0x0000035F\n\
-_080E80A8: .4byte gElfMugshotGraphics+43*20+12\n\
+_080E80A8: .4byte gCyberElfCategoryIcons+12\n\
 _080E80AC:\n\
 	cmp r0, #3\n\
 	beq _080E80B2\n\
@@ -396,4 +398,4 @@ static void ElfIcon_Die(struct Widget* w) { SET_WIDGET_ROUTINE(w, ENTITY_EXIT); 
 
 static const u8 u8_ARRAY_08372198[CYBERELF_LENGTH] = {
     2, 4, 4, 4, 4, 6, 6, 47, 47, 4, 4, 4, 4, 4, 4, 4, 4, 10, 10, 10, 10, 10, 10, 6, 6, 12, 12, 15, 17, 19, 21, 23, 24, 24, 25, 25, 26, 26, 27, 27, 30, 31, 33, 33, 33, 33, 33, 33, 34, 34, 34, 34, 35, 36, 36, 36, 36, 36, 38, 38, 38, 39, 39, 39, 39, 39, 41, 41, 41, 42, 42, 42, 42, 42,
-};
+};  // 0x08372198

@@ -2,6 +2,7 @@
 #define __INCLUDE_ENTITY_SPRITE_H__
 
 #include "gba/gba.h"
+#include "renderer.h"
 
 struct EntityOamData {
   /*0x00*/ u32 y : 8;
@@ -49,6 +50,6 @@ struct Sprite {
     u16 y;
   } mag;  // size magnification (x, y)
 };  // 32 bytes
-static_assert(sizeof(struct Sprite) == 32);
+static_assert(sizeof(struct Sprite) == sizeof(RenderData));
 
 #endif  // __INCLUDE_ENTITY_SPRITE_H__

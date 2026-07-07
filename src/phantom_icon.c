@@ -4,13 +4,9 @@
 // ファントムのミニゲームで、残機を表す顔アイコンのスプライト
 // 他のミニゲームのアイコンは、vfx/minigame_icon.c で実装されており、なぜファントムのアイコンだけ実装が別かは今の所は不明
 
-// Sprite (entity.h) と似てるけど、0x0C以降が違いそう
-struct PhantomIconSprite {
-  // Task
-  void* _;                               // 0x00
-  void (*fn)(void*, struct DrawPivot*);  // 0x04
-
-  void* p;  // 0x08 (0x20319D0 or 0x20319D8 or 0x20319E0)
+typedef struct {
+  RenderNode node;  // 0x00
+  void* p;          // 0x08 (0x20319D0 or 0x20319D8 or 0x20319E0)
   struct {
     /*0x0C*/ u32 y : 8;
     /*0x0D*/ u32 affineMode : 2;  // 0x1, 0x2 = 0x3
@@ -27,10 +23,10 @@ struct PhantomIconSprite {
     u8 pad[2];    // 0x12
   } oam;          // 0x0C
   u8 unk_14[12];  // 0x14
-};
-static_assert(sizeof(struct PhantomIconSprite) == sizeof(struct Sprite));
+} PhantomIconSprite;
+static_assert(sizeof(PhantomIconSprite) == sizeof(RenderData));
 
-static void RenderTask_PhantomIcon(struct PhantomIconSprite* s, struct DrawPivot* pivot);
+static void RenderTask_PhantomIcon(PhantomIconSprite* s, struct DrawPivot* pivot);
 
 /**
  * @brief Create phantom face icon for Minigame HP
@@ -40,8 +36,8 @@ static void RenderTask_PhantomIcon(struct PhantomIconSprite* s, struct DrawPivot
  * @param tilenum Tile Number for Chip icon
  * @note Called on Phantom minigame only in Zero3
  */
-void CreatePhantomIcon(struct PhantomIconSprite* s, void* p, u8 r2, u16 tilenum) {
-  SetTaskCallback((void*)s, RenderTask_PhantomIcon);
+void CreatePhantomIcon(PhantomIconSprite* s, void* p, u8 r2, u16 tilenum) {
+  SetTaskCallback(&s->node, RenderTask_PhantomIcon);
   (s->oam).bpp = 0;
   (s->oam).paletteNum = 0;
   (s->oam).pad[0] = 0, (s->oam).pad[1] = 0;
@@ -59,7 +55,7 @@ void CreatePhantomIcon(struct PhantomIconSprite* s, void* p, u8 r2, u16 tilenum)
 
 // Only used in Phantom minigame
 // 0x08004d80
-NAKED static void RenderTask_PhantomIcon(struct PhantomIconSprite* s, struct DrawPivot* pivot) {
+NAKED static void RenderTask_PhantomIcon(PhantomIconSprite* s, struct DrawPivot* pivot) {
   asm(".syntax unified\n\
 	push {r4, r5, r6, r7, lr}\n\
 	adds r4, r0, #0\n\

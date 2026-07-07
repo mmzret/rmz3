@@ -159,13 +159,13 @@ _080F3E06:\n\
 	ldr r0, _080F4094 @ =gGraphic_Capcom+(20*20)+12\n\
 	movs r1, #0\n\
 	bl LoadPalette\n\
-	ldr r0, _080F4098 @ =gGraphics_CodeName\n\
+	ldr r0, _080F4098 @ =gGraphic_CodeName\n\
 	ldrh r1, [r5]\n\
 	ands r4, r1\n\
 	lsls r4, r4, #0xc\n\
 	adds r1, r4, #0\n\
 	bl LoadGraphic\n\
-	ldr r0, _080F409C @ =gGraphics_CodeName+12\n\
+	ldr r0, _080F409C @ =gPalette_CodeName\n\
 	movs r1, #0\n\
 	bl LoadPalette\n\
 	ldr r0, _080F40A0 @ =0x085222F0\n\
@@ -451,8 +451,8 @@ _080F4088: .4byte 0x00000DCC\n\
 _080F408C: .4byte gGraphic_Capcom+(20*20)\n\
 _080F4090: .4byte gVideoRegBuffer+6\n\
 _080F4094: .4byte gGraphic_Capcom+(20*20)+12\n\
-_080F4098: .4byte gGraphics_CodeName\n\
-_080F409C: .4byte gGraphics_CodeName+12\n\
+_080F4098: .4byte gGraphic_CodeName\n\
+_080F409C: .4byte gPalette_CodeName\n\
 _080F40A0: .4byte gBgMapOffsets+(20*4)\n\
 _080F40A4: .4byte gBgMapOffsets+(22*4)\n\
 _080F40A8: .4byte 0x00000ED8\n\

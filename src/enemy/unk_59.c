@@ -4,21 +4,30 @@
 #include "vfx.h"
 
 // ファントムの出すオブジェクト?
+typedef struct {
+  ENTITY_HDR;        // 0x00
+  ENTITY_SPRITE;     // 0x28
+  struct Body body;  // 0x74
+  // props (16bytes, offset: 0xB4..)
+  s32 x_b4;       // 0xB4
+  u8 unk_b8[12];  // 0xB8
+} Enemy59;
+static_assert(sizeof(Enemy59) == sizeof(struct Enemy));
 
 void FUN_080c4c2c(s32 x, s32 y, s32 amplitude, u8 theta);
 void CreateGhost18(Coords32* c, u8 kind, bool8 xflip, u8 r3);
 
-void Enemy59_Init(struct Enemy* p);
-void Enemy59_Update(struct Enemy* p);
-void Enemy59_Die(struct Enemy* p);
+static void Enemy59_Init(Enemy59* p);
+void Enemy59_Update(Enemy59* p);
+void Enemy59_Die(Enemy59* p);
 
 // clang-format off
 const EnemyRoutine gEnemy59Routine = {
-    [ENTITY_INIT] =      Enemy59_Init,
-    [ENTITY_UPDATE] =    Enemy59_Update,
-    [ENTITY_DIE] =       Enemy59_Die,
+    [ENTITY_INIT] =      (void*)Enemy59_Init,
+    [ENTITY_UPDATE] =    (void*)Enemy59_Update,
+    [ENTITY_DIE] =       (void*)Enemy59_Die,
     [ENTITY_DISAPPEAR] = (void*)DeleteEnemy,
-    [ENTITY_EXIT] =      (EnemyFunc)DeleteEntity,
+    [ENTITY_EXIT] =      (void*)DeleteEntity,
 };
 // clang-format on
 
@@ -55,6 +64,65 @@ void FUN_0809130c(struct Entity* e, u8 idx) {
     }
     p->work[0] = idx;
   }
+}
+
+// 0x080913C0
+void FUN_080913c0(Enemy59* q, u8 kind) {
+  Enemy59* p = AllocEntityLast(gEnemyHeaderPtr);
+  if (p != NULL) {
+    INIT_ENEMY_ROUTINE(p, ENEMY_59);
+    (p->coord).x = (q->coord).x;
+    (p->coord).y = (q->coord).y;
+    p->work[0] = kind;
+    p->work[3] = q->x_b4 > 0;
+  }
+}
+
+/**
+ * @note まきびし?
+ * @note 0x0809142C
+ */
+void FUN_0809142c(struct Entity* q, u8 kind) {
+  Enemy59* p = AllocEntityLast(gEnemyHeaderPtr);
+  if (p != NULL) {
+    INIT_ENEMY_ROUTINE(p, ENEMY_59);
+    (p->coord).x = (q->coord).x;
+    (p->coord).y = (q->coord).y - PIXEL(10);
+    p->work[0] = 12;
+    p->work[2] = kind;
+    p->unk_28 = q;
+  }
+}
+
+static const struct Collision sCollisions[];
+static const u8 u8_ARRAY_08369a14[];
+void FUN_08091790(struct Body* body, Coords32* r1 UNUSED, Coords32* r2 UNUSED);
+
+static void Enemy59_Init(Enemy59* p) {
+  if (p->work[0] == 12) {
+    SET_ENEMY_ROUTINE(p, ENTITY_UPDATE);
+    p->flags |= FLIPABLE;
+    p->flags |= DISPLAY;
+    INIT_BODY(p, sCollisions, 6, FUN_08091790);
+    p->mode[1] = u8_ARRAY_08369a14[p->work[0]];
+    Enemy59_Update(p);
+    return;
+  }
+  if (p->work[0] > 8) {
+    SET_ENEMY_ROUTINE(p, ENTITY_DIE);
+    p->flags |= FLIPABLE;
+    p->flags |= DISPLAY;
+    p->mode[1] = u8_ARRAY_08369a14[p->work[0]];
+    Enemy59_Die(p);
+    return;
+  }
+
+  SET_ENEMY_ROUTINE(p, ENTITY_UPDATE);
+  p->flags |= FLIPABLE;
+  p->flags |= DISPLAY;
+  INIT_BODY(p, sCollisions, 1, FUN_08091790);
+  p->mode[1] = u8_ARRAY_08369a14[p->work[0]];
+  Enemy59_Update(p);
 }
 
 INCASM("asm/enemy/unk_59.inc");
@@ -281,7 +349,7 @@ static const EnemyFunc sUpdates2[10] = {
 void FUN_08091fa8(struct Enemy* p);
 void FUN_080921c8(struct Enemy* p);
 static void FUN_080922e0(struct Entity* p);
-static void FUN_080923ec(Object* p);
+static void FUN_080923ec(Enemy59* p);
 
 static const EnemyFunc sDeads[4] = {
     (void*)FUN_08091fa8,
@@ -340,11 +408,11 @@ NON_MATCH static void FUN_080922e0(struct Entity* p) {
 #endif
 }
 
-static void FUN_080923ec(Object* p) {
+static void FUN_080923ec(Enemy59* p) {
   Coords32 c;
   EXIT_BODY(p);
-  c.x = (p->s).coord.x;
-  c.y = (p->s).coord.y - PIXEL(8);
+  c.x = (p->coord).x;
+  c.y = (p->coord).y - PIXEL(8);
   CreateSmoke(1, &c);
   PlaySound(SE_ZAKO_EXPLODE);
   SET_ENEMY_ROUTINE(p, ENTITY_EXIT);

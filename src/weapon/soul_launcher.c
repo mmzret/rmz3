@@ -50,6 +50,7 @@ struct Entity* CreateSoulLauncher(struct Zero* z, u8 r1, u8 r2) {
 
 INCASM("asm/weapon/soul_launcher.inc");
 
+// 0x08361558
 static const struct Collision sCollisions[2] = {
     {
       kind : DDP,
@@ -91,4 +92,5 @@ const WeaponRoutine gSoulLauncherRoutine = {
 };
 // clang-format on
 
-const s32 s32_ARRAY_0836159c[4] = {-PIXEL(2), -PIXEL(1), PIXEL(1), PIXEL(2)};
+// 0x0836159c
+static const s32 sSoulLauncherDx[4] = {-PIXEL(2), -PIXEL(1), PIXEL(1), PIXEL(2)};

@@ -3,136 +3,104 @@
 
 .global gVolcanoTilesetGraphics
 gVolcanoTilesetGraphics:
-	@ Graphic 0
-	.4byte gVolcanoTilesetGraphics_0-. @ src offset
-	.4byte (0 << 22) | 16384 	@ size(bit0..21): 16384 Bytes, dst(bit22..) = VRAM+0
-	.2byte 256, BPP4 	@ chunk size, props
-		@ Palette
-		.4byte gVolcanoTilesetGraphics_0_Palettes-. @ src offset
+
+VolcanoTileset0: @ 0x08721768
+	.4byte VolcanoTileset0_Tiles-. @ data: 0x087217F4 = .+140
+	.4byte 16384 | (0 << 22) 	@ bit0..21: bytesize, bit22..31: dst (VRAM TileID)
+	.2byte 256, BPP4 	@ rowsize(unused), props
+	@ Palette0 0x08721774
+		.4byte VolcanoTileset0_Pal-. @ data: 0x087257F4 = .+16512
 		.2byte 192 @ bytesize
 		.byte 0, 2 @ lz77(bool8), dst = PaletteID
 
-	@ Graphic 1
-	.4byte gVolcanoTilesetGraphics_1-. @ src offset
-	.4byte (512 << 22) | 15360 	@ size(bit0..21): 15360 Bytes, dst(bit22..) = VRAM+512
-	.2byte 256, BPP4 	@ chunk size, props
-		@ Palette
-		.4byte gVolcanoTilesetGraphics_1_Palettes-. @ src offset
+VolcanoTileset1: @ 0x0872177C
+	.4byte VolcanoTileset1_Tiles-. @ data: 0x087258B4 = .+16696
+	.4byte 15360 | (512 << 22) 	@ bit0..21: bytesize, bit22..31: dst (VRAM TileID)
+	.2byte 256, BPP4 	@ rowsize(unused), props
+	@ Palette1 0x08721788
+		.4byte VolcanoTileset1_Pal-. @ data: 0x087294B4 = .+32044
 		.2byte 192 @ bytesize
 		.byte 0, 9 @ lz77(bool8), dst = PaletteID
 
-	@ Graphic 2
-	.4byte gVolcanoTilesetGraphics_2-. @ src offset
-	.4byte (512 << 22) | 14784 	@ size(bit0..21): 14784 Bytes, dst(bit22..) = VRAM+512
-	.2byte 256, BPP4 	@ chunk size, props
-		@ Palette
-		.4byte gVolcanoTilesetGraphics_2_Palettes-. @ src offset
+VolcanoTileset2: @ 0x08721790
+	.4byte VolcanoTileset2_Tiles-. @ data: 0x08729574 = .+32228
+	.4byte 14784 | (512 << 22) 	@ bit0..21: bytesize, bit22..31: dst (VRAM TileID)
+	.2byte 256, BPP4 	@ rowsize(unused), props
+	@ Palette2 0x0872179C
+		.4byte VolcanoTileset2_Pal-. @ data: 0x0872CF34 = .+47000
 		.2byte 192 @ bytesize
 		.byte 0, 9 @ lz77(bool8), dst = PaletteID
 
-	@ Graphic 3
-	.4byte gVolcanoTilesetGraphics_3-. @ src offset
-	.4byte (0 << 22) | 16256 	@ size(bit0..21): 16256 Bytes, dst(bit22..) = VRAM+0
-	.2byte 256, BPP4 	@ chunk size, props
-		@ Palette
-		.4byte gVolcanoTilesetGraphics_3_Palettes-. @ src offset
+VolcanoTileset3: @ 0x087217A4
+	.4byte VolcanoTileset3_Tiles-. @ data: 0x0872CFF4 = .+47184
+	.4byte 16256 | (0 << 22) 	@ bit0..21: bytesize, bit22..31: dst (VRAM TileID)
+	.2byte 256, BPP4 	@ rowsize(unused), props
+	@ Palette3 0x087217B0
+		.4byte VolcanoTileset3_Pal-. @ data: 0x08730F74 = .+63428
 		.2byte 224 @ bytesize
 		.byte 0, 2 @ lz77(bool8), dst = PaletteID
 
-	@ Graphic 4
-	.4byte gVolcanoTilesetGraphics_4-. @ src offset
-	.4byte (512 << 22) | 7980 	@ size(bit0..21): 7980 Bytes, dst(bit22..) = VRAM+512
-	.2byte 256, (LZ77 | BPP4) 	@ chunk size, props
-		@ Palette
-		.4byte gVolcanoTilesetGraphics_4_Palettes-. @ src offset
+VolcanoTileset4: @ 0x087217B8
+	.4byte VolcanoTileset4_Tiles-. @ data: 0x08731054 = .+63644
+	.4byte 7980 | (512 << 22) 	@ bit0..21: bytesize, bit22..31: dst (VRAM TileID)
+	.2byte 256, (LZ77 | BPP4) 	@ rowsize(unused), props
+	@ Palette4 0x087217C4
+		.4byte VolcanoTileset4_Pal-. @ data: 0x08732F80 = .+71612
 		.2byte 192 @ bytesize
 		.byte 0, 9 @ lz77(bool8), dst = PaletteID
 
-	@ Graphic 5
-	.4byte gVolcanoTilesetGraphics_5-. @ src offset
-	.4byte (0 << 22) | 7892 	@ size(bit0..21): 7892 Bytes, dst(bit22..) = VRAM+0
-	.2byte 256, (LZ77 | BPP4) 	@ chunk size, props
-		@ Palette
-		.4byte gVolcanoTilesetGraphics_5_Palettes-. @ src offset
+VolcanoTileset5: @ 0x087217CC
+	.4byte VolcanoTileset5_Tiles-. @ data: 0x08733040 = .+71796
+	.4byte 7892 | (0 << 22) 	@ bit0..21: bytesize, bit22..31: dst (VRAM TileID)
+	.2byte 256, (LZ77 | BPP4) 	@ rowsize(unused), props
+	@ Palette5 0x087217D8
+		.4byte VolcanoTileset5_Pal-. @ data: 0x08734F14 = .+79676
 		.2byte 192 @ bytesize
 		.byte 0, 2 @ lz77(bool8), dst = PaletteID
 
-	@ Graphic 6
-	.4byte gVolcanoTilesetGraphics_6-. @ src offset
-	.4byte (0 << 22) | 5380 	@ size(bit0..21): 5380 Bytes, dst(bit22..) = VRAM+0
-	.2byte 256, (LZ77 | BPP4) 	@ chunk size, props
-		@ Palette
-		.4byte gVolcanoTilesetGraphics_6_Palettes-. @ src offset
+VolcanoTileset6: @ 0x087217E0
+	.4byte VolcanoTileset6_Tiles-. @ data: 0x08734FD4 = .+79860
+	.4byte 5380 | (0 << 22) 	@ bit0..21: bytesize, bit22..31: dst (VRAM TileID)
+	.2byte 256, (LZ77 | BPP4) 	@ rowsize(unused), props
+	@ Palette6 0x087217EC
+		.4byte VolcanoTileset6_Pal-. @ data: 0x087364D8 = .+85228
 		.2byte 96 @ bytesize
 		.byte 0, 2 @ lz77(bool8), dst = PaletteID
 
 @;@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 
-gVolcanoTilesetGraphics_0:
-	.incbin "data/tilesets/volcano/0/tiles.4bpp"
-	gVolcanoTilesetGraphics_0_Palettes:
-	.incbin "data/tilesets/volcano/0/02.pal"
-	.incbin "data/tilesets/volcano/0/03.pal"
-	.incbin "data/tilesets/volcano/0/04.pal"
-	.incbin "data/tilesets/volcano/0/05.pal"
-	.incbin "data/tilesets/volcano/0/06.pal"
-	.incbin "data/tilesets/volcano/0/07.pal"
+VolcanoTileset0_Tiles:
+	.incbin "data/tilesets/volcano/volcano0.4bpp"
+VolcanoTileset0_Pal:
+	.incbin "data/tilesets/volcano/volcano0.gbapal"
 
-gVolcanoTilesetGraphics_1:
-	.incbin "data/tilesets/volcano/1/tiles.4bpp"
-	gVolcanoTilesetGraphics_1_Palettes:
-	.incbin "data/tilesets/volcano/1/09.pal"
-	.incbin "data/tilesets/volcano/1/10.pal"
-	.incbin "data/tilesets/volcano/1/11.pal"
-	.incbin "data/tilesets/volcano/1/12.pal"
-	.incbin "data/tilesets/volcano/1/13.pal"
-	.incbin "data/tilesets/volcano/1/14.pal"
+VolcanoTileset1_Tiles:
+	.incbin "data/tilesets/volcano/volcano1.4bpp"
+VolcanoTileset1_Pal:
+	.incbin "data/tilesets/volcano/volcano1.gbapal"
 
-gVolcanoTilesetGraphics_2:
-	.incbin "data/tilesets/volcano/2/tiles.4bpp"
-	gVolcanoTilesetGraphics_2_Palettes:
-	.incbin "data/tilesets/volcano/2/09.pal"
-	.incbin "data/tilesets/volcano/2/10.pal"
-	.incbin "data/tilesets/volcano/2/11.pal"
-	.incbin "data/tilesets/volcano/2/12.pal"
-	.incbin "data/tilesets/volcano/2/13.pal"
-	.incbin "data/tilesets/volcano/2/14.pal"
+VolcanoTileset2_Tiles:
+	.incbin "data/tilesets/volcano/volcano2.4bpp"
+VolcanoTileset2_Pal:
+	.incbin "data/tilesets/volcano/volcano2.gbapal"
 
-gVolcanoTilesetGraphics_3:
-	.incbin "data/tilesets/volcano/3/tiles.4bpp"
-	gVolcanoTilesetGraphics_3_Palettes:
-	.incbin "data/tilesets/volcano/3/02.pal"
-	.incbin "data/tilesets/volcano/3/03.pal"
-	.incbin "data/tilesets/volcano/3/04.pal"
-	.incbin "data/tilesets/volcano/3/05.pal"
-	.incbin "data/tilesets/volcano/3/06.pal"
-	.incbin "data/tilesets/volcano/3/07.pal"
-	.incbin "data/tilesets/volcano/3/08.pal"
+VolcanoTileset3_Tiles:
+	.incbin "data/tilesets/volcano/volcano3.4bpp"
+VolcanoTileset3_Pal:
+	.incbin "data/tilesets/volcano/volcano3.gbapal"
 
-gVolcanoTilesetGraphics_4:
-	.incbin "data/tilesets/volcano/4/tiles.4bpp.lz"
-	gVolcanoTilesetGraphics_4_Palettes:
-	.incbin "data/tilesets/volcano/4/09.pal"
-	.incbin "data/tilesets/volcano/4/10.pal"
-	.incbin "data/tilesets/volcano/4/11.pal"
-	.incbin "data/tilesets/volcano/4/12.pal"
-	.incbin "data/tilesets/volcano/4/13.pal"
-	.incbin "data/tilesets/volcano/4/14.pal"
+VolcanoTileset4_Tiles:
+	.incbin "data/tilesets/volcano/volcano4.4bpp.lz"
+VolcanoTileset4_Pal:
+	.incbin "data/tilesets/volcano/volcano4.gbapal"
 
-gVolcanoTilesetGraphics_5:
-	.incbin "data/tilesets/volcano/5/tiles.4bpp.lz"
-	gVolcanoTilesetGraphics_5_Palettes:
-	.incbin "data/tilesets/volcano/5/02.pal"
-	.incbin "data/tilesets/volcano/5/03.pal"
-	.incbin "data/tilesets/volcano/5/04.pal"
-	.incbin "data/tilesets/volcano/5/05.pal"
-	.incbin "data/tilesets/volcano/5/06.pal"
-	.incbin "data/tilesets/volcano/5/07.pal"
+VolcanoTileset5_Tiles:
+	.incbin "data/tilesets/volcano/volcano5.4bpp.lz"
+VolcanoTileset5_Pal:
+	.incbin "data/tilesets/volcano/volcano5.gbapal"
 
-gVolcanoTilesetGraphics_6:
-	.incbin "data/tilesets/volcano/6/tiles.4bpp.lz"
-	gVolcanoTilesetGraphics_6_Palettes:
-	.incbin "data/tilesets/volcano/6/02.pal"
-	.incbin "data/tilesets/volcano/6/03.pal"
-	.incbin "data/tilesets/volcano/6/04.pal"
+VolcanoTileset6_Tiles:
+	.incbin "data/tilesets/volcano/volcano6.4bpp.lz"
+VolcanoTileset6_Pal:
+	.incbin "data/tilesets/volcano/volcano6.gbapal"
 

@@ -1,12 +1,13 @@
 include songs.mk
-include stage_rules.mk
-include sprite_rules.mk
+include metasprite_rules.mk
+include sprite_animation_rules.mk
 include graphics_file_rules.mk
 
-ASSETS := $(SONG_ASMS) $(STAGE_HDR) $(SPRITES) $(ALL_GRAPHICS)
+# gbagfx を使うアセットは scaninc で依存関係を自動生成するので、ここに含める必要はない
+ASSETS := $(SONG_ASMS) $(METASPRITE) $(SPRITE_ANIMS)
 
 .PHONY: assets
 assets: $(ASSETS)
 
 .PHONY: clean-assets
-clean-assets: clean-stage clean-midi clean-sprite clean-graphics clean-graphic-headers
+clean-assets: clean-midi clean-metasprite clean-sprite-animation clean-graphics

@@ -82,7 +82,7 @@ _0803B1D8:
 	ldr r1, _0803B250 @ =0xFFFFB800
 	adds r0, r0, r1
 	str r0, [r6, #0x58]
-	ldr r1, _0803B254 @ =0x0836159C
+	ldr r1, _0803B254 @ =sSoulLauncherDx
 	ldrb r0, [r6, #0x10]
 	lsls r0, r0, #2
 	adds r0, r0, r1
@@ -104,7 +104,7 @@ _0803B1D8:
 	strb r0, [r6, #0xa]
 	adds r4, r6, #0
 	adds r4, #0x74
-	ldr r0, _0803B25C @ =0x08361558
+	ldr r0, _0803B25C @ =sCollisions
 	mov r8, r0
 	adds r2, r6, #0
 	adds r2, #0x54
@@ -134,9 +134,9 @@ _0803B1D8:
 	.align 2, 0
 _0803B24C: .4byte 0xFFFFF500
 _0803B250: .4byte 0xFFFFB800
-_0803B254: .4byte 0x0836159C
+_0803B254: .4byte sSoulLauncherDx
 _0803B258: .4byte 0xFFFFF900
-_0803B25C: .4byte 0x08361558
+_0803B25C: .4byte sCollisions
 _0803B260:
 	adds r0, r7, #0
 	bl CalcRodBonus

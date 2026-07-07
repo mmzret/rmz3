@@ -3,104 +3,76 @@
 
 .global gAntarcticTilesetGraphics
 gAntarcticTilesetGraphics:
-	@ Graphic 0
-	.4byte gAntarcticTilesetGraphics_0-. @ src offset
-	.4byte (0 << 22) | 5736 	@ size(bit0..21): 5736 Bytes, dst(bit22..) = VRAM+0
-	.2byte 256, (LZ77 | BPP4) 	@ chunk size, props
-		@ Palette
-		.4byte gAntarcticTilesetGraphics_0_Palettes-. @ src offset
+
+AntarcticTileset0: @ 0x0877EADC
+	.4byte AntarcticTileset0_Tiles-. @ data: 0x0877EB40 = .+100
+	.4byte 5736 | (0 << 22) 	@ bit0..21: bytesize, bit22..31: dst (VRAM TileID)
+	.2byte 256, (LZ77 | BPP4) 	@ rowsize(unused), props
+	@ Palette 0x0877EAE8
+		.4byte AntarcticTileset0_Pal-. @ data: 0x087801A8 = .+5824
 		.2byte 224 @ bytesize
 		.byte 0, 2 @ lz77(bool8), dst = PaletteID
 
-	@ Graphic 1
-	.4byte gAntarcticTilesetGraphics_1-. @ src offset
-	.4byte (512 << 22) | 11696 	@ size(bit0..21): 11696 Bytes, dst(bit22..) = VRAM+512
-	.2byte 256, (LZ77 | BPP4) 	@ chunk size, props
-		@ Palette
-		.4byte gAntarcticTilesetGraphics_1_Palettes-. @ src offset
+AntarcticTileset1: @ 0x0877EAF0
+	.4byte AntarcticTileset1_Tiles-. @ data: 0x08780288 = .+6040
+	.4byte 11696 | (512 << 22) 	@ bit0..21: bytesize, bit22..31: dst (VRAM TileID)
+	.2byte 256, (LZ77 | BPP4) 	@ rowsize(unused), props
+	@ Palette 0x0877EAFC
+		.4byte AntarcticTileset1_Pal-. @ data: 0x08783038 = .+17724
 		.2byte 224 @ bytesize
 		.byte 0, 9 @ lz77(bool8), dst = PaletteID
 
-	@ Graphic 2
-	.4byte gAntarcticTilesetGraphics_2-. @ src offset
-	.4byte (512 << 22) | 9444 	@ size(bit0..21): 9444 Bytes, dst(bit22..) = VRAM+512
-	.2byte 256, (LZ77 | BPP4) 	@ chunk size, props
-		@ Palette
-		.4byte gAntarcticTilesetGraphics_2_Palettes-. @ src offset
+AntarcticTileset2: @ 0x0877EB04
+	.4byte AntarcticTileset2_Tiles-. @ data: 0x08783118 = .+17940
+	.4byte 9444 | (512 << 22) 	@ bit0..21: bytesize, bit22..31: dst (VRAM TileID)
+	.2byte 256, (LZ77 | BPP4) 	@ rowsize(unused), props
+	@ Palette 0x0877EB10
+		.4byte AntarcticTileset2_Pal-. @ data: 0x087855FC = .+27372
 		.2byte 224 @ bytesize
 		.byte 0, 9 @ lz77(bool8), dst = PaletteID
 
-	@ Graphic 3
-	.4byte gAntarcticTilesetGraphics_3-. @ src offset
-	.4byte (512 << 22) | 6868 	@ size(bit0..21): 6868 Bytes, dst(bit22..) = VRAM+512
-	.2byte 256, (LZ77 | BPP4) 	@ chunk size, props
-		@ Palette
-		.4byte gAntarcticTilesetGraphics_3_Palettes-. @ src offset
+AntarcticTileset3: @ 0x0877EB18
+	.4byte AntarcticTileset3_Tiles-. @ data: 0x087856DC = .+27588
+	.4byte 6868 | (512 << 22) 	@ bit0..21: bytesize, bit22..31: dst (VRAM TileID)
+	.2byte 256, (LZ77 | BPP4) 	@ rowsize(unused), props
+	@ Palette 0x0877EB24
+		.4byte AntarcticTileset3_Pal-. @ data: 0x087871B0 = .+34444
 		.2byte 224 @ bytesize
 		.byte 0, 9 @ lz77(bool8), dst = PaletteID
 
-	@ Graphic 4
-	.4byte gAntarcticTilesetGraphics_4-. @ src offset
-	.4byte (0 << 22) | 8792 	@ size(bit0..21): 8792 Bytes, dst(bit22..) = VRAM+0
-	.2byte 256, (LZ77 | BPP4) 	@ chunk size, props
-		@ Palette
-		.4byte gAntarcticTilesetGraphics_4_Palettes-. @ src offset
+AntarcticTileset4: @ 0x0877EB2C
+	.4byte AntarcticTileset4_Tiles-. @ data: 0x08787290 = .+34660
+	.4byte 8792 | (0 << 22) 	@ bit0..21: bytesize, bit22..31: dst (VRAM TileID)
+	.2byte 256, (LZ77 | BPP4) 	@ rowsize(unused), props
+	@ Palette 0x0877EB38
+		.4byte AntarcticTileset4_Pal-. @ data: 0x087894E8 = .+43440
 		.2byte 192 @ bytesize
 		.byte 0, 2 @ lz77(bool8), dst = PaletteID
 
 @;@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 
-gAntarcticTilesetGraphics_0:
-	.incbin "data/tilesets/antarctic/0/tiles.4bpp.lz"
-	gAntarcticTilesetGraphics_0_Palettes:
-	.incbin "data/tilesets/antarctic/0/02.pal"
-	.incbin "data/tilesets/antarctic/0/03.pal"
-	.incbin "data/tilesets/antarctic/0/04.pal"
-	.incbin "data/tilesets/antarctic/0/05.pal"
-	.incbin "data/tilesets/antarctic/0/06.pal"
-	.incbin "data/tilesets/antarctic/0/07.pal"
-	.incbin "data/tilesets/antarctic/0/08.pal"
+AntarcticTileset0_Tiles:
+	.incbin "data/tilesets/antarctic/antarctic0.4bpp.lz"
+AntarcticTileset0_Pal:
+	.incbin "data/tilesets/antarctic/antarctic0.gbapal"
 
-gAntarcticTilesetGraphics_1:
-	.incbin "data/tilesets/antarctic/1/tiles.4bpp.lz"
-	gAntarcticTilesetGraphics_1_Palettes:
-	.incbin "data/tilesets/antarctic/1/09.pal"
-	.incbin "data/tilesets/antarctic/1/10.pal"
-	.incbin "data/tilesets/antarctic/1/11.pal"
-	.incbin "data/tilesets/antarctic/1/12.pal"
-	.incbin "data/tilesets/antarctic/1/13.pal"
-	.incbin "data/tilesets/antarctic/1/14.pal"
-	.incbin "data/tilesets/antarctic/1/15.pal"
+AntarcticTileset1_Tiles:
+	.incbin "data/tilesets/antarctic/antarctic1.4bpp.lz"
+AntarcticTileset1_Pal:
+	.incbin "data/tilesets/antarctic/antarctic1.gbapal"
 
-gAntarcticTilesetGraphics_2:
-	.incbin "data/tilesets/antarctic/2/tiles.4bpp.lz"
-	gAntarcticTilesetGraphics_2_Palettes:
-	.incbin "data/tilesets/antarctic/2/09.pal"
-	.incbin "data/tilesets/antarctic/2/10.pal"
-	.incbin "data/tilesets/antarctic/2/11.pal"
-	.incbin "data/tilesets/antarctic/2/12.pal"
-	.incbin "data/tilesets/antarctic/2/13.pal"
-	.incbin "data/tilesets/antarctic/2/14.pal"
-	.incbin "data/tilesets/antarctic/2/15.pal"
+AntarcticTileset2_Tiles:
+	.incbin "data/tilesets/antarctic/antarctic2.4bpp.lz"
+AntarcticTileset2_Pal:
+	.incbin "data/tilesets/antarctic/antarctic2.gbapal"
 
-gAntarcticTilesetGraphics_3:
-	.incbin "data/tilesets/antarctic/3/tiles.4bpp.lz"
-	gAntarcticTilesetGraphics_3_Palettes:
-	.incbin "data/tilesets/antarctic/3/09.pal"
-	.incbin "data/tilesets/antarctic/3/10.pal"
-	.incbin "data/tilesets/antarctic/3/11.pal"
-	.incbin "data/tilesets/antarctic/3/12.pal"
-	.incbin "data/tilesets/antarctic/3/13.pal"
-	.incbin "data/tilesets/antarctic/3/14.pal"
-	.incbin "data/tilesets/antarctic/3/15.pal"
+AntarcticTileset3_Tiles:
+	.incbin "data/tilesets/antarctic/antarctic3.4bpp.lz"
+AntarcticTileset3_Pal:
+	.incbin "data/tilesets/antarctic/antarctic3.gbapal"
 
-gAntarcticTilesetGraphics_4:
-	.incbin "data/tilesets/antarctic/4/tiles.4bpp.lz"
-	gAntarcticTilesetGraphics_4_Palettes:
-	.incbin "data/tilesets/antarctic/4/02.pal"
-	.incbin "data/tilesets/antarctic/4/03.pal"
-	.incbin "data/tilesets/antarctic/4/04.pal"
-	.incbin "data/tilesets/antarctic/4/05.pal"
-	.incbin "data/tilesets/antarctic/4/06.pal"
-	.incbin "data/tilesets/antarctic/4/07.pal"
+AntarcticTileset4_Tiles:
+	.incbin "data/tilesets/antarctic/antarctic4.4bpp.lz"
+AntarcticTileset4_Pal:
+	.incbin "data/tilesets/antarctic/antarctic4.gbapal"
 

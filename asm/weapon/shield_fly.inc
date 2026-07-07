@@ -52,7 +52,7 @@ _08039D90:
 	cmp r0, r1
 	beq _08039DC4
 	strb r2, [r4, #0x10]
-	ldr r2, _08039DE0 @ =0x0836126C
+	ldr r2, _08039DE0 @ =sShieldFlyMotions
 	ldrb r0, [r4, #0x10]
 	lsls r0, r0, #1
 	ldrb r1, [r4, #0x11]
@@ -89,7 +89,7 @@ _08039DC4:
 	orrs r0, r1
 	b _08039DEA
 	.align 2, 0
-_08039DE0: .4byte 0x0836126C
+_08039DE0: .4byte sShieldFlyMotions
 _08039DE4:
 	ldrb r1, [r4, #0xa]
 	movs r0, #0xef
@@ -114,7 +114,7 @@ _08039DEA:
 	ldrb r0, [r0]
 	cmp r0, #3
 	bne _08039E1E
-	ldr r1, _08039E24 @ =0x08361334
+	ldr r1, _08039E24 @ =u8_ARRAY_08361334
 	ldrb r0, [r4, #0x11]
 	adds r0, r0, r1
 	ldrb r0, [r0]
@@ -126,7 +126,7 @@ _08039E1E:
 	pop {r0}
 	bx r0
 	.align 2, 0
-_08039E24: .4byte 0x08361334
+_08039E24: .4byte u8_ARRAY_08361334
 
 	thumb_func_start shield_08039e28
 shield_08039e28: @ 0x08039E28
@@ -154,7 +154,7 @@ _08039E46:
 	strb r0, [r6, #0xa]
 	adds r4, r6, #0
 	adds r4, #0x74
-	ldr r3, _08039EB8 @ =0x083612AC
+	ldr r3, _08039EB8 @ =Collision_ARRAY_083612ac
 	mov sb, r3
 	adds r2, r6, #0
 	adds r2, #0x54
@@ -170,7 +170,7 @@ _08039E46:
 	adds r2, #0xc
 	lsls r2, r2, #0x18
 	lsrs r2, r2, #0x18
-	ldr r1, _08039EBC @ =0x08361284
+	ldr r1, _08039EBC @ =sShieldFlyElements
 	ldrb r0, [r5, #0xd]
 	adds r0, r0, r1
 	ldrb r3, [r0]
@@ -199,8 +199,8 @@ _08039E46:
 	orrs r0, r2
 	b _08039ECC
 	.align 2, 0
-_08039EB8: .4byte 0x083612AC
-_08039EBC: .4byte 0x08361284
+_08039EB8: .4byte Collision_ARRAY_083612ac
+_08039EBC: .4byte sShieldFlyElements
 _08039EC0: .4byte onHit
 _08039EC4: .4byte 0x00006D01
 _08039EC8:
@@ -226,7 +226,7 @@ _08039EE6:
 	ands r0, r1
 	cmp r0, #0
 	beq _08039F10
-	ldr r2, _08039F0C @ =0x0836128C
+	ldr r2, _08039F0C @ =sShieldFlyOffsetY
 	ldrb r0, [r6, #0x10]
 	lsls r0, r0, #2
 	adds r0, r0, r2
@@ -240,9 +240,9 @@ _08039EE6:
 	movs r0, #0
 	b _08039F28
 	.align 2, 0
-_08039F0C: .4byte 0x0836128C
+_08039F0C: .4byte sShieldFlyOffsetY
 _08039F10:
-	ldr r2, _08039F84 @ =0x0836128C
+	ldr r2, _08039F84 @ =sShieldFlyOffsetY
 	ldrb r0, [r6, #0x10]
 	lsls r0, r0, #2
 	adds r0, r0, r2
@@ -265,7 +265,7 @@ _08039F28:
 	ldr r0, [r6, #0x58]
 	adds r0, r0, r1
 	str r0, [r6, #0x58]
-	ldr r0, _08039F88 @ =0x08361288
+	ldr r0, _08039F88 @ =u8_ARRAY_08361288
 	ldrb r0, [r0, #2]
 	strb r0, [r6, #0x12]
 	ldrb r0, [r6, #0xe]
@@ -302,8 +302,8 @@ _08039F48:
 	strb r0, [r1, #0xc]
 	b _08039FAC
 	.align 2, 0
-_08039F84: .4byte 0x0836128C
-_08039F88: .4byte 0x08361288
+_08039F84: .4byte sShieldFlyOffsetY
+_08039F88: .4byte u8_ARRAY_08361288
 _08039F8C:
 	ldr r0, [r6, #0x54]
 	ldr r2, _08039FF8 @ =0xFFFFFA00
@@ -529,7 +529,7 @@ _0803A126:
 	strb r0, [r6, #0xa]
 	adds r4, r6, #0
 	adds r4, #0x74
-	ldr r0, _0803A198 @ =0x083612DC
+	ldr r0, _0803A198 @ =Collision_ARRAY_083612dc
 	mov r8, r0
 	adds r2, r6, #0
 	adds r2, #0x54
@@ -545,7 +545,7 @@ _0803A126:
 	adds r2, #0xc
 	lsls r2, r2, #0x18
 	lsrs r2, r2, #0x18
-	ldr r1, _0803A19C @ =0x08361284
+	ldr r1, _0803A19C @ =sShieldFlyElements
 	ldrb r0, [r5, #0xd]
 	adds r0, r0, r1
 	ldrb r3, [r0]
@@ -575,8 +575,8 @@ _0803A126:
 	orrs r0, r2
 	b _0803A1A8
 	.align 2, 0
-_0803A198: .4byte 0x083612DC
-_0803A19C: .4byte 0x08361284
+_0803A198: .4byte Collision_ARRAY_083612dc
+_0803A19C: .4byte sShieldFlyElements
 _0803A1A0: .4byte onHit
 _0803A1A4:
 	movs r0, #0xef
@@ -601,7 +601,7 @@ _0803A1C2:
 	ands r0, r1
 	cmp r0, #0
 	beq _0803A1E8
-	ldr r1, _0803A1E4 @ =0x0836129C
+	ldr r1, _0803A1E4 @ =sShieldFlyOffsetX
 	ldrb r0, [r6, #0x10]
 	lsls r0, r0, #2
 	adds r0, r0, r1
@@ -614,9 +614,9 @@ _0803A1C2:
 	lsls r0, r0, #2
 	b _0803A1FC
 	.align 2, 0
-_0803A1E4: .4byte 0x0836129C
+_0803A1E4: .4byte sShieldFlyOffsetX
 _0803A1E8:
-	ldr r1, _0803A270 @ =0x0836129C
+	ldr r1, _0803A270 @ =sShieldFlyOffsetX
 	ldrb r0, [r6, #0x10]
 	lsls r0, r0, #2
 	adds r0, r0, r1
@@ -631,7 +631,7 @@ _0803A1FC:
 	ldrb r1, [r6, #0x10]
 	movs r0, #0x40
 	str r0, [r6, #0x64]
-	ldr r0, _0803A278 @ =0x0836128C
+	ldr r0, _0803A278 @ =sShieldFlyOffsetY
 	lsls r1, r1, #2
 	adds r0, #2
 	adds r1, r1, r0
@@ -686,9 +686,9 @@ _0803A254:
 	ble _0803A28A
 	b _0803A288
 	.align 2, 0
-_0803A270: .4byte 0x0836129C
+_0803A270: .4byte sShieldFlyOffsetX
 _0803A274: .4byte 0xFFFFFD00
-_0803A278: .4byte 0x0836128C
+_0803A278: .4byte sShieldFlyOffsetY
 _0803A27C:
 	ldr r0, [r6, #0x64]
 	subs r0, r2, r0
@@ -880,7 +880,7 @@ _0803A3D2:
 	strb r0, [r7, #0xa]
 	adds r4, r7, #0
 	adds r4, #0x74
-	ldr r0, _0803A44C @ =0x083612DC
+	ldr r0, _0803A44C @ =Collision_ARRAY_083612dc
 	mov sl, r0
 	adds r2, r7, #0
 	adds r2, #0x54
@@ -898,7 +898,7 @@ _0803A3D2:
 	adds r2, #0xc
 	lsls r2, r2, #0x18
 	lsrs r2, r2, #0x18
-	ldr r1, _0803A454 @ =0x08361284
+	ldr r1, _0803A454 @ =sShieldFlyElements
 	ldrb r0, [r6, #0xd]
 	adds r0, r0, r1
 	ldrb r3, [r0]
@@ -928,9 +928,9 @@ _0803A3D2:
 	orrs r0, r2
 	b _0803A45C
 	.align 2, 0
-_0803A44C: .4byte 0x083612DC
+_0803A44C: .4byte Collision_ARRAY_083612dc
 _0803A450: .4byte onHit
-_0803A454: .4byte 0x08361284
+_0803A454: .4byte sShieldFlyElements
 _0803A458:
 	movs r0, #0xef
 	ands r0, r2
@@ -954,7 +954,7 @@ _0803A476:
 	ands r0, r1
 	cmp r0, #0
 	beq _0803A49C
-	ldr r1, _0803A498 @ =0x0836129C
+	ldr r1, _0803A498 @ =sShieldFlyOffsetX
 	ldrb r0, [r7, #0x10]
 	lsls r0, r0, #2
 	adds r0, r0, r1
@@ -966,9 +966,9 @@ _0803A476:
 	movs r0, #0
 	b _0803A4B0
 	.align 2, 0
-_0803A498: .4byte 0x0836129C
+_0803A498: .4byte sShieldFlyOffsetX
 _0803A49C:
-	ldr r1, _0803A4D4 @ =0x0836129C
+	ldr r1, _0803A4D4 @ =sShieldFlyOffsetX
 	ldrb r0, [r7, #0x10]
 	lsls r0, r0, #2
 	adds r0, r0, r1
@@ -981,7 +981,7 @@ _0803A49C:
 _0803A4B0:
 	strb r0, [r7, #0x13]
 	ldrb r1, [r7, #0x10]
-	ldr r0, _0803A4D8 @ =0x0836128C
+	ldr r0, _0803A4D8 @ =sShieldFlyOffsetY
 	lsls r1, r1, #2
 	adds r0, #2
 	adds r1, r1, r0
@@ -998,8 +998,8 @@ _0803A4B0:
 	movs r0, #0xc0
 	b _0803A4DE
 	.align 2, 0
-_0803A4D4: .4byte 0x0836129C
-_0803A4D8: .4byte 0x0836128C
+_0803A4D4: .4byte sShieldFlyOffsetX
+_0803A4D8: .4byte sShieldFlyOffsetY
 _0803A4DC:
 	movs r0, #0x80
 _0803A4DE:

@@ -68,10 +68,10 @@ static bool32 getStageRewardChip(struct ResultState* p);
 static bool32 getStageRewardExSkill(struct ResultState* p);
 static bool32 FUN_080248f0(struct ResultState* p);
 
-// 0x0802400c
 /**
  * @brief リザルト画面のときに毎フレーム実行される
  * @return まだリザルト画面かどうか (TRUE: まだリザルト画面, FALSE: リザルト画面が終了)
+ * @note 0x0802400c
  */
 NON_MATCH bool32 ResultScreen_Update(struct ResultState* p) {
 #if MODERN
@@ -86,11 +86,11 @@ NON_MATCH bool32 ResultScreen_Update(struct ResultState* p) {
       gScore.elfPenalty += CalcElfPenalty(gGameState.z2);
       CalcMissionScore();
       BGCNT16(1) = BGCNT_CHARBASE(1) | BGCNT_SCREENBASE(2);  // 0x204
-      *(u32*)gVideoRegBuffer.bgofs[1] = 0;
+      RESET_BGOFS(1);
       gVideoRegBuffer.dispcnt &= ~DISPCNT_BG_ALL_ON;
       gVideoRegBuffer.dispcnt |= (DISPCNT_BG0_ON | DISPCNT_BG1_ON | DISPCNT_OBJ_ON);
-      LoadGraphic(BG_GRAPHIC(BG_MISC_MENU), BG_CHAR_OFFSET(1));
-      LoadPalette(BG_PALETTE(BG_MISC_MENU), 0);
+      LoadGraphic(&gGraphic_MiscMenu, BG_CHAR_OFFSET(1));
+      LoadPalette(&gPalette_MiscMenu, 0);
       LoadGraphic(BG_GRAPHIC(BG_CODENAME), CHAR_BASE(1));
       LoadPalette(BG_PALETTE(BG_CODENAME), 0);
       CopyBgMap(SCREEN_ADDR(1), SELF_REL_PTR(&gBgMapOffsets[100]), 0, 0);
@@ -112,7 +112,7 @@ NON_MATCH bool32 ResultScreen_Update(struct ResultState* p) {
     case 1: {
       StepPaletteAnimation(64);
       if (gStageRun.vm.transition == TRANSITION_NONE) {
-        PALETTE16(0) = RGB_BLACK;
+        gPaletteManager.buf[0] = RGB_BLACK;
         p->mode[1] = 0;
         p->mode[0]++;
       }
@@ -1183,7 +1183,7 @@ _08024B50: .4byte gVideoRegBuffer+6\n\
 static void PrintResultRank(u8 rank) {
   u16* m = Malloc(2);
   if (m != NULL) {
-    *m = (TILEMAP_PAL(5) | 0x166) - rank;
+    *m = (TILE_PAL(5) | 0x166) - rank;
     RequestBgMapTransfer(m, (void*)SCREEN_BASE(1) + 738, 2);
   }
 }
@@ -1195,11 +1195,11 @@ static void PrintCodeName1(struct ResultState* p) {
   if (m != NULL) {
     if (p->codenamePrefix == 0) {  // no prefix
       for (i = 0; i < 8; i++) {
-        m[i] = (TILEMAP_PAL(15) | 0x300) + u8_ARRAY_083863e8[p->codenameSuffix * 2] + i;
+        m[i] = (TILE_PAL(15) | 0x300) + u8_ARRAY_083863e8[p->codenameSuffix * 2] + i;
       }
     } else {
       for (i = 0; i < 8; i++) {
-        m[i] = (TILEMAP_PAL(15) | 0x300) + u8_ARRAY_083863d0[p->codenamePrefix * 2] + i;
+        m[i] = (TILE_PAL(15) | 0x300) + u8_ARRAY_083863d0[p->codenamePrefix * 2] + i;
       }
       // 残りのコードネームは PrintCodeName2 で描画する
     }

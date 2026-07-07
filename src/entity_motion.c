@@ -152,10 +152,10 @@ NON_MATCH void UpdateEntityAnim(struct Entity* p) {
       tileNum = p->tileNum + wDynamicGraphicTilenums[p->motionID];
       palID = p->palID + wDynamicMotionPalIDs[p->motionID];
       if (p->motionID < 144) {
-        struct GraphicV2* g = (struct GraphicV2*)SELF_REL_PTR(&gDynamicMotionGraphicOffsets[p->motionID]) + texture;
+        struct Graphic* g = (struct Graphic*)SELF_REL_PTR(&gDynamicMotionGraphicOffsets[p->motionID]) + texture;
         RequestGraphicTransfer((void*)g, (void*)((tileNum - g->tileId) * 32 + 0x10000));
       } else {
-        struct ColorGraphicV2* g = (struct ColorGraphicV2*)SELF_REL_PTR(&gDynamicMotionGraphicOffsets[p->motionID]) + texture;
+        ColorGraphic* g = (ColorGraphic*)SELF_REL_PTR(&gDynamicMotionGraphicOffsets[p->motionID]) + texture;
         RequestGraphicTransfer((void*)g, (void*)((tileNum - (g->g).tileId) * 32 + 0x10000));
         LoadPalette(&g->pal, (palID - (g->pal).dst) * 32 + 512);
       }
@@ -242,11 +242,11 @@ NON_MATCH void InitMotionLocation(void) {
 #if MODERN
   s16 i;
   for (i = 0; i < STATIC_MOTION_COUNT; i++) {
-    wStaticGraphicTilenums[i] = gStaticMotionGraphics[i].g.ofs;
+    wStaticGraphicTilenums[i] = gStaticMotionGraphics[i].g.tileId;
     wStaticMotionPalIDs[i] = gStaticMotionGraphics[i].pal.dst;
   }
   for (i = 0; i < DYNAMIC_MOTION_COUNT; i++) {
-    struct ColorGraphicV2* g = SELF_REL_PTR(&gDynamicMotionGraphicOffsets[i]);
+    ColorGraphic* g = SELF_REL_PTR(&gDynamicMotionGraphicOffsets[i]);
     wDynamicGraphicTilenums[i] = (g->g).tileId;
     if (i < 144) {
       wDynamicMotionPalIDs[i] = 0;

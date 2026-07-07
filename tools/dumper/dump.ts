@@ -6,6 +6,7 @@ import { BASE, Rect, ROM_PATH, toHex } from '../common/index.ts';
 
 // ロックマンゼロ3で使われる様々なデータ構造を、ダンプするためのスクリプト
 // ビルドでは使わない
+// ちょっとしたデータのダンプはここにまとめる
 
 const dumpMML = (view: DataView, start: number, length: number): string => {
   let result = '';

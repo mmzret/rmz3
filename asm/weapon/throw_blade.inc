@@ -72,7 +72,7 @@ ThrowBlade_Init: @ 0x0803BED0
 	strb r0, [r6, #0xa]
 	adds r4, r6, #0
 	adds r4, #0x74
-	ldr r5, _0803BF90 @ =0x08361660
+	ldr r5, _0803BF90 @ =sThrowBladeCollision_Ice
 	adds r2, r6, #0
 	adds r2, #0x54
 	adds r0, r4, #0
@@ -94,7 +94,7 @@ ThrowBlade_Init: @ 0x0803BED0
 	b _0803BFE2
 	.align 2, 0
 _0803BF8C: .4byte gWeaponFnTable
-_0803BF90: .4byte 0x08361660
+_0803BF90: .4byte sThrowBladeCollision_Ice
 _0803BF94:
 	adds r0, r6, #0
 	movs r1, #0x1d
@@ -112,7 +112,7 @@ _0803BF94:
 	strb r0, [r6, #0xa]
 	adds r4, r6, #0
 	adds r4, #0x74
-	ldr r5, _0803BFF8 @ =0x08361630
+	ldr r5, _0803BFF8 @ =sThrowBladeCollision_Normal
 	adds r2, r6, #0
 	adds r2, #0x54
 	adds r0, r4, #0
@@ -144,7 +144,7 @@ _0803BFE2:
 	orrs r0, r1
 	b _0803C002
 	.align 2, 0
-_0803BFF8: .4byte 0x08361630
+_0803BFF8: .4byte sThrowBladeCollision_Normal
 _0803BFFC:
 	ldrb r1, [r6, #0xa]
 	movs r0, #0xef

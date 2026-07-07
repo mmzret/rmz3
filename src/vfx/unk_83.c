@@ -38,7 +38,7 @@ struct Entity* CreateGhost83(struct Entity* e) {
 static void TaskCB_080c9b4c(struct Sprite* p, struct DrawPivot* _);
 
 static void Ghost83_Init(struct Entity* p) {
-  SetTaskCallback((struct Task*)&p->spr, TaskCB_080c9b4c);
+  SetTaskCallback((void*)&p->spr, TaskCB_080c9b4c);
   (p->spr).sprites = (void*)p;
   p->flags &= ~USE_COMMON_OAM_RENDERER;
   p->flags |= DISPLAY;

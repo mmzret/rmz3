@@ -31,7 +31,7 @@ struct VFX* CreateExlifeIndicator(u8 extraLife) {
 }
 
 static void ExlifeIndicator_Init(struct Entity* p) {
-  SetTaskCallback((struct Task*)&p->spr, TaskCB_080be5d0);
+  SetTaskCallback((void*)&p->spr, TaskCB_080be5d0);
   (p->spr).sprites = (struct MetaspriteHeader*)p;
   p->flags &= ~USE_COMMON_OAM_RENDERER;
   p->flags |= DISPLAY;
@@ -138,7 +138,7 @@ static void TaskCB_080be5d0(struct Sprite* s, struct DrawPivot* c) {
   UpdateSpriteAnimation(p);
   (p->s).spr.c = &coord;
   (s->fn)(s, c);
-  SetTaskCallback((struct Task*)&(p->s).spr, TaskCB_080be5d0);
+  SetTaskCallback((void*)&(p->s).spr, TaskCB_080be5d0);
   (p->s).spr.sprites = (struct MetaspriteHeader*)p;
   (p->s).flags &= ~USE_COMMON_OAM_RENDERER;
 }

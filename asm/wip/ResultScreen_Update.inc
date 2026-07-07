@@ -105,7 +105,7 @@ _080240A2:
 	ldr r0, _080241B4 @ =gGraphic_Capcom+(22*20)+12
 	movs r1, #0
 	bl LoadPalette
-	ldr r0, _080241B8 @ =gGraphics_CodeName
+	ldr r0, _080241B8 @ =gGraphic_CodeName
 	ldrh r1, [r5]
 	ands r4, r1
 	lsls r4, r4, #0xc
@@ -190,8 +190,8 @@ _080241A8: .4byte gVideoRegBuffer+6
 _080241AC: .4byte 0x0000F0FF
 _080241B0: .4byte gGraphic_Capcom+(22*20)
 _080241B4: .4byte gGraphic_Capcom+(22*20)+12
-_080241B8: .4byte gGraphics_CodeName
-_080241BC: .4byte gGraphics_CodeName+12
+_080241B8: .4byte gGraphic_CodeName
+_080241BC: .4byte gPalette_CodeName
 _080241C0: .4byte gBgMapOffsets+400
 _080241C4: .4byte gWindowRegBuffer
 _080241C8: .4byte 0x0000BFFF

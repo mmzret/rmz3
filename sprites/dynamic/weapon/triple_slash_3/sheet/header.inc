@@ -31,20 +31,15 @@ gGraphicHeader_Sprite_weapon_triple_slash_3:
 
 gGraphicHeader_Sprite_weapon_triple_slash_3_0:
 	.incbin "sprites/dynamic/weapon/triple_slash_3/sheet/0.4bpp"
-	gGraphicHeader_Sprite_weapon_triple_slash_3_0_Palettes:
 
 gGraphicHeader_Sprite_weapon_triple_slash_3_1:
 	.incbin "sprites/dynamic/weapon/triple_slash_3/sheet/1.4bpp"
-	gGraphicHeader_Sprite_weapon_triple_slash_3_1_Palettes:
 
 gGraphicHeader_Sprite_weapon_triple_slash_3_2:
 	.incbin "sprites/dynamic/weapon/triple_slash_3/sheet/2.4bpp"
-	gGraphicHeader_Sprite_weapon_triple_slash_3_2_Palettes:
 
 gGraphicHeader_Sprite_weapon_triple_slash_3_3:
-	.incbin "sprites/dynamic/weapon/triple_slash_3/sheet/3.notrim.4bpp"
-	gGraphicHeader_Sprite_weapon_triple_slash_3_3_Palettes:
+	.incbin "sprites/dynamic/weapon/triple_slash_3/sheet/3.4bpp"
 
 gGraphicHeader_Sprite_weapon_triple_slash_3_4:
 	.incbin "sprites/dynamic/weapon/triple_slash_3/sheet/4.4bpp"
-	gGraphicHeader_Sprite_weapon_triple_slash_3_4_Palettes:

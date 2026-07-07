@@ -14,7 +14,7 @@ void clear0x02001ee0(void);
 void ClearVRAM(void);
 void InitPaletteManager(void);
 void InitSound(void);
-void InitTextPrinter(u32*);
+void InitTextPrinter(void* tilemap);
 void InitScheduler(bool32 ok);
 void RunScheduler(void);
 void usrHBlankCallback(void);
@@ -39,7 +39,7 @@ NON_MATCH void AgbMain(void) {
   InitSound();
   EnableBG0(gGameState.bg0, SCREEN_BASE(0), 1408, RGB(0, 30, 0));
   InitTextPrinter(gGameState.bg0);
-  PALETTE16(0) = RGB_WHITE;
+  gPaletteManager.buf[0] = RGB_WHITE;
   gIntrManager.slowGameRatio = 1;
   gIntrManager.hblankCallback = usrHBlankCallback;
   gIntrManager.lyc = 0;

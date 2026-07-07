@@ -16,8 +16,6 @@ gGraphicHeader_Sprite_weapon_unk_124:
 
 gGraphicHeader_Sprite_weapon_unk_124_0:
 	.incbin "sprites/dynamic/weapon/unk_124/sheet/0.4bpp"
-	gGraphicHeader_Sprite_weapon_unk_124_0_Palettes:
 
 gGraphicHeader_Sprite_weapon_unk_124_1:
-	.incbin "sprites/dynamic/weapon/unk_124/sheet/1.notrim.4bpp"
-	gGraphicHeader_Sprite_weapon_unk_124_1_Palettes:
+	.incbin "sprites/dynamic/weapon/unk_124/sheet/1.4bpp"

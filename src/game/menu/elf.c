@@ -8,8 +8,16 @@
 #include "widget.h"
 #include "zero.h"
 
-#define gGraphic_ElfTab(category) ((const struct Graphic*)((void*)BG_GRAPHIC(BG_ELF_TAB) + (category * 20)))
-#define gPalette_ElfTab(category) ((const struct Palette*)((void*)BG_PALETTE(BG_ELF_TAB) + (category * 20)))
+extern const u8 gGraphics_CyberElfTab[];
+extern const u8 gPalettes_CyberElfTab[];
+#define gGraphic_ElfTab(category) ((const struct Graphic*)(gGraphics_CyberElfTab + (category * sizeof(ColorGraphic))))
+#define gPalette_ElfTab(category) ((const struct Palette*)(gPalettes_CyberElfTab + (category * sizeof(ColorGraphic))))
+
+extern const struct Graphic gGraphic_ElfMenu;
+extern const struct Palette gPalette_ElfMenu;
+
+extern const struct Graphic gGraphic_Unk39;
+extern const struct Palette gPalette_Unk39;
 
 static void printElfNames(struct GameState* g);
 static void printElfMenuDescription(struct GameState* g);
@@ -63,8 +71,8 @@ void EachMenuLoop_Elf(struct GameState* g) {
 static void ElfMenuLoop_Init(struct GameState* g) {
   u8 i;
   struct Zero* z = g->z2;
-  LoadGraphic(BG_GRAPHIC(BG_ELF_MENU), CHAR_BASE(1));
-  LoadPalette(BG_PALETTE(BG_ELF_MENU), 0);
+  LoadGraphic(&gGraphic_ElfMenu, CHAR_BASE(1));
+  LoadPalette(&gPalette_ElfMenu, 0);
   CpuFastCopy(BGMAP(BG_ELF_MENU), g->menuBgMap2, 1920);
   RequestBgMapTransfer(g->menuBgMap1, (void*)SCREEN_BASE(1), 0x1000);
   for (i = 0; i < 6; i++) {
@@ -114,19 +122,19 @@ static void ElfMenuLoop_Update(struct GameState* g) {
     }
     gBlendRegBuffer.bldalpha = (ELF_MENU->unk_b & 0x1F) | ((0x10 - ELF_MENU->unk_b) << 8);
     if (tab != ELF_MENU->tab) {
-      LoadGraphic((void*)gGraphic_ElfTab(ELF_MENU->tab), (void*)CHAR_BASE(1));
+      LoadGraphic(gGraphic_ElfTab(ELF_MENU->tab), (void*)CHAR_BASE(1));
       LoadPalette(gPalette_ElfTab(ELF_MENU->tab), 0);
     }
 
     if (g->mode[3] >= 2) {
       if (tab != ELF_MENU->tab || (prev < 2)) {
-        LoadGraphic((void*)((void*)BG_GRAPHIC(BG_ELF_CATEGORY) + (20 * ELF_MENU->tab)), (void*)CHAR_BASE(1));
-        LoadPalette((const struct Palette*)((void*)BG_PALETTE(BG_ELF_CATEGORY) + (20 * ELF_MENU->tab)), 0);
+        LoadGraphic(BG_GRAPHIC(BG_ELF_CATEGORY) + (sizeof(ColorGraphic) * ELF_MENU->tab), (void*)CHAR_BASE(1));
+        LoadPalette(BG_PALETTE(BG_ELF_CATEGORY) + (sizeof(ColorGraphic) * ELF_MENU->tab), 0);
       }
     } else {
       if (1 < prev) {
-        LoadGraphic(BG_GRAPHIC(BG_UNK_39), (void*)CHAR_BASE(1));
-        LoadPalette(BG_PALETTE(BG_UNK_39), 0);
+        LoadGraphic(&gGraphic_Unk39, (void*)CHAR_BASE(1));
+        LoadPalette(&gPalette_Unk39, 0);
       }
       if ((ELF_MENU->mode == 0) && (((&z->unk_b4)->status).satelites[0] != ELF_NONE)) {
         PrintString(STRING(100 + ((&z->unk_b4)->status).satelites[0]), 21, 1);

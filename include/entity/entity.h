@@ -9,6 +9,7 @@
 #include "motion.h"
 
 struct ScriptEntity;
+struct Zero;
 
 #define ENTITY_HDR                                                                                                                                                                                                     \
   struct Entity* prev;               /* 0x00 */                                                                                                                                                                        \
@@ -32,8 +33,8 @@ struct ScriptEntity;
   u8 renderPrio;                     /* 0x25, Renderer priority (0..31), lower is rendered first, so higher is rendered above lower */                                                                                 \
   metatile_attr_t physicsAttr;       /* 0x26, ENTI_PHYSICS のときの attr */
 
-// ここからは Entity によってはこれに従わない使い方をしてるものがあったので分けた
-#define ENTITY_HDR_PART2                                                                                                                                            \
+// ここからは Entity によってはこれに従わない使い方をしてるものがあったので分けた (通常のGBAスプライトとして描画するEntityがこのレイアウトと思われる, ほとんどのEntityはこのレイアウト)
+#define ENTITY_SPRITE                                                                                                                                               \
   struct Entity* unk_28;   /* 0x28, CreateEmotionBubble では　ここに Coords32 のポインタ　を、 Widget ではここに GameState のポインタ　を入れている */              \
   struct Entity* unk_2c;   /* 0x2C */                                                                                                                               \
   const struct Rect* size; /* 0x30 */                                                                                                                               \
@@ -44,8 +45,8 @@ struct ScriptEntity;
   AnimState motion;
 
 struct Entity {
-  ENTITY_HDR;
-  ENTITY_HDR_PART2;
+  ENTITY_HDR;     // 0x00
+  ENTITY_SPRITE;  // 0x28
 };  // 116 bytes
 static_assert(sizeof(struct Entity) == 116);
 
@@ -107,7 +108,15 @@ struct Solid {
 };  // 196 bytes
 
 // Entity.kind = 7, アイテム
-// -> include/pickup.h
+typedef struct Pickup {
+  ENTITY_HDR;        // 0x00
+  ENTITY_SPRITE;     // 0x28
+  struct Body body;  // 0xB4
+  // props (16bytes, offset: 0xB4..)
+  s32 y;           // 0xB4
+  struct Zero* z;  // 0xB8, ゼロがアイテム拾うとセットされる
+  u8 _[8];         // 0xBC, unused?
+} Pickup;          // 196 bytes
 
 // Entity.kind = 8, サイバーエルフ
 struct Elf {

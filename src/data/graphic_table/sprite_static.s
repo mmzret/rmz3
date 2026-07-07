@@ -5,12 +5,12 @@
 
 .global gStaticMotionGraphics
 gStaticMotionGraphics:
-	@ Graphic 0
-	.4byte gStaticMotionGraphics_0-. @ src
+CommonEffect: @ Graphic 0
+	.4byte CommonEffect_Tiles-. @ src
 	.4byte 2816 | (160 << 22) 	@ bit0..21: bytesize, bit22..31: dst (VRAM TileID)
 	.2byte 1592, (LZ77 | BPP4) 	@ rowsize(unused), props
 		@ Palette
-		.4byte gStaticMotionGraphics_0_Palettes-. @ src offset
+		.4byte CommonEffect_Pal-. @ src offset
 		.2byte 64 @ bytesize
 		.byte 0, 14 @ lz77(bool8), dst = PaletteID
 
@@ -23,30 +23,30 @@ gStaticMotionGraphics:
 		.2byte 32 @ bytesize
 		.byte 0, 8 @ lz77(bool8), dst = PaletteID
 
-	@ Graphic 2
-	.4byte gStaticMotionGraphics_2-. @ src
+Lemon: @ Graphic 2
+	.4byte Lemon_Tiles-. @ src
 	.4byte 96 | (359 << 22) 	@ bit0..21: bytesize, bit22..31: dst (VRAM TileID)
 	.2byte 24, (LZ77 | BPP4 | NO_PAL) 	@ rowsize(unused), props
 		@ Palette
-		.4byte gStaticMotionGraphics_2_Palettes-. @ src offset
+		.4byte Lemon_Pal-. @ src offset
 		.2byte 0 @ bytesize
 		.byte 0, 14 @ lz77(bool8), dst = PaletteID
 
-	@ Graphic 3
-	.4byte gStaticMotionGraphics_3-. @ src
+EmotionBubble: @ Graphic 3
+	.4byte EmotionBubble_Tiles-. @ src
 	.4byte 192 | (362 << 22) 	@ bit0..21: bytesize, bit22..31: dst (VRAM TileID)
 	.2byte 48, (BPP4 | NO_PAL) 	@ rowsize(unused), props
 		@ Palette
-		.4byte gStaticMotionGraphics_3_Palettes-. @ src offset
+		.4byte EmotionBubble_Pal-. @ src offset
 		.2byte 0 @ bytesize
 		.byte 0, 14 @ lz77(bool8), dst = PaletteID
 
-	@ Graphic 4
-	.4byte gStaticMotionGraphics_4-. @ src
+ShotCounter: @ Graphic 4
+	.4byte ShotCounter_Tiles-. @ src
 	.4byte 1792 | (512 << 22) 	@ bit0..21: bytesize, bit22..31: dst (VRAM TileID)
 	.2byte 448, BPP4 	@ rowsize(unused), props
 		@ Palette
-		.4byte gStaticMotionGraphics_4_Palettes-. @ src offset
+		.4byte ShotCounter_Pal-. @ src offset
 		.2byte 32 @ bytesize
 		.byte 0, 4 @ lz77(bool8), dst = PaletteID
 
@@ -626,7 +626,7 @@ gStaticMotionGraphics:
 		.2byte 32 @ bytesize
 		.byte 0, 4 @ lz77(bool8), dst = PaletteID
 
-	@ Graphic 69
+ExSkillIcon: @ Graphic 69
 	.4byte gStaticMotionGraphics_69-. @ src
 	.4byte 4608 | (864 << 22) 	@ bit0..21: bytesize, bit22..31: dst (VRAM TileID)
 	.2byte 1152, BPP4 	@ rowsize(unused), props
@@ -914,12 +914,12 @@ gStaticMotionGraphics:
 		.2byte 32 @ bytesize
 		.byte 0, 7 @ lz77(bool8), dst = PaletteID
 
-	@ Graphic 101
-	.4byte gStaticMotionGraphics_101-. @ src
+Omega1wSword: @ Graphic 101
+	.4byte Omega1wSword_Tiles-. @ src
 	.4byte 4492 | (826 << 22) 	@ bit0..21: bytesize, bit22..31: dst (VRAM TileID)
 	.2byte 1864, (LZ77 | BPP4) 	@ rowsize(unused), props
 		@ Palette
-		.4byte gStaticMotionGraphics_101_Palettes-. @ src offset
+		.4byte Omega1wSword_Pal-. @ src offset
 		.2byte 32 @ bytesize
 		.byte 0, 8 @ lz77(bool8), dst = PaletteID
 
@@ -1049,12 +1049,12 @@ gStaticMotionGraphics:
 		.2byte 32 @ bytesize
 		.byte 0, 5 @ lz77(bool8), dst = PaletteID
 
-	@ Graphic 116
-	.4byte gStaticMotionGraphics_116-. @ src
+Deathlock: @ Graphic 116, 0x085d8208
+	.4byte Deathlock_Tiles-. @ src
 	.4byte 3040 | (512 << 22) 	@ bit0..21: bytesize, bit22..31: dst (VRAM TileID)
 	.2byte 760, BPP4 	@ rowsize(unused), props
 		@ Palette
-		.4byte gStaticMotionGraphics_116_Palettes-. @ src offset
+		.4byte Deathlock_Pal-. @ src offset
 		.2byte 32 @ bytesize
 		.byte 0, 4 @ lz77(bool8), dst = PaletteID
 
@@ -1292,7 +1292,7 @@ gStaticMotionGraphics:
 		.2byte 32 @ bytesize
 		.byte 0, 4 @ lz77(bool8), dst = PaletteID
 
-	@ Graphic 143
+	@ Graphic 143 (サイバーエルフのグラフィック用を動的に読み込むためのダミー)
 	.4byte gStaticMotionGraphics_143-. @ src
 	.4byte 0 | (512 << 22) 	@ bit0..21: bytesize, bit22..31: dst (VRAM TileID)
 	.2byte 0, 0 	@ rowsize(unused), props
@@ -1689,11 +1689,11 @@ gStaticMotionGraphics:
 		.byte 0, 4 @ lz77(bool8), dst = PaletteID
 
 	@ Graphic 187
-	.4byte gStaticMotionGraphics_187-. @ src
+	.4byte Alouette_Tiles-. @ src
 	.4byte 1824 | (512 << 22) 	@ bit0..21: bytesize, bit22..31: dst (VRAM TileID)
 	.2byte 456, BPP4 	@ rowsize(unused), props
 		@ Palette
-		.4byte gStaticMotionGraphics_187_Palettes-. @ src offset
+		.4byte Alouette_Pal-. @ src offset
 		.2byte 96 @ bytesize
 		.byte 0, 4 @ lz77(bool8), dst = PaletteID
 
@@ -2293,43 +2293,42 @@ gStaticMotionGraphics:
 
 @;@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 
-gStaticMotionGraphics_0:
-	.incbin "sprites/static/effects/sheet.lz"
-	gStaticMotionGraphics_0_Palettes:
-	.incbin "sprites/static/effects/14.pal"
-	.incbin "sprites/static/effects/15.pal"
+CommonEffect_Tiles:
+	.incbin "sprites/static/effects/sheet.4bpp.lz"
+CommonEffect_Pal:
+	.incbin "sprites/static/effects/effects.gbapal"
 
 gStaticMotionGraphics_1:
-	.incbin "sprites/static/1/sheet.lz"
+	.incbin "sprites/static/1/sheet.4bpp.lz"
 	gStaticMotionGraphics_1_Palettes:
-	.incbin "sprites/static/1/sheet.lz.gbapal"
+	.incbin "sprites/static/1/sheet.gbapal"
 
-gStaticMotionGraphics_2:
-	.incbin "sprites/static/lemon/sheet.lz"
-	gStaticMotionGraphics_2_Palettes:
+Lemon_Tiles:
+	.incbin "sprites/static/lemon/sheet.4bpp.lz"
+Lemon_Pal:
 
-gStaticMotionGraphics_3:
+EmotionBubble_Tiles:
 	.incbin "sprites/static/emotion_bubble/sheet.4bpp"
-	gStaticMotionGraphics_3_Palettes:
+EmotionBubble_Pal:
 
-gStaticMotionGraphics_4:
+ShotCounter_Tiles:
 	.incbin "sprites/static/enemy/shotcounter/sheet.4bpp"
-	gStaticMotionGraphics_4_Palettes:
+ShotCounter_Pal:
 	.incbin "sprites/static/enemy/shotcounter/sheet.gbapal"
 
 gStaticMotionGraphics_5:
-	.incbin "sprites/static/gravel/sheet.lz"
-	gStaticMotionGraphics_5_Palettes:
-	.incbin "sprites/static/gravel/sheet.lz.gbapal"
+	.incbin "sprites/static/gravel/sheet.4bpp.lz"
+gStaticMotionGraphics_5_Palettes:
+	.incbin "sprites/static/gravel/sheet.gbapal"
 
 gStaticMotionGraphics_6:
 	.incbin "sprites/static/enemy/batring/sheet.4bpp"
-	gStaticMotionGraphics_6_Palettes:
+gStaticMotionGraphics_6_Palettes:
 	.incbin "sprites/static/enemy/batring/sheet.gbapal"
 
 gStaticMotionGraphics_7:
 	.incbin "sprites/static/enemy/grand_cannon/sheet.4bpp"
-	gStaticMotionGraphics_7_Palettes:
+gStaticMotionGraphics_7_Palettes:
 	.incbin "sprites/static/enemy/grand_cannon/sheet.gbapal"
 
 gStaticMotionGraphics_8:
@@ -2338,65 +2337,63 @@ gStaticMotionGraphics_8:
 	.incbin "sprites/static/enemy/pillar_cannon/sheet.gbapal"
 
 gStaticMotionGraphics_9:
-	.incbin "sprites/static/omega_white/hand/sheet.lz"
+	.incbin "sprites/static/omega_white/hand/sheet.4bpp.lz"
 	gStaticMotionGraphics_9_Palettes:
-	.incbin "sprites/static/omega_white/hand/sheet.lz.gbapal"
+	.incbin "sprites/static/omega_white/hand/sheet.gbapal"
 
 gStaticMotionGraphics_10:
-	.incbin "sprites/static/omega_white/ring/sheet.lz"
-	gStaticMotionGraphics_10_Palettes:
-	.incbin "sprites/static/omega_white/ring/sheet.lz.gbapal"
+	.incbin "sprites/static/omega_white/ring/sheet.4bpp.lz"
+gStaticMotionGraphics_10_Palettes:
+	.incbin "sprites/static/omega_white/ring/sheet.gbapal"
 
 gStaticMotionGraphics_11:
-	.incbin "sprites/static/omega_white/recover/sheet.lz"
-	gStaticMotionGraphics_11_Palettes:
-	.incbin "sprites/static/omega_white/recover/sheet.lz.gbapal"
+	.incbin "sprites/static/omega_white/recover/sheet.4bpp.lz"
+gStaticMotionGraphics_11_Palettes:
+	.incbin "sprites/static/omega_white/recover/sheet.gbapal"
 
 gStaticMotionGraphics_12:
 	.incbin "sprites/static/omega_white/rubble/sheet.4bpp"
-	gStaticMotionGraphics_12_Palettes:
+gStaticMotionGraphics_12_Palettes:
 	.incbin "sprites/static/omega_white/rubble/sheet.gbapal"
 
 gStaticMotionGraphics_13:
 	.incbin "sprites/static/enemy/shrimpolin/sheet.4bpp"
-	gStaticMotionGraphics_13_Palettes:
-	.incbin "sprites/static/enemy/shrimpolin/04.pal"
-	.incbin "sprites/static/enemy/shrimpolin/05.pal"
+gStaticMotionGraphics_13_Palettes:
+	.incbin "sprites/static/enemy/shrimpolin/shrimpolin.gbapal"
 
 gStaticMotionGraphics_14:
-	.incbin "sprites/static/menu/chip_icon/sheet.lz"
-	gStaticMotionGraphics_14_Palettes:
-	.incbin "sprites/static/menu/chip_icon/04.pal"
-	.incbin "sprites/static/menu/chip_icon/05.pal"
+	.incbin "sprites/static/menu/chip_icon/sheet.4bpp.lz"
+gStaticMotionGraphics_14_Palettes:
+	.incbin "sprites/static/menu/chip_icon/chip_icon.gbapal"
 
 gStaticMotionGraphics_15:
-	.incbin "sprites/static/menu/main_menu/sheet.lz"
-	gStaticMotionGraphics_15_Palettes:
-	.incbin "sprites/static/menu/main_menu/sheet.lz.gbapal"
+	.incbin "sprites/static/menu/main_menu/sheet.4bpp.lz"
+gStaticMotionGraphics_15_Palettes:
+	.incbin "sprites/static/menu/main_menu/sheet.gbapal"
 
 gStaticMotionGraphics_16:
 	.incbin "sprites/static/enemy/icebon/icebon/sheet.4bpp"
-	gStaticMotionGraphics_16_Palettes:
+gStaticMotionGraphics_16_Palettes:
 	.incbin "sprites/static/enemy/icebon/icebon/sheet.gbapal"
 
 gStaticMotionGraphics_17:
 	.incbin "sprites/static/enemy/icebon/ice/sheet.4bpp"
-	gStaticMotionGraphics_17_Palettes:
+gStaticMotionGraphics_17_Palettes:
 	.incbin "sprites/static/enemy/icebon/ice/sheet.gbapal"
 
 gStaticMotionGraphics_18:
 	.incbin "sprites/static/door_2d/blue/sheet.4bpp"
-	gStaticMotionGraphics_18_Palettes:
+gStaticMotionGraphics_18_Palettes:
 	.incbin "sprites/static/door_2d/blue/sheet.gbapal"
 
 gStaticMotionGraphics_19:
 	.incbin "sprites/static/enemy/pantheon_hunter/sheet.4bpp"
-	gStaticMotionGraphics_19_Palettes:
+gStaticMotionGraphics_19_Palettes:
 	.incbin "sprites/static/enemy/pantheon_hunter/sheet.gbapal"
 
 gStaticMotionGraphics_20:
 	.incbin "sprites/static/enemy/pantheon_guardian/sheet.4bpp"
-	gStaticMotionGraphics_20_Palettes:
+gStaticMotionGraphics_20_Palettes:
 	.incbin "sprites/static/enemy/pantheon_guardian/sheet.gbapal"
 
 gStaticMotionGraphics_21:
@@ -2416,26 +2413,25 @@ gStaticMotionGraphics_23:
 
 gStaticMotionGraphics_24:
 	.incbin "sprites/static/enemy/sharkseal_x/sheet.4bpp"
-	gStaticMotionGraphics_24_Palettes:
-	.incbin "sprites/static/enemy/sharkseal_x/09.pal"
-	.incbin "sprites/static/enemy/sharkseal_x/10.pal"
+gStaticMotionGraphics_24_Palettes:
+	.incbin "sprites/static/enemy/sharkseal_x/sharkseal_x.gbapal"
 
 gStaticMotionGraphics_25:
 	.incbin "sprites/static/enemy/lamplort/sheet.4bpp"
-	gStaticMotionGraphics_25_Palettes:
+gStaticMotionGraphics_25_Palettes:
 	.incbin "sprites/static/enemy/lamplort/sheet.gbapal"
 
 gStaticMotionGraphics_26:
-	.incbin "sprites/static/element_effect/thunder/sheet.lz"
-	gStaticMotionGraphics_26_Palettes:
+	.incbin "sprites/static/element_effect/thunder/sheet.4bpp.lz"
+gStaticMotionGraphics_26_Palettes:
 
 gStaticMotionGraphics_27:
-	.incbin "sprites/static/element_effect/flame/sheet.lz"
-	gStaticMotionGraphics_27_Palettes:
+	.incbin "sprites/static/element_effect/flame/sheet.4bpp.lz"
+gStaticMotionGraphics_27_Palettes:
 
 gStaticMotionGraphics_28:
-	.incbin "sprites/static/element_effect/ice/sheet.lz"
-	gStaticMotionGraphics_28_Palettes:
+	.incbin "sprites/static/element_effect/ice/sheet.4bpp.lz"
+gStaticMotionGraphics_28_Palettes:
 
 gStaticMotionGraphics_29:
 	.incbin "sprites/static/enemy/lemmingles/sheet.4bpp"
@@ -2458,34 +2454,34 @@ gStaticMotionGraphics_32:
 	.incbin "sprites/static/32/sheet.gbapal"
 
 gStaticMotionGraphics_33:
-	.incbin "sprites/static/fefnir_fireball/sheet.lz"
-	gStaticMotionGraphics_33_Palettes:
-	.incbin "sprites/static/fefnir_fireball/sheet.lz.gbapal"
+	.incbin "sprites/static/fefnir_fireball/sheet.4bpp.lz"
+gStaticMotionGraphics_33_Palettes:
+	.incbin "sprites/static/fefnir_fireball/sheet.gbapal"
 
 gStaticMotionGraphics_34:
-	.incbin "sprites/static/enemy/carryarm/sheet.lz"
+	.incbin "sprites/static/enemy/carryarm/sheet.4bpp.lz"
 	gStaticMotionGraphics_34_Palettes:
-	.incbin "sprites/static/enemy/carryarm/sheet.lz.gbapal"
+	.incbin "sprites/static/enemy/carryarm/sheet.gbapal"
 
 gStaticMotionGraphics_35:
-	.incbin "sprites/static/container/container/sheet.lz"
-	gStaticMotionGraphics_35_Palettes:
-	.incbin "sprites/static/container/container/sheet.lz.gbapal"
+	.incbin "sprites/static/container/container/sheet.4bpp.lz"
+gStaticMotionGraphics_35_Palettes:
+	.incbin "sprites/static/container/container/sheet.gbapal"
 
 gStaticMotionGraphics_36:
-	.incbin "sprites/static/childre/36/sheet.lz"
-	gStaticMotionGraphics_36_Palettes:
-	.incbin "sprites/static/childre/36/sheet.lz.gbapal"
+	.incbin "sprites/static/childre/36/sheet.4bpp.lz"
+gStaticMotionGraphics_36_Palettes:
+	.incbin "sprites/static/childre/36/sheet.gbapal"
 
 gStaticMotionGraphics_37:
-	.incbin "sprites/static/childre/ear_shot/sheet.lz"
-	gStaticMotionGraphics_37_Palettes:
-	.incbin "sprites/static/childre/ear_shot/sheet.lz.gbapal"
+	.incbin "sprites/static/childre/ear_shot/sheet.4bpp.lz"
+gStaticMotionGraphics_37_Palettes:
+	.incbin "sprites/static/childre/ear_shot/sheet.gbapal"
 
 gStaticMotionGraphics_38:
-	.incbin "sprites/static/childre/38/sheet.lz"
-	gStaticMotionGraphics_38_Palettes:
-	.incbin "sprites/static/childre/38/sheet.lz.gbapal"
+	.incbin "sprites/static/childre/38/sheet.4bpp.lz"
+gStaticMotionGraphics_38_Palettes:
+	.incbin "sprites/static/childre/38/sheet.gbapal"
 
 gStaticMotionGraphics_39:
 	.incbin "sprites/static/enemy/pantheon_aqua/sheet.4bpp"
@@ -2508,16 +2504,14 @@ gStaticMotionGraphics_42:
 	.incbin "sprites/static/enemy/purple_nerple/sheet.gbapal"
 
 gStaticMotionGraphics_43:
-	.incbin "sprites/static/wormer/body/sheet.lz"
-	gStaticMotionGraphics_43_Palettes:
-	.incbin "sprites/static/wormer/body/04.pal"
-	.incbin "sprites/static/wormer/body/05.pal"
+	.incbin "sprites/static/wormer/body/sheet.4bpp.lz"
+gStaticMotionGraphics_43_Palettes:
+	.incbin "sprites/static/wormer/body/body.gbapal"
 
 gStaticMotionGraphics_44:
-	.incbin "sprites/static/wormer/rock_drone/sheet.lz"
-	gStaticMotionGraphics_44_Palettes:
-	.incbin "sprites/static/wormer/rock_drone/06.pal"
-	.incbin "sprites/static/wormer/rock_drone/07.pal"
+	.incbin "sprites/static/wormer/rock_drone/sheet.4bpp.lz"
+gStaticMotionGraphics_44_Palettes:
+	.incbin "sprites/static/wormer/rock_drone/rock_drone.gbapal"
 
 gStaticMotionGraphics_45:
 	.incbin "sprites/static/minigame/phantom/mine/sheet.4bpp"
@@ -2535,53 +2529,48 @@ gStaticMotionGraphics_47:
 	.incbin "sprites/static/enemy/tile_cannon/sheet.gbapal"
 
 gStaticMotionGraphics_48:
-	.incbin "sprites/static/baby_elf/48/sheet.lz"
+	.incbin "sprites/static/baby_elf/48/sheet.4bpp.lz"
 	gStaticMotionGraphics_48_Palettes:
-	.incbin "sprites/static/baby_elf/48/sheet.lz.gbapal"
+	.incbin "sprites/static/baby_elf/48/sheet.gbapal"
 
 gStaticMotionGraphics_49:
-	.incbin "sprites/static/baby_elf/49/sheet.lz"
+	.incbin "sprites/static/baby_elf/49/sheet.4bpp.lz"
 	gStaticMotionGraphics_49_Palettes:
-	.incbin "sprites/static/baby_elf/49/sheet.lz.gbapal"
+	.incbin "sprites/static/baby_elf/49/sheet.gbapal"
 
 gStaticMotionGraphics_50:
-	.incbin "sprites/static/baby_elf/50/sheet.lz"
-	gStaticMotionGraphics_50_Palettes:
-	.incbin "sprites/static/baby_elf/50/07.pal"
-	.incbin "sprites/static/baby_elf/50/08.pal"
+	.incbin "sprites/static/baby_elf/50/sheet.4bpp.lz"
+gStaticMotionGraphics_50_Palettes:
+	.incbin "sprites/static/baby_elf/50/50.gbapal"
 
 gStaticMotionGraphics_51:
-	.incbin "sprites/static/baby_elf/51/sheet.lz"
+	.incbin "sprites/static/baby_elf/51/sheet.4bpp.lz"
 	gStaticMotionGraphics_51_Palettes:
-	.incbin "sprites/static/baby_elf/51/sheet.lz.gbapal"
+	.incbin "sprites/static/baby_elf/51/sheet.gbapal"
 
 gStaticMotionGraphics_52:
-	.incbin "sprites/static/baby_elf/52/sheet.lz"
+	.incbin "sprites/static/baby_elf/52/sheet.4bpp.lz"
 	gStaticMotionGraphics_52_Palettes:
-	.incbin "sprites/static/baby_elf/52/sheet.lz.gbapal"
+	.incbin "sprites/static/baby_elf/52/sheet.gbapal"
 
 gStaticMotionGraphics_53:
 	.incbin "sprites/static/enemy/shelluno/sheet.4bpp"
-	gStaticMotionGraphics_53_Palettes:
-	.incbin "sprites/static/enemy/shelluno/09.pal"
-	.incbin "sprites/static/enemy/shelluno/10.pal"
+gStaticMotionGraphics_53_Palettes:
+	.incbin "sprites/static/enemy/shelluno/shelluno.gbapal"
 
 gStaticMotionGraphics_54:
-	.incbin "sprites/static/deathtanz/rock/sheet.lz"
+	.incbin "sprites/static/deathtanz/rock/sheet.4bpp.lz"
 	gStaticMotionGraphics_54_Palettes:
-	.incbin "sprites/static/deathtanz/rock/sheet.lz.gbapal"
+	.incbin "sprites/static/deathtanz/rock/sheet.gbapal"
 
 gStaticMotionGraphics_55:
-	.incbin "sprites/static/deathtanz/projectile/sheet.lz"
-	gStaticMotionGraphics_55_Palettes:
-	.incbin "sprites/static/deathtanz/projectile/06.pal"
-	.incbin "sprites/static/deathtanz/projectile/07.pal"
-	.incbin "sprites/static/deathtanz/projectile/08.pal"
-	.incbin "sprites/static/deathtanz/projectile/09.pal"
+	.incbin "sprites/static/deathtanz/projectile/sheet.4bpp.lz"
+gStaticMotionGraphics_55_Palettes:
+	.incbin "sprites/static/deathtanz/projectile/projectile.gbapal"
 
 gStaticMotionGraphics_56:
 	.incbin "sprites/static/enemy/heavy_cannon/sheet.4bpp"
-	gStaticMotionGraphics_56_Palettes:
+gStaticMotionGraphics_56_Palettes:
 	.incbin "sprites/static/enemy/heavy_cannon/sheet.gbapal"
 
 gStaticMotionGraphics_57:
@@ -2600,16 +2589,16 @@ gStaticMotionGraphics_59:
 	.incbin "sprites/static/volcano/lava_river_platform/sheet.gbapal"
 
 gStaticMotionGraphics_60:
-	.incbin "sprites/static/exlife_indicator/sheet.lz"
-	gStaticMotionGraphics_60_Palettes:
+	.incbin "sprites/static/exlife_indicator/sheet.4bpp.lz"
+gStaticMotionGraphics_60_Palettes:
 
 gStaticMotionGraphics_61:
 	.incbin "sprites/static/61/sheet.4bpp"
-	gStaticMotionGraphics_61_Palettes:
+gStaticMotionGraphics_61_Palettes:
 
 gStaticMotionGraphics_62:
 	.incbin "sprites/static/enemy/beetank/sheet.4bpp"
-	gStaticMotionGraphics_62_Palettes:
+gStaticMotionGraphics_62_Palettes:
 	.incbin "sprites/static/enemy/beetank/sheet.gbapal"
 
 gStaticMotionGraphics_63:
@@ -2618,13 +2607,13 @@ gStaticMotionGraphics_63:
 	.incbin "sprites/static/enemy/swordy/sheet.gbapal"
 
 gStaticMotionGraphics_64:
-	.incbin "sprites/static/iceball/sheet.lz"
-	gStaticMotionGraphics_64_Palettes:
-	.incbin "sprites/static/iceball/sheet.lz.gbapal"
+	.incbin "sprites/static/iceball/sheet.4bpp.lz"
+gStaticMotionGraphics_64_Palettes:
+	.incbin "sprites/static/iceball/sheet.gbapal"
 
 gStaticMotionGraphics_65:
 	.incbin "sprites/static/enemy/puffy/body/sheet.4bpp"
-	gStaticMotionGraphics_65_Palettes:
+gStaticMotionGraphics_65_Palettes:
 	.incbin "sprites/static/enemy/puffy/body/sheet.gbapal"
 
 gStaticMotionGraphics_66:
@@ -2643,22 +2632,19 @@ gStaticMotionGraphics_68:
 	.incbin "sprites/static/old_residential/fall_rock/sheet.gbapal"
 
 gStaticMotionGraphics_69:
-	.incbin "sprites/static/menu/exskill_icon/sheet.notrim.4bpp"
-	gStaticMotionGraphics_69_Palettes:
-	.incbin "sprites/static/menu/exskill_icon/10.pal"
-	.incbin "sprites/static/menu/exskill_icon/11.pal"
+	.incbin "sprites/static/menu/exskill_icon/sheet.4bpp"
+gStaticMotionGraphics_69_Palettes:
+	.incbin "sprites/static/menu/exskill_icon/exskill_icon.gbapal"
 
 gStaticMotionGraphics_70:
-	.incbin "sprites/static/bee_server/sheet.lz"
-	gStaticMotionGraphics_70_Palettes:
-	.incbin "sprites/static/bee_server/sheet.lz.gbapal"
+	.incbin "sprites/static/bee_server/sheet.4bpp.lz"
+gStaticMotionGraphics_70_Palettes:
+	.incbin "sprites/static/bee_server/sheet.gbapal"
 
 gStaticMotionGraphics_71:
 	.incbin "sprites/static/enemy/mellnet/sheet.4bpp"
-	gStaticMotionGraphics_71_Palettes:
-	.incbin "sprites/static/enemy/mellnet/05.pal"
-	.incbin "sprites/static/enemy/mellnet/06.pal"
-	.incbin "sprites/static/enemy/mellnet/07.pal"
+gStaticMotionGraphics_71_Palettes:
+	.incbin "sprites/static/enemy/mellnet/mellnet.gbapal"
 
 gStaticMotionGraphics_72:
 	.incbin "sprites/static/72/sheet.4bpp"
@@ -2666,14 +2652,14 @@ gStaticMotionGraphics_72:
 	.incbin "sprites/static/72/sheet.gbapal"
 
 gStaticMotionGraphics_73:
-	.incbin "sprites/static/anubis/rod/sheet.lz"
+	.incbin "sprites/static/anubis/rod/sheet.4bpp.lz"
 	gStaticMotionGraphics_73_Palettes:
-	.incbin "sprites/static/anubis/rod/sheet.lz.gbapal"
+	.incbin "sprites/static/anubis/rod/sheet.gbapal"
 
 gStaticMotionGraphics_74:
-	.incbin "sprites/static/anubis/sand/sheet.lz"
+	.incbin "sprites/static/anubis/sand/sheet.4bpp.lz"
 	gStaticMotionGraphics_74_Palettes:
-	.incbin "sprites/static/anubis/sand/sheet.lz.gbapal"
+	.incbin "sprites/static/anubis/sand/sheet.gbapal"
 
 gStaticMotionGraphics_75:
 	.incbin "sprites/static/anubis/coffin/sheet.4bpp"
@@ -2686,71 +2672,69 @@ gStaticMotionGraphics_76:
 	.incbin "sprites/static/enemy/pantheon_zombie/sheet.gbapal"
 
 gStaticMotionGraphics_77:
-	.incbin "sprites/static/pantheon_aqua_mod/body/sheet.lz"
+	.incbin "sprites/static/pantheon_aqua_mod/body/sheet.4bpp.lz"
 	gStaticMotionGraphics_77_Palettes:
-	.incbin "sprites/static/pantheon_aqua_mod/body/sheet.lz.gbapal"
+	.incbin "sprites/static/pantheon_aqua_mod/body/sheet.gbapal"
 
 gStaticMotionGraphics_78:
-	.incbin "sprites/static/pantheon_aqua_mod/projectile/sheet.lz"
+	.incbin "sprites/static/pantheon_aqua_mod/projectile/sheet.4bpp.lz"
 	gStaticMotionGraphics_78_Palettes:
-	.incbin "sprites/static/pantheon_aqua_mod/projectile/sheet.lz.gbapal"
+	.incbin "sprites/static/pantheon_aqua_mod/projectile/sheet.gbapal"
 
 gStaticMotionGraphics_79:
-	.incbin "sprites/static/pantheon_aqua_mod/rock/sheet.lz"
+	.incbin "sprites/static/pantheon_aqua_mod/rock/sheet.4bpp.lz"
 	gStaticMotionGraphics_79_Palettes:
-	.incbin "sprites/static/pantheon_aqua_mod/rock/sheet.lz.gbapal"
+	.incbin "sprites/static/pantheon_aqua_mod/rock/sheet.gbapal"
 
 gStaticMotionGraphics_80:
-	.incbin "sprites/static/80/sheet.lz"
+	.incbin "sprites/static/80/sheet.4bpp.lz"
 	gStaticMotionGraphics_80_Palettes:
-	.incbin "sprites/static/80/sheet.lz.gbapal"
+	.incbin "sprites/static/80/sheet.gbapal"
 
 gStaticMotionGraphics_81:
 	.incbin "sprites/static/mother_elf/81/sheet.4bpp"
-	gStaticMotionGraphics_81_Palettes:
-	.incbin "sprites/static/mother_elf/81/06.pal"
-	.incbin "sprites/static/mother_elf/81/07.pal"
+gStaticMotionGraphics_81_Palettes:
+	.incbin "sprites/static/mother_elf/81/81.gbapal"
 
 gStaticMotionGraphics_82:
-	.incbin "sprites/static/menu/elf_menu/sheet.lz"
+	.incbin "sprites/static/menu/elf_menu/sheet.4bpp.lz"
 	gStaticMotionGraphics_82_Palettes:
-	.incbin "sprites/static/menu/elf_menu/08.pal"
-	.incbin "sprites/static/menu/elf_menu/09.pal"
+	.incbin "sprites/static/menu/elf_menu/elf_menu.gbapal"
 
 gStaticMotionGraphics_83:
-	.incbin "sprites/static/menu/elf_menu_icon/sheet.lz"
+	.incbin "sprites/static/menu/elf_menu_icon/sheet.4bpp.lz"
 	gStaticMotionGraphics_83_Palettes:
-	.incbin "sprites/static/menu/elf_menu_icon/sheet.lz.gbapal"
+	.incbin "sprites/static/menu/elf_menu_icon/sheet.gbapal"
 
 gStaticMotionGraphics_84:
-	.incbin "sprites/static/locomo_if/body/sheet.lz"
-	gStaticMotionGraphics_84_Palettes:
-	.incbin "sprites/static/locomo_if/body/sheet.lz.gbapal"
+	.incbin "sprites/static/locomo_if/body/sheet.4bpp.lz"
+gStaticMotionGraphics_84_Palettes:
+	.incbin "sprites/static/locomo_if/body/sheet.gbapal"
 
 gStaticMotionGraphics_85:
-	.incbin "sprites/static/locomo_if/platform/sheet.lz"
-	gStaticMotionGraphics_85_Palettes:
-	.incbin "sprites/static/locomo_if/platform/sheet.lz.gbapal"
+	.incbin "sprites/static/locomo_if/platform/sheet.4bpp.lz"
+gStaticMotionGraphics_85_Palettes:
+	.incbin "sprites/static/locomo_if/platform/sheet.gbapal"
 
 gStaticMotionGraphics_86:
-	.incbin "sprites/static/locomo_if/flame/sheet.lz"
-	gStaticMotionGraphics_86_Palettes:
-	.incbin "sprites/static/locomo_if/flame/sheet.lz.gbapal"
+	.incbin "sprites/static/locomo_if/flame/sheet.4bpp.lz"
+gStaticMotionGraphics_86_Palettes:
+	.incbin "sprites/static/locomo_if/flame/sheet.gbapal"
 
 gStaticMotionGraphics_87:
-	.incbin "sprites/static/locomo_if/chill/sheet.lz"
-	gStaticMotionGraphics_87_Palettes:
-	.incbin "sprites/static/locomo_if/chill/sheet.lz.gbapal"
+	.incbin "sprites/static/locomo_if/chill/sheet.4bpp.lz"
+gStaticMotionGraphics_87_Palettes:
+	.incbin "sprites/static/locomo_if/chill/sheet.gbapal"
 
 gStaticMotionGraphics_88:
 	.incbin "sprites/static/locomo_if/ice/sheet.4bpp"
-	gStaticMotionGraphics_88_Palettes:
+gStaticMotionGraphics_88_Palettes:
 	.incbin "sprites/static/locomo_if/ice/sheet.gbapal"
 
 gStaticMotionGraphics_89:
-	.incbin "sprites/static/glacierle/hand/sheet.lz"
+	.incbin "sprites/static/glacierle/hand/sheet.4bpp.lz"
 	gStaticMotionGraphics_89_Palettes:
-	.incbin "sprites/static/glacierle/hand/sheet.lz.gbapal"
+	.incbin "sprites/static/glacierle/hand/sheet.gbapal"
 
 gStaticMotionGraphics_90:
 	.incbin "sprites/static/glacierle/icicle/sheet.4bpp"
@@ -2758,59 +2742,59 @@ gStaticMotionGraphics_90:
 	.incbin "sprites/static/glacierle/icicle/sheet.gbapal"
 
 gStaticMotionGraphics_91:
-	.incbin "sprites/static/copy_x/fire_shot/sheet.lz"
+	.incbin "sprites/static/copy_x/fire_shot/sheet.4bpp.lz"
 	gStaticMotionGraphics_91_Palettes:
-	.incbin "sprites/static/copy_x/fire_shot/sheet.lz.gbapal"
+	.incbin "sprites/static/copy_x/fire_shot/sheet.gbapal"
 
 gStaticMotionGraphics_92:
-	.incbin "sprites/static/copy_x/elec_shot/sheet.lz"
+	.incbin "sprites/static/copy_x/elec_shot/sheet.4bpp.lz"
 	gStaticMotionGraphics_92_Palettes:
-	.incbin "sprites/static/copy_x/elec_shot/sheet.lz.gbapal"
+	.incbin "sprites/static/copy_x/elec_shot/sheet.gbapal"
 
 gStaticMotionGraphics_93:
-	.incbin "sprites/static/copy_x/normal_shot/sheet.lz"
+	.incbin "sprites/static/copy_x/normal_shot/sheet.4bpp.lz"
 	gStaticMotionGraphics_93_Palettes:
-	.incbin "sprites/static/copy_x/normal_shot/sheet.lz.gbapal"
+	.incbin "sprites/static/copy_x/normal_shot/sheet.gbapal"
 
 gStaticMotionGraphics_94:
-	.incbin "sprites/static/copy_x/sliding_spark/sheet.lz"
+	.incbin "sprites/static/copy_x/sliding_spark/sheet.4bpp.lz"
 	gStaticMotionGraphics_94_Palettes:
-	.incbin "sprites/static/copy_x/sliding_spark/sheet.lz.gbapal"
+	.incbin "sprites/static/copy_x/sliding_spark/sheet.gbapal"
 
 gStaticMotionGraphics_95:
-	.incbin "sprites/static/copy_x/charge_effect/sheet.lz"
+	.incbin "sprites/static/copy_x/charge_effect/sheet.4bpp.lz"
 	gStaticMotionGraphics_95_Palettes:
-	.incbin "sprites/static/copy_x/charge_effect/sheet.lz.gbapal"
+	.incbin "sprites/static/copy_x/charge_effect/sheet.gbapal"
 
 gStaticMotionGraphics_96:
-	.incbin "sprites/static/copy_x/reflect_laser/sheet.lz"
+	.incbin "sprites/static/copy_x/reflect_laser/sheet.4bpp.lz"
 	gStaticMotionGraphics_96_Palettes:
-	.incbin "sprites/static/copy_x/reflect_laser/sheet.lz.gbapal"
+	.incbin "sprites/static/copy_x/reflect_laser/sheet.gbapal"
 
 gStaticMotionGraphics_97:
-	.incbin "sprites/static/copy_x/97/sheet.lz"
+	.incbin "sprites/static/copy_x/97/sheet.4bpp.lz"
 	gStaticMotionGraphics_97_Palettes:
-	.incbin "sprites/static/copy_x/97/sheet.lz.gbapal"
+	.incbin "sprites/static/copy_x/97/sheet.gbapal"
 
 gStaticMotionGraphics_98:
-	.incbin "sprites/static/blizzack/ice/sheet.lz"
+	.incbin "sprites/static/blizzack/ice/sheet.4bpp.lz"
 	gStaticMotionGraphics_98_Palettes:
-	.incbin "sprites/static/blizzack/ice/sheet.lz.gbapal"
+	.incbin "sprites/static/blizzack/ice/sheet.gbapal"
 
 gStaticMotionGraphics_99:
-	.incbin "sprites/static/blizzack/chill/sheet.lz"
+	.incbin "sprites/static/blizzack/chill/sheet.4bpp.lz"
 	gStaticMotionGraphics_99_Palettes:
-	.incbin "sprites/static/blizzack/chill/sheet.lz.gbapal"
+	.incbin "sprites/static/blizzack/chill/sheet.gbapal"
 
 gStaticMotionGraphics_100:
-	.incbin "sprites/static/blizzack/shoulder/sheet.lz"
+	.incbin "sprites/static/blizzack/shoulder/sheet.4bpp.lz"
 	gStaticMotionGraphics_100_Palettes:
-	.incbin "sprites/static/blizzack/shoulder/sheet.lz.gbapal"
+	.incbin "sprites/static/blizzack/shoulder/sheet.gbapal"
 
-gStaticMotionGraphics_101:
-	.incbin "sprites/static/omega_white/sword/sheet.lz"
-	gStaticMotionGraphics_101_Palettes:
-	.incbin "sprites/static/omega_white/sword/sheet.lz.gbapal"
+Omega1wSword_Tiles:
+	.incbin "sprites/static/omega_white/sword/sheet.4bpp.lz"
+Omega1wSword_Pal:
+	.incbin "sprites/static/omega_white/sword/sheet.gbapal"
 
 gStaticMotionGraphics_102:
 	.incbin "sprites/static/enemy/eye_cannon/sheet.4bpp"
@@ -2824,9 +2808,8 @@ gStaticMotionGraphics_103:
 
 gStaticMotionGraphics_104:
 	.incbin "sprites/static/enemy/capsule_cannon/sheet.4bpp"
-	gStaticMotionGraphics_104_Palettes:
-	.incbin "sprites/static/enemy/capsule_cannon/04.pal"
-	.incbin "sprites/static/enemy/capsule_cannon/05.pal"
+gStaticMotionGraphics_104_Palettes:
+	.incbin "sprites/static/enemy/capsule_cannon/capsule_cannon.gbapal"
 
 gStaticMotionGraphics_105:
 	.incbin "sprites/static/enemy/pantheon_bomber/sheet.4bpp"
@@ -2834,9 +2817,9 @@ gStaticMotionGraphics_105:
 	.incbin "sprites/static/enemy/pantheon_bomber/sheet.gbapal"
 
 gStaticMotionGraphics_106:
-	.incbin "sprites/static/hanumachine_obj/sheet.lz"
+	.incbin "sprites/static/hanumachine_obj/sheet.4bpp.lz"
 	gStaticMotionGraphics_106_Palettes:
-	.incbin "sprites/static/hanumachine_obj/sheet.lz.gbapal"
+	.incbin "sprites/static/hanumachine_obj/sheet.gbapal"
 
 gStaticMotionGraphics_107:
 	.incbin "sprites/static/enemy/mothjiro/sheet.4bpp"
@@ -2883,9 +2866,10 @@ gStaticMotionGraphics_115:
 	gStaticMotionGraphics_115_Palettes:
 	.incbin "sprites/static/resistance_base/elevator/default/sheet.gbapal"
 
-gStaticMotionGraphics_116:
+@ ./tools/dumper/gfx.ts 0x085d8208 ./sprites/static/enemy/deathlock/sheet.png -- -width 4 -object
+Deathlock_Tiles:
 	.incbin "sprites/static/enemy/deathlock/sheet.4bpp"
-	gStaticMotionGraphics_116_Palettes:
+Deathlock_Pal:
 	.incbin "sprites/static/enemy/deathlock/sheet.gbapal"
 
 gStaticMotionGraphics_117:
@@ -2930,10 +2914,8 @@ gStaticMotionGraphics_124:
 
 gStaticMotionGraphics_125:
 	.incbin "sprites/static/weil_labo_platform/sheet.4bpp"
-	gStaticMotionGraphics_125_Palettes:
-	.incbin "sprites/static/weil_labo_platform/09.pal"
-	.incbin "sprites/static/weil_labo_platform/10.pal"
-	.incbin "sprites/static/weil_labo_platform/11.pal"
+gStaticMotionGraphics_125_Palettes:
+	.incbin "sprites/static/weil_labo_platform/weil_labo_platform.gbapal"
 
 gStaticMotionGraphics_126:
 	.incbin "sprites/static/enemy/petatria/sheet.4bpp"
@@ -2941,54 +2923,54 @@ gStaticMotionGraphics_126:
 	.incbin "sprites/static/enemy/petatria/sheet.gbapal"
 
 gStaticMotionGraphics_127:
-	.incbin "sprites/static/disabled_disk/sheet.lz"
+	.incbin "sprites/static/disabled_disk/sheet.4bpp.lz"
 	gStaticMotionGraphics_127_Palettes:
-	.incbin "sprites/static/disabled_disk/sheet.lz.gbapal"
+	.incbin "sprites/static/disabled_disk/sheet.gbapal"
 
 gStaticMotionGraphics_128:
-	.incbin "sprites/static/128/sheet.lz"
+	.incbin "sprites/static/128/sheet.4bpp.lz"
 	gStaticMotionGraphics_128_Palettes:
-	.incbin "sprites/static/128/sheet.lz.gbapal"
+	.incbin "sprites/static/128/sheet.gbapal"
 
 gStaticMotionGraphics_129:
-	.incbin "sprites/static/subtank2/sheet.lz"
+	.incbin "sprites/static/subtank2/sheet.4bpp.lz"
 	gStaticMotionGraphics_129_Palettes:
-	.incbin "sprites/static/subtank2/sheet.lz.gbapal"
+	.incbin "sprites/static/subtank2/sheet.gbapal"
 
 gStaticMotionGraphics_130:
-	.incbin "sprites/static/prologue/mob/sheet.lz"
+	.incbin "sprites/static/prologue/mob/sheet.4bpp.lz"
 	gStaticMotionGraphics_130_Palettes:
-	.incbin "sprites/static/prologue/mob/sheet.lz.gbapal"
+	.incbin "sprites/static/prologue/mob/sheet.gbapal"
 
 gStaticMotionGraphics_131:
-	.incbin "sprites/static/prologue/cutscene_mob/sheet.lz"
+	.incbin "sprites/static/prologue/cutscene_mob/sheet.4bpp.lz"
 	gStaticMotionGraphics_131_Palettes:
-	.incbin "sprites/static/prologue/cutscene_mob/sheet.lz.gbapal"
+	.incbin "sprites/static/prologue/cutscene_mob/sheet.gbapal"
 
 gStaticMotionGraphics_132:
-	.incbin "sprites/static/prologue/cutscene_zero/sheet.lz"
-	gStaticMotionGraphics_132_Palettes:
-	.incbin "sprites/static/prologue/cutscene_zero/sheet.lz.gbapal"
+	.incbin "sprites/static/prologue/cutscene_zero/sheet.4bpp.lz"
+gStaticMotionGraphics_132_Palettes:
+	.incbin "sprites/static/prologue/cutscene_zero/sheet.gbapal"
 
 gStaticMotionGraphics_133:
-	.incbin "sprites/static/prologue/cutscene_ciel/sheet.lz"
+	.incbin "sprites/static/prologue/cutscene_ciel/sheet.4bpp.lz"
 	gStaticMotionGraphics_133_Palettes:
-	.incbin "sprites/static/prologue/cutscene_ciel/sheet.lz.gbapal"
+	.incbin "sprites/static/prologue/cutscene_ciel/sheet.gbapal"
 
 gStaticMotionGraphics_134:
-	.incbin "sprites/static/phantom/ninja_star/sheet.lz"
+	.incbin "sprites/static/phantom/ninja_star/sheet.4bpp.lz"
 	gStaticMotionGraphics_134_Palettes:
-	.incbin "sprites/static/phantom/ninja_star/sheet.lz.gbapal"
+	.incbin "sprites/static/phantom/ninja_star/sheet.gbapal"
 
 gStaticMotionGraphics_135:
-	.incbin "sprites/static/phantom/135/sheet.lz"
+	.incbin "sprites/static/phantom/135/sheet.4bpp.lz"
 	gStaticMotionGraphics_135_Palettes:
-	.incbin "sprites/static/phantom/135/sheet.lz.gbapal"
+	.incbin "sprites/static/phantom/135/sheet.gbapal"
 
 gStaticMotionGraphics_136:
-	.incbin "sprites/static/phantom/makibishi/sheet.lz"
-	gStaticMotionGraphics_136_Palettes:
-	.incbin "sprites/static/phantom/makibishi/sheet.lz.gbapal"
+	.incbin "sprites/static/phantom/makibishi/sheet.4bpp.lz"
+gStaticMotionGraphics_136_Palettes:
+	.incbin "sprites/static/phantom/makibishi/sheet.gbapal"
 
 gStaticMotionGraphics_137:
 	.incbin "sprites/static/resistance_base/elevator/wood/sheet.4bpp"
@@ -3001,14 +2983,14 @@ gStaticMotionGraphics_138:
 	.incbin "sprites/static/resistance_base/elevator/mmx/sheet.gbapal"
 
 gStaticMotionGraphics_139:
-	.incbin "sprites/static/energy_facility_btn/sheet.lz"
+	.incbin "sprites/static/energy_facility_btn/sheet.4bpp.lz"
 	gStaticMotionGraphics_139_Palettes:
-	.incbin "sprites/static/energy_facility_btn/sheet.lz.gbapal"
+	.incbin "sprites/static/energy_facility_btn/sheet.gbapal"
 
 gStaticMotionGraphics_140:
-	.incbin "sprites/static/resistance/mob/sheet.lz"
+	.incbin "sprites/static/resistance/mob/sheet.4bpp.lz"
 	gStaticMotionGraphics_140_Palettes:
-	.incbin "sprites/static/resistance/mob/sheet.lz.gbapal"
+	.incbin "sprites/static/resistance/mob/sheet.gbapal"
 
 gStaticMotionGraphics_141:
   gStaticMotionGraphics_141_Palettes:
@@ -3022,39 +3004,39 @@ gStaticMotionGraphics_143:
   gStaticMotionGraphics_143_Palettes:
 
 gStaticMotionGraphics_144:
-	.incbin "sprites/static/resistance_base/ciel_comp/0/sheet.lz"
+	.incbin "sprites/static/resistance_base/ciel_comp/0/sheet.4bpp.lz"
 	gStaticMotionGraphics_144_Palettes:
-	.incbin "sprites/static/resistance_base/ciel_comp/0/sheet.lz.gbapal"
+	.incbin "sprites/static/resistance_base/ciel_comp/0/sheet.gbapal"
 
 gStaticMotionGraphics_145:
-	.incbin "sprites/static/resistance_base/ciel_comp/1/sheet.lz"
+	.incbin "sprites/static/resistance_base/ciel_comp/1/sheet.4bpp.lz"
 	gStaticMotionGraphics_145_Palettes:
-	.incbin "sprites/static/resistance_base/ciel_comp/1/sheet.lz.gbapal"
+	.incbin "sprites/static/resistance_base/ciel_comp/1/sheet.gbapal"
 
 gStaticMotionGraphics_146:
-	.incbin "sprites/static/resistance_base/ciel_comp/2/sheet.lz"
+	.incbin "sprites/static/resistance_base/ciel_comp/2/sheet.4bpp.lz"
 	gStaticMotionGraphics_146_Palettes:
-	.incbin "sprites/static/resistance_base/ciel_comp/2/sheet.lz.gbapal"
+	.incbin "sprites/static/resistance_base/ciel_comp/2/sheet.gbapal"
 
 gStaticMotionGraphics_147:
-	.incbin "sprites/static/resistance_base/ciel_comp/3/sheet.lz"
+	.incbin "sprites/static/resistance_base/ciel_comp/3/sheet.4bpp.lz"
 	gStaticMotionGraphics_147_Palettes:
-	.incbin "sprites/static/resistance_base/ciel_comp/3/sheet.lz.gbapal"
+	.incbin "sprites/static/resistance_base/ciel_comp/3/sheet.gbapal"
 
 gStaticMotionGraphics_148:
-	.incbin "sprites/static/resistance_base/ciel_comp/4/sheet.lz"
+	.incbin "sprites/static/resistance_base/ciel_comp/4/sheet.4bpp.lz"
 	gStaticMotionGraphics_148_Palettes:
-	.incbin "sprites/static/resistance_base/ciel_comp/4/sheet.lz.gbapal"
+	.incbin "sprites/static/resistance_base/ciel_comp/4/sheet.gbapal"
 
 gStaticMotionGraphics_149:
-	.incbin "sprites/static/logo/megaman/sheet.lz"
+	.incbin "sprites/static/logo/megaman/sheet.4bpp.lz"
 	gStaticMotionGraphics_149_Palettes:
-	.incbin "sprites/static/logo/megaman/sheet.lz.gbapal"
+	.incbin "sprites/static/logo/megaman/sheet.gbapal"
 
 gStaticMotionGraphics_150:
-	.incbin "sprites/static/logo/z/sheet.lz"
+	.incbin "sprites/static/logo/z/sheet.4bpp.lz"
 	gStaticMotionGraphics_150_Palettes:
-	.incbin "sprites/static/logo/z/sheet.lz.gbapal"
+	.incbin "sprites/static/logo/z/sheet.gbapal"
 
 gStaticMotionGraphics_151:
 	.incbin "sprites/static/missile_platform/sheet.4bpp"
@@ -3064,8 +3046,7 @@ gStaticMotionGraphics_151:
 gStaticMotionGraphics_152:
 	.incbin "sprites/static/mother_elf/152/sheet.4bpp"
 	gStaticMotionGraphics_152_Palettes:
-	.incbin "sprites/static/mother_elf/152/04.pal"
-	.incbin "sprites/static/mother_elf/152/05.pal"
+	.incbin "sprites/static/mother_elf/152/152.gbapal"
 
 gStaticMotionGraphics_153:
 	.incbin "sprites/static/volcano/coffin/sheet.4bpp"
@@ -3093,24 +3074,24 @@ gStaticMotionGraphics_157:
 	.incbin "sprites/static/smoke_157/sheet.gbapal"
 
 gStaticMotionGraphics_158:
-	.incbin "sprites/static/minigame/zero/sheet.lz"
+	.incbin "sprites/static/minigame/zero/sheet.4bpp.lz"
 	gStaticMotionGraphics_158_Palettes:
-	.incbin "sprites/static/minigame/zero/sheet.lz.gbapal"
+	.incbin "sprites/static/minigame/zero/sheet.gbapal"
 
 gStaticMotionGraphics_159:
-	.incbin "sprites/static/minigame/copy_x/sheet.lz"
+	.incbin "sprites/static/minigame/copy_x/sheet.4bpp.lz"
 	gStaticMotionGraphics_159_Palettes:
-	.incbin "sprites/static/minigame/copy_x/sheet.lz.gbapal"
+	.incbin "sprites/static/minigame/copy_x/sheet.gbapal"
 
 gStaticMotionGraphics_160:
-	.incbin "sprites/static/minigame/phantom/icon/sheet.lz"
+	.incbin "sprites/static/minigame/phantom/icon/sheet.4bpp.lz"
 	gStaticMotionGraphics_160_Palettes:
-	.incbin "sprites/static/minigame/phantom/icon/sheet.lz.gbapal"
+	.incbin "sprites/static/minigame/phantom/icon/sheet.gbapal"
 
 gStaticMotionGraphics_161:
-	.incbin "sprites/static/minigame/harpuia/sheet.lz"
+	.incbin "sprites/static/minigame/harpuia/sheet.4bpp.lz"
 	gStaticMotionGraphics_161_Palettes:
-	.incbin "sprites/static/minigame/harpuia/sheet.lz.gbapal"
+	.incbin "sprites/static/minigame/harpuia/sheet.gbapal"
 
 gStaticMotionGraphics_162:
 	.incbin "sprites/static/resistance_base/painting/mmbn/sheet.4bpp"
@@ -3138,67 +3119,67 @@ gStaticMotionGraphics_166:
 	.incbin "sprites/static/resistance_base/painting/ciel/sheet.gbapal"
 
 gStaticMotionGraphics_167:
-	.incbin "sprites/static/life_energy/default/sheet.lz"
+	.incbin "sprites/static/life_energy/default/sheet.4bpp.lz"
 	gStaticMotionGraphics_167_Palettes:
-	.incbin "sprites/static/life_energy/default/sheet.lz.gbapal"
+	.incbin "sprites/static/life_energy/default/sheet.gbapal"
 
 gStaticMotionGraphics_168:
-	.incbin "sprites/static/life_energy/x/sheet.lz"
+	.incbin "sprites/static/life_energy/x/sheet.4bpp.lz"
 	gStaticMotionGraphics_168_Palettes:
-	.incbin "sprites/static/life_energy/x/sheet.lz.gbapal"
+	.incbin "sprites/static/life_energy/x/sheet.gbapal"
 
 gStaticMotionGraphics_169:
-	.incbin "sprites/static/life_energy/tank/sheet.lz"
+	.incbin "sprites/static/life_energy/tank/sheet.4bpp.lz"
 	gStaticMotionGraphics_169_Palettes:
-	.incbin "sprites/static/life_energy/tank/sheet.lz.gbapal"
+	.incbin "sprites/static/life_energy/tank/sheet.gbapal"
 
 gStaticMotionGraphics_170:
-	.incbin "sprites/static/ecrystal/default/sheet.lz"
-	gStaticMotionGraphics_170_Palettes:
-	.incbin "sprites/static/ecrystal/default/sheet.lz.gbapal"
+	.incbin "sprites/static/ecrystal/default/sheet.4bpp.lz"
+gStaticMotionGraphics_170_Palettes:
+	.incbin "sprites/static/ecrystal/default/sheet.gbapal"
 
 gStaticMotionGraphics_171:
-	.incbin "sprites/static/ecrystal/ball/sheet.lz"
-	gStaticMotionGraphics_171_Palettes:
-	.incbin "sprites/static/ecrystal/ball/sheet.lz.gbapal"
+	.incbin "sprites/static/ecrystal/ball/sheet.4bpp.lz"
+gStaticMotionGraphics_171_Palettes:
+	.incbin "sprites/static/ecrystal/ball/sheet.gbapal"
 
 gStaticMotionGraphics_172:
-	.incbin "sprites/static/ecrystal/green/sheet.lz"
+	.incbin "sprites/static/ecrystal/green/sheet.4bpp.lz"
 	gStaticMotionGraphics_172_Palettes:
-	.incbin "sprites/static/ecrystal/green/sheet.lz.gbapal"
+	.incbin "sprites/static/ecrystal/green/sheet.gbapal"
 
 gStaticMotionGraphics_173:
-	.incbin "sprites/static/exlife/default/sheet.lz"
+	.incbin "sprites/static/exlife/default/sheet.4bpp.lz"
 	gStaticMotionGraphics_173_Palettes:
-	.incbin "sprites/static/exlife/default/sheet.lz.gbapal"
+	.incbin "sprites/static/exlife/default/sheet.gbapal"
 
 gStaticMotionGraphics_174:
-	.incbin "sprites/static/exlife/blue/sheet.lz"
+	.incbin "sprites/static/exlife/blue/sheet.4bpp.lz"
 	gStaticMotionGraphics_174_Palettes:
-	.incbin "sprites/static/exlife/blue/sheet.lz.gbapal"
+	.incbin "sprites/static/exlife/blue/sheet.gbapal"
 
 gStaticMotionGraphics_175:
-	.incbin "sprites/static/exlife/green/sheet.lz"
+	.incbin "sprites/static/exlife/green/sheet.4bpp.lz"
 	gStaticMotionGraphics_175_Palettes:
-	.incbin "sprites/static/exlife/green/sheet.lz.gbapal"
+	.incbin "sprites/static/exlife/green/sheet.gbapal"
 
 gStaticMotionGraphics_176:
-	.incbin "sprites/static/result_disk/default/sheet.lz"
-	gStaticMotionGraphics_176_Palettes:
-	.incbin "sprites/static/result_disk/default/sheet.lz.gbapal"
+	.incbin "sprites/static/result_disk/default/sheet.4bpp.lz"
+gStaticMotionGraphics_176_Palettes:
+	.incbin "sprites/static/result_disk/default/sheet.gbapal"
 
 gStaticMotionGraphics_177:
-	.incbin "sprites/static/result_disk/blue/sheet.lz"
-	gStaticMotionGraphics_177_Palettes:
-	.incbin "sprites/static/result_disk/blue/sheet.lz.gbapal"
+	.incbin "sprites/static/result_disk/blue/sheet.4bpp.lz"
+gStaticMotionGraphics_177_Palettes:
+	.incbin "sprites/static/result_disk/blue/sheet.gbapal"
 
 gStaticMotionGraphics_178:
-	.incbin "sprites/static/result_disk/red/sheet.lz"
-	gStaticMotionGraphics_178_Palettes:
-	.incbin "sprites/static/result_disk/red/sheet.lz.gbapal"
+	.incbin "sprites/static/result_disk/red/sheet.4bpp.lz"
+gStaticMotionGraphics_178_Palettes:
+	.incbin "sprites/static/result_disk/red/sheet.gbapal"
 
 gStaticMotionGraphics_179:
-	.incbin "sprites/static/179/sheet.lz"
+	.incbin "sprites/static/179/sheet.4bpp.lz"
 	gStaticMotionGraphics_179_Palettes:
 
 gStaticMotionGraphics_180:
@@ -3226,81 +3207,79 @@ gStaticMotionGraphics_184:
 	.incbin "sprites/static/x/sheet.gbapal"
 
 gStaticMotionGraphics_185:
-	.incbin "sprites/static/omega_zx_floating_rock/sheet.lz"
+	.incbin "sprites/static/omega_zx_floating_rock/sheet.4bpp.lz"
 	gStaticMotionGraphics_185_Palettes:
-	.incbin "sprites/static/omega_zx_floating_rock/sheet.lz.gbapal"
+	.incbin "sprites/static/omega_zx_floating_rock/sheet.gbapal"
 
 gStaticMotionGraphics_186:
-	.incbin "sprites/static/186/sheet.lz"
+	.incbin "sprites/static/186/sheet.4bpp.lz"
 	gStaticMotionGraphics_186_Palettes:
-	.incbin "sprites/static/186/sheet.lz.gbapal"
+	.incbin "sprites/static/186/sheet.gbapal"
 
-gStaticMotionGraphics_187:
+Alouette_Tiles:
 	.incbin "sprites/static/resistance/alouette/sheet.4bpp"
-	gStaticMotionGraphics_187_Palettes:
-	.incbin "sprites/static/resistance/alouette/04.pal"
-	.incbin "sprites/static/resistance/alouette/05.pal"
-	.incbin "sprites/static/resistance/alouette/06.pal"
+Alouette_Pal:
+	.incbin "sprites/static/resistance/alouette/alouette.gbapal"
 
 gStaticMotionGraphics_188:
-	.incbin "sprites/static/resistance/kiss/sheet.lz"
-	gStaticMotionGraphics_188_Palettes:
-	.incbin "sprites/static/resistance/kiss/sheet.lz.gbapal"
+	.incbin "sprites/static/resistance/kiss/sheet.4bpp.lz"
+gStaticMotionGraphics_188_Palettes:
+	.incbin "sprites/static/resistance/kiss/sheet.gbapal"
 
 gStaticMotionGraphics_189:
-	.incbin "sprites/static/resistance/faucon/sheet.lz"
+	.incbin "sprites/static/resistance/faucon/sheet.4bpp.lz"
 	gStaticMotionGraphics_189_Palettes:
-	.incbin "sprites/static/resistance/faucon/sheet.lz.gbapal"
+	.incbin "sprites/static/resistance/faucon/sheet.gbapal"
 
 gStaticMotionGraphics_190:
-	.incbin "sprites/static/resistance/hirondelle/sheet.lz"
+	.incbin "sprites/static/resistance/hirondelle/sheet.4bpp.lz"
 	gStaticMotionGraphics_190_Palettes:
-	.incbin "sprites/static/resistance/hirondelle/sheet.lz.gbapal"
+	.incbin "sprites/static/resistance/hirondelle/sheet.gbapal"
 
 gStaticMotionGraphics_191:
-	.incbin "sprites/static/resistance/autruche/sheet.lz"
+	.incbin "sprites/static/resistance/autruche/sheet.4bpp.lz"
 	gStaticMotionGraphics_191_Palettes:
-	.incbin "sprites/static/resistance/autruche/sheet.lz.gbapal"
+	.incbin "sprites/static/resistance/autruche/sheet.gbapal"
 
 gStaticMotionGraphics_192:
-	.incbin "sprites/static/resistance/rocinolle/sheet.lz"
+	.incbin "sprites/static/resistance/rocinolle/sheet.4bpp.lz"
 	gStaticMotionGraphics_192_Palettes:
-	.incbin "sprites/static/resistance/rocinolle/sheet.lz.gbapal"
+	.incbin "sprites/static/resistance/rocinolle/sheet.gbapal"
 
 gStaticMotionGraphics_193:
-	.incbin "sprites/static/resistance/doigt/sheet.lz"
+	.incbin "sprites/static/resistance/doigt/sheet.4bpp.lz"
 	gStaticMotionGraphics_193_Palettes:
-	.incbin "sprites/static/resistance/doigt/sheet.lz.gbapal"
+	.incbin "sprites/static/resistance/doigt/sheet.gbapal"
 
 gStaticMotionGraphics_194:
-	.incbin "sprites/static/resistance/cerveau/sheet.lz"
+	.incbin "sprites/static/resistance/cerveau/sheet.4bpp.lz"
 	gStaticMotionGraphics_194_Palettes:
-	.incbin "sprites/static/resistance/cerveau/sheet.lz.gbapal"
+	.incbin "sprites/static/resistance/cerveau/sheet.gbapal"
 
 gStaticMotionGraphics_195:
-	.incbin "sprites/static/resistance/hibou/sheet.lz"
+	.incbin "sprites/static/resistance/hibou/sheet.4bpp.lz"
 	gStaticMotionGraphics_195_Palettes:
-	.incbin "sprites/static/resistance/hibou/sheet.lz.gbapal"
+	.incbin "sprites/static/resistance/hibou/sheet.gbapal"
 
 gStaticMotionGraphics_196:
-	.incbin "sprites/static/resistance/andrew/sheet.lz"
+	.incbin "sprites/static/resistance/andrew/sheet.4bpp.lz"
 	gStaticMotionGraphics_196_Palettes:
-	.incbin "sprites/static/resistance/andrew/sheet.lz.gbapal"
+	.incbin "sprites/static/resistance/andrew/sheet.gbapal"
 
 gStaticMotionGraphics_197:
-	.incbin "sprites/static/resistance/menart/sheet.lz"
+	.incbin "sprites/static/resistance/menart/sheet.4bpp.lz"
 	gStaticMotionGraphics_197_Palettes:
-	.incbin "sprites/static/resistance/menart/sheet.lz.gbapal"
+	.incbin "sprites/static/resistance/menart/sheet.gbapal"
 
 gStaticMotionGraphics_198:
-	.incbin "sprites/static/resistance/perroquiet/sheet.lz"
+	.incbin "sprites/static/resistance/perroquiet/sheet.4bpp.lz"
 	gStaticMotionGraphics_198_Palettes:
-	.incbin "sprites/static/resistance/perroquiet/sheet.lz.gbapal"
+	.incbin "sprites/static/resistance/perroquiet/sheet.gbapal"
 
 gStaticMotionGraphics_199:
-	.incbin "sprites/static/resistance/pic/sheet.lz"
+	.incbin "sprites/static/resistance/pic/sheet.4bpp.lz"
 	gStaticMotionGraphics_199_Palettes:
-	.incbin "sprites/static/resistance/pic/sheet.lz.gbapal"
+	.incbin "sprites/static/resistance/pic/sheet.gbapal"
 
 gStaticMotionGraphics_200:
 	.incbin "sprites/static/smoke/sheet.4bpp"
@@ -3308,14 +3287,14 @@ gStaticMotionGraphics_200:
 	.incbin "sprites/static/smoke/sheet.gbapal"
 
 gStaticMotionGraphics_201:
-	.incbin "sprites/static/resistance/operator/sheet.lz"
+	.incbin "sprites/static/resistance/operator/sheet.4bpp.lz"
 	gStaticMotionGraphics_201_Palettes:
-	.incbin "sprites/static/resistance/operator/sheet.lz.gbapal"
+	.incbin "sprites/static/resistance/operator/sheet.gbapal"
 
 gStaticMotionGraphics_202:
-	.incbin "sprites/static/resistance_base/202/sheet.lz"
+	.incbin "sprites/static/resistance_base/202/sheet.4bpp.lz"
 	gStaticMotionGraphics_202_Palettes:
-	.incbin "sprites/static/resistance_base/202/sheet.lz.gbapal"
+	.incbin "sprites/static/resistance_base/202/sheet.gbapal"
 
 gStaticMotionGraphics_203:
 	.incbin "sprites/static/iceblock/sheet.4bpp"
@@ -3323,38 +3302,29 @@ gStaticMotionGraphics_203:
 	.incbin "sprites/static/iceblock/sheet.gbapal"
 
 gStaticMotionGraphics_204:
-	.incbin "sprites/static/resistance_base/204/sheet.lz"
+	.incbin "sprites/static/resistance_base/204/sheet.4bpp.lz"
 	gStaticMotionGraphics_204_Palettes:
-	.incbin "sprites/static/resistance_base/204/sheet.lz.gbapal"
+	.incbin "sprites/static/resistance_base/204/sheet.gbapal"
 
 gStaticMotionGraphics_205:
-	.incbin "sprites/static/mission_mugshot/first4/sheet.lz"
+	.incbin "sprites/static/mission_mugshot/first4/sheet.4bpp.lz"
 	gStaticMotionGraphics_205_Palettes:
-	.incbin "sprites/static/mission_mugshot/first4/08.pal"
-	.incbin "sprites/static/mission_mugshot/first4/09.pal"
-	.incbin "sprites/static/mission_mugshot/first4/10.pal"
-	.incbin "sprites/static/mission_mugshot/first4/11.pal"
+	.incbin "sprites/static/mission_mugshot/first4/first4.gbapal"
 
 gStaticMotionGraphics_206:
-	.incbin "sprites/static/mission_mugshot/middle4/sheet.lz"
+	.incbin "sprites/static/mission_mugshot/middle4/sheet.4bpp.lz"
 	gStaticMotionGraphics_206_Palettes:
-	.incbin "sprites/static/mission_mugshot/middle4/08.pal"
-	.incbin "sprites/static/mission_mugshot/middle4/09.pal"
-	.incbin "sprites/static/mission_mugshot/middle4/10.pal"
-	.incbin "sprites/static/mission_mugshot/middle4/11.pal"
+	.incbin "sprites/static/mission_mugshot/middle4/middle4.gbapal"
 
 gStaticMotionGraphics_207:
-	.incbin "sprites/static/mission_mugshot/done/sheet.notrim.lz"
-	gStaticMotionGraphics_207_Palettes:
-	.incbin "sprites/static/mission_mugshot/done/sheet.notrim.lz.gbapal"
+	.incbin "sprites/static/mission_mugshot/done/sheet.4bpp.lz"
+gStaticMotionGraphics_207_Palettes:
+	.incbin "sprites/static/mission_mugshot/done/sheet.gbapal"
 
 gStaticMotionGraphics_208:
-	.incbin "sprites/static/mission_mugshot/later4/sheet.lz"
+	.incbin "sprites/static/mission_mugshot/later4/sheet.4bpp.lz"
 	gStaticMotionGraphics_208_Palettes:
-	.incbin "sprites/static/mission_mugshot/later4/08.pal"
-	.incbin "sprites/static/mission_mugshot/later4/09.pal"
-	.incbin "sprites/static/mission_mugshot/later4/10.pal"
-	.incbin "sprites/static/mission_mugshot/later4/11.pal"
+	.incbin "sprites/static/mission_mugshot/later4/later4.gbapal"
 
 gStaticMotionGraphics_209:
 	.incbin "sprites/static/number/sheet.4bpp"
@@ -3393,16 +3363,12 @@ gStaticMotionGraphics_215:
 gStaticMotionGraphics_216:
 	.incbin "sprites/static/resistance_base/cat/216/sheet.4bpp"
 	gStaticMotionGraphics_216_Palettes:
-	.incbin "sprites/static/resistance_base/cat/216/04.pal"
-	.incbin "sprites/static/resistance_base/cat/216/05.pal"
-	.incbin "sprites/static/resistance_base/cat/216/06.pal"
+	.incbin "sprites/static/resistance_base/cat/216/216.gbapal"
 
 gStaticMotionGraphics_217:
 	.incbin "sprites/static/resistance_base/cat/217/sheet.4bpp"
 	gStaticMotionGraphics_217_Palettes:
-	.incbin "sprites/static/resistance_base/cat/217/04.pal"
-	.incbin "sprites/static/resistance_base/cat/217/05.pal"
-	.incbin "sprites/static/resistance_base/cat/217/06.pal"
+	.incbin "sprites/static/resistance_base/cat/217/217.gbapal"
 
 gStaticMotionGraphics_218:
 	.incbin "sprites/static/resistance_base/seagull/sheet.4bpp"
@@ -3440,9 +3406,9 @@ gStaticMotionGraphics_224:
 	.incbin "sprites/static/rubble/sheet.gbapal"
 
 gStaticMotionGraphics_225:
-	.incbin "sprites/static/omega_white/body/sheet.lz"
-	gStaticMotionGraphics_225_Palettes:
-	.incbin "sprites/static/omega_white/body/sheet.lz.gbapal"
+	.incbin "sprites/static/omega_white/body/sheet.4bpp.lz"
+gStaticMotionGraphics_225_Palettes:
+	.incbin "sprites/static/omega_white/body/sheet.gbapal"
 
 gStaticMotionGraphics_226:
 	.incbin "sprites/static/container/crashed/0.4bpp"
@@ -3475,36 +3441,32 @@ gStaticMotionGraphics_231:
 	.incbin "sprites/static/resistance_base/plant/sheet.gbapal"
 
 gStaticMotionGraphics_232:
-	.incbin "sprites/static/ciel_minigame/232/sheet.lz"
-	gStaticMotionGraphics_232_Palettes:
-	.incbin "sprites/static/ciel_minigame/232/sheet.lz.gbapal"
+	.incbin "sprites/static/ciel_minigame/232/sheet.4bpp.lz"
+gStaticMotionGraphics_232_Palettes:
+	.incbin "sprites/static/ciel_minigame/232/sheet.gbapal"
 
 gStaticMotionGraphics_233:
-	.incbin "sprites/static/ciel_minigame/233/sheet.lz"
-	gStaticMotionGraphics_233_Palettes:
-	.incbin "sprites/static/ciel_minigame/233/05.pal"
-	.incbin "sprites/static/ciel_minigame/233/06.pal"
-	.incbin "sprites/static/ciel_minigame/233/07.pal"
-	.incbin "sprites/static/ciel_minigame/233/08.pal"
-	.incbin "sprites/static/ciel_minigame/233/09.pal"
+	.incbin "sprites/static/ciel_minigame/233/sheet.4bpp.lz"
+gStaticMotionGraphics_233_Palettes:
+	.incbin "sprites/static/ciel_minigame/233/233.gbapal"
 
 gStaticMotionGraphics_234:
-	.incbin "sprites/static/ciel_minigame/234/sheet.lz"
-	gStaticMotionGraphics_234_Palettes:
-	.incbin "sprites/static/ciel_minigame/234/sheet.lz.gbapal"
+	.incbin "sprites/static/ciel_minigame/234/sheet.4bpp.lz"
+gStaticMotionGraphics_234_Palettes:
+	.incbin "sprites/static/ciel_minigame/234/sheet.gbapal"
 
 gStaticMotionGraphics_235:
 	.incbin "sprites/static/235/sheet.4bpp"
-	gStaticMotionGraphics_235_Palettes:
+gStaticMotionGraphics_235_Palettes:
 
 gStaticMotionGraphics_236:
-	.incbin "sprites/static/spark/sheet.lz"
-	gStaticMotionGraphics_236_Palettes:
+	.incbin "sprites/static/spark/sheet.4bpp.lz"
+gStaticMotionGraphics_236_Palettes:
 
 gStaticMotionGraphics_237:
-	.incbin "sprites/static/rock_237/sheet.lz"
-	gStaticMotionGraphics_237_Palettes:
-	.incbin "sprites/static/rock_237/sheet.lz.gbapal"
+	.incbin "sprites/static/rock_237/sheet.4bpp.lz"
+gStaticMotionGraphics_237_Palettes:
+	.incbin "sprites/static/rock_237/sheet.gbapal"
 
 gStaticMotionGraphics_238:
 	.incbin "sprites/static/238/sheet.4bpp"
@@ -3512,74 +3474,74 @@ gStaticMotionGraphics_238:
 	.incbin "sprites/static/238/sheet.gbapal"
 
 gStaticMotionGraphics_239:
-	.incbin "sprites/static/fish/angel_fish/sheet.lz"
+	.incbin "sprites/static/fish/angel_fish/sheet.4bpp.lz"
 	gStaticMotionGraphics_239_Palettes:
-	.incbin "sprites/static/fish/angel_fish/sheet.lz.gbapal"
+	.incbin "sprites/static/fish/angel_fish/sheet.gbapal"
 
 gStaticMotionGraphics_240:
-	.incbin "sprites/static/fish/sea_bream/sheet.lz"
+	.incbin "sprites/static/fish/sea_bream/sheet.4bpp.lz"
 	gStaticMotionGraphics_240_Palettes:
-	.incbin "sprites/static/fish/sea_bream/sheet.lz.gbapal"
+	.incbin "sprites/static/fish/sea_bream/sheet.gbapal"
 
 gStaticMotionGraphics_241:
-	.incbin "sprites/static/fish/crab/sheet.lz"
+	.incbin "sprites/static/fish/crab/sheet.4bpp.lz"
 	gStaticMotionGraphics_241_Palettes:
-	.incbin "sprites/static/fish/crab/sheet.lz.gbapal"
+	.incbin "sprites/static/fish/crab/sheet.gbapal"
 
 gStaticMotionGraphics_242:
-	.incbin "sprites/static/fish/school/sheet.lz"
+	.incbin "sprites/static/fish/school/sheet.4bpp.lz"
 	gStaticMotionGraphics_242_Palettes:
-	.incbin "sprites/static/fish/school/sheet.lz.gbapal"
+	.incbin "sprites/static/fish/school/sheet.gbapal"
 
 gStaticMotionGraphics_243:
-	.incbin "sprites/static/243/sheet.lz"
+	.incbin "sprites/static/243/sheet.4bpp.lz"
 	gStaticMotionGraphics_243_Palettes:
-	.incbin "sprites/static/243/sheet.lz.gbapal"
+	.incbin "sprites/static/243/sheet.gbapal"
 
 gStaticMotionGraphics_244:
-	.incbin "sprites/static/copy_x_minigame_slot/sheet.lz"
+	.incbin "sprites/static/copy_x_minigame_slot/sheet.4bpp.lz"
 	gStaticMotionGraphics_244_Palettes:
-	.incbin "sprites/static/copy_x_minigame_slot/sheet.lz.gbapal"
+	.incbin "sprites/static/copy_x_minigame_slot/sheet.gbapal"
 
 gStaticMotionGraphics_245:
-	.incbin "sprites/static/boss_human/hellbat/sheet.lz"
+	.incbin "sprites/static/boss_human/hellbat/sheet.4bpp.lz"
 	gStaticMotionGraphics_245_Palettes:
-	.incbin "sprites/static/boss_human/hellbat/sheet.lz.gbapal"
+	.incbin "sprites/static/boss_human/hellbat/sheet.gbapal"
 
 gStaticMotionGraphics_246:
-	.incbin "sprites/static/boss_human/childre/sheet.lz"
+	.incbin "sprites/static/boss_human/childre/sheet.4bpp.lz"
 	gStaticMotionGraphics_246_Palettes:
-	.incbin "sprites/static/boss_human/childre/sheet.lz.gbapal"
+	.incbin "sprites/static/boss_human/childre/sheet.gbapal"
 
 gStaticMotionGraphics_247:
-	.incbin "sprites/static/boss_human/blazin/sheet.lz"
+	.incbin "sprites/static/boss_human/blazin/sheet.4bpp.lz"
 	gStaticMotionGraphics_247_Palettes:
-	.incbin "sprites/static/boss_human/blazin/sheet.lz.gbapal"
+	.incbin "sprites/static/boss_human/blazin/sheet.gbapal"
 
 gStaticMotionGraphics_248:
-	.incbin "sprites/static/boss_human/deathtanz/sheet.lz"
+	.incbin "sprites/static/boss_human/deathtanz/sheet.4bpp.lz"
 	gStaticMotionGraphics_248_Palettes:
-	.incbin "sprites/static/boss_human/deathtanz/sheet.lz.gbapal"
+	.incbin "sprites/static/boss_human/deathtanz/sheet.gbapal"
 
 gStaticMotionGraphics_249:
-	.incbin "sprites/static/boss_human/glacierle/sheet.lz"
+	.incbin "sprites/static/boss_human/glacierle/sheet.4bpp.lz"
 	gStaticMotionGraphics_249_Palettes:
-	.incbin "sprites/static/boss_human/glacierle/sheet.lz.gbapal"
+	.incbin "sprites/static/boss_human/glacierle/sheet.gbapal"
 
 gStaticMotionGraphics_250:
-	.incbin "sprites/static/boss_human/cubit/sheet.lz"
+	.incbin "sprites/static/boss_human/cubit/sheet.4bpp.lz"
 	gStaticMotionGraphics_250_Palettes:
-	.incbin "sprites/static/boss_human/cubit/sheet.lz.gbapal"
+	.incbin "sprites/static/boss_human/cubit/sheet.gbapal"
 
 gStaticMotionGraphics_251:
-	.incbin "sprites/static/boss_human/tretista/sheet.lz"
+	.incbin "sprites/static/boss_human/tretista/sheet.4bpp.lz"
 	gStaticMotionGraphics_251_Palettes:
-	.incbin "sprites/static/boss_human/tretista/sheet.lz.gbapal"
+	.incbin "sprites/static/boss_human/tretista/sheet.gbapal"
 
 gStaticMotionGraphics_252:
-	.incbin "sprites/static/boss_human/volteel/sheet.lz"
+	.incbin "sprites/static/boss_human/volteel/sheet.4bpp.lz"
 	gStaticMotionGraphics_252_Palettes:
-	.incbin "sprites/static/boss_human/volteel/sheet.lz.gbapal"
+	.incbin "sprites/static/boss_human/volteel/sheet.gbapal"
 
 gStaticMotionGraphics_253:
 	.incbin "sprites/static/253/sheet.4bpp"

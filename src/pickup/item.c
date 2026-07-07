@@ -6,8 +6,8 @@
 static const struct Collision sCollision;
 static void onCollision(struct Body* body, Coords32* r1 UNUSED, Coords32* r2 UNUSED);
 
-static void MapItem_Init(struct Pickup* p);
-static void MapItem_Update(struct Pickup* p);
+static void MapItem_Init(Pickup* p);
+static void MapItem_Update(Pickup* p);
 static void MapItem_Die(struct Entity* p);
 
 // clang-format off
@@ -127,7 +127,7 @@ _080E0A76:\n\
  .syntax divided\n");
 }
 
-NAKED static void MapItem_Init(struct Pickup* p) {
+NAKED static void MapItem_Init(Pickup* p) {
   asm(".syntax unified\n\
 	push {r4, r5, r6, lr}\n\
 	adds r6, r0, #0\n\
@@ -317,7 +317,7 @@ _080E0C08: .4byte gPickupFnTable\n\
  .syntax divided\n");
 }
 
-NAKED static void MapItem_Update(struct Pickup* p) {
+NAKED static void MapItem_Update(Pickup* p) {
   asm(".syntax unified\n\
 	push {r4, r5, r6, lr}\n\
 	adds r4, r0, #0\n\
@@ -721,7 +721,7 @@ static void MapItem_Die(struct Entity* p) {
 }
 
 static void onCollision(struct Body* body, Coords32* r1 UNUSED, Coords32* r2 UNUSED) {
-  struct Pickup* p = (struct Pickup*)body->parent;
+  Pickup* p = (Pickup*)body->parent;
   struct Entity* q = body->enemy->parent;
   if (q->kind == ENTITY_PLAYER) {
     p->z = (void*)q;

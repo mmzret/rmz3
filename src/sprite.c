@@ -44,11 +44,10 @@ void CreateDrawPivot(struct DrawPivot* dp, struct Pivot* p, void* _ UNUSED) {
   (dp->offset).x = (dp->offset).y = 0;
 }
 
-void SetTaskCallback(struct Task* t, void* cb) { t->fn = cb; }
+void SetTaskCallback(RenderNode* t, void* cb) { t->fn = cb; }
 
-static void unused_ClearTaskCallback(struct Task* t) { t->fn = NULL; }
-
-static void unused_08004730(struct Task* t) { t->next = NULL; }
+static void unused_ClearTaskCallback(RenderNode* t) { t->fn = NULL; }
+static void unused_08004730(RenderNode* t) { t->next = NULL; }
 
 static void unused_08004738(u32* a, u32* b) { *b = *a, *a = (u32)b; }
 
@@ -59,7 +58,7 @@ static void unused_08004740(u32* a, u32 b, u32* c) { *c = *a, *a = b; }
 void InitNonAffineSprite(struct Sprite* s, struct MetaspriteHeader* sprites, Coords32* c) {
   MemFill32(0, &s->sprites, 24);  // Clear 8..32 bytes
 
-  SetTaskCallback((struct Task*)s, TaskCB_DrawNoAffineSprite);
+  SetTaskCallback((void*)s, TaskCB_DrawNoAffineSprite);
   (s->oam).mosaic = 1;
   (s->oam).priority = 2;
   s->sprites = sprites;
@@ -69,7 +68,7 @@ void InitNonAffineSprite(struct Sprite* s, struct MetaspriteHeader* sprites, Coo
 void InitRotatableSprite(struct Sprite* s, struct MetaspriteHeader* sprites, Coords32* c) {
   MemFill32(0, &s->sprites, 24);  // Clear 8..32 bytes
 
-  SetTaskCallback((struct Task*)s, TaskCB_DrawRotatableSprite);
+  SetTaskCallback((void*)s, TaskCB_DrawRotatableSprite);
   (s->oam).mosaic = 1;
   (s->oam).priority = 2;
   s->sprites = sprites;
@@ -80,7 +79,7 @@ void InitRotatableSprite(struct Sprite* s, struct MetaspriteHeader* sprites, Coo
 void InitScalerotSprite1(struct Sprite* s, struct MetaspriteHeader* sprites, Coords32* c) {
   MemFill32(0, &s->sprites, 24);  // Clear 8..32 bytes
 
-  SetTaskCallback((struct Task*)s, TaskCB_SetMetaspriteTileNum1);
+  SetTaskCallback((void*)s, TaskCB_SetMetaspriteTileNum1);
   (s->oam).mosaic = 1;
   (s->oam).priority = 2;
   s->sprites = sprites;
@@ -92,7 +91,7 @@ void InitScalerotSprite1(struct Sprite* s, struct MetaspriteHeader* sprites, Coo
 
 void InitScalerotSprite2(struct Sprite* s, struct MetaspriteHeader* sprites, Coords32* c) {
   _CpuFastFill(0, s, 32);
-  SetTaskCallback((struct Task*)s, TaskCB_SetMetaspriteTileNum2);
+  SetTaskCallback((void*)s, TaskCB_SetMetaspriteTileNum2);
   (s->oam).mosaic = 1;
   (s->oam).priority = 2;
   s->sprites = sprites;

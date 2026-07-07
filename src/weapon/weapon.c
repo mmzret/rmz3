@@ -9,7 +9,7 @@
 
 #define SLOT_4BPP 16
 
-static const struct PlttData gWeaponPalettes[5][SLOT_4BPP];
+static const rgb555 gWeaponPalettes[5][SLOT_4BPP];
 
 void InitWeaponHeader(struct EntityHeader* h, struct Weapon* w, s16 len) {
   s16 i;
@@ -75,13 +75,15 @@ const u16 gWeaponTileNum[4] = {
 const u8 gWeaponPalIDs[4] = {1, 1, 5, 5};
 
 // clang-format off
-static const ALIGNED(4) struct PlttData gWeaponPalettes[5][SLOT_4BPP] = {
-  [WEAPON_COLOR_NORMAL]  = { PLTTDATA(0x0000), PLTTDATA(0xB4A0), PLTTDATA(0xC588), PLTTDATA(0x6AD2), PLTTDATA(0xFBDE), PLTTDATA(0x82DC), PLTTDATA(0x939F), PLTTDATA(0xD3FF), PLTTDATA(0x8388), PLTTDATA(0xBFF2), PLTTDATA(0xFBF5), PLTTDATA(0x8388), PLTTDATA(0x43F2), PLTTDATA(0xFBF5), PLTTDATA(0xFFBF), PLTTDATA(0xFFFF) },
-  [WEAPON_COLOR_THUNDER] = { PLTTDATA(0x0000), PLTTDATA(0xB4A0), PLTTDATA(0xC588), PLTTDATA(0x6AD2), PLTTDATA(0xFBDE), PLTTDATA(0x82DC), PLTTDATA(0x939F), PLTTDATA(0xD3FF), PLTTDATA(0x8388), PLTTDATA(0xBFF2), PLTTDATA(0xFBF5), PLTTDATA(0xDBF2), PLTTDATA(0xD3FF), PLTTDATA(0xEFFF), PLTTDATA(0xDBFF), PLTTDATA(0xFFFF) },
-  [WEAPON_COLOR_FLAME]   = { PLTTDATA(0x0000), PLTTDATA(0xB4A0), PLTTDATA(0xC588), PLTTDATA(0x6AD2), PLTTDATA(0xFBDE), PLTTDATA(0x82DC), PLTTDATA(0x939F), PLTTDATA(0xD3FF), PLTTDATA(0x8388), PLTTDATA(0xBFF2), PLTTDATA(0xFBF5), PLTTDATA(0x825F), PLTTDATA(0x031F), PLTTDATA(0xAFFF), PLTTDATA(0xFF9F), PLTTDATA(0xFFFF) },
-  [WEAPON_COLOR_ICE]     = { PLTTDATA(0x0000), PLTTDATA(0xB4A0), PLTTDATA(0xC588), PLTTDATA(0x6AD2), PLTTDATA(0xFBDE), PLTTDATA(0x82DC), PLTTDATA(0x939F), PLTTDATA(0xD3FF), PLTTDATA(0x8388), PLTTDATA(0xBFF2), PLTTDATA(0xFBF5), PLTTDATA(0x7F07), PLTTDATA(0xFF90), PLTTDATA(0x7FD5), PLTTDATA(0xFFFC), PLTTDATA(0xFFFF) },
-  [WEAPON_COLOR_OMEGA]   = { PLTTDATA(0x0000), PLTTDATA(0xB4A0), PLTTDATA(0xC588), PLTTDATA(0x6AD2), PLTTDATA(0xFBDE), PLTTDATA(0x82DC), PLTTDATA(0x939F), PLTTDATA(0xD3FF), PLTTDATA(0xE8BF), PLTTDATA(0x7DFF), PLTTDATA(0x7EDF), PLTTDATA(0x441F), PLTTDATA(0xE8BF), PLTTDATA(0x7DFF), PLTTDATA(0x7EDF), PLTTDATA(0xFFBF) },
-};
+static const ALIGNED(4) rgb555 gWeaponPalettes[5][SLOT_4BPP] = {
+  //                         0          1               2                3                4                 5                6                7                 8                9                 10                11                12                13                14                15
+  [WEAPON_COLOR_NORMAL]  = { RGB_BLACK, RGBg(0, 5, 13), RGBg(8, 12, 17), RGB(18, 22, 26), RGBg(30, 30, 30), RGBg(28, 22, 0), RGBg(31, 28, 4), RGBg(31, 31, 20), RGBg(8, 28,  0), RGBg(18, 31, 15), RGBg(21, 31, 30), RGBg( 8, 28,  0),  RGB(18, 31, 16), RGBg(21, 31, 30), RGBg(31, 29, 31), RGBg(31, 31, 31) },
+  [WEAPON_COLOR_THUNDER] = { RGB_BLACK, RGBg(0, 5, 13), RGBg(8, 12, 17), RGB(18, 22, 26), RGBg(30, 30, 30), RGBg(28, 22, 0), RGBg(31, 28, 4), RGBg(31, 31, 20), RGBg(8, 28,  0), RGBg(18, 31, 15), RGBg(21, 31, 30), RGBg(18, 31, 22), RGBg(31, 31, 20), RGBg(31, 31, 27), RGBg(31, 31, 22), RGBg(31, 31, 31) },
+  [WEAPON_COLOR_FLAME]   = { RGB_BLACK, RGBg(0, 5, 13), RGBg(8, 12, 17), RGB(18, 22, 26), RGBg(30, 30, 30), RGBg(28, 22, 0), RGBg(31, 28, 4), RGBg(31, 31, 20), RGBg(8, 28,  0), RGBg(18, 31, 15), RGBg(21, 31, 30), RGBg(31, 18,  0),  RGB(31, 24,  0), RGBg(31, 31, 11), RGBg(31, 28, 31), RGBg(31, 31, 31) },
+  [WEAPON_COLOR_ICE]     = { RGB_BLACK, RGBg(0, 5, 13), RGBg(8, 12, 17), RGB(18, 22, 26), RGBg(30, 30, 30), RGBg(28, 22, 0), RGBg(31, 28, 4), RGBg(31, 31, 20), RGBg(8, 28,  0), RGBg(18, 31, 15), RGBg(21, 31, 30),  RGB( 7, 24, 31), RGBg(16, 28, 31),  RGB(21, 30, 31), RGBg(28, 31, 31), RGBg(31, 31, 31) },
+  [WEAPON_COLOR_OMEGA]   = { RGB_BLACK, RGBg(0, 5, 13), RGBg(8, 12, 17), RGB(18, 22, 26), RGBg(30, 30, 30), RGBg(28, 22, 0), RGBg(31, 28, 4), RGBg(31, 31, 20), RGBg(31, 5, 26),  RGB(31, 15, 31),  RGB(31, 22, 31),  RGB(31,  0, 17), RGBg(31,  5, 26),  RGB(31, 15, 31),  RGB(31, 22, 31), RGBg(31, 29, 31) },
+}; // 0x0835ed68
+// clang-format on
 
 extern const WeaponRoutine gBusterRoutine;
 extern const WeaponRoutine gSaberRoutine;
@@ -101,6 +103,7 @@ extern const WeaponRoutine gSmashElecRoutine;
 extern const WeaponRoutine gElecShieldSweepRoutine;
 extern const WeaponRoutine gMinigameRodRoutine;
 
+// clang-format off
 const WeaponRoutine* const gWeaponFnTable[WEAPON_MOVE_COUNT] = {
     [WEAPON_MOVE_Z_BUSTER] =          &gBusterRoutine,
     [WEAPON_MOVE_Z_SABER] =           &gSaberRoutine,

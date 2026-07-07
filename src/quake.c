@@ -48,10 +48,8 @@ void CalcQuake(Coords32* _, Coords32* ofs) {
 
   if ((power >> 6) != 0) {
     s32 mag;
-    s32 val = SINX((((gQuakeManager.frame++) & 3) << 6), power);
-    if (val < 0) {
-      val += 0xFF;
-    }
+    s32 val = SIN(((gQuakeManager.frame++) & 3) << 6) * power;
+    if (val < 0) val += 0xFF;
     mag = val >> 8;
 
     ofs->x = mag >> 4;

@@ -1,9 +1,7 @@
 #!/usr/bin/env -S deno run --allow-read --allow-write --allow-run
 
 import { Command } from '@cliffy/command';
-import { loadU16 } from '../../common/index.ts';
-
-const BASE = 0x0800_0000;
+import { addr, getU16, ROM_PATH } from '../../common/index.ts';
 
 // This script is write-off program for myself, so no longer needed
 const main = async () => {
@@ -15,20 +13,21 @@ const main = async () => {
     .usage('0x08347f64 20')
     .parse(Deno.args);
 
-  const rom = Deno.readFileSync('baserom.gba');
-  const START = Number(args[0]);
+  const rom8 = Deno.readFileSync(ROM_PATH);
+  const rom = new DataView(rom8.buffer);
+  const START: addr = Number(args[0]);
   const LENGTH = args[1];
 
   for (let i = 0; i < LENGTH; i++) {
-    const start = START + (8 * i) - BASE;
+    const start = START + (8 * i);
     console.log(`{
-      ${rom[start]},
-      ${rom[start + 1]},
-      ${loadU16(rom, start + 2)},
-      ${rom[start + 4]},
-      ${rom[start + 5]},
-      ${rom[start + 6]},
-      ${rom[start + 7]},
+      ${rom8[start]},
+      ${rom8[start + 1]},
+      ${getU16(rom, start + 2)},
+      ${rom8[start + 4]},
+      ${rom8[start + 5]},
+      ${rom8[start + 6]},
+      ${rom8[start + 7]},
     },`);
   }
 };

@@ -11,12 +11,19 @@
 #define TASK_LENGTH 128
 
 // 任意の型のポインタ + そのポインタ+pivot で呼び出すコールバック
-typedef struct Task {
-  struct Task* next;  // 同じ優先度を持つ次のタスクへのポインタ
-  void (*fn)(struct Task*, struct DrawPivot*);
-} RenderTask;
+typedef struct RenderNode {
+  struct RenderNode* next; /* 同じ優先度を持つ次のタスクへのポインタ */
+  void (*fn)(struct RenderNode*, struct DrawPivot*);
+} RenderNode;  // 8 bytes
 
-typedef RenderTask* DrawQueue[4][32];
+typedef struct {
+  RenderNode node;  // 0x00
+  void* ptr;        // 0x08, 任意のポインタ
+  u8 buf[20];       // 0x0C, 汎用
+} RenderData;
+static_assert(sizeof(RenderData) == 32);
+
+typedef RenderNode* DrawQueue[4][32];
 
 typedef struct Renderer {
   DrawQueue slow_buffer;  // タスク用のメモリ領域(IWRAMに余裕がない場合はここを使う)
@@ -28,11 +35,11 @@ static_assert(sizeof(Renderer) == 524);
 
 void Renderer_Init(Renderer* r);
 void Renderer_SetPivot(Renderer* r, struct Pivot* pivot);
-void Renderer_PrependTask(Renderer* r, struct Task* task);
-void Renderer_SendTask(Renderer* r, struct Task* task, s16 prio, s16 x);
+void Renderer_PrependTask(Renderer* r, RenderNode* task);
+void Renderer_SendTask(Renderer* r, RenderNode* task, s16 prio, s16 x);
 void Renderer_Clear(Renderer* r);
 void Renderer_Flush(Renderer* r);
 
-void SetTaskCallback(struct Task* t, void* cb);
+void SetTaskCallback(RenderNode* t, void* cb);
 
 #endif  // GUARD_RMZ3_RENDERER_H

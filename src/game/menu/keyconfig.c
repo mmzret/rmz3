@@ -40,8 +40,8 @@ static void FUN_080f614c(struct GameState* g, u16* r1);
 static void KcMenuLoop_Init(struct GameState* g) {
   struct KeyConfigMenuState* kc = &((g->sceneState).menu).kc;
   kc->y = 0;
-  LoadGraphic(BG_GRAPHIC(BG_MISC_MENU), (void*)CHAR_BASE(1));
-  LoadPalette(BG_PALETTE(BG_MISC_MENU), 0);
+  LoadGraphic(&gGraphic_MiscMenu, (void*)CHAR_BASE(1));
+  LoadPalette(&gPalette_MiscMenu, 0);
   CpuFastCopy(BGMAP(BG_MISC_MENU), g->menuBgMap1, 960 * 2);
   FUN_080f614c(g, g->menuBgMap1);
   StartPaletteAnimation(67, 0);

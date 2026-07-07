@@ -56,14 +56,16 @@ struct Entity* CreateWeapon13(struct Zero* z, u8 n) {
 
 INCASM("asm/weapon/unk_13.inc");
 
-const s8 s8_ARRAY_ARRAY_083616cc[2][4] = {
+static const s8 s8_ARRAY_ARRAY_083616cc[2][4] = {
     {0xEA, 0xF5, 0x03, 0x16},
     {0xF2, 0xD8, 0x02, 0xF3},
-};
+};  // 0x083616cc
 
-const u8 u8_ARRAY_083616d4[4] = {0x80, 0xC0, 0x40, 0x00};
+// 0x083616d4
+static const u8 u8_ARRAY_083616d4[4] = {0x80, 0xC0, 0x40, 0x00};
 
-static const motion_t sMotions[4] = {
+// 0x083616d8
+static const motion_t sWeapon13Animations[4] = {
     MOTION(DM104_UNK, 0),
     MOTION(DM104_UNK, 1),
     MOTION(DM104_UNK, 1),

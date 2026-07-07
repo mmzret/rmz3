@@ -71,7 +71,7 @@ void PreprocAsmFile(std::string filename, bool isStdin, bool doEnum) {
         break;
       case Directive::String: {
         // .string "xxx", length
-        // 文字列のバイト数が length より短い場合は、残りを space で埋める。
+        // 文字列のバイト数が length より短い場合は、残りを CHAR_SPACE で埋める。
         unsigned char s[kMaxStringLength];
         int length = stack.top().ReadString(s);
         PrintAsmBytes(s, length);
@@ -153,14 +153,11 @@ int main(int argc, char** argv) {
   g_charmap = new Charmap(charmap);
 
   const char* extension = GetFileExtension(source);
-
   if (!extension) FATAL_ERROR("\"%s\" has no file extension.\n", argv[1]);
 
-  if ((extension[0] == 's') && extension[1] == '\0') {
-    // '.s'
+  if ((extension[0] == 's') && extension[1] == '\0') {  // '.s'
     PreprocAsmFile(source, isStdin, doEnum);
-  } else if ((extension[0] == 'c' || extension[0] == 'i') && extension[1] == '\0') {
-    // '.c' or '.i'
+  } else if ((extension[0] == 'c' || extension[0] == 'i') && extension[1] == '\0') {  // '.c' or '.i'
     if (doEnum) FATAL_ERROR("-e is invalid for C sources\n");
     PreprocCFile(source, isStdin);
   } else {

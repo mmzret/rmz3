@@ -48,6 +48,6 @@ static_assert(sizeof(struct MinigameState) == 256);
 struct GameState;
 typedef bool32 (*MinigameFunc)(struct GameState*);
 
-void PrintMinigameNumber(s32 score, u16 x, u16 y);
+void PrintMinigameNumber(s32 score, u16 x8, u16 y8);
 
 #endif  // GUARD_RMZ3_MINIGAME_H

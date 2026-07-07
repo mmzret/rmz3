@@ -57,7 +57,7 @@ static const BossFunc sUpdates2[4] = {
     FUN_0804d1ac,
     FUN_0804d240,
     FUN_0804d418,
-};
+};  // 0x08363244
 
 // --------------------------------------------
 
@@ -65,7 +65,7 @@ void FUN_0804d494(struct Boss* p);
 
 static const BossFunc sDeads[1] = {
     FUN_0804d494,
-};
+};  // 0x08363254
 
 // --------------------------------------------
 
@@ -165,12 +165,12 @@ static const struct Collision sCollisions[8] = {
     },
 };
 
-static const u8 sInitModes[4] = {1, 0, 0, 0};
+static const u8 sBeeServerInitModes[4] = {1, 0, 0, 0};  // 0x08363318
 
-const Coords32 Coord_0836331c = {0, 0};
+static const Coords32 sBeeServerElfxOffset = {PIXEL(0), PIXEL(0)};  // 0x0836331c
 
 const u8 u8_ARRAY_ARRAY_08363324[3][5] = {
     {2, 3, 4, 5, 5},
     {4, 3, 3, 2, 2},
     {5, 5, 4, 3, 2},
-};
+};  // 0x08363324

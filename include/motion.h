@@ -28,8 +28,8 @@ struct Subsprite {
   /*    */ u16 yflip : 1;
   /*    */ u16 size : 2;   // OAMと同じ
   /*    */ u16 shape : 2;  // OAMと同じ
-  /*0x02*/ s8 x;
-  /*0x03*/ s8 y;
+  /*0x02*/ s8 x;           // Offset
+  /*0x03*/ s8 y;           // Offset
 };  // 4 bytes
 static_assert(sizeof(struct Subsprite) == 4);
 

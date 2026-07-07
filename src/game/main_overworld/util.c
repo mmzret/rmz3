@@ -122,7 +122,7 @@ s16 save_080f32f8(struct GameState* g) {
     if ((&gTextWindow.text)->mugshotRight || (&gTextWindow.text)->mugshot == NO_MUGSHOT) {
       no_left_mugshot = 1;
     }
-    PrintString(s, 8 - (no_left_mugshot * 7), (&gTextWindow.text)->y + (g->unk_008[1] * 2));  // ▷
+    PrintString(s, 8 - (no_left_mugshot * 7), (&gTextWindow.text)->y8 + (g->unk_008[1] * 2));  // ▷
   }
 
   // Handle A/B input

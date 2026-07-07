@@ -6,6 +6,15 @@
 
 // ROMが保持しているステージの静的な情報 のことを Stage (ステージ) と呼んでいるが、後で名前を変える予定
 
+// FUN_080094f0
+// (カメラに関係する値 << 12) | (Bg1のbgFnsのインデックス) | (Bg2のbgFnsのインデックス) | | (Bg3のbgFnsのインデックス)
+// scroll_type:
+// 0x0： 自由移動範囲
+// 0x2..D： 数値の隣の値が2以上異なる場合、部屋の境界を越えない限りスクロールしない (「粘着型」スクロール方式)
+// 0xE： カメラが部屋の上部にスクロールするのを防ぎますが、プレイヤーの移動や死亡は阻止しません
+// 0xF： その部屋にカメラをスクロールさせず、プレイヤーが入室してもプレイヤーを死亡させない設定です
+#define LAYER_CB(scroll_type, bg1, bg2, bg3) ((scroll_type << 12) | ((bg1 << 8) | (bg2 << 4) | (bg3 << 0)))
+
 typedef void (*StageFunc)(Coords32*);
 
 // e.g. 0x0863c638
@@ -17,19 +26,19 @@ typedef struct {
 
 // ROMが保持しているステージの静的な情報
 struct Stage {
-  u32 id;                                        // ステージID
-  const StageFunc* fn;                           // ステージ自体に割り当てられたルーチン
-  const MetatileMapSelfRelPtr* terrainHdr;       // 常に &gStageTerrains[STAGE_ID]
-  const struct ChunkMap* maps[STAGE_LAYER_NUM];  // ステージ全体でチャンクをどう配置するかのデータ (ステージレイヤ3枚分)
-  u32 bgIdx[STAGE_LAYER_NUM];                    // ステージレイヤが実際のGBAのどのBGレイヤに割り当てられるか  bit4-8がbgcntのn(BGnか), そしてbit0-4 は (1 << n) したもの
-  u32 prio[STAGE_LAYER_NUM];                     // BG Priority for layer
-  u32 screenBase[STAGE_LAYER_NUM];               // 各ステージレイヤのBGマップデータの配置先アドレス
-  Coords32 scrollPower[STAGE_LAYER_NUM];
-  PixelCoords scroll[STAGE_LAYER_NUM];  // レイヤに常に加算されるスクロール値(ピクセル単位) つまりxに16を加えるとレイヤが16pxずれる(あくまでずれるのはレイヤの見た目で地形はずれない)
-  const tileset_ofs_t* tilesetOffset;   // チャンク座標 と 読み込むタイルセット の対応表, bit0-3: gOverworld.terrain.tilesets[1], bit4-7: gOverworld.terrain.tilesets[0]
-  const StageLayerRoutine* bgFns;       // ステージレイヤに割り当てられるルーチンのテーブル, 全部のステージレイヤのルーチンがまとまっており、 ステージレイヤの種類,現在のチャンク から どのルーチンを割り当てるかが決まる
-  const u16* behavior;                  // 現在の座標から bgFns のインデックス および　カメラに関する何か を得るためのテーブル (TODO: chunkAttr とかに名前を変えたほうがいいかも?)
-  s32 conveyor[2];                      // Overworld.conveyor
+  u32 id;                                        // 0x00, ステージID
+  const StageFunc* fn;                           // 0x04, ステージ自体に割り当てられたルーチン
+  const MetatileMapSelfRelPtr* terrainHdr;       // 0x08, 常に &gStageTerrains[STAGE_ID]
+  const struct ChunkMap* maps[STAGE_LAYER_NUM];  // 0x0C, ステージ全体でチャンクをどう配置するかのデータ (ステージレイヤ3枚分)
+  u32 bgIdx[STAGE_LAYER_NUM];                    // 0x18, ステージレイヤが実際のGBAのどのBGレイヤに割り当てられるか  bit4-8がbgcntのn(BGnか), そしてbit0-4 は (1 << n) したもの
+  u32 prio[STAGE_LAYER_NUM];                     // 0x24, BG Priority for layer
+  u32 screenBase[STAGE_LAYER_NUM];               // 0x30, 各ステージレイヤのBGマップデータの配置先アドレス
+  Coords32 scrollPower[STAGE_LAYER_NUM];         // 0x3C
+  PixelCoords scroll[STAGE_LAYER_NUM];           // 0x54, レイヤに常に加算されるスクロール値(ピクセル単位) つまりxに16を加えるとレイヤが16pxずれる(あくまでずれるのはレイヤの見た目で地形はずれない)
+  const tileset_ofs_t* tilesetOffset;            // 0x6C, チャンク座標 と 読み込むタイルセット の対応表, bit0-3: gOverworld.terrain.tilesets[1], bit4-7: gOverworld.terrain.tilesets[0]
+  const StageLayerRoutine* bgFns;                // 0x70, ステージレイヤに割り当てられるルーチンのテーブル, 全部のステージレイヤのルーチンがまとまっており、 ステージレイヤの種類,現在のチャンク から どのルーチンを割り当てるかが決まる
+  const u16* behavior;                           // 0x74, 現在の座標から bgFns のインデックス および　カメラに関する何か を得るためのテーブル (TODO: chunkAttr とかに名前を変えたほうがいいかも?)
+  s32 conveyor[2];                               // 0x78, Overworld.conveyor
 };
 static_assert(sizeof(struct Stage) == 128);
 

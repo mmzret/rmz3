@@ -1,4 +1,0 @@
-# Generated header files
-stage/*/*.h
-
-!stage/*/props.h

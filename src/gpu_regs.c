@@ -11,10 +11,10 @@ void ResetVideoRegister(void) {
   gVideoRegBuffer.dispcnt &= ~DISPCNT_BGMODE_MASK;
   gVideoRegBuffer.dispcnt &= ~(DISPCNT_BG_ALL_ON | DISPCNT_WIN1_ON);
   DmaFill32(3, 0, gVideoRegBuffer.bgcnt, sizeof(struct WramVideoRegister) - 4);
-  *(u16*)(&gVideoRegBuffer.bgcnt[0]) = BGCNT_PRIORITY(0) | BGCNT_CHARBASE(2) | BGCNT_SCREENBASE(0) | BGCNT_TXT512x512;
-  *(u16*)(&gVideoRegBuffer.bgcnt[1]) = BGCNT_PRIORITY(1) | BGCNT_CHARBASE(1) | BGCNT_SCREENBASE(2) | BGCNT_TXT512x256;
-  *(u16*)(&gVideoRegBuffer.bgcnt[2]) = BGCNT_PRIORITY(2) | BGCNT_CHARBASE(1) | BGCNT_SCREENBASE(4) | BGCNT_TXT512x256;
-  *(u16*)(&gVideoRegBuffer.bgcnt[3]) = BGCNT_PRIORITY(3) | BGCNT_CHARBASE(1) | BGCNT_SCREENBASE(8) | BGCNT_TXT512x256;
+  BGCNT16(0) = BGCNT_PRIORITY(0) | BGCNT_CHARBASE(2) | BGCNT_SCREENBASE(0) | BGCNT_TXT512x512;
+  BGCNT16(1) = BGCNT_PRIORITY(1) | BGCNT_CHARBASE(1) | BGCNT_SCREENBASE(2) | BGCNT_TXT512x256;
+  BGCNT16(2) = BGCNT_PRIORITY(2) | BGCNT_CHARBASE(1) | BGCNT_SCREENBASE(4) | BGCNT_TXT512x256;
+  BGCNT16(3) = BGCNT_PRIORITY(3) | BGCNT_CHARBASE(1) | BGCNT_SCREENBASE(8) | BGCNT_TXT512x256;
   FlushVideoRegister();
 }
 
@@ -24,6 +24,7 @@ void FlushVideoRegister(void) {
   gVideoRegBuffer.dispcnt &= 0x0F17;
   dispcnt |= gVideoRegBuffer.dispcnt;
   REG_DISPCNT = dispcnt;
+
   DmaCopy32(3, gVideoRegBuffer.bgcnt, REG_ADDR_BG0CNT, sizeof(struct WramVideoRegister) - 4);
 }
 
@@ -84,7 +85,7 @@ void loadBgMap_08004248(u16* _dst, const u32* tbl, u8 idx, s8 x8, s8 y8) {
 void ResetOAM(void) {
   gOamManager.dispcnt = DISPCNT_OBJ_1D_MAP | DISPCNT_OBJ_ON;
   gOamManager.p = gOamManager.buf;
-  DmaFill32(3, 0x200, gOamManager.buf, 1024);
+  DmaFill32(3, 0x200, gOamManager.buf, OAM_SIZE);
   FlushOAM();
 }
 
@@ -100,7 +101,7 @@ NON_MATCH void FlushOAM(void) {
     *((u16*)gOamManager.p) = 0x200;
     gOamManager.p = &gOamManager.p[1];
   }
-  DmaCopy32(3, gOamManager.buf, OAM, 1024);
+  DmaCopy32(3, gOamManager.buf, OAM, OAM_SIZE);
   gOamManager.p = gOamManager.buf;
 #else
   INCCODE("asm/wip/FlushOAM.inc");
@@ -108,10 +109,7 @@ NON_MATCH void FlushOAM(void) {
 }
 
 // 0x08004370
-void ClearBLDCLT_1(void) {
-  gBlendRegBuffer.bldclt = 0;
-  return;
-}
+void ClearBLDCLT_1(void) { gBlendRegBuffer.bldclt = 0; }
 
 void FlushBlendRegister(void) {
   REG_BLDALPHA = gBlendRegBuffer.bldalpha;
@@ -141,12 +139,6 @@ void FlushWinRegister(void) {
   (*(vu32*)REG_ADDR_WININ) = *((u32*)&gWindowRegBuffer.winin);
 }
 
-void ClearMOSAIC(void) {
-  wMOSAIC = 0;
-  return;
-}
+void ClearMOSAIC(void) { wMOSAIC = 0; }
 
-void FlushMOSAIC(void) {
-  REG_MOSAIC = wMOSAIC;
-  return;
-}
+void FlushMOSAIC(void) { REG_MOSAIC = wMOSAIC; }

@@ -21,7 +21,7 @@ BeeServer_Init: @ 0x0804CE68
 	ldr r0, [r0]
 	ldr r0, [r0, #4]
 	str r0, [r7, #0x14]
-	ldr r1, _0804CEC0 @ =0x08363318
+	ldr r1, _0804CEC0 @ =sBeeServerInitModes
 	ldrb r0, [r7, #0x10]
 	adds r0, r0, r1
 	ldrb r0, [r0]
@@ -47,7 +47,7 @@ BeeServer_Init: @ 0x0804CE68
 	b _0804CED6
 	.align 2, 0
 _0804CEBC: .4byte gBossFnTable
-_0804CEC0: .4byte 0x08363318
+_0804CEC0: .4byte sBeeServerInitModes
 _0804CEC4: .4byte gSystemSavedata
 _0804CEC8: .4byte sCollisions
 _0804CECC:
@@ -239,14 +239,14 @@ _0804D046:
 	lsls r0, r0, #0x18
 	cmp r0, #0
 	bne _0804D078
-	ldr r1, _0804D080 @ =0x08363234
+	ldr r1, _0804D080 @ =sUpdates1
 	ldrb r0, [r4, #0xd]
 	lsls r0, r0, #2
 	adds r0, r0, r1
 	ldr r1, [r0]
 	adds r0, r4, #0
 	bl _call_via_r1
-	ldr r1, _0804D084 @ =0x08363244
+	ldr r1, _0804D084 @ =sUpdates2
 	ldrb r0, [r4, #0xd]
 	lsls r0, r0, #2
 	adds r0, r0, r1
@@ -260,13 +260,13 @@ _0804D078:
 	pop {r0}
 	bx r0
 	.align 2, 0
-_0804D080: .4byte 0x08363234
-_0804D084: .4byte 0x08363244
+_0804D080: .4byte sUpdates1
+_0804D084: .4byte sUpdates2
 
 	thumb_func_start BeeServer_Die
 BeeServer_Die: @ 0x0804D088
 	push {lr}
-	ldr r2, _0804D09C @ =0x08363254
+	ldr r2, _0804D09C @ =sDeads
 	ldrb r1, [r0, #0xd]
 	lsls r1, r1, #2
 	adds r1, r1, r2
@@ -275,7 +275,7 @@ BeeServer_Die: @ 0x0804D088
 	pop {r0}
 	bx r0
 	.align 2, 0
-_0804D09C: .4byte 0x08363254
+_0804D09C: .4byte sDeads
 
 	thumb_func_start nop_0804d0a0
 nop_0804d0a0: @ 0x0804D0A0
@@ -299,7 +299,7 @@ FUN_0804d0a4: @ 0x0804D0A4
 	ands r0, r1
 	cmp r0, #0x20
 	bne _0804D0D2
-	ldr r2, _0804D0F0 @ =0x0836331C
+	ldr r2, _0804D0F0 @ =sBeeServerElfxOffset
 	movs r0, #0x12
 	adds r1, r4, #0
 	bl ApplyElementEffect
@@ -324,7 +324,7 @@ _0804D0EA:
 	pop {r0}
 	bx r0
 	.align 2, 0
-_0804D0F0: .4byte 0x0836331C
+_0804D0F0: .4byte sBeeServerElfxOffset
 _0804D0F4: .4byte 0x00020008
 
 	thumb_func_start FUN_0804d0f8
@@ -409,7 +409,7 @@ _0804D18E:
 	pop {r0}
 	bx r0
 	.align 2, 0
-_0804D194: .4byte 0x08363270
+_0804D194: .4byte sCollisions+(24*1)
 _0804D198: .4byte 0x00020008
 _0804D19C: .4byte RNG_0202f388
 _0804D1A0: .4byte 0x000343FD
@@ -580,7 +580,7 @@ _0804D2AE:
 	strb r4, [r3]
 	b _0804D34A
 	.align 2, 0
-_0804D2E0: .4byte 0x08363329
+_0804D2E0: .4byte u8_ARRAY_ARRAY_08363324+5
 _0804D2E4:
 	movs r4, #0
 	mov r3, sp
@@ -667,7 +667,7 @@ _0804D370:
 _0804D384:
 	adds r0, r6, #0
 	adds r0, #0x74
-	ldr r2, _0804D3D4 @ =0x08363324
+	ldr r2, _0804D3D4 @ =u8_ARRAY_ARRAY_08363324
 	adds r1, r6, #0
 	adds r1, #0x71
 	ldrb r1, [r1]
@@ -698,7 +698,7 @@ _0804D3C4: .4byte 0x000343FD
 _0804D3C8: .4byte 0x00269EC3
 _0804D3CC: .4byte 0xFFFFE000
 _0804D3D0: .4byte 0x00004601
-_0804D3D4: .4byte 0x08363324
+_0804D3D4: .4byte u8_ARRAY_ARRAY_08363324
 _0804D3D8: .4byte sCollisions
 _0804D3DC:
 	ldr r1, _0804D414 @ =0x00004602
@@ -788,7 +788,7 @@ _0804D47C:
 	.align 2, 0
 _0804D484: .4byte 0x0000010F
 _0804D488: .4byte 0x00004603
-_0804D48C: .4byte 0x0836332E
+_0804D48C: .4byte u8_ARRAY_ARRAY_08363324+10
 _0804D490: .4byte sCollisions
 
 	thumb_func_start FUN_0804d494

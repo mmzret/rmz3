@@ -457,7 +457,7 @@ s16 SnowyPlains_FreeUpdate(struct StageRun* p) {
     SetScript(&gStageRun.vm, gStageScriptList[STAGE_SNOWY_PLAINS][3]);  // 0x08355f5c
     p->stageEventPhase = 4;
   } else if (p->stageEventPhase == 4 && (gStageRun.missionStatus & MISSION_SUCCESS)) {
-    gCollisionManager.disabled |= (1 << 7);
+    gCollisionManager.disabled |= COLLMAN_DISABLED;
     gCollisionManager.sweep |= SWEEP_ALL_ENEMY;
     SetScript(&gStageRun.vm, gStageScriptList[STAGE_SNOWY_PLAINS][4]);
     gStageRun.missionStatus &= ~MISSION_SUCCESS;
@@ -465,7 +465,7 @@ s16 SnowyPlains_FreeUpdate(struct StageRun* p) {
     gStageRun.missionStatus |= MISSION_STAY;
     p->stageEventPhase = 5;
   } else if (p->stageEventPhase == 5) {
-    gCollisionManager.disabled &= ~(1 << 7);
+    gCollisionManager.disabled &= ~COLLMAN_DISABLED;
     gCollisionManager.sweep = 0;
     setStageCheckpoint(3);
     p->stageEventPhase = 6;

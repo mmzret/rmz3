@@ -54,7 +54,7 @@ static void MinigameLoop_InitMinigame(struct GameState* g) {
   gWindowRegBuffer.dispcnt = 0;
   gWindowRegBuffer.winin[2] = 0xFF;
   wMOSAIC = 0x0;
-  PALETTE16(0) = RGB_BLACK;
+  gPaletteManager.buf[0] = RGB_BLACK;
   gPaletteManager.filter[0] = gPaletteManager.filter[1] = gPaletteManager.filter[2] = FILTER_BLACK;
   gVideoRegBuffer.dispcnt &= ~DISPCNT_BGMODE_MASK;
   gVideoRegBuffer.dispcnt &= ~DISPCNT_BG_ALL_ON;

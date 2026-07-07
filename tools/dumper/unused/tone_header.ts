@@ -1,11 +1,9 @@
 #!/usr/bin/env -S deno run --allow-read
 
 import { Command } from '@cliffy/command';
-import { loadU32, loadU8, toHex } from '../../common/index.ts';
+import { addr, BASE, getU32, getU8, toHex } from '../../common/index.ts';
 
-const BASE = 0x0800_0000;
 const SIZE = 12;
-const KIND = ['DDP', 'DRP', 'DRP2'];
 
 const main = async () => {
   const { args } = await new Command()
@@ -16,22 +14,22 @@ const main = async () => {
     .usage('rmz3.gba 0x0810e5a4 128')
     .parse(Deno.args);
 
-  const rom = Deno.readFileSync(args[0]);
-  const start = Number(args[1]);
+  const rom = new DataView(Deno.readFileSync(args[0]).buffer);
+  const start: addr = Number(args[1]);
   const length = args[2];
   for (let i = 0; i < length; i++) {
-    const addr = start + (i * SIZE);
+    const addr: addr = start + (i * SIZE);
     const tonedata = {
-      type: loadU8(rom, addr, BASE),
-      key: loadU8(rom, addr + 1, BASE),
-      len: loadU8(rom, addr + 2, BASE),
-      pan_sweep: loadU8(rom, addr + 3, BASE),
-      attack: loadU8(rom, addr + 8, BASE),
-      decay: loadU8(rom, addr + 9, BASE),
-      sustain: loadU8(rom, addr + 10, BASE),
-      release: loadU8(rom, addr + 11, BASE),
+      type: getU8(rom, addr),
+      key: getU8(rom, addr + 1),
+      len: getU8(rom, addr + 2),
+      pan_sweep: getU8(rom, addr + 3),
+      attack: getU8(rom, addr + 8),
+      decay: getU8(rom, addr + 9),
+      sustain: getU8(rom, addr + 10),
+      release: getU8(rom, addr + 11),
     };
-    const wavaddr = loadU32(rom, addr + 4, BASE);
+    const wavaddr = getU32(rom, addr + 4);
     let wav = `(struct WaveData *)0x${toHex(wavaddr, 8)}`;
     if (wavaddr > BASE) {
       wav = `&DirectSoundWaveData_unk_${toHex(wavaddr, 8).toLowerCase()}`;

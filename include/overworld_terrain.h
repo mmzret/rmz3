@@ -63,8 +63,8 @@ struct Terrain {
 
   tileset_t tilesets[2];  // see tileset_t's comment
 
-  u16 enabledBg;               // DISPCNTの bit8..11 つまり BGn有効フラグ
-  struct BgCnt savedBgCnt[3];  // 0x020029da (gOverworld + 0x7da), これはインデックスとBG番号が対応している = savedBgCnt[0]: BG1CNT, savedBgCnt[1]: BG2CNT, savedBgCnt[2]: BG3CNT
+  u16 enabledBg;      // DISPCNTの bit8..11 つまり BGn有効フラグ
+  u16 savedBgCnt[3];  // 0x020029da (gOverworld + 0x7da), これはインデックスとBG番号が対応している = savedBgCnt[0]: BG1CNT, savedBgCnt[1]: BG2CNT, savedBgCnt[2]: BG3CNT
 
   MetatileMap tilemap;  // 0x020029e0 .layer[STAGE_LAYER_TERRAIN]のステージ全体のMetatileのマップ, 壁との押し出し判定などで参照される (他のステージレイヤは描画用で参照しないので STAGE_LAYER_TERRAIN だけでいい)
   bool16 tilemap_duty;  // 0x0202E200 tilemap がロード時以降書きかわった際にTRUEになるフラグ?
@@ -77,9 +77,7 @@ static_assert(sizeof(struct Terrain) == 179796);
 
 // gOverworld, ステージの動的な地形情報
 struct Overworld {
-  struct Task task;
-  struct Task* p;
-  u8 unk_0c[20];  // .task から ここまでが include/entity/entity.h の Sprite と同じサイズ(32バイト)になる...
+  RenderData r;  // 0x00
 
   struct StageLayer layer[STAGE_LAYER_NUM];
   struct Terrain terrain;  // 0x1B8, 現在のステージの地形データ

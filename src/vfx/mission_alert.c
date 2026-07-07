@@ -95,7 +95,7 @@ static void MissionAlert_Die(struct VFX* p) {
 static void TaskCB_Unk080b5890(struct Sprite* p, struct DrawPivot* _ UNUSED);
 
 static void initMissionXXX(struct VFX* p) {
-  SetTaskCallback((struct Task*)&(p->s).spr, TaskCB_Unk080b5890);
+  SetTaskCallback((void*)&(p->s).spr, TaskCB_Unk080b5890);
   (p->s).spr.sprites = (struct MetaspriteHeader*)p;
   (p->s).flags &= ~USE_COMMON_OAM_RENDERER;
   (p->s).flags |= DISPLAY;
@@ -434,7 +434,7 @@ _080B5ABC: .4byte gVideoRegBuffer+12\n\
 static void TaskCB_Unk080b5b90(struct Sprite* p, struct DrawPivot* _ UNUSED);
 
 static void initWarning(struct Entity* p) {
-  SetTaskCallback((struct Task*)&p->spr, TaskCB_Unk080b5b90);
+  SetTaskCallback((void*)&p->spr, TaskCB_Unk080b5b90);
   p->spr.sprites = (struct MetaspriteHeader*)p;
   p->flags &= ~USE_COMMON_OAM_RENDERER;
   p->flags |= DISPLAY;
@@ -1144,7 +1144,7 @@ _080B6098: .4byte 0x0000039E\n\
 static void updateGameOverTile(struct Sprite* p, struct DrawPivot* _ UNUSED);
 
 static void initGameOver(struct VFX* p) {
-  SetTaskCallback((struct Task*)&(p->s).spr, updateGameOverTile);
+  SetTaskCallback((void*)&(p->s).spr, updateGameOverTile);
   (p->s).spr.sprites = (struct MetaspriteHeader*)p;
   (p->s).flags &= ~(1 << 3);
   (p->s).flags |= DISPLAY;

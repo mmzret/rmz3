@@ -160,26 +160,7 @@
 		src/stage/giant_elevator/update.o (.rodata);
 
     src/script_command.o (.rodata);
-    asm/scripts/script_table.o (.rodata);
-      asm/scripts/system.o (.rodata);
-      asm/scripts/stage0.o (.rodata);
-      asm/scripts/spacecraft.o (.rodata);
-      asm/scripts/volcano.o (.rodata);
-      asm/scripts/ocean.o (.rodata);
-      asm/scripts/repair_factory.o (.rodata);
-      asm/scripts/old_residential.o (.rodata);
-      asm/scripts/missile_factory.o (.rodata);
-      asm/scripts/twilight_desert.o (.rodata);
-      asm/scripts/anatre_forest.o (.rodata);
-      asm/scripts/frostline_ice_base.o (.rodata);
-      asm/scripts/area_x2.o (.rodata);
-      asm/scripts/energy_facility.o (.rodata);
-      asm/scripts/snowy_plains.o (.rodata);
-      asm/scripts/sunken_library.o (.rodata);
-      asm/scripts/giant_elevator.o (.rodata);
-      asm/scripts/sub_arcadia.o (.rodata);
-      asm/scripts/weil_labo.o (.rodata);
-      asm/scripts/resistance_base.o (.rodata);
+    src/data/scripts/scripts.o (.rodata);
 		
 		src/result.o (.rodata);
 		src/drop.o (.rodata);
@@ -603,8 +584,9 @@
     src/data/animation/sprite_dynamic.o (.rodata);
     src/data/graphic_table/sprite_dynamic.o (.rodata);
 
-		src/data/bgmaps.o (.rodata);
-		src/data/graphic_table/bg.o (.rodata);
+		src/data/bg/tilemap.o (.rodata);
+		src/data/bg/graphics.o (.rodata);
+
 		src/data/graphic_table/dialog.o (.rodata);
 		src/data/animation/palette.o (.rodata);
 
@@ -613,7 +595,7 @@
 		FILL(0xFF)
 		. += 40;
 
-		src/data/graphic_table/elf.o (.rodata);
+		src/data/graphic_table/cyberelf.o (.rodata);
 		src/stage/terrain.o (.rodata);
 		FILL(0xFF)
 		. += 120;

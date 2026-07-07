@@ -62,8 +62,8 @@ static void MenuLoop_InitMenu(struct GameState* g) {
   gVideoRegBuffer.dispcnt &= ~DISPCNT_BGMODE_MASK;
   gVideoRegBuffer.dispcnt &= ~DISPCNT_BG_ALL_ON;
   gVideoRegBuffer.dispcnt |= DISPCNT_BG0_ON | DISPCNT_BG1_ON | DISPCNT_OBJ_ON;
-  BGCNT16(1) = BGCNT_PRIORITY(2) | BGCNT_CHARBASE(1) | BGCNT_SCREENBASE(2) | BGCNT_AFF256x256;
-  *(u32*)gVideoRegBuffer.bgofs[1] = 0;
+  BGCNT16(1) = BGCNT_PRIORITY(2) | BGCNT_CHARBASE(1) | BGCNT_SCREENBASE(2) | BGCNT_TXT512x256;
+  RESET_BGOFS(1);
   (sEachMenuLoops[MENU->unk_4c])(g);
   g->mode[1] = g->mode[2] = 1;
   MenuLoop_OpenMenu(g);

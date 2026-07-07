@@ -174,7 +174,7 @@ _0803B948:
 _0803B94C:
 	adds r0, r0, r1
 	str r0, [r7, #0x54]
-	ldr r0, _0803B9C8 @ =0x08361624
+	ldr r0, _0803B9C8 @ =sBlizzardArrowYOffsets
 	ldrb r1, [r7, #0x10]
 	lsls r1, r1, #2
 	adds r1, r1, r0
@@ -195,7 +195,7 @@ _0803B962:
 	strb r0, [r7, #0xa]
 	adds r4, r7, #0
 	adds r4, #0x74
-	ldr r6, _0803B9CC @ =0x083615E0
+	ldr r6, _0803B9CC @ =sCollisions
 	adds r2, r7, #0
 	adds r2, #0x54
 	adds r0, r4, #0
@@ -231,8 +231,8 @@ _0803B962:
 	bx r0
 	.align 2, 0
 _0803B9C4: .4byte 0xFFFFF300
-_0803B9C8: .4byte 0x08361624
-_0803B9CC: .4byte 0x083615E0
+_0803B9C8: .4byte sBlizzardArrowYOffsets
+_0803B9CC: .4byte sCollisions
 _0803B9D0: .4byte hitBlizzardArrow
 
 	thumb_func_start BlizzardArrow_Update

@@ -4,25 +4,12 @@
 #include "entity/entity.h"
 #include "types.h"
 
-struct Zero;
-
-// Entity.kind = 7, アイテム
-struct Pickup {
-  OBJECT_HDR;
-  // props (16bytes, offset: 0xB4..)
-  s32 y;
-  struct Zero* z;  // ゼロがアイテム拾うとセットされる
-  u8 work[8];
-};  // 196 bytes
-
-// --------------------------------------------
-
-extern struct Pickup gPickups[10];
+extern Pickup gPickups[10];
 
 struct EntityHeader;
 extern struct EntityHeader* gPickupHeaderPtr;
 
-typedef void (*PickupFunc)(struct Pickup*);
+typedef void (*PickupFunc)(Pickup*);
 typedef PickupFunc PickupRoutine[5];
 extern const PickupRoutine* const gPickupFnTable[2];
 

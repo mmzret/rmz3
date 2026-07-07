@@ -6,13 +6,13 @@
 #include "projectile.h"
 
 // コピーXのチャージショット + レイジングエクスチャージ(ﾓｳﾕﾙｻﾝ!)
-struct Projectile28 {
+typedef struct {
   OBJECT_HDR;
   // props (16bytes, offset: 0xB4..)
   Coords32 c_b4;  // 0xB4
   u8 unk_bc[8];   // 0xBC
-};
-static_assert(sizeof(struct Projectile28) == sizeof(struct Projectile));
+} Projectile28;
+static_assert(sizeof(Projectile28) == sizeof(struct Projectile));
 
 // Entity.work[0]
 enum {
@@ -53,7 +53,7 @@ void CreateProjectile28(struct Entity* e, u8 kind, u8 unusedval) {
 
 // --------------------------------------------
 
-static void FUN_080a9b90(struct Projectile28* p);
+static void FUN_080a9b90(Projectile28* p);
 static void FUN_080a9d88(struct Entity* p);
 static void Projectile28_Init_RagingEXCharge(struct Entity* p);
 void FUN_080aa08c(struct Projectile* p);
@@ -68,7 +68,7 @@ static void Projectile28_Init(struct Entity* p) {
   (PTR_ARRAY_0836c20c[p->work[0]])(p);
 }
 
-static void FUN_080a9c88(struct Projectile28* p);
+static void FUN_080a9c88(Projectile28* p);
 static void FUN_080a9dcc(struct Projectile* p);
 void FUN_080a9ef8(struct Projectile* p);
 void FUN_080aa120(struct Projectile* p);
@@ -87,7 +87,7 @@ static void Projectile28_Die(Object* p) {
   if ((p->s).work[0] >= PJ28_2_RAGING_EX_CHARGE) {
     gWindowRegBuffer.dispcnt &= ~DISPCNT_WIN1_ON;
     gWindowRegBuffer.winin[2] |= 0xFE;
-    PALETTE16(0) = RGB_BLACK;
+    gPaletteManager.buf[0] = RGB_BLACK;
   }
   EXIT_BODY(p);
   SET_PROJECTILE_ROUTINE(p, ENTITY_EXIT);
@@ -97,7 +97,7 @@ static void Projectile28_Die(Object* p) {
 
 static const struct Collision sCollisions[];
 
-static void FUN_080a9b90(struct Projectile28* p) {
+static void FUN_080a9b90(Projectile28* p) {
   struct Entity* q = (p->s).unk_28;
   SET_PROJECTILE_ROUTINE(p, ENTITY_UPDATE);
   InitNonAffineMotion(&p->s);
@@ -123,7 +123,7 @@ static void FUN_080a9b90(struct Projectile28* p) {
   Projectile28_Update((void*)p);
 }
 
-static void FUN_080a9c88(struct Projectile28* p) {
+static void FUN_080a9c88(Projectile28* p) {
   UpdateSpriteAnimation(p);
   if ((p->s).flags & X_FLIP) {
     (p->s).coord.x = (p->c_b4).x + COS((p->s).work[2]) * 11;
@@ -185,7 +185,7 @@ static void Projectile28_Init_RagingEXCharge(struct Entity* p) {
   gWindowRegBuffer.dispcnt |= DISPCNT_WIN1_ON;
   gWindowRegBuffer.winin[1] = WININ_WIN0_CLR | WININ_WIN0_OBJ | WININ_WIN0_BG0;
   gWindowRegBuffer.winin[2] |= WINOUT_WIN01_BG3 | WINOUT_WIN01_BG2 | WINOUT_WIN01_BG1;
-  PALETTE16(0) = RGB_WHITE;
+  (*(u16*)(&gPaletteManager.buf[0])) = RGB_WHITE;  // NOTE: gPaletteManager.buf[0] = RGB_WHITE; だとコンパイル結果が一致しなかった
   p->work[2] = p->work[3] = 0;
   Projectile28_Update(p);
 }

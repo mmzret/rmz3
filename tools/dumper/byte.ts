@@ -1,7 +1,7 @@
 #!/usr/bin/env -S deno run --allow-read
 
 import { Command } from '@cliffy/command';
-import { loadI16, loadI32, loadI8, loadU16, loadU32, loadU8, toHex } from '../common/index.ts';
+import { addr, getS16, getS32, getS8, getU16, getU32, getU8, ROM_PATH, toHex } from '../common/index.ts';
 
 /*
   バイナリファイルからword(32bit)の配列をアセンブリ形式で(標準出力に)ダンプする
@@ -24,21 +24,21 @@ const Units: Record<Format, number> = {
 };
 
 const Loader = {
-  'u8': loadU8,
-  'u16': loadU16,
-  'u32': loadU32,
-  's8': loadI8,
-  's16': loadI16,
-  's32': loadI32,
+  'u8': getU8,
+  'u16': getU16,
+  'u32': getU32,
+  's8': getS8,
+  's16': getS16,
+  's32': getS32,
 };
 
 const Size = {
   'u8': '.byte',
-  'u16': '.hword',
-  'u32': '.word',
+  'u16': '.2byte',
+  'u32': '.4byte',
   's8': '.byte',
-  's16': '.hword',
-  's32': '.word',
+  's16': '.2byte',
+  's32': '.4byte',
 };
 
 const main = async () => {
@@ -57,16 +57,20 @@ const main = async () => {
     .option('-w, --width=[n]', 'a number of data by line')
     .option('--prefix=[p:string]', 'prefix of data')
     .option('-i, --index', "add index prefix as '[idx] = ' (only C)")
-    .arguments('<rom> <addr> <length>')
-    .usage('rmz3.gba 0x085222a0 134 -f=u8 -m=c')
+    .argument('<addr:number>', '開始アドレス')
+    .argument('<length:number>', 'エントリ数')
+    .usage('0x085222a0 134 -f=u8 -m=c')
     .parse(Deno.args);
 
-  const [start, length] = [Number(args[1]), Number(args[2])];
+  const start: addr = Number(args[0]);
+  const length: number = Number(args[1]);
   const format = options.format as Format;
   if (!IntTypes.includes(format)) {
     console.error(`Format(-f, --format) must be either of ${IntTypes}`);
     return;
   }
+
+  const rom = new DataView(Deno.readFileSync(ROM_PATH).buffer);
 
   const column = options.width ? Number(options.width) : length;
   const mode = options.mode as string;
@@ -74,12 +78,10 @@ const main = async () => {
   const load = Loader[format];
   const isDecimal = options.base === 10;
 
-  const rom = Deno.readFileSync(args[0]);
-
   let result = '';
   for (let i = 0; i < length; i++) {
-    const addr = start + (i * unit);
-    const val = load(rom, addr, 0x0800_0000);
+    const addr: addr = start + (i * unit);
+    const val = load(rom, addr);
 
     let hex = isDecimal ? Math.abs(val).toString(10) : toHex(Math.abs(val), unit * 2, '0x');
     if (options.small) {

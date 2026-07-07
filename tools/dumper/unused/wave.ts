@@ -1,9 +1,8 @@
 #!/usr/bin/env -S deno run --allow-read --allow-run
 
 import { Command } from '@cliffy/command';
-import { loadU32, toHex } from '../../common/index.ts';
+import { BASE, getU32, toHex } from '../../common/index.ts';
 
-const BASE = 0x0800_0000;
 const MIN = 0x0831e9dc;
 const SIZE = 12;
 
@@ -16,16 +15,16 @@ const main = async () => {
     .usage('rmz3.gba 0x0810e5a4 128')
     .parse(Deno.args);
 
-  const rom = Deno.readFileSync(args[0]);
+  const rom = new DataView(Deno.readFileSync(args[0]).buffer);
   const start = Number(args[1]);
   const length = args[2];
   for (let i = 0; i < length; i++) {
     const addr = start + (i * SIZE);
-    const wave = loadU32(rom, addr + 4, BASE);
+    const wave = getU32(rom, addr + 4);
     if (wave < MIN) {
       continue;
     }
-    let size = loadU32(rom, wave + 12, BASE);
+    let size = getU32(rom, wave + 12);
     size += 4 - (size % 4);
     const from = toHex(wave, 8);
     const wave_end = wave + 16 + size;

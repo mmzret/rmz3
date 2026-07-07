@@ -257,9 +257,9 @@ gGraphicHeader_Sprite_phantom_8:
 	.incbin "sprites/dynamic/phantom/sheet/8.gbapal"
 
 gGraphicHeader_Sprite_phantom_9:
-	.incbin "sprites/dynamic/phantom/sheet/9.notrim.4bpp"
+	.incbin "sprites/dynamic/phantom/sheet/9.4bpp"
 	gGraphicHeader_Sprite_phantom_9_Palettes:
-	.incbin "sprites/dynamic/phantom/sheet/9.notrim.gbapal"
+	.incbin "sprites/dynamic/phantom/sheet/9.gbapal"
 
 gGraphicHeader_Sprite_phantom_10:
 	.incbin "sprites/dynamic/phantom/sheet/10.4bpp"

@@ -12,7 +12,8 @@ struct ThrowBladeProps {
   u8 unk_c1[43];
 };
 
-static const struct Collision sNormalCollisions[2] = {
+// 0x08361630
+static const struct Collision sThrowBladeCollision_Normal[2] = {
     {
       kind : DDP,
       faction : FACTION_ALLY,
@@ -37,7 +38,8 @@ static const struct Collision sNormalCollisions[2] = {
     },
 };
 
-static const struct Collision sIceCollisions[2] = {
+// 0x08361660, アイスチップ装備時
+static const struct Collision sThrowBladeCollision_Ice[2] = {
     {
       kind : DDP,
       faction : FACTION_ALLY,
@@ -70,59 +72,58 @@ void ThrowBlade_Die(struct Weapon* w);
 
 // clang-format off
 const WeaponRoutine gThrowBladeRoutine = {
-    [ENTITY_INIT] =      (WeaponFunc)ThrowBlade_Init,
-    [ENTITY_UPDATE] =    (WeaponFunc)ThrowBlade_Update,
-    [ENTITY_DIE] =       (WeaponFunc)ThrowBlade_Die,
-    [ENTITY_DISAPPEAR] = (WeaponFunc)DeleteWeapon,
-    [ENTITY_EXIT] =      (WeaponFunc)DeleteEntity,    
+    [ENTITY_INIT] =      (void*)ThrowBlade_Init,
+    [ENTITY_UPDATE] =    (void*)ThrowBlade_Update,
+    [ENTITY_DIE] =       (void*)ThrowBlade_Die,
+    [ENTITY_DISAPPEAR] = (void*)DeleteWeapon,
+    [ENTITY_EXIT] =      (void*)DeleteEntity,    
 };
 // clang-format on
 
-void MenuExit_ThrowBlade(struct Weapon* w) {
-  struct Zero* z = (struct Zero*)(w->s).unk_28;
-  struct ThrowBladeProps* s = (struct ThrowBladeProps*)w->buffer;
+void MenuExit_ThrowBlade(struct Weapon* p) {
+  Player* z = (Player*)(p->s).unk_28;
+  struct ThrowBladeProps* s = (struct ThrowBladeProps*)p->buffer;
   if ((s->element != ((&z->unk_b4)->status).element)) {
-    (w->s).flags &= ~DISPLAY;
-    (w->s).flags &= ~FLIPABLE;
-    EXIT_BODY(w);
-    SET_WEAPON_ROUTINE(w, ENTITY_DISAPPEAR);
+    (p->s).flags &= ~DISPLAY;
+    (p->s).flags &= ~FLIPABLE;
+    EXIT_BODY(p);
+    SET_WEAPON_ROUTINE(p, ENTITY_DISAPPEAR);
   }
 }
 
-struct Weapon* CreateThrowBlade(struct Zero* z, struct Weapon* saber, bool8 isIce) {
-  struct Weapon* w = (struct Weapon*)AllocEntityLast(gWeaponHeaderPtr);
-  if (w != NULL) {
+struct Weapon* CreateThrowBlade(Player* z, struct Weapon* saber, bool8 isIce) {
+  struct Weapon* p = AllocEntityLast(gWeaponHeaderPtr);
+  if (p != NULL) {
     struct ThrowBladeProps* s;
 
     if ((z->unk_b4).mainCopy == WEAPON_SABER) {
-      INIT_WEAPON_ROUTINE(w, WEAPON_MOVE_ZANEIDAN);
-      (w->s).flags2 &= ~ENTITY_FLAGS2_B6;
-      (w->s).renderPrio = 16;
-      (w->s).tileNum = gWeaponTileNum[0];
-      (w->s).palID = gWeaponPalIDs[0];
+      INIT_WEAPON_ROUTINE(p, WEAPON_MOVE_ZANEIDAN);
+      (p->s).flags2 &= ~ENTITY_FLAGS2_B6;
+      (p->s).renderPrio = 16;
+      (p->s).tileNum = gWeaponTileNum[0];
+      (p->s).palID = gWeaponPalIDs[0];
       if (isIce) {
         const u8 element = ((&z->unk_b4)->status).element;
         SetWeaponElement(0, element);
       }
     } else {
-      INIT_WEAPON_ROUTINE(w, WEAPON_MOVE_ZANEIDAN);
-      (w->s).flags2 &= ~ENTITY_FLAGS2_B6;
-      (w->s).renderPrio = 16;
-      (w->s).tileNum = gWeaponTileNum[1];
-      (w->s).palID = gWeaponPalIDs[1];
+      INIT_WEAPON_ROUTINE(p, WEAPON_MOVE_ZANEIDAN);
+      (p->s).flags2 &= ~ENTITY_FLAGS2_B6;
+      (p->s).renderPrio = 16;
+      (p->s).tileNum = gWeaponTileNum[1];
+      (p->s).palID = gWeaponPalIDs[1];
       if (isIce) {
         const u8 element = ((&z->unk_b4)->status).element;
         SetWeaponElement(1, element);
       }
     }
-    (w->s).unk_28 = &z->s;
-    s = (struct ThrowBladeProps*)w->buffer;
+    (p->s).unk_28 = &z->s;
+    s = (struct ThrowBladeProps*)p->buffer;
     s->saber = saber;
     s->element = ((&z->unk_b4)->status).element;
-    (w->s).work[0] = isIce;
-    (w->s).work[1] = 0;
+    (p->s).work[0] = isIce, (p->s).work[1] = 0;
   }
-  return w;
+  return p;
 }
 
 INCASM("asm/weapon/throw_blade.inc");

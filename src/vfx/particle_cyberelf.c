@@ -636,11 +636,11 @@ static void FUN_080c0160(struct CyberelfParticle* p) {
 static void FUN_080c019c(struct CyberelfParticle* p) {
   if (p->unk_3 != 0) {
     (p->s).work[3] = (p->s).work[2] = 6;
-    (p->s).d.x = COSX(p->theta, 3) >> 2;
-    (p->s).d.y = SINX(p->theta, 3) >> 2;
+    (p->s).d.x = (COS(p->theta) * 3) >> 2;
+    (p->s).d.y = (SIN(p->theta) * 3) >> 2;
   } else {
-    (p->s).d.x = (s16)COSX(p->theta, 1) >> 2;
-    (p->s).d.y = (s16)SINX(p->theta, 1) >> 2;
+    (p->s).d.x = (s16)(COS(p->theta) * 1) >> 2;
+    (p->s).d.y = (s16)(SIN(p->theta) * 1) >> 2;
   }
   (p->s).unk_coord.x = 0, (p->s).unk_coord.y = 1;
 }

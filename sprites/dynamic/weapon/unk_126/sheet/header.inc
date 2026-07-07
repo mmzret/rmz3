@@ -36,24 +36,18 @@ gGraphicHeader_Sprite_weapon_unk_126:
 
 gGraphicHeader_Sprite_weapon_unk_126_0:
 	.incbin "sprites/dynamic/weapon/unk_126/sheet/0.4bpp"
-	gGraphicHeader_Sprite_weapon_unk_126_0_Palettes:
 
 gGraphicHeader_Sprite_weapon_unk_126_1:
 	.incbin "sprites/dynamic/weapon/unk_126/sheet/1.4bpp"
-	gGraphicHeader_Sprite_weapon_unk_126_1_Palettes:
 
 gGraphicHeader_Sprite_weapon_unk_126_2:
-	.incbin "sprites/dynamic/weapon/unk_126/sheet/2.notrim.4bpp"
-	gGraphicHeader_Sprite_weapon_unk_126_2_Palettes:
+	.incbin "sprites/dynamic/weapon/unk_126/sheet/2.4bpp"
 
 gGraphicHeader_Sprite_weapon_unk_126_3:
 	.incbin "sprites/dynamic/weapon/unk_126/sheet/3.4bpp"
-	gGraphicHeader_Sprite_weapon_unk_126_3_Palettes:
 
 gGraphicHeader_Sprite_weapon_unk_126_4:
 	.incbin "sprites/dynamic/weapon/unk_126/sheet/4.4bpp"
-	gGraphicHeader_Sprite_weapon_unk_126_4_Palettes:
 
 gGraphicHeader_Sprite_weapon_unk_126_5:
 	.incbin "sprites/dynamic/weapon/unk_126/sheet/5.4bpp"
-	gGraphicHeader_Sprite_weapon_unk_126_5_Palettes:

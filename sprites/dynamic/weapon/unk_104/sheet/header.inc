@@ -114,7 +114,7 @@ gGraphicHeader_Sprite_weapon_unk_104_10:
 	gGraphicHeader_Sprite_weapon_unk_104_10_Palettes:
 
 gGraphicHeader_Sprite_weapon_unk_104_11:
-	.incbin "sprites/dynamic/weapon/unk_104/sheet/11.notrim.4bpp"
+	.incbin "sprites/dynamic/weapon/unk_104/sheet/11.4bpp"
 	gGraphicHeader_Sprite_weapon_unk_104_11_Palettes:
 
 gGraphicHeader_Sprite_weapon_unk_104_12:

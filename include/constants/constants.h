@@ -14,6 +14,7 @@
 #include "constants/minigame.h"
 #include "constants/mod.h"
 #include "constants/motion.h"
+#include "constants/rgb.h"
 #include "constants/song.h"
 #include "constants/sound.h"
 #include "constants/stage_id.h"

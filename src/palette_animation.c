@@ -20,18 +20,18 @@ void RemoveAllPaletteAnimations(void) {
 }
 
 static inline void TransferPalettes(PaletteAnimation* b) {
-  struct PlttAnimData* pal = b->pal;
-  s16 chunk_size = (pal->end - pal->start) + 1;
+  PlttAnimData* pal = b->pal;
+  s16 len = (pal->end - pal->start) + 1;  // 転送する色数 (len * 2 = 転送するバイト数)
   if ((b->offsetByte & 0x1FF) == 0) {
-    s16 val = (b->m).table[(b->m).id][(b->m).cmdIdx].param;
-    u16* src = (u16*)(pal + 1) + (val * chunk_size);
+    s16 idx = (b->m).table[(b->m).id][(b->m).cmdIdx].param;  // 今回転送するパレットのインデックス
+    u16* src = (u16*)(pal + 1) + (idx * len);
     s32 dst_byte_offset = b->offsetByte + (pal->start << 1);
-    CpuCopy16(src, ((u8*)gPaletteManager.buf + dst_byte_offset), (chunk_size << 1));
+    CpuCopy16(src, ((u8*)gPaletteManager.buf + dst_byte_offset), (len << 1));
   } else {
-    s16 val = (b->m).table[(b->m).id][(b->m).cmdIdx].param;
-    u16* src = (u16*)(pal + 1) + (val * chunk_size);
+    s16 idx = (b->m).table[(b->m).id][(b->m).cmdIdx].param;  // 今回転送するパレットのインデックス
+    u16* src = (u16*)(pal + 1) + (idx * len);
     s32 dst_byte_offset = b->offsetByte + ((pal->start << 1) & 0x1F);
-    CpuCopy16(src, ((u8*)gPaletteManager.buf + dst_byte_offset), (chunk_size << 1));
+    CpuCopy16(src, ((u8*)gPaletteManager.buf + dst_byte_offset), (len << 1));
   }
 }
 

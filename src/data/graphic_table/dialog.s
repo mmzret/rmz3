@@ -3,14 +3,15 @@
 .section .rodata
 .balign 4, 0
 
-.global gDialogGraphics
-gDialogGraphics:
-	@ Graphic 0
-	.4byte gDialogGraphics_0-. @ src
+@ preproc を使う
+gDialogGraphics:: @ 0x085a7ec4
+
+gGraphic_MsgBox0:: @ Gfx0 in 0x085a7ec4
+	.4byte MsgBox0_Tiles-. @ src
 	.4byte 156 | (0 << 22) 	@ bit0..21: bytesize, bit22..31: dst (VRAM TileID)
 	.2byte 256, (LZ77 | BPP4) 	@ rowsize(unused), props
-		@ Palette
-		.4byte gDialogGraphics_0_Palettes-. @ src offset
+	gPalette_MsgBox0::
+		.4byte MsgBox0_Pal-. @ src offset
 		.2byte 32 @ bytesize
 		.byte 0, 0 @ lz77(bool8), dst = PaletteID
 
@@ -518,11 +519,11 @@ gDialogGraphics:
 		.2byte 32 @ bytesize
 		.byte 0, 0 @ lz77(bool8), dst = PaletteID
 
-	@ Graphic 57
+gGraphics_MsgBox:: @ Gfx57
 	.4byte gDialogGraphics_57-. @ src
 	.4byte 868 | (0 << 22) 	@ bit0..21: bytesize, bit22..31: dst (VRAM TileID)
 	.2byte 48, (LZ77 | BPP4) 	@ rowsize(unused), props
-		@ Palette
+	gPalettes_MsgBox::
 		.4byte gDialogGraphics_57_Palettes-. @ src offset
 		.2byte 32 @ bytesize
 		.byte 0, 0 @ lz77(bool8), dst = PaletteID
@@ -601,331 +602,331 @@ gDialogGraphics:
 
 @;@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 
-gDialogGraphics_0:
-	.incbin "graphics/dialog/msgbox/0.lz"
-	gDialogGraphics_0_Palettes:
-	.incbin "graphics/dialog/msgbox/0.lz.gbapal"
+MsgBox0_Tiles:
+  .incbin "graphics/dialog/msgbox/0.4bpp.lz"
+MsgBox0_Pal:
+  .incbin "graphics/dialog/msgbox/0.gbapal"
 
 gDialogGraphics_1:
 	gDialogGraphics_1_Palettes:
 
 gDialogGraphics_2:
-	.incbin "graphics/dialog/mugshot/zero.lz"
+	.incbin "graphics/dialog/mugshot/zero.4bpp.lz"
 	gDialogGraphics_2_Palettes:
-	.incbin "graphics/dialog/mugshot/zero.lz.gbapal"
+	.incbin "graphics/dialog/mugshot/zero.gbapal"
 
 gDialogGraphics_3:
-	.incbin "graphics/dialog/mugshot/blazin.lz"
+	.incbin "graphics/dialog/mugshot/blazin.4bpp.lz"
 	gDialogGraphics_3_Palettes:
-	.incbin "graphics/dialog/mugshot/blazin.lz.gbapal"
+	.incbin "graphics/dialog/mugshot/blazin.gbapal"
 
 gDialogGraphics_4:
-	.incbin "graphics/dialog/mugshot/childre.lz"
+	.incbin "graphics/dialog/mugshot/childre.4bpp.lz"
 	gDialogGraphics_4_Palettes:
-	.incbin "graphics/dialog/mugshot/childre.lz.gbapal"
+	.incbin "graphics/dialog/mugshot/childre.gbapal"
 
 gDialogGraphics_5:
-	.incbin "graphics/dialog/mugshot/hellbat.lz"
+	.incbin "graphics/dialog/mugshot/hellbat.4bpp.lz"
 	gDialogGraphics_5_Palettes:
-	.incbin "graphics/dialog/mugshot/hellbat.lz.gbapal"
+	.incbin "graphics/dialog/mugshot/hellbat.gbapal"
 
 gDialogGraphics_6:
-	.incbin "graphics/dialog/mugshot/deathtanz.lz"
+	.incbin "graphics/dialog/mugshot/deathtanz.4bpp.lz"
 	gDialogGraphics_6_Palettes:
-	.incbin "graphics/dialog/mugshot/deathtanz.lz.gbapal"
+	.incbin "graphics/dialog/mugshot/deathtanz.gbapal"
 
 gDialogGraphics_7:
-	.incbin "graphics/dialog/mugshot/cubit.lz"
+	.incbin "graphics/dialog/mugshot/cubit.4bpp.lz"
 	gDialogGraphics_7_Palettes:
-	.incbin "graphics/dialog/mugshot/cubit.lz.gbapal"
+	.incbin "graphics/dialog/mugshot/cubit.gbapal"
 
 gDialogGraphics_8:
-	.incbin "graphics/dialog/mugshot/glacierle.lz"
+	.incbin "graphics/dialog/mugshot/glacierle.4bpp.lz"
 	gDialogGraphics_8_Palettes:
-	.incbin "graphics/dialog/mugshot/glacierle.lz.gbapal"
+	.incbin "graphics/dialog/mugshot/glacierle.gbapal"
 
 gDialogGraphics_9:
-	.incbin "graphics/dialog/mugshot/volteel.lz"
+	.incbin "graphics/dialog/mugshot/volteel.4bpp.lz"
 	gDialogGraphics_9_Palettes:
-	.incbin "graphics/dialog/mugshot/volteel.lz.gbapal"
+	.incbin "graphics/dialog/mugshot/volteel.gbapal"
 
 gDialogGraphics_10:
-	.incbin "graphics/dialog/mugshot/tretista.lz"
+	.incbin "graphics/dialog/mugshot/tretista.4bpp.lz"
 	gDialogGraphics_10_Palettes:
-	.incbin "graphics/dialog/mugshot/tretista.lz.gbapal"
+	.incbin "graphics/dialog/mugshot/tretista.gbapal"
 
 gDialogGraphics_11:
-	.incbin "graphics/dialog/mugshot/blazin_human.lz"
+	.incbin "graphics/dialog/mugshot/blazin_human.4bpp.lz"
 	gDialogGraphics_11_Palettes:
-	.incbin "graphics/dialog/mugshot/blazin_human.lz.gbapal"
+	.incbin "graphics/dialog/mugshot/blazin_human.gbapal"
 
 gDialogGraphics_12:
-	.incbin "graphics/dialog/mugshot/childre_human.lz"
+	.incbin "graphics/dialog/mugshot/childre_human.4bpp.lz"
 	gDialogGraphics_12_Palettes:
-	.incbin "graphics/dialog/mugshot/childre_human.lz.gbapal"
+	.incbin "graphics/dialog/mugshot/childre_human.gbapal"
 
 gDialogGraphics_13:
-	.incbin "graphics/dialog/mugshot/hellbat_human.lz"
+	.incbin "graphics/dialog/mugshot/hellbat_human.4bpp.lz"
 	gDialogGraphics_13_Palettes:
-	.incbin "graphics/dialog/mugshot/hellbat_human.lz.gbapal"
+	.incbin "graphics/dialog/mugshot/hellbat_human.gbapal"
 
 gDialogGraphics_14:
-	.incbin "graphics/dialog/mugshot/deathtanz_human.lz"
+	.incbin "graphics/dialog/mugshot/deathtanz_human.4bpp.lz"
 	gDialogGraphics_14_Palettes:
-	.incbin "graphics/dialog/mugshot/deathtanz_human.lz.gbapal"
+	.incbin "graphics/dialog/mugshot/deathtanz_human.gbapal"
 
 gDialogGraphics_15:
-	.incbin "graphics/dialog/mugshot/cubit_human.lz"
+	.incbin "graphics/dialog/mugshot/cubit_human.4bpp.lz"
 	gDialogGraphics_15_Palettes:
-	.incbin "graphics/dialog/mugshot/cubit_human.lz.gbapal"
+	.incbin "graphics/dialog/mugshot/cubit_human.gbapal"
 
 gDialogGraphics_16:
-	.incbin "graphics/dialog/mugshot/glacierle_human.lz"
+	.incbin "graphics/dialog/mugshot/glacierle_human.4bpp.lz"
 	gDialogGraphics_16_Palettes:
-	.incbin "graphics/dialog/mugshot/glacierle_human.lz.gbapal"
+	.incbin "graphics/dialog/mugshot/glacierle_human.gbapal"
 
 gDialogGraphics_17:
-	.incbin "graphics/dialog/mugshot/volteel_human.lz"
+	.incbin "graphics/dialog/mugshot/volteel_human.4bpp.lz"
 	gDialogGraphics_17_Palettes:
-	.incbin "graphics/dialog/mugshot/volteel_human.lz.gbapal"
+	.incbin "graphics/dialog/mugshot/volteel_human.gbapal"
 
 gDialogGraphics_18:
-	.incbin "graphics/dialog/mugshot/tretista_human.lz"
+	.incbin "graphics/dialog/mugshot/tretista_human.4bpp.lz"
 	gDialogGraphics_18_Palettes:
-	.incbin "graphics/dialog/mugshot/tretista_human.lz.gbapal"
+	.incbin "graphics/dialog/mugshot/tretista_human.gbapal"
 
 gDialogGraphics_19:
-	.incbin "graphics/dialog/mugshot/anubis.lz"
+	.incbin "graphics/dialog/mugshot/anubis.4bpp.lz"
 	gDialogGraphics_19_Palettes:
-	.incbin "graphics/dialog/mugshot/anubis.lz.gbapal"
+	.incbin "graphics/dialog/mugshot/anubis.gbapal"
 
 gDialogGraphics_20:
-	.incbin "graphics/dialog/mugshot/hanumachine.lz"
+	.incbin "graphics/dialog/mugshot/hanumachine.4bpp.lz"
 	gDialogGraphics_20_Palettes:
-	.incbin "graphics/dialog/mugshot/hanumachine.lz.gbapal"
+	.incbin "graphics/dialog/mugshot/hanumachine.gbapal"
 
 gDialogGraphics_21:
-	.incbin "graphics/dialog/mugshot/blizzack.lz"
+	.incbin "graphics/dialog/mugshot/blizzack.4bpp.lz"
 	gDialogGraphics_21_Palettes:
-	.incbin "graphics/dialog/mugshot/blizzack.lz.gbapal"
+	.incbin "graphics/dialog/mugshot/blizzack.gbapal"
 
 gDialogGraphics_22:
-	.incbin "graphics/dialog/mugshot/harpuia.lz"
+	.incbin "graphics/dialog/mugshot/harpuia.4bpp.lz"
 	gDialogGraphics_22_Palettes:
-	.incbin "graphics/dialog/mugshot/harpuia.lz.gbapal"
+	.incbin "graphics/dialog/mugshot/harpuia.gbapal"
 
 gDialogGraphics_23:
-	.incbin "graphics/dialog/mugshot/leviathan.lz"
+	.incbin "graphics/dialog/mugshot/leviathan.4bpp.lz"
 	gDialogGraphics_23_Palettes:
-	.incbin "graphics/dialog/mugshot/leviathan.lz.gbapal"
+	.incbin "graphics/dialog/mugshot/leviathan.gbapal"
 
 gDialogGraphics_24:
-	.incbin "graphics/dialog/mugshot/fefnir.lz"
+	.incbin "graphics/dialog/mugshot/fefnir.4bpp.lz"
 	gDialogGraphics_24_Palettes:
-	.incbin "graphics/dialog/mugshot/fefnir.lz.gbapal"
+	.incbin "graphics/dialog/mugshot/fefnir.gbapal"
 
 gDialogGraphics_25:
-	.incbin "graphics/dialog/mugshot/phantom.lz"
+	.incbin "graphics/dialog/mugshot/phantom.4bpp.lz"
 	gDialogGraphics_25_Palettes:
-	.incbin "graphics/dialog/mugshot/phantom.lz.gbapal"
+	.incbin "graphics/dialog/mugshot/phantom.gbapal"
 
 gDialogGraphics_26:
-	.incbin "graphics/dialog/mugshot/x.lz"
+	.incbin "graphics/dialog/mugshot/x.4bpp.lz"
 	gDialogGraphics_26_Palettes:
-	.incbin "graphics/dialog/mugshot/x.lz.gbapal"
+	.incbin "graphics/dialog/mugshot/x.gbapal"
 
 gDialogGraphics_27:
-	.incbin "graphics/dialog/mugshot/copy_x.lz"
+	.incbin "graphics/dialog/mugshot/copy_x.4bpp.lz"
 	gDialogGraphics_27_Palettes:
-	.incbin "graphics/dialog/mugshot/copy_x.lz.gbapal"
+	.incbin "graphics/dialog/mugshot/copy_x.gbapal"
 
 gDialogGraphics_28:
-	.incbin "graphics/dialog/mugshot/mother_elf.lz"
+	.incbin "graphics/dialog/mugshot/mother_elf.4bpp.lz"
 	gDialogGraphics_28_Palettes:
-	.incbin "graphics/dialog/mugshot/mother_elf.lz.gbapal"
+	.incbin "graphics/dialog/mugshot/mother_elf.gbapal"
 
 gDialogGraphics_29:
-	.incbin "graphics/dialog/mugshot/weil.lz"
+	.incbin "graphics/dialog/mugshot/weil.4bpp.lz"
 	gDialogGraphics_29_Palettes:
-	.incbin "graphics/dialog/mugshot/weil.lz.gbapal"
+	.incbin "graphics/dialog/mugshot/weil.gbapal"
 
 gDialogGraphics_30:
-	.incbin "graphics/dialog/mugshot/omega_white.lz"
+	.incbin "graphics/dialog/mugshot/omega_white.4bpp.lz"
 	gDialogGraphics_30_Palettes:
-	.incbin "graphics/dialog/mugshot/omega_white.lz.gbapal"
+	.incbin "graphics/dialog/mugshot/omega_white.gbapal"
 
 gDialogGraphics_31:
-	.incbin "graphics/dialog/mugshot/omega_gold.lz"
+	.incbin "graphics/dialog/mugshot/omega_gold.4bpp.lz"
 	gDialogGraphics_31_Palettes:
-	.incbin "graphics/dialog/mugshot/omega_gold.lz.gbapal"
+	.incbin "graphics/dialog/mugshot/omega_gold.gbapal"
 
 gDialogGraphics_32:
-	.incbin "graphics/dialog/mugshot/ciel.lz"
+	.incbin "graphics/dialog/mugshot/ciel.4bpp.lz"
 	gDialogGraphics_32_Palettes:
-	.incbin "graphics/dialog/mugshot/ciel.lz.gbapal"
+	.incbin "graphics/dialog/mugshot/ciel.gbapal"
 
 gDialogGraphics_33:
-	.incbin "graphics/dialog/mugshot/cerveau.lz"
+	.incbin "graphics/dialog/mugshot/cerveau.4bpp.lz"
 	gDialogGraphics_33_Palettes:
-	.incbin "graphics/dialog/mugshot/cerveau.lz.gbapal"
+	.incbin "graphics/dialog/mugshot/cerveau.gbapal"
 
 gDialogGraphics_34:
-	.incbin "graphics/dialog/mugshot/alouette.lz"
+	.incbin "graphics/dialog/mugshot/alouette.4bpp.lz"
 	gDialogGraphics_34_Palettes:
-	.incbin "graphics/dialog/mugshot/alouette.lz.gbapal"
+	.incbin "graphics/dialog/mugshot/alouette.gbapal"
 
 gDialogGraphics_35:
-	.incbin "graphics/dialog/mugshot/andrew.lz"
+	.incbin "graphics/dialog/mugshot/andrew.4bpp.lz"
 	gDialogGraphics_35_Palettes:
-	.incbin "graphics/dialog/mugshot/andrew.lz.gbapal"
+	.incbin "graphics/dialog/mugshot/andrew.gbapal"
 
 gDialogGraphics_36:
-	.incbin "graphics/dialog/mugshot/hibou.lz"
+	.incbin "graphics/dialog/mugshot/hibou.4bpp.lz"
 	gDialogGraphics_36_Palettes:
-	.incbin "graphics/dialog/mugshot/hibou.lz.gbapal"
+	.incbin "graphics/dialog/mugshot/hibou.gbapal"
 
 gDialogGraphics_37:
-	.incbin "graphics/dialog/mugshot/rocinolle.lz"
+	.incbin "graphics/dialog/mugshot/rocinolle.4bpp.lz"
 	gDialogGraphics_37_Palettes:
-	.incbin "graphics/dialog/mugshot/rocinolle.lz.gbapal"
+	.incbin "graphics/dialog/mugshot/rocinolle.gbapal"
 
 gDialogGraphics_38:
-	.incbin "graphics/dialog/mugshot/perroquiet.lz"
+	.incbin "graphics/dialog/mugshot/perroquiet.4bpp.lz"
 	gDialogGraphics_38_Palettes:
-	.incbin "graphics/dialog/mugshot/perroquiet.lz.gbapal"
+	.incbin "graphics/dialog/mugshot/perroquiet.gbapal"
 
 gDialogGraphics_39:
-	.incbin "graphics/dialog/mugshot/menart.lz"
+	.incbin "graphics/dialog/mugshot/menart.4bpp.lz"
 	gDialogGraphics_39_Palettes:
-	.incbin "graphics/dialog/mugshot/menart.lz.gbapal"
+	.incbin "graphics/dialog/mugshot/menart.gbapal"
 
 gDialogGraphics_40:
-	.incbin "graphics/dialog/mugshot/doigt.lz"
+	.incbin "graphics/dialog/mugshot/doigt.4bpp.lz"
 	gDialogGraphics_40_Palettes:
-	.incbin "graphics/dialog/mugshot/doigt.lz.gbapal"
+	.incbin "graphics/dialog/mugshot/doigt.gbapal"
 
 gDialogGraphics_41:
-	.incbin "graphics/dialog/mugshot/weil_monitor.lz"
+	.incbin "graphics/dialog/mugshot/weil_monitor.4bpp.lz"
 	gDialogGraphics_41_Palettes:
-	.incbin "graphics/dialog/mugshot/weil_monitor.lz.gbapal"
+	.incbin "graphics/dialog/mugshot/weil_monitor.gbapal"
 
 gDialogGraphics_42:
-	.incbin "graphics/dialog/mugshot/autruche.lz"
+	.incbin "graphics/dialog/mugshot/autruche.4bpp.lz"
 	gDialogGraphics_42_Palettes:
-	.incbin "graphics/dialog/mugshot/autruche.lz.gbapal"
+	.incbin "graphics/dialog/mugshot/autruche.gbapal"
 
 gDialogGraphics_43:
-	.incbin "graphics/dialog/mugshot/pic.lz"
+	.incbin "graphics/dialog/mugshot/pic.4bpp.lz"
 	gDialogGraphics_43_Palettes:
-	.incbin "graphics/dialog/mugshot/pic.lz.gbapal"
+	.incbin "graphics/dialog/mugshot/pic.gbapal"
 
 gDialogGraphics_44:
-	.incbin "graphics/dialog/mugshot/hirondelle.lz"
+	.incbin "graphics/dialog/mugshot/hirondelle.4bpp.lz"
 	gDialogGraphics_44_Palettes:
-	.incbin "graphics/dialog/mugshot/hirondelle.lz.gbapal"
+	.incbin "graphics/dialog/mugshot/hirondelle.gbapal"
 
 gDialogGraphics_45:
-	.incbin "graphics/dialog/mugshot/faucon.lz"
+	.incbin "graphics/dialog/mugshot/faucon.4bpp.lz"
 	gDialogGraphics_45_Palettes:
-	.incbin "graphics/dialog/mugshot/faucon.lz.gbapal"
+	.incbin "graphics/dialog/mugshot/faucon.gbapal"
 
 gDialogGraphics_46:
-	.incbin "graphics/dialog/mugshot/kiss.lz"
+	.incbin "graphics/dialog/mugshot/kiss.4bpp.lz"
 	gDialogGraphics_46_Palettes:
-	.incbin "graphics/dialog/mugshot/kiss.lz.gbapal"
+	.incbin "graphics/dialog/mugshot/kiss.gbapal"
 
 gDialogGraphics_47:
-	.incbin "graphics/dialog/mugshot/brain.lz"
+	.incbin "graphics/dialog/mugshot/brain.4bpp.lz"
 	gDialogGraphics_47_Palettes:
-	.incbin "graphics/dialog/mugshot/brain.lz.gbapal"
+	.incbin "graphics/dialog/mugshot/brain.gbapal"
 
 gDialogGraphics_48:
-	.incbin "graphics/dialog/mugshot/joan.lz"
+	.incbin "graphics/dialog/mugshot/joan.4bpp.lz"
 	gDialogGraphics_48_Palettes:
-	.incbin "graphics/dialog/mugshot/joan.lz.gbapal"
+	.incbin "graphics/dialog/mugshot/joan.gbapal"
 
 gDialogGraphics_49:
-	.incbin "graphics/dialog/mugshot/rouge.lz"
+	.incbin "graphics/dialog/mugshot/rouge.4bpp.lz"
 	gDialogGraphics_49_Palettes:
-	.incbin "graphics/dialog/mugshot/rouge.lz.gbapal"
+	.incbin "graphics/dialog/mugshot/rouge.gbapal"
 
 gDialogGraphics_50:
-	.incbin "graphics/dialog/mugshot/sound_only.lz"
+	.incbin "graphics/dialog/mugshot/sound_only.4bpp.lz"
 	gDialogGraphics_50_Palettes:
-	.incbin "graphics/dialog/mugshot/sound_only.lz.gbapal"
+	.incbin "graphics/dialog/mugshot/sound_only.gbapal"
 
 gDialogGraphics_51:
-	.incbin "graphics/dialog/mugshot/crea.lz"
+	.incbin "graphics/dialog/mugshot/crea.4bpp.lz"
 	gDialogGraphics_51_Palettes:
-	.incbin "graphics/dialog/mugshot/crea.lz.gbapal"
+	.incbin "graphics/dialog/mugshot/crea.gbapal"
 
 gDialogGraphics_52:
-	.incbin "graphics/dialog/mugshot/prea.lz"
+	.incbin "graphics/dialog/mugshot/prea.4bpp.lz"
 	gDialogGraphics_52_Palettes:
-	.incbin "graphics/dialog/mugshot/prea.lz.gbapal"
+	.incbin "graphics/dialog/mugshot/prea.gbapal"
 
 gDialogGraphics_53:
-	.incbin "graphics/dialog/mugshot/sound_only2.lz"
+	.incbin "graphics/dialog/mugshot/sound_only2.4bpp.lz"
 	gDialogGraphics_53_Palettes:
-	.incbin "graphics/dialog/mugshot/sound_only2.lz.gbapal"
+	.incbin "graphics/dialog/mugshot/sound_only2.gbapal"
 
 gDialogGraphics_54:
-	.incbin "graphics/dialog/mugshot/colbor.lz"
+	.incbin "graphics/dialog/mugshot/colbor.4bpp.lz"
 	gDialogGraphics_54_Palettes:
-	.incbin "graphics/dialog/mugshot/colbor.lz.gbapal"
+	.incbin "graphics/dialog/mugshot/colbor.gbapal"
 
 gDialogGraphics_55:
-	.incbin "graphics/dialog/mugshot/copy_x_armor.lz"
+	.incbin "graphics/dialog/mugshot/copy_x_armor.4bpp.lz"
 	gDialogGraphics_55_Palettes:
-	.incbin "graphics/dialog/mugshot/copy_x_armor.lz.gbapal"
+	.incbin "graphics/dialog/mugshot/copy_x_armor.gbapal"
 
 gDialogGraphics_56:
-	.incbin "graphics/dialog/mugshot/ciel_blur.lz"
+	.incbin "graphics/dialog/mugshot/ciel_blur.4bpp.lz"
 	gDialogGraphics_56_Palettes:
-	.incbin "graphics/dialog/mugshot/ciel_blur.lz.gbapal"
+	.incbin "graphics/dialog/mugshot/ciel_blur.gbapal"
 
 gDialogGraphics_57:
-	.incbin "graphics/dialog/mugshot/omega_zero.lz"
+	.incbin "graphics/dialog/mugshot/omega_zero.4bpp.lz"
 	gDialogGraphics_57_Palettes:
-	.incbin "graphics/dialog/mugshot/omega_zero.lz.gbapal"
+	.incbin "graphics/dialog/mugshot/omega_zero.gbapal"
 
 gDialogGraphics_58:
-	.incbin "graphics/dialog/msgbox/1.lz"
+	.incbin "graphics/dialog/msgbox/1.4bpp.lz"
 	gDialogGraphics_58_Palettes:
-	.incbin "graphics/dialog/msgbox/1.lz.gbapal"
+	.incbin "graphics/dialog/msgbox/1.gbapal"
 
 gDialogGraphics_59:
-	.incbin "graphics/dialog/msgbox/2.lz"
+	.incbin "graphics/dialog/msgbox/2.4bpp.lz"
 	gDialogGraphics_59_Palettes:
-	.incbin "graphics/dialog/msgbox/2.lz.gbapal"
+	.incbin "graphics/dialog/msgbox/2.gbapal"
 
 gDialogGraphics_60:
-	.incbin "graphics/dialog/msgbox/3.lz"
+	.incbin "graphics/dialog/msgbox/3.4bpp.lz"
 	gDialogGraphics_60_Palettes:
-	.incbin "graphics/dialog/msgbox/3.lz.gbapal"
+	.incbin "graphics/dialog/msgbox/3.gbapal"
 
 gDialogGraphics_61:
-	.incbin "graphics/dialog/msgbox/4.lz"
+	.incbin "graphics/dialog/msgbox/4.4bpp.lz"
 	gDialogGraphics_61_Palettes:
-	.incbin "graphics/dialog/msgbox/4.lz.gbapal"
+	.incbin "graphics/dialog/msgbox/4.gbapal"
 
 gDialogGraphics_62:
-	.incbin "graphics/dialog/msgbox/5.lz"
+	.incbin "graphics/dialog/msgbox/5.4bpp.lz"
 	gDialogGraphics_62_Palettes:
-	.incbin "graphics/dialog/msgbox/5.lz.gbapal"
+	.incbin "graphics/dialog/msgbox/5.gbapal"
 
 gDialogGraphics_63:
-	.incbin "graphics/dialog/msgbox/6.lz"
+	.incbin "graphics/dialog/msgbox/6.4bpp.lz"
 	gDialogGraphics_63_Palettes:
-	.incbin "graphics/dialog/msgbox/6.lz.gbapal"
+	.incbin "graphics/dialog/msgbox/6.gbapal"
 
 gDialogGraphics_64:
-	.incbin "graphics/dialog/msgbox/7.lz"
+	.incbin "graphics/dialog/msgbox/7.4bpp.lz"
 	gDialogGraphics_64_Palettes:
-	.incbin "graphics/dialog/msgbox/7.lz.gbapal"
+	.incbin "graphics/dialog/msgbox/7.gbapal"
 
 gDialogGraphics_65:
-	.incbin "graphics/dialog/msgbox/8.lz"
+	.incbin "graphics/dialog/msgbox/8.4bpp.lz"
 	gDialogGraphics_65_Palettes:
-	.incbin "graphics/dialog/msgbox/8.lz.gbapal"
+	.incbin "graphics/dialog/msgbox/8.gbapal"
 

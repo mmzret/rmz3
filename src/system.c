@@ -82,16 +82,16 @@ void Process_SoftReset(struct Process* _ UNUSED) {
   gWindowRegBuffer.dispcnt = 0;
   gWindowRegBuffer.winin[2] = 0xFF;
   wMOSAIC = 0x00;
-  PALETTE16(0) = RGB_BLACK;
+  (*(u16*)(&gPaletteManager.buf[0])) = RGB_BLACK;
   StopAllMusics();
   LoadAsciiBold();
   LoadKatakanaBold();
   gVideoRegBuffer.dispcnt &= ~DISPCNT_BGMODE_MASK;
   gVideoRegBuffer.dispcnt &= ~DISPCNT_BG_ALL_ON;
   gVideoRegBuffer.dispcnt |= DISPCNT_BG0_ON;
-  *(u32*)gVideoRegBuffer.bgofs[0] = 0;
+  RESET_BGOFS(0);
   if (gIntro.mode[0] == 0) {
-    PALETTE16(0) = RGB_WHITE;
+    (*(u16*)(&gPaletteManager.buf[0])) = RGB_WHITE;
   }
   SwitchProcess(TRUE);
   exec(Process_Intro);

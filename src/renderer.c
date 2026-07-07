@@ -22,20 +22,20 @@ static void unused_08004e58(Renderer* r, void* r1) { r->_ = r1; }
 
 // 描画タスクを1番最初に実行されるようにレンダラにわたす (つまり、後続の描画タスクでどんどん上書きされていく)
 // 0x08004e64
-void Renderer_PrependTask(Renderer* r, struct Task* task) {
+void Renderer_PrependTask(Renderer* r, RenderNode* task) {
   task->next = (*r->tasks)[0][0];
   (*r->tasks)[0][0] = task;
 }
 
-static void unused_08004e74(Renderer* r, struct Task* task, s16 prio) {
-  struct Task* cur = (*r->tasks)[prio][0];
+static void unused_08004e74(Renderer* r, RenderNode* task, s16 prio) {
+  RenderNode* cur = (*r->tasks)[prio][0];
   task->next = cur;
   (*r->tasks)[prio][0] = task;
 }
 
 // 0x08004e8c
-void Renderer_SendTask(Renderer* r, struct Task* task, s16 prio, s16 col) {
-  struct Task* cur = (*r->tasks)[prio][col];
+void Renderer_SendTask(Renderer* r, RenderNode* task, s16 prio, s16 col) {
+  RenderNode* cur = (*r->tasks)[prio][col];
   task->next = cur;
   (*r->tasks)[prio][col] = task;
 }
@@ -48,19 +48,19 @@ void Renderer_SendTask(Renderer* r, struct Task* task, s16 prio, s16 col) {
  */
 void Renderer_Flush(Renderer* r) {
   s32 i;
-  struct Task** list;
+  RenderNode** list;
   struct DrawPivot c;
 
   if (r->pivot != NULL) {
     CreateDrawPivot(&c, r->pivot, r->_);
 
-    list = (struct Task**)(*r->tasks);
+    list = (RenderNode**)(*r->tasks);
     for (i = 0; i < TASK_LENGTH; i++) {
-      struct Task* task = list[0];  // = .tasks[i / 32][i % 32]
+      RenderNode* node = list[0];  // = .tasks[i / 32][i % 32]
       list = &list[1];
-      while (task != NULL) {  // task -> task->next -> task->next->next -> ... -> NULL
-        (task->fn)(task, &c);
-        task = task->next;
+      while (node != NULL) {  // node -> node->next -> node->next->next -> ... -> NULL
+        (node->fn)(node, &c);
+        node = node->next;
       }
     }
   }

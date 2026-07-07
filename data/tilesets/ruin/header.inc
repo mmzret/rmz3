@@ -3,76 +3,61 @@
 
 .global gRuinTilesetGraphics
 gRuinTilesetGraphics:
-	@ Graphic 0
-	.4byte gRuinTilesetGraphics_0-. @ src offset
-	.4byte (0 << 22) | 11872 	@ size(bit0..21): 11872 Bytes, dst(bit22..) = VRAM+0
-	.2byte 256, (BPP4 | LZ77) 	@ chunk size, props
-		@ Palette
-		.4byte gRuinTilesetGraphics_0_Palettes-. @ src offset
+
+RuinTileset0: @ 0x08756C84
+	.4byte RuinTileset0_Tiles-. @ data: 0x08756CD4 = .+80
+	.4byte 11872 | (0 << 22) 	@ bit0..21: bytesize, bit22..31: dst (VRAM TileID)
+	.2byte 256, (LZ77 | BPP4) 	@ rowsize(unused), props
+	@ Palette0 0x08756C90
+		.4byte RuinTileset0_Pal-. @ data: 0x08759B34 = .+11940
 		.2byte 160 @ bytesize
 		.byte 0, 2 @ lz77(bool8), dst = PaletteID
 
-	@ Graphic 1
-	.4byte gRuinTilesetGraphics_1-. @ src offset
-	.4byte (512 << 22) | 10356 	@ size(bit0..21): 10356 Bytes, dst(bit22..) = VRAM+512
-	.2byte 256, (BPP4 | LZ77) 	@ chunk size, props
-		@ Palette
-		.4byte gRuinTilesetGraphics_1_Palettes-. @ src offset
+RuinTileset1: @ 0x08756C98
+	.4byte RuinTileset1_Tiles-. @ data: 0x08759BD4 = .+12092
+	.4byte 10356 | (512 << 22) 	@ bit0..21: bytesize, bit22..31: dst (VRAM TileID)
+	.2byte 256, (LZ77 | BPP4) 	@ rowsize(unused), props
+	@ Palette1 0x08756CA4
+		.4byte RuinTileset1_Pal-. @ data: 0x0875C448 = .+22436
 		.2byte 192 @ bytesize
 		.byte 0, 9 @ lz77(bool8), dst = PaletteID
 
-	@ Graphic 2
-	.4byte gRuinTilesetGraphics_2-. @ src offset
-	.4byte (512 << 22) | 11388 	@ size(bit0..21): 11388 Bytes, dst(bit22..) = VRAM+512
-	.2byte 256, (BPP4 | LZ77) 	@ chunk size, props
-		@ Palette
-		.4byte gRuinTilesetGraphics_2_Palettes-. @ src offset
+RuinTileset2: @ 0x08756CAC
+	.4byte RuinTileset2_Tiles-. @ data: 0x0875C508 = .+22620
+	.4byte 11388 | (512 << 22) 	@ bit0..21: bytesize, bit22..31: dst (VRAM TileID)
+	.2byte 256, (LZ77 | BPP4) 	@ rowsize(unused), props
+	@ Palette2 0x08756CB8
+		.4byte RuinTileset2_Pal-. @ data: 0x0875F184 = .+33996
 		.2byte 160 @ bytesize
 		.byte 0, 9 @ lz77(bool8), dst = PaletteID
 
-	@ Graphic 3
-	.4byte gRuinTilesetGraphics_3-. @ src offset
-	.4byte (0 << 22) | 9492 	@ size(bit0..21): 9492 Bytes, dst(bit22..) = VRAM+0
-	.2byte 256, (BPP4 | LZ77) 	@ chunk size, props
-		@ Palette
-		.4byte gRuinTilesetGraphics_3_Palettes-. @ src offset
+RuinTileset3: @ 0x08756CC0
+	.4byte RuinTileset3_Tiles-. @ data: 0x0875F224 = .+34148
+	.4byte 9492 | (0 << 22) 	@ bit0..21: bytesize, bit22..31: dst (VRAM TileID)
+	.2byte 256, (LZ77 | BPP4) 	@ rowsize(unused), props
+	@ Palette3 0x08756CCC
+		.4byte RuinTileset3_Pal-. @ data: 0x08761738 = .+43628
 		.2byte 96 @ bytesize
 		.byte 0, 2 @ lz77(bool8), dst = PaletteID
 
 @;@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 
-gRuinTilesetGraphics_0:
-	.incbin "data/tilesets/ruin/0/tiles.4bpp.lz"
-	gRuinTilesetGraphics_0_Palettes:
-	.incbin "data/tilesets/ruin/0/02.pal"
-	.incbin "data/tilesets/ruin/0/03.pal"
-	.incbin "data/tilesets/ruin/0/04.pal"
-	.incbin "data/tilesets/ruin/0/05.pal"
-	.incbin "data/tilesets/ruin/0/06.pal"
+RuinTileset0_Tiles:
+	.incbin "data/tilesets/ruin/ruin0.4bpp.lz"
+RuinTileset0_Pal:
+	.incbin "data/tilesets/ruin/ruin0.gbapal"
 
-gRuinTilesetGraphics_1:
-	.incbin "data/tilesets/ruin/1/tiles.4bpp.lz"
-	gRuinTilesetGraphics_1_Palettes:
-	.incbin "data/tilesets/ruin/1/09.pal"
-	.incbin "data/tilesets/ruin/1/10.pal"
-	.incbin "data/tilesets/ruin/1/11.pal"
-	.incbin "data/tilesets/ruin/1/12.pal"
-	.incbin "data/tilesets/ruin/1/13.pal"
-	.incbin "data/tilesets/ruin/1/14.pal"
+RuinTileset1_Tiles:
+	.incbin "data/tilesets/ruin/ruin1.4bpp.lz"
+RuinTileset1_Pal:
+	.incbin "data/tilesets/ruin/ruin1.gbapal"
 
-gRuinTilesetGraphics_2:
-	.incbin "data/tilesets/ruin/2/tiles.4bpp.lz"
-	gRuinTilesetGraphics_2_Palettes:
-	.incbin "data/tilesets/ruin/2/09.pal"
-	.incbin "data/tilesets/ruin/2/10.pal"
-	.incbin "data/tilesets/ruin/2/11.pal"
-	.incbin "data/tilesets/ruin/2/12.pal"
-	.incbin "data/tilesets/ruin/2/13.pal"
+RuinTileset2_Tiles:
+	.incbin "data/tilesets/ruin/ruin2.4bpp.lz"
+RuinTileset2_Pal:
+	.incbin "data/tilesets/ruin/ruin2.gbapal"
 
-gRuinTilesetGraphics_3:
-	.incbin "data/tilesets/ruin/3/tiles.4bpp.lz"
-	gRuinTilesetGraphics_3_Palettes:
-	.incbin "data/tilesets/ruin/3/02.pal"
-	.incbin "data/tilesets/ruin/3/03.pal"
-	.incbin "data/tilesets/ruin/3/04.pal"
-
+RuinTileset3_Tiles:
+	.incbin "data/tilesets/ruin/ruin3.4bpp.lz"
+RuinTileset3_Pal:
+	.incbin "data/tilesets/ruin/ruin3.gbapal"

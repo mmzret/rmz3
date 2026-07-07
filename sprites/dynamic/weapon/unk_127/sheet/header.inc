@@ -43,7 +43,7 @@ gGraphicHeader_Sprite_weapon_unk_127_1:
 	gGraphicHeader_Sprite_weapon_unk_127_1_Palettes:
 
 gGraphicHeader_Sprite_weapon_unk_127_2:
-	.incbin "sprites/dynamic/weapon/unk_127/sheet/2.notrim.4bpp"
+	.incbin "sprites/dynamic/weapon/unk_127/sheet/2.4bpp"
 	gGraphicHeader_Sprite_weapon_unk_127_2_Palettes:
 
 gGraphicHeader_Sprite_weapon_unk_127_3:

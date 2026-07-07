@@ -16,9 +16,7 @@
       "include": ["deno.jsonc", "tools"]
     },
     "options": {
-      "useTabs": false,
       "lineWidth": 1000, // I hate line wrapping
-      "indentWidth": 2,
       "singleQuote": true
     }
   },

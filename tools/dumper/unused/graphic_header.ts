@@ -1,7 +1,7 @@
 #!/usr/bin/env -S deno run --allow-read --allow-write --allow-run
 
 import { Command } from '@cliffy/command';
-import { loadU16, loadU32, loadU8, toHex } from '../../common/index.ts';
+import { getU16, getU32, getU8, toHex } from '../../common/index.ts';
 
 const main = async () => {
   const { args, options } = await new Command()
@@ -16,7 +16,7 @@ const main = async () => {
     .usage('rmz3.gba 0x085d78f8 254')
     .parse(Deno.args);
 
-  const rom = Deno.readFileSync(args[0]);
+  const rom = new DataView(Deno.readFileSync(args[0]).buffer);
   const start = Number(args[1]);
   const length = Number(args[2]);
 
@@ -36,23 +36,22 @@ const printProps = (props: number) => {
 };
 
 export const printGraphicHeader = (
-  rom: Uint8Array,
+  rom: DataView,
   addr: number,
   nopal: boolean,
 ): string => {
-  const BASE = 0x0800_0000;
   const gfx = {
-    srcrel: loadU32(rom, addr, BASE),
-    srcabs: loadU32(rom, addr, BASE) + addr,
-    size: loadU32(rom, addr + 4, BASE) & 0x3FFFFF,
-    ofs: loadU16(rom, addr + 6, BASE) >> 6,
-    chunk: loadU16(rom, addr + 8, BASE),
-    props: loadU16(rom, addr + 10, BASE),
-    palrel: loadU32(rom, addr + 12, BASE),
-    palabs: loadU32(rom, addr + 12, BASE) + (addr + 12),
-    palLength: loadU16(rom, addr + 16, BASE) / 2,
-    palLz77: loadU8(rom, addr + 18, BASE),
-    dst: loadU8(rom, addr + 19, BASE),
+    srcrel: getU32(rom, addr),
+    srcabs: getU32(rom, addr) + addr,
+    size: getU32(rom, addr + 4) & 0x3FFFFF,
+    ofs: getU16(rom, addr + 6) >> 6,
+    chunk: getU16(rom, addr + 8),
+    props: getU16(rom, addr + 10),
+    palrel: getU32(rom, addr + 12),
+    palabs: getU32(rom, addr + 12) + (addr + 12),
+    palLength: getU16(rom, addr + 16) / 2,
+    palLz77: getU8(rom, addr + 18),
+    dst: getU8(rom, addr + 19),
   };
 
   const graphic = `{${nopal ? `  // 0x${toHex(addr, 8)}` : ''}

@@ -71,10 +71,8 @@ static void MenuComp2_Update(struct SquareCursorWidget* p) {
   (p->s).coord.x = p->px * PIXEL(1);
   (p->s).coord.y = p->py * PIXEL(1);
   if ((p->s).work[0] == 0) {
-    const u16* bg1ofs = gVideoRegBuffer.bgofs[1];
-    if (bg1ofs[0] > 0x100) {
-      (p->s).coord.x += PIXEL(512);
-    }
+    BgOfs* bg1ofs = (BgOfs*)gVideoRegBuffer.bgofs[1];
+    if (bg1ofs->x > 256) (p->s).coord.x += PIXEL(512);
   }
 }
 

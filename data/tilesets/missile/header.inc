@@ -3,137 +3,104 @@
 
 .global gMissileTilesetGraphics
 gMissileTilesetGraphics:
-	@ Graphic 0
-	.4byte gMissileTilesetGraphics_0-. @ src offset
-	.4byte (0 << 22) | 7284 	@ bit0..21: bytesize, bit22..31: dst (VRAM TileID)
-	.2byte 256, (LZ77 | BPP4) 	@ colsize(unused), props
-		@ Palette
-		.4byte gMissileTilesetGraphics_0_Palettes-. @ src offset
+
+MissileTileset0: @ 0x08761798
+	.4byte MissileTileset0_Tiles-. @ data: 0x08761824 = .+140
+	.4byte 7284 | (0 << 22) 	@ bit0..21: bytesize, bit22..31: dst (VRAM TileID)
+	.2byte 256, (LZ77 | BPP4) 	@ rowsize(unused), props
+	@ Palette 0x087617A4
+		.4byte MissileTileset0_Pal-. @ data: 0x08763498 = .+7412
 		.2byte 192 @ bytesize
 		.byte 0, 2 @ lz77(bool8), dst = PaletteID
 
-	@ Graphic 1
-	.4byte gMissileTilesetGraphics_1-. @ src offset
-	.4byte (512 << 22) | 7404 	@ bit0..21: bytesize, bit22..31: dst (VRAM TileID)
-	.2byte 256, (LZ77 | BPP4) 	@ colsize(unused), props
-		@ Palette
-		.4byte gMissileTilesetGraphics_1_Palettes-. @ src offset
+MissileTileset1: @ 0x087617AC
+	.4byte MissileTileset1_Tiles-. @ data: 0x08763558 = .+7596
+	.4byte 7404 | (512 << 22) 	@ bit0..21: bytesize, bit22..31: dst (VRAM TileID)
+	.2byte 256, (LZ77 | BPP4) 	@ rowsize(unused), props
+	@ Palette 0x087617B8
+		.4byte MissileTileset1_Pal-. @ data: 0x08765244 = .+14988
 		.2byte 192 @ bytesize
 		.byte 0, 9 @ lz77(bool8), dst = PaletteID
 
-	@ Graphic 2
-	.4byte gMissileTilesetGraphics_2-. @ src offset
-	.4byte (0 << 22) | 5784 	@ bit0..21: bytesize, bit22..31: dst (VRAM TileID)
-	.2byte 256, (LZ77 | BPP4) 	@ colsize(unused), props
-		@ Palette
-		.4byte gMissileTilesetGraphics_2_Palettes-. @ src offset
+MissileTileset2: @ 0x087617C0
+	.4byte MissileTileset2_Tiles-. @ data: 0x08765304 = .+15172
+	.4byte 5784 | (0 << 22) 	@ bit0..21: bytesize, bit22..31: dst (VRAM TileID)
+	.2byte 256, (LZ77 | BPP4) 	@ rowsize(unused), props
+	@ Palette 0x087617CC
+		.4byte MissileTileset2_Pal-. @ data: 0x0876699C = .+20944
 		.2byte 64 @ bytesize
 		.byte 0, 2 @ lz77(bool8), dst = PaletteID
 
-	@ Graphic 3
-	.4byte gMissileTilesetGraphics_3-. @ src offset
-	.4byte (0 << 22) | 5680 	@ bit0..21: bytesize, bit22..31: dst (VRAM TileID)
-	.2byte 256, (LZ77 | BPP4) 	@ colsize(unused), props
-		@ Palette
-		.4byte gMissileTilesetGraphics_3_Palettes-. @ src offset
+MissileTileset3: @ 0x087617D4
+	.4byte MissileTileset3_Tiles-. @ data: 0x087669DC = .+21000
+	.4byte 5680 | (0 << 22) 	@ bit0..21: bytesize, bit22..31: dst (VRAM TileID)
+	.2byte 256, (LZ77 | BPP4) 	@ rowsize(unused), props
+	@ Palette 0x087617E0
+		.4byte MissileTileset3_Pal-. @ data: 0x0876800C = .+26668
 		.2byte 224 @ bytesize
 		.byte 0, 2 @ lz77(bool8), dst = PaletteID
 
-	@ Graphic 4
-	.4byte gMissileTilesetGraphics_4-. @ src offset
-	.4byte (512 << 22) | 5636 	@ bit0..21: bytesize, bit22..31: dst (VRAM TileID)
-	.2byte 256, (LZ77 | BPP4) 	@ colsize(unused), props
-		@ Palette
-		.4byte gMissileTilesetGraphics_4_Palettes-. @ src offset
+MissileTileset4: @ 0x087617E8
+	.4byte MissileTileset4_Tiles-. @ data: 0x087680EC = .+26884
+	.4byte 5636 | (512 << 22) 	@ bit0..21: bytesize, bit22..31: dst (VRAM TileID)
+	.2byte 256, (LZ77 | BPP4) 	@ rowsize(unused), props
+	@ Palette 0x087617F4
+		.4byte MissileTileset4_Pal-. @ data: 0x087696F0 = .+32508
 		.2byte 224 @ bytesize
 		.byte 0, 9 @ lz77(bool8), dst = PaletteID
 
-	@ Graphic 5
-	.4byte gMissileTilesetGraphics_5-. @ src offset
-	.4byte (0 << 22) | 11028 	@ bit0..21: bytesize, bit22..31: dst (VRAM TileID)
-	.2byte 256, (LZ77 | BPP4) 	@ colsize(unused), props
-		@ Palette
-		.4byte gMissileTilesetGraphics_5_Palettes-. @ src offset
+MissileTileset5: @ 0x087617FC
+	.4byte MissileTileset5_Tiles-. @ data: 0x087697D0 = .+32724
+	.4byte 11028 | (0 << 22) 	@ bit0..21: bytesize, bit22..31: dst (VRAM TileID)
+	.2byte 256, (LZ77 | BPP4) 	@ rowsize(unused), props
+	@ Palette 0x08761808
+		.4byte MissileTileset5_Pal-. @ data: 0x0876C2E4 = .+43740
 		.2byte 192 @ bytesize
 		.byte 0, 2 @ lz77(bool8), dst = PaletteID
 
-	@ Graphic 6
-	.4byte gMissileTilesetGraphics_6-. @ src offset
-	.4byte (512 << 22) | 4724 	@ bit0..21: bytesize, bit22..31: dst (VRAM TileID)
-	.2byte 256, (LZ77 | BPP4) 	@ colsize(unused), props
-		@ Palette
-		.4byte gMissileTilesetGraphics_6_Palettes-. @ src offset
+MissileTileset6: @ 0x08761810
+	.4byte MissileTileset6_Tiles-. @ data: 0x0876C3A4 = .+43924
+	.4byte 4724 | (512 << 22) 	@ bit0..21: bytesize, bit22..31: dst (VRAM TileID)
+	.2byte 256, (LZ77 | BPP4) 	@ rowsize(unused), props
+	@ Palette 0x0876181C
+		.4byte MissileTileset6_Pal-. @ data: 0x0876D618 = .+48636
 		.2byte 224 @ bytesize
 		.byte 0, 9 @ lz77(bool8), dst = PaletteID
 
 @;@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 
-gMissileTilesetGraphics_0:
-	.incbin "data/tilesets/missile/0/tiles.4bpp.lz"
-	gMissileTilesetGraphics_0_Palettes:
-	.incbin "data/tilesets/missile/0/02.pal"
-	.incbin "data/tilesets/missile/0/03.pal"
-	.incbin "data/tilesets/missile/0/04.pal"
-	.incbin "data/tilesets/missile/0/05.pal"
-	.incbin "data/tilesets/missile/0/06.pal"
-	.incbin "data/tilesets/missile/0/07.pal"
+MissileTileset0_Tiles:
+	.incbin "data/tilesets/missile/missile0.4bpp.lz"
+MissileTileset0_Pal:
+	.incbin "data/tilesets/missile/missile0.gbapal"
 
-gMissileTilesetGraphics_1:
-	.incbin "data/tilesets/missile/1/tiles.4bpp.lz"
-	gMissileTilesetGraphics_1_Palettes:
-	.incbin "data/tilesets/missile/1/09.pal"
-	.incbin "data/tilesets/missile/1/10.pal"
-	.incbin "data/tilesets/missile/1/11.pal"
-	.incbin "data/tilesets/missile/1/12.pal"
-	.incbin "data/tilesets/missile/1/13.pal"
-	.incbin "data/tilesets/missile/1/14.pal"
+MissileTileset1_Tiles:
+	.incbin "data/tilesets/missile/missile1.4bpp.lz"
+MissileTileset1_Pal:
+	.incbin "data/tilesets/missile/missile1.gbapal"
 
-gMissileTilesetGraphics_2:
-	.incbin "data/tilesets/missile/2/tiles.4bpp.lz"
-	gMissileTilesetGraphics_2_Palettes:
-	.incbin "data/tilesets/missile/2/02.pal"
-	.incbin "data/tilesets/missile/2/03.pal"
+MissileTileset2_Tiles:
+	.incbin "data/tilesets/missile/missile2.4bpp.lz"
+MissileTileset2_Pal:
+	.incbin "data/tilesets/missile/missile2.gbapal"
 
-gMissileTilesetGraphics_3:
-	.incbin "data/tilesets/missile/3/tiles.4bpp.lz"
-	gMissileTilesetGraphics_3_Palettes:
-	.incbin "data/tilesets/missile/3/02.pal"
-	.incbin "data/tilesets/missile/3/03.pal"
-	.incbin "data/tilesets/missile/3/04.pal"
-	.incbin "data/tilesets/missile/3/05.pal"
-	.incbin "data/tilesets/missile/3/06.pal"
-	.incbin "data/tilesets/missile/3/07.pal"
-	.incbin "data/tilesets/missile/3/08.pal"
+MissileTileset3_Tiles:
+	.incbin "data/tilesets/missile/missile3.4bpp.lz"
+MissileTileset3_Pal:
+	.incbin "data/tilesets/missile/missile3.gbapal"
 
-gMissileTilesetGraphics_4:
-	.incbin "data/tilesets/missile/4/tiles.4bpp.lz"
-	gMissileTilesetGraphics_4_Palettes:
-	.incbin "data/tilesets/missile/4/09.pal"
-	.incbin "data/tilesets/missile/4/10.pal"
-	.incbin "data/tilesets/missile/4/11.pal"
-	.incbin "data/tilesets/missile/4/12.pal"
-	.incbin "data/tilesets/missile/4/13.pal"
-	.incbin "data/tilesets/missile/4/14.pal"
-	.incbin "data/tilesets/missile/4/15.pal"
+MissileTileset4_Tiles:
+	.incbin "data/tilesets/missile/missile4.4bpp.lz"
+MissileTileset4_Pal:
+	.incbin "data/tilesets/missile/missile4.gbapal"
 
-gMissileTilesetGraphics_5:
-	.incbin "data/tilesets/missile/5/tiles.4bpp.lz"
-	gMissileTilesetGraphics_5_Palettes:
-	.incbin "data/tilesets/missile/5/02.pal"
-	.incbin "data/tilesets/missile/5/03.pal"
-	.incbin "data/tilesets/missile/5/04.pal"
-	.incbin "data/tilesets/missile/5/05.pal"
-	.incbin "data/tilesets/missile/5/06.pal"
-	.incbin "data/tilesets/missile/5/07.pal"
+MissileTileset5_Tiles:
+	.incbin "data/tilesets/missile/missile5.4bpp.lz"
+MissileTileset5_Pal:
+	.incbin "data/tilesets/missile/missile5.gbapal"
 
-gMissileTilesetGraphics_6:
-	.incbin "data/tilesets/missile/6/tiles.4bpp.lz"
-	gMissileTilesetGraphics_6_Palettes:
-	.incbin "data/tilesets/missile/6/09.pal"
-	.incbin "data/tilesets/missile/6/10.pal"
-	.incbin "data/tilesets/missile/6/11.pal"
-	.incbin "data/tilesets/missile/6/12.pal"
-	.incbin "data/tilesets/missile/6/13.pal"
-	.incbin "data/tilesets/missile/6/14.pal"
-	.incbin "data/tilesets/missile/6/15.pal"
+MissileTileset6_Tiles:
+	.incbin "data/tilesets/missile/missile6.4bpp.lz"
+MissileTileset6_Pal:
+	.incbin "data/tilesets/missile/missile6.gbapal"
 

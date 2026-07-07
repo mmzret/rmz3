@@ -20,4 +20,3 @@ Static sprite:
     グラフィックデータが小さかったり、VRAMに余裕がある場合はStaticにすべきと思われる。
 ```
 
-Please use [mmzret/mmz3e](https://github.com/mmzret/mmz3e) for viewing the sprite animations.

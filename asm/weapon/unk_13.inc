@@ -18,7 +18,7 @@ Weapon13_Init: @ 0x0803C558
 	movs r0, #2
 	orrs r0, r1
 	strb r0, [r5, #0xa]
-	ldr r1, _0803C5A0 @ =0x083616D8
+	ldr r1, _0803C5A0 @ =sWeapon13Animations
 	ldrb r0, [r5, #0x10]
 	lsls r0, r0, #1
 	adds r0, r0, r1
@@ -40,7 +40,7 @@ Weapon13_Init: @ 0x0803C558
 	orrs r1, r0
 	b _0803C5A8
 	.align 2, 0
-_0803C5A0: .4byte 0x083616D8
+_0803C5A0: .4byte sWeapon13Animations
 _0803C5A4:
 	movs r0, #0xef
 	ands r1, r0
@@ -73,7 +73,7 @@ _0803C5D2:
 	adds r2, r1, #0
 	cmp r0, #0
 	beq _0803C5F0
-	ldr r0, _0803C5EC @ =0x083616D4
+	ldr r0, _0803C5EC @ =u8_ARRAY_083616d4
 	ldrb r0, [r0]
 	adds r0, #0x80
 	lsls r0, r0, #0x18
@@ -81,16 +81,16 @@ _0803C5D2:
 	ldrb r1, [r5, #0x10]
 	b _0803C606
 	.align 2, 0
-_0803C5EC: .4byte 0x083616D4
+_0803C5EC: .4byte u8_ARRAY_083616d4
 _0803C5F0:
-	ldr r0, _0803C5F8 @ =0x083616D4
+	ldr r0, _0803C5F8 @ =u8_ARRAY_083616d4
 	ldrb r3, [r0]
 	ldrb r1, [r5, #0x10]
 	b _0803C606
 	.align 2, 0
-_0803C5F8: .4byte 0x083616D4
+_0803C5F8: .4byte u8_ARRAY_083616d4
 _0803C5FC:
-	ldr r0, _0803C620 @ =0x083616D4
+	ldr r0, _0803C620 @ =u8_ARRAY_083616d4
 	ldrb r1, [r5, #0x10]
 	adds r0, r1, r0
 	ldrb r3, [r0]
@@ -100,7 +100,7 @@ _0803C606:
 	ands r0, r2
 	cmp r0, #0
 	beq _0803C628
-	ldr r0, _0803C624 @ =0x083616CC
+	ldr r0, _0803C624 @ =s8_ARRAY_ARRAY_083616cc
 	adds r0, r1, r0
 	movs r1, #0
 	ldrsb r1, [r0, r1]
@@ -109,10 +109,10 @@ _0803C606:
 	subs r0, r0, r1
 	b _0803C636
 	.align 2, 0
-_0803C620: .4byte 0x083616D4
-_0803C624: .4byte 0x083616CC
+_0803C620: .4byte u8_ARRAY_083616d4
+_0803C624: .4byte s8_ARRAY_ARRAY_083616cc
 _0803C628:
-	ldr r0, _0803C680 @ =0x083616CC
+	ldr r0, _0803C680 @ =s8_ARRAY_ARRAY_083616cc
 	adds r0, r1, r0
 	movs r1, #0
 	ldrsb r1, [r0, r1]
@@ -121,7 +121,7 @@ _0803C628:
 	adds r0, r0, r1
 _0803C636:
 	str r0, [r5, #0x54]
-	ldr r1, _0803C684 @ =0x083616D0
+	ldr r1, _0803C684 @ =s8_ARRAY_ARRAY_083616cc+4
 	ldrb r0, [r6, #0x10]
 	adds r0, r0, r1
 	movs r1, #0
@@ -157,8 +157,8 @@ _0803C636:
 	orrs r0, r1
 	b _0803C692
 	.align 2, 0
-_0803C680: .4byte 0x083616CC
-_0803C684: .4byte 0x083616D0
+_0803C680: .4byte s8_ARRAY_ARRAY_083616cc
+_0803C684: .4byte s8_ARRAY_ARRAY_083616cc+4
 _0803C688: .4byte gSineTable
 _0803C68C:
 	ldrb r1, [r5, #0xa]

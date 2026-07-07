@@ -3,123 +3,89 @@
 
 .global gResistanceBaseTilesetGraphics
 gResistanceBaseTilesetGraphics:
-	@ Graphic 0
-	.4byte gResistanceBaseTilesetGraphics_0-. @ src offset
-	.4byte (0 << 22) | 6148 	@ size(bit0..21): 6148 Bytes, dst(bit22..) = VRAM+0
-	.2byte 256, (LZ77 | BPP4) 	@ chunk size, props
-		@ Palette
-		.4byte gResistanceBaseTilesetGraphics_0_Palettes-. @ src offset
+
+ResistanceBaseTileset0: @ 0x087C6F30
+	.4byte ResistanceBaseTileset0_Tiles-. @ data: 0x087C6FA8 = .+120
+	.4byte 6148 | (0 << 22) 	@ bit0..21: bytesize, bit22..31: dst (VRAM TileID)
+	.2byte 256, (LZ77 | BPP4) 	@ rowsize(unused), props
+	@ Palette 0x087C6F3C
+		.4byte ResistanceBaseTileset0_Pal-. @ data: 0x087C87AC = .+6256
 		.2byte 224 @ bytesize
 		.byte 0, 2 @ lz77(bool8), dst = PaletteID
 
-	@ Graphic 1
-	.4byte gResistanceBaseTilesetGraphics_1-. @ src offset
-	.4byte (0 << 22) | 6892 	@ size(bit0..21): 6892 Bytes, dst(bit22..) = VRAM+0
-	.2byte 256, (LZ77 | BPP4) 	@ chunk size, props
-		@ Palette
-		.4byte gResistanceBaseTilesetGraphics_1_Palettes-. @ src offset
+ResistanceBaseTileset1: @ 0x087C6F44
+	.4byte ResistanceBaseTileset1_Tiles-. @ data: 0x087C888C = .+6472
+	.4byte 6892 | (0 << 22) 	@ bit0..21: bytesize, bit22..31: dst (VRAM TileID)
+	.2byte 256, (LZ77 | BPP4) 	@ rowsize(unused), props
+	@ Palette 0x087C6F50
+		.4byte ResistanceBaseTileset1_Pal-. @ data: 0x087CA378 = .+13352
 		.2byte 224 @ bytesize
 		.byte 0, 2 @ lz77(bool8), dst = PaletteID
 
-	@ Graphic 2
-	.4byte gResistanceBaseTilesetGraphics_2-. @ src offset
-	.4byte (512 << 22) | 16384 	@ size(bit0..21): 16384 Bytes, dst(bit22..) = VRAM+512
-	.2byte 256, BPP4 	@ chunk size, props
-		@ Palette
-		.4byte gResistanceBaseTilesetGraphics_2_Palettes-. @ src offset
+ResistanceBaseTileset2: @ 0x087C6F58
+	.4byte ResistanceBaseTileset2_Tiles-. @ data: 0x087CA458 = .+13568
+	.4byte 16384 | (512 << 22) 	@ bit0..21: bytesize, bit22..31: dst (VRAM TileID)
+	.2byte 256, BPP4 	@ rowsize(unused), props
+	@ Palette 0x087C6F64
+		.4byte ResistanceBaseTileset2_Pal-. @ data: 0x087CE458 = .+29940
 		.2byte 224 @ bytesize
 		.byte 0, 9 @ lz77(bool8), dst = PaletteID
 
-	@ Graphic 3
-	.4byte gResistanceBaseTilesetGraphics_3-. @ src offset
-	.4byte (512 << 22) | 16384 	@ size(bit0..21): 16384 Bytes, dst(bit22..) = VRAM+512
-	.2byte 256, BPP4 	@ chunk size, props
-		@ Palette
-		.4byte gResistanceBaseTilesetGraphics_3_Palettes-. @ src offset
+ResistanceBaseTileset3: @ 0x087C6F6C
+	.4byte ResistanceBaseTileset3_Tiles-. @ data: 0x087CE538 = .+30156
+	.4byte 16384 | (512 << 22) 	@ bit0..21: bytesize, bit22..31: dst (VRAM TileID)
+	.2byte 256, BPP4 	@ rowsize(unused), props
+	@ Palette 0x087C6F78
+		.4byte ResistanceBaseTileset3_Pal-. @ data: 0x087D2538 = .+46528
 		.2byte 224 @ bytesize
 		.byte 0, 9 @ lz77(bool8), dst = PaletteID
 
-	@ Graphic 4
-	.4byte gResistanceBaseTilesetGraphics_4-. @ src offset
-	.4byte (0 << 22) | 8160 	@ size(bit0..21): 8160 Bytes, dst(bit22..) = VRAM+0
-	.2byte 256, (LZ77 | BPP4) 	@ chunk size, props
-		@ Palette
-		.4byte gResistanceBaseTilesetGraphics_4_Palettes-. @ src offset
+ResistanceBaseTileset4: @ 0x087C6F80
+	.4byte ResistanceBaseTileset4_Tiles-. @ data: 0x087D2618 = .+46744
+	.4byte 8160 | (0 << 22) 	@ bit0..21: bytesize, bit22..31: dst (VRAM TileID)
+	.2byte 256, (LZ77 | BPP4) 	@ rowsize(unused), props
+	@ Palette 0x087C6F8C
+		.4byte ResistanceBaseTileset4_Pal-. @ data: 0x087D45F8 = .+54892
 		.2byte 224 @ bytesize
 		.byte 0, 2 @ lz77(bool8), dst = PaletteID
 
-	@ Graphic 5
-	.4byte gResistanceBaseTilesetGraphics_5-. @ src offset
-	.4byte (0 << 22) | 4788 	@ size(bit0..21): 4788 Bytes, dst(bit22..) = VRAM+0
-	.2byte 256, (LZ77 | BPP4) 	@ chunk size, props
-		@ Palette
-		.4byte gResistanceBaseTilesetGraphics_5_Palettes-. @ src offset
+ResistanceBaseTileset5: @ 0x087C6F94
+	.4byte ResistanceBaseTileset5_Tiles-. @ data: 0x087D46D8 = .+55108
+	.4byte 4788 | (0 << 22) 	@ bit0..21: bytesize, bit22..31: dst (VRAM TileID)
+	.2byte 256, (LZ77 | BPP4) 	@ rowsize(unused), props
+	@ Palette 0x087C6FA0
+		.4byte ResistanceBaseTileset5_Pal-. @ data: 0x087D598C = .+59884
 		.2byte 160 @ bytesize
 		.byte 0, 2 @ lz77(bool8), dst = PaletteID
 
 @;@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 
-gResistanceBaseTilesetGraphics_0:
-	.incbin "data/tilesets/resistance_base/0/tiles.4bpp.lz"
-	gResistanceBaseTilesetGraphics_0_Palettes:
-	.incbin "data/tilesets/resistance_base/0/02.pal"
-	.incbin "data/tilesets/resistance_base/0/03.pal"
-	.incbin "data/tilesets/resistance_base/0/04.pal"
-	.incbin "data/tilesets/resistance_base/0/05.pal"
-	.incbin "data/tilesets/resistance_base/0/06.pal"
-	.incbin "data/tilesets/resistance_base/0/07.pal"
-	.incbin "data/tilesets/resistance_base/0/08.pal"
+ResistanceBaseTileset0_Tiles:
+	.incbin "data/tilesets/resistance_base/resistance_base0.4bpp.lz"
+ResistanceBaseTileset0_Pal:
+	.incbin "data/tilesets/resistance_base/resistance_base0.gbapal"
 
-gResistanceBaseTilesetGraphics_1:
-	.incbin "data/tilesets/resistance_base/1/tiles.4bpp.lz"
-	gResistanceBaseTilesetGraphics_1_Palettes:
-	.incbin "data/tilesets/resistance_base/1/02.pal"
-	.incbin "data/tilesets/resistance_base/1/03.pal"
-	.incbin "data/tilesets/resistance_base/1/04.pal"
-	.incbin "data/tilesets/resistance_base/1/05.pal"
-	.incbin "data/tilesets/resistance_base/1/06.pal"
-	.incbin "data/tilesets/resistance_base/1/07.pal"
-	.incbin "data/tilesets/resistance_base/1/08.pal"
+ResistanceBaseTileset1_Tiles:
+	.incbin "data/tilesets/resistance_base/resistance_base1.4bpp.lz"
+ResistanceBaseTileset1_Pal:
+	.incbin "data/tilesets/resistance_base/resistance_base1.gbapal"
 
-gResistanceBaseTilesetGraphics_2:
-	.incbin "data/tilesets/resistance_base/2/tiles.4bpp"
-	gResistanceBaseTilesetGraphics_2_Palettes:
-	.incbin "data/tilesets/resistance_base/2/09.pal"
-	.incbin "data/tilesets/resistance_base/2/10.pal"
-	.incbin "data/tilesets/resistance_base/2/11.pal"
-	.incbin "data/tilesets/resistance_base/2/12.pal"
-	.incbin "data/tilesets/resistance_base/2/13.pal"
-	.incbin "data/tilesets/resistance_base/2/14.pal"
-	.incbin "data/tilesets/resistance_base/2/15.pal"
+ResistanceBaseTileset2_Tiles:
+	.incbin "data/tilesets/resistance_base/resistance_base2.4bpp"
+ResistanceBaseTileset2_Pal:
+	.incbin "data/tilesets/resistance_base/resistance_base2.gbapal"
 
-gResistanceBaseTilesetGraphics_3:
-	.incbin "data/tilesets/resistance_base/3/tiles.4bpp"
-	gResistanceBaseTilesetGraphics_3_Palettes:
-	.incbin "data/tilesets/resistance_base/3/09.pal"
-	.incbin "data/tilesets/resistance_base/3/10.pal"
-	.incbin "data/tilesets/resistance_base/3/11.pal"
-	.incbin "data/tilesets/resistance_base/3/12.pal"
-	.incbin "data/tilesets/resistance_base/3/13.pal"
-	.incbin "data/tilesets/resistance_base/3/14.pal"
-	.incbin "data/tilesets/resistance_base/3/15.pal"
+ResistanceBaseTileset3_Tiles:
+	.incbin "data/tilesets/resistance_base/resistance_base3.4bpp"
+ResistanceBaseTileset3_Pal:
+	.incbin "data/tilesets/resistance_base/resistance_base3.gbapal"
 
-gResistanceBaseTilesetGraphics_4:
-	.incbin "data/tilesets/resistance_base/4/tiles.4bpp.lz"
-	gResistanceBaseTilesetGraphics_4_Palettes:
-	.incbin "data/tilesets/resistance_base/4/02.pal"
-	.incbin "data/tilesets/resistance_base/4/03.pal"
-	.incbin "data/tilesets/resistance_base/4/04.pal"
-	.incbin "data/tilesets/resistance_base/4/05.pal"
-	.incbin "data/tilesets/resistance_base/4/06.pal"
-	.incbin "data/tilesets/resistance_base/4/07.pal"
-	.incbin "data/tilesets/resistance_base/4/08.pal"
+ResistanceBaseTileset4_Tiles:
+	.incbin "data/tilesets/resistance_base/resistance_base4.4bpp.lz"
+ResistanceBaseTileset4_Pal:
+	.incbin "data/tilesets/resistance_base/resistance_base4.gbapal"
 
-gResistanceBaseTilesetGraphics_5:
-	.incbin "data/tilesets/resistance_base/5/tiles.4bpp.lz"
-	gResistanceBaseTilesetGraphics_5_Palettes:
-	.incbin "data/tilesets/resistance_base/5/02.pal"
-	.incbin "data/tilesets/resistance_base/5/03.pal"
-	.incbin "data/tilesets/resistance_base/5/04.pal"
-	.incbin "data/tilesets/resistance_base/5/05.pal"
-	.incbin "data/tilesets/resistance_base/5/06.pal"
-
+ResistanceBaseTileset5_Tiles:
+	.incbin "data/tilesets/resistance_base/resistance_base5.4bpp.lz"
+ResistanceBaseTileset5_Pal:
+	.incbin "data/tilesets/resistance_base/resistance_base5.gbapal"

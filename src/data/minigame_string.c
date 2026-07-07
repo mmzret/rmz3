@@ -1,7 +1,7 @@
 #include "gba/gba.h"
 #include "global.h"
 
-const ALIGNED(4) u8 Unicode_Prompt[] = "^";
+const ALIGNED(4) char_t Unicode_Prompt[] = "^";
 
 const ALIGNED(4) u8 Unicode_CursorUp[] = "\\";
 const ALIGNED(4) u8 Unicode_CursorDown[] = "^";

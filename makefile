@@ -61,7 +61,7 @@ MODIFIERS :=
 
 # The “modern” option is meant to build using the latest toolchain instead of agbcc (an older version of gcc used in rmz3), but because there are still hard-coded addresses in this project, 
 # the rom built with “modern” won’t run all the way through, as the linking process won’t complete correctly.
-ifeq ($(filter modern,$(MAKECMDGOALS)),modern)
+ifneq ($(filter modern clean-code-modern,$(MAKECMDGOALS)),)
 MODIFIERS := $(MODIFIERS)-modern
 MODERN := 1
 endif
@@ -89,6 +89,21 @@ AS := $(TOOL)/arm-none-eabi-as
 LD = $(TOOL)/arm-none-eabi-ld
 OBJCOPY = $(TOOL)/arm-none-eabi-objcopy
 
+# macOS では arm-none-eabi-cpp を使用してください。macOS のデフォルトコンパイラ clang であり、clang のプリプロセッサは .s ファイルをプリプロセスする際に \u 文字を検出すると警告を表示します。これは Unicodeリテラルを期待しているためです。
+# ただし、binutils-arm-none-eabi をインストールする環境では、このツールがデフォルトで付属していないため、無条件に arm-none-eabi-cpp を使用することはできません。
+ifneq ($(MODERN),1)
+# Vanilla
+  ifeq ($(shell uname -s),Darwin)
+# macOS
+    CPP := $(TOOL)/arm-none-eabi-cpp
+  else
+    CPP := $(CC) -E
+  endif
+else
+# Modern
+  CPP := $(TOOL)/arm-none-eabi-cpp
+endif
+
 include make_tools.mk
 
 # Flags
@@ -112,21 +127,20 @@ LDFLAGS := $(LIBPATH) -lgcc -lc
 
 include assets.mk
 
-ASM_DATAS := $(SONG_ASMS)
-ASM_CODES := $(wildcard asm/*.s) $(wildcard asm/*/*.s) $(shell find src -type f -name '*.s')
-ASM_SRCS := $(ASM_CODES) $(ASM_DATAS)
-ASM_OBJS := $(addprefix $(BUILD_DIR)/, $(ASM_SRCS:.s=.o))
+ASM_s := $(shell find src -type f -name '*.s') $(SONG_ASMS)
+ASM_s_OBJS := $(addprefix $(BUILD_DIR)/, $(ASM_s:.s=.o))
 
-# PRERPOC を使うので特別処理
-STRINGS := $(wildcard src/data/strings/*.s) $(wildcard src/data/texts/*.s)
-STRINGS_OBJS := $(addprefix $(BUILD_DIR)/, $(STRINGS:.s=.o))
+# cppを通すアセンブリ
+# 大文字のSだとファイル名の大文字小文字を区別しないapfsだとおかしくなるのでsx, ref: https://gcc.gnu.org/onlinedocs/gcc/Overall-Options.html
+ASM_sx := $(shell find src -type f -name '*.sx')
+ASM_sx_OBJS := $(addprefix $(BUILD_DIR)/, $(ASM_sx:.sx=.o))
 
-# *.s から *.o を作るが、 ファイルによっては別アセンブラを使う必要があったり、 プリプロセッサを通す必要があったりするため、 いくつかの変数に分けて管理している。
-# gccプリプロセッサで処理するもの
-ASM_SCRIPTS := $(wildcard asm/scripts/*.s)
-ASM_SCRIPTS_OBJS := $(addprefix $(BUILD_DIR)/, $(ASM_SCRIPTS:.s=.o))
-# ASM_SCRIPTS を除いたもの (普通にアセンブリできるもの)
-GCCASFILE := $(filter-out $(ASM_SCRIPTS), $(ASM_SRCS))
+ASM_OBJS := $(ASM_s_OBJS) $(ASM_sx_OBJS)
+ASM_DEPS := $(ASM_s_OBJS:.o=.d)
+
+# PRERPOC を使うので特別処理 (拡張子をユニークなものにすべき?)
+ASM_USE_PREPROC := $(wildcard src/data/strings/*.s) $(wildcard src/data/texts/*.s) $(wildcard src/data/bg/*.s) $(wildcard src/data/graphic_table/*.s)
+ASM_USE_PREPROC_OBJS := $(addprefix $(BUILD_DIR)/, $(ASM_USE_PREPROC:.s=.o))
 
 C_SRCS := $(shell find src -type f -name '*.c')
 C_OBJS := $(addprefix $(BUILD_DIR)/, $(C_SRCS:.c=.o))
@@ -153,7 +167,7 @@ LD_BUILD := $(addprefix $(BUILD_DIR)/, $(LD_INC))
 ######## ルール定義 #############
 
 # RULES_NO_SCAN: ビルドを伴わないルールの一覧
-RULES_NO_SCAN := assets clean clean-code clean-assets
+RULES_NO_SCAN += assets clean clean-code clean-code-modern clean-assets
 .PHONY: all modern compare compile $(RULES_NO_SCAN)
 
 # ビルドを伴うルールの場合は、アセットの生成 と 依存関係ファイル　の読み込み が必要になる。
@@ -191,11 +205,12 @@ compare: $(ROM)
 	@sha1sum -c $(NAME).sha1
 
 clean: clean-code clean-assets
-	rm -f $(ELF)
 
-# Cファイルは、AGBCCの都合で一旦アセンブリに変換してからオブジェクトファイルにする必要があるので .s も中間生成される
 clean-code:
 	rm -rf ./$(BUILD_DIR)
+	rm -f $(ELF)
+
+clean-code-modern: clean-code
 
 $(ROM): $(ELF)
 	$(OBJCOPY) -O binary $< $@
@@ -208,7 +223,7 @@ $(LD_BUILD): $(BUILD_DIR)/linker/%.txt: linker/%.txt
 	@cp $< $@
 
 $(ELF): $(LDSCRIPT) $(OBJS)
-	cd $(BUILD_DIR) && $(LD) -T ../../$< -Map $(RONNAME).map -o ../../$@ $(OBJS_REL) $(LDFLAGS)
+	@cd $(BUILD_DIR) && $(LD) -T ../../$< -Map $(RONNAME).map -o ../../$@ $(OBJS_REL) $(LDFLAGS)
 
 $(C_OBJS): $(BUILD_DIR)/%.o: %.c
 ifeq ($(MODERN),1)
@@ -232,10 +247,20 @@ endif
 $(BUILD_DIR)/%.o: %.s
 	$(AS) $(ASFLAGS) $< -o $@
 
+$(BUILD_DIR)/%.o: %.sx
+	$(TOOL)/arm-none-eabi-gcc -c $(CPPFLAGS) $(ASFLAGS) $< -o $@
+
+$(ASM_s_OBJS:.o=.d): $(BUILD_DIR)/%.d: %.s
+	$(SCANINC) -M $@ -I include $<
+
+# $(ASM_sx_OBJS:.o=.d): $(BUILD_DIR)/%.d: %.sx
+# $(SCANINC) -M $@ -I include $<
+
+ifneq ($(NODEP),1)
+-include $(ASM_DEPS)
+endif
+
 # PREPROC
 PREPROC := tools/preproc/preproc$(EXE)
-$(STRINGS_OBJS): $(BUILD_DIR)/%.o: %.s
+$(ASM_USE_PREPROC_OBJS): $(BUILD_DIR)/%.o: %.s
 	$(PREPROC) $< charmap.txt | $(AS) $(ASFLAGS) -o $@ -
-
-$(ASM_SCRIPTS_OBJS): $(BUILD_DIR)/%.o: %.s
-	$(CPP) $(CPPFLAGS) $< | $(AS) $(ASFLAGS) -o $@ -

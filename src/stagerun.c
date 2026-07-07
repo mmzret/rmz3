@@ -313,7 +313,7 @@ static bool32 CheckMissionFail(struct StageRun* p) {
 
   if (!(gStageRun.missionStatus & MISSION_STAY)) {
     if (gStageRun.missionStatus & MISSION_PLAYER_DEAD) {
-      gCollisionManager.disabled |= (1 << 7);
+      gCollisionManager.disabled |= COLLMAN_DISABLED;
       gHUD.timeLeft = NULL;
       c = (p->vm).start;
       if ((c != Script_MissionFail) && (c != Script_MissionFail2)) {

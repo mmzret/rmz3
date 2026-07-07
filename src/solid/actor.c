@@ -1274,8 +1274,8 @@ static void Actor7_Update(struct Solid* p) {
   switch ((p->s).mode[1]) {
     case 0: {
       (p->s).coord.y = FUN_08009f6c((p->s).coord.x, (p->s).coord.y);
-      wStaticGraphicTilenums[19] = 0x388;
-      wStaticMotionPalIDs[19] = 9;
+      wStaticGraphicTilenums[SM019_PANTHEON_HUNTER] = 904;
+      wStaticMotionPalIDs[SM019_PANTHEON_HUNTER] = 9;
       LOAD_STATIC_GRAPHIC(SM019_PANTHEON_HUNTER);
       SetSpriteAnimation(p, MOTION(SM019_PANTHEON_HUNTER, 9));
       (p->s).mode[1]++;

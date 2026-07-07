@@ -16,6 +16,19 @@
 
 typedef void (*IntroLoopFunc)(struct Intro*);
 
+extern const struct Graphic gGraphic_Inti;
+extern const struct Palette gPalette_Inti;
+
+extern const struct Graphic gGraphic_TitleZero;
+extern const struct Palette gPalette_TitleZero;
+extern const struct Graphic gGraphic_TitleCiel;
+extern const struct Palette gPalette_TitleCiel;
+
+extern const struct Graphic gGraphic_OpeningAnim1;
+extern const struct Palette gPalette_OpeningAnim1;
+extern const struct Graphic gGraphic_OpeningAnim2;
+extern const struct Palette gPalette_OpeningAnim2;
+
 static const u8 u8_ARRAY_08385f9c[7];
 static const s32 s32_ARRAY_08385fec[8];
 static const s32 s32_ARRAY_ARRAY_0838600c[16];
@@ -75,10 +88,10 @@ static void IntroLoop_CapcomInti(struct Intro* p) {
       gVideoRegBuffer.dispcnt &= ~DISPCNT_BG_ALL_ON;
       gVideoRegBuffer.dispcnt |= (DISPCNT_BG0_ON | DISPCNT_BG3_ON | DISPCNT_OBJ_ON | DISPCNT_WIN0_ON);
       BGCNT16(3) = BGCNT_PRIORITY(2) | BGCNT_CHARBASE(1) | BGCNT_SCREENBASE(2);
-      *(u32*)gVideoRegBuffer.bgofs[3] = 0;
-      PALETTE16(0) = RGB_BLACK;
-      LoadGraphic(BG_GRAPHIC(BG_CAPCOM), (void*)0x4000);
-      LoadPalette(BG_PALETTE(BG_CAPCOM), 0);
+      RESET_BGOFS(3);
+      gPaletteManager.buf[0] = RGB_BLACK;
+      LoadGraphic(&gGraphic_Capcom, (void*)0x4000);
+      LoadPalette(&gPalette_Capcom, 0);
       LoadBgMap(USE_BG3, gBgMapOffsets, BG_CAPCOM, 0, 0);
       p->titleFrame = 0;
       p->frame = 0;
@@ -111,8 +124,8 @@ static void IntroLoop_CapcomInti(struct Intro* p) {
       if (p->frame > 0) {
         break;
       }
-      LoadGraphic(BG_GRAPHIC(BG_INTI), (void*)CHAR_BASE(3));
-      LoadPalette(BG_PALETTE(BG_INTI), 0);
+      LoadGraphic(&gGraphic_Inti, (void*)CHAR_BASE(3));
+      LoadPalette(&gPalette_Inti, 0);
       LoadBgMap(USE_BG3, gBgMapOffsets, BG_INTI, 0, 0);
       p->frame = 0;
       p->mode[1]++;
@@ -181,7 +194,7 @@ static void IntroLoop_DemoPlay1(struct Intro* p) {
       gWindowRegBuffer.dispcnt = 0;
       gWindowRegBuffer.winin[2] = 0xFF;
       wMOSAIC = 0x0;
-      PALETTE16(0) = RGB_BLACK;
+      gPaletteManager.buf[0] = RGB_BLACK;
       LoadAsciiBold();
       gVideoRegBuffer.dispcnt &= ~DISPCNT_BGMODE_MASK;
       gVideoRegBuffer.dispcnt &= ~DISPCNT_BG_ALL_ON;
@@ -207,7 +220,7 @@ static void IntroLoop_DemoPlay1(struct Intro* p) {
         gWindowRegBuffer.dispcnt = 0;
         gWindowRegBuffer.winin[2] = 0xFF;
         wMOSAIC = 0x0;
-        PALETTE16(0) = RGB_BLACK;
+        gPaletteManager.buf[0] = RGB_BLACK;
         LoadAsciiBold();
         StopAllMusics();
         p->demo_id++;
@@ -287,7 +300,7 @@ static void IntroLoop_DemoPlay2(struct Intro* p) {
       gWindowRegBuffer.dispcnt = 0;
       gWindowRegBuffer.winin[2] = 0xFF;
       wMOSAIC = 0x0;
-      PALETTE16(0) = RGB_BLACK;
+      gPaletteManager.buf[0] = RGB_BLACK;
       LoadAsciiBold();
       gVideoRegBuffer.dispcnt &= ~DISPCNT_BGMODE_MASK;
       gVideoRegBuffer.dispcnt &= ~DISPCNT_BG_ALL_ON;
@@ -319,7 +332,7 @@ static void IntroLoop_DemoPlay2(struct Intro* p) {
         gWindowRegBuffer.dispcnt = 0;
         gWindowRegBuffer.winin[2] = 0xFF;
         wMOSAIC = 0x0;
-        PALETTE16(0) = RGB_BLACK;
+        gPaletteManager.buf[0] = RGB_BLACK;
         LoadAsciiBold();
         StopAllMusics();
         p->demo_id++;
@@ -382,7 +395,7 @@ static void InitTitleAnimation(struct Intro* p) {
   gWindowRegBuffer.dispcnt = 0;
   gWindowRegBuffer.winin[2] = 0xFF;
   wMOSAIC = 0x0;
-  PALETTE16(0) = RGB_BLACK;
+  gPaletteManager.buf[0] = RGB_BLACK;
   LoadAsciiBold();
   gVideoRegBuffer.dispcnt &= ~DISPCNT_BGMODE_MASK;
   gVideoRegBuffer.dispcnt &= ~DISPCNT_BG_ALL_ON;
@@ -709,25 +722,25 @@ NAKED static u8 intro_080ecd28(struct Intro* p) { INCCODE("asm/todo/intro_080ecd
 static void loadTitleScreen(struct Intro* _ UNUSED) {
   if (gSystemSavedata.title < 3) {
     *(u32*)gVideoRegBuffer.bgofs[3] = gSystemSavedata.title * 80;
-    LoadGraphic(BG_GRAPHIC(BG_TITLE_ZERO), (void*)CHAR_BASE(3));
-    LoadPalette(BG_PALETTE(BG_TITLE_ZERO), 0);
+    LoadGraphic(&gGraphic_TitleZero, (void*)CHAR_BASE(3));
+    LoadPalette(&gPalette_TitleZero, 0);
     LoadBgMap(USE_BG3, gBgMapOffsets, BG_TITLE_ZERO, 0, 0);
   } else {
     *(u32*)gVideoRegBuffer.bgofs[3] = (gSystemSavedata.title - 3) * 80;
-    LoadGraphic(BG_GRAPHIC(BG_TITLE_CIEL), (void*)CHAR_BASE(3));
-    LoadPalette(BG_PALETTE(BG_TITLE_CIEL), 0);
+    LoadGraphic(&gGraphic_TitleCiel, (void*)CHAR_BASE(3));
+    LoadPalette(&gPalette_TitleCiel, 0);
     LoadBgMap(USE_BG3, gBgMapOffsets, BG_TITLE_CIEL, 0, 0);
   }
 }
 
 static void FUN_080ed07c(struct Intro* p) {
   gVideoRegBuffer.dispcnt |= DISPCNT_BG1_ON | DISPCNT_OBJ_ON;
-  *(u16*)&gVideoRegBuffer.bgcnt[1] = BGCNT_PRIORITY(3) | BGCNT_CHARBASE(1) | BGCNT_SCREENBASE(24);
-  *(u32*)gVideoRegBuffer.bgofs[1] = 0;
-  LoadGraphic(BG_GRAPHIC(BG_OP_ANIM1), (void*)CHAR_BASE(1));
-  LoadPalette(BG_PALETTE(BG_OP_ANIM1), 0);
-  LoadGraphic(BG_GRAPHIC(BG_OP_ANIM2), (void*)CHAR_BASE(1));
-  LoadPalette(BG_PALETTE(BG_OP_ANIM2), 0);
+  BGCNT16(1) = BGCNT_PRIORITY(3) | BGCNT_CHARBASE(1) | BGCNT_SCREENBASE(24);
+  RESET_BGOFS(1);
+  LoadGraphic(&gGraphic_OpeningAnim1, (void*)CHAR_BASE(1));
+  LoadPalette(&gPalette_OpeningAnim1, 0);
+  LoadGraphic(&gGraphic_OpeningAnim2, (void*)CHAR_BASE(1));
+  LoadPalette(&gPalette_OpeningAnim2, 0);
   LoadBgMap(USE_BG1, gBgMapOffsets, BG_OP_ANIM1, 0, 0);
   p->unk_23c = 0;
 }
@@ -1276,15 +1289,15 @@ _080ED6B6:\n\
 static void FUN_080ed6c4(struct Intro* p) {
   gVideoRegBuffer.dispcnt |= (DISPCNT_BG3_ON | DISPCNT_OBJ_ON | DISPCNT_WIN0_ON);
   BGCNT16(3) = (BGCNT_PRIORITY(2) | BGCNT_MOSAIC | BGCNT_SCREENBASE(26) | BGCNT_TXT512x256);
-  *(u32*)gVideoRegBuffer.bgofs[3] = 0;
+  RESET_BGOFS(3);
 
   {
     void* dst = SCREEN_ADDR(3);
     _CpuFastFill(0, dst, 4096);
   }
 
-  LoadGraphic(BG_GRAPHIC(BG_TITLE_ZERO), CHAR_BASE(3));
-  LoadPalette(BG_PALETTE(BG_TITLE_ZERO), 0);
+  LoadGraphic(&gGraphic_TitleZero, CHAR_BASE(3));
+  LoadPalette(&gPalette_TitleZero, 0);
   LoadBgMap(USE_BG3, gBgMapOffsets, BG_TITLE_ZERO, 0, 0);
 
   gWindowRegBuffer.dispcnt |= DISPCNT_WIN1_ON;
@@ -1505,7 +1518,7 @@ static void IntroLoop_StartMainGame(struct Intro* p) {
       gWindowRegBuffer.dispcnt = 0;
       gWindowRegBuffer.winin[2] = 0xFF;
       wMOSAIC = 0;
-      PALETTE16(0) = RGB_BLACK;
+      gPaletteManager.buf[0] = RGB_BLACK;
       LoadAsciiBold();
       gVideoRegBuffer.dispcnt &= ~DISPCNT_BGMODE_MASK;
       gVideoRegBuffer.dispcnt &= ~DISPCNT_BG_ALL_ON;
@@ -1587,7 +1600,7 @@ static void FUN_080ed9c0(struct Intro* p) {
   gWindowRegBuffer.dispcnt = 0;
   gWindowRegBuffer.winin[2] = 0xFF;
   wMOSAIC = 0;
-  PALETTE16(0) = RGB_BLACK;
+  gPaletteManager.buf[0] = RGB_BLACK;
   LoadAsciiBold();
   gVideoRegBuffer.dispcnt &= ~DISPCNT_BGMODE_MASK;
   gVideoRegBuffer.dispcnt &= ~DISPCNT_BG_ALL_ON;
@@ -2103,7 +2116,7 @@ static void FUN_080edf04(struct Intro* p) {
       gWindowRegBuffer.dispcnt = 0;
       gWindowRegBuffer.winin[2] = 0xFF;
       wMOSAIC = 0;
-      PALETTE16(0) = RGB_BLACK;
+      gPaletteManager.buf[0] = RGB_BLACK;
       LoadAsciiBold();
       gVideoRegBuffer.dispcnt &= ~DISPCNT_BGMODE_MASK;
       gVideoRegBuffer.dispcnt &= ~DISPCNT_BG_ALL_ON;

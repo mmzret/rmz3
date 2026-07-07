@@ -15,11 +15,11 @@ static metatile_attr_t FUN_080e1360(s32 x, s32 y);
 static s32 FUN_080e1394(s32 x, s32 y);
 static s32 FUN_080e13c4(s32 x, s32 y);
 
-static void onCollision(struct Body* body, Coords32* r1 UNUSED, Coords32* r2 UNUSED);
+static void PickupDisk_OnCollision(struct Body* body, Coords32* r1 UNUSED, Coords32* r2 UNUSED);
 
-static void MapDisk_Init(struct Pickup* p);
-static void MapDisk_Update(struct Pickup* p);
-static void MapDisk_Die(struct Entity* p);
+static void MapDisk_Init(Pickup* p);
+static void MapDisk_Update(Pickup* p);
+static void MapDisk_Die(Pickup* p);
 
 // clang-format off
 const PickupRoutine gPickupDiskRoutine = {
@@ -55,38 +55,38 @@ struct Entity* CreateMapDisk(u8 diskNo, Coords32* _c, u8 r2) {
   return p;
 }
 
-static void MapDisk_Init(struct Pickup* p) {
+static void MapDisk_Init(Pickup* p) {
   motion_t m;
   u8* disks = gStageDiskManager.disk;
-  const s32 diskID = (p->s).work[0] - 1;
+  const s32 diskID = p->work[0] - 1;
   if (IS_DISK_UNLOCKED(disks, diskID) & 1) {
-    (p->s).flags &= ~DISPLAY;
-    (p->s).flags &= ~FLIPABLE;
+    p->flags &= ~DISPLAY;
+    p->flags &= ~FLIPABLE;
     EXIT_BODY(p);
     SET_ITEM_ROUTINE(p, ENTITY_DISAPPEAR);
     return;
   }
 
-  InitNonAffineMotion(&p->s);
+  InitNonAffineMotion((void*)p);
   m = MOTION(SM176_RESULT_DISK, 11) + (((u16)gSystemSavedata.disk) << 8);
   SetSpriteAnimation(p, m);
-  (p->s).flags |= DISPLAY;
-  (p->s).flags |= FLIPABLE;
-  INIT_BODY(p, &sCollision, 64, onCollision);
-  p->y = (p->s).coord.y;
+  p->flags |= DISPLAY;
+  p->flags |= FLIPABLE;
+  INIT_BODY(p, &sCollision, 64, PickupDisk_OnCollision);
+  p->y = (p->coord).y;
   p->z = NULL;
 
-  if ((p->s).work[1] >= 2) {
-    (p->s).d.y = PIXEL(0);
+  if (p->work[1] >= 2) {
+    (p->d).y = PIXEL(0);
   } else {
-    (p->s).d.y = -PIXEL(4);
+    (p->d).y = -PIXEL(4);
   }
-  *((u16*)&(p->s).work[2]) = 360;
+  *((u16*)&p->work[2]) = 360;
   SET_ITEM_ROUTINE(p, ENTITY_UPDATE);
   MapDisk_Update(p);
 }
 
-NAKED static void MapDisk_Update(struct Pickup* p) {
+NAKED static void MapDisk_Update(Pickup* p) {
   asm(".syntax unified\n\
 	push {r4, r5, r6, lr}\n\
 	adds r4, r0, #0\n\
@@ -343,7 +343,7 @@ _080E1308: .4byte 0xFFFFFC00\n\
  .syntax divided\n");
 }
 
-static void MapDisk_Die(struct Entity* p) {
+static void MapDisk_Die(Pickup* p) {
   const bool8 ok = CreateSmallNumber((p->coord).x, (p->coord).y, p->work[0]);
   if (ok) {
     PlaySound(SE_GAIN_DISK);
@@ -352,12 +352,10 @@ static void MapDisk_Die(struct Entity* p) {
 }
 
 // 0x080e1344
-static void onCollision(struct Body* body, Coords32* r1 UNUSED, Coords32* r2 UNUSED) {
-  struct Pickup* self = (struct Pickup*)body->parent;
-  struct Entity* p = (struct Entity*)body->enemy->parent;
-  if (p->kind == ENTITY_PLAYER) {
-    self->z = (struct Zero*)p;
-  }
+static void PickupDisk_OnCollision(struct Body* body, Coords32* r1 UNUSED, Coords32* r2 UNUSED) {
+  Pickup* p = (Pickup*)body->parent;
+  struct Entity* q = (struct Entity*)body->enemy->parent;
+  if (q->kind == ENTITY_PLAYER) p->z = (Player*)q;
 }
 
 static metatile_attr_t FUN_080e1360(s32 x, s32 y) { return (FUN_080098a4(x - PIXEL(7), y) | FUN_080098a4(x + PIXEL(7), y)); }

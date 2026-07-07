@@ -71,13 +71,6 @@ extern struct SoundInfo* SOUND_INFO_PTR;
 
 #define TOTAL_OBJ_TILE_COUNT 1024
 
-#define RGB(r, g, b) ((r) | ((g) << 5) | ((b) << 10))
-
-#define RGB_BLACK RGB(0, 0, 0)
-#define RGB_WHITE RGB(31, 31, 31)
-
-#define WIN_RANGE(a, b) (((a) << 8) | (b))
-
 // NON_MATCH は　ロジックは合ってそうだが、レジスタ割り当てなどが合わない場合に使っていて、 modernビルドでコンパイル対象になります
 // WIP は　ロジックも合ってなさそうだったり、文字通りdecomp途中の関数に使っていて、 modernビルドでもコンパイル対象になりません (そもそもコンパイル通る保証もないです、文字通り、WIPです)
 // 中で使われている ALWAYS_FALSE は vscode が "#if 0" のときにコードをグレーアウトしてしまうのを防ぐためのもので、常に偽になるように意図的に定義していません

@@ -391,7 +391,7 @@ NON_MATCH u16 CalcDamage(struct Body* a, struct Body* d) {
   const struct Collision* processing = d->processing;
   const u8 hardness = processing->hardness | d->hardness;
 
-  if (!(gCollisionManager.disabled & 0x80) && (processing->hitzone != 0xFF) && !(hardness & NO_DAMAGE)) {
+  if (!(gCollisionManager.disabled & COLLMAN_DISABLED) && (processing->hitzone != 0xFF) && !(hardness & NO_DAMAGE)) {
     const s32 X = sDamageScale[processing->hitzone][a->element];
     if (X != 9) {
       u16 damage = (X * a->atk) / 4;
@@ -414,7 +414,7 @@ NON_MATCH u16 CalcDamage(struct Body* a, struct Body* d) {
 // ドアフラグはここで立ててる
 NON_MATCH void hitbox_08007674(struct Body* a, struct Body* d) {
 #if MODERN
-  if (gCollisionManager.disabled & (1 << 7)) return;
+  if (gCollisionManager.disabled & COLLMAN_DISABLED) return;
   if ((a->collisionLayer & LAYER_MASK(&d->processing)) == 0) return;
 
   if ((a->processing)->special == CHATABLE) {
@@ -495,29 +495,15 @@ NON_MATCH void hitbox_08007674(struct Body* a, struct Body* d) {
     d->elemented = a->element & 0xF;
     d->invincibleLv = a->comboLv;
 
-    if (a->nature & BODY_NATURE_B2) {
-      d->hitboxFlags |= BODY_STATUS_BLOCKED;
-    }
-    if (a->nature & BODY_NATURE_B0) {
-      d->hitboxFlags |= BODY_STATUS_B14;
-    }
-    if (a->nature & ELEMENT_ENCHANTABLE) {
-      d->hitboxFlags |= BODY_STATUS_B15;
-    }
-    if (a->nature & BODY_NATURE_CUT) {
-      d->hitboxFlags |= BODY_STATUS_SLASHED;
-    }
-    if (a->nature & BODY_NATURE_RECOIL) {
-      d->hitboxFlags |= BODY_STATUS_RECOILED;
-    }
-    if (a->nature & BODY_NATURE_ILETHAS) {
-      d->hitboxFlags |= BODY_STATUS_B22;
-    }
+    if (a->nature & BODY_NATURE_B2) d->hitboxFlags |= BODY_STATUS_BLOCKED;
+    if (a->nature & BODY_NATURE_B0) d->hitboxFlags |= BODY_STATUS_B14;
+    if (a->nature & ELEMENT_ENCHANTABLE) d->hitboxFlags |= BODY_STATUS_B15;
+    if (a->nature & BODY_NATURE_CUT) d->hitboxFlags |= BODY_STATUS_SLASHED;
+    if (a->nature & BODY_NATURE_RECOIL) d->hitboxFlags |= BODY_STATUS_RECOILED;
+    if (a->nature & BODY_NATURE_ILETHAS) d->hitboxFlags |= BODY_STATUS_B22;
 
     if ((d->processing)->hitzone != 0xFF) {
-      if (((a->processing)->atkType == ATK_SABER) || ((a->processing)->atkType == ATK_ROD)) {
-        gCollisionManager.hitstop = 4;
-      }
+      if (((a->processing)->atkType == ATK_SABER) || ((a->processing)->atkType == ATK_ROD)) gCollisionManager.hitstop = 4;
     }
     a->status |= a->hitboxFlags;
     d->status |= d->hitboxFlags;
@@ -569,18 +555,10 @@ NON_MATCH void hitbox_08007674(struct Body* a, struct Body* d) {
         a->hitboxFlags |= BODY_STATUS_B13;
         d->hitboxFlags |= BODY_STATUS_BLOCKED;
       }
-      if (a->nature & BODY_NATURE_B0) {
-        d->hitboxFlags |= BODY_STATUS_B14;
-      }
-      if (a->nature & ELEMENT_ENCHANTABLE) {
-        d->hitboxFlags |= BODY_STATUS_B15;
-      }
-      if (a->nature & BODY_NATURE_CUT) {
-        d->hitboxFlags |= BODY_STATUS_SLASHED;
-      }
-      if (a->nature & BODY_NATURE_RECOIL) {
-        d->hitboxFlags |= BODY_STATUS_RECOILED;
-      }
+      if (a->nature & BODY_NATURE_B0) d->hitboxFlags |= BODY_STATUS_B14;
+      if (a->nature & ELEMENT_ENCHANTABLE) d->hitboxFlags |= BODY_STATUS_B15;
+      if (a->nature & BODY_NATURE_CUT) d->hitboxFlags |= BODY_STATUS_SLASHED;
+      if (a->nature & BODY_NATURE_RECOIL) d->hitboxFlags |= BODY_STATUS_RECOILED;
       if (a->nature & BODY_NATURE_ILETHAS) {
         a->hitboxFlags |= BODY_STATUS_B23;
         d->hitboxFlags |= BODY_STATUS_B22;
@@ -592,13 +570,9 @@ NON_MATCH void hitbox_08007674(struct Body* a, struct Body* d) {
         d->hitboxFlags |= BODY_STATUS_DEAD;
       }
       if ((d->processing)->hitzone != 0xFF) {
-        if (((a->processing)->atkType == ATK_SABER) || ((a->processing)->atkType == ATK_ROD)) {
-          gCollisionManager.hitstop = 4;
-        }
+        if (((a->processing)->atkType == ATK_SABER) || ((a->processing)->atkType == ATK_ROD)) gCollisionManager.hitstop = 4;
       }
-      if (((d->processing)->special == HALFABLE) || ((d->processing)->special == CS_BOSS)) {
-        d->invincibleTime = 90;
-      }
+      if (((d->processing)->special == HALFABLE) || ((d->processing)->special == CS_BOSS)) d->invincibleTime = 90;
       a->status |= a->hitboxFlags;
       d->status |= d->hitboxFlags;
       return;
@@ -623,7 +597,7 @@ NON_MATCH void hitbox_08007674(struct Body* a, struct Body* d) {
 
 static bool8 unused_08007b80(struct Body* a, struct Body* d) {
   const u8 hardness = (d->processing)->hardness | d->hardness;
-  if (gCollisionManager.disabled & (1 << 7)) return FALSE;
+  if (gCollisionManager.disabled & COLLMAN_DISABLED) return FALSE;
   if (!(hardness & NO_DAMAGE)) {
     d->hp--;
     d->enemy = a;
@@ -651,7 +625,7 @@ static bool8 unused_08007b80(struct Body* a, struct Body* d) {
 
 u16 CalcPutitedSpikeDamage(struct Body* body, u8 damage) {
   const u8 hardness = (body->processing)->hardness | body->hardness;
-  if (gCollisionManager.disabled & (1 << 7)) return 0;
+  if (gCollisionManager.disabled & COLLMAN_DISABLED) return 0;
   if (body->invincibleTime != 0) return 0;
 
   if (hardness & HARDNESS_WEAK) damage *= 2;
@@ -710,32 +684,30 @@ static void TrySweepBodies(void) {
  * @note 0x08007d38
  */
 static void checkOverlap1(struct Hitbox* a, struct Hitbox* drp2) {
-  u16 w, h;
-  s32 x, y;
-  u32 W, H;
-  struct Hitbox* d;
-
   if ((a != NULL) && (drp2 != NULL)) {
-    do {
-      x = (a->c).x;
-      y = (a->c).y;
-      w = a->w;
-      h = a->h;
+    while (a != NULL) {
+      s32 x = (a->c).x;
+      s32 y = (a->c).y;
+      u16 aw = a->w;
+      u16 ah = a->h;
 
-      for (d = drp2; d != NULL; d = d->next) {
+      struct Hitbox* d = drp2;
+      while (d != NULL) {
         if (a->body != d->body) {
-          W = w + d->w;
-          H = h + d->h;
-          if ((x - (d->c).x) + (W >> 1) < W) {
-            if ((y - (d->c).y) + (H >> 1) < H) {
+          u32 w = aw + d->w;
+          u32 h = ah + d->h;
+          s32 dx = x - (d->c).x;
+          if (dx + (w >> 1) < w) {  // dx >= -w/2 && dx < w/2
+            s32 dy = y - (d->c).y;
+            if (dy + (h >> 1) < h) {  // dy >= -h/2 && dy < h/2
               tryOverlapCallback1(a, d);
             }
           }
         }
+        d = d->next;
       }
-
       a = a->next;
-    } while (a != NULL);
+    }
   }
 }
 
@@ -747,32 +719,30 @@ static void checkOverlap1(struct Hitbox* a, struct Hitbox* drp2) {
  * @note 0x08007db0
  */
 static void checkOverlap2(struct Hitbox* a, struct Hitbox* drp1) {
-  u16 w, h;
-  s32 x, y;
-  u32 W, H;
-  struct Hitbox* d;
-
   if ((a != NULL) && (drp1 != NULL)) {
-    do {
-      x = (a->c).x;
-      y = (a->c).y;
-      w = a->w;
-      h = a->h;
+    while (a != NULL) {
+      s32 x = (a->c).x;
+      s32 y = (a->c).y;
+      u16 aw = a->w;
+      u16 ah = a->h;
 
-      for (d = drp1; d != NULL; d = d->next) {
+      struct Hitbox* d = drp1;
+      while (d != NULL) {
         if (a->body != d->body) {
-          W = w + d->w;
-          H = h + d->h;
-          if ((x - (d->c).x) + (W >> 1) < W) {
-            if ((y - (d->c).y) + (H >> 1) < H) {
+          u32 w = aw + d->w;
+          u32 h = ah + d->h;
+          s32 dx = x - (d->c).x;
+          if (dx + (w >> 1) < w) {  // dx >= -w/2 && dx < w/2
+            s32 dy = y - (d->c).y;
+            if (dy + (h >> 1) < h) {  // dy >= -h/2 && dy < h/2
               tryOverlapCallback2(a, d);
             }
           }
         }
+        d = d->next;
       }
-
       a = a->next;
-    } while (a != NULL);
+    }
   }
 }
 
@@ -780,66 +750,54 @@ static void checkOverlap2(struct Hitbox* a, struct Hitbox* drp1) {
  * @brief apとdpに衝突の結果生まれるフラグをセットして、ap->body->fn と dh->body->fn をそれぞれ呼び出す
  * @param ah DDP's hitbox info
  * @param dh DRP2's hitbox info
+ * @note tryOverlapCallback2 の軽量版?
+ * @note 0x08007E28
  */
 NON_MATCH static void tryOverlapCallback1(struct Hitbox* ah, struct Hitbox* dh) {
 #if MODERN
   struct Body* a = ah->body;
   struct Body* d = dh->body;
 
-  if ((gCollisionManager.disabled & (1 << 7)) || (ah->data->special == DOOR_3D)) {
+  if ((gCollisionManager.disabled & COLLMAN_DISABLED) || (ah->data->special == DOOR_3D)) {
     return;
   }
 
-  if (!(a->forceFlags & FORCE_NATURE)) {
-    a->nature = ah->data->nature;
-  }
+  if (!(a->forceFlags & FORCE_NATURE)) a->nature = ah->data->nature;
 
   if (a->nature & BODY_NATURE_B7) {
     return;
   }
 
-  a->hitboxFlags = 0;
-  d->hitboxFlags = 0;
-  a->processing = ah->data;
-  d->processing = dh->data;
+  a->hitboxFlags = 0, d->hitboxFlags = 0;
+  a->processing = ah->data, d->processing = dh->data;
 
-  if (!(a->forceFlags & FORCE_NATURE)) {
-    a->nature = ah->data->nature;
-  }
+  if (!(a->forceFlags & FORCE_NATURE)) a->nature = ah->data->nature;
 
   if ((a->status & BODY_STATUS_B8) == 0) {
     a->unk_32[0] = -0x8000;
     a->unk_32[1] = 0x7FFF;
   }
 
-  if (a->coord->x >= d->coord->x) {
-    a->unk_32[0] = (s16)(((dh->c).x + dh->w) - a->coord->x) >> 8;
+  if ((a->coord)->x >= (d->coord)->x) {  // aの親(Entity) が dの親(Entity) より右にいる
+    a->unk_32[0] = (s16)(((dh->c).x + dh->w) - (a->coord)->x) >> 8;
   } else {
-    a->unk_32[1] = (s16)(((dh->c).x - dh->w) - a->coord->x) >> 8;
+    a->unk_32[1] = (s16)(((dh->c).x - dh->w) - (a->coord)->x) >> 8;
   }
 
   if ((a->processing->special == HALFABLE) && (a->processing->atkType != 0) && (d->prevStatus & (BODY_STATUS_B6 | BODY_STATUS_B7))) {
     d->enemy = a;
     d->status |= BODY_STATUS_B7;
   } else {
-    if (d->processing->hardness & METAL) {
-      d->hitboxFlags |= BODY_STATUS_B13;
-    }
+    if (d->processing->hardness & METAL) d->hitboxFlags |= BODY_STATUS_B13;
     d->enemy = a;
     d->hitboxFlags |= BODY_STATUS_B6;
-    if ((a->processing->atkType == ATK_SABER) || (a->processing->atkType == ATK_ROD)) {
-      gCollisionManager.hitstop = 4;
-    }
-    if (d->processing->hardness & METAL) {
-      a->hitboxFlags |= BODY_STATUS_BLOCKED;
-    }
+    if ((a->processing->atkType == ATK_SABER) || (a->processing->atkType == ATK_ROD)) gCollisionManager.hitstop = 4;
+    if (d->processing->hardness & METAL) a->hitboxFlags |= BODY_STATUS_BLOCKED;
   }
 
   a->enemy = d;
   a->hitboxFlags |= (BODY_STATUS_B5 | BODY_STATUS_B8);
-  if (a->nature & BODY_NATURE_RECOIL) {
-    d->hitboxFlags |= BODY_STATUS_B22;
-  }
+  if (a->nature & BODY_NATURE_RECOIL) d->hitboxFlags |= BODY_STATUS_B22;
   a->status |= a->hitboxFlags;
   d->status |= d->hitboxFlags;
 
@@ -890,18 +848,10 @@ NON_MATCH static void tryOverlapCallback2(struct Hitbox* ah, struct Hitbox* dh) 
   a->processing = ah->data;
   d->processing = dh->data;
 
-  if (!(a->forceFlags & FORCE_DAMAGE)) {
-    a->atk = ah->data->damage;
-  }
-  if (!(a->forceFlags & FORCE_ELEMENT)) {
-    a->element = ah->data->element;
-  }
-  if (!(a->forceFlags & FORCE_NATURE)) {
-    a->nature = ah->data->nature;
-  }
-  if (!(a->forceFlags & FORCE_COMBO_LEVEL)) {
-    a->comboLv = ah->data->comboLv;
-  }
+  if (!(a->forceFlags & FORCE_DAMAGE)) a->atk = ah->data->damage;
+  if (!(a->forceFlags & FORCE_ELEMENT)) a->element = ah->data->element;
+  if (!(a->forceFlags & FORCE_NATURE)) a->nature = ah->data->nature;
+  if (!(a->forceFlags & FORCE_COMBO_LEVEL)) a->comboLv = ah->data->comboLv;
   if (!(a->forceFlags & FORCE_LAYER)) {
     a->collisionLayer = ah->data->layer;
     goto DONE;
@@ -935,9 +885,9 @@ NON_MATCH static void tryOverlapCallback2(struct Hitbox* ah, struct Hitbox* dh) 
 
   } else if (atkType == ATK_SOUL_LAUNCHER) {
     if (a->element == ELEMENT_FLAME) {
-      a->collisionLayer = 0x400000;
+      a->collisionLayer = (1 << 22);
     } else {
-      a->collisionLayer = 0x200000;
+      a->collisionLayer = (1 << 21);
     }
 
   } else if (atkType == 14) {

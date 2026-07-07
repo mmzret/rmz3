@@ -138,13 +138,14 @@ const main = async () => {
   metasprites.forEach((metasprite) => {
     metasprite.subsprites.forEach((subsprite) => {
       let u16 = subsprite.tileNum;
-      u16 |= subsprite.xflip ? 0x400 : 0;
-      u16 |= subsprite.yflip ? 0x800 : 0;
+      if (subsprite.xflip) u16 |= 1 << 10;
+      if (subsprite.yflip) u16 |= 1 << 11;
       u16 |= SUPRITE_SIZE.findIndex((size) => size[0] == subsprite.size[0] && size[1] == subsprite.size[1]) << 12;
 
       const x = subsprite.x >= 0 ? subsprite.x : 0x100 + subsprite.x;
       const y = subsprite.y >= 0 ? subsprite.y : 0x100 + subsprite.y;
 
+      // struct Subsprite
       result += `\t.2byte 0x${u16.toString(16)}\n\t.byte ${x}, ${y}\n`;
     });
   });

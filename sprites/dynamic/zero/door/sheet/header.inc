@@ -35,25 +35,19 @@ gGraphicHeader_Sprite_zero_door:
 @;@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 
 gGraphicHeader_Sprite_zero_door_0:
-	.incbin "sprites/dynamic/zero/door/sheet/0.lz"
-	gGraphicHeader_Sprite_zero_door_0_Palettes:
+	.incbin "sprites/dynamic/zero/door/sheet/0.4bpp.lz"
 
 gGraphicHeader_Sprite_zero_door_1:
-	.incbin "sprites/dynamic/zero/door/sheet/1.lz"
-	gGraphicHeader_Sprite_zero_door_1_Palettes:
+	.incbin "sprites/dynamic/zero/door/sheet/1.4bpp.lz"
 
 gGraphicHeader_Sprite_zero_door_2:
-	.incbin "sprites/dynamic/zero/door/sheet/2.lz"
-	gGraphicHeader_Sprite_zero_door_2_Palettes:
+	.incbin "sprites/dynamic/zero/door/sheet/2.4bpp.lz"
 
 gGraphicHeader_Sprite_zero_door_3:
-	.incbin "sprites/dynamic/zero/door/sheet/3.lz"
-	gGraphicHeader_Sprite_zero_door_3_Palettes:
+	.incbin "sprites/dynamic/zero/door/sheet/3.4bpp.lz"
 
 gGraphicHeader_Sprite_zero_door_4:
-	.incbin "sprites/dynamic/zero/door/sheet/4.lz"
-	gGraphicHeader_Sprite_zero_door_4_Palettes:
+	.incbin "sprites/dynamic/zero/door/sheet/4.4bpp.lz"
 
 gGraphicHeader_Sprite_zero_door_5:
-	.incbin "sprites/dynamic/zero/door/sheet/5.lz"
-	gGraphicHeader_Sprite_zero_door_5_Palettes:
+	.incbin "sprites/dynamic/zero/door/sheet/5.4bpp.lz"

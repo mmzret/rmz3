@@ -108,7 +108,7 @@ s16 AreaX2_MissionUpdate(struct StageRun* p) {
     p->stageEventPhase = 7;
 
   } else if (p->stageEventPhase == 7 && (gStageRun.missionStatus & MISSION_SUCCESS)) {
-    gCollisionManager.disabled |= (1 << 7);
+    gCollisionManager.disabled |= COLLMAN_DISABLED;
     gCollisionManager.sweep |= (1 << FACTION_ENEMY);
     SetScript(&gStageRun.vm, gStageScriptList[STAGE_AREA_X2][8]);
     gStageRun.missionStatus &= ~MISSION_SUCCESS;
@@ -119,7 +119,7 @@ s16 AreaX2_MissionUpdate(struct StageRun* p) {
     p->stageEventPhase = 8;
 
   } else if (p->stageEventPhase == 8) {
-    gCollisionManager.disabled &= ~(1 << 7);
+    gCollisionManager.disabled &= ~COLLMAN_DISABLED;
     gCollisionManager.sweep = 0;
     SetScript(&gStageRun.vm, gStageScriptList[STAGE_AREA_X2][10]);
     setStageCheckpoint(7);

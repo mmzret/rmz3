@@ -4,110 +4,6 @@
 	
 	.text
 
-	thumb_func_start FUN_080c078c
-FUN_080c078c: @ 0x080C078C
-	push {r4, r5, r6, lr}
-	adds r6, r0, #0
-	adds r4, r1, #0
-	lsls r2, r2, #0x18
-	lsrs r5, r2, #0x18
-	ldr r0, _080C07DC @ =gVFXHeaderPtr
-	ldr r0, [r0]
-	bl AllocEntityLast
-	adds r3, r0, #0
-	cmp r3, #0
-	beq _080C07D4
-	adds r1, r3, #0
-	adds r1, #0x25
-	movs r2, #0
-	movs r0, #1
-	strb r0, [r1]
-	ldr r0, _080C07E0 @ =gVFXFnTable
-	movs r1, #0x32
-	strb r1, [r3, #9]
-	adds r0, #0xc8
-	ldr r0, [r0]
-	ldr r0, [r0]
-	str r0, [r3, #0x14]
-	movs r0, #0
-	strh r2, [r3, #0x20]
-	adds r1, r3, #0
-	adds r1, #0x22
-	strb r0, [r1]
-	strb r5, [r3, #0x10]
-	strb r0, [r3, #0x11]
-	ldr r0, [r4]
-	str r0, [r3, #0x54]
-	ldr r0, [r4, #4]
-	str r0, [r3, #0x58]
-	str r6, [r3, #0x28]
-_080C07D4:
-	adds r0, r3, #0
-	pop {r4, r5, r6}
-	pop {r1}
-	bx r1
-	.align 2, 0
-_080C07DC: .4byte gVFXHeaderPtr
-_080C07E0: .4byte gVFXFnTable
-
-	thumb_func_start FUN_080c07e4
-FUN_080c07e4: @ 0x080C07E4
-	push {r4, r5, r6, r7, lr}
-	mov r7, r8
-	push {r7}
-	adds r5, r0, #0
-	mov r8, r1
-	lsls r2, r2, #0x18
-	lsrs r6, r2, #0x18
-	lsls r3, r3, #0x18
-	lsrs r7, r3, #0x18
-	ldr r0, _080C084C @ =gVFXHeaderPtr
-	ldr r0, [r0]
-	bl AllocEntityLast
-	adds r4, r0, #0
-	cmp r4, #0
-	beq _080C0840
-	adds r0, #0x25
-	movs r3, #0
-	movs r2, #1
-	strb r2, [r0]
-	ldr r0, _080C0850 @ =gVFXFnTable
-	movs r1, #0x32
-	strb r1, [r4, #9]
-	adds r0, #0xc8
-	ldr r0, [r0]
-	ldr r0, [r0]
-	str r0, [r4, #0x14]
-	movs r0, #0
-	strh r3, [r4, #0x20]
-	adds r1, r4, #0
-	adds r1, #0x22
-	strb r0, [r1]
-	strb r6, [r4, #0x10]
-	adds r0, r4, #0
-	adds r0, #0x7c
-	strb r7, [r0]
-	strb r2, [r4, #0x11]
-	ldr r0, [r5]
-	str r0, [r4, #0x54]
-	ldr r0, [r5, #4]
-	str r0, [r4, #0x58]
-	mov r1, r8
-	ldr r0, [r1]
-	str r0, [r4, #0x64]
-	ldr r0, [r1, #4]
-	str r0, [r4, #0x68]
-_080C0840:
-	adds r0, r4, #0
-	pop {r3}
-	mov r8, r3
-	pop {r4, r5, r6, r7}
-	pop {r1}
-	bx r1
-	.align 2, 0
-_080C084C: .4byte gVFXHeaderPtr
-_080C0850: .4byte gVFXFnTable
-
 	thumb_func_start VFX50_Init
 VFX50_Init: @ 0x080C0854
 	push {r4, r5, lr}
@@ -251,7 +147,7 @@ FUN_080c094c: @ 0x080C094C
 	beq _080C0984
 	b _080C09B8
 _080C095C:
-	ldr r1, _080C09C0 @ =0x0836F180
+	ldr r1, _080C09C0 @ =sVFX50Animations
 	adds r0, r4, #0
 	adds r0, #0x7c
 	ldrb r0, [r0]
@@ -302,7 +198,7 @@ _080C09B8:
 	pop {r0}
 	bx r0
 	.align 2, 0
-_080C09C0: .4byte 0x0836F180
+_080C09C0: .4byte sVFX50Animations
 _080C09C4: .4byte gVFXFnTable
 
 	thumb_func_start FUN_080c09c8

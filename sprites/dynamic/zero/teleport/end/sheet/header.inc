@@ -46,32 +46,24 @@ gGraphicHeader_Sprite_zero_teleport_end:
 
 gGraphicHeader_Sprite_zero_teleport_end_0:
 	.incbin "sprites/dynamic/zero/teleport/end/sheet/0.4bpp"
-	gGraphicHeader_Sprite_zero_teleport_end_0_Palettes:
 
 gGraphicHeader_Sprite_zero_teleport_end_1:
-	.incbin "sprites/dynamic/zero/teleport/end/sheet/1.notrim.4bpp"
-	gGraphicHeader_Sprite_zero_teleport_end_1_Palettes:
+	.incbin "sprites/dynamic/zero/teleport/end/sheet/1.4bpp"
 
 gGraphicHeader_Sprite_zero_teleport_end_2:
 	.incbin "sprites/dynamic/zero/teleport/end/sheet/2.4bpp"
-	gGraphicHeader_Sprite_zero_teleport_end_2_Palettes:
 
 gGraphicHeader_Sprite_zero_teleport_end_3:
 	.incbin "sprites/dynamic/zero/teleport/end/sheet/3.4bpp"
-	gGraphicHeader_Sprite_zero_teleport_end_3_Palettes:
 
 gGraphicHeader_Sprite_zero_teleport_end_4:
 	.incbin "sprites/dynamic/zero/teleport/end/sheet/4.4bpp"
-	gGraphicHeader_Sprite_zero_teleport_end_4_Palettes:
 
 gGraphicHeader_Sprite_zero_teleport_end_5:
 	.incbin "sprites/dynamic/zero/teleport/end/sheet/5.4bpp"
-	gGraphicHeader_Sprite_zero_teleport_end_5_Palettes:
 
 gGraphicHeader_Sprite_zero_teleport_end_6:
 	.incbin "sprites/dynamic/zero/teleport/end/sheet/6.4bpp"
-	gGraphicHeader_Sprite_zero_teleport_end_6_Palettes:
 
 gGraphicHeader_Sprite_zero_teleport_end_7:
 	.incbin "sprites/dynamic/zero/teleport/end/sheet/7.4bpp"
-	gGraphicHeader_Sprite_zero_teleport_end_7_Palettes:

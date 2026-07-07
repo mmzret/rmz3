@@ -114,9 +114,9 @@ void DrawEntity(struct EntityHeader* h, Renderer* r) {
         }
       }
       if (p->flags & USE_COMMON_OAM_RENDERER) {
-        Renderer_SendTask(r, (struct Task*)spr, (spr->oam).priority, p->renderPrio);  // normal rendering (as GBA sprites)
+        Renderer_SendTask(r, (void*)spr, (spr->oam).priority, p->renderPrio);  // normal rendering (as GBA sprites)
       } else {
-        Renderer_SendTask(r, (struct Task*)spr, 0, p->renderPrio);  // custom rendering
+        Renderer_SendTask(r, (void*)spr, 0, p->renderPrio);  // custom rendering
       }
     }
     p = GetNextEntity(h);
@@ -152,9 +152,9 @@ void DrawCollidableEntity(struct EntityHeader* h, Renderer* r) {
             RotateSprite(spr, p->angle);
           }
         }
-        Renderer_SendTask(r, (struct Task*)spr, (spr->oam).priority, p->renderPrio);  // normal rendering (as GBA sprites)
+        Renderer_SendTask(r, (void*)spr, (spr->oam).priority, p->renderPrio);  // normal rendering (as GBA sprites)
       } else {
-        Renderer_SendTask(r, (struct Task*)spr, 0, p->renderPrio);  // custom rendering
+        Renderer_SendTask(r, (void*)spr, 0, p->renderPrio);  // custom rendering
       }
     }
     p = GetNextEntity(h);

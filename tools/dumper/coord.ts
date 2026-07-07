@@ -1,9 +1,7 @@
 #!/usr/bin/env -S deno run --allow-read
 
 import { Command } from '@cliffy/command';
-import { loadI16, loadI32, toHex } from '../common/index.ts';
-
-const BASE = 0x0800_0000;
+import { addr, getS16, getS32, ROM_PATH, toHex } from '../common/index.ts';
 
 const main = async () => {
   const { args, options } = await new Command()
@@ -16,8 +14,8 @@ const main = async () => {
     .parse(Deno.args);
 
   const w = Number(options.width);
-  const rom = Deno.readFileSync('baserom.gba');
-  const start = Number(args[0]);
+  const rom = new DataView(Deno.readFileSync(ROM_PATH).buffer);
+  const start: addr = Number(args[0]);
   const length = args[1];
   const SIZE = w / 4;
   const TYPE_NAME = `Coord${w == 32 ? '' : w}`;
@@ -27,9 +25,9 @@ const main = async () => {
   console.log(`static const struct ${TYPE_NAME} sCoords[${length}] = {`);
   for (let i = 0; i < length; i++) {
     let x, y: string;
-    const addr = start + (i * SIZE);
-    const xRaw = w == 32 ? (loadI32(rom, addr + 0, BASE)) : (loadI16(rom, addr + 0, BASE));
-    const yRaw = w == 32 ? (loadI32(rom, addr + 4, BASE)) : (loadI16(rom, addr + 2, BASE));
+    const addr: addr = start + (i * SIZE);
+    const xRaw = w == 32 ? (getS32(rom, addr + 0)) : (getS16(rom, addr + 0));
+    const yRaw = w == 32 ? (getS32(rom, addr + 4)) : (getS16(rom, addr + 2));
     if (((xRaw & 0xFF) === 0x00) && ((yRaw & 0xFF) === 0x00)) {
       const pixel = [xRaw >> 8, yRaw >> 8];
       x = (pixel[0] >= 0) ? `PIXEL(${pixel[0]})` : `-PIXEL(${-pixel[0]})`;

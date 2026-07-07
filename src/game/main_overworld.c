@@ -71,7 +71,7 @@ void CheckItemGain(struct GameState* p) {
 
 void DrawHUD(struct GameState* _ UNUSED) {
   s8 ok = FALSE;
-  if ((!(gStageRun.vm.active & VM_ACTIVE)) && (gStageRun.vm.indicator == NULL) && (gGameState.mode[2] == 0) && (gTextWindow.text.props.kind != MUGSHOT) && (gHUD.z != NULL)) {
+  if ((!(gStageRun.vm.active & VM_ACTIVE)) && (gStageRun.vm.indicator == NULL) && (gGameState.mode[2] == 0) && (gTextWindow.text.state.u8[0] != TWK_MUGSHOT) && (gHUD.z != NULL)) {
     DrawStatus();
     ok = TRUE;
   }

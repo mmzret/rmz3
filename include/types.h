@@ -18,7 +18,7 @@ typedef char_t* str_t;
 
 // Entity の アニメーション を指すID (gDynamicMotionCmdTable (0x083b54fc) のインデックス)
 typedef u8 motion_id_t;
-typedef u8 motion_sub_id_t;  // mmz3e の preview で選ぶやつ
+typedef u8 motion_sub_id_t;
 
 // (motion_id_t << 8) | motion_sub_id_t
 typedef u16 motion_t;
@@ -27,9 +27,15 @@ typedef u8 weapon_t;       // WeaponID (0=バスター, 1=セイバー, 2=ロッ
 typedef u32 zero_input_t;  // ZERO_INPUT_XXX
 
 // (StageID << 8) | TilesetIdx, (TilesetIdx は 0..15)
-// SELF_REL_PTR(&gStageTilesetOffsets[StageID]) で、 ColorGraphicV2 の配列の先頭アドレス (e.g. gSnowTilesetGraphics) が得られ、TilesetIdx をその配列のインデックス として、タイルセットのグラフィックとパレットのアドレスが得られる
+// SELF_REL_PTR(&gStageTilesetOffsets[StageID]) で、 ColorGraphic の配列の先頭アドレス (e.g. gSnowTilesetGraphics) が得られ、TilesetIdx をその配列のインデックス として、タイルセットのグラフィックとパレットのアドレスが得られる
 typedef u16 tileset_t;
 
 typedef u8 tileset_ofs_t;  // ((TilesetIdx_0 << 4) | TilesetIdx_1), TilesetIdx_n = gOverworld.tilesets[n] の TilesetIdx
+
+typedef union {
+  u32 u32;
+  u16 u16[2];
+  u8 u8[4];
+} State32;
 
 #endif  // GUARD_RMZ3_TYPES_H

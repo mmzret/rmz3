@@ -4,30 +4,32 @@
 
 // Tretista
 
-struct Solid13Object {
-  OBJECT_HDR;
+typedef struct {
+  ENTITY_HDR;
+  ENTITY_SPRITE;
+  struct Body body;  // 0x74
   // props (16bytes, offset: 0xB4..)
   u8 unk_b4[12];
   u8 unk_c0;
-};
-static_assert(sizeof(struct Solid13Object) == sizeof(struct Solid));
+} Solid13Object;
+static_assert(sizeof(Solid13Object) == sizeof(struct Solid));
 
 static const struct Rect sSize;
 
 static const struct Collision Collision_ARRAY_0837025c[2];
 static const struct Collision Collision_ARRAY_0837028c[2];
 
-static void Solid13_Init(struct Solid13Object* p);
+static void Solid13_Init(Solid13Object* p);
 static void Solid13_Update(struct Entity* p);
 static void Solid13_Die(struct Entity* p);
 
 // clang-format off
 const SolidRoutine gSolid13Routine = {
-    [ENTITY_INIT] =      (SolidFunc)Solid13_Init,
-    [ENTITY_UPDATE] =    (SolidFunc)Solid13_Update,
-    [ENTITY_DIE] =       (SolidFunc)Solid13_Die,
-    [ENTITY_DISAPPEAR] = (SolidFunc)DeleteSolid,
-    [ENTITY_EXIT] =      (SolidFunc)DeleteEntity,
+    [ENTITY_INIT] =      (void*)Solid13_Init,
+    [ENTITY_UPDATE] =    (void*)Solid13_Update,
+    [ENTITY_DIE] =       (void*)Solid13_Die,
+    [ENTITY_DISAPPEAR] = (void*)DeleteSolid,
+    [ENTITY_EXIT] =      (void*)DeleteEntity,
 };
 // clang-format on
 
@@ -43,18 +45,18 @@ struct Solid* CreateSolid13(struct Entity* e, Coords32* c, Coords32* d, u8 n) {
   return (void*)p;
 }
 
-static void Solid13_Init(struct Solid13Object* p) {
-  (p->s).flags2 |= ENTI_PHYSICS;
-  (p->s).size = &sSize;
-  (p->s).physicsAttr = SHAPE_BLOCK;
-  (p->s).flags |= FLIPABLE;
-  (p->s).flags &= ~DISPLAY;
-  InitNonAffineMotion(&p->s);
+static void Solid13_Init(Solid13Object* p) {
+  p->flags2 |= ENTI_PHYSICS;
+  p->size = &sSize;
+  p->physicsAttr = SHAPE_BLOCK;
+  p->flags |= FLIPABLE;
+  p->flags &= ~DISPLAY;
+  InitNonAffineMotion((void*)p);
   INIT_BODY(p, &Collision_ARRAY_0837025c[0], 1, NULL);
   INIT_BODY(p, &Collision_ARRAY_0837028c[0], 1, NULL);
   p->unk_c0 = 0;
   SET_SOLID_ROUTINE(p, ENTITY_UPDATE);
-  (p->s).mode[1] = 0, (p->s).mode[2] = 0, (p->s).mode[3] = 0;
+  p->mode[1] = 0, p->mode[2] = 0, p->mode[3] = 0;
   Solid13_Update((void*)p);
 }
 

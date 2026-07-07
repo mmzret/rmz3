@@ -12,12 +12,12 @@ const PickupRoutine* const gPickupFnTable[2] = {
     &gPickupDiskRoutine,
 };
 
-void InitPickupHeader(struct EntityHeader* h, struct Pickup* p, s16 len) {
+void InitPickupHeader(struct EntityHeader* h, Pickup* p, s16 len) {
   s16 i;
 
-  InitEntityHeader(h, ENTITY_ITEM, &p->s, sizeof(struct Pickup), len);
+  InitEntityHeader(h, ENTITY_ITEM, (void*)p, sizeof(Pickup), len);
   for (i = 0; i < len; i++) {
-    p[i].s.uniqueID = gEntityIDGenerator + i;
+    p[i].uniqueID = gEntityIDGenerator + i;
   }
   gEntityIDGenerator += len;
   gPickupHeaderPtr = h;

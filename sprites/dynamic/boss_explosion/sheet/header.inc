@@ -113,61 +113,61 @@ gGraphicHeader_Sprite_boss_explosion:
 @;@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 
 gGraphicHeader_Sprite_boss_explosion_0:
-	.incbin "sprites/dynamic/boss_explosion/sheet/0.notrim.4bpp"
+	.incbin "sprites/dynamic/boss_explosion/sheet/0.4bpp"
 	gGraphicHeader_Sprite_boss_explosion_0_Palettes:
-	.incbin "sprites/dynamic/boss_explosion/sheet/0.notrim.gbapal"
+	.incbin "sprites/dynamic/boss_explosion/sheet/0.gbapal"
 
 gGraphicHeader_Sprite_boss_explosion_1:
-	.incbin "sprites/dynamic/boss_explosion/sheet/1.notrim.4bpp"
+	.incbin "sprites/dynamic/boss_explosion/sheet/1.4bpp"
 	gGraphicHeader_Sprite_boss_explosion_1_Palettes:
-	.incbin "sprites/dynamic/boss_explosion/sheet/1.notrim.gbapal"
+	.incbin "sprites/dynamic/boss_explosion/sheet/1.gbapal"
 
 gGraphicHeader_Sprite_boss_explosion_2:
-	.incbin "sprites/dynamic/boss_explosion/sheet/2.notrim.4bpp"
+	.incbin "sprites/dynamic/boss_explosion/sheet/2.4bpp"
 	gGraphicHeader_Sprite_boss_explosion_2_Palettes:
-	.incbin "sprites/dynamic/boss_explosion/sheet/2.notrim.gbapal"
+	.incbin "sprites/dynamic/boss_explosion/sheet/2.gbapal"
 
 gGraphicHeader_Sprite_boss_explosion_3:
-	.incbin "sprites/dynamic/boss_explosion/sheet/3.notrim.4bpp"
+	.incbin "sprites/dynamic/boss_explosion/sheet/3.4bpp"
 	gGraphicHeader_Sprite_boss_explosion_3_Palettes:
-	.incbin "sprites/dynamic/boss_explosion/sheet/3.notrim.gbapal"
+	.incbin "sprites/dynamic/boss_explosion/sheet/3.gbapal"
 
 gGraphicHeader_Sprite_boss_explosion_4:
-	.incbin "sprites/dynamic/boss_explosion/sheet/4.notrim.4bpp"
+	.incbin "sprites/dynamic/boss_explosion/sheet/4.4bpp"
 	gGraphicHeader_Sprite_boss_explosion_4_Palettes:
-	.incbin "sprites/dynamic/boss_explosion/sheet/4.notrim.gbapal"
+	.incbin "sprites/dynamic/boss_explosion/sheet/4.gbapal"
 
 gGraphicHeader_Sprite_boss_explosion_5:
-	.incbin "sprites/dynamic/boss_explosion/sheet/5.notrim.4bpp"
+	.incbin "sprites/dynamic/boss_explosion/sheet/5.4bpp"
 	gGraphicHeader_Sprite_boss_explosion_5_Palettes:
-	.incbin "sprites/dynamic/boss_explosion/sheet/5.notrim.gbapal"
+	.incbin "sprites/dynamic/boss_explosion/sheet/5.gbapal"
 
 gGraphicHeader_Sprite_boss_explosion_6:
-	.incbin "sprites/dynamic/boss_explosion/sheet/6.notrim.4bpp"
+	.incbin "sprites/dynamic/boss_explosion/sheet/6.4bpp"
 	gGraphicHeader_Sprite_boss_explosion_6_Palettes:
-	.incbin "sprites/dynamic/boss_explosion/sheet/6.notrim.gbapal"
+	.incbin "sprites/dynamic/boss_explosion/sheet/6.gbapal"
 
 gGraphicHeader_Sprite_boss_explosion_7:
-	.incbin "sprites/dynamic/boss_explosion/sheet/7.notrim.4bpp"
+	.incbin "sprites/dynamic/boss_explosion/sheet/7.4bpp"
 	gGraphicHeader_Sprite_boss_explosion_7_Palettes:
-	.incbin "sprites/dynamic/boss_explosion/sheet/7.notrim.gbapal"
+	.incbin "sprites/dynamic/boss_explosion/sheet/7.gbapal"
 
 gGraphicHeader_Sprite_boss_explosion_8:
-	.incbin "sprites/dynamic/boss_explosion/sheet/8.notrim.4bpp"
+	.incbin "sprites/dynamic/boss_explosion/sheet/8.4bpp"
 	gGraphicHeader_Sprite_boss_explosion_8_Palettes:
-	.incbin "sprites/dynamic/boss_explosion/sheet/8.notrim.gbapal"
+	.incbin "sprites/dynamic/boss_explosion/sheet/8.gbapal"
 
 gGraphicHeader_Sprite_boss_explosion_9:
-	.incbin "sprites/dynamic/boss_explosion/sheet/9.notrim.4bpp"
+	.incbin "sprites/dynamic/boss_explosion/sheet/9.4bpp"
 	gGraphicHeader_Sprite_boss_explosion_9_Palettes:
-	.incbin "sprites/dynamic/boss_explosion/sheet/9.notrim.gbapal"
+	.incbin "sprites/dynamic/boss_explosion/sheet/9.gbapal"
 
 gGraphicHeader_Sprite_boss_explosion_10:
-	.incbin "sprites/dynamic/boss_explosion/sheet/10.notrim.4bpp"
+	.incbin "sprites/dynamic/boss_explosion/sheet/10.4bpp"
 	gGraphicHeader_Sprite_boss_explosion_10_Palettes:
-	.incbin "sprites/dynamic/boss_explosion/sheet/10.notrim.gbapal"
+	.incbin "sprites/dynamic/boss_explosion/sheet/10.gbapal"
 
 gGraphicHeader_Sprite_boss_explosion_11:
-	.incbin "sprites/dynamic/boss_explosion/sheet/11.notrim.4bpp"
+	.incbin "sprites/dynamic/boss_explosion/sheet/11.4bpp"
 	gGraphicHeader_Sprite_boss_explosion_11_Palettes:
-	.incbin "sprites/dynamic/boss_explosion/sheet/11.notrim.gbapal"
+	.incbin "sprites/dynamic/boss_explosion/sheet/11.gbapal"

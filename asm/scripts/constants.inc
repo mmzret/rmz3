@@ -6,7 +6,6 @@
 
 .equ DIR_LEFT, 0x00
 .equ DIR_RIGHT, 0x01
-.equ IN_SEA, 0x100
 
 @;@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 

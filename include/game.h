@@ -82,7 +82,7 @@ struct GameState {
   struct WramWindowRegister savedWindowRegister;  // 0x1EE8 (addr:0x02032A48)
   u8 unk_1ef8[352];                               // 0x1EF8 (addr:0x02032A58)
   u8 savedObjVRAM[16 * 1024];                     // 0x2058 (addr:0x02032BB8)
-  struct PlttData savedObjPal[256];               // 0x6058 (addr:0x02036BB8)
+  rgb555 savedObjPal[256];                        // 0x6058 (addr:0x02036BB8)
   u32 savedColor0;                                // 0x6258 (addr:0x02036DB8), SaveGraphicState でここに 色番号0(透明色)が退避される
   GameSavedata save;                              // 0x625C (addr:0x02036DBC)
   struct Zero* z2;                                // 0x64AC (addr:0x0203700C)

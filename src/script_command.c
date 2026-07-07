@@ -277,7 +277,7 @@ NON_MATCH static bool32 Cmd_cmd06(struct VM* vm) {
   switch (c->val2) {
     case 0: {                                                                   // (おそらく)静止した8bppの1枚絵を表示する
       BGCNT16(1) = (BGCNT_SCREENBASE(2) | BGCNT_256COLOR | BGCNT_CHARBASE(1));  // 0x284
-      *(u32*)gVideoRegBuffer.bgofs[1] = 0;
+      RESET_BGOFS(1);
       gVideoRegBuffer.dispcnt |= (DISPCNT_OBJ_ON | DISPCNT_BG1_ON);
       LoadGraphic(BG_GRAPHIC(c->status), BG_CHAR_OFFSET(1));
       LoadPalette(BG_PALETTE(c->status), 0);
@@ -327,12 +327,12 @@ NON_MATCH static bool32 Cmd_cmd06(struct VM* vm) {
       break;
     }
     case 5: {  // backdrop_color
-      PALETTE16(0) = (u16)c->work;
+      gPaletteManager.buf[0] = (u16)c->work;
       break;
     }
     case 6: {                                                                  // (おそらく)静止した4bppの1枚絵を表示する
       BGCNT16(1) = (BGCNT_SCREENBASE(2) | BGCNT_16COLOR | BGCNT_CHARBASE(1));  // 0x204
-      *(u32*)gVideoRegBuffer.bgofs[1] = 0;
+      RESET_BGOFS(1);
       gVideoRegBuffer.dispcnt |= (DISPCNT_OBJ_ON | DISPCNT_BG1_ON);
       LoadGraphic(BG_GRAPHIC(c->status), BG_CHAR_OFFSET(1));
       LoadPalette(BG_PALETTE(c->status), 0);
@@ -365,10 +365,10 @@ static bool32 Cmd_resume(struct VM* vm) {
     cam->viewport.x = (z->s).coord.x;
     cam->viewport.y = (z->s).coord.y;
     cam->dx = 0, cam->dy = 0;
-    gCollisionManager.disabled &= 0x7F;
+    gCollisionManager.disabled &= ~COLLMAN_DISABLED;
     gCollisionManager.sweep = 0;
   } else {
-    gCollisionManager.disabled &= 0x7F;
+    gCollisionManager.disabled &= ~COLLMAN_DISABLED;
     gCollisionManager.sweep = 0;
   }
 
@@ -802,7 +802,7 @@ static bool32 Cmd_transition(struct VM* vm) {
     // start_transition XX
     vm->transition = c->status;
     if (vm->transition & TRANSITION_Z) {
-      PALETTE16(0) = RGB_BLACK;
+      gPaletteManager.buf[0] = RGB_BLACK;
     }
   }
   return FALSE;
@@ -918,7 +918,7 @@ status:
 */
 static bool32 Cmd_message(struct VM* vm) {
   switch (((vm->pc)->c).status) {
-    case 0: {
+    case 0: {  // print_message
       PrintTextWindow(*(TextID*)&(((vm->pc)->c).work), (u16)((vm->pc)->c).val2);
       break;
     }
@@ -934,7 +934,7 @@ static bool32 Cmd_message(struct VM* vm) {
       }
       break;
     }
-    case 2: {
+    case 2: {  // wait_msgbox_end
       if (((vm->pc)->c).val2 == 0) {
         if ((&gTextWindow.text)->mode != 0) {
           vm->pc--;
@@ -946,7 +946,7 @@ static bool32 Cmd_message(struct VM* vm) {
       }
       break;
     }
-    case 3: {
+    case 3: {  // triumphant_message
       vm->zeroDeathTextIDs[((vm->pc)->c).val2] = ((vm->pc)->c).work;
       break;
     }
@@ -968,7 +968,7 @@ static bool32 Cmd_message(struct VM* vm) {
       vm->zeroDeathTextIDs[((vm->pc)->c).val2] = 0xFFFF;
       break;
     }
-    case 7: {
+    case 7: {  // kill_message
       (&gTextWindow.text)->flag |= TEXT_FLAG_TERMINATE;
       break;
     }
@@ -1217,12 +1217,12 @@ static bool32 Cmd_sweep(struct VM* vm) {
     }
 
     case 2: {
-      gCollisionManager.disabled |= (1 << 7);
+      gCollisionManager.disabled |= COLLMAN_DISABLED;
       break;
     }
 
     case 3: {
-      gCollisionManager.disabled &= ~(1 << 7);
+      gCollisionManager.disabled &= ~COLLMAN_DISABLED;
       break;
     }
   }

@@ -5,7 +5,6 @@ agbcc
 *.cheats
 *.elf
 graphics/dialog/mugshot/**/*.bin
-graphics/elf/type/**/*.bin
 tmp/
 graphics/**/*.4bpp
 sprites/**/*.4bpp
@@ -17,10 +16,13 @@ sprites/**/sequence.inc
 data/tilesets/*/header.s
 graphics/**/header.s
 tools/mgba
+tools/**/oneshot/
 
 sound/songs/midi/*.s
 
 graphics/**/*.gbapal
 sprites/**/*.gbapal
-data/tilesets/**/header.json
+data/tilesets/**/*.gbapal
 graphics/**/header.json
+
+*.dump

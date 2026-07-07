@@ -39,6 +39,6 @@ metatile_attr_t FUN_080098a4(s32 x, s32 y);
 metatile_attr_t GetGroundMetatileAttr(s32 x, s32 y);
 
 void ShiftMetatile(s32 x16, s32 y16, const struct MetatileShift* s);
-void PatchMetatileMap(s32 x, s32 y, u16* patch);
+void PatchMetatileMap(s32 x, s32 y, const u16* patch);
 
 #endif  // GUARD_RMZ3_OW_METATILE_H

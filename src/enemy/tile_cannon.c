@@ -2,7 +2,14 @@
 #include "enemy.h"
 #include "global.h"
 
-INCASM("asm/enemy/tile_cannon.inc");
+typedef struct {
+  ENTITY_HDR;
+  ENTITY_SPRITE;
+  struct Body body;  // 0x74
+  // props (16bytes, offset: 0xB4..)
+  u8 props[16];
+} TileCannon;
+static_assert(sizeof(TileCannon) == sizeof(struct Enemy));
 
 void TileCannon_Init(struct Enemy* p);
 void TileCannon_Update(struct Enemy* p);
@@ -10,15 +17,27 @@ void TileCannon_Die(struct Enemy* p);
 
 // clang-format off
 const EnemyRoutine gTileCannonRoutine = {
-    [ENTITY_INIT] =      TileCannon_Init,
-    [ENTITY_UPDATE] =    TileCannon_Update,
-    [ENTITY_DIE] =       TileCannon_Die,
+    [ENTITY_INIT] =      (void*)TileCannon_Init,
+    [ENTITY_UPDATE] =    (void*)TileCannon_Update,
+    [ENTITY_DIE] =       (void*)TileCannon_Die,
     [ENTITY_DISAPPEAR] = (void*)DeleteEnemy,
-    [ENTITY_EXIT] =      (EnemyFunc)DeleteEntity,
+    [ENTITY_EXIT] =      (void*)DeleteEntity,
 };
 // clang-format on
 
-// --------------------------------------------
+bool32 FUN_080780c4(TileCannon* p) {
+  TileCannon* q = (TileCannon*)p->unk_2c;
+  if (q->mode[0] >= ENTITY_DIE && (q->body).hp == 0) {
+    SetSpriteAnimation(p, MOTION(SM047_TILE_CANNON, 0) | p->work[0]);
+    UpdateSpriteAnimation(p);
+    p->work[2] = 120;
+    p->mode[1] = 1, p->mode[2] = 0;
+    return TRUE;
+  }
+  return FALSE;
+}
+
+INCASM("asm/enemy/tile_cannon.inc");
 
 void FUN_08078480(struct Enemy* p);
 void FUN_0807847c(struct Enemy* p);

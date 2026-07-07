@@ -24,42 +24,32 @@
         },
         "editor.semanticHighlighting.enabled": true,
         "editor.formatOnSave": true,
-        "editor.insertSpaces": true,
-        "editor.detectIndentation":false
+        "editor.insertSpaces": true
     },
 
     "[linkerscript]": {
         "editor.suggest.insertMode": "replace",
         "editor.formatOnSave": true,
-        "editor.insertSpaces": true,
-        "editor.detectIndentation":false
+        "editor.insertSpaces": true
     },
 
     "C_Cpp.clang_format_fallbackStyle": "{ BasedOnStyle: Google, ColumnLimit: 1000 }",
     "files.exclude": {
-        "tools/agbcc": true,
         "*.sav": true,
-        "*.elf": true,
-        "graphics/**/*.{4bpp,lz,gbapal}": true,
-        "sprites/**/*.{4bpp,lz,gbapal}": true,
-        "src/*.{o,d}": true,
         "baserom.gba": true,
-        "src/**/*.s": { "when": "$(basename).c" },
-        "sound/songs/midi/*.s": false,
     },
     "search.exclude": {
-        "src/**/*.s": false,
+        "tools/agbcc": true,
     },
     "files.associations": {
-        "*.ino": "cpp",
-        "*.tsx": "typescriptreact",
         "*.s": "arm",
+        "*.sx": "arm",
         "*.inc": "arm",
         "*.h": "c",
-        "hooks": "plaintext",
-        "bytereplacement": "plaintext",
-        "repoints": "plaintext",
-        "routinepointers": "plaintext",
         "**/linker/*.txt": "linkerscript"
-    }
+    },
+    "workbench.editorAssociations": {
+      "*.bin": "hexEditor.hexedit",
+      "*.gbapal": "hexEditor.hexedit"
+    },
 }

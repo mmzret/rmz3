@@ -21,12 +21,9 @@ gGraphicHeader_Sprite_weapon_triple_slash_2:
 
 gGraphicHeader_Sprite_weapon_triple_slash_2_0:
 	.incbin "sprites/dynamic/weapon/triple_slash_2/sheet/0.4bpp"
-	gGraphicHeader_Sprite_weapon_triple_slash_2_0_Palettes:
 
 gGraphicHeader_Sprite_weapon_triple_slash_2_1:
 	.incbin "sprites/dynamic/weapon/triple_slash_2/sheet/1.4bpp"
-	gGraphicHeader_Sprite_weapon_triple_slash_2_1_Palettes:
 
 gGraphicHeader_Sprite_weapon_triple_slash_2_2:
 	.incbin "sprites/dynamic/weapon/triple_slash_2/sheet/2.4bpp"
-	gGraphicHeader_Sprite_weapon_triple_slash_2_2_Palettes:

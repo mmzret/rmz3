@@ -8,6 +8,15 @@
 static void drawZeroHPWeaponIcon(void* p);
 static void FUN_080ea3c8(void* p);
 
+extern const struct Graphic gGraphic_HUD;
+extern const struct Palette gPalette_HUD;
+
+extern const struct Graphic gGraphic_Unk17;
+extern const struct Palette gPalette_Unk17;
+
+extern const struct Graphic gGraphic_LogoDemo;
+extern const struct Palette gPalette_LogoDemo;
+
 void ResetHUD(u16* bg0) {
   gHUD.bg0 = bg0;
   gHUD.offset_y = 0;
@@ -20,13 +29,13 @@ void DrawStatus(void) {
   gWindowRegBuffer.winin[2] |= WINOUT_WIN01_BG0;
   if (gHUD.offset_y == 0) {
     if (!FLAG(gCurStory.s.gameflags, DEMO_PLAY)) {
-      LoadGraphic(BG_GRAPHIC(BG_UNK_17), (void*)CHAR_BASE(0));
-      LoadPalette(BG_PALETTE(BG_UNK_17), 0);
-      LoadGraphic(BG_GRAPHIC(BG_HP_GAUGE), (void*)CHAR_BASE(0));
-      LoadPalette(BG_PALETTE(BG_HP_GAUGE), 0);
+      LoadGraphic(&gGraphic_Unk17, (void*)CHAR_BASE(0));
+      LoadPalette(&gPalette_Unk17, 0);
+      LoadGraphic(&gGraphic_HUD, (void*)CHAR_BASE(0));
+      LoadPalette(&gPalette_HUD, 0);
     } else {
-      LoadGraphic(BG_GRAPHIC(BG_TITLE_LOGO), (void*)CHAR_BASE(0));
-      LoadPalette(BG_PALETTE(BG_TITLE_LOGO), 0);
+      LoadGraphic(&gGraphic_LogoDemo, (void*)CHAR_BASE(0));
+      LoadPalette(&gPalette_LogoDemo, 0);
     }
     gHUD.offset_y = 1;
   }
@@ -37,8 +46,8 @@ void DrawStatus(void) {
   } else {
     gVideoRegBuffer.dispcnt |= DISPCNT_BG0_ON;
     if (gHUD.offset_y < 32) gHUD.offset_y++;
-    BGOFS(0)->y = 32 - gHUD.offset_y;
-    loadBgMap_08004248(gHUD.bg0, gBgMapOffsets, BG_TITLE_LOGO, 0, 0);  // デモプレイ中はタイトルロゴを左上に表示
+    BGnVOFS(0) = 32 - gHUD.offset_y;
+    loadBgMap_08004248(gHUD.bg0, gBgMapOffsets, BG_LOGO_DEMO, 0, 0);  // デモプレイ中はタイトルロゴを左上に表示
   }
 }
 

@@ -1445,7 +1445,7 @@ static void unused_FastCopy(void* dst, const void* src, u32 bytesize) {  // CpuF
   if ((bytesize & 0x1F) != 0) CpuCopy32(src + n, dst + n, bytesize & 0x1F);
 }
 
-void UpdateBGOFS(struct LayerGraphic* l, struct BgOfs* bgofs) {
+void UpdateBGOFS(struct LayerGraphic* l, BgOfs* bgofs) {
   bgofs->x = l->bgofs[0];
   bgofs->y = l->bgofs[1];
 }

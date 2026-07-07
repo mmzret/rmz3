@@ -61,7 +61,7 @@ void doGraphicTransferTasks(void) {
 #define TILESIZE(g) ((u32)g->tilesize << 3)
 
 // 0x080037c0
-void LoadGraphic(const struct GraphicV2* g, void* dst_vram_offset) {
+void LoadGraphic(const struct Graphic* g, void* dst_vram_offset) {
   if (g->size != 0) {
     dst_vram_offset += g->tileId * TILESIZE(g);
 
@@ -133,7 +133,7 @@ void LoadGraphic(const struct GraphicV2* g, void* dst_vram_offset) {
  * @brief Graphic構造体を gGraphicTransferManager(0x02001f00) に追加する
  * @note 0x08003934
  */
-s32 RequestGraphicTransfer(const struct Graphic* g, void* dst_vram_offset) {
+s32 RequestGraphicTransfer(const void* g, void* dst_vram_offset) {
   u32 i;
 
   // Check same request

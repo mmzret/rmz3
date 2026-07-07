@@ -641,7 +641,7 @@ static void DiskLoop_Exit(struct GameState* g) {
   u8* s;
   RemovePaletteAnimation(64);
   gWindowRegBuffer.dispcnt &= ~DISPCNT_WIN0_ON;
-  PALETTE16(0) = 0;
+  gPaletteManager.buf[0] = 0;
   s = (u8*)&(g->sceneState).menu;
   s[13] = 1;
   SetGameMode(g, GAMEMODE(MAINGAME, OVERWORLD, 3, 5));
@@ -660,8 +660,8 @@ static void sd_analysis_080f83ac(struct GameState* g) {
 
 static void sd_analysis_080f8408(struct GameState* g) {
   Coords32* c = &g->unk_0dc4;
-  const u16* bg1ofs = gVideoRegBuffer.bgofs[1];
-  c->x = PIXEL(bg1ofs[0] & 0x1FF) + PIXEL(120);
+  const BgOfs* bg1ofs = (const BgOfs*)gVideoRegBuffer.bgofs[1];
+  c->x = PIXEL(bg1ofs->x & 0x1FF) + PIXEL(120);
   Renderer_Clear(&g->rendererUI);
   UpdateEntities(gWidgetHeaderPtr);
   DrawEntity(gWidgetHeaderPtr, &g->rendererUI);

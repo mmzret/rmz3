@@ -5,10 +5,12 @@
 
 #define FONT_BOLD 0x7800
 
+extern const rgb555 gFontPalette[96];
+
 static s32 printStringWithLen(u8 start_x8, u8 start_y8, char_t* s, u16 len);
 
-void InitTextPrinter(u32* bg0) {
-  gTextPrinter.bg0 = (tile_id_t*)bg0;
+void InitTextPrinter(void* tilemap) {
+  gTextPrinter.tilemap = tilemap;
   gTextPrinter.variable = &gTerminateCharCode;
   gTextPrinter.startX = 0;
   gTextPrinter.endX = 30;
@@ -17,16 +19,17 @@ void InitTextPrinter(u32* bg0) {
   LoadAsciiBold();
 }
 
+// 0x080e9730
 void LoadAsciiBold(void) {
-  static const ALIGNED(4) u16 sDefaultBGPalette[16] = {
-      0x0000, 0xFFFF, 0xB9CE, 0x8421, 0xC21F, 0xABFF, 0xC3EC, 0x9E80, 0xA110, 0xF3F3, 0xF68A, 0xD14A, 0xA8FC, 0x8537, 0x908D, 0xCEB5,
-  };
+  static const ALIGNED(4) rgb555 sDefaultBGPalette[16] = {
+      RGB_BLACK, RGBg_WHITE, RGBg(14, 14, 14), RGBg(1, 1, 1), RGBg(31, 16, 16), RGBg(31, 31, 10), RGBg(12, 31, 16), RGBg(0, 20, 7), RGBg(16, 8, 8), RGBg(19, 31, 28), RGBg(10, 20, 29), RGBg(10, 10, 20), RGBg(28, 7, 10), RGBg(23, 9, 1), RGBg(13, 4, 4), RGBg(21, 21, 19),
+  };  // 0x080ff15c
 
   u8 val;
   CpuFastCopy(gFontBold, (void*)(CHAR_BASE(0) + VRAM + FONT_BOLD), 2048);
   val = 0;
   CpuFastCopy(sDefaultBGPalette, gPaletteManager.buf, 32);
-  gTextPrinter.startX = val;
+  gTextPrinter.startX = val;  // 0
   gTextPrinter.endX = 30;
   gTextPrinter.startY = 0;
   gTextPrinter.endY = 22;
@@ -51,24 +54,25 @@ NON_MATCH void ResetCharTiles(void) {
 }
 
 void LoadKatakanaBold(void) {
-  const void* src = &gFontBold[0x40];
-  const u16 charBase = (*((u16*)&gVideoRegBuffer.bgcnt[0]) & 0xc) << 12;
-  CpuFastCopy(src, (void*)(VRAM + 0x7000 + charBase), 2048);
+  const void* src = &gFontBold[64];
+  void* dst = (void*)(VRAM + 0x7000 + CHAR_BASE(0));
+  CpuFastCopy(src, dst, 64 * TILE_SIZE_4BPP);
 }
 
 void FUN_080e981c(void) {
   gTextPrinter.unk_002 = 2;
-  CpuFastCopy(&gFontPalette[0], &gPaletteManager.buf[32], ARRAY_COUNT(gFontPalette) * 2);
+  CpuFastCopy(&gFontPalette[0], &gPaletteManager.buf[16 * 2], ARRAY_COUNT(gFontPalette) * 2);
 }
 
 void FUN_080e9840(void) {
   gTextPrinter.unk_002 = 10;
-  CpuFastCopy(&gFontPalette[0], &gPaletteManager.buf[160], ARRAY_COUNT(gFontPalette) * 2);
+  CpuFastCopy(&gFontPalette[0], &gPaletteManager.buf[16 * 10], ARRAY_COUNT(gFontPalette) * 2);
 }
 
-/*
-  毎フレーム、gTextPrinter の文字列を全て描画する
-*/
+/**
+ * @brief 毎フレーム、gTextPrinter の文字列を全て描画する
+ * @note 0x080e9864
+ */
 WIP void PrintAllStrings(void) {
 #ifdef ALWAYS_FALSE
   s32 i;
@@ -89,6 +93,10 @@ WIP void PrintAllStrings(void) {
 #endif
 }
 
+/**
+ * @brief 多分、文字の描画に必要なフォントのタイルデータをVRAMにロードする
+ * @note 0x080e98ec
+ */
 NAKED void FUN_080e98ec(void) {
   asm(".syntax unified\n\
 	push {r4, r5, r6, r7, lr}\n\
@@ -288,6 +296,7 @@ _080E9A70: .4byte gFontBig+32\n\
  .syntax divided\n");
 }
 
+// Get string character count (not bytesize)
 s16 getStringLength(char_t* s) {
   s16 len = 0;
   for (; *s < CHAR_NEXT; s++) {
@@ -369,7 +378,7 @@ char_t* SkipString(char_t* s, s32 skipBytesize) {
 }
 
 void PrintUnicodeString(const char_t* s, u32 x8, u32 y8) {
-  tile_id_t* dst = gTextPrinter.bg0;
+  u16* dst = gTextPrinter.tilemap;
   if (y8 < 32) {
     dst = &dst[x8 + (y8 * 32)];
     while (*s != 0) {
@@ -387,7 +396,21 @@ void PrintUnicodeString(const char_t* s, u32 x8, u32 y8) {
 }
 
 // 0x080e9d04
-NAKED void PrintMinigameNumber(s32 score, u16 x, u16 y) { INCCODE("asm/todo/PrintMinigameNumber.inc"); };
+void PrintMinigameNumber(s32 score, u16 x8, u16 y8) {
+  s16 i;
+  char_t s[17];  // 符号 + 15桁 + 終端
+  s32 val = score;
+  if (score < 0) val = -score;
+  s[16] = '\0';
+
+  for (i = 15; i > 0; i--) {
+    s[i] = '0' + (val % 10);
+    if (val < 10) break;
+    val /= 10;
+  }
+  if (score < 0) s[--i] = '-';  // sign
+  PrintUnicodeString(&s[i], x8 - 15 + i, y8);
+};
 
 NAKED void unused_080e9d94(s32 r0, u16 r1, u16 r2) { INCCODE("asm/unused/unused_080e9d94.inc"); };
 
