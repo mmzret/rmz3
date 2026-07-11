@@ -42,7 +42,7 @@ typedef struct {
   s16 len;                // 0x10, .current の文字数
   s16 done;               // 0x12, 処理済みの文字数
   s16 frame;              // 0x14
-  s16 unk_16;             // 0x16
+  s16 unk_16;             // 0x16, CHAR_F5 の次の1バイトが入る
   char_t* start;          // 0x18
   char_t* current;        // 0x1C
   char_t* next;           // 0x20

@@ -3,9 +3,23 @@
 #include "gfx.h"
 #include "global.h"
 
-#define FONT_BOLD 0x7800
+#define CHAR_KANJI 0xF0
 
-extern const rgb555 gFontPalette[96];
+#define CHAR_VARIABLE 0xF9
+#define CHAR_LF 0xFC
+
+#define ASCII_a 97  // "a"
+#define JIS_KANA 160
+
+// タイルID
+//  736.. gFontTall と gFontBig のための領域 (使う文字だけ重複なしで動的にロード)
+//  896.. gFontJIS の カタカナ
+//  960.. gFontJIS の ASCII(正確にはASCII文字の0x20..5F)
+#define GLYPH_TILEID 736
+#define JIS_KANA_TILEID 896  // 0x7000 / TILE_SIZE_4BPP, ◻︎。「」、・ヲァィゥェォ ...
+#define ASCII_TILEID 960     // 0x7800 / TILE_SIZE_4BPP printable ASCII (32..96)
+
+extern const rgb555 gFontBigPal[16 * 6];
 
 static s32 printStringWithLen(u8 start_x8, u8 start_y8, char_t* s, u16 len);
 
@@ -26,7 +40,7 @@ void LoadAsciiBold(void) {
   };  // 0x080ff15c
 
   u8 val;
-  CpuFastCopy(gFontBold, (void*)(CHAR_BASE(0) + VRAM + FONT_BOLD), 2048);
+  CpuFastCopy(gFontJIS, (void*)(VRAM + CHAR_BASE(0) + (ASCII_TILEID * TILE_SIZE_4BPP)), 64 * TILE_SIZE_4BPP);
   val = 0;
   CpuFastCopy(sDefaultBGPalette, gPaletteManager.buf, 32);
   gTextPrinter.startX = val;  // 0
@@ -36,37 +50,47 @@ void LoadAsciiBold(void) {
   ResetCharTiles();
 }
 
+// 0x080e97a4
 NON_MATCH void ResetCharTiles(void) {
 #if MODERN
-  struct CharTile* tile;
+  s32 i;
+  GlyphNode* c;
   gTextPrinter.freelist = NULL;
-  for (s32 i = 79; i >= 0; i--) {
-    tile = &gTextPrinter.tilelist[i];
-    tile->tileID = 894 - (79 - i) * 2;
-    tile->next = gTextPrinter.freelist;
-    gTextPrinter.freelist = tile;
+  for (i = 79; i >= 0; i--) {
+    c = &gTextPrinter.glyphBuffer[i];
+    c->tileID = (GLYPH_TILEID + (79 * 2)) - (79 - i) * 2;
+    c->next = gTextPrinter.freelist;
+    gTextPrinter.freelist = c;
   }
-  gTextPrinter.used = gTextPrinter.cur = NULL;
+  gTextPrinter.cache = gTextPrinter.cur = NULL;
   gTextPrinter.len = 0;
 #else
   INCCODE("asm/wip/ResetCharTiles.inc");
 #endif
 }
 
-void LoadKatakanaBold(void) {
-  const void* src = &gFontBold[64];
-  void* dst = (void*)(VRAM + 0x7000 + CHAR_BASE(0));
+void LoadJISKana(void) {
+  const void* src = &gFontJIS[64];
+  void* dst = (void*)(VRAM + CHAR_BASE(0) + (JIS_KANA_TILEID * TILE_SIZE_4BPP));
   CpuFastCopy(src, dst, 64 * TILE_SIZE_4BPP);
 }
 
+/**
+ * @brief gFontBigPal を BGP2 にロードする, タイトル画面、ゲームオーバー、ゲームクリア時に使用
+ * @note 0x080e981c
+ */
 void FUN_080e981c(void) {
-  gTextPrinter.unk_002 = 2;
-  CpuFastCopy(&gFontPalette[0], &gPaletteManager.buf[16 * 2], ARRAY_COUNT(gFontPalette) * 2);
+  gTextPrinter.fontBigPalID = 2;
+  CpuFastCopy(gFontBigPal, &gPaletteManager.buf[16 * 2], sizeof(gFontBigPal));
 }
 
+/**
+ * @brief gFontBigPal を BGP10 にロードする, ミニゲームのときのみ使用
+ * @note 0x080e9840
+ */
 void FUN_080e9840(void) {
-  gTextPrinter.unk_002 = 10;
-  CpuFastCopy(&gFontPalette[0], &gPaletteManager.buf[16 * 10], ARRAY_COUNT(gFontPalette) * 2);
+  gTextPrinter.fontBigPalID = 10;
+  CpuFastCopy(gFontBigPal, &gPaletteManager.buf[16 * 10], sizeof(gFontBigPal));
 }
 
 /**
@@ -76,11 +100,11 @@ void FUN_080e9840(void) {
 WIP void PrintAllStrings(void) {
 #ifdef ALWAYS_FALSE
   s32 i;
-  struct CharTile* c = gTextPrinter.cur;
-  while (c != NULL) {
+  GlyphNode* c = gTextPrinter.cur;
+  while (c != NULL) {  // cur にあるグリフ (前回の PrintAllStrings で使ったグリフ) を全て cache に移動する
     gTextPrinter.cur = c->next;
-    c->next = gTextPrinter.used;
-    gTextPrinter.used = c;
+    c->next = gTextPrinter.cache;
+    gTextPrinter.cache = c;
   }
   gTextPrinter.cur = NULL;
 
@@ -94,7 +118,7 @@ WIP void PrintAllStrings(void) {
 }
 
 /**
- * @brief 多分、文字の描画に必要なフォントのタイルデータをVRAMにロードする
+ * @brief まだVRAMにロードされていないグリフ(= GlyphNode.tileID の bit15 が1)をVRAMにロードする
  * @note 0x080e98ec
  */
 NAKED void FUN_080e98ec(void) {
@@ -115,7 +139,7 @@ NAKED void FUN_080e98ec(void) {
 _080E9906:\n\
 	movs r2, #0xf\n\
 	mov r8, r2\n\
-	ldr r0, _080E9970 @ =gFont\n\
+	ldr r0, _080E9970 @ =gFontTall\n\
 	mov sl, r0\n\
 	movs r1, #0xf8\n\
 	lsls r1, r1, #1\n\
@@ -166,11 +190,11 @@ _080E9924:\n\
 	b _080E9A04\n\
 	.align 2, 0\n\
 _080E996C: .4byte gTextPrinter\n\
-_080E9970: .4byte gFont\n\
+_080E9970: .4byte gFontTall\n\
 _080E9974: .4byte gVideoRegBuffer+4\n\
 _080E9978: .4byte 0x000001FF\n\
 _080E997C: .4byte 0x0000FFF0\n\
-_080E9980: .4byte gFont+(32*16)\n\
+_080E9980: .4byte gFontTall+(32*16)\n\
 _080E9984:\n\
 	ldr r0, _080E99D0 @ =0x000003FF\n\
 	cmp r2, r0\n\
@@ -377,19 +401,23 @@ char_t* SkipString(char_t* s, s32 skipBytesize) {
   return s;
 }
 
-void PrintUnicodeString(const char_t* s, u32 x8, u32 y8) {
+/**
+ * @brief Print JIS string
+ * @note 0x080e9cb4
+ */
+void PrintJISString(const char_t* s, u32 x8, u32 y8) {
   u16* dst = gTextPrinter.tilemap;
   if (y8 < 32) {
     dst = &dst[x8 + (y8 * 32)];
     while (*s != 0) {
       if (x8 > 31) return;
 
-      if (*s < UNICODE_A) {
-        *dst++ = 928 + *s++;
-      } else if (*s < UNICODE_NBSP) {
-        *dst++ = 896 + *s++;
+      if (*s < ASCII_a) {
+        *dst++ = (ASCII_TILEID - 32) + *s++;  // 0..96: ASCII -> そのまま表示する (0..32 は来ないことを前提とする)
+      } else if (*s < JIS_KANA) {
+        *dst++ = ((ASCII_TILEID - 32) - 32) + *s++;  // 97..159: ASCII小文字 -> 大文字として表示する
       } else {
-        *dst++ = 736 + *s++;
+        *dst++ = (JIS_KANA_TILEID - 160) + *s++;  // 160..255: JISカナ -> そのまま表示する
       }
     }
   }
@@ -409,11 +437,12 @@ void PrintMinigameNumber(s32 score, u16 x8, u16 y8) {
     val /= 10;
   }
   if (score < 0) s[--i] = '-';  // sign
-  PrintUnicodeString(&s[i], x8 - 15 + i, y8);
+  PrintJISString(&s[i], x8 - 15 + i, y8);
 };
 
 NAKED void unused_080e9d94(s32 r0, u16 r1, u16 r2) { INCCODE("asm/unused/unused_080e9d94.inc"); };
 
+// 0x080e9e00
 NAKED static s32 printStringWithLen(u8 start_x8, u8 start_y8, char_t* s, u16 len) {
   asm(".syntax unified\n\
 	push {r4, r5, r6, r7, lr}\n\
@@ -584,7 +613,7 @@ _080E9F38: .4byte 0x0000059B\n\
 _080E9F3C: .4byte 0x000003FF\n\
 _080E9F40:\n\
 	adds r0, r4, #0\n\
-	bl getFreeCharTile\n\
+	bl AllocateGlyph\n\
 	cmp r0, #0\n\
 	beq _080E9FC6\n\
 	strh r4, [r0, #4]\n\
@@ -616,7 +645,7 @@ _080E9F40:\n\
 	adds r0, r2, #0\n\
 	orrs r4, r0\n\
 	adds r0, r4, #0\n\
-	bl getFreeCharTile\n\
+	bl AllocateGlyph\n\
 	cmp r0, #0\n\
 	beq _080E9FC6\n\
 	strh r4, [r0, #4]\n\
@@ -667,104 +696,45 @@ _080E9FDC: .4byte 0x000003FF\n\
  .syntax divided\n");
 }
 
-NAKED static struct CharTile* getFreeCharTile(u16 styledChar) {
-  asm(".syntax unified\n\
-	push {r4, r5, r6, r7, lr}\n\
-	lsls r0, r0, #0x10\n\
-	lsrs r6, r0, #0x10\n\
-	ldr r1, _080EA048 @ =gTextPrinter\n\
-	movs r2, #0xb1\n\
-	lsls r2, r2, #3\n\
-	adds r0, r1, r2\n\
-	ldr r2, [r0]\n\
-	adds r7, r1, #0\n\
-	cmp r2, #0\n\
-	beq _080EA00C\n\
-	ldr r4, _080EA04C @ =0x00000FFF\n\
-	adds r3, r6, #0\n\
-	ands r3, r4\n\
-_080E9FFC:\n\
-	ldrh r1, [r2, #4]\n\
-	adds r0, r4, #0\n\
-	ands r0, r1\n\
-	cmp r3, r0\n\
-	beq _080EA08C\n\
-	ldr r2, [r2]\n\
-	cmp r2, #0\n\
-	bne _080E9FFC\n\
-_080EA00C:\n\
-	ldr r5, _080EA050 @ =0x0203089C\n\
-	ldr r2, [r5]\n\
-	cmp r2, #0\n\
-	beq _080EA02C\n\
-	ldr r4, _080EA04C @ =0x00000FFF\n\
-	adds r3, r6, #0\n\
-	ands r3, r4\n\
-_080EA01A:\n\
-	ldrh r1, [r2, #4]\n\
-	adds r0, r4, #0\n\
-	ands r0, r1\n\
-	cmp r3, r0\n\
-	beq _080EA054\n\
-	adds r5, r2, #0\n\
-	ldr r2, [r2]\n\
-	cmp r2, #0\n\
-	bne _080EA01A\n\
-_080EA02C:\n\
-	movs r0, #0xb2\n\
-	lsls r0, r0, #3\n\
-	adds r3, r7, r0\n\
-	ldr r1, [r3]\n\
-	cmp r1, #0\n\
-	bne _080EA068\n\
-	subs r0, #4\n\
-	adds r2, r7, r0\n\
-	ldr r0, [r2]\n\
-	str r0, [r3]\n\
-	cmp r0, #0\n\
-	bne _080EA066\n\
-	movs r0, #0\n\
-	b _080EA08E\n\
-	.align 2, 0\n\
-_080EA048: .4byte gTextPrinter\n\
-_080EA04C: .4byte 0x00000FFF\n\
-_080EA050: .4byte 0x0203089C\n\
-_080EA054:\n\
-	ldr r0, [r2]\n\
-	str r0, [r5]\n\
-	movs r3, #0xb1\n\
-	lsls r3, r3, #3\n\
-	adds r1, r7, r3\n\
-	ldr r0, [r1]\n\
-	str r0, [r2]\n\
-	str r2, [r1]\n\
-	b _080EA08C\n\
-_080EA066:\n\
-	str r1, [r2]\n\
-_080EA068:\n\
-	movs r0, #0xb2\n\
-	lsls r0, r0, #3\n\
-	adds r1, r7, r0\n\
-	ldr r2, [r1]\n\
-	ldr r0, [r2]\n\
-	str r0, [r1]\n\
-	movs r3, #0xb1\n\
-	lsls r3, r3, #3\n\
-	adds r1, r7, r3\n\
-	ldr r0, [r1]\n\
-	str r0, [r2]\n\
-	str r2, [r1]\n\
-	ldrh r1, [r2, #6]\n\
-	movs r3, #0x80\n\
-	lsls r3, r3, #8\n\
-	adds r0, r3, #0\n\
-	orrs r0, r1\n\
-	strh r0, [r2, #6]\n\
-_080EA08C:\n\
-	adds r0, r2, #0\n\
-_080EA08E:\n\
-	pop {r4, r5, r6, r7}\n\
-	pop {r1}\n\
-	bx r1\n\
- .syntax divided\n");
+// 0x080e9fe0
+static GlyphNode* AllocateGlyph(Glyph glyph) {
+  GlyphNode* node;
+
+  {
+    // このフレームで使用が確定している文字の中に、同じ文字があればそれを返す
+    node = gTextPrinter.cur;
+    while (node != NULL) {
+      if ((glyph & 0xFFF) == (node->c & 0xFFF)) return node;
+      node = node->next;
+    }
+  }
+  {
+    // キャッシュ(前フレームで使用した文字)の中に、同じ文字があればそれを cur に移動して返す
+    void* tail = &gTextPrinter.cache;
+    node = gTextPrinter.cache;
+    while (node != NULL) {
+      if ((glyph & 0xFFF) == (node->c & 0xFFF)) {
+        *((GlyphNode**)tail) = node->next;
+        node->next = gTextPrinter.cur;
+        gTextPrinter.cur = node;
+        return node;
+      }
+      tail = node;
+      node = node->next;
+    }
+  }
+
+  // バッファに空きがないなら、キャッシュを解放して空きを作る
+  if (gTextPrinter.freelist == NULL) {
+    gTextPrinter.freelist = gTextPrinter.cache;
+    if (gTextPrinter.cache == NULL) return NULL;  // キャッシュを解放しても空きがない場合は失敗
+    gTextPrinter.cache = NULL;                    // キャッシュを解放
+  }
+
+  node = gTextPrinter.freelist;
+  gTextPrinter.freelist = node->next;
+  node->next = gTextPrinter.cur;
+  gTextPrinter.cur = node;
+  node->tileID |= (1 << 15);  // mark as used
+  return node;
 }

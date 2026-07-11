@@ -250,9 +250,15 @@ RED = F2
 WINDOW = F3
 
 ANSWER = F4
+
+@ {F5 0x09}, 今の所 F5 の後は 0x09 のみ
 F5 = F5
+
 F6 = F6
-F7 = F7
+
+@ gFontBig を使う
+@ {BIG color}, color は gFontBigPal のパレットエントリ, {BIG 0} なら &gFontBigPal[0], {BIG n} なら &gFontBigPal[16*n] 
+BIG = F7
 
 VARIABLE = F9
 TOP = FA

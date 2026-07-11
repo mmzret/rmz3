@@ -3,7 +3,6 @@
 
 #include "constants/armor.h"
 #include "constants/bg.h"
-#include "constants/charcode.h"
 #include "constants/cyberelf.h"
 #include "constants/diskno.h"
 #include "constants/entity.h"

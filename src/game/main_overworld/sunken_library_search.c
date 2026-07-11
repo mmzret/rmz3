@@ -1,10 +1,11 @@
 #include "game.h"
 #include "global.h"
 #include "spawn.h"
+#include "strings.h"
 
 static const TextID SearchReactionTexts[4];
 static const disk_t SunkenSecretDisks[4];
-static const str_id_t StrID_ARRAY_08386294[4];
+static const StringID StrID_ARRAY_08386294[4];
 static const TextID AfterSearchTextIDs[4];
 
 // 0x080F2620
@@ -357,7 +358,7 @@ _080F28BE:\n\
 	ldrb r2, [r0, #5]\n\
 	adds r2, #2\n\
 	adds r0, r3, #0\n\
-	bl PrintUnicodeString\n\
+	bl PrintJISString\n\
 _080F28D2:\n\
 	movs r2, #6\n\
 	ldrsh r1, [r6, r2]\n\
@@ -385,7 +386,7 @@ _080F28F4:\n\
 	ldrb r2, [r4, #5]\n\
 	adds r2, #5\n\
 	adds r0, r3, #0\n\
-	bl PrintUnicodeString\n\
+	bl PrintJISString\n\
 _080F2906:\n\
 	ldrh r1, [r6, #0xa]\n\
 	movs r5, #0xa\n\
@@ -773,7 +774,7 @@ static const disk_t SunkenSecretDisks[4] = {
     DISK_ID(DISK_FILE_L),
 };
 
-static const str_id_t StrID_ARRAY_08386294[4] = {0x03DE, 0x03DF, 0x03E0, 0x03E1};
+static const StringID StrID_ARRAY_08386294[4] = {0x03DE, 0x03DF, 0x03E0, 0x03E1};
 
 /*
   xxx ノ データガ アル

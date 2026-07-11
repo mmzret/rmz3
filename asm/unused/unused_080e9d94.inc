@@ -46,7 +46,7 @@ _080E9DE8:
 	mov r0, sp
 	mov r1, ip
 	adds r2, r7, #0
-	bl PrintUnicodeString
+	bl PrintJISString
 	add sp, #0x10
 	pop {r4, r5, r6, r7}
 	pop {r0}

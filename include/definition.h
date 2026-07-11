@@ -104,7 +104,4 @@ extern const ShapeChecker gShapeCheckerDown[16];
 extern const ShapeChecker gShapeCheckerLeft[16];
 extern const ShapeChecker gShapeCheckerRight[16];
 
-extern const char_t gStringData[];
-extern const u16 StringOfsTable[1096];
-
 #endif  // GUARD_RMZ3_DEFINITION_H

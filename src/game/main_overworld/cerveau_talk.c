@@ -13,14 +13,14 @@ void OverworldLoop_CerveauTalk(struct GameState* g) {
       if (((&gTextWindow.text)->mode != 0) && ((&gTextWindow.text)->mode != TEXT_MODE_OPTION)) {
         return;
       }
-      if ((&gTextWindow.text)->unk_16 == 9) {
+      if ((&gTextWindow.text)->unk_16 == 0x09) {  // ディスク092(エチューン)
         if ((&gTextWindow.text)->mode != 0) {
           (&gTextWindow.text)->flag |= TEXT_FLAG_TERMINATE;
           break;
         }
-        gTextPrinter.variable = (char_t*)STRING(892);
+        gTextPrinter.variable = (char_t*)STRING(STR_DISK_NO + DISK_ELF_ACHOON);  // "092"
         PrintTextWindow(0x100, 0x5A);
-        getDiskInStageRun(0x5b);
+        getDiskInStageRun(DISK_ID(DISK_ELF_ACHOON));
         break;
       }
 

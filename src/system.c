@@ -85,7 +85,7 @@ void Process_SoftReset(struct Process* _ UNUSED) {
   (*(u16*)(&gPaletteManager.buf[0])) = RGB_BLACK;
   StopAllMusics();
   LoadAsciiBold();
-  LoadKatakanaBold();
+  LoadJISKana();
   gVideoRegBuffer.dispcnt &= ~DISPCNT_BGMODE_MASK;
   gVideoRegBuffer.dispcnt &= ~DISPCNT_BG_ALL_ON;
   gVideoRegBuffer.dispcnt |= DISPCNT_BG0_ON;

@@ -56,20 +56,20 @@ static const u16 u16_ARRAY_08386130[32] = {
  */
 NON_MATCH void PrintSaveDataRowText(u8 idx, u8 rank, u32 playTime, u8 lap, u8 mode, u8 y8) {
 #if MODERN
-  PrintString(STRING(31 + idx), 7, y8);         // ${idx+1}
+  PrintString(gStrNumber(1 + idx), 7, y8);      // ${idx+1}
   PrintString(STRING(40 + rank), (7 + 2), y8);  // レベル${rank}
 
-  PrintString(STRING(30 + (playTime / (60 * 60 * 60 * 10))), (7 + 7), y8);    // Hour (digit 10)
-  PrintString(STRING(30 + ((playTime / (60 * 60 * 60)) % 10)), (7 + 8), y8);  // Hour (digit 1)
-  PrintString(STRING(7), (7 + 9), y8);                                        // :
-  PrintString(STRING(30 + ((playTime / (60 * 60 * 10)) % 6)), (7 + 10), y8);  // Minute (digit 10)
-  PrintString(STRING(30 + ((playTime / (60 * 60)) % 10)), (7 + 11), y8);      // Minute (digit 1)
-  PrintString(STRING(8), (7 + 12), y8);                                       // '
-  PrintString(STRING(30 + ((playTime / (60 * 10)) % 6)), (7 + 13), y8);       // Second (digit 10)
-  PrintString(STRING(30 + ((playTime / 60) % 10)), (7 + 14), y8);             // Second (digit 1)
+  PrintString(gStrNumber(playTime / (60 * 60 * 60 * 10)), (7 + 7), y8);    // Hour (digit 10)
+  PrintString(gStrNumber((playTime / (60 * 60 * 60)) % 10), (7 + 8), y8);  // Hour (digit 1)
+  PrintString(STRING(STR_COLON), (7 + 9), y8);                             // :
+  PrintString(gStrNumber((playTime / (60 * 60 * 10)) % 6), (7 + 10), y8);  // Minute (digit 10)
+  PrintString(gStrNumber((playTime / (60 * 60)) % 10), (7 + 11), y8);      // Minute (digit 1)
+  PrintString(STRING(8), (7 + 12), y8);                                    // '
+  PrintString(gStrNumber((playTime / (60 * 10)) % 6), (7 + 13), y8);       // Second (digit 10)
+  PrintString(gStrNumber((playTime / 60) % 10), (7 + 14), y8);             // Second (digit 1)
   if (lap > 0) {
-    if (lap > 9) PrintString(STRING(30 + (lap / 10)), (7 + 16), y8);
-    PrintString(STRING(30 + (lap % 10)), (7 + 17), y8);
+    if (lap > 9) PrintString(gStrNumber(lap / 10), (7 + 16), y8);
+    PrintString(gStrNumber(lap % 10), (7 + 17), y8);
   }
   if (mode == 1) {                         // H (Hardmode)
     PrintString(STRING(3), (7 + 18), y8);  // ここの (7+18) のコンパイル結果だけが一致しない (しかも意味不明)

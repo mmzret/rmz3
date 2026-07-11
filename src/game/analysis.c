@@ -1429,7 +1429,7 @@ static void printThreeDigitNumber(u16 n, u8 x, u8 y) {
   u8 i;
   for (i = 0; i < 3; i++) {
     u32 digit = n % 10;
-    PrintString(STRING(digit + 30), x - i, y);
+    PrintString(gStrNumber(digit), x - i, y);
     n /= 10;
   }
 }

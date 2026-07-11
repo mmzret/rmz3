@@ -1,8 +1,9 @@
 #include "game.h"
 #include "global.h"
+#include "strings.h"
 
 static const u8 MissionBitfields_083861e8[MISSION_COUNT];
-static const str_id_t StageNameIdxs[MISSION_COUNT];
+static const StringID StageNameIdxs[MISSION_COUNT];
 static const TextID MissionSummaryTextIDs[MISSION_COUNT];
 static const TextID MissionAskTextIDs[MISSION_COUNT];
 static const u8 u8_ARRAY_0838623c[16];
@@ -1123,7 +1124,7 @@ _080F19E2:\n\
 	ldrb r2, [r0, #5]\n\
 	adds r2, #2\n\
 	adds r0, r3, #0\n\
-	bl PrintUnicodeString\n\
+	bl PrintJISString\n\
 _080F19F6:\n\
 	movs r2, #6\n\
 	ldrsh r1, [r5, r2]\n\
@@ -1151,7 +1152,7 @@ _080F1A18:\n\
 	ldrb r2, [r4, #5]\n\
 	adds r2, #5\n\
 	adds r0, r3, #0\n\
-	bl PrintUnicodeString\n\
+	bl PrintJISString\n\
 _080F1A2A:\n\
 	ldrh r0, [r5, #0xa]\n\
 	movs r3, #0xa\n\
@@ -1576,7 +1577,7 @@ static const u8 MissionBitfields_083861e8[MISSION_COUNT] = {
 };
 
 // Idx of 08372210 (StringOfsTable)
-static const str_id_t StageNameIdxs[MISSION_COUNT] = {
+static const StringID StageNameIdxs[MISSION_COUNT] = {
     63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74,
 };
 

@@ -10,7 +10,6 @@ typedef s16 SoundIDS16;
 typedef u32 SoundID32;
 typedef u16 TextID;
 typedef u8 disk_t;
-typedef u16 str_id_t;  // 08372210 のidx
 typedef u8 mod_t;
 typedef u8 cyberelf_t;  // Elf ID
 typedef u8 char_t;      // Char code

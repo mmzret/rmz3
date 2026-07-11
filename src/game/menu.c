@@ -673,7 +673,7 @@ void PrintNumber(u16 n, u8 x, u8 y) {
   u8 i = 0;
   while (TRUE) {
     u16 digit = n % 10;
-    PrintString(STRING(digit + 30), x - i, y);
+    PrintString(gStrNumber(digit), x - i, y);
     n /= 10;
     if (n == 0) {
       break;

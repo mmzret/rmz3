@@ -117,7 +117,7 @@ s16 save_080f32f8(struct GameState* g) {
 
   {
     // Draw the cursor
-    const char* s = STRING(0);  // ▷
+    const char* s = STRING(STR_CURSOR);  // ▷
     s32 no_left_mugshot = 0;
     if ((&gTextWindow.text)->mugshotRight || (&gTextWindow.text)->mugshot == NO_MUGSHOT) {
       no_left_mugshot = 1;

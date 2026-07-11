@@ -1440,12 +1440,12 @@ _0809AA5A:
 	ldr r0, _0809AA88 @ =StrMISS
 	adds r1, r5, #0
 	adds r2, r4, #0
-	bl PrintUnicodeString
+	bl PrintJISString
 	ldr r0, _0809AA8C @ =StrSEC
 	adds r1, r5, #2
 	adds r4, #1
 	adds r2, r4, #0
-	bl PrintUnicodeString
+	bl PrintJISString
 	ldr r0, [r6, #0x5c]
 	lsls r1, r5, #0x10
 	lsrs r1, r1, #0x10
@@ -1519,13 +1519,13 @@ _0809AAE0:
 	ldr r0, _0809AB20 @ =StrCOMBO
 	adds r1, r5, #2
 	adds r2, r4, #0
-	bl PrintUnicodeString
+	bl PrintJISString
 _0809AAFC:
 	ldr r0, _0809AB24 @ =StrPlusSEC
 	adds r4, #1
 	adds r1, r5, #0
 	adds r2, r4, #0
-	bl PrintUnicodeString
+	bl PrintJISString
 	ldr r0, [r6, #0x5c]
 	adds r1, r5, #1
 	lsls r1, r1, #0x10

@@ -2049,8 +2049,8 @@ _080EDDB4: .4byte 0x00000241\n\
 
 // draw minigame rules
 static void FUN_080eddb8(struct Intro* p) {
-  static const u16 ALIGNED(2) sMinigameRuleStrings[7] = {
-      0x0441, 0x0442, 0x0443, 0x0444, 0x0445, 0x0446, 0x0447,
+  static const StringID ALIGNED(2) sMinigameRuleStrings[7] = {
+      STR_MGRULES_ZERO, 0x0442, 0x0443, 0x0444, 0x0445, 0x0446, 0x0447,
   };
 
   switch (p->mode[2]) {
@@ -2102,7 +2102,7 @@ static void FUN_080eddb8(struct Intro* p) {
   }
 
   StepPaletteAnimation(0x40);
-  PrintString(STRING(1088), 13, 2);  // sMinigameRules (0x083763c4)
+  PrintString(STRING(STR_MGRULES), 13, 2);
   PrintString(STRING(sMinigameRuleStrings[p->unk_242]), 3, 4);
 }
 

@@ -98,6 +98,7 @@ sRecap:: @ 0x08372ac0
   .include "src/data/strings/recap.inc"
   .string "あれから2ヶ月後$"
 
+@ id: 30..39
 sNumber:: @ 0x08372d60
   .string "0$"
   .string "1$"
@@ -514,32 +515,32 @@ sDiskAnalysisGuide:: @ 0x083747ba
   .string "このディスクは\nカイセキされていません$"
 
 sTitleMenu:: @ 0x083747fa
-  .string "{F7 0x00}はじめから${F7 0x01}はじめから$"
-  .string "{F7 0x00}つづきから${F7 0x01}つづきから$"
-  .string "{F7 0x00}ミニゲーム${F7 0x01}ミニゲーム$"
+  .string "{BIG 0x00}はじめから${BIG 0x01}はじめから$"
+  .string "{BIG 0x00}つづきから${BIG 0x01}つづきから$"
+  .string "{BIG 0x00}ミニゲーム${BIG 0x01}ミニゲーム$"
 
 sConnections_0:: @ 0x0837482a
-  .string "{F7 0x05}つうしん まちうけちゅう$"
+  .string "{BIG 0x05}つうしん まちうけちゅう$"
 sConnections_1:: @ 0x08374839
-  .string "{F7 0x00}Bボタンでキャンセル$"
+  .string "{BIG 0x00}Bボタンでキャンセル$"
 sConnections_2:: @ 0x08374846
-  .string "{F7 0x05}    エグゼ4が\n{F7 0x05}チップをせんたくちゅうです$"
+  .string "{BIG 0x05}    エグゼ4が\n{BIG 0x05}チップをせんたくちゅうです$"
 sConnections_3:: @ 0x08374862
-  .string "{F7 0x04}つうしんエラーが\nはっせいしました$"
+  .string "{BIG 0x04}つうしんエラーが\nはっせいしました$"
 
 sGameOver:: @ 0x08374876
-  .string "{F7 0x00}    コンティニュー${F7 0x01}    コンティニュー$"
-  .string " {F7 0x00}セーブした場所からやりなおす$ {F7 0x01}セーブした場所からやりなおす$"
-  .string "{F7 0x00}    ゲームをやめる${F7 0x01}    ゲームをやめる$"
+  .string "{BIG 0x00}    コンティニュー${BIG 0x01}    コンティニュー$"
+  .string " {BIG 0x00}セーブした場所からやりなおす$ {BIG 0x01}セーブした場所からやりなおす$"
+  .string "{BIG 0x00}    ゲームをやめる${BIG 0x01}    ゲームをやめる$"
 
 sMiniGameNames:: @ 0x083748d2
-  .string " {F7 0x00}  ゼロ$ {F7 0x01}  ゼロ$"
-  .string "{F7 0x00}  シエル${F7 0x01}  シエル$"
-  .string "{F7 0x00}コピーエックス${F7 0x01}コピーエックス$"
-  .string " {F7 0x00}ハルピュイア$ {F7 0x01}ハルピュイア$"
-  .string " {F7 0x00}ファーブニル$ {F7 0x01}ファーブニル$"
-  .string " {F7 0x00}レヴィアタン$ {F7 0x01}レヴィアタン$"
-  .string "{F7 0x00} ファントム${F7 0x01} ファントム$"
+  .string " {BIG 0x00}  ゼロ$ {BIG 0x01}  ゼロ$"
+  .string "{BIG 0x00}  シエル${BIG 0x01}  シエル$"
+  .string "{BIG 0x00}コピーエックス${BIG 0x01}コピーエックス$"
+  .string " {BIG 0x00}ハルピュイア$ {BIG 0x01}ハルピュイア$"
+  .string " {BIG 0x00}ファーブニル$ {BIG 0x01}ファーブニル$"
+  .string " {BIG 0x00}レヴィアタン$ {BIG 0x01}レヴィアタン$"
+  .string "{BIG 0x00} ファントム${BIG 0x01} ファントム$"
 
 # size is 1516 bytes
 sStaffRoll:: @ 0x08374954
@@ -549,6 +550,7 @@ sDiskContents:: @ 0x08374f40
   .include "src/data/strings/disk.inc"
 
 sDiskNumbers:: @ 0x08375f5e
+  @ id: 800..980
   .include "src/data/strings/disk_number.inc"
 
 sSubmergedLibFileNames:: @ 0x0837639c
@@ -558,10 +560,10 @@ sSubmergedLibFileNames:: @ 0x0837639c
   .string "ヨウセイ戦争のデータ$"
 
 @ size is 996 bytes
-Text_MiniGameRules:: @ 0x083763c4
+sMinigameRules:: @ 0x083763c4
   .string "{RED}ルール{RED_END}$"
 
-Text_MinigameDesc_Zero::
+Text_MinigameDesc_Zero:: @ 1089
 	.string "6方向から とんでくる メルネットを\n"
 	.string "✚ボタンで ねらいをさだめ、\n"
 	.string "Bボタンのリコイルロッドで コウゲキします。\n"

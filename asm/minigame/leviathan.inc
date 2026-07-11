@@ -13,7 +13,7 @@ leviathan_minigame_080fb594: @ 0x080FB594
 	ldr r0, _080FB5D8 @ =0x0810E2AC
 	movs r1, #0xa
 	movs r2, #0x13
-	bl PrintUnicodeString
+	bl PrintJISString
 	ldr r0, [r4, #0x20]
 	movs r1, #0x3c
 	bl __divsi3

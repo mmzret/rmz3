@@ -4,6 +4,7 @@
 #include "menu.h"
 #include "palette_animation.h"
 #include "story.h"
+#include "strings.h"
 #include "text.h"
 #include "widget.h"
 #include "zero.h"
@@ -22,7 +23,7 @@ extern const struct Palette gPalette_Unk39;
 static void printElfNames(struct GameState* g);
 static void printElfMenuDescription(struct GameState* g);
 static void printElfMenuBottomString(struct GameState* g);
-static str_id_t getElfDescStrID(struct GameState* g, u8 r1);
+static StringID getElfDescStrID(struct GameState* g, u8 r1);
 
 static void ElfMenuLoop_Init(struct GameState* g);
 static void ElfMenuLoop_Update(struct GameState* g);
@@ -2102,7 +2103,7 @@ _080F7920: .4byte gStringData\n\
  .syntax divided\n");
 }
 
-NAKED static str_id_t getElfDescStrID(struct GameState* g, u8 r1) {
+NAKED static StringID getElfDescStrID(struct GameState* g, u8 r1) {
   asm(".syntax unified\n\
 	push {r4, lr}\n\
 	lsls r1, r1, #0x18\n\

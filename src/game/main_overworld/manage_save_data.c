@@ -525,7 +525,7 @@ _080F0ABC:\n\
 	ldrb r2, [r4, #5]\n\
 	adds r2, #2\n\
 	adds r0, r3, #0\n\
-	bl PrintUnicodeString\n\
+	bl PrintJISString\n\
 _080F0ACE:\n\
 	movs r2, #6\n\
 	ldrsh r0, [r6, r2]\n\
@@ -551,7 +551,7 @@ _080F0AEC:\n\
 	ldrb r2, [r4, #5]\n\
 	adds r2, #5\n\
 	adds r0, r3, #0\n\
-	bl PrintUnicodeString\n\
+	bl PrintJISString\n\
 	b _080F0B84\n\
 	.align 2, 0\n\
 _080F0B00: .4byte 0x02000618\n\
@@ -588,7 +588,7 @@ _080F0B42:\n\
 	ldrb r2, [r4, #5]\n\
 	adds r2, #2\n\
 	adds r0, r3, #0\n\
-	bl PrintUnicodeString\n\
+	bl PrintJISString\n\
 _080F0B54:\n\
 	movs r1, #6\n\
 	ldrsh r0, [r6, r1]\n\
@@ -614,7 +614,7 @@ _080F0B72:\n\
 	ldrb r2, [r4, #5]\n\
 	adds r2, #5\n\
 	adds r0, r3, #0\n\
-	bl PrintUnicodeString\n\
+	bl PrintJISString\n\
 _080F0B84:\n\
 	ldrh r1, [r6, #0xa]\n\
 	movs r2, #0xa\n\

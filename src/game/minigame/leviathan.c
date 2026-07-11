@@ -10,9 +10,9 @@ extern const u8 Unicode_HI_SCORE_0810e2a0[];
 void MinigameLeviathan_DrawScoreHiscore(struct GameState* g) {
   struct MinigameState* s = (struct MinigameState*)(g->sceneState).raw;
 
-  PrintUnicodeString(Unicode_SCORE_0810e298, 1, 0);
+  PrintJISString(Unicode_SCORE_0810e298, 1, 0);
   PrintMinigameNumber(s->unk_24, 12, 0);
-  PrintUnicodeString(Unicode_HI_SCORE_0810e2a0, 15, 0);
+  PrintJISString(Unicode_HI_SCORE_0810e2a0, 15, 0);
   PrintMinigameNumber(s->unk_2c, 28, 0);
 }
 

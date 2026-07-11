@@ -9,9 +9,9 @@ extern const u8 Unicode_HI_SCORE_0810e2c0[];
 void MinigamePhantom_DrawScoreHiscore(struct GameState* g) {
   struct MinigameState* s = (struct MinigameState*)(g->sceneState).raw;
 
-  PrintUnicodeString(Unicode_SCORE_0810e2b8, 1, 0);
+  PrintJISString(Unicode_SCORE_0810e2b8, 1, 0);
   PrintMinigameNumber(s->unk_34, 12, 0);
-  PrintUnicodeString(Unicode_HI_SCORE_0810e2c0, 15, 0);
+  PrintJISString(Unicode_HI_SCORE_0810e2c0, 15, 0);
   PrintMinigameNumber(s->unk_3c, 28, 0);
 }
 

@@ -354,7 +354,7 @@ _080FAB7E:
 	mov r0, sp
 	movs r1, #1
 	movs r2, #0
-	bl PrintUnicodeString
+	bl PrintJISString
 	ldrh r0, [r5, #0xe]
 	lsls r1, r0, #1
 	adds r1, r1, r0
@@ -379,7 +379,7 @@ _080FABB2:
 	adds r0, r4, #0
 	movs r1, #0xf
 	movs r2, #0
-	bl PrintUnicodeString
+	bl PrintJISString
 	ldr r4, [r5, #0x3c]
 	adds r0, r4, #0
 	movs r1, #0x1b
@@ -679,7 +679,7 @@ _080FAE18:
 	mov r0, sp
 	movs r1, #1
 	movs r2, #0
-	bl PrintUnicodeString
+	bl PrintJISString
 	ldrh r0, [r7, #0xe]
 	lsls r1, r0, #1
 	adds r1, r1, r0
@@ -711,7 +711,7 @@ _080FAE5E:
 	mov r0, sl
 	movs r1, #0xf
 	movs r2, #0
-	bl PrintUnicodeString
+	bl PrintJISString
 	ldr r4, [r7, #0x3c]
 	adds r0, r4, #0
 	movs r1, #0x1b
@@ -828,7 +828,7 @@ _080FAF58:
 	mov r0, sp
 	movs r1, #1
 	movs r2, #0
-	bl PrintUnicodeString
+	bl PrintJISString
 	ldrh r0, [r5, #0xe]
 	lsls r1, r0, #1
 	adds r1, r1, r0
@@ -853,7 +853,7 @@ _080FAF8C:
 	adds r0, r4, #0
 	movs r1, #0xf
 	movs r2, #0
-	bl PrintUnicodeString
+	bl PrintJISString
 	ldr r4, [r5, #0x3c]
 	adds r0, r4, #0
 	movs r1, #0x1b
