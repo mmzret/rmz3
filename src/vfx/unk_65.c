@@ -35,7 +35,7 @@ static void Ghost65_Init(struct Entity* p) {
   p->mode[1] = u8_ARRAY_0836f59c[p->work[0]];
   p->flags |= FLIPABLE;
   p->flags |= DISPLAY;
-  InitNonAffineMotion(p);
+  EnableSpriteAnimation_Normal(p);
   Ghost65_Update((void*)p);
 }
 

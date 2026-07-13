@@ -11,6 +11,11 @@
 #define ASCII_a 97  // "a"
 #define JIS_KANA 160
 
+extern const u8 gFontTall[];
+extern const u8 gFontJIS[][TILE_SIZE_4BPP];
+extern const u8 gFontBig[];
+extern const rgb555 gFontBigPal[16 * 6];
+
 // タイルID
 //  736.. gFontTall と gFontBig のための領域 (使う文字だけ重複なしで動的にロード)
 //  896.. gFontJIS の カタカナ
@@ -19,9 +24,15 @@
 #define JIS_KANA_TILEID 896  // 0x7000 / TILE_SIZE_4BPP, ◻︎。「」、・ヲァィゥェォ ...
 #define ASCII_TILEID 960     // 0x7800 / TILE_SIZE_4BPP printable ASCII (32..96)
 
-extern const rgb555 gFontBigPal[16 * 6];
-
 static s32 printStringWithLen(u8 start_x8, u8 start_y8, char_t* s, u16 len);
+
+/**
+ * @brief gFontTall と gFontJIS のパレット (赤文字含む)
+ * @note ゲーム中、 BGP0 はこのパレット固定と思われる
+ */
+static const ALIGNED(4) rgb555 sBGP0[16] = {
+    RGB_BLACK, RGBg_WHITE, RGBg(14, 14, 14), RGBg(1, 1, 1), RGBg(31, 16, 16), RGBg(31, 31, 10), RGBg(12, 31, 16), RGBg(0, 20, 7), RGBg(16, 8, 8), RGBg(19, 31, 28), RGBg(10, 20, 29), RGBg(10, 10, 20), RGBg(28, 7, 10), RGBg(23, 9, 1), RGBg(13, 4, 4), RGBg(21, 21, 19),
+};  // 0x080FF15C
 
 void InitTextPrinter(void* tilemap) {
   gTextPrinter.tilemap = tilemap;
@@ -35,14 +46,10 @@ void InitTextPrinter(void* tilemap) {
 
 // 0x080e9730
 void LoadAsciiBold(void) {
-  static const ALIGNED(4) rgb555 sDefaultBGPalette[16] = {
-      RGB_BLACK, RGBg_WHITE, RGBg(14, 14, 14), RGBg(1, 1, 1), RGBg(31, 16, 16), RGBg(31, 31, 10), RGBg(12, 31, 16), RGBg(0, 20, 7), RGBg(16, 8, 8), RGBg(19, 31, 28), RGBg(10, 20, 29), RGBg(10, 10, 20), RGBg(28, 7, 10), RGBg(23, 9, 1), RGBg(13, 4, 4), RGBg(21, 21, 19),
-  };  // 0x080ff15c
-
   u8 val;
   CpuFastCopy(gFontJIS, (void*)(VRAM + CHAR_BASE(0) + (ASCII_TILEID * TILE_SIZE_4BPP)), 64 * TILE_SIZE_4BPP);
   val = 0;
-  CpuFastCopy(sDefaultBGPalette, gPaletteManager.buf, 32);
+  CpuFastCopy(sBGP0, gPaletteManager.buf, 32);
   gTextPrinter.startX = val;  // 0
   gTextPrinter.endX = 30;
   gTextPrinter.startY = 0;
@@ -100,11 +107,14 @@ void FUN_080e9840(void) {
 WIP void PrintAllStrings(void) {
 #ifdef ALWAYS_FALSE
   s32 i;
-  GlyphNode* c = gTextPrinter.cur;
-  while (c != NULL) {  // cur にあるグリフ (前回の PrintAllStrings で使ったグリフ) を全て cache に移動する
-    gTextPrinter.cur = c->next;
-    c->next = gTextPrinter.cache;
-    gTextPrinter.cache = c;
+
+  // cur にあるグリフ (前回の PrintAllStrings で使ったグリフ) を全て cache に移動する
+  GlyphNode* node = gTextPrinter.cur;
+  while (node != NULL) {
+    GlyphNode* next = node->next;
+    node->next = gTextPrinter.cache;
+    gTextPrinter.cache = node;
+    node = next;
   }
   gTextPrinter.cur = NULL;
 
@@ -121,203 +131,50 @@ WIP void PrintAllStrings(void) {
  * @brief まだVRAMにロードされていないグリフ(= GlyphNode.tileID の bit15 が1)をVRAMにロードする
  * @note 0x080e98ec
  */
-NAKED void FUN_080e98ec(void) {
-  asm(".syntax unified\n\
-	push {r4, r5, r6, r7, lr}\n\
-	mov r7, sl\n\
-	mov r6, sb\n\
-	mov r5, r8\n\
-	push {r5, r6, r7}\n\
-	ldr r0, _080E996C @ =gTextPrinter\n\
-	movs r1, #0xb1\n\
-	lsls r1, r1, #3\n\
-	adds r0, r0, r1\n\
-	ldr r6, [r0]\n\
-	cmp r6, #0\n\
-	bne _080E9906\n\
-	b _080E9A60\n\
-_080E9906:\n\
-	movs r2, #0xf\n\
-	mov r8, r2\n\
-	ldr r0, _080E9970 @ =gFontTall\n\
-	mov sl, r0\n\
-	movs r1, #0xf8\n\
-	lsls r1, r1, #1\n\
-	mov sb, r1\n\
-_080E9914:\n\
-	ldrh r1, [r6, #6]\n\
-	movs r2, #0x80\n\
-	lsls r2, r2, #8\n\
-	adds r0, r2, #0\n\
-	ands r0, r1\n\
-	cmp r0, #0\n\
-	bne _080E9924\n\
-	b _080E9A58\n\
-_080E9924:\n\
-	subs r2, #1\n\
-	adds r0, r2, #0\n\
-	ands r0, r1\n\
-	strh r0, [r6, #6]\n\
-	ldrh r2, [r6, #4]\n\
-	ldr r0, _080E9974 @ =gVideoRegBuffer+4\n\
-	ldrh r1, [r0]\n\
-	movs r0, #0xc\n\
-	ands r0, r1\n\
-	lsls r0, r0, #0xc\n\
-	movs r1, #0xc0\n\
-	lsls r1, r1, #0x13\n\
-	adds r7, r0, r1\n\
-	ldr r0, _080E9978 @ =0x000001FF\n\
-	cmp r2, r0\n\
-	bhi _080E9984\n\
-	ldr r1, _080E997C @ =0x0000FFF0\n\
-	adds r0, r1, #0\n\
-	adds r4, r2, #0\n\
-	ands r4, r0\n\
-	lsls r4, r4, #6\n\
-	mov r0, r8\n\
-	ands r2, r0\n\
-	lsls r0, r2, #5\n\
-	adds r4, r4, r0\n\
-	mov r1, sl\n\
-	adds r0, r4, r1\n\
-	ldrh r1, [r6, #6]\n\
-	lsls r1, r1, #5\n\
-	adds r1, r7, r1\n\
-	movs r2, #8\n\
-	bl CpuFastSet\n\
-	ldr r2, _080E9980 @ =0x080FF37C\n\
-	b _080E9A04\n\
-	.align 2, 0\n\
-_080E996C: .4byte gTextPrinter\n\
-_080E9970: .4byte gFontTall\n\
-_080E9974: .4byte gVideoRegBuffer+4\n\
-_080E9978: .4byte 0x000001FF\n\
-_080E997C: .4byte 0x0000FFF0\n\
-_080E9980: .4byte gFontTall+(32*16)\n\
-_080E9984:\n\
-	ldr r0, _080E99D0 @ =0x000003FF\n\
-	cmp r2, r0\n\
-	bhi _080E99D4\n\
-	adds r0, r2, #0\n\
-	mov r1, sb\n\
-	ands r0, r1\n\
-	lsls r0, r0, #6\n\
-	mov r1, r8\n\
-	ands r2, r1\n\
-	lsls r1, r2, #5\n\
-	adds r0, r0, r1\n\
-	mov r2, sl\n\
-	adds r1, r0, r2\n\
-	ldrh r0, [r6, #6]\n\
-	lsls r0, r0, #5\n\
-	adds r3, r7, r0\n\
-	movs r2, #0\n\
-_080E99A6:\n\
-	ldm r1!, {r0}\n\
-	lsls r0, r0, #2\n\
-	stm r3!, {r0}\n\
-	adds r0, r2, #1\n\
-	lsls r0, r0, #0x10\n\
-	lsrs r2, r0, #0x10\n\
-	cmp r2, #7\n\
-	bls _080E99A6\n\
-	movs r0, #0xf0\n\
-	lsls r0, r0, #1\n\
-	adds r1, r1, r0\n\
-	movs r2, #0\n\
-_080E99BE:\n\
-	ldm r1!, {r0}\n\
-	lsls r0, r0, #2\n\
-	stm r3!, {r0}\n\
-	adds r0, r2, #1\n\
-	lsls r0, r0, #0x10\n\
-	lsrs r2, r0, #0x10\n\
-	cmp r2, #7\n\
-	bls _080E99BE\n\
-	b _080E9A58\n\
-	.align 2, 0\n\
-_080E99D0: .4byte 0x000003FF\n\
-_080E99D4:\n\
-	movs r0, #0x80\n\
-	lsls r0, r0, #4\n\
-	adds r1, r0, #0\n\
-	adds r0, r2, #0\n\
-	ands r0, r1\n\
-	cmp r0, #0\n\
-	bne _080E9A20\n\
-	adds r4, r2, #0\n\
-	mov r1, sb\n\
-	ands r4, r1\n\
-	lsls r4, r4, #7\n\
-	mov r0, r8\n\
-	ands r2, r0\n\
-	lsls r0, r2, #6\n\
-	adds r4, r4, r0\n\
-	ldr r1, _080E9A18 @ =gFontBig\n\
-	adds r0, r4, r1\n\
-	ldrh r1, [r6, #6]\n\
-	lsls r1, r1, #5\n\
-	adds r1, r7, r1\n\
-	movs r2, #8\n\
-	bl CpuFastSet\n\
-	ldr r2, _080E9A1C @ =0x08106E3C\n\
-_080E9A04:\n\
-	adds r4, r4, r2\n\
-	ldrh r1, [r6, #6]\n\
-	lsls r1, r1, #5\n\
-	adds r1, #0x20\n\
-	adds r1, r7, r1\n\
-	adds r0, r4, #0\n\
-	movs r2, #8\n\
-	bl CpuFastSet\n\
-	b _080E9A58\n\
-	.align 2, 0\n\
-_080E9A18: .4byte gFontBig\n\
-_080E9A1C: .4byte gFontBig+1024\n\
-_080E9A20:\n\
-	adds r4, r2, #0\n\
-	mov r0, sb\n\
-	ands r4, r0\n\
-	lsls r4, r4, #7\n\
-	mov r1, r8\n\
-	ands r2, r1\n\
-	lsls r0, r2, #6\n\
-	adds r4, r4, r0\n\
-	ldr r5, _080E9A70 @ =0x08106A5C\n\
-	adds r0, r4, r5\n\
-	ldrh r1, [r6, #6]\n\
-	lsls r1, r1, #5\n\
-	adds r1, r7, r1\n\
-	movs r2, #8\n\
-	bl CpuFastSet\n\
-	movs r2, #0x80\n\
-	lsls r2, r2, #3\n\
-	adds r5, r5, r2\n\
-	adds r4, r4, r5\n\
-	ldrh r1, [r6, #6]\n\
-	lsls r1, r1, #5\n\
-	adds r1, #0x20\n\
-	adds r1, r7, r1\n\
-	adds r0, r4, #0\n\
-	movs r2, #8\n\
-	bl CpuFastSet\n\
-_080E9A58:\n\
-	ldr r6, [r6]\n\
-	cmp r6, #0\n\
-	beq _080E9A60\n\
-	b _080E9914\n\
-_080E9A60:\n\
-	pop {r3, r4, r5}\n\
-	mov r8, r3\n\
-	mov sb, r4\n\
-	mov sl, r5\n\
-	pop {r4, r5, r6, r7}\n\
-	pop {r0}\n\
-	bx r0\n\
-	.align 2, 0\n\
-_080E9A70: .4byte gFontBig+32\n\
- .syntax divided\n");
+NON_MATCH void LoadGlyphTiles(void) {
+#if MODERN
+  GlyphNode* node = gTextPrinter.cur;
+  while (node != NULL) {
+    if (node->tileID & GLYPH_TILE_NOT_LOADED) {
+      node->tileID &= ~GLYPH_TILE_NOT_LOADED;
+      {
+        const Glyph glyph = node->c;
+        void* vram = (void*)(VRAM + CHAR_BASE(0));
+        if (glyph < 0x200) {  // gFontTall (normal, BGP0)
+          u32 offset = ((glyph & 0xFFF0) * (TILE_SIZE_4BPP * 2)) + ((glyph & 0xF) * TILE_SIZE_4BPP);
+          CpuFastCopy(&gFontTall[offset], vram + (node->tileID * TILE_SIZE_4BPP), TILE_SIZE_4BPP);
+          CpuFastCopy(&gFontTall[offset + (16 * TILE_SIZE_4BPP)], (vram + (node->tileID * TILE_SIZE_4BPP)) + TILE_SIZE_4BPP, TILE_SIZE_4BPP);
+        } else if (glyph < 0x400) {  // gFontTall+Red (BGP0, パレットを変えずに4bppの色番号を変えることで赤くしている)
+          u16 i;
+          const u8* src = &gFontTall[((glyph & 0x1F0) * (TILE_SIZE_4BPP * 2)) + ((glyph & 0xF) * TILE_SIZE_4BPP)];
+          u32* dst = vram + (node->tileID * TILE_SIZE_4BPP);
+          for (i = 0; i < 8; i++) {
+            *dst++ = (*((u32*)src)) << 2;
+            src += 4;
+          }
+          src += 15 * TILE_SIZE_4BPP;
+          for (i = 0; i < 8; i++) {
+            *dst++ = (*((u32*)src)) << 2;
+            src += 4;
+          }
+        } else {                           // gFontBig
+          if ((glyph & (1 << 11)) == 0) {  // 左半分
+            u32 offset = ((glyph & 0x1F0) * (TILE_SIZE_4BPP * 4)) + ((glyph & 0xF) * (TILE_SIZE_4BPP * 2));
+            CpuFastCopy(&gFontBig[offset], vram + (node->tileID * TILE_SIZE_4BPP), TILE_SIZE_4BPP);
+            CpuFastCopy(&gFontBig[offset + (32 * TILE_SIZE_4BPP)], (vram + (node->tileID * TILE_SIZE_4BPP)) + TILE_SIZE_4BPP, TILE_SIZE_4BPP);
+          } else {  // 右半分
+            u32 offset = ((glyph & 0x1F0) * (TILE_SIZE_4BPP * 4)) + ((glyph & 0xF) * (TILE_SIZE_4BPP * 2));
+            CpuFastCopy(&gFontBig[offset + TILE_SIZE_4BPP], vram + (node->tileID * TILE_SIZE_4BPP), TILE_SIZE_4BPP);
+            CpuFastCopy(&gFontBig[offset + (32 * TILE_SIZE_4BPP) + TILE_SIZE_4BPP], (vram + (node->tileID * TILE_SIZE_4BPP)) + TILE_SIZE_4BPP, TILE_SIZE_4BPP);
+          }
+        }
+      }
+    }
+    node = node->next;
+  }
+#else
+  INCCODE("asm/wip/LoadGlyphTiles.inc");
+#endif
 }
 
 // Get string character count (not bytesize)
@@ -735,6 +592,6 @@ static GlyphNode* AllocateGlyph(Glyph glyph) {
   gTextPrinter.freelist = node->next;
   node->next = gTextPrinter.cur;
   gTextPrinter.cur = node;
-  node->tileID |= (1 << 15);  // mark as used
+  node->tileID |= GLYPH_TILE_NOT_LOADED;
   return node;
 }

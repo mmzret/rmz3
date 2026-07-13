@@ -54,7 +54,7 @@ static void MenuCursor_Init(struct Widget* p) {
   };
   // clang-format on
   SET_WIDGET_ROUTINE(p, ENTITY_UPDATE);
-  InitNonAffineMotion(&p->s);
+  EnableSpriteAnimation_Normal(p);
   (p->s).flags |= DISPLAY;
   (p->s).flags |= FLIPABLE;
   (p->s).spr.xflip = FALSE, (p->s).spr.oam.xflip = FALSE;
@@ -159,40 +159,40 @@ static void MenuCursor_Die(struct Widget* w) { SET_WIDGET_ROUTINE(w, ENTITY_EXIT
 // --------------------------------------------
 
 static void FUN_080e76b4(struct Widget* w) {
-  InitNonAffineMotion(&w->s);
+  EnableSpriteAnimation_Normal(w);
   SetSpriteAnimation(w, MOTION(SM083_ELF_MENU_ICON, 10));  // ▲
   (w->s).coord.x = PIXEL(356);
   (w->s).coord.y = PIXEL(6);
 }
 
 static void FUN_080e76dc(struct Widget* w) {
-  InitNonAffineMotion(&w->s);
+  EnableSpriteAnimation_Normal(w);
   SetSpriteAnimation(w, MOTION(SM083_ELF_MENU_ICON, 12));  // ▼
   (w->s).coord.x = PIXEL(356);
   (w->s).coord.y = PIXEL(122);
 }
 
 static void FUN_080e7704(struct Widget* w) {
-  InitNonAffineMotion(&w->s);
+  EnableSpriteAnimation_Normal(w);
   SetSpriteAnimation(w, MOTION(SM083_ELF_MENU_ICON, 14));  // ▶
 }
 
 static void FUN_080e7720(struct Widget* w) {
-  InitNonAffineMotion(&w->s);
+  EnableSpriteAnimation_Normal(w);
   SetSpriteAnimation(w, MOTION(SM083_ELF_MENU_ICON, 10));  // ▲
   (w->s).coord.x = PIXEL(114);
   (w->s).coord.y = PIXEL(14);
 }
 
 static void FUN_080e7748(struct Widget* w) {
-  InitNonAffineMotion(&w->s);
+  EnableSpriteAnimation_Normal(w);
   SetSpriteAnimation(w, MOTION(SM083_ELF_MENU_ICON, 12));  // ▼
   (w->s).coord.x = PIXEL(114);
   (w->s).coord.y = PIXEL(128);
 }
 
 static void FUN_080e7770(struct Widget* w) {
-  InitNonAffineMotion(&w->s);
+  EnableSpriteAnimation_Normal(w);
   SetSpriteAnimation(w, MOTION(SM083_ELF_MENU_ICON, 14));  // ▶
 }
 

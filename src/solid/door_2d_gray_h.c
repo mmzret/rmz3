@@ -29,7 +29,7 @@ static void Solid22_Init(struct Solid* p) {
   (p->s).coord.y += PIXEL(9);
   (p->s).spr.oam.priority = 1;
   (p->s).flags |= DISPLAY;
-  InitNonAffineMotion(&p->s);
+  EnableSpriteAnimation_Normal(p);
   SET_SOLID_ROUTINE(p, ENTITY_UPDATE);
   (p->s).mode[1] = 0;
   (p->s).mode[2] = 0;

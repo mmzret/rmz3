@@ -33,7 +33,7 @@ static void Solid34_Init(Object* p) {
 
   (p->s).flags |= DISPLAY;
   (p->s).flags |= FLIPABLE;
-  InitNonAffineMotion(&p->s);
+  EnableSpriteAnimation_Normal(p);
   INIT_BODY(p, &sCollision, 0, NULL);
   (p->s).coord.y = FUN_0800a134((p->s).coord.x, (p->s).coord.y);
   SET_SOLID_ROUTINE(p, ENTITY_UPDATE);

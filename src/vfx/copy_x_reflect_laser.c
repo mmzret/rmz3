@@ -42,7 +42,7 @@ static void VFX56_Init(struct Entity* p) {
   };  // 0x0836f22c
 
   SET_VFX_ROUTINE(p, ENTITY_UPDATE);
-  InitNonAffineMotion(p);
+  EnableSpriteAnimation_Normal(p);
   p->flags |= DISPLAY;
   p->flags |= FLIPABLE;
   SetSpriteAnimation(p, MOTION(SM096_COPYX_REFLECT_LASER, 1));

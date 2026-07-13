@@ -41,7 +41,7 @@ static void Fefnir_Init(struct Zero* z) {
 
   (z->s).flags |= FLIPABLE;
   (z->s).flags |= DISPLAY;
-  InitNonAffineMotion(&z->s);
+  EnableSpriteAnimation_Normal(z);
   ResetDynamicMotion(&z->s);
   INIT_BODY(z, &sCollisions[0], 6, onCollision);
   (z->s).work[3] = 0;

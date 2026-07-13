@@ -44,7 +44,7 @@ static void Elf5_Init(struct CyberElf5* p) {
   struct Rect r = gZeroRanges[z->posture];
   gPause = TRUE;
   SET_ELF_ROUTINE(p, ENTITY_UPDATE);
-  InitNonAffineMotion(&p->s);
+  EnableSpriteAnimation_Normal(p);
   ResetDynamicMotion(&p->s);
   (p->s).flags |= DISPLAY;
   (p->s).flags |= FLIPABLE;

@@ -1,8 +1,8 @@
 #include "global.h"
 #include "overworld.h"
 
-extern const Coords32 gSnowyPlainMetatileShift1;
-extern const Coords32 gSnowyPlainMetatileShift2;
+extern const MetatileShift gSnowyPlainMetatileShift1;
+extern const MetatileShift gSnowyPlainMetatileShift2;
 
 static void initSnowyPlains(Coords32* _ UNUSED);
 static void nop_08012b18(Coords32* _ UNUSED);
@@ -17,11 +17,10 @@ static const StageFunc sStageRoutine[4] = {
 };
 
 static void initSnowyPlains(Coords32* _ UNUSED) {
-  Coords32 shift1, shift2;
-  shift1 = gSnowyPlainMetatileShift1;
-  shift2 = gSnowyPlainMetatileShift2;
-  ShiftMetatile(0, 81, (struct MetatileShift*)&shift1);
-  ShiftMetatile(240, 111, (struct MetatileShift*)&shift2);
+  MetatileShift shift1 = gSnowyPlainMetatileShift1;
+  MetatileShift shift2 = gSnowyPlainMetatileShift2;
+  ShiftMetatile(0, 81, &shift1);
+  ShiftMetatile(240, 111, &shift2);
 }
 
 static void nop_08012b18(Coords32* _ UNUSED) { return; }

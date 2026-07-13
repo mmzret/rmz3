@@ -89,7 +89,7 @@ void FUN_080cb3b8(struct Entity* e, s32 x, s32 y) {
 void FUN_080cb4c0(struct Entity* p) {
   s32 y, y2;
   p->flags |= DISPLAY;
-  InitNonAffineMotion(p);
+  EnableSpriteAnimation_Normal(p);
   SetSpriteAnimation(p, MOTION(SM032_BURNING_FIRE, 0));
   (p->spr).oam.priority = 0;
   if (p->work[0] == 0) {

@@ -894,27 +894,27 @@ bool16 FUN_0800bd38(s32 x, s32 y) {
 // 落ちてくる氷ブロック
 void FUN_0800bd78(s32 x, s32 y) {
   bool16 b;
-  struct MetatileShift s;
+  MetatileShift s;
   s16 x16 = METACOORD(x) - 1;
   s16 y16 = METACOORD(y) - 1;
   s.x = x16 + 120;
   s.y = y16;
-  *((u32*)&s.block) = (2 << 16) | 2;
+  *((u32*)&s.width) = (2 << 16) | 2;
   b = FUN_0800bd38(x, y + PIXEL(48));
   if (!b) {
-    *((u32*)&s.block) = (3 << 16) | (*((u32*)&s.block) & 0xFFFF);
+    *((u32*)&s.width) = (3 << 16) | (*((u32*)&s.width) & 0xFFFF);
   }
   ShiftMetatile(x16, y16, &s);
 }
 
 // 落ちてくる氷ブロック
 void FUN_0800bdd4(s32 x, s32 y) {
-  struct MetatileShift s;
+  MetatileShift s;
   s16 x16 = METACOORD(x) - 1;
   s16 y16 = METACOORD(y) - 1;
   s.x = x16 + 60;
   s.y = y16;
-  *((u32*)&s.block) = (2 << 16) | 2;
+  *((u32*)&s.width) = (2 << 16) | 2;
   ShiftMetatile(x16, y16, &s);
 }
 

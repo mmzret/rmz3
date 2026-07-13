@@ -178,7 +178,7 @@ static void initDashDust(struct VFX* p) {
 }
 
 static void FUN_080b39dc(struct VFX* p) {
-  InitNonAffineMotion(&p->s);
+  EnableSpriteAnimation_Normal(p);
   (p->s).flags |= DISPLAY;
   (p->s).flags |= FLIPABLE;
   SetSpriteAnimation(p, MOTION(SM000_BATTLE_EFFECT, 17));
@@ -213,7 +213,7 @@ static void FUN_080b3a3c(struct VFX* p) {
   }
 
   (p->s).coord.x += PIXEL((RANDOM(RNG_0202f388) & 4) - 2);
-  InitNonAffineMotion(&p->s);
+  EnableSpriteAnimation_Normal(p);
   (p->s).flags |= DISPLAY;
   (p->s).flags |= FLIPABLE;
   SetSpriteAnimation(p, MOTION(SM000_BATTLE_EFFECT, 17));
@@ -239,7 +239,7 @@ static void FUN_080b3b20(struct VFX* p) {
 }
 
 static void FUN_080b3b8c(struct VFX* p) {
-  InitNonAffineMotion(&p->s);
+  EnableSpriteAnimation_Normal(p);
   (p->s).flags |= DISPLAY;
   (p->s).flags |= FLIPABLE;
   SetSpriteAnimation(p, MOTION(SM000_BATTLE_EFFECT, 15));
@@ -256,7 +256,7 @@ static void FUN_080b3b8c(struct VFX* p) {
 }
 
 static void FUN_080b3c40(struct VFX* p) {
-  InitNonAffineMotion(&p->s);
+  EnableSpriteAnimation_Normal(p);
   (p->s).flags |= DISPLAY;
   (p->s).flags |= FLIPABLE;
   SetSpriteAnimation(p, MOTION(SM000_BATTLE_EFFECT, 16));
@@ -273,7 +273,7 @@ static void FUN_080b3c40(struct VFX* p) {
 }
 
 static void initRicochet(struct VFX* p) {
-  InitNonAffineMotion(&p->s);
+  EnableSpriteAnimation_Normal(p);
   (p->s).flags |= DISPLAY;
   (p->s).flags |= FLIPABLE;
   SetSpriteAnimation(p, MOTION(SM000_BATTLE_EFFECT, 9));
@@ -282,7 +282,7 @@ static void initRicochet(struct VFX* p) {
 }
 
 static void initWallDust(struct VFX* p) {
-  InitNonAffineMotion(&p->s);
+  EnableSpriteAnimation_Normal(p);
   (p->s).flags |= DISPLAY;
   (p->s).flags |= FLIPABLE;
 
@@ -300,7 +300,7 @@ static void initWallDust(struct VFX* p) {
 }
 
 static void FUN_080b3e08(struct VFX* p) {
-  InitNonAffineMotion(&p->s);
+  EnableSpriteAnimation_Normal(p);
   (p->s).flags |= DISPLAY;
   (p->s).flags |= FLIPABLE;
   SetSpriteAnimation(p, MOTION(SM000_BATTLE_EFFECT, 5));
@@ -310,7 +310,7 @@ static void FUN_080b3e08(struct VFX* p) {
 }
 
 static void FUN_080b3e4c(struct VFX* p) {
-  InitNonAffineMotion(&p->s);
+  EnableSpriteAnimation_Normal(p);
   (p->s).flags |= DISPLAY;
   (p->s).flags |= FLIPABLE;
   SetSpriteAnimation(p, MOTION(SM000_BATTLE_EFFECT, 13));
@@ -348,7 +348,7 @@ static void FUN_080b3ee0(struct Entity* p) {
   (p->coord).x += PIXEL((RANDOM(RNG_0202f388) & 3) - 2);
   (p->d).y = ((PIXEL(1) * 3) / 4) + (RANDOM(RNG_0202f388) & 0x3F);
 
-  InitNonAffineMotion(p);
+  EnableSpriteAnimation_Normal(p);
   p->flags |= DISPLAY;
   p->flags |= FLIPABLE;
   SetSpriteAnimation(p, MOTION(SM000_BATTLE_EFFECT, 13));

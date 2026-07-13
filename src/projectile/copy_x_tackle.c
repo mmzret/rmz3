@@ -88,7 +88,7 @@ static void initCopyXSlidingSonicBoom(Object* p) {
 
   struct Entity* q = (p->s).unk_28;
   SET_PROJECTILE_ROUTINE(p, ENTITY_UPDATE);
-  InitNonAffineMotion(&p->s);
+  EnableSpriteAnimation_Normal(p);
   (p->s).flags |= DISPLAY;
   (p->s).flags |= FLIPABLE;
   SetSpriteAnimation(p, MOTION(SM094_COPYX_SLIDING_SPARK, 0));
@@ -134,7 +134,7 @@ static void InitNovaStrikeProjectile(Object* p) {
 
   struct Entity* q = (p->s).unk_28;
   SET_PROJECTILE_ROUTINE(p, ENTITY_UPDATE);
-  InitNonAffineMotion(&p->s);
+  EnableSpriteAnimation_Normal(p);
   (p->s).flags |= DISPLAY;
   (p->s).flags |= FLIPABLE;
   SetSpriteAnimation(p, MOTION(SM094_COPYX_SLIDING_SPARK, 1));

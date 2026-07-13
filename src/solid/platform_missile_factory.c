@@ -24,7 +24,7 @@ const SolidRoutine gSolid36Routine = {
 
 static void Solid36_Init(struct Solid* p) {
   (p->s).flags |= DISPLAY;
-  InitNonAffineMotion(&p->s);
+  EnableSpriteAnimation_Normal(p);
   (p->s).flags |= FLIPABLE;
   (p->s).unk_coord.y = (p->s).coord.y - PIXEL(8);
   SetSpriteAnimation(p, MOTION(SM151_MISSILE_PLATFORM, 1));

@@ -43,7 +43,7 @@ static void Projectile42_Init(Object* p) {
   (p->s).mode[1] = u8_ARRAY_0836d730[(p->s).work[0]];
   (p->s).flags |= FLIPABLE;
   (p->s).flags |= DISPLAY;
-  InitNonAffineMotion(&p->s);
+  EnableSpriteAnimation_Normal(p);
   INIT_BODY(p, &sCollision, 1, onCollision);
   Projectile42_Update((void*)p);
 }

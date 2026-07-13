@@ -38,7 +38,7 @@ static void Harpuia_Init(struct Zero* z) {
   Coords32 c, *d, *uc;
   s32 x, y;
 
-  InitNonAffineMotion(&z->s);
+  EnableSpriteAnimation_Normal(z);
   ResetDynamicMotion(&z->s);
   (z->s).flags |= DISPLAY;
   (z->s).flags |= FLIPABLE;

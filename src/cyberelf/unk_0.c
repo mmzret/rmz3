@@ -47,7 +47,7 @@ static void Elf0_Init(struct CyberElf0* p) {
   struct Zero* z = p->player;
   struct Rect r = gZeroRanges[z->posture];
   gPause = TRUE;
-  InitNonAffineMotion(&p->s);
+  EnableSpriteAnimation_Normal(p);
   ResetDynamicMotion(&p->s);
   (p->s).flags |= DISPLAY;
   (p->s).flags |= FLIPABLE;

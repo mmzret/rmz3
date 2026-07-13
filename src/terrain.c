@@ -357,8 +357,8 @@ NON_MATCH static void LoadTerrainLayerAllChunks(const struct Stage* stage, const
 }
 
 // 0x0800911c
-// (s->x, s->y) から 横 s->block, 縦 s->row のメタタイルを (x16, y16) にコピーする
-void ShiftMetatile(s32 x16, s32 y16, const struct MetatileShift* s) {
+// (s->x, s->y) から 横 s->width, 縦 s->height のメタタイルを (x16, y16) にコピーする
+void ShiftMetatile(s32 x16, s32 y16, const MetatileShift* s) {
   s32 i;
   const u8 id = gOverworld.terrain.id & 0x7F;
   const struct Stage* stage = gStageLandscape[id];
@@ -367,11 +367,11 @@ void ShiftMetatile(s32 x16, s32 y16, const struct MetatileShift* s) {
 
   // 1番下の行から上にコピーしていく
   u32 w = (u32)((stage->maps[0])->width) * 15;  // ステージの横幅(メタタイル単位)
-  dst = &dst[TILEMAP_OFFSET(w, x16, y16 + s->row)];
-  src = &src[TILEMAP_OFFSET(w, s->x, s->y + s->row)];
-  for (i = 0; i < s->row; i++) {
+  dst = &dst[TILEMAP_OFFSET(w, x16, y16 + s->height)];
+  src = &src[TILEMAP_OFFSET(w, s->x, s->y + s->height)];
+  for (i = 0; i < s->height; i++) {
     dst -= w, src -= w;  // 上の行へ (-16px)
-    CopyMemory(src, dst, s->block << 1);
+    CopyMemory(src, dst, s->width << 1);
   }
   gOverworld.terrain.tilemap_duty = TRUE;
 }

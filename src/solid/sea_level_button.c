@@ -37,11 +37,9 @@ struct Solid* CreateSeaLevelButton(u8 idx, Coords32* c) {
 // --------------------------------------------
 
 static void SeaLevelButton_Init(struct Solid* p) {
-  Coords32* velocity;
   (p->s).flags |= FLIPABLE;
   (p->s).coord.y = FUN_08009f6c((p->s).coord.x, (p->s).coord.y);
-  velocity = &(p->s).d;
-  velocity->x = velocity->y = 0;
+  (&(p->s).d)->x = (&(p->s).d)->y = 0;
   if (IS_MISSION) {
     INIT_BODY(p, &sCollisions[0], 0, NULL);
     SET_SOLID_ROUTINE(p, ENTITY_UPDATE);
@@ -348,7 +346,7 @@ static void SeaLevelButton_Die(struct Solid* p) {
       }
       LOAD_STATIC_GRAPHIC(SM181_SEA_LEVEL_BUTTON);
       (p->s).flags |= DISPLAY;
-      InitNonAffineMotion(&p->s);
+      EnableSpriteAnimation_Normal(p);
       SetSpriteAnimation(p, MOTION(SM181_SEA_LEVEL_BUTTON, 2));
       (p->s).flags2 |= ENTI_PHYSICS;
       (p->s).size = &sSizes[1];

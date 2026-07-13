@@ -44,7 +44,7 @@ struct Entity* volteel_080bc0b0(struct Entity* e, Coords32* c, u8 kind) {
 // --------------------------------------------
 
 static void VFX36_Init(struct Entity* p) {
-  InitNonAffineMotion(p);
+  EnableSpriteAnimation_Normal(p);
   p->flags |= DISPLAY;
   p->flags |= FLIPABLE;
   ResetDynamicMotion(p);

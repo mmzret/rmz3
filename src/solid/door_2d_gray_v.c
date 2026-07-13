@@ -24,7 +24,7 @@ const SolidRoutine gDoor2DGrayVRoutine = {
 // clang-format on
 
 static void Door2DGray_Init(struct Solid* p) {
-  InitNonAffineMotion(&p->s);
+  EnableSpriteAnimation_Normal(p);
   (p->s).coord.x += PIXEL(8);
   (p->s).coord.y += PIXEL(8);
   LOAD_STATIC_GRAPHIC(SM122_DOOR_2D_GRAY_V);

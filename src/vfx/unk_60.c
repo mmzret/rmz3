@@ -32,7 +32,7 @@ struct Entity* CreateVFX60(Coords32* c, u8 kind, motion_t m, u32 val) {
 // --------------------------------------------
 
 static void VFX60_Init(struct Entity* p) {
-  InitNonAffineMotion(p);
+  EnableSpriteAnimation_Normal(p);
   p->flags |= DISPLAY;
   p->flags |= FLIPABLE;
   if (p->work[0] == 0) {
@@ -89,4 +89,4 @@ const s32* const PTR_s32_ARRAY_0836f404[3] = {
     &s32_ARRAY_0836f3a4[0],
     &s32_ARRAY_0836f3a4[8],
     &s32_ARRAY_0836f3a4[16],
-};
+};  // 0x0836F404

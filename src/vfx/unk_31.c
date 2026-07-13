@@ -48,7 +48,7 @@ static void Ghost31_Init(struct VFX* p) {
   (p->s).mode[1] = sInitModes[(p->s).work[0]];
   (p->s).flags |= FLIPABLE;
   (p->s).flags |= DISPLAY;
-  InitNonAffineMotion(&p->s);
+  EnableSpriteAnimation_Normal(p);
   Ghost31_Update(p);
 }
 

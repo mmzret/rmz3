@@ -58,7 +58,6 @@ void DrawCollidableEntity(struct EntityHeader* h, Renderer* r);
 void DrawWeapon(Renderer* r);
 struct Entity* GetNearestEntity(struct EntityHeader* h, Coords32* c);
 
-void InitNonAffineMotion(struct Entity* e);
 void InitRotatableMotion(struct Entity* e);
 u16 countSpecificEntities1(struct EntityHeader* h, u8 id);
 u16 countSpecificEntities2(struct EntityHeader* h, u8 id, u8 r2, u8 r3);

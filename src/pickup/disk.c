@@ -67,7 +67,7 @@ static void MapDisk_Init(Pickup* p) {
     return;
   }
 
-  InitNonAffineMotion((void*)p);
+  EnableSpriteAnimation_Normal(p);
   m = MOTION(SM176_RESULT_DISK, 11) + (((u16)gSystemSavedata.disk) << 8);
   SetSpriteAnimation(p, m);
   p->flags |= DISPLAY;

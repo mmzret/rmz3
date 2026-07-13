@@ -37,7 +37,7 @@ struct Projectile* FUN_080aed8c(struct Entity* boss, Coords32* c1, Coords32* c2,
 
 static void ClavekerYellowBalls_Init(struct Projectile* p) {
   if ((p->s).work[1] == 0) {
-    InitNonAffineMotion(&p->s);
+    EnableSpriteAnimation_Normal(p);
     (p->s).flags |= DISPLAY;
     (p->s).flags |= FLIPABLE;
     INIT_BODY(p, &sCollisions[0], 2, NULL);

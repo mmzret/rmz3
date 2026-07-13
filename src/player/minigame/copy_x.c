@@ -37,7 +37,7 @@ struct Entity* CreatePlayerCopyX(struct MinigameState* q, Coords32* c, u8 n) {
 static void CopyXMini_Init(struct Zero* p) {
   Coords32 c;
 
-  InitNonAffineMotion(&p->s);
+  EnableSpriteAnimation_Normal(p);
   ResetDynamicMotion(&p->s);
   (p->s).flags |= DISPLAY;
   (p->s).flags |= FLIPABLE;

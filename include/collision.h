@@ -58,6 +58,7 @@ enum CollisionAtkType {
   ATK_UNK12 = 12,
   ATK_SOUL_LAUNCHER = 13,
   ATK_UNK14 = 14,
+  ATK_UNK15 = 15,
   ATK_NONE = 0xFF,  // DRP, DRP2のとき
 };
 
@@ -84,7 +85,7 @@ struct Collision {
 
   // --------------------------------------------
   // If DRP, this is u32 layer value for DDPBody.collisionLayer
-  u8 atkType;  // 0x04
+  u8 atkType;  // 0x04, see CollisionAtkType
   u8 element;  // 0x05
   u8 nature;   // 0x06
   u8 comboLv;  // 0x07

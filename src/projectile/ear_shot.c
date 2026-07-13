@@ -42,7 +42,7 @@ static void EarShot_Init(struct Projectile* p) {
   (p->s).mode[1] = sInitModes[(p->s).work[0]];
   (p->s).flags |= FLIPABLE;
   (p->s).flags |= DISPLAY;
-  InitNonAffineMotion(&p->s);
+  EnableSpriteAnimation_Normal(p);
   INIT_BODY(p, &sCollisions[(p->s).work[0] == 1], 1, onCollision);
   EarShot_Update(p);
 }

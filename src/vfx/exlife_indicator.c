@@ -132,7 +132,7 @@ static void TaskCB_080be5d0(struct Sprite* s, struct DrawPivot* c) {
   coord.x += (c->coord).x;
   coord.y = (p->s).coord.y - PIXEL(80);
   coord.y += (c->coord).y;
-  InitNonAffineMotion((struct Entity*)p);
+  EnableSpriteAnimation_Normal(p);
   SetSpriteAnimation(p, sMotions[(p->s).work[0]]);
   (p->s).spr.oam.priority = 0;
   UpdateSpriteAnimation(p);

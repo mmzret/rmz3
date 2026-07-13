@@ -1816,7 +1816,7 @@ static void Rod_Init(struct RecoilRod* p) {
   struct Zero* z = (&p->props)->z;
 
   SET_WEAPON_ROUTINE(p, ENTITY_UPDATE);
-  InitNonAffineMotion(&p->s);
+  EnableSpriteAnimation_Normal(p);
   ResetDynamicMotion(&p->s);
   (p->s).flags |= DISPLAY;
   (p->s).flags |= FLIPABLE;

@@ -61,7 +61,7 @@ struct Entity* FUN_080b9228(Coords32* c) {
 
 static void VFX25_Init(struct VFX25* p) {
   if ((p->s).work[0] == 0) {
-    InitNonAffineMotion(&p->s);
+    EnableSpriteAnimation_Normal(p);
     (p->s).flags |= DISPLAY;
     (p->s).flags |= FLIPABLE;
     (p->s).work[2] = 8;
@@ -69,7 +69,7 @@ static void VFX25_Init(struct VFX25* p) {
     (p->s).mode[1] = 0, (p->s).mode[2] = 0, (p->s).mode[3] = 0;
 
   } else if ((p->s).work[0] == 1) {
-    InitNonAffineMotion(&p->s);
+    EnableSpriteAnimation_Normal(p);
     (p->s).flags |= DISPLAY;
     (p->s).flags |= FLIPABLE;
     (p->s).work[2] = 8;
@@ -77,7 +77,7 @@ static void VFX25_Init(struct VFX25* p) {
     (p->s).mode[1] = 1, (p->s).mode[2] = 0, (p->s).mode[3] = 0;
 
   } else if ((p->s).work[0] == 2) {
-    InitNonAffineMotion(&p->s);
+    EnableSpriteAnimation_Normal(p);
     (p->s).flags |= DISPLAY;
     (p->s).flags |= FLIPABLE;
     (p->c).x = 0, (p->c).y = 0;
@@ -86,7 +86,7 @@ static void VFX25_Init(struct VFX25* p) {
     (p->s).renderPrio = 24;
 
   } else if ((p->s).work[0] == 3) {
-    InitNonAffineMotion(&p->s);
+    EnableSpriteAnimation_Normal(p);
     (p->s).flags |= DISPLAY;
     (p->s).flags |= FLIPABLE;
     (p->c).x = 0, (p->c).y = 0;

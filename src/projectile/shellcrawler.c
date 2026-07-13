@@ -65,7 +65,7 @@ static void _Projectile43_Update(Object* p) {
   switch ((p->s).mode[2]) {
     case 0: {
       INIT_BODY(p, sCollision, 0, NULL);
-      InitNonAffineMotion(&p->s);
+      EnableSpriteAnimation_Normal(p);
       SetSpriteAnimation(p, MOTION(SM219_SHELLCRAWLER, 13));
       SET_XFLIP(p, (p->s).work[2]);
       (p->s).mode[2]++;

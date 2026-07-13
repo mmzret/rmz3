@@ -60,7 +60,7 @@ static void Elf11_Init(struct Entity* p) {
 
   SET_ELF_ROUTINE(p, ENTITY_UPDATE);
   p->palID = 1;
-  InitNonAffineMotion(p);
+  EnableSpriteAnimation_Normal(p);
   ResetDynamicMotion(p);
   p->flags2 &= ~DYNAMIC;
   p->flags |= DISPLAY;

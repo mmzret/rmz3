@@ -40,7 +40,7 @@ struct Solid* CreateGiantElevatorPlatform(u8 isRight) {
 static void Solid46_Init(struct Solid* p) {
   (p->s).flags |= DISPLAY;
   (p->s).flags |= FLIPABLE;
-  InitNonAffineMotion(&p->s);
+  EnableSpriteAnimation_Normal(p);
   SetSpriteAnimation(p, MOTION(SM155_GIANT_ELEVATOR_PLATFORM, 0));
   (p->s).flags2 |= ENTI_PHYSICS;
   (p->s).size = &sSize;

@@ -38,7 +38,7 @@ struct Projectile* CreateProjectile6(struct Entity* e, Coords32* c, u8 r2, u8 r3
 // --------------------------------------------
 
 static void Projectile6_Init(Object* p) {
-  InitNonAffineMotion(&p->s);
+  EnableSpriteAnimation_Normal(p);
   (p->s).flags |= DISPLAY;
   (p->s).flags |= FLIPABLE;
   INIT_BODY(p, &sCollisions[0], 1, NULL);

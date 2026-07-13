@@ -1,14 +1,20 @@
 #include "global.h"
+#include "metatile.h"
 #include "motion.h"
 
-// 0x080fecc4
-const Coords32 Coord_080fecc4 = {
-    0x0,
-    0x10001,
-};
+const MetatileShift gMetatileShift_080fecc4 = {
+    0, 0,  // x16, y16
+    1, 1   // width, height
+};  // 0x080fecc4
 
-const Coords32 gSnowyPlainMetatileShift1 = {0x500000, 0x4500F0};
-const Coords32 gSnowyPlainMetatileShift2 = {0x6E00F0, 0x310096};
+const MetatileShift gSnowyPlainMetatileShift1 = {
+    0, 80,   // x16, y16
+    240, 69  // width, height
+};  // 0x080feccc
+const MetatileShift gSnowyPlainMetatileShift2 = {
+    240, 110,  // x16, y16
+    150, 49    // width, height
+};  // 0x080fecd4
 
 const Coords32 Coord_080fecdc = {PIXEL(352), PIXEL(1056)};
 

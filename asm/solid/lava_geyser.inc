@@ -4,154 +4,6 @@
 	
 	.text
 
-	thumb_func_start Solid7_Update
-Solid7_Update: @ 0x080CC8F8
-	push {r4, lr}
-	adds r4, r0, #0
-	ldr r1, _080CC924 @ =0x0836FF7C
-	ldrb r0, [r4, #0xd]
-	lsls r0, r0, #2
-	adds r0, r0, r1
-	ldr r1, [r0]
-	adds r0, r4, #0
-	bl _call_via_r1
-	ldr r1, _080CC928 @ =0x0836FF94
-	ldrb r0, [r4, #0xd]
-	lsls r0, r0, #2
-	adds r0, r0, r1
-	ldr r1, [r0]
-	adds r0, r4, #0
-	bl _call_via_r1
-	pop {r4}
-	pop {r0}
-	bx r0
-	.align 2, 0
-_080CC924: .4byte 0x0836FF7C
-_080CC928: .4byte 0x0836FF94
-
-	thumb_func_start Solid7_Die
-Solid7_Die: @ 0x080CC92C
-	bx lr
-	.align 2, 0
-
-	thumb_func_start nop_080cc930
-nop_080cc930: @ 0x080CC930
-	bx lr
-	.align 2, 0
-
-	thumb_func_start FUN_080cc934
-FUN_080cc934: @ 0x080CC934
-	push {r4, lr}
-	adds r4, r0, #0
-	adds r0, #0x8c
-	ldr r0, [r0]
-	movs r1, #8
-	ands r0, r1
-	cmp r0, #0
-	beq _080CC960
-	adds r0, r4, #0
-	adds r0, #0x97
-	ldrb r1, [r0]
-	movs r0, #0xf0
-	ands r0, r1
-	cmp r0, #0x30
-	bne _080CC960
-	movs r0, #0x40
-	bl PlaySound
-	movs r1, #0
-	movs r0, #4
-	strb r0, [r4, #0xd]
-	strb r1, [r4, #0xe]
-_080CC960:
-	pop {r4}
-	pop {r0}
-	bx r0
-	.align 2, 0
-
-	thumb_func_start FUN_080cc968
-FUN_080cc968: @ 0x080CC968
-	push {r4, r5, lr}
-	adds r4, r0, #0
-	ldrb r0, [r4, #0xe]
-	cmp r0, #0
-	beq _080CC978
-	cmp r0, #1
-	beq _080CC996
-	b _080CC9F2
-_080CC978:
-	ldr r0, [r4, #0x54]
-	str r0, [r4, #0x64]
-	adds r0, r4, #0
-	adds r0, #0x74
-	ldr r1, _080CC9F8 @ =0x0836FFAC
-	bl SetDDP
-	movs r1, #0xe4
-	lsls r1, r1, #6
-	adds r0, r4, #0
-	bl SetMotion
-	ldrb r0, [r4, #0xe]
-	adds r0, #1
-	strb r0, [r4, #0xe]
-_080CC996:
-	ldr r0, _080CC9FC @ =gOverworld
-	ldr r1, _080CCA00 @ =0x0002D02C
-	adds r0, r0, r1
-	ldrh r0, [r0]
-	ldrb r2, [r4, #0x10]
-	movs r1, #3
-	ands r2, r1
-	lsls r1, r2, #4
-	adds r1, r1, r2
-	lsls r1, r1, #2
-	subs r1, r1, r2
-	subs r0, r0, r1
-	adds r0, #1
-	movs r1, #0x86
-	lsls r1, r1, #1
-	bl __modsi3
-	adds r5, r0, #0
-	cmp r5, #0xec
-	ble _080CC9E2
-	adds r0, r4, #0
-	adds r0, #0xc0
-	ldr r2, [r0]
-	ldr r0, _080CCA04 @ =0xFFFFFE00
-	adds r2, r2, r0
-	ldr r3, _080CCA08 @ =RNG_0202f388
-	ldr r1, [r3]
-	ldr r0, _080CCA0C @ =0x000343FD
-	muls r0, r1, r0
-	ldr r1, _080CCA10 @ =0x00269EC3
-	adds r0, r0, r1
-	lsls r0, r0, #1
-	lsrs r1, r0, #1
-	str r1, [r3]
-	lsls r0, r0, #5
-	lsrs r0, r0, #0x16
-	adds r2, r2, r0
-	str r2, [r4, #0x54]
-_080CC9E2:
-	cmp r5, #0
-	bne _080CC9EC
-	movs r0, #1
-	strb r0, [r4, #0xd]
-	strb r5, [r4, #0xe]
-_080CC9EC:
-	adds r0, r4, #0
-	bl UpdateEntityAnim
-_080CC9F2:
-	pop {r4, r5}
-	pop {r0}
-	bx r0
-	.align 2, 0
-_080CC9F8: .4byte 0x0836FFAC
-_080CC9FC: .4byte gOverworld
-_080CCA00: .4byte 0x0002D02C
-_080CCA04: .4byte 0xFFFFFE00
-_080CCA08: .4byte RNG_0202f388
-_080CCA0C: .4byte 0x000343FD
-_080CCA10: .4byte 0x00269EC3
-
 	thumb_func_start FUN_080cca14
 FUN_080cca14: @ 0x080CCA14
 	push {r4, r5, lr}
@@ -327,7 +179,7 @@ _080CCB60:
 	movs r0, #8
 	orrs r0, r1
 	strb r0, [r4, #0xb]
-	ldr r0, _080CCC00 @ =0x0836FFDC
+	ldr r0, _080CCC00 @ =sSize
 	str r0, [r4, #0x30]
 	ldr r0, _080CCC04 @ =0x00000811
 	strh r0, [r4, #0x26]
@@ -404,9 +256,9 @@ _080CCBFA:
 	pop {r0}
 	bx r0
 	.align 2, 0
-_080CCC00: .4byte 0x0836FFDC
+_080CCC00: .4byte sSize
 _080CCC04: .4byte 0x00000811
-_080CCC08: .4byte 0x0836FFAC
+_080CCC08: .4byte sCollisions
 _080CCC0C: .4byte 0xFFFFFE00
 _080CCC10: .4byte RNG_0202f388
 _080CCC14: .4byte 0x000343FD
@@ -428,7 +280,7 @@ _080CCC2E:
 	movs r0, #8
 	orrs r0, r1
 	strb r0, [r4, #0xb]
-	ldr r0, _080CCC98 @ =0x0836FFDC
+	ldr r0, _080CCC98 @ =sSize
 	str r0, [r4, #0x30]
 	ldr r0, _080CCC9C @ =0x00000801
 	strh r0, [r4, #0x26]
@@ -476,9 +328,9 @@ _080CCC90:
 	pop {r0}
 	bx r0
 	.align 2, 0
-_080CCC98: .4byte 0x0836FFDC
+_080CCC98: .4byte sSize
 _080CCC9C: .4byte 0x00000801
-_080CCCA0: .4byte 0x0836FFC4
+_080CCCA0: .4byte sCollisions+(24*1)
 
 	thumb_func_start FUN_080ccca4
 FUN_080ccca4: @ 0x080CCCA4

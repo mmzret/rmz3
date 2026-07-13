@@ -39,9 +39,18 @@
 #define BG_MAP_41 41
 #define BG_MAP_42 42
 
-#define BG_CODENAME 43
+#define BG_CODENAME 43  // tiledata
+#define BG_UNK_43 43    // tilemap
+#define BG_UNK_44 44
+#define BG_UNK_45 45
+#define BG_UNK_46 46
 #define BG_UNK_47 47
 #define BG_UNK_55 55
+#define BG_UNK_56 56
+#define BG_UNK_57 57
+#define BG_UNK_58 58
+#define BG_UNK_59 59
+#define BG_UNK_60 60
 #define BG_UNK_61 61
 #define BG_UNK_66 66
 #define BG_UNK_67 67

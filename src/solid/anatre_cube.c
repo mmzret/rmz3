@@ -75,11 +75,9 @@ static void Solid47_Die(struct Solid* p) {
 // --------------------------------------------
 
 static void FUN_080dec04(struct Solid* p) {
-  Coords32* d;
   (p->s).flags |= FLIPABLE;
   (p->s).coord.y = FUN_08009f6c((p->s).coord.x, (p->s).coord.y) - (PIXEL(32) - 1);
-  d = &(p->s).d;
-  d->x = d->y = 0;
+  (&(p->s).d)->x = (&(p->s).d)->y = 0;
   SET_SOLID_ROUTINE(p, ENTITY_UPDATE);
 }
 

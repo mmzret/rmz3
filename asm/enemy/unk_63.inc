@@ -137,12 +137,12 @@ _08094D6A:
 	beq _08094D8C
 	adds r0, r4, #0
 	adds r0, #0x74
-	ldr r1, _08094D88 @ =0x08369EFC
+	ldr r1, _08094D88 @ =sCollisions
 	bl SetDDP
 	b _08094D96
 	.align 2, 0
 _08094D84: .4byte pZero2
-_08094D88: .4byte 0x08369EFC
+_08094D88: .4byte sCollisions
 _08094D8C:
 	adds r0, r4, #0
 	adds r0, #0x74
@@ -204,5 +204,5 @@ _08094DFC:
 	pop {r0}
 	bx r0
 	.align 2, 0
-_08094E04: .4byte 0x08369F14
+_08094E04: .4byte sCollisions+(24*1)
 _08094E08: .4byte gEnemyFnTable

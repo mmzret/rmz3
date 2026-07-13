@@ -67,7 +67,7 @@ static const struct Collision sCollisions[];
 static void FUN_080a84c4(Object* p) {
   struct Entity* q = (p->s).unk_28;
   SET_PROJECTILE_ROUTINE(p, ENTITY_UPDATE);
-  InitNonAffineMotion(&p->s);
+  EnableSpriteAnimation_Normal(p);
   (p->s).flags |= DISPLAY;
   (p->s).flags |= FLIPABLE;
   SetSpriteAnimation(p, MOTION(SM093_COPYX_NORMAL_SHOT, 0));
@@ -88,7 +88,7 @@ static void FUN_080a84c4(Object* p) {
 static void FUN_080a85a0(Object* p) {
   struct Entity* q = (p->s).unk_28;
   SET_PROJECTILE_ROUTINE(p, ENTITY_UPDATE);
-  InitNonAffineMotion(&p->s);
+  EnableSpriteAnimation_Normal(p);
   (p->s).flags |= DISPLAY;
   (p->s).flags |= FLIPABLE;
   SetSpriteAnimation(p, MOTION(SM093_COPYX_NORMAL_SHOT, 1));

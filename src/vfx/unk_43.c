@@ -42,7 +42,7 @@ static void VFX43_Init(struct Entity* p) {
   p->mode[1] = sInitModes[p->work[0]];
   p->flags |= FLIPABLE;
   p->flags |= DISPLAY;
-  InitNonAffineMotion(p);
+  EnableSpriteAnimation_Normal(p);
   VFX43_Update((void*)p);
 }
 

@@ -39,7 +39,7 @@ static void Solid23_Init(struct Solid* p) {
   (p->s).mode[1] = sInitMode[(p->s).work[0]];
   (p->s).flags |= FLIPABLE;
   (p->s).flags |= DISPLAY;
-  InitNonAffineMotion(&p->s);
+  EnableSpriteAnimation_Normal(p);
   INIT_BODY(p, &Collision_ARRAY_08370ea8[0], 1, onCollision);
   (p->s).coord.y = gOverworld.sea;
   Solid23_Update(p);

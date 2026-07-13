@@ -28,7 +28,7 @@ static struct Entity* unused_CreateGhost15(u8 n, Coords32* c) {
     INIT_VFX_ROUTINE(p, VFX_EMOTION_BUBBLE);
     (p->coord).x = c->x, (p->coord).y = c->y;
     p->work[0] = 0;
-    InitNonAffineMotion(p);
+    EnableSpriteAnimation_Normal(p);
     SetSpriteAnimation(p, sMotions[n]);
   }
   return p;
@@ -42,7 +42,7 @@ struct Entity* CreateEmotionBubble(u8 kind, Coords32* target, Coords32* offset) 
     p->unk_28 = (void*)target;
     (p->unk_coord).x = offset->x, (p->unk_coord).y = offset->y;
     p->work[0] = 1;
-    InitNonAffineMotion(p);
+    EnableSpriteAnimation_Normal(p);
     SetSpriteAnimation(p, sMotions[kind]);
     SET_XFLIP(p, (offset->x < 0));
   }

@@ -43,6 +43,7 @@
 struct Collision;
 struct Body;
 
+// 基本的に最初の Body しか使わない (SharksealX_OnCollision が 2個目の引数を使っている)
 typedef void (*BodyFunc)(struct Body*, Coords32*, Coords32*);
 
 struct Body {

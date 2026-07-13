@@ -54,7 +54,7 @@ _080019B6:
 	bl FlushWinRegister
 	bl FlushMOSAIC
 	bl transferData
-	bl FUN_080e98ec
+	bl LoadGlyphTiles
 	bl FlushPalette
 	bl doGraphicTransferTasks
 	ldr r0, _08001A84 @ =gSramState

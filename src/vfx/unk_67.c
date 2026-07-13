@@ -33,7 +33,7 @@ struct Entity* FUN_080c4914(Coords32* c, u8 kind, motion_t m, u32 val) {
 // --------------------------------------------
 
 static void Ghost67_Init(struct Entity* p) {
-  InitNonAffineMotion(p);
+  EnableSpriteAnimation_Normal(p);
   p->flags |= DISPLAY;
   p->flags |= FLIPABLE;
   if (p->work[0] == 0) {

@@ -49,7 +49,7 @@ struct VFX* CreateRipple(struct Zero* z, bool8 outOfSea) {
 
 static void Ripple_Init(struct VFX* p) {
   struct Zero* z = (struct Zero*)(p->s).unk_28;
-  InitNonAffineMotion(&p->s);
+  EnableSpriteAnimation_Normal(p);
   (p->s).flags |= FLIPABLE;
   SetSpriteAnimation(p, MOTION(SM000_BATTLE_EFFECT, 0x13));
   (p->s).flags |= DISPLAY;

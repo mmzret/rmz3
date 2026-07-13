@@ -53,8 +53,8 @@ static_assert(sizeof(struct Entity) == 116);
 // 当たり判定のある Entity
 typedef struct CollidableEntity {
   struct Entity s;
-  struct Body body;
-} Object;  // 180 bytes (0xB4..)
+  struct Body body;  // 0x74
+} Object;            // 180 bytes (0xB4..)
 static_assert(sizeof(struct CollidableEntity) == 180);
 
 #define OBJECT_HDR \

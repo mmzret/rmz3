@@ -478,7 +478,7 @@ NON_MATCH u16 FUN_080d0aa0(struct Entity* p, motion_t m, u8 r2) {
       break;
     }
     case 4: {
-      InitNonAffineMotion(p);
+      EnableSpriteAnimation_Normal(p);
       if (r2 != 0) {
         ResetDynamicMotion(p);
       }
@@ -510,7 +510,7 @@ NON_MATCH u16 FUN_080d0aa0(struct Entity* p, motion_t m, u8 r2) {
 static void initStaticActor(struct Solid* p) {
   (p->s).flags |= DISPLAY;
   (p->s).flags |= FLIPABLE;
-  InitNonAffineMotion(&p->s);
+  EnableSpriteAnimation_Normal(p);
   SET_SOLID_ROUTINE(p, ENTITY_UPDATE);
   Actor_Update(p);
 }
@@ -518,7 +518,7 @@ static void initStaticActor(struct Solid* p) {
 static void initDynamicActor(struct Solid* p) {
   (p->s).flags |= DISPLAY;
   (p->s).flags |= FLIPABLE;
-  InitNonAffineMotion(&p->s);
+  EnableSpriteAnimation_Normal(p);
   ResetDynamicMotion(&p->s);
   SET_SOLID_ROUTINE(p, ENTITY_UPDATE);
   Actor_Update(p);

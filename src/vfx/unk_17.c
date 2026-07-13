@@ -246,7 +246,7 @@ static void FUN_080b6a9c(struct VFX* p) {
   bool8 xflip = (((struct Entity*)(p->s).unk_28)->flags & X_FLIP) != 0;
   register u32 idx asm("r5") = (p->s).work[1];
 
-  InitNonAffineMotion(&p->s);
+  EnableSpriteAnimation_Normal(p);
   (p->s).flags |= DISPLAY;
   (p->s).flags |= FLIPABLE;
   SetSpriteAnimation(p, sMotions[idx]);

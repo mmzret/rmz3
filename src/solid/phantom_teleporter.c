@@ -42,7 +42,7 @@ static void PhantomTeleporter_Init(struct Solid* p) {
     SET_SOLID_ROUTINE(p, ENTITY_DISAPPEAR);
     return;
   }
-  InitNonAffineMotion(&p->s);
+  EnableSpriteAnimation_Normal(p);
   (p->s).spr.oam.priority = 1;
   (p->s).flags |= DISPLAY;
   (p->s).flags |= FLIPABLE;

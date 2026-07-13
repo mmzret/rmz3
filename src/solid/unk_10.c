@@ -29,8 +29,6 @@ const SolidRoutine gSolid10Routine = {
 // clang-format on
 
 static void Solid10_Init(struct Solid* p) {
-  Coords32* velocity;
-
   if (GetMetatileAttr((p->s).coord.x, (p->s).coord.y) == 0) {
     (p->s).flags &= ~DISPLAY;
     (p->s).flags &= ~FLIPABLE;
@@ -40,8 +38,7 @@ static void Solid10_Init(struct Solid* p) {
   }
 
   INIT_BODY(p, &sCollisions1[0], 0, NULL);
-  velocity = &(p->s).d;
-  velocity->x = velocity->y = 0;
+  (&(p->s).d)->x = (&(p->s).d)->y = 0;
   (p->s).coord.x += PIXEL(8);
   (p->s).coord.y = FUN_08009f6c((p->s).coord.x, (p->s).coord.y) + 1;
   SET_SOLID_ROUTINE(p, ENTITY_UPDATE);
@@ -57,7 +54,7 @@ static void Solid10_Update(struct Solid* p) {
       INIT_BODY(p, &sCollisions2[0], 0, NULL);
       (p->s).flags |= DISPLAY;
       (p->s).flags |= FLIPABLE;
-      InitNonAffineMotion(&p->s);
+      EnableSpriteAnimation_Normal(p);
       SetSpriteAnimation(p, MOTION(SM068_OLD_RESIDENTIAL_FALL_ROCK, 0) | (p->s).work[0]);
       SET_SOLID_ROUTINE(p, ENTITY_DIE);
       Solid10_Die(p);

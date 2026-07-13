@@ -6,7 +6,7 @@
 #define HEIGHT 14
 #define WIDTH 32
 
-static const struct MetatileShift sMetatileShift;
+static const MetatileShift sMetatileShift;
 
 static void initMissileFactory(Coords32* _ UNUSED);
 static void FUN_0800e460(Coords32* c);
@@ -421,7 +421,7 @@ const struct Stage gMissileFactoryLandscape = {
   conveyor : {-PIXEL(1), PIXEL(1)},
 };
 
-static const struct MetatileShift sMetatileShift = {x : 255, y : 20, block : 135, row : 20};  // 0x0833ece4
+static const MetatileShift sMetatileShift = {x : 255, y : 20, width : 135, height : 20};  // 0x0833ece4
 
 // clang-format off
 const struct Rect Rect_ARRAY_0833ecec[6] = {
@@ -457,25 +457,25 @@ const struct Struct_0833ed1c Struct_0833ed1c_ARRAY_0833ed1c[12] = {
 };
 // clang-format on
 
-static const struct MetatileShift sMetatileShifts1[4] = {
-    {x : 255, y : 50, block : 135, row : 30},
-    {x : 195, y : 70, block : 10, row : 10},
-    {x : 195, y : 80, block : 10, row : 10},
-    {x : 195, y : 90, block : 10, row : 10},
+static const MetatileShift sMetatileShifts1[4] = {
+    {x : 255, y : 50, width : 135, height : 30},
+    {x : 195, y : 70, width : 10, height : 10},
+    {x : 195, y : 80, width : 10, height : 10},
+    {x : 195, y : 90, width : 10, height : 10},
 };
 
-static const struct MetatileShift sMetatileShifts2[4] = {
-    {x : 195, y : 100, block : 10, row : 10},
-    {x : 195, y : 100, block : 10, row : 10},
-    {x : 195, y : 110, block : 10, row : 10},
-    {x : 195, y : 120, block : 10, row : 10},
+static const MetatileShift sMetatileShifts2[4] = {
+    {x : 195, y : 100, width : 10, height : 10},
+    {x : 195, y : 100, width : 10, height : 10},
+    {x : 195, y : 110, width : 10, height : 10},
+    {x : 195, y : 120, width : 10, height : 10},
 };
 
-static const struct MetatileShift sMetatileShifts3[4] = {
-    {x : 195, y : 100, block : 5, row : 10},
-    {x : 195, y : 100, block : 5, row : 10},
-    {x : 195, y : 110, block : 5, row : 10},
-    {x : 195, y : 120, block : 5, row : 10},
+static const MetatileShift sMetatileShifts3[4] = {
+    {x : 195, y : 100, width : 5, height : 10},
+    {x : 195, y : 100, width : 5, height : 10},
+    {x : 195, y : 110, width : 5, height : 10},
+    {x : 195, y : 120, width : 5, height : 10},
 };
 
 #undef HEIGHT

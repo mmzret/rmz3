@@ -28,17 +28,14 @@ const SolidRoutine gSolid33Routine = {
 static void Solid33_Init(Object* p) {
   (p->s).flags |= DISPLAY;
   (p->s).flags |= FLIPABLE;
-  InitNonAffineMotion(&p->s);
+  EnableSpriteAnimation_Normal(p);
   SetSpriteAnimation(p, MOTION(SM125_WEILLABO_PLATFORM, 0));
   UpdateSpriteAnimation(p);
   INIT_BODY(p, &sCollisions[0], 0, NULL);
   (p->s).flags2 |= ENTI_PHYSICS;
   (p->s).size = &sSize;
   (p->s).physicsAttr = (MTATTR_CONVEYOR1 | SHAPE_BLOCK);
-  {
-    Coords32* d = &(p->s).d;
-    d->x = d->y = 0;
-  }
+  (&(p->s).d)->x = (&(p->s).d)->y = 0;
   (p->s).coord.x += PIXEL(8);
   SET_SOLID_ROUTINE(p, ENTITY_UPDATE);
   Solid33_Update(p);

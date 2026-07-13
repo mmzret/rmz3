@@ -58,7 +58,7 @@ struct Entity* FUN_0809d904(Coords32* c, s32 unk_b8, s32 lifetime, struct Entity
 // --------------------------------------------
 
 static void Projectile5_Init(Object* p) {
-  InitNonAffineMotion(&p->s);
+  EnableSpriteAnimation_Normal(p);
   (p->s).flags |= DISPLAY;
   (p->s).flags |= FLIPABLE;
   INIT_BODY(p, sCollisions, 1, NULL);

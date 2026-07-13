@@ -115,7 +115,7 @@ static void rBase_080cfd4c(struct ElevatorObject* p) {
   if (p->skin == ELEVATOR_WOOD) LOAD_STATIC_GRAPHIC(SM137_ELEVATOR_WOOD);
   if (p->skin == ELEVATOR_MMX) LOAD_STATIC_GRAPHIC(SM138_ELEVATOR_MMX);
 
-  InitNonAffineMotion(&p->s);
+  EnableSpriteAnimation_Normal(p);
   (p->s).flags |= DISPLAY;
   (p->s).flags |= FLIPABLE;
   SET_XFLIP(p, FALSE);

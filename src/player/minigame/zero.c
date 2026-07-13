@@ -39,7 +39,7 @@ struct Entity* CreateZeroMini(void* q, Coords32* c, u8 n) {
 
 static void ZeroMini_Init(struct Zero* z) {
   Coords32* c;
-  InitNonAffineMotion(&z->s);
+  EnableSpriteAnimation_Normal(z);
   ResetDynamicMotion(&z->s);
   (z->s).flags |= DISPLAY;
   (z->s).flags |= FLIPABLE;

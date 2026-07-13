@@ -30,7 +30,7 @@ static void Container_Init(struct Solid* p) {
   const s32 n = SM226_CRASH_CONTAINER + (p->s).work[0];
   LOAD_STATIC_GRAPHIC(n);
 
-  InitNonAffineMotion(&p->s);
+  EnableSpriteAnimation_Normal(p);
   (p->s).flags |= DISPLAY;
   (p->s).flags |= FLIPABLE;
   SetSpriteAnimation(p, MOTION(SM226_CRASH_CONTAINER, 0));

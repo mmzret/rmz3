@@ -10,15 +10,18 @@
 
 #define MAX_STRING_COUNT 96  // 文字数ではなく文字列の数
 
-// Glyph は gFontTall, gFontBig の1文字
-typedef u16 Glyph;  // bit0..7: 文字コード (charmap.txt), bit8: ???, bit9: 赤, bit10: gFontBig を使用する, bit11: ???, bit12..15: パレットID
+// GlyphNode.tileID
+#define GLYPH_TILE_NOT_LOADED (1 << 15)  // GlyphNode.tileID の bit15 が1のとき、まだグリフのタイルデータがVRAMにロードされていない
+
+/// @brief bit0..7: 文字コード (charmap.txt), bit8: ???, bit9: 赤, bit10: gFontBig, bit11: gFontBigの右半分か左半分か, bit12..15: パレットID
+typedef u16 Glyph;
 
 // Glyph allocation entry
-// Glyph は gFontTall, gFontBig の1文字のこと (gFontJIS は動的割り当てしないのでここでは扱わない)
+// Glyph は gFontTall の1文字, gFontBig の1/2文字 (gFontJIS は動的割り当てしないのでここでは扱わない)
 typedef struct GlyphNode {
   struct GlyphNode* next;  // 次のグリフ, 文字列の次の文字ではなく、アロケーションリストの次を指していることに注意
   Glyph c;                 // see Glyph
-  u16 tileID;              // bit0..11: タイルID, bit12..14: 不使用?, bit15: 1 ならこのNodeのグリフがまだVRAMにロードされていない (FUN_080e98ec でロードされる)
+  u16 tileID;              // bit0..11: タイルID, bit12..14: 不使用(0), bit15: 1 ならこのNodeのグリフがまだVRAMにロードされていない
 } GlyphNode;
 static_assert(sizeof(GlyphNode) == 8);
 
@@ -48,15 +51,13 @@ static_assert(sizeof(TextPrinter) == 1440);
 extern TextPrinter gTextPrinter;
 extern char_t gTerminateCharCode;
 
-extern const u8 gFontJIS[][TILE_SIZE_4BPP];
-
 void LoadAsciiBold(void);
 void ResetCharTiles(void);
 void LoadJISKana(void);
 void FUN_080e981c(void);
 void FUN_080e9840(void);
 void PrintAllStrings(void);
-void FUN_080e98ec(void);
+void LoadGlyphTiles(void);
 void PrintString(const char_t* s, u32 x, u32 y);
 s16 getStringLength(char_t* s);
 void text_080e9b40(const char_t* s, u32 x, u32 y, u16 count);

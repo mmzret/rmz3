@@ -37,7 +37,7 @@ struct VFX* CreateChargeEffect(struct Zero* z, struct VFX* v, u8 r2) {
 // ------------------------------------------------------------------------------------------------------------------------------------
 
 static void ChargeEffect_Init(struct Entity* p) {
-  InitNonAffineMotion(p);
+  EnableSpriteAnimation_Normal(p);
   p->flags |= FLIPABLE;
   SET_XFLIP(p, FALSE);
   SET_VFX_ROUTINE(p, ENTITY_UPDATE);

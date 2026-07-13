@@ -56,16 +56,13 @@ static struct Entity* unused_FUN_080924a8(struct Entity* e, u8 kind) {
 // --------------------------------------------
 
 static void Enemy60_Init(struct OmegaZX_X* p) {
-  InitNonAffineMotion(&p->s);
+  EnableSpriteAnimation_Normal(p);
   ResetDynamicMotion(&p->s);
   SET_XFLIP(p, FALSE);
   (p->s).flags &= ~DISPLAY;
   (p->s).flags |= FLIPABLE;
   INIT_BODY(p, sCollisions, 1, onCollision);
-  {
-    Coords32* d = &(p->s).d;
-    d->x = d->y = 0;
-  }
+  (&(p->s).d)->x = (&(p->s).d)->y = 0;
   SET_ENEMY_ROUTINE(p, ENTITY_UPDATE);
   (p->s).mode[1] = 0, (p->s).mode[2] = 0, (p->s).mode[3] = 0;
   (p->c).x = 0, (p->c).y = 0;

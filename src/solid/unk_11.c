@@ -38,10 +38,7 @@ static void Solid11_Init(struct Solid* p) {
     return;
   }
   INIT_BODY(p, &sCollision, 0, NULL);
-  {
-    Coords32* d = &(p->s).d;
-    d->x = d->y = 0;
-  }
+  (&(p->s).d)->x = (&(p->s).d)->y = 0;
   (p->s).coord.x += PIXEL(8);
   (p->s).coord.y += PIXEL(8);
   SET_SOLID_ROUTINE(p, ENTITY_UPDATE);
@@ -54,7 +51,7 @@ static void Solid11_Update(struct Solid* p) {
       EXIT_BODY(p);
       (p->s).flags |= DISPLAY;
       (p->s).flags |= FLIPABLE;
-      InitNonAffineMotion(&p->s);
+      EnableSpriteAnimation_Normal(p);
       SetSpriteAnimation(p, MOTION(SM072_UNK, 0));
       SET_SOLID_ROUTINE(p, ENTITY_DIE);
       Solid11_Die(p);

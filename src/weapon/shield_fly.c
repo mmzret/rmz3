@@ -130,7 +130,7 @@ struct Entity* CreateWeaponShieldFly(struct Zero* z, u8 r1) {
 
 static void ShieldFly_Init(struct WeaponCommon* p) {
   SET_WEAPON_ROUTINE(p, ENTITY_UPDATE);
-  InitNonAffineMotion(&p->s);
+  EnableSpriteAnimation_Normal(p);
   ResetDynamicMotion(&p->s);
   (p->s).flags |= DISPLAY;
   (p->s).flags |= FLIPABLE;

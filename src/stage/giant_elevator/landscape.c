@@ -159,7 +159,7 @@ static const StageLayerRoutine sLayerRoutine[9] = {
 
 INCASM("asm/stage_gfx/giant_elevator.inc");
 
-static const struct MetatileShift sMetatileShift2;
+static const MetatileShift sMetatileShift2;
 
 void FUN_08014b04(void) {
   ShiftMetatile(0xB4, 0x72, &sMetatileShift2);
@@ -322,5 +322,5 @@ const struct Stage gGiantElevatorLandscape = {
   behavior : sScreenBehavior,
 };
 
-static const struct MetatileShift sMetatileShift1 = {x : 247, y : 130, block : 8, row : 30};  // 0x083458B4
-static const struct MetatileShift sMetatileShift2 = {x : 179, y : 114, block : 1, row : 4};   // 0x083458BC
+static const MetatileShift sMetatileShift1 = {x : 247, y : 130, width : 8, height : 30};  // 0x083458B4
+static const MetatileShift sMetatileShift2 = {x : 179, y : 114, width : 1, height : 4};   // 0x083458BC

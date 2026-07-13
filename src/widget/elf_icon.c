@@ -35,7 +35,7 @@ static void ElfIcon_Init(struct Widget* w) {
   SET_WIDGET_ROUTINE(w, ENTITY_UPDATE);
   wStaticGraphicTilenums[SM143_CYBERELF_ICON] = 863;
   wStaticMotionPalIDs[SM143_CYBERELF_ICON] = 11;
-  InitNonAffineMotion(&w->s);
+  EnableSpriteAnimation_Normal(w);
   (w->s).flags |= FLIPABLE;
   SetSpriteAnimation(w, MOTION(SM143_CYBERELF_ICON, 0));
   (w->s).spr.xflip = FALSE;

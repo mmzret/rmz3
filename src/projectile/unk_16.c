@@ -33,7 +33,7 @@ struct Entity* FUN_080a244c(Coords32* c1, Coords32* c2, bool8 isDirRight) {
 static const struct Collision sCollisions[];
 
 static void Projectile16_Init(Object* p) {
-  InitNonAffineMotion(&p->s);
+  EnableSpriteAnimation_Normal(p);
   (p->s).flags |= DISPLAY;
   (p->s).flags |= FLIPABLE;
   INIT_BODY(p, &sCollisions[0], 2, NULL);

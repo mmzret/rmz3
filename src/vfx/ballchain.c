@@ -44,15 +44,11 @@ struct Entity* CreateBallChain(Coords32* c, struct Entity* e, u8 n) {
 // --------------------------------------------
 
 static void BallChain_Init(struct BallChain* p) {
-  InitNonAffineMotion(&p->s);
+  EnableSpriteAnimation_Normal(p);
   (p->s).flags |= DISPLAY;
   (p->s).flags |= FLIPABLE;
   (p->s).renderPrio = 24;
-  {
-    // ???
-    Coords32* c = &(p->s).d;
-    (p->s).d.y = c->y = 0;  // 1つ は d.x の間違いじゃね？
-  }
+  (&(p->s).d)->y = (&(p->s).d)->y = 0;  // 多分 d.x を d.y と書き間違えている
   p->unk_74 = 0;
   if ((p->s).work[1] < 7) {
     Coords32 c = (p->s).coord;

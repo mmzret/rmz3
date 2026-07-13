@@ -55,7 +55,7 @@ void FUN_0809130c(struct Entity* e, u8 idx) {
       (p->coord).x = (e->coord).x + x;
     }
     p->unk_28 = e;
-    InitNonAffineMotion(p);
+    EnableSpriteAnimation_Normal(p);
     ResetDynamicMotion(p);
     (p->spr).sprites = (*(void**)&e->kind);
     {
@@ -362,7 +362,7 @@ NON_MATCH static void FUN_080922e0(struct Entity* p) {
 #if MODERN
   switch (p->mode[2]) {
     case 0: {
-      InitNonAffineMotion(p);
+      EnableSpriteAnimation_Normal(p);
       SET_XFLIP(p, p->work[3]);
       SetSpriteAnimation(p, MOTION(SM019_PANTHEON_HUNTER, 3));  // 分身のハズレ枠
       p->work[2] = 18;

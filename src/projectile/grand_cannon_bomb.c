@@ -38,7 +38,7 @@ static void GrandCannonBomb_Init(struct Projectile* p) {
   (p->s).mode[1] = 0;
   (p->s).flags |= FLIPABLE;
   (p->s).flags |= DISPLAY;
-  InitNonAffineMotion(&p->s);
+  EnableSpriteAnimation_Normal(p);
   INIT_BODY(p, &sCollision, 1, NULL);
   GrandCannonBomb_Update(p);
 }

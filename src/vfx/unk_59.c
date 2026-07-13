@@ -44,7 +44,7 @@ struct Entity* FUN_080c273c(Coords32* c, u8 kind, motion_t m, u32 val) {
 // --------------------------------------------
 
 static void VFX59_Init(struct Entity* p) {
-  InitNonAffineMotion(p);
+  EnableSpriteAnimation_Normal(p);
   p->flags |= DISPLAY;
   p->flags |= FLIPABLE;
   if (p->work[0] == 0) {
@@ -111,4 +111,4 @@ const s32* const PTR_s32_ARRAY_0836f37c[3] = {
     &s32_ARRAY_0836f31c[0],
     &s32_ARRAY_0836f31c[8],
     &s32_ARRAY_0836f31c[16],
-};
+};  // 0x0836F37C

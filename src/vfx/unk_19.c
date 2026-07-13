@@ -63,7 +63,7 @@ static void Ghost19_Init(struct VFX* p) {
   (p->s).mode[1] = u8_ARRAY_0836e8a8[(p->s).work[0]];
   (p->s).flags |= FLIPABLE;
   (p->s).flags |= DISPLAY;
-  InitNonAffineMotion(&p->s);
+  EnableSpriteAnimation_Normal(p);
   if ((p->s).work[0] == 1) {
     ResetDynamicMotion(&p->s);
   }

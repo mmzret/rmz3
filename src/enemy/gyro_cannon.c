@@ -53,7 +53,7 @@ static void initGyroCannonPropeller(struct GyroCannon* p);
 
 static void GyroCannon_Init(struct Enemy* p) {
   SET_ENEMY_ROUTINE(p, ENTITY_UPDATE);
-  InitNonAffineMotion(&p->s);
+  EnableSpriteAnimation_Normal(p);
   (p->s).flags |= DISPLAY;
   (p->s).flags |= FLIPABLE;
   if ((p->s).work[0] != 0) {  // propeller

@@ -223,7 +223,7 @@ static void FUN_080af250(struct Projectile* p) {
   INIT_BODY(p, &sCollisions[4], 0, NULL);
   SET_PROJECTILE_ROUTINE(p, ENTITY_UPDATE);
   (p->s).mode[1] = 0;
-  InitNonAffineMotion(&p->s);
+  EnableSpriteAnimation_Normal(p);
   (p->s).flags |= DISPLAY;
   (p->s).flags |= FLIPABLE;
   PhantomProjectile_Update(p);

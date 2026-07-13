@@ -65,14 +65,14 @@ void FUN_080b8f68(s32 x, s32 y, u8 frame) {
 
 // --------------------------------------------
 
-static void VFX24_Init(struct VFX* vfx) {
-  SET_VFX_ROUTINE(vfx, ENTITY_UPDATE);
-  (vfx->s).mode[1] = sInitModes[(vfx->s).work[0]];
-  (vfx->s).flags |= FLIPABLE;
-  (vfx->s).flags |= DISPLAY;
-  InitNonAffineMotion(&vfx->s);
-  (vfx->s).palID = (vfx->s).work[2];
-  VFX24_Update(vfx);
+static void VFX24_Init(struct VFX* p) {
+  SET_VFX_ROUTINE(p, ENTITY_UPDATE);
+  (p->s).mode[1] = sInitModes[(p->s).work[0]];
+  (p->s).flags |= FLIPABLE;
+  (p->s).flags |= DISPLAY;
+  EnableSpriteAnimation_Normal(p);
+  (p->s).palID = (p->s).work[2];
+  VFX24_Update(p);
 }
 
 // --------------------------------------------

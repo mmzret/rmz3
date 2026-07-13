@@ -37,9 +37,9 @@ static void Flopper_Init(struct FlopperObject* p) {
   INIT_BODY(p, &sCollisions[0], 1, Flopper_onCollision);
   (p->s).flags |= FLIPABLE;
   (p->s).mode[1] = (p->s).work[0];
-  InitNonAffineMotion(&p->s);
+  EnableSpriteAnimation_Normal(p);
   (p->s).flags |= DISPLAY;
-  SetSpriteAnimation(p, MOTION(SM022_FLOPPER, 0x00));
+  SetSpriteAnimation(p, MOTION(SM022_FLOPPER, 0));
   Flopper_Update((void*)p);
 }
 

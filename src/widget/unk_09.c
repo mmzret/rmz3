@@ -38,7 +38,7 @@ static void Widget9_Init(struct Widget* w) {
       FUN_080e7a9c,
   };
   SET_WIDGET_ROUTINE(w, ENTITY_UPDATE);
-  InitNonAffineMotion(&w->s);
+  EnableSpriteAnimation_Normal(w);
   (w->s).flags |= DISPLAY;
   (w->s).flags |= FLIPABLE;
   (w->s).spr.xflip = FALSE;

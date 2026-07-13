@@ -79,7 +79,7 @@ static void BurstShot_Init(struct Weapon* p) {
   struct Entity* parent = (struct Entity*)(p->s).unk_2c;
 
   SET_WEAPON_ROUTINE(p, ENTITY_UPDATE);
-  InitNonAffineMotion(&p->s);
+  EnableSpriteAnimation_Normal(p);
   ResetDynamicMotion(&p->s);
   (p->s).flags |= DISPLAY;
   (p->s).flags |= FLIPABLE;

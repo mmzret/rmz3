@@ -41,7 +41,7 @@ static const EnemyFunc sUpdates1[4] = {
     nop_0806e284,
     nop_0806e284,
     nop_0806e284,
-};
+};  // 0x083667A4
 
 void FUN_0806e288(struct Enemy* p);
 static void FUN_0806e518(struct Entity* p);
@@ -53,7 +53,7 @@ static const EnemyFunc sUpdates2[4] = {
     (void*)FUN_0806e518,
     (void*)FUN_0806e3b0,
     (void*)FUN_0806e4bc,
-};
+};  // 0x083667B4
 
 static bool8 FUN_0806dfa4(struct Entity* p) {
   switch (p->mode[3]) {
@@ -101,8 +101,6 @@ static void FUN_0806e518(struct Entity* p) {
     }
   }
 }
-
-// --------------------------------------------
 
 // 0x083667c4
 static const struct Collision sCollisions[3] = {

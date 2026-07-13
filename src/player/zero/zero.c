@@ -33,7 +33,7 @@ NON_MATCH static void Zero_Init(struct Zero* z) {
   struct Zero_b4* b4;
 
   SET_PLAYER_ROUTINE(z, ENTITY_UPDATE);
-  InitNonAffineMotion(&z->s);
+  EnableSpriteAnimation_Normal(z);
   ResetDynamicMotion(&z->s);
   (z->s).flags |= DISPLAY;
   (z->s).flags |= FLIPABLE;

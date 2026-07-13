@@ -44,7 +44,7 @@ struct VFX* CreateSlashedEnemy(Coords32* c, const struct SlashedEnemy* data, u8 
 
 static void SlashedEnemy_Init(struct Ghost16* p) {
   const struct SlashedEnemy* data = p->data;
-  InitNonAffineMotion(&p->s);
+  EnableSpriteAnimation_Normal(p);
   (p->s).flags |= DISPLAY;
   (p->s).flags |= FLIPABLE;
   SetSpriteAnimation(p, data->m);

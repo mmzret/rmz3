@@ -158,7 +158,7 @@ static void Ghost81_Init(struct VFX* p) {
   (p->s).mode[1] = u8_ARRAY_0836fa3c[(p->s).work[0]];
   (p->s).flags |= FLIPABLE;
   (p->s).flags |= DISPLAY;
-  InitNonAffineMotion(&p->s);
+  EnableSpriteAnimation_Normal(p);
   Ghost81_Update(p);
 }
 

@@ -30,7 +30,7 @@ struct Entity* CreateGhost30(struct Entity* e, Coords32* c, u8 n, u32 m) {
 }
 
 static void Ghost30_Init(struct Entity* p) {
-  InitNonAffineMotion(p);
+  EnableSpriteAnimation_Normal(p);
   p->flags |= DISPLAY;
   p->flags |= FLIPABLE;
   ResetDynamicMotion(p);

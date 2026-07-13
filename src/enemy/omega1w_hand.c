@@ -50,10 +50,7 @@ static void OmegaWhiteHand_Init(struct OmegaWhiteHandObject* p) {
   (p->s).flags &= ~DISPLAY;
   (p->s).flags |= FLIPABLE;
   INIT_BODY(p, sCollisions, 1, Omega1wHand_OnCollision);
-  {
-    Coords32* d = &(p->s).d;
-    d->x = d->y = 0;
-  }
+  (&(p->s).d)->x = (&(p->s).d)->y = 0;
   SET_ENEMY_ROUTINE(p, ENTITY_UPDATE);
   (p->s).mode[1] = 0, (p->s).mode[2] = 0, (p->s).mode[3] = 1;
   if ((p->s).work[0] == 0) {  // 右手

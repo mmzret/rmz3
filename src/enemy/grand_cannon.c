@@ -150,7 +150,7 @@ static void GrandCannon_Init(struct GrandCannon* p) {
   (p->s).mode[1] = sInitModes[(p->s).work[0]];
   (p->s).flags |= FLIPABLE;
   (p->s).flags |= DISPLAY;
-  InitNonAffineMotion(&p->s);
+  EnableSpriteAnimation_Normal(p);
 
   if ((p->s).work[0] == GRAND_CANNON_TURRET) {
     (p->s).coord.y = FUN_08009f6c((p->s).coord.x, (p->s).coord.y);

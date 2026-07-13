@@ -44,7 +44,7 @@ static void LavaRiverPlatform_Init(struct Solid8Object* p) {
   (p->s).mode[1] = sInitMode[(p->s).work[0]];
   (p->s).flags |= FLIPABLE;
   (p->s).flags |= DISPLAY;
-  InitNonAffineMotion(&p->s);
+  EnableSpriteAnimation_Normal(p);
   (p->s).flags2 |= ENTI_PHYSICS;
   (p->s).size = (struct Rect*)&sSize;
   (p->s).physicsAttr = MTATTR_CONVEYOR1 | SHAPE_BLOCK;

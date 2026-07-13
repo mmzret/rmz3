@@ -3,13 +3,15 @@
 #include "palette_animation.h"
 #include "solid.h"
 
+extern const MetatileShift gMetatileShift_080fecc4;
+
+static const s32 sOceanSeaLevels[5];
+static const Coords32 sSeaLevelButtonCoords[4];
+
 static void initOcean(Coords32* _ UNUSED);
 static void ocean_0800cbe8(Coords32* _ UNUSED);
 static void ocean_0800cfac(Coords32* _ UNUSED);
 static void exitOcean(Coords32* _ UNUSED);
-
-static const s32 sOceanSeaLevels[5];
-static const Coords32 sSeaLevelButtonCoords[4];
 
 static const StageFunc sStageRoutine[4] = {
     initOcean,
@@ -514,27 +516,295 @@ static void exitOcean(Coords32* _ UNUSED) {
   }
 }
 
-INCASM("asm/stage_gfx/ocean.inc");
+// 0x0800D110
+void ocean_0800d110(struct StageLayer* l, const struct Stage* _ UNUSED) {
+  if (l->phase == 0) {
+    const u16 n = (l->bgIdx << 16) >> 20;
+    BGCNT16(n) = (l->prio | l->screenBase) | BGCNT_CHARBASE(1) | BGCNT_MOSAIC | BGCNT_TXT256x512;
+    RESET_BGOFS(n);
+    CpuFastCopy(BGMAP(BG_UNK_45), SCREEN_ADDR(n), BG_SCREEN_SIZE);
+    CpuFastCopy(BGMAP(BG_UNK_46), SCREEN_ADDR(n) + BG_SCREEN_SIZE, BG_SCREEN_SIZE);
+    gBlendRegBuffer.bldclt = BLDCNT_TGT1_BG2 | BLDCNT_EFFECT_BLEND | (BLDCNT_TGT2_BG0 | BLDCNT_TGT2_BG1 | BLDCNT_TGT2_BG3 | BLDCNT_TGT2_OBJ | BLDCNT_TGT2_BD);  // 0x3B44
+    gBlendRegBuffer.bldalpha = BLDALPHA_BLEND(4, 12);                                                                                                           // 0x0C04
+    (l->work).ocean.frameCounter = 0;
+    l->phase++;
+  }
+  (l->work).ocean.frameCounter++;
+}
 
-void ocean_0800d110(struct StageLayer* l, const struct Stage* stage);
-void FUN_0800d1c8(struct StageLayer* l, const struct Stage* stage);
-void FUN_0800d264(struct StageLayer* l, const struct Stage* stage);
-void ocean_0800d28c(struct StageLayer* l, const struct Stage* stage);
-void ctrlOceanBG3Scroll(struct StageLayer* l, const struct Stage* stage);
-void ocean_0800d488(struct StageLayer* l, const struct Stage* stage);
-void setOceanBGScroll(struct StageLayer* l, const struct Stage* stage);
-void ocean_0800d544(struct StageLayer* l, const struct Stage* stage);
-void ocean_0800d568(struct StageLayer* l, const struct Stage* stage);
+/**
+ * @note LayerUpdate_SunkenLibrary_2 の処理と似ているので多分水面の処理
+ * @note 0x0800D1C8
+ */
+void LayerDraw_Ocean_2(struct StageLayer* l, const struct Stage* _ UNUSED) {
+  u16 n = l->bgIdx;
+  s32 scy = ((l->viewportLeftTopPixel).y - (gOverworld.sea >> 8)) + 5 - (SIN((l->work).ocean.frameCounter) >> 6);
+  if (scy < -180) scy = -180;
+  if (scy < 0) {
+    gWindowRegBuffer.dispcnt |= DISPCNT_WIN1_ON;
+    gWindowRegBuffer.winin[1] = 0xFB;
+    gWindowRegBuffer.winin[2] |= 0x0E;
+    gWindowRegBuffer.winH.half[1] = 0xFF;
+    gWindowRegBuffer.winV.half[1] = (-scy) & 0xFF;
+  } else {
+    gWindowRegBuffer.winV.half[1] = 0;
+  }
+  BGnHOFS(n >> 4) = (l->viewportLeftTopPixel).x;
+  BGnVOFS(n >> 4) = scy;
+}
+
+// 0x0800D264
+void LayerExit_Ocean_2(struct StageLayer* l UNUSED, const struct Stage* _ UNUSED) {
+  gBlendRegBuffer.bldclt = 0;
+  gWindowRegBuffer.dispcnt &= ~DISPCNT_WIN1_ON;
+  gWindowRegBuffer.winin[2] |= 0xE;
+}
+
+// 0x0800D28C
+void LayerUpdate_Ocean_3(struct StageLayer* l, const struct Stage* _ UNUSED) {
+  if (l->phase == 0) {
+    const u16 n = (l->bgIdx << 16) >> 20;
+    BGCNT16(n) = (l->prio | l->screenBase) | BGCNT_CHARBASE(1) | BGCNT_MOSAIC | BGCNT_TXT256x512;  // 0x8044
+    RESET_BGOFS(n);
+    CpuFastCopy(BGMAP(BG_UNK_43), SCREEN_ADDR(n), BG_SCREEN_SIZE);
+    CpuFastCopy(BGMAP(BG_UNK_44), SCREEN_ADDR(n) + BG_SCREEN_SIZE, BG_SCREEN_SIZE);
+    l->phase++;
+  }
+}
+
+NAKED void ctrlOceanBG3Scroll(struct StageLayer* l, const struct Stage* _ UNUSED) {
+  asm(".syntax unified\n\
+	push {r4, r5, r6, r7, lr}\n\
+	mov r7, sl\n\
+	mov r6, sb\n\
+	mov r5, r8\n\
+	push {r5, r6, r7}\n\
+	sub sp, #0xc\n\
+	adds r5, r0, #0\n\
+	movs r6, #0x9f\n\
+	movs r0, #0xa0\n\
+	lsls r0, r0, #2\n\
+	bl Malloc\n\
+	str r0, [sp]\n\
+	cmp r0, #0\n\
+	bne _0800D33C\n\
+	b _0800D462\n\
+_0800D33C:\n\
+	ldr r2, _0800D474 @ =gIntrManager\n\
+	movs r1, #0xba\n\
+	lsls r1, r1, #1\n\
+	adds r0, r2, r1\n\
+	ldr r3, [sp]\n\
+	str r3, [r0]\n\
+	movs r7, #0xbc\n\
+	lsls r7, r7, #1\n\
+	adds r1, r2, r7\n\
+	ldr r0, _0800D478 @ =0x0400001C\n\
+	str r0, [r1]\n\
+	movs r0, #0xbe\n\
+	lsls r0, r0, #1\n\
+	adds r1, r2, r0\n\
+	ldr r0, _0800D47C @ =0xA6600001\n\
+	str r0, [r1]\n\
+	ldr r0, [r5, #0x34]\n\
+	subs r0, #0xf0\n\
+	lsls r0, r0, #0xf\n\
+	lsrs r0, r0, #0x10\n\
+	str r0, [sp, #4]\n\
+	ldr r0, [r5, #0x38]\n\
+	subs r0, #0xc0\n\
+	lsls r0, r0, #0xf\n\
+	lsrs r0, r0, #0x10\n\
+	mov sb, r0\n\
+	mov r8, sb\n\
+	mov r1, r8\n\
+	lsls r0, r1, #0x10\n\
+	asrs r2, r0, #0x10\n\
+	adds r0, r2, #0\n\
+	adds r0, #0x9f\n\
+	cmp r0, #0x87\n\
+	ble _0800D39E\n\
+	movs r7, #0x9f\n\
+	lsls r7, r7, #2\n\
+	adds r1, r3, r7\n\
+	adds r3, r2, #0\n\
+	lsls r2, r3, #0x10\n\
+	ldr r0, [sp, #4]\n\
+	orrs r2, r0\n\
+_0800D38E:\n\
+	str r2, [r1]\n\
+	subs r1, #4\n\
+	subs r6, #1\n\
+	cmp r6, #0\n\
+	blt _0800D39E\n\
+	adds r0, r6, r3\n\
+	cmp r0, #0x87\n\
+	bgt _0800D38E\n\
+_0800D39E:\n\
+	ldr r4, [r5, #0x34]\n\
+	subs r4, #0xf0\n\
+	adds r0, r4, #0\n\
+	movs r1, #3\n\
+	bl __divsi3\n\
+	lsls r4, r4, #0xe\n\
+	ldr r1, [r5, #0x38]\n\
+	subs r1, #0xc0\n\
+	lsls r2, r1, #1\n\
+	adds r2, r2, r1\n\
+	lsls r2, r2, #5\n\
+	asrs r2, r2, #8\n\
+	adds r2, #0x10\n\
+	lsls r2, r2, #0x10\n\
+	lsls r0, r0, #0x10\n\
+	asrs r0, r0, #0x10\n\
+	mov sl, r0\n\
+	lsrs r1, r4, #0x10\n\
+	str r1, [sp, #4]\n\
+	asrs r4, r4, #0x10\n\
+	subs r4, r0, r4\n\
+	lsls r4, r4, #0xc\n\
+	lsrs r3, r2, #0x10\n\
+	mov sb, r3\n\
+	asrs r7, r2, #0x10\n\
+	mov r1, r8\n\
+	lsls r0, r1, #0x10\n\
+	asrs r0, r0, #0x10\n\
+	mov r8, r0\n\
+	subs r5, r7, r0\n\
+	adds r5, #0x10\n\
+	adds r0, r4, #0\n\
+	adds r1, r5, #0\n\
+	bl __divsi3\n\
+	str r0, [sp, #8]\n\
+	movs r0, #0x80\n\
+	lsls r0, r0, #9\n\
+	adds r1, r5, #0\n\
+	bl __divsi3\n\
+	ldr r3, _0800D480 @ =0xFFFFF000\n\
+	adds r3, r3, r0\n\
+	mov ip, r3\n\
+	cmp r6, #0\n\
+	blt _0800D462\n\
+	adds r0, r6, r7\n\
+	cmp r0, #0x77\n\
+	ble _0800D446\n\
+	mov r4, r8\n\
+	mov r8, sl\n\
+	adds r5, r7, #0\n\
+	lsls r0, r6, #2\n\
+	ldr r7, [sp]\n\
+	adds r2, r0, r7\n\
+	ldr r0, _0800D484 @ =0x0000FFFF\n\
+	mov sl, r0\n\
+	rsbs r0, r6, #0\n\
+	adds r0, #0x87\n\
+	subs r3, r0, r4\n\
+_0800D418:\n\
+	mov r1, ip\n\
+	muls r1, r3, r1\n\
+	asrs r1, r1, #0xc\n\
+	subs r1, r4, r1\n\
+	lsls r1, r1, #0x10\n\
+	ldr r7, [sp, #8]\n\
+	adds r0, r3, #0\n\
+	muls r0, r7, r0\n\
+	asrs r0, r0, #0xc\n\
+	mov r7, r8\n\
+	subs r0, r7, r0\n\
+	mov r7, sl\n\
+	ands r0, r7\n\
+	orrs r1, r0\n\
+	str r1, [r2]\n\
+	subs r2, #4\n\
+	adds r3, #1\n\
+	subs r6, #1\n\
+	cmp r6, #0\n\
+	blt _0800D462\n\
+	adds r0, r6, r5\n\
+	cmp r0, #0x77\n\
+	bgt _0800D418\n\
+_0800D446:\n\
+	cmp r6, #0\n\
+	blt _0800D462\n\
+	mov r0, sb\n\
+	lsls r2, r0, #0x10\n\
+	ldr r1, [sp, #4]\n\
+	orrs r2, r1\n\
+	lsls r0, r6, #2\n\
+	ldr r3, [sp]\n\
+	adds r0, r0, r3\n\
+_0800D458:\n\
+	str r2, [r0]\n\
+	subs r0, #4\n\
+	subs r6, #1\n\
+	cmp r6, #0\n\
+	bge _0800D458\n\
+_0800D462:\n\
+	add sp, #0xc\n\
+	pop {r3, r4, r5}\n\
+	mov r8, r3\n\
+	mov sb, r4\n\
+	mov sl, r5\n\
+	pop {r4, r5, r6, r7}\n\
+	pop {r0}\n\
+	bx r0\n\
+	.align 2, 0\n\
+_0800D474: .4byte gIntrManager\n\
+_0800D478: .4byte 0x0400001C\n\
+_0800D47C: .4byte 0xA6600001\n\
+_0800D480: .4byte 0xFFFFF000\n\
+_0800D484: .4byte 0x0000FFFF\n\
+ .syntax divided\n");
+}
+
+void ocean_0800d488(struct StageLayer* l, const struct Stage* _ UNUSED) {
+  if (l->phase == 0) {
+    const u16 n = (l->bgIdx << 16) >> 20;
+    BGCNT16(n) = (l->prio | l->screenBase) | BGCNT_CHARBASE(1) | BGCNT_MOSAIC | BGCNT_TXT256x512;  // 0x8044
+    RESET_BGOFS(n);
+    CpuFastCopy(BGMAP(BG_UNK_57), SCREEN_ADDR(n), BG_SCREEN_SIZE);
+    CpuFastCopy(BGMAP(BG_UNK_56), SCREEN_ADDR(n) + BG_SCREEN_SIZE, BG_SCREEN_SIZE);
+    l->phase++;
+  }
+}
+
+// 0x0800D518
+void setOceanBGScroll(struct StageLayer* l, const struct Stage* _ UNUSED) {
+  const u16 n = (l->bgIdx << 16) >> 20;
+  BGnHOFS(n) = (l->viewportLeftTopPixel).x >> 1;
+  BGnVOFS(n) = ((l->viewportLeftTopPixel).y >> 1) - 96;
+}
+
+// 0x0800D544
+void LayerUpdate_Ocean_5(struct StageLayer* l, const struct Stage* _ UNUSED) {
+  if (l->phase == 0) {
+    (l->scrollPower).x = PIXEL(1);
+    (l->scrollPower).y = PIXEL(1) / 2;
+    (l->scroll).x = 0;
+    (l->scroll).y = 320;
+    l->phase++;
+  }
+}
+
+// 0x0800D568
+void LayerUpdate_Ocean_6(struct StageLayer* l, const struct Stage* _ UNUSED) {
+  if ((l->viewportLeftTopPixel).x > 6496 && (l->viewportLeftTopPixel).x < 6944) {
+    if (!isSoundPlaying(SE_UNK_e1)) PlaySound(SE_UNK_e1);
+    SetStageNoiseVolume(SE_UNK_e1);
+  } else {
+    if (isSoundPlaying(SE_UNK_e1)) StopSound(SE_UNK_e1);
+  }
+}
 
 // clang-format off
 static const StageLayerRoutine sLayerRoutine[7] = {
     [0] = {NULL, NULL, NULL},
     [1] = {NULL, DrawGeneralStageLayer, NULL},
-    [2] = {ocean_0800d110, FUN_0800d1c8, FUN_0800d264},
-    [3] = {ocean_0800d28c, ctrlOceanBG3Scroll, NULL},
+    [2] = {ocean_0800d110, LayerDraw_Ocean_2, LayerExit_Ocean_2},
+    [3] = {LayerUpdate_Ocean_3, ctrlOceanBG3Scroll, NULL},
     [4] = {ocean_0800d488, setOceanBGScroll, NULL},
-    [5] = {ocean_0800d544, DrawGeneralStageLayer, NULL},
-    [6] = {ocean_0800d568, DrawGeneralStageLayer, NULL},
+    [5] = {LayerUpdate_Ocean_5, DrawGeneralStageLayer, NULL},
+    [6] = {LayerUpdate_Ocean_6, DrawGeneralStageLayer, NULL},
 };
 // clang-format on
 
@@ -648,8 +918,31 @@ const struct Stage gOceanLandscape = {
   behavior : sScreenBehavior,
 };
 
-const struct MetatilePatch MetatilePatch_0833cda8 = {
-  w : 2,
-  h : 2,
-};
-const metatile_id_t MetatilePatchData_0833cda8[4] = {0, 0, 0, 0};
+// 0x0800d5a8
+void FUN_0800d5a8(void) {
+  static const u16 sPatch[2 + (2 * 2)] = {
+      2, 2,  // width, height
+      0, 0, 0, 0,
+  };  // 0x0833cda8
+  PatchMetatileMap(31, 37, sPatch);
+}
+
+// 0x0800D5BC
+bool16 FUN_0800d5bc(s32 x, s32 y) {
+  if (y >= PIXEL(480) && y < PIXEL(960)) {
+    struct Overworld* ow = &gOverworld;
+    return GET_METATILE(&ow->terrain, x >> 12, y >> 12) != GET_METATILE(&ow->terrain, x >> 12, (y + PIXEL(800)) >> 12);
+  }
+  return FALSE;
+}
+
+// childre ship
+bool16 FUN_0800d61c(s32 x, s32 y) {
+  MetatileShift val = gMetatileShift_080fecc4;
+  if (!FUN_0800d5bc(x, y)) return FALSE;
+
+  val.x = x >> 12;
+  val.y = (y + PIXEL(800)) >> 12;
+  ShiftMetatile(x >> 12, y >> 12, (const MetatileShift*)&val);
+  return TRUE;
+}

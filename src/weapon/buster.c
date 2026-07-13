@@ -166,7 +166,7 @@ NON_MATCH static void initLemonBullet(struct ZeroBuster* p) {
   struct ZeroBusterProps* s = &p->props;
   struct Zero* z = s->z;
 
-  InitNonAffineMotion(&p->s);
+  EnableSpriteAnimation_Normal(p);
   ResetDynamicMotion(&p->s);
 
   (p->s).flags |= DISPLAY;
@@ -234,7 +234,7 @@ static void initSemiBullet(struct ZeroBuster* p) {
   u8 element;
   struct Zero* z = (p->props).z;
 
-  InitNonAffineMotion(&p->s);
+  EnableSpriteAnimation_Normal(p);
   ResetDynamicMotion(&p->s);
 
   (p->s).flags |= DISPLAY;
@@ -639,7 +639,7 @@ _08037614: .4byte sCollisions+(24*6)\n\
 static void initBurstShotBullet(struct ZeroBuster* p) {
   struct Zero* z = (p->props).z;
 
-  InitNonAffineMotion(&p->s);
+  EnableSpriteAnimation_Normal(p);
   ResetDynamicMotion(&p->s);
 
   (p->s).flags |= DISPLAY;
@@ -661,7 +661,7 @@ static void initBurstShotBullet(struct ZeroBuster* p) {
 static void initBlizzardArrowBullet(struct ZeroBuster* p) {
   struct Zero* z = (p->props).z;
 
-  InitNonAffineMotion(&p->s);
+  EnableSpriteAnimation_Normal(p);
   ResetDynamicMotion(&p->s);
 
   (p->s).flags |= DISPLAY;

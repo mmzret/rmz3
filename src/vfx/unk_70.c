@@ -99,7 +99,7 @@ static void VFX70_Die(struct Entity* p) {
 static void _VFX70_Init(struct Entity* p) {
   p->flags |= DISPLAY;
   p->flags |= FLIPABLE;
-  InitNonAffineMotion(p);
+  EnableSpriteAnimation_Normal(p);
   SET_VFX_ROUTINE(p, ENTITY_UPDATE);
   VFX70_Update(p);
 }

@@ -29,7 +29,7 @@ NON_MATCH static void IceBlock_Init(struct Solid* p) {
 #if MODERN
   (p->s).flags |= FLIPABLE;
   (p->s).flags |= DISPLAY;
-  InitNonAffineMotion(&p->s);
+  EnableSpriteAnimation_Normal(p);
   (&(p->s).d)->x = (&(p->s).d)->y = 0;
   (p->s).coord.x += PIXEL(8);
   (p->s).coord.y -= PIXEL(11);

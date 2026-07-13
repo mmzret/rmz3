@@ -89,7 +89,7 @@ static void Solid17_Init(Object* p) {
   (p->s).mode[1] = sInitMode[(p->s).work[0]];
   (p->s).flags |= FLIPABLE;
   (p->s).flags |= DISPLAY;
-  InitNonAffineMotion(&p->s);
+  EnableSpriteAnimation_Normal(p);
   _INIT_BODY(p, sCollisions, 1);
   (p->s).flags2 &= ~WHITE_PAINTABLE;
   (p->s).invincibleID = (p->s).uniqueID;

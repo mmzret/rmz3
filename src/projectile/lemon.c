@@ -48,7 +48,7 @@ struct Projectile* CreateLemon(Coords32* c, s32 amplitude, u8 r2) {
 NAKED static struct Projectile* unused_0809ca34(Coords32* c, s32 r1, u8 r2) { INCCODE("asm/unused/unused_0809ca34.inc"); }
 
 static void Lemon_Init(struct Projectile* p) {
-  InitNonAffineMotion(&p->s);
+  EnableSpriteAnimation_Normal(p);
   (p->s).flags |= DISPLAY;
   (p->s).flags |= FLIPABLE;
   INIT_BODY(p, sCollisions, 0, NULL);

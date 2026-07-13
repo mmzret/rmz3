@@ -183,7 +183,7 @@ static void Deathtanz_Init(struct Deathtanz* p) {
   (p->s).mode[1] = sInitModes[(p->s).work[0]];
   (p->s).flags |= FLIPABLE;
   (p->s).flags |= DISPLAY;
-  InitNonAffineMotion(&p->s);
+  EnableSpriteAnimation_Normal(p);
   ResetDynamicMotion(&p->s);
 
   ResetBossBody((void*)p, &sCollisions[0], 64);

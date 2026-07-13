@@ -44,7 +44,7 @@ struct Entity* FUN_080b76d4(Coords32* c, u8 r1, u16 r2, s32 r3) {
 // --------------------------------------------
 
 static void BatringNecro_Init(struct Entity* p) {
-  InitNonAffineMotion(p);
+  EnableSpriteAnimation_Normal(p);
   p->flags |= DISPLAY;
   p->flags |= FLIPABLE;
   p->work[2] = 0xFF;

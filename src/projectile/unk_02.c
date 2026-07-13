@@ -36,7 +36,7 @@ struct Entity* CreateProjectile2(Coords32* c1, Coords32* c2, u8 n) {
 // --------------------------------------------
 
 static void Projectile2_Init(struct Projectile* p) {
-  InitNonAffineMotion(&p->s);
+  EnableSpriteAnimation_Normal(p);
   (p->s).flags |= DISPLAY;
   (p->s).flags |= FLIPABLE;
   INIT_BODY(p, &sCollision, 1, NULL);

@@ -70,7 +70,7 @@ struct Entity* FUN_080bde9c(struct Entity* e, Coords32* c, u8 kind, u8 param_4) 
 // --------------------------------------------
 
 static void VFX41_Init(struct Entity* p) {
-  InitNonAffineMotion(p);
+  EnableSpriteAnimation_Normal(p);
   p->flags |= DISPLAY;
   p->flags |= FLIPABLE;
   ResetDynamicMotion(p);

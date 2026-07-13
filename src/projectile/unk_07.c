@@ -34,7 +34,7 @@ struct Projectile* CreateProjectile7(Coords32* c, s32 amplitude, u8 angle) {
 static const struct Collision sCollisions[2];
 
 static void Projectile7_Init(struct Projectile* p) {
-  InitNonAffineMotion(&p->s);
+  EnableSpriteAnimation_Normal(p);
   (p->s).flags |= DISPLAY;
   (p->s).flags |= FLIPABLE;
   INIT_BODY(p, &sCollisions[0], 0, NULL);

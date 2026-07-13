@@ -223,8 +223,8 @@ _0806E1C4:
 	pop {r0}
 	bx r0
 	.align 2, 0
-_0806E1CC: .4byte 0x083667A4
-_0806E1D0: .4byte 0x083667B4
+_0806E1CC: .4byte sUpdates1
+_0806E1D0: .4byte sUpdates2
 _0806E1D4: .4byte gStageRun+232
 _0806E1D8: .4byte gEnemyFnTable
 
@@ -352,7 +352,7 @@ _0806E2BA:
 	orrs r0, r1
 	b _0806E2D0
 	.align 2, 0
-_0806E2C8: .4byte 0x083667F4
+_0806E2C8: .4byte sCollisions+(24*2)
 _0806E2CC:
 	movs r0, #0xef
 	ands r0, r2

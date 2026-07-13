@@ -28,7 +28,7 @@ struct Entity* CreateSmoke(u8 kind, Coords32* c) {
     INIT_VFX_ROUTINE(p, 0);
     (p->coord).x = c->x;
     (p->coord).y = c->y;
-    InitNonAffineMotion(p);
+    EnableSpriteAnimation_Normal(p);
     SetSpriteAnimation(p, MOTION(SM000_BATTLE_EFFECT, sMotionSubIDs[kind]));
   }
   return p;

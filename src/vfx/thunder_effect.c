@@ -30,7 +30,7 @@ struct ElementEffect* CreateThunderEffect(struct Entity* e, Coords32* c, u8 r2) 
 }
 
 static void Ghost9_Init(struct Entity* p) {
-  InitNonAffineMotion(p);
+  EnableSpriteAnimation_Normal(p);
   SetSpriteAnimation(p, MOTION(SM026_THUNDER_EFFECT, 5));
   p->flags |= DISPLAY;
   SET_VFX_ROUTINE(p, ENTITY_UPDATE);

@@ -4,6 +4,9 @@
 #include "global.h"
 #include "motion.h"
 
+/**
+ * @note 直接呼ばずに EnableSpriteAnimation_Normal() を呼ぶ
+ */
 void InitNonAffineMotion(struct Entity* p) {
   struct Sprite* spr = &p->spr;
   ResetAnimState(&p->motion, gStaticMotionCmdTable[0]);

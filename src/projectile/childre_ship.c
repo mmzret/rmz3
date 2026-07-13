@@ -48,7 +48,7 @@ static void FUN_080b27f8(struct Projectile* p) {
     range : {PIXEL(0), PIXEL(0), PIXEL(32), PIXEL(8)},
   };
 
-  InitNonAffineMotion(&p->s);
+  EnableSpriteAnimation_Normal(p);
   (p->s).flags |= DISPLAY;
   (p->s).flags |= FLIPABLE;
   INIT_BODY(p, &sCollision, 0, NULL);

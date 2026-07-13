@@ -144,7 +144,7 @@ static void Ghost32_Init(struct VFX* p) {
 }
 
 static void FUN_080baad8(struct Entity* p) {
-  InitNonAffineMotion(p);
+  EnableSpriteAnimation_Normal(p);
   if (p->work[0] == 0) {
     SET_XFLIP(p, FALSE);
     (p->d).x = PIXEL(3) / 8;  // 右
@@ -158,7 +158,7 @@ static void FUN_080baad8(struct Entity* p) {
 }
 
 static void FUN_080bab54(struct Entity* p) {
-  InitNonAffineMotion(p);
+  EnableSpriteAnimation_Normal(p);
   (p->d).x = 0, (p->d).y = 0;
   p->work[2] = (RANDOM(RNG_0202f388) & 7) + 0x7F;
   SET_VFX_ROUTINE(p, ENTITY_UPDATE);
@@ -210,7 +210,7 @@ static void FUN_080baca4(struct PAquaVFX* p) {
 }
 
 static void FUN_080bacec(struct PAquaVFX* p) {
-  InitNonAffineMotion(&p->s);
+  EnableSpriteAnimation_Normal(p);
   p->mag_7c = 0x100;
   (p->s).spr.mag.x = 0x100;
   (p->s).spr.mag.y = p->mag_7c;
@@ -220,7 +220,7 @@ static void FUN_080bacec(struct PAquaVFX* p) {
 }
 
 static void FUN_080bad34(struct PAquaVFX* p) {
-  InitNonAffineMotion(&p->s);
+  EnableSpriteAnimation_Normal(p);
   p->mag_7c = 0x100;
   (p->s).spr.mag.x = 0x100;
   (p->s).spr.mag.y = p->mag_7c;

@@ -162,7 +162,7 @@ static void ZeroDeathEffect_Die(struct VFX* p) {
 // 0x080b3698
 static void _ZeroDeathEffect_Init(struct VFX* p) {
   (p->s).flags |= DISPLAY;
-  InitNonAffineMotion(&p->s);
+  EnableSpriteAnimation_Normal(p);
   (p->s).spr.oam.priority = 0;
   (p->s).work[3] = 0x80;
   SET_VFX_ROUTINE(p, ENTITY_UPDATE);

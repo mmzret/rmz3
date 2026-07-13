@@ -138,7 +138,7 @@ static void OmegaZeroProjectile_Init(struct Projectile* p) {
   (p->s).mode[1] = sOmegaZeroProjectileInitModes[(p->s).work[0]];
   (p->s).flags |= FLIPABLE;
   (p->s).flags |= DISPLAY;
-  InitNonAffineMotion(&p->s);
+  EnableSpriteAnimation_Normal(p);
   INIT_BODY(p, &gOmegaZeroProjectileCollisions_0836c9c0[0], 1, onCollision);
   OmegaZeroProjectile_Update(p);
 }

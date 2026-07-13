@@ -59,7 +59,7 @@ static void PhantomMini_Init(Player* z) {
 
   (z->s).flags |= FLIPABLE;
   (z->s).flags |= DISPLAY;
-  InitNonAffineMotion(&z->s);
+  EnableSpriteAnimation_Normal(z);
   ResetDynamicMotion(&z->s);
   INIT_BODY(z, &sCollisions[0], 6, onCollision);
   (z->s).unk_coord.y = (z->s).coord.y;

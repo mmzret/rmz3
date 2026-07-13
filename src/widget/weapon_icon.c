@@ -41,7 +41,7 @@ static void MenuWeapon_Init(struct Widget* w) {
   s32 x, y;
 
   SET_WIDGET_ROUTINE(w, ENTITY_UPDATE);
-  InitNonAffineMotion(&w->s);
+  EnableSpriteAnimation_Normal(w);
   (w->s).flags |= DISPLAY;
   (w->s).flags |= FLIPABLE;
   SetSpriteAnimation(w, sWeaponIconMotions[(w->s).work[0]]);

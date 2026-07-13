@@ -12,9 +12,9 @@ typedef struct {
 } VFX50;
 static_assert(sizeof(VFX50) == sizeof(struct VFX));
 
-void VFX50_Init(struct VFX* p);
-void VFX50_Update(struct VFX* p);
-void VFX50_Die(struct VFX* p);
+static void VFX50_Init(VFX50* p);
+static void VFX50_Update(VFX50* p);
+static void VFX50_Die(VFX50* p);
 
 // clang-format off
 const VFXRoutine gVFX50Routine = {
@@ -50,18 +50,54 @@ struct Entity* FUN_080c07e4(Coords32* c1, Coords32* c2, u8 xflip, u8 unk7c) {
   return (void*)p;
 }
 
+static void VFX50_Init(VFX50* p) {
+  EnableSpriteAnimation_Normal(p);
+  p->flags |= DISPLAY;
+  p->flags |= FLIPABLE;
+  ResetDynamicMotion((void*)p);
+
+  if (p->work[0] == 0) {
+    SET_XFLIP(p, FALSE);
+    (p->d).x = PIXEL(1) / 2;
+  } else {
+    SET_XFLIP(p, TRUE);
+    (p->d).x = -PIXEL(1) / 2;
+  }
+  (p->d).y = 0;
+
+  if (p->work[1] == 0) {
+    SET_VFX_ROUTINE(p, ENTITY_UPDATE);
+    p->mode[1] = 1, p->mode[2] = 0, p->mode[3] = 0;
+  } else {
+    SET_VFX_ROUTINE(p, ENTITY_UPDATE);
+    p->mode[1] = 0, p->mode[2] = 0, p->mode[3] = 0;
+  }
+
+  (p->d).y = 0;
+  p->work[2] = 0xFF;
+  VFX50_Update(p);
+}
+
+void FUN_080c094c(VFX50* p);
+void FUN_080c09c8(VFX50* p);
+
+static void VFX50_Update(VFX50* p) {
+  static void (*const sUpdates[2])(VFX50*) = {
+      FUN_080c094c,
+      FUN_080c09c8,
+  };  // 0x0836F178
+  (sUpdates[p->mode[1]])(p);
+}
+
+static void VFX50_Die(VFX50* p) {
+  p->flags &= ~DISPLAY;
+  SET_VFX_ROUTINE(p, ENTITY_EXIT);
+}
+
 INCASM("asm/vfx/unk_50.inc");
-
-void FUN_080c094c(struct VFX* p);
-void FUN_080c09c8(struct VFX* p);
-
-static const VFXFunc sUpdates[2] = {
-    FUN_080c094c,
-    FUN_080c09c8,
-};
 
 static const motion_t sVFX50Animations[3] = {
     MOTION(DM177_CUBIT_FLAME, 9),
     MOTION(DM177_CUBIT_FLAME, 10),
     MOTION(DM177_CUBIT_FLAME, 11),
-};  // 0x0836f180
+};  // 0x0836F180

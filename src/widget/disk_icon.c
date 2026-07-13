@@ -28,7 +28,7 @@ void CreateDiskIcon(Coords32* c, u8 n, u8 r2) {
 
 static void DiskIcon_Init(struct Widget* w) {
   SET_WIDGET_ROUTINE(w, ENTITY_UPDATE);
-  InitNonAffineMotion(&w->s);
+  EnableSpriteAnimation_Normal(w);
   (w->s).flags |= DISPLAY;
   (w->s).flags |= FLIPABLE;
   (w->s).coord.x += PIXEL(8);

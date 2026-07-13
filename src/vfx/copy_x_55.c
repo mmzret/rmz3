@@ -41,7 +41,7 @@ static void VFX55_Init(struct Entity* p) {
   };
 
   SET_VFX_ROUTINE(p, ENTITY_UPDATE);
-  InitNonAffineMotion(p);
+  EnableSpriteAnimation_Normal(p);
   p->flags |= DISPLAY;
   p->flags |= FLIPABLE;
   (sInitializers[p->work[0]])(p);

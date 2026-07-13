@@ -52,7 +52,7 @@ static void Solid50_Init(struct Solid* p) {
   (p->s).mode[1] = sInitModes[(p->s).work[0]];
   (p->s).flags |= FLIPABLE;
   (p->s).flags |= DISPLAY;
-  InitNonAffineMotion(&p->s);
+  EnableSpriteAnimation_Normal(p);
 
   if ((p->s).work[0] != 2) {
     FUN_080df5ac(&p->s);

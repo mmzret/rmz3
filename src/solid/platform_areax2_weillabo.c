@@ -24,7 +24,7 @@ static void Solid25_Init(struct Solid* p) {
   static const struct Rect size = {PIXEL(0), PIXEL(24), PIXEL(32), PIXEL(48)};
 
   (p->s).flags |= DISPLAY;
-  InitNonAffineMotion(&p->s);
+  EnableSpriteAnimation_Normal(p);
   (p->s).flags |= FLIPABLE;
   (p->s).flags2 |= ENTI_PHYSICS;
   (p->s).size = (struct Rect*)&size;

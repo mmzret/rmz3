@@ -285,7 +285,7 @@ _080C6BE6:
 	pop {r0}
 	bx r0
 	.align 2, 0
-_080C6C40: .4byte 0x0836F854
+_080C6C40: .4byte motion_t_ARRAY_0836f854
 _080C6C44: .4byte RNG_0202f388
 _080C6C48: .4byte 0x000343FD
 _080C6C4C: .4byte 0x00269EC3
@@ -471,7 +471,7 @@ _080C6D6A:
 	pop {r0}
 	bx r0
 	.align 2, 0
-_080C6DB8: .4byte 0x0836F85A
+_080C6DB8: .4byte motion_t_ARRAY_0836f85a
 _080C6DBC: .4byte 0xFFFFFE00
 _080C6DC0: .4byte gVFXFnTable
 

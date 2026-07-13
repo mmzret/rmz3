@@ -33,7 +33,7 @@ struct Entity* createGhost44(Coords32* c, u8 kind) {
 // --------------------------------------------
 
 static void VFX44_Init(struct Entity* p) {
-  InitNonAffineMotion(p);
+  EnableSpriteAnimation_Normal(p);
   p->flags |= DISPLAY;
   p->flags |= FLIPABLE;
   if (p->work[0] == 0) {

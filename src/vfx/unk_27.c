@@ -81,7 +81,7 @@ static void Ghost27_Die(struct Entity* p) {
 // --------------------------------------------
 
 static void FUN_080b9b9c(struct Entity* p) {
-  InitNonAffineMotion(p);
+  EnableSpriteAnimation_Normal(p);
   p->flags |= DISPLAY;
   p->flags |= FLIPABLE;
   SetSpriteAnimation(p, MOTION(SM023_GYRO_CANNON, 1));
@@ -100,7 +100,7 @@ static void FUN_080b9b9c(struct Entity* p) {
 }
 
 static void FUN_080b9c08(struct Entity* p) {
-  InitNonAffineMotion(p);
+  EnableSpriteAnimation_Normal(p);
   p->flags |= DISPLAY;
   p->flags |= FLIPABLE;
   SetSpriteAnimation(p, MOTION(SM023_GYRO_CANNON, 8));

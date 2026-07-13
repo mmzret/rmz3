@@ -46,7 +46,7 @@ struct Entity* CreateGhost82_2(Coords32* c, u8 n, motion_t m, u32 val) {
 // --------------------------------------------
 
 static void Ghost82_Init(struct Entity* p) {
-  InitNonAffineMotion(p);
+  EnableSpriteAnimation_Normal(p);
   p->flags |= DISPLAY;
   p->flags |= FLIPABLE;
   if (p->work[0] == 0) {

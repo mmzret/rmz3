@@ -40,7 +40,7 @@ const EnemyRoutine gPantheonGuardianRoutine = {
 // clang-format on
 
 static void PantheonGuardian_Init(struct PantheonGuardianObject* p) {
-  InitNonAffineMotion(&p->s);
+  EnableSpriteAnimation_Normal(p);
   (p->s).flags |= DISPLAY;
   (p->s).flags |= FLIPABLE;
   if (FLAG(gSystemSavedata.flags, MOD_P_GUARDIAN_HP4) && !FLAG(gCurStory.s.gameflags, DEMO_PLAY)) {

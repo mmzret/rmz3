@@ -121,7 +121,7 @@ NON_MATCH NORETURN void Process_System(struct Process* p) {
     FlushWinRegister();
     FlushMOSAIC();
     transferData();
-    FUN_080e98ec();  // Fontデータ関連
+    LoadGlyphTiles();
     FlushPalette();
     doGraphicTransferTasks();
     if (gSramState.unk_00 == 0) {

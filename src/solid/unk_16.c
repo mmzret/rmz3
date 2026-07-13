@@ -37,7 +37,7 @@ void FUN_080cee14(u8 n, s32 x, s32 y) {
     (p->s).coord.y = y;
     (p->s).work[0] = n, (p->s).work[1] = 1;
     (p->s).flags |= DISPLAY;
-    InitNonAffineMotion(&p->s);
+    EnableSpriteAnimation_Normal(p);
     SetSpriteAnimation(p, MOTION(SM112_ANATRE_CUBE, 15));
     UpdateSpriteAnimation(p);
     AppendQuake(5, &(p->s).coord);
@@ -81,8 +81,7 @@ static void Solid16_Update(struct Entity* p) {
 static void Solid16_Die(struct Solid* p) {
   switch ((p->s).mode[1]) {
     case 0: {
-      Coords32* d = &(p->s).d;
-      d->x = d->y = 0;
+      (&(p->s).d)->x = (&(p->s).d)->y = 0;
       (p->s).mode[1]++;
       break;
     }

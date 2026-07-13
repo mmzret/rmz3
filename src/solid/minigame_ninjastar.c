@@ -52,7 +52,7 @@ static void MgNinjaStar_Init(struct Solid* p) {
   (p->s).mode[1] = sInitModes[(p->s).work[0]];
   (p->s).flags |= FLIPABLE;
   (p->s).flags |= DISPLAY;
-  InitNonAffineMotion(&p->s);
+  EnableSpriteAnimation_Normal(p);
   MgNinjaStar_Update(p);
 }
 

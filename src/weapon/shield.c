@@ -55,7 +55,7 @@ struct Entity* CreateWeaponShieldGuard(struct Zero* z, u8 n) {
 static void ShieldGuard_Init(struct WeaponCommon* p) {
   struct Zero* z = (p->props).z;
   SET_WEAPON_ROUTINE(p, ENTITY_UPDATE);
-  InitNonAffineMotion(&p->s);
+  EnableSpriteAnimation_Normal(p);
   ResetDynamicMotion(&p->s);
   (p->s).flags |= DISPLAY;
   (p->s).flags |= FLIPABLE;

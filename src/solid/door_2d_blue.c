@@ -24,7 +24,7 @@ const SolidRoutine gDoor2DBlueRoutine = {
 
 NON_MATCH static void Door2DBlue_Init(struct Solid* p) {
 #if MODERN
-  InitNonAffineMotion(&p->s);
+  EnableSpriteAnimation_Normal(p);
   if ((p->s).work[1] == 0) {
     // Otherside
     struct Entity* q = AllocEntityLast(gSolidHeaderPtr);

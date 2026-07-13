@@ -48,7 +48,7 @@ static void CielComputer_Init(struct Solid* p) {
   motion_id_t id;
   (p->s).flags |= DISPLAY;
   (p->s).flags |= FLIPABLE;
-  InitNonAffineMotion(&p->s);
+  EnableSpriteAnimation_Normal(p);
   SET_XFLIP(p, FALSE);
   SetSpriteAnimation(p, sMotions[gSystemSavedata.cielComputer]);
   id = sMotions[gSystemSavedata.cielComputer] >> 8;

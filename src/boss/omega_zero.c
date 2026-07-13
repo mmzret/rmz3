@@ -155,7 +155,7 @@ NON_MATCH static void OmegaZero_Init(struct BossOmegaZero* p) {
   (p->s).mode[1] = sInitModes[(p->s).work[0]];
   (p->s).flags |= FLIPABLE;
   (p->s).flags |= DISPLAY;
-  InitNonAffineMotion(&p->s);
+  EnableSpriteAnimation_Normal(p);
   ResetDynamicMotion(&p->s);
   ResetBossBody((void*)p, sCollisions, 96);
   SET_BOSS_COLLISION_HANDLER(p, onCollision);

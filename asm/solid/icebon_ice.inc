@@ -4,207 +4,6 @@
 	
 	.text
 
-	thumb_func_start FUN_080ca700
-FUN_080ca700: @ 0x080CA700
-	push {lr}
-	adds r3, r0, #0
-	ldr r0, [r3, #0x28]
-	ldrb r0, [r0, #0xc]
-	cmp r0, #2
-	bls _080CA748
-	ldrb r1, [r3, #0xa]
-	movs r0, #0xfe
-	ands r0, r1
-	movs r2, #0
-	movs r1, #0xfd
-	ands r0, r1
-	strb r0, [r3, #0xa]
-	adds r0, r3, #0
-	adds r0, #0x8c
-	str r2, [r0]
-	adds r0, #4
-	str r2, [r0]
-	adds r0, #4
-	strb r2, [r0]
-	ldrb r1, [r3, #0xa]
-	movs r0, #0xfb
-	ands r0, r1
-	strb r0, [r3, #0xa]
-	ldr r1, _080CA744 @ =gSolidFnTable
-	ldrb r0, [r3, #9]
-	lsls r0, r0, #2
-	adds r0, r0, r1
-	movs r1, #3
-	str r1, [r3, #0xc]
-	ldr r0, [r0]
-	ldr r0, [r0, #0xc]
-	str r0, [r3, #0x14]
-	b _080CA762
-	.align 2, 0
-_080CA744: .4byte gSolidFnTable
-_080CA748:
-	cmp r0, #1
-	bls _080CA762
-	ldr r1, _080CA768 @ =gSolidFnTable
-	ldrb r0, [r3, #9]
-	lsls r0, r0, #2
-	adds r0, r0, r1
-	movs r1, #2
-	str r1, [r3, #0xc]
-	ldr r0, [r0]
-	ldr r0, [r0, #8]
-	str r0, [r3, #0x14]
-	movs r0, #0
-	strb r0, [r3, #0xd]
-_080CA762:
-	pop {r0}
-	bx r0
-	.align 2, 0
-_080CA768: .4byte gSolidFnTable
-
-	thumb_func_start FUN_080ca76c
-FUN_080ca76c: @ 0x080CA76C
-	push {lr}
-	adds r3, r0, #0
-	ldr r0, [r3, #0x28]
-	ldrb r0, [r0, #0xc]
-	cmp r0, #2
-	bls _080CA7B4
-	ldrb r1, [r3, #0xa]
-	movs r0, #0xfe
-	ands r0, r1
-	movs r2, #0
-	movs r1, #0xfd
-	ands r0, r1
-	strb r0, [r3, #0xa]
-	adds r0, r3, #0
-	adds r0, #0x8c
-	str r2, [r0]
-	adds r0, #4
-	str r2, [r0]
-	adds r0, #4
-	strb r2, [r0]
-	ldrb r1, [r3, #0xa]
-	movs r0, #0xfb
-	ands r0, r1
-	strb r0, [r3, #0xa]
-	ldr r1, _080CA7B0 @ =gSolidFnTable
-	ldrb r0, [r3, #9]
-	lsls r0, r0, #2
-	adds r0, r0, r1
-	movs r1, #3
-	str r1, [r3, #0xc]
-	ldr r0, [r0]
-	ldr r0, [r0, #0xc]
-	str r0, [r3, #0x14]
-	b _080CA7CE
-	.align 2, 0
-_080CA7B0: .4byte gSolidFnTable
-_080CA7B4:
-	cmp r0, #1
-	bls _080CA7CE
-	ldr r1, _080CA7D4 @ =gSolidFnTable
-	ldrb r0, [r3, #9]
-	lsls r0, r0, #2
-	adds r0, r0, r1
-	movs r1, #2
-	str r1, [r3, #0xc]
-	ldr r0, [r0]
-	ldr r0, [r0, #8]
-	str r0, [r3, #0x14]
-	movs r0, #0
-	strb r0, [r3, #0xd]
-_080CA7CE:
-	pop {r0}
-	bx r0
-	.align 2, 0
-_080CA7D4: .4byte gSolidFnTable
-
-	thumb_func_start FUN_080ca7d8
-FUN_080ca7d8: @ 0x080CA7D8
-	push {r4, lr}
-	adds r4, r0, #0
-	adds r0, #0xa4
-	movs r1, #0
-	ldrsh r0, [r0, r1]
-	cmp r0, #4
-	ble _080CA7F2
-	movs r1, #0x88
-	lsls r1, r1, #5
-	adds r0, r4, #0
-	bl SetMotion
-	b _080CA7FA
-_080CA7F2:
-	ldr r1, _080CA80C @ =0x00001102
-	adds r0, r4, #0
-	bl SetMotion
-_080CA7FA:
-	adds r0, r4, #0
-	bl UpdateEntityAnim
-	ldrb r0, [r4, #0xe]
-	cmp r0, #0
-	beq _080CA810
-	cmp r0, #1
-	beq _080CA83C
-	b _080CA868
-	.align 2, 0
-_080CA80C: .4byte 0x00001102
-_080CA810:
-	adds r1, r4, #0
-	adds r1, #0xb4
-	ldr r0, [r4, #0x58]
-	str r0, [r1]
-	ldr r0, [r4, #0x58]
-	str r0, [r4, #0x68]
-	ldrb r1, [r4, #0xb]
-	movs r0, #8
-	orrs r0, r1
-	strb r0, [r4, #0xb]
-	ldr r0, _080CA870 @ =0x0836FD58
-	str r0, [r4, #0x30]
-	ldr r0, _080CA874 @ =0x00000801
-	strh r0, [r4, #0x26]
-	adds r0, r4, #0
-	adds r0, #0x74
-	ldr r1, _080CA878 @ =0x0836FCF8
-	bl SetDDP
-	ldrb r0, [r4, #0xe]
-	adds r0, #1
-	strb r0, [r4, #0xe]
-_080CA83C:
-	adds r1, r4, #0
-	adds r1, #0xb4
-	ldr r0, [r1]
-	subs r0, #0x80
-	str r0, [r1]
-	ldr r1, [r4, #0x58]
-	subs r0, r0, r1
-	cmp r0, #0
-	bge _080CA850
-	adds r0, #7
-_080CA850:
-	asrs r0, r0, #3
-	adds r0, r1, r0
-	str r0, [r4, #0x58]
-	ldr r1, [r4, #0x68]
-	subs r0, r0, r1
-	ldr r1, _080CA87C @ =0xFFFFF100
-	cmp r0, r1
-	bgt _080CA868
-	movs r1, #0
-	movs r0, #1
-	strb r0, [r4, #0xd]
-	strb r1, [r4, #0xe]
-_080CA868:
-	pop {r4}
-	pop {r0}
-	bx r0
-	.align 2, 0
-_080CA870: .4byte 0x0836FD58
-_080CA874: .4byte 0x00000801
-_080CA878: .4byte 0x0836FCF8
-_080CA87C: .4byte 0xFFFFF100
-
 	thumb_func_start FUN_080ca880
 FUN_080ca880: @ 0x080CA880
 	push {r4, r5, r6, lr}
@@ -240,7 +39,7 @@ _080CA8BC:
 	movs r0, #8
 	orrs r0, r1
 	strb r0, [r4, #0xb]
-	ldr r0, _080CA938 @ =0x0836FD58
+	ldr r0, _080CA938 @ =sIcebonIceCubeSize
 	str r0, [r4, #0x30]
 	ldr r0, _080CA93C @ =0x00000801
 	strh r0, [r4, #0x26]
@@ -299,9 +98,9 @@ _080CA916:
 	lsls r0, r0, #4
 	b _080CA952
 	.align 2, 0
-_080CA938: .4byte 0x0836FD58
+_080CA938: .4byte sIcebonIceCubeSize
 _080CA93C: .4byte 0x00000801
-_080CA940: .4byte 0x0836FCF8
+_080CA940: .4byte sCollisions+(24*1)
 _080CA944: .4byte gOverworld
 _080CA948: .4byte 0x0002C00C
 _080CA94C: .4byte pZero2
@@ -572,7 +371,7 @@ _080CAB48:
 	bx r0
 	.align 2, 0
 _080CAB50: .4byte 0x00001104
-_080CAB54: .4byte 0x0836FD28
+_080CAB54: .4byte sCollisions+(24*3)
 
 	thumb_func_start FUN_080cab58
 FUN_080cab58: @ 0x080CAB58
@@ -642,7 +441,7 @@ _080CABD0:
 	pop {r0}
 	bx r0
 	.align 2, 0
-_080CABD8: .4byte 0x0836FD28
+_080CABD8: .4byte sCollisions+(24*3)
 _080CABDC: .4byte 0x00001105
 _080CABE0: .4byte gOverworld
 _080CABE4: .4byte 0x0002C00C

@@ -62,11 +62,11 @@ static void ExIcon_Update(struct Widget* w) {
 
   if (((&z->unk_b4)->status.exSkill & (1 << KIND)) >> KIND) {
     (w->s).palID = 0;
-    InitNonAffineMotion(&w->s);
+    EnableSpriteAnimation_Normal(w);
     SetSpriteAnimation(w, sExIconMotions[KIND]);
   } else {
     (w->s).palID = 1;
-    InitNonAffineMotion(&w->s);
+    EnableSpriteAnimation_Normal(w);
     SetSpriteAnimation(w, sExIconMotions[KIND]);
   }
   UpdateSpriteAnimation(w);

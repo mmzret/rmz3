@@ -57,7 +57,7 @@ static void AfterImage_Init(struct AfterImage* p) {
 
   if (q->mode[0] != 0) {
     s32 i;
-    InitNonAffineMotion(&p->s);
+    EnableSpriteAnimation_Normal(p);
     (p->s).flags |= DISPLAY;
     (p->s).spr.c = c1;
 

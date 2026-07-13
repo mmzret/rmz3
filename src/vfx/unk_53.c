@@ -32,7 +32,7 @@ void CreateVFX53(struct Entity* e, u8 n) {
 }
 
 static void VFX53_Init(struct Entity* p) {
-  InitNonAffineMotion(p);
+  EnableSpriteAnimation_Normal(p);
   p->flags |= DISPLAY;
   p->flags |= FLIPABLE;
   SetSpriteAnimation(p, MOTION(SM092_COPYX_ELEC_ICE_SHOT, 4));

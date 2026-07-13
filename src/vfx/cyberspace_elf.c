@@ -38,7 +38,7 @@ void CreateCyberSpaceElf(Coords32* c, u8 kind, u8 r2) {
 static void CyberSpaceElf_Init(struct CyberSpaceElf* p) {
   s32 y;
   SET_VFX_ROUTINE(p, ENTITY_UPDATE);
-  InitNonAffineMotion(&p->s);
+  EnableSpriteAnimation_Normal(p);
   ResetDynamicMotion(&p->s);
   (p->s).flags |= DISPLAY;
   (p->s).flags |= FLIPABLE;

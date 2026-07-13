@@ -52,6 +52,9 @@ void GotoMotion(struct Entity* p, motion_t m, u16 r2, u16 r3);
 void ResetDynamicMotion(struct Entity* p);
 void InitMotionLocation(void);
 
+void InitNonAffineMotion(struct Entity* p);
+static inline void EnableSpriteAnimation_Normal(void* enti) { InitNonAffineMotion((struct Entity*)enti); }
+
 void InitScalerotMotion1(struct Entity* p);
 static inline void EnableSpriteAnimation_Affine(void* enti) { InitScalerotMotion1((struct Entity*)enti); }
 

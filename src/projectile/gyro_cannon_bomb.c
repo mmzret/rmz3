@@ -39,7 +39,7 @@ static void Projectile8_Init(struct Projectile* p) {
     range : {PIXEL(0), PIXEL(0), PIXEL(8), PIXEL(8)},
   };
 
-  InitNonAffineMotion(&p->s);
+  EnableSpriteAnimation_Normal(p);
   (p->s).flags |= DISPLAY;
   (p->s).flags |= FLIPABLE;
   SetSpriteAnimation(p, MOTION(SM023_GYRO_CANNON, 9));

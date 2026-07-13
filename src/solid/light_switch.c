@@ -26,7 +26,7 @@ const SolidRoutine gLightSwitchRoutine = {
 static void Solid32_Init(struct Solid* p) {
   (p->s).flags |= DISPLAY;
   (p->s).flags |= FLIPABLE;
-  InitNonAffineMotion(&p->s);
+  EnableSpriteAnimation_Normal(p);
   SetSpriteAnimation(p, MOTION(SM223_LIGHT_SWITCH, 0));
   (p->s).flags2 |= ENTI_PHYSICS;
   (p->s).size = &sSize;

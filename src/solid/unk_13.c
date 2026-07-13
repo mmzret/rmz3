@@ -51,7 +51,7 @@ static void Solid13_Init(Solid13Object* p) {
   p->physicsAttr = SHAPE_BLOCK;
   p->flags |= FLIPABLE;
   p->flags &= ~DISPLAY;
-  InitNonAffineMotion((void*)p);
+  EnableSpriteAnimation_Normal(p);
   INIT_BODY(p, &Collision_ARRAY_0837025c[0], 1, NULL);
   INIT_BODY(p, &Collision_ARRAY_0837028c[0], 1, NULL);
   p->unk_c0 = 0;

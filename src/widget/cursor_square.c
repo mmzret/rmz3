@@ -49,7 +49,7 @@ static void MenuComp2_Init(struct SquareCursorWidget* p) {
   };  // 0x08372044
 
   SET_WIDGET_ROUTINE(p, ENTITY_UPDATE);
-  InitNonAffineMotion(&p->s);
+  EnableSpriteAnimation_Normal(p);
   (p->s).flags |= DISPLAY;
   (p->s).flags |= FLIPABLE;
   SetSpriteAnimation(p, sMotions[(p->s).work[0]]);

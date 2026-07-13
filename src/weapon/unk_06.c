@@ -43,7 +43,7 @@ static void Weapon6_Init(struct Weapon* w) {
   (w->s).mode[1] = sInitModes[(w->s).work[0]];
   (w->s).flags |= FLIPABLE;
   (w->s).flags |= DISPLAY;
-  InitNonAffineMotion(&w->s);
+  EnableSpriteAnimation_Normal(w);
   ResetDynamicMotion(&w->s);
   INIT_BODY(w, &sCollision, 1, onHit);
   Weapon6_Update(w);

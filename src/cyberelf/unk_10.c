@@ -70,7 +70,7 @@ struct Entity* elf_080e4bf4(Player* player, u8 kind1, u8 kind2, bool8 is_satelit
 static void Elf10_Init(struct CyberElf10* p) {
   struct Zero* z = p->player;
   struct Rect r = gZeroRanges[z->posture];
-  InitNonAffineMotion(&p->s);
+  EnableSpriteAnimation_Normal(p);
   ResetDynamicMotion(&p->s);
   (p->s).flags |= DISPLAY;
   (p->s).flags |= FLIPABLE;

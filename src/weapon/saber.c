@@ -90,7 +90,7 @@ NON_MATCH static void Saber_Init(struct ZeroSaber* p) {
   struct Zero* z = b4->z;
 
   SET_WEAPON_ROUTINE(p, ENTITY_UPDATE);
-  InitNonAffineMotion(&p->s);
+  EnableSpriteAnimation_Normal(p);
   ResetDynamicMotion(&p->s);
   (p->s).flags |= DISPLAY;
   (p->s).flags |= FLIPABLE;

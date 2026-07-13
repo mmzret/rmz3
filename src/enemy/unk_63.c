@@ -58,7 +58,7 @@ static void Enemy63_Init(struct Enemy* p) {
   (p->s).mode[1] = sInitModes[(p->s).work[0]];
   (p->s).flags |= FLIPABLE;
   (p->s).flags |= DISPLAY;
-  InitNonAffineMotion(&p->s);
+  EnableSpriteAnimation_Normal(p);
   INIT_BODY(p, sCollisions, 1, Enemy63_onCollision);
   if ((p->s).work[0] < 4) {
     (p->s).coord.x += PIXEL(s8_ARRAY_ARRAY_08369f5a[(p->s).work[0]][0]);
@@ -178,8 +178,6 @@ static void FUN_08094ea0(struct Enemy* p) {
     }
   }
 }
-
-// --------------------------------------------
 
 // 0x08369efc
 static const struct Collision sCollisions[3] = {

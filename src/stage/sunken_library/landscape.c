@@ -100,8 +100,8 @@ static void exitSunkenLibrary(Coords32* _ UNUSED) {
 
 // ------------------------------------------------------------------------------------------------------------------------------------
 
-static void LayerUpdate_2(struct StageLayer* l, const struct Stage* _ UNUSED);
-static void FUN_08013898(struct StageLayer* l, const struct Stage* _ UNUSED);
+static void LayerUpdate_SunkenLibrary_2(struct StageLayer* l, const struct Stage* _ UNUSED);
+static void LayerDraw_SunkenLibrary_2(struct StageLayer* l, const struct Stage* _ UNUSED);
 static void FUN_08013908(struct StageLayer* l UNUSED, const struct Stage* _ UNUSED);
 void sunkenlib_08013930(struct StageLayer* l, const struct Stage* stage);
 void FUN_08013a98(struct StageLayer* l, const struct Stage* stage);
@@ -125,8 +125,8 @@ static const StageLayerRoutine sLayerRoutine[6] = {
       [LAYER_EXIT]   = NULL,
     },
     [2] = {
-      [LAYER_UPDATE] = LayerUpdate_2,
-      [LAYER_DRAW]   = FUN_08013898,
+      [LAYER_UPDATE] = LayerUpdate_SunkenLibrary_2,
+      [LAYER_DRAW]   = LayerDraw_SunkenLibrary_2,
       [LAYER_EXIT]   = FUN_08013908,
     },
     [3] = {
@@ -148,7 +148,7 @@ static const StageLayerRoutine sLayerRoutine[6] = {
 // clang-format on
 
 // 0x080137c0
-static void LayerUpdate_2(struct StageLayer* l, const struct Stage* _ UNUSED) {
+static void LayerUpdate_SunkenLibrary_2(struct StageLayer* l, const struct Stage* _ UNUSED) {
   if (l->phase == 0) {
     const u16 n = l->bgIdx;
     BGCNT16(n >> 4) = l->prio | l->screenBase | BGCNT_CHARBASE(1) | BGCNT_MOSAIC | BGCNT_TXT256x512;
@@ -160,13 +160,14 @@ static void LayerUpdate_2(struct StageLayer* l, const struct Stage* _ UNUSED) {
     gWindowRegBuffer.dispcnt |= DISPCNT_WIN1_ON;
     gWindowRegBuffer.winin[1] = 0xF3;
     gWindowRegBuffer.winin[2] |= 0xE;
-    *((u16*)&gWindowRegBuffer.winH + 1) = 0xFF;
+    gWindowRegBuffer.winH.half[1] = 0xFF;
     l->unk_10 = 0;
     l->phase++;
   }
 }
 
-static void FUN_08013898(struct StageLayer* l, const struct Stage* _ UNUSED) {
+// 0x08013898
+static void LayerDraw_SunkenLibrary_2(struct StageLayer* l, const struct Stage* _ UNUSED) {
   u16 n = l->bgIdx;
   s32 deltaPixel = ((l->viewportLeftTopPixel).y - (gOverworld.sea >> 8)) + 5;
   if (deltaPixel > 255) deltaPixel = 255;

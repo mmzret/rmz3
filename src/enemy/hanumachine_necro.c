@@ -47,7 +47,7 @@ static void HanumachineNecro_Init(struct Enemy* p) {
   struct Boss* hanu;
 
   hanu = (struct Boss*)(p->s).unk_28;
-  InitNonAffineMotion(&p->s);
+  EnableSpriteAnimation_Normal(p);
   ResetDynamicMotion(&p->s);
   (p->s).flags |= DISPLAY;
   (p->s).flags |= FLIPABLE;

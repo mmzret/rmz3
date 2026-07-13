@@ -51,7 +51,7 @@ static void Graffiti_Init(Object* p) {
     return;
   }
 
-  InitNonAffineMotion(&p->s);
+  EnableSpriteAnimation_Normal(p);
   (p->s).flags |= DISPLAY;
   (p->s).flags |= FLIPABLE;
   SetSpriteAnimation(p, sMotions[(p->s).work[0]]);

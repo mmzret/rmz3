@@ -31,7 +31,7 @@ struct ElementEffect* CreateFlameEffect(struct Entity* e, Coords32* c, u8 r2) {
 
 static void FlameEffect_Init(struct Entity* p) {
   struct Entity* q = p->unk_28;
-  InitNonAffineMotion(p);
+  EnableSpriteAnimation_Normal(p);
   if (q->flags & USE_COMMON_OAM_RENDERER) (p->spr).oam.priority = (q->spr).oam.priority;
   p->renderPrio = 0;
   ForceEntityPalette(p, 14);

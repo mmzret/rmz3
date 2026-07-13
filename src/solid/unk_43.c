@@ -37,7 +37,7 @@ static void Solid43_Init(struct Solid* p) {
 
   (p->s).flags |= DISPLAY;
   (p->s).flags |= FLIPABLE;
-  InitNonAffineMotion(&p->s);
+  EnableSpriteAnimation_Normal(p);
   SetSpriteAnimation(p, MOTION(SM156_UNK_ICE, 0));
   SET_SOLID_ROUTINE(p, ENTITY_DIE);
   Solid43_Die(p);

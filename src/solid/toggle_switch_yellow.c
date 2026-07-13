@@ -33,7 +33,7 @@ static void Solid52_Init(Object* p) {
 
   (p->s).flags |= DISPLAY;
   (p->s).flags |= FLIPABLE;
-  InitNonAffineMotion(&p->s);
+  EnableSpriteAnimation_Normal(p);
   SET_YFLIP(p, TRUE);
   INIT_BODY(p, &sCollision, 0, NULL);
   (p->s).coord.y = FUN_08009f6c((p->s).coord.x, (p->s).coord.y) + PIXEL(2) + 1;

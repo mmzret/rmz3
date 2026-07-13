@@ -82,7 +82,7 @@ static void Ghost68_Die(struct Entity* p) {
 
 static void FUN_080c4d30(struct Entity* p) {
   p->flags |= DISPLAY;
-  InitNonAffineMotion(p);
+  EnableSpriteAnimation_Normal(p);
   SET_VFX_ROUTINE(p, ENTITY_UPDATE);
 }
 
@@ -107,7 +107,7 @@ static void FUN_080c4d60(struct Entity* p) {
 
 static void FUN_080c4db8(struct Entity* p) {
   p->flags |= DISPLAY;
-  InitNonAffineMotion(p);
+  EnableSpriteAnimation_Normal(p);
   SET_VFX_ROUTINE(p, ENTITY_UPDATE);
 }
 
