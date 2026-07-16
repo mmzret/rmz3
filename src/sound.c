@@ -66,27 +66,29 @@ void SoundHBlank(void) {
 void SoundVBlank(void) { m4aSoundVSync(); }
 
 // メニュー画面を開いた時など、BGMの音量を落とす
-NON_MATCH void TurnDownBGM(void) {
-#if MODERN
-  u32 i;
-  for (i = 0; i < MUSIC_PLAYER_LENGTH; i++) {
-    m4aMPlayVolumeControl(gMPlayTable[i].info, 0xFFFF, 0x60);
+void TurnDownBGM(void) {
+  u32 n = NUM_MUSIC_PLAYERS;
+  if (n != 0) {
+    const struct MusicPlayer* mpt = gMPlayTable;
+    u32 i = n;
+    do {
+      m4aMPlayVolumeControl(mpt->info, 0xFFFF, 0x60);
+      mpt++;
+    } while (--i != 0);
   }
-#else
-  INCCODE("asm/wip/TurnDownBGM.inc");
-#endif
 }
 
 // メニュー画面から戻った時に、BGMを通常音量に戻す
-NON_MATCH void TurnUpBGM(void) {
-#if MODERN
-  u32 i;
-  for (i = 0; i < MUSIC_PLAYER_LENGTH; i++) {
-    m4aMPlayVolumeControl(gMPlayTable[i].info, 0xFFFF, 0x100);
+void TurnUpBGM(void) {
+  u32 n = NUM_MUSIC_PLAYERS;
+  if (n != 0) {
+    const struct MusicPlayer* mpt = gMPlayTable;
+    u32 i = n;
+    do {
+      m4aMPlayVolumeControl(mpt->info, 0xFFFF, 0x100);
+      mpt++;
+    } while (--i != 0);
   }
-#else
-  INCCODE("asm/wip/TurnUpBGM.inc");
-#endif
 }
 
 void PlayBGM(SoundID n) { m4aSongNumStart(n); }
@@ -110,8 +112,7 @@ bool32 _isSoundPlaying(SoundID n) {
   return FALSE;
 }
 
-NON_MATCH s16 PlaySound(SoundID id) {
-#if MODERN
+s16 PlaySound(SoundID id) {
   if (gSongTable[id].ms == gSongTable[SE_ZAKO_STUN].ms) {
     if ((SoundID2 == MUS_DUMMY) || (SoundID2 == SE_ZAKO_STUN)) {
       SoundID2 = id;
@@ -120,13 +121,14 @@ NON_MATCH s16 PlaySound(SoundID id) {
   }
 
   if (id == MUS_DUMMY) {
+    // empty do/while nudges the compiler to extend (u16)id straight into its
+    // home register instead of via a scratch+copy (do not remove)
+    do {
+    } while (0);
     return MUS_DUMMY;
   }
   m4aSongNumStart(id);
   return id;
-#else
-  INCCODE("asm/wip/PlaySound.inc");
-#endif
 }
 
 void StopSound(s16 n) {
