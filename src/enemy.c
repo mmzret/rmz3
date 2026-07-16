@@ -48,17 +48,17 @@ static struct Entity* Unused_08063690(u8 n) {
   return NULL;
 }
 
-static struct Weapon* unused_080636d4(struct Entity* e) {
-  struct Weapon* p = (struct Weapon*)GetNearestEntity(gWeaponHeaderPtr, &e->coord);
+static struct Entity* unused_080636d4(struct Entity* q) {
+  struct Entity* p = GetNearestEntity(gWeaponHeaderPtr, &q->coord);
   if (p == NULL) {
     return NULL;
   }
   return p;
 }
 
-static Coords32* unused_080636f0(struct Entity* p) {
-  struct Entity* w = GetNearestEntity(gWeaponHeaderPtr, &p->coord);
-  if (w != NULL) return &w->coord;
+static Coords32* unused_080636f0(struct Entity* q) {
+  struct Entity* p = GetNearestEntity(gWeaponHeaderPtr, &q->coord);
+  if (p != NULL) return &p->coord;
   return NULL;
 }
 

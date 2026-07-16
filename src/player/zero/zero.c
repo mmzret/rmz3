@@ -34,10 +34,10 @@ NON_MATCH static void Zero_Init(struct Zero* z) {
 
   SET_PLAYER_ROUTINE(z, ENTITY_UPDATE);
   EnableSpriteAnimation_Normal(z);
-  ResetDynamicMotion(&z->s);
+  SetSpriteTableDynamic(z);
   (z->s).flags |= DISPLAY;
   (z->s).flags |= FLIPABLE;
-  SetSpriteAnimation(z, MOTION(DM000_ZERO_NEUTRAL, 0x00));
+  SetSpriteAnimation(z, MOTION(DM000_ZERO_NEUTRAL, 0));
   UpdateSpriteAnimation(z);
   if ((z->s).work[1] == 0) {
     (z->s).coord.y = FUN_0800a05c((z->s).coord.x, (z->s).coord.y);

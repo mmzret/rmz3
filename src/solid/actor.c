@@ -27,7 +27,7 @@ const SolidRoutine gScriptActorRoutine = {
 // clang-format on
 
 struct Solid* CreateScriptActor(struct Solid* e, u8 kind) {
-  struct Solid* p = (struct Solid*)AllocEntityLast(gSolidHeaderPtr);
+  struct Solid* p = AllocEntityLast(gSolidHeaderPtr);
   if (p != NULL) {
     INIT_SOLID_ROUTINE(p, SOLID_SCRIPT_ACTOR);
     (p->s).work[0] = kind;
@@ -38,7 +38,7 @@ struct Solid* CreateScriptActor(struct Solid* e, u8 kind) {
   return p;
 }
 
-u16 FUN_080d08d0(struct Boss* babyelf, motion_t m) { return FUN_080d0934(&babyelf->s, m, ((babyelf->s).flags2 >> 2) & 1); }
+u16 FUN_080d08d0(struct Boss* babyelf, motion_t m) { return FUN_080d0934((void*)babyelf, m, (babyelf->flags2 >> 2) & 1); }
 
 // --------------------------------------------
 
@@ -379,7 +379,7 @@ u16 FUN_080d0934(struct Entity* p, motion_t m, u8 r2) {
     case 2: {
       EnableSpriteAnimation_Affine(p);
       if (r2 != 0) {
-        ResetDynamicMotion(p);
+        SetSpriteTableDynamic(p);
       }
       SetSpriteAnimation(p, m);
       p->mode[3]++;
@@ -434,7 +434,7 @@ NON_MATCH u16 FUN_080d0aa0(struct Entity* p, motion_t m, u8 r2) {
     case 0: {
       EnableSpriteAnimation_Affine(p);
       if (r2 != 0) {
-        ResetDynamicMotion(p);
+        SetSpriteTableDynamic(p);
       }
       SetSpriteAnimation(p, m);
       (p->spr).mag.x = 0x20;
@@ -480,7 +480,7 @@ NON_MATCH u16 FUN_080d0aa0(struct Entity* p, motion_t m, u8 r2) {
     case 4: {
       EnableSpriteAnimation_Normal(p);
       if (r2 != 0) {
-        ResetDynamicMotion(p);
+        SetSpriteTableDynamic(p);
       }
       SetSpriteAnimation(p, m);
       p->work[2] = 30;
@@ -519,7 +519,7 @@ static void initDynamicActor(struct Solid* p) {
   (p->s).flags |= DISPLAY;
   (p->s).flags |= FLIPABLE;
   EnableSpriteAnimation_Normal(p);
-  ResetDynamicMotion(&p->s);
+  SetSpriteTableDynamic(p);
   SET_SOLID_ROUTINE(p, ENTITY_UPDATE);
   Actor_Update(p);
 }

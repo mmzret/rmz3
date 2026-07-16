@@ -16,9 +16,11 @@ extern u8* gElfAvailability;  // 多分常に GameState.save.elf
 
 // --------------------------------------------
 
-typedef void (*ElfFunc)(struct Elf*);
+typedef void (*ElfFunc)(CyberElf*);
 typedef ElfFunc ElfRoutine[5];
 extern const ElfRoutine* const gElfFnTable[13];
+
+typedef void (*CyberElfFunc)(CyberElf*);
 
 #define INIT_ELF_ROUTINE(entity, entityID) INIT_RENDER_ENTITY(16, gElfFnTable, entity, entityID)
 #define SET_ELF_ROUTINE(entity, modeID) SET_ENTITY_ROUTINE(gElfFnTable, entity, modeID)
@@ -45,10 +47,10 @@ motion_t GetElfMotion(u8 category);
 
 struct Entity* CreateElf0(struct Zero* z, u8 breed, u8 availability, u8 _);
 struct Entity* CreateNurseBElf(struct Zero* z, u8 breed, u8 availability, u8 satelite_slot);
-struct Elf* CreateNurseEElf(struct Zero* z, u8 r1, u8 r2, u8 isSatelite2);
-struct Elf* CreateFollowerElf(struct Zero* z, u8 breed, u8 availability, bool8 isSatelite1);
-struct Elf* CreateSeaotterElf(struct Zero* z, u8 breed, u8 availability, u8 _);
+CyberElf* CreateNurseEElf(struct Zero* z, u8 r1, u8 r2, u8 isSatelite2);
+struct Entity* CreateFollowerElf(struct Zero* z, u8 breed, u8 availability, bool8 isSatelite1);
+CyberElf* CreateSeaotterElf(struct Zero* z, u8 breed, u8 availability, u8 _);
 // ...
-struct Elf* CreateBirdElf(struct Zero* z, u8 r1, u8 r2, u8 isSatelite2);
+CyberElf* CreateBirdElf(struct Zero* z, u8 r1, u8 r2, u8 isSatelite2);
 
 #endif  // GUARD_RMZ3_CYBERELF_H

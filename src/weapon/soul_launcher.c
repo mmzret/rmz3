@@ -2,9 +2,8 @@
 #include "global.h"
 #include "weapon.h"
 
-struct SoulLauncher {
-  OBJECT_HDR;
-  // props (56bytes, offset: 0xB4..)
+typedef struct {
+  COLLISION_OBJECT_HDR;
   struct SoulLauncherProps {
     struct Zero* z;  // 0xB4
     u8 unk_b8[8];    // 0xB8
@@ -12,37 +11,37 @@ struct SoulLauncher {
     u8 element;      // 0xC1
     u8 unk_c2[42];   // 0xC2
   } props;
-};
-static_assert(sizeof(struct SoulLauncher) == sizeof(struct Weapon));
+} SoulLauncher;
+static_assert(sizeof(SoulLauncher) == sizeof(Weapon));
 
 static const struct Collision sCollisions[2];
 
-void MenuExit_SoulLauncher(struct SoulLauncher* p) {
-  struct Zero* z = (struct Zero*)(p->s).unk_28;
-  if (((&p->props)->element != ((&z->unk_b4)->status).element) || (z->unk_136 & (1 << 2))) {
-    (p->s).flags &= ~DISPLAY;
-    (p->s).flags &= ~FLIPABLE;
+void MenuExit_SoulLauncher(SoulLauncher* p) {
+  struct Zero* z = (struct Zero*)p->unk_28;
+  if (((&p->props)->element != ((&z->unk_b4)->status).element) || (z->unk_136 & (1 << WEAPON_ROD))) {
+    p->flags &= ~DISPLAY;
+    p->flags &= ~FLIPABLE;
     EXIT_BODY(p);
     SET_WEAPON_ROUTINE(p, ENTITY_DISAPPEAR);
   }
 }
 
 struct Entity* CreateSoulLauncher(struct Zero* z, u8 r1, u8 r2) {
-  struct SoulLauncher* p = (struct SoulLauncher*)AllocEntityLast(gWeaponHeaderPtr);
+  SoulLauncher* p = AllocEntityLast(gWeaponHeaderPtr);
   if (p != NULL) {
     if ((z->unk_b4).mainCopy == WEAPON_ROD) {
       INIT_WEAPON_ROUTINE(p, WEAPON_MOVE_SOUL_LANCHER);
-      (p->s).flags2 &= ~ENTITY_FLAGS2_B6;
-      (p->s).renderPrio = 16;
-      (p->s).tileNum = gWeaponTileNum[0], (p->s).palID = gWeaponPalIDs[0];
+      p->flags2 &= ~ENTITY_FLAGS2_B6;
+      p->renderPrio = 16;
+      p->tileNum = gWeaponTileNum[0], p->palID = gWeaponPalIDs[0];
     } else {
       INIT_WEAPON_ROUTINE(p, WEAPON_MOVE_SOUL_LANCHER);
-      (p->s).flags2 &= ~ENTITY_FLAGS2_B6;
-      (p->s).renderPrio = 16;
-      (p->s).tileNum = gWeaponTileNum[1], (p->s).palID = gWeaponPalIDs[1];
+      p->flags2 &= ~ENTITY_FLAGS2_B6;
+      p->renderPrio = 16;
+      p->tileNum = gWeaponTileNum[1], p->palID = gWeaponPalIDs[1];
     }
-    (p->s).unk_28 = (void*)z;
-    (p->s).work[0] = r1, (p->s).work[1] = r2;
+    p->unk_28 = (void*)z;
+    p->work[0] = r1, p->work[1] = r2;
     (&p->props)->element = ((&z->unk_b4)->status).element;
   }
   return (void*)p;
@@ -78,9 +77,9 @@ static const struct Collision sCollisions[2] = {
 
 // --------------------------------------------
 
-void SoulLauncher_Init(struct Weapon* p);
-void SoulLauncher_Update(struct Weapon* p);
-void SoulLauncher_Die(struct Weapon* p);
+void SoulLauncher_Init(SoulLauncher* p);
+void SoulLauncher_Update(SoulLauncher* p);
+void SoulLauncher_Die(SoulLauncher* p);
 
 // clang-format off
 const WeaponRoutine gSoulLauncherRoutine = {

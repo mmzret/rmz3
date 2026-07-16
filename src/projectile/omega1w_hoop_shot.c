@@ -5,7 +5,7 @@
 
 // Omega (1st white) hoop shot?
 typedef struct {
-  OBJECT_HDR;
+  COLLISION_OBJECT_HDR;
   // props (16bytes, offset: 0xB4..)
   u8 unk_b4[4];  // 0xB4
   s32 unk_b8;    // 0xB8
@@ -17,9 +17,9 @@ static_assert(sizeof(Projectile5) == sizeof(struct Projectile));
 static const ProjectileFunc sUpdates[2];
 static const struct Collision sCollisions[];
 
-static void Projectile5_Init(Object* p);
+static void Projectile5_Init(Projectile5* p);
 static void Projectile5_Update(struct Entity* p);
-static void Projectile5_Die(Object* p);
+static void Projectile5_Die(Projectile5* p);
 
 // clang-format off
 const ProjectileRoutine gProjectile5Routine = {
@@ -35,10 +35,10 @@ struct Entity* FUN_0809d8a0(Coords32* c, s32 unk_b8, s32 lifetime, struct Entity
   Projectile5* p = AllocEntityLast(gProjectileHeaderPtr);
   if (p != NULL) {
     INIT_PROJECTILE_ROUTINE(p, 5);
-    (p->s).coord = *c;
-    (p->s).work[0] = 0;
+    p->coord = *c;
+    p->work[0] = 0;
     p->unk_b8 = unk_b8, p->lifetime = lifetime;
-    (p->s).unk_28 = q;
+    p->unk_28 = q;
   }
   return (void*)p;
 }
@@ -47,23 +47,23 @@ struct Entity* FUN_0809d904(Coords32* c, s32 unk_b8, s32 lifetime, struct Entity
   Projectile5* p = AllocEntityLast(gProjectileHeaderPtr);
   if (p != NULL) {
     INIT_PROJECTILE_ROUTINE(p, 5);
-    (p->s).coord = *c;
-    (p->s).work[0] = 1;
+    p->coord = *c;
+    p->work[0] = 1;
     p->unk_b8 = unk_b8, p->lifetime = lifetime;
-    (p->s).unk_28 = q;
+    p->unk_28 = q;
   }
   return (void*)p;
 }
 
 // --------------------------------------------
 
-static void Projectile5_Init(Object* p) {
+static void Projectile5_Init(Projectile5* p) {
   EnableSpriteAnimation_Normal(p);
-  (p->s).flags |= DISPLAY;
-  (p->s).flags |= FLIPABLE;
+  p->flags |= DISPLAY;
+  p->flags |= FLIPABLE;
   INIT_BODY(p, sCollisions, 1, NULL);
   SET_PROJECTILE_ROUTINE(p, ENTITY_UPDATE);
-  (p->s).mode[1] = 0, (p->s).mode[2] = 0, (p->s).mode[3] = 0;
+  p->mode[1] = 0, p->mode[2] = 0, p->mode[3] = 0;
   Projectile5_Update((void*)p);
 }
 
@@ -78,8 +78,8 @@ static void Projectile5_Update(struct Entity* p) {
   (sUpdates[(p->mode[1])])(p);
 }
 
-static void Projectile5_Die(Object* p) {
-  (p->s).flags &= ~DISPLAY;
+static void Projectile5_Die(Projectile5* p) {
+  p->flags &= ~DISPLAY;
   EXIT_BODY(p);
   SET_PROJECTILE_ROUTINE(p, ENTITY_EXIT);
 }
@@ -87,19 +87,19 @@ static void Projectile5_Die(Object* p) {
 // --------------------------------------------
 
 static void FUN_0809da14(Projectile5* p) {
-  if (((p->s).unk_28)->mode[0] >= ENTITY_DIE) {
-    CreateSmoke(3, &(p->s).coord);
+  if ((p->unk_28)->mode[0] >= ENTITY_DIE) {
+    CreateSmoke(3, &p->coord);
     SET_PROJECTILE_ROUTINE(p, ENTITY_DIE);
     return;
   }
-  switch ((p->s).mode[2]) {
+  switch (p->mode[2]) {
     case 0: {
-      if ((p->s).work[0] == 0) {
+      if (p->work[0] == 0) {
         SetSpriteAnimation(p, MOTION(SM010_OMEGA_RING, 0));
       } else {
         SetSpriteAnimation(p, MOTION(SM010_OMEGA_RING, 3));
       }
-      (p->s).mode[2]++;
+      p->mode[2]++;
       FALLTHROUGH;
     }
     case 1: {
@@ -108,8 +108,8 @@ static void FUN_0809da14(Projectile5* p) {
     }
     default: {
       if (p->lifetime == 0 || (--p->lifetime) == 0) {
-        (p->s).work[2] = 127;
-        (p->s).mode[1] = 1, (p->s).mode[2] = 0;
+        p->work[2] = 127;
+        p->mode[1] = 1, p->mode[2] = 0;
       }
       break;
     }

@@ -19,11 +19,11 @@ const BossRoutine gCubitRoutine = {
 // clang-format on
 
 struct Boss* CreateCubit(Coords32* c, u8 n) {
-  struct Boss* p = (struct Boss*)AllocEntityLast(gBossHeaderPtr);
+  struct Boss* p = AllocEntityLast(gBossHeaderPtr);
   if (p != NULL) {
     INIT_BOSS_ROUTINE(p, BOSS_CUBIT);
-    (p->s).coord = *c;
-    (p->s).work[0] = n;
+    p->coord = *c;
+    p->work[0] = n;
   }
   return p;
 }

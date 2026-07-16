@@ -39,12 +39,12 @@ const ElfRoutine *const gElfFnTable[13] = {
 };
 // clang-format on
 
-void InitElfHeader(struct EntityHeader* h, struct Elf* p, s16 len) {
+void InitElfHeader(struct EntityHeader* h, CyberElf* p, s16 len) {
   s16 i;
 
-  InitEntityHeader(h, ENTITY_ELF, &p->s, sizeof(struct Elf), len);
+  InitEntityHeader(h, ENTITY_ELF, (struct Entity*)p, sizeof(CyberElf), len);
   for (i = 0; i < len; i++) {
-    p[i].s.uniqueID = gEntityIDGenerator + i;
+    p[i].uniqueID = gEntityIDGenerator + i;
   }
   gEntityIDGenerator += len;
   gElfHeaderPtr = h;
@@ -78,7 +78,7 @@ void close_menu_080e1540(ElfFunc fn) {
   struct Entity* p = GetEntityList(h);
 
   while (p != (struct Entity*)&h->tail) {
-    fn((struct Elf*)p);
+    fn((CyberElf*)p);
     p = GetNextEntity(h);
   }
 }
@@ -268,7 +268,7 @@ _080E16B8:\n\
  .syntax divided\n");
 }
 
-NAKED void FUN_080e16c4(Coords32* c, struct CollidableEntity* p) {
+NAKED void FUN_080e16c4(Coords32* c, struct Entity* p) {
   asm(".syntax unified\n\
 	push {r4, r5, r6, r7, lr}\n\
 	mov ip, r0\n\

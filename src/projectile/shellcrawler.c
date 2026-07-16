@@ -49,44 +49,44 @@ static void Projectile43_Update(Object* p) {
       _Projectile43_Update,
   };  // 0x0836d748
   if (FLAG(gCurStory.s.gameflags, METTAUR_ENABLED)) {
-    (p->s).flags &= ~DISPLAY;
-    (p->s).flags &= ~FLIPABLE;
+    p->flags &= ~DISPLAY;
+    p->flags &= ~FLIPABLE;
     EXIT_BODY(p);
     SET_PROJECTILE_ROUTINE(p, ENTITY_DISAPPEAR);
     return;
   }
-  (sUpdates[(p->s).mode[1]])(p);
+  (sUpdates[p->mode[1]])(p);
 }
 
 static const struct Collision sCollision[];
 
 // 0x080b155c
 static void _Projectile43_Update(Object* p) {
-  switch ((p->s).mode[2]) {
+  switch (p->mode[2]) {
     case 0: {
       INIT_BODY(p, sCollision, 0, NULL);
       EnableSpriteAnimation_Normal(p);
       SetSpriteAnimation(p, MOTION(SM219_SHELLCRAWLER, 13));
-      SET_XFLIP(p, (p->s).work[2]);
-      (p->s).mode[2]++;
-      (p->s).work[3] = 85;
-      (p->s).work[2] = 6;
+      SET_XFLIP(p, p->work[2]);
+      p->mode[2]++;
+      p->work[3] = 85;
+      p->work[2] = 6;
       FALLTHROUGH;
     }
     case 1: {
-      (p->s).work[3]--;
-      if ((p->s).work[3] == 0) {
-        CreateSmoke(3, &(p->s).coord);
+      p->work[3]--;
+      if (p->work[3] == 0) {
+        CreateSmoke(3, &p->coord);
         SET_PROJECTILE_ROUTINE(p, ENTITY_DIE);
         return;
       }
-      if ((p->s).work[2] == 0) {
+      if (p->work[2] == 0) {
         u8 attr;
-        (p->s).coord.x += (p->s).d.x;
-        attr = FUN_080098a4((p->s).coord.x, (p->s).coord.y);
+        p->coord.x += p->d.x;
+        attr = FUN_080098a4(p->coord.x, p->coord.y);
         if (attr != 0 && !(attr & (1 << 7))) SET_PROJECTILE_ROUTINE(p, ENTITY_DIE);
       } else {
-        (p->s).work[2]--;
+        p->work[2]--;
       }
       UpdateSpriteAnimation(p);
       break;

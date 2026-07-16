@@ -129,10 +129,10 @@ u16 FUN_0805b8ac(struct Boss* _, u32 old) {
 static void onCollision(struct Body* body, Coords32* c1, Coords32* c2) {
   {
     struct Boss* p = (struct Boss*)body->parent;
-    struct Entity* fx = (struct Entity*)(p->s).unk_2c;
+    struct Entity* fx = (struct Entity*)p->unk_2c;
     if (fx != NULL) {
       if (fx->mode[0] >= ENTITY_DIE) {
-        (p->s).unk_2c = NULL;
+        p->unk_2c = NULL;
       } else {
         fx->flags &= ~DISPLAY;
       }
@@ -156,7 +156,7 @@ static void onCollision(struct Body* body, Coords32* c1, Coords32* c2) {
 static void floatGoldOmega1(struct Omega1* p) {
   u16 val = (p->unk_c0 + 1) & 0xFF;
   p->unk_c0 = val;
-  (p->s).coord.y = (p->s).unk_coord.y + (gSineTable[val] << 3);
+  p->coord.y = p->unk_coord.y + (gSineTable[val] << 3);
 }
 
 // --------------------------------------------

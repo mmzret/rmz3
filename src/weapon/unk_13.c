@@ -5,9 +5,9 @@
 static const motion_t sMotions[4];
 static const struct Collision sCollisions[2];
 
-void Weapon13_Init(struct Weapon* p);
-void Weapon13_Update(struct Weapon* p);
-void Weapon13_Die(struct Weapon* p);
+void Weapon13_Init(Weapon* p);
+void Weapon13_Update(Weapon* p);
+void Weapon13_Die(Weapon* p);
 
 // clang-format off
 const WeaponRoutine gWeapon13Routine = {
@@ -19,10 +19,10 @@ const WeaponRoutine gWeapon13Routine = {
 };
 // clang-format on
 
-void MenuExit_Weapon13(struct WeaponCommon* p) {
+void MenuExit_Weapon13(WeaponCommon* p) {
   if ((p->props).z->unk_136 & (1 << 2)) {
-    (p->s).flags &= ~DISPLAY;
-    (p->s).flags &= ~FLIPABLE;
+    p->flags &= ~DISPLAY;
+    p->flags &= ~FLIPABLE;
     EXIT_BODY(p);
     SET_WEAPON_ROUTINE(p, ENTITY_DISAPPEAR);
   }
@@ -30,26 +30,26 @@ void MenuExit_Weapon13(struct WeaponCommon* p) {
 
 struct Entity* CreateWeapon13(struct Zero* z, u8 n) {
   u8 element;
-  struct WeaponCommon* p = (struct WeaponCommon*)AllocEntityLast(gWeaponHeaderPtr);
+  WeaponCommon* p = AllocEntityLast(gWeaponHeaderPtr);
   if (p != NULL) {
     if ((z->unk_b4).mainCopy == WEAPON_ROD) {
       INIT_WEAPON_ROUTINE(p, WEAPON_MOVE_13);
-      (p->s).flags2 &= ~ENTITY_FLAGS2_B6;
-      (p->s).renderPrio = 16;
-      (p->s).tileNum = gWeaponTileNum[0], (p->s).palID = gWeaponPalIDs[0];
+      p->flags2 &= ~ENTITY_FLAGS2_B6;
+      p->renderPrio = 16;
+      p->tileNum = gWeaponTileNum[0], p->palID = gWeaponPalIDs[0];
       element = ((&z->unk_b4)->status).element;
       SetWeaponElement(0, element);
     } else {
       INIT_WEAPON_ROUTINE(p, WEAPON_MOVE_13);
-      (p->s).flags2 &= ~ENTITY_FLAGS2_B6;
-      (p->s).renderPrio = 16;
-      (p->s).tileNum = gWeaponTileNum[1], (p->s).palID = gWeaponPalIDs[1];
+      p->flags2 &= ~ENTITY_FLAGS2_B6;
+      p->renderPrio = 16;
+      p->tileNum = gWeaponTileNum[1], p->palID = gWeaponPalIDs[1];
       element = ((&z->unk_b4)->status).element;
       SetWeaponElement(1, element);
     }
     (p->props).z = z;
-    (p->s).work[0] = n;
-    (p->s).work[1] = ++z->unk_137;
+    p->work[0] = n;
+    p->work[1] = ++z->unk_137;
   }
   return (void*)p;
 }

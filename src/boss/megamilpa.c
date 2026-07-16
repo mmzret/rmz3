@@ -196,8 +196,8 @@ static void Megamilpa_Update(struct Boss* p) {
     return;
   }
 
-  (sUpdates1[(p->s).mode[1]])(p);
-  (sUpdates2[(p->s).mode[1]])(p);
+  (sUpdates1[p->mode[1]])(p);
+  (sUpdates2[p->mode[1]])(p);
 }
 
 // --------------------------------------------

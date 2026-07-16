@@ -459,14 +459,14 @@ static void CopyX_Update(struct BossCopyX* p) {
     StepPaletteAnimation(92);
     RemovePaletteAnimation(92);
     SET_BOSS_ROUTINE(p, ENTITY_DIE);
-    (p->s).mode[2] = 1;
+    p->mode[2] = 1;
     EXIT_BODY(p);
     CopyX_Die((void*)p);
     return;
   }
 
   copyx_08057744((void*)p);
-  if ((p->s).mode[1] != 33) {
+  if (p->mode[1] != 33) {
     p->unk_dd = (p->body).hp - 16;
     if (p->unk_dd < 0) {
       p->unk_dd = 0;
@@ -475,20 +475,20 @@ static void CopyX_Update(struct BossCopyX* p) {
 
   // Check if Copy X is flinching
   if (((p->body).status & BODY_STATUS_WHITE) && (((p->body).unk_23 != 0) || ((p->body).status & (BODY_STATUS_B14 | BODY_STATUS_B15)))) {
-    if ((u8)((p->s).mode[1] - 5) > 1) {
-      if ((p->s).mode[1] != 9) {
-        if ((p->s).mode[1] != 10) {
-          if ((p->s).mode[1] != 11) {
-            (p->s).mode[1] = 33;  // flinch(0x08056c14)
-            (p->s).mode[2] = 1;
-            (p->s).mode[3] = 33;
+    if ((u8)(p->mode[1] - 5) > 1) {
+      if (p->mode[1] != 9) {
+        if (p->mode[1] != 10) {
+          if (p->mode[1] != 11) {
+            p->mode[1] = 33;  // flinch(0x08056c14)
+            p->mode[2] = 1;
+            p->mode[3] = 33;
           }
         }
       }
     }
   }
 
-  (sUpdates[(p->s).mode[1]])((void*)p);
+  (sUpdates[p->mode[1]])((void*)p);
   StartPaletteAnimation(92 + p->unk_c5, 640);
   StepPaletteAnimation(92 + p->unk_c5);
   RemovePaletteAnimation(92 + p->unk_c5);
@@ -512,34 +512,33 @@ static void CopyX_Die(struct Boss* p) {
   };
   // clang-format on
   copyx_08057744(p);
-  (sDeads[(p->s).mode[1]])(p);
+  (sDeads[p->mode[1]])(p);
 }
 
 // --------------------------------------------
 
 static void copyx_080557a4(struct Boss* p) {
-  if ((p->s).scriptEntity->flags & (1 << 0)) {
-    (p->s).mode[1] = 1;
-    (p->s).mode[2] = 1;
+  if (p->scriptEntity->flags & (1 << 0)) {
+    p->mode[1] = 1, p->mode[2] = 1;
   }
 }
 
 static void copyxMode1(struct Boss* p) {
-  if ((p->s).mode[2] != 0) {
+  if (p->mode[2] != 0) {
     SetSpriteAnimation(p, MOTION(DM179_COPY_X, 26));
     CreateVFX55(p, 0, 0);
-    (p->s).mode[2] = 0, (p->s).mode[3] = 0;
-    (p->s).work[2] = 0;
+    p->mode[2] = 0, p->mode[3] = 0;
+    p->work[2] = 0;
   }
-  if (((p->s).work[2] == 0) && ((p->s).motion.cmdIdx == 6)) {
+  if ((p->work[2] == 0) && (p->motion.cmdIdx == 6)) {
     PlaySound(SE_COPYX_MODE_CHANGE);
-    (p->s).work[2]++;
+    p->work[2]++;
   }
-  if ((p->s).mode[3] == 0) {
-    if (IsSpriteAnimEnd(p)) (p->s).mode[3]++;
+  if (p->mode[3] == 0) {
+    if (IsSpriteAnimEnd(p)) p->mode[3]++;
   } else if (!(gStageRun.vm.active & VM_ACTIVE)) {
     SetSpriteAnimation(p, MOTION(DM179_COPY_X, 0));
-    (p->s).mode[1] = 2, (p->s).mode[2] = 1;
+    p->mode[1] = 2, p->mode[2] = 1;
   }
 }
 
@@ -887,9 +886,9 @@ _08055ABC:\n\
 
 static void copyxNextMode(Object* p) {
   UpdateSpriteAnimation(p);
-  if (--(p->s).work[2] == 0xFF) {
-    (p->s).mode[1] = (p->s).mode[3];
-    (p->s).mode[2] = 1;
+  if (--p->work[2] == 0xFF) {
+    p->mode[1] = p->mode[3];
+    p->mode[2] = 1;
   }
 }
 
@@ -897,17 +896,17 @@ static void copyxNextMode(Object* p) {
 static void copyxMode4(struct BossCopyX* p) {
   UpdateSpriteAnimation(p);
   p->unk_c6 = 1;
-  (p->s).mode[1] = 3;
-  (p->s).mode[2] = 1;
-  (p->s).mode[3] = 2;
+  p->mode[1] = 3;
+  p->mode[2] = 1;
+  p->mode[3] = 2;
   {
     s16 hp = (p->body).hp;
     if (hp < 32) {
-      (p->s).work[2] = 8;
+      p->work[2] = 8;
     } else if (hp < 48) {
-      (p->s).work[2] = 4;
+      p->work[2] = 4;
     } else {
-      (p->s).work[2] = 2;
+      p->work[2] = 2;
     }
   }
 }

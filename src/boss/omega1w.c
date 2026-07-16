@@ -69,19 +69,19 @@ static void OmegaWhite_Init(struct Omega1* p) {
   p->unk_c0 = 0;
   p->unk_d4 = 0;
 
-  y = (p->s).coord.y - PIXEL(80);
-  (p->s).coord.y = FUN_08009f6c((p->s).coord.x, y);
-  (p->s).unk_coord.y = p->unk_y = (p->s).coord.y;
+  y = p->coord.y - PIXEL(80);
+  p->coord.y = FUN_08009f6c(p->coord.x, y);
+  p->unk_coord.y = p->unk_y = p->coord.y;
 
-  if ((p->s).work[0] == 0) {
+  if (p->work[0] == 0) {
     SET_BOSS_ROUTINE(p, ENTITY_UPDATE);
-    (p->s).mode[1] = 0, (p->s).mode[2] = 0, (p->s).mode[3] = 0;
+    p->mode[1] = 0, p->mode[2] = 0, p->mode[3] = 0;
   } else {
     SET_BOSS_ROUTINE(p, ENTITY_UPDATE);
-    (p->s).mode[1] = 3, (p->s).mode[2] = 0, (p->s).mode[3] = 0;
+    p->mode[1] = 3, p->mode[2] = 0, p->mode[3] = 0;
   }
   CreateOmega1wHand(&c, FALSE, (void*)p);
-  (p->s).unk_2c = omegaWhite_080b91d4(&c, 2, (struct Entity*)p);
+  p->unk_2c = omegaWhite_080b91d4(&c, 2, (struct Entity*)p);
   CreateOmega1wHand(&c, TRUE, (void*)p);
   StartPaletteAnimation(11, 672);
   OmegaWhite_Update((void*)p);
@@ -130,14 +130,14 @@ static void OmegaWhite_Update(struct Boss* p) {
 
   if (((p->body).status & BODY_STATUS_DEAD) || ((p->body).hp == 0)) {
     bool16 player_dead = gStageRun.missionStatus & MISSION_PLAYER_DEAD;
-    if (!player_dead && ((p->s).mode[1] != 6)) {
+    if (!player_dead && (p->mode[1] != 6)) {
       PlaySound(SE_OMEGA1_DEATH);
-      (p->s).mode[1] = 6, (p->s).mode[2] = 0;
+      p->mode[1] = 6, p->mode[2] = 0;
     }
   }
 
-  (sUpdates1[(p->s).mode[1]])(p);
-  (sUpdates2[(p->s).mode[1]])(p);
+  (sUpdates1[p->mode[1]])(p);
+  (sUpdates2[p->mode[1]])(p);
 }
 
 // --------------------------------------------
@@ -150,13 +150,13 @@ static void OmegaWhite_Die(struct Boss* p) {
       omegaWhite_0803e148,
       omegaWhite_0803e1f8,
   };
-  (seq[(p->s).mode[1]])(p);
+  (seq[p->mode[1]])(p);
 }
 
 static void OmegaWhite_Disappear(struct Boss* p) {
   RemovePaletteAnimation(11);
   EXIT_BODY(p);
-  (p->s).flags &= ~DISPLAY;
+  p->flags &= ~DISPLAY;
   gOverworld.state[1] = 0;
   DeleteBoss((void*)p);
 }
@@ -165,7 +165,7 @@ static void omegaWhite_0803e148(struct Boss* p) {
   Coords32* velocity;
 
   StepPaletteAnimation(11);
-  switch ((p->s).mode[2]) {
+  switch (p->mode[2]) {
     case 0: {
       if ((gStageRun.missionStatus & MISSION_STAY) && !(gStageRun.vm.active & VM_ACTIVE)) {
         gStageRun.missionStatus &= ~MISSION_STAY;
@@ -173,24 +173,24 @@ static void omegaWhite_0803e148(struct Boss* p) {
       }
       PlaySound(SE_OMEGA1_DEATH);
       EXIT_BODY(p);
-      velocity = &(p->s).d;
+      velocity = &p->d;
       velocity->x = velocity->y = 0;
-      (p->s).work[2] = 90;
-      (p->s).mode[2]++;
+      p->work[2] = 90;
+      p->mode[2]++;
       FALLTHROUGH;
     }
     case 1: {
-      if ((p->s).work[2] != 0) {
-        (p->s).work[2]--;
-        if ((p->s).work[2] == 0) {
-          (p->s).mode[2]++;
+      if (p->work[2] != 0) {
+        p->work[2]--;
+        if (p->work[2] == 0) {
+          p->mode[2]++;
         }
       }
       break;
     }
     case 2: {
-      if ((p->s).scriptEntity->flags & (1 << 7)) {
-        (p->s).mode[1] = 1, (p->s).mode[2] = 0;
+      if (p->scriptEntity->flags & (1 << 7)) {
+        p->mode[1] = 1, p->mode[2] = 0;
       }
       break;
     }
@@ -198,13 +198,13 @@ static void omegaWhite_0803e148(struct Boss* p) {
 }
 
 static void omegaWhite_0803e1f8(struct Boss* p) {
-  u8 phase = (p->s).mode[2];
+  u8 phase = p->mode[2];
   switch (phase) {
     case 0: {
       RemovePaletteAnimation(11);
-      (p->s).flags &= ~DISPLAY;
+      p->flags &= ~DISPLAY;
       gOverworld.state[1] = phase;
-      (p->s).mode[2]++;
+      p->mode[2]++;
     }
     case 1: {
       gStageRun.vm.active |= VM_FLAG1;
@@ -215,25 +215,25 @@ static void omegaWhite_0803e1f8(struct Boss* p) {
 static bool8 nop_0803e240(void* _) { return TRUE; }
 
 static void omegaWhite_0803e244(struct Omega1* p) {
-  if ((p->s).mode[2] == 0) {
+  if (p->mode[2] == 0) {
     gOverworld.state[1] = 1;
-    (p->s).mode[1] = 1;
-    (p->s).mode[2] = 0;
+    p->mode[1] = 1;
+    p->mode[2] = 0;
     p->unk_d4 |= (1 << 0);
-    (p->s).mode[2]++;
+    p->mode[2]++;
   }
 }
 
 static bool8 nop_0803e278(void* _) { return TRUE; }
 
 static void omegaWhiteIntoMode2(struct Boss* p) {
-  u8 phase = (p->s).mode[2];
+  u8 phase = p->mode[2];
   switch (phase) {
     case 0: {
-      (p->s).mode[2] = 1;
+      p->mode[2] = 1;
     }
     case 1: {
-      (p->s).mode[1] = 2, (p->s).mode[2] = 0;
+      p->mode[1] = 2, p->mode[2] = 0;
     }
   }
 }
@@ -241,14 +241,14 @@ static void omegaWhiteIntoMode2(struct Boss* p) {
 static bool8 nop_0803e29c(void* _) { return TRUE; }
 
 static void omegaWhite_0803e2a0(struct Boss* p) {
-  u8 phase = (p->s).mode[2];
+  u8 phase = p->mode[2];
   switch (phase) {
     case 0: {
-      (p->s).mode[2] = 1;
+      p->mode[2] = 1;
     }
     case 1: {
       if (!(gStageRun.vm.active & VM_ACTIVE)) {
-        (p->s).mode[1] = 3, (p->s).mode[2] = 0;
+        p->mode[1] = 3, p->mode[2] = 0;
       }
     }
   }
@@ -257,21 +257,21 @@ static void omegaWhite_0803e2a0(struct Boss* p) {
 // クールタイム終了後のオメガのモードをランダムに4か5にする
 // 0x0803e2d0
 static bool8 changeOmegaWhiteMode(struct Omega1* p) {
-  if ((p->s).mode[2] == 0) return TRUE;
-  if ((p->s).work[3] == 0) return TRUE;
-  if (--(p->s).work[3] != 0) return TRUE;
+  if (p->mode[2] == 0) return TRUE;
+  if (p->work[3] == 0) return TRUE;
+  if (--p->work[3] != 0) return TRUE;
 
   if ((RANDOM(RNG_0202f388) & 0xF) < 8) {
     if ((p->unk_b4[1] != 0) || (p->unk_b4[2] != 0)) {
-      (p->s).mode[1] = 4, (p->s).mode[2] = 0;
+      p->mode[1] = 4, p->mode[2] = 0;
     } else {
-      (p->s).mode[1] = 5, (p->s).mode[2] = 0;
+      p->mode[1] = 5, p->mode[2] = 0;
     }
   } else {
     if ((p->unk_b4[1] == 1) && (p->unk_b4[2] == 1)) {
-      (p->s).mode[1] = 4, (p->s).mode[2] = 0;
+      p->mode[1] = 4, p->mode[2] = 0;
     } else {
-      (p->s).mode[1] = 5, (p->s).mode[2] = 0;
+      p->mode[1] = 5, p->mode[2] = 0;
     }
   }
   return TRUE;
@@ -279,13 +279,13 @@ static bool8 changeOmegaWhiteMode(struct Omega1* p) {
 
 // オメガが縦にふわふわして何もしていない状態(2秒間)
 static void omegaWhiteNeutral(struct Boss* p) {
-  u8 phase = (p->s).mode[2];
+  u8 phase = p->mode[2];
   switch (phase) {
     case 0: {
       SetDDP(&p->body, &sCollisions[1]);
-      (p->s).d.x = (p->s).d.y = 0;
-      (p->s).work[3] = 2 * SECOND;
-      (p->s).mode[2]++;
+      p->d.x = p->d.y = 0;
+      p->work[3] = 2 * SECOND;
+      p->mode[2]++;
     }
     case 1: {
       floatOmegaWhite((void*)p);
@@ -877,10 +877,10 @@ _0803E7E6:\n\
 static void onCollision(struct Body* body, Coords32* c1, Coords32* c2) {
   {
     struct Boss* p = (struct Boss*)body->parent;
-    struct Entity* fx = (struct Entity*)(p->s).unk_2c;
+    struct Entity* fx = (struct Entity*)p->unk_2c;
     if (fx != NULL) {
       if (fx->mode[0] >= ENTITY_DIE) {
-        (p->s).unk_2c = NULL;
+        p->unk_2c = NULL;
       } else {
         fx->flags &= ~DISPLAY;
       }
@@ -903,7 +903,7 @@ static void onCollision(struct Body* body, Coords32* c1, Coords32* c2) {
 static void floatOmegaWhite(struct Omega1* p) {
   u16 val = (p->unk_c0 + 1) & 0xFF;
   p->unk_c0 = val;
-  (p->s).coord.y = (p->s).unk_coord.y + (gSineTable[val] << 3);
+  (p->coord).y = (p->unk_coord).y + (gSineTable[val] << 3);
 }
 
 static const struct Collision sCollisions[8] = {

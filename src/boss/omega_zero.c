@@ -9,8 +9,8 @@
 #include "weapon.h"
 #include "zero.h"
 
-struct BossOmegaZero {
-  OBJECT_HDR;
+typedef struct {
+  COLLISION_OBJECT_HDR;
   // props (48bytes, offset: 0xB4..)
   s32 x;
   s32 y;
@@ -29,8 +29,8 @@ struct BossOmegaZero {
   u8 unk_d3;
   u32 unk_d4;
   u8 unk_d8[12];
-};
-static_assert(sizeof(struct BossOmegaZero) == sizeof(struct Boss));
+} BossOmegaZero;
+static_assert(sizeof(BossOmegaZero) == sizeof(struct Boss));
 
 static const u8 sModes[48];
 static const u8 sInitModes[4];
@@ -46,7 +46,7 @@ struct Projectile* CreateOmegaZeroSaber(struct Entity* e, u8 kind);
 static const BossFunc gOmegaZeroMainRoutine1[24];
 static const BossFunc gOmegaZeroMainRoutine2[24];
 
-static void OmegaZero_Init(struct BossOmegaZero* p);
+static void OmegaZero_Init(BossOmegaZero* p);
 static void OmegaZero_Update(struct Boss* p);
 static void OmegaZero_Die(struct Boss* p);
 
@@ -61,9 +61,9 @@ const BossRoutine gOmegaZeroRoutine = {
 // clang-format on
 
 // 0x0805d5d0
-NON_MATCH static void calcNextOmegaZeroAction(struct BossOmegaZero* p) {
+NON_MATCH static void calcNextOmegaZeroAction(BossOmegaZero* p) {
 #if MODERN
-  s32 d = abs((p->s).coord.x - (pZero2->s).coord.x);
+  s32 d = abs((p->coord).x - (pZero2->s).coord.x);
   if (d < PIXEL(80)) {
     d = 0;  // 近距離ルーチン
   } else if (d < PIXEL(120)) {
@@ -87,8 +87,8 @@ NON_MATCH static void calcNextOmegaZeroAction(struct BossOmegaZero* p) {
         p->prevMode = sModes[d + rng];
         p->unk_c6 = 0;
       }
-      (p->s).mode[1] = p->prevMode;
-      (p->s).mode[2] = 0;
+      p->mode[1] = p->prevMode;
+      p->mode[2] = 0;
       return;
     }
   }
@@ -97,33 +97,29 @@ NON_MATCH static void calcNextOmegaZeroAction(struct BossOmegaZero* p) {
 #endif
 }
 
-static void oz_0805d6a8(struct BossOmegaZero* p) {
+static void oz_0805d6a8(BossOmegaZero* p) {
   {
     s32 x = p->x - PIXEL(224);
-    if ((p->s).coord.x < x) {
-      (p->s).coord.x = x;
-    }
+    if ((p->coord).x < x) (p->coord).x = x;
   }
 
   {
     s32 x = p->x + PIXEL(224);
-    if ((p->s).coord.x > x) {
-      (p->s).coord.x = x;
-    }
+    if ((p->coord).x > x) (p->coord).x = x;
   }
 }
 
 // 0x0805d6d8
 static void onCollision(struct Body* body, Coords32* c1, Coords32* c2) {
-  struct Entity* other = (struct Entity*)body->enemy->parent;
-  struct BossOmegaZero* self = (struct BossOmegaZero*)body->parent;
+  struct Entity* q = (struct Entity*)body->enemy->parent;
+  BossOmegaZero* p = (BossOmegaZero*)body->parent;
 
   if (body->hitboxFlags & BODY_STATUS_WHITE) {
-    self->isRight = (self->s).coord.x < (other->coord).x;
+    p->isRight = (p->coord).x < (q->coord).x;
   }
 }
 
-static bool8 tryKillOmegaZero(struct BossOmegaZero* p) {
+static bool8 tryKillOmegaZero(BossOmegaZero* p) {
   u32* status = &(p->body).status;
 
   if (((*status & BODY_STATUS_DEAD) || ((p->body).hp == 0)) && !(gStageRun.missionStatus & MISSION_PLAYER_DEAD)) {
@@ -135,9 +131,9 @@ static bool8 tryKillOmegaZero(struct BossOmegaZero* p) {
 
     SET_BOSS_ROUTINE(p, ENTITY_DIE);
     if (*status & BODY_STATUS_SLASHED) {
-      (p->s).mode[1] = 1;
+      p->mode[1] = 1;
     } else {
-      (p->s).mode[1] = 0;
+      p->mode[1] = 0;
     }
     OmegaZero_Die((void*)p);
     return TRUE;
@@ -146,30 +142,30 @@ static bool8 tryKillOmegaZero(struct BossOmegaZero* p) {
   return FALSE;
 }
 
-NON_MATCH static void OmegaZero_Init(struct BossOmegaZero* p) {
+NON_MATCH static void OmegaZero_Init(BossOmegaZero* p) {
 #if MODERN
   struct Body* body;
   void* fn;
 
   SET_BOSS_ROUTINE(p, ENTITY_UPDATE);
-  (p->s).mode[1] = sInitModes[(p->s).work[0]];
-  (p->s).flags |= FLIPABLE;
-  (p->s).flags |= DISPLAY;
+  p->mode[1] = sInitModes[p->work[0]];
+  p->flags |= FLIPABLE;
+  p->flags |= DISPLAY;
   EnableSpriteAnimation_Normal(p);
-  ResetDynamicMotion(&p->s);
+  SetSpriteTableDynamic(p);
   ResetBossBody((void*)p, sCollisions, 96);
   SET_BOSS_COLLISION_HANDLER(p, onCollision);
-  (p->s).palID = 4, (p->s).tileNum = 512;
-  if ((p->s).work[0] == 0) {
+  p->palID = 4, p->tileNum = 512;
+  if (p->work[0] == 0) {
     LOAD_STATIC_GRAPHIC(SM128_UNK);
     LOAD_STATIC_GRAPHIC(SM237_ROCK);
-    p->x = (p->s).coord.x >> 8;
+    p->x = (p->coord).x >> 8;
     p->x = ((p->x / 240) * PIXEL(240));
-    p->y = FUN_08009f6c((p->s).coord.x, (p->s).coord.y);
+    p->y = FUN_08009f6c((p->coord).x, (p->coord).y);
     p->vfx = NULL;
     p->prevMode |= 0xFF;
     p->unk_c6 = 0;
-    (p->s).coord.y = p->y;
+    (p->coord).y = p->y;
     LoadZeroPalette(NULL, 8);
     SetWeaponElement(2, 4);
   }
@@ -187,7 +183,7 @@ static void ozNeutral(struct Boss* p);
 static void ozMode1(struct Boss* p);
 static void ozDash(struct Boss* p);
 static void ozDoubleJump1(struct Boss* p);
-static void ozDoubleJump2(struct BossOmegaZero* p);
+static void ozDoubleJump2(BossOmegaZero* p);
 static void ozTripleSlash1(struct Boss* p);
 static void ozTripleSlash2(struct Boss* p);
 static void ozTripleSlash3(struct Boss* p);
@@ -196,7 +192,7 @@ static void double_charge_wave_2(struct Boss* p);
 static void double_charge_wave_3(struct Boss* p);
 static void ozRyuenjin1(struct Boss* p);
 static void ozRyuenjin2(struct Boss* p);
-static void ozRyuenjin3(struct BossOmegaZero* p);
+static void ozRyuenjin3(BossOmegaZero* p);
 static void messenkou(struct Boss* p);
 static void rekkoha(struct Boss* p);
 static void charge_saber(struct Boss* p);
@@ -265,8 +261,8 @@ static void OmegaZero_Update(struct Boss* p) {
   // clang-format on
   bool8 isDead = tryKillOmegaZero((void*)p);
   if (!isDead) {
-    (sUpdates1[(p->s).mode[1]])(p);
-    (sUpdates2[(p->s).mode[1]])(p);
+    (sUpdates1[p->mode[1]])(p);
+    (sUpdates2[p->mode[1]])(p);
   }
 }
 
@@ -278,7 +274,7 @@ static void OmegaZero_Die(struct Boss* p) {
       ozDeath0,
       ozDeath1,
   };
-  (sDeads[(p->s).mode[1]])(p);
+  (sDeads[p->mode[1]])(p);
   return;
 }
 
@@ -290,36 +286,36 @@ static void nop_0805d950(struct Boss* _) {
 // 0x0805d954
 static void tryMakeFlinch(struct Boss* p) {
   if ((p->body).status & BODY_STATUS_WHITE) {
-    (p->s).mode[1] = 19;
-    (p->s).mode[2] = 0;
+    p->mode[1] = 19;
+    p->mode[2] = 0;
   }
 }
 
 // 01 00 -- --
 static void ozNeutral(struct Boss* p) {
-  switch ((p->s).mode[2]) {
+  switch (p->mode[2]) {
     case 0: {
-      if ((u32)((pZero2->s).coord.x - (p->s).coord.x) + PIXEL(208) > PIXEL(416)) {
-        (p->s).work[2] = 8;
+      if ((u32)((pZero2->s).coord.x - p->coord.x) + PIXEL(208) > PIXEL(416)) {
+        p->work[2] = 8;
       } else {
-        (p->s).work[2] = 24;
+        p->work[2] = 24;
       }
       SetSpriteAnimation(p, MOTION(DM000_ZERO_NEUTRAL, 0));
-      (p->s).mode[2]++;
+      p->mode[2]++;
       FALLTHROUGH;
     }
     case 1: {
       bool8 xflip;
       SetDDP(&p->body, &sCollisions[1]);
-      (p->s).spr.xflip = (p->s).coord.x < (pZero2->s).coord.x;
-      xflip = (p->s).spr.oam.xflip = (p->s).coord.x < (pZero2->s).coord.x;
+      p->spr.xflip = p->coord.x < (pZero2->s).coord.x;
+      xflip = p->spr.oam.xflip = p->coord.x < (pZero2->s).coord.x;
       if (xflip) {
-        (p->s).flags |= X_FLIP;
+        p->flags |= X_FLIP;
       } else {
-        (p->s).flags &= ~X_FLIP;
+        p->flags &= ~X_FLIP;
       }
-      (p->s).work[2]--;
-      if (!((pZero2->body).status & BODY_STATUS_DEAD) && ((pZero2->body).hp != 0) && ((p->s).work[2] == 0)) {
+      p->work[2]--;
+      if (!((pZero2->body).status & BODY_STATUS_DEAD) && ((pZero2->body).hp != 0) && (p->work[2] == 0)) {
         calcNextOmegaZeroAction((void*)p);
       }
       UpdateSpriteAnimation(p);
@@ -694,11 +690,11 @@ _0805DD18: .4byte 0xFFFFFC00\n\
 }
 
 // 01 04 xx --
-static void ozDoubleJump2(struct BossOmegaZero* p) {
-  switch ((p->s).mode[2]) {
+static void ozDoubleJump2(BossOmegaZero* p) {
+  switch (p->mode[2]) {
     case 0: {
       SetSpriteAnimation(p, MOTION(DM004_ZERO_AIR, 1));
-      (p->s).mode[2]++;
+      p->mode[2]++;
       break;
     }
     case 1: {
@@ -709,30 +705,28 @@ static void ozDoubleJump2(struct BossOmegaZero* p) {
     }
   }
 
-  (p->s).coord.x += (p->s).d.x;
+  p->coord.x += p->d.x;
   oz_0805d6a8((void*)p);
 
-  (p->s).d.y += 0x40;
-  if (PIXEL(7) < (p->s).d.y) {
-    (p->s).d.y = PIXEL(7);
-  }
+  p->d.y += 0x40;
+  if (PIXEL(7) < p->d.y) p->d.y = PIXEL(7);
 
-  (p->s).coord.y += (p->s).d.y;
-  if ((p->s).coord.y >= p->y) {
-    (p->s).coord.y = p->y;
-    (p->s).mode[1] = 0, (p->s).mode[2] = 0;
+  p->coord.y += p->d.y;
+  if (p->coord.y >= p->y) {
+    p->coord.y = p->y;
+    p->mode[1] = 0, p->mode[2] = 0;
   }
   UpdateSpriteAnimation(p);
 }
 
 // 01 05 xx --
 static void ozTripleSlash1(struct Boss* p) {
-  switch ((p->s).mode[2]) {
+  switch (p->mode[2]) {
     case 0: {
       PlaySound(SE_OMEGAZERO_VOICE_ea);
       CreateOmegaZeroSaber((struct Entity*)p, 0);
       SetSpriteAnimation(p, MOTION(DM014_ZERO_SABER_TRIPLE1, 0));
-      (p->s).mode[2]++;
+      p->mode[2]++;
       break;
     }
     case 1: {
@@ -745,18 +739,18 @@ static void ozTripleSlash1(struct Boss* p) {
 
   UpdateSpriteAnimation(p);
   if (IsSpriteAnimEnd(p)) {
-    (p->s).mode[1] = 6, (p->s).mode[2] = 0;
+    p->mode[1] = 6, p->mode[2] = 0;
   }
 }
 
 // 01 06 xx --
 static void ozTripleSlash2(struct Boss* p) {
-  switch ((p->s).mode[2]) {
+  switch (p->mode[2]) {
     case 0: {
       PlaySound(SE_OMEGAZERO_VOICE_eb);
       CreateOmegaZeroSaber((struct Entity*)p, 1);
       SetSpriteAnimation(p, MOTION(DM015_ZERO_SABER_TRIPLE2, 0));
-      (p->s).mode[2]++;
+      p->mode[2]++;
       break;
     }
     case 1: {
@@ -769,18 +763,18 @@ static void ozTripleSlash2(struct Boss* p) {
 
   UpdateSpriteAnimation(p);
   if (IsSpriteAnimEnd(p)) {
-    (p->s).mode[1] = 7, (p->s).mode[2] = 0;
+    p->mode[1] = 7, p->mode[2] = 0;
   }
 }
 
 // 01 07 xx --
 static void ozTripleSlash3(struct Boss* p) {
-  switch ((p->s).mode[2]) {
+  switch (p->mode[2]) {
     case 0: {
       PlaySound(SE_OMEGAZERO_VOICE_ec);
       CreateOmegaZeroSaber((struct Entity*)p, 2);
       SetSpriteAnimation(p, MOTION(DM016_ZERO_SABER_TRIPLE3, 0));
-      (p->s).mode[2]++;
+      p->mode[2]++;
       break;
     }
     case 1: {
@@ -793,24 +787,24 @@ static void ozTripleSlash3(struct Boss* p) {
 
   UpdateSpriteAnimation(p);
   if (IsSpriteAnimEnd(p)) {
-    (p->s).mode[1] = 0, (p->s).mode[2] = 0;
+    p->mode[1] = 0, p->mode[2] = 0;
   }
 }
 
 // 01 08 xx --
 static void double_charge_wave_1(struct Boss* p) {
-  switch ((p->s).mode[2]) {
+  switch (p->mode[2]) {
     case 0: {
-      (p->s).work[2] = 24;
+      p->work[2] = 24;
       oz_080c3b44((void*)p);
       oz_080c3b9c((void*)p);
-      (p->s).mode[2]++;
+      p->mode[2]++;
       FALLTHROUGH;
     }
     case 1: {
-      (p->s).work[2]--;
-      if ((p->s).work[2] == 0) {
-        (p->s).mode[2]++;
+      p->work[2]--;
+      if (p->work[2] == 0) {
+        p->mode[2]++;
       }
       UpdateSpriteAnimation(p);
       break;
@@ -818,13 +812,13 @@ static void double_charge_wave_1(struct Boss* p) {
 
     case 2: {
       SetSpriteAnimation(p, MOTION(DM008_ZERO_BUSTER, 3));
-      (p->s).mode[2]++;
+      p->mode[2]++;
       FALLTHROUGH;
     }
     case 3: {
       UpdateSpriteAnimation(p);
       if (IsSpriteAnimEnd(p)) {
-        (p->s).mode[1] = 9, (p->s).mode[2] = 0;
+        p->mode[1] = 9, p->mode[2] = 0;
       }
       break;
     }
@@ -1310,25 +1304,23 @@ _0805E27C: .4byte gProjectileFnTable\n\
   01 0D xx --
   Fall down
 */
-static void ozRyuenjin3(struct BossOmegaZero* p) {
-  switch ((p->s).mode[2]) {
+static void ozRyuenjin3(BossOmegaZero* p) {
+  switch (p->mode[2]) {
     case 0: {
       CreateOmegaZeroSaber((struct Entity*)p, 6);
       SetSpriteAnimation(p, MOTION(DM018_ZERO_SABER_TENRETSUJIN, 2));
-      (p->s).mode[2]++;
+      p->mode[2]++;
       FALLTHROUGH;
     }
     case 1: {
-      (p->s).coord.x += (p->s).d.x;
+      p->coord.x += p->d.x;
       oz_0805d6a8((void*)p);
-      (p->s).d.y += PIXEL(1) / 4;
-      if ((p->s).d.y > PIXEL(7)) {
-        (p->s).d.y = PIXEL(7);
-      }
-      (p->s).coord.y += (p->s).d.y;
-      if ((p->s).coord.y >= p->y) {
-        (p->s).coord.y = p->y;
-        (p->s).mode[1] = 0, (p->s).mode[2] = 0;
+      p->d.y += PIXEL(1) / 4;
+      if (p->d.y > PIXEL(7)) p->d.y = PIXEL(7);
+      p->coord.y += p->d.y;
+      if (p->coord.y >= p->y) {
+        p->coord.y = p->y;
+        p->mode[1] = 0, p->mode[2] = 0;
       }
       UpdateSpriteAnimation(p);
       break;
@@ -1539,43 +1531,43 @@ _0805E45C: .4byte 0x00003F01\n\
 
 // 01 10 xx --
 static void charge_saber(struct Boss* p) {
-  switch ((p->s).mode[2]) {
+  switch (p->mode[2]) {
     case 0: {
-      (p->s).work[2] = 24;
+      p->work[2] = 24;
       oz_080c3b44((void*)p);
       oz_080c3b9c((void*)p);
-      (p->s).mode[2]++;
+      p->mode[2]++;
       FALLTHROUGH;
     }
     case 1: {
-      (p->s).work[2]--;
-      if ((p->s).work[2] == 0) {
-        (p->s).mode[2]++;
+      p->work[2]--;
+      if (p->work[2] == 0) {
+        p->mode[2]++;
       }
       UpdateSpriteAnimation(p);
       break;
     }
     case 2: {
-      (p->s).work[2] = 0;
+      p->work[2] = 0;
       PlaySound(SE_OMEGAZERO_CHARGE_SABER);
       CreateOmegaZeroSaber((struct Entity*)p, 7);
       SetSpriteAnimation(p, MOTION(DM020_ZERO_SABER_CHARGE, 0));
-      (p->s).mode[2]++;
+      p->mode[2]++;
       FALLTHROUGH;
     }
     case 3: {
       UpdateSpriteAnimation(p);
-      if ((*(u32*)&(p->s).motion.id & 0xffff00) == 0x10300) {
-        s32 x = (p->s).coord.x - PIXEL(48);
-        if ((p->s).flags & X_FLIP) {
-          x = (p->s).coord.x + PIXEL(48);
+      if ((*(u32*)&p->motion.id & 0xffff00) == 0x10300) {
+        s32 x = p->coord.x - PIXEL(48);
+        if (p->flags & X_FLIP) {
+          x = p->coord.x + PIXEL(48);
         }
         CreateOzChargeSaberRock(x, 0);
-        oz_080b3820(&(p->s).coord, (p->s).flags >> 4 & 1);
-        AppendQuake(3, &(p->s).coord);
+        oz_080b3820(&p->coord, p->flags >> 4 & 1);
+        AppendQuake(3, &p->coord);
       }
       if (IsSpriteAnimEnd(p)) {
-        (p->s).mode[1] = 0, (p->s).mode[2] = 0;
+        p->mode[1] = 0, p->mode[2] = 0;
       }
       break;
     }
@@ -2268,37 +2260,37 @@ _0805EA50: .4byte pZero2\n\
 
 // 01 17 xx --
 static void ozRanbu4(struct Boss* p) {
-  switch ((p->s).mode[2]) {
+  switch (p->mode[2]) {
     case 0: {
       PlaySound(SE_OMEGAZERO_VOICE_ec);
       CreateOmegaZeroSaber((struct Entity*)p, 14);
       SetSpriteAnimation(p, MOTION(DM016_ZERO_SABER_TRIPLE3, 0));
-      (p->s).mode[2]++;
+      p->mode[2]++;
       FALLTHROUGH;
     }
     case 1: {
-      FUN_0801779c(&p->s);
+      FUN_0801779c((void*)p);
       UpdateSpriteAnimation(p);
-      if (IsSpriteAnimEnd(p)) (p->s).mode[2]++;
+      if (IsSpriteAnimEnd(p)) p->mode[2]++;
       break;
     }
 
     case 2: {
       PlaySound(SE_OMEGAZERO_CHARGE_SABER);
       SetSpriteAnimation(p, MOTION(DM017_ZERO_SABER_SLASH_UP, 0));
-      (p->s).work[2] = 0;
-      (p->s).mode[2]++;
+      p->work[2] = 0;
+      p->mode[2]++;
       FALLTHROUGH;
     }
     case 3: {
-      FUN_0801779c(&p->s);
+      FUN_0801779c((void*)p);
       UpdateSpriteAnimation(p);
-      if (((p->s).motion.cmdIdx == 1) && ((p->s).work[2] == 0)) {
-        (p->s).work[2] = 1;
+      if ((p->motion.cmdIdx == 1) && (p->work[2] == 0)) {
+        p->work[2] = 1;
         CreateOmegaZeroSaber((struct Entity*)p, 15);
       }
       if (IsSpriteAnimEnd(p)) {
-        (p->s).mode[1] = 11, (p->s).mode[2] = 0;
+        p->mode[1] = 11, p->mode[2] = 0;
       }
       break;
     }
@@ -2308,42 +2300,42 @@ static void ozRanbu4(struct Boss* p) {
     }
   }
 
-  (pZero2->s).coord.x = (p->s).unk_coord.x;
-  (pZero2->s).coord.y = (p->s).unk_coord.y;
+  (pZero2->s).coord.x = p->unk_coord.x;
+  (pZero2->s).coord.y = p->unk_coord.y;
 }
 
 // 02 00 xx --
 static void ozDeath0(struct Boss* p) {
-  switch ((p->s).mode[2]) {
+  switch (p->mode[2]) {
     case 0: {
       EXIT_BODY(p);
       if ((gStageRun.missionStatus & MISSION_STAY) && !(gStageRun.vm.active & VM_ACTIVE)) {
         gStageRun.missionStatus &= ~MISSION_STAY;
         gStageRun.missionStatus |= MISSION_SUCCESS;
       }
-      (p->s).work[2] = 80;
+      p->work[2] = 80;
       SetSpriteAnimation(p, MOTION(DM050_ZERO_STUN, 1));
-      (p->s).mode[2]++;
+      p->mode[2]++;
       FALLTHROUGH;
     }
     case 1: {
       UpdateSpriteAnimation(p);
-      (p->s).work[2]--;
-      if ((p->s).scriptEntity->flags & (1 << 7)) {
-        (p->s).mode[2]++;
+      p->work[2]--;
+      if (p->scriptEntity->flags & (1 << 7)) {
+        p->mode[2]++;
       }
       break;
     }
 
     case 2: {
-      (p->s).unk_2c = CreateBossExplosion((struct Entity*)p, (Coords32*)sExplosionCoords);
-      (p->s).mode[2]++;
+      p->unk_2c = CreateBossExplosion((struct Entity*)p, (Coords32*)sExplosionCoords);
+      p->mode[2]++;
       FALLTHROUGH;
     }
     case 3: {
-      if (((p->s).unk_2c)->mode[0] >= 2) {
+      if ((p->unk_2c)->mode[0] >= 2) {
         gStageRun.vm.active |= VM_FLAG1;
-        (p->s).mode[2]++;
+        p->mode[2]++;
       }
       break;
     }
@@ -2356,36 +2348,36 @@ static void ozDeath0(struct Boss* p) {
 
 // 02 01 xx --
 static void ozDeath1(struct Boss* p) {
-  switch ((p->s).mode[2]) {
+  switch (p->mode[2]) {
     case 0: {
       EXIT_BODY(p);
       if ((gStageRun.missionStatus & MISSION_STAY) && !(gStageRun.vm.active & VM_ACTIVE)) {
         gStageRun.missionStatus &= ~MISSION_STAY;
         gStageRun.missionStatus |= MISSION_SUCCESS;
       }
-      (p->s).work[2] = 80;
+      p->work[2] = 80;
       SetSpriteAnimation(p, MOTION(DM050_ZERO_STUN, 1));
-      (p->s).mode[2]++;
+      p->mode[2]++;
       FALLTHROUGH;
     }
     case 1: {
       UpdateSpriteAnimation(p);
-      (p->s).work[2]--;
-      if ((p->s).scriptEntity->flags & (1 << 7)) {
-        (p->s).mode[2]++;
+      p->work[2]--;
+      if (p->scriptEntity->flags & (1 << 7)) {
+        p->mode[2]++;
       }
       break;
     }
 
     case 2: {
-      (p->s).unk_2c = CreateBossExplosion((struct Entity*)p, (Coords32*)&sExplosionCoords[1]);
-      (p->s).mode[2]++;
+      p->unk_2c = CreateBossExplosion((struct Entity*)p, (Coords32*)&sExplosionCoords[1]);
+      p->mode[2]++;
       FALLTHROUGH;
     }
     case 3: {
-      if (((p->s).unk_2c)->mode[0] >= 2) {
+      if ((p->unk_2c)->mode[0] >= 2) {
         gStageRun.vm.active |= VM_FLAG1;
-        (p->s).mode[2]++;
+        p->mode[2]++;
       }
       break;
     }

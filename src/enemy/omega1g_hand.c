@@ -23,7 +23,7 @@ struct Enemy* FUN_08082b58(Coords32* c, bool8 isLeftHand, struct Boss* omega) {
     (p->s).coord = *c;
     (p->s).work[0] = isLeftHand;
     (p->s).work[1] = 0;
-    (p->s).unk_28 = &omega->s;
+    (p->s).unk_28 = (void*)omega;
   }
   return p;
 }

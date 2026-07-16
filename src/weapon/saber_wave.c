@@ -3,23 +3,20 @@
 #include "weapon.h"
 
 // Saber wave by cyberelf, Cottus
-
-// エルフで出せるやつ
-struct SaverWave {
-  OBJECT_HDR;
-  // props (56bytes, offset: 0xB4..)
+typedef struct {
+  COLLISION_OBJECT_HDR;
   struct SaberWave_b4 {
-    struct Weapon* saber;  // 0xB4, projectile -> saber (if saber, this is null)
-    struct Zero* z;        // 0xB8
-    u8 props[4];           // 0xBC
-    u8 element;            // 0xC0
-    u8 atk;                // 0xC1
-    u8 flags;              // 0xC2
-    bool8 unk;             // 0xC3
-    u8 unk_c4[40];         // 0xC4
-  } props;
-};
-static_assert(sizeof(struct SaverWave) == sizeof(struct Weapon));
+    Weapon* saber;  // 0xB4, projectile -> saber (if saber, this is null)
+    Player* z;      // 0xB8
+    u8 props[4];    // 0xBC
+    u8 element;     // 0xC0
+    u8 atk;         // 0xC1
+    u8 flags;       // 0xC2
+    bool8 unk;      // 0xC3
+    u8 unk_c4[40];  // 0xC4
+  } props;          // props (56bytes, offset: 0xB4..)
+} SaverWave;
+static_assert(sizeof(SaverWave) == sizeof(Weapon));
 
 // 0x08361338
 static const struct Collision sCollisions[16] = {
@@ -201,9 +198,9 @@ static const struct Collision sCollisions[16] = {
     },
 };
 
-void Weapon5_Init(struct Weapon* w);
-void Weapon5_Update(struct Weapon* w);
-void Weapon5_Die(struct Weapon* w);
+void Weapon5_Init(SaverWave* p);
+void Weapon5_Update(SaverWave* p);
+void Weapon5_Die(SaverWave* p);
 
 // clang-format off
 const WeaponRoutine gSaberWaveRoutine = {
@@ -215,24 +212,24 @@ const WeaponRoutine gSaberWaveRoutine = {
 };
 // clang-format on
 
-struct Entity* CreateSaberWave(struct Zero* z, struct Weapon* saber, bool8 isProjectile) {
-  struct SaverWave* p = (struct SaverWave*)AllocEntityLast(gWeaponHeaderPtr);
+struct Entity* CreateSaberWave(Player* z, Weapon* saber, bool8 isProjectile) {
+  SaverWave* p = AllocEntityLast(gWeaponHeaderPtr);
   if (p != NULL) {
     if ((z->unk_b4).mainCopy == WEAPON_SABER) {
       INIT_WEAPON_ROUTINE(p, WEAPON_MOVE_SABER_WAVE);
-      (p->s).flags2 &= ~ENTITY_FLAGS2_B6;
-      (p->s).renderPrio = 16;
-      (p->s).tileNum = gWeaponTileNum[0], (p->s).palID = gWeaponPalIDs[0];
+      p->flags2 &= ~ENTITY_FLAGS2_B6;
+      p->renderPrio = 16;
+      p->tileNum = gWeaponTileNum[0], p->palID = gWeaponPalIDs[0];
     } else {
       INIT_WEAPON_ROUTINE(p, WEAPON_MOVE_SABER_WAVE);
-      (p->s).flags2 &= ~ENTITY_FLAGS2_B6;
-      (p->s).renderPrio = 16;
-      (p->s).tileNum = gWeaponTileNum[1], (p->s).palID = gWeaponPalIDs[1];
+      p->flags2 &= ~ENTITY_FLAGS2_B6;
+      p->renderPrio = 16;
+      p->tileNum = gWeaponTileNum[1], p->palID = gWeaponPalIDs[1];
     }
     (&p->props)->saber = saber;
     (&p->props)->z = z;
-    (p->s).work[0] = isProjectile, (p->s).work[1] = 0;
-    if (!isProjectile) CreateSaberWave(z, (struct Weapon*)p, TRUE);
+    p->work[0] = isProjectile, p->work[1] = 0;
+    if (!isProjectile) CreateSaberWave(z, (void*)p, TRUE);
   }
   return (struct Entity*)p;
 }

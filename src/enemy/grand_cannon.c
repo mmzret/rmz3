@@ -7,7 +7,7 @@
 #include "vfx.h"
 
 struct GrandCannon {
-  OBJECT_HDR;
+  COLLISION_OBJECT_HDR;
   // props (16bytes, offset: 0xB4..)
   struct GrandCannonProps {
     struct Entity* elfx;  // ElementEffect
@@ -111,12 +111,12 @@ static const EnemyFunc sUpdates2[4] = {
 
 static bool8 FUN_08069098(struct GrandCannon* p) {
   if ((p->props).elfx == NULL) {
-    switch ((p->s).mode[3]) {
+    switch (p->mode[3]) {
       case 0: {
         if (IsFrozen(p)) {
-          (sUpdates1[(p->s).mode[1]])((void*)p);
-          (sUpdates2[(p->s).mode[1]])((void*)p);
-          (p->s).mode[3]++;
+          (sUpdates1[p->mode[1]])((void*)p);
+          (sUpdates2[p->mode[1]])((void*)p);
+          p->mode[3]++;
           UpdateSpriteAnimation(p);
           return TRUE;
         }
@@ -124,7 +124,7 @@ static bool8 FUN_08069098(struct GrandCannon* p) {
       }
       case 1: {
         if (IsFrozen(p)) return TRUE;
-        (p->s).mode[3] = 0;
+        p->mode[3] = 0;
         break;
       }
     }
@@ -137,7 +137,7 @@ static void FUN_0806910c(struct GrandCannon* p) {
     if ((p->body).status & BODY_STATUS_WHITE) {
       (p->props).elfx = (void*)ApplyElementEffect(0, (Object*)p, &sElementCoord);
       if ((p->props).elfx != NULL) {
-        (p->s).mode[1] = 3, (p->s).mode[2] = 0;
+        p->mode[1] = 3, p->mode[2] = 0;
       }
     }
   }
@@ -147,13 +147,13 @@ static void FUN_0806910c(struct GrandCannon* p) {
 
 static void GrandCannon_Init(struct GrandCannon* p) {
   SET_ENEMY_ROUTINE(p, ENTITY_UPDATE);
-  (p->s).mode[1] = sInitModes[(p->s).work[0]];
-  (p->s).flags |= FLIPABLE;
-  (p->s).flags |= DISPLAY;
+  p->mode[1] = sInitModes[p->work[0]];
+  p->flags |= FLIPABLE;
+  p->flags |= DISPLAY;
   EnableSpriteAnimation_Normal(p);
 
-  if ((p->s).work[0] == GRAND_CANNON_TURRET) {
-    (p->s).coord.y = FUN_08009f6c((p->s).coord.x, (p->s).coord.y);
+  if (p->work[0] == GRAND_CANNON_TURRET) {
+    p->coord.y = FUN_08009f6c(p->coord.x, p->coord.y);
     if (FLAG(gSystemSavedata.flags, MOD_105) && !FLAG(gCurStory.s.gameflags, DEMO_PLAY)) {
       _INIT_BODY(p, sCollisions, 12);
     } else {
@@ -240,7 +240,7 @@ static void grandcannon_08069380(struct GrandCannon* p) {
   if (elfx == NULL || IsDead(elfx)) {
     (p->props).elfx = NULL;
     SetDDP(&p->body, sCollisions);
-    (p->s).mode[1] = 0, (p->s).mode[2] = 0;
+    p->mode[1] = 0, p->mode[2] = 0;
   }
 }
 

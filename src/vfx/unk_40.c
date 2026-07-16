@@ -108,7 +108,7 @@ static void FUN_080bdc74(struct Entity* p) {
     case 0: {
       u32 dx;
       p->flags |= DISPLAY;
-      ResetDynamicMotion(p);
+      SetSpriteTableDynamic(p);
       SetSpriteAnimation(p, sMotions[idx]);
 
       dx = (idx - 1) * PIXEL(1);

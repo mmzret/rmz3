@@ -3,11 +3,8 @@
 #include "global.h"
 
 typedef struct {
-  ENTITY_HDR;
-  ENTITY_SPRITE;
-  struct Body body;  // 0x74
-  // props (16bytes, offset: 0xB4..)
-  u8 props[16];
+  COLLISION_OBJECT_HDR;
+  u8 props[16];  // 0xB4
 } TileCannon;
 static_assert(sizeof(TileCannon) == sizeof(struct Enemy));
 

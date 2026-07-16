@@ -3,7 +3,7 @@
 #include "projectile.h"
 
 struct BlazinTail {
-  OBJECT_HDR;
+  COLLISION_OBJECT_HDR;
   // props (16bytes, offset: 0xB4..)
   s32 hp;        // 0xB4
   s32 xflip;     // 0xB8
@@ -32,11 +32,11 @@ const ProjectileRoutine gBlazinTailRoutine = {
 // --------------------------------------------
 
 struct Projectile* createBlazinTail(struct Entity* e, s32 hp) {
-  struct BlazinTail* p = (struct BlazinTail*)AllocEntityLast(gProjectileHeaderPtr);
+  struct BlazinTail* p = AllocEntityLast(gProjectileHeaderPtr);
   if (p != NULL) {
     INIT_PROJECTILE_ROUTINE(p, 10);
-    (p->s).work[0] = 0;
-    (p->s).unk_28 = e;
+    p->work[0] = 0;
+    p->unk_28 = e;
     p->hp = hp;
   }
   return (struct Projectile*)p;
@@ -45,10 +45,10 @@ struct Projectile* createBlazinTail(struct Entity* e, s32 hp) {
 // --------------------------------------------
 
 static void BlazinTail_Init(struct BlazinTail* p) {
-  (p->s).flags |= FLIPABLE;
+  p->flags |= FLIPABLE;
   INIT_BODY(p, &sCollisions[0], *((s16*)&p->hp), onCollision);
   SET_PROJECTILE_ROUTINE(p, ENTITY_UPDATE);
-  (p->s).mode[1] = 0, (p->s).mode[2] = 0, (p->s).mode[3] = 0;
+  p->mode[1] = 0, p->mode[2] = 0, p->mode[3] = 0;
   BlazinTail_Update(p);
 }
 
@@ -66,8 +66,8 @@ static void BlazinTail_Update(struct BlazinTail* p) {
     BlazinTail_Die((void*)p);
     return;
   }
-  p->xflip = (((p->s).unk_28)->flags & X_FLIP) ? 1 : 0;
-  (sUpdates[(p->s).mode[1]])((void*)p);
+  p->xflip = ((p->unk_28)->flags & X_FLIP) ? 1 : 0;
+  (sUpdates[p->mode[1]])((void*)p);
 }
 
 // --------------------------------------------

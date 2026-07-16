@@ -2,8 +2,8 @@
 #include "global.h"
 #include "weapon.h"
 
-struct ReflectLaser {
-  OBJECT_HDR;
+typedef struct {
+  COLLISION_OBJECT_HDR;
   // props (56bytes, offset: 0xB4..)
   struct ReflectLaserProps {
     struct Entity* q;  // 0xB4
@@ -11,8 +11,8 @@ struct ReflectLaser {
     u8 unk_c0;         // 0xC0
     u8 unk_c1[43];     // 0xC1
   } props;
-};
-static_assert(sizeof(struct ReflectLaser) == sizeof(struct Weapon));
+} ReflectLaser;
+static_assert(sizeof(ReflectLaser) == sizeof(Weapon));
 
 static const struct Collision sCollisions[2];
 static const motion_t sMotions[8];
@@ -43,9 +43,9 @@ static const struct Collision sCollisions[2] = {
     },
 };
 
-static void ReflectLaser_Init(struct ReflectLaser* p);
-static void ReflectLaser_Update(struct ReflectLaser* p);
-static void ReflectLaser_Die(Object* p);
+static void ReflectLaser_Init(ReflectLaser* p);
+static void ReflectLaser_Update(ReflectLaser* p);
+static void ReflectLaser_Die(ReflectLaser* p);
 
 // clang-format off
 const WeaponRoutine gReflectLaserRoutine = {
@@ -57,47 +57,47 @@ const WeaponRoutine gReflectLaserRoutine = {
 };
 // clang-format on
 
-void MenuExit_ReflectLaser(struct Weapon* p) {
-  struct Zero* z = (struct Zero*)(p->s).unk_28;
+void MenuExit_ReflectLaser(Weapon* p) {
+  struct Zero* z = (struct Zero*)p->unk_28;
   if (P_ELEMENT(z) != 0) {
-    (p->s).flags &= ~DISPLAY;
-    (p->s).flags &= ~FLIPABLE;
+    p->flags &= ~DISPLAY;
+    p->flags &= ~FLIPABLE;
     EXIT_BODY(p);
     SET_WEAPON_ROUTINE(p, ENTITY_DISAPPEAR);
     return;
   }
   if (z->unk_136 & (1 << WEAPON_BUSTER)) {
-    (p->s).flags &= ~DISPLAY;
-    (p->s).flags &= ~FLIPABLE;
+    p->flags &= ~DISPLAY;
+    p->flags &= ~FLIPABLE;
     EXIT_BODY(p);
     SET_WEAPON_ROUTINE(p, ENTITY_DISAPPEAR);
   }
 }
 
 struct Entity* CreateReflectLaser(struct Zero* z, struct Entity* q, u8 n) {
-  struct ReflectLaser* p = AllocEntityLast(gWeaponHeaderPtr);
+  ReflectLaser* p = AllocEntityLast(gWeaponHeaderPtr);
   if (p != NULL) {
     if ((z->unk_b4).mainCopy == WEAPON_BUSTER) {
       INIT_WEAPON_ROUTINE(p, WEAPON_MOVE_REFLECT_LASER);
-      (p->s).flags2 &= ~ENTITY_FLAGS2_B6;
-      (p->s).renderPrio = 16;
-      (p->s).tileNum = gWeaponTileNum[0], (p->s).palID = gWeaponPalIDs[0];
+      p->flags2 &= ~ENTITY_FLAGS2_B6;
+      p->renderPrio = 16;
+      p->tileNum = gWeaponTileNum[0], p->palID = gWeaponPalIDs[0];
     } else {
       INIT_WEAPON_ROUTINE(p, WEAPON_MOVE_REFLECT_LASER);
-      (p->s).flags2 &= ~ENTITY_FLAGS2_B6;
-      (p->s).renderPrio = 16;
-      (p->s).tileNum = gWeaponTileNum[1], (p->s).palID = gWeaponPalIDs[1];
+      p->flags2 &= ~ENTITY_FLAGS2_B6;
+      p->renderPrio = 16;
+      p->tileNum = gWeaponTileNum[1], p->palID = gWeaponPalIDs[1];
     }
-    (p->s).unk_28 = (void*)z;
+    p->unk_28 = (void*)z;
     (p->props).q = q;
-    (p->s).work[0] = n, (p->s).work[1] = 0;
+    p->work[0] = n, p->work[1] = 0;
   }
   return (void*)p;
 }
 
-NAKED static struct Weapon* unused_CreateReflectLaser(struct Zero* z, struct Entity* p, void* r2, u8 r3, u8 r4) { INCCODE("asm/unused/unused_CreateReflectLaser.inc"); }
+NAKED static struct Entity* unused_CreateReflectLaser(struct Zero* z, struct Entity* p, void* r2, u8 r3, u8 r4) { INCCODE("asm/unused/unused_CreateReflectLaser.inc"); }
 
-NAKED static void ReflectLaser_Init(struct ReflectLaser* p) {
+NAKED static void ReflectLaser_Init(ReflectLaser* p) {
   asm(".syntax unified\n\
 	push {r4, r5, r6, r7, lr}\n\
 	mov r7, sl\n\
@@ -240,31 +240,31 @@ _0803AF62:\n\
 }
 
 // 0x0803af78
-static void ReflectLaser_Update(struct ReflectLaser* p) {
+static void ReflectLaser_Update(ReflectLaser* p) {
   struct Entity* q = (&p->props)->q;
   if (q->mode[0] >= ENTITY_DIE) {
-    (p->s).flags &= ~DISPLAY;
-    (p->s).flags &= ~FLIPABLE;
+    p->flags &= ~DISPLAY;
+    p->flags &= ~FLIPABLE;
     EXIT_BODY(p);
     SET_WEAPON_ROUTINE(p, ENTITY_DISAPPEAR);
     return;
   }
 
   UpdateSpriteAnimation(p);
-  if ((p->s).work[0] & 1) {
-    (p->s).coord.x = ((&p->props)->c_b8).x;
-    (p->s).coord.y = ((&p->props)->c_b8).y;
+  if (p->work[0] & 1) {
+    p->coord.x = ((&p->props)->c_b8).x;
+    p->coord.y = ((&p->props)->c_b8).y;
   } else {
-    (p->s).coord.x = (q->coord).x + ((((&p->props)->c_b8).x - (q->coord).x) >> 1);
-    (p->s).coord.y = (q->coord).y + ((((&p->props)->c_b8).y - (q->coord).y) >> 1);
+    p->coord.x = (q->coord).x + ((((&p->props)->c_b8).x - (q->coord).x) >> 1);
+    p->coord.y = (q->coord).y + ((((&p->props)->c_b8).y - (q->coord).y) >> 1);
   }
   ((&p->props)->c_b8).x = (q->coord).x;
   ((&p->props)->c_b8).y = (q->coord).y;
 }
 
-static void ReflectLaser_Die(Object* p) {
+static void ReflectLaser_Die(ReflectLaser* p) {
   EXIT_BODY(p);
-  (p->s).flags &= ~DISPLAY;
+  p->flags &= ~DISPLAY;
   SET_WEAPON_ROUTINE(p, ENTITY_EXIT);
 }
 

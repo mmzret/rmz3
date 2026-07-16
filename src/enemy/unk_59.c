@@ -5,9 +5,7 @@
 
 // ファントムの出すオブジェクト?
 typedef struct {
-  ENTITY_HDR;        // 0x00
-  ENTITY_SPRITE;     // 0x28
-  struct Body body;  // 0x74
+  COLLISION_OBJECT_HDR;
   // props (16bytes, offset: 0xB4..)
   s32 x_b4;       // 0xB4
   u8 unk_b8[12];  // 0xB8
@@ -56,7 +54,7 @@ void FUN_0809130c(struct Entity* e, u8 idx) {
     }
     p->unk_28 = e;
     EnableSpriteAnimation_Normal(p);
-    ResetDynamicMotion(p);
+    SetSpriteTableDynamic(p);
     (p->spr).sprites = (*(void**)&e->kind);
     {
       u8 palID = *((u8*)e + 0x15);

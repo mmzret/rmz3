@@ -50,16 +50,16 @@ struct Entity {
 };  // 116 bytes
 static_assert(sizeof(struct Entity) == 116);
 
-// 当たり判定のある Entity
-typedef struct CollidableEntity {
-  struct Entity s;
-  struct Body body;  // 0x74
-} Object;            // 180 bytes (0xB4..)
-static_assert(sizeof(struct CollidableEntity) == 180);
+// Entity + Sprite + Body
+#define COLLISION_OBJECT_HDR   \
+  ENTITY_HDR;       /* 0x00 */ \
+  ENTITY_SPRITE;    /* 0x28 */ \
+  struct Body body; /* 0x74 */
 
-#define OBJECT_HDR \
-  struct Entity s; \
-  struct Body body;
+typedef struct CollisionObject {
+  COLLISION_OBJECT_HDR;  // 0x00
+} Object;                // 180 bytes (0xB4..)
+static_assert(sizeof(struct CollisionObject) == 180);
 
 // --------------------------------------------
 
@@ -69,27 +69,29 @@ static_assert(sizeof(struct CollidableEntity) == 180);
 // -> include/entity/player.h
 
 // Entity.kind = 1, ゼロの武器
-struct Weapon {
-  OBJECT_HDR;
-  u8 buffer[56];  // 0xB4
-};  // 236 bytes
+typedef struct Weapon {
+  COLLISION_OBJECT_HDR;  // 0x00
+  u8 buffer[56];         // 0xB4
+} Weapon;                // 236 bytes
 
 // Entity.kind = 2
-struct Boss {
-  OBJECT_HDR;
-  u8 buffer[48];  // 0xB4
-};  // 228 bytes
+typedef struct Boss {
+  COLLISION_OBJECT_HDR;  // 0x00
+  u8 buffer[48];         // 0xB4
+} Boss;                  // 228 bytes
 
 // Entity.kind = 3
 struct Enemy {
-  OBJECT_HDR;
+  struct Entity s;
+  struct Body body;
   u8 buffer[16];  // 0xB4
 };  // 196 bytes
 
 // Entity.kind = 4
 // 飛び道具だと思ってたけど、特定のエンティティに従属しているエンティティのことを指すかも？
 struct Projectile {
-  OBJECT_HDR;
+  struct Entity s;
+  struct Body body;
   u8 buffer[16];  // 0xB4
 };  // 196 bytes
 
@@ -103,26 +105,24 @@ struct VFX {
 
 // Entity.kind = 6
 struct Solid {
-  OBJECT_HDR;
+  struct Entity s;
+  struct Body body;
   u8 buffer[16];  // 0xB4
 };  // 196 bytes
 
 // Entity.kind = 7, アイテム
 typedef struct Pickup {
-  ENTITY_HDR;        // 0x00
-  ENTITY_SPRITE;     // 0x28
-  struct Body body;  // 0xB4
-  // props (16bytes, offset: 0xB4..)
-  s32 y;           // 0xB4
-  struct Zero* z;  // 0xB8, ゼロがアイテム拾うとセットされる
-  u8 _[8];         // 0xBC, unused?
-} Pickup;          // 196 bytes
+  COLLISION_OBJECT_HDR;  // 0x00
+  s32 y;                 // 0xB4
+  struct Zero* z;        // 0xB8, ゼロがアイテム拾うとセットされる
+  u8 _[8];               // 0xBC, unused?
+} Pickup;                // 196 bytes
 
 // Entity.kind = 8, サイバーエルフ
-struct Elf {
-  OBJECT_HDR;
-  u8 buffer[16];  // 0xB4
-};  // 196 bytes
+typedef struct CyberElf {
+  COLLISION_OBJECT_HDR;  // 0x00
+  u8 buffer[16];         // 0xB4
+} CyberElf;              // 196 bytes
 
 // --------------------------------------------
 

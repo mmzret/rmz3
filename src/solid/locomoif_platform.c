@@ -3,17 +3,13 @@
 #include "global.h"
 #include "solid.h"
 
-/*
-  ロコモIF戦で出現する台座
-*/
-
-struct LocomoIFPlatformObject {
-  OBJECT_HDR;
-  // props (16bytes, offset: 0xB4..)
-  u16 unk_00;     // 0xB4
-  u8 unk_02[14];  // 0xB6
-};
-static_assert(sizeof(struct LocomoIFPlatformObject) == sizeof(struct Solid));
+// ロコモIF戦で出現する台座
+typedef struct {
+  COLLISION_OBJECT_HDR;
+  u16 unk_b4;     // 0xB4
+  u8 unk_b6[14];  // 0xB6
+} LocomoIFPlatform;
+static_assert(sizeof(LocomoIFPlatform) == sizeof(struct Solid));
 
 // ------------------------------------------------------------------------------------------------------------------------------------
 
@@ -23,23 +19,23 @@ void LocomoIFPlatform_Die(struct Solid* p);
 
 // clang-format off
 const SolidRoutine gLocomoIFPlatformRoutine = {
-    [ENTITY_INIT] =      LocomoIFPlatform_Init,
-    [ENTITY_UPDATE] =    LocomoIFPlatform_Update,
-    [ENTITY_DIE] =       LocomoIFPlatform_Die,
+    [ENTITY_INIT] =      (void*)LocomoIFPlatform_Init,
+    [ENTITY_UPDATE] =    (void*)LocomoIFPlatform_Update,
+    [ENTITY_DIE] =       (void*)LocomoIFPlatform_Die,
     [ENTITY_DISAPPEAR] = (void*)DeleteSolid,
-    [ENTITY_EXIT] =      (SolidFunc)DeleteEntity,
+    [ENTITY_EXIT] =      (void*)DeleteEntity,
 };
 // clang-format on
 
 void CreateLocomoIFPlatform(struct Boss* locomoif) {
   s32 i;
   for (i = 0; i < 2; i++) {
-    struct LocomoIFPlatformObject* p = (struct LocomoIFPlatformObject*)AllocEntityLast(gSolidHeaderPtr);
+    LocomoIFPlatform* p = AllocEntityLast(gSolidHeaderPtr);
     if (p != NULL) {
       INIT_SOLID_ROUTINE(p, SOLID_LOCOMOIF_PLATFORM);
-      (p->s).work[0] = 0;
-      p->unk_00 = (i << 15);
-      (p->s).unk_28 = &locomoif->s;
+      p->work[0] = 0;
+      p->unk_b4 = (i << 15);
+      p->unk_28 = (void*)locomoif;
     }
   }
 }

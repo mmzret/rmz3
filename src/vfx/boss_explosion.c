@@ -104,7 +104,7 @@ INCASM("asm/vfx/boss_explosion.inc");
 static void initFireball(struct Entity* p) {
   EnableSpriteAnimation_Affine(p);
   p->flags |= DISPLAY;
-  ResetDynamicMotion(p);
+  SetSpriteTableDynamic(p);
   p->flags |= FLIPABLE;
   SetSpriteAnimation(p, MOTION(DM199_BOSS_EXPLOSION, 0));
   UpdateSpriteAnimation(p);

@@ -86,17 +86,17 @@ static void initCopyXSlidingSonicBoom(Object* p) {
       },
   };
 
-  struct Entity* q = (p->s).unk_28;
+  struct Entity* q = p->unk_28;
   SET_PROJECTILE_ROUTINE(p, ENTITY_UPDATE);
   EnableSpriteAnimation_Normal(p);
-  (p->s).flags |= DISPLAY;
-  (p->s).flags |= FLIPABLE;
+  p->flags |= DISPLAY;
+  p->flags |= FLIPABLE;
   SetSpriteAnimation(p, MOTION(SM094_COPYX_SLIDING_SPARK, 0));
   UpdateSpriteAnimation(p);
   SET_XFLIP(p, (q->flags & X_FLIP) != 0);
   INIT_BODY(p, sCollisions1, 64, NULL);
-  (p->s).work[2] = 40;
-  (p->s).mode[2] = 1;
+  p->work[2] = 40;
+  p->mode[2] = 1;
   CopyXProjectile_Update((void*)p);
 }
 
@@ -132,17 +132,17 @@ static void InitNovaStrikeProjectile(Object* p) {
       },
   };
 
-  struct Entity* q = (p->s).unk_28;
+  struct Entity* q = p->unk_28;
   SET_PROJECTILE_ROUTINE(p, ENTITY_UPDATE);
   EnableSpriteAnimation_Normal(p);
-  (p->s).flags |= DISPLAY;
-  (p->s).flags |= FLIPABLE;
+  p->flags |= DISPLAY;
+  p->flags |= FLIPABLE;
   SetSpriteAnimation(p, MOTION(SM094_COPYX_SLIDING_SPARK, 1));
   UpdateSpriteAnimation(p);
   SET_XFLIP(p, (q->flags & X_FLIP) != 0);
   INIT_BODY(p, sCollisions2, 64, NULL);
-  (p->s).work[2] = 40;
-  (p->s).mode[2] = 1;
+  p->work[2] = 40;
+  p->mode[2] = 1;
   CopyXProjectile_Update((void*)p);
 }
 

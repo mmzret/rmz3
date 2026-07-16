@@ -3,9 +3,9 @@
 #include "global.h"
 
 struct FlopperObject {
-  OBJECT_HDR;
+  COLLISION_OBJECT_HDR;
   // props (16bytes, offset: 0xB4..)
-  Coords32 c;
+  Coords32 c;  // 0xB4
   u32 unk_08;
   u8 unk_0c[4];
 };
@@ -32,44 +32,39 @@ const EnemyRoutine gFlopperRoutine = {
 
 static void Flopper_Init(struct FlopperObject* p) {
   SET_ENEMY_ROUTINE(p, ENTITY_UPDATE);
-  (p->c).x = (p->s).coord.x;
-  (p->c).y = (p->s).coord.y;
+  (p->c).x = p->coord.x;
+  (p->c).y = p->coord.y;
   INIT_BODY(p, &sCollisions[0], 1, Flopper_onCollision);
-  (p->s).flags |= FLIPABLE;
-  (p->s).mode[1] = (p->s).work[0];
+  p->flags |= FLIPABLE;
+  p->mode[1] = p->work[0];
   EnableSpriteAnimation_Normal(p);
-  (p->s).flags |= DISPLAY;
+  p->flags |= DISPLAY;
   SetSpriteAnimation(p, MOTION(SM022_FLOPPER, 0));
-  Flopper_Update((void*)p);
+  Flopper_Update(p);
 }
 
 static void Flopper_Update(struct FlopperObject* p) {
   if ((p->body).status & (BODY_STATUS_DEAD | BODY_STATUS_B2)) {
     SET_ENEMY_ROUTINE(p, ENTITY_DIE);
-    (p->s).work[2] = 0;
+    p->work[2] = 0;
     EXIT_BODY(p);
-    (p->s).flags &= ~DISPLAY;
+    p->flags &= ~DISPLAY;
     p->unk_08 = 0;
-    (p->s).work[2] = 0;
+    p->work[2] = 0;
     Flopper_Die((void*)p);
     return;
   }
 
-  if ((p->s).mode[3] == 0 && IsFrozen(p)) {
-    (p->s).mode[3] = 1;
-  }
-
-  if ((p->s).mode[3] != 0) {
-    if ((p->s).mode[3] == 1) {
+  if (p->mode[3] == 0 && IsFrozen(p)) p->mode[3] = 1;
+  if (p->mode[3] != 0) {
+    if (p->mode[3] == 1) {
       UpdateSpriteAnimation(p);
-      (p->s).mode[3] = 2;
+      p->mode[3] = 2;
     }
-    if (!IsFrozen(p)) {
-      (p->s).mode[3] = 0;
-    }
+    if (!IsFrozen(p)) p->mode[3] = 0;
     return;
   }
-  (sUpdates[(p->s).mode[1]])((void*)p);
+  (sUpdates[p->mode[1]])((void*)p);
 }
 
 INCASM("asm/enemy/flopper.inc");

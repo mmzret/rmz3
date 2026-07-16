@@ -5,12 +5,10 @@
 // Tretista
 
 typedef struct {
-  ENTITY_HDR;
-  ENTITY_SPRITE;
-  struct Body body;  // 0x74
-  // props (16bytes, offset: 0xB4..)
-  u8 unk_b4[12];
-  u8 unk_c0;
+  COLLISION_OBJECT_HDR;  // 0x00
+  u8 unk_b4[12];         // 0xB4
+  u8 unk_c0;             // 0xC0
+  u8 pad_c1[3];          // 0xC1
 } Solid13Object;
 static_assert(sizeof(Solid13Object) == sizeof(struct Solid));
 
@@ -20,8 +18,8 @@ static const struct Collision Collision_ARRAY_0837025c[2];
 static const struct Collision Collision_ARRAY_0837028c[2];
 
 static void Solid13_Init(Solid13Object* p);
-static void Solid13_Update(struct Entity* p);
-static void Solid13_Die(struct Entity* p);
+static void Solid13_Update(Solid13Object* p);
+static void Solid13_Die(Solid13Object* p);
 
 // clang-format off
 const SolidRoutine gSolid13Routine = {
@@ -57,41 +55,41 @@ static void Solid13_Init(Solid13Object* p) {
   p->unk_c0 = 0;
   SET_SOLID_ROUTINE(p, ENTITY_UPDATE);
   p->mode[1] = 0, p->mode[2] = 0, p->mode[3] = 0;
-  Solid13_Update((void*)p);
+  Solid13_Update(p);
 }
 
-static void _Solid13_Update(Object* p);
+static void _Solid13_Update(Solid13Object* p);
 
-static void Solid13_Update(struct Entity* p) {
-  static const SolidFunc sUpdates[1] = {
-      (SolidFunc)_Solid13_Update,
+static void Solid13_Update(Solid13Object* p) {
+  static void (*const sUpdates[1])(Solid13Object*) = {
+      _Solid13_Update,
   };
-  (sUpdates[p->mode[1]])((void*)p);
+  (sUpdates[p->mode[1]])(p);
 }
 
-static void Solid13_Die(struct Entity* p) { SET_SOLID_ROUTINE(p, ENTITY_EXIT); }
+static void Solid13_Die(Solid13Object* p) { SET_SOLID_ROUTINE(p, ENTITY_EXIT); }
 
 // --------------------------------------------
 
 // 0x080ce438
-static void _Solid13_Update(Object* p) {
-  switch ((p->s).mode[2]) {
+static void _Solid13_Update(Solid13Object* p) {
+  switch (p->mode[2]) {
     case 0: {
-      (p->s).mode[2]++;
+      p->mode[2]++;
       FALLTHROUGH;
     }
     case 1: {
-      struct Entity* e = (struct Entity*)(p->s).unk_28;
-      (p->s).coord = e->coord;
+      struct Entity* e = (struct Entity*)p->unk_28;
+      p->coord = e->coord;
       if (e->mode[0] >= ENTITY_DIE) {
         SET_SOLID_ROUTINE(p, ENTITY_DIE);
         EXIT_BODY(p);
-        Solid13_Die((void*)p);
+        Solid13_Die(p);
       }
       if ((p->body).status & BODY_STATUS_B2) {
         SET_SOLID_ROUTINE(p, ENTITY_DIE);
         EXIT_BODY(p);
-        Solid13_Die((void*)p);
+        Solid13_Die(p);
       }
       break;
     }

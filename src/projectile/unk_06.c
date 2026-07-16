@@ -39,13 +39,13 @@ struct Projectile* CreateProjectile6(struct Entity* e, Coords32* c, u8 r2, u8 r3
 
 static void Projectile6_Init(Object* p) {
   EnableSpriteAnimation_Normal(p);
-  (p->s).flags |= DISPLAY;
-  (p->s).flags |= FLIPABLE;
+  p->flags |= DISPLAY;
+  p->flags |= FLIPABLE;
   INIT_BODY(p, &sCollisions[0], 1, NULL);
-  (p->s).coord.x = (((p->s).unk_28)->coord).x;
-  (p->s).coord.y = (((p->s).unk_28)->coord).y;
+  p->coord.x = ((p->unk_28)->coord).x;
+  p->coord.y = ((p->unk_28)->coord).y;
   SET_PROJECTILE_ROUTINE(p, ENTITY_UPDATE);
-  (p->s).mode[1] = 1, (p->s).mode[2] = 0, (p->s).mode[3] = 0;
+  p->mode[1] = 1, p->mode[2] = 0, p->mode[3] = 0;
   Projectile6_Update((void*)p);
 }
 
@@ -64,10 +64,10 @@ static void Projectile6_Update(Object* p) {
       (void*)FUN_0809dfb8,
   };
 
-  struct Entity* l = (p->s).unk_28;
+  struct Entity* l = p->unk_28;
   if (l->mode[0] < ENTITY_DIE) {
     if (IS_METTAUR) {
-      (p->s).flags &= ~DISPLAY;
+      p->flags &= ~DISPLAY;
       EXIT_BODY(p);
     } else {
       goto _UPDATE;
@@ -80,11 +80,11 @@ static void Projectile6_Update(Object* p) {
 
 _UPDATE:
   SET_XFLIP(p, (l->flags & X_FLIP) != 0);
-  (sUpdates[(p->s).mode[1]])((void*)p);
+  (sUpdates[p->mode[1]])((void*)p);
 }
 
 static void Projectile6_Die(Object* p) {
-  (p->s).flags &= ~DISPLAY;
+  p->flags &= ~DISPLAY;
   EXIT_BODY(p);
   SET_PROJECTILE_ROUTINE(p, ENTITY_EXIT);
 }
@@ -94,7 +94,7 @@ static void Projectile6_Die(Object* p) {
 INCASM("asm/projectile/unk_06.inc");
 
 static void FUN_0809dfb8(Object* p) {
-  struct Entity* l = (p->s).unk_28;
+  struct Entity* l = p->unk_28;
   if (l->mode[0] >= ENTITY_DIE) {
     SET_PROJECTILE_ROUTINE(p, ENTITY_DIE);
     Projectile6_Die((void*)p);
@@ -102,18 +102,16 @@ static void FUN_0809dfb8(Object* p) {
   }
 
   SET_XFLIP(p, (l->flags & X_FLIP) != 0);
-  switch ((p->s).mode[2]) {
+  switch (p->mode[2]) {
     case 0: {
       SetSpriteAnimation(p, MOTION(SM025_LAMPLORT, 9));
       SetDDP(&p->body, &sCollisions[5]);
-      (p->s).mode[2]++;
+      p->mode[2]++;
       FALLTHROUGH;
     }
     case 1: {
       UpdateSpriteAnimation(p);
-      if (IsSpriteAnimEnd(p)) {
-        (p->s).mode[1] = 0, (p->s).mode[2] = 0;
-      }
+      if (IsSpriteAnimEnd(p)) p->mode[1] = 0, p->mode[2] = 0;
       break;
     }
   }

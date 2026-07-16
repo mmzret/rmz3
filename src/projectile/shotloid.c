@@ -40,9 +40,9 @@ static const struct Collision sCollision;
 
 static void Projectile42_Init(Object* p) {
   SET_PROJECTILE_ROUTINE(p, ENTITY_UPDATE);
-  (p->s).mode[1] = u8_ARRAY_0836d730[(p->s).work[0]];
-  (p->s).flags |= FLIPABLE;
-  (p->s).flags |= DISPLAY;
+  p->mode[1] = u8_ARRAY_0836d730[p->work[0]];
+  p->flags |= FLIPABLE;
+  p->flags |= DISPLAY;
   EnableSpriteAnimation_Normal(p);
   INIT_BODY(p, &sCollision, 1, onCollision);
   Projectile42_Update((void*)p);
@@ -59,20 +59,20 @@ static void Projectile42_Update(Object* p) {
       (void*)_Projectile42_Update,
   };
 
-  if (((p->s).work[0] == 0) && FLAG(gCurStory.s.gameflags, METTAUR_ENABLED)) {
-    (p->s).flags &= ~DISPLAY;
-    (p->s).flags &= ~FLIPABLE;
+  if ((p->work[0] == 0) && FLAG(gCurStory.s.gameflags, METTAUR_ENABLED)) {
+    p->flags &= ~DISPLAY;
+    p->flags &= ~FLIPABLE;
     EXIT_BODY(p);
     SET_PROJECTILE_ROUTINE(p, ENTITY_DISAPPEAR);
     return;
   }
-  (sUpdates1[(p->s).mode[1]])((void*)p);
-  (sUpdates2[(p->s).mode[1]])((void*)p);
+  (sUpdates1[p->mode[1]])((void*)p);
+  (sUpdates2[p->mode[1]])((void*)p);
 }
 
 static void Projectile42_Die(Object* p) {
   EXIT_BODY(p);
-  CreateSmoke(1, &(p->s).coord);
+  CreateSmoke(1, &p->coord);
   PlaySound(SE_ZAKO_EXPLODE);
   SET_PROJECTILE_ROUTINE(p, ENTITY_EXIT);
 }
@@ -83,21 +83,21 @@ static void FUN_080b13d8(void* _) {}
 
 // 0x080B13DC
 static void _Projectile42_Update(Object* p) {
-  switch ((p->s).mode[2]) {
+  switch (p->mode[2]) {
     case 0: {
       SetSpriteAnimation(p, MOTION(SM142_SHOTLOID, 12));
-      (p->s).mode[2]++;
+      p->mode[2]++;
       FALLTHROUGH;
     }
     case 1: {
-      (p->s).coord.x += (p->s).d.x;
-      (p->s).d.y += PIXEL(1) / 4;
-      if ((p->s).d.y > PIXEL(7)) {
-        (p->s).d.y = PIXEL(7);
+      p->coord.x += p->d.x;
+      p->d.y += PIXEL(1) / 4;
+      if (p->d.y > PIXEL(7)) {
+        p->d.y = PIXEL(7);
       }
-      (p->s).coord.y += (p->s).d.y;
+      p->coord.y += p->d.y;
       UpdateSpriteAnimation(p);
-      if (FUN_080098a4((p->s).coord.x, (p->s).coord.y) || (((p->body).status & BODY_STATUS_B2))) {
+      if (FUN_080098a4(p->coord.x, p->coord.y) || (((p->body).status & BODY_STATUS_B2))) {
         SET_PROJECTILE_ROUTINE(p, ENTITY_DIE);
       }
       break;

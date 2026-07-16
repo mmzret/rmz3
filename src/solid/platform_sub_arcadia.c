@@ -86,22 +86,22 @@ _080CF0F8: .4byte 0x00001106\n\
 
 static void Solid17_Init(Object* p) {
   SET_SOLID_ROUTINE(p, ENTITY_UPDATE);
-  (p->s).mode[1] = sInitMode[(p->s).work[0]];
-  (p->s).flags |= FLIPABLE;
-  (p->s).flags |= DISPLAY;
+  p->mode[1] = sInitMode[p->work[0]];
+  p->flags |= FLIPABLE;
+  p->flags |= DISPLAY;
   EnableSpriteAnimation_Normal(p);
   _INIT_BODY(p, sCollisions, 1);
-  (p->s).flags2 &= ~WHITE_PAINTABLE;
-  (p->s).invincibleID = (p->s).uniqueID;
+  p->flags2 &= ~WHITE_PAINTABLE;
+  p->invincibleID = p->uniqueID;
   SET_BODY_INTERSECT_HANDLER(p, onCollision);
-  (p->s).flags2 |= ENTI_PHYSICS;
-  (p->s).size = &sSize;
-  (p->s).physicsAttr = MTATTR_CONVEYOR1 | SHAPE_BLOCK;
-  (p->s).coord.x -= PIXEL(8);
-  (p->s).coord.y -= PIXEL(8);
-  (p->s).unk_coord.x = (p->s).coord.x;
-  (p->s).unk_coord.y = (p->s).coord.y;
-  (p->s).work[3] = 0;
+  p->flags2 |= ENTI_PHYSICS;
+  p->size = &sSize;
+  p->physicsAttr = MTATTR_CONVEYOR1 | SHAPE_BLOCK;
+  p->coord.x -= PIXEL(8);
+  p->coord.y -= PIXEL(8);
+  p->unk_coord.x = p->coord.x;
+  p->unk_coord.y = p->coord.y;
+  p->work[3] = 0;
   Solid17_Update((void*)p);
 }
 

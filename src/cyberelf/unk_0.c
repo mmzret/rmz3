@@ -8,14 +8,14 @@
 // HPゲージを増やすサイバーエルフ(ミルピィ、エルピィ、シルピィ、レルピィ)
 
 struct CyberElf0 {
-  OBJECT_HDR;
-  // props (16bytes, offset: 0xB4..)
-  Coords32 coord_b4;    // 0xB4
-  struct Zero* player;  // 0xBC
-  u8 unk_c0;            // 0xC0
-  u8 unk_c1;            // 0xC1
+  COLLISION_OBJECT_HDR;  // 0x00
+  Coords32 coord_b4;     // 0xB4
+  struct Zero* player;   // 0xBC
+  u8 unk_c0;             // 0xC0
+  u8 unk_c1;             // 0xC1
+  u16 pad_c2;            // 0xC2
 };
-static_assert(sizeof(struct CyberElf0) == sizeof(struct Elf));
+static_assert(sizeof(struct CyberElf0) == sizeof(CyberElf));
 
 static void Elf0_Init(struct CyberElf0* p);
 static void Elf0_Update(struct CyberElf0* p);
@@ -32,11 +32,11 @@ const ElfRoutine gElf0Routine = {
 // clang-format on
 
 struct Entity* CreateElf0(struct Zero* player, u8 breed, u8 availability, u8 _) {
-  struct CyberElf0* p = (struct CyberElf0*)AllocEntityLast(gElfHeaderPtr);
+  struct CyberElf0* p = AllocEntityLast(gElfHeaderPtr);
   if (p != NULL) {
     INIT_ELF_ROUTINE(p, 0);
     p->player = player;
-    (p->s).work[0] = breed, (p->s).work[1] = availability;
+    p->work[0] = breed, p->work[1] = availability;
   }
   return (struct Entity*)p;
 }
@@ -48,26 +48,26 @@ static void Elf0_Init(struct CyberElf0* p) {
   struct Rect r = gZeroRanges[z->posture];
   gPause = TRUE;
   EnableSpriteAnimation_Normal(p);
-  ResetDynamicMotion(&p->s);
-  (p->s).flags |= DISPLAY;
-  (p->s).flags |= FLIPABLE;
+  SetSpriteTableDynamic(p);
+  p->flags |= DISPLAY;
+  p->flags |= FLIPABLE;
   SetSpriteAnimation(p, GetElfMotion(0));
   UpdateSpriteAnimation(p);
-  (p->s).spr.xflip = FALSE;
-  (p->s).spr.oam.xflip = FALSE;
-  (p->s).flags &= ~X_FLIP;
-  (p->s).spr.oam.priority = 0;
-  (p->s).coord.x = (z->s).coord.x + r.x;
-  (p->s).coord.y = (z->s).coord.y + r.y;
+  p->spr.xflip = FALSE;
+  p->spr.oam.xflip = FALSE;
+  p->flags &= ~X_FLIP;
+  p->spr.oam.priority = 0;
+  p->coord.x = (z->s).coord.x + r.x;
+  p->coord.y = (z->s).coord.y + r.y;
   (p->coord_b4).x = PIXEL(10);
   (p->coord_b4).y = PIXEL(80);
-  if ((p->s).work[0] == 0) {
+  if (p->work[0] == 0) {
     (p->coord_b4).y -= PIXEL(getMaxHP1x(z) * 2);
   } else {
     (p->coord_b4).y -= PIXEL(getMaxHP1x(z));
   }
-  (p->s).unk_coord.x = PIXEL(120) - (&gStageRun.vm.camera.viewport)->x + (p->s).coord.x;
-  (p->s).unk_coord.y = PIXEL(80) - (&gStageRun.vm.camera.viewport)->y + (p->s).coord.y;
+  p->unk_coord.x = PIXEL(120) - (&gStageRun.vm.camera.viewport)->x + p->coord.x;
+  p->unk_coord.y = PIXEL(80) - (&gStageRun.vm.camera.viewport)->y + p->coord.y;
   p->unk_c1 = 32;
   SET_ELF_ROUTINE(p, ENTITY_UPDATE);
   Elf0_Update(p);
@@ -86,14 +86,14 @@ static void Elf0_Update(struct CyberElf0* p) {
   };  // 0x08371c80
 
   UpdateSpriteAnimation(p);
-  (sUpdates[(p->s).mode[1]])((void*)p);
-  if ((p->s).mode[0] == ENTITY_UPDATE) {
-    (p->s).coord.x = (p->s).unk_coord.x - PIXEL(120);
-    (p->s).coord.x += (&gStageRun.vm.camera.viewport)->x;
-    (p->s).coord.y = (p->s).unk_coord.y - PIXEL(80);
-    (p->s).coord.y += (&gStageRun.vm.camera.viewport)->y;
+  (sUpdates[p->mode[1]])((void*)p);
+  if (p->mode[0] == ENTITY_UPDATE) {
+    p->coord.x = p->unk_coord.x - PIXEL(120);
+    p->coord.x += (&gStageRun.vm.camera.viewport)->x;
+    p->coord.y = p->unk_coord.y - PIXEL(80);
+    p->coord.y += (&gStageRun.vm.camera.viewport)->y;
     idx = p->unk_c0;
-    (p->s).coord.y += SIN(idx << 3) << 2;
+    p->coord.y += SIN(idx << 3) << 2;
   }
 }
 

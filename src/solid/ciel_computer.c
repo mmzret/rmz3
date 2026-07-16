@@ -250,4 +250,4 @@ _080DF410: .4byte gInChat\n\
  .syntax divided\n");
 }
 
-static void CielComputer_Die(Object* p) { DeleteSolid((void*)p); }
+static void CielComputer_Die(Object* p) { DeleteSolid(p); }

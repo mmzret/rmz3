@@ -42,7 +42,7 @@ static void Solid25_Init(struct Solid* p) {
 
 static void Solid25_Update(Object* p) {
   u16 val;
-  u32 tmp = (p->s).work[0] * 64;
+  u32 tmp = p->work[0] * 64;
   if (((gOverworld.terrain.id & 0x7F) == STAGE_AREA_X2) || ((gOverworld.terrain.id & 0x7F) == STAGE_WEILS_LABO)) {
     tmp += gOverworld.work.areaX2.unk_008;
   }
@@ -52,10 +52,10 @@ static void Solid25_Update(Object* p) {
   val &= 0xFF;
   if (val < 0x80) {
     s32 y = (val * 0xC0) - PIXEL(48);
-    (p->s).coord.y = (p->s).unk_coord.y + y;
+    p->coord.y = p->unk_coord.y + y;
   } else {
     s32 y = ((val - 0x80) * 0xC0) - PIXEL(48);
-    (p->s).coord.y = (p->s).unk_coord.y - y;
+    p->coord.y = p->unk_coord.y - y;
   }
   UpdateSpriteAnimation(p);
 }
