@@ -1,4 +1,6 @@
+#include "camera.h"
 #include "global.h"
+#include "stagerun.h"
 #include "vfx.h"
 
 // サイバーエルフが出すキラキラ
@@ -536,87 +538,25 @@ static const EntityFunc sUpdates[2] = {
     (void*)nop_080c0258,
 };
 
-NAKED static void ElfParticle_Update(struct VFX* p) {
-  asm(".syntax unified\n\
-	push {r4, lr}\n\
-	adds r4, r0, #0\n\
-	bl UpdateEntityAnim\n\
-	ldr r1, _080C0134 @ =0x0836F134\n\
-	ldrb r0, [r4, #0x10]\n\
-	lsls r0, r0, #2\n\
-	adds r0, r0, r1\n\
-	ldr r1, [r0]\n\
-	adds r0, r4, #0\n\
-	bl _call_via_r1\n\
-	ldr r0, [r4, #0x54]\n\
-	ldr r2, [r4, #0x5c]\n\
-	adds r0, r0, r2\n\
-	str r0, [r4, #0x54]\n\
-	ldr r0, [r4, #0x58]\n\
-	ldr r1, [r4, #0x60]\n\
-	adds r0, r0, r1\n\
-	str r0, [r4, #0x58]\n\
-	ldr r0, [r4, #0x64]\n\
-	adds r2, r2, r0\n\
-	str r2, [r4, #0x5c]\n\
-	ldr r0, [r4, #0x68]\n\
-	adds r1, r1, r0\n\
-	str r1, [r4, #0x60]\n\
-	ldrb r1, [r4, #0xa]\n\
-	movs r0, #1\n\
-	orrs r1, r0\n\
-	strb r1, [r4, #0xa]\n\
-	ldrb r0, [r4, #0x13]\n\
-	subs r0, #1\n\
-	strb r0, [r4, #0x13]\n\
-	lsls r0, r0, #0x18\n\
-	lsrs r0, r0, #0x18\n\
-	cmp r0, #0xff\n\
-	bne _080C00FC\n\
-	ldrb r0, [r4, #0x12]\n\
-	subs r0, #1\n\
-	strb r0, [r4, #0x12]\n\
-	strb r0, [r4, #0x13]\n\
-	lsls r0, r0, #0x18\n\
-	lsrs r0, r0, #0x18\n\
-	cmp r0, #7\n\
-	bhi _080C00FC\n\
-	movs r0, #0xfe\n\
-	ands r1, r0\n\
-	strb r1, [r4, #0xa]\n\
-_080C00FC:\n\
-	ldr r0, _080C0138 @ =gStageRun+232\n\
-	adds r1, r4, #0\n\
-	adds r1, #0x54\n\
-	bl Camera_GetDistance\n\
-	movs r1, #0x80\n\
-	lsls r1, r1, #6\n\
-	cmp r0, r1\n\
-	bhi _080C0114\n\
-	ldrb r0, [r4, #0x12]\n\
-	cmp r0, #0\n\
-	bne _080C012C\n\
-_080C0114:\n\
-	ldr r1, _080C013C @ =gVFXFnTable\n\
-	ldrb r0, [r4, #9]\n\
-	lsls r0, r0, #2\n\
-	adds r0, r0, r1\n\
-	movs r1, #2\n\
-	str r1, [r4, #0xc]\n\
-	ldr r0, [r0]\n\
-	ldr r0, [r0, #8]\n\
-	str r0, [r4, #0x14]\n\
-	adds r0, r4, #0\n\
-	bl ElfParticle_Die\n\
-_080C012C:\n\
-	pop {r4}\n\
-	pop {r0}\n\
-	bx r0\n\
-	.align 2, 0\n\
-_080C0134: .4byte sUpdates\n\
-_080C0138: .4byte gStageRun+232\n\
-_080C013C: .4byte gVFXFnTable\n\
- .syntax divided\n");
+static void ElfParticle_Update(struct VFX* vfx) {
+  UpdateSpriteAnimation(vfx);
+  ((VFXFunc)sUpdates[(vfx->s).work[0]])(vfx);
+  (vfx->s).coord.x += (vfx->s).d.x;
+  (vfx->s).coord.y += (vfx->s).d.y;
+  (vfx->s).d.x += (vfx->s).unk_coord.x;
+  (vfx->s).d.y += (vfx->s).unk_coord.y;
+  (vfx->s).flags |= DISPLAY;
+  if ((u8)--(vfx->s).work[3] == 0xff) {
+    (vfx->s).work[2]--;
+    (vfx->s).work[3] = (vfx->s).work[2];
+    if ((u8)(vfx->s).work[2] <= 7) {
+      (vfx->s).flags &= ~DISPLAY;
+    }
+  }
+  if (Camera_GetDistance(&gStageRun.vm.camera, &(vfx->s).coord) > 0x2000 || (vfx->s).work[2] == 0) {
+    SET_VFX_ROUTINE(vfx, ENTITY_DIE);
+    ElfParticle_Die(&vfx->s);
+  }
 }
 
 static void ElfParticle_Die(struct Entity* p) {

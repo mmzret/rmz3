@@ -135,52 +135,15 @@ _080C8ED4: .4byte gStaticMotionGraphics+12\n\
  .syntax divided\n");
 }
 
-NAKED void CreateGhost79_2(struct Entity* p, u8 r1, u8 r2) {
-  asm(".syntax unified\n\
-	push {r4, r5, r6, r7, lr}\n\
-	adds r6, r0, #0\n\
-	lsls r1, r1, #0x18\n\
-	lsrs r4, r1, #0x18\n\
-	lsls r2, r2, #0x18\n\
-	lsrs r5, r2, #0x18\n\
-	ldr r0, _080C8F28 @ =gVFXHeaderPtr\n\
-	ldr r0, [r0]\n\
-	bl AllocEntityLast\n\
-	mov ip, r0\n\
-	cmp r0, #0\n\
-	beq _080C8F22\n\
-	adds r0, #0x25\n\
-	movs r3, #0\n\
-	movs r2, #1\n\
-	strb r2, [r0]\n\
-	ldr r0, _080C8F2C @ =gVFXFnTable\n\
-	movs r1, #0x4f\n\
-	mov r7, ip\n\
-	strb r1, [r7, #9]\n\
-	adds r1, #0xed\n\
-	adds r0, r0, r1\n\
-	ldr r0, [r0]\n\
-	ldr r0, [r0]\n\
-	str r0, [r7, #0x14]\n\
-	movs r0, #0\n\
-	strh r3, [r7, #0x20]\n\
-	mov r1, ip\n\
-	adds r1, #0x22\n\
-	strb r0, [r1]\n\
-	str r6, [r7, #0x28]\n\
-	mov r0, ip\n\
-	adds r0, #0x7b\n\
-	strb r4, [r0]\n\
-	strb r2, [r7, #0x10]\n\
-	strb r5, [r7, #0x11]\n\
-_080C8F22:\n\
-	pop {r4, r5, r6, r7}\n\
-	pop {r0}\n\
-	bx r0\n\
-	.align 2, 0\n\
-_080C8F28: .4byte gVFXHeaderPtr\n\
-_080C8F2C: .4byte gVFXFnTable\n\
- .syntax divided\n");
+void CreateGhost79_2(struct Entity* p, u8 r1, u8 r2) {
+  struct VFX* g = AllocEntityFirst(gVFXHeaderPtr);
+  if (g != NULL) {
+    INIT_VFX_ROUTINE(g, VFX_UNK_079);
+    (g->s).unk_28 = p;
+    g->buffer[7] = r1;
+    (g->s).work[0] = 1;
+    (g->s).work[1] = r2;
+  }
 }
 
 // --------------------------------------------
@@ -224,47 +187,15 @@ static void Ghost79_Die(struct VFX* p) {
 
 // --------------------------------------------
 
-NAKED static void FUN_080c8f78(struct VFX* p) {
-  asm(".syntax unified\n\
-	push {r4, r5, lr}\n\
-	adds r4, r0, #0\n\
-	ldr r1, _080C8F94 @ =gVFXFnTable\n\
-	ldrb r0, [r4, #9]\n\
-	lsls r0, r0, #2\n\
-	adds r0, r0, r1\n\
-	movs r1, #1\n\
-	str r1, [r4, #0xc]\n\
-	ldr r0, [r0]\n\
-	ldr r0, [r0, #4]\n\
-	str r0, [r4, #0x14]\n\
-	movs r5, #0\n\
-	b _080C8FA8\n\
-	.align 2, 0\n\
-_080C8F94: .4byte gVFXFnTable\n\
-_080C8F98:\n\
-	ldrb r2, [r4, #0x11]\n\
-	adds r0, r4, #0\n\
-	adds r1, r5, #0\n\
-	bl CreateGhost79_2\n\
-	adds r0, r5, #1\n\
-	lsls r0, r0, #0x18\n\
-	lsrs r5, r0, #0x18\n\
-_080C8FA8:\n\
-	adds r0, r4, #0\n\
-	adds r0, #0x7b\n\
-	ldrb r0, [r0]\n\
-	cmp r5, r0\n\
-	blo _080C8F98\n\
-	movs r0, #0\n\
-	strb r0, [r4, #0x12]\n\
-	movs r0, #1\n\
-	strb r0, [r4, #0x13]\n\
-	adds r0, r4, #0\n\
-	bl Ghost79_Update\n\
-	pop {r4, r5}\n\
-	pop {r0}\n\
-	bx r0\n\
- .syntax divided\n");
+static void FUN_080c8f78(struct VFX* p) {
+  u8 i;
+  SET_VFX_ROUTINE(p, ENTITY_UPDATE);
+  for (i = 0; i < p->buffer[7]; i++) {
+    CreateGhost79_2(&p->s, i, (p->s).work[1]);
+  }
+  (p->s).work[2] = 0;
+  (p->s).work[3] = 1;
+  Ghost79_Update(p);
 }
 
 static void FUN_080c8fc8(struct VFX* p) {
