@@ -60,7 +60,10 @@ struct MenuState {
   u16 unk_08;
   u8 unk_0a;
   u8 unk_0b;
-  u32 unk_0c;
+  u8 unk_0c;
+  u8 unk_0d;
+  u8 unk_0e;
+  u8 unk_0f;
   u32 rank;
   struct Widget* mc_14;  // e.g. 0203d938
   struct Widget* mc_18;  // e.g. 0203d830

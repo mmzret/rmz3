@@ -130,107 +130,38 @@ _080E82F4:\n\
  .syntax divided\n");
 }
 
-NAKED static void DiskModalBorder_Update(struct Widget* w) {
-  asm(".syntax unified\n\
-	push {r4, r5, lr}\n\
-	adds r4, r0, #0\n\
-	ldr r0, [r4, #0x28]\n\
-	ldr r1, _080E8334 @ =0x00000DCC\n\
-	adds r5, r0, r1\n\
-	ldrb r0, [r5, #0xd]\n\
-	cmp r0, #0\n\
-	beq _080E833C\n\
-	ldrb r1, [r4, #0xa]\n\
-	movs r0, #0xfe\n\
-	ands r0, r1\n\
-	movs r1, #0xfd\n\
-	ands r0, r1\n\
-	strb r0, [r4, #0xa]\n\
-	ldr r1, _080E8338 @ =gWidgetFnTable\n\
-	ldrb r0, [r4, #9]\n\
-	lsls r0, r0, #2\n\
-	adds r0, r0, r1\n\
-	movs r1, #3\n\
-	str r1, [r4, #0xc]\n\
-	ldr r0, [r0]\n\
-	ldr r0, [r0, #0xc]\n\
-	str r0, [r4, #0x14]\n\
-	b _080E83B2\n\
-	.align 2, 0\n\
-_080E8334: .4byte 0x00000DCC\n\
-_080E8338: .4byte gWidgetFnTable\n\
-_080E833C:\n\
-	ldrb r0, [r5, #0xe]\n\
-	cmp r0, #0\n\
-	beq _080E83AA\n\
-	ldrb r1, [r4, #0xa]\n\
-	movs r0, #1\n\
-	orrs r0, r1\n\
-	strb r0, [r4, #0xa]\n\
-	adds r0, r4, #0\n\
-	bl UpdateEntityAnim\n\
-	ldrb r0, [r4, #0x10]\n\
-	cmp r0, #1\n\
-	beq _080E837C\n\
-	cmp r0, #1\n\
-	bgt _080E8360\n\
-	cmp r0, #0\n\
-	beq _080E836A\n\
-	b _080E83B2\n\
-_080E8360:\n\
-	cmp r0, #2\n\
-	beq _080E838C\n\
-	cmp r0, #3\n\
-	beq _080E8398\n\
-	b _080E83B2\n\
-_080E836A:\n\
-	ldrb r1, [r5, #0xe]\n\
-	movs r0, #0x40\n\
-	subs r0, r0, r1\n\
-	lsls r0, r0, #8\n\
-	str r0, [r4, #0x54]\n\
-	ldrb r1, [r5, #0xf]\n\
-	movs r0, #0x50\n\
-	subs r0, r0, r1\n\
-	b _080E83A4\n\
-_080E837C:\n\
-	ldrb r0, [r5, #0xe]\n\
-	adds r0, #0x40\n\
-	lsls r0, r0, #8\n\
-	str r0, [r4, #0x54]\n\
-	ldrb r1, [r5, #0xf]\n\
-	movs r0, #0x50\n\
-	subs r0, r0, r1\n\
-	b _080E83A4\n\
-_080E838C:\n\
-	ldrb r0, [r5, #0xe]\n\
-	movs r1, #0x40\n\
-	subs r1, r1, r0\n\
-	lsls r1, r1, #8\n\
-	str r1, [r4, #0x54]\n\
-	b _080E83A0\n\
-_080E8398:\n\
-	ldrb r0, [r5, #0xe]\n\
-	adds r0, #0x40\n\
-	lsls r0, r0, #8\n\
-	str r0, [r4, #0x54]\n\
-_080E83A0:\n\
-	ldrb r0, [r5, #0xf]\n\
-	adds r0, #0x50\n\
-_080E83A4:\n\
-	lsls r0, r0, #8\n\
-	str r0, [r4, #0x58]\n\
-	b _080E83B2\n\
-_080E83AA:\n\
-	ldrb r1, [r4, #0xa]\n\
-	movs r0, #0xfe\n\
-	ands r0, r1\n\
-	strb r0, [r4, #0xa]\n\
-_080E83B2:\n\
-	pop {r4, r5}\n\
-	pop {r0}\n\
-	bx r0\n\
- .syntax divided\n");
+static void DiskModalBorder_Update(struct Widget* w) {
+  struct GameState* g = (struct GameState*)(w->s).unk_28;
+  struct MenuState* m = &(g->sceneState).menu;
+
+  if (m->unk_0d != 0) {
+    (w->s).flags &= ~DISPLAY;
+    (w->s).flags &= ~FLIPABLE;
+    SET_WIDGET_ROUTINE(w, ENTITY_DISAPPEAR);
+  } else if (m->unk_0e != 0) {
+    (w->s).flags |= DISPLAY;
+    UpdateSpriteAnimation(w);
+    switch ((w->s).work[0]) {
+      case 0:
+        (w->s).coord.x = (0x40 - m->unk_0e) << 8;
+        (w->s).coord.y = (0x50 - m->unk_0f) << 8;
+        break;
+      case 1:
+        (w->s).coord.x = (m->unk_0e + 0x40) << 8;
+        (w->s).coord.y = (0x50 - m->unk_0f) << 8;
+        break;
+      case 2:
+        (w->s).coord.x = (0x40 - m->unk_0e) << 8;
+        (w->s).coord.y = (m->unk_0f + 0x50) << 8;
+        break;
+      case 3:
+        (w->s).coord.x = (m->unk_0e + 0x40) << 8;
+        (w->s).coord.y = (m->unk_0f + 0x50) << 8;
+        break;
+    }
+  } else {
+    (w->s).flags &= ~DISPLAY;
+  }
 }
 
 static void DiskModalBorder_Die(struct Widget* w) { SET_WIDGET_ROUTINE(w, ENTITY_EXIT); }
