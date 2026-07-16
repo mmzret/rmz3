@@ -2,6 +2,7 @@
 #include "element.h"
 #include "enemy.h"
 #include "global.h"
+#include "motion.h"
 #include "projectile/unk_06.h"
 
 struct Lamplort {
@@ -215,13 +216,13 @@ _0806C38C: .4byte gEnemyFnTable\n\
  .syntax divided\n");
 }
 
-void FUN_0806c81c(struct Enemy* p);
-void FUN_0806c824(struct Enemy* p);
-void FUN_0806c8c8(struct Enemy* p);
-void FUN_0806c9c0(struct Enemy* p);
-void true_0806cac4(struct Enemy* p);
-void FUN_0806cb58(struct Enemy* p);
-void FUN_0806cc00(struct Enemy* p);
+bool8 FUN_0806c81c(struct Enemy* p);
+bool8 FUN_0806c824(struct Enemy* p);
+bool8 FUN_0806c8c8(struct Enemy* p);
+bool8 FUN_0806c9c0(struct Enemy* p);
+bool8 true_0806cac4(struct Enemy* p);
+bool8 FUN_0806cb58(struct Enemy* p);
+bool8 FUN_0806cc00(struct Enemy* p);
 static bool32 true_0806cd48(void* _ UNUSED);
 static bool32 FUN_0806cda4(void* _ UNUSED);
 static bool32 FUN_0806cdac(void* _ UNUSED);
@@ -243,11 +244,11 @@ static const EnemyFunc sUpdates1[10] = {
 // clang-format on
 
 void FUN_0806c820(struct Enemy* p);
-void FUN_0806c828(struct Enemy* p);
+static void FUN_0806c828(struct Lamplort* p);
 void FUN_0806c8cc(struct Enemy* p);
 void FUN_0806c9c4(struct Enemy* p);
-void FUN_0806cac8(struct Enemy* p);
-void FUN_0806cb5c(struct Enemy* p);
+static void FUN_0806cac8(struct Lamplort* p);
+static void FUN_0806cb5c(struct Lamplort* p);
 void lamplort_0806cc04(struct Enemy* p);
 static void FUN_0806cd4c(struct Lamplort* p);
 static void FUN_0806cda8(void* _ UNUSED);
@@ -308,7 +309,97 @@ dispatch2:
   (sUpdates2[(p->s).mode[1]])((struct Enemy*)p);
 }
 
-INCASM("asm/enemy/lamplort.inc");
+INCASM("asm/enemy/lamplort_a.inc");
+
+void Lamplort_Disappear(struct Enemy* p) { DeleteEnemy((struct Entity*)p); }
+
+bool8 FUN_0806c81c(struct Enemy* p) { return TRUE; }
+
+void FUN_0806c820(struct Enemy* p) {}
+
+bool8 FUN_0806c824(struct Enemy* p) { return TRUE; }
+
+static void FUN_0806c828(struct Lamplort* p) {
+  switch ((p->s).mode[2]) {
+    case 0:
+      (p->s).work[2] = 40;
+      (p->s).mode[2]++;
+      FALLTHROUGH;
+    case 1:
+      SetDDP(&p->body, &sCollisions[0]);
+      SetSpriteAnimation(p, MOTION(SM025_LAMPLORT, 0));
+      SET_XFLIP(p, p->unk_bc);
+      (p->s).mode[2]++;
+      FALLTHROUGH;
+    case 2:
+      UpdateSpriteAnimation(p);
+      if ((p->s).work[2] == 0 || --(p->s).work[2] == 0) {
+        (p->s).mode[1] = 2, (p->s).mode[2] = 0;
+      }
+      break;
+  }
+}
+
+bool8 FUN_0806c8c8(struct Enemy* p) { return TRUE; }
+
+INCASM("asm/enemy/lamplort_b.inc");
+
+bool8 FUN_0806c9c0(struct Enemy* p) { return TRUE; }
+
+INCASM("asm/enemy/lamplort_c.inc");
+
+bool8 true_0806cac4(struct Enemy* p) { return TRUE; }
+
+static void FUN_0806cac8(struct Lamplort* p) {
+  switch ((p->s).mode[2]) {
+    case 0: {
+      struct LamplortFlame* flame;
+      SetSpriteAnimation(p, MOTION(SM025_LAMPLORT, 8));
+      SetDDP(&p->body, &sCollisions[0]);
+      flame = (struct LamplortFlame*)((p->s).unk_2c);
+      flame->unk_b4 |= 2;
+      SET_XFLIP(p, p->unk_bc);
+      (p->s).mode[2]++;
+      FALLTHROUGH;
+    }
+    case 1:
+      UpdateSpriteAnimation(p);
+      if (IsSpriteAnimEnd(p)) {
+        (p->s).mode[1] = 1, (p->s).mode[2] = 0;
+      }
+      break;
+  }
+}
+
+bool8 FUN_0806cb58(struct Enemy* p) { return TRUE; }
+
+static void FUN_0806cb5c(struct Lamplort* p) {
+  switch ((p->s).mode[2]) {
+    case 0: {
+      struct LamplortFlame* flame;
+      SetSpriteAnimation(p, MOTION(SM025_LAMPLORT, 1));
+      SetDDP(&p->body, &sCollisions[0]);
+      SET_XFLIP(p, p->unk_bc);
+      flame = (struct LamplortFlame*)((p->s).unk_2c);
+      flame->unk_b4 |= 2;
+      (p->s).work[2] = 8;
+      (p->s).mode[2]++;
+      FALLTHROUGH;
+    }
+    case 1:
+      UpdateSpriteAnimation(p);
+      if (IsSpriteAnimEnd(p)) {
+        if ((p->s).work[2] == 0 || --(p->s).work[2] == 0) {
+          (p->s).mode[1] = 6, (p->s).mode[2] = 0;
+        }
+      }
+      break;
+  }
+}
+
+bool8 FUN_0806cc00(struct Enemy* p) { return TRUE; }
+
+INCASM("asm/enemy/lamplort_d.inc");
 
 static bool32 true_0806cd48(void* _) { return TRUE; }
 
