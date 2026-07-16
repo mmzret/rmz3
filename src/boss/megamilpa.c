@@ -1,6 +1,7 @@
 #include "boss.h"
 #include "collision.h"
 #include "global.h"
+#include "camera.h"
 #include "stagerun.h"
 
 static const s32 s32_ARRAY_08361abc[2];
@@ -548,88 +549,35 @@ _0803D5FC: .4byte 0x00269EC3\n\
  .syntax divided\n");
 }
 
-NAKED static void FUN_0803d600(struct Boss* p) {
-  asm(".syntax unified\n\
-	push {r4, r5, r6, r7, lr}\n\
-	adds r4, r0, #0\n\
-	movs r1, #0\n\
-	adds r0, #0xc4\n\
-	ldr r0, [r0]\n\
-	cmp r0, #0x77\n\
-	bgt _0803D610\n\
-	movs r1, #1\n\
-_0803D610:\n\
-	adds r7, r1, #0\n\
-	movs r1, #0\n\
-	cmp r0, #0xc4\n\
-	ble _0803D61A\n\
-	movs r1, #1\n\
-_0803D61A:\n\
-	adds r6, r1, #0\n\
-	cmp r7, #0\n\
-	bne _0803D624\n\
-	cmp r6, #0\n\
-	beq _0803D640\n\
-_0803D624:\n\
-	adds r5, r4, #0\n\
-	adds r5, #0xc8\n\
-	ldrb r0, [r5]\n\
-	cmp r0, #0\n\
-	bne _0803D652\n\
-	ldr r0, _0803D63C @ =0x0000010D\n\
-	bl PlaySound\n\
-	movs r0, #1\n\
-	strb r0, [r5]\n\
-	b _0803D652\n\
-	.align 2, 0\n\
-_0803D63C: .4byte 0x0000010D\n\
-_0803D640:\n\
-	adds r5, r4, #0\n\
-	adds r5, #0xc8\n\
-	ldrb r0, [r5]\n\
-	cmp r0, #0\n\
-	beq _0803D652\n\
-	ldr r0, _0803D69C @ =0x0000010D\n\
-	bl StopSound\n\
-	strb r6, [r5]\n\
-_0803D652:\n\
-	adds r0, r4, #0\n\
-	adds r0, #0xc4\n\
-	ldr r1, [r0]\n\
-	adds r1, #1\n\
-	str r1, [r0]\n\
-	movs r0, #3\n\
-	ands r1, r0\n\
-	cmp r1, #0\n\
-	bne _0803D694\n\
-	cmp r7, #0\n\
-	beq _0803D67C\n\
-	adds r0, r4, #0\n\
-	movs r1, #0\n\
-	movs r2, #1\n\
-	bl FUN_0803d454\n\
-	adds r1, r4, #0\n\
-	adds r1, #0x54\n\
-	movs r0, #3\n\
-	bl AppendQuake\n\
-_0803D67C:\n\
-	cmp r6, #0\n\
-	beq _0803D694\n\
-	adds r0, r4, #0\n\
-	movs r1, #1\n\
-	movs r2, #1\n\
-	bl FUN_0803d454\n\
-	adds r1, r4, #0\n\
-	adds r1, #0x54\n\
-	movs r0, #3\n\
-	bl AppendQuake\n\
-_0803D694:\n\
-	pop {r4, r5, r6, r7}\n\
-	pop {r0}\n\
-	bx r0\n\
-	.align 2, 0\n\
-_0803D69C: .4byte 0x0000010D\n\
- .syntax divided\n");
+static void FUN_0803d600(struct Boss* p) {
+  bool8 lo = *(s32*)&p->buffer[16] <= 0x77;
+  bool8 hi = *(s32*)&p->buffer[16] > 0xc4;
+  s32 t;
+
+  if (lo || hi) {
+    if (p->buffer[20] == 0) {
+      PlaySound(0x10D);
+      p->buffer[20] = 1;
+    }
+  } else {
+    if (p->buffer[20] != 0) {
+      StopSound(0x10D);
+      p->buffer[20] = hi;
+    }
+  }
+
+  t = *(s32*)&p->buffer[16] + 1;
+  *(s32*)&p->buffer[16] = t;
+  if ((t & 3) == 0) {
+    if (lo) {
+      FUN_0803d454(p, 0, 1);
+      AppendQuake(3, &(p->s).coord);
+    }
+    if (hi) {
+      FUN_0803d454(p, 1, 1);
+      AppendQuake(3, &(p->s).coord);
+    }
+  }
 }
 
 // --------------------------------------------

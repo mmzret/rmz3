@@ -1,5 +1,7 @@
 #include "collision.h"
 #include "global.h"
+#include "stagerun.h"
+#include "camera.h"
 #include "projectile.h"
 #include "vfx.h"
 
@@ -116,141 +118,45 @@ static void FUN_0809da14(Projectile5* p) {
   }
 }
 
-NAKED static void FUN_0809daa0(Projectile5* p) {
-  asm(".syntax unified\n\
-	push {r4, r5, lr}\n\
-	adds r4, r0, #0\n\
-	ldr r0, [r4, #0x28]\n\
-	ldrb r0, [r0, #0xc]\n\
-	cmp r0, #1\n\
-	bls _0809DAB8\n\
-	adds r1, r4, #0\n\
-	adds r1, #0x54\n\
-	movs r0, #3\n\
-	bl CreateSmoke\n\
-	b _0809DAC4\n\
-_0809DAB8:\n\
-	ldrb r0, [r4, #0x12]\n\
-	subs r0, #1\n\
-	strb r0, [r4, #0x12]\n\
-	lsls r0, r0, #0x18\n\
-	cmp r0, #0\n\
-	bne _0809DADC\n\
-_0809DAC4:\n\
-	ldr r1, _0809DAD8 @ =gProjectileFnTable\n\
-	ldrb r0, [r4, #9]\n\
-	lsls r0, r0, #2\n\
-	adds r0, r0, r1\n\
-	movs r1, #2\n\
-	str r1, [r4, #0xc]\n\
-	ldr r0, [r0]\n\
-	ldr r0, [r0, #8]\n\
-	str r0, [r4, #0x14]\n\
-	b _0809DBAA\n\
-	.align 2, 0\n\
-_0809DAD8: .4byte gProjectileFnTable\n\
-_0809DADC:\n\
-	ldrb r5, [r4, #0xe]\n\
-	cmp r5, #1\n\
-	beq _0809DB5E\n\
-	cmp r5, #1\n\
-	bgt _0809DAEC\n\
-	cmp r5, #0\n\
-	beq _0809DAF2\n\
-	b _0809DBAA\n\
-_0809DAEC:\n\
-	cmp r5, #2\n\
-	beq _0809DB94\n\
-	b _0809DBAA\n\
-_0809DAF2:\n\
-	ldrb r0, [r4, #0x10]\n\
-	cmp r0, #0\n\
-	bne _0809DB20\n\
-	ldr r1, _0809DB18 @ =0x00000A01\n\
-	adds r0, r4, #0\n\
-	bl SetMotion\n\
-	adds r0, r4, #0\n\
-	adds r0, #0x74\n\
-	ldr r1, _0809DB1C @ =sCollisions+24\n\
-	bl SetDDP\n\
-	adds r0, r4, #0\n\
-	adds r0, #0xb8\n\
-	ldr r0, [r0]\n\
-	str r0, [r4, #0x60]\n\
-	str r5, [r4, #0x5c]\n\
-	b _0809DB3E\n\
-	.align 2, 0\n\
-_0809DB18: .4byte 0x00000A01\n\
-_0809DB1C: .4byte sCollisions+24\n\
-_0809DB20:\n\
-	ldr r1, _0809DB80 @ =0x00000A04\n\
-	adds r0, r4, #0\n\
-	bl SetMotion\n\
-	adds r0, r4, #0\n\
-	adds r0, #0x74\n\
-	ldr r1, _0809DB84 @ =sCollisions+48\n\
-	bl SetDDP\n\
-	adds r0, r4, #0\n\
-	adds r0, #0xb8\n\
-	ldr r0, [r0]\n\
-	rsbs r0, r0, #0\n\
-	str r0, [r4, #0x5c]\n\
-	str r5, [r4, #0x60]\n\
-_0809DB3E:\n\
-	ldr r2, _0809DB88 @ =RNG_0202f388\n\
-	ldr r1, [r2]\n\
-	ldr r0, _0809DB8C @ =0x000343FD\n\
-	muls r0, r1, r0\n\
-	ldr r1, _0809DB90 @ =0x00269EC3\n\
-	adds r0, r0, r1\n\
-	lsls r0, r0, #1\n\
-	lsrs r1, r0, #1\n\
-	str r1, [r2]\n\
-	lsrs r0, r0, #0x11\n\
-	movs r1, #1\n\
-	ands r0, r1\n\
-	strb r0, [r4, #0x13]\n\
-	ldrb r0, [r4, #0xe]\n\
-	adds r0, #1\n\
-	strb r0, [r4, #0xe]\n\
-_0809DB5E:\n\
-	adds r0, r4, #0\n\
-	bl UpdateEntityAnim\n\
-	adds r0, r4, #0\n\
-	adds r0, #0x73\n\
-	ldrb r0, [r0]\n\
-	cmp r0, #3\n\
-	bne _0809DBAA\n\
-	ldrb r0, [r4, #0xa]\n\
-	movs r1, #1\n\
-	orrs r1, r0\n\
-	strb r1, [r4, #0xa]\n\
-	ldrb r0, [r4, #0xe]\n\
-	adds r0, #1\n\
-	strb r0, [r4, #0xe]\n\
-	b _0809DBAA\n\
-	.align 2, 0\n\
-_0809DB80: .4byte 0x00000A04\n\
-_0809DB84: .4byte sCollisions+48\n\
-_0809DB88: .4byte RNG_0202f388\n\
-_0809DB8C: .4byte 0x000343FD\n\
-_0809DB90: .4byte 0x00269EC3\n\
-_0809DB94:\n\
-	ldr r0, [r4, #0x54]\n\
-	ldr r1, [r4, #0x5c]\n\
-	adds r0, r0, r1\n\
-	str r0, [r4, #0x54]\n\
-	ldr r0, [r4, #0x58]\n\
-	ldr r1, [r4, #0x60]\n\
-	adds r0, r0, r1\n\
-	str r0, [r4, #0x58]\n\
-	adds r0, r4, #0\n\
-	bl UpdateEntityAnim\n\
-_0809DBAA:\n\
-	pop {r4, r5}\n\
-	pop {r0}\n\
-	bx r0\n\
- .syntax divided\n");
+static void FUN_0809daa0(Projectile5* p) {
+  if ((p->s).unk_28->mode[0] > 1) {
+    CreateSmoke(3, &(p->s).coord);
+    SET_PROJECTILE_ROUTINE(p, ENTITY_DIE);
+  } else if (--(p->s).work[2] == 0) {
+    SET_PROJECTILE_ROUTINE(p, ENTITY_DIE);
+  } else {
+    s32 m = (p->s).mode[2];
+    switch (m) {
+      case 0:
+        if ((p->s).work[0] == 0) {
+          SetSpriteAnimation(&p->s, 0xa01);
+          SetDDP(&p->body, &sCollisions[1]);
+          (p->s).d.y = p->unk_b8;
+          (p->s).d.x = m;
+        } else {
+          SetSpriteAnimation(&p->s, 0xa04);
+          SetDDP(&p->body, &sCollisions[2]);
+          (p->s).d.x = -p->unk_b8;
+          (p->s).d.y = m;
+        }
+        RNG_0202f388 = LCG(RNG_0202f388);
+        (p->s).work[3] = (RNG_0202f388 >> 16) & 1;
+        (p->s).mode[2]++;
+        // fallthrough
+      case 1:
+        UpdateSpriteAnimation(p);
+        if ((p->s).motion.state == 3) {
+          (p->s).flags |= DISPLAY;
+          (p->s).mode[2]++;
+        }
+        break;
+      case 2:
+        (p->s).coord.x += (p->s).d.x;
+        (p->s).coord.y += (p->s).d.y;
+        UpdateSpriteAnimation(p);
+        break;
+    }
+  }
 }
 
 // 0x0836ab8c
