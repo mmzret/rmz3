@@ -1468,4 +1468,8 @@ NAKED static u8 unused_08006dcc(void* p, Coords32* c) { INCCODE("asm/unused/unus
 
 NAKED static u8 unused_08006e3c(void* p, u32 unk_x, u32 unk_y) { INCCODE("asm/unused/unused_08006e3c.inc"); }  // unk_x, unk_y の単位不明(pixel?)
 
-NAKED static u8 unused_08006ea8(void* p, u32 r1, s32 r2, s32 r3) { INCCODE("asm/unused/unused_08006ea8.inc"); }
+static u8 unused_08006ea8(void* p, u8 a, s32 b, s32 c) {
+  u32 idx = c * 15 + (a * 150 + b);
+  u16 mid = ((u16*)((void**)p)[2])[idx];
+  return ((u8*)((void**)p)[0])[mid * 2];
+}
