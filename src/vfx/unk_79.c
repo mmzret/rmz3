@@ -136,7 +136,7 @@ _080C8ED4: .4byte gStaticMotionGraphics+12\n\
 }
 
 void CreateGhost79_2(struct Entity* p, u8 r1, u8 r2) {
-  struct VFX* g = AllocEntityFirst(gVFXHeaderPtr);
+  struct VFX* g = AllocEntityLast(gVFXHeaderPtr);
   if (g != NULL) {
     INIT_VFX_ROUTINE(g, VFX_UNK_079);
     (g->s).unk_28 = p;
