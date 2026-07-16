@@ -1,8 +1,117 @@
 #include "collision.h"
 #include "enemy.h"
 #include "global.h"
+#include "score.h"
+#include "stagerun.h"
+#include "camera.h"
 
-INCASM("asm/enemy/cattatank.inc");
+INCASM("asm/enemy/cattatank_a.inc");
+
+static const EnemyFunc sUpdates1[10];
+static const EnemyFunc sUpdates2[10];
+void Cattatank_Die(struct Enemy* p);
+void cattatank_08099e20(struct Enemy* p);
+
+void TryDropZakoDisk(struct Enemy* p, Coords32* c);
+
+void Cattatank_Update(struct Enemy* p) {
+  u8 m;
+  if ((p->body).status & BODY_STATUS_DEAD) {
+    if ((p->s).mode[1] == 6) {
+      if (!IsFrozen(&p->s)) {
+        goto dispatch1;
+      }
+    }
+    (p->s).mode[3] = 0;
+    SET_ENEMY_ROUTINE(p, ENTITY_DIE);
+    Cattatank_Die(p);
+    return;
+  }
+  if (Camera_GetDistance(&gStageRun.vm.camera, &(p->s).coord) > 0x3000) {
+    if (gStageRun.vm.camera.viewport.y + 0x4FFF < (p->s).coord.y + 0x2000) {
+      if ((p->s).work[1] == 1) {
+        (p->s).mode[3] = 1;
+        PlaySound(0x2a);
+        TryDropItem(1, &(p->s).coord);
+        if (gScore.enemyCount <= 0x270E) {
+          gScore.enemyCount++;
+        }
+        TryDropZakoDisk(p, &(p->s).coord);
+        (p->s).flags &= ~DISPLAY;
+        SET_ENEMY_ROUTINE(p, ENTITY_EXIT);
+        return;
+      }
+    }
+  }
+dispatch1:
+  (sUpdates1[(p->s).mode[1]])(p);
+  cattatank_08099e20(p);
+  m = (p->s).mode[1];
+  if (m == 6 || m == 7) goto dispatch2;
+  if (m == 9) goto dispatch2;
+  if (IsFrozen(&p->s)) {
+    return;
+  }
+dispatch2:
+  (sUpdates2[(p->s).mode[1]])(p);
+}
+
+INCASM("asm/enemy/cattatank_b.inc");
+
+bool8 nop_08099090(struct Enemy* p) { return TRUE; }
+
+void cattatank_08099094(struct Enemy* p) {
+  switch ((p->s).mode[2]) {
+    case 0:
+      (p->s).flags &= ~DISPLAY;
+      (p->s).work[2] = 0x32;
+      (p->s).mode[2]++;
+      // fallthrough
+    case 1:
+      if ((p->s).work[2] != 0) {
+        if (--(p->s).work[2] != 0) break;
+      }
+      (p->s).mode[1] = 1;
+      (p->s).mode[2] = 0;
+      break;
+  }
+}
+
+bool8 nop_080990d4(struct Enemy* p) { return TRUE; }
+
+INCASM("asm/enemy/cattatank_c.inc");
+
+bool8 nop_0809925c(struct Enemy* p) { return TRUE; }
+
+INCASM("asm/enemy/cattatank_d.inc");
+
+bool8 nop_080994e8(struct Enemy* p) { return TRUE; }
+
+INCASM("asm/enemy/cattatank_e.inc");
+
+bool8 nop_0809973c(struct Enemy* p) { return TRUE; }
+
+INCASM("asm/enemy/cattatank_f.inc");
+
+bool8 nop_08099950(struct Enemy* p) { return TRUE; }
+
+INCASM("asm/enemy/cattatank_g.inc");
+
+bool8 nop_08099a94(struct Enemy* p) { return TRUE; }
+
+INCASM("asm/enemy/cattatank_h.inc");
+
+bool8 nop_08099ce0(struct Enemy* p) { return TRUE; }
+
+INCASM("asm/enemy/cattatank_i.inc");
+
+bool8 nop_08099d7c(struct Enemy* p) { return TRUE; }
+
+void nop_08099d80(struct Enemy* p) {}
+
+bool8 nop_08099d84(struct Enemy* p) { return TRUE; }
+
+INCASM("asm/enemy/cattatank_j.inc");
 
 void Cattatank_Init(struct Enemy* p);
 void Cattatank_Update(struct Enemy* p);
@@ -20,29 +129,19 @@ const EnemyRoutine gCattatankRoutine = {
 
 // --------------------------------------------
 
-void nop_08099090(struct Enemy* p);
-void nop_080990d4(struct Enemy* p);
-void nop_0809925c(struct Enemy* p);
-void nop_080994e8(struct Enemy* p);
-void nop_0809973c(struct Enemy* p);
-void nop_08099950(struct Enemy* p);
-void nop_08099a94(struct Enemy* p);
-void nop_08099ce0(struct Enemy* p);
-void nop_08099d7c(struct Enemy* p);
-void nop_08099d84(struct Enemy* p);
 
 // clang-format off
 static const EnemyFunc sUpdates1[10] = {
-    nop_08099090,
-    nop_080990d4,
-    nop_0809925c,
-    nop_080994e8,
-    nop_0809973c,
-    nop_08099950,
-    nop_08099a94,
-    nop_08099ce0,
-    nop_08099d7c,
-    nop_08099d84,
+    (EnemyFunc)nop_08099090,
+    (EnemyFunc)nop_080990d4,
+    (EnemyFunc)nop_0809925c,
+    (EnemyFunc)nop_080994e8,
+    (EnemyFunc)nop_0809973c,
+    (EnemyFunc)nop_08099950,
+    (EnemyFunc)nop_08099a94,
+    (EnemyFunc)nop_08099ce0,
+    (EnemyFunc)nop_08099d7c,
+    (EnemyFunc)nop_08099d84,
 };
 // clang-format on
 
@@ -54,7 +153,6 @@ void FUN_08099740(struct Enemy* p);
 void FUN_08099954(struct Enemy* p);
 void FUN_08099a98(struct Enemy* p);
 void FUN_08099ce4(struct Enemy* p);
-void nop_08099d80(struct Enemy* p);
 void FUN_08099d88(struct Enemy* p);
 
 // clang-format off
