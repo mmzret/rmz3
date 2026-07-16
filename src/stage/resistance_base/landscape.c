@@ -288,57 +288,12 @@ _08016518: .4byte 0x0002D024\n\
  .syntax divided\n");
 }
 
-NAKED static void rbase_0801651c(struct StageLayer* l, const struct Stage* _) {
-  asm(".syntax unified\n\
-	push {r4, r5, r6, lr}\n\
-	mov r6, sb\n\
-	mov r5, r8\n\
-	push {r5, r6}\n\
-	adds r4, r0, #0\n\
-	mov sb, r1\n\
-	ldr r0, _0801657C @ =gStageTilesetOffsets+(18*4)\n\
-	mov r8, r0\n\
-	ldrh r0, [r4, #0x10]\n\
-	lsrs r0, r0, #2\n\
-	movs r6, #7\n\
-	ands r0, r6\n\
-	lsls r1, r0, #2\n\
-	adds r1, r1, r0\n\
-	lsls r1, r1, #2\n\
-	ldr r5, _08016580 @ =0x08704980\n\
-	adds r1, r1, r5\n\
-	mov r2, r8\n\
-	ldr r0, [r2]\n\
-	adds r0, r0, r1\n\
-	movs r1, #0x80\n\
-	lsls r1, r1, #7\n\
-	bl RequestGraphicTransfer\n\
-	ldrh r0, [r4, #0x10]\n\
-	lsrs r0, r0, #2\n\
-	ands r0, r6\n\
-	lsls r1, r0, #2\n\
-	adds r1, r1, r0\n\
-	lsls r1, r1, #2\n\
-	adds r1, r1, r5\n\
-	mov r2, r8\n\
-	ldr r0, [r2]\n\
-	adds r0, r0, r1\n\
-	adds r0, #0xc\n\
-	movs r1, #0\n\
-	bl LoadPalette\n\
-	adds r0, r4, #0\n\
-	mov r1, sb\n\
-	bl DrawGeneralStageLayer\n\
-	pop {r3, r4}\n\
-	mov r8, r3\n\
-	mov sb, r4\n\
-	pop {r4, r5, r6}\n\
-	pop {r0}\n\
-	bx r0\n\
-	.align 2, 0\n\
-_0801657C: .4byte gStageTilesetOffsets+(18*4)\n\
-_08016580: .4byte gTilesetAnims+(58*20)-0xd1534\n\
- .syntax divided\n");
+#define TILESETS(id, ofs) ((ColorGraphic*)(*((u32*)(0x087044b0 + (id * 4))) + (0x087044b0 + (id * 4)) + (ofs * 20)))
+
+static void rbase_0801651c(struct StageLayer* l, const struct Stage* stage) {
+  RequestGraphicTransfer(&(TILESETS(18, 58)[(l->unk_10 >> 2) & 7]).g, (void*)0x4000);
+  LoadPalette(&(TILESETS(18, 58)[(l->unk_10 >> 2) & 7]).pal, 0);
+  DrawGeneralStageLayer(l, stage);
 }
 
 static void rbase_08016584(struct StageLayer* l UNUSED, const struct Stage* _ UNUSED) {

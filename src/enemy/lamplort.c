@@ -271,96 +271,41 @@ static const EnemyFunc sUpdates2[10] = {
 
 static bool32 FUN_0806ce5c(void* _ UNUSED);
 
-NAKED static void Lamplort_Update(struct Lamplort* p) {
-  asm(".syntax unified\n\
-	push {r4, lr}\n\
-	adds r4, r0, #0\n\
-	adds r0, #0x8c\n\
-	ldr r0, [r0]\n\
-	movs r1, #0x80\n\
-	lsls r1, r1, #2\n\
-	ands r0, r1\n\
-	cmp r0, #0\n\
-	bne _0806C3AC\n\
-	adds r0, r4, #0\n\
-	bl FUN_0806ce5c\n\
-	cmp r0, #0\n\
-	bne _0806C3CC\n\
-_0806C3AC:\n\
-	ldr r1, _0806C3C8 @ =gEnemyFnTable\n\
-	ldrb r0, [r4, #9]\n\
-	lsls r0, r0, #2\n\
-	adds r0, r0, r1\n\
-	movs r1, #2\n\
-	str r1, [r4, #0xc]\n\
-	ldr r0, [r0]\n\
-	ldr r0, [r0, #8]\n\
-	str r0, [r4, #0x14]\n\
-	adds r0, r4, #0\n\
-	bl Lamplort_Die\n\
-	b _0806C43C\n\
-	.align 2, 0\n\
-_0806C3C8: .4byte gEnemyFnTable\n\
-_0806C3CC:\n\
-	adds r0, r4, #0\n\
-	bl IsFrozen\n\
-	cmp r0, #0\n\
-	beq _0806C3F2\n\
-	ldr r1, [r4, #0x2c]\n\
-	adds r1, #0xb4\n\
-	ldr r0, [r1]\n\
-	movs r2, #2\n\
-	orrs r0, r2\n\
-	str r0, [r1]\n\
-	adds r0, r4, #0\n\
-	adds r0, #0xc0\n\
-	ldr r1, [r0]\n\
-	cmp r1, #0\n\
-	bne _0806C3F2\n\
-	movs r0, #1\n\
-	strb r0, [r4, #0xd]\n\
-	strb r1, [r4, #0xe]\n\
-_0806C3F2:\n\
-	ldr r0, _0806C428 @ =sUpdates1\n\
-	ldrb r1, [r4, #0xd]\n\
-	lsls r1, r1, #2\n\
-	adds r1, r1, r0\n\
-	ldr r1, [r1]\n\
-	adds r0, r4, #0\n\
-	bl _call_via_r1\n\
-	adds r0, r4, #0\n\
-	bl lamplort_0806ce08\n\
-	ldrb r0, [r4, #0xd]\n\
-	cmp r0, #7\n\
-	beq _0806C42C\n\
-	cmp r0, #9\n\
-	beq _0806C42C\n\
-	adds r0, r4, #0\n\
-	bl IsFrozen\n\
-	cmp r0, #0\n\
-	beq _0806C42C\n\
-	ldrb r1, [r4, #0xd]\n\
-	adds r0, r4, #0\n\
-	adds r0, #0xba\n\
-	strb r1, [r0]\n\
-	b _0806C43C\n\
-	.align 2, 0\n\
-_0806C428: .4byte sUpdates1\n\
-_0806C42C:\n\
-	ldr r0, _0806C444 @ =sUpdates2\n\
-	ldrb r1, [r4, #0xd]\n\
-	lsls r1, r1, #2\n\
-	adds r1, r1, r0\n\
-	ldr r1, [r1]\n\
-	adds r0, r4, #0\n\
-	bl _call_via_r1\n\
-_0806C43C:\n\
-	pop {r4}\n\
-	pop {r0}\n\
-	bx r0\n\
-	.align 2, 0\n\
-_0806C444: .4byte sUpdates2\n\
- .syntax divided\n");
+static bool32 FUN_0806ce5c(void* _);
+static bool32 lamplort_0806ce08(struct Lamplort* p);
+
+static void Lamplort_Update(struct Lamplort* p) {
+  u8 m;
+  if (!((p->body).status & BODY_STATUS_DEAD)) {
+    if (FUN_0806ce5c(p)) {
+      goto alive;
+    }
+  }
+  SET_ENEMY_ROUTINE(p, ENTITY_DIE);
+  Lamplort_Die((struct Enemy*)p);
+  return;
+
+alive:
+  if (IsFrozen(&p->s)) {
+    u32 v;
+    *(u32*)((u8*)(p->s).unk_2c + 0xb4) |= 2;
+    v = (u32)p->elfx;
+    if (v == 0) {
+      (p->s).mode[1] = 1;
+      (p->s).mode[2] = v;
+    }
+  }
+  (sUpdates1[(p->s).mode[1]])((struct Enemy*)p);
+  lamplort_0806ce08(p);
+  m = (p->s).mode[1];
+  if (m == 7) goto dispatch2;
+  if (m == 9) goto dispatch2;
+  if (IsFrozen(&p->s)) {
+    p->unk_ba = (p->s).mode[1];
+    return;
+  }
+dispatch2:
+  (sUpdates2[(p->s).mode[1]])((struct Enemy*)p);
 }
 
 INCASM("asm/enemy/lamplort.inc");

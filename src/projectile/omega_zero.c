@@ -194,154 +194,41 @@ static void OmegaZeroProjectile_Die(Object* p) {
 static void nop_080ae5b4(void* _) {}
 
 // 01 00 xx --
-NAKED static void OmegaZeroSaber_Update(struct Projectile* p) {
-  asm(".syntax unified\n\
-	push {r4, r5, lr}\n\
-	adds r4, r0, #0\n\
-	ldr r5, [r4, #0x28]\n\
-	ldrb r0, [r4, #0xe]\n\
-	cmp r0, #0\n\
-	beq _080AE5CA\n\
-	cmp r0, #1\n\
-	beq _080AE630\n\
-	b _080AE690\n\
-_080AE5CA:\n\
-	adds r0, r4, #0\n\
-	bl ResetDynamicMotion\n\
-	movs r0, #0x80\n\
-	lsls r0, r0, #2\n\
-	strh r0, [r4, #0x20]\n\
-	adds r1, r4, #0\n\
-	adds r1, #0x22\n\
-	movs r0, #5\n\
-	strb r0, [r1]\n\
-	ldr r1, _080AE604 @ =gOmegaZeroSaberMotions\n\
-	ldrb r0, [r4, #0x11]\n\
-	lsls r0, r0, #1\n\
-	adds r0, r0, r1\n\
-	ldrh r1, [r0]\n\
-	adds r0, r4, #0\n\
-	bl SetMotion\n\
-	ldrb r0, [r5, #0xa]\n\
-	lsrs r2, r0, #4\n\
-	movs r0, #1\n\
-	ands r2, r0\n\
-	cmp r2, #0\n\
-	beq _080AE608\n\
-	ldrb r0, [r4, #0xa]\n\
-	movs r1, #0x10\n\
-	orrs r0, r1\n\
-	b _080AE60E\n\
-	.align 2, 0\n\
-_080AE604: .4byte gOmegaZeroSaberMotions\n\
-_080AE608:\n\
-	ldrb r1, [r4, #0xa]\n\
-	movs r0, #0xef\n\
-	ands r0, r1\n\
-_080AE60E:\n\
-	strb r0, [r4, #0xa]\n\
-	adds r1, r2, #0\n\
-	adds r0, r4, #0\n\
-	adds r0, #0x4c\n\
-	strb r1, [r0]\n\
-	adds r3, r4, #0\n\
-	adds r3, #0x4a\n\
-	lsls r1, r1, #4\n\
-	ldrb r2, [r3]\n\
-	movs r0, #0x11\n\
-	rsbs r0, r0, #0\n\
-	ands r0, r2\n\
-	orrs r0, r1\n\
-	strb r0, [r3]\n\
-	ldrb r0, [r4, #0xe]\n\
-	adds r0, #1\n\
-	strb r0, [r4, #0xe]\n\
-_080AE630:\n\
-	ldr r0, [r5, #0x54]\n\
-	str r0, [r4, #0x54]\n\
-	ldr r0, [r5, #0x58]\n\
-	str r0, [r4, #0x58]\n\
-	ldrb r0, [r4, #0x11]\n\
-	cmp r0, #9\n\
-	bls _080AE64C\n\
-	adds r0, r4, #0\n\
-	bl FUN_0801779c\n\
-	adds r0, r4, #0\n\
-	bl UpdateEntityAnim\n\
-	b _080AE652\n\
-_080AE64C:\n\
-	adds r0, r4, #0\n\
-	bl UpdateEntityAnim\n\
-_080AE652:\n\
-	adds r0, r4, #0\n\
-	adds r0, #0x74\n\
-	ldr r1, _080AE6D4 @ =PTR_ARRAY_0836d28c\n\
-	ldrb r2, [r4, #0x11]\n\
-	lsls r2, r2, #2\n\
-	adds r2, r2, r1\n\
-	adds r1, r4, #0\n\
-	adds r1, #0x71\n\
-	ldrb r1, [r1]\n\
-	lsls r1, r1, #0x18\n\
-	asrs r1, r1, #0x18\n\
-	ldr r2, [r2]\n\
-	lsls r1, r1, #2\n\
-	adds r1, r1, r2\n\
-	ldr r1, [r1]\n\
-	bl SetDDP\n\
-	adds r0, r4, #0\n\
-	adds r0, #0x73\n\
-	ldrb r0, [r0]\n\
-	cmp r0, #3\n\
-	bne _080AE690\n\
-	ldr r1, _080AE6D8 @ =gProjectileFnTable\n\
-	ldrb r0, [r4, #9]\n\
-	lsls r0, r0, #2\n\
-	adds r0, r0, r1\n\
-	movs r1, #2\n\
-	str r1, [r4, #0xc]\n\
-	ldr r0, [r0]\n\
-	ldr r0, [r0, #8]\n\
-	str r0, [r4, #0x14]\n\
-_080AE690:\n\
-	ldrb r0, [r5, #0xc]\n\
-	cmp r0, #1\n\
-	bls _080AE6CC\n\
-	ldrb r1, [r4, #0xa]\n\
-	movs r0, #0xfe\n\
-	ands r0, r1\n\
-	movs r2, #0\n\
-	movs r1, #0xfd\n\
-	ands r0, r1\n\
-	strb r0, [r4, #0xa]\n\
-	adds r0, r4, #0\n\
-	adds r0, #0x8c\n\
-	str r2, [r0]\n\
-	adds r0, #4\n\
-	str r2, [r0]\n\
-	adds r0, #4\n\
-	strb r2, [r0]\n\
-	ldrb r1, [r4, #0xa]\n\
-	movs r0, #0xfb\n\
-	ands r0, r1\n\
-	strb r0, [r4, #0xa]\n\
-	ldr r1, _080AE6D8 @ =gProjectileFnTable\n\
-	ldrb r0, [r4, #9]\n\
-	lsls r0, r0, #2\n\
-	adds r0, r0, r1\n\
-	movs r1, #3\n\
-	str r1, [r4, #0xc]\n\
-	ldr r0, [r0]\n\
-	ldr r0, [r0, #0xc]\n\
-	str r0, [r4, #0x14]\n\
-_080AE6CC:\n\
-	pop {r4, r5}\n\
-	pop {r0}\n\
-	bx r0\n\
-	.align 2, 0\n\
-_080AE6D4: .4byte PTR_ARRAY_0836d28c\n\
-_080AE6D8: .4byte gProjectileFnTable\n\
- .syntax divided\n");
+extern const motion_t gOmegaZeroSaberMotions[16];
+extern const struct Collision *const *const PTR_ARRAY_0836d28c[16];
+
+static void OmegaZeroSaber_Update(struct Projectile* p) {
+  struct Entity* parent = (p->s).unk_28;
+  switch ((p->s).mode[2]) {
+    case 0:
+      ResetDynamicMotion(&p->s);
+      (p->s).tileNum = 0x200;
+      (p->s).palID = 5;
+      SetSpriteAnimation(&p->s, gOmegaZeroSaberMotions[(p->s).work[1]]);
+      SET_XFLIP(p, (parent->flags >> 4) & 1);
+      (p->s).mode[2]++;
+      // fallthrough
+    case 1:
+      (p->s).coord.x = parent->coord.x;
+      (p->s).coord.y = parent->coord.y;
+      if ((p->s).work[1] > 9) {
+        FUN_0801779c(&p->s);
+        UpdateSpriteAnimation(p);
+      } else {
+        UpdateSpriteAnimation(p);
+      }
+      SetDDP(&p->body, PTR_ARRAY_0836d28c[(p->s).work[1]][(p->s).motion.cmdIdx]);
+      if ((p->s).motion.state == 3) {
+        SET_PROJECTILE_ROUTINE(p, ENTITY_DIE);
+      }
+      break;
+  }
+  if (parent->mode[0] > 1) {
+    (p->s).flags &= ~DISPLAY;
+    (p->s).flags &= ~FLIPABLE;
+    EXIT_BODY(p);
+    SET_PROJECTILE_ROUTINE(p, ENTITY_DISAPPEAR);
+  }
 }
 
 // 01 01 xx --
