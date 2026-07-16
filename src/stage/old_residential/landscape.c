@@ -401,42 +401,11 @@ static void LayerUpdate_9(struct StageLayer* l, const struct Stage* _ UNUSED) {
 }
 
 // 0x0800e284
-NAKED metatile_attr_t FUN_0800e284(s32 x, s32 y) {
-  asm(".syntax unified\n\
-	push {r4, r5, lr}\n\
-	adds r4, r0, #0\n\
-	adds r3, r1, #0\n\
-	ldr r0, _0800E294 @ =0x0004FFFF\n\
-	cmp r3, r0\n\
-	ble _0800E298\n\
-	movs r0, #0\n\
-	b _0800E2B8\n\
-	.align 2, 0\n\
-_0800E294: .4byte 0x0004FFFF\n\
-_0800E298:\n\
-	ldr r2, _0800E2C0 @ =gOverworld\n\
-	movs r0, #0xfc\n\
-	lsls r0, r0, #3\n\
-	adds r2, r2, r0\n\
-	ldrh r1, [r2]\n\
-	movs r5, #0xc8\n\
-	lsls r5, r5, #0xb\n\
-	adds r0, r3, r5\n\
-	asrs r0, r0, #0xc\n\
-	muls r0, r1, r0\n\
-	asrs r1, r4, #0xc\n\
-	adds r0, r0, r1\n\
-	adds r0, #2\n\
-	lsls r0, r0, #1\n\
-	adds r0, r0, r2\n\
-	ldrh r0, [r0]\n\
-_0800E2B8:\n\
-	pop {r4, r5}\n\
-	pop {r1}\n\
-	bx r1\n\
-	.align 2, 0\n\
-_0800E2C0: .4byte gOverworld\n\
- .syntax divided\n");
+metatile_attr_t FUN_0800e284(s32 x, s32 y) {
+  if (y <= 0x4FFFF) {
+    return gOverworld.terrain.tilemap[(gOverworld.terrain.tilemap[0] * ((y + 0x64000) >> 12)) + (x >> 12) + 2];
+  }
+  return 0;
 }
 
 typedef struct {

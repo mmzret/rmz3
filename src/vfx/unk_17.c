@@ -184,55 +184,18 @@ _080B6A34: .4byte gVFXFnTable\n\
  .syntax divided\n");
 }
 
-NAKED static void FUN_080b6a38(struct VFX* p) {
-  asm(".syntax unified\n\
-	push {r4, r5, lr}\n\
-	adds r5, r0, #0\n\
-	ldr r0, [r5, #0x54]\n\
-	ldr r1, [r5, #0x5c]\n\
-	adds r0, r0, r1\n\
-	str r0, [r5, #0x54]\n\
-	ldr r0, [r5, #0x58]\n\
-	ldr r1, [r5, #0x60]\n\
-	adds r0, r0, r1\n\
-	str r0, [r5, #0x58]\n\
-	adds r1, #0x10\n\
-	str r1, [r5, #0x60]\n\
-	adds r0, r5, #0\n\
-	bl UpdateEntityAnim\n\
-	ldrb r0, [r5, #0x12]\n\
-	subs r0, #1\n\
-	strb r0, [r5, #0x12]\n\
-	lsls r0, r0, #0x18\n\
-	lsrs r0, r0, #0x18\n\
-	cmp r0, #0xff\n\
-	bne _080B6A90\n\
-	ldr r0, [r5, #0x28]\n\
-	adds r4, r5, #0\n\
-	adds r4, #0x54\n\
-	adds r1, r4, #0\n\
-	bl CreateGhost17_2\n\
-	movs r0, #2\n\
-	adds r1, r4, #0\n\
-	bl CreateSmoke\n\
-	movs r0, #0x2a\n\
-	bl PlaySound\n\
-	ldr r1, _080B6A98 @ =gVFXFnTable\n\
-	ldrb r0, [r5, #9]\n\
-	lsls r0, r0, #2\n\
-	adds r0, r0, r1\n\
-	movs r1, #2\n\
-	str r1, [r5, #0xc]\n\
-	ldr r0, [r0]\n\
-	ldr r0, [r0, #8]\n\
-	str r0, [r5, #0x14]\n\
-_080B6A90:\n\
-	pop {r4, r5}\n\
-	pop {r0}\n\
-	bx r0\n\
-	.align 2, 0\n\
-_080B6A98: .4byte gVFXFnTable\n\
- .syntax divided\n");
+static void FUN_080b6a38(struct VFX* p) {
+  (p->s).coord.x += (p->s).d.x;
+  (p->s).coord.y += (p->s).d.y;
+  (p->s).d.y += 0x10;
+  UpdateSpriteAnimation(p);
+  (p->s).work[2]--;
+  if ((p->s).work[2] == 0xff) {
+    CreateGhost17_2((p->s).unk_28, &(p->s).coord);
+    CreateSmoke(2, &(p->s).coord);
+    PlaySound(0x2a);
+    SET_VFX_ROUTINE(p, ENTITY_DIE);
+  }
 }
 
 static void FUN_080b6a9c(struct VFX* p) {
