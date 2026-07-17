@@ -181,14 +181,14 @@ static bool32 nop_0804b520(struct Boss* p);
 static bool32 nop_0804b56c(struct Boss* p);
 static bool32 nop_0804b5e8(struct Boss* p);
 static bool32 nop_0804b6b4(void* _ UNUSED);
-void FUN_0804b900(struct Boss* p);
-void FUN_0804ba40(struct Boss* p);
-void FUN_0804bcf4(struct Boss* p);
-void FUN_0804bee0(struct Boss* p);
-void FUN_0804c220(struct Boss* p);
-void FUN_0804c554(struct Boss* p);
-void nop_0804c9ec(struct Boss* p);
-void FUN_0804caa0(struct Boss* p);
+bool8 FUN_0804b900(struct Boss* p);
+bool8 FUN_0804ba40(struct Boss* p);
+bool8 FUN_0804bcf4(struct Boss* p);
+bool8 FUN_0804bee0(struct Boss* p);
+bool8 FUN_0804c220(struct Boss* p);
+bool8 FUN_0804c554(struct Boss* p);
+bool8 nop_0804c9ec(struct Boss* p);
+bool8 FUN_0804caa0(struct Boss* p);
 
 static void hellbatMode0(struct Boss* p);
 static void hellbatMode1(struct Boss* p);
@@ -772,7 +772,73 @@ static void hellbatMode2(struct Hellbat* p) {
 
 static bool32 nop_0804b6b4(void* _) { return TRUE; }
 
-INCASM("asm/boss/hellbat.inc");
+INCASM("asm/boss/hellbat_a.inc");
+
+bool8 FUN_0804b900(struct Boss* p) { return TRUE; }
+
+INCASM("asm/boss/hellbat_b.inc");
+
+bool8 FUN_0804ba40(struct Boss* p) { return TRUE; }
+
+INCASM("asm/boss/hellbat_c.inc");
+
+bool8 FUN_0804bcf4(struct Boss* p) { return TRUE; }
+
+INCASM("asm/boss/hellbat_d.inc");
+
+bool8 FUN_0804bee0(struct Boss* p) { return TRUE; }
+
+INCASM("asm/boss/hellbat_e.inc");
+
+bool8 FUN_0804c220(struct Boss* p) { return TRUE; }
+
+INCASM("asm/boss/hellbat_f.inc");
+
+bool8 FUN_0804c554(struct Boss* p) { return TRUE; }
+
+INCASM("asm/boss/hellbat_g.inc");
+
+bool8 nop_0804c9ec(struct Boss* p) { return TRUE; }
+
+void hellbatDamage(struct Boss* p) {
+  struct Entity** slot;
+  switch ((p->s).mode[2]) {
+    case 0:
+      (p->s).flags |= DISPLAY;
+      PlaySound(0x8a);
+      if ((p->s).flags & Y_FLIP) {
+        (p->s).spr.yflip = 0;
+        (p->s).spr.oam.yflip = 0;
+        (p->s).flags &= ~Y_FLIP;
+        (p->s).coord.y += 0x3900;
+      }
+      (p->s).d.y = 0;
+      (p->s).mode[2]++;
+      FALLTHROUGH;
+    case 1:
+      (p->s).d.y += 0x40;
+      if ((p->s).d.y > 0x700) {
+        (p->s).d.y = 0x700;
+      }
+      if (FUN_080098a4((p->s).coord.x, (p->s).coord.y + (p->s).d.y) != 0) {
+        (p->s).d.y = 0;
+        (p->s).coord.y = FUN_08009f6c((p->s).coord.x, (p->s).coord.y) + 0x200;
+      } else {
+        (p->s).coord.y += (p->s).d.y;
+      }
+      break;
+  }
+  slot = (struct Entity**)((u8*)p + 0xc0);
+  if (isKilled(*slot)) {
+    *slot = NULL;
+    (p->s).mode[1] = 5;
+    (p->s).mode[2] = 0;
+  }
+}
+
+bool8 FUN_0804caa0(struct Boss* p) { return TRUE; }
+
+INCASM("asm/boss/hellbat_h.inc");
 
 extern const u16 u16_ARRAY_080feedc[6];
 

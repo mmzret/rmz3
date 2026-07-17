@@ -1,8 +1,78 @@
 #include "boss.h"
 #include "collision.h"
 #include "global.h"
+#include "physics.h"
 
-INCASM("asm/boss/spearook.inc");
+static const BossFunc sDeads[5];
+
+INCASM("asm/boss/spearook_a.inc");
+
+void Spearook_Die(struct Boss* p) {
+  (sDeads[(p->s).mode[1]])(p);
+}
+
+void FUN_08062264(struct Boss* p) {}
+
+void FUN_08062268(struct Boss* p) {
+  struct Entity** slot = (struct Entity**)((u8*)p + 0xb4);
+  if (*slot == NULL || isKilled(*slot)) {
+    *slot = NULL;
+    (p->s).mode[1] = 0;
+    (p->s).mode[2] = 0;
+  }
+}
+
+INCASM("asm/boss/spearook_b.inc");
+
+void FUN_08062304(struct Boss* p) {
+  u32 v = *(u32*)((u8*)p + 0x8c);
+  if (v & 1) {
+    if (v & 0x20000) {
+      *(u32*)((u8*)p + 0xbc) &= ~4;
+      (p->s).mode[1] = 14;
+      (p->s).mode[2] = 0;
+    }
+  }
+}
+
+INCASM("asm/boss/spearook_c.inc");
+
+void nop_0806316c(struct Boss* p) {}
+
+void nop_08063170(struct Boss* p) {}
+
+INCASM("asm/boss/spearook_d.inc");
+
+void nop_08063510(struct Boss* p) {}
+
+void FUN_08063514(struct Boss* p) {
+  switch ((p->s).mode[2]) {
+    case 0:
+      EXIT_BODY(p);
+      (p->s).d.y = 0;
+      (p->s).mode[2]++;
+      FALLTHROUGH;
+    case 1:
+      (p->s).d.y += 0x40;
+      if ((p->s).d.y > 0x700) {
+        (p->s).d.y = 0x700;
+      }
+      (p->s).coord.y += (p->s).d.y;
+      {
+        s32 push = PushoutToUp1((p->s).coord.x, (p->s).coord.y);
+        if (push < 0) {
+          (p->s).coord.y += push;
+          CreateSmoke(1, &(p->s).coord);
+          PlaySound(0x2a);
+          (p->s).flags &= ~DISPLAY;
+          (p->s).flags &= ~FLIPABLE;
+          EXIT_BODY(p);
+          SET_BOSS_ROUTINE(p, ENTITY_DISAPPEAR);
+        }
+      }
+      break;
+  }
+}
 
 void Spearook_Init(struct Boss* p);
 void Spearook_Update(struct Boss* p);
