@@ -116,4 +116,18 @@ static void FUN_080dcd20(Seagulls* p) {
   Seagulls_Update(p);
 }
 
-INCASM("asm/solid/seagulls.inc");
+INCASM("asm/solid/seagulls_a.inc");
+
+void FUN_080dd400(struct Solid* p) {
+  SET_SOLID_ROUTINE(p, ENTITY_EXIT);
+}
+
+
+void FUN_080dd418(struct Solid* p) {
+  SET_SOLID_ROUTINE(p, ENTITY_EXIT);
+}
+
+
+void FUN_080dd430(struct Solid* p) {
+  SET_SOLID_ROUTINE(p, ENTITY_EXIT);
+}
