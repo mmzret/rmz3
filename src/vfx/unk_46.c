@@ -2,6 +2,16 @@
 #include "vfx.h"
 #include "vfx/unk_common.h"
 
+struct VFX46 {
+  struct Entity s;
+  // props (16bytes, offset: 0x74..)
+  motion_t unk_74;  // 0xAD01 とか
+  u32 unk_78;
+  u8 unk_7c;
+  u32 pad_80;
+};
+static_assert(sizeof(struct VFX46) == sizeof(struct VFX));
+
 // トレテスタ・ケルベリアン関連
 // - トレテスタ・ケルベリアンが死んだ際のパーティクル
 // - コンテナが壊れる時のパーティクル
@@ -75,7 +85,34 @@ struct Entity* FUN_080bed5c(struct Entity* e, Coords32* c, u8 kind, u8 param_4) 
   return (void*)p;
 }
 
-INCASM("asm/vfx/unk_46.inc");
+static const VFXFunc sUpdates[4];
+
+struct Entity* FUN_080bedc0(struct Entity* e, struct Coord* c, u8 kind, u8 param_4) {
+  struct VFX46* p = (struct VFX46*)AllocEntityLast(gVFXHeaderPtr);
+  if (p != NULL) {
+    INIT_VFX_ROUTINE(p, VFX_UNK_046);
+    (p->s).work[0] = kind;
+    p->unk_7c = param_4;
+    (p->s).work[1] = 3;
+    (p->s).coord.x = c->x;
+    (p->s).coord.y = c->y;
+    (p->s).unk_28 = (void*)e;
+  }
+  return (void*)p;
+}
+
+INCASM("asm/vfx/unk_46_a.inc");
+
+void VFX46_Update(struct VFX* vfx) {
+  (sUpdates[(vfx->s).mode[1]])(vfx);
+}
+
+void VFX46_Die(struct VFX* vfx) {
+  (vfx->s).flags &= ~DISPLAY;
+  SET_VFX_ROUTINE(vfx, ENTITY_EXIT);
+}
+
+INCASM("asm/vfx/unk_46_b.inc");
 
 void FUN_080bef44(struct VFX* vfx);
 void FUN_080bf0a0(struct VFX* vfx);
