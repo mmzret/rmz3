@@ -21,7 +21,7 @@ bool8 FUN_08093a64(struct Enemy* p, s32 dy) {
   return FALSE;
 }
 
-INCASM("asm/enemy/shotloid_b.inc");
+INCASM("asm/enemy/shotloid_b_a.inc");
 
 void nop_08093af8(struct Enemy* p) {}
 
