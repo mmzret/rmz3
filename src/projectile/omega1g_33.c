@@ -2,7 +2,55 @@
 #include "global.h"
 #include "projectile.h"
 
-INCASM("asm/projectile/omega1g_33.inc");
+struct Projectile33x {
+  OBJECT_HDR;
+  u8 work[4];          // 0xB4
+  Coords32 prevCoord;  // 0xB8
+  u32 unk_c0;          // 0xC0
+};
+
+
+static const ProjectileFunc sUpdates[3];
+
+struct Projectile* createGoldOmega1Laser(s32 a0, u8 a1, s32 a2, struct Entity* e) {
+  struct Projectile* p = (struct Projectile*)AllocEntityLast(gProjectileHeaderPtr);
+  if (p != NULL) {
+    INIT_PROJECTILE_ROUTINE(p, 33);
+    (p->s).work[0] = 0;
+    ((struct Projectile33x*)p)->work[0] = a1;
+    ((struct Projectile33x*)p)->prevCoord.x = a0;
+    ((struct Projectile33x*)p)->prevCoord.y = a2;
+    (p->s).unk_28 = e;
+  }
+  return p;
+}
+
+struct Projectile* FUN_080ac3e8(struct Coord* c, u8 a1, u16 a2) {
+  struct Projectile* p = (struct Projectile*)AllocEntityLast(gProjectileHeaderPtr);
+  if (p != NULL) {
+    INIT_PROJECTILE_ROUTINE(p, 33);
+    (p->s).work[0] = 1;
+    (p->s).coord.x = c->x;
+    (p->s).coord.y = c->y;
+    (p->s).work[1] = a1;
+    ((struct Projectile33x*)p)->prevCoord.y = a2;
+  }
+  return p;
+}
+
+INCASM("asm/projectile/omega1g_33_a.inc");
+
+void OmegaGoldProjectile_Update(struct Projectile* p) {
+  (sUpdates[(p->s).mode[1]])(p);
+}
+
+void OmegaGoldProjectile_Die(struct Projectile* p) {
+  (p->s).flags &= ~DISPLAY;
+  EXIT_BODY(p);
+  SET_PROJECTILE_ROUTINE(p, ENTITY_EXIT);
+}
+
+INCASM("asm/projectile/omega1g_33_b.inc");
 
 void OmegaGoldProjectile_Init(Projectile* p);
 void OmegaGoldProjectile_Update(Projectile* p);
