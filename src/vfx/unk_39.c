@@ -1,5 +1,8 @@
 #include "global.h"
+#include "gfx.h"
 #include "vfx.h"
+
+#define PALETTE16(n) (*(u16*)(&gPaletteManager.buf[0]))
 
 struct VFX39 {
   struct Entity s;
@@ -14,7 +17,7 @@ static_assert(sizeof(struct VFX39) == sizeof(struct VFX));
 
 static void VFX39_Init(struct VFX39* p);
 static void VFX39_Update(struct VFX* vfx);
-void VFX39_Die(struct VFX* vfx);
+void VFX39_Die(struct VFX* p);
 
 // clang-format off
 const VFXRoutine gVFX39Routine = {
@@ -75,4 +78,13 @@ static void VFX39_Update(struct VFX* vfx) {
 
 // --------------------------------------------
 
-INCASM("asm/vfx/unk_39.inc");
+INCASM("asm/vfx/unk_39_a.inc");
+
+void VFX39_Die(struct VFX* p) {
+  PALETTE16(0) = 0;
+  gWindowRegBuffer.dispcnt &= 0xBFFF;
+  (p->s).flags &= ~DISPLAY;
+  SET_VFX_ROUTINE(p, ENTITY_EXIT);
+}
+
+INCASM("asm/vfx/unk_39_b.inc");

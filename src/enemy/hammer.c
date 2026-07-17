@@ -286,7 +286,41 @@ static void FUN_080755f4(struct Enemy* p) {
 
 static bool8 FUN_08075628(struct Enemy* p) { return TRUE; }
 
-INCASM("asm/enemy/hammer.inc");
+INCASM("asm/enemy/hammer_a.inc");
+
+bool8 FUN_080756e8(struct Enemy* p) { return TRUE; }
+
+INCASM("asm/enemy/hammer_b.inc");
+
+bool8 FUN_08075a30(struct Enemy* p) {
+  if ((p->body).status & BODY_STATUS_B3) {
+    if ((s8)p->buffer[1] == 1) {
+      (p->s).mode[1] = 2;
+      (p->s).mode[2] = 0;
+      p->buffer[1] = 0;
+    }
+  }
+  return TRUE;
+}
+
+void FUN_08075a5c(struct Body* body) {
+  const struct Collision* c = (body->enemy)->processing;
+  if (c->special == 1) {
+    if ((*(u32*)&c->atkType & 0x000200FF) == 0x00020002) {
+      ((struct Enemy*)body->parent)->buffer[1] = 1;
+    }
+  }
+}
+
+struct Entity* FUN_080b9228(struct Coord* c, s32 a2);
+
+bool8 FUN_08075a84(struct Enemy* p) {
+  struct Coord c;
+  c.x = (p->s).coord.x;
+  c.y = (p->s).coord.y - PIXEL(16);
+  FUN_080b9228(&c, 0);
+  return TRUE;
+}
 
 // --------------------------------------------
 

@@ -1,5 +1,6 @@
 #include "collision.h"
 #include "global.h"
+#include "score.h"
 #include "weapon.h"
 
 typedef struct {
@@ -47,7 +48,32 @@ struct Entity* CreateSoulLauncher(struct Zero* z, u8 r1, u8 r2) {
   return (void*)p;
 }
 
-INCASM("asm/weapon/soul_launcher.inc");
+INCASM("asm/weapon/soul_launcher_a.inc");
+
+void SoulLauncher_Die(struct Weapon* p) {
+  (p->s).flags &= ~DISPLAY;
+  SET_WEAPON_ROUTINE(p, ENTITY_EXIT);
+}
+
+void FUN_0803b4b0(struct Body* body) {
+  if (body->hitboxFlags & BODY_STATUS_B2) {
+    struct Weapon* w = (struct Weapon*)body->parent;
+    if (gScore.weaponCount[WEAPON_ROD] <= 0xFFFE) {
+      gScore.weaponCount[WEAPON_ROD]++;
+    }
+    if ((w->s).work[1] == 0) {
+      ((struct SoulLauncherProps*)w->buffer)->unk_c0 = 1;
+    }
+  }
+}
+
+metatile_attr_t FUN_0803b4e8(s32 x, s32 y) {
+  metatile_attr_t result = FUN_080098a4(x, y);
+  if (result == 0x800F) {
+    result = 0;
+  }
+  return result;
+}
 
 // 0x08361558
 static const struct Collision sCollisions[2] = {

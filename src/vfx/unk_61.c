@@ -1,6 +1,9 @@
 #include "global.h"
+#include "story.h"
 #include "vfx.h"
 #include "vfx/unk_common.h"
+
+#define IS_METTAUR (FLAG(gCurStory.s.gameflags, METTAUR_ENABLED))
 
 // Mothjiro 関連
 
@@ -54,7 +57,26 @@ struct Entity* FUN_080c2f3c(Coords32* c, u8 kind) {
 
 // --------------------------------------------
 
-INCASM("asm/vfx/unk_61.inc");
+static const VFXFunc sUpdates[3];
+
+INCASM("asm/vfx/unk_61_a.inc");
+
+void VFX61_Update(struct VFX* vfx) {
+  if (IS_METTAUR) {
+    SET_VFX_ROUTINE(vfx, ENTITY_DIE);
+    VFX61_Die(vfx);
+  } else {
+    (sUpdates[(vfx->s).mode[1]])(vfx);
+  }
+}
+
+
+void VFX61_Die(struct VFX* vfx) {
+  (vfx->s).flags &= ~DISPLAY;
+  SET_VFX_ROUTINE(vfx, ENTITY_EXIT);
+}
+
+INCASM("asm/vfx/unk_61_b.inc");
 
 // --------------------------------------------
 
