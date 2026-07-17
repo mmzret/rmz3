@@ -77,7 +77,79 @@ static void Projectile16_Die(Object* p) {
 
 // --------------------------------------------
 
-INCASM("asm/projectile/unk_16.inc");
+void FUN_080a25f8(struct Projectile* p) {
+  // `zero` is declared up here and assigned 0 only after the division below, so
+  // agbcc materializes the work[3] zero straight after __divsi3 and holds it in a
+  // register across the d.y/unk_coord.x stores (a case-scoped `= 0` const-folds
+  // away and is rescheduled late). Permuter-found; see git history.
+  s32 zero;
+  if ((p->body).status & BODY_STATUS_DEAD) {
+    EXIT_BODY(p);
+    CreateSmoke(2, &(p->s).coord);
+    SET_PROJECTILE_ROUTINE(p, ENTITY_DIE);
+  } else if ((p->body).status & BODY_STATUS_B2) {
+    EXIT_BODY(p);
+    CreateSmoke(2, &(p->s).coord);
+    PlaySound(0x35);
+    SET_PROJECTILE_ROUTINE(p, ENTITY_DIE);
+  } else if (--(p->s).work[2] == 0) {
+    CreateSmoke(2, &(p->s).coord);
+    SET_PROJECTILE_ROUTINE(p, ENTITY_DIE);
+  } else {
+    switch ((p->s).mode[2]) {
+      case 0: {
+        s32 targetX;
+        SetSpriteAnimation(p, 0x3e03);
+        if (!((p->s).flags & X_FLIP)) {
+          targetX = (p->s).coord.x - 0x6000;
+        } else {
+          targetX = (p->s).coord.x + 0x6000;
+        }
+        (p->s).unk_coord.x = 0x1e;
+        (p->s).d.x = (targetX - (p->s).coord.x) / 0x1e;
+        zero = 0;
+        (p->s).d.y = -0x3c0;
+        (p->s).unk_coord.x = 0x1d;
+        (p->s).work[3] = zero;
+        (p->s).mode[2]++;
+        FALLTHROUGH;
+      }
+      case 1:
+        (p->s).d.y += 0x40;
+        (p->s).coord.x += (p->s).d.x;
+        (p->s).coord.y += (p->s).d.y;
+        UpdateSpriteAnimation(p);
+        if (FUN_080098a4((p->s).coord.x, (p->s).coord.y) != 0) {
+          (p->s).mode[1] = 1;
+          (p->s).mode[2] = 0;
+        }
+        break;
+    }
+  }
+}
+
+void FUN_080a2710(struct Projectile* p) {
+  switch ((p->s).mode[2]) {
+    case 0: {
+      struct Coord c;
+      (p->s).flags &= ~DISPLAY;
+      (p->s).work[2] = 0x14;
+      c.x = (p->s).coord.x;
+      c.y = (p->s).coord.y - 0x800;
+      CreateSmoke(1, &c);
+      PlaySound(0x35);
+      SetDDP(&p->body, &sCollisions[2]);
+      (p->s).mode[2]++;
+      FALLTHROUGH;
+    }
+    case 1:
+      if ((p->s).work[2] != 0 && --(p->s).work[2] != 0) {
+        break;
+      }
+      SET_PROJECTILE_ROUTINE(p, ENTITY_DIE);
+      break;
+  }
+}
 
 // --------------------------------------------
 
