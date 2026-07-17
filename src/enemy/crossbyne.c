@@ -70,7 +70,68 @@ static void FUN_0807cce0(s32 x, s32 y) {
 // 0x0807cd70
 static void onCollision(struct Body* body UNUSED, Coords32* r1 UNUSED, Coords32* r2 UNUSED) {}
 
-INCASM("asm/enemy/crossbyne.inc");
+static const EnemyFunc sUpdates1[7];
+static const EnemyFunc sUpdates2[7];
+static const EnemyFunc sDeads[3];
+static const struct Collision sCollisions[5];
+static const motion_t sMotions[19];
+
+INCASM("asm/enemy/crossbyne_a.inc");
+
+extern const EnemyFunc sUpdates1[7];
+extern const EnemyFunc sUpdates2[7];
+bool8 FUN_0807cd74(struct Enemy* p);
+void crossbyne_0807cdc4(struct Enemy* p);
+
+void Crossbyne_Update(struct Enemy* p) {
+  if (!FUN_0807cd74(p)) {
+    crossbyne_0807cdc4(p);
+    (sUpdates1[(p->s).mode[1]])(p);
+    (sUpdates2[(p->s).mode[1]])(p);
+  }
+}
+
+void Crossbyne_Die(struct Enemy* p) {
+  (sDeads[(p->s).mode[1]])(p);
+}
+
+void FUN_0807cf5c(struct Enemy* p) {}
+
+void FUN_0807cf60(struct Enemy* p) {
+  struct Entity** slot = (struct Entity**)((u8*)p + 0xb4);
+  if (*slot == NULL || isKilled(*slot)) {
+    *slot = NULL;
+    (p->s).mode[1] = 2;
+    (p->s).mode[2] = 0;
+  }
+}
+
+void FUN_0807cf88(struct Enemy* p) {
+  if ((p->s).mode[2] == 0) {
+    SetDDP(&p->body, &sCollisions[2]);
+    (p->s).mode[2]++;
+  }
+}
+
+
+void FUN_0807cfac(struct Enemy* p) {
+  switch ((p->s).mode[2]) {
+    case 0:
+      PlaySound(0x12b);
+      SetSpriteAnimation(p, sMotions[(p->s).work[0]]);
+      (p->s).mode[2]++;
+      FALLTHROUGH;
+    case 1:
+      UpdateSpriteAnimation(p);
+      if ((p->s).motion.state == 3) {
+        (p->s).mode[1] = 2;
+        (p->s).mode[2] = 0;
+      }
+      break;
+  }
+}
+
+INCASM("asm/enemy/crossbyne_b.inc");
 
 // --------------------------------------------
 

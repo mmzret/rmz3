@@ -132,7 +132,30 @@ static void FUN_08084fb4(Enemy42* p) {
   Enemy42_Update(p);
 }
 
-INCASM("asm/enemy/unk_42.inc");
+INCASM("asm/enemy/unk_42_a.inc");
+
+void FUN_080852f4(struct Enemy* p) {
+  UpdateSpriteAnimation(p);
+  if ((p->s).mode[3] == 0) {
+    (p->s).coord.x += (p->s).d.x;
+    (p->s).d.x += (p->s).unk_coord.x;
+    if ((p->s).work[2]++ > 0x40) {
+      (p->s).mode[3]++;
+      (p->s).work[2] = 0;
+    }
+  } else {
+    if (((p->s).unk_28)->mode[3] > 3) {
+      SET_ENEMY_ROUTINE(p, ENTITY_DISAPPEAR);
+    }
+  }
+}
+
+void FUN_0808534c(struct Enemy* p) {
+  EXIT_BODY(p);
+  SET_ENEMY_ROUTINE(p, ENTITY_EXIT);
+}
+
+INCASM("asm/enemy/unk_42_b.inc");
 
 static void FUN_08085578(Enemy42* p) { SET_ENEMY_ROUTINE(p, ENTITY_EXIT); }
 

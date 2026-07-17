@@ -2,7 +2,59 @@
 #include "enemy.h"
 #include "global.h"
 
-INCASM("asm/enemy/shellcrawler.inc");
+INCASM("asm/enemy/shellcrawler_a.inc");
+
+bool8 FUN_08095d80(struct Enemy* p);
+
+void FUN_08096438(struct Enemy* p) {
+  if (FUN_08095d80(p) == 0) {
+    (p->s).mode[1] = 1;
+    (p->s).mode[2] = 0;
+  } else if (*(u32*)((u8*)p + 0x8c) & 1) {
+    (p->s).mode[1] = 5;
+    (p->s).mode[2] = 0;
+  }
+}
+
+void FUN_08096468(struct Enemy* p) {
+  if (FUN_08095d80(p) == 0) {
+    (p->s).mode[1] = 1;
+    (p->s).mode[2] = 0;
+  }
+}
+
+void FUN_08096484(struct Enemy* p) {
+  if (FUN_08095d80(p) == 0) {
+    (p->s).mode[1] = 1;
+    (p->s).mode[2] = 0;
+  }
+  if ((*(u32*)((u8*)p + 0x8c) & 0x00020001) == 0x00020001) {
+    (p->s).mode[1] = 0xa;
+    (p->s).mode[2] = 0;
+  }
+}
+
+void FUN_080964bc(struct Enemy* p) {}
+
+INCASM("asm/enemy/shellcrawler_b.inc");
+
+void FUN_0809660c(struct Enemy* p) {
+  switch ((p->s).mode[2]) {
+    case 0:
+      SetSpriteAnimation(p, MOTION(0xdb, 3));
+      (p->s).mode[2]++;
+      FALLTHROUGH;
+    case 1:
+      UpdateSpriteAnimation(p);
+      if ((p->s).motion.state == 3) {
+        (p->s).mode[1] = (p->s).motion.state;
+        (p->s).mode[2] = 0;
+      }
+      break;
+  }
+}
+
+INCASM("asm/enemy/shellcrawler_c.inc");
 
 void Shellcrawler_Init(struct Enemy* p);
 void Shellcrawler_Update(struct Enemy* p);

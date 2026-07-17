@@ -345,6 +345,16 @@ const struct Stage gSubArcadiaLandscape = {
   behavior : sScreenBehavior,
 };
 
-INCASM("asm/stage_gfx/sub_arcadia.inc");
+INCASM("asm/stage_gfx/sub_arcadia_a.inc");
+
+void FUN_08014f58(struct StageLayer* l, const struct Stage* stage) {
+  if (l->phase == 0) {
+    l->scrollPower.x = 0x100;
+    l->scrollPower.y = 0x80;
+    l->scroll.x = 0;
+    l->scroll.y = 0x4b0;
+    l->phase++;
+  }
+}
 
 #undef STAGE

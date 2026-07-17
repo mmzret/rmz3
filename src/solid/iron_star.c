@@ -37,7 +37,16 @@ static void onCollision(struct Body* body UNUSED, Coords32* r1 UNUSED, Coords32*
   return;
 }
 
-INCASM("asm/solid/iron_star.inc");
+INCASM("asm/solid/iron_star_a.inc");
+
+void killIronStar(struct Solid* p) {
+  (p->s).flags2 &= ~ENTI_PHYSICS;
+  SET_SOLID_ROUTINE(p, ENTITY_EXIT);
+}
+
+void nop_080cbcc0(struct Solid* p) {}
+
+INCASM("asm/solid/iron_star_b.inc");
 
 // --------------------------------------------
 

@@ -4,7 +4,15 @@
 
 // コロップ、ソロップ(つまり、画面上を飛行するエルフ？)
 
-INCASM("asm/cyberelf/nurse_e.inc");
+INCASM("asm/cyberelf/nurse_e_a.inc");
+
+void NurseE_Die(struct Elf* p) {
+  FUN_080bfce8(&(p->s).coord, 0);
+  (p->s).flags &= ~DISPLAY;
+  SET_ELF_ROUTINE(p, ENTITY_EXIT);
+}
+
+INCASM("asm/cyberelf/nurse_e_b.inc");
 
 void NurseE_Init(CyberElf* p);
 void NurseE_Update(CyberElf* p);

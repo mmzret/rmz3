@@ -1,6 +1,7 @@
 #include "collision.h"
 #include "enemy.h"
 #include "global.h"
+#include "score.h"
 
 void HellBouncer_Init(struct Enemy* p);
 void HellBouncer_Update(struct Enemy* p);
@@ -27,16 +28,39 @@ struct Entity* createHellBouncer(struct Entity* q, Coords32* c, u8 r2, u8 idx) {
   return p;
 }
 
-INCASM("asm/enemy/hell_bouncer.inc");
+void TryDropZakoDisk(struct Enemy* p, struct Coord* c);
 
-void FUN_0807e5f0(struct Enemy* p);
-void FUN_0807ead8(struct Enemy* p);
-void FUN_0807f644(struct Enemy* p);
+INCASM("asm/enemy/hell_bouncer_a.inc");
+
+void HellBouncer_Die(struct Enemy* p) {
+  if (gScore.enemyCount <= 0x270E) {
+    gScore.enemyCount++;
+  }
+  TryDropZakoDisk(p, &(p->s).coord);
+  (p->s).flags &= ~DISPLAY;
+  SET_ENEMY_ROUTINE(p, ENTITY_EXIT);
+}
+
+bool8 FUN_0807e5f0(struct Enemy* p) { return TRUE; }
+
+INCASM("asm/enemy/hell_bouncer_b.inc");
+
+bool8 FUN_0807ead8(struct Enemy* p) { return TRUE; }
+
+INCASM("asm/enemy/hell_bouncer_c.inc");
+
+bool8 FUN_0807f644(struct Enemy* p) { return TRUE; }
+
+INCASM("asm/enemy/hell_bouncer_d.inc");
+
+bool8 FUN_0807e5f0(struct Enemy* p);
+bool8 FUN_0807ead8(struct Enemy* p);
+bool8 FUN_0807f644(struct Enemy* p);
 
 static const EnemyFunc sUpdates1[3] = {
-    (void*)FUN_0807e5f0,
-    (void*)FUN_0807ead8,
-    (void*)FUN_0807f644,
+    (EnemyFunc)FUN_0807e5f0,
+    (EnemyFunc)FUN_0807ead8,
+    (EnemyFunc)FUN_0807f644,
 };
 
 void FUN_0807e5f4(struct Enemy* p);

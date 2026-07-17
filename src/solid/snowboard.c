@@ -414,7 +414,12 @@ _080CF748: .4byte sSolid18Collisions\n\
  .syntax divided\n");
 }
 
-INCASM("asm/solid/snowboard.inc");
+INCASM("asm/solid/snowboard_a.inc");
+
+void nop_080cf914(struct Solid* p) {}
+void nop_080cf918(struct Solid* p) {}
+
+INCASM("asm/solid/snowboard_b.inc");
 
 // --------------------------------------------
 

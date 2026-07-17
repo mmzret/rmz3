@@ -154,9 +154,9 @@ static void LayerUpdate_4(struct StageLayer* l, const struct Stage* stage);
 void FUN_0800ea78(struct StageLayer* l, const struct Stage* stage);
 void missileFactory_0800eb38(struct StageLayer* l, const struct Stage* stage);
 void FUN_0800f2c4(struct StageLayer* l, const struct Stage* stage);
-void FUN_0800f2e0(struct StageLayer* l, const struct Stage* stage);
+void FUN_0800f2e0(struct StageLayer* l UNUSED, const struct Stage* stage UNUSED);
 void missileFactory_0800f2ec(struct StageLayer* l, const struct Stage* stage);
-void FUN_0800f54c(struct StageLayer* l, const struct Stage* stage);
+void FUN_0800f54c(struct StageLayer* l UNUSED, const struct Stage* stage UNUSED);
 void missileFactory_0800f560(struct StageLayer* l, const struct Stage* stage);
 void FUN_0800f604(struct StageLayer* l, const struct Stage* stage);
 void FUN_0800f68c(struct StageLayer* l, const struct Stage* stage);
@@ -304,7 +304,38 @@ static void LayerUpdate_4(struct StageLayer* l, const struct Stage* _ UNUSED) {
   l->unk_10 += 0x10;
 }
 
-INCASM("asm/stage_gfx/missile_factory.inc");
+INCASM("asm/stage_gfx/missile_factory_a.inc");
+
+void FUN_0800f2c4(struct StageLayer* l, const struct Stage* stage) {
+  if (l->phase > 1 && l->unk_0f != 0) {
+    DrawGeneralStageLayer(l, stage);
+  }
+}
+
+void FUN_0800f2e0(struct StageLayer* l UNUSED, const struct Stage* stage UNUSED) {
+  gBlendRegBuffer.bldclt = 0;
+}
+
+INCASM("asm/stage_gfx/missile_factory_b.inc");
+
+void FUN_0800f54c(struct StageLayer* l UNUSED, const struct Stage* stage UNUSED) {
+  RemovePaletteAnimation(0xcf);
+  RemovePaletteAnimation(0xd0);
+}
+
+INCASM("asm/stage_gfx/missile_factory_c.inc");
+
+void FUN_0800f874(struct StageLayer* l, const struct Stage* stage) {
+  if (l->phase == 0) {
+    l->scrollPower.x = 0xc0;
+    l->scroll.x = 0x6cc;
+    l->phase++;
+  }
+}
+
+void FUN_0800f894(u32 a) {
+  gOverworld.work.missileFactory.unk_010 = a;
+}
 
 // clang-format off
 static const u8 sChunkMap1[4 + (32 * 14)] = {

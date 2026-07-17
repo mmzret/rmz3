@@ -56,7 +56,31 @@ static void MgNinjaStar_Init(struct Solid* p) {
   MgNinjaStar_Update(p);
 }
 
-INCASM("asm/solid/minigame_ninjastar.inc");
+static const SolidFunc sUpdates1[2];
+static const SolidFunc sUpdates2[2];
+
+void MgNinjaStar_Update(struct Solid* p) {
+  if ((*(struct Entity**)((u8*)(p->s).unk_28 + 8))->coord.x - (p->s).coord.x > 0xc000) {
+    (p->s).flags &= ~DISPLAY;
+    (p->s).flags &= ~FLIPABLE;
+    EXIT_BODY(p);
+    SET_SOLID_ROUTINE(p, ENTITY_DISAPPEAR);
+  } else {
+    (p->s).coord.x += *(s32*)((u8*)(p->s).unk_28 + 0x14);
+    (p->s).unk_coord.x += *(s32*)((u8*)(p->s).unk_28 + 0x14);
+    (sUpdates1[(p->s).mode[1]])(p);
+    (sUpdates2[(p->s).mode[1]])(p);
+  }
+}
+
+void MgNinjaStar_Die(struct Solid* p) {
+  SET_SOLID_ROUTINE(p, ENTITY_EXIT);
+}
+
+
+void nop_080d9304(struct Solid* p) {}
+
+INCASM("asm/solid/minigame_ninjastar_a.inc");
 
 // --------------------------------------------
 

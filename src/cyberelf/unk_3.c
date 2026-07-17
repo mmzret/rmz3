@@ -46,7 +46,14 @@ static void Elf3_Init(CyberElf* p) {
   Elf3_Update(p);
 }
 
-INCASM("asm/cyberelf/unk_3.inc");
+INCASM("asm/cyberelf/unk_3_a.inc");
+
+void Elf3_Die(struct Elf* p) {
+  (p->s).flags &= ~DISPLAY;
+  SET_ELF_ROUTINE(p, ENTITY_EXIT);
+}
+
+INCASM("asm/cyberelf/unk_3_b.inc");
 
 // 0x08371cf0
 static const struct Collision sElf3Collisions[2] = {

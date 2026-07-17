@@ -1,5 +1,6 @@
 #include "collision.h"
 #include "global.h"
+#include "zero.h"
 #include "projectile.h"
 
 // for Volteel Biblio's thunder
@@ -110,7 +111,97 @@ static void FUN_0809f640(Projectile12* p) {
   p->mode[2] = 0;
 }
 
-INCASM("asm/projectile/unk_12.inc");
+void FUN_0809f64c(struct Projectile* p) {
+  switch ((p->s).mode[2]) {
+    case 0:
+      SetSpriteAnimation(p, 0xa601);
+      (p->s).work[2] = 0x14;
+      (p->s).mode[2]++;
+      FALLTHROUGH;
+    case 1:
+      UpdateSpriteAnimation(p);
+      if ((p->s).work[2] != 0 && --(p->s).work[2] != 0) {
+        break;
+      }
+      (p->s).work[2] = 0xa0;
+      (p->s).mode[2]++;
+      break;
+    case 2: {
+      s32 dx = (pZero2->s).coord.x - (p->s).coord.x;
+      s32 dy;
+      s32 t;
+      s32 norm;
+      (p->s).d.x = dx;
+      t = (p->s).coord.y + 0x1000;
+      dy = (pZero2->s).coord.y - t;
+      (p->s).d.y = dy;
+      norm = Sqrt((dx >> 2) * (dx >> 2) + (dy >> 2) * (dy >> 2)) << 2;
+      if (norm != 0) {
+        (p->s).d.x = ((p->s).d.x << 8) / norm;
+        (p->s).d.y = ((p->s).d.y << 8) / norm;
+      }
+      (p->s).unk_coord.x = ((p->s).d.x * 3 << 6) >> 8;
+      (p->s).unk_coord.y = ((p->s).d.y * 3 << 6) >> 8;
+      (p->s).coord.x += (p->s).unk_coord.x;
+      (p->s).coord.y += (p->s).unk_coord.y;
+      UpdateSpriteAnimation(p);
+      if (--(p->s).work[2] == 0 || (p->s).unk_28->mode[0] > 1) {
+        (p->s).work[2] = 0x1e;
+        (p->s).work[3] |= 0xff;
+        EXIT_BODY(p);
+        (p->s).mode[2]++;
+      } else if ((p->body).status & 0x400100) {
+        (p->s).work[2] = 0x1e;
+        (p->s).work[3] |= 0xff;
+        EXIT_BODY(p);
+        (p->s).mode[2]++;
+      }
+      break;
+    }
+    case 3: {
+      s32 w = (p->s).work[3];
+      (p->s).work[3] = w + (-w >> 4);
+      (p->s).spr.mag.x = (p->s).work[3];
+      (p->s).spr.mag.y = (p->s).work[3];
+      UpdateSpriteAnimation(p);
+      if (--(p->s).work[2] == 0) {
+        SET_PROJECTILE_ROUTINE(p, ENTITY_DIE);
+      }
+      break;
+    }
+  }
+}
+
+void FUN_0809f7c8(struct Projectile* p) {
+  (p->s).mode[1] = 1;
+  (p->s).mode[2] = 0;
+}
+
+void FUN_0809f7d4(struct Projectile* p) {
+  if ((p->s).unk_28->mode[0] > 1) {
+    EXIT_BODY(p);
+  }
+  switch ((p->s).mode[2]) {
+    case 0:
+      SetSpriteAnimation(p, 0xa600);
+      SET_XFLIP(p, TRUE);
+      (p->s).work[2] = 0xff;
+      (p->s).unk_coord.x = ((p->s).d.x << 10) >> 8;
+      (p->s).unk_coord.y = ((p->s).d.y << 10) >> 8;
+      (p->s).angle = *(u8*)((u8*)p + 0xb4);
+      (p->s).mode[2]++;
+      FALLTHROUGH;
+    case 1:
+      (p->s).coord.x += (p->s).unk_coord.x;
+      (p->s).coord.y += (p->s).unk_coord.y;
+      UpdateSpriteAnimation(p);
+      if (--(p->s).work[2] == 0) {
+        EXIT_BODY(p);
+        SET_PROJECTILE_ROUTINE(p, ENTITY_DIE);
+      }
+      break;
+  }
+}
 
 // --------------------------------------------
 

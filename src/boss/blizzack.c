@@ -33,7 +33,56 @@ void CreateBlizzack(Coords32* c) {
 
 // --------------------------------------------
 
-INCASM("asm/boss/blizzack.inc");
+static const BossFunc sDeads[3];
+
+INCASM("asm/boss/blizzack_a.inc");
+
+void Blizzack_Die(struct Boss* p) {
+  (sDeads[(p->s).mode[1]])(p);
+}
+
+// blizzackMode0/Mode1 do not match: agbcc schedules the mode[2]=0 zero early,
+// forcing the 0x64xx constant into a spare reg + copy (regmove) the target
+// avoids. Logic is faithful in the MODERN branches; the INCCODE asm bodies
+// match the ROM byte-for-byte.
+INCASM("asm/boss/blizzack_b.inc");
+
+INCASM("asm/boss/blizzack_c.inc");
+
+INCASM("asm/boss/blizzack_d.inc");
+
+// blizzackNextMode does not match for the same regmove reason as blizzackMode1:
+// agbcc schedules the mode[2]=0 zero early, forcing the 0x6402 constant into a
+// spare reg + copy the target avoids. Logic is faithful in the MODERN branch;
+// the INCCODE asm body matches the ROM byte-for-byte.
+INCASM("asm/boss/blizzack_e.inc");
+
+INCASM("asm/boss/blizzack_f.inc");
+
+void FUN_080aabd4(struct Boss* p);
+
+void blizzackMode8(struct Boss* p) {
+  if ((p->s).mode[2] != 0) {
+    (p->s).mode[2] = 0;
+    (p->s).work[2] = 0xb4;
+    FUN_080aabd4(p);
+  }
+  UpdateSpriteAnimation(p);
+  if ((u8)--(p->s).work[2] == 0xff) {
+    (p->s).mode[1] = 9;
+    (p->s).mode[2] = 1;
+  }
+}
+
+INCASM("asm/boss/blizzack_g.inc");
+
+void FUN_0805af14(struct Boss* p) {
+  if ((p->s).coord.x < *(s32*)((u8*)p + 0xb4) + 0x2000 ||
+      (p->s).coord.x > *(s32*)((u8*)p + 0xd8) - 0x2000) {
+    (p->s).coord.x = *(s32*)((u8*)p + 0xc0);
+  }
+  *(s32*)((u8*)p + 0xc0) = (p->s).coord.x;
+}
 
 void blizzackMode0(Blizzack* p);
 void blizzackMode1(Blizzack* p);

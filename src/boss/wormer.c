@@ -32,7 +32,61 @@ bool8 tryKillOrWormer(struct Boss* p) {
   return FALSE;
 }
 
-INCASM("asm/boss/wormer.inc");
+INCASM("asm/boss/wormer_a.inc");
+
+void nop_08042890(struct Boss* p) {}
+
+void FUN_08042894(struct Boss* p) {
+  if ((p->s).work[0] == 1) {
+    if (*(u32*)((u8*)p + 0x8c) & 1) {
+      if ((*(u8*)((u8*)p + 0x97) & 0xf0) == 0x20) {
+        (p->s).mode[1] = 8;
+        (p->s).mode[2] = 0;
+      }
+    }
+  }
+}
+
+INCASM("asm/boss/wormer_b.inc");
+
+void FUN_08042d4c(struct Boss* p) {
+  switch ((p->s).mode[2]) {
+    case 0:
+      SetDDP(&p->body, &sCollisions[5 + 7 * (p->s).work[0]]);
+      SetSpriteAnimation(p, MOTION(0x2b, 7));
+      (p->s).mode[2]++;
+      FALLTHROUGH;
+    case 1:
+      UpdateSpriteAnimation(p);
+      if ((p->s).motion.state == 3) {
+        (p->s).mode[1] = 7;
+        (p->s).mode[2] = 0;
+      }
+      break;
+  }
+}
+
+INCASM("asm/boss/wormer_c.inc");
+
+void FUN_08042f9c(struct Boss* p) {
+  switch ((p->s).mode[2]) {
+    case 0:
+      SetSpriteAnimation(p, MOTION(0x2b, 3));
+      UpdateSpriteAnimation(p);
+      SetDDP(&p->body, &sCollisions[7 + 7 * (p->s).work[0]]);
+      (p->s).work[2] = 0x20;
+      (p->s).mode[2]++;
+      FALLTHROUGH;
+    case 1:
+      if (--(p->s).work[2] == 0) {
+        (p->s).mode[1] = 7;
+        (p->s).mode[2] = 0;
+      }
+      break;
+  }
+}
+
+INCASM("asm/boss/wormer_d.inc");
 
 // --------------------------------------------
 

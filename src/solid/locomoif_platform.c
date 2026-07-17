@@ -1,6 +1,7 @@
 #include "collision.h"
 #include "entity.h"
 #include "global.h"
+#include "trig.h"
 #include "solid.h"
 
 // ロコモIF戦で出現する台座
@@ -40,7 +41,26 @@ void CreateLocomoIFPlatform(struct Boss* locomoif) {
   }
 }
 
-INCASM("asm/solid/locomoif_platform.inc");
+void FUN_080ce538(struct Solid* p) {
+  struct LocomoIFPlatformObject* obj = (struct LocomoIFPlatformObject*)p;
+  struct Solid* parent = (struct Solid*)(p->s).unk_28;
+  (p->s).coord.x = (parent->s).coord.x;
+  (p->s).coord.x += (s16)gSineTable[(u8)((obj->unk_00 >> 8) + 0x40)] * 56;
+  (p->s).coord.y = (parent->s).coord.y - 0x1000;
+  (p->s).coord.y += (s16)gSineTable[obj->unk_00 >> 8] * 56;
+}
+
+void nop_080ce58c(struct Solid* p) {}
+
+INCASM("asm/solid/locomoif_platform_a.inc");
+
+void LocomoIFPlatform_Die(struct Solid* p) {
+  SET_SOLID_ROUTINE(p, ENTITY_EXIT);
+}
+
+void nop_080ce70c(struct Solid* p) {}
+
+INCASM("asm/solid/locomoif_platform_b.inc");
 
 // --------------------------------------------
 

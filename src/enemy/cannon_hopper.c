@@ -1,8 +1,68 @@
 #include "collision.h"
 #include "enemy.h"
 #include "global.h"
+#include "zero.h"
+#include "story.h"
 
-INCASM("asm/enemy/cannon_hopper.inc");
+static const EnemyFunc sDeads[4];
+
+INCASM("asm/enemy/cannon_hopper_a.inc");
+
+void CannonHopper_Die(struct Enemy* p) {
+  if (gCurStory.s.gameflags[4] & 0x40) {
+    (p->s).flags &= ~DISPLAY;
+    (p->s).flags &= ~FLIPABLE;
+    EXIT_BODY(p);
+    SET_ENEMY_ROUTINE(p, ENTITY_DISAPPEAR);
+  } else {
+    (sDeads[(p->s).mode[1]])(p);
+  }
+}
+
+void FUN_080978c8(struct Enemy* p) {
+  struct Enemy* parent = (struct Enemy*)(p->s).unk_2c;
+  *(s32*)((u8*)parent + 0xb4) = pZero2->s.coord.x - (parent->s).coord.x;
+}
+
+void FUN_080978e0(struct Enemy* p) {}
+
+
+void FUN_080978e4(struct Enemy* p) {
+  if (((p->body).status & 0x00020001) == 0x00020001) {
+    (p->s).mode[1] = 5;
+    (p->s).mode[2] = 0;
+  }
+}
+
+
+void FUN_08097904(struct Enemy* p) {
+  if (((p->body).status & 0x00020001) == 0x00020001) {
+    (p->s).mode[1] = 5;
+    (p->s).mode[2] = 0;
+  }
+}
+
+INCASM("asm/enemy/cannon_hopper_b.inc");
+
+void FUN_08097cc8(struct Enemy* p) {
+  switch ((p->s).mode[2]) {
+    case 0:
+      SetSpriteAnimation(p, MOTION(0xdc, 3));
+      (p->s).work[2] = 0xc;
+      (p->s).mode[2]++;
+      FALLTHROUGH;
+    case 1:
+      (p->s).work[2]--;
+      if ((p->s).work[2] == 0) {
+        (p->s).mode[1] = 1;
+        (p->s).mode[2] = 0;
+      }
+      UpdateSpriteAnimation(p);
+      break;
+  }
+}
+
+INCASM("asm/enemy/cannon_hopper_c.inc");
 
 void CannonHopper_Init(struct Enemy* p);
 void CannonHopper_Update(struct Enemy* p);

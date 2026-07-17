@@ -32,7 +32,26 @@ MegamilpaNode* CreateMegamilpaNode(u8 idx) {
 
 // --------------------------------------------
 
-INCASM("asm/enemy/megamilpa_node.inc");
+INCASM("asm/enemy/megamilpa_node_a.inc");
+
+extern const EnemyFunc sMegamilpaNodeUpdates1[3];
+extern const EnemyFunc sMegamilpaNodeUpdates2[3];
+
+void MegamilpaNode_Update(struct Enemy* p) {
+  if ((*(struct Entity**)((u8*)p + 0xb4))->mode[0] > 1) {
+    SET_ENEMY_ROUTINE(p, ENTITY_DIE);
+    MegamilpaNode_Die(p);
+  } else {
+    (sMegamilpaNodeUpdates1[(p->s).mode[1]])(p);
+    (sMegamilpaNodeUpdates2[(p->s).mode[1]])(p);
+  }
+}
+
+INCASM("asm/enemy/megamilpa_node_b.inc");
+
+void nop_08065928(struct Enemy* p) {}
+
+INCASM("asm/enemy/megamilpa_node_c.inc");
 
 void nop_08065928(struct Enemy* p);
 

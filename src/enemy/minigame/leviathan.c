@@ -2,7 +2,67 @@
 #include "enemy.h"
 #include "global.h"
 
-INCASM("asm/enemy/minigame_leviathan.inc");
+static const EnemyFunc sUpdates1[7];
+static const EnemyFunc sUpdates2[7];
+static const EnemyFunc sDeads[4];
+static const struct Collision sCollisions[6];
+static const u8 u8_ARRAY_0836a764[6];
+static const u8 u8_ARRAY_0836a76a[8];
+static const motion_t sMotions[12];
+
+INCASM("asm/enemy/minigame_leviathan_a.inc");
+
+void nop_0809a0b4(struct Enemy* p) {}
+
+static const struct Collision sCollisions[6];
+static const u8 u8_ARRAY_0836a764[6];
+static const u8 u8_ARRAY_0836a76a[8];
+static const motion_t sMotions[12];
+static const EnemyFunc sUpdates1[7];
+static const EnemyFunc sUpdates2[7];
+
+void LeviathanMinigameEnemy_Die(struct Enemy* p);
+void LeviathanMinigameEnemy_Update(struct Enemy* p);
+
+bool8 FUN_0809a0b8(struct Enemy* p) {
+  if ((p->body).status & 0x200) {
+    *(u8*)((u8*)(p->s).unk_28 + 0x31) = 10;
+    SET_ENEMY_ROUTINE(p, ENTITY_DIE);
+    (p->s).mode[1] = u8_ARRAY_0836a764[(p->s).work[0]];
+    LeviathanMinigameEnemy_Die(p);
+    return TRUE;
+  }
+  return FALSE;
+}
+
+void LeviathanMinigameEnemy_Init(struct Enemy* p) {
+  SET_ENEMY_ROUTINE(p, ENTITY_UPDATE);
+  (p->s).mode[1] = u8_ARRAY_0836a76a[(p->s).work[0]];
+  (p->s).flags |= FLIPABLE;
+  (p->s).flags |= DISPLAY;
+  InitNonAffineMotion(&p->s);
+  if ((p->s).work[0] != 6) {
+    SetSpriteAnimation(p, sMotions[(p->s).work[0]]);
+  }
+  UpdateSpriteAnimation(p);
+  INIT_BODY(p, sCollisions, 1, (void*)nop_0809a0b4);
+  LeviathanMinigameEnemy_Update(p);
+}
+
+void LeviathanMinigameEnemy_Update(struct Enemy* p) {
+  if (!FUN_0809a0b8(p)) {
+    sUpdates1[(p->s).mode[1]](p);
+    sUpdates2[(p->s).mode[1]](p);
+  }
+}
+
+void LeviathanMinigameEnemy_Die(struct Enemy* p) {
+  (sDeads[(p->s).mode[1]])(p);
+}
+
+void nop_0809a1ec(struct Enemy* p) {}
+
+INCASM("asm/enemy/minigame_leviathan_b.inc");
 
 void LeviathanMinigameEnemy_Init(struct Enemy* p);
 void LeviathanMinigameEnemy_Update(struct Enemy* p);

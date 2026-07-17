@@ -71,8 +71,8 @@ static void ZeroMini_Init(struct Zero* z) {
 
 static bool32 nop_0803658c(void* _ UNUSED);
 void FUN_080365d8(struct Zero* z);
-void FUN_08036848(struct Zero* z);
-void FUN_08036904(struct Zero* z);
+bool8 FUN_08036848(struct Zero* z);
+bool8 FUN_08036904(struct Zero* z);
 static bool32 FUN_08036b94(void* _ UNUSED);
 
 static void zeroMini_08036590(struct Zero* z);
@@ -166,7 +166,27 @@ static void zeroMini_08036590(struct Zero* z) {
 
 // --------------------------------------------
 
-INCASM("asm/player/zero_minigame.inc");
+INCASM("asm/player/zero_minigame_a.inc");
+
+bool8 FUN_08036848(struct Zero* z) {
+  if ((z->s).mode[2] > 1 && (gJoypad[0].pressed & B_BUTTON)) {
+    (z->s).mode[1] = 3;
+    (z->s).mode[2] = 0;
+  }
+  return TRUE;
+}
+
+INCASM("asm/player/zero_minigame_b.inc");
+
+bool8 FUN_08036904(struct Zero* z) {
+  if ((z->s).mode[2] == 1 && *(s8*)((u8*)z + 0x71) > 2 && (gJoypad[0].pressed & B_BUTTON) &&
+      (z->s).mode[3] == 0) {
+    (z->s).mode[3] = (z->s).mode[2];
+  }
+  return TRUE;
+}
+
+INCASM("asm/player/zero_minigame_c.inc");
 
 // 0x08036b94
 static bool32 FUN_08036b94(void* _) { return TRUE; }

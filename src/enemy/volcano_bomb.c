@@ -1,6 +1,7 @@
 #include "collision.h"
 #include "enemy.h"
 #include "global.h"
+#include "physics.h"
 #include "overworld.h"
 #include "vfx.h"
 
@@ -103,7 +104,32 @@ static void FUN_080713e8(struct Enemy* p) {
   return;
 }
 
-INCASM("asm/enemy/volcano_bomb.inc");
+void FUN_080713ec(struct Enemy* p) {
+  switch ((p->s).mode[2]) {
+    case 0: {
+      SetDDP(&p->body, &sCollisions[1]);
+      (p->s).d.y = 0;
+      SetSpriteAnimation(p, 0x1f00);
+      (p->s).mode[2]++;
+    }
+      FALLTHROUGH;
+    case 1: {
+      s32 pushAmount;
+      (p->s).d.y += 0x20;
+      if ((p->s).d.y > 0x700) {
+        (p->s).d.y = 0x700;
+      }
+      (p->s).coord.y += (p->s).d.y;
+      pushAmount = PushoutToUp1((p->s).coord.x, (p->s).coord.y + 0xa00);
+      if (pushAmount < 0) {
+        (p->s).coord.y += pushAmount;
+        SET_ENEMY_ROUTINE(p, ENTITY_DIE);
+      }
+      UpdateSpriteAnimation(p);
+      break;
+    }
+  }
+}
 
 // --------------------------------------------
 

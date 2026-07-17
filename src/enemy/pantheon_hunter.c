@@ -572,7 +572,55 @@ static const EnemyFunc sDeads[3] = {
     (EnemyFunc)FUN_080656cc,
 };
 
-INCASM("asm/enemy/pantheon_hunter.inc");
+INCASM("asm/enemy/pantheon_hunter_a.inc");
+
+void phunter_08064c10(struct Enemy* p) {
+  if ((p->s).mode[1] == 2) return;
+  if (((p->body).status & 0x00020001) == 0x00020001) {
+    (p->s).mode[1] = 2;
+    (p->s).mode[2] = 0;
+  }
+}
+
+void FUN_08064c38(struct Enemy* p) {
+  if ((p->s).mode[2] == 0) {
+    SetSpriteAnimation(p, 0x1300);
+    (p->s).d.y = 0;
+    (p->s).d.x = 0;
+    (p->s).mode[2]++;
+  }
+  UpdateSpriteAnimation(p);
+  (p->s).d.y += 0x40;
+  if ((p->s).d.y > 0x700) {
+    (p->s).d.y = 0x700;
+  }
+  (p->s).coord.y += (p->s).d.y;
+  {
+    metatile_attr_t r = FUN_080098a4((p->s).coord.x, (p->s).coord.y);
+    if (r != 0x800F && r != 0) {
+      (p->s).coord.y = FUN_08009f6c((p->s).coord.x, (p->s).coord.y);
+      (p->s).mode[1] = 5;
+      (p->s).mode[2] = 0;
+      (p->s).mode[3] = 6;
+    }
+  }
+}
+
+void nop_08064ca8(struct Enemy* p) {}
+
+INCASM("asm/enemy/pantheon_hunter_b.inc");
+
+void FUN_08064e0c(struct Enemy* p) {
+  if ((p->s).mode[2] == 0) {
+    SetSpriteAnimation(p, MOTION(0x13, 3));
+    (p->s).mode[2]++;
+  }
+  UpdateSpriteAnimation(p);
+}
+
+void nop_08064e34(struct Enemy* p) {}
+
+INCASM("asm/enemy/pantheon_hunter_c.inc");
 
 // 0x080656cc
 static void FUN_080656cc(struct Entity* p) {

@@ -350,7 +350,72 @@ static void nop_080739a8(struct Enemy* p) {
   return;
 }
 
-INCASM("asm/enemy/childre_obj.inc");
+void FUN_080739ac(struct Enemy* p) {
+  switch ((p->s).mode[2]) {
+    case 0:
+      (p->s).work[2] = 0x40;
+      SetSpriteAnimation(p, MOTION(0x24, 0));
+      (p->s).mode[2]++;
+      FALLTHROUGH;
+    case 1:
+      (p->s).work[2]--;
+      if ((p->s).work[2] == 0) {
+        ExplodeSplitMine((p->s).coord.x, (p->s).coord.y);
+        SET_ENEMY_ROUTINE(p, ENTITY_DIE);
+        (p->s).mode[1] = (p->s).work[0];
+      }
+      UpdateSpriteAnimation(p);
+      break;
+  }
+}
+
+void FUN_08073a0c(struct Enemy* p) {
+  switch ((p->s).mode[2]) {
+    case 0:
+      SetSpriteAnimation(p, MOTION(0x24, 1) + (p->s).work[1]);
+      (p->s).mode[2]++;
+      FALLTHROUGH;
+    case 1:
+      (p->s).coord.x += (p->s).d.x;
+      (p->s).coord.y += (p->s).d.y;
+      if (FUN_080098a4((p->s).coord.x, (p->s).coord.y)) {
+        SET_ENEMY_ROUTINE(p, ENTITY_DIE);
+        (p->s).mode[1] = (p->s).work[0];
+      }
+      UpdateSpriteAnimation(p);
+      break;
+  }
+}
+
+INCASM("asm/enemy/childre_obj_a.inc");
+
+void FUN_08073d88(struct Enemy* p) {
+  CreateVFX31_1((p->s).coord.x, (p->s).coord.y);
+  EXIT_BODY(p);
+  CreateSmoke(1, &(p->s).coord);
+  PlaySound(0x2a);
+  SET_ENEMY_ROUTINE(p, ENTITY_EXIT);
+}
+
+void FUN_08073dd8(struct Enemy* p) {
+  EXIT_BODY(p);
+  CreateSmoke(2, &(p->s).coord);
+  SET_ENEMY_ROUTINE(p, ENTITY_EXIT);
+}
+
+void FUN_08073e18(struct Enemy* p) {
+  PlaySound(0x3f);
+  CreateVFX31_2((p->s).coord.x, (p->s).coord.y);
+  EXIT_BODY(p);
+  SET_ENEMY_ROUTINE(p, ENTITY_EXIT);
+}
+
+void FUN_08073e60(struct Enemy* p) {
+  EXIT_BODY(p);
+  CreateSmoke(2, &(p->s).coord);
+  SET_ENEMY_ROUTINE(p, ENTITY_EXIT);
+  PlaySound(0x35);
+}
 
 // --------------------------------------------
 

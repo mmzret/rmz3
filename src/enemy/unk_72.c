@@ -2,7 +2,45 @@
 #include "enemy.h"
 #include "global.h"
 
-INCASM("asm/enemy/unk_72.inc");
+static const EnemyFunc sUpdates[2];
+
+struct Enemy* FUN_0809c3b4(struct Entity* e, struct Coord* c, u16 a2, u8 a3) {
+  struct Enemy* p = (struct Enemy*)AllocEntityLast(gEnemyHeaderPtr);
+  if (p != NULL) {
+    INIT_ENEMY_ROUTINE(p, ENEMY_72);
+    (p->s).coord = *c;
+    (p->s).work[0] = a3;
+    (p->s).work[1] = 0;
+    *(u16*)&p->buffer[0] = a2;
+    (p->s).unk_28 = e;
+  }
+  return p;
+}
+
+struct Enemy* FUN_0809c430(struct Entity* e, struct Coord* c) {
+  struct Enemy* p = (struct Enemy*)AllocEntityLast(gEnemyHeaderPtr);
+  if (p != NULL) {
+    INIT_ENEMY_ROUTINE(p, ENEMY_72);
+    (p->s).coord = *c;
+    (p->s).work[0] = 0;
+    (p->s).work[1] = 1;
+    (p->s).unk_28 = e;
+  }
+  return p;
+}
+
+INCASM("asm/enemy/unk_72_a.inc");
+
+void Enemy72_Update(struct Enemy* p) {
+  (sUpdates[(p->s).mode[1]])(p);
+}
+
+void Enemy72_Die(struct Enemy* p) {
+  (p->s).flags &= ~DISPLAY;
+  SET_ENEMY_ROUTINE(p, ENTITY_EXIT);
+}
+
+INCASM("asm/enemy/unk_72_b.inc");
 
 void Enemy72_Init(struct Enemy* p);
 void Enemy72_Update(struct Enemy* p);

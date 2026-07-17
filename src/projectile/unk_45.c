@@ -66,7 +66,28 @@ Entity* FUN_080b19ec(void* q, Coords32* c, u8 kind) {
   return p;
 }
 
-INCASM("asm/projectile/unk_45.inc");
+static const ProjectileFunc PTR_ARRAY_0836d7cc[4];
+
+INCASM("asm/projectile/unk_45_a.inc");
+
+void FUN_080b1b28(struct Projectile* p) {
+  (PTR_ARRAY_0836d7cc[(p->s).mode[1]])(p);
+}
+
+void FUN_080b1b40(struct Projectile* p) {
+  (p->s).flags &= ~DISPLAY;
+  EXIT_BODY(p);
+  SET_PROJECTILE_ROUTINE(p, ENTITY_EXIT);
+}
+
+INCASM("asm/projectile/unk_45_b.inc");
+
+void FUN_080b2204(struct Body* body) {
+  struct CollidableEntity* parent = body->parent;
+  if ((body->enemy->processing)->faction == 0) {
+    *(u8*)((u8*)parent + 0xbc) = 1;
+  }
+}
 
 void FUN_080b1b7c(Projectile* p);
 void FUN_080b1cbc(Projectile* p);

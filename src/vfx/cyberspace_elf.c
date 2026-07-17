@@ -14,7 +14,7 @@ static_assert(sizeof(struct CyberSpaceElf) == sizeof(struct VFX));
 
 static void CyberSpaceElf_Init(struct CyberSpaceElf* p);
 void CyberSpaceElf_Update(struct VFX* p);
-void CyberSpaceElf_Die(struct VFX* p);
+void CyberSpaceElf_Die(struct VFX* vfx);
 
 // clang-format off
 const VFXRoutine gCyberSpaceElfRoutine = {
@@ -53,4 +53,11 @@ static void CyberSpaceElf_Init(struct CyberSpaceElf* p) {
   CyberSpaceElf_Update((void*)p);
 }
 
-INCASM("asm/vfx/cyberspace_elf.inc");
+void FUN_080bfd98(struct Coord* c, u8 r1, u8 r2);
+
+INCASM("asm/vfx/cyberspace_elf_a.inc");
+
+void CyberSpaceElf_Die(struct VFX* vfx) {
+  FUN_080bfd98(&(vfx->s).coord, 1, (vfx->s).work[1]);
+  SET_VFX_ROUTINE(vfx, ENTITY_EXIT);
+}

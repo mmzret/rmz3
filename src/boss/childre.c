@@ -518,7 +518,26 @@ WIP void childreMode1(Childre* p) {
 #endif
 }
 
-INCASM("asm/boss/childre.inc");
+INCASM("asm/boss/childre_a.inc");
+
+void childreEndEarShot(struct Boss* p) {
+  switch ((p->s).mode[2]) {
+    case 0:
+      SetDDP(&p->body, &sCollisions[1]);
+      SetSpriteAnimation(p, MOTION(0xa4, 0x16));
+      (p->s).mode[2]++;
+      FALLTHROUGH;
+    case 1:
+      UpdateSpriteAnimation(p);
+      if ((p->s).motion.state == 3) {
+        (p->s).mode[1] = 0;
+        (p->s).mode[2] = 0;
+      }
+      break;
+  }
+}
+
+INCASM("asm/boss/childre_b.inc");
 
 // --------------------------------------------
 

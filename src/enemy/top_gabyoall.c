@@ -112,7 +112,14 @@ static void Enemy14_Update(TopGabyoall* p) {
   if (!IsFrozen(p)) (sUpdates[p->work[0]])((void*)p);
 }
 
-INCASM("asm/enemy/top_gabyoall.inc");
+void Enemy14_Die(struct Enemy* p) {
+  CreateSmoke(1, &(p->s).coord);
+  PlaySound(0x2a);
+  (p->s).flags &= ~DISPLAY;
+  SET_ENEMY_ROUTINE(p, ENTITY_EXIT);
+}
+
+INCASM("asm/enemy/top_gabyoall_a.inc");
 
 // 0x08070000
 void FUN_08070000(struct Body* body, Coords32* r1 UNUSED, Coords32* r2 UNUSED) {

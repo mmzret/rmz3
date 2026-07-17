@@ -34,7 +34,107 @@ bool32 FUN_080780c4(TileCannon* p) {
   return FALSE;
 }
 
-INCASM("asm/enemy/tile_cannon.inc");
+static const EnemyFunc sUpdates1[9];
+static const EnemyFunc sUpdates2[9];
+static const struct Collision sCollisions[9];
+
+struct Enemy* FUN_08078108(struct Entity* e) {
+  struct Enemy* p = (struct Enemy*)AllocEntityLast(gEnemyHeaderPtr);
+  if (p != NULL) {
+    INIT_ENEMY_ROUTINE(p, ENEMY_TILE_CANNON);
+    (p->s).work[0] = 2;
+    (p->s).coord.x = e->coord.x;
+    (p->s).coord.y = e->coord.y;
+    (p->s).unk_28 = e;
+    (p->s).flags2 |= WHITE_PAINTABLE;
+    (p->s).invincibleID = e->uniqueID;
+  }
+  return p;
+}
+
+void FUN_08078170(struct Enemy* p) {}
+
+void TileCannon_Die(struct Enemy* p);
+
+
+static bool8 tilecannon_08078174(struct Enemy* p) {
+  if ((p->body).status & BODY_STATUS_DEAD) {
+    TileCannon_Die(p);
+    return TRUE;
+  }
+  return FALSE;
+}
+
+INCASM("asm/enemy/tile_cannon_a.inc");
+
+extern const EnemyFunc sUpdates1[9];
+extern const EnemyFunc sUpdates2[9];
+void tilecannon_08078210(struct Enemy* p);
+bool8 tilecannon_08078198(struct Enemy* p);
+
+void TileCannon_Update(struct Enemy* p) {
+  if ((p->s).work[0] == 2) {
+    if (((p->s).unk_28)->mode[0] > 1) {
+      (p->s).flags &= ~DISPLAY;
+      (p->s).flags &= ~FLIPABLE;
+      EXIT_BODY(p);
+      (p->s).flags &= ~COLLIDABLE;
+      SET_ENEMY_ROUTINE(p, ENTITY_DISAPPEAR);
+      return;
+    }
+    tilecannon_08078210(p);
+    if (tilecannon_08078174(p)) {
+      return;
+    }
+  } else {
+    if (tilecannon_08078198(p)) {
+      return;
+    }
+  }
+  (sUpdates1[(p->s).mode[1]])(p);
+  (sUpdates2[(p->s).mode[1]])(p);
+}
+
+INCASM("asm/enemy/tile_cannon_b.inc");
+
+void FUN_0807847c(struct Enemy* p) {}
+
+void FUN_08078480(struct Enemy* p) {
+  struct Entity** slot = (struct Entity**)((u8*)p + 0xb4);
+  if (*slot == NULL || isKilled(*slot)) {
+    SetDDP(&p->body, &sCollisions[7]);
+    *slot = NULL;
+    (p->s).mode[1] = 7;
+    (p->s).mode[2] = 0;
+  }
+}
+
+void FUN_080784b4(struct Enemy* p) {
+  if ((p->s).mode[2] == 0) {
+    SetDDP(&p->body, &sCollisions[8]);
+    (p->s).mode[2]++;
+  }
+}
+
+INCASM("asm/enemy/tile_cannon_c.inc");
+
+void FUN_08078624(struct Enemy* p) {
+  switch ((p->s).mode[2]) {
+    case 0:
+      SetSpriteAnimation(p, MOTION(0x2f, 6));
+      (p->s).mode[2]++;
+      FALLTHROUGH;
+    case 1:
+      UpdateSpriteAnimation(p);
+      if ((p->s).motion.state == 3) {
+        (p->s).mode[1] = 5;
+        (p->s).mode[2] = 0;
+      }
+      break;
+  }
+}
+
+INCASM("asm/enemy/tile_cannon_d.inc");
 
 void FUN_08078480(struct Enemy* p);
 void FUN_0807847c(struct Enemy* p);

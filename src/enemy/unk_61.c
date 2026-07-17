@@ -33,7 +33,38 @@ void FUN_080935b4(struct Entity* q, u8 idx, u8 val) {
 // 0x0809362C
 static void onCollision(struct Body* body UNUSED, Coords32* c1 UNUSED, Coords32* c2 UNUSED) {}
 
-INCASM("asm/enemy/unk_61.inc");
+static const EnemyFunc sUpdates1[1];
+static const EnemyFunc sUpdates2[1];
+
+INCASM("asm/enemy/unk_61_a.inc");
+
+void Enemy61_Update(struct Enemy* p) {
+  if (((struct Entity*)(p->s).unk_28)->mode[0] > 1) {
+    SET_ENEMY_ROUTINE(p, ENTITY_DIE);
+  } else {
+    (sUpdates1[(p->s).mode[1]])(p);
+    (sUpdates2[(p->s).mode[1]])(p);
+  }
+}
+
+void Enemy61_Die(struct Enemy* p) {
+  struct Entity* parent = (p->s).unk_28;
+  switch ((p->s).mode[2]) {
+    case 0:
+      EXIT_BODY(p);
+      (p->s).mode[2]++;
+      FALLTHROUGH;
+    case 1:
+      if (parent->mode[0] > 2) {
+        SET_ENEMY_ROUTINE(p, ENTITY_EXIT);
+      }
+      break;
+  }
+}
+
+void FUN_08093754(struct Enemy* p) {}
+
+INCASM("asm/enemy/unk_61_b.inc");
 
 void FUN_08093754(struct Enemy* p);
 
