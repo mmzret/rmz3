@@ -4,6 +4,7 @@
 #include "global.h"
 #include "stagerun.h"
 #include "vfx/bubble.h"
+#include "vfx/necro.h"
 #include "zero.h"
 
 typedef struct {
@@ -23,6 +24,7 @@ static_assert(sizeof(Childre) == sizeof(Boss));
 static const u8 sInitModes[4];
 static const struct Collision sCollisions[];
 static const Coords32 sChildre_ElfxOffsets;
+static const motion_t s16_0836206c;
 
 static void Childre_Init(Childre* p);
 static void Childre_Update(Childre* p);
@@ -413,6 +415,109 @@ void childreMode0(Childre* p) {
   }
 }
 
+// 0x08040A58
+WIP void childreMode1(Childre* p) {
+#ifdef ALWAYS_FALSE
+  switch (p->mode[2]) {
+    case 0: {
+      SetSpriteAnimation(p, MOTION(DM164_CHILDRE, 0));
+      p->mode[2]++;
+      FALLTHROUGH;
+    }
+    case 1: {
+      UpdateSpriteAnimation(p);
+      if ((p->scriptEntity)->flags & (1 << 0)) p->mode[2]++;
+      break;
+    }
+    case 2: {
+      PlaySound(SE_CHILDRE_VOICE_1);
+      p->work[2] = 4;
+      SetSpriteAnimation(p, MOTION(DM164_CHILDRE, 27));
+      p->mode[2]++;
+      FALLTHROUGH;
+    }
+    case 3: {
+      UpdateSpriteAnimation(p);
+      if (--(p->work[2]) == 0) p->mode[2]++;
+      break;
+    }
+    case 4: {
+      PlaySound(SE_UNK_67);
+      (p->d).y = -PIXEL(2);
+      p->work[2] = 0;
+      SetSpriteAnimation(p, MOTION(DM164_CHILDRE, 28));
+      p->mode[2]++;
+      FALLTHROUGH;
+    }
+    case 5: {
+      s32 dy;
+      (p->d).y += PIXEL(1) / 4;
+      if ((p->d).y > PIXEL(7)) (p->d).y = PIXEL(7);
+      (p->coord).y += (p->d).y;
+      if (p->work[2] == 0 && (p->d).y > 0) {
+        p->work[2] = 1;
+        SetSpriteAnimation(p, MOTION(DM164_CHILDRE, 29));
+      }
+      dy = (p->unk_bc).y - (p->coord).y;
+      if (dy < 0 && (p->d).y > 0) {
+        (p->coord).y += dy;
+        p->mode[2]++;
+      }
+      UpdateSpriteAnimation(p);
+      break;
+    }
+    case 6: {
+      p->work[2] = 4;
+      SetSpriteAnimation(p, MOTION(DM164_CHILDRE, 27));
+      p->mode[2]++;
+      FALLTHROUGH;
+    }
+    case 7: {
+      UpdateSpriteAnimation(p);
+      if (--(p->work[2]) == 0) p->mode[2]++;
+      break;
+    }
+    case 8: {
+      p->work[2] = 0;
+      SetSpriteAnimation(p, MOTION(DM164_CHILDRE, 25));
+      p->mode[2]++;
+      FALLTHROUGH;
+    }
+    case 9: {
+      s8 i;
+      UpdateSpriteAnimation(p);
+      p->work[2]++;
+      if (p->work[2] == 5) PlaySound(SE_UNK_66);
+      i = p->work[2] % 5;
+      if (i == 0) {
+        if ((p->motion).cmdIdx == 1 || (p->motion).cmdIdx == 4 || (p->motion).cmdIdx == 5) {
+          Coords32 c = {(p->coord).x + PIXEL(3), (p->coord).y - PIXEL(20)};
+          Coords32 d = {PIXEL(1), -0x55 - (RANDOM(RNG_0202f388) & 0xFF)};
+          FUN_080b834c((void*)p, &c, &d, 0, (motion_t*)&s16_0836206c, 24);
+          c.x = (p->coord).x - PIXEL(8), c.y = (p->coord).y - PIXEL(20);
+          d.x = -PIXEL(3) / 8, d.y = -0x20 - (RANDOM(RNG_0202f388) & 0xFF);
+          FUN_080b8454((void*)p, &c, &d, 0, (motion_t*)&s16_0836206c, 24, 25);
+        }
+      }
+      if (IsSpriteAnimEnd(p)) p->mode[2]++;
+      break;
+    }
+    case 10: {
+      SetSpriteAnimation(p, MOTION(DM164_CHILDRE, 0));
+      p->mode[2]++;
+      FALLTHROUGH;
+    }
+    case 11: {
+      UpdateSpriteAnimation(p);
+      if (!(gStageRun.vm.active & VM_ACTIVE)) p->mode[1] = 0, p->mode[2] = 0;
+      break;
+    }
+  }
+#else
+  INCCODE("asm/wip/childreMode1.inc");
+#endif
+}
+
 INCASM("asm/boss/childre.inc");
 
 // --------------------------------------------
@@ -593,18 +698,20 @@ static const u8 sInitModes[4] = {1, 16, 0, 0};
 
 static const Coords32 sChildre_ElfxOffsets = {PIXEL(0), -PIXEL(16)};
 
-const s16 s16_0836206c = 0x2601;
+static const motion_t s16_0836206c = MOTION(SM038_UNK, 1);
 
 // clang-format off
-const motion_t sChildreMotions[6] = {
-    MOTION(DM164_CHILDRE, 0x10),
-    MOTION(DM164_CHILDRE, 0x11),
-    MOTION(DM164_CHILDRE, 0x11),
-    MOTION(DM164_CHILDRE, 0x11),
-    MOTION(DM164_CHILDRE, 0x11),
-    MOTION(DM164_CHILDRE, 0x12),
-};
+const motion_t sChildreAnimations[6] = {
+    MOTION(DM164_CHILDRE, 16),
+    MOTION(DM164_CHILDRE, 17),
+    MOTION(DM164_CHILDRE, 17),
+    MOTION(DM164_CHILDRE, 17),
+    MOTION(DM164_CHILDRE, 17),
+    MOTION(DM164_CHILDRE, 18),
+}; // 0x0836206E
 // clang-format on
 
-const Coords32 Coord_0836207c = {0x200, 0xFFFFE800};
-const Coords32 Coord_08362084 = {0x600, 0xFFFFE700};
+static const Coords32 sChildre_ExplosionOffsets[2] = {
+    {PIXEL(2), -PIXEL(24)},
+    {PIXEL(6), -PIXEL(25)},
+};  // 0x0836207C

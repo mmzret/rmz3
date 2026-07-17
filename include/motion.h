@@ -68,4 +68,7 @@ void UpdateEntityAnim(struct Entity* p);
 // 今後は UpdateEntityAnim を呼び出すところはこっちを使う (既存の箇所も後でこっちに置き換える予定)
 #define UpdateSpriteAnimation(enti) (UpdateEntityAnim(((struct Entity*)(enti))))
 
+void FUN_0801779c(struct Entity* p);
+static inline void _FUN_0801779c(void* enti) { FUN_0801779c((struct Entity*)enti); }
+
 #endif  // GUARD_RMZ3_MOTION_H

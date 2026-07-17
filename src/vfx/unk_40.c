@@ -130,7 +130,7 @@ static void FUN_080bdc74(struct Entity* p) {
       (p->coord).x += (p->d).x;
       (p->coord).y += (p->d).y;
       (p->d).y += PIXEL(1) / 4;
-      FUN_0801779c(p);
+      _FUN_0801779c(p);
       if (FUN_080098a4((p->coord).x, (p->coord).y) && ((p->d).y > 0)) {
         CreateSmoke(3, &p->coord);
         SET_VFX_ROUTINE(p, ENTITY_DIE);

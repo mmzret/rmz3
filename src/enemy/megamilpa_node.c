@@ -1,15 +1,8 @@
+#include "enemy/megamilpa_node.h"
+
 #include "collision.h"
 #include "enemy.h"
 #include "global.h"
-
-typedef struct {
-  COLLISION_OBJECT_HDR;
-  // props (16bytes, offset: 0xB4..)
-  u8 unk_b4[4];   // 0xB4
-  u8 nodeIdx;     // 0xB8
-  u8 unk_b9[11];  // 0xB9
-} MegamilpaNode;
-static_assert(sizeof(MegamilpaNode) == sizeof(struct Enemy));
 
 void MegamilpaNode_Init(struct Enemy* p);
 void MegamilpaNode_Update(struct Enemy* p);
@@ -27,14 +20,14 @@ const EnemyRoutine gMegamilpaNodeRoutine = {
 
 // --------------------------------------------
 
-struct Entity* CreateMegamilpaNode(u8 idx) {
+MegamilpaNode* CreateMegamilpaNode(u8 idx) {
   MegamilpaNode* p = AllocEntityLast(gEnemyHeaderPtr);
   if (p != NULL) {
     INIT_ENEMY_ROUTINE(p, ENEMY_MEGAMILPA_NODE);
     p->work[0] = 0;
     p->nodeIdx = idx;
   }
-  return (void*)p;
+  return p;
 }
 
 // --------------------------------------------

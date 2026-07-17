@@ -2269,7 +2269,7 @@ static void ozRanbu4(struct Boss* p) {
       FALLTHROUGH;
     }
     case 1: {
-      FUN_0801779c((void*)p);
+      _FUN_0801779c(p);
       UpdateSpriteAnimation(p);
       if (IsSpriteAnimEnd(p)) p->mode[2]++;
       break;
@@ -2283,7 +2283,7 @@ static void ozRanbu4(struct Boss* p) {
       FALLTHROUGH;
     }
     case 3: {
-      FUN_0801779c((void*)p);
+      _FUN_0801779c(p);
       UpdateSpriteAnimation(p);
       if ((p->motion.cmdIdx == 1) && (p->work[2] == 0)) {
         p->work[2] = 1;

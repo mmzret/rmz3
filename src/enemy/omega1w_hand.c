@@ -125,7 +125,7 @@ static void OmegaWhiteHand_Update(Omega1wHand* p) {
   }; // 0x08366410
   // clang-format on
 
-  struct Omega1* omega = (struct Omega1*)p->unk_28;
+  Omega1* omega = (Omega1*)p->unk_28;
   if (omega->mode[0] >= ENTITY_DISAPPEAR) {
     // 本体が消えるときは、手も消える
     p->flags &= ~DISPLAY;

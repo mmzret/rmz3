@@ -19,13 +19,13 @@ const EnemyRoutine gOmegaGoldSwordRoutine = {
 // --------------------------------------------
 
 // 0x0808b798
-struct Enemy* CreateOmega1gSword(Coords32* c, u8 r1, struct Entity* e) {
-  struct Enemy* p = AllocEntityLast(gEnemyHeaderPtr);
+struct Entity* CreateOmega1gSword(Coords32* c, u8 r1, void* omega1) {
+  struct Entity* p = AllocEntityLast(gEnemyHeaderPtr);
   if (p != NULL) {
     INIT_ENEMY_ROUTINE(p, ENEMY_OMEGA1G_SWORD);
-    (p->s).coord = *c;
-    (p->s).work[0] = r1;
-    (p->s).unk_28 = e;
+    p->coord = *c;
+    p->work[0] = r1;
+    p->unk_28 = omega1;
   }
   return p;
 }

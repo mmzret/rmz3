@@ -80,7 +80,6 @@ void ScalerotSprite2() __attribute__((alias("ScalerotSprite")));
 
 void UpdateEntityPaletteID(struct Entity* p);
 void PaintEntityWhite(struct Entity* p);
-void FUN_0801779c(struct Entity* p);
 
 bool32 isKilled(struct Entity* p);
 #define IsDead(p) (isKilled((struct Entity*)(p)))

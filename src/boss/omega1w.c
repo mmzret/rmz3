@@ -18,10 +18,10 @@ struct Entity* CreateOmega1wHand(Coords32* c, bool8 isLeftHand, struct Entity* o
 
 static const struct Collision sCollisions[8];
 
-static void OmegaWhite_Init(struct Omega1* p);
-static void OmegaWhite_Update(struct Boss* p);
-static void OmegaWhite_Die(struct Boss* p);
-static void OmegaWhite_Disappear(struct Boss* p);
+static void OmegaWhite_Init(Omega1* p);
+static void OmegaWhite_Update(Omega1* p);
+static void OmegaWhite_Die(Omega1* p);
+static void OmegaWhite_Disappear(Omega1* p);
 
 // clang-format off
 const BossRoutine gOmegaWhiteRoutine = {
@@ -33,7 +33,7 @@ const BossRoutine gOmegaWhiteRoutine = {
 };
 // clang-format on
 
-static void floatOmegaWhite(struct Omega1* p);
+static void floatOmegaWhite(Omega1* p);
 
 struct Entity* CreateOmegaWhite(Coords32* c, u8 n) {
   struct Entity* p = AllocEntityLast(gBossHeaderPtr);
@@ -45,7 +45,7 @@ struct Entity* CreateOmegaWhite(Coords32* c, u8 n) {
   return p;
 }
 
-static void OmegaWhite_Init(struct Omega1* p) {
+static void OmegaWhite_Init(Omega1* p) {
   s32 y;
   Coords32 c;
   struct Body* body;
@@ -84,47 +84,47 @@ static void OmegaWhite_Init(struct Omega1* p) {
   p->unk_2c = omegaWhite_080b91d4(&c, 2, (struct Entity*)p);
   CreateOmega1wHand(&c, TRUE, (void*)p);
   StartPaletteAnimation(11, 672);
-  OmegaWhite_Update((void*)p);
+  OmegaWhite_Update(p);
 }
 
 // --------------------------------------------
 
-static void omegaWhite_0803e244(struct Omega1* p);
-static void omegaWhiteIntoMode2(struct Boss* p);
-static void omegaWhiteNeutral(struct Boss* p);
-static void omegaWhiteLaser(struct Boss* p);
-static void omegaWhite_0803e2a0(struct Boss* p);
-static bool8 changeOmegaWhiteMode(struct Omega1* p);
-static bool8 nop_0803e240(void* _);
-static bool8 nop_0803e278(void* _);
-static bool8 nop_0803e29c(void* _);
-static bool8 nop_0803e390(void* _);
-static bool8 nop_0803e51c(void* _);
-static bool8 nop_0803e5e8(void* _);
-static void omegaWhite_0803e520(struct Boss* p);
-static void omegaWhite_0803e5ec(struct Boss* p);
+static void omegaWhite_0803e244(Omega1* p);
+static void omegaWhiteIntoMode2(Omega1* p);
+static void omegaWhiteNeutral(Omega1* p);
+static void omegaWhiteLaser(Omega1* p);
+static void omegaWhite_0803e2a0(Omega1* p);
+static bool8 changeOmegaWhiteMode(Omega1* p);
+static bool8 nop_0803e240(Omega1* _);
+static bool8 nop_0803e278(Omega1* _);
+static bool8 nop_0803e29c(Omega1* _);
+static bool8 nop_0803e390(Omega1* _);
+static bool8 nop_0803e51c(Omega1* _);
+static bool8 nop_0803e5e8(Omega1* _);
+static void omegaWhite_0803e520(Omega1* p);
+static void omegaWhite_0803e5ec(Omega1* p);
 
-static void OmegaWhite_Update(struct Boss* p) {
+static void OmegaWhite_Update(Omega1* p) {
   // clang-format off
-  static const BossFunc sUpdates1[7] = {
-      (BossFunc)nop_0803e240,
-      (BossFunc)nop_0803e278,
-      (BossFunc)nop_0803e29c,
-      (BossFunc)changeOmegaWhiteMode,
-      (BossFunc)nop_0803e390,
-      (BossFunc)nop_0803e51c,
-      (BossFunc)nop_0803e5e8,
+  static bool8 (*const sUpdates1[7])(Omega1*) = {
+      nop_0803e240,
+      nop_0803e278,
+      nop_0803e29c,
+      changeOmegaWhiteMode,
+      nop_0803e390,
+      nop_0803e51c,
+      nop_0803e5e8,
   };
   // clang-format on
   // clang-format off
-  static const BossFunc sUpdates2[7] = {
-      (void*)omegaWhite_0803e244,
-      (void*)omegaWhiteIntoMode2,
-      (void*)omegaWhite_0803e2a0,
-      (void*)omegaWhiteNeutral,
-      (void*)omegaWhiteLaser,
-      (void*)omegaWhite_0803e520,
-      (void*)omegaWhite_0803e5ec,
+  static void (*const sUpdates2[7])(Omega1*) = {
+      omegaWhite_0803e244,
+      omegaWhiteIntoMode2,
+      omegaWhite_0803e2a0,
+      omegaWhiteNeutral,
+      omegaWhiteLaser,
+      omegaWhite_0803e520,
+      omegaWhite_0803e5ec,
   };
   // clang-format on
 
@@ -135,25 +135,24 @@ static void OmegaWhite_Update(struct Boss* p) {
       p->mode[1] = 6, p->mode[2] = 0;
     }
   }
-
   (sUpdates1[p->mode[1]])(p);
   (sUpdates2[p->mode[1]])(p);
 }
 
 // --------------------------------------------
 
-static void omegaWhite_0803e148(struct Boss* p);
-static void omegaWhite_0803e1f8(struct Boss* p);
+static void omegaWhite_0803e148(Omega1* p);
+static void omegaWhite_0803e1f8(Omega1* p);
 
-static void OmegaWhite_Die(struct Boss* p) {
-  static const BossFunc seq[2] = {
+static void OmegaWhite_Die(Omega1* p) {
+  static void (*const seq[2])(Omega1*) = {
       omegaWhite_0803e148,
       omegaWhite_0803e1f8,
   };
   (seq[p->mode[1]])(p);
 }
 
-static void OmegaWhite_Disappear(struct Boss* p) {
+static void OmegaWhite_Disappear(Omega1* p) {
   RemovePaletteAnimation(11);
   EXIT_BODY(p);
   p->flags &= ~DISPLAY;
@@ -161,7 +160,7 @@ static void OmegaWhite_Disappear(struct Boss* p) {
   DeleteBoss((void*)p);
 }
 
-static void omegaWhite_0803e148(struct Boss* p) {
+static void omegaWhite_0803e148(Omega1* p) {
   Coords32* velocity;
 
   StepPaletteAnimation(11);
@@ -197,7 +196,7 @@ static void omegaWhite_0803e148(struct Boss* p) {
   }
 }
 
-static void omegaWhite_0803e1f8(struct Boss* p) {
+static void omegaWhite_0803e1f8(Omega1* p) {
   u8 phase = p->mode[2];
   switch (phase) {
     case 0: {
@@ -212,9 +211,9 @@ static void omegaWhite_0803e1f8(struct Boss* p) {
   }
 }
 
-static bool8 nop_0803e240(void* _) { return TRUE; }
+static bool8 nop_0803e240(Omega1* _) { return TRUE; }
 
-static void omegaWhite_0803e244(struct Omega1* p) {
+static void omegaWhite_0803e244(Omega1* p) {
   if (p->mode[2] == 0) {
     gOverworld.state[1] = 1;
     p->mode[1] = 1;
@@ -224,9 +223,9 @@ static void omegaWhite_0803e244(struct Omega1* p) {
   }
 }
 
-static bool8 nop_0803e278(void* _) { return TRUE; }
+static bool8 nop_0803e278(Omega1* _) { return TRUE; }
 
-static void omegaWhiteIntoMode2(struct Boss* p) {
+static void omegaWhiteIntoMode2(Omega1* p) {
   u8 phase = p->mode[2];
   switch (phase) {
     case 0: {
@@ -238,9 +237,9 @@ static void omegaWhiteIntoMode2(struct Boss* p) {
   }
 }
 
-static bool8 nop_0803e29c(void* _) { return TRUE; }
+static bool8 nop_0803e29c(Omega1* _) { return TRUE; }
 
-static void omegaWhite_0803e2a0(struct Boss* p) {
+static void omegaWhite_0803e2a0(Omega1* p) {
   u8 phase = p->mode[2];
   switch (phase) {
     case 0: {
@@ -256,7 +255,7 @@ static void omegaWhite_0803e2a0(struct Boss* p) {
 
 // クールタイム終了後のオメガのモードをランダムに4か5にする
 // 0x0803e2d0
-static bool8 changeOmegaWhiteMode(struct Omega1* p) {
+static bool8 changeOmegaWhiteMode(Omega1* p) {
   if (p->mode[2] == 0) return TRUE;
   if (p->work[3] == 0) return TRUE;
   if (--p->work[3] != 0) return TRUE;
@@ -278,25 +277,26 @@ static bool8 changeOmegaWhiteMode(struct Omega1* p) {
 }
 
 // オメガが縦にふわふわして何もしていない状態(2秒間)
-static void omegaWhiteNeutral(struct Boss* p) {
-  u8 phase = p->mode[2];
-  switch (phase) {
+static void omegaWhiteNeutral(Omega1* p) {
+  switch (p->mode[2]) {
     case 0: {
       SetDDP(&p->body, &sCollisions[1]);
-      p->d.x = p->d.y = 0;
+      (p->d).x = (p->d).y = 0;
       p->work[3] = 2 * SECOND;
       p->mode[2]++;
+      FALLTHROUGH;
     }
     case 1: {
-      floatOmegaWhite((void*)p);
+      floatOmegaWhite(p);
+      break;
     }
   }
 }
 
-static bool8 nop_0803e390(void* _) { return TRUE; }
+static bool8 nop_0803e390(Omega1* _) { return TRUE; }
 
 // オメガレーザー(3発の球体を打つやつ)
-NAKED static void omegaWhiteLaser(struct Boss* p) {
+NAKED static void omegaWhiteLaser(Omega1* p) {
   asm(".syntax unified\n\
 	push {r4, lr}\n\
 	sub sp, #8\n\
@@ -495,9 +495,9 @@ _0803E500:\n\
  .syntax divided\n");
 }
 
-static bool8 nop_0803e51c(void* _) { return TRUE; }
+static bool8 nop_0803e51c(Omega1* _) { return TRUE; }
 
-NAKED static void omegaWhite_0803e520(struct Boss* p) {
+NAKED static void omegaWhite_0803e520(Omega1* p) {
   asm(".syntax unified\n\
 	push {r4, lr}\n\
 	adds r4, r0, #0\n\
@@ -608,9 +608,9 @@ _0803E5E0:\n\
  .syntax divided\n");
 }
 
-static bool8 nop_0803e5e8(void* _) { return TRUE; }
+static bool8 nop_0803e5e8(Omega1* _) { return TRUE; }
 
-NAKED static void omegaWhite_0803e5ec(struct Boss* p) {
+NAKED static void omegaWhite_0803e5ec(Omega1* p) {
   asm(".syntax unified\n\
 	push {r4, r5, lr}\n\
 	adds r4, r0, #0\n\
@@ -876,7 +876,7 @@ _0803E7E6:\n\
 // 0x0803e7ec
 static void onCollision(struct Body* body, Coords32* c1, Coords32* c2) {
   {
-    struct Boss* p = (struct Boss*)body->parent;
+    Omega1* p = (Omega1*)body->parent;
     struct Entity* fx = (struct Entity*)p->unk_2c;
     if (fx != NULL) {
       if (fx->mode[0] >= ENTITY_DIE) {
@@ -887,7 +887,7 @@ static void onCollision(struct Body* body, Coords32* c1, Coords32* c2) {
     }
   }
   {
-    struct Omega1* p = (struct Omega1*)body->parent;
+    Omega1* p = (Omega1*)body->parent;
     struct Entity* fx = p->unk_bc;
     if (fx != NULL) {
       if (fx->mode[0] >= ENTITY_DIE) {
@@ -900,7 +900,7 @@ static void onCollision(struct Body* body, Coords32* c1, Coords32* c2) {
 }
 
 // オメガが縦にふわふわする処理
-static void floatOmegaWhite(struct Omega1* p) {
+static void floatOmegaWhite(Omega1* p) {
   u16 val = (p->unk_c0 + 1) & 0xFF;
   p->unk_c0 = val;
   (p->coord).y = (p->unk_coord).y + (gSineTable[val] << 3);
