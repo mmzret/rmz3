@@ -1,6 +1,7 @@
 #include "collision.h"
 #include "enemy.h"
 #include "global.h"
+#include "zero.h"
 #include "vfx.h"
 
 // ファントムの出すオブジェクト?
@@ -17,7 +18,7 @@ void CreateGhost18(Coords32* c, u8 kind, bool8 xflip, u8 r3);
 
 static void Enemy59_Init(Enemy59* p);
 void Enemy59_Update(Enemy59* p);
-void Enemy59_Die(Enemy59* p);
+void Enemy59_Die(struct Enemy* p);
 
 // clang-format off
 const EnemyRoutine gEnemy59Routine = {
@@ -94,7 +95,7 @@ void FUN_0809142c(Entity* q, u8 kind) {
 
 static const struct Collision sCollisions[];
 static const u8 u8_ARRAY_08369a14[];
-void FUN_08091790(struct Body* body, Coords32* r1 UNUSED, Coords32* r2 UNUSED);
+void FUN_08091790(struct Body* body);
 
 static void Enemy59_Init(Enemy59* p) {
   if (p->work[0] == 12) {
@@ -123,7 +124,36 @@ static void Enemy59_Init(Enemy59* p) {
   Enemy59_Update(p);
 }
 
-INCASM("asm/enemy/unk_59.inc");
+static const EnemyFunc sDeads[4];
+
+INCASM("asm/enemy/unk_59_b.inc");
+
+void Enemy59_Die(struct Enemy* p) {
+  (sDeads[(p->s).mode[1]])(p);
+}
+
+void FUN_08091790(struct Body* body) {
+  struct Enemy* atk = (struct Enemy*)(body->enemy->parent);
+  struct Enemy* self = (struct Enemy*)(body->parent);
+  if ((self->s).work[0] == 0xc) {
+    if ((body->hitboxFlags & 8) &&
+        (s8)(atk->s).kind == 2 &&
+        (atk->s).mode[1] == 1 &&
+        (u8)((atk->s).mode[2] - 1) <= 1 &&
+        (atk->s).id == 0x15 &&
+        ((*(u32*)&(self->s).mode[0]) & 0xffff00) == 0x30800) {
+      *(s32*)((u8*)self + 0xb4) = (atk->s).coord.x - (self->s).coord.x;
+      (self->s).mode[1] = 9;
+      (self->s).mode[2] = 0;
+    }
+  } else {
+    *(s32*)((u8*)self + 0xb4) = pZero2->s.coord.x - (self->s).coord.x;
+  }
+}
+
+void FUN_08091810(struct Enemy* p) {}
+
+INCASM("asm/enemy/unk_59_a.inc");
 
 // 0x083697F4
 static const struct SlashedEnemy sSlashedEnemies[4] = {

@@ -190,7 +190,19 @@ static void Projectile28_Init_RagingEXCharge(Projectile28* p) {
   Projectile28_Update(p);
 }
 
-INCASM("asm/projectile/copy_x_28.inc");
+INCASM("asm/projectile/copy_x_28_b.inc");
+
+void FUN_080aa120(struct Projectile* p) {
+  struct Entity* par = (p->s).unk_28;
+  (p->s).coord = par->coord;
+  (p->s).work[3]++;
+  if (par->mode[1] != 0xf) {
+    SET_PROJECTILE_ROUTINE(p, ENTITY_DIE);
+    Projectile28_Die((Object*)p);
+  }
+}
+
+INCASM("asm/projectile/copy_x_28_a.inc");
 
 // --------------------------------------------
 

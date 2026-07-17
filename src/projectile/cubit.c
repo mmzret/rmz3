@@ -2,7 +2,97 @@
 #include "global.h"
 #include "projectile.h"
 
-INCASM("asm/projectile/cubit.inc");
+struct Projectile33x {
+  OBJECT_HDR;
+  u8 work[4];          // 0xB4
+  Coords32 prevCoord;  // 0xB8
+  u32 unk_c0;          // 0xC0
+};
+
+
+struct Projectile* FUN_080a5f00(struct Entity* e, u8 a1) {
+  struct Projectile* p = (struct Projectile*)AllocEntityLast(gProjectileHeaderPtr);
+  if (p != NULL) {
+    INIT_PROJECTILE_ROUTINE(p, 22);
+    (p->s).work[0] = 0;
+    (p->s).unk_28 = e;
+    ((struct Projectile33x*)p)->work[2] = 0;
+    ((struct Projectile33x*)p)->work[1] = a1;
+  }
+  return p;
+}
+
+struct Projectile* FUN_080a5f54(struct Entity* e, struct Coord* c, u8 a2, u8 a3) {
+  struct Projectile* p = (struct Projectile*)AllocEntityLast(gProjectileHeaderPtr);
+  if (p != NULL) {
+    INIT_PROJECTILE_ROUTINE(p, 22);
+    (p->s).work[0] = 5;
+    (p->s).coord = *c;
+    ((struct Projectile33x*)p)->work[0] = a2;
+    ((struct Projectile33x*)p)->work[1] = a3;
+    ((struct Projectile33x*)p)->work[2] = 0;
+    (p->s).unk_28 = e;
+  }
+  return p;
+}
+
+struct Projectile* FUN_080a5fc4(struct Entity* e) {
+  struct Projectile* p = (struct Projectile*)AllocEntityLast(gProjectileHeaderPtr);
+  if (p != NULL) {
+    INIT_PROJECTILE_ROUTINE(p, 22);
+    (p->s).work[0] = 1;
+    ((struct Projectile33x*)p)->work[2] = 0;
+    (p->s).unk_28 = e;
+  }
+  return p;
+}
+
+struct Projectile* FUN_080a6014(struct Entity* e, struct Coord* c, u8 a2, u8 a3) {
+  struct Projectile* p = (struct Projectile*)AllocEntityLast(gProjectileHeaderPtr);
+  if (p != NULL) {
+    INIT_PROJECTILE_ROUTINE(p, 22);
+    (p->s).work[0] = 4;
+    (p->s).coord = *c;
+    ((struct Projectile33x*)p)->work[1] = a3;
+    ((struct Projectile33x*)p)->work[2] = a2;
+    (p->s).unk_28 = e;
+  }
+  return p;
+}
+
+struct Projectile* cubit_080a6078(struct Entity* e) {
+  struct Projectile* p = (struct Projectile*)AllocEntityLast(gProjectileHeaderPtr);
+  if (p != NULL) {
+    INIT_PROJECTILE_ROUTINE(p, 22);
+    (p->s).work[0] = 2;
+    ((struct Projectile33x*)p)->work[2] = 0;
+    (p->s).unk_28 = e;
+  }
+  return p;
+}
+
+INCASM("asm/projectile/cubit_a.inc");
+
+static const ProjectileFunc* const sUpdates[4];
+
+void CubitProjectile_Update(struct Projectile* p) {
+  (sUpdates[(p->s).work[0]][(p->s).mode[1]])(p);
+}
+
+void CubitProjectile_Die(struct Projectile* p) {
+  (p->s).flags &= ~DISPLAY;
+  EXIT_BODY(p);
+  SET_PROJECTILE_ROUTINE(p, ENTITY_EXIT);
+}
+
+INCASM("asm/projectile/cubit_b.inc");
+
+void FUN_080a7a70(struct Projectile* p) {
+  (p->s).mode[1] = 1;
+  (p->s).mode[2] = 0;
+}
+
+INCASM("asm/projectile/cubit_c.inc");
 
 void CubitProjectile_Init(Projectile* p);
 void CubitProjectile_Update(Projectile* p);

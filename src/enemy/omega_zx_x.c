@@ -1,6 +1,8 @@
 #include "collision.h"
 #include "enemy.h"
 #include "global.h"
+#include "script.h"
+#include "score.h"
 
 // OmegaZX のスプライト部分 (というか手前の X っぽい部分)
 
@@ -74,11 +76,163 @@ static void Enemy60_Init(struct OmegaZX_X* p) {
   Enemy60_Update((void*)p);
 }
 
-INCASM("asm/enemy/omega_zx_x.inc");
+static const EnemyFunc sDeads[2];
+
+INCASM("asm/enemy/omega_zx_x_a.inc");
+
+void Enemy60_Die(struct Enemy* p) {
+  (sDeads[(p->s).mode[1]])(p);
+}
+
+INCASM("asm/enemy/omega_zx_x_b.inc");
+
+void FUN_08092918(struct Enemy* p) {
+  struct Coord c;
+  if ((p->s).mode[2] == 0) {
+    c.x = (p->s).coord.x;
+    c.y = (p->s).coord.y;
+    CreateSmoke(1, &c);
+    PlaySound(0x2a);
+    if (gScore.enemyCount <= 0x270e) {
+      gScore.enemyCount++;
+    }
+    TryDropZakoDisk(p, &(p->s).coord);
+    (p->s).flags &= ~DISPLAY;
+    SET_ENEMY_ROUTINE(p, ENTITY_EXIT);
+  }
+}
+
+void FUN_08092980(struct Enemy* p) {
+  switch ((p->s).mode[2]) {
+    case 0:
+      (p->s).mode[2] = 1;
+      FALLTHROUGH;
+    case 1:
+      if ((p->s).unk_28->scriptEntity->flags & 1) {
+        (p->s).flags |= DISPLAY;
+        SetSpriteAnimation(p, 0xb600);
+        UpdateSpriteAnimation(p);
+        (p->s).mode[1] = 1;
+        (p->s).mode[2] = 0;
+      }
+      break;
+  }
+}
+
+void FUN_080929c8(struct Enemy* p) {
+  switch ((p->s).mode[2]) {
+    case 0:
+      (p->s).mode[2] = 1;
+      FALLTHROUGH;
+    case 1:
+      (p->s).mode[1] = 2;
+      (p->s).mode[2] = 0;
+      break;
+  }
+}
+
+void FUN_080929e8(struct OmegaZX_X* p) {
+  switch ((p->s).mode[2]) {
+    case 0:
+      SetSpriteAnimation(p, 0xb600);
+      SET_XFLIP(p, FALSE);
+      SetDDP(&p->body, &sCollisions[3]);
+      (p->s).d.y = 0;
+      (p->s).d.x = 0;
+      (p->s).work[2] = 0;
+      (p->s).mode[2]++;
+      FALLTHROUGH;
+    case 1:
+      (p->s).coord.y = (p->c).y + (((p->s).unk_28)->coord).y;
+      (p->s).coord.x = (p->c).x + (((p->s).unk_28)->coord).x;
+      UpdateSpriteAnimation(p);
+      break;
+  }
+}
+
+void FUN_08092a60(struct Enemy* p) {
+  switch ((p->s).mode[2]) {
+    case 0:
+      (p->s).mode[2] = 1;
+      FALLTHROUGH;
+    case 1:
+      if ((p->s).unk_28->scriptEntity->flags & 1) {
+        (p->s).flags |= DISPLAY;
+        SetSpriteAnimation(p, 0xb601);
+        UpdateSpriteAnimation(p);
+        (p->s).mode[1] = 1;
+        (p->s).mode[2] = 0;
+      }
+      break;
+  }
+}
+
+void FUN_08092aac(struct Enemy* p) {
+  switch ((p->s).mode[2]) {
+    case 0:
+      (p->s).mode[2] = 1;
+      FALLTHROUGH;
+    case 1:
+      (p->s).mode[1] = 2;
+      (p->s).mode[2] = 0;
+      break;
+  }
+}
+
+void FUN_08092acc(struct OmegaZX_X* p) {
+  switch ((p->s).mode[2]) {
+    case 0:
+      SetSpriteAnimation(p, 0xb601);
+      SET_XFLIP(p, FALSE);
+      SetDDP(&p->body, &sCollisions[5]);
+      (p->s).d.y = 0;
+      (p->s).d.x = 0;
+      (p->s).work[2] = 0;
+      (p->s).mode[2]++;
+      FALLTHROUGH;
+    case 1:
+      (p->s).work[2] += 2;
+      (p->s).coord.y += (((p->c).y + (((p->s).unk_28)->coord).y - (p->s).coord.y) << 4) >> 8;
+      (p->s).coord.x = (p->c).x + (((p->s).unk_28)->coord).x;
+      UpdateSpriteAnimation(p);
+      break;
+  }
+}
+
+void FUN_08092b54(struct Enemy* p) {
+  switch ((p->s).mode[2]) {
+    case 0:
+      (p->s).mode[2] = 1;
+      FALLTHROUGH;
+    case 1:
+      if (((p->s).unk_28->scriptEntity)->flags & 1) {
+        (p->s).flags |= DISPLAY;
+        SetSpriteAnimation(p, 0xb602);
+        UpdateSpriteAnimation(p);
+        (p->s).mode[1] = 1;
+        (p->s).mode[2] = 0;
+      }
+      break;
+  }
+}
+
+void FUN_08092ba0(struct Enemy* p) {
+  switch ((p->s).mode[2]) {
+    case 0:
+      (p->s).mode[2] = 1;
+      FALLTHROUGH;
+    case 1:
+      (p->s).mode[1] = 2;
+      (p->s).mode[2] = 0;
+      break;
+  }
+}
+
+INCASM("asm/enemy/omega_zx_x_c.inc");
 
 void FUN_08092980(struct Enemy* p);
 void FUN_080929c8(struct Enemy* p);
-void FUN_080929e8(struct Enemy* p);
+void FUN_080929e8(struct OmegaZX_X* p);
 static void FUN_0809357c(struct OmegaZX_X* p);
 
 static const EnemyFunc sUpdates1[4] = {
@@ -90,7 +244,7 @@ static const EnemyFunc sUpdates1[4] = {
 
 void FUN_08092a60(struct Enemy* p);
 void FUN_08092aac(struct Enemy* p);
-void FUN_08092acc(struct Enemy* p);
+void FUN_08092acc(struct OmegaZX_X* p);
 
 static const EnemyFunc sUpdates2[4] = {
     (void*)FUN_08092a60,
