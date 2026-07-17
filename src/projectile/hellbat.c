@@ -2,7 +2,79 @@
 #include "global.h"
 #include "projectile.h"
 
-INCASM("asm/projectile/hellbat.inc");
+static const ProjectileFunc* const sUpdates[5];
+
+struct Projectile* createBat(struct Entity* e, struct Coord* c, u8 a2, u8 a3) {
+  struct Projectile* p = (struct Projectile*)AllocEntityLast(gProjectileHeaderPtr);
+  if (p != NULL) {
+    INIT_PROJECTILE_ROUTINE(p, 15);
+    (p->s).work[0] = 0;
+    p->buffer[1] = a2;
+    p->buffer[2] = a3;
+    (p->s).coord = *c;
+    (p->s).unk_28 = e;
+  }
+  return p;
+}
+
+struct Projectile* createEchoWave(struct Entity* e, struct Coord* c, u8 a2) {
+  struct Projectile* p = (struct Projectile*)AllocEntityLast(gProjectileHeaderPtr);
+  if (p != NULL) {
+    INIT_PROJECTILE_ROUTINE(p, 15);
+    (p->s).work[0] = 1;
+    p->buffer[1] = a2;
+    (p->s).coord = *c;
+    (p->s).unk_28 = e;
+  }
+  return p;
+}
+
+INCASM("asm/projectile/hellbat_a.inc");
+
+void Projectile15_Update(struct Projectile* p) {
+  (sUpdates[(p->s).work[0]][(p->s).mode[1]])(p);
+}
+
+void Projectile15_Die(struct Projectile* p) {
+  (p->s).flags &= ~DISPLAY;
+  EXIT_BODY(p);
+  SET_PROJECTILE_ROUTINE(p, ENTITY_EXIT);
+}
+
+void FUN_080a176c(struct Projectile* p) {
+  (p->s).mode[1] = 1;
+  (p->s).mode[2] = 0;
+}
+
+INCASM("asm/projectile/hellbat_b.inc");
+
+void FUN_080a1a10(struct Projectile* p) {
+  (p->s).mode[1] = 1;
+  (p->s).mode[2] = 0;
+}
+
+INCASM("asm/projectile/hellbat_c.inc");
+
+void FUN_080a1f10(struct Projectile* p) {
+  (p->s).mode[1] = 1;
+  (p->s).mode[2] = 0;
+}
+
+INCASM("asm/projectile/hellbat_d.inc");
+
+void FUN_080a2020(struct Projectile* p) {
+  (p->s).mode[1] = 1;
+  (p->s).mode[2] = 0;
+}
+
+INCASM("asm/projectile/hellbat_e.inc");
+
+void FUN_080a22ec(struct Projectile* p) {
+  (p->s).mode[1] = 1;
+  (p->s).mode[2] = 0;
+}
+
+INCASM("asm/projectile/hellbat_f.inc");
 
 void Projectile15_Init(struct Projectile* p);
 void Projectile15_Update(struct Projectile* p);

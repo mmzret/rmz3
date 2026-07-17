@@ -2,7 +2,53 @@
 #include "global.h"
 #include "projectile.h"
 
-INCASM("asm/projectile/unk_18.inc");
+static const ProjectileFunc PTR_ARRAY_0836b434[5];
+static const ProjectileFunc PTR_ARRAY_0836b448[5];
+static const struct Collision sCollisions[4];
+static const u8 sInitModes[4];
+
+INCASM("asm/projectile/unk_18_a.inc");
+
+void FUN_080a2ee8(s32 x, s32 y) {
+  struct Projectile* p = (struct Projectile*)AllocEntityFirst(gProjectileHeaderPtr);
+  if (p != NULL) {
+    INIT_PROJECTILE_ROUTINE(p, 18);
+    (p->s).work[0] = 1;
+    (p->s).coord.x = x;
+    (p->s).coord.y = y;
+  }
+}
+
+INCASM("asm/projectile/unk_18_b.inc");
+
+void FUN_080a2fa4(struct Enemy* p) {}
+
+void Projectile18_Init(struct Projectile* p) {
+  SET_PROJECTILE_ROUTINE(p, ENTITY_UPDATE);
+  (p->s).mode[1] = sInitModes[(p->s).work[0]];
+  (p->s).flags |= FLIPABLE;
+  (p->s).flags |= DISPLAY;
+  InitNonAffineMotion(&p->s);
+  INIT_BODY(p, sCollisions, 1, (void*)FUN_080a2fa4);
+  Projectile18_Update(p);
+}
+
+void Projectile18_Update(struct Projectile* p) {
+  (PTR_ARRAY_0836b434[(p->s).mode[1]])(p);
+  (PTR_ARRAY_0836b448[(p->s).mode[1]])(p);
+}
+
+void Projectile18_Die(struct Projectile* p) {
+  EXIT_BODY(p);
+  CreateSmoke(3, &(p->s).coord);
+  SET_PROJECTILE_ROUTINE(p, ENTITY_EXIT);
+}
+
+void FUN_080a308c(struct Projectile* p) {}
+
+void FUN_080a3090(struct Projectile* p) {}
+
+INCASM("asm/projectile/unk_18_c.inc");
 
 static const struct Collision sCollisions[4];
 static const u8 sInitModes[4];

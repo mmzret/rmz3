@@ -4,7 +4,67 @@
 
 // LocomoIF
 
-INCASM("asm/projectile/locomo_if.inc");
+static const ProjectileFunc sUpdates1[];
+static const ProjectileFunc sUpdates2[];
+static const struct Collision sCollisions[4];
+static const u8 u8_ARRAY_0836bec4[2];
+
+void FUN_080a7c60(s32 x, s32 y, u8 a2) {
+  struct Projectile* p = (struct Projectile*)AllocEntityFirst(gProjectileHeaderPtr);
+  if (p != NULL) {
+    INIT_PROJECTILE_ROUTINE(p, 23);
+    (p->s).work[0] = 0;
+    (p->s).coord.x = x;
+    (p->s).coord.y = y;
+    (p->s).work[2] = a2;
+  }
+}
+
+void FUN_080a7cb0(s32 x, s32 y, u8 a2) {
+  struct Projectile* p = (struct Projectile*)AllocEntityFirst(gProjectileHeaderPtr);
+  if (p != NULL) {
+    INIT_PROJECTILE_ROUTINE(p, 23);
+    (p->s).work[0] = 1;
+    (p->s).coord.x = x;
+    (p->s).coord.y = y;
+    (p->s).work[2] = a2;
+  }
+}
+
+void FUN_080a7d00(struct Enemy* p) {}
+
+void Projectile23_Init(struct Projectile* p) {
+  SET_PROJECTILE_ROUTINE(p, ENTITY_UPDATE);
+  (p->s).mode[1] = u8_ARRAY_0836bec4[(p->s).work[0]];
+  (p->s).flags |= FLIPABLE;
+  (p->s).flags |= DISPLAY;
+  InitNonAffineMotion(&p->s);
+  INIT_BODY(p, sCollisions, 1, (void*)FUN_080a7d00);
+  Projectile23_Update(p);
+}
+
+void Projectile23_Update(struct Projectile* p) {
+  (sUpdates1[(p->s).mode[1]])(p);
+  (sUpdates2[(p->s).mode[1]])(p);
+}
+
+void Projectile23_Die(struct Projectile* p) {
+  EXIT_BODY(p);
+  CreateSmoke(3, &(p->s).coord);
+  SET_PROJECTILE_ROUTINE(p, ENTITY_EXIT);
+}
+
+void FUN_080a7de8(struct Projectile* p) {}
+
+
+void FUN_080a7dec(struct Projectile* p) {
+  if ((p->body).status & BODY_STATUS_BINDING) {
+    (p->s).mode[1] = 2;
+    (p->s).mode[2] = 0;
+  }
+}
+
+INCASM("asm/projectile/locomo_if_a.inc");
 
 void Projectile23_Init(struct Projectile* p);
 void Projectile23_Update(struct Projectile* p);
