@@ -2,7 +2,34 @@
 #include "enemy.h"
 #include "global.h"
 
-INCASM("asm/enemy/deathtanz_rock.inc");
+static const EnemyFunc sDeads[1];
+
+INCASM("asm/enemy/deathtanz_rock_a.inc");
+
+void nop_0807a5bc(struct Enemy* p) {}
+
+void DeathtanzRock_Die(struct Enemy* p);
+
+
+static bool8 FUN_0807a5c0(struct Enemy* p) {
+  if ((p->body).status & BODY_STATUS_DEAD) {
+    SET_ENEMY_ROUTINE(p, ENTITY_DIE);
+    (p->s).mode[1] = 0;
+    DeathtanzRock_Die(p);
+    return TRUE;
+  }
+  return FALSE;
+}
+
+INCASM("asm/enemy/deathtanz_rock_b.inc");
+
+void DeathtanzRock_Die(struct Enemy* p) {
+  (sDeads[(p->s).mode[1]])(p);
+}
+
+void nop_0807a6f8(struct Enemy* p) {}
+
+INCASM("asm/enemy/deathtanz_rock_c.inc");
 
 void DeathtanzRock_Init(struct Enemy* p);
 void DeathtanzRock_Update(struct Enemy* p);
