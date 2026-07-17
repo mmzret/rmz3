@@ -1,6 +1,9 @@
 #include "collision.h"
 #include "enemy.h"
 #include "global.h"
+#include "element.h"
+#include "score.h"
+#include "story.h"
 
 void EyeCannon_Init(struct Enemy* p);
 void EyeCannon_Update(struct Enemy* p);
@@ -31,7 +34,118 @@ static bool8 FUN_08084708(struct Enemy* p) {
   return FALSE;
 }
 
-INCASM("asm/enemy/eye_cannon.inc");
+static const EnemyFunc sUpdates1[6];
+static const EnemyFunc sUpdates2[6];
+static const EnemyFunc sDeads[1];
+static const struct Collision sCollisions[3];
+static const u32 u32_ARRAY_08368358[4];
+static const motion_t sMotions[3];
+static const Coords32 sElementCoord;
+bool8 FUN_08084744(struct Enemy* p);
+
+INCASM("asm/enemy/eye_cannon_a.inc");
+
+extern const struct Coord sElementCoord;
+
+void FUN_080847b8(struct Enemy* p) {
+  struct VFX** slot = (struct VFX**)((u8*)p + 0xb4);
+  if (*slot == NULL && ((p->body).status & 1)) {
+    struct VFX* e = ApplyElementEffect(0, &p->s, &sElementCoord);
+    *slot = e;
+    if (e != NULL) {
+      (p->s).mode[1] = 0;
+      (p->s).mode[2] = 0;
+    }
+  }
+}
+
+INCASM("asm/enemy/eye_cannon_b.inc");
+
+void EyeCannon_Update(struct Enemy* p) {
+  if (!FUN_08084708(p)) {
+    FUN_080847b8(p);
+    if (!FUN_08084744(p)) {
+      (sUpdates1[(p->s).mode[1]])(p);
+      (sUpdates2[(p->s).mode[1]])(p);
+    }
+  }
+}
+
+void EyeCannon_Die(struct Enemy* p) {
+  (sDeads[(p->s).mode[1]])(p);
+}
+
+void FUN_08084930(struct Enemy* p) {}
+
+
+void FUN_08084934(struct Enemy* p) {
+  struct Entity** slot = (struct Entity**)((u8*)p + 0xb4);
+  if (*slot == NULL || isKilled(*slot)) {
+    *slot = NULL;
+    SetDDP(&p->body, &sCollisions[1]);
+    if (!IsFrozen(&p->s)) {
+      (p->s).mode[1] = 1;
+      (p->s).mode[2] = 0;
+    }
+  }
+}
+
+void FUN_08084974(struct Enemy* p) {
+  switch ((p->s).mode[2]) {
+    case 0:
+      SetSpriteAnimation(p, MOTION(0x66, 0));
+      SetDDP(&p->body, &sCollisions[2]);
+      (p->s).mode[2]++;
+      FALLTHROUGH;
+    case 1:
+      UpdateSpriteAnimation(p);
+      break;
+  }
+}
+
+INCASM("asm/enemy/eye_cannon_c.inc");
+
+void FUN_08084cbc(struct Enemy* p) {
+  switch ((p->s).mode[2]) {
+    case 0:
+      PlaySound(0x8f << 1);
+      SetSpriteAnimation(p, MOTION(0x66, 3));
+      (p->s).mode[2]++;
+      FALLTHROUGH;
+    case 1:
+      UpdateSpriteAnimation(p);
+      if ((p->s).motion.state == 3) {
+        (p->s).mode[1] = (p->s).motion.state;
+        (p->s).mode[2] = 0;
+      }
+      break;
+  }
+}
+
+extern void FUN_080b7f70(struct Enemy* p, struct Coord* c, motion_t* m, s32 n);
+extern void TryDropZakoDisk(struct Enemy* p, struct Coord* c);
+static const u32 u32_ARRAY_08368358[4];
+static const motion_t sMotions[3];
+
+void _killEyeCannon(struct Enemy* p) {
+  struct Coord c;
+  EXIT_BODY(p);
+  (p->s).flags &= ~DISPLAY;
+  c.x = (p->s).coord.x;
+  c.y = (p->s).coord.y + 0x1200;
+  FUN_080b7f70(p, &c, (motion_t*)sMotions, 3);
+  CreateSmoke(1, &c);
+  PlaySound(0x2a);
+  TryDropItem(3, &(p->s).coord);
+  if (gScore.enemyCount <= 0x270e) {
+    gScore.enemyCount++;
+  }
+  TryDropZakoDisk(p, &(p->s).coord);
+  SET_ENEMY_ROUTINE(p, ENTITY_EXIT);
+  if ((p->s).work[0] != 0) {
+    SET_FLAG(gCurStory.s.gameflags, u32_ARRAY_08368358[(p->s).work[0] - 1]);
+  }
+}
 
 void FUN_08084934(struct Enemy* p);
 void FUN_08084930(struct Enemy* p);
