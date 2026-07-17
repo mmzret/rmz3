@@ -3,6 +3,7 @@
 #include "enemy.h"
 #include "entity.h"
 #include "global.h"
+#include "trig.h"
 
 typedef struct {
   COLLISION_OBJECT_HDR;
@@ -70,12 +71,12 @@ static void OmegaWhiteHand_Init(Omega1wHand* p) {
 
 // --------------------------------------------
 
-void FUN_0806aa9c(struct Enemy* p);
-void FUN_0806ae90(struct Enemy* p);
-void FUN_0806af24(struct Enemy* p);
-void FUN_0806b094(struct Enemy* p);
-void FUN_0806b120(struct Enemy* p);
-void FUN_0806b8cc(struct Enemy* p);
+bool8 FUN_0806aa9c(struct Enemy* p);
+bool8 FUN_0806ae90(struct Enemy* p);
+bool8 FUN_0806af24(struct Enemy* p);
+bool8 FUN_0806b094(struct Enemy* p);
+bool8 FUN_0806b120(struct Enemy* p);
+bool8 FUN_0806b8cc(struct Enemy* p);
 
 void FUN_0806aaa0(struct Enemy* p);
 void FUN_0806ae94(struct Enemy* p);
@@ -162,7 +163,156 @@ static void OmegaWhiteHand_Die(struct Entity* p) {
 
 // --------------------------------------------
 
-INCASM("asm/enemy/omega1w_hand.inc");
+INCASM("asm/enemy/omega1w_hand_a.inc");
+
+void FUN_0806aa54(struct Enemy* p) {
+  struct Coord c;
+  if ((p->s).mode[2] == 0) {
+    c.x = (p->s).coord.x;
+    c.y = (p->s).coord.y;
+    CreateSmoke(1, &c);
+    PlaySound(0x2a);
+    (p->s).flags &= ~DISPLAY;
+    SET_ENEMY_ROUTINE(p, ENTITY_EXIT);
+  }
+}
+
+bool8 FUN_0806aa9c(struct Enemy* p) { return TRUE; }
+
+INCASM("asm/enemy/omega1w_hand_b.inc");
+
+bool8 FUN_0806ae90(struct Enemy* p) { return TRUE; }
+
+void FUN_0806ae94(struct Enemy* p) {
+  switch ((p->s).mode[2]) {
+    case 0:
+      (p->s).flags |= 1;
+      (p->s).coord.y = ((struct Enemy*)(p->s).unk_28)->s.coord.y;
+      (p->s).coord.x = ((struct Enemy*)(p->s).unk_28)->s.coord.x;
+      SetSpriteAnimation(p, MOTION(0x9, 0));
+      (p->s).mode[2]++;
+      FALLTHROUGH;
+    case 1:
+      UpdateSpriteAnimation(p);
+      (p->s).mode[1] = 2;
+      (p->s).mode[2] = 0;
+      break;
+  }
+}
+
+void FUN_0806aedc(struct Enemy* p) {
+  switch ((p->s).mode[2]) {
+    case 0:
+      (p->s).flags |= 1;
+      (p->s).coord.y = ((struct Enemy*)(p->s).unk_28)->s.coord.y;
+      (p->s).coord.x = ((struct Enemy*)(p->s).unk_28)->s.coord.x;
+      SetSpriteAnimation(p, MOTION(0x9, 1));
+      (p->s).mode[2]++;
+      FALLTHROUGH;
+    case 1:
+      UpdateSpriteAnimation(p);
+      (p->s).mode[1] = 2;
+      (p->s).mode[2] = 0;
+      break;
+  }
+}
+
+bool8 FUN_0806af24(struct Enemy* p) {
+  if (((p->s).unk_28)->mode[1] == 5) {
+    (p->s).mode[1] = 4;
+    (p->s).mode[2] = 0;
+  }
+  return TRUE;
+}
+
+void FUN_0806af40(struct Enemy* p) {
+  switch ((p->s).mode[2]) {
+    case 0:
+      (p->s).flags2 |= WHITE_PAINTABLE;
+      (p->s).invincibleID = ((p->s).unk_28)->uniqueID;
+      SetSpriteAnimation(p, 0x900);
+      SET_XFLIP(p, FALSE);
+      SetDDP(&p->body, &sCollisions[0]);
+      (p->s).d.y = 0;
+      (p->s).d.x = 0;
+      (p->s).work[2] = 0;
+      (p->s).mode[2]++;
+      FALLTHROUGH;
+    case 1: {
+      s32 wob;
+      (p->s).work[2] += 2;
+      wob = gSineTable[(p->s).work[2]];
+      (p->s).coord.y = *(s32*)((u8*)p + 0xb8) + ((p->s).unk_28)->coord.y + wob;
+      (p->s).coord.x = *(s32*)((u8*)p + 0xb4) + ((p->s).unk_28)->coord.x;
+      UpdateSpriteAnimation(p);
+      break;
+    }
+  }
+}
+
+void FUN_0806afdc(struct Enemy* p) {
+  switch ((p->s).mode[2]) {
+    case 0:
+      (p->s).flags2 |= WHITE_PAINTABLE;
+      (p->s).invincibleID = ((p->s).unk_28)->uniqueID;
+      SetSpriteAnimation(p, 0x901);
+      SET_XFLIP(p, FALSE);
+      SET_YFLIP(p, FALSE);
+      (p->s).d.y = 0;
+      (p->s).d.x = 0;
+      SetDDP(&p->body, &sCollisions[3]);
+      (p->s).work[2] = 0;
+      (p->s).mode[2]++;
+      FALLTHROUGH;
+    case 1: {
+      s32 wob;
+      (p->s).work[2] += 2;
+      wob = gSineTable[(p->s).work[2]] << 1;
+      (p->s).coord.y = *(s32*)((u8*)p + 0xb8) + ((p->s).unk_28)->coord.y + wob;
+      (p->s).coord.x = *(s32*)((u8*)p + 0xb4) + ((p->s).unk_28)->coord.x;
+      UpdateSpriteAnimation(p);
+      break;
+    }
+  }
+}
+
+bool8 FUN_0806b094(struct Enemy* p) { return TRUE; }
+
+void FUN_0806b098(struct Enemy* p) {
+  switch ((p->s).mode[2]) {
+    case 0:
+      SET_XFLIP(p, FALSE);
+      (p->s).d.y = 0;
+      (p->s).d.x = 0;
+      (p->s).mode[2]++;
+      FALLTHROUGH;
+    case 1:
+      UpdateSpriteAnimation(p);
+      break;
+  }
+}
+
+void FUN_0806b0dc(struct Enemy* p) {
+  switch ((p->s).mode[2]) {
+    case 0:
+      SET_XFLIP(p, FALSE);
+      (p->s).d.y = 0;
+      (p->s).d.x = 0;
+      (p->s).mode[2]++;
+      FALLTHROUGH;
+    case 1:
+      UpdateSpriteAnimation(p);
+      break;
+  }
+}
+
+bool8 FUN_0806b120(struct Enemy* p) { return TRUE; }
+
+INCASM("asm/enemy/omega1w_hand_c.inc");
+
+bool8 FUN_0806b8cc(struct Enemy* p) { return TRUE; }
+
+INCASM("asm/enemy/omega1w_hand_d.inc");
 
 // 0x0806be0c
 static void Omega1wHand_OnCollision(struct Body* body UNUSED, Coords32* r1 UNUSED, Coords32* r2 UNUSED) {}
