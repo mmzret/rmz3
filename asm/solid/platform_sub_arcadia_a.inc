@@ -4,42 +4,6 @@
 	
 	.text
 
-	thumb_func_start FUN_080cf20c
-FUN_080cf20c: @ 0x080CF20C
-	push {r4, lr}
-	adds r4, r0, #0
-	ldrb r0, [r4, #0xe]
-	cmp r0, #0
-	beq _080CF21C
-	cmp r0, #1
-	beq _080CF23C
-	b _080CF242
-_080CF21C:
-	adds r0, r4, #0
-	adds r0, #0x74
-	ldr r1, _080CF248 @ =0x083705D4
-	bl SetDDP
-	ldr r1, _080CF24C @ =0x08370604
-	ldrb r0, [r4, #0x10]
-	lsls r0, r0, #1
-	adds r0, r0, r1
-	ldrh r1, [r0]
-	adds r0, r4, #0
-	bl SetMotion
-	ldrb r0, [r4, #0xe]
-	adds r0, #1
-	strb r0, [r4, #0xe]
-_080CF23C:
-	adds r0, r4, #0
-	bl UpdateEntityAnim
-_080CF242:
-	pop {r4}
-	pop {r0}
-	bx r0
-	.align 2, 0
-_080CF248: .4byte 0x083705D4
-_080CF24C: .4byte 0x08370604
-
 	thumb_func_start FUN_080cf250
 FUN_080cf250: @ 0x080CF250
 	push {r4, r5, lr}
@@ -276,3 +240,4 @@ _080CF414:
 _080CF41C: .4byte 0x0000FFFF
 _080CF420: .4byte 0x0837060C
 _080CF424: .4byte 0x08370614
+
