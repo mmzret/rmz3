@@ -30,29 +30,123 @@ struct Enemy* CreatePillerCannon(Coords32* c, u8 n) {
   return p;
 }
 
-INCASM("asm/enemy/piller_cannon.inc");
+INCASM("asm/enemy/piller_cannon_a.inc");
 
-void FUN_0806860c(struct Enemy* p);
-void FUN_08068614(struct Enemy* p);
-void FUN_080686b0(struct Enemy* p);
-void FUN_08068780(struct Enemy* p);
-void FUN_08068ad8(struct Enemy* p);
-void FUN_08068c84(struct Enemy* p);
-void FUN_08068e60(struct Enemy* p);
-void FUN_08068eb0(struct Enemy* p);
-void FUN_08068eb8(struct Enemy* p);
+extern const EnemyFunc sUpdates1[9];
+extern const EnemyFunc sUpdates2[9];
+void FUN_08068f08(struct Enemy* p);
+void PillerCannon_Die(struct Enemy* p);
+
+void PillerCannon_Update(struct Enemy* p) {
+  struct Entity** slot;
+  u8 m;
+  u8* t;
+  if ((p->body).status & BODY_STATUS_DEAD) {
+    SET_ENEMY_ROUTINE(p, ENTITY_DIE);
+    PillerCannon_Die(p);
+    return;
+  }
+  (sUpdates1[(p->s).mode[1]])(p);
+  FUN_08068f08(p);
+  m = (p->s).mode[1];
+  if (m == 6) goto check2;
+  if (m == 8) goto check2;
+  if (IsFrozen(&p->s)) {
+    p->buffer[6] = (p->s).mode[1];
+    return;
+  }
+check2:
+  slot = (struct Entity**)((u8*)p + 0xbc);
+  if (*slot != NULL) {
+    if (!isKilled(*slot)) {
+      SetDDP(&p->body, &sCollisions[12]);
+      return;
+    }
+    SetDDP(&p->body, &sCollisions[11]);
+    *slot = NULL;
+  }
+  t = (u8*)((u8*)p + 0xc0);
+  if (*t != 0) {
+    *t = *t - 1;
+    return;
+  }
+  (sUpdates2[(p->s).mode[1]])(p);
+}
+
+INCASM("asm/enemy/piller_cannon_b.inc");
+
+bool8 FUN_0806860c(struct Enemy* p) { return TRUE; }
+
+
+void FUN_08068610(struct Enemy* p) {}
+
+bool8 FUN_08068614(struct Enemy* p) { return TRUE; }
+
+INCASM("asm/enemy/piller_cannon_c.inc");
+
+bool8 FUN_080686b0(struct Enemy* p) { return TRUE; }
+
+INCASM("asm/enemy/piller_cannon_d.inc");
+
+bool8 FUN_08068780(struct Enemy* p) { return TRUE; }
+
+INCASM("asm/enemy/piller_cannon_e.inc");
+
+bool8 FUN_08068ad8(struct Enemy* p) { return TRUE; }
+
+INCASM("asm/enemy/piller_cannon_f.inc");
+
+bool8 FUN_08068c84(struct Enemy* p) { return TRUE; }
+
+INCASM("asm/enemy/piller_cannon_g.inc");
+
+bool8 FUN_08068e60(struct Enemy* p) { return TRUE; }
+
+void FUN_08068e64(struct Enemy* p) {
+  struct Entity** slot;
+  if ((p->s).mode[2] == 0) {
+    SetDDP(&p->body, &sCollisions[12]);
+    (p->s).mode[2]++;
+  }
+  slot = (struct Entity**)((u8*)p + 0xbc);
+  if (isKilled(*slot)) {
+    SetDDP(&p->body, &sCollisions[11]);
+    *slot = NULL;
+    (p->s).mode[1] = 1;
+    (p->s).mode[2] = 0;
+  }
+}
+
+bool8 FUN_08068eb0(struct Enemy* p) { return TRUE; }
+
+
+void FUN_08068eb4(struct Enemy* p) {}
+
+bool8 FUN_08068eb8(struct Enemy* p) { return TRUE; }
+
+INCASM("asm/enemy/piller_cannon_h.inc");
+
+bool8 FUN_0806860c(struct Enemy* p);
+bool8 FUN_08068614(struct Enemy* p);
+bool8 FUN_080686b0(struct Enemy* p);
+bool8 FUN_08068780(struct Enemy* p);
+bool8 FUN_08068ad8(struct Enemy* p);
+bool8 FUN_08068c84(struct Enemy* p);
+bool8 FUN_08068e60(struct Enemy* p);
+bool8 FUN_08068eb0(struct Enemy* p);
+bool8 FUN_08068eb8(struct Enemy* p);
 
 // clang-format off
 static const EnemyFunc sUpdates1[9] = {
-    FUN_0806860c,
-    FUN_08068614,
-    FUN_080686b0,
-    FUN_08068780,
-    FUN_08068ad8,
-    FUN_08068c84,
-    FUN_08068e60,
-    FUN_08068eb0,
-    FUN_08068eb8,
+    (EnemyFunc)FUN_0806860c,
+    (EnemyFunc)FUN_08068614,
+    (EnemyFunc)FUN_080686b0,
+    (EnemyFunc)FUN_08068780,
+    (EnemyFunc)FUN_08068ad8,
+    (EnemyFunc)FUN_08068c84,
+    (EnemyFunc)FUN_08068e60,
+    (EnemyFunc)FUN_08068eb0,
+    (EnemyFunc)FUN_08068eb8,
 };
 // clang-format on
 
