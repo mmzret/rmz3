@@ -1,8 +1,137 @@
 #include "collision.h"
 #include "enemy.h"
 #include "global.h"
+#include "element.h"
 
-INCASM("asm/enemy/pantheon_bomber.inc");
+struct Enemy* CreatePantheonBomber(struct Coord* c, u8 mode) {
+  struct Enemy* p = (struct Enemy*)AllocEntityLast(gEnemyHeaderPtr);
+  if (p != NULL) {
+    INIT_ENEMY_ROUTINE(p, ENEMY_P_BOMBER);
+    (p->s).coord = *c;
+    (p->s).work[0] = mode;
+  }
+  return p;
+}
+
+static const EnemyFunc sUpdates1[6];
+static const EnemyFunc sUpdates2[6];
+static const struct Collision sCollisions[5];
+static const Coords32 sElementCoord;
+
+INCASM("asm/enemy/pantheon_bomber_a.inc");
+
+extern const EnemyFunc sUpdates1[6];
+extern const EnemyFunc sUpdates2[6];
+bool8 pBomber_08086628(struct Enemy* p);
+void PantheonBomber_Die(struct Enemy* p);
+
+void PantheonBomber_Update(struct Enemy* p) {
+  u32 dead = (p->body).status & BODY_STATUS_DEAD;
+  struct Entity** slot;
+  if (dead) {
+    SET_ENEMY_ROUTINE(p, ENTITY_DIE);
+    PantheonBomber_Die(p);
+    return;
+  }
+  (sUpdates1[(p->s).mode[1]])(p);
+  pBomber_08086628(p);
+  slot = (struct Entity**)((u8*)p + 0xbc);
+  if (*slot == NULL) {
+    if (IsFrozen(&p->s)) {
+      return;
+    }
+    if (*slot == NULL) {
+      goto dispatch2;
+    }
+  }
+  if (isKilled(*slot)) {
+    SetDDP(&p->body, &sCollisions[1]);
+    *slot = (struct Entity*)dead;
+  } else {
+    SetDDP(&p->body, &sCollisions[2]);
+  }
+  return;
+
+dispatch2:
+  (sUpdates2[(p->s).mode[1]])(p);
+}
+
+INCASM("asm/enemy/pantheon_bomber_b.inc");
+
+bool8 nop_08086338(struct Enemy* p) { return TRUE; }
+
+void pantheon_bomber_0808633c(struct Enemy* p) {
+  switch ((p->s).mode[2]) {
+    case 0:
+      GotoMotion(&p->s, MOTION(0x69, 4), 2, 1);
+      SetDDP(&p->body, &sCollisions[0]);
+      p->buffer[5] = 0;
+      (p->s).work[2] = 0x30;
+      (p->s).mode[2]++;
+      FALLTHROUGH;
+    case 1:
+      UpdateSpriteAnimation(p);
+      if ((p->s).work[2] == 0 || --(p->s).work[2] == 0) {
+        (p->s).mode[1] = 2;
+        (p->s).mode[2] = 0;
+      }
+      break;
+  }
+}
+
+bool8 nop_080863a0(struct Enemy* p) { return TRUE; }
+
+INCASM("asm/enemy/pantheon_bomber_c.inc");
+
+bool8 nop_08086414(struct Enemy* p) { return TRUE; }
+
+INCASM("asm/enemy/pantheon_bomber_d.inc");
+
+bool8 nop_080865d0(struct Enemy* p) { return TRUE; }
+
+void FUN_080865d4(struct Enemy* p) {
+  if ((p->s).mode[2] == 0) {
+    SetDDP(&p->body, &sCollisions[2]);
+    (p->s).mode[2]++;
+  }
+}
+
+bool8 nop_080865f8(struct Enemy* p) { return TRUE; }
+
+
+void nop_080865fc(struct Enemy* p) {}
+
+bool8 nop_08086600(struct Enemy* p) { return TRUE; }
+
+
+void FUN_08086604(struct Enemy* p) {
+  if ((p->s).mode[2] == 0) {
+    SetDDP(&p->body, &sCollisions[2]);
+    (p->s).mode[2]++;
+  }
+}
+
+bool8 pBomber_08086628(struct Enemy* p) {
+  struct VFX** slot = (struct VFX**)((u8*)p + 0xbc);
+  if (*slot == NULL && ((p->body).status & 1)) {
+    *slot = ApplyElementEffect(0, &p->s, &sElementCoord);
+  }
+  return TRUE;
+}
+
+void FUN_0808665c(struct Body* body, struct Coord* c) {
+  const struct Collision* col = (body->enemy)->processing;
+  if (col->atkType == 3 || col->atkType == 0xe || col->atkType == 0xf) {
+    struct Enemy* self = (struct Enemy*)body->parent;
+    if ((self->body).status & 0x200) {
+      if ((self->s).coord.x < c->x) {
+        *(u8*)((u8*)self + 0xba) = 0xff;
+      } else {
+        *(u8*)((u8*)self + 0xba) = 0xfe;
+      }
+    }
+  }
+}
 
 void PantheonBomber_Init(struct Enemy* p);
 void PantheonBomber_Update(struct Enemy* p);
@@ -18,21 +147,21 @@ const EnemyRoutine gPantheonBomberRoutine = {
 };
 // clang-format on
 
-void nop_08086338(struct Enemy* p);
-void nop_080863a0(struct Enemy* p);
-void nop_08086414(struct Enemy* p);
-void nop_080865d0(struct Enemy* p);
-void nop_080865f8(struct Enemy* p);
-void nop_08086600(struct Enemy* p);
+bool8 nop_08086338(struct Enemy* p);
+bool8 nop_080863a0(struct Enemy* p);
+bool8 nop_08086414(struct Enemy* p);
+bool8 nop_080865d0(struct Enemy* p);
+bool8 nop_080865f8(struct Enemy* p);
+bool8 nop_08086600(struct Enemy* p);
 
 // clang-format off
 static const EnemyFunc sUpdates1[6] = {
-    nop_08086338,
-    nop_080863a0,
-    nop_08086414,
-    nop_080865d0,
-    nop_080865f8,
-    nop_08086600,
+    (EnemyFunc)nop_08086338,
+    (EnemyFunc)nop_080863a0,
+    (EnemyFunc)nop_08086414,
+    (EnemyFunc)nop_080865d0,
+    (EnemyFunc)nop_080865f8,
+    (EnemyFunc)nop_08086600,
 };
 // clang-format on
 
