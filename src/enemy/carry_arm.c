@@ -2,7 +2,46 @@
 #include "enemy.h"
 #include "global.h"
 
-INCASM("asm/enemy/carry_arm.inc");
+INCASM("asm/enemy/carry_arm_a.inc");
+
+void nop_08071568(struct Enemy* p) {}
+
+void CarryArm_Die(struct Enemy* p);
+
+static bool8 FUN_0807156c(struct Enemy* p) {
+  if ((p->body).status & BODY_STATUS_DEAD) {
+    SET_ENEMY_ROUTINE(p, ENTITY_DIE);
+    (p->s).mode[1] = (p->s).work[0];
+    CarryArm_Die(p);
+    return TRUE;
+  }
+  return FALSE;
+}
+
+INCASM("asm/enemy/carry_arm_b.inc");
+
+extern const EnemyFunc PTR_ARRAY_08366b48[6];
+extern const EnemyFunc PTR_ARRAY_08366b60[6];
+extern const EnemyFunc PTR_ARRAY_08366b78[2];
+
+void CarryArm_Update(struct Enemy* p) {
+  if (!FUN_0807156c(p)) {
+    (PTR_ARRAY_08366b48[(p->s).mode[1]])(p);
+    (PTR_ARRAY_08366b60[(p->s).mode[1]])(p);
+  }
+}
+
+void CarryArm_Die(struct Enemy* p) {
+  (PTR_ARRAY_08366b78[(p->s).mode[1]])(p);
+}
+
+void FUN_080716a8(struct Enemy* p) {}
+
+INCASM("asm/enemy/carry_arm_c.inc");
+
+void FUN_08071c70(struct Enemy* p) {
+  SET_ENEMY_ROUTINE(p, ENTITY_EXIT);
+}
 
 void CarryArm_Init(struct Enemy* p);
 void CarryArm_Update(struct Enemy* p);
