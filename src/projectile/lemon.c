@@ -58,51 +58,51 @@ static void Lemon_Init(ProjectileLemon* p) {
   Lemon_Update(p);
 }
 
-static void Lemon_Update(struct Projectile* p) {
+static void Lemon_Update(ProjectileLemon* p) {
   metatile_attr_t r;
-  UpdateSpriteAnimation(&p->s);
+  UpdateSpriteAnimation(p);
   if ((p->body).status & BODY_STATUS_BLOCKED) {
-    if ((p->s).mode[1] == 0) {
+    if (p->mode[1] == 0) {
       INIT_BODY(p, &sCollisions[2], 0, NULL);
-      (p->s).d.x = -((p->s).d.x * 3) / 2;
-      (p->s).d.y = -((p->s).d.y * 3) / 2;
-      (p->s).mode[1] = 1;
-    } else if ((p->s).d.y < 0) {
-      PlaySound(0x2b);
-      (p->s).d.x = -(p->s).d.x;
+      (p->d).x = -((p->d).x * 3) / 2;
+      (p->d).y = -((p->d).y * 3) / 2;
+      p->mode[1] = 1;
+    } else if ((p->d).y < 0) {
+      PlaySound(SE_BLOCKED);
+      (p->d).x = -(p->d).x;
     } else {
-      PlaySound(0x2b);
-      (p->s).d.y = -(p->s).d.y;
+      PlaySound(SE_BLOCKED);
+      (p->d).y = -(p->d).y;
     }
   }
-  if ((p->body).status & 0x400100) {
+  if ((p->body).status & (BODY_STATUS_B22 | BODY_STATUS_B8)) {
     EXIT_BODY(p);
-    CreateSmoke(3, &(p->s).coord);
+    CreateSmoke(3, &p->coord);
     SET_PROJECTILE_ROUTINE(p, ENTITY_DIE);
   } else if ((p->body).status & BODY_STATUS_B2) {
     EXIT_BODY(p);
-    CreateSmoke(2, &(p->s).coord);
+    CreateSmoke(2, &p->coord);
     SET_PROJECTILE_ROUTINE(p, ENTITY_DIE);
-  } else if (--(p->s).work[2] == 0) {
-    CreateSmoke(3, &(p->s).coord);
+  } else if (--p->work[2] == 0) {
+    CreateSmoke(3, &p->coord);
     SET_PROJECTILE_ROUTINE(p, ENTITY_DIE);
-  } else if ((p->s).work[0] != 0 && (r = FUN_080098a4((p->s).coord.x, (p->s).coord.y)) != 0 && !(r & 0x8000)) {
-    CreateSmoke(3, &(p->s).coord);
+  } else if (p->work[0] != 0 && (r = FUN_080098a4((p->coord).x, (p->coord).y)) != 0 && !(r & MTATTR_SOFT_PLATFORM)) {
+    CreateSmoke(3, &p->coord);
     SET_PROJECTILE_ROUTINE(p, ENTITY_DIE);
   } else {
-    if ((p->s).mode[1] == 0) {
-      if ((p->s).mode[2] == 0) {
+    if (p->mode[1] == 0) {
+      if (p->mode[2] == 0) {
         if (gIsLemonCollisionRemoved) {
           SetDDP(&p->body, &sCollisions[4]);
-          (p->s).mode[2] = 1;
+          p->mode[2] = 1;
         }
       } else if (!gIsLemonCollisionRemoved) {
         SetDDP(&p->body, &sCollisions[0]);
-        (p->s).mode[2] = 0;
+        p->mode[2] = 0;
       }
     }
-    (p->s).coord.x += (p->s).d.x;
-    (p->s).coord.y += (p->s).d.y;
+    (p->coord).x += (p->d).x;
+    (p->coord).y += (p->d).y;
   }
 }
 
