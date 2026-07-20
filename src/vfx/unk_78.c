@@ -115,11 +115,9 @@ static void FUN_080c89c8(struct VFX* p) {
   EnableSpriteAnimation_Normal(p);
   (p->s).flags |= DISPLAY;
   (p->s).flags |= FLIPABLE;
-  SetSpriteAnimation(p, MOTION(SM233_UNK, 0xB));
-  RNG_0202f388 = LCG(RNG_0202f388);
-  SET_XFLIP(p, (RNG_0202f388 >> 16) & 1);
-  RNG_0202f388 = LCG(RNG_0202f388);
-  SET_YFLIP(p, (RNG_0202f388 >> 16) & 1);
+  SetSpriteAnimation(p, MOTION(SM233_UNK, 11));
+  SET_XFLIP(p, RANDOM(RNG_0202f388) & 1);
+  SET_YFLIP(p, RANDOM(RNG_0202f388) & 1);
   ForceEntityPalette(&p->s, p->buffer[9] + 5);
   (p->s).work[2] = 0x20;
   (p->s).d.x = 0;

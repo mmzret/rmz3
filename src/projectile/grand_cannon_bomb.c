@@ -75,16 +75,16 @@ static void GrandCannonBomb_Die(struct Projectile* p) {
 static void _parabolaGrandcannonBomb(struct Projectile* p) {
   switch ((p->s).mode[2]) {
     case 0:
-      SetSpriteAnimation(&p->s, MOTION(7, 8));
+      SetSpriteAnimation(p, MOTION(SM007_GRAND_CANNON, 8));
       (p->s).mode[2]++;
       // fallthrough
     case 1:
       UpdateSpriteAnimation(p);
       (p->s).coord.x += (p->s).d.x;
       (p->s).coord.y += (p->s).d.y;
-      (p->s).d.y += 0x40;
-      if ((p->s).d.y > 0x700) {
-        (p->s).d.y = 0x700;
+      (p->s).d.y += PIXEL(1) / 4;
+      if ((p->s).d.y > PIXEL(7)) {
+        (p->s).d.y = PIXEL(7);
       }
       if (FUN_080098a4((p->s).coord.x, (p->s).coord.y) || ((p->body).status & 4)) {
         SET_PROJECTILE_ROUTINE(p, ENTITY_DIE);

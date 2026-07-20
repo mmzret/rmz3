@@ -45,7 +45,7 @@ struct Projectile* CreateLemon(Coords32* c, s32 amplitude, u8 r2) {
   return (void*)p;
 }
 
-NAKED static struct Projectile* unused_0809ca34(Coords32* c, s32 r1, u8 r2) { INCCODE("asm/unused/unused_0809ca34.inc"); }
+NAKED static struct Entity* unused_0809ca34(Coords32* c, s32 r1, u8 r2) { INCCODE("asm/unused/unused_0809ca34.inc"); }
 
 static void Lemon_Init(ProjectileLemon* p) {
   EnableSpriteAnimation_Normal(p);

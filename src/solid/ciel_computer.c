@@ -1,7 +1,7 @@
-#include "collision.h"
-#include "gfx.h"
 #include "anim_loader.h"
+#include "collision.h"
 #include "game.h"
+#include "gfx.h"
 #include "global.h"
 #include "palette_animation.h"
 #include "solid.h"
@@ -79,29 +79,29 @@ static void CielComputer_Update(struct Solid* p) {
         return;
       }
       if (gSystemSavedata.cielComputer <= 3) {
-        SetSpriteAnimation(&p->s, sMotions[gSystemSavedata.cielComputer] | 1);
+        SetSpriteAnimation(p, sMotions[gSystemSavedata.cielComputer] | 1);
         if (gSystemSavedata.cielComputer == 3) {
-          StartPaletteAnimation(0xF1, ((u8)GetEntityPalID(&p->s) << 5) | 0x200);
+          StartPaletteAnimation(241, ((u8)GetEntityPalID(&p->s) << 5) | 0x200);
         }
       }
       if (gSystemSavedata.cielComputer == 4) {
-        StartPaletteAnimation(0xF2, ((u8)GetEntityPalID(&p->s) << 5) | 0x200);
+        StartPaletteAnimation(242, ((u8)GetEntityPalID(&p->s) << 5) | 0x200);
       }
       PlaySound(0x12A);
       SetGameMode(&gGameState, 0x00060400);
       (p->s).mode[1]++;
       break;
     case 1:
-      StepPaletteAnimation(0xF1);
-      StepPaletteAnimation(0xF2);
+      StepPaletteAnimation(241);
+      StepPaletteAnimation(242);
       if (gGameState.mode[2] == 0) {
-        RemovePaletteAnimation(0xF1);
-        RemovePaletteAnimation(0xF2);
+        RemovePaletteAnimation(241);
+        RemovePaletteAnimation(242);
         if (gSystemSavedata.cielComputer > 2) {
           motion_id_t id = sMotions[gSystemSavedata.cielComputer] >> 8;
           REQUEST_STATIC_GRAPHIC(id);
         }
-        SetSpriteAnimation(&p->s, sMotions[gSystemSavedata.cielComputer]);
+        SetSpriteAnimation(p, sMotions[gSystemSavedata.cielComputer]);
         gInChat = 0;
         (p->s).mode[1] = 0;
       }

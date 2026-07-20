@@ -10,9 +10,9 @@ typedef struct {
 } Projectile14;
 static_assert(sizeof(Projectile14) == sizeof(struct Projectile));
 
-void Projectile14_Init(struct Projectile* p);
-void Projectile14_Update(struct Projectile* p);
-void Projectile14_Die(struct Projectile* p);
+void Projectile14_Init(Projectile14* p);
+void Projectile14_Update(Projectile14* p);
+void Projectile14_Die(Projectile14* p);
 
 // clang-format off
 const ProjectileRoutine gProjectile14Routine = {
@@ -83,7 +83,7 @@ static void onCollision(struct Body* body UNUSED, Coords32* r1 UNUSED, Coords32*
 
 INCASM("asm/projectile/unk_14.inc");
 
-void nop_080a0b6c(struct Projectile* p);
+void nop_080a0b6c(Projectile14* p);
 
 // clang-format off
 // 0x0836b0f4
@@ -96,11 +96,11 @@ static const ProjectileFunc sUpdates1[5] = {
 };
 // clang-format on
 
-void FUN_080a0b70(struct Projectile* p);
-void FUN_080a0dc0(struct Projectile* p);
-void FUN_080a0fa8(struct Projectile* p);
-void FUN_080a1280(struct Projectile* p);
-void FUN_080a133c(struct Projectile* p);
+void FUN_080a0b70(Projectile14* p);
+void FUN_080a0dc0(Projectile14* p);
+void FUN_080a0fa8(Projectile14* p);
+void FUN_080a1280(Projectile14* p);
+void FUN_080a133c(Projectile14* p);
 
 // clang-format off
 // 0x0836b108

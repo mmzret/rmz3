@@ -1,8 +1,8 @@
-#include "collision.h"
 #include "camera.h"
+#include "collision.h"
 #include "global.h"
-#include "stagerun.h"
 #include "projectile.h"
+#include "stagerun.h"
 
 static const u8 sInitModes[4];
 static const struct Collision sCollisions[4];
@@ -24,7 +24,7 @@ const ProjectileRoutine gEarShotRoutine = {
 // --------------------------------------------
 
 void createEarShot(s32 x, s32 y, u8 n, bool8 is_big) {
-  struct Projectile* p = (struct Projectile*)AllocEntityFirst(gProjectileHeaderPtr);
+  struct Projectile* p = AllocEntityFirst(gProjectileHeaderPtr);
   if (p != NULL) {
     INIT_PROJECTILE_ROUTINE(p, 11);
     (p->s).work[0] = !!is_big;
@@ -80,9 +80,9 @@ static void FUN_0809f3d4(struct Projectile* p) {
   switch ((p->s).mode[2]) {
     case 0:
       if ((p->s).work[0] == 0) {
-        SetSpriteAnimation(&p->s, MOTION(0x25, 0));
+        SetSpriteAnimation(p, MOTION(SM037_EAR_SHOT, 0));
       } else {
-        SetSpriteAnimation(&p->s, MOTION(0x25, 1));
+        SetSpriteAnimation(p, MOTION(SM037_EAR_SHOT, 1));
       }
       (p->s).d.x = ((p->s).work[2] << 11) - 0x400;
       SET_XFLIP(p, (p->s).work[2]);

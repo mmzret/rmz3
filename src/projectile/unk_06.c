@@ -25,7 +25,7 @@ const ProjectileRoutine gProjectile6Routine = {
 // clang-format on
 
 struct Projectile* CreateProjectile6(struct Entity* e, Coords32* c, u8 r2, u8 r3) {
-  struct Projectile* p = (struct Projectile*)AllocEntityLast(gProjectileHeaderPtr);
+  struct Projectile* p = AllocEntityLast(gProjectileHeaderPtr);
   if (p != NULL) {
     INIT_PROJECTILE_ROUTINE(p, 6);
     (p->s).work[0] = r2, (p->s).work[1] = r3;

@@ -95,8 +95,7 @@ static void FUN_080b6fc8(struct VFX* p) {
   switch ((p->s).mode[2]) {
     case 0: {
       const motion_t* m = motion_t_ARRAY_0836e8aa;
-      RNG_0202f388 = LCG(RNG_0202f388);
-      SetSpriteAnimation(&p->s, m[(RNG_0202f388 >> 16) % 3]);
+      SetSpriteAnimation(p, m[RANDOM(RNG_0202f388) % 3]);
       (p->s).mode[2]++;
     }
     case 1:
@@ -106,7 +105,7 @@ static void FUN_080b6fc8(struct VFX* p) {
       if ((p->s).d.y > 0 && FUN_080098a4((p->s).coord.x, (p->s).coord.y)) {
         SET_VFX_ROUTINE(p, ENTITY_DIE);
       }
-      UpdateSpriteAnimation(&p->s);
+      UpdateSpriteAnimation(p);
   }
 }
 

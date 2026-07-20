@@ -127,11 +127,11 @@ static void FUN_080af114(struct Projectile* p) {
   } else if (*((u16*)&((p->s).unk_28)->mode[2]) == 0x101) {
     SET_PROJECTILE_ROUTINE(p, ENTITY_UPDATE);
     (p->s).mode[1] = 0;
-    InitNonAffineMotion(&p->s);
-    (p->s).renderPrio = 0x19;
+    EnableSpriteAnimation_Normal(p);
+    (p->s).renderPrio = 25;
     (p->s).flags |= DISPLAY;
     (p->s).flags |= FLIPABLE;
-    SetSpriteAnimation(&p->s, MOTION(0x86, 3));
+    SetSpriteAnimation(p, MOTION(SM134_NINJA_STAR, 3));
     PhantomProjectile_Update(p);
   }
 }

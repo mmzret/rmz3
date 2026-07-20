@@ -188,16 +188,16 @@ static void nop_080ae5b4(void* _) {}
 
 // 01 00 xx --
 extern const motion_t gOmegaZeroSaberMotions[16];
-extern const struct Collision *const *const PTR_ARRAY_0836d28c[16];
+extern const struct Collision* const* const PTR_ARRAY_0836d28c[16];
 
 static void OmegaZeroSaber_Update(struct Projectile* p) {
   struct Entity* parent = (p->s).unk_28;
   switch ((p->s).mode[2]) {
     case 0:
-      ResetDynamicMotion(&p->s);
-      (p->s).tileNum = 0x200;
+      SetSpriteTableDynamic(p);
+      (p->s).tileNum = 512;
       (p->s).palID = 5;
-      SetSpriteAnimation(&p->s, gOmegaZeroSaberMotions[(p->s).work[1]]);
+      SetSpriteAnimation(p, gOmegaZeroSaberMotions[(p->s).work[1]]);
       SET_XFLIP(p, (parent->flags >> 4) & 1);
       (p->s).mode[2]++;
       // fallthrough
@@ -205,7 +205,7 @@ static void OmegaZeroSaber_Update(struct Projectile* p) {
       (p->s).coord.x = parent->coord.x;
       (p->s).coord.y = parent->coord.y;
       if ((p->s).work[1] > 9) {
-        FUN_0801779c(&p->s);
+        _FUN_0801779c(p);
         UpdateSpriteAnimation(p);
       } else {
         UpdateSpriteAnimation(p);

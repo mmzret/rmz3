@@ -1,9 +1,9 @@
 #include "collision.h"
 #include "global.h"
-#include "vfx.h"
 #include "physics.h"
 #include "projectile.h"
 #include "story.h"
+#include "vfx.h"
 
 static const struct Collision sCollisions[2];
 
@@ -96,10 +96,9 @@ static void FUN_080aeefc(struct Projectile* p) {
   } else {
     switch ((p->s).mode[2]) {
       case 0:
-        SetSpriteAnimation(&p->s, MOTION(0x75, 0xa));
+        SetSpriteAnimation(p, MOTION(SM117_CLAVEKER, 10));
         (p->s).d.y = 0;
-        RNG_0202f388 = LCG(RNG_0202f388);
-        (p->s).d.x = ((RNG_0202f388 >> 16) % 0x1e0) - 0xf0;
+        (p->s).d.x = (RANDOM(RNG_0202f388) % 0x1e0) - 0xf0;
         (p->s).work[2] = 0x78;
         (p->s).mode[2]++;
         // fallthrough
@@ -134,9 +133,9 @@ static void FUN_080aeefc(struct Projectile* p) {
         UpdateSpriteAnimation(p);
         break;
       case 2:
-        (p->s).d.y += 0x40;
-        if ((p->s).d.y > 0x700) {
-          (p->s).d.y = 0x700;
+        (p->s).d.y += PIXEL(1) / 4;
+        if ((p->s).d.y > PIXEL(7)) {
+          (p->s).d.y = PIXEL(7);
         }
         (p->s).coord.x += (p->s).d.x;
         (p->s).coord.y += (p->s).d.y;

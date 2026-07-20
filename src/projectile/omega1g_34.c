@@ -13,9 +13,9 @@ typedef struct {
 } Projectile34;
 static_assert(sizeof(Projectile34) == sizeof(struct Projectile));
 
-void Projectile34_Init(struct Projectile* p);
-void Projectile34_Update(struct Projectile* p);
-void Projectile34_Die(struct Projectile* p);
+void Projectile34_Init(Projectile34* p);
+void Projectile34_Update(Projectile34* p);
+void Projectile34_Die(Projectile34* p);
 
 // clang-format off
 const ProjectileRoutine gProjectile34Routine = {
@@ -43,12 +43,12 @@ INCASM("asm/projectile/unk_34.inc");
 
 // --------------------------------------------
 
-void FUN_080acb54(struct Projectile* p);
-void FUN_080acbe0(struct Projectile* p);
-void FUN_080accf0(struct Projectile* p);
-void FUN_080acea0(struct Projectile* p);
+void FUN_080acb54(Projectile34* p);
+void FUN_080acbe0(Projectile34* p);
+void FUN_080accf0(Projectile34* p);
+void FUN_080acea0(Projectile34* p);
 
-static const ProjectileFunc sUpdates[4] = {
+static void (*const sUpdates[4])(Projectile34*) = {
     FUN_080acb54,
     FUN_080acbe0,
     FUN_080accf0,

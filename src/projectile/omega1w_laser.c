@@ -14,8 +14,8 @@ static_assert(sizeof(Projectile4) == sizeof(struct Projectile));
 
 static const struct Collision sCollisions[2];
 
-static void OmegaWhiteProjectile_Init(struct Projectile* p);
-static void OmegaWhiteProjectile_Update(struct Entity* p);
+static void OmegaWhiteProjectile_Init(Projectile4* p);
+static void OmegaWhiteProjectile_Update(Projectile4* p);
 static void OmegaWhiteProjectile_Die(Projectile4* p);
 
 // clang-format off
@@ -55,7 +55,7 @@ struct Projectile* CreateOmegaWhiteHoop(s32 x, s32 y, u8 n) {
   return (struct Projectile*)p;
 }
 
-NAKED static void OmegaWhiteProjectile_Init(struct Projectile* p) {
+NAKED static void OmegaWhiteProjectile_Init(Projectile4* p) {
   asm(".syntax unified\n\
 	push {r4, r5, r6, lr}\n\
 	adds r5, r0, #0\n\
@@ -146,15 +146,15 @@ _0809D5A8: .4byte gProjectileFnTable\n\
  .syntax divided\n");
 }
 
-void doOmega1BallLaser1(struct Projectile* p);
-void doOmega1BallLaser2(struct Projectile* p);
-void doOmega1Hoopshot(struct Projectile* p);
+void doOmega1BallLaser1(Projectile4* p);
+void doOmega1BallLaser2(Projectile4* p);
+void doOmega1Hoopshot(Projectile4* p);
 
-static void OmegaWhiteProjectile_Update(struct Entity* p) {
-  static const EntityFunc sUpdates[3] = {
-      (void*)doOmega1BallLaser1,
-      (void*)doOmega1BallLaser2,
-      (void*)doOmega1Hoopshot,
+static void OmegaWhiteProjectile_Update(Projectile4* p) {
+  static void (*const sUpdates[3])(Projectile4*) = {
+      doOmega1BallLaser1,
+      doOmega1BallLaser2,
+      doOmega1Hoopshot,
   };
   (sUpdates[p->mode[1]])(p);
 }

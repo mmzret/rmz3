@@ -17,16 +17,16 @@ static void Solid6_Die(struct Solid* p);
 
 // clang-format off
 const SolidRoutine gLavaGeyserPlatformRoutine = {
-    [ENTITY_INIT] =      Solid6_Init,
-    [ENTITY_UPDATE] =    Solid6_Update,
-    [ENTITY_DIE] =       Solid6_Die,
+    [ENTITY_INIT] =      (void*)Solid6_Init,
+    [ENTITY_UPDATE] =    (void*)Solid6_Update,
+    [ENTITY_DIE] =       (void*)Solid6_Die,
     [ENTITY_DISAPPEAR] = (void*)DeleteSolid,
-    [ENTITY_EXIT] =      (SolidFunc)DeleteEntity,
+    [ENTITY_EXIT] =      (void*)DeleteEntity,
 };
 // clang-format on
 
 void CreateLavaGeyserPlatform(struct Solid* s) {
-  struct Solid* p = (struct Solid*)AllocEntityFirst(gSolidHeaderPtr);
+  struct Solid* p = AllocEntityFirst(gSolidHeaderPtr);
   if (p != NULL) {
     INIT_SOLID_ROUTINE(p, SOLID_LAVA_GEYSER_PLATFORM);
     (p->s).work[0] = 0;
@@ -82,26 +82,26 @@ static void FUN_080cc6a0(struct Solid* p) {
   struct Entity* anchor = (p->s).unk_28;
   switch ((p->s).mode[2]) {
     case 0:
-      SetSpriteAnimation(&p->s, MOTION(SM058_VOLCANO_RISING_PLATFORM, 1));
+      SetSpriteAnimation(p, MOTION(SM058_VOLCANO_RISING_PLATFORM, 1));
       (p->s).mode[2]++;
     case 1:
       if (FUN_080cc814(anchor)) {
         (p->s).mode[2]++;
       }
-      UpdateSpriteAnimation(&p->s);
+      UpdateSpriteAnimation(p);
       break;
     case 2:
-      SetSpriteAnimation(&p->s, MOTION(SM058_VOLCANO_RISING_PLATFORM, 0));
+      SetSpriteAnimation(p, MOTION(SM058_VOLCANO_RISING_PLATFORM, 0));
       (p->s).mode[2]++;
     case 3:
       if (!FUN_080cc814(anchor)) {
         (p->s).mode[2] = 0;
       }
-      UpdateSpriteAnimation(&p->s);
+      UpdateSpriteAnimation(p);
       break;
   }
   (p->s).coord.x = anchor->coord.x;
-  (p->s).coord.y = anchor->coord.y - 0xF00;
+  (p->s).coord.y = anchor->coord.y - PIXEL(15);
 }
 
 // --------------------------------------------
