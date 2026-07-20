@@ -97,7 +97,7 @@ static void buster_0(struct Zero* z) {
   s32 y = -PIXEL(22);
   bool8 xflip = ((z->s).flags >> 4);
   u8 ok = TRUE;
-  struct Weapon* w = CreateBuster(z, x, y, xflip & ok);
+  Weapon* w = CreateBuster(z, x, y, xflip & ok);
   if (w == NULL) {
     (z->unk_b4).attackState8[0] = 0;
   } else {

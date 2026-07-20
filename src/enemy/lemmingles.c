@@ -3,7 +3,7 @@
 #include "global.h"
 
 struct EnemyLemmingles {
-  OBJECT_HDR;
+  COLLISION_OBJECT_HDR;
   // props (16bytes, offset: 0xB4..)
   u8 unk_b4[4];
   s32 unk_b8_x;
@@ -28,15 +28,15 @@ const EnemyRoutine gLemminglesRoutine = {
 // --------------------------------------------
 
 void FUN_0806e590(struct Entity* e, u8 kind1, u8 kind2, u8 kind3) {
-  struct EnemyLemmingles* p = (struct EnemyLemmingles*)AllocEntityLast(gEnemyHeaderPtr);
+  struct EnemyLemmingles* p = AllocEntityLast(gEnemyHeaderPtr);
   if (p != NULL) {
     INIT_ENEMY_ROUTINE(p, ENEMY_LEMMINGLES);
-    (p->s).coord.x = e->coord.x;
-    (p->s).coord.y = e->coord.y;
-    (p->s).unk_28 = (void*)e;
-    (p->s).work[0] = kind1;
-    (p->s).work[1] = kind3;
-    (p->s).work[2] = kind2;
+    p->coord.x = e->coord.x;
+    p->coord.y = e->coord.y;
+    p->unk_28 = (void*)e;
+    p->work[0] = kind1;
+    p->work[1] = kind3;
+    p->work[2] = kind2;
     p->unk_b8_x = e->coord.x;
   }
 }

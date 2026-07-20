@@ -4,18 +4,17 @@
 #include "entity.h"
 #include "global.h"
 
-struct OmegaWhiteHandObject {
-  OBJECT_HDR;
-  // props (16bytes, offset: 0xB4..)
-  Coords32 unk_b4;  // オメガ本体からの距離?
-  u8 unk_bc[8];
-};
-static_assert(sizeof(struct OmegaWhiteHandObject) == sizeof(struct Enemy));
+typedef struct {
+  COLLISION_OBJECT_HDR;
+  Coords32 unk_b4;  // 0xB4, オメガ本体からの距離?
+  u8 unk_bc[8];     // 0xBC
+} Omega1wHand;
+static_assert(sizeof(Omega1wHand) == sizeof(struct Enemy));
 
 static const struct Collision sCollisions[];
 
-static void OmegaWhiteHand_Init(struct OmegaWhiteHandObject* p);
-static void OmegaWhiteHand_Update(Object* p);
+static void OmegaWhiteHand_Init(Omega1wHand* p);
+static void OmegaWhiteHand_Update(Omega1wHand* p);
 static void OmegaWhiteHand_Die(struct Entity* p);
 
 // clang-format off
@@ -43,30 +42,30 @@ struct Entity* CreateOmega1wHand(Coords32* c, bool8 isLeftHand, struct Entity* o
 
 static void Omega1wHand_OnCollision(struct Body* body, Coords32* r1 UNUSED, Coords32* r2 UNUSED);
 
-static void OmegaWhiteHand_Init(struct OmegaWhiteHandObject* p) {
+static void OmegaWhiteHand_Init(Omega1wHand* p) {
   EnableSpriteAnimation_Affine(p);
-  (p->s).angle = 0;
+  p->angle = 0;
   SET_XFLIP(p, FALSE);
-  (p->s).flags &= ~DISPLAY;
-  (p->s).flags |= FLIPABLE;
+  p->flags &= ~DISPLAY;
+  p->flags |= FLIPABLE;
   INIT_BODY(p, sCollisions, 1, Omega1wHand_OnCollision);
-  (&(p->s).d)->x = (&(p->s).d)->y = 0;
+  (&p->d)->x = (&p->d)->y = 0;
   SET_ENEMY_ROUTINE(p, ENTITY_UPDATE);
-  (p->s).mode[1] = 0, (p->s).mode[2] = 0, (p->s).mode[3] = 1;
-  if ((p->s).work[0] == 0) {  // 右手
-    (p->s).spr.oam.priority = 3;
+  p->mode[1] = 0, p->mode[2] = 0, p->mode[3] = 1;
+  if (p->work[0] == 0) {  // 右手
+    p->spr.oam.priority = 3;
     (p->unk_b4).x = -PIXEL(19);
     (p->unk_b4).y = -PIXEL(58);
-  } else {                   // 左手
-    (p->s).renderPrio = 23;  // 重なったら、右手の方が見えるようにする
+  } else {               // 左手
+    p->renderPrio = 23;  // 重なったら、右手の方が見えるようにする
     (p->unk_b4).x = PIXEL(21);
     (p->unk_b4).y = -PIXEL(56);
     SET_YFLIP(p, FALSE);  // 左手は上下反転させない
   }
-  (p->s).flags2 |= WHITE_PAINTABLE;
-  (p->s).invincibleID = ((p->s).unk_28)->uniqueID;  // オメガが白くなったら、手も白くするで
+  p->flags2 |= WHITE_PAINTABLE;
+  p->invincibleID = (p->unk_28)->uniqueID;  // オメガが白くなったら、手も白くするで
 
-  OmegaWhiteHand_Update((void*)p);
+  OmegaWhiteHand_Update(p);
 }
 
 // --------------------------------------------
@@ -92,7 +91,7 @@ void FUN_0806b0dc(struct Enemy* p);
 void FUN_0806b4cc(struct Enemy* p);
 void FUN_0806bb8c(struct Enemy* p);
 
-static void OmegaWhiteHand_Update(Object* p) {
+static void OmegaWhiteHand_Update(Omega1wHand* p) {
   // clang-format off
   static const EnemyFunc sUpdates[6] = {
       (EnemyFunc)FUN_0806aa9c,
@@ -126,25 +125,25 @@ static void OmegaWhiteHand_Update(Object* p) {
   }; // 0x08366410
   // clang-format on
 
-  struct Omega1* omega = (struct Omega1*)(p->s).unk_28;
-  if ((omega->s).mode[0] >= ENTITY_DISAPPEAR) {
+  Omega1* omega = (Omega1*)p->unk_28;
+  if (omega->mode[0] >= ENTITY_DISAPPEAR) {
     // 本体が消えるときは、手も消える
-    (p->s).flags &= ~DISPLAY;
-    (p->s).flags &= ~FLIPABLE;
+    p->flags &= ~DISPLAY;
+    p->flags &= ~FLIPABLE;
     EXIT_BODY(p);
     SET_ENEMY_ROUTINE(p, ENTITY_DISAPPEAR);
     return;
   }
 
-  if ((omega->unk_d4 & 2) && ((p->s).mode[1] != 5)) {
-    (p->s).mode[1] = 5, (p->s).mode[2] = 0;
+  if ((omega->unk_d4 & 2) && (p->mode[1] != 5)) {
+    p->mode[1] = 5, p->mode[2] = 0;
   }
-  (sUpdates[(p->s).mode[1]])((void*)p);
+  (sUpdates[p->mode[1]])((void*)p);
 
-  if ((p->s).work[0] == 0) {  // 右手
-    (sUpdateRights[(p->s).mode[1]])((void*)p);
+  if (p->work[0] == 0) {  // 右手
+    (sUpdateRights[p->mode[1]])((void*)p);
   } else {  // 左手
-    (sUpdateLefts[(p->s).mode[1]])((void*)p);
+    (sUpdateLefts[p->mode[1]])((void*)p);
   }
 }
 

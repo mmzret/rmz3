@@ -1,29 +1,34 @@
 #include "boss.h"
 #include "collision.h"
+#include "element.h"
 #include "global.h"
 #include "stagerun.h"
+#include "vfx/bubble.h"
+#include "vfx/necro.h"
+#include "zero.h"
 
-struct Childre {
-  OBJECT_HDR;
-  // props (48bytes, offset: 0xB4..)
-  struct Entity* unk_b4;
-  u32 unk_b8;
-  Coords32 unk_bc;
-  u8 unk_c4;
-  u8 unk_c5;
-  bool8 shouldTurnRight;
-  u8 unk_c7;
-  Coords32 unk_c8;
-  u8 unk_d0[20];
-};
-static_assert(sizeof(struct Childre) == sizeof(struct Boss));
+typedef struct {
+  COLLISION_OBJECT_HDR;   // 0x00
+  struct Entity* elfx;    // 0xB4, Element FX
+  u32 unk_b8;             // 0xB8
+  Coords32 unk_bc;        // 0xBC
+  u8 unk_c4;              // 0xC4
+  u8 unk_c5;              // 0xC5
+  bool8 shouldTurnRight;  // 0xC6
+  u8 unk_c7;              // 0xC7
+  Coords32 unk_c8;        // 0xC8
+  u8 unk_d0[20];          // 0xD0
+} Childre;
+static_assert(sizeof(Childre) == sizeof(Boss));
 
 static const u8 sInitModes[4];
 static const struct Collision sCollisions[];
+static const Coords32 sChildre_ElfxOffsets;
+static const motion_t s16_0836206c;
 
-static void Childre_Init(struct Childre* p);
-static void Childre_Update(struct Childre* p);
-static void Childre_Die(struct Boss* p);
+static void Childre_Init(Childre* p);
+static void Childre_Update(Childre* p);
+static void Childre_Die(Childre* p);
 
 // clang-format off
 const BossRoutine gChildreRoutine = {
@@ -35,7 +40,7 @@ const BossRoutine gChildreRoutine = {
 };
 // clang-format on
 
-NAKED void childre_08040428(struct Boss* p) {
+NAKED void childre_08040428(Childre* p) {
   asm(".syntax unified\n\
 	push {r4, r5, r6, r7, lr}\n\
 	mov ip, r0\n\
@@ -137,25 +142,25 @@ _080404D8:\n\
  .syntax divided\n");
 }
 
-static void onCollision(struct Body* body, Coords32* c1, Coords32* c2) {
-  struct Zero* z = (struct Zero*)body->enemy->parent;
-  struct Childre* p = (struct Childre*)body->parent;
+void Childre_OnCollision(struct Body* body, Coords32* c1, Coords32* c2) {
+  Object* q = (Object*)body->enemy->parent;
+  Childre* p = (Childre*)body->parent;
 
   if (body->hitboxFlags & BODY_STATUS_WHITE) {
-    (p->unk_c8).x = (z->s).coord.x;
-    (p->unk_c8).y = (z->s).coord.y;
-    p->shouldTurnRight = (p->s).coord.x < (z->s).coord.x;
+    (p->unk_c8).x = (q->coord).x;
+    (p->unk_c8).y = (q->coord).y;
+    p->shouldTurnRight = (p->coord).x < (q->coord).x;
   }
 }
 
-static bool8 tryKillChildre(struct Boss* p) {
+static bool8 tryKillChildre(Childre* p) {
   if ((((p->body).status & BODY_STATUS_DEAD) || ((p->body).hp == 0)) && !(gStageRun.missionStatus & MISSION_PLAYER_DEAD)) {
     PlaySound(SE_CHILDRE_DEATH);
     SET_BOSS_ROUTINE(p, ENTITY_DIE);
     if ((p->body).status & BODY_STATUS_SLASHED) {
-      (p->s).mode[1] = 1;
+      p->mode[1] = 1;
     } else {
-      (p->s).mode[1] = 0;
+      p->mode[1] = 0;
     }
     Childre_Die(p);
     return TRUE;
@@ -166,7 +171,7 @@ static bool8 tryKillChildre(struct Boss* p) {
 
 // --------------------------------------------
 
-static void Childre_Init(struct Childre* p) {
+static void Childre_Init(Childre* p) {
   struct Body* body;
   s32 y;
   void* fn;
@@ -179,28 +184,28 @@ static void Childre_Init(struct Childre* p) {
 #endif
 
   SET_BOSS_ROUTINE(p, ENTITY_UPDATE);
-  (p->s).mode[1] = sInitModes[(p->s).work[0]];
-  (p->s).flags |= FLIPABLE;
-  (p->s).flags |= DISPLAY;
+  p->mode[1] = sInitModes[p->work[0]];
+  p->flags |= FLIPABLE;
+  p->flags |= DISPLAY;
   EnableSpriteAnimation_Normal(p);
-  ResetDynamicMotion(&p->s);
+  SetSpriteTableDynamic(p);
 
   ResetBossBody((void*)p, &sCollisions[0], 64);
-  fn = onCollision;
+  fn = Childre_OnCollision;
   body = &p->body;
   body->fn = fn;
 
-  if ((p->s).work[0] == 0) {
+  if (p->work[0] == 0) {
     LOAD_STATIC_GRAPHIC(SM036_UNK);
     LOAD_STATIC_GRAPHIC(SM037_EAR_SHOT);
     LOAD_STATIC_GRAPHIC(SM038_UNK);
-    p->unk_b4 = NULL;
+    p->elfx = NULL;
 
-    y = FUN_08009f6c((p->s).coord.x, (p->s).coord.y);
-    (p->s).coord.y = y;
+    y = FUN_08009f6c(p->coord.x, p->coord.y);
+    p->coord.y = y;
     p->unk_bc.y = y;
 
-    p->unk_bc.x = (((p->s).coord.x / PIXEL(240)) * PIXEL(240)) + PIXEL(120);
+    p->unk_bc.x = (((p->coord).x / PIXEL(240)) * PIXEL(240)) + PIXEL(120);
 
 #if MODERN
     p->unk_c4 = 0xFF;
@@ -213,115 +218,304 @@ static void Childre_Init(struct Childre* p) {
 #endif
     p->unk_c5 = 0;
   }
-  Childre_Update((void*)p);
+  Childre_Update(p);
 }
 
-// --------------------------------------------
+void childreNeutral(Childre* p);
+static void nop_08040788(Childre* p);
 
-void childreNeutral(struct Boss* p);
-static void nop_08040788(struct Boss* p);
+void childreMode0(Childre* p);
+void childreMode1(Childre* p);
+void childreMode2(Childre* p);
+void childreMode3(Childre* p);
+void childreStartRising(Childre* p);
+void childreRising(Childre* p);
+void childreMode6(Childre* p);
+void childreMode7(Childre* p);
+void childreMode8(Childre* p);
+void childreStartScrewIce(Childre* p);
+void childreMaybeMiddleScrewIce(Childre* p);
+void childreScrewIce(Childre* p);
+void childreMissile(Childre* p);
+void childreStartEarShot(Childre* p);
+void childreEarShot(Childre* p);
+void childreEndEarShot(Childre* p);
+void childreMode16(Childre* p);
+void childreStun(Childre* p);
+void childreMode18(Childre* p);
 
-void childreMode0(struct Boss* p);
-void childreMode1(struct Boss* p);
-void childreMode2(struct Boss* p);
-void childreMode3(struct Boss* p);
-void childreStartRising(struct Boss* p);
-void childreRising(struct Boss* p);
-void childreMode6(struct Boss* p);
-void childreMode7(struct Boss* p);
-void childreMode8(struct Boss* p);
-void childreStartScrewIce(struct Boss* p);
-void childreMaybeMiddleScrewIce(struct Boss* p);
-void childreScrewIce(struct Boss* p);
-void childreMissile(struct Boss* p);
-void childreStartEarShot(struct Boss* p);
-void childreEarShot(struct Boss* p);
-void childreEndEarShot(struct Boss* p);
-void childreMode16(struct Boss* p);
-void childreStun(struct Boss* p);
-void childreMode18(struct Boss* p);
-
-static void Childre_Update(struct Childre* p) {
+static void Childre_Update(Childre* p) {
   // clang-format off
-  static const BossFunc sUpdates1[19] = {
-      (void*)childreNeutral,
-      (void*)nop_08040788,
-      (void*)childreNeutral,
-      (void*)childreNeutral,
-      (void*)childreNeutral,
-      (void*)childreNeutral,
-      (void*)childreNeutral,
-      (void*)childreNeutral,
-      (void*)childreNeutral,
-      (void*)childreNeutral,
-      (void*)childreNeutral,
-      (void*)childreNeutral,
-      (void*)childreNeutral,
-      (void*)childreNeutral,
-      (void*)childreNeutral,
-      (void*)childreNeutral,
-      (void*)nop_08040788,
-      (void*)nop_08040788,
-      (void*)nop_08040788,
+  static void (*const sUpdates1[19])(Childre*) = {
+      childreNeutral,
+      nop_08040788,
+      childreNeutral,
+      childreNeutral,
+      childreNeutral,
+      childreNeutral,
+      childreNeutral,
+      childreNeutral,
+      childreNeutral,
+      childreNeutral,
+      childreNeutral,
+      childreNeutral,
+      childreNeutral,
+      childreNeutral,
+      childreNeutral,
+      childreNeutral,
+      nop_08040788,
+      nop_08040788,
+      nop_08040788,
   };
   // clang-format on
 
   // clang-format off
-  static const BossFunc sUpdates2[19] = {
-      (void*)childreMode0,
-      (void*)childreMode1,
-      (void*)childreMode2,
-      (void*)childreMode3,
-      (void*)childreStartRising,
-      (void*)childreRising,
-      (void*)childreMode6,
-      (void*)childreMode7,
-      (void*)childreMode8,
-      (void*)childreStartScrewIce,
-      (void*)childreMaybeMiddleScrewIce,
-      (void*)childreScrewIce,
-      (void*)childreMissile,
-      (void*)childreStartEarShot,
-      (void*)childreEarShot,
-      (void*)childreEndEarShot,
-      (void*)childreMode16,
-      (void*)childreStun,
-      (void*)childreMode18,
+  static void (*const sUpdates2[19])(Childre*) = {
+      childreMode0,
+      childreMode1,
+      childreMode2,
+      childreMode3,
+      childreStartRising,
+      childreRising,
+      childreMode6,
+      childreMode7,
+      childreMode8,
+      childreStartScrewIce,
+      childreMaybeMiddleScrewIce,
+      childreScrewIce,
+      childreMissile,
+      childreStartEarShot,
+      childreEarShot,
+      childreEndEarShot,
+      childreMode16,
+      childreStun,
+      childreMode18,
   };
   // clang-format on
 
-  bool8 killed;
-
-  struct Entity* e = p->unk_b4;
-  if ((e != NULL) && isKilled(e)) {
-    p->unk_b4 = NULL;
+  if ((p->elfx != NULL) && isKilled(p->elfx)) {
+    p->elfx = NULL;
   }
-
-  killed = tryKillChildre((void*)p);
-  if (!killed) {
-    (sUpdates1[(p->s).mode[1]])((void*)p);
-    (sUpdates2[(p->s).mode[1]])((void*)p);
+  if (!tryKillChildre(p)) {
+    (sUpdates1[p->mode[1]])(p);
+    (sUpdates2[p->mode[1]])(p);
   }
 }
 
-// --------------------------------------------
+void childre_08042140(Childre* p);
+void childre_08042224(Childre* p);
 
-void childre_08042140(struct Boss* p);
-void childre_08042224(struct Boss* p);
-
-static void Childre_Die(struct Boss* p) {
-  static const BossFunc sDeads[2] = {
+static void Childre_Die(Childre* p) {
+  static void (*const sDeads[2])(Childre*) = {
       childre_08042140,
       childre_08042224,
   };
-  (sDeads[(p->s).mode[1]])(p);
+  (sDeads[p->mode[1]])(p);
 }
 
 // --------------------------------------------
 
-static void nop_08040788(struct Boss* p) {
-  // nop
-  return;
+static void nop_08040788(Childre* _) {}
+
+void childreNeutral(Childre* p) {
+  if ((p->body).status & BODY_STATUS_WHITE) {
+    if ((p->body).status & BODY_STATUS_RECOILED) {
+      if (p->mode[1] == 5) {
+        {
+          // (p->coord).x = (p->flags & X_FLIP) ? (p->coord).x - PIXEL(8) : (p->coord).x + PIXEL(8);
+          s32 prev = (p->coord).x;
+          s32 x = (p->coord).x = prev + PIXEL(8);
+          if (p->flags & X_FLIP) x = prev - PIXEL(8);
+          (p->coord).x = x;
+        }
+        (p->coord).y += PIXEL(8);
+      }
+      p->mode[1] = 18, p->mode[2] = 0;
+    }
+    if ((p->body).elemented == ELEMENT_FLAME) {
+      if (((p->coord).y - PIXEL(16)) > gOverworld.sea) {
+        s32 i;
+        for (i = 0; i < 5; i++) {
+          if ((RANDOM(RNG_0202f388) & 1) == 0) {
+            s32 x = (p->coord).x - PIXEL(16) + (RANDOM(RNG_0202f388) & 0x1FFF);
+            s32 y = (p->coord).y - PIXEL(16) + (RANDOM(RNG_0202f388) & 0x1FFF);
+            CreateBubble(x, y, 0);
+          } else {
+            s32 x = (p->coord).x - PIXEL(16) + (RANDOM(RNG_0202f388) & 0x1FFF);
+            s32 y = (p->coord).y - PIXEL(16) + (RANDOM(RNG_0202f388) & 0x1FFF);
+            CreateBubble(x, y, 1);
+          }
+        }
+      } else {
+        p->elfx = ApplyElementEffect(10, (Object*)p, &sChildre_ElfxOffsets);
+      }
+      p->mode[1] = 17, p->mode[2] = 0;
+    }
+  }
+}
+
+void childreMode0(Childre* p) {
+  switch (p->mode[2]) {
+    case 0: {
+      bool32 isPlayerRight;
+      (p->coord).y = (p->unk_bc).y;
+      SetDDP(&p->body, &sCollisions[1]);
+      p->work[2] = 0;
+      isPlayerRight = (pZero2->s).coord.x - (p->coord).x < 0;
+      if (p->flags & X_FLIP) {
+        if (!isPlayerRight) {
+          goto _MODE2;
+        }
+      } else {
+        if (isPlayerRight) {
+        _MODE2:
+          p->mode[2] += 2;
+          break;
+        }
+      }
+
+      PlaySound(SE_UNK_67);
+      SetSpriteAnimation(p, MOTION(DM164_CHILDRE, 8));
+      (p->d).y = -PIXEL(2);
+      p->mode[2]++;
+      FALLTHROUGH;
+    }
+    case 1: {
+      s32 dy;
+      (p->d).y += PIXEL(1) / 4;
+      if ((p->d).y > PIXEL(7)) (p->d).y = PIXEL(7);
+      (p->coord).y += (p->d).y;
+      dy = (p->unk_bc).y - (p->coord).y;
+      if (dy < 0) (p->coord).y += dy;
+      UpdateSpriteAnimation(p);
+      if (IsSpriteAnimEnd(p)) {
+        p->work[2] = 1;
+        p->mode[2]++;
+      }
+      break;
+    }
+    case 2: {
+      if (p->work[2] != 0) SET_PLAYER_XFLIP(p, !(p->flags & X_FLIP));
+      SetDDP(&p->body, &sCollisions[1]);
+      p->work[2] = 32;
+      SetSpriteAnimation(p, MOTION(DM164_CHILDRE, 0));
+      p->mode[2]++;
+      FALLTHROUGH;
+    }
+    case 3: {
+      p->work[2]--;
+      if (p->work[2] == 0) {
+        if (!((pZero2->body).status & BODY_STATUS_DEAD) && ((pZero2->body).hp != 0)) {
+          childre_08040428(p);
+        }
+      }
+      UpdateSpriteAnimation(p);
+      break;
+    }
+  }
+}
+
+// 0x08040A58
+WIP void childreMode1(Childre* p) {
+#ifdef ALWAYS_FALSE
+  switch (p->mode[2]) {
+    case 0: {
+      SetSpriteAnimation(p, MOTION(DM164_CHILDRE, 0));
+      p->mode[2]++;
+      FALLTHROUGH;
+    }
+    case 1: {
+      UpdateSpriteAnimation(p);
+      if ((p->scriptEntity)->flags & (1 << 0)) p->mode[2]++;
+      break;
+    }
+    case 2: {
+      PlaySound(SE_CHILDRE_VOICE_1);
+      p->work[2] = 4;
+      SetSpriteAnimation(p, MOTION(DM164_CHILDRE, 27));
+      p->mode[2]++;
+      FALLTHROUGH;
+    }
+    case 3: {
+      UpdateSpriteAnimation(p);
+      if (--(p->work[2]) == 0) p->mode[2]++;
+      break;
+    }
+    case 4: {
+      PlaySound(SE_UNK_67);
+      (p->d).y = -PIXEL(2);
+      p->work[2] = 0;
+      SetSpriteAnimation(p, MOTION(DM164_CHILDRE, 28));
+      p->mode[2]++;
+      FALLTHROUGH;
+    }
+    case 5: {
+      s32 dy;
+      (p->d).y += PIXEL(1) / 4;
+      if ((p->d).y > PIXEL(7)) (p->d).y = PIXEL(7);
+      (p->coord).y += (p->d).y;
+      if (p->work[2] == 0 && (p->d).y > 0) {
+        p->work[2] = 1;
+        SetSpriteAnimation(p, MOTION(DM164_CHILDRE, 29));
+      }
+      dy = (p->unk_bc).y - (p->coord).y;
+      if (dy < 0 && (p->d).y > 0) {
+        (p->coord).y += dy;
+        p->mode[2]++;
+      }
+      UpdateSpriteAnimation(p);
+      break;
+    }
+    case 6: {
+      p->work[2] = 4;
+      SetSpriteAnimation(p, MOTION(DM164_CHILDRE, 27));
+      p->mode[2]++;
+      FALLTHROUGH;
+    }
+    case 7: {
+      UpdateSpriteAnimation(p);
+      if (--(p->work[2]) == 0) p->mode[2]++;
+      break;
+    }
+    case 8: {
+      p->work[2] = 0;
+      SetSpriteAnimation(p, MOTION(DM164_CHILDRE, 25));
+      p->mode[2]++;
+      FALLTHROUGH;
+    }
+    case 9: {
+      s8 i;
+      UpdateSpriteAnimation(p);
+      p->work[2]++;
+      if (p->work[2] == 5) PlaySound(SE_UNK_66);
+      i = p->work[2] % 5;
+      if (i == 0) {
+        if ((p->motion).cmdIdx == 1 || (p->motion).cmdIdx == 4 || (p->motion).cmdIdx == 5) {
+          Coords32 c = {(p->coord).x + PIXEL(3), (p->coord).y - PIXEL(20)};
+          Coords32 d = {PIXEL(1), -0x55 - (RANDOM(RNG_0202f388) & 0xFF)};
+          FUN_080b834c((void*)p, &c, &d, 0, (motion_t*)&s16_0836206c, 24);
+          c.x = (p->coord).x - PIXEL(8), c.y = (p->coord).y - PIXEL(20);
+          d.x = -PIXEL(3) / 8, d.y = -0x20 - (RANDOM(RNG_0202f388) & 0xFF);
+          FUN_080b8454((void*)p, &c, &d, 0, (motion_t*)&s16_0836206c, 24, 25);
+        }
+      }
+      if (IsSpriteAnimEnd(p)) p->mode[2]++;
+      break;
+    }
+    case 10: {
+      SetSpriteAnimation(p, MOTION(DM164_CHILDRE, 0));
+      p->mode[2]++;
+      FALLTHROUGH;
+    }
+    case 11: {
+      UpdateSpriteAnimation(p);
+      if (!(gStageRun.vm.active & VM_ACTIVE)) p->mode[1] = 0, p->mode[2] = 0;
+      break;
+    }
+  }
+#else
+  INCCODE("asm/wip/childreMode1.inc");
+#endif
 }
 
 INCASM("asm/boss/childre.inc");
@@ -502,20 +696,22 @@ const u8 u8_ARRAY_0836205c[4] = {2, 2, 12, 13};
 
 static const u8 sInitModes[4] = {1, 16, 0, 0};
 
-const Coords32 Coord_08362064 = {0, -0x1000};
+static const Coords32 sChildre_ElfxOffsets = {PIXEL(0), -PIXEL(16)};
 
-const s16 s16_0836206c = 0x2601;
+static const motion_t s16_0836206c = MOTION(SM038_UNK, 1);
 
 // clang-format off
-const motion_t sChildreMotions[6] = {
-    MOTION(DM164_CHILDRE, 0x10),
-    MOTION(DM164_CHILDRE, 0x11),
-    MOTION(DM164_CHILDRE, 0x11),
-    MOTION(DM164_CHILDRE, 0x11),
-    MOTION(DM164_CHILDRE, 0x11),
-    MOTION(DM164_CHILDRE, 0x12),
-};
+const motion_t sChildreAnimations[6] = {
+    MOTION(DM164_CHILDRE, 16),
+    MOTION(DM164_CHILDRE, 17),
+    MOTION(DM164_CHILDRE, 17),
+    MOTION(DM164_CHILDRE, 17),
+    MOTION(DM164_CHILDRE, 17),
+    MOTION(DM164_CHILDRE, 18),
+}; // 0x0836206E
 // clang-format on
 
-const Coords32 Coord_0836207c = {0x200, 0xFFFFE800};
-const Coords32 Coord_08362084 = {0x600, 0xFFFFE700};
+static const Coords32 sChildre_ExplosionOffsets[2] = {
+    {PIXEL(2), -PIXEL(24)},
+    {PIXEL(6), -PIXEL(25)},
+};  // 0x0836207C

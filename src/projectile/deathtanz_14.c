@@ -2,14 +2,13 @@
 #include "global.h"
 #include "projectile.h"
 
-struct Projectile14 {
-  OBJECT_HDR;
-  // props (16bytes, offset: 0xB4..)
+typedef struct {
+  COLLISION_OBJECT_HDR;
   u8 unk_b4[8];  // 0xB4
   u8 unk_bc;     // 0xBC
   u32 unk_c0;    // 0xC0
-};
-static_assert(sizeof(struct Projectile14) == sizeof(struct Projectile));
+} Projectile14;
+static_assert(sizeof(Projectile14) == sizeof(struct Projectile));
 
 void Projectile14_Init(struct Projectile* p);
 void Projectile14_Update(struct Projectile* p);
@@ -47,14 +46,13 @@ void FUN_080a08e0(struct Entity* q, s32 x, s32 y, bool8 xflip) {
 }
 
 void deathtanz_080a0934(struct Entity* q, s32 x, s32 y, bool8 xflip, bool8 r4) {
-  struct Projectile14* p = (struct Projectile14*)AllocEntityFirst(gProjectileHeaderPtr);
+  Projectile14* p = AllocEntityFirst(gProjectileHeaderPtr);
   if (p != NULL) {
     INIT_PROJECTILE_ROUTINE(p, 14);
-    (p->s).work[0] = 1;
-    (p->s).coord.x = x, (p->s).coord.y = y;
-    (p->s).work[2] = xflip;
-    (p->s).unk_28 = q;
-    p->unk_bc = r4;
+    p->work[0] = 1;
+    (p->coord).x = x, (p->coord).y = y;
+    p->work[2] = xflip;
+    p->unk_28 = q, p->unk_bc = r4;
   }
 }
 

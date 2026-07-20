@@ -50,13 +50,13 @@ void RegisterHitboxes(struct EntityHeader* h) {
   Object* p = (void*)StartEntityListIteration(h);
 
   while (p != (Object*)&h->tail) {
-    if ((p->s).flags & COLLIDABLE) {
+    if (p->flags & COLLIDABLE) {
       struct Body* body = &p->body;
-      if ((p->s).flags & FLIPABLE) {
-        if ((p->s).flags & AFFINE) {
-          RegisterScalerotHitbox(body, ((p->s).flags & 0x30) >> 4, (p->s).angle);
+      if (p->flags & FLIPABLE) {
+        if (p->flags & AFFINE) {
+          RegisterScalerotHitbox(body, (p->flags & 0x30) >> 4, p->angle);
         } else {
-          RegisterFlipableHitbox(body, ((p->s).flags & 0x30) >> 4);
+          RegisterFlipableHitbox(body, (p->flags & 0x30) >> 4);
         }
       } else {
         ResisterNonAffineHitbox(body);
@@ -75,9 +75,9 @@ NON_MATCH void RunDamageEffect(struct EntityHeader* h) {
   Object* p = (void*)StartEntityListIteration(h);
 
   while (p != ((void*)&h->tail)) {
-    if (((p->s).flags & COLLIDABLE) && ((p->s).flags2 & WHITE_PAINTABLE)) {
+    if ((p->flags & COLLIDABLE) && (p->flags2 & WHITE_PAINTABLE)) {
       if (((p->body).status & BODY_STATUS_WHITE) || ((p->body).prevStatus & 1) || ((p->body).invincibleTime & 2)) {
-        gWhitePaintFlags[(p->s).invincibleID >> 5] |= (1 << ((p->s).invincibleID & 0x1F));
+        gWhitePaintFlags[p->invincibleID >> 5] |= (1 << (p->invincibleID & 0x1F));
       }
       if (!gInHitStopFrames) {
         if (((p->body).status & BODY_STATUS_WHITE) && (((p->body).collisions)->faction != FACTION_ALLY)) {

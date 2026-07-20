@@ -65,7 +65,7 @@ static void Ghost19_Init(struct VFX* p) {
   (p->s).flags |= DISPLAY;
   EnableSpriteAnimation_Normal(p);
   if ((p->s).work[0] == 1) {
-    ResetDynamicMotion(&p->s);
+    SetSpriteTableDynamic(p);
   }
   Ghost19_Update(p);
 }

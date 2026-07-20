@@ -4,9 +4,7 @@
 #include "vfx.h"
 
 typedef struct {
-  ENTITY_HDR;        // 0x00
-  ENTITY_SPRITE;     // 0x28
-  struct Body body;  // 0x74
+  COLLISION_OBJECT_HDR;
   // props (16bytes, offset: 0xB4..)
   s32 y;
   u8 unk_04[12];

@@ -125,7 +125,7 @@ static void onBuster(struct Zero* z) {
 }
 
 static void walk_buster_0(struct Zero* z) {
-  struct Weapon* w = CreateBuster(z, -PIXEL(32), -PIXEL(18), ((z->s).flags >> 4) & 1);
+  Weapon* w = CreateBuster(z, -PIXEL(32), -PIXEL(18), ((z->s).flags >> 4) & 1);
   if (w == NULL) {
     (z->unk_b4).attackState8[0] = 0;
   } else {

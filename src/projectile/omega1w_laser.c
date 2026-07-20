@@ -3,21 +3,20 @@
 #include "projectile.h"
 
 // オメガ第一形態(白)の攻撃オブジェクト
-struct Projectile4 {
-  OBJECT_HDR;
-  // props (16bytes, offset: 0xB4..)
+typedef struct {
+  COLLISION_OBJECT_HDR;
   u8 idx_b4;     // 0xB4
   s32 unk_b8;    // 0xB8
   s32 timer_bc;  // 0xBC
   u32 unk_c0;    // 0xC0
-};
-static_assert(sizeof(struct Projectile4) == sizeof(struct Projectile));
+} Projectile4;
+static_assert(sizeof(Projectile4) == sizeof(struct Projectile));
 
 static const struct Collision sCollisions[2];
 
 static void OmegaWhiteProjectile_Init(struct Projectile* p);
 static void OmegaWhiteProjectile_Update(struct Entity* p);
-static void OmegaWhiteProjectile_Die(Object* p);
+static void OmegaWhiteProjectile_Die(Projectile4* p);
 
 // clang-format off
 const ProjectileRoutine gOmegaWhiteProjectileRoutine = {
@@ -30,28 +29,28 @@ const ProjectileRoutine gOmegaWhiteProjectileRoutine = {
 // clang-format on
 
 struct Projectile* createOmega1Laser(s32 x, u8 n, s32 lifetime, struct Entity* omega) {
-  struct Projectile4* p = AllocEntityLast(gProjectileHeaderPtr);
+  Projectile4* p = AllocEntityLast(gProjectileHeaderPtr);
   if (p != NULL) {
     INIT_PROJECTILE_ROUTINE(p, 4);
-    (p->s).work[0] = 0;
+    p->work[0] = 0;
     p->idx_b4 = n;
     p->unk_b8 = x;
     p->timer_bc = lifetime;
-    (p->s).unk_28 = omega;
+    p->unk_28 = omega;
   }
   return (struct Projectile*)p;
 }
 
 struct Projectile* CreateOmegaWhiteHoop(s32 x, s32 y, u8 n) {
-  struct Projectile4* p = AllocEntityLast(gProjectileHeaderPtr);
+  Projectile4* p = AllocEntityLast(gProjectileHeaderPtr);
   if (p != NULL) {
     INIT_PROJECTILE_ROUTINE(p, 4);
-    (p->s).work[0] = 1;
-    (p->s).coord.x = x, (p->s).coord.y = y;
+    p->work[0] = 1;
+    (p->coord).x = x, (p->coord).y = y;
     p->idx_b4 = n;
     p->unk_b8 = 0x400;
     p->timer_bc = 1;
-    (p->s).unk_28 = NULL;
+    p->unk_28 = NULL;
   }
   return (struct Projectile*)p;
 }
@@ -160,8 +159,8 @@ static void OmegaWhiteProjectile_Update(struct Entity* p) {
   (sUpdates[p->mode[1]])(p);
 }
 
-static void OmegaWhiteProjectile_Die(Object* p) {
-  (p->s).flags &= ~DISPLAY;
+static void OmegaWhiteProjectile_Die(Projectile4* p) {
+  p->flags &= ~DISPLAY;
   EXIT_BODY(p);
   SET_PROJECTILE_ROUTINE(p, ENTITY_EXIT);
 }

@@ -30,9 +30,9 @@ static const struct Collision sCollisions[2] = {
 
 // --------------------------------------------
 
-void BlizzardArrow_Init(struct Weapon* p);
-void BlizzardArrow_Update(struct Weapon* p);
-void BlizzardArrow_Die(struct Weapon* p);
+void BlizzardArrow_Init(Weapon* p);
+void BlizzardArrow_Update(Weapon* p);
+void BlizzardArrow_Die(Weapon* p);
 
 // clang-format off
 const WeaponRoutine gBlizzardArrowRoutine = {
@@ -46,18 +46,18 @@ const WeaponRoutine gBlizzardArrowRoutine = {
 
 // --------------------------------------------
 
-void MenuExit_BlizzardArrow(struct Weapon* p) {
-  Player* z = (Player*)(p->s).unk_28;
+void MenuExit_BlizzardArrow(Weapon* p) {
+  Player* z = (Player*)p->unk_28;
   if (((&z->unk_b4)->status).element != ELEMENT_ICE) {
-    (p->s).flags &= ~DISPLAY;
-    (p->s).flags &= ~FLIPABLE;
+    p->flags &= ~DISPLAY;
+    p->flags &= ~FLIPABLE;
     EXIT_BODY(p);
     SET_WEAPON_ROUTINE(p, ENTITY_DISAPPEAR);
     return;
   }
   if (z->unk_136 & (1 << WEAPON_BUSTER)) {
-    (p->s).flags &= ~DISPLAY;
-    (p->s).flags &= ~FLIPABLE;
+    p->flags &= ~DISPLAY;
+    p->flags &= ~FLIPABLE;
     EXIT_BODY(p);
     SET_WEAPON_ROUTINE(p, ENTITY_DISAPPEAR);
   }

@@ -6,21 +6,19 @@
 // Bee?
 
 struct CyberElf11 {
-  OBJECT_HDR;
-  // props (16bytes, offset: 0xB4..)
+  COLLISION_OBJECT_HDR;
   Player* player;   // 0xB4
   void* parent_b8;  // 0xB8
-  u8 unk_bc[8];
+  u8 unk_bc[8];     // 0xBC
 };
-static_assert(sizeof(struct CyberElf11) == sizeof(struct Elf));
+static_assert(sizeof(struct CyberElf11) == sizeof(CyberElf));
 
-static const ElfFunc sInitializers[4];
-static const ElfFunc sUpdates[4];
+static const CyberElfFunc sUpdates[4];
 static const struct Collision sCollisions[15];
 
 static void Elf11_Init(struct Entity* p);
-void Elf11_Update(struct Elf* p);
-void Elf11_Die(struct Elf* p);
+void Elf11_Update(CyberElf* p);
+void Elf11_Die(CyberElf* p);
 
 // clang-format off
 const ElfRoutine gElf11Routine = {
@@ -33,22 +31,22 @@ const ElfRoutine gElf11Routine = {
 // clang-format on
 
 struct Entity* FUN_080e5048(Player* player, struct Entity* q, u8 kind) {
-  struct CyberElf11* p = (struct CyberElf11*)AllocEntityLast(gElfHeaderPtr);
+  struct CyberElf11* p = AllocEntityLast(gElfHeaderPtr);
   if (p != NULL) {
     INIT_ELF_ROUTINE(p, 11);
     p->player = player;
     p->parent_b8 = q;
-    (p->s).work[0] = kind, (p->s).work[1] = 0;
+    p->work[0] = kind, p->work[1] = 0;
   }
   return (struct Entity*)p;
 }
 
 // --------------------------------------------
 
-void FUN_080e51b0(struct Elf* p);
-void FUN_080e5300(struct Elf* p);
-void FUN_080e54ac(struct Elf* p);
-void FUN_080e5608(struct Elf* p);
+void FUN_080e51b0(CyberElf* p);
+void FUN_080e5300(CyberElf* p);
+void FUN_080e54ac(CyberElf* p);
+void FUN_080e5608(CyberElf* p);
 
 static void Elf11_Init(struct Entity* p) {
   static const EntityFunc sInitializers[4] = {
@@ -61,7 +59,7 @@ static void Elf11_Init(struct Entity* p) {
   SET_ELF_ROUTINE(p, ENTITY_UPDATE);
   p->palID = 1;
   EnableSpriteAnimation_Normal(p);
-  ResetDynamicMotion(p);
+  SetSpriteTableDynamic(p);
   p->flags2 &= ~DYNAMIC;
   p->flags |= DISPLAY;
   p->flags |= FLIPABLE;
@@ -71,13 +69,13 @@ static void Elf11_Init(struct Entity* p) {
 
 INCASM("asm/cyberelf/unk_11.inc");
 
-void FUN_080e56a0(struct Elf* p);
-void FUN_080e5718(struct Elf* p);
-void FUN_080e5798(struct Elf* p);
-void FUN_080e5818(struct Elf* p);
+void FUN_080e56a0(CyberElf* p);
+void FUN_080e5718(CyberElf* p);
+void FUN_080e5798(CyberElf* p);
+void FUN_080e5818(CyberElf* p);
 
 // 0x08371e08
-static const ElfFunc sUpdates[4] = {
+static const CyberElfFunc sUpdates[4] = {
     FUN_080e56a0,
     FUN_080e5718,
     FUN_080e5798,

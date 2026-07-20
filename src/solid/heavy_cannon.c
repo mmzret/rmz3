@@ -22,15 +22,15 @@ const SolidRoutine gHeavyCannonRoutine = {
 static bool8 FUN_080cbdc0(Object* p) {
   if ((p->body).status & BODY_STATUS_DEAD) {
     struct Entity* next;
-    if ((p->s).work[0] < 4) {
-      next = (struct Entity*)(p->s).unk_2c;
+    if (p->work[0] < 4) {
+      next = (struct Entity*)p->unk_2c;
       while (next != NULL) {
         SET_SOLID_ROUTINE(next, ENTITY_DIE);
         next = (struct Entity*)next->unk_2c;
       }
     } else {
-      struct Entity* prev = (struct Entity*)(p->s).unk_28;
-      next = (struct Entity*)(p->s).unk_2c;
+      struct Entity* prev = (struct Entity*)p->unk_28;
+      next = (struct Entity*)p->unk_2c;
       if (prev != NULL) prev->unk_2c = next;
       if (next != NULL) next->unk_28 = prev;
     }

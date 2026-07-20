@@ -34,17 +34,17 @@ static const struct Collision sCollisions[];
 
 static void Projectile16_Init(Object* p) {
   EnableSpriteAnimation_Normal(p);
-  (p->s).flags |= DISPLAY;
-  (p->s).flags |= FLIPABLE;
+  p->flags |= DISPLAY;
+  p->flags |= FLIPABLE;
   INIT_BODY(p, &sCollisions[0], 2, NULL);
-  if ((p->s).work[0] == 0) {
+  if (p->work[0] == 0) {
     SET_XFLIP(p, FALSE);
   } else {
     SET_XFLIP(p, TRUE);
   }
-  (p->s).work[2] = 0xFF;
+  p->work[2] = 0xFF;
   SET_PROJECTILE_ROUTINE(p, ENTITY_UPDATE);
-  (p->s).mode[1] = 0, (p->s).mode[2] = 0, (p->s).mode[3] = 0;
+  p->mode[1] = 0, p->mode[2] = 0, p->mode[3] = 0;
   Projectile16_Update((void*)p);
 }
 
@@ -59,18 +59,18 @@ static void Projectile16_Update(Object* p) {
   };
 
   if (IS_METTAUR) {
-    (p->s).flags &= ~DISPLAY;
-    (p->s).flags &= ~FLIPABLE;
+    p->flags &= ~DISPLAY;
+    p->flags &= ~FLIPABLE;
     EXIT_BODY(p);
     SET_PROJECTILE_ROUTINE(p, ENTITY_DISAPPEAR);
     return;
   }
 
-  (sUpdates[(p->s).mode[1]])((void*)p);
+  (sUpdates[p->mode[1]])((void*)p);
 }
 
 static void Projectile16_Die(Object* p) {
-  (p->s).flags &= ~DISPLAY;
+  p->flags &= ~DISPLAY;
   EXIT_BODY(p);
   SET_PROJECTILE_ROUTINE(p, ENTITY_EXIT);
 }

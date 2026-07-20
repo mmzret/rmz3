@@ -15,9 +15,9 @@ void InitSolidHeader(struct EntityHeader* h, struct Solid* p, s16 len) {
 }
 
 void DeleteSolid(Object* p) {
-  (p->s).flags &= ~DISPLAY;
+  p->flags &= ~DISPLAY;
   EXIT_BODY(p);
-  (p->s).flags2 &= ~ENTI_PHYSICS;
+  p->flags2 &= ~ENTI_PHYSICS;
   SET_SOLID_ROUTINE(p, ENTITY_EXIT);
 }
 

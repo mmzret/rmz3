@@ -8,14 +8,13 @@
 #define SEIMERAN_CLONE 1
 #define SEIMERAN_SEED 2
 
-typedef struct EnemySeimeran {
-  OBJECT_HDR;
-  // props (16bytes, offset: 0xB4..)
+typedef struct {
+  COLLISION_OBJECT_HDR;
   struct {
     struct Entity* elfx;  // 0xB4, Element Effect
     Coords32 c_b8;        // 0xB8
     u8 unk_c0;            // 0xC0
-  } props;
+  } props;                // props (16bytes, offset: 0xB4..)
 } Seimeran;
 static_assert(sizeof(Seimeran) == sizeof(struct Enemy));
 
@@ -65,10 +64,10 @@ static void onCollision(struct Body* body UNUSED, Coords32* r1 UNUSED, Coords32*
 static bool8 FUN_0808f348(Seimeran* p) {
   if ((p->body).status & BODY_STATUS_DEAD) {
     SET_ENEMY_ROUTINE(p, ENTITY_DIE);
-    if (((p->s).work[0] != SEIMERAN_SEED) && ((p->body).status & BODY_STATUS_SLASHED) && ((p->props).unk_c0 > 9)) {
-      (p->s).mode[1] = 1;
+    if ((p->work[0] != SEIMERAN_SEED) && ((p->body).status & BODY_STATUS_SLASHED) && ((p->props).unk_c0 > 9)) {
+      p->mode[1] = 1;
     } else {
-      (p->s).mode[1] = 0;
+      p->mode[1] = 0;
     }
     Seimeran_Die((void*)p);
     return TRUE;
@@ -116,13 +115,13 @@ static const EnemyFunc sUpdates2[8] = {
 
 // 0x0808f3a8
 static bool8 FUN_0808f3a8(Seimeran* p) {
-  if (((p->s).work[0] != SEIMERAN_SEED) && (p->props).elfx == NULL) {
-    switch ((p->s).mode[3]) {
+  if ((p->work[0] != SEIMERAN_SEED) && (p->props).elfx == NULL) {
+    switch (p->mode[3]) {
       case 0: {
         if (IsFrozen(p)) {
-          (sUpdates1[(p->s).mode[1]])((void*)p);
-          (sUpdates2[(p->s).mode[1]])((void*)p);
-          (p->s).mode[3]++;
+          (sUpdates1[p->mode[1]])((void*)p);
+          (sUpdates2[p->mode[1]])((void*)p);
+          p->mode[3]++;
           UpdateSpriteAnimation(p);
           return TRUE;
         }
@@ -130,7 +129,7 @@ static bool8 FUN_0808f3a8(Seimeran* p) {
       }
       case 1: {
         if (IsFrozen(p)) return TRUE;
-        (p->s).mode[3] = 0;
+        p->mode[3] = 0;
         break;
       }
     }
@@ -142,10 +141,10 @@ static const Coords32 sElementCoord;
 
 // 0x0808f424
 static void FUN_0808f424(Seimeran* p) {
-  if ((p->props).elfx == NULL && ((p->s).work[0] != SEIMERAN_SEED) && ((p->s).mode[1] != 5) && ((p->s).mode[1] != 6) && ((p->body).status & BODY_STATUS_WHITE)) {
-    (p->props).elfx = (void*)ApplyElementEffect(0, (Object*)p, &sElementCoord);
+  if ((p->props).elfx == NULL && (p->work[0] != SEIMERAN_SEED) && (p->mode[1] != 5) && (p->mode[1] != 6) && ((p->body).status & BODY_STATUS_WHITE)) {
+    (p->props).elfx = ApplyElementEffect(0, (Object*)p, &sElementCoord);
     if ((p->props).elfx != NULL) {
-      (p->s).mode[1] = 0, (p->s).mode[2] = 0;
+      p->mode[1] = 0, p->mode[2] = 0;
     }
   }
 }

@@ -43,23 +43,23 @@ static void Graffiti_Init(Object* p) {
   };  // 0x08371892
   // clang-format on
 
-  if (!FLAG(gSystemSavedata.flags, sFlags[(p->s).work[0]])) {
-    (p->s).flags &= ~DISPLAY;
-    (p->s).flags &= ~FLIPABLE;
+  if (!FLAG(gSystemSavedata.flags, sFlags[p->work[0]])) {
+    p->flags &= ~DISPLAY;
+    p->flags &= ~FLIPABLE;
     EXIT_BODY(p);
     SET_SOLID_ROUTINE(p, ENTITY_DISAPPEAR);
     return;
   }
 
   EnableSpriteAnimation_Normal(p);
-  (p->s).flags |= DISPLAY;
-  (p->s).flags |= FLIPABLE;
-  SetSpriteAnimation(p, sMotions[(p->s).work[0]]);
+  p->flags |= DISPLAY;
+  p->flags |= FLIPABLE;
+  SetSpriteAnimation(p, sMotions[p->work[0]]);
   SET_XFLIP(p, FALSE);
-  (p->s).renderPrio = 31;
-  if ((p->s).work[0] == GRAFFITI_CIEL2) {
-    (p->s).coord.x -= PIXEL(4);
-    (p->s).coord.y -= PIXEL(4);
+  p->renderPrio = 31;
+  if (p->work[0] == GRAFFITI_CIEL2) {
+    p->coord.x -= PIXEL(4);
+    p->coord.y -= PIXEL(4);
   }
   SET_SOLID_ROUTINE(p, ENTITY_UPDATE);
   Graffiti_Update((void*)p);

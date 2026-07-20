@@ -4,19 +4,19 @@
 #include "vfx.h"
 
 struct FollowerCyberElf {
-  OBJECT_HDR;
-  // props (16bytes, offset: 0xB4..)
-  struct Zero* player;  // 0xB4
-  cyberelf_t id;        // 0xB8
-  u8 unk_b9[7];         // 0xB9
-  u8 unk_0c;            // 0xC0
-  bool8 isSatelite1;    // 0xC1
+  COLLISION_OBJECT_HDR;  // 0x00
+  struct Zero* player;   // 0xB4
+  cyberelf_t id_b8;      // 0xB8
+  u8 unk_b9[7];          // 0xB9
+  u8 unk_0c;             // 0xC0
+  bool8 isSatelite1;     // 0xC1
+  u16 pad_c2;            // 0xC2
 };
-static_assert(sizeof(struct FollowerCyberElf) == sizeof(struct Elf));
+static_assert(sizeof(struct FollowerCyberElf) == sizeof(CyberElf));
 
-static void FollowerElf_Init(struct Elf* e);
-static void FollowerElf_Update(struct Elf* e);
-static void FollowerElf_Die(struct FollowerCyberElf* e);
+static void FollowerElf_Init(struct FollowerCyberElf* p);
+static void FollowerElf_Update(struct FollowerCyberElf* p);
+static void FollowerElf_Die(struct FollowerCyberElf* p);
 
 // clang-format off
 const ElfRoutine gFollowerElfRoutine = {
@@ -31,47 +31,43 @@ const ElfRoutine gFollowerElfRoutine = {
 void MenuExit_FollowerElf(struct FollowerCyberElf* e) {
   struct Zero* player = e->player;
   if (e->isSatelite1 == 0) {
-    if (e->id == ((&player->unk_b4)->status).satelites[0]) {
+    if (e->id_b8 == ((&player->unk_b4)->status).satelites[0]) {
       return;
     }
-    if (player->unk_121 == ELF_BYSE) {
-      CLEAR_FLAG(gCurStory.s.gameflags, BYSE_ENABLED);
-    }
-    (e->s).flags &= ~DISPLAY;
-    (e->s).flags &= ~FLIPABLE;
+    if (player->unk_121 == ELF_BYSE) CLEAR_FLAG(gCurStory.s.gameflags, BYSE_ENABLED);
+    e->flags &= ~DISPLAY;
+    e->flags &= ~FLIPABLE;
     EXIT_BODY(e);
   } else {
-    if (e->id == ((&player->unk_b4)->status).satelites[1]) {
+    if (e->id_b8 == ((&player->unk_b4)->status).satelites[1]) {
       return;
     }
-    if (player->unk_121 == ELF_BYSE) {
-      CLEAR_FLAG(gCurStory.s.gameflags, BYSE_ENABLED);
-    }
-    (e->s).flags &= ~DISPLAY;
-    (e->s).flags &= ~FLIPABLE;
+    if (player->unk_121 == ELF_BYSE) CLEAR_FLAG(gCurStory.s.gameflags, BYSE_ENABLED);
+    e->flags &= ~DISPLAY;
+    e->flags &= ~FLIPABLE;
     EXIT_BODY(e);
   }
   SET_ELF_ROUTINE(e, ENTITY_DISAPPEAR);
 }
 
-struct Elf* CreateFollowerElf(struct Zero* p, u8 breed, u8 availability, bool8 isSatelite1) {
-  struct FollowerCyberElf* e = (struct FollowerCyberElf*)AllocEntityLast(gElfHeaderPtr);
-  if (e != NULL) {
-    INIT_ELF_ROUTINE(e, 8);
-    e->player = p;
-    (e->s).work[0] = breed;
-    (e->s).work[1] = availability;
-    e->isSatelite1 = isSatelite1;
+struct Entity* CreateFollowerElf(struct Zero* z, u8 breed, u8 availability, bool8 isSatelite1) {
+  struct FollowerCyberElf* p = AllocEntityLast(gElfHeaderPtr);
+  if (p != NULL) {
+    INIT_ELF_ROUTINE(p, 8);
+    p->player = z;
+    p->work[0] = breed;
+    p->work[1] = availability;
+    p->isSatelite1 = isSatelite1;
     if (isSatelite1 == 0) {
-      e->id = ((&p->unk_b4)->status).satelites[0];
+      p->id_b8 = ((&z->unk_b4)->status).satelites[0];
     } else {
-      e->id = ((&p->unk_b4)->status).satelites[1];
+      p->id_b8 = ((&z->unk_b4)->status).satelites[1];
     }
   }
-  return (void*)e;
+  return (void*)p;
 }
 
-NAKED static void FollowerElf_Init(struct Elf* e) {
+NAKED static void FollowerElf_Init(struct FollowerCyberElf* p) {
   asm(".syntax unified\n\
 	push {r4, r5, r6, r7, lr}\n\
 	adds r4, r0, #0\n\
@@ -196,7 +192,7 @@ _080E4284: .4byte gCurStory\n\
  .syntax divided\n");
 }
 
-NAKED static void FollowerElf_Update(struct Elf* e) {
+NAKED static void FollowerElf_Update(struct FollowerCyberElf* p) {
   asm(".syntax unified\n\
 	push {r4, r5, r6, r7, lr}\n\
 	adds r5, r0, #0\n\
@@ -521,12 +517,10 @@ _080E44E4:\n\
  .syntax divided\n");
 }
 
-static void FollowerElf_Die(struct FollowerCyberElf* e) {
-  struct Zero* player = e->player;
-  FUN_080bfce8(&(e->s).coord, 0);
-  if (player->unk_121 == ELF_BYSE) {
-    CLEAR_FLAG(gCurStory.s.gameflags, BYSE_ENABLED);
-  }
-  (e->s).flags &= ~DISPLAY;
-  SET_ELF_ROUTINE(e, ENTITY_EXIT);
+static void FollowerElf_Die(struct FollowerCyberElf* p) {
+  struct Zero* player = p->player;
+  FUN_080bfce8(&p->coord, 0);
+  if (player->unk_121 == ELF_BYSE) CLEAR_FLAG(gCurStory.s.gameflags, BYSE_ENABLED);
+  p->flags &= ~DISPLAY;
+  SET_ELF_ROUTINE(p, ENTITY_EXIT);
 }

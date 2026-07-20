@@ -6,12 +6,11 @@
 #include "zero.h"
 
 struct CyberElf5 {
-  OBJECT_HDR;
-  // props (16bytes, offset: 0xB4..)
-  struct Zero* player;  // 0xB4
-  u8 unk_b8[12];        // 0xB8
+  COLLISION_OBJECT_HDR;  // 0x00
+  struct Zero* player;   // 0xB4
+  u8 unk_b8[12];         // 0xB8
 };
-static_assert(sizeof(struct CyberElf5) == sizeof(struct Elf));
+static_assert(sizeof(struct CyberElf5) == sizeof(CyberElf));
 
 static void Elf5_Init(struct CyberElf5* p);
 static void Elf5_Update(struct CyberElf5* p);
@@ -28,11 +27,11 @@ const ElfRoutine gElf5Routine = {
 // clang-format on
 
 struct Entity* CreateElf5(struct Zero* player, u8 breed, u8 availability, u8 _) {
-  struct CyberElf5* p = (struct CyberElf5*)AllocEntityLast(gElfHeaderPtr);
+  struct CyberElf5* p = AllocEntityLast(gElfHeaderPtr);
   if (p != NULL) {
     INIT_ELF_ROUTINE(p, 5);
     p->player = player;
-    (p->s).work[0] = breed, (p->s).work[1] = availability;
+    p->work[0] = breed, p->work[1] = availability;
   }
   return (struct Entity*)p;
 }
@@ -45,15 +44,15 @@ static void Elf5_Init(struct CyberElf5* p) {
   gPause = TRUE;
   SET_ELF_ROUTINE(p, ENTITY_UPDATE);
   EnableSpriteAnimation_Normal(p);
-  ResetDynamicMotion(&p->s);
-  (p->s).flags |= DISPLAY;
-  (p->s).flags |= FLIPABLE;
+  SetSpriteTableDynamic(p);
+  p->flags |= DISPLAY;
+  p->flags |= FLIPABLE;
   SetSpriteAnimation(p, MOTION(DM144_CYBERELF_NURSE, 0));
-  (p->s).spr.xflip = FALSE, (p->s).spr.oam.xflip = FALSE;
-  (p->s).flags &= ~X_FLIP;
-  (p->s).spr.oam.priority = 0;
-  (p->s).coord.x = (z->s).coord.x + r.x;
-  (p->s).coord.y = (z->s).coord.y + r.y;
+  p->spr.xflip = FALSE, p->spr.oam.xflip = FALSE;
+  p->flags &= ~X_FLIP;
+  p->spr.oam.priority = 0;
+  p->coord.x = (z->s).coord.x + r.x;
+  p->coord.y = (z->s).coord.y + r.y;
   Elf5_Update(p);
 }
 
@@ -74,7 +73,7 @@ static void Elf5_Die(struct CyberElf5* p) {
   (*flags)[z->unk_121] |= ELF_AVABILITY_USED;
   (b4->status).fusions += 3;
   if ((gScore.total)->fusionCount < 99) (gScore.total)->fusionCount++;
-  FUN_080bfce8(&(p->s).coord, 0);
-  (p->s).flags &= ~DISPLAY;
+  FUN_080bfce8(&p->coord, 0);
+  p->flags &= ~DISPLAY;
   SET_ELF_ROUTINE(p, ENTITY_EXIT);
 }

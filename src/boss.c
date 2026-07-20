@@ -62,9 +62,9 @@ const BossRoutine* const gBossFnTable[BOSS_ENTITY_COUNT] = {
 void InitBossHeader(struct EntityHeader* h, struct Boss* p, s16 len) {
   s16 i;
 
-  InitEntityHeader(h, ENTITY_BOSS, &p->s, sizeof(struct Boss), len);
+  InitEntityHeader(h, ENTITY_BOSS, (void*)p, sizeof(struct Boss), len);
   for (i = 0; i < len; i++) {
-    p[i].s.uniqueID = gEntityIDGenerator + i;
+    p[i].uniqueID = gEntityIDGenerator + i;
   }
   gEntityIDGenerator += len;
   gBossHeaderPtr = h;

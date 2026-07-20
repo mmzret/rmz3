@@ -9,9 +9,7 @@ static const struct Collision sCollisions[];
 static const struct Rect sSize;
 
 typedef struct {
-  ENTITY_HDR;        // 0x00
-  ENTITY_SPRITE;     // 0x28
-  struct Body body;  // 0x74
+  COLLISION_OBJECT_HDR;
   // props (16bytes, offset: 0xB4..)
   u8 unk_b4[4];  // 0xB4
   s32 unk_b8_y;  // 0xB8

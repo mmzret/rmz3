@@ -3,21 +3,21 @@
 
 static const ElfFunc sUpdates[2];
 
-void BirdElf_Init(struct Elf* p);
-void BirdElf_Update(struct Elf* p);
-void BirdElf_Die(struct Elf* p);
+void BirdElf_Init(CyberElf* p);
+void BirdElf_Update(CyberElf* p);
+void BirdElf_Die(CyberElf* p);
 
 // clang-format off
 const ElfRoutine gBirdElfRoutine = {
-    [ENTITY_INIT] =      BirdElf_Init,
-    [ENTITY_UPDATE] =    BirdElf_Update,
-    [ENTITY_DIE] =       BirdElf_Die,
+    [ENTITY_INIT] =      (void*)BirdElf_Init,
+    [ENTITY_UPDATE] =    (void*)BirdElf_Update,
+    [ENTITY_DIE] =       (void*)BirdElf_Die,
     [ENTITY_DISAPPEAR] = (void*)DeleteElf,
-    [ENTITY_EXIT] =      (ElfFunc)DeleteEntity,
+    [ENTITY_EXIT] =      (void*)DeleteEntity,
 };
 // clang-format on
 
-NAKED void FUN_080e58bc(struct Elf* p) {
+NAKED void FUN_080e58bc(CyberElf* p) {
   asm(".syntax unified\n\
 	push {lr}\n\
 	adds r3, r0, #0\n\
@@ -79,12 +79,12 @@ _080E5924: .4byte gElfFnTable\n\
  .syntax divided\n");
 }
 
-void FUN_080e5b74(struct Elf* p);
-void FUN_080e5d68(struct Elf* p);
+void FUN_080e5b74(CyberElf* p);
+void FUN_080e5d68(CyberElf* p);
 
 static const ElfFunc sUpdates[2] = {
-    FUN_080e5b74,
-    FUN_080e5d68,
+    (void*)FUN_080e5b74,
+    (void*)FUN_080e5d68,
 };
 
 INCASM("asm/cyberelf/bird.inc");

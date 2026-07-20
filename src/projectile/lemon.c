@@ -5,19 +5,18 @@
 #include "vfx.h"
 
 // 敵が撃ってくる Lemon(豆)
-struct ProjectileLemon {
-  OBJECT_HDR;
-  // props (16bytes, offset: 0xB4..)
+typedef struct {
+  COLLISION_OBJECT_HDR;
   s32 amplitude;  // 0xB4
   u8 unk_b8[12];  // 0xB8
-};
-static_assert(sizeof(struct ProjectileLemon) == sizeof(struct Projectile));
+} ProjectileLemon;
+static_assert(sizeof(ProjectileLemon) == sizeof(struct Projectile));
 
 static const struct Collision sCollisions[6];
 
-static void Lemon_Init(struct Projectile* p);
-static void Lemon_Update(struct Projectile* p);
-static void Lemon_Die(struct Projectile* p);
+static void Lemon_Init(ProjectileLemon* p);
+static void Lemon_Update(ProjectileLemon* p);
+static void Lemon_Die(ProjectileLemon* p);
 
 // clang-format off
 const ProjectileRoutine gLemonRoutine = {
@@ -33,28 +32,28 @@ const ProjectileRoutine gLemonRoutine = {
 
 // 0x0809c99c
 struct Projectile* CreateLemon(Coords32* c, s32 amplitude, u8 r2) {
-  struct ProjectileLemon* p = (struct ProjectileLemon*)AllocEntityLast(gProjectileHeaderPtr);
+  ProjectileLemon* p = AllocEntityLast(gProjectileHeaderPtr);
   if (p != NULL) {
     INIT_PROJECTILE_ROUTINE(p, 0);
-    (p->s).coord.x = c->x, (p->s).coord.y = c->y;
+    p->coord.x = c->x, p->coord.y = c->y;
     r2 += 0x80;
     p->amplitude = amplitude;
-    (p->s).d.x = Cos(r2, amplitude);
-    (p->s).d.y = Sin(r2, amplitude);
-    (p->s).work[0] = 1;
+    p->d.x = Cos(r2, amplitude);
+    p->d.y = Sin(r2, amplitude);
+    p->work[0] = 1;
   }
   return (void*)p;
 }
 
 NAKED static struct Projectile* unused_0809ca34(Coords32* c, s32 r1, u8 r2) { INCCODE("asm/unused/unused_0809ca34.inc"); }
 
-static void Lemon_Init(struct Projectile* p) {
+static void Lemon_Init(ProjectileLemon* p) {
   EnableSpriteAnimation_Normal(p);
-  (p->s).flags |= DISPLAY;
-  (p->s).flags |= FLIPABLE;
+  p->flags |= DISPLAY;
+  p->flags |= FLIPABLE;
   INIT_BODY(p, sCollisions, 0, NULL);
   SetSpriteAnimation(p, MOTION(SM002_LEMON, 0));
-  (p->s).work[2] = 0xFF;
+  p->work[2] = 0xFF;
   SET_PROJECTILE_ROUTINE(p, ENTITY_UPDATE);
   Lemon_Update(p);
 }
@@ -107,8 +106,8 @@ static void Lemon_Update(struct Projectile* p) {
   }
 }
 
-static void Lemon_Die(struct Projectile* p) {
-  (p->s).flags &= ~DISPLAY;
+static void Lemon_Die(ProjectileLemon* p) {
+  p->flags &= ~DISPLAY;
   EXIT_BODY(p);
   SET_PROJECTILE_ROUTINE(p, ENTITY_EXIT);
 }

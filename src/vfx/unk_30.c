@@ -33,7 +33,7 @@ static void Ghost30_Init(struct Entity* p) {
   EnableSpriteAnimation_Normal(p);
   p->flags |= DISPLAY;
   p->flags |= FLIPABLE;
-  ResetDynamicMotion(p);
+  SetSpriteTableDynamic(p);
   if (p->work[0] == 0) {
     SET_XFLIP(p, FALSE);
   } else {

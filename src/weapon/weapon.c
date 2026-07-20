@@ -11,13 +11,13 @@
 
 static const rgb555 gWeaponPalettes[5][SLOT_4BPP];
 
-void InitWeaponHeader(struct EntityHeader* h, struct Weapon* w, s16 len) {
+void InitWeaponHeader(struct EntityHeader* h, Weapon* w, s16 len) {
   s16 i;
   u16 j;
 
-  InitEntityHeader(h, ENTITY_WEAPON, &w->s, sizeof(struct Weapon), len);
+  InitEntityHeader(h, ENTITY_WEAPON, (void*)w, sizeof(Weapon), len);
   for (i = 0; i < len; i++) {
-    w[i].s.uniqueID = gEntityIDGenerator + i;
+    w[i].uniqueID = gEntityIDGenerator + i;
   }
   gEntityIDGenerator += len;
   gWeaponHeaderPtr = h;
@@ -58,7 +58,7 @@ void KillAllWeapons(WeaponFunc kill) {
   struct EntityHeader* h = gWeaponHeaderPtr;
   struct Entity* p = GetEntityList(h);
   while (p != (struct Entity*)&h->tail) {
-    kill((struct Weapon*)p);
+    kill((Weapon*)p);
     p = GetNextEntity(h);
   }
 }

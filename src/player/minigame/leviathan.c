@@ -69,7 +69,7 @@ static void Leviathan_Init(Player* p) {
   (p->s).flags |= FLIPABLE;
   (p->s).flags |= DISPLAY;
   EnableSpriteAnimation_Normal(p);
-  ResetDynamicMotion(&p->s);
+  SetSpriteTableDynamic(p);
   (p->s).spr.xflip = TRUE;
   (p->s).spr.oam.xflip = TRUE;
   (p->s).flags |= X_FLIP;

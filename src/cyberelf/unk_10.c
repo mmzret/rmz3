@@ -6,15 +6,14 @@
 // サテライトエルフ全般？
 
 struct CyberElf10 {
-  OBJECT_HDR;
-  // props (16bytes, offset: 0xB4..)
-  Player* player;  // 0xB4
-  Coords32 c_b8;   // 0xB8
-  u8 unk_c0;       // 0xC0
-  u8 unk_c1;       // 0xC1
-  u16 unk_c2;      // 0xC2
+  COLLISION_OBJECT_HDR;  // 0x00
+  Player* player;        // 0xB4
+  Coords32 c_b8;         // 0xB8
+  u8 unk_c0;             // 0xC0
+  u8 unk_c1;             // 0xC1
+  u16 unk_c2;            // 0xC2
 };
-static_assert(sizeof(struct CyberElf10) == sizeof(struct Elf));
+static_assert(sizeof(struct CyberElf10) == sizeof(CyberElf));
 
 static void Elf10_Init(struct CyberElf10* p);
 static void Elf10_Update(struct CyberElf10* p);
@@ -33,35 +32,35 @@ const ElfRoutine gElf10Routine = {
 // 0x080e4b88
 void MenuExit_CyberElf10(struct CyberElf10* p) {
   Player* player = p->player;
-  if ((p->s).unk_coord.x == 0) {
-    if ((p->s).work[3] == ((&player->unk_b4)->status).satelites[0]) {
+  if (p->unk_coord.x == 0) {
+    if (p->work[3] == ((&player->unk_b4)->status).satelites[0]) {
       return;
     }
-    (p->s).flags &= ~DISPLAY;
-    (p->s).flags &= ~FLIPABLE;
+    p->flags &= ~DISPLAY;
+    p->flags &= ~FLIPABLE;
     EXIT_BODY(p);
   } else {
-    if ((p->s).work[3] == ((&player->unk_b4)->status).satelites[1]) {
+    if (p->work[3] == ((&player->unk_b4)->status).satelites[1]) {
       return;
     }
-    (p->s).flags &= ~DISPLAY;
-    (p->s).flags &= ~FLIPABLE;
+    p->flags &= ~DISPLAY;
+    p->flags &= ~FLIPABLE;
     EXIT_BODY(p);
   }
   SET_ELF_ROUTINE(p, ENTITY_DISAPPEAR);
 }
 
 struct Entity* elf_080e4bf4(Player* player, u8 kind1, u8 kind2, bool8 is_satelite2) {
-  struct CyberElf10* p = (struct CyberElf10*)AllocEntityLast(gElfHeaderPtr);
+  struct CyberElf10* p = AllocEntityLast(gElfHeaderPtr);
   if (p != NULL) {
     INIT_ELF_ROUTINE(p, 10);
     p->player = player;
-    (p->s).work[0] = kind1, (p->s).work[1] = kind2;
-    (p->s).unk_coord.x = is_satelite2;
+    p->work[0] = kind1, p->work[1] = kind2;
+    p->unk_coord.x = is_satelite2;
     if (is_satelite2 == 0) {
-      (p->s).work[3] = ((&player->unk_b4)->status).satelites[0];
+      p->work[3] = ((&player->unk_b4)->status).satelites[0];
     } else {
-      (p->s).work[3] = ((&player->unk_b4)->status).satelites[1];
+      p->work[3] = ((&player->unk_b4)->status).satelites[1];
     }
   }
   return (struct Entity*)p;
@@ -71,21 +70,21 @@ static void Elf10_Init(struct CyberElf10* p) {
   struct Zero* z = p->player;
   struct Rect r = gZeroRanges[z->posture];
   EnableSpriteAnimation_Normal(p);
-  ResetDynamicMotion(&p->s);
-  (p->s).flags |= DISPLAY;
-  (p->s).flags |= FLIPABLE;
+  SetSpriteTableDynamic(p);
+  p->flags |= DISPLAY;
+  p->flags |= FLIPABLE;
   SetSpriteAnimation(p, GetElfMotion(1));
   UpdateSpriteAnimation(p);
-  (p->s).spr.xflip = FALSE, (p->s).spr.oam.xflip = FALSE;
-  (p->s).flags &= ~X_FLIP;
-  (p->s).coord.x = (z->s).coord.x + r.x;
-  (p->s).coord.y = (z->s).coord.y + r.y;
-  (p->c_b8).x = (p->s).coord.x;
-  (p->c_b8).y = (p->s).coord.y;
+  p->spr.xflip = FALSE, p->spr.oam.xflip = FALSE;
+  p->flags &= ~X_FLIP;
+  p->coord.x = (z->s).coord.x + r.x;
+  p->coord.y = (z->s).coord.y + r.y;
+  (p->c_b8).x = p->coord.x;
+  (p->c_b8).y = p->coord.y;
   p->unk_c2 = 0x200;
   p->unk_c0 = 0;
   p->unk_c1 = 32;
-  (p->s).work[2] = 60;
+  p->work[2] = 60;
   SET_ELF_ROUTINE(p, ENTITY_UPDATE);
   Elf10_Update(p);
 }

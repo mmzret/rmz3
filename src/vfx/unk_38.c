@@ -30,13 +30,12 @@ struct Entity* FUN_080bcf68(Coords32* c, u8 kind) {
 }
 
 struct Entity* FUN_080bcfbc(Coords32* c, u8 kind, motion_t m, u32 val) {
-  struct VFXUnkCommon* p = (struct VFXUnkCommon*)AllocEntityLast(gVFXHeaderPtr);
+  VFXUnkCommon* p = AllocEntityLast(gVFXHeaderPtr);
   if (p != NULL) {
     INIT_VFX_ROUTINE(p, VFX_UNK_038);
-    (p->s).work[0] = kind, (p->s).work[1] = 1;
-    (p->s).coord.x = c->x, (p->s).coord.y = c->y;
-    p->m_74 = m;
-    p->unk_78 = val;
+    p->work[0] = kind, p->work[1] = 1;
+    (p->coord).x = c->x, (p->coord).y = c->y;
+    p->m_74 = m, p->unk_78 = val;
   }
   return (void*)p;
 }

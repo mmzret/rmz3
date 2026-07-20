@@ -2,9 +2,9 @@
 #include "score.h"
 #include "weapon.h"
 
-static void ShieldSweep_Init(struct Weapon* p);
-static void ShieldSweep_Update(struct Weapon* p);
-static void ShieldSweep_Die(struct Entity* p);
+static void ShieldSweep_Init(Weapon* p);
+static void ShieldSweep_Update(Weapon* p);
+static void ShieldSweep_Die(Weapon* p);
 
 // clang-format off
 const WeaponRoutine gShieldSweepRoutine = {
@@ -16,10 +16,10 @@ const WeaponRoutine gShieldSweepRoutine = {
 };
 // clang-format on
 
-void MenuExit_ShieldSweep(struct WeaponCommon* p) {
+void MenuExit_ShieldSweep(WeaponCommon* p) {
   if ((p->props).z->unk_136 & (1 << WEAPON_SHIELD)) {
-    (p->s).flags &= ~DISPLAY;
-    (p->s).flags &= ~FLIPABLE;
+    p->flags &= ~DISPLAY;
+    p->flags &= ~FLIPABLE;
     EXIT_BODY(p);
     SET_WEAPON_ROUTINE(p, ENTITY_DISAPPEAR);
   }
@@ -27,33 +27,33 @@ void MenuExit_ShieldSweep(struct WeaponCommon* p) {
 
 struct Entity* CreateShieldSweep(struct Zero* z, struct Entity* q, u8 n) {
   u8 element;
-  struct WeaponCommon* p = AllocEntityLast(gWeaponHeaderPtr);
+  WeaponCommon* p = AllocEntityLast(gWeaponHeaderPtr);
   if (p != NULL) {
     if ((z->unk_b4).mainCopy == WEAPON_SHIELD) {
       INIT_WEAPON_ROUTINE(p, WEAPON_MOVE_SHIELD_SWEEP);
-      (p->s).flags2 &= ~ENTITY_FLAGS2_B6;
-      (p->s).renderPrio = 16;
-      (p->s).tileNum = gWeaponTileNum[0], (p->s).palID = gWeaponPalIDs[0];
+      p->flags2 &= ~ENTITY_FLAGS2_B6;
+      p->renderPrio = 16;
+      p->tileNum = gWeaponTileNum[0], p->palID = gWeaponPalIDs[0];
       element = ((&z->unk_b4)->status).element;
       SetWeaponElement(0, element);
     } else {
       INIT_WEAPON_ROUTINE(p, WEAPON_MOVE_SHIELD_SWEEP);
-      (p->s).flags2 &= ~ENTITY_FLAGS2_B6;
-      (p->s).renderPrio = 16;
-      (p->s).tileNum = gWeaponTileNum[1], (p->s).palID = gWeaponPalIDs[1];
+      p->flags2 &= ~ENTITY_FLAGS2_B6;
+      p->renderPrio = 16;
+      p->tileNum = gWeaponTileNum[1], p->palID = gWeaponPalIDs[1];
       element = ((&z->unk_b4)->status).element;
       SetWeaponElement(1, element);
     }
     (p->props).z = z;
-    (p->s).unk_28 = q;
-    (p->s).work[0] = n, (p->s).work[1] = 0;
+    p->unk_28 = q;
+    p->work[0] = n, p->work[1] = 0;
   }
   return (void*)p;
 }
 
 static void ShieldSweep_OnCollision(struct Body* body, Coords32* r1 UNUSED, Coords32* r2 UNUSED);
 
-NAKED static void ShieldSweep_Init(struct Weapon* p) {
+NAKED static void ShieldSweep_Init(Weapon* p) {
   asm(".syntax unified\n\
 	push {r4, r5, r6, lr}\n\
 	adds r4, r0, #0\n\
@@ -154,7 +154,7 @@ _0803C2F8: .4byte gWeaponFnTable\n\
  .syntax divided\n");
 }
 
-NAKED static void ShieldSweep_Update(struct Weapon* p) {
+NAKED static void ShieldSweep_Update(Weapon* p) {
   asm(".syntax unified\n\
 	push {r4, r5, r6, lr}\n\
 	adds r4, r0, #0\n\
@@ -279,7 +279,7 @@ _0803C3E8: .4byte gWeaponFnTable\n\
  .syntax divided\n");
 }
 
-static void ShieldSweep_Die(struct Entity* p) {
+static void ShieldSweep_Die(Weapon* p) {
   p->flags &= ~DISPLAY;
   SET_WEAPON_ROUTINE(p, ENTITY_EXIT);
 }

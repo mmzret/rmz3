@@ -18,11 +18,11 @@ const VFXRoutine gVFX60Routine = {
 // clang-format on
 
 struct Entity* CreateVFX60(Coords32* c, u8 kind, motion_t m, u32 val) {
-  struct VFXUnkCommon* p = (struct VFXUnkCommon*)AllocEntityLast(gVFXHeaderPtr);
+  VFXUnkCommon* p = AllocEntityLast(gVFXHeaderPtr);
   if (p != NULL) {
     INIT_VFX_ROUTINE(p, VFX_UNK_060);
-    (p->s).work[0] = kind, (p->s).work[1] = 1;
-    (p->s).coord.x = c->x, (p->s).coord.y = c->y;
+    p->work[0] = kind, p->work[1] = 1;
+    p->coord.x = c->x, p->coord.y = c->y;
     p->m_74 = m;
     p->unk_78 = val;
   }
@@ -54,7 +54,7 @@ static void VFX60_Init(struct Entity* p) {
 }
 
 static void nop_080c2d44(void* _ UNUSED);
-void FUN_080c2d48(struct VFXUnkCommon* p);
+void FUN_080c2d48(VFXUnkCommon* p);
 
 static void VFX60_Update(struct Entity* p) {
   static const VFXFunc sUpdates[2] = {
