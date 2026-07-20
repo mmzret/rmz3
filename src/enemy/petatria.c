@@ -2,7 +2,112 @@
 #include "enemy.h"
 #include "global.h"
 
-INCASM("asm/enemy/petatria.inc");
+struct Enemy* CreatePetatria(Coords32* c, u8 mode) {
+  struct Enemy* p = (struct Enemy*)AllocEntityLast(gEnemyHeaderPtr);
+  if (p != NULL) {
+    INIT_ENEMY_ROUTINE(p, ENEMY_PETATRIA);
+    (p->s).coord = *c;
+    (p->s).work[0] = mode;
+  }
+  return p;
+}
+
+INCASM("asm/enemy/petatria_a.inc");
+
+static const EnemyFunc sUpdates1[10];
+static const EnemyFunc sUpdates2[10];
+bool8 FUN_08091188(struct Enemy* p);
+void Petatria_Die(struct Enemy* p);
+
+void Petatria_Update(struct Enemy* p) {
+  struct Entity** slot;
+  if ((p->body).status & BODY_STATUS_DEAD) {
+    SET_ENEMY_ROUTINE(p, ENTITY_DIE);
+    Petatria_Die(p);
+    return;
+  }
+  (sUpdates1[(p->s).mode[1]])(p);
+  FUN_08091188(p);
+  if (IsFrozen(&p->s)) {
+    return;
+  }
+  slot = (struct Entity**)((u8*)p + 0xc0);
+  if (*slot != NULL) {
+    if (!isKilled(*slot)) {
+      return;
+    }
+    *slot = NULL;
+  }
+  (sUpdates2[(p->s).mode[1]])(p);
+}
+
+INCASM("asm/enemy/petatria_b.inc");
+
+bool8 FUN_080902a8(struct Enemy* p) {
+  if ((p->body).status & BODY_STATUS_B3) {
+    (p->s).mode[1] = 4;
+    (p->s).mode[2] = 0;
+  }
+  return TRUE;
+}
+
+INCASM("asm/enemy/petatria_c.inc");
+
+bool8 FUN_080906ec(struct Enemy* p) {
+  if ((p->body).status & BODY_STATUS_B3) {
+    (p->s).mode[1] = 5;
+    (p->s).mode[2] = 0;
+  }
+  return TRUE;
+}
+
+INCASM("asm/enemy/petatria_d.inc");
+
+bool8 FUN_08090b20(struct Enemy* p) { return TRUE; }
+
+INCASM("asm/enemy/petatria_e.inc");
+
+bool8 FUN_08090c60(struct Enemy* p) { return TRUE; }
+
+INCASM("asm/enemy/petatria_f.inc");
+
+bool8 FUN_08090da4(struct Enemy* p) { return TRUE; }
+
+INCASM("asm/enemy/petatria_g.inc");
+
+bool8 FUN_08090edc(struct Enemy* p) { return TRUE; }
+
+INCASM("asm/enemy/petatria_h.inc");
+
+bool8 FUN_08091068(struct Enemy* p) { return TRUE; }
+
+INCASM("asm/enemy/petatria_i.inc");
+
+bool8 FUN_08091150(struct Enemy* p) { return TRUE; }
+
+void FUN_08091154(struct Enemy* p) {
+  if ((p->s).mode[2] == 0) {
+    (p->s).mode[2] = 1;
+  }
+}
+
+bool8 FUN_08091168(struct Enemy* p) { return TRUE; }
+
+void FUN_0809116c(struct Enemy* p) {}
+
+bool8 FUN_08091170(struct Enemy* p) { return TRUE; }
+
+void FUN_08091174(struct Enemy* p) {
+  if ((p->s).mode[2] == 0) {
+    (p->s).mode[2] = 1;
+  }
+}
+
+bool8 FUN_08091188(struct Enemy* p) { return TRUE; }
+
+INCASM("asm/enemy/petatria_j.inc");
+
+void nop_0809127c(struct Enemy* p) {}
 
 void Petatria_Init(struct Enemy* p);
 void Petatria_Update(struct Enemy* p);
@@ -18,29 +123,19 @@ const EnemyRoutine gPetatriaRoutine = {
 };
 // clang-format on
 
-void FUN_080902a8(struct Enemy* p);
-void FUN_080906ec(struct Enemy* p);
-void FUN_08090b20(struct Enemy* p);
-void FUN_08090c60(struct Enemy* p);
-void FUN_08090da4(struct Enemy* p);
-void FUN_08090edc(struct Enemy* p);
-void FUN_08091068(struct Enemy* p);
-void FUN_08091150(struct Enemy* p);
-void FUN_08091168(struct Enemy* p);
-void FUN_08091170(struct Enemy* p);
 
 // clang-format off
 static const EnemyFunc sUpdates1[10] = {
-    FUN_080902a8,
-    FUN_080906ec,
-    FUN_08090b20,
-    FUN_08090c60,
-    FUN_08090da4,
-    FUN_08090edc,
-    FUN_08091068,
-    FUN_08091150,
-    FUN_08091168,
-    FUN_08091170,
+    (EnemyFunc)FUN_080902a8,
+    (EnemyFunc)FUN_080906ec,
+    (EnemyFunc)FUN_08090b20,
+    (EnemyFunc)FUN_08090c60,
+    (EnemyFunc)FUN_08090da4,
+    (EnemyFunc)FUN_08090edc,
+    (EnemyFunc)FUN_08091068,
+    (EnemyFunc)FUN_08091150,
+    (EnemyFunc)FUN_08091168,
+    (EnemyFunc)FUN_08091170,
 };
 // clang-format on
 
@@ -51,9 +146,6 @@ void FUN_08090c64(struct Enemy* p);
 void FUN_08090da8(struct Enemy* p);
 void FUN_08090ee0(struct Enemy* p);
 void FUN_0809106c(struct Enemy* p);
-void FUN_08091154(struct Enemy* p);
-void FUN_0809116c(struct Enemy* p);
-void FUN_08091174(struct Enemy* p);
 
 // clang-format off
 static const EnemyFunc sUpdates2[10] = {
