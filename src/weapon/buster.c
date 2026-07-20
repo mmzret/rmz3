@@ -1447,91 +1447,34 @@ static void BlizzardArrow_Update(struct ZeroBuster* p) {
 }
 
 // 0x08037ed8
-NAKED static u8 shouldDelete(Weapon* w) {
-  asm(".syntax unified\n\
-	push {r4, r5, lr}\n\
-	adds r4, r0, #0\n\
-	adds r1, r4, #0\n\
-	adds r1, #0xb4\n\
-	ldr r5, [r1]\n\
-	ldrb r0, [r1, #0xf]\n\
-	cmp r0, #0\n\
-	beq _08037EF0\n\
-	subs r0, #1\n\
-	strb r0, [r1, #0xf]\n\
-	movs r0, #0\n\
-	b _08037F72\n\
-_08037EF0:\n\
-	ldr r0, [r4, #0x54]\n\
-	ldr r1, [r4, #0x58]\n\
-	bl FUN_080098a4\n\
-	lsls r0, r0, #0x10\n\
-	lsrs r1, r0, #0x10\n\
-	ldr r2, _08037F34 @ =0x7FF20000\n\
-	adds r0, r0, r2\n\
-	lsrs r0, r0, #0x10\n\
-	cmp r0, #1\n\
-	bhi _08037F08\n\
-	movs r1, #0\n\
-_08037F08:\n\
-	movs r0, #0x80\n\
-	lsls r0, r0, #8\n\
-	ands r0, r1\n\
-	cmp r0, #0\n\
-	beq _08037F14\n\
-	movs r1, #0\n\
-_08037F14:\n\
-	movs r0, #0xf\n\
-	ands r1, r0\n\
-	cmp r1, #0\n\
-	beq _08037F38\n\
-	adds r0, r4, #0\n\
-	adds r0, #0x54\n\
-	ldrb r2, [r4, #0xa]\n\
-	lsrs r2, r2, #4\n\
-	movs r1, #1\n\
-	ands r2, r1\n\
-	movs r1, #7\n\
-	bl CreateParticle\n\
-	movs r0, #1\n\
-	b _08037F72\n\
-	.align 2, 0\n\
-_08037F34: .4byte 0x7FF20000\n\
-_08037F38:\n\
-	adds r0, r5, #0\n\
-	adds r0, #0x8c\n\
-	ldr r0, [r0]\n\
-	movs r1, #8\n\
-	ands r0, r1\n\
-	cmp r0, #0\n\
-	beq _08037F4A\n\
-	movs r0, #1\n\
-	b _08037F72\n\
-_08037F4A:\n\
-	ldr r0, _08037F68 @ =gStageRun+232\n\
-	adds r1, r4, #0\n\
-	adds r1, #0x54\n\
-	bl Camera_GetDistance\n\
-	ldr r2, _08037F6C @ =s16_ARRAY_0835ee8c\n\
-	ldrb r1, [r4, #0x10]\n\
-	lsls r1, r1, #1\n\
-	adds r1, r1, r2\n\
-	movs r2, #0\n\
-	ldrsh r1, [r1, r2]\n\
-	cmp r0, r1\n\
-	bhi _08037F70\n\
-	movs r0, #0\n\
-	b _08037F72\n\
-	.align 2, 0\n\
-_08037F68: .4byte gStageRun+232\n\
-_08037F6C: .4byte s16_ARRAY_0835ee8c\n\
-_08037F70:\n\
-	movs r0, #2\n\
-_08037F72:\n\
-	pop {r4, r5}\n\
-	pop {r1}\n\
-	bx r1\n\
- .syntax divided\n");
+extern const s16 s16_ARRAY_0835ee8c[];
+
+static u8 shouldDelete(struct Weapon* w) {
+  struct ZeroBusterProps* b = &((struct ZeroBuster*)w)->props;
+  struct Zero* z = b->z;
+  metatile_attr_t attr;
+  if (b->unk_c3 != 0) {
+    b->unk_c3--;
+    return 0;
+  }
+  attr = FUN_080098a4((w->s).coord.x, (w->s).coord.y);
+  if (attr == MT_LADDER_FLOOR || attr == MT_LADDER) {
+    attr = 0;
+  }
+  if (attr & MTATTR_SOFT_PLATFORM) {
+    attr = 0;
+  }
+  if (attr & 0xf) {
+    CreateParticle(&(w->s).coord, 7, ((w->s).flags >> 4) & 1);
+    return 1;
+  }
+  if (z->body.status & 8) {
+    return 1;
+  }
+  if (Camera_GetDistance(&gStageRun.vm.camera, &(w->s).coord) > s16_ARRAY_0835ee8c[(w->s).work[0]]) {
+    return 2;
+  }
+  return 0;
 }
 
 NAKED static bool8 buster_08037f78(Weapon* w, const struct Rect* size) {
