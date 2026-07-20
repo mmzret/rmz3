@@ -18,7 +18,7 @@ const BossRoutine gVolteelRoutine = {
     [ENTITY_UPDATE] =    (void*)Volteel_Update,
     [ENTITY_DIE] =       (void*)Volteel_Die,
     [ENTITY_DISAPPEAR] = (void*)DeleteBoss,
-    [ENTITY_EXIT] =      (BossFunc)DeleteEntity,
+    [ENTITY_EXIT] =      (void*)DeleteEntity,
 };
 // clang-format on
 
@@ -302,17 +302,15 @@ INCASM("asm/boss/volteel_a.inc");
 bool8 nop_080438a4(struct Boss* p) { return TRUE; }
 
 void volteelMode0(struct Boss* p) {
-  switch ((p->s).mode[2]) {
+  switch (p->mode[2]) {
     case 0:
-      (p->s).flags |= 1;
-      SetSpriteAnimation(p, MOTION(0xa5, 0));
-      (p->s).mode[2]++;
+      p->flags |= DISPLAY;
+      SetSpriteAnimation(p, MOTION(DM165_VOLTEEL, 0));
+      p->mode[2]++;
       FALLTHROUGH;
     case 1:
       UpdateSpriteAnimation(p);
-      if ((p->s).scriptEntity->flags & 1) {
-        (p->s).mode[1] = 1, (p->s).mode[2] = 0;
-      }
+      if ((p->scriptEntity)->flags & (1 << 0)) p->mode[1] = 1, p->mode[2] = 0;
       break;
   }
 }
@@ -324,15 +322,13 @@ INCASM("asm/boss/volteel_b.inc");
 bool8 FUN_08043988(struct Boss* p) { return TRUE; }
 
 void volteelMode2(struct Boss* p) {
-  switch ((p->s).mode[2]) {
+  switch (p->mode[2]) {
     case 0:
-      SetSpriteAnimation(p, MOTION(0xa5, 0));
-      (p->s).mode[2]++;
+      SetSpriteAnimation(p, MOTION(DM165_VOLTEEL, 0));
+      p->mode[2]++;
       FALLTHROUGH;
     case 1:
-      if (!(gStageRun.vm.active & VM_ACTIVE)) {
-        (p->s).mode[1] = 3, (p->s).mode[2] = 0;
-      }
+      if (!(gStageRun.vm.active & VM_ACTIVE)) p->mode[1] = 3, p->mode[2] = 0;
       UpdateSpriteAnimation(p);
       break;
   }
@@ -379,9 +375,7 @@ bool8 FUN_08045610(struct Boss* p) { return TRUE; }
 INCASM("asm/boss/volteel_l.inc");
 
 bool8 FUN_080459d4(struct Boss* p) {
-  if ((p->s).mode[1] == 5) {
-    return TRUE;
-  }
+  if (p->mode[1] == 5) return TRUE;
   return FALSE;
 }
 
