@@ -78,79 +78,30 @@ static void Solid6_Die(struct Solid* p) {
 
 static void nop_080cc69c(struct Solid* p) { return; }
 
-NAKED static void FUN_080cc6a0(struct Solid* p) {
-  asm(".syntax unified\n\
-	push {r4, r5, lr}\n\
-	adds r4, r0, #0\n\
-	ldr r5, [r4, #0x28]\n\
-	ldrb r0, [r4, #0xe]\n\
-	cmp r0, #1\n\
-	beq _080CC6CE\n\
-	cmp r0, #1\n\
-	bgt _080CC6B6\n\
-	cmp r0, #0\n\
-	beq _080CC6C0\n\
-	b _080CC712\n\
-_080CC6B6:\n\
-	cmp r0, #2\n\
-	beq _080CC6EC\n\
-	cmp r0, #3\n\
-	beq _080CC6FC\n\
-	b _080CC712\n\
-_080CC6C0:\n\
-	ldr r1, _080CC6E8 @ =0x00003A01\n\
-	adds r0, r4, #0\n\
-	bl SetMotion\n\
-	ldrb r0, [r4, #0xe]\n\
-	adds r0, #1\n\
-	strb r0, [r4, #0xe]\n\
-_080CC6CE:\n\
-	adds r0, r5, #0\n\
-	bl FUN_080cc814\n\
-	lsls r0, r0, #0x18\n\
-	cmp r0, #0\n\
-	beq _080CC6E0\n\
-	ldrb r0, [r4, #0xe]\n\
-	adds r0, #1\n\
-	strb r0, [r4, #0xe]\n\
-_080CC6E0:\n\
-	adds r0, r4, #0\n\
-	bl UpdateEntityAnim\n\
-	b _080CC712\n\
-	.align 2, 0\n\
-_080CC6E8: .4byte 0x00003A01\n\
-_080CC6EC:\n\
-	movs r1, #0xe8\n\
-	lsls r1, r1, #6\n\
-	adds r0, r4, #0\n\
-	bl SetMotion\n\
-	ldrb r0, [r4, #0xe]\n\
-	adds r0, #1\n\
-	strb r0, [r4, #0xe]\n\
-_080CC6FC:\n\
-	adds r0, r5, #0\n\
-	bl FUN_080cc814\n\
-	lsls r0, r0, #0x18\n\
-	lsrs r0, r0, #0x18\n\
-	cmp r0, #0\n\
-	bne _080CC70C\n\
-	strb r0, [r4, #0xe]\n\
-_080CC70C:\n\
-	adds r0, r4, #0\n\
-	bl UpdateEntityAnim\n\
-_080CC712:\n\
-	ldr r0, [r5, #0x54]\n\
-	str r0, [r4, #0x54]\n\
-	ldr r0, [r5, #0x58]\n\
-	ldr r1, _080CC724 @ =0xFFFFF100\n\
-	adds r0, r0, r1\n\
-	str r0, [r4, #0x58]\n\
-	pop {r4, r5}\n\
-	pop {r0}\n\
-	bx r0\n\
-	.align 2, 0\n\
-_080CC724: .4byte 0xFFFFF100\n\
- .syntax divided\n");
+static void FUN_080cc6a0(struct Solid* p) {
+  struct Entity* anchor = (p->s).unk_28;
+  switch ((p->s).mode[2]) {
+    case 0:
+      SetSpriteAnimation(&p->s, MOTION(SM058_VOLCANO_RISING_PLATFORM, 1));
+      (p->s).mode[2]++;
+    case 1:
+      if (FUN_080cc814(anchor)) {
+        (p->s).mode[2]++;
+      }
+      UpdateSpriteAnimation(&p->s);
+      break;
+    case 2:
+      SetSpriteAnimation(&p->s, MOTION(SM058_VOLCANO_RISING_PLATFORM, 0));
+      (p->s).mode[2]++;
+    case 3:
+      if (!FUN_080cc814(anchor)) {
+        (p->s).mode[2] = 0;
+      }
+      UpdateSpriteAnimation(&p->s);
+      break;
+  }
+  (p->s).coord.x = anchor->coord.x;
+  (p->s).coord.y = anchor->coord.y - 0xF00;
 }
 
 // --------------------------------------------
