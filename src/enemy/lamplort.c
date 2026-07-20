@@ -286,26 +286,26 @@ static void Lamplort_Update(struct Lamplort* p) {
   return;
 
 alive:
-  if (IsFrozen(&p->s)) {
+  if (IsFrozen(p)) {
     u32 v;
-    *(u32*)((u8*)(p->s).unk_2c + 0xb4) |= 2;
+    *(u32*)((u8*)p->unk_2c + 0xb4) |= 2;
     v = (u32)p->elfx;
     if (v == 0) {
-      (p->s).mode[1] = 1;
-      (p->s).mode[2] = v;
+      p->mode[1] = 1;
+      p->mode[2] = v;
     }
   }
-  (sUpdates1[(p->s).mode[1]])((struct Enemy*)p);
+  (sUpdates1[p->mode[1]])((struct Enemy*)p);
   lamplort_0806ce08(p);
-  m = (p->s).mode[1];
+  m = p->mode[1];
   if (m == 7) goto dispatch2;
   if (m == 9) goto dispatch2;
-  if (IsFrozen(&p->s)) {
-    p->unk_ba = (p->s).mode[1];
+  if (IsFrozen(p)) {
+    p->unk_ba = p->mode[1];
     return;
   }
 dispatch2:
-  (sUpdates2[(p->s).mode[1]])((struct Enemy*)p);
+  (sUpdates2[p->mode[1]])((struct Enemy*)p);
 }
 
 INCASM("asm/enemy/lamplort_a.inc");
@@ -319,21 +319,21 @@ void FUN_0806c820(struct Enemy* p) {}
 bool8 FUN_0806c824(struct Enemy* p) { return TRUE; }
 
 static void FUN_0806c828(struct Lamplort* p) {
-  switch ((p->s).mode[2]) {
+  switch (p->mode[2]) {
     case 0:
-      (p->s).work[2] = 40;
-      (p->s).mode[2]++;
+      p->work[2] = 40;
+      p->mode[2]++;
       FALLTHROUGH;
     case 1:
       SetDDP(&p->body, &sCollisions[0]);
       SetSpriteAnimation(p, MOTION(SM025_LAMPLORT, 0));
       SET_XFLIP(p, p->unk_bc);
-      (p->s).mode[2]++;
+      p->mode[2]++;
       FALLTHROUGH;
     case 2:
       UpdateSpriteAnimation(p);
-      if ((p->s).work[2] == 0 || --(p->s).work[2] == 0) {
-        (p->s).mode[1] = 2, (p->s).mode[2] = 0;
+      if (p->work[2] == 0 || --p->work[2] == 0) {
+        p->mode[1] = 2, p->mode[2] = 0;
       }
       break;
   }
@@ -350,21 +350,21 @@ INCASM("asm/enemy/lamplort_c.inc");
 bool8 true_0806cac4(struct Enemy* p) { return TRUE; }
 
 static void FUN_0806cac8(struct Lamplort* p) {
-  switch ((p->s).mode[2]) {
+  switch (p->mode[2]) {
     case 0: {
       struct LamplortFlame* flame;
       SetSpriteAnimation(p, MOTION(SM025_LAMPLORT, 8));
       SetDDP(&p->body, &sCollisions[0]);
-      flame = (struct LamplortFlame*)((p->s).unk_2c);
+      flame = (struct LamplortFlame*)(p->unk_2c);
       flame->unk_b4 |= 2;
       SET_XFLIP(p, p->unk_bc);
-      (p->s).mode[2]++;
+      p->mode[2]++;
       FALLTHROUGH;
     }
     case 1:
       UpdateSpriteAnimation(p);
       if (IsSpriteAnimEnd(p)) {
-        (p->s).mode[1] = 1, (p->s).mode[2] = 0;
+        p->mode[1] = 1, p->mode[2] = 0;
       }
       break;
   }
@@ -373,23 +373,23 @@ static void FUN_0806cac8(struct Lamplort* p) {
 bool8 FUN_0806cb58(struct Enemy* p) { return TRUE; }
 
 static void FUN_0806cb5c(struct Lamplort* p) {
-  switch ((p->s).mode[2]) {
+  switch (p->mode[2]) {
     case 0: {
       struct LamplortFlame* flame;
       SetSpriteAnimation(p, MOTION(SM025_LAMPLORT, 1));
       SetDDP(&p->body, &sCollisions[0]);
       SET_XFLIP(p, p->unk_bc);
-      flame = (struct LamplortFlame*)((p->s).unk_2c);
+      flame = (struct LamplortFlame*)(p->unk_2c);
       flame->unk_b4 |= 2;
-      (p->s).work[2] = 8;
-      (p->s).mode[2]++;
+      p->work[2] = 8;
+      p->mode[2]++;
       FALLTHROUGH;
     }
     case 1:
       UpdateSpriteAnimation(p);
       if (IsSpriteAnimEnd(p)) {
-        if ((p->s).work[2] == 0 || --(p->s).work[2] == 0) {
-          (p->s).mode[1] = 6, (p->s).mode[2] = 0;
+        if (p->work[2] == 0 || --p->work[2] == 0) {
+          p->mode[1] = 6, p->mode[2] = 0;
         }
       }
       break;
