@@ -1610,59 +1610,18 @@ void clearSecretDiskDataHard(u8* flagbits) {
  * @brief clearSecretDiskData のアルティメットモード版
  * @note 0x080f8c14
  */
-NAKED void unlockAllSecretDisk(u8* flagbits) {
-  asm(".syntax unified\n\
-	push {r4, r5, r6, r7, lr}\n\
-	sub sp, #8\n\
-	adds r4, r0, #0\n\
-	ldr r6, _080F8C74 @ =gStageDiskManager\n\
-	str r4, [r6]\n\
-	movs r5, #0\n\
-	str r5, [sp]\n\
-	ldr r2, _080F8C78 @ =0x01000008\n\
-	mov r0, sp\n\
-	adds r1, r4, #0\n\
-	bl CpuFastSet\n\
-	str r5, [sp, #4]\n\
-	add r0, sp, #4\n\
-	adds r4, #0x20\n\
-	ldr r2, _080F8C7C @ =0x05000004\n\
-	adds r1, r4, #0\n\
-	bl CpuSet\n\
-	movs r7, #3\n\
-_080F8C3C:\n\
-	ldr r2, [r6]\n\
-	lsrs r4, r5, #2\n\
-	adds r2, r2, r4\n\
-	adds r3, r5, #0\n\
-	ands r3, r7\n\
-	movs r0, #1\n\
-	lsls r0, r3\n\
-	ldrb r1, [r2]\n\
-	orrs r0, r1\n\
-	strb r0, [r2]\n\
-	ldr r2, [r6]\n\
-	adds r2, r2, r4\n\
-	movs r0, #0x10\n\
-	lsls r0, r3\n\
-	ldrb r1, [r2]\n\
-	orrs r0, r1\n\
-	strb r0, [r2]\n\
-	adds r0, r5, #1\n\
-	lsls r0, r0, #0x18\n\
-	lsrs r5, r0, #0x18\n\
-	cmp r5, #0xb3\n\
-	bls _080F8C3C\n\
-	bl clearStageDisk\n\
-	add sp, #8\n\
-	pop {r4, r5, r6, r7}\n\
-	pop {r0}\n\
-	bx r0\n\
-	.align 2, 0\n\
-_080F8C74: .4byte gStageDiskManager\n\
-_080F8C78: .4byte 0x01000008\n\
-_080F8C7C: .4byte 0x05000004\n\
- .syntax divided\n");
+void unlockAllSecretDisk(u8* flagbits) {
+  u8 i;
+  u8* d;
+  gStageDiskManager.disk = flagbits;
+  CpuFastFill(0, flagbits, 32);
+  CpuFill32(0, flagbits + 0x20, 16);
+  for (i = 0; i <= 0xb3; i++) {
+    d = gStageDiskManager.disk;
+    gStageDiskManager.disk[i >> 2] = d[i >> 2] | (1 << (i & 3));
+    gStageDiskManager.disk[i >> 2] |= 0x10 << (i & 3);
+  }
+  clearStageDisk();
 }
 
 void clearStageDisk(void) {
