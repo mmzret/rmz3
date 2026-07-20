@@ -107,7 +107,7 @@ static void VFX24_Die(struct VFX* vfx) {
 void FUN_080b9070(struct VFX* vfx) {
   switch ((vfx->s).mode[2]) {
     case 0:
-      SetMotion(&vfx->s, 0xd00);
+      SetSpriteAnimation(vfx, 0xd00);
       (vfx->s).mode[2]++;
       FALLTHROUGH;
     case 1:
@@ -122,7 +122,7 @@ void FUN_080b9070(struct VFX* vfx) {
 void FUN_080b90bc(struct VFX* vfx) {
   switch ((vfx->s).mode[2]) {
     case 0:
-      SetMotion(&vfx->s, 0xd09);
+      SetSpriteAnimation(vfx, 0xd09);
       (vfx->s).mode[2]++;
       FALLTHROUGH;
     case 1:
@@ -143,7 +143,7 @@ void FUN_080b90bc(struct VFX* vfx) {
 void FUN_080b9134(struct VFX* vfx) {
   switch ((vfx->s).mode[2]) {
     case 0:
-      SetMotion(&vfx->s, 0xd01);
+      SetSpriteAnimation(vfx, 0xd01);
       (vfx->s).mode[2]++;
       FALLTHROUGH;
     case 1:

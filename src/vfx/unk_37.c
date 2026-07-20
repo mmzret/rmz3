@@ -86,7 +86,7 @@ void VFX37_Init(struct VFX* vfx) {
   (vfx->s).mode[1] = u8_ARRAY_0836edf0[(vfx->s).work[0]];
   (vfx->s).flags |= FLIPABLE;
   (vfx->s).flags |= DISPLAY;
-  InitNonAffineMotion(&vfx->s);
+  EnableSpriteAnimation_Normal(vfx);
   VFX37_Update(vfx);
 }
 

@@ -77,7 +77,7 @@ void FUN_08082a20(struct Enemy* p) {
 void FUN_08082aa0(struct Enemy* p) {
   switch ((p->s).mode[2]) {
     case 0:
-      InitNonAffineMotion(&p->s);
+      EnableSpriteAnimation_Normal(p);
       SetSpriteAnimation(p, MOTION(0x59, 1));
       (p->s).mode[2]++;
       FALLTHROUGH;

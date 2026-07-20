@@ -40,7 +40,7 @@ void LeviathanMinigameEnemy_Init(struct Enemy* p) {
   (p->s).mode[1] = u8_ARRAY_0836a76a[(p->s).work[0]];
   (p->s).flags |= FLIPABLE;
   (p->s).flags |= DISPLAY;
-  InitNonAffineMotion(&p->s);
+  EnableSpriteAnimation_Normal(p);
   if ((p->s).work[0] != 6) {
     SetSpriteAnimation(p, sMotions[(p->s).work[0]]);
   }

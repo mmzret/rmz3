@@ -85,7 +85,7 @@ bool8 FUN_0803532c(struct Zero* z) { return TRUE; }
 void FUN_08035330(struct Zero* z) {
   switch ((z->s).mode[2]) {
     case 0:
-      SetMotion(&z->s, MOTION(0xBE, 0x21));
+      SetSpriteAnimation(z, MOTION(0xBE, 0x21));
       (z->s).work[2] = 0x3c;
       (z->s).mode[2]++;
       FALLTHROUGH;
@@ -110,7 +110,7 @@ bool8 FUN_0803537c(struct Zero* z) {
 void FUN_080353a8(struct Zero* z) {
   switch ((z->s).mode[2]) {
     case 0:
-      SetMotion(&z->s, MOTION(0xBE, 0x21));
+      SetSpriteAnimation(z, MOTION(0xBE, 0x21));
       SetDDP(&z->body, &sCollisions[0]);
       (z->s).mode[2]++;
       FALLTHROUGH;
@@ -131,7 +131,7 @@ bool8 FUN_080353e4(struct Zero* z) {
 void FUN_0803540c(struct Zero* z) {
   switch ((z->s).mode[2]) {
     case 0:
-      SetMotion(&z->s, MOTION(0xBE, 0x21));
+      SetSpriteAnimation(z, MOTION(0xBE, 0x21));
       (z->s).work[2] = 0xa;
       (z->s).mode[2]++;
       FALLTHROUGH;
@@ -171,7 +171,7 @@ bool8 FUN_080354a4(struct Zero* z) {
 void harpuia_080354d4(struct Zero* z) {
   switch ((z->s).mode[2]) {
     case 0:
-      SetMotion(&z->s, MOTION(0xBE, 0x22));
+      SetSpriteAnimation(z, MOTION(0xBE, 0x22));
       SetDDP(&z->body, &sCollisions[1]);
       PlaySound(0xf9);
       *(u8*)((u8*)z + 0xf) = 0;
@@ -192,7 +192,7 @@ void harpuia_080354d4(struct Zero* z) {
       }
       break;
     case 2:
-      SetMotion(&z->s, MOTION(0xBE, 0x23));
+      SetSpriteAnimation(z, MOTION(0xBE, 0x23));
       SetDDP(&z->body, &sCollisions[1]);
       PlaySound(0xf9);
       (z->s).mode[2]++;
@@ -215,7 +215,7 @@ bool8 FUN_080355c0(struct Zero* z) { return TRUE; }
 void FUN_080355c4(struct Zero* z) {
   switch ((z->s).mode[2]) {
     case 0:
-      SetMotion(&z->s, MOTION(0xBE, 0x21));
+      SetSpriteAnimation(z, MOTION(0xBE, 0x21));
       *(u32*)((u8*)z + 0x8c) = 0;
       *(u32*)((u8*)z + 0x90) = 0;
       *(u8*)((u8*)z + 0x94) = 0;

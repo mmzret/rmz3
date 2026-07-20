@@ -49,7 +49,7 @@ void AnubisCoffin_Init(struct Solid* p) {
   (p->s).mode[1] = u8_ARRAY_08370240[(p->s).work[0]];
   (p->s).flags |= FLIPABLE;
   (p->s).flags |= DISPLAY;
-  InitNonAffineMotion(&p->s);
+  EnableSpriteAnimation_Normal(p);
   INIT_BODY(p, sAnubisCoffinCollisions, 1, (void*)nop_080cde6c);
   *(u8*)((u8*)p + 0xbc) = 0;
   AnubisCoffin_Update(p);

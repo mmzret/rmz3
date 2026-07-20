@@ -59,7 +59,7 @@ void HeavyCannon_Init(struct Enemy* p) {
   (p->s).mode[1] = sInitModes[(p->s).work[0]];
   (p->s).flags |= FLIPABLE;
   (p->s).flags |= DISPLAY;
-  InitNonAffineMotion(&p->s);
+  EnableSpriteAnimation_Normal(p);
   INIT_BODY(p, sCollisions, 10, FUN_0807aae8);
   (p->s).renderPrio = 30;
   HeavyCannon_Update(p);
