@@ -4,11 +4,11 @@
 #include "entity/entity.h"
 #include "gba/gba.h"
 
-struct LamplortFlame {
+typedef struct {
   COLLISION_OBJECT_HDR;  // 0x00
   u32 unk_b4;            // 0xB4
   u8 unk_b8[12];         // 0xB8
-};  // 132 bytes
-static_assert(sizeof(struct LamplortFlame) == sizeof(Object) + 16);
+} LamplortFlame;         // 132 bytes
+static_assert(sizeof(LamplortFlame) == sizeof(Object) + 16);
 
 #endif  // __INCLUDE_PROJECTILE_UNK_06_H__

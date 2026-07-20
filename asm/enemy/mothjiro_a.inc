@@ -64,7 +64,7 @@ _08087C6C:
 	bl InitBody
 	str r6, [r4, #0x2c]
 	str r5, [r4, #0x24]
-	ldr r0, _08087CEC @ =FUN_08088b0c
+	ldr r0, _08087CEC @ =Mothjiro_OnCollision
 	str r0, [r4, #0x24]
 	ldr r0, [r6, #0x54]
 	str r0, [r6, #0x64]
@@ -120,7 +120,7 @@ _08087CD8:
 	bx r0
 	.align 2, 0
 _08087CE8: .4byte 0x083687C8
-_08087CEC: .4byte FUN_08088b0c
+_08087CEC: .4byte Mothjiro_OnCollision
 _08087CF0: .4byte 0xFFFFC000
 _08087CF4: .4byte 0xFFFFB000
 _08087CF8: .4byte gEnemyFnTable

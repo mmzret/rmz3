@@ -2,12 +2,19 @@
 #include "enemy.h"
 #include "global.h"
 
-struct Enemy* CreatePetatria(Coords32* c, u8 mode) {
-  struct Enemy* p = (struct Enemy*)AllocEntityLast(gEnemyHeaderPtr);
+typedef struct {
+  COLLISION_OBJECT_HDR;  // 0x00
+  u8 buffer[12];         // 0xB4
+  void* enti_c0;         // 0xC0, Entity*
+} Petatria;
+static_assert(sizeof(Petatria) == sizeof(struct Enemy));
+
+Petatria* Unused_CreatePetatria(Coords32* c, u8 mode) {
+  Petatria* p = AllocEntityLast(gEnemyHeaderPtr);
   if (p != NULL) {
     INIT_ENEMY_ROUTINE(p, ENEMY_PETATRIA);
-    (p->s).coord = *c;
-    (p->s).work[0] = mode;
+    p->coord = *c;
+    p->work[0] = mode;
   }
   return p;
 }
@@ -17,46 +24,42 @@ INCASM("asm/enemy/petatria_a.inc");
 static const EnemyFunc sUpdates1[10];
 static const EnemyFunc sUpdates2[10];
 bool8 FUN_08091188(struct Enemy* p);
-void Petatria_Die(struct Enemy* p);
+void Petatria_Die(Petatria* p);
 
-void Petatria_Update(struct Enemy* p) {
-  struct Entity** slot;
+void Petatria_Update(Petatria* p) {
   if ((p->body).status & BODY_STATUS_DEAD) {
     SET_ENEMY_ROUTINE(p, ENTITY_DIE);
     Petatria_Die(p);
     return;
   }
-  (sUpdates1[(p->s).mode[1]])(p);
-  FUN_08091188(p);
-  if (IsFrozen(&p->s)) {
+  (sUpdates1[p->mode[1]])((void*)p);
+  FUN_08091188((void*)p);
+  if (IsFrozen(p)) {
     return;
   }
-  slot = (struct Entity**)((u8*)p + 0xc0);
-  if (*slot != NULL) {
-    if (!isKilled(*slot)) {
+  if (p->enti_c0 != NULL) {
+    if (!isKilled(p->enti_c0)) {
       return;
     }
-    *slot = NULL;
+    p->enti_c0 = NULL;
   }
-  (sUpdates2[(p->s).mode[1]])(p);
+  (sUpdates2[p->mode[1]])((void*)p);
 }
 
 INCASM("asm/enemy/petatria_b.inc");
 
-bool8 FUN_080902a8(struct Enemy* p) {
+bool8 FUN_080902a8(Petatria* p) {
   if ((p->body).status & BODY_STATUS_B3) {
-    (p->s).mode[1] = 4;
-    (p->s).mode[2] = 0;
+    p->mode[1] = 4, p->mode[2] = 0;
   }
   return TRUE;
 }
 
 INCASM("asm/enemy/petatria_c.inc");
 
-bool8 FUN_080906ec(struct Enemy* p) {
+bool8 FUN_080906ec(Petatria* p) {
   if ((p->body).status & BODY_STATUS_B3) {
-    (p->s).mode[1] = 5;
-    (p->s).mode[2] = 0;
+    p->mode[1] = 5, p->mode[2] = 0;
   }
   return TRUE;
 }
@@ -85,10 +88,8 @@ INCASM("asm/enemy/petatria_i.inc");
 
 bool8 FUN_08091150(struct Enemy* p) { return TRUE; }
 
-void FUN_08091154(struct Enemy* p) {
-  if ((p->s).mode[2] == 0) {
-    (p->s).mode[2] = 1;
-  }
+void FUN_08091154(Petatria* p) {
+  if (p->mode[2] == 0) p->mode[2] = 1;
 }
 
 bool8 FUN_08091168(struct Enemy* p) { return TRUE; }
@@ -97,10 +98,8 @@ void FUN_0809116c(struct Enemy* p) {}
 
 bool8 FUN_08091170(struct Enemy* p) { return TRUE; }
 
-void FUN_08091174(struct Enemy* p) {
-  if ((p->s).mode[2] == 0) {
-    (p->s).mode[2] = 1;
-  }
+void FUN_08091174(Petatria* p) {
+  if (p->mode[2] == 0) p->mode[2] = 1;
 }
 
 bool8 FUN_08091188(struct Enemy* p) { return TRUE; }
@@ -110,19 +109,18 @@ INCASM("asm/enemy/petatria_j.inc");
 void nop_0809127c(struct Enemy* p) {}
 
 void Petatria_Init(struct Enemy* p);
-void Petatria_Update(struct Enemy* p);
-void Petatria_Die(struct Enemy* p);
+void Petatria_Update(Petatria* p);
+void Petatria_Die(Petatria* p);
 
 // clang-format off
 const EnemyRoutine gPetatriaRoutine = {
-    [ENTITY_INIT] =      Petatria_Init,
-    [ENTITY_UPDATE] =    Petatria_Update,
-    [ENTITY_DIE] =       Petatria_Die,
+    [ENTITY_INIT] =      (void*)Petatria_Init,
+    [ENTITY_UPDATE] =    (void*)Petatria_Update,
+    [ENTITY_DIE] =       (void*)Petatria_Die,
     [ENTITY_DISAPPEAR] = (void*)DeleteEnemy,
-    [ENTITY_EXIT] =      (EnemyFunc)DeleteEntity,
+    [ENTITY_EXIT] =      (void*)DeleteEntity,
 };
 // clang-format on
-
 
 // clang-format off
 static const EnemyFunc sUpdates1[10] = {
@@ -156,9 +154,9 @@ static const EnemyFunc sUpdates2[10] = {
     FUN_08090da8,
     FUN_08090ee0,
     FUN_0809106c,
-    FUN_08091154,
+    (void*)FUN_08091154,
     FUN_0809116c,
-    FUN_08091174,
+    (void*)FUN_08091174,
 };
 // clang-format on
 
