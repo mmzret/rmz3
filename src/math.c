@@ -40,7 +40,18 @@ s32 CalcAngleBetweenPoints(s32 x1, s32 y1, s32 x2, s32 y2) { return CalcAngle(x2
 
 s32 CalcAngleBetweenCoords(Coords32* c1, Coords32* c2) { return CalcAngleBetweenPoints(c1->x, c1->y, c2->x, c2->y); }
 
-NAKED u8 FUN_080e964c(u32 r0, s32 r1, s32 r2) {
+// Steps `a` toward `b` by at most `c` on a 256-unit wrapping scale (angles).
+// Does not match: agbcc allocates the u8 mask and the direction temp
+// differently from the target (24 vs 26 instructions); the MODERN branch
+// documents the behaviour, the asm below is what the ROM contains.
+NON_MATCH u8 FUN_080e964c(u32 a, s32 b, s32 c) {
+#if MODERN
+  if ((((a - b) + c) & 0xFF) > (u32)(c << 1)) {
+    s32 dir = (((a - b) & 0xFF) > 0x7F) ? -1 : 1;
+    return (b + c * dir) & 0xFF;
+  }
+  return a;
+#else
   asm(".syntax unified\n\
 	push {r4, r5, r6, lr}\n\
 	adds r6, r0, #0\n\
@@ -72,6 +83,7 @@ _080E9678:\n\
 	pop {r1}\n\
 	bx r1\n\
  .syntax divided\n");
+#endif
 }
 
 NAKED static void unused_080e9680(void* param_1, void* param_2, void* param_3, void* param_4, void* param_5, void* param_6) { INCCODE("asm/unused/unused_080e9680.inc"); }
