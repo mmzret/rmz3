@@ -1,6 +1,8 @@
 #include "entity.h"
 #include "gfx.h"
 #include "global.h"
+#include "stagerun.h"
+#include "camera.h"
 #include "vfx.h"
 
 /*
@@ -1066,69 +1068,22 @@ _080C65A6:\n\
  .syntax divided\n");
 }
 
-NAKED static void FUN_080c65ac(struct VFX* p) {
-  asm(".syntax unified\n\
-	push {r4, r5, lr}\n\
-	adds r4, r0, #0\n\
-	ldrb r0, [r4, #0xd]\n\
-	cmp r0, #0\n\
-	beq _080C65BC\n\
-	cmp r0, #1\n\
-	beq _080C65C6\n\
-	b _080C6610\n\
-_080C65BC:\n\
-	movs r0, #0x10\n\
-	strb r0, [r4, #0x12]\n\
-	ldrb r0, [r4, #0xd]\n\
-	adds r0, #1\n\
-	strb r0, [r4, #0xd]\n\
-_080C65C6:\n\
-	ldr r3, _080C65E8 @ =gBlendRegBuffer\n\
-	ldrb r5, [r4, #0x12]\n\
-	movs r1, #0x1f\n\
-	ands r1, r5\n\
-	ldrb r2, [r4, #0x12]\n\
-	movs r0, #0x10\n\
-	subs r0, r0, r2\n\
-	lsls r0, r0, #8\n\
-	orrs r1, r0\n\
-	strh r1, [r3, #2]\n\
-	lsls r0, r5, #0x18\n\
-	cmp r0, #0\n\
-	beq _080C65EC\n\
-	subs r0, r5, #1\n\
-	strb r0, [r4, #0x12]\n\
-	b _080C6610\n\
-	.align 2, 0\n\
-_080C65E8: .4byte gBlendRegBuffer\n\
-_080C65EC:\n\
-	ldr r0, _080C6618 @ =gOverworld\n\
-	ldr r1, _080C661C @ =0x0002D025\n\
-	adds r0, r0, r1\n\
-	movs r1, #0\n\
-	strb r1, [r0]\n\
-	ldrb r1, [r4, #0xa]\n\
-	movs r0, #0xfe\n\
-	ands r0, r1\n\
-	strb r0, [r4, #0xa]\n\
-	ldr r1, _080C6620 @ =gVFXFnTable\n\
-	ldrb r0, [r4, #9]\n\
-	lsls r0, r0, #2\n\
-	adds r0, r0, r1\n\
-	movs r1, #4\n\
-	str r1, [r4, #0xc]\n\
-	ldr r0, [r0]\n\
-	ldr r0, [r0, #0x10]\n\
-	str r0, [r4, #0x14]\n\
-_080C6610:\n\
-	pop {r4, r5}\n\
-	pop {r0}\n\
-	bx r0\n\
-	.align 2, 0\n\
-_080C6618: .4byte gOverworld\n\
-_080C661C: .4byte 0x0002D025\n\
-_080C6620: .4byte gVFXFnTable\n\
- .syntax divided\n");
+static void FUN_080c65ac(struct VFX* p) {
+  switch ((p->s).mode[1]) {
+    case 0:
+      (p->s).work[2] = 0x10;
+      (p->s).mode[1]++;
+    case 1:
+      gBlendRegBuffer.bldalpha =
+          ((p->s).work[2] & 0x1f) | ((0x10 - (p->s).work[2]) << 8);
+      if ((p->s).work[2] != 0) {
+        (p->s).work[2]--;
+      } else {
+        gOverworld.state[1] = 0;
+        (p->s).flags &= ~DISPLAY;
+        SET_VFX_ROUTINE(p, ENTITY_EXIT);
+      }
+  }
 }
 
 NAKED static void updateMissionPoint(struct VFX* p) {
