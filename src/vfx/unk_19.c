@@ -89,79 +89,25 @@ static void Ghost19_Die(struct VFX* p) { SET_VFX_ROUTINE(p, ENTITY_EXIT); }
 
 // --------------------------------------------
 
-NAKED static void FUN_080b6fc8(struct VFX* p) {
-  asm(".syntax unified\n\
-	push {r4, r5, lr}\n\
-	adds r5, r0, #0\n\
-	ldrb r0, [r5, #0xe]\n\
-	cmp r0, #0\n\
-	beq _080B6FD8\n\
-	cmp r0, #1\n\
-	beq _080B7006\n\
-	b _080B7042\n\
-_080B6FD8:\n\
-	ldr r4, _080B7048 @ =0x0836E8AA\n\
-	ldr r2, _080B704C @ =RNG_0202f388\n\
-	ldr r1, [r2]\n\
-	ldr r0, _080B7050 @ =0x000343FD\n\
-	muls r0, r1, r0\n\
-	ldr r1, _080B7054 @ =0x00269EC3\n\
-	adds r0, r0, r1\n\
-	lsls r0, r0, #1\n\
-	lsrs r1, r0, #1\n\
-	str r1, [r2]\n\
-	lsrs r0, r0, #0x11\n\
-	movs r1, #3\n\
-	bl __umodsi3\n\
-	lsls r0, r0, #1\n\
-	adds r0, r0, r4\n\
-	ldrh r1, [r0]\n\
-	adds r0, r5, #0\n\
-	bl SetMotion\n\
-	ldrb r0, [r5, #0xe]\n\
-	adds r0, #1\n\
-	strb r0, [r5, #0xe]\n\
-_080B7006:\n\
-	ldr r1, [r5, #0x54]\n\
-	ldr r0, [r5, #0x5c]\n\
-	adds r2, r1, r0\n\
-	str r2, [r5, #0x54]\n\
-	ldr r1, [r5, #0x58]\n\
-	ldr r0, [r5, #0x60]\n\
-	adds r1, r1, r0\n\
-	str r1, [r5, #0x58]\n\
-	adds r0, #0x40\n\
-	str r0, [r5, #0x60]\n\
-	cmp r0, #0\n\
-	ble _080B703C\n\
-	adds r0, r2, #0\n\
-	bl FUN_080098a4\n\
-	lsls r0, r0, #0x10\n\
-	cmp r0, #0\n\
-	beq _080B703C\n\
-	ldr r1, _080B7058 @ =gVFXFnTable\n\
-	ldrb r0, [r5, #9]\n\
-	lsls r0, r0, #2\n\
-	adds r0, r0, r1\n\
-	movs r1, #2\n\
-	str r1, [r5, #0xc]\n\
-	ldr r0, [r0]\n\
-	ldr r0, [r0, #8]\n\
-	str r0, [r5, #0x14]\n\
-_080B703C:\n\
-	adds r0, r5, #0\n\
-	bl UpdateEntityAnim\n\
-_080B7042:\n\
-	pop {r4, r5}\n\
-	pop {r0}\n\
-	bx r0\n\
-	.align 2, 0\n\
-_080B7048: .4byte motion_t_ARRAY_0836e8aa\n\
-_080B704C: .4byte RNG_0202f388\n\
-_080B7050: .4byte 0x000343FD\n\
-_080B7054: .4byte 0x00269EC3\n\
-_080B7058: .4byte gVFXFnTable\n\
- .syntax divided\n");
+static const motion_t motion_t_ARRAY_0836e8aa[3];
+
+static void FUN_080b6fc8(struct VFX* p) {
+  switch ((p->s).mode[2]) {
+    case 0: {
+      const motion_t* m = motion_t_ARRAY_0836e8aa;
+      RNG_0202f388 = LCG(RNG_0202f388);
+      SetSpriteAnimation(&p->s, m[(RNG_0202f388 >> 16) % 3]);
+      (p->s).mode[2]++;
+    }
+    case 1:
+      (p->s).coord.x += (p->s).d.x;
+      (p->s).coord.y += (p->s).d.y;
+      (p->s).d.y += 0x40;
+      if ((p->s).d.y > 0 && FUN_080098a4((p->s).coord.x, (p->s).coord.y)) {
+        SET_VFX_ROUTINE(p, ENTITY_DIE);
+      }
+      UpdateSpriteAnimation(&p->s);
+  }
 }
 
 NAKED static void FUN_080b705c(struct VFX* p) {
