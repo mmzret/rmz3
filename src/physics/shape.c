@@ -357,158 +357,62 @@ s32 FUN_0800aaec(s32 x, s32 y) {
   return 0;
 }
 
-NAKED s32 FUN_0800ab20(s32 x, s32 y) {
-  asm(".syntax unified\n\
-	push {lr}\n\
-	adds r2, r0, #0\n\
-	ldr r0, _0800AB38 @ =0x000007FF\n\
-	cmp r2, r0\n\
-	ble _0800AB40\n\
-	ldr r3, _0800AB3C @ =0xFFFFF800\n\
-	adds r0, r2, r3\n\
-	lsls r0, r0, #1\n\
-	cmp r1, r0\n\
-	bge _0800AB40\n\
-	mvns r0, r1\n\
-	b _0800AB42\n\
-	.align 2, 0\n\
-_0800AB38: .4byte 0x000007FF\n\
-_0800AB3C: .4byte 0xFFFFF800\n\
-_0800AB40:\n\
-	movs r0, #0\n\
-_0800AB42:\n\
-	pop {r1}\n\
-	bx r1\n\
- .syntax divided\n");
+s32 FUN_0800ab20(s32 x, s32 y) {
+  if (x > 0x7FF && y < (x - 0x800) * 2) {
+    return ~y;
+  }
+  return 0;
 }
 
-NAKED s32 FUN_0800ab48(s32 x, s32 y) {
-  asm(".syntax unified\n\
-	push {lr}\n\
-	adds r2, r0, #0\n\
-	ldr r0, _0800AB5C @ =0x000007FF\n\
-	cmp r2, r0\n\
-	bgt _0800AB58\n\
-	lsls r0, r2, #1\n\
-	cmp r1, r0\n\
-	bge _0800AB60\n\
-_0800AB58:\n\
-	mvns r0, r1\n\
-	b _0800AB62\n\
-	.align 2, 0\n\
-_0800AB5C: .4byte 0x000007FF\n\
-_0800AB60:\n\
-	movs r0, #0\n\
-_0800AB62:\n\
-	pop {r1}\n\
-	bx r1\n\
- .syntax divided\n");
+s32 FUN_0800ab48(s32 x, s32 y) {
+  if (x > 0x7FF) {
+    return ~y;
+  }
+  if (y >= x * 2) {
+    return 0;
+  }
+  return ~y;
 }
 
-NAKED s32 FUN_0800ab68(s32 x, s32 y) {
-  asm(".syntax unified\n\
-	push {lr}\n\
-	adds r2, r0, #0\n\
-	ldr r0, _0800AB80 @ =0x00000BFF\n\
-	cmp r2, r0\n\
-	ble _0800AB88\n\
-	ldr r3, _0800AB84 @ =0xFFFFF400\n\
-	adds r0, r2, r3\n\
-	lsls r0, r0, #2\n\
-	cmp r1, r0\n\
-	bge _0800AB88\n\
-	mvns r0, r1\n\
-	b _0800AB8A\n\
-	.align 2, 0\n\
-_0800AB80: .4byte 0x00000BFF\n\
-_0800AB84: .4byte 0xFFFFF400\n\
-_0800AB88:\n\
-	movs r0, #0\n\
-_0800AB8A:\n\
-	pop {r1}\n\
-	bx r1\n\
- .syntax divided\n");
+s32 FUN_0800ab68(s32 x, s32 y) {
+  if (x > 0xBFF && y < (x - 0xC00) * 4) {
+    return ~y;
+  }
+  return 0;
 }
 
-NAKED s32 FUN_0800ab90(s32 x, s32 y) {
-  asm(".syntax unified\n\
-	push {lr}\n\
-	adds r2, r0, #0\n\
-	ldr r0, _0800ABB0 @ =0x000007FF\n\
-	cmp r2, r0\n\
-	ble _0800ABBC\n\
-	ldr r0, _0800ABB4 @ =0x00000BFF\n\
-	cmp r2, r0\n\
-	bgt _0800ABAA\n\
-	ldr r3, _0800ABB8 @ =0xFFFFF800\n\
-	adds r0, r2, r3\n\
-	lsls r0, r0, #2\n\
-	cmp r1, r0\n\
-	bge _0800ABBC\n\
-_0800ABAA:\n\
-	mvns r0, r1\n\
-	b _0800ABBE\n\
-	.align 2, 0\n\
-_0800ABB0: .4byte 0x000007FF\n\
-_0800ABB4: .4byte 0x00000BFF\n\
-_0800ABB8: .4byte 0xFFFFF800\n\
-_0800ABBC:\n\
-	movs r0, #0\n\
-_0800ABBE:\n\
-	pop {r1}\n\
-	bx r1\n\
- .syntax divided\n");
+s32 FUN_0800ab90(s32 x, s32 y) {
+  if (x <= 0x7FF) {
+    return 0;
+  }
+  if (x > 0xBFF) {
+    return ~y;
+  }
+  if (y >= (x - 0x800) * 4) {
+    return 0;
+  }
+  return ~y;
 }
 
-NAKED s32 FUN_0800abc4(s32 x, s32 y) {
-  asm(".syntax unified\n\
-	push {lr}\n\
-	adds r2, r0, #0\n\
-	ldr r0, _0800ABE4 @ =0x000003FF\n\
-	cmp r2, r0\n\
-	ble _0800ABF0\n\
-	ldr r0, _0800ABE8 @ =0x000007FF\n\
-	cmp r2, r0\n\
-	bgt _0800ABDE\n\
-	ldr r3, _0800ABEC @ =0xFFFFFC00\n\
-	adds r0, r2, r3\n\
-	lsls r0, r0, #2\n\
-	cmp r1, r0\n\
-	bge _0800ABF0\n\
-_0800ABDE:\n\
-	mvns r0, r1\n\
-	b _0800ABF2\n\
-	.align 2, 0\n\
-_0800ABE4: .4byte 0x000003FF\n\
-_0800ABE8: .4byte 0x000007FF\n\
-_0800ABEC: .4byte 0xFFFFFC00\n\
-_0800ABF0:\n\
-	movs r0, #0\n\
-_0800ABF2:\n\
-	pop {r1}\n\
-	bx r1\n\
- .syntax divided\n");
+s32 FUN_0800abc4(s32 x, s32 y) {
+  if (x <= 0x3FF) {
+    return 0;
+  }
+  if (x > 0x7FF) {
+    return ~y;
+  }
+  if (y >= (x - 0x400) * 4) {
+    return 0;
+  }
+  return ~y;
 }
 
-NAKED s32 FUN_0800abf8(s32 x, s32 y) {
-  asm(".syntax unified\n\
-	push {lr}\n\
-	adds r2, r0, #0\n\
-	ldr r0, _0800AC0C @ =0x000003FF\n\
-	cmp r2, r0\n\
-	bgt _0800AC08\n\
-	lsls r0, r2, #2\n\
-	cmp r1, r0\n\
-	bge _0800AC10\n\
-_0800AC08:\n\
-	mvns r0, r1\n\
-	b _0800AC12\n\
-	.align 2, 0\n\
-_0800AC0C: .4byte 0x000003FF\n\
-_0800AC10:\n\
-	movs r0, #0\n\
-_0800AC12:\n\
-	pop {r1}\n\
-	bx r1\n\
- .syntax divided\n");
+s32 FUN_0800abf8(s32 x, s32 y) {
+  if (x > 0x3FF) {
+    return ~y;
+  }
+  if (y >= x * 4) {
+    return 0;
+  }
+  return ~y;
 }
