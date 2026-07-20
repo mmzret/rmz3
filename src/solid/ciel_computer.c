@@ -1,6 +1,9 @@
 #include "collision.h"
 #include "gfx.h"
+#include "anim_loader.h"
+#include "game.h"
 #include "global.h"
+#include "palette_animation.h"
 #include "solid.h"
 
 static void CielComputer_Init(struct Solid* p);
@@ -60,194 +63,50 @@ static void CielComputer_Init(struct Solid* p) {
   CielComputer_Update((void*)p);
 }
 
-NAKED static void CielComputer_Update(struct Solid* p) {
-  asm(".syntax unified\n\
-	push {r4, r5, r6, r7, lr}\n\
-	mov r7, r8\n\
-	push {r7}\n\
-	adds r6, r0, #0\n\
-	bl UpdateEntityAnim\n\
-	ldrb r0, [r6, #0xd]\n\
-	cmp r0, #0\n\
-	beq _080DF294\n\
-	cmp r0, #1\n\
-	beq _080DF358\n\
-	b _080DF3EA\n\
-_080DF294:\n\
-	adds r0, r6, #0\n\
-	adds r0, #0x8c\n\
-	ldr r0, [r0]\n\
-	movs r1, #0x80\n\
-	lsls r1, r1, #0x16\n\
-	ands r0, r1\n\
-	cmp r0, #0\n\
-	bne _080DF2A6\n\
-	b _080DF3EA\n\
-_080DF2A6:\n\
-	ldr r0, _080DF340 @ =gInChat\n\
-	ldrb r0, [r0]\n\
-	cmp r0, #0\n\
-	bne _080DF2B0\n\
-	b _080DF3EA\n\
-_080DF2B0:\n\
-	ldr r0, _080DF344 @ =gCollisionManager\n\
-	movs r1, #0xc5\n\
-	lsls r1, r1, #3\n\
-	adds r0, r0, r1\n\
-	adds r1, r6, #0\n\
-	adds r1, #0x74\n\
-	ldr r0, [r0]\n\
-	cmp r0, r1\n\
-	beq _080DF2C4\n\
-	b _080DF3EA\n\
-_080DF2C4:\n\
-	ldr r0, _080DF348 @ =gSystemSavedata\n\
-	adds r4, r0, #0\n\
-	adds r4, #0x48\n\
-	ldrb r0, [r4]\n\
-	cmp r0, #3\n\
-	bhi _080DF302\n\
-	ldr r1, _080DF34C @ =sMotions\n\
-	lsls r0, r0, #1\n\
-	adds r0, r0, r1\n\
-	ldrh r0, [r0]\n\
-	movs r1, #1\n\
-	orrs r1, r0\n\
-	adds r0, r6, #0\n\
-	bl SetMotion\n\
-	ldrb r0, [r4]\n\
-	cmp r0, #3\n\
-	bne _080DF302\n\
-	adds r0, r6, #0\n\
-	bl GetEntityPalID\n\
-	adds r1, r0, #0\n\
-	lsls r1, r1, #0x18\n\
-	lsrs r1, r1, #0x13\n\
-	movs r2, #0x80\n\
-	lsls r2, r2, #2\n\
-	adds r0, r2, #0\n\
-	orrs r1, r0\n\
-	movs r0, #0xf1\n\
-	bl StartPaletteAnimation\n\
-_080DF302:\n\
-	ldr r0, _080DF348 @ =gSystemSavedata\n\
-	adds r0, #0x48\n\
-	ldrb r0, [r0]\n\
-	cmp r0, #4\n\
-	bne _080DF326\n\
-	adds r0, r6, #0\n\
-	bl GetEntityPalID\n\
-	adds r1, r0, #0\n\
-	lsls r1, r1, #0x18\n\
-	lsrs r1, r1, #0x13\n\
-	movs r2, #0x80\n\
-	lsls r2, r2, #2\n\
-	adds r0, r2, #0\n\
-	orrs r1, r0\n\
-	movs r0, #0xf2\n\
-	bl StartPaletteAnimation\n\
-_080DF326:\n\
-	movs r0, #0x95\n\
-	lsls r0, r0, #1\n\
-	bl PlaySound\n\
-	ldr r0, _080DF350 @ =gGameState\n\
-	ldr r1, _080DF354 @ =0x00060400\n\
-	bl SetGameMode\n\
-	ldrb r0, [r6, #0xd]\n\
-	adds r0, #1\n\
-	strb r0, [r6, #0xd]\n\
-	b _080DF3EA\n\
-	.align 2, 0\n\
-_080DF340: .4byte gInChat\n\
-_080DF344: .4byte gCollisionManager\n\
-_080DF348: .4byte gSystemSavedata\n\
-_080DF34C: .4byte sMotions\n\
-_080DF350: .4byte gGameState\n\
-_080DF354: .4byte 0x00060400\n\
-_080DF358:\n\
-	movs r0, #0xf1\n\
-	bl StepPaletteAnimation\n\
-	movs r0, #0xf2\n\
-	bl StepPaletteAnimation\n\
-	ldr r0, _080DF3F4 @ =gGameState\n\
-	ldrb r7, [r0, #2]\n\
-	cmp r7, #0\n\
-	bne _080DF3EA\n\
-	movs r0, #0xf1\n\
-	bl RemovePaletteAnimation\n\
-	movs r0, #0xf2\n\
-	bl RemovePaletteAnimation\n\
-	ldr r0, _080DF3F8 @ =gSystemSavedata\n\
-	adds r0, #0x48\n\
-	mov r8, r0\n\
-	ldrb r0, [r0]\n\
-	cmp r0, #2\n\
-	bls _080DF3D2\n\
-	ldr r1, _080DF3FC @ =sMotions\n\
-	mov r2, r8\n\
-	ldrb r0, [r2]\n\
-	lsls r0, r0, #1\n\
-	adds r0, r0, r1\n\
-	ldrh r4, [r0]\n\
-	lsrs r4, r4, #8\n\
-	lsls r5, r4, #2\n\
-	adds r5, r5, r4\n\
-	lsls r5, r5, #2\n\
-	ldr r1, _080DF400 @ =gStaticMotionGraphics\n\
-	adds r0, r5, r1\n\
-	ldr r1, _080DF404 @ =wStaticGraphicTilenums\n\
-	lsls r4, r4, #1\n\
-	adds r1, r4, r1\n\
-	ldrh r1, [r1]\n\
-	ldrh r2, [r0, #6]\n\
-	lsrs r2, r2, #6\n\
-	subs r1, r1, r2\n\
-	lsls r1, r1, #5\n\
-	movs r2, #0x80\n\
-	lsls r2, r2, #9\n\
-	adds r1, r1, r2\n\
-	bl RequestGraphicTransfer\n\
-	ldr r0, _080DF408 @ =gStaticMotionGraphics+12\n\
-	adds r5, r5, r0\n\
-	ldr r0, _080DF40C @ =wStaticMotionPalIDs\n\
-	adds r4, r4, r0\n\
-	ldrh r1, [r4]\n\
-	ldrb r0, [r5, #7]\n\
-	subs r1, r1, r0\n\
-	lsls r1, r1, #5\n\
-	movs r2, #0x80\n\
-	lsls r2, r2, #2\n\
-	adds r1, r1, r2\n\
-	adds r0, r5, #0\n\
-	bl LoadPalette\n\
-_080DF3D2:\n\
-	ldr r1, _080DF3FC @ =sMotions\n\
-	mov r2, r8\n\
-	ldrb r0, [r2]\n\
-	lsls r0, r0, #1\n\
-	adds r0, r0, r1\n\
-	ldrh r1, [r0]\n\
-	adds r0, r6, #0\n\
-	bl SetMotion\n\
-	ldr r0, _080DF410 @ =gInChat\n\
-	strb r7, [r0]\n\
-	strb r7, [r6, #0xd]\n\
-_080DF3EA:\n\
-	pop {r3}\n\
-	mov r8, r3\n\
-	pop {r4, r5, r6, r7}\n\
-	pop {r0}\n\
-	bx r0\n\
-	.align 2, 0\n\
-_080DF3F4: .4byte gGameState\n\
-_080DF3F8: .4byte gSystemSavedata\n\
-_080DF3FC: .4byte sMotions\n\
-_080DF400: .4byte gStaticMotionGraphics\n\
-_080DF404: .4byte wStaticGraphicTilenums\n\
-_080DF408: .4byte gStaticMotionGraphics+12\n\
-_080DF40C: .4byte wStaticMotionPalIDs\n\
-_080DF410: .4byte gInChat\n\
- .syntax divided\n");
+u8 GetEntityPalID(struct Entity* p);
+
+static void CielComputer_Update(struct Solid* p) {
+  UpdateSpriteAnimation(p);
+  switch ((p->s).mode[1]) {
+    case 0:
+      if (!((p->body).status & BODY_STATUS_CHAT)) {
+        return;
+      }
+      if (gInChat == 0) {
+        return;
+      }
+      if (gCollisionManager.talkTo != &p->body) {
+        return;
+      }
+      if (gSystemSavedata.cielComputer <= 3) {
+        SetSpriteAnimation(&p->s, sMotions[gSystemSavedata.cielComputer] | 1);
+        if (gSystemSavedata.cielComputer == 3) {
+          StartPaletteAnimation(0xF1, ((u8)GetEntityPalID(&p->s) << 5) | 0x200);
+        }
+      }
+      if (gSystemSavedata.cielComputer == 4) {
+        StartPaletteAnimation(0xF2, ((u8)GetEntityPalID(&p->s) << 5) | 0x200);
+      }
+      PlaySound(0x12A);
+      SetGameMode(&gGameState, 0x00060400);
+      (p->s).mode[1]++;
+      break;
+    case 1:
+      StepPaletteAnimation(0xF1);
+      StepPaletteAnimation(0xF2);
+      if (gGameState.mode[2] == 0) {
+        RemovePaletteAnimation(0xF1);
+        RemovePaletteAnimation(0xF2);
+        if (gSystemSavedata.cielComputer > 2) {
+          motion_id_t id = sMotions[gSystemSavedata.cielComputer] >> 8;
+          REQUEST_STATIC_GRAPHIC(id);
+        }
+        SetSpriteAnimation(&p->s, sMotions[gSystemSavedata.cielComputer]);
+        gInChat = 0;
+        (p->s).mode[1] = 0;
+      }
+      break;
+  }
 }
 
 static void CielComputer_Die(Object* p) { DeleteSolid(p); }

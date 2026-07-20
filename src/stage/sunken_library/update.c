@@ -1,4 +1,5 @@
 #include "global.h"
+#include "score.h"
 #include "overworld.h"
 
 static const Coords32 sSunkenLibRoom[24];
@@ -613,83 +614,36 @@ _0801F710: .4byte sSunkenLibRoom\n\
  .syntax divided\n");
 }
 
-NAKED Coords32* FUN_0801f714(Coords32* c) {
-  asm(".syntax unified\n\
-	push {r4, r5, lr}\n\
-	adds r5, r0, #0\n\
-	movs r4, #0\n\
-	b _0801F71E\n\
-_0801F71C:\n\
-	adds r4, #1\n\
-_0801F71E:\n\
-	cmp r4, #0x17\n\
-	bgt _0801F750\n\
-	lsls r0, r4, #0x18\n\
-	lsrs r0, r0, #0x18\n\
-	bl getSunkenLibRoomCoord\n\
-	adds r2, r0, #0\n\
-	ldr r1, [r2]\n\
-	ldr r0, [r5]\n\
-	subs r1, r1, r0\n\
-	movs r0, #0xc0\n\
-	lsls r0, r0, #5\n\
-	adds r1, r1, r0\n\
-	ldr r0, _0801F774 @ =0x00002FFF\n\
-	cmp r1, r0\n\
-	bhi _0801F71C\n\
-	ldr r0, [r2, #4]\n\
-	ldr r1, [r5, #4]\n\
-	subs r0, r0, r1\n\
-	movs r1, #0x80\n\
-	lsls r1, r1, #5\n\
-	adds r0, r0, r1\n\
-	ldr r1, _0801F778 @ =0x00001FFF\n\
-	cmp r0, r1\n\
-	bhi _0801F71C\n\
-_0801F750:\n\
-	cmp r4, #0x18\n\
-	bne _0801F756\n\
-	movs r4, #4\n\
-_0801F756:\n\
-	cmp r4, #3\n\
-	ble _0801F784\n\
-	subs r0, r4, #4\n\
-	movs r1, #3\n\
-	ands r0, r1\n\
-	adds r4, r0, #4\n\
-	ldr r1, _0801F77C @ =gScore\n\
-	movs r0, #7\n\
-	ldrsb r0, [r1, r0]\n\
-	subs r0, #2\n\
-	cmp r0, #0\n\
-	ble _0801F780\n\
-	ldrb r0, [r1, #7]\n\
-	subs r0, #2\n\
-	b _0801F782\n\
-	.align 2, 0\n\
-_0801F774: .4byte 0x00002FFF\n\
-_0801F778: .4byte 0x00001FFF\n\
-_0801F77C: .4byte gScore\n\
-_0801F780:\n\
-	movs r0, #0\n\
-_0801F782:\n\
-	strb r0, [r1, #7]\n\
-_0801F784:\n\
-	ldr r1, _0801F79C @ =gStageRun+392\n\
-	ldr r0, [r5]\n\
-	str r0, [r1]\n\
-	ldr r0, [r5, #4]\n\
-	str r0, [r1, #4]\n\
-	lsls r0, r4, #3\n\
-	ldr r1, _0801F7A0 @ =Coord_ARRAY_0834cea4\n\
-	adds r0, r0, r1\n\
-	pop {r4, r5}\n\
-	pop {r1}\n\
-	bx r1\n\
-	.align 2, 0\n\
-_0801F79C: .4byte gStageRun+392\n\
-_0801F7A0: .4byte Coord_ARRAY_0834cea4\n\
- .syntax divided\n");
+extern const Coords32 Coord_ARRAY_0834cea4[8];
+Coords32* getSunkenLibRoomCoord(u8 idx);
+
+Coords32* FUN_0801f714(Coords32* c) {
+  s32 i;
+  Coords32* room;
+  for (i = 0; i <= 23; i++) {
+    room = getSunkenLibRoomCoord(i);
+    if ((u32)(room->x - c->x + 0x1800) > 0x2FFF) {
+      continue;
+    }
+    if ((u32)(room->y - c->y + 0x1000) > 0x1FFF) {
+      continue;
+    }
+    break;
+  }
+  if (i == 24) {
+    i = 4;
+  }
+  if (i > 3) {
+    i = ((i - 4) & 3) + 4;
+    if ((s8)gScore.missionPoint - 2 > 0) {
+      gScore.missionPoint -= 2;
+    } else {
+      gScore.missionPoint = 0;
+    }
+  }
+  ((Coords32*)&gStageRun.unk_188)->x = c->x;
+  ((Coords32*)&gStageRun.unk_188)->y = c->y;
+  return (Coords32*)&Coord_ARRAY_0834cea4[i];
 }
 
 Coords32* FUN_0801f7a4(Coords32* _ UNUSED) { return (Coords32*)&gStageRun.unk_188; }

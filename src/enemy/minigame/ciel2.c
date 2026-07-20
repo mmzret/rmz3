@@ -140,85 +140,29 @@ _0809C2DE:\n\
  .syntax divided\n");
 }
 
-NAKED static void CielMinigameEnemy2_Update(struct Enemy* p) {
-  asm(".syntax unified\n\
-	push {r4, r5, lr}\n\
-	adds r4, r0, #0\n\
-	ldr r2, [r4, #0x28]\n\
-	ldrb r0, [r4, #0xd]\n\
-	cmp r0, #0\n\
-	beq _0809C312\n\
-	cmp r0, #1\n\
-	beq _0809C350\n\
-	b _0809C38E\n\
-_0809C312:\n\
-	ldr r1, _0809C344 @ =0x00000E0F\n\
-	adds r0, r2, r1\n\
-	ldrb r1, [r0]\n\
-	ldr r0, _0809C348 @ =gEnemyHeaderPtr\n\
-	ldr r0, [r0]\n\
-	movs r3, #0xa\n\
-	ldrsh r0, [r0, r3]\n\
-	cmp r1, r0\n\
-	bgt _0809C38E\n\
-	ldr r1, _0809C34C @ =0x00000E12\n\
-	adds r0, r2, r1\n\
-	ldrb r0, [r0]\n\
-	cmp r0, #0\n\
-	bne _0809C38E\n\
-	movs r3, #0xde\n\
-	lsls r3, r3, #4\n\
-	adds r0, r2, r3\n\
-	ldrb r1, [r4, #0x10]\n\
-	adds r0, r0, r1\n\
-	ldrb r0, [r0]\n\
-	strb r0, [r4, #0x12]\n\
-	ldrb r0, [r4, #0xd]\n\
-	adds r0, #1\n\
-	b _0809C38C\n\
-	.align 2, 0\n\
-_0809C344: .4byte 0x00000E0F\n\
-_0809C348: .4byte gEnemyHeaderPtr\n\
-_0809C34C: .4byte 0x00000E12\n\
-_0809C350:\n\
-	ldr r0, [r4, #0x54]\n\
-	ldr r1, [r4, #0x5c]\n\
-	adds r0, r0, r1\n\
-	str r0, [r4, #0x54]\n\
-	ldr r1, [r4, #0x58]\n\
-	ldr r0, [r4, #0x60]\n\
-	adds r1, r1, r0\n\
-	str r1, [r4, #0x58]\n\
-	adds r5, r4, #0\n\
-	adds r5, #0xb8\n\
-	ldr r0, [r5]\n\
-	movs r2, #0x80\n\
-	lsls r2, r2, #5\n\
-	adds r0, r0, r2\n\
-	cmp r1, r0\n\
-	blt _0809C38E\n\
-	ldrb r1, [r4, #0x12]\n\
-	adds r1, #5\n\
-	lsls r1, r1, #0x18\n\
-	lsrs r1, r1, #0x18\n\
-	adds r0, r4, #0\n\
-	bl ForceEntityPalette\n\
-	adds r0, r4, #0\n\
-	adds r0, #0xb4\n\
-	ldr r0, [r0]\n\
-	str r0, [r4, #0x54]\n\
-	ldr r0, [r5]\n\
-	str r0, [r4, #0x58]\n\
-	movs r0, #0\n\
-_0809C38C:\n\
-	strb r0, [r4, #0xd]\n\
-_0809C38E:\n\
-	adds r0, r4, #0\n\
-	bl UpdateEntityAnim\n\
-	pop {r4, r5}\n\
-	pop {r0}\n\
-	bx r0\n\
- .syntax divided\n");
+static void CielMinigameEnemy2_Update(struct Enemy* p) {
+  struct Entity* e = (p->s).unk_28;
+
+  switch ((p->s).mode[1]) {
+    case 0:
+      if (*((u8*)e + 0xE0F) <= gEnemyHeaderPtr->remaining && *((u8*)e + 0xE12) == 0) {
+        u8* tbl = (u8*)e + 0xDE0;
+        (p->s).work[2] = tbl[(p->s).work[0]];
+        (p->s).mode[1]++;
+      }
+      break;
+    case 1:
+      (p->s).coord.x += (p->s).d.x;
+      (p->s).coord.y += (p->s).d.y;
+      if ((p->s).coord.y >= *(s32*)&p->buffer[4] + 0x1000) {
+        ForceEntityPalette(&p->s, (p->s).work[2] + 5);
+        (p->s).coord.x = *(s32*)&p->buffer[0];
+        (p->s).coord.y = *(s32*)&p->buffer[4];
+        (p->s).mode[1] = 0;
+      }
+      break;
+  }
+  UpdateSpriteAnimation(p);
 }
 
 static void CielMinigameEnemy2_Die(struct Enemy* p) { SET_ENEMY_ROUTINE(p, ENTITY_EXIT); }
