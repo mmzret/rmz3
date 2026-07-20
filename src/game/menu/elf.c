@@ -180,14 +180,12 @@ static void ElfMenuLoop_Exit(struct GameState* g) {
 // --------------------------------------------
 
 static void ElfMenuFocusLoop_NoFocus(struct GameState* g) {
-  struct Zero* z = *(struct Zero**)((u8*)g + 0x64AC);
+  Player* z = g->z2;
   u8 mode;
 
   gWindowRegBuffer.dispcnt &= ~DISPCNT_WIN0_ON;
 
-  if (ELF_MENU->unk_b <= 0xF) {
-    ELF_MENU->unk_b++;
-  }
+  if (ELF_MENU->unk_b <= 0xF) ELF_MENU->unk_b++;
   mode = ELF_MENU->mode;
 
   if (((&z->unk_b4)->status).menuZeroColor != 1) {
@@ -198,26 +196,22 @@ static void ElfMenuFocusLoop_NoFocus(struct GameState* g) {
       ELF_MENU->mode = (ELF_MENU->mode + 1) % 5;
     }
   }
-  if (mode != ELF_MENU->mode) {
-    PlaySound(1);
-  }
+  if (mode != ELF_MENU->mode) PlaySound(SE_CURSOR);
   if (gJoypad[0].pressed & A_BUTTON) {
     ELF_MENU->y = 0;
     ELF_MENU->cursor = 0;
     g->mode[3] = 1;
     MENU->unk_4b = 0;
-    if (ELF_MENU->plttAnimID != 0) {
-      RemovePaletteAnimation(ELF_MENU->plttAnimID);
-    }
-    ELF_MENU->plttAnimID = 0x4D;
-    StartPaletteAnimation(0x4D, 0);
+    if (ELF_MENU->plttAnimID != 0) RemovePaletteAnimation(ELF_MENU->plttAnimID);
+    ELF_MENU->plttAnimID = 77;
+    StartPaletteAnimation(77, 0);
     StepPaletteAnimation(ELF_MENU->plttAnimID);
-    PlaySound(2);
+    PlaySound(SE_YES);
   }
 }
 
 void FUN_080f70d8(struct GameState* g);
-struct Widget* createMenuCursor(struct GameState* g, u8 kind);
+struct Entity* CreateTriangleCursor(struct GameState* g, u8 kind);
 struct Widget* CreateMenuComp9(struct GameState* g, bool8 r1, u8 r2);
 
 static void ElfMenuFocusLoop_OpenTab(struct GameState* g) {
@@ -226,10 +220,10 @@ static void ElfMenuFocusLoop_OpenTab(struct GameState* g) {
   if (MENU->unk_4b == 0) {
     u8 i;
     FUN_080f70d8(g);
-    for (i = 0; i <= 2; i++) {
-      createMenuCursor(g, i);
+    for (i = 0; i < 3; i++) {
+      CreateTriangleCursor(g, i);
     }
-    for (i = 0; i <= 5; i++) {
+    for (i = 0; i < 6; i++) {
       CreateMenuComp9(g, 0, i);
       CreateMenuComp9(g, 1, i);
     }
@@ -239,8 +233,8 @@ static void ElfMenuFocusLoop_OpenTab(struct GameState* g) {
   if (gJoypad[0].pressed & B_BUTTON) {
     g->mode[3] = 0;
     RemovePaletteAnimation(ELF_MENU->plttAnimID);
-    ELF_MENU->plttAnimID = 0x4E;
-    StartPaletteAnimation(0x4E, 0);
+    ELF_MENU->plttAnimID = 78;
+    StartPaletteAnimation(78, 0);
     StepPaletteAnimation(ELF_MENU->plttAnimID);
     PlaySound(3);
   } else if (ELF_MENU->unk_b != 0) {
@@ -1876,7 +1870,7 @@ _080F7874: .4byte gStringData\n\
 }
 
 static void printElfMenuBottomString(struct GameState* g) {
-  struct Zero* z = *(struct Zero**)((u8*)g + 0x64AC);
+  Player* z = g->z2;
   StringID strId = 0;
 
   switch (g->mode[3]) {
@@ -1912,17 +1906,17 @@ static void printElfMenuBottomString(struct GameState* g) {
       break;
   }
   if (strId != 0) {
-    PrintString(STRING(strId), 1, 0x12);
+    PrintString(STRING(strId), 1, 18);
   }
 }
 
 bool8 FUN_080e1cac(cyberelf_t n);
 
 static StringID getElfDescStrID(struct GameState* g, u8 e) {
-  struct Zero* z = *(struct Zero**)((u8*)g + 0x64AC);
+  Player* z = g->z2;
 
   if (gElfAvailability[e] & ELF_AVABILITY_USED) {
-    if (((&z->unk_b4)->status).menuZeroColor == 2) {
+    if (((&z->unk_b4)->status).menuZeroColor == MZC_ULTIMATE) {
       if (!FUN_080e1cac(e)) {
         PrintString(STRING(374), 17, 13);
       }
@@ -1931,12 +1925,8 @@ static StringID getElfDescStrID(struct GameState* g, u8 e) {
     }
   }
   if ((((u32)gElfBreedInfo[e].unk_0 << 26) >> 29) == 2 && (gElfAvailability[e] & ELF_AVABILITY_SATELITE)) {
-    if (e <= 0x1a) {
-      return e + 0x10B;
-    }
-    if (e <= 0x27) {
-      return e + 0x102;
-    }
+    if (e <= 0x1a) return e + 0x10B;
+    if (e <= 0x27) return e + 0x102;
   }
   return e + 0xC8;
 }
