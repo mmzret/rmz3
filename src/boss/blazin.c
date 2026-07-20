@@ -9,6 +9,8 @@
 static const BossFunc sUpdates1[12];
 static const BossFunc sUpdates2[12];
 
+bool8 FUN_0803ffc0(struct Boss* p);
+
 static void Blazin_Init(struct Boss* p);
 static void Blazin_Update(struct Boss* p);
 static void Blazin_Die(struct Boss* p);
@@ -248,102 +250,30 @@ static const BossFunc sUpdates2[12] = {
 };
 // clang-format on
 
-NAKED static void Blazin_Update(struct Boss* p) {
-  asm(".syntax unified\n\
-	push {r4, r5, lr}\n\
-	adds r4, r0, #0\n\
-	adds r5, r4, #0\n\
-	adds r5, #0x8c\n\
-	ldr r0, [r5]\n\
-	movs r1, #0x80\n\
-	lsls r1, r1, #2\n\
-	ands r0, r1\n\
-	cmp r0, #0\n\
-	bne _0803EA10\n\
-	adds r0, r4, #0\n\
-	adds r0, #0xa4\n\
-	movs r1, #0\n\
-	ldrsh r0, [r0, r1]\n\
-	cmp r0, #0\n\
-	bne _0803EA5A\n\
-_0803EA10:\n\
-	ldr r0, _0803EA48 @ =gStageRun\n\
-	ldrh r1, [r0, #8]\n\
-	movs r0, #8\n\
-	ands r0, r1\n\
-	cmp r0, #0\n\
-	bne _0803EA5A\n\
-	ldr r1, _0803EA4C @ =gBossFnTable\n\
-	ldrb r0, [r4, #9]\n\
-	lsls r0, r0, #2\n\
-	adds r0, r0, r1\n\
-	movs r1, #2\n\
-	str r1, [r4, #0xc]\n\
-	ldr r0, [r0]\n\
-	ldr r0, [r0, #8]\n\
-	str r0, [r4, #0x14]\n\
-	movs r0, #0x75\n\
-	bl PlaySound\n\
-	ldr r1, [r5]\n\
-	movs r0, #0x80\n\
-	lsls r0, r0, #9\n\
-	ands r1, r0\n\
-	cmp r1, #0\n\
-	beq _0803EA50\n\
-	movs r0, #1\n\
-	strb r0, [r4, #0xf]\n\
-	b _0803EA52\n\
-	.align 2, 0\n\
-_0803EA48: .4byte gStageRun\n\
-_0803EA4C: .4byte gBossFnTable\n\
-_0803EA50:\n\
-	strb r1, [r4, #0xf]\n\
-_0803EA52:\n\
-	adds r0, r4, #0\n\
-	bl Blazin_Die\n\
-	b _0803EAA2\n\
-_0803EA5A:\n\
-	adds r1, r4, #0\n\
-	adds r1, #0xc4\n\
-	ldr r0, [r1]\n\
-	cmp r0, #0\n\
-	beq _0803EA7C\n\
-	ldrb r0, [r0, #0xc]\n\
-	cmp r0, #1\n\
-	bls _0803EA7C\n\
-	movs r0, #0\n\
-	str r0, [r1]\n\
-	adds r0, r4, #0\n\
-	bl FUN_0803ffc0\n\
-	adds r1, r4, #0\n\
-	adds r1, #0xc8\n\
-	movs r0, #0x15\n\
-	strh r0, [r1]\n\
-_0803EA7C:\n\
-	ldr r1, _0803EAA8 @ =sUpdates1\n\
-	ldrb r0, [r4, #0xd]\n\
-	lsls r0, r0, #2\n\
-	adds r0, r0, r1\n\
-	ldr r1, [r0]\n\
-	adds r0, r4, #0\n\
-	bl _call_via_r1\n\
-	adds r0, r4, #0\n\
-	bl blazin_0803fed8\n\
-	ldr r1, _0803EAAC @ =sUpdates2\n\
-	ldrb r0, [r4, #0xd]\n\
-	lsls r0, r0, #2\n\
-	adds r0, r0, r1\n\
-	ldr r1, [r0]\n\
-	adds r0, r4, #0\n\
-	bl _call_via_r1\n\
-_0803EAA2:\n\
-	pop {r4, r5}\n\
-	pop {r0}\n\
-	bx r0\n\
-	.align 2, 0\n\
-_0803EAA8: .4byte sUpdates1\n\
-_0803EAAC: .4byte sUpdates2\n\
- .syntax divided\n");
+u32 blazin_0803fed8(void* p);
+
+static void Blazin_Update(struct Boss* p) {
+  if (((p->body).status & BODY_STATUS_DEAD || (p->body).hp == 0) && !(gStageRun.missionStatus & 8)) {
+    SET_BOSS_ROUTINE(p, ENTITY_DIE);
+    PlaySound(SE_BLAZIN_DEATH);
+    if ((p->body).status & BODY_STATUS_SLASHED) {
+      p->mode[3] = 1;
+    } else {
+      p->mode[3] = 0;
+    }
+    Blazin_Die(p);
+  } else {
+    struct Projectile** tailSlot = (struct Projectile**)((u8*)p + 0xc4);
+    struct Projectile* tail = *tailSlot;
+    if (tail != NULL && (tail->s).mode[0] > 1) {
+      *tailSlot = NULL;
+      FUN_0803ffc0(p);
+      *(u16*)((u8*)p + 0xc8) = 0x15;
+    }
+    sUpdates1[p->mode[1]](p);
+    blazin_0803fed8(p);
+    sUpdates2[p->mode[1]](p);
+  }
 }
 
 // --------------------------------------------
@@ -732,7 +662,110 @@ _0803EE28: .4byte gStageRun\n\
 
 static bool8 nop_0803ee2c(struct Boss* _) { return TRUE; }
 
-INCASM("asm/boss/blazin.inc");
+void blazinMode0(struct Boss* p) {
+  switch (p->mode[2]) {
+    case 0:
+      p->flags |= 1;
+      SetSpriteAnimation(p, (motion_t)((*(u16*)((u8*)p + 0xc8) + 0x15) | 0xA200));
+      p->mode[2]++;
+      FALLTHROUGH;
+    case 1:
+      UpdateSpriteAnimation(p);
+      if ((p->scriptEntity)->flags & 1) {
+        p->mode[1] = 1, p->mode[2] = 0;
+      }
+      break;
+  }
+}
+
+bool8 FUN_0803ee8c(struct Boss* _) { return TRUE; }
+
+INCASM("asm/boss/blazin_a.inc");
+
+bool8 FUN_0803ef64(struct Boss* _) { return TRUE; }
+
+struct Projectile* createBlazinTail(struct Entity* e, s32 hp);
+
+void blazinMode2(struct Boss* p) {
+  struct Projectile** tailSlot;
+  switch (p->mode[2]) {
+    case 0:
+      tailSlot = (struct Projectile**)((u8*)p + 0xc4);
+      *tailSlot = NULL;
+      *tailSlot = createBlazinTail((void*)p, 2);
+      SetSpriteAnimation(p, (motion_t)(*(u16*)((u8*)p + 0xc8) | 0xA200));
+      p->mode[2]++;
+      FALLTHROUGH;
+    case 1:
+      if (!(gStageRun.vm.active & VM_ACTIVE)) p->mode[1] = 3, p->mode[2] = 0;
+      UpdateSpriteAnimation(p);
+      break;
+  }
+}
+
+bool8 true_0803efc4(struct Boss* _) { return TRUE; }
+
+INCASM("asm/boss/blazin_b.inc");
+
+bool8 nop_0803f280(struct Boss* _) { return TRUE; }
+
+INCASM("asm/boss/blazin_c.inc");
+
+bool8 FUN_0803f3fc(struct Boss* _) { return TRUE; }
+
+INCASM("asm/boss/blazin_d.inc");
+
+bool8 nop_0803f538(struct Boss* _) { return TRUE; }
+
+INCASM("asm/boss/blazin_e.inc");
+
+bool8 nop_0803f710(struct Boss* _) { return TRUE; }
+
+INCASM("asm/boss/blazin_f.inc");
+
+bool8 FUN_0803f9a8(struct Boss* _) { return TRUE; }
+
+void blazinMode8(struct Boss* p) {
+  if (p->mode[2] == 0) p->mode[2] = 1;
+}
+
+bool8 FUN_0803f9c0(struct Boss* _) { return TRUE; }
+
+INCASM("asm/boss/blazin_g.inc");
+
+bool8 FUN_0803fc70(struct Boss* _) { return TRUE; }
+
+INCASM("asm/boss/blazin_h.inc");
+
+bool8 FUN_0803fd58(struct Boss* _) { return TRUE; }
+
+INCASM("asm/boss/blazin_i.inc");
+
+struct Enemy* FUN_0809c430(struct Entity* e, Coords32* c);
+
+bool8 FUN_0803ffc0(struct Boss* p) {
+  Coords32 c;
+  c.x = p->coord.x;
+  c.y = p->coord.y;
+  FUN_0809c430((struct Entity*)p, &c);
+  return TRUE;
+}
+
+INCASM("asm/boss/blazin_j.inc");
+
+s32 howFarBlazin(struct Boss* p) {
+  s32 zx = (pZero2->s).coord.x;
+  s32 sx = p->coord.x;
+  s32 d = zx - sx;
+  if (d <= 0) {
+    d = sx - zx;
+  }
+  if (d <= 0x4eff) return 0;
+  if (d <= 0x8eff) return 1;
+  return 2;
+}
+
+INCASM("asm/boss/blazin_k.inc");
 
 // 0x080403c4
 static void setBlazinDirection(struct Entity* p) {
