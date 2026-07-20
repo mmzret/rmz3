@@ -9,6 +9,7 @@
 extern SoundID SoundID1;
 extern SoundID SoundID2;
 extern u32 gSongCount;
+extern char gNumSongs[];  // 絶対リンカシンボル (= 336); ランタイム値としてロードさせるために使う
 extern struct MusicPlayerTrack gMPlayTracks[21];
 
 EWRAM_DATA struct SoundInfo gSoundInfo = {};
@@ -34,15 +35,13 @@ EWRAM_DATA struct MusicPlayerInfo gMPlayInfo_12 = {};
 EWRAM_DATA struct MusicPlayerInfo gMPlayInfo_13 = {};
 EWRAM_DATA struct MusicPlayerInfo gMPlayInfo_14 = {};
 
-NON_MATCH void InitSound(void) {
-#if MODERN
+void InitSound(void) {
   m4aSoundInit();
-  gSongCount = SONG_COUNT;
+  // SONG_COUNT を即値ストアに定数畳み込みさせず、リテラルプールから
+  // ロードしてキャストさせるため、絶対リンカシンボル gNumSongs (= 336) を経由する
+  gSongCount = (u16)gNumSongs;
   SoundID1 = MUS_DUMMY;
   SoundID2 = MUS_DUMMY;
-#else
-  INCCODE("asm/wip/InitSound.inc");
-#endif
 }
 
 void StopAllMusics(void) {
