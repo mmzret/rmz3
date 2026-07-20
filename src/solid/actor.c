@@ -1,4 +1,5 @@
 #include "collision.h"
+#include "vfx/after_image.h"
 #include "entity.h"
 #include "global.h"
 #include "overworld.h"
@@ -555,209 +556,75 @@ static void loadNeutralZeroColor(struct Solid* p) {
 
 // --------------------------------------------
 
-NAKED static void Actor1_Update(struct Solid* p) {
-  asm(".syntax unified\n\
-	push {r4, r5, r6, r7, lr}\n\
-	adds r6, r0, #0\n\
-	ldrb r0, [r6, #0xd]\n\
-	cmp r0, #6\n\
-	bls _080D0D50\n\
-	b _080D0EDC\n\
-_080D0D50:\n\
-	lsls r0, r0, #2\n\
-	ldr r1, _080D0D5C @ =_080D0D60\n\
-	adds r0, r0, r1\n\
-	ldr r0, [r0]\n\
-	mov pc, r0\n\
-	.align 2, 0\n\
-_080D0D5C: .4byte _080D0D60\n\
-_080D0D60: @ jump table\n\
-	.4byte _080D0D7C @ case 0\n\
-	.4byte _080D0DAA @ case 1\n\
-	.4byte _080D0DE0 @ case 2\n\
-	.4byte _080D0E12 @ case 3\n\
-	.4byte _080D0E34 @ case 4\n\
-	.4byte _080D0E48 @ case 5\n\
-	.4byte _080D0EA8 @ case 6\n\
-_080D0D7C:\n\
-	adds r7, r6, #0\n\
-	adds r7, #0x25\n\
-	movs r5, #0\n\
-	movs r4, #0x10\n\
-	strb r4, [r7]\n\
-	ldr r0, [r6, #0x54]\n\
-	movs r1, #0xf0\n\
-	lsls r1, r1, #8\n\
-	adds r0, r0, r1\n\
-	ldr r1, [r6, #0x58]\n\
-	bl FUN_08009f6c\n\
-	str r0, [r6, #0x58]\n\
-	str r5, [r6, #0x2c]\n\
-	strb r4, [r7]\n\
-	movs r1, #0xc4\n\
-	lsls r1, r1, #8\n\
-	adds r0, r6, #0\n\
-	bl SetMotion\n\
-	ldrb r0, [r6, #0xd]\n\
-	adds r0, #1\n\
-	strb r0, [r6, #0xd]\n\
-_080D0DAA:\n\
-	adds r0, r6, #0\n\
-	bl UpdateEntityAnim\n\
-	ldr r0, [r6, #0x54]\n\
-	adds r0, #0x50\n\
-	str r0, [r6, #0x54]\n\
-	ldr r0, [r6, #0x18]\n\
-	ldrb r1, [r0, #9]\n\
-	movs r0, #1\n\
-	ands r0, r1\n\
-	cmp r0, #0\n\
-	bne _080D0DC4\n\
-	b _080D0EDC\n\
-_080D0DC4:\n\
-	adds r0, r6, #0\n\
-	adds r0, #0x73\n\
-	ldrb r0, [r0]\n\
-	cmp r0, #4\n\
-	beq _080D0DD0\n\
-	b _080D0EDC\n\
-_080D0DD0:\n\
-	ldr r1, _080D0DDC @ =0x00003303\n\
-	adds r0, r6, #0\n\
-	bl SetMotion\n\
-	movs r0, #0x10\n\
-	b _080D0E9E\n\
-	.align 2, 0\n\
-_080D0DDC: .4byte 0x00003303\n\
-_080D0DE0:\n\
-	adds r0, r6, #0\n\
-	bl UpdateEntityAnim\n\
-	ldrb r0, [r6, #0x12]\n\
-	subs r0, #1\n\
-	strb r0, [r6, #0x12]\n\
-	lsls r0, r0, #0x18\n\
-	lsrs r2, r0, #0x18\n\
-	cmp r2, #0\n\
-	bne _080D0EDC\n\
-	ldrb r1, [r6, #0xa]\n\
-	movs r0, #0xef\n\
-	ands r0, r1\n\
-	strb r0, [r6, #0xa]\n\
-	adds r0, r6, #0\n\
-	adds r0, #0x4c\n\
-	strb r2, [r0]\n\
-	adds r2, r6, #0\n\
-	adds r2, #0x4a\n\
-	ldrb r1, [r2]\n\
-	movs r0, #0x11\n\
-	rsbs r0, r0, #0\n\
-	ands r0, r1\n\
-	strb r0, [r2]\n\
-	b _080D0EA0\n\
-_080D0E12:\n\
-	adds r0, r6, #0\n\
-	bl UpdateEntityAnim\n\
-	ldr r0, [r6, #0x18]\n\
-	ldrb r1, [r0, #9]\n\
-	movs r0, #2\n\
-	ands r0, r1\n\
-	cmp r0, #0\n\
-	beq _080D0EDC\n\
-	ldr r1, _080D0E30 @ =0x00003301\n\
-	adds r0, r6, #0\n\
-	bl SetMotion\n\
-	b _080D0EA0\n\
-	.align 2, 0\n\
-_080D0E30: .4byte 0x00003301\n\
-_080D0E34:\n\
-	adds r0, r6, #0\n\
-	bl UpdateEntityAnim\n\
-	adds r0, r6, #0\n\
-	adds r0, #0x73\n\
-	ldrb r0, [r0]\n\
-	cmp r0, #3\n\
-	bne _080D0EDC\n\
-	movs r0, #8\n\
-	b _080D0E9E\n\
-_080D0E48:\n\
-	adds r0, r6, #0\n\
-	bl UpdateEntityAnim\n\
-	ldrb r0, [r6, #0x12]\n\
-	subs r0, #1\n\
-	strb r0, [r6, #0x12]\n\
-	lsls r0, r0, #0x18\n\
-	cmp r0, #0\n\
-	bne _080D0EDC\n\
-	movs r4, #1\n\
-	ldrb r0, [r6, #0xa]\n\
-	movs r1, #0x10\n\
-	orrs r0, r1\n\
-	strb r0, [r6, #0xa]\n\
-	adds r0, r6, #0\n\
-	adds r0, #0x4c\n\
-	strb r4, [r0]\n\
-	adds r3, r6, #0\n\
-	adds r3, #0x4a\n\
-	movs r2, #0x10\n\
-	ldrb r1, [r3]\n\
-	movs r0, #0x11\n\
-	rsbs r0, r0, #0\n\
-	ands r0, r1\n\
-	orrs r0, r2\n\
-	strb r0, [r3]\n\
-	movs r1, #0xc0\n\
-	lsls r1, r1, #2\n\
-	adds r0, r6, #0\n\
-	bl SetMotion\n\
-	adds r0, r6, #0\n\
-	adds r0, #0x54\n\
-	ldrb r2, [r6, #0xa]\n\
-	lsrs r2, r2, #4\n\
-	ands r2, r4\n\
-	movs r1, #0\n\
-	bl CreateParticle\n\
-	movs r0, #8\n\
-	bl PlaySound\n\
-	movs r0, #0x20\n\
-_080D0E9E:\n\
-	strb r0, [r6, #0x12]\n\
-_080D0EA0:\n\
-	ldrb r0, [r6, #0xd]\n\
-	adds r0, #1\n\
-	strb r0, [r6, #0xd]\n\
-	b _080D0EDC\n\
-_080D0EA8:\n\
-	adds r0, r6, #0\n\
-	bl UpdateEntityAnim\n\
-	ldrb r0, [r6, #0x12]\n\
-	cmp r0, #0\n\
-	beq _080D0EC8\n\
-	subs r0, #1\n\
-	strb r0, [r6, #0x12]\n\
-	ldr r0, [r6, #0x2c]\n\
-	cmp r0, #0\n\
-	bne _080D0ED2\n\
-	adds r0, r6, #0\n\
-	bl CreateAfterImages\n\
-	str r0, [r6, #0x2c]\n\
-	b _080D0ED2\n\
-_080D0EC8:\n\
-	ldr r1, [r6, #0x2c]\n\
-	cmp r1, #0\n\
-	beq _080D0ED2\n\
-	movs r0, #1\n\
-	strb r0, [r1, #0x11]\n\
-_080D0ED2:\n\
-	ldr r0, [r6, #0x54]\n\
-	movs r1, #0xe0\n\
-	lsls r1, r1, #2\n\
-	adds r0, r0, r1\n\
-	str r0, [r6, #0x54]\n\
-_080D0EDC:\n\
-	pop {r4, r5, r6, r7}\n\
-	pop {r0}\n\
-	bx r0\n\
- .syntax divided\n");
+static void Actor1_Update(struct Solid* p) {
+  switch ((p->s).mode[1]) {
+    case 0:
+      (p->s).renderPrio = 0x10;
+      (p->s).coord.y = FUN_08009f6c((p->s).coord.x + PIXEL(240), (p->s).coord.y);
+      (p->s).unk_2c = NULL;
+      (p->s).renderPrio = 0x10;
+      SetMotion(&p->s, MOTION(DM196_ZERO_WALK, 0));
+      (p->s).mode[1]++;
+      // fallthrough
+    case 1:
+      UpdateSpriteAnimation(&p->s);
+      (p->s).coord.x += 0x50;
+      if ((p->s).scriptEntity->flags & 1) {
+        if ((p->s).motion.state == 4) {
+          SetMotion(&p->s, MOTION(DM051_ZERO_UNK, 3));
+          (p->s).work[2] = 0x10;
+          (p->s).mode[1]++;
+        }
+      }
+      break;
+    case 2:
+      UpdateSpriteAnimation(&p->s);
+      (p->s).work[2]--;
+      if ((u8)(p->s).work[2] == 0) {
+        SET_XFLIP(&p->s, 0);
+        (p->s).mode[1]++;
+      }
+      break;
+    case 3:
+      UpdateSpriteAnimation(&p->s);
+      if ((p->s).scriptEntity->flags & 2) {
+        SetMotion(&p->s, MOTION(DM051_ZERO_UNK, 1));
+        (p->s).mode[1]++;
+      }
+      break;
+    case 4:
+      UpdateSpriteAnimation(&p->s);
+      if ((p->s).motion.state == 3) {
+        (p->s).work[2] = 8;
+        (p->s).mode[1]++;
+      }
+      break;
+    case 5:
+      UpdateSpriteAnimation(&p->s);
+      (p->s).work[2]--;
+      if ((u8)(p->s).work[2] == 0) {
+        bool8 isRight = 1;
+        SET_XFLIP(&p->s, isRight);
+        SetMotion(&p->s, MOTION(DM003_ZERO_DASH, 0));
+        CreateParticle(&(p->s).coord, 0, ((p->s).flags >> 4) & isRight);
+        PlaySound(SE_DASH_1);
+        (p->s).work[2] = 0x20;
+        (p->s).mode[1]++;
+      }
+      break;
+    case 6:
+      UpdateSpriteAnimation(&p->s);
+      if ((p->s).work[2] != 0) {
+        (p->s).work[2]--;
+        if ((p->s).unk_2c == NULL) {
+          (p->s).unk_2c = CreateAfterImages(&p->s);
+        }
+      } else if ((p->s).unk_2c != NULL) {
+        (p->s).unk_2c->work[1] = 1;
+      }
+      (p->s).coord.x += 0x380;
+      break;
+  }
 }
 
 // --------------------------------------------
@@ -849,425 +716,149 @@ static void Actor3_Update(struct Solid* p) {
   }
 }
 
-NAKED static void Actor4_Update(struct Solid* p) {
-  asm(".syntax unified\n\
-	push {r4, lr}\n\
-	adds r4, r0, #0\n\
-	ldrb r0, [r4, #0xd]\n\
-	cmp r0, #4\n\
-	bhi _080D11BA\n\
-	lsls r0, r0, #2\n\
-	ldr r1, _080D10FC @ =_080D1100\n\
-	adds r0, r0, r1\n\
-	ldr r0, [r0]\n\
-	mov pc, r0\n\
-	.align 2, 0\n\
-_080D10FC: .4byte _080D1100\n\
-_080D1100: @ jump table\n\
-	.4byte _080D1114 @ case 0\n\
-	.4byte _080D112C @ case 1\n\
-	.4byte _080D114C @ case 2\n\
-	.4byte _080D1170 @ case 3\n\
-	.4byte _080D11B4 @ case 4\n\
-_080D1114:\n\
-	ldr r0, [r4, #0x54]\n\
-	ldr r1, [r4, #0x58]\n\
-	bl FUN_08009f6c\n\
-	str r0, [r4, #0x58]\n\
-	ldr r1, _080D1144 @ =0x0000C210\n\
-	adds r0, r4, #0\n\
-	bl SetMotion\n\
-	ldrb r0, [r4, #0xd]\n\
-	adds r0, #1\n\
-	strb r0, [r4, #0xd]\n\
-_080D112C:\n\
-	adds r0, r4, #0\n\
-	bl UpdateEntityAnim\n\
-	ldr r0, [r4, #0x18]\n\
-	ldrb r1, [r0, #9]\n\
-	movs r0, #1\n\
-	ands r0, r1\n\
-	cmp r0, #0\n\
-	beq _080D11BA\n\
-	ldr r1, _080D1148 @ =0x0000C214\n\
-	b _080D11A2\n\
-	.align 2, 0\n\
-_080D1144: .4byte 0x0000C210\n\
-_080D1148: .4byte 0x0000C214\n\
-_080D114C:\n\
-	adds r0, r4, #0\n\
-	bl UpdateEntityAnim\n\
-	ldr r0, [r4, #0x18]\n\
-	ldrb r1, [r0, #9]\n\
-	movs r0, #2\n\
-	ands r0, r1\n\
-	cmp r0, #0\n\
-	beq _080D11BA\n\
-	ldr r1, _080D116C @ =0x0000C211\n\
-	adds r0, r4, #0\n\
-	bl SetMotion\n\
-	movs r0, #8\n\
-	strb r0, [r4, #0x12]\n\
-	b _080D11A8\n\
-	.align 2, 0\n\
-_080D116C: .4byte 0x0000C211\n\
-_080D1170:\n\
-	movs r2, #0\n\
-	ldrb r1, [r4, #0xa]\n\
-	movs r0, #0xef\n\
-	ands r0, r1\n\
-	strb r0, [r4, #0xa]\n\
-	adds r0, r4, #0\n\
-	adds r0, #0x4c\n\
-	strb r2, [r0]\n\
-	adds r2, r4, #0\n\
-	adds r2, #0x4a\n\
-	ldrb r1, [r2]\n\
-	movs r0, #0x11\n\
-	rsbs r0, r0, #0\n\
-	ands r0, r1\n\
-	strb r0, [r2]\n\
-	adds r0, r4, #0\n\
-	bl UpdateEntityAnim\n\
-	ldrb r0, [r4, #0x12]\n\
-	subs r0, #1\n\
-	strb r0, [r4, #0x12]\n\
-	lsls r0, r0, #0x18\n\
-	cmp r0, #0\n\
-	bne _080D11BA\n\
-	ldr r1, _080D11B0 @ =0x0000C212\n\
-_080D11A2:\n\
-	adds r0, r4, #0\n\
-	bl SetMotion\n\
-_080D11A8:\n\
-	ldrb r0, [r4, #0xd]\n\
-	adds r0, #1\n\
-	strb r0, [r4, #0xd]\n\
-	b _080D11BA\n\
-	.align 2, 0\n\
-_080D11B0: .4byte 0x0000C212\n\
-_080D11B4:\n\
-	adds r0, r4, #0\n\
-	bl UpdateEntityAnim\n\
-_080D11BA:\n\
-	pop {r4}\n\
-	pop {r0}\n\
-	bx r0\n\
- .syntax divided\n");
+static void Actor4_Update(struct Solid* p) {
+  switch ((p->s).mode[1]) {
+    case 0:
+      (p->s).coord.y = FUN_08009f6c((p->s).coord.x, (p->s).coord.y);
+      SetMotion(&p->s, MOTION(DM194_CIEL, 16));
+      (p->s).mode[1]++;
+      // fallthrough
+    case 1:
+      UpdateSpriteAnimation(&p->s);
+      if ((p->s).scriptEntity->flags & 1) {
+        SetMotion(&p->s, MOTION(DM194_CIEL, 20));
+        (p->s).mode[1]++;
+      }
+      break;
+    case 2:
+      UpdateSpriteAnimation(&p->s);
+      if ((p->s).scriptEntity->flags & 2) {
+        SetMotion(&p->s, MOTION(DM194_CIEL, 17));
+        (p->s).work[2] = 8;
+        (p->s).mode[1]++;
+      }
+      break;
+    case 3:
+      SET_XFLIP(&p->s, 0);
+      UpdateSpriteAnimation(&p->s);
+      (p->s).work[2]--;
+      if ((u8)(p->s).work[2] == 0) {
+        SetMotion(&p->s, MOTION(DM194_CIEL, 18));
+        (p->s).mode[1]++;
+      }
+      break;
+    case 4:
+      UpdateSpriteAnimation(&p->s);
+      break;
+  }
 }
 
-NAKED static void Actor5_Update(struct Solid* p) {
-  asm(".syntax unified\n\
-	push {r4, r5, r6, lr}\n\
-	adds r6, r0, #0\n\
-	ldrb r0, [r6, #0xd]\n\
-	cmp r0, #6\n\
-	bls _080D11CC\n\
-	b _080D1366\n\
-_080D11CC:\n\
-	lsls r0, r0, #2\n\
-	ldr r1, _080D11D8 @ =_080D11DC\n\
-	adds r0, r0, r1\n\
-	ldr r0, [r0]\n\
-	mov pc, r0\n\
-	.align 2, 0\n\
-_080D11D8: .4byte _080D11DC\n\
-_080D11DC: @ jump table\n\
-	.4byte _080D11F8 @ case 0\n\
-	.4byte _080D1256 @ case 1\n\
-	.4byte _080D12B4 @ case 2\n\
-	.4byte _080D12D4 @ case 3\n\
-	.4byte _080D1304 @ case 4\n\
-	.4byte _080D133A @ case 5\n\
-	.4byte _080D1360 @ case 6\n\
-_080D11F8:\n\
-	ldr r0, [r6, #0x54]\n\
-	ldr r1, [r6, #0x58]\n\
-	bl FUN_08009f6c\n\
-	str r0, [r6, #0x58]\n\
-	ldrb r0, [r6, #0x11]\n\
-	cmp r0, #0\n\
-	bne _080D1248\n\
-	movs r4, #0xaf\n\
-	lsls r4, r4, #4\n\
-	ldr r1, _080D1298 @ =gStaticMotionGraphics\n\
-	adds r0, r4, r1\n\
-	ldr r1, _080D129C @ =wStaticGraphicTilenums\n\
-	movs r5, #0x8c\n\
-	lsls r5, r5, #1\n\
-	adds r1, r1, r5\n\
-	ldrh r1, [r1]\n\
-	ldrh r2, [r0, #6]\n\
-	lsrs r2, r2, #6\n\
-	subs r1, r1, r2\n\
-	lsls r1, r1, #5\n\
-	movs r2, #0x80\n\
-	lsls r2, r2, #9\n\
-	adds r1, r1, r2\n\
-	bl LoadGraphic\n\
-	ldr r0, _080D12A0 @ =gStaticMotionGraphics+12\n\
-	adds r4, r4, r0\n\
-	ldr r0, _080D12A4 @ =wStaticMotionPalIDs\n\
-	adds r0, r0, r5\n\
-	ldrh r1, [r0]\n\
-	ldrb r0, [r4, #7]\n\
-	subs r1, r1, r0\n\
-	lsls r1, r1, #5\n\
-	movs r2, #0x80\n\
-	lsls r2, r2, #2\n\
-	adds r1, r1, r2\n\
-	adds r0, r4, #0\n\
-	bl LoadPalette\n\
-_080D1248:\n\
-	ldr r1, _080D12A8 @ =0x00008C05\n\
-	adds r0, r6, #0\n\
-	bl SetMotion\n\
-	ldrb r0, [r6, #0xd]\n\
-	adds r0, #1\n\
-	strb r0, [r6, #0xd]\n\
-_080D1256:\n\
-	adds r0, r6, #0\n\
-	bl UpdateEntityAnim\n\
-	ldr r0, [r6, #0x18]\n\
-	ldrb r1, [r0, #9]\n\
-	movs r0, #1\n\
-	ands r0, r1\n\
-	cmp r0, #0\n\
-	beq _080D127A\n\
-	ldr r1, _080D12AC @ =0x00008C06\n\
-	adds r0, r6, #0\n\
-	bl SetMotion\n\
-	movs r0, #0x2d\n\
-	strb r0, [r6, #0x12]\n\
-	ldrb r0, [r6, #0xd]\n\
-	adds r0, #1\n\
-	strb r0, [r6, #0xd]\n\
-_080D127A:\n\
-	ldr r0, [r6, #0x18]\n\
-	ldrb r1, [r0, #9]\n\
-	movs r0, #2\n\
-	ands r0, r1\n\
-	cmp r0, #0\n\
-	beq _080D1366\n\
-	ldr r1, _080D12B0 @ =0x00008C07\n\
-	adds r0, r6, #0\n\
-	bl SetMotion\n\
-	movs r0, #0xe\n\
-	strb r0, [r6, #0x12]\n\
-	movs r0, #3\n\
-	strb r0, [r6, #0xd]\n\
-	b _080D1366\n\
-	.align 2, 0\n\
-_080D1298: .4byte gStaticMotionGraphics\n\
-_080D129C: .4byte wStaticGraphicTilenums\n\
-_080D12A0: .4byte gStaticMotionGraphics+12\n\
-_080D12A4: .4byte wStaticMotionPalIDs\n\
-_080D12A8: .4byte 0x00008C05\n\
-_080D12AC: .4byte 0x00008C06\n\
-_080D12B0: .4byte 0x00008C07\n\
-_080D12B4:\n\
-	ldrb r0, [r6, #0x12]\n\
-	adds r1, r0, #1\n\
-	strb r1, [r6, #0x12]\n\
-	lsls r0, r0, #0x18\n\
-	lsrs r0, r0, #0x18\n\
-	cmp r0, #0x2c\n\
-	bls _080D12CC\n\
-	movs r0, #0x59\n\
-	bl PlaySound\n\
-	movs r0, #0\n\
-	strb r0, [r6, #0x12]\n\
-_080D12CC:\n\
-	adds r0, r6, #0\n\
-	bl UpdateEntityAnim\n\
-	b _080D1366\n\
-_080D12D4:\n\
-	adds r0, r6, #0\n\
-	bl UpdateEntityAnim\n\
-	ldr r0, [r6, #0x54]\n\
-	movs r1, #0xe0\n\
-	lsls r1, r1, #1\n\
-	adds r0, r0, r1\n\
-	str r0, [r6, #0x54]\n\
-	ldrb r0, [r6, #0x12]\n\
-	subs r0, #1\n\
-	strb r0, [r6, #0x12]\n\
-	lsls r0, r0, #0x18\n\
-	cmp r0, #0\n\
-	bne _080D1366\n\
-	ldr r1, _080D1300 @ =0x00008C05\n\
-	adds r0, r6, #0\n\
-	bl SetMotion\n\
-	movs r0, #8\n\
-	strb r0, [r6, #0x12]\n\
-	b _080D1354\n\
-	.align 2, 0\n\
-_080D1300: .4byte 0x00008C05\n\
-_080D1304:\n\
-	adds r0, r6, #0\n\
-	bl UpdateEntityAnim\n\
-	ldrb r0, [r6, #0x12]\n\
-	subs r0, #1\n\
-	strb r0, [r6, #0x12]\n\
-	lsls r0, r0, #0x18\n\
-	lsrs r2, r0, #0x18\n\
-	cmp r2, #0\n\
-	bne _080D1366\n\
-	ldrb r1, [r6, #0xa]\n\
-	movs r0, #0xef\n\
-	ands r0, r1\n\
-	strb r0, [r6, #0xa]\n\
-	adds r0, r6, #0\n\
-	adds r0, #0x4c\n\
-	strb r2, [r0]\n\
-	adds r2, r6, #0\n\
-	adds r2, #0x4a\n\
-	ldrb r1, [r2]\n\
-	movs r0, #0x11\n\
-	rsbs r0, r0, #0\n\
-	ands r0, r1\n\
-	strb r0, [r2]\n\
-	movs r0, #8\n\
-	strb r0, [r6, #0x12]\n\
-	b _080D1354\n\
-_080D133A:\n\
-	adds r0, r6, #0\n\
-	bl UpdateEntityAnim\n\
-	ldrb r0, [r6, #0x12]\n\
-	subs r0, #1\n\
-	strb r0, [r6, #0x12]\n\
-	lsls r0, r0, #0x18\n\
-	cmp r0, #0\n\
-	bne _080D1366\n\
-	ldr r1, _080D135C @ =0x00008C06\n\
-	adds r0, r6, #0\n\
-	bl SetMotion\n\
-_080D1354:\n\
-	ldrb r0, [r6, #0xd]\n\
-	adds r0, #1\n\
-	strb r0, [r6, #0xd]\n\
-	b _080D1366\n\
-	.align 2, 0\n\
-_080D135C: .4byte 0x00008C06\n\
-_080D1360:\n\
-	adds r0, r6, #0\n\
-	bl UpdateEntityAnim\n\
-_080D1366:\n\
-	pop {r4, r5, r6}\n\
-	pop {r0}\n\
-	bx r0\n\
- .syntax divided\n");
+static void Actor5_Update(struct Solid* p) {
+  switch ((p->s).mode[1]) {
+    case 0:
+      (p->s).coord.y = FUN_08009f6c((p->s).coord.x, (p->s).coord.y);
+      if ((p->s).work[1] == 0) {
+        LOAD_STATIC_GRAPHIC(SM140_RESISTANCE_MOB);
+      }
+      SetMotion(&p->s, MOTION(SM140_RESISTANCE_MOB, 5));
+      (p->s).mode[1]++;
+      // fallthrough
+    case 1:
+      UpdateSpriteAnimation(&p->s);
+      if ((p->s).scriptEntity->flags & 1) {
+        SetMotion(&p->s, MOTION(SM140_RESISTANCE_MOB, 6));
+        (p->s).work[2] = 0x2D;
+        (p->s).mode[1]++;
+      }
+      if ((p->s).scriptEntity->flags & 2) {
+        SetMotion(&p->s, MOTION(SM140_RESISTANCE_MOB, 7));
+        (p->s).work[2] = 0xE;
+        (p->s).mode[1] = 3;
+      }
+      break;
+    case 2:
+      if ((p->s).work[2]++ > 0x2C) {
+        PlaySound(SE_UNK_59);
+        (p->s).work[2] = 0;
+      }
+      UpdateSpriteAnimation(&p->s);
+      break;
+    case 3:
+      UpdateSpriteAnimation(&p->s);
+      (p->s).coord.x += 0x1C0;
+      (p->s).work[2]--;
+      if ((u8)(p->s).work[2] == 0) {
+        SetMotion(&p->s, MOTION(SM140_RESISTANCE_MOB, 5));
+        (p->s).work[2] = 8;
+        (p->s).mode[1]++;
+      }
+      break;
+    case 4:
+      UpdateSpriteAnimation(&p->s);
+      (p->s).work[2]--;
+      if ((u8)(p->s).work[2] == 0) {
+        SET_XFLIP(&p->s, 0);
+        (p->s).work[2] = 8;
+        (p->s).mode[1]++;
+      }
+      break;
+    case 5:
+      UpdateSpriteAnimation(&p->s);
+      (p->s).work[2]--;
+      if ((u8)(p->s).work[2] == 0) {
+        SetMotion(&p->s, MOTION(SM140_RESISTANCE_MOB, 6));
+        (p->s).mode[1]++;
+      }
+      break;
+    case 6:
+      UpdateSpriteAnimation(&p->s);
+      break;
+  }
 }
 
-NAKED static void Actor6_Update(struct Solid* p) {
-  asm(".syntax unified\n\
-	push {r4, lr}\n\
-	adds r4, r0, #0\n\
-	ldrb r0, [r4, #0xd]\n\
-	cmp r0, #7\n\
-	bhi _080D1448\n\
-	lsls r0, r0, #2\n\
-	ldr r1, _080D1380 @ =_080D1384\n\
-	adds r0, r0, r1\n\
-	ldr r0, [r0]\n\
-	mov pc, r0\n\
-	.align 2, 0\n\
-_080D1380: .4byte _080D1384\n\
-_080D1384: @ jump table\n\
-	.4byte _080D13A4 @ case 0\n\
-	.4byte _080D1448 @ case 1\n\
-	.4byte _080D13BC @ case 2\n\
-	.4byte _080D13DC @ case 3\n\
-	.4byte _080D13FC @ case 4\n\
-	.4byte _080D1418 @ case 5\n\
-	.4byte _080D1430 @ case 6\n\
-	.4byte _080D1448 @ case 7\n\
-_080D13A4:\n\
-	movs r1, #0xbe\n\
-	lsls r1, r1, #8\n\
-	adds r0, r4, #0\n\
-	movs r2, #1\n\
-	bl FUN_080d0aa0\n\
-	lsls r0, r0, #0x10\n\
-	cmp r0, #0\n\
-	beq _080D1448\n\
-	ldrb r0, [r4, #0xd]\n\
-	adds r0, #2\n\
-	b _080D1446\n\
-_080D13BC:\n\
-	adds r0, r4, #0\n\
-	bl UpdateEntityAnim\n\
-	ldr r0, [r4, #0x18]\n\
-	ldrb r1, [r0, #9]\n\
-	movs r0, #1\n\
-	ands r0, r1\n\
-	cmp r0, #0\n\
-	beq _080D1448\n\
-	ldr r1, _080D13D8 @ =0x0000BE1C\n\
-	adds r0, r4, #0\n\
-	bl SetMotion\n\
-	b _080D1442\n\
-	.align 2, 0\n\
-_080D13D8: .4byte 0x0000BE1C\n\
-_080D13DC:\n\
-	adds r0, r4, #0\n\
-	bl UpdateEntityAnim\n\
-	ldr r0, [r4, #0x18]\n\
-	ldrb r1, [r0, #9]\n\
-	movs r0, #2\n\
-	ands r0, r1\n\
-	cmp r0, #0\n\
-	beq _080D1448\n\
-	ldr r1, _080D13F8 @ =0x0000BE1D\n\
-	adds r0, r4, #0\n\
-	bl SetMotion\n\
-	b _080D1442\n\
-	.align 2, 0\n\
-_080D13F8: .4byte 0x0000BE1D\n\
-_080D13FC:\n\
-	adds r0, r4, #0\n\
-	bl UpdateEntityAnim\n\
-	adds r0, r4, #0\n\
-	adds r0, #0x73\n\
-	ldrb r0, [r0]\n\
-	cmp r0, #3\n\
-	bne _080D1448\n\
-	movs r1, #0xbe\n\
-	lsls r1, r1, #8\n\
-	adds r0, r4, #0\n\
-	bl SetMotion\n\
-	b _080D1442\n\
-_080D1418:\n\
-	adds r0, r4, #0\n\
-	bl UpdateEntityAnim\n\
-	ldr r0, [r4, #0x18]\n\
-	ldrb r1, [r0, #9]\n\
-	movs r0, #4\n\
-	ands r0, r1\n\
-	cmp r0, #0\n\
-	beq _080D1448\n\
-	movs r0, #0x1e\n\
-	strb r0, [r4, #0x12]\n\
-	b _080D1442\n\
-_080D1430:\n\
-	movs r1, #0xbe\n\
-	lsls r1, r1, #8\n\
-	adds r0, r4, #0\n\
-	movs r2, #1\n\
-	bl FUN_080d0934\n\
-	lsls r0, r0, #0x10\n\
-	cmp r0, #0\n\
-	beq _080D1448\n\
-_080D1442:\n\
-	ldrb r0, [r4, #0xd]\n\
-	adds r0, #1\n\
-_080D1446:\n\
-	strb r0, [r4, #0xd]\n\
-_080D1448:\n\
-	pop {r4}\n\
-	pop {r0}\n\
-	bx r0\n\
- .syntax divided\n");
+static void Actor6_Update(struct Solid* p) {
+  switch ((p->s).mode[1]) {
+    case 0:
+      if (FUN_080d0aa0(&p->s, MOTION(DM190_HARPUIA, 0), 1) != 0) {
+        (p->s).mode[1] += 2;
+      }
+      break;
+    case 2:
+      UpdateSpriteAnimation(&p->s);
+      if ((p->s).scriptEntity->flags & 1) {
+        SetMotion(&p->s, MOTION(DM190_HARPUIA, 28));
+        (p->s).mode[1]++;
+      }
+      break;
+    case 3:
+      UpdateSpriteAnimation(&p->s);
+      if ((p->s).scriptEntity->flags & 2) {
+        SetMotion(&p->s, MOTION(DM190_HARPUIA, 29));
+        (p->s).mode[1]++;
+      }
+      break;
+    case 4:
+      UpdateSpriteAnimation(&p->s);
+      if ((p->s).motion.state == 3) {
+        SetMotion(&p->s, MOTION(DM190_HARPUIA, 0));
+        (p->s).mode[1]++;
+      }
+      break;
+    case 5:
+      UpdateSpriteAnimation(&p->s);
+      if ((p->s).scriptEntity->flags & 4) {
+        (p->s).work[2] = 0x1E;
+        (p->s).mode[1]++;
+      }
+      break;
+    case 6:
+      if (FUN_080d0934(&p->s, MOTION(DM190_HARPUIA, 0), 1) != 0) {
+        (p->s).mode[1]++;
+      }
+      break;
+    case 7:
+      break;
+  }
 }
 
 static void Actor7_Update(struct Solid* p) {
