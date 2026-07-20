@@ -40,7 +40,7 @@ struct Entity* CreateZeroMini(void* q, Coords32* c, u8 n) {
 static void ZeroMini_Init(struct Zero* z) {
   Coords32* c;
   EnableSpriteAnimation_Normal(z);
-  ResetDynamicMotion(&z->s);
+  SetSpriteTableDynamic(z);
   (z->s).flags |= DISPLAY;
   (z->s).flags |= FLIPABLE;
   SET_PLAYER_XFLIP(z, FALSE);

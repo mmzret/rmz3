@@ -7,7 +7,7 @@
 #include "gba/gba.h"
 #include "zero.h"
 
-typedef void (*WeaponFunc)(struct Weapon*);
+typedef void (*WeaponFunc)(Weapon*);
 typedef WeaponFunc WeaponRoutine[5];
 extern const WeaponRoutine* const gWeaponFnTable[WEAPON_MOVE_COUNT];
 
@@ -28,20 +28,20 @@ void SetWeaponElement(u16 n, u16 val);
 void KillAllWeapons(WeaponFunc fn);
 u8 GetWeaponCharge(struct Zero* z, bool8 isSubWeapon);
 
-struct Weapon* CreateBlizzardArrow(struct Zero* z, Coords32* c, u8 n, bool8 xflip);
+Weapon* CreateBlizzardArrow(struct Zero* z, Coords32* c, u8 n, bool8 xflip);
 
-void DeleteSaber(struct Weapon* w);
+void DeleteSaber(Weapon* w);
 void DeleteFlyingShield(Object* p);
 
-struct Weapon* CreateWeaponBuster(struct Zero* z, Coords32* c, u8 n, bool8 xflip, bool8 yflip);
-struct Weapon* CreateWeaponSaber(struct Zero* z, u8 r1);
-struct Weapon* CreateBuster(struct Zero* z, s32 x, s32 y, bool8 isDirRight);
+Weapon* CreateWeaponBuster(struct Zero* z, Coords32* c, u8 n, bool8 xflip, bool8 yflip);
+Weapon* CreateWeaponSaber(struct Zero* z, u8 r1);
+Weapon* CreateBuster(struct Zero* z, s32 x, s32 y, bool8 isDirRight);
 struct Entity* CreateWeaponShieldGuard(struct Zero* z, u8 n);
-struct Weapon* CreateWeaponRod(struct Zero* z);
+Weapon* CreateWeaponRod(struct Zero* z);
 struct Entity* CreateWeaponShieldFly(struct Zero* z, u8 n);
 struct Entity* CreateSmashElec(struct Zero* z, Coords32* c, u8 leftOrRight);
-struct Weapon* CreateThrowBlade(struct Zero* z, struct Weapon* w, bool8 isIce);
-struct Entity* CreateSaberWave(struct Zero* z, struct Weapon* w, bool8 r2);
+Weapon* CreateThrowBlade(struct Zero* z, Weapon* w, bool8 isIce);
+struct Entity* CreateSaberWave(struct Zero* z, Weapon* w, bool8 r2);
 void CreateWeapon6(s32 x, s32 y);
 
 u8 CalcBusterBonus(struct Zero* z);
@@ -49,9 +49,8 @@ u8 CalcSaberBonus(struct Zero* z);
 u8 CalcRodBonus(struct Zero* z);
 u8 CalcShieldBonus(struct Zero* z);
 
-struct WeaponCommon {
-  OBJECT_HDR;
-  // props (56bytes, offset: 0xB4..)
+typedef struct {
+  COLLISION_OBJECT_HDR;
   struct WeaponCommonProps {
     struct Zero* z;
     /*
@@ -61,8 +60,8 @@ struct WeaponCommon {
     */
     u8 props[2][8];
     u8 unk_c8[36];
-  } props;
-};
-static_assert(sizeof(struct WeaponCommon) == sizeof(struct Weapon));
+  } props;  // props (56bytes, offset: 0xB4..)
+} WeaponCommon;
+static_assert(sizeof(WeaponCommon) == sizeof(Weapon));
 
 #endif  // GUARD_RMZ3_WEAPON_H

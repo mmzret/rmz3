@@ -275,8 +275,8 @@ void ApplyGiantElf(struct StageRun* p) {
     StopSound(SE_TIME_ELF_HURRY);
 
     if ((gStageRun.missionStatus & MISSION_STAY) && !(gStageRun.vm.active & VM_ACTIVE) && FLAG(gCurStory.s.gameflags, GIANT_ELF_ENABLED)) {
-      if ((boss->s).kind == ENTITY_BOSS) {
-        const u8 id = (boss->s).id;
+      if (boss->kind == ENTITY_BOSS) {
+        const u8 id = boss->id;
         if (id != BOSS_MEGAMILPA) {
           if (id != BOSS_WORMER) {
             if (id != BOSS_BEE_SERVER) {
@@ -285,7 +285,7 @@ void ApplyGiantElf(struct StageRun* p) {
                   if (id != BOSS_PHANTOM) {
                     if (id != BOSS_REACTOR_CORE) {
                       if (id != BOSS_SPEAROOK) {
-                        if ((boss->s).flags & COLLIDABLE) {
+                        if (boss->flags & COLLIDABLE) {
                           (boss->body).hp = ((u16)(boss->body).hp + 1) >> 1;
                           CLEAR_FLAG(gCurStory.s.gameflags, GIANT_ELF_ENABLED);
                           CLEAR_FLAG((&gGameState.save.story)->gameflags, GIANT_ELF_ENABLED);

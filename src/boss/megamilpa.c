@@ -1,192 +1,103 @@
 #include "boss.h"
 #include "collision.h"
+#include "enemy/megamilpa_node.h"
 #include "global.h"
+#include "mod.h"
 #include "stagerun.h"
+
+typedef struct {
+  COLLISION_OBJECT_HDR;  // 0x00
+  Coords32 c_b4;         // 0xB4
+  u8 unk_bc;             // 0xBC
+  u8 unk_bd;             // 0xBD
+  u8 unk_be[2];          // 0xBE
+  s32 unk_c0;            // 0xC0
+  s32 unk_c4;            // 0xC4
+  bool8 unk_c8;          // 0xC8
+  u8 unk_c9[3];          // 0xC9
+  u8 buffer[24];         // 0xCC
+} Megamilpa;
+static_assert(sizeof(Megamilpa) == sizeof(struct Boss));
 
 static const s32 s32_ARRAY_08361abc[2];
 static const u8 u8_ARRAY_08361ac4[2];
+static const struct Collision gMegamilpaCoreHitbox;
+static const u8 sMegamilpa_InitModes[4];
 
-static void Megamilpa_Init(struct Boss* p);
-static void Megamilpa_Update(struct Boss* p);
-static void Megamilpa_Die(struct Boss* p);
+static void Megamilpa_Init(Megamilpa* p);
+static void Megamilpa_Update(Megamilpa* p);
+static void Megamilpa_Die(Megamilpa* p);
 
 // clang-format off
 const BossRoutine gMegamilpaRoutine = {
-    [ENTITY_INIT] =      Megamilpa_Init,
-    [ENTITY_UPDATE] =    Megamilpa_Update,
-    [ENTITY_DIE] =       Megamilpa_Die,
+    [ENTITY_INIT] =      (void*)Megamilpa_Init,
+    [ENTITY_UPDATE] =    (void*)Megamilpa_Update,
+    [ENTITY_DIE] =       (void*)Megamilpa_Die,
     [ENTITY_DISAPPEAR] = (void*)DeleteBoss,
-    [ENTITY_EXIT] =      (BossFunc)DeleteEntity,
+    [ENTITY_EXIT] =      (void*)DeleteEntity,
 };
 // clang-format on
 
-NAKED static void Megamilpa_Init(struct Boss* p) {
-  asm(".syntax unified\n\
-	push {r4, r5, r6, lr}\n\
-	adds r6, r0, #0\n\
-	ldr r1, _0803D254 @ =gBossFnTable\n\
-	ldrb r0, [r6, #9]\n\
-	lsls r0, r0, #2\n\
-	adds r0, r0, r1\n\
-	movs r1, #1\n\
-	str r1, [r6, #0xc]\n\
-	ldr r0, [r0]\n\
-	ldr r0, [r0, #4]\n\
-	str r0, [r6, #0x14]\n\
-	ldr r1, _0803D258 @ =u8_ARRAY_08361ab8\n\
-	ldrb r0, [r6, #0x10]\n\
-	adds r0, r0, r1\n\
-	ldrb r0, [r0]\n\
-	movs r5, #0\n\
-	strb r0, [r6, #0xd]\n\
-	ldrb r0, [r6, #0xa]\n\
-	movs r1, #2\n\
-	orrs r0, r1\n\
-	movs r1, #1\n\
-	orrs r0, r1\n\
-	strb r0, [r6, #0xa]\n\
-	adds r0, r6, #0\n\
-	bl InitNonAffineMotion\n\
-	adds r0, r6, #0\n\
-	bl ResetDynamicMotion\n\
-	adds r4, r6, #0\n\
-	adds r4, #0xb4\n\
-	ldr r0, [r6, #0x54]\n\
-	asrs r0, r0, #8\n\
-	str r0, [r4]\n\
-	movs r1, #0xf0\n\
-	bl __divsi3\n\
-	lsls r1, r0, #4\n\
-	subs r1, r1, r0\n\
-	lsls r1, r1, #0xc\n\
-	movs r0, #0xf0\n\
-	lsls r0, r0, #7\n\
-	adds r1, r1, r0\n\
-	str r1, [r4]\n\
-	ldr r0, [r6, #0x54]\n\
-	ldr r1, [r6, #0x58]\n\
-	bl FUN_08009f6c\n\
-	adds r1, r6, #0\n\
-	adds r1, #0xb8\n\
-	ldr r2, _0803D25C @ =0xFFFFFC00\n\
-	adds r0, r0, r2\n\
-	str r0, [r1]\n\
-	ldr r0, [r4]\n\
-	str r0, [r6, #0x54]\n\
-	ldr r0, [r1]\n\
-	str r0, [r6, #0x58]\n\
-	adds r0, r6, #0\n\
-	adds r0, #0xc0\n\
-	str r5, [r0]\n\
-	adds r1, #5\n\
-	movs r0, #0xff\n\
-	strb r0, [r1]\n\
-	adds r0, r6, #0\n\
-	adds r0, #0xbc\n\
-	strb r5, [r0]\n\
-	ldrb r0, [r6, #0x10]\n\
-	cmp r0, #0\n\
-	bne _0803D2A0\n\
-	movs r4, #0\n\
-_0803D224:\n\
-	cmp r4, #5\n\
-	beq _0803D234\n\
-	lsls r0, r4, #0x18\n\
-	lsrs r0, r0, #0x18\n\
-	bl CreateMegamilpaNode\n\
-	adds r0, #0xb4\n\
-	str r6, [r0]\n\
-_0803D234:\n\
-	adds r4, #1\n\
-	cmp r4, #0xa\n\
-	ble _0803D224\n\
-	ldr r0, _0803D260 @ =gSystemSavedata\n\
-	ldrb r1, [r0, #0x16]\n\
-	movs r0, #0x40\n\
-	ands r0, r1\n\
-	cmp r0, #0\n\
-	beq _0803D268\n\
-	ldr r1, _0803D264 @ =gMegamilpaCoreHitbox\n\
-	adds r0, r6, #0\n\
-	movs r2, #0x50\n\
-	bl ResetBossBody\n\
-	b _0803D272\n\
-	.align 2, 0\n\
-_0803D254: .4byte gBossFnTable\n\
-_0803D258: .4byte u8_ARRAY_08361ab8\n\
-_0803D25C: .4byte 0xFFFFFC00\n\
-_0803D260: .4byte gSystemSavedata\n\
-_0803D264: .4byte gMegamilpaCoreHitbox\n\
-_0803D268:\n\
-	ldr r1, _0803D2AC @ =gMegamilpaCoreHitbox\n\
-	adds r0, r6, #0\n\
-	movs r2, #0x40\n\
-	bl ResetBossBody\n\
-_0803D272:\n\
-	ldr r0, _0803D2B0 @ =0x085D795C\n\
-	ldr r1, _0803D2B4 @ =wStaticGraphicTilenums\n\
-	ldrh r1, [r1, #0xa]\n\
-	ldrh r2, [r0, #6]\n\
-	lsrs r2, r2, #6\n\
-	subs r1, r1, r2\n\
-	lsls r1, r1, #5\n\
-	movs r2, #0x80\n\
-	lsls r2, r2, #9\n\
-	adds r1, r1, r2\n\
-	bl LoadGraphic\n\
-	ldr r0, _0803D2B8 @ =0x085D7968\n\
-	ldr r1, _0803D2BC @ =wStaticMotionPalIDs\n\
-	ldrh r1, [r1, #0xa]\n\
-	ldrb r2, [r0, #7]\n\
-	subs r1, r1, r2\n\
-	lsls r1, r1, #5\n\
-	movs r2, #0x80\n\
-	lsls r2, r2, #2\n\
-	adds r1, r1, r2\n\
-	bl LoadPalette\n\
-_0803D2A0:\n\
-	adds r0, r6, #0\n\
-	bl Megamilpa_Update\n\
-	pop {r4, r5, r6}\n\
-	pop {r0}\n\
-	bx r0\n\
-	.align 2, 0\n\
-_0803D2AC: .4byte gMegamilpaCoreHitbox\n\
-_0803D2B0: .4byte gStaticMotionGraphics+(5*20)\n\
-_0803D2B4: .4byte wStaticGraphicTilenums\n\
-_0803D2B8: .4byte gStaticMotionGraphics+(5*20)+12\n\
-_0803D2BC: .4byte wStaticMotionPalIDs\n\
- .syntax divided\n");
+static void Megamilpa_Init(Megamilpa* p) {
+  SET_BOSS_ROUTINE(p, ENTITY_UPDATE);
+  p->mode[1] = sMegamilpa_InitModes[p->work[0]];
+  p->flags |= FLIPABLE;
+  p->flags |= DISPLAY;
+  EnableSpriteAnimation_Normal(p);
+  SetSpriteTableDynamic(p);
+  (p->c_b4).x = (p->coord).x >> 8;
+  (p->c_b4).x = (((p->c_b4).x / 240) * PIXEL(240)) + PIXEL(120);
+  (p->c_b4).y = FUN_08009f6c((p->coord).x, (p->coord).y) - PIXEL(4);
+  (p->coord).x = (p->c_b4).x;
+  (p->coord).y = (p->c_b4).y;
+  p->unk_c0 = 0;
+  p->unk_bd = 0xFF, p->unk_bc = 0;
+  if (p->work[0] == 0) {
+    s32 i;
+    for (i = 0; i < 11; i++) {
+      if (i != 5) {
+        MegamilpaNode* node = CreateMegamilpaNode(i);
+        node->parent = p;
+      }
+    }
+    if (FLAG(gSystemSavedata.flags, MOD_MEGAMILPA)) {
+      ResetBossBody((void*)p, &gMegamilpaCoreHitbox, 80);
+    } else {
+      ResetBossBody((void*)p, &gMegamilpaCoreHitbox, 64);
+    }
+    LOAD_STATIC_GRAPHIC(SM005_GRAVEL);
+  }
+  Megamilpa_Update(p);
 }
 
 // --------------------------------------------
 
 static void nop_0803d6a0(void* _);
 
-void FUN_0803d6a4(struct Boss* p);
-void FUN_0803d6fc(struct Boss* p);
-void FUN_0803d7a0(struct Boss* p);
-void FUN_0803d844(struct Boss* p);
-void FUN_0803dba0(struct Boss* p);
-void FUN_0803dc34(struct Boss* p);
+void FUN_0803d6a4(Megamilpa* p);
+void FUN_0803d6fc(Megamilpa* p);
+void FUN_0803d7a0(Megamilpa* p);
+void FUN_0803d844(Megamilpa* p);
+void FUN_0803dba0(Megamilpa* p);
+void FUN_0803dc34(Megamilpa* p);
 
-static void Megamilpa_Update(struct Boss* p) {
+static void Megamilpa_Update(Megamilpa* p) {
   // clang-format off
-  static const BossFunc sUpdates1[6] = {
-      (BossFunc)nop_0803d6a0, 
-      (BossFunc)nop_0803d6a0, 
-      (BossFunc)nop_0803d6a0, 
-      (BossFunc)nop_0803d6a0, 
-      (BossFunc)nop_0803d6a0, 
-      (BossFunc)nop_0803d6a0,
+  static void (*const sUpdates1[6])(void*) = {
+      nop_0803d6a0, 
+      nop_0803d6a0, 
+      nop_0803d6a0, 
+      nop_0803d6a0, 
+      nop_0803d6a0, 
+      nop_0803d6a0,
   };
-  static const BossFunc sUpdates2[6] = {
-      (BossFunc)FUN_0803d6a4, 
-      (BossFunc)FUN_0803d6fc, 
-      (BossFunc)FUN_0803d7a0, 
-      (BossFunc)FUN_0803d844, 
-      (BossFunc)FUN_0803dba0, 
-      (BossFunc)FUN_0803dc34,
+  static void (*const sUpdates2[6])(Megamilpa*) = {
+      FUN_0803d6a4, 
+      FUN_0803d6fc, 
+      FUN_0803d7a0, 
+      FUN_0803d844, 
+      FUN_0803dba0, 
+      FUN_0803dc34,
   };
   // clang-format on
 
@@ -196,13 +107,13 @@ static void Megamilpa_Update(struct Boss* p) {
     return;
   }
 
-  (sUpdates1[(p->s).mode[1]])(p);
-  (sUpdates2[(p->s).mode[1]])(p);
+  (sUpdates1[p->mode[1]])(p);
+  (sUpdates2[p->mode[1]])(p);
 }
 
 // --------------------------------------------
 
-NAKED static void Megamilpa_Die(struct Boss* p) {
+NAKED static void Megamilpa_Die(Megamilpa* p) {
   asm(".syntax unified\n\
 	push {r4, r5, lr}\n\
 	adds r5, r0, #0\n\
@@ -345,7 +256,7 @@ _0803D450: .4byte gStageRun\n\
 
 // --------------------------------------------
 
-NAKED static void FUN_0803d454(struct Boss* p, u8 r1, u8 r2) {
+NAKED static void FUN_0803d454(Megamilpa* p, u8 r1, u8 r2) {
   asm(".syntax unified\n\
 	push {r4, r5, r6, r7, lr}\n\
 	mov r7, sl\n\
@@ -548,95 +459,107 @@ _0803D5FC: .4byte 0x00269EC3\n\
  .syntax divided\n");
 }
 
-NAKED static void FUN_0803d600(struct Boss* p) {
-  asm(".syntax unified\n\
-	push {r4, r5, r6, r7, lr}\n\
-	adds r4, r0, #0\n\
-	movs r1, #0\n\
-	adds r0, #0xc4\n\
-	ldr r0, [r0]\n\
-	cmp r0, #0x77\n\
-	bgt _0803D610\n\
-	movs r1, #1\n\
-_0803D610:\n\
-	adds r7, r1, #0\n\
-	movs r1, #0\n\
-	cmp r0, #0xc4\n\
-	ble _0803D61A\n\
-	movs r1, #1\n\
-_0803D61A:\n\
-	adds r6, r1, #0\n\
-	cmp r7, #0\n\
-	bne _0803D624\n\
-	cmp r6, #0\n\
-	beq _0803D640\n\
-_0803D624:\n\
-	adds r5, r4, #0\n\
-	adds r5, #0xc8\n\
-	ldrb r0, [r5]\n\
-	cmp r0, #0\n\
-	bne _0803D652\n\
-	ldr r0, _0803D63C @ =0x0000010D\n\
-	bl PlaySound\n\
-	movs r0, #1\n\
-	strb r0, [r5]\n\
-	b _0803D652\n\
-	.align 2, 0\n\
-_0803D63C: .4byte 0x0000010D\n\
-_0803D640:\n\
-	adds r5, r4, #0\n\
-	adds r5, #0xc8\n\
-	ldrb r0, [r5]\n\
-	cmp r0, #0\n\
-	beq _0803D652\n\
-	ldr r0, _0803D69C @ =0x0000010D\n\
-	bl StopSound\n\
-	strb r6, [r5]\n\
-_0803D652:\n\
-	adds r0, r4, #0\n\
-	adds r0, #0xc4\n\
-	ldr r1, [r0]\n\
-	adds r1, #1\n\
-	str r1, [r0]\n\
-	movs r0, #3\n\
-	ands r1, r0\n\
-	cmp r1, #0\n\
-	bne _0803D694\n\
-	cmp r7, #0\n\
-	beq _0803D67C\n\
-	adds r0, r4, #0\n\
-	movs r1, #0\n\
-	movs r2, #1\n\
-	bl FUN_0803d454\n\
-	adds r1, r4, #0\n\
-	adds r1, #0x54\n\
-	movs r0, #3\n\
-	bl AppendQuake\n\
-_0803D67C:\n\
-	cmp r6, #0\n\
-	beq _0803D694\n\
-	adds r0, r4, #0\n\
-	movs r1, #1\n\
-	movs r2, #1\n\
-	bl FUN_0803d454\n\
-	adds r1, r4, #0\n\
-	adds r1, #0x54\n\
-	movs r0, #3\n\
-	bl AppendQuake\n\
-_0803D694:\n\
-	pop {r4, r5, r6, r7}\n\
-	pop {r0}\n\
-	bx r0\n\
-	.align 2, 0\n\
-_0803D69C: .4byte 0x0000010D\n\
- .syntax divided\n");
-}
+static void FUN_0803d600(Megamilpa* p) {
+  bool8 cond1 = (p->unk_c4 < 120);
+  bool8 cond2 = (p->unk_c4 > 196);
 
-// --------------------------------------------
+  if (cond1 || cond2) {
+    if (!p->unk_c8) {
+      PlaySound(SE_UNK_10d);
+      p->unk_c8 = TRUE;
+    }
+  } else {
+    if (p->unk_c8) {
+      StopSound(SE_UNK_10d);
+      p->unk_c8 = FALSE;
+    }
+  }
+
+  p->unk_c4++;
+  if ((p->unk_c4 & 3) == 0) {
+    if (cond1) {
+      FUN_0803d454(p, 0, 1);
+      AppendQuake(3, &p->coord);
+    }
+    if (cond2) {
+      FUN_0803d454(p, 1, 1);
+      AppendQuake(3, &p->coord);
+    }
+  }
+}
 
 static void nop_0803d6a0(void* _) {}
 
-// --------------------------------------------
+void FUN_0803d6a4(Megamilpa* p) {
+  switch (p->mode[2]) {
+    case 0: {
+      p->flags &= ~DISPLAY;
+      p->mode[2]++;
+      FALLTHROUGH;
+    }
+    case 1: {
+      if ((p->scriptEntity)->flags & (1 << 0)) p->mode[2]++;
+      break;
+    }
+    case 2: {
+      if (!(gStageRun.vm.active & VM_ACTIVE)) p->mode[1] = 1, p->mode[2] = 0;
+      break;
+    }
+  }
+}
+
+void FUN_0803d6fc(Megamilpa* p) {
+  switch (p->mode[2]) {
+    case 0: {
+      p->work[2] = 60;
+      SetDDP(&p->body, &gMegamilpaCoreHitbox);
+      p->flags &= ~DISPLAY;
+      p->mode[2]++;
+      FALLTHROUGH;
+    }
+    case 1: {
+      p->work[2]--;
+      if (p->work[2] == 0) {
+        u8 val;
+        do {
+          val = u8_ARRAY_08361ac4[RANDOM(RNG_0202f388) & 1];
+          if (val == p->unk_bd) {
+            p->unk_bc++;
+          } else {
+            p->unk_bc = 0;
+          }
+        } while (p->unk_bc > 1);
+        p->unk_bd = val;
+        p->mode[1] = val, p->mode[2] = 0;
+      }
+      break;
+    }
+  }
+}
+
+void FUN_0803d7a0(Megamilpa* p) {
+  switch (p->mode[2]) {
+    case 0: {
+      PlaySound(SE_UNK_10d);
+      p->work[2] = 32;
+      p->unk_be[0] = RANDOM(RNG_0202f388) & 1;
+      p->unk_be[1] = RANDOM(RNG_0202f388) & 1;
+      p->mode[2]++;
+      FALLTHROUGH;
+    }
+    case 1: {
+      if ((p->work[2] & 3) == 0) FUN_0803d454(p, 0, 0);
+      if (p->work[2] > 0) {
+        p->work[2]--;
+      } else {
+        p->unk_c0 |= 1;
+        p->mode[1] = 3, p->mode[2] = 0;
+      }
+      AppendQuake(3, &p->coord);
+      break;
+    }
+  }
+}
 
 INCASM("asm/boss/megamilpa.inc");
 
@@ -742,7 +665,7 @@ const struct Collision Collision_ARRAY_ARRAY_083619c8[3][3] = {
     },
 };
 
-const struct Collision gMegamilpaCoreHitbox = {
+static const struct Collision gMegamilpaCoreHitbox = {
   kind : DRP,
   faction : FACTION_ENEMY,
   special : CS_BOSS,
@@ -750,16 +673,16 @@ const struct Collision gMegamilpaCoreHitbox = {
   hitzone : 0,
   remaining : 0,
   range : {PIXEL(4), PIXEL(0), PIXEL(8), PIXEL(16)},
-};
+};  // 0x08361AA0
 
-const u8 u8_ARRAY_08361ab8[4] = {0, 0, 0, 0};
+static const u8 sMegamilpa_InitModes[4] = {0, 0, 0, 0};  // 0x08361AB8
 
 static const s32 s32_ARRAY_08361abc[2] = {0x4800, 0x3000};
 
 static const u8 u8_ARRAY_08361ac4[2] = {2, 4};
 
 const motion_t gMegamilpaMotions[5] = {
-    MOTION(DM160_MEGAMILPA, 0x0C), MOTION(DM160_MEGAMILPA, 0x0D), MOTION(DM160_MEGAMILPA, 0x0E), MOTION(DM160_MEGAMILPA, 0x0F), MOTION(DM160_MEGAMILPA, 0x10),
+    MOTION(DM160_MEGAMILPA, 12), MOTION(DM160_MEGAMILPA, 13), MOTION(DM160_MEGAMILPA, 14), MOTION(DM160_MEGAMILPA, 15), MOTION(DM160_MEGAMILPA, 16),
 };
 
 const u8 u8_ARRAY_08361ad0[5] = {0, 0, 3, 6, 6};  // 083619c8 のidx

@@ -1,3 +1,4 @@
+#include "boss/omega1.h"
 #include "collision.h"
 #include "enemy.h"
 #include "global.h"
@@ -16,14 +17,13 @@ const EnemyRoutine gOmegaGoldHandRoutine = {
 };
 // clang-format on
 
-struct Enemy* FUN_08082b58(Coords32* c, bool8 isLeftHand, struct Boss* omega) {
-  struct Enemy* p = AllocEntityLast(gEnemyHeaderPtr);
+struct Entity* FUN_08082b58(Coords32* c, bool8 isLeftHand, Omega1* omega) {
+  struct Entity* p = AllocEntityLast(gEnemyHeaderPtr);
   if (p != NULL) {
     INIT_ENEMY_ROUTINE(p, ENEMY_OMEGA1G_HAND);
-    (p->s).coord = *c;
-    (p->s).work[0] = isLeftHand;
-    (p->s).work[1] = 0;
-    (p->s).unk_28 = &omega->s;
+    p->coord = *c;
+    p->work[0] = isLeftHand, p->work[1] = 0;
+    p->unk_28 = (void*)omega;
   }
   return p;
 }
@@ -32,8 +32,7 @@ struct Entity* FUN_08082bbc(struct Entity* q, u8 kind) {
   struct Entity* p = AllocEntityLast(gEnemyHeaderPtr);
   if (p != NULL) {
     INIT_ENEMY_ROUTINE(p, ENEMY_OMEGA1G_HAND);
-    p->work[0] = kind;
-    p->work[1] = 1;
+    p->work[0] = kind, p->work[1] = 1;
     p->unk_28 = q;
   }
   return p;

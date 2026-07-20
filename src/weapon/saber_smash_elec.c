@@ -32,9 +32,9 @@ static const struct Collision sCollisions[2] = {
     },
 };
 
-void SmashElec_Init(struct Weapon* w);
-void SmashElec_Update(struct Weapon* w);
-void SmashElec_Die(struct Weapon* w);
+void SmashElec_Init(Weapon* w);
+void SmashElec_Update(Weapon* w);
+void SmashElec_Die(Weapon* w);
 static void SmashElec_Disappear(struct Entity* p);
 
 // clang-format off
@@ -47,11 +47,11 @@ const WeaponRoutine gSmashElecRoutine = {
 };
 // clang-format on
 
-void MenuExit_SaberSmash(struct Weapon* p) {
-  struct Zero* z = (struct Zero*)(p->s).unk_28;
+void MenuExit_SaberSmash(Weapon* p) {
+  struct Zero* z = (struct Zero*)p->unk_28;
   if (P_ELEMENT(z) != ELEMENT_THUNDER || (z->unk_136 & (1 << 1))) {
-    (p->s).flags &= ~DISPLAY;
-    (p->s).flags &= ~FLIPABLE;
+    p->flags &= ~DISPLAY;
+    p->flags &= ~FLIPABLE;
     EXIT_BODY(p);
     SET_WEAPON_ROUTINE(p, ENTITY_DISAPPEAR);
   }

@@ -3,14 +3,13 @@
 #include "global.h"
 #include "vfx.h"
 
-struct PantheonHunterObject {
-  OBJECT_HDR;
-  // props (16bytes, offset: 0xB4..)
-  u8 unk_b4[8];
+typedef struct {
+  COLLISION_OBJECT_HDR;
+  u8 unk_b4[8];   // 0xB4
   bool8 isRight;  // 0xBC
-  u32 unk_c0;
-};
-static_assert(sizeof(struct PantheonHunterObject) == sizeof(struct Enemy));
+  u32 unk_c0;     // 0xC0
+} PantheonHunter;
+static_assert(sizeof(PantheonHunter) == sizeof(struct Enemy));
 
 static const EnemyFunc sUpdates[13];
 static const EnemyFunc sDeads[3];
@@ -589,9 +588,9 @@ static void FUN_080656cc(struct Entity* p) {
 // 0x080656f4
 static void onCollision(struct Body* body, Coords32* r1 UNUSED, Coords32* r2 UNUSED) {
   if (body->hitboxFlags & BODY_STATUS_WHITE) {
-    struct Entity* e = (struct Entity*)body->enemy->parent;
-    struct PantheonHunterObject* self = (struct PantheonHunterObject*)body->parent;
-    self->isRight = (e->coord).x > (self->s).coord.x;
+    struct Entity* q = (struct Entity*)body->enemy->parent;
+    PantheonHunter* p = (PantheonHunter*)body->parent;
+    p->isRight = (q->coord).x > (p->coord).x;
   }
 }
 

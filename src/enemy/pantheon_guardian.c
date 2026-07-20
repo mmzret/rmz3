@@ -6,9 +6,9 @@
 #include "zero.h"
 
 struct PantheonGuardianObject {
-  OBJECT_HDR;
+  COLLISION_OBJECT_HDR;
   // props (16bytes, offset: 0xB4..)
-  s32 x;
+  s32 x;  // 0xB4
   u8 unk_b8[4];
   u8 unk_bc;
   u8 unk_bd;
@@ -41,25 +41,25 @@ const EnemyRoutine gPantheonGuardianRoutine = {
 
 static void PantheonGuardian_Init(struct PantheonGuardianObject* p) {
   EnableSpriteAnimation_Normal(p);
-  (p->s).flags |= DISPLAY;
-  (p->s).flags |= FLIPABLE;
+  p->flags |= DISPLAY;
+  p->flags |= FLIPABLE;
   if (FLAG(gSystemSavedata.flags, MOD_P_GUARDIAN_HP4) && !FLAG(gCurStory.s.gameflags, DEMO_PLAY)) {
     _INIT_BODY(p, sCollisions, 14);
   } else {
     _INIT_BODY(p, sCollisions, 10);
   }
   SET_BODY_INTERSECT_HANDLER(p, FUN_0806465c);
-  p->x = (p->s).coord.x;
-  (p->s).coord.y = FUN_08009f6c((p->s).coord.x, (p->s).coord.y);
-  (p->s).d.x = (p->s).d.y = 0;
+  p->x = p->coord.x;
+  p->coord.y = FUN_08009f6c(p->coord.x, p->coord.y);
+  p->d.x = p->d.y = 0;
   p->unk_c0 = NULL;
   p->unk_b8[0] = 0, p->unk_b8[1] = 0;
 
   SET_ENEMY_ROUTINE(p, ENTITY_UPDATE);
-  if ((pZero2->s).coord.x - (p->s).coord.x < 0) {
-    (p->s).mode[1] = 1, (p->s).mode[2] = 0;
+  if ((pZero2->s).coord.x - p->coord.x < 0) {
+    p->mode[1] = 1, p->mode[2] = 0;
   } else {
-    (p->s).mode[1] = 2, (p->s).mode[2] = 0;
+    p->mode[1] = 2, p->mode[2] = 0;
   }
   PantheonGuardian_Update((void*)p);
 }

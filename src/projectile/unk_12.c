@@ -55,7 +55,7 @@ static void Projectile12_Init(struct Projectile* p) {
   (p->s).spr.mag.y = 0x100;
   (p->s).flags |= DISPLAY;
   (p->s).flags |= FLIPABLE;
-  ResetDynamicMotion(&p->s);
+  SetSpriteTableDynamic(p);
   if ((p->s).work[0] == 0) {
     INIT_BODY(p, &sCollisions[0], 1, NULL);
   } else if ((p->s).work[0] == 1) {

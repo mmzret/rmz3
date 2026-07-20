@@ -12,7 +12,7 @@
 
 static void MenuComp2_Init(struct SquareCursorWidget* p);
 static void MenuComp2_Update(struct SquareCursorWidget* p);
-static void MenuComp2_Die(struct Entity* p);
+static void MenuComp2_Die(struct SquareCursorWidget* p);
 
 // clang-format off
 const WidgetRoutine gSquareCursorRoutine = {
@@ -50,30 +50,29 @@ static void MenuComp2_Init(struct SquareCursorWidget* p) {
 
   SET_WIDGET_ROUTINE(p, ENTITY_UPDATE);
   EnableSpriteAnimation_Normal(p);
-  (p->s).flags |= DISPLAY;
-  (p->s).flags |= FLIPABLE;
-  SetSpriteAnimation(p, sMotions[(p->s).work[0]]);
-  (p->s).spr.xflip = FALSE, (p->s).spr.oam.xflip = FALSE;
-  (p->s).flags &= ~X_FLIP;
-  (p->s).spr.oam.priority = 0;
+  p->flags |= DISPLAY;
+  p->flags |= FLIPABLE;
+  SetSpriteAnimation(p, sMotions[p->work[0]]);
+  (p->spr).xflip = FALSE, (p->spr).oam.xflip = FALSE;
+  p->flags &= ~X_FLIP;
+  (p->spr).oam.priority = 0;
   p->dead = FALSE;
-  MenuComp2_Update((void*)p);
+  MenuComp2_Update(p);
 }
 
 static void MenuComp2_Update(struct SquareCursorWidget* p) {
   UpdateSpriteAnimation(p);
   if (p->dead) {
-    (p->s).flags &= ~DISPLAY;
-    (p->s).flags &= ~FLIPABLE;
+    p->flags &= ~DISPLAY;
+    p->flags &= ~FLIPABLE;
     SET_WIDGET_ROUTINE(p, ENTITY_DISAPPEAR);
     return;
   }
-  (p->s).coord.x = p->px * PIXEL(1);
-  (p->s).coord.y = p->py * PIXEL(1);
-  if ((p->s).work[0] == 0) {
-    BgOfs* bg1ofs = (BgOfs*)gVideoRegBuffer.bgofs[1];
-    if (bg1ofs->x > 256) (p->s).coord.x += PIXEL(512);
+  (p->coord).x = p->px * PIXEL(1);
+  (p->coord).y = p->py * PIXEL(1);
+  if (p->work[0] == 0) {
+    if (BGnHOFS(1) > 256) (p->coord).x += PIXEL(512);
   }
 }
 
-static void MenuComp2_Die(struct Entity* p) { SET_WIDGET_ROUTINE(p, ENTITY_EXIT); }
+static void MenuComp2_Die(struct SquareCursorWidget* p) { SET_WIDGET_ROUTINE(p, ENTITY_EXIT); }

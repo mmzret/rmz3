@@ -10,15 +10,14 @@ enum ElevatorSkin {
 };
 
 struct ElevatorObject {
-  OBJECT_HDR;
-  // props (16bytes, offset: 0xB4..)
-  Coords32 c;
-  u8 unk_bc;
-  u8 skin;  // 1: Wood, 2: MMX
-  SoundIDS16 se;
-  u8 unk_c0;
-  u8 unk_c1;
-  u16 unk_c2;
+  COLLISION_OBJECT_HDR;  // 0x00
+  Coords32 c;            // 0xB4
+  u8 unk_bc;             // 0xBC
+  u8 skin;               // 0xBD, 1: Wood, 2: MMX
+  SoundIDS16 se;         // 0xBE
+  u8 unk_c0;             // 0xC0
+  u8 unk_c1;             // 0xC1
+  u16 unk_c2;            // 0xC2
 };
 static_assert(sizeof(struct ElevatorObject) == sizeof(struct Solid));
 
@@ -45,11 +44,11 @@ const SolidRoutine gBaseElevatorRoutine = {
 // ------------------------------------------------------------------------------------------------------------------------------------
 
 struct Solid* CreateResistanceBaseElevator(u8 lv) {
-  struct ElevatorObject* p = (struct ElevatorObject*)AllocEntityLast(gSolidHeaderPtr);
+  struct ElevatorObject* p = AllocEntityLast(gSolidHeaderPtr);
   if (p != NULL) {
     INIT_SOLID_ROUTINE(p, SOLID_BASE_ELEVATOR);
-    (p->s).work[0] = 0;
-    (p->s).level = lv;
+    p->work[0] = 0;
+    p->level = lv;
     p->skin = gSystemSavedata.elevator;
   }
   return (void*)p;
@@ -90,7 +89,7 @@ void BaseElevator_Update(struct Solid* p) {
 }
 
 static void BaseElevator_Die(struct ElevatorObject* p) {
-  if ((p->s).work[0] == 0) {
+  if (p->work[0] == 0) {
     if (p->se != MUS_NONE) {
       StopSound(p->se);
       p->se = MUS_NONE;
@@ -100,7 +99,7 @@ static void BaseElevator_Die(struct ElevatorObject* p) {
 }
 
 static void BaseElevator_Disappear(struct ElevatorObject* p) {
-  if ((p->s).work[0] == 0) {
+  if (p->work[0] == 0) {
     if (p->se != MUS_NONE) {
       StopSound(p->se);
       p->se = MUS_NONE;
@@ -116,16 +115,16 @@ static void rBase_080cfd4c(struct ElevatorObject* p) {
   if (p->skin == ELEVATOR_MMX) LOAD_STATIC_GRAPHIC(SM138_ELEVATOR_MMX);
 
   EnableSpriteAnimation_Normal(p);
-  (p->s).flags |= DISPLAY;
-  (p->s).flags |= FLIPABLE;
+  p->flags |= DISPLAY;
+  p->flags |= FLIPABLE;
   SET_XFLIP(p, FALSE);
-  (p->s).flags2 |= ENTI_PHYSICS;
-  (p->s).size = &Rect_08370728;
-  (p->s).physicsAttr = MTATTR_CONVEYOR1 | SHAPE_BLOCK;
+  p->flags2 |= ENTI_PHYSICS;
+  p->size = &Rect_08370728;
+  p->physicsAttr = MTATTR_CONVEYOR1 | SHAPE_BLOCK;
   INIT_BODY(p, sCollisions, 0, NULL);
   (p->c).x = PIXEL(1616), (p->c).y = PIXEL(608);
-  (p->s).coord.x = (p->c).x;
-  (p->s).coord.y = (p->c).y + (p->s).level * PIXEL(160);
+  p->coord.x = (p->c).x;
+  p->coord.y = (p->c).y + p->level * PIXEL(160);
 
   p->se = MUS_NONE;
   CreateResistanceBaseElevator2((void*)p, 1, 0);

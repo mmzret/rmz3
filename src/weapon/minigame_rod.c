@@ -4,8 +4,8 @@
 
 // 多分ゼロのミニゲームの武器
 
-static void Weapon16_Init(struct Weapon* w);
-static void Weapon16_Update(struct Weapon* w);
+static void Weapon16_Init(Weapon* p);
+static void Weapon16_Update(Weapon* p);
 static void Weapon16_Die(Object* p);
 
 // clang-format off
@@ -18,20 +18,20 @@ const WeaponRoutine gMinigameRodRoutine = {
 };
 // clang-format on
 
-struct Weapon* CreateWeaponMinigameRod(struct Entity* q, u8 r1, u8 r2) {
-  struct Weapon* p = AllocEntityLast(gWeaponHeaderPtr);
+Weapon* CreateWeaponMinigameRod(struct Entity* q, u8 r1, u8 r2) {
+  Weapon* p = AllocEntityLast(gWeaponHeaderPtr);
   if (p != NULL) {
     INIT_WEAPON_ROUTINE(p, WEAPON_MOVE_MINIGAME_ROD);
-    (p->s).flags2 &= ~ENTITY_FLAGS2_B6;
-    (p->s).renderPrio = 16;
-    (p->s).tileNum = gWeaponTileNum[0], (p->s).palID = gWeaponPalIDs[0];
-    (p->s).work[0] = r2, (p->s).work[1] = r1;
-    (p->s).unk_28 = q;
+    p->flags2 &= ~ENTITY_FLAGS2_B6;
+    p->renderPrio = 16;
+    p->tileNum = gWeaponTileNum[0], p->palID = gWeaponPalIDs[0];
+    p->work[0] = r2, p->work[1] = r1;
+    p->unk_28 = q;
   }
   return p;
 }
 
-NAKED static void Weapon16_Init(struct Weapon* w) {
+NAKED static void Weapon16_Init(Weapon* w) {
   asm(".syntax unified\n\
 	push {r4, lr}\n\
 	adds r4, r0, #0\n\
@@ -105,23 +105,23 @@ _0803CF2C: .4byte gWeaponFnTable\n\
  .syntax divided\n");
 }
 
-static void _Weapon16_Update(struct Weapon* p);
+static void _Weapon16_Update(Weapon* p);
 
-static void Weapon16_Update(struct Weapon* p) {
+static void Weapon16_Update(Weapon* p) {
   static const WeaponFunc sUpdates[1] = {
       _Weapon16_Update,
   };
-  (sUpdates[(p->s).mode[1]])(p);
+  (sUpdates[p->mode[1]])(p);
 }
 
 static void Weapon16_Die(Object* p) {
-  (p->s).flags &= ~DISPLAY;
+  p->flags &= ~DISPLAY;
   EXIT_BODY(p);
   SET_WEAPON_ROUTINE(p, ENTITY_EXIT);
 }
 
 // 0x0803CF84
-NAKED static void _Weapon16_Update(struct Weapon* p) {
+NAKED static void _Weapon16_Update(Weapon* p) {
   asm(".syntax unified\n\
 	push {r4, r5, r6, r7, lr}\n\
 	adds r5, r0, #0\n\

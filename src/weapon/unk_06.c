@@ -2,9 +2,9 @@
 #include "global.h"
 #include "weapon.h"
 
-static void Weapon6_Init(struct Weapon* w);
-static void Weapon6_Update(struct Weapon* w);
-static void Weapon6_Die(struct Weapon* w);
+static void Weapon6_Init(Weapon* w);
+static void Weapon6_Update(Weapon* w);
+static void Weapon6_Die(Weapon* w);
 
 // clang-format off
 const WeaponRoutine gWeapon6Routine = {
@@ -38,64 +38,63 @@ static void onHit(struct Body* body UNUSED, Coords32* r1 UNUSED, Coords32* r2 UN
 static const struct Collision sCollision;
 static const u8 sInitModes[];
 
-static void Weapon6_Init(struct Weapon* w) {
-  SET_WEAPON_ROUTINE(w, ENTITY_UPDATE);
-  (w->s).mode[1] = sInitModes[(w->s).work[0]];
-  (w->s).flags |= FLIPABLE;
-  (w->s).flags |= DISPLAY;
-  EnableSpriteAnimation_Normal(w);
-  ResetDynamicMotion(&w->s);
-  INIT_BODY(w, &sCollision, 1, onHit);
-  Weapon6_Update(w);
+static void Weapon6_Init(Weapon* p) {
+  SET_WEAPON_ROUTINE(p, ENTITY_UPDATE);
+  p->mode[1] = sInitModes[p->work[0]];
+  p->flags |= FLIPABLE;
+  p->flags |= DISPLAY;
+  EnableSpriteAnimation_Normal(p);
+  SetSpriteTableDynamic(p);
+  INIT_BODY(p, &sCollision, 1, onHit);
+  Weapon6_Update(p);
 }
 
 static void nop_0803abf4(void* _);
-static void _Weapon6_Update(struct Weapon* w);
+static void _Weapon6_Update(Weapon* w);
 
-static void Weapon6_Update(struct Weapon* w) {
+static void Weapon6_Update(Weapon* p) {
   static const WeaponFunc sUpdates1[1] = {
       (WeaponFunc)nop_0803abf4,
   };
   static const WeaponFunc sUpdates2[1] = {
       (WeaponFunc)_Weapon6_Update,
   };
-  if ((w->body).status & BODY_STATUS_B2) {
-    SET_WEAPON_ROUTINE(w, ENTITY_DIE);
-    Weapon6_Die(w);
+  if ((p->body).status & BODY_STATUS_B2) {
+    SET_WEAPON_ROUTINE(p, ENTITY_DIE);
+    Weapon6_Die(p);
     return;
   }
-  (sUpdates1[(w->s).mode[1]])(w);
-  (sUpdates2[(w->s).mode[1]])(w);
+  (sUpdates1[p->mode[1]])(p);
+  (sUpdates2[p->mode[1]])(p);
 }
 
-static void Weapon6_Die(struct Weapon* w) {
-  EXIT_BODY(w);
-  SET_WEAPON_ROUTINE(w, ENTITY_EXIT);
+static void Weapon6_Die(Weapon* p) {
+  EXIT_BODY(p);
+  SET_WEAPON_ROUTINE(p, ENTITY_EXIT);
 }
 
 // --------------------------------------------
 
 static void nop_0803abf4(void* _) { return; }
 
-static void _Weapon6_Update(struct Weapon* w) {
-  switch ((w->s).mode[2]) {
+static void _Weapon6_Update(Weapon* p) {
+  switch (p->mode[2]) {
     case 0: {
-      InitRotatableMotion(&w->s);
-      (w->s).flags2 &= ~DYNAMIC;
-      (w->s).tileNum = 0;
-      (w->s).palID = 0;
-      SetSpriteAnimation(w, MOTION(SM033_FEFNIR_FIREBALL, 0));
-      (w->s).angle = 64;
-      (w->s).mode[2]++;
+      InitRotatableMotion((void*)p);
+      p->flags2 &= ~DYNAMIC;
+      p->tileNum = 0, p->palID = 0;
+      SetSpriteAnimation(p, MOTION(SM033_FEFNIR_FIREBALL, 0));
+      p->angle = 64;
+      p->mode[2]++;
       FALLTHROUGH;
     }
     case 1: {
-      s32 y = (w->s).coord.y;
-      (w->s).coord.y -= PIXEL(4);
-      if (((w->s).coord.x - (u32)PIXEL(9808) > PIXEL(304)) || (y - (u32)PIXEL(436) > PIXEL(224))) {
-        SET_WEAPON_ROUTINE(w, ENTITY_DIE);
+      s32 y = p->coord.y;
+      p->coord.y -= PIXEL(4);
+      if ((p->coord.x - (u32)PIXEL(9808) > PIXEL(304)) || (y - (u32)PIXEL(436) > PIXEL(224))) {
+        SET_WEAPON_ROUTINE(p, ENTITY_DIE);
       }
-      UpdateSpriteAnimation(w);
+      UpdateSpriteAnimation(p);
       break;
     }
   }

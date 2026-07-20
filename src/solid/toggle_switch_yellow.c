@@ -31,25 +31,25 @@ static void Solid52_Init(Object* p) {
     range : {PIXEL(0), PIXEL(8), PIXEL(32), PIXEL(16)},
   };  // 0x0837191c
 
-  (p->s).flags |= DISPLAY;
-  (p->s).flags |= FLIPABLE;
+  p->flags |= DISPLAY;
+  p->flags |= FLIPABLE;
   EnableSpriteAnimation_Normal(p);
   SET_YFLIP(p, TRUE);
   INIT_BODY(p, &sCollision, 0, NULL);
-  (p->s).coord.y = FUN_08009f6c((p->s).coord.x, (p->s).coord.y) + PIXEL(2) + 1;
+  p->coord.y = FUN_08009f6c(p->coord.x, p->coord.y) + PIXEL(2) + 1;
   SET_SOLID_ROUTINE(p, ENTITY_UPDATE);
   Solid52_Update(p);
 }
 
 static void Solid52_Update(Object* p) {
-  switch ((p->s).mode[3]) {
+  switch (p->mode[3]) {
     case 0: {
-      if (((p->s).work[0] = gOverworld.state[0]) == 0) {
+      if ((p->work[0] = gOverworld.state[0]) == 0) {
         SetSpriteAnimation(p, MOTION(SM210_LEVER_SWITCH_YELLOW, 1));
       } else {
         SetSpriteAnimation(p, MOTION(SM210_LEVER_SWITCH_YELLOW, 2));
       }
-      (p->s).mode[3]++;
+      p->mode[3]++;
       FALLTHROUGH;
     }
     case 1: {
@@ -57,21 +57,21 @@ static void Solid52_Update(Object* p) {
       if ((p->body).status & BODY_STATUS_B3) {
         gOverworld.state[0] ^= 1;
       }
-      if ((p->s).work[0] != gOverworld.state[0]) {
-        if ((p->s).work[0] == 0) {
+      if (p->work[0] != gOverworld.state[0]) {
+        if (p->work[0] == 0) {
           SetSpriteAnimation(p, MOTION(SM210_LEVER_SWITCH_YELLOW, 3));
         } else {
           SetSpriteAnimation(p, MOTION(SM210_LEVER_SWITCH_YELLOW, 4));
         }
-        (p->s).work[2] = 30;
-        (p->s).mode[3]++;
+        p->work[2] = 30;
+        p->mode[3]++;
       }
       break;
     }
     case 2: {
       UpdateSpriteAnimation(p);
-      if (--(p->s).work[2] == 0) {
-        (p->s).mode[3] = 0;
+      if (--p->work[2] == 0) {
+        p->mode[3] = 0;
       }
       break;
     }

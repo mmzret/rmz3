@@ -48,8 +48,12 @@ void SetMotion(struct Entity* p, motion_t m);
 // 今後は SetMotion を呼び出すところはこっちを使う (既存の箇所も後でこっちに置き換える予定)
 #define SetSpriteAnimation(enti, id) (SetMotion(((struct Entity*)(enti)), id))
 
-void GotoMotion(struct Entity* p, motion_t m, u16 r2, u16 r3);
 void ResetDynamicMotion(struct Entity* p);
+static inline void SetSpriteTableDynamic(void* enti) { ResetDynamicMotion((struct Entity*)enti); }
+
+void GotoMotion(struct Entity* p, motion_t m, u16 r2, u16 r3);
+static inline void GotoSpriteAnimation(void* enti, motion_t motion, u16 cmdIdx, u16 duration) { GotoMotion((struct Entity*)enti, motion, cmdIdx, duration); }
+
 void InitMotionLocation(void);
 
 void InitNonAffineMotion(struct Entity* p);
@@ -63,5 +67,8 @@ void ForceEntityPalette(struct Entity* p, u8 palID);
 void UpdateEntityAnim(struct Entity* p);
 // 今後は UpdateEntityAnim を呼び出すところはこっちを使う (既存の箇所も後でこっちに置き換える予定)
 #define UpdateSpriteAnimation(enti) (UpdateEntityAnim(((struct Entity*)(enti))))
+
+void FUN_0801779c(struct Entity* p);
+static inline void _FUN_0801779c(void* enti) { FUN_0801779c((struct Entity*)enti); }
 
 #endif  // GUARD_RMZ3_MOTION_H

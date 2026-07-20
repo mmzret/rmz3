@@ -99,15 +99,16 @@ extern GameSavedata SaveState_020003a8;
 void SetGameMode(struct GameState* p, u32 mode);
 
 struct Pickup;
+struct CyberElf;
 
 void InitBossHeader(struct EntityHeader* h, struct Boss* p, s16 len);
-void InitWeaponHeader(struct EntityHeader* h, struct Weapon* w, s16 len);
+void InitWeaponHeader(struct EntityHeader* h, Weapon* w, s16 len);
 void InitEnemyHeader(struct EntityHeader* h, struct Enemy* p, s16 len);
 void InitProjectileHeader(struct EntityHeader* h, struct Projectile* p, s16 len);
 void InitVFXHeader(struct EntityHeader* h, struct VFX* p, s16 len);
 void InitSolidHeader(struct EntityHeader* h, struct Solid* p, s16 len);
 void InitPickupHeader(struct EntityHeader* h, struct Pickup* p, s16 len);
-void InitElfHeader(struct EntityHeader* h, struct Elf* p, s16 len);
+void InitElfHeader(struct EntityHeader* h, struct CyberElf* p, s16 len);
 void InitWidgetHeader(struct EntityHeader* h, struct Widget* p, s16 len);
 
 void UpdateVFXs(void);

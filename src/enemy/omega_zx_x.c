@@ -5,10 +5,9 @@
 // OmegaZX のスプライト部分 (というか手前の X っぽい部分)
 
 struct OmegaZX_X {
-  OBJECT_HDR;
-  // props (16bytes, offset: 0xB4..)
-  Coords32 c;    // 0xB4
-  u8 unk_bc[8];  // 0xBC
+  COLLISION_OBJECT_HDR;  // 0x00
+  Coords32 c;            // 0xB4
+  u8 unk_bc[8];          // 0xBC
 };
 static_assert(sizeof(struct OmegaZX_X) == sizeof(struct Enemy));
 
@@ -57,20 +56,20 @@ static struct Entity* unused_FUN_080924a8(struct Entity* e, u8 kind) {
 
 static void Enemy60_Init(struct OmegaZX_X* p) {
   EnableSpriteAnimation_Normal(p);
-  ResetDynamicMotion(&p->s);
+  SetSpriteTableDynamic(p);
   SET_XFLIP(p, FALSE);
-  (p->s).flags &= ~DISPLAY;
-  (p->s).flags |= FLIPABLE;
+  p->flags &= ~DISPLAY;
+  p->flags |= FLIPABLE;
   INIT_BODY(p, sCollisions, 1, onCollision);
-  (&(p->s).d)->x = (&(p->s).d)->y = 0;
+  (&p->d)->x = (&p->d)->y = 0;
   SET_ENEMY_ROUTINE(p, ENTITY_UPDATE);
-  (p->s).mode[1] = 0, (p->s).mode[2] = 0, (p->s).mode[3] = 0;
+  p->mode[1] = 0, p->mode[2] = 0, p->mode[3] = 0;
   (p->c).x = 0, (p->c).y = 0;
   {
-    (p->s).coord.y = (((p->s).unk_28)->coord).y;
-    (p->s).coord.x = (p->c).x + (((p->s).unk_28)->coord).x;
-    (p->s).flags2 |= WHITE_PAINTABLE;
-    (p->s).invincibleID = ((p->s).unk_28)->uniqueID;
+    p->coord.y = ((p->unk_28)->coord).y;
+    p->coord.x = (p->c).x + ((p->unk_28)->coord).x;
+    p->flags2 |= WHITE_PAINTABLE;
+    p->invincibleID = (p->unk_28)->uniqueID;
   }
   Enemy60_Update((void*)p);
 }
@@ -139,14 +138,14 @@ static const EnemyFunc sDeads[2] = {
 static void onCollision(struct Body* body UNUSED, Coords32* r1 UNUSED, Coords32* r2 UNUSED) {}
 
 static void FUN_0809357c(struct OmegaZX_X* p) {
-  switch ((p->s).mode[2]) {
+  switch (p->mode[2]) {
     case 0: {
-      (p->s).mode[2]++;
+      p->mode[2]++;
       FALLTHROUGH;
     }
     case 1: {
-      (p->s).coord.y = (p->c).y + (((p->s).unk_28)->coord).y;
-      (p->s).coord.x = (p->c).x + (((p->s).unk_28)->coord).x;
+      p->coord.y = (p->c).y + ((p->unk_28)->coord).y;
+      p->coord.x = (p->c).x + ((p->unk_28)->coord).x;
       UpdateSpriteAnimation(p);
       break;
     }

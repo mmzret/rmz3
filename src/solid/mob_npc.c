@@ -5,11 +5,11 @@
 // レジスタンスベースのモブキャラ
 
 struct MobObject {
-  OBJECT_HDR;
-  u8 unk_00[8];     // 0xB4
-  s16 unk_08;       // 0xBC
-  motion_t motion;  // 0xBE
-  u8 unk_0c[4];     // 0xC0
+  COLLISION_OBJECT_HDR;
+  u8 unk_00[8];        // 0xB4
+  s16 unk_08;          // 0xBC
+  motion_t motion_be;  // 0xBE
+  u8 unk_0c[4];        // 0xC0
 };
 static_assert(sizeof(struct MobObject) == sizeof(struct Solid));
 
@@ -176,15 +176,15 @@ static void MobNPC_Update(struct Solid* p) {
 static void MobNPC_Die(struct Solid* p) { SET_SOLID_ROUTINE(p, ENTITY_DISAPPEAR); }
 
 static void mob_neutral_080d95a8(struct MobObject* p) {
-  if ((p->s).mode[2] == 0) {
-    SetSpriteAnimation(p, p->motion);
-    (p->s).work[2] = 64;
-    (p->s).mode[2]++;
+  if (p->mode[2] == 0) {
+    SetSpriteAnimation(p, p->motion_be);
+    p->work[2] = 64;
+    p->mode[2]++;
   }
   UpdateSpriteAnimation(p);
-  if ((p->unk_08 != 0) && (--(p->s).work[2] == 0xff)) {
-    (p->s).mode[1] = 1;
-    (p->s).mode[2] = 0;
+  if ((p->unk_08 != 0) && (--p->work[2] == 0xff)) {
+    p->mode[1] = 1;
+    p->mode[2] = 0;
   }
 }
 
@@ -352,27 +352,26 @@ _080D972C:\n\
 }
 
 static void FUN_080d9734(struct MobObject* p) {
-  if ((p->s).mode[2] == 0) {
-    SetSpriteAnimation(p, p->motion);
-    (p->s).work[2] = 64;
-    (p->s).mode[2]++;
+  if (p->mode[2] == 0) {
+    SetSpriteAnimation(p, p->motion_be);
+    p->work[2] = 64;
+    p->mode[2]++;
   }
 
   UpdateSpriteAnimation(p);
 
-  (p->s).work[2]--;
-  if ((p->s).work[2] == 0xFF) {
-    bool8 xflip = (((p->s).flags >> 4) & 1) == 0;  // Toggle
+  p->work[2]--;
+  if (p->work[2] == 0xFF) {
+    bool8 xflip = ((p->flags >> 4) & 1) == 0;  // Toggle
     if (xflip) {
-      (p->s).flags |= X_FLIP;
+      p->flags |= X_FLIP;
     } else {
-      (p->s).flags &= ~X_FLIP;
+      p->flags &= ~X_FLIP;
     }
-    (p->s).spr.xflip = xflip & 1;
-    (p->s).spr.oam.xflip = xflip;
-    (p->s).d.x = -(p->s).d.x;
-    (p->s).mode[1] = 1;
-    (p->s).mode[2] = 0;
+    p->spr.xflip = xflip & 1;
+    p->spr.oam.xflip = xflip;
+    p->d.x = -p->d.x;
+    p->mode[1] = 1, p->mode[2] = 0;
   }
 }
 

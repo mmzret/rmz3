@@ -6,14 +6,14 @@
 #include "story.h"
 #include "zero.h"
 
-struct PhantomTeleporterObject {
-  OBJECT_HDR;
+typedef struct {
+  COLLISION_OBJECT_HDR;
   // props (16bytes, offset: 0xB4..)
   void* player;           // 0xB4
   Coords32* destination;  // 0xB8
   u8 unk_bc[8];
-};
-static_assert(sizeof(struct PhantomTeleporterObject) == sizeof(struct Solid));
+} PhantomTeleporter;
+static_assert(sizeof(PhantomTeleporter) == sizeof(struct Solid));
 
 static const u16 u16_ARRAY_08371064[10];
 static const struct Collision sCollisions[2];
@@ -22,7 +22,7 @@ Coords32* GetWarpDestination1(Coords32* c);
 
 static void PhantomTeleporter_Init(struct Solid* p);
 static void PhantomTeleporter_Update(struct Entity* p);
-static void PhantomTeleporter_Die(struct Solid* p);
+static void PhantomTeleporter_Die(PhantomTeleporter* p);
 
 // clang-format off
 const SolidRoutine gPhantomTeleporterRoutine = {
@@ -53,7 +53,7 @@ static void PhantomTeleporter_Init(struct Solid* p) {
   PhantomTeleporter_Update((void*)p);
 }
 
-static void updatePhantomTeleporter(struct PhantomTeleporterObject* p);
+static void updatePhantomTeleporter(PhantomTeleporter* p);
 
 static void PhantomTeleporter_Update(struct Entity* p) {
   static const EntityFunc sUpdates[1] = {
@@ -62,26 +62,24 @@ static void PhantomTeleporter_Update(struct Entity* p) {
   (sUpdates[p->mode[1]])(p);
 }
 
-static void PhantomTeleporter_Die(struct Solid* p) {
+static void PhantomTeleporter_Die(PhantomTeleporter* p) {
   EXIT_BODY(p);
-  (p->s).flags &= ~DISPLAY;
+  p->flags &= ~DISPLAY;
   SET_SOLID_ROUTINE(p, ENTITY_EXIT);
 }
 
 // 0x080d87c8
 static void onCollision(struct Body* body, Coords32* r1 UNUSED, Coords32* r2 UNUSED) {
-  struct PhantomTeleporterObject* p = (struct PhantomTeleporterObject*)body->parent;
+  PhantomTeleporter* p = (PhantomTeleporter*)body->parent;
   struct Entity* q = (struct Entity*)(body->enemy)->parent;
-  if (q->kind == ENTITY_PLAYER) {
-    p->player = q;
-  }
+  if (q->kind == ENTITY_PLAYER) p->player = q;
 }
 
 // 0x080d87e4
-static void updatePhantomTeleporter(struct PhantomTeleporterObject* p) {
-  switch ((p->s).mode[2]) {
+static void updatePhantomTeleporter(PhantomTeleporter* p) {
+  switch (p->mode[2]) {
     case 0: {
-      if (!FLAG(gCurStory.s.gameflags, u16_ARRAY_08371064[(p->s).work[0]])) {
+      if (!FLAG(gCurStory.s.gameflags, u16_ARRAY_08371064[p->work[0]])) {
         SetSpriteAnimation(p, MOTION(SM123_TELEPORTAL, 1));
         INIT_BODY(p, sCollisions, 0, onCollision);
         p->player = NULL;
@@ -89,7 +87,7 @@ static void updatePhantomTeleporter(struct PhantomTeleporterObject* p) {
         SetSpriteAnimation(p, MOTION(SM123_TELEPORTAL, 0));
         EXIT_BODY(p);
       }
-      (p->s).mode[2]++;
+      p->mode[2]++;
       FALLTHROUGH;
     }
     case 1: {
@@ -98,8 +96,8 @@ static void updatePhantomTeleporter(struct PhantomTeleporterObject* p) {
         if ((p->body).status & BODY_STATUS_TELEPORTAL) {
           if (p->player != NULL) {
             gStageRun.vm.unk_004 |= (1 << 1);
-            (p->s).work[2] = 30;
-            (p->s).mode[2]++;
+            p->work[2] = 30;
+            p->mode[2]++;
           }
         }
       }
@@ -107,25 +105,25 @@ static void updatePhantomTeleporter(struct PhantomTeleporterObject* p) {
     }
     case 2: {
       UpdateSpriteAnimation(p);
-      if ((p->s).work[2] != 0) {
-        (p->s).work[2]--;
+      if (p->work[2] != 0) {
+        p->work[2]--;
         break;
       }
       PlaySound(SE_TELEPORT);
       SetSpriteAnimation(p, MOTION(SM123_TELEPORTAL, 2));
-      (p->s).work[2] = 20;
-      (p->s).mode[2]++;
+      p->work[2] = 20;
+      p->mode[2]++;
       break;
     }
     case 3: {
       register Coords32* dest asm("r1");
       UpdateSpriteAnimation(p);
-      if ((p->s).work[2] != 0) {
-        (p->s).work[2]--;
+      if (p->work[2] != 0) {
+        p->work[2]--;
         break;
       }
       Camera_SetMode(&gStageRun.vm.camera, CM1);
-      dest = GetWarpDestination1(&(p->s).coord);
+      dest = GetWarpDestination1(&p->coord);
       p->destination = dest;
       if (dest != NULL) {
         (pZero2->s).coord.x = (p->destination)->x;
@@ -134,20 +132,20 @@ static void updatePhantomTeleporter(struct PhantomTeleporterObject* p) {
       }
       (pZero2->s).spr.xflip = TRUE, (pZero2->s).spr.oam.xflip = TRUE;
       (pZero2->s).flags |= X_FLIP;
-      (p->s).work[2] = 90;
-      (p->s).mode[2]++;
+      p->work[2] = 90;
+      p->mode[2]++;
       break;
     }
     case 4: {
       UpdateSpriteAnimation(p);
-      if ((p->s).work[2] != 0) {
-        (p->s).work[2]--;
+      if (p->work[2] != 0) {
+        p->work[2]--;
         break;
       }
       PlaySound(SE_TENSOU_BACK);
       SetSpriteAnimation(p, MOTION(SM123_TELEPORTAL, 3));
       gStageRun.vm.transition = TRANSITION_BLACKOUT;
-      (p->s).mode[2]++;
+      p->mode[2]++;
       break;
     }
     case 5: {
@@ -163,7 +161,7 @@ static void updatePhantomTeleporter(struct PhantomTeleporterObject* p) {
         resetSateliteElfPosition(pZero2);
         (pZero2->s).mode[1] = 10, (pZero2->s).mode[2] = 4, (pZero2->s).mode[3] = 0;
         p->player = NULL;
-        (p->s).mode[2] = 0;
+        p->mode[2] = 0;
       }
       break;
     }

@@ -6,16 +6,16 @@
 
 INCASM("asm/cyberelf/nurse_e.inc");
 
-void NurseE_Init(struct Elf* p);
-void NurseE_Update(struct Elf* p);
-void NurseE_Die(struct Elf* p);
+void NurseE_Init(CyberElf* p);
+void NurseE_Update(CyberElf* p);
+void NurseE_Die(CyberElf* p);
 
 // clang-format off
 const ElfRoutine gNurseERoutine = {
-    [ENTITY_INIT] =      NurseE_Init,
-    [ENTITY_UPDATE] =    NurseE_Update,
-    [ENTITY_DIE] =       NurseE_Die,
+    [ENTITY_INIT] =      (void*)NurseE_Init,
+    [ENTITY_UPDATE] =    (void*)NurseE_Update,
+    [ENTITY_DIE] =       (void*)NurseE_Die,
     [ENTITY_DISAPPEAR] = (void*)DeleteElf,
-    [ENTITY_EXIT] =      (ElfFunc)DeleteEntity,
+    [ENTITY_EXIT] =      (void*)DeleteEntity,
 };
 // clang-format on

@@ -18,11 +18,11 @@ const VFXRoutine gVFX63Routine = {
 // clang-format on
 
 struct Entity* CreateVFX63(Coords32* c, u8 kind, motion_t m, u32 val) {
-  struct VFXUnkCommon* p = (struct VFXUnkCommon*)AllocEntityLast(gVFXHeaderPtr);
+  VFXUnkCommon* p = AllocEntityLast(gVFXHeaderPtr);
   if (p != NULL) {
     INIT_VFX_ROUTINE(p, VFX_UNK_063);
-    (p->s).work[0] = kind, (p->s).work[1] = 0;
-    (p->s).coord.x = c->x, (p->s).coord.y = c->y;
+    p->work[0] = kind, p->work[1] = 0;
+    p->coord.x = c->x, p->coord.y = c->y;
     p->m_74 = m;
     p->unk_78 = val;
   }
@@ -55,7 +55,7 @@ static void VFX63_Init(struct Entity* p) {
   VFX63_Update(p);
 }
 
-static void _VFX63_Update(struct VFXUnkCommon* p);
+static void _VFX63_Update(VFXUnkCommon* p);
 
 static void VFX63_Update(struct Entity* p) {
   static const VFXFunc sUpdates[1] = {
@@ -80,7 +80,7 @@ static void VFX63_Die(struct Entity* p) {
 /**
  * @note 0x080c3864
  */
-NAKED static void _VFX63_Update(struct VFXUnkCommon* p) {
+NAKED static void _VFX63_Update(VFXUnkCommon* p) {
   asm(".syntax unified\n\
 	push {r4, r5, r6, r7, lr}\n\
 	mov r7, sb\n\

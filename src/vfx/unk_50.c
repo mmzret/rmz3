@@ -54,7 +54,7 @@ static void VFX50_Init(VFX50* p) {
   EnableSpriteAnimation_Normal(p);
   p->flags |= DISPLAY;
   p->flags |= FLIPABLE;
-  ResetDynamicMotion((void*)p);
+  SetSpriteTableDynamic(p);
 
   if (p->work[0] == 0) {
     SET_XFLIP(p, FALSE);

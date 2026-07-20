@@ -7,13 +7,12 @@
 
 static void RenderTask_CyberSpaceDoor(struct Sprite* s, struct DrawPivot* dp);
 
-struct CyberDoorObject {
-  OBJECT_HDR;
-  // props (16bytes, offset: 0xB4..)
-  struct MetaspriteHeader* sprites;  // 0xB4
-  u8 unk_bc[12];                     // 0xBC
-};
-static_assert(sizeof(struct CyberDoorObject) == sizeof(struct Solid));
+typedef struct {
+  COLLISION_OBJECT_HDR;                 // 0x00
+  struct MetaspriteHeader* sprites_b4;  // 0xB4
+  u8 unk_bc[12];                        // 0xBC
+} CyberspaceDoor;
+static_assert(sizeof(CyberspaceDoor) == sizeof(struct Solid));
 
 static const struct Collision sCollisions[2];
 
@@ -465,22 +464,22 @@ _080DBDF0: .4byte gStageRun\n\
 
 // 0x080dbdf4
 static void RenderTask_CyberSpaceDoor(struct Sprite* s, struct DrawPivot* dp) {
-  struct CyberDoorObject* p = (struct CyberDoorObject*)s->sprites;
+  CyberspaceDoor* p = (CyberspaceDoor*)s->sprites;
   if (!FLAG(gCurStory.s.gameflags, IN_CYBERSPACE)) {
-    if ((p->s).work[0] != 0) {
+    if (p->work[0] != 0) {
       return;
     }
   } else {
-    if ((p->s).work[0] == 0) {
+    if (p->work[0] == 0) {
       return;
     }
   }
 
-  (p->s).spr.sprites = p->sprites;
+  (p->spr).sprites = p->sprites_b4;
   UpdateSpriteAnimation(p);
   TaskCB_DrawNoAffineSprite(s, dp);
-  p->sprites = (p->s).spr.sprites;
-  (p->s).spr.sprites = (void*)p;
+  p->sprites_b4 = (p->spr).sprites;
+  (p->spr).sprites = (void*)p;
 }
 
 static const struct Collision sCollisions[2] = {

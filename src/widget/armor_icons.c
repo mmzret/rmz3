@@ -2,25 +2,23 @@
 #include "global.h"
 #include "widget.h"
 
-/*
-  ヘッド、ボディ、フットのチップリスト
-*/
-
-struct ArmorIcons {
-  struct Entity s;
+// ヘッド、ボディ、フットのチップリスト
+typedef struct {
+  ENTITY_HDR;     // 0x00
+  ENTITY_SPRITE;  // 0x28
   // props (16bytes, offset: 0x74..)
-  struct Widget* parent;
-  u8 unk_78[12];
-};
-static_assert(sizeof(struct ArmorIcons) == sizeof(struct Widget));
+  struct Widget* parent;  // 0x74
+  u8 unk_78[12];          // 0x78
+} ArmorIcons;
+static_assert(sizeof(ArmorIcons) == sizeof(struct Widget));
 
 #define ARMORS_HEAD 0
 #define ARMORS_BODY 1
 #define ARMORS_FOOT 2
 
-static void ArmorIcons_Init(struct Widget* w);
-static void ArmorIcons_Update(struct Widget* w);
-static void ArmorIcons_Die(struct Entity* p);
+static void ArmorIcons_Init(ArmorIcons* p);
+static void ArmorIcons_Update(ArmorIcons* p);
+static void ArmorIcons_Die(ArmorIcons* p);
 
 // clang-format off
 const WidgetRoutine gArmorIconsRoutine = {
@@ -44,60 +42,58 @@ struct Entity* CreateArmorIcons(struct GameState* g, u8 r1, u8 r2) {
   return p;
 }
 
-struct Entity* CreateArmorIcons2(struct GameState* g, struct Widget* p, u8 r2, u8 r3) {
-  struct ArmorIcons* w = (struct ArmorIcons*)AllocEntityLast(gWidgetHeaderPtr);
-  if (w != NULL) {
-    INIT_WIDGET_ROUTINE(w, 5);
-    (w->s).unk_28 = (void*)g;
-    w->parent = p;
-    (w->s).work[0] = 1, (w->s).work[1] = r2;
-    w->unk_78[0] = r3;
+struct Entity* CreateArmorIcons2(struct GameState* g, struct Widget* parent, u8 r2, u8 r3) {
+  ArmorIcons* p = AllocEntityLast(gWidgetHeaderPtr);
+  if (p != NULL) {
+    INIT_WIDGET_ROUTINE(p, 5);
+    p->unk_28 = (void*)g;
+    p->parent = parent;
+    p->work[0] = 1, p->work[1] = r2;
+    p->unk_78[0] = r3;
   }
-  return (void*)w;
+  return (void*)p;
 }
 
 // --------------------------------------------
 
-static void FUN_080e6ab8(struct Widget* w);
-static void FUN_080e6bb8(struct Widget* w);
+static void FUN_080e6ab8(ArmorIcons* p);
+static void FUN_080e6bb8(ArmorIcons* p);
 
-static void ArmorIcons_Init(struct Widget* w) {
+static void ArmorIcons_Init(ArmorIcons* p) {
   s32 x, y;
 
-  if ((w->s).work[0] != 0) {
-    FUN_080e6bb8(w);
+  if (p->work[0] != 0) {
+    FUN_080e6bb8(p);
   } else {
-    FUN_080e6ab8(w);
+    FUN_080e6ab8(p);
   }
 
-  x = (w->s).coord.x;
-  y = (w->s).coord.y;
-  (w->s).unk_coord.x = x;
-  (w->s).unk_coord.y = y;
-  ArmorIcons_Update(w);
+  x = p->coord.x;
+  y = p->coord.y;
+  p->unk_coord.x = x;
+  p->unk_coord.y = y;
+  ArmorIcons_Update(p);
 }
 
-static void FUN_080e6f6c(struct Widget* w);
-static void FUN_080e6c94(struct Widget* w);
+static void FUN_080e6f6c(ArmorIcons* p);
+static void FUN_080e6c94(ArmorIcons* p);
 
-static void ArmorIcons_Update(struct Widget* w) {
-  (w->s).coord = (w->s).unk_coord;
-  if ((w->s).work[0] != 0) {
-    FUN_080e6f6c(w);
+static void ArmorIcons_Update(ArmorIcons* p) {
+  p->coord = p->unk_coord;
+  if (p->work[0] != 0) {
+    FUN_080e6f6c(p);
   } else {
-    FUN_080e6c94(w);
+    FUN_080e6c94(p);
   }
-  (w->s).unk_coord = (w->s).coord;
-  if (BGOFS(1)->x > 0x100) {
-    (w->s).coord.x += PIXEL(512);
-  }
+  p->unk_coord = p->coord;
+  if (BGnHOFS(1) > 256) (p->coord).x += PIXEL(512);
 }
 
-static void ArmorIcons_Die(struct Entity* p) { SET_WIDGET_ROUTINE(p, ENTITY_EXIT); }
+static void ArmorIcons_Die(ArmorIcons* p) { SET_WIDGET_ROUTINE(p, ENTITY_EXIT); }
 
 // --------------------------------------------
 
-NAKED static void FUN_080e6ab8(struct Widget* w) {
+NAKED static void FUN_080e6ab8(ArmorIcons* p) {
   asm(".syntax unified\n\
 	push {r4, r5, lr}\n\
 	adds r5, r0, #0\n\
@@ -221,7 +217,7 @@ _080E6BB4: .4byte sChipHeight\n\
  .syntax divided\n");
 }
 
-NAKED static void FUN_080e6bb8(struct Widget* w) {
+NAKED static void FUN_080e6bb8(ArmorIcons* p) {
   asm(".syntax unified\n\
 	push {r4, r5, lr}\n\
 	adds r4, r0, #0\n\
@@ -328,7 +324,7 @@ _080E6C90: .4byte sFootChipMotions\n\
  .syntax divided\n");
 }
 
-NAKED static void FUN_080e6c94(struct Widget* w) {
+NAKED static void FUN_080e6c94(ArmorIcons* p) {
   asm(".syntax unified\n\
 	push {r4, r5, r6, r7, lr}\n\
 	mov r7, r8\n\
@@ -697,7 +693,7 @@ _080E6F62:\n\
  .syntax divided\n");
 }
 
-NAKED static void FUN_080e6f6c(struct Widget* w) {
+NAKED static void FUN_080e6f6c(ArmorIcons* p) {
   asm(".syntax unified\n\
 	push {r4, r5, r6, r7, lr}\n\
 	mov r7, r8\n\
@@ -952,3 +948,7 @@ const u8 u8_ARRAY_083720b8[3] = {
     [ARMORS_BODY] = 3,
     [ARMORS_FOOT] = 4,
 };
+
+#undef ARMORS_HEAD
+#undef ARMORS_BODY
+#undef ARMORS_FOOT

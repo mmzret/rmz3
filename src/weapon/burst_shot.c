@@ -20,7 +20,7 @@ static const struct Collision sCollision = {
 
 // --------------------------------------------
 
-static void BurstShot_Init(struct Weapon* p);
+static void BurstShot_Init(Weapon* p);
 static void BurstShot_Update(struct Entity* p);
 static void BurstShot_Die(struct Entity* p);
 
@@ -36,36 +36,36 @@ const WeaponRoutine gBurstShotRoutine = {
 
 // --------------------------------------------
 
-void MenuExit_BurstShot(struct Weapon* p) {
-  Player* z = (Player*)(p->s).unk_28;
+void MenuExit_BurstShot(Weapon* p) {
+  Player* z = (Player*)p->unk_28;
   if (((&z->unk_b4)->status).element != ELEMENT_FLAME || (z->unk_136 & (1 << 0))) {
-    (p->s).flags &= ~DISPLAY;
-    (p->s).flags &= ~FLIPABLE;
+    p->flags &= ~DISPLAY;
+    p->flags &= ~FLIPABLE;
     EXIT_BODY(p);
     SET_WEAPON_ROUTINE(p, ENTITY_DISAPPEAR);
   }
 }
 
-struct Weapon* CreateBurstShot(struct Zero* z, struct Weapon* q, u8 n, s32 x, s32 y) {
-  struct Weapon* p = AllocEntityLast(gWeaponHeaderPtr);
+Weapon* CreateBurstShot(struct Zero* z, Weapon* q, u8 n, s32 x, s32 y) {
+  Weapon* p = AllocEntityLast(gWeaponHeaderPtr);
   if (p != NULL) {
     if ((z->unk_b4).mainCopy == WEAPON_BUSTER) {
       INIT_WEAPON_ROUTINE(p, WEAPON_MOVE_BURST_SHOT);
-      (p->s).flags2 &= ~ENTITY_FLAGS2_B6;
-      (p->s).renderPrio = 16;
-      (p->s).tileNum = gWeaponTileNum[0], (p->s).palID = gWeaponPalIDs[0];
+      p->flags2 &= ~ENTITY_FLAGS2_B6;
+      p->renderPrio = 16;
+      p->tileNum = gWeaponTileNum[0], p->palID = gWeaponPalIDs[0];
     } else {
       INIT_WEAPON_ROUTINE(p, WEAPON_MOVE_BURST_SHOT);
-      (p->s).flags2 &= ~ENTITY_FLAGS2_B6;
-      (p->s).renderPrio = 16;
-      (p->s).tileNum = gWeaponTileNum[1], (p->s).palID = gWeaponPalIDs[1];
+      p->flags2 &= ~ENTITY_FLAGS2_B6;
+      p->renderPrio = 16;
+      p->tileNum = gWeaponTileNum[1], p->palID = gWeaponPalIDs[1];
     }
-    (p->s).unk_28 = &z->s;
-    (p->s).unk_2c = &q->s;
-    (p->s).coord = (q->s).coord;
-    (p->s).work[0] = n, (p->s).work[1] = 0;
-    (p->s).coord.x += x;
-    (p->s).coord.y += y;
+    p->unk_28 = &z->s;
+    p->unk_2c = (void*)q;
+    p->coord = q->coord;
+    p->work[0] = n, p->work[1] = 0;
+    p->coord.x += x;
+    p->coord.y += y;
   }
   return p;
 }
@@ -73,17 +73,17 @@ struct Weapon* CreateBurstShot(struct Zero* z, struct Weapon* q, u8 n, s32 x, s3
 static const motion_t sBurstShotAnimations[3];
 static void BurstShot_OnCollision(struct Body* body, Coords32* r1 UNUSED, Coords32* r2 UNUSED);
 
-static void BurstShot_Init(struct Weapon* p) {
+static void BurstShot_Init(Weapon* p) {
   struct Body* body;
-  Player* z = (Player*)(p->s).unk_28;
-  struct Entity* parent = (struct Entity*)(p->s).unk_2c;
+  Player* z = (Player*)p->unk_28;
+  struct Entity* parent = (struct Entity*)p->unk_2c;
 
   SET_WEAPON_ROUTINE(p, ENTITY_UPDATE);
   EnableSpriteAnimation_Normal(p);
-  ResetDynamicMotion(&p->s);
-  (p->s).flags |= DISPLAY;
-  (p->s).flags |= FLIPABLE;
-  SetSpriteAnimation(p, sBurstShotAnimations[(p->s).work[0]]);
+  SetSpriteTableDynamic(p);
+  p->flags |= DISPLAY;
+  p->flags |= FLIPABLE;
+  SetSpriteAnimation(p, sBurstShotAnimations[p->work[0]]);
   _INIT_BODY(p, &sCollision, 1);
   body = &p->body;
   InitWeaponBody(body, &sCollision, (u8)(CalcBusterBonus(z) + 2), ELEMENT_FLAME, 2, (parent->work[3] >> 2) + 2);

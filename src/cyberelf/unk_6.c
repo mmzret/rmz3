@@ -5,42 +5,40 @@
 struct Zero;
 
 struct CyberElf6 {
-  OBJECT_HDR;
-  // props (16bytes, offset: 0xB4..)
-  struct Zero* player;  // 0xB4
-  u8 unk_b8[12];        // 0xB8
+  COLLISION_OBJECT_HDR;  // 0x00
+  struct Zero* player;   // 0xB4
+  u8 unk_b8[12];         // 0xB8
 };
-static_assert(sizeof(struct CyberElf6) == sizeof(struct Elf));
+static_assert(sizeof(struct CyberElf6) == sizeof(CyberElf));
 
 static const u16 u16_ARRAY_08371d5c[7];
 static const u8 sFusionPenalties[7];
 
-static void Elf6_Init(struct Elf* e);
-static void Elf6_Update(struct Elf* e);
-static void Elf6_Die(struct Elf* e);
+static void Elf6_Init(CyberElf* p);
+static void Elf6_Update(CyberElf* p);
+static void Elf6_Die(CyberElf* p);
 
 // clang-format off
 const ElfRoutine gElf6Routine = {
-    [ENTITY_INIT] =      Elf6_Init,
-    [ENTITY_UPDATE] =    Elf6_Update,
-    [ENTITY_DIE] =       Elf6_Die,
+    [ENTITY_INIT] =      (void*)Elf6_Init,
+    [ENTITY_UPDATE] =    (void*)Elf6_Update,
+    [ENTITY_DIE] =       (void*)Elf6_Die,
     [ENTITY_DISAPPEAR] = (void*)DeleteElf,
-    [ENTITY_EXIT] =      (ElfFunc)DeleteEntity,
+    [ENTITY_EXIT] =      (void*)DeleteEntity,
 };
 // clang-format on
 
 struct Entity* CreateElf6(struct Zero* z, u8 breed, u8 availability, u8 _) {
-  struct CyberElf6* p = (struct CyberElf6*)AllocEntityLast(gElfHeaderPtr);
+  struct CyberElf6* p = AllocEntityLast(gElfHeaderPtr);
   if (p != NULL) {
     INIT_ELF_ROUTINE(p, 6);
     p->player = z;
-    (p->s).work[0] = breed;
-    (p->s).work[1] = availability;
+    p->work[0] = breed, p->work[1] = availability;
   }
   return (struct Entity*)p;
 }
 
-NAKED static void Elf6_Init(struct Elf* e) {
+NAKED static void Elf6_Init(CyberElf* p) {
   asm(".syntax unified\n\
 	push {r4, r5, r6, r7, lr}\n\
 	adds r6, r0, #0\n\
@@ -137,7 +135,7 @@ _080E3702:\n\
  .syntax divided\n");
 }
 
-NAKED static void Elf6_Update(struct Elf* e) {
+NAKED static void Elf6_Update(CyberElf* p) {
   asm(".syntax unified\n\
 	push {r4, r5, r6, r7, lr}\n\
 	adds r5, r0, #0\n\
@@ -314,7 +312,7 @@ _080E3898: .4byte wMOSAIC\n\
  .syntax divided\n");
 }
 
-NAKED static void Elf6_Die(struct Elf* e) {
+NAKED static void Elf6_Die(CyberElf* p) {
   asm(".syntax unified\n\
 	push {r4, r5, r6, r7, lr}\n\
 	adds r4, r0, #0\n\

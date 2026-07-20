@@ -24,7 +24,7 @@ static void onCollision(struct Body* body UNUSED, Coords32* r1 UNUSED, Coords32*
 static bool8 tryKillBeeServer(struct Boss* p) {
   if ((((p->body).status & BODY_STATUS_DEAD) || ((p->body).hp == 0)) && !(gStageRun.missionStatus & MISSION_PLAYER_DEAD)) {
     SET_BOSS_ROUTINE(p, ENTITY_DIE);
-    (p->s).mode[1] = 0;
+    p->mode[1] = 0;
     BeeServer_Die(p);
     return TRUE;
   }

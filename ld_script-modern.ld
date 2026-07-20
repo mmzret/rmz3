@@ -8,6 +8,7 @@ MEMORY {
 
 gMaxLines = 0;
 gNumMusicPlayers = 15;
+gNumSongs = 336;
 
 SECTIONS {
 	. = 0x2000000;

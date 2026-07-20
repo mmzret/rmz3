@@ -759,10 +759,10 @@ NON_MATCH static void LayerDraw_FixOmegaWhiteCoord(struct StageLayer* l, const s
   }
   if (gOverworld.work.spacecraft.omega != NULL) {
     u8 id;
-    gOverworld.work.spacecraft.omegaCoord.x = (gOverworld.work.spacecraft.omega->s).coord.x;
-    gOverworld.work.spacecraft.omegaCoord.y = (gOverworld.work.spacecraft.omega->s).coord.y;
+    gOverworld.work.spacecraft.omegaCoord.x = (gOverworld.work.spacecraft.omega->coord).x;
+    gOverworld.work.spacecraft.omegaCoord.y = (gOverworld.work.spacecraft.omega->coord).y;
 
-    id = (gOverworld.work.spacecraft.omega->s).invincibleID;
+    id = gOverworld.work.spacecraft.omega->invincibleID;
     if (gWhitePaintFlags[id >> 5] & (1 << (id & 0x1F))) {
       gPaletteManager.unk_404 = 0x180;
       gPaletteManager.unk_406 = 0x20;

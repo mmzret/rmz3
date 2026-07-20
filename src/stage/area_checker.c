@@ -11,76 +11,29 @@ static u32 getSpaceCraftArea(Coords32* c) {
   return 0;
 }
 
-NAKED static u32 getVolcanoArea(Coords32* c) {
-  asm(".syntax unified\n\
-	push {r4, lr}\n\
-	adds r3, r0, #0\n\
-	ldr r2, [r3]\n\
-	ldr r0, _0801916C @ =0x002C1000\n\
-	cmp r2, r0\n\
-	bgt _08019168\n\
-	ldr r1, _08019170 @ =0xFFE2EFFF\n\
-	adds r0, r2, r1\n\
-	ldr r4, _08019174 @ =0x0000EFFE\n\
-	cmp r0, r4\n\
-	bls _08019168\n\
-	ldr r1, [r3, #4]\n\
-	movs r0, #0xd8\n\
-	lsls r0, r0, #0xa\n\
-	cmp r1, r0\n\
-	ble _0801917C\n\
-	ldr r1, _08019178 @ =0xFFDE3FFF\n\
-	adds r0, r2, r1\n\
-	cmp r0, r4\n\
-	bhi _0801917C\n\
-_08019168:\n\
-	movs r0, #7\n\
-	b _080191BE\n\
-	.align 2, 0\n\
-_0801916C: .4byte 0x002C1000\n\
-_08019170: .4byte 0xFFE2EFFF\n\
-_08019174: .4byte 0x0000EFFE\n\
-_08019178: .4byte 0xFFDE3FFF\n\
-_0801917C:\n\
-	ldr r1, [r3]\n\
-	ldr r0, _08019188 @ =0x000B3FFF\n\
-	cmp r1, r0\n\
-	bgt _0801918C\n\
-	movs r0, #0\n\
-	b _080191BE\n\
-	.align 2, 0\n\
-_08019188: .4byte 0x000B3FFF\n\
-_0801918C:\n\
-	ldr r0, _08019198 @ =0x0011F7FF\n\
-	cmp r1, r0\n\
-	bgt _0801919C\n\
-	movs r0, #1\n\
-	b _080191BE\n\
-	.align 2, 0\n\
-_08019198: .4byte 0x0011F7FF\n\
-_0801919C:\n\
-	ldr r0, _080191A8 @ =0x00176FFF\n\
-	cmp r1, r0\n\
-	bgt _080191AC\n\
-	movs r0, #2\n\
-	b _080191BE\n\
-	.align 2, 0\n\
-_080191A8: .4byte 0x00176FFF\n\
-_080191AC:\n\
-	ldr r0, _080191B8 @ =0x001D0FFF\n\
-	cmp r1, r0\n\
-	ble _080191BC\n\
-	movs r0, #4\n\
-	b _080191BE\n\
-	.align 2, 0\n\
-_080191B8: .4byte 0x001D0FFF\n\
-_080191BC:\n\
-	movs r0, #3\n\
-_080191BE:\n\
-	pop {r4}\n\
-	pop {r1}\n\
-	bx r1\n\
- .syntax divided\n");
+static u32 getVolcanoArea(struct Coord* c) {
+  if (c->x > 0x2C1000) {
+    return 7;
+  }
+  if ((u32)(c->x - 0x1D1001) <= 0xEFFE) {
+    return 7;
+  }
+  if (c->y > 0x36000 && (u32)(c->x - 0x21C001) <= 0xEFFE) {
+    return 7;
+  }
+  if (c->x <= 0xB3FFF) {
+    return 0;
+  }
+  if (c->x <= 0x11F7FF) {
+    return 1;
+  }
+  if (c->x <= 0x176FFF) {
+    return 2;
+  }
+  if (c->x <= 0x1D0FFF) {
+    return 3;
+  }
+  return 4;
 }
 
 static u32 getOceanArea(Coords32* c) {
@@ -148,62 +101,30 @@ static u32 getAreaX2Area(Coords32* c) {
   return 0;
 }
 
-NAKED static u32 getEnergyFactoryArea(Coords32* c) {
-  asm(".syntax unified\n\
-	push {lr}\n\
-	ldr r1, [r0]\n\
-	ldr r0, _080193D4 @ =0x002B9000\n\
-	cmp r1, r0\n\
-	ble _080193D8\n\
-	movs r0, #7\n\
-	b _08019426\n\
-	.align 2, 0\n\
-_080193D4: .4byte 0x002B9000\n\
-_080193D8:\n\
-	ldr r0, _080193F0 @ =0x00223800\n\
-	cmp r1, r0\n\
-	bgt _080193EA\n\
-	ldr r0, _080193F4 @ =0x00205800\n\
-	cmp r1, r0\n\
-	bgt _08019424\n\
-	ldr r0, _080193F8 @ =0x0016F800\n\
-	cmp r1, r0\n\
-	ble _080193FC\n\
-_080193EA:\n\
-	movs r0, #1\n\
-	b _08019426\n\
-	.align 2, 0\n\
-_080193F0: .4byte 0x00223800\n\
-_080193F4: .4byte 0x00205800\n\
-_080193F8: .4byte 0x0016F800\n\
-_080193FC:\n\
-	ldr r0, _08019408 @ =0x00151800\n\
-	cmp r1, r0\n\
-	ble _0801940C\n\
-	movs r0, #6\n\
-	b _08019426\n\
-	.align 2, 0\n\
-_08019408: .4byte 0x00151800\n\
-_0801940C:\n\
-	ldr r0, _0801941C @ =0x000F7800\n\
-	cmp r1, r0\n\
-	bgt _08019418\n\
-	ldr r0, _08019420 @ =0x000D9800\n\
-	cmp r1, r0\n\
-	bgt _08019424\n\
-_08019418:\n\
-	movs r0, #0\n\
-	b _08019426\n\
-	.align 2, 0\n\
-_0801941C: .4byte 0x000F7800\n\
-_08019420: .4byte 0x000D9800\n\
-_08019424:\n\
-	movs r0, #5\n\
-_08019426:\n\
-	pop {r1}\n\
-	bx r1\n\
-	.align 2, 0\n\
- .syntax divided\n");
+static u32 getEnergyFactoryArea(struct Coord* c) {
+  s32 x = c->x;
+  if (x > 0x2B9000) {
+    return 7;
+  }
+  if (x > 0x223800) {
+    return 1;
+  }
+  if (x > 0x205800) {
+    return 5;
+  }
+  if (x > 0x16F800) {
+    return 1;
+  }
+  if (x > 0x151800) {
+    return 6;
+  }
+  if (x > 0xF7800) {
+    return 0;
+  }
+  if (x > 0xD9800) {
+    return 5;
+  }
+  return 0;
 }
 
 static u32 getSnowyPlainsArea(Coords32* c) {

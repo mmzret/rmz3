@@ -5,16 +5,15 @@
 #include "zero.h"
 
 struct BossPhantom {
-  OBJECT_HDR;
-  // props (48bytes, offset: 0xB4..)
-  u8 unk_b4[20];
-  u8 unk_c8;
-  u8 unk_c9;
-  u8 unk_ca;
-  bool8 isRight;  // 0xCB
-  u8 unk_cc[4];
-  void* unk_d0;
-  u8 unk_d4[16];
+  COLLISION_OBJECT_HDR;  // 0x00
+  u8 unk_b4[20];         // 0xB4
+  u8 unk_c8;             // 0xC8
+  u8 unk_c9;             // 0xC9
+  u8 unk_ca;             // 0xCA
+  bool8 isRight;         // 0xCB
+  u8 unk_cc[4];          // 0xCC
+  void* unk_d0;          // 0xD0
+  u8 unk_d4[16];         // 0xD4
 };
 static_assert(sizeof(struct BossPhantom) == sizeof(struct Boss));
 
@@ -242,7 +241,7 @@ _0805EED0: .4byte onCollision\n\
 static void onCollision(struct Body* body, Coords32* c1, Coords32* c2) {
   struct BossPhantom* p = (struct BossPhantom*)body->parent;
   if (body->hitboxFlags & BODY_STATUS_WHITE) PlaySound(SE_PHANTOM_DAMAGE);
-  p->isRight = ((pZero2->s).coord.x - (p->s).coord.x) > 0;
+  p->isRight = ((pZero2->s).coord.x - (p->coord).x) > 0;
 }
 
 static const EntityFunc sUpdates[1];
@@ -251,11 +250,11 @@ static void Phantom_Update(struct BossPhantom* p) {
   if ((((p->body).status & BODY_STATUS_DEAD) || ((p->body).hp == 0)) && !(gStageRun.missionStatus & MISSION_PLAYER_DEAD)) {
     if (p->unk_d0 != NULL) p->unk_d0 = NULL;
     SET_BOSS_ROUTINE(p, ENTITY_DIE);
-    (p->s).mode[1] = 0;
+    p->mode[1] = 0;
     Phantom_Die((void*)p);
     return;
   }
-  sUpdates[(p->s).work[0]]((void*)p);
+  sUpdates[p->work[0]]((void*)p);
   phantom_080607e4((void*)p);
 }
 
@@ -271,11 +270,11 @@ static void FUN_0805f004(Object* p);
 
 static void FUN_0805efbc(Object* p) {
   SetDDP(&p->body, &sCollisions[0]);
-  *((u16*)&(p->s).mode[2]) = 1;
+  *((u16*)&p->mode[2]) = 1;
   FUN_080607a0((void*)p, 0);
   RANDOM(RNG_0202f388);
-  (p->s).work[2] = 1;
-  FUN_0805f004((void*)p);
+  p->work[2] = 1;
+  FUN_0805f004(p);
 }
 
 void FUN_080607f0(void*);
@@ -283,30 +282,30 @@ void FUN_080607f0(void*);
 static void FUN_0805f004(Object* p) {
   s32 i;
   FUN_080607f0(p);
-  i = (p->s).work[2] - 1;
-  (p->s).work[2] = i;
+  i = p->work[2] - 1;
+  p->work[2] = i;
   if (i) {
     return;
   }
   if ((p->body).hp < 48) {
     u32 idx = RANDOM(RNG_0202f388) & 0x1F;
     if (idx < 10) {
-      (p->s).mode[1] = 1, *((u16*)&(p->s).mode[2]) = 0;
+      p->mode[1] = 1, *((u16*)&p->mode[2]) = 0;
     } else if (idx < 17) {
-      (p->s).mode[1] = 3, *((u16*)&(p->s).mode[2]) = 0;
+      p->mode[1] = 3, *((u16*)&p->mode[2]) = 0;
     } else if (idx < 24) {
-      (p->s).mode[1] = 4, *((u16*)&(p->s).mode[2]) = 0;
+      p->mode[1] = 4, *((u16*)&p->mode[2]) = 0;
     } else {
-      (p->s).mode[1] = 6, *((u16*)&(p->s).mode[2]) = 0;
+      p->mode[1] = 6, *((u16*)&p->mode[2]) = 0;
     }
   } else {
     u32 idx = RANDOM(RNG_0202f388) & 0x1F;
     if (idx < 14) {
-      (p->s).mode[1] = 1, *((u16*)&(p->s).mode[2]) = 0;
+      p->mode[1] = 1, *((u16*)&p->mode[2]) = 0;
     } else if (idx < 23) {
-      (p->s).mode[1] = 3, *((u16*)&(p->s).mode[2]) = 0;
+      p->mode[1] = 3, *((u16*)&p->mode[2]) = 0;
     } else {
-      (p->s).mode[1] = 4, *((u16*)&(p->s).mode[2]) = 0;
+      p->mode[1] = 4, *((u16*)&p->mode[2]) = 0;
     }
   }
 }

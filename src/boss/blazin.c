@@ -356,12 +356,12 @@ static void Blazin_Die(struct Boss* p) {
       blazinDeath0,
       blazinDeath1,
   };
-  (sDeads[(p->s).mode[1]])(p);
+  (sDeads[p->mode[1]])(p);
 }
 
 static void blazinDeath0(struct Boss* p) {
   Coords32* velocity;
-  switch ((p->s).mode[2]) {
+  switch (p->mode[2]) {
     case 0: {
       if ((gStageRun.missionStatus & MISSION_STAY) && !(gStageRun.vm.active & VM_ACTIVE)) {
         gStageRun.missionStatus &= ~MISSION_STAY;
@@ -370,25 +370,24 @@ static void blazinDeath0(struct Boss* p) {
       if (isSoundPlaying(SE_COPYX_FIRESHOT)) StopSound(SE_COPYX_FIRESHOT);
       if (isSoundPlaying(SE_BLAZIN_EX)) StopSound(SE_BLAZIN_EX);
       EXIT_BODY(p);
-      velocity = &(p->s).d;
+      velocity = &p->d;
       velocity->x = velocity->y = 0;
-      (p->s).work[2] = 1;
-      (p->s).mode[2]++;
+      p->work[2] = 1;
+      p->mode[2]++;
       FALLTHROUGH;
     }
     case 1: {
-      if ((p->s).work[2] != 0) {
-        (p->s).work[2]--;
-        if ((p->s).work[2] == 0) {
-          (p->s).mode[2]++;
+      if (p->work[2] != 0) {
+        p->work[2]--;
+        if (p->work[2] == 0) {
+          p->mode[2]++;
         }
       }
       break;
     }
 
     case 2: {
-      (p->s).mode[1] = 1;
-      (p->s).mode[2] = 0;
+      p->mode[1] = 1, p->mode[2] = 0;
       break;
     }
   }

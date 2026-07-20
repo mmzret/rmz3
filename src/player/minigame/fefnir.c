@@ -42,7 +42,7 @@ static void Fefnir_Init(struct Zero* z) {
   (z->s).flags |= FLIPABLE;
   (z->s).flags |= DISPLAY;
   EnableSpriteAnimation_Normal(z);
-  ResetDynamicMotion(&z->s);
+  SetSpriteTableDynamic(z);
   INIT_BODY(z, &sCollisions[0], 6, onCollision);
   (z->s).work[3] = 0;
   (z->s).coord.y = FUN_0800a05c((z->s).coord.x, (z->s).coord.y);

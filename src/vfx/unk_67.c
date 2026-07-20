@@ -19,11 +19,11 @@ const VFXRoutine gGhost67Routine = {
 // clang-format on
 
 struct Entity* FUN_080c4914(Coords32* c, u8 kind, motion_t m, u32 val) {
-  struct VFXUnkCommon* p = (struct VFXUnkCommon*)AllocEntityLast(gVFXHeaderPtr);
+  VFXUnkCommon* p = AllocEntityLast(gVFXHeaderPtr);
   if (p != NULL) {
     INIT_VFX_ROUTINE(p, VFX_UNK_067);
-    (p->s).work[0] = kind, (p->s).work[1] = 0;
-    (p->s).coord.x = c->x, (p->s).coord.y = c->y;
+    p->work[0] = kind, p->work[1] = 0;
+    p->coord.x = c->x, p->coord.y = c->y;
     p->m_74 = m;
     p->unk_78 = val;
   }
@@ -56,7 +56,7 @@ static void Ghost67_Init(struct Entity* p) {
   VFX67_Update(p);
 }
 
-static void _VFX67_Update(struct VFXUnkCommon* p);
+static void _VFX67_Update(VFXUnkCommon* p);
 
 static void VFX67_Update(struct Entity* p) {
   static const EntityFunc sUpdates[1] = {
@@ -79,7 +79,7 @@ static void Ghost67_Die(struct Entity* p) {
 // --------------------------------------------
 
 // 0x080c4aac
-NAKED static void _VFX67_Update(struct VFXUnkCommon* p) {
+NAKED static void _VFX67_Update(VFXUnkCommon* p) {
   asm(".syntax unified\n\
 	push {r4, r5, r6, r7, lr}\n\
 	mov r7, sb\n\

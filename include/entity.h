@@ -21,13 +21,13 @@ extern struct EntityHeader* gEnemyHeaderPtr;
 extern struct EntityHeader* gElfHeaderPtr;
 
 extern Player gPlayers[1];
-extern struct Weapon gWeapons[24];
+extern Weapon gWeapons[24];
 extern struct Boss gBosses[5];
 extern struct Enemy gEnemies[18];
 extern struct Projectile gProjectiles[24];
 extern struct VFX gVFXs[64];
 extern struct Solid gSolids[22];
-extern struct Elf gElfEntities[16];
+extern CyberElf gElfEntities[16];
 extern u8 gEntityIDGenerator;
 
 void _StartEntityListIteration(struct EntityHeader* h);
@@ -80,7 +80,6 @@ void ScalerotSprite2() __attribute__((alias("ScalerotSprite")));
 
 void UpdateEntityPaletteID(struct Entity* p);
 void PaintEntityWhite(struct Entity* p);
-void FUN_0801779c(struct Entity* p);
 
 bool32 isKilled(struct Entity* p);
 #define IsDead(p) (isKilled((struct Entity*)(p)))

@@ -143,11 +143,11 @@ static bool8 isShieldOK(struct Zero* z) {
 }
 
 // 0x0803413c
-NON_MATCH struct Weapon* CreateBuster(struct Zero* z, s32 x, s32 y, bool8 isDirRight) {
+NON_MATCH Weapon* CreateBuster(struct Zero* z, s32 x, s32 y, bool8 isDirRight) {
 #if MODERN
   u8 kind;
   Coords32 c;
-  struct Weapon* w;
+  Weapon* w;
   u8* tmp;
   if (((&z->unk_b4)->status).weapons[0] == WEAPON_BUSTER) {
     kind = GetWeaponCharge(z, FALSE);
