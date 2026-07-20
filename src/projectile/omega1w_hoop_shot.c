@@ -1,8 +1,8 @@
+#include "camera.h"
 #include "collision.h"
 #include "global.h"
-#include "stagerun.h"
-#include "camera.h"
 #include "projectile.h"
+#include "stagerun.h"
 #include "vfx.h"
 
 // Omega (1st white) hoop shot?
@@ -119,40 +119,39 @@ static void FUN_0809da14(Projectile5* p) {
 }
 
 static void FUN_0809daa0(Projectile5* p) {
-  if ((p->s).unk_28->mode[0] > 1) {
-    CreateSmoke(3, &(p->s).coord);
+  if ((p->unk_28)->mode[0] > 1) {
+    CreateSmoke(3, &p->coord);
     SET_PROJECTILE_ROUTINE(p, ENTITY_DIE);
-  } else if (--(p->s).work[2] == 0) {
+  } else if (--p->work[2] == 0) {
     SET_PROJECTILE_ROUTINE(p, ENTITY_DIE);
   } else {
-    s32 m = (p->s).mode[2];
+    s32 m = p->mode[2];
     switch (m) {
       case 0:
-        if ((p->s).work[0] == 0) {
-          SetSpriteAnimation(&p->s, 0xa01);
+        if (p->work[0] == 0) {
+          SetSpriteAnimation(p, MOTION(SM010_OMEGA_RING, 1));
           SetDDP(&p->body, &sCollisions[1]);
-          (p->s).d.y = p->unk_b8;
-          (p->s).d.x = m;
+          (p->d).y = p->unk_b8;
+          (p->d).x = 0;
         } else {
-          SetSpriteAnimation(&p->s, 0xa04);
+          SetSpriteAnimation(p, MOTION(SM010_OMEGA_RING, 4));
           SetDDP(&p->body, &sCollisions[2]);
-          (p->s).d.x = -p->unk_b8;
-          (p->s).d.y = m;
+          (p->d).x = -p->unk_b8;
+          (p->d).y = 0;
         }
-        RNG_0202f388 = LCG(RNG_0202f388);
-        (p->s).work[3] = (RNG_0202f388 >> 16) & 1;
-        (p->s).mode[2]++;
-        // fallthrough
+        p->work[3] = RANDOM(RNG_0202f388) & 1;
+        p->mode[2]++;
+        FALLTHROUGH;
       case 1:
         UpdateSpriteAnimation(p);
-        if ((p->s).motion.state == 3) {
-          (p->s).flags |= DISPLAY;
-          (p->s).mode[2]++;
+        if (IsSpriteAnimEnd(p)) {
+          p->flags |= DISPLAY;
+          p->mode[2]++;
         }
         break;
       case 2:
-        (p->s).coord.x += (p->s).d.x;
-        (p->s).coord.y += (p->s).d.y;
+        (p->coord).x += (p->d).x;
+        (p->coord).y += (p->d).y;
         UpdateSpriteAnimation(p);
         break;
     }
