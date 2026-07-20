@@ -30,7 +30,7 @@ static const struct Collision sCollisions[2] = {
     },
 };
 
-static void ElecShieldSweep_Init(struct Weapon* p);
+static void ElecShieldSweep_Init(Weapon* p);
 static void ElecShieldSweep_Update(struct Entity* p);
 static void ElecShieldSweep_Die(struct Entity* p);
 
@@ -44,38 +44,38 @@ const WeaponRoutine gElecShieldSweepRoutine = {
 };
 // clang-format on
 
-void MenuExit_ShieldSweepElec(struct Weapon* p) {
-  struct Zero* z = (struct Zero*)(p->s).unk_28;
-  if (((&z->unk_b4)->status).element != ELEMENT_THUNDER || (z->unk_136 & (1 << 3))) {
-    (p->s).flags &= ~DISPLAY;
-    (p->s).flags &= ~FLIPABLE;
+void MenuExit_ShieldSweepElec(Weapon* p) {
+  Player* z = (Player*)p->unk_28;
+  if (((&z->unk_b4)->status).element != ELEMENT_THUNDER || (z->unk_136 & (1 << WEAPON_SHIELD))) {
+    p->flags &= ~DISPLAY;
+    p->flags &= ~FLIPABLE;
     EXIT_BODY(p);
     SET_WEAPON_ROUTINE(p, ENTITY_DISAPPEAR);
   }
 }
 
-struct Weapon* CreateShieldSweepElec(Player* z, s32 x, s32 y) {
-  struct Weapon* p = AllocEntityLast(gWeaponHeaderPtr);
+Weapon* CreateShieldSweepElec(Player* z, s32 x, s32 y) {
+  Weapon* p = AllocEntityLast(gWeaponHeaderPtr);
   if (p != NULL) {
     if ((z->unk_b4).mainCopy == WEAPON_SABER) {
       INIT_WEAPON_ROUTINE(p, WEAPON_MOVE_SHIELD_SWEEP_ELEC);
-      (p->s).flags2 &= ~ENTITY_FLAGS2_B6;
-      (p->s).renderPrio = 16;
-      (p->s).tileNum = gWeaponTileNum[0], (p->s).palID = gWeaponPalIDs[0];
+      p->flags2 &= ~ENTITY_FLAGS2_B6;
+      p->renderPrio = 16;
+      p->tileNum = gWeaponTileNum[0], p->palID = gWeaponPalIDs[0];
     } else {
       INIT_WEAPON_ROUTINE(p, WEAPON_MOVE_SHIELD_SWEEP_ELEC);
-      (p->s).flags2 &= ~ENTITY_FLAGS2_B6;
-      (p->s).renderPrio = 16;
-      (p->s).tileNum = gWeaponTileNum[1], (p->s).palID = gWeaponPalIDs[1];
+      p->flags2 &= ~ENTITY_FLAGS2_B6;
+      p->renderPrio = 16;
+      p->tileNum = gWeaponTileNum[1], p->palID = gWeaponPalIDs[1];
     }
-    (p->s).unk_28 = (void*)z;
-    (p->s).coord.x = x, (p->s).coord.y = y;
-    (p->s).work[0] = 0, (p->s).work[1] = 0;
+    p->unk_28 = (void*)z;
+    p->coord.x = x, p->coord.y = y;
+    p->work[0] = 0, p->work[1] = 0;
   }
   return p;
 }
 
-NAKED static void ElecShieldSweep_Init(struct Weapon* p) {
+NAKED static void ElecShieldSweep_Init(Weapon* p) {
   asm(".syntax unified\n\
 	push {r4, r5, r6, r7, lr}\n\
 	mov r7, sb\n\

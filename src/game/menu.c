@@ -686,20 +686,20 @@ void PrintNumber(u16 n, u8 x, u8 y) {
 
 struct SoulLauncher;
 
-void MenuExit_Buster(struct Weapon* p);
-void MenuExit_ShieldGuard(struct WeaponCommon* p);
-void MenuExit_ShieldFly(struct Weapon* p);
-void MenuExit_ReflectLaser(struct Weapon* p);
+void MenuExit_Buster(Weapon* p);
+void MenuExit_ShieldGuard(WeaponCommon* p);
+void MenuExit_ShieldFly(Weapon* p);
+void MenuExit_ReflectLaser(Weapon* p);
 void MenuExit_SoulLauncher(struct SoulLauncher* p);
-void MenuExit_BurstShot(struct Weapon* p);
-void MenuExit_BlizzardArrow(struct Weapon* p);
-void MenuExit_ThrowBlade(struct Weapon* p);
-void MenuExit_ShieldSweep(struct WeaponCommon* p);
-void MenuExit_Weapon13(struct WeaponCommon* p);
-void MenuExit_SaberSmash(struct Weapon* p);
-void MenuExit_ShieldSweepElec(struct Weapon* p);
+void MenuExit_BurstShot(Weapon* p);
+void MenuExit_BlizzardArrow(Weapon* p);
+void MenuExit_ThrowBlade(Weapon* p);
+void MenuExit_ShieldSweep(WeaponCommon* p);
+void MenuExit_Weapon13(WeaponCommon* p);
+void MenuExit_SaberSmash(Weapon* p);
+void MenuExit_ShieldSweepElec(Weapon* p);
 
-void FUN_080f3d44(struct Weapon* w) {
+void FUN_080f3d44(Weapon* w) {
   // clang-format off
   static const WeaponFunc PTR_ARRAY_08386300[WEAPON_MOVE_COUNT] = {
     [WEAPON_MOVE_Z_BUSTER]     =      (void*)MenuExit_Buster, 
@@ -721,8 +721,8 @@ void FUN_080f3d44(struct Weapon* w) {
     [WEAPON_MOVE_MINIGAME_ROD] =      (void*)NULL,
   };
   // clang-format on
-  if (PTR_ARRAY_08386300[(w->s).id] != NULL) {
-    (PTR_ARRAY_08386300[(w->s).id])(w);
+  if (PTR_ARRAY_08386300[w->id] != NULL) {
+    (PTR_ARRAY_08386300[w->id])(w);
   }
 }
 
@@ -731,16 +731,16 @@ void FUN_080f3d44(struct Weapon* w) {
 struct FollowerCyberElf;
 struct CyberElf10;
 
-void FUN_080e2510(struct Elf* e);
-void FUN_080e2b78(struct Elf* e);
+void FUN_080e2510(CyberElf* p);
+void FUN_080e2b78(CyberElf* p);
 void MenuExit_FollowerElf(struct FollowerCyberElf* e);
-void MenuExit_SeaOtterElf(struct Elf* e);
+void MenuExit_SeaOtterElf(CyberElf* p);
 void MenuExit_CyberElf10(struct CyberElf10* p);
-void FUN_080e58bc(struct Elf* e);
+void FUN_080e58bc(CyberElf* p);
 
-void close_menu_080f3d64(struct Elf* e) {
+void close_menu_080f3d64(CyberElf* p) {
   // clang-format off
-  static const ElfFunc PTR_ARRAY_08386344[13] = {
+  static const CyberElfFunc PTR_ARRAY_08386344[13] = {
     [0]  = (void*)NULL, 
     [1]  = (void*)NULL, 
     [2]  = (void*)FUN_080e2510, 
@@ -756,7 +756,7 @@ void close_menu_080f3d64(struct Elf* e) {
     [12] = (void*)FUN_080e58bc,
   }; // 0x08386344
   // clang-format on
-  if (PTR_ARRAY_08386344[(e->s).id] != NULL) {
-    (PTR_ARRAY_08386344[(e->s).id])((void*)e);
+  if (PTR_ARRAY_08386344[p->id] != NULL) {
+    (PTR_ARRAY_08386344[p->id])(p);
   }
 }

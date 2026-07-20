@@ -4,7 +4,7 @@
 #include "gba/types.h"
 
 struct VFX;
-struct CollidableEntity;
+struct CollisionObject;
 struct Coord;
 
 enum ElemFX {
@@ -25,6 +25,6 @@ struct ElFxManager {
 extern struct ElFxManager gElFxManager;
 
 void RequestElementEffectGraphic(enum ElemFX elem_fx);
-struct Entity* ApplyElementEffect(u8 idx, struct CollidableEntity* p, const struct Coord* c);
+struct Entity* ApplyElementEffect(u8 idx, struct CollisionObject* p, const struct Coord* c);
 
 #endif  // GUARD_RMZ3_ELEMENT_H

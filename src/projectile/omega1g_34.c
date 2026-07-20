@@ -3,16 +3,15 @@
 #include "projectile.h"
 
 // オメガ第一形態に関係
-
-struct Projectile34 {
-  OBJECT_HDR;
+typedef struct {
+  COLLISION_OBJECT_HDR;
   // props (16bytes, offset: 0xB4..)
   u8 unk_b4[4];  // 0xB4
   u32 unk_b8;    // 0xB8
   u32 unk_bc;    // 0xBC
   u8 pad_c0[4];  // 0xC0
-};
-static_assert(sizeof(struct Projectile34) == sizeof(struct Projectile));
+} Projectile34;
+static_assert(sizeof(Projectile34) == sizeof(struct Projectile));
 
 void Projectile34_Init(struct Projectile* p);
 void Projectile34_Update(struct Projectile* p);
@@ -29,13 +28,13 @@ const ProjectileRoutine gProjectile34Routine = {
 // clang-format on
 
 struct Entity* FUN_080ac818(Coords32* c, s32 val1, s32 val2, struct Entity* e) {
-  struct Projectile34* p = (struct Projectile34*)AllocEntityLast(gProjectileHeaderPtr);
+  Projectile34* p = AllocEntityLast(gProjectileHeaderPtr);
   if (p != NULL) {
     INIT_PROJECTILE_ROUTINE(p, 34);
-    (p->s).coord = *c;
-    (p->s).work[0] = 0, (p->s).work[1] = 0;
+    p->coord = *c;
+    p->work[0] = 0, p->work[1] = 0;
     p->unk_b8 = val1, p->unk_bc = val2;
-    (p->s).unk_28 = (void*)e;
+    p->unk_28 = (void*)e;
   }
   return (void*)p;
 }

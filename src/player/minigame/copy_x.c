@@ -38,7 +38,7 @@ static void CopyXMini_Init(struct Zero* p) {
   Coords32 c;
 
   EnableSpriteAnimation_Normal(p);
-  ResetDynamicMotion(&p->s);
+  SetSpriteTableDynamic(p);
   (p->s).flags |= DISPLAY;
   (p->s).flags |= FLIPABLE;
 

@@ -1,3 +1,4 @@
+#include "cyberelf.h"
 #include "game.h"
 #include "gfx.h"
 #include "global.h"
@@ -178,224 +179,81 @@ static void ElfMenuLoop_Exit(struct GameState* g) {
 
 // --------------------------------------------
 
-NAKED static void ElfMenuFocusLoop_NoFocus(struct GameState* g) {
-  asm(".syntax unified\n\
-	push {r4, r5, r6, r7, lr}\n\
-	adds r5, r0, #0\n\
-	ldr r1, _080F6A7C @ =0x000064AC\n\
-	adds r0, r5, r1\n\
-	ldr r3, [r0]\n\
-	ldr r2, _080F6A80 @ =gWindowRegBuffer\n\
-	ldrh r1, [r2]\n\
-	ldr r0, _080F6A84 @ =0x0000DFFF\n\
-	ands r0, r1\n\
-	strh r0, [r2]\n\
-	ldr r2, _080F6A88 @ =0x00000DFC\n\
-	adds r4, r5, r2\n\
-	ldrb r0, [r4, #0xb]\n\
-	cmp r0, #0xf\n\
-	bhi _080F69F2\n\
-	adds r0, #1\n\
-	strb r0, [r4, #0xb]\n\
-_080F69F2:\n\
-	ldrb r7, [r4, #7]\n\
-	adds r0, r3, #0\n\
-	adds r0, #0xb4\n\
-	ldrb r0, [r0, #0x1a]\n\
-	cmp r0, #1\n\
-	beq _080F6A2A\n\
-	ldr r6, _080F6A8C @ =gJoypad\n\
-	ldrh r1, [r6, #6]\n\
-	movs r0, #0x40\n\
-	ands r0, r1\n\
-	cmp r0, #0\n\
-	beq _080F6A14\n\
-	adds r0, r7, #4\n\
-	movs r1, #5\n\
-	bl __modsi3\n\
-	strb r0, [r4, #7]\n\
-_080F6A14:\n\
-	ldrh r1, [r6, #6]\n\
-	movs r0, #0x80\n\
-	ands r0, r1\n\
-	cmp r0, #0\n\
-	beq _080F6A2A\n\
-	ldrb r0, [r4, #7]\n\
-	adds r0, #1\n\
-	movs r1, #5\n\
-	bl __modsi3\n\
-	strb r0, [r4, #7]\n\
-_080F6A2A:\n\
-	ldr r0, _080F6A88 @ =0x00000DFC\n\
-	adds r4, r5, r0\n\
-	ldrb r1, [r4, #7]\n\
-	cmp r7, r1\n\
-	beq _080F6A3A\n\
-	movs r0, #1\n\
-	bl PlaySound\n\
-_080F6A3A:\n\
-	ldr r0, _080F6A8C @ =gJoypad\n\
-	ldrh r1, [r0, #4]\n\
-	movs r0, #1\n\
-	ands r0, r1\n\
-	cmp r0, #0\n\
-	beq _080F6A76\n\
-	movs r1, #0\n\
-	strb r1, [r4, #6]\n\
-	strb r1, [r4, #9]\n\
-	movs r0, #1\n\
-	strb r0, [r5, #3]\n\
-	ldr r2, _080F6A90 @ =0x00000E17\n\
-	adds r0, r5, r2\n\
-	strb r1, [r0]\n\
-	ldrb r0, [r4, #0xc]\n\
-	cmp r0, #0\n\
-	beq _080F6A60\n\
-	bl RemovePaletteAnimation\n\
-_080F6A60:\n\
-	movs r0, #0x4d\n\
-	strb r0, [r4, #0xc]\n\
-	movs r1, #0\n\
-	bl StartPaletteAnimation\n\
-	ldrb r0, [r4, #0xc]\n\
-	bl StepPaletteAnimation\n\
-	movs r0, #2\n\
-	bl PlaySound\n\
-_080F6A76:\n\
-	pop {r4, r5, r6, r7}\n\
-	pop {r0}\n\
-	bx r0\n\
-	.align 2, 0\n\
-_080F6A7C: .4byte 0x000064AC\n\
-_080F6A80: .4byte gWindowRegBuffer\n\
-_080F6A84: .4byte 0x0000DFFF\n\
-_080F6A88: .4byte 0x00000DFC\n\
-_080F6A8C: .4byte gJoypad\n\
-_080F6A90: .4byte 0x00000E17\n\
- .syntax divided\n");
+static void ElfMenuFocusLoop_NoFocus(struct GameState* g) {
+  Player* z = g->z2;
+  u8 mode;
+
+  gWindowRegBuffer.dispcnt &= ~DISPCNT_WIN0_ON;
+
+  if (ELF_MENU->unk_b <= 0xF) ELF_MENU->unk_b++;
+  mode = ELF_MENU->mode;
+
+  if (((&z->unk_b4)->status).menuZeroColor != 1) {
+    if (gJoypad[0].field3_0x6 & DPAD_UP) {
+      ELF_MENU->mode = (mode + 4) % 5;
+    }
+    if (gJoypad[0].field3_0x6 & DPAD_DOWN) {
+      ELF_MENU->mode = (ELF_MENU->mode + 1) % 5;
+    }
+  }
+  if (mode != ELF_MENU->mode) PlaySound(SE_CURSOR);
+  if (gJoypad[0].pressed & A_BUTTON) {
+    ELF_MENU->y = 0;
+    ELF_MENU->cursor = 0;
+    g->mode[3] = 1;
+    MENU->unk_4b = 0;
+    if (ELF_MENU->plttAnimID != 0) RemovePaletteAnimation(ELF_MENU->plttAnimID);
+    ELF_MENU->plttAnimID = 77;
+    StartPaletteAnimation(77, 0);
+    StepPaletteAnimation(ELF_MENU->plttAnimID);
+    PlaySound(SE_YES);
+  }
 }
 
-NAKED static void ElfMenuFocusLoop_OpenTab(struct GameState* g) {
-  asm(".syntax unified\n\
-	push {r4, r5, r6, r7, lr}\n\
-	adds r5, r0, #0\n\
-	ldr r1, _080F6B20 @ =0x00000DFC\n\
-	adds r0, r5, r1\n\
-	ldrb r0, [r0, #0xc]\n\
-	bl StepPaletteAnimation\n\
-	ldr r3, _080F6B24 @ =0x00000E17\n\
-	adds r6, r5, r3\n\
-	ldrb r0, [r6]\n\
-	cmp r0, #0\n\
-	bne _080F6AEC\n\
-	adds r0, r5, #0\n\
-	bl FUN_080f70d8\n\
-	movs r4, #0\n\
-_080F6AB4:\n\
-	adds r0, r5, #0\n\
-	adds r1, r4, #0\n\
-	bl CreateTriangleCursor\n\
-	adds r0, r4, #1\n\
-	lsls r0, r0, #0x18\n\
-	lsrs r4, r0, #0x18\n\
-	cmp r4, #2\n\
-	bls _080F6AB4\n\
-	movs r4, #0\n\
-_080F6AC8:\n\
-	adds r0, r5, #0\n\
-	movs r1, #0\n\
-	adds r2, r4, #0\n\
-	bl CreateMenuComp9\n\
-	adds r0, r5, #0\n\
-	movs r1, #1\n\
-	adds r2, r4, #0\n\
-	bl CreateMenuComp9\n\
-	adds r0, r4, #1\n\
-	lsls r0, r0, #0x18\n\
-	lsrs r4, r0, #0x18\n\
-	cmp r4, #5\n\
-	bls _080F6AC8\n\
-	ldrb r0, [r6]\n\
-	adds r0, #1\n\
-	strb r0, [r6]\n\
-_080F6AEC:\n\
-	ldr r0, _080F6B28 @ =gJoypad\n\
-	ldrh r1, [r0, #4]\n\
-	movs r7, #2\n\
-	movs r0, #2\n\
-	ands r0, r1\n\
-	cmp r0, #0\n\
-	beq _080F6B2C\n\
-	movs r0, #0\n\
-	strb r0, [r5, #3]\n\
-	ldr r0, _080F6B20 @ =0x00000DFC\n\
-	adds r4, r5, r0\n\
-	ldrb r0, [r4, #0xc]\n\
-	bl RemovePaletteAnimation\n\
-	movs r0, #0x4e\n\
-	strb r0, [r4, #0xc]\n\
-	movs r1, #0\n\
-	bl StartPaletteAnimation\n\
-	ldrb r0, [r4, #0xc]\n\
-	bl StepPaletteAnimation\n\
-	movs r0, #3\n\
-	bl PlaySound\n\
-	b _080F6B7E\n\
-	.align 2, 0\n\
-_080F6B20: .4byte 0x00000DFC\n\
-_080F6B24: .4byte 0x00000E17\n\
-_080F6B28: .4byte gJoypad\n\
-_080F6B2C:\n\
-	ldr r1, _080F6B40 @ =0x00000DFC\n\
-	adds r6, r5, r1\n\
-	ldrb r0, [r6, #0xb]\n\
-	adds r4, r0, #0\n\
-	cmp r4, #0\n\
-	beq _080F6B44\n\
-	subs r0, #1\n\
-	strb r0, [r6, #0xb]\n\
-	b _080F6B7E\n\
-	.align 2, 0\n\
-_080F6B40: .4byte 0x00000DFC\n\
-_080F6B44:\n\
-	strb r7, [r5, #3]\n\
-	ldr r3, _080F6B84 @ =0x00000E17\n\
-	adds r0, r5, r3\n\
-	strb r4, [r0]\n\
-	strb r4, [r6, #8]\n\
-	ldrb r0, [r6, #0xc]\n\
-	cmp r0, #0\n\
-	beq _080F6B5A\n\
-	bl RemovePaletteAnimation\n\
-	strb r4, [r6, #0xc]\n\
-_080F6B5A:\n\
-	ldr r2, _080F6B88 @ =gWindowRegBuffer\n\
-	ldrh r1, [r2]\n\
-	movs r3, #0x80\n\
-	lsls r3, r3, #6\n\
-	adds r0, r3, #0\n\
-	orrs r0, r1\n\
-	strh r0, [r2]\n\
-	strb r7, [r2, #0xc]\n\
-	ldrb r0, [r2, #0xe]\n\
-	movs r1, #0x11\n\
-	orrs r0, r1\n\
-	strb r0, [r2, #0xe]\n\
-	ldr r0, _080F6B8C @ =0x00001078\n\
-	strh r0, [r2, #4]\n\
-	adds r0, #0x18\n\
-	strh r0, [r2, #8]\n\
-	movs r0, #0x10\n\
-	strb r0, [r6, #0xd]\n\
-_080F6B7E:\n\
-	pop {r4, r5, r6, r7}\n\
-	pop {r0}\n\
-	bx r0\n\
-	.align 2, 0\n\
-_080F6B84: .4byte 0x00000E17\n\
-_080F6B88: .4byte gWindowRegBuffer\n\
-_080F6B8C: .4byte 0x00001078\n\
- .syntax divided\n");
+void FUN_080f70d8(struct GameState* g);
+struct Entity* CreateTriangleCursor(struct GameState* g, u8 kind);
+struct Widget* CreateMenuComp9(struct GameState* g, bool8 r1, u8 r2);
+
+static void ElfMenuFocusLoop_OpenTab(struct GameState* g) {
+  StepPaletteAnimation(ELF_MENU->plttAnimID);
+
+  if (MENU->unk_4b == 0) {
+    u8 i;
+    FUN_080f70d8(g);
+    for (i = 0; i < 3; i++) {
+      CreateTriangleCursor(g, i);
+    }
+    for (i = 0; i < 6; i++) {
+      CreateMenuComp9(g, 0, i);
+      CreateMenuComp9(g, 1, i);
+    }
+    MENU->unk_4b++;
+  }
+
+  if (gJoypad[0].pressed & B_BUTTON) {
+    g->mode[3] = 0;
+    RemovePaletteAnimation(ELF_MENU->plttAnimID);
+    ELF_MENU->plttAnimID = 78;
+    StartPaletteAnimation(78, 0);
+    StepPaletteAnimation(ELF_MENU->plttAnimID);
+    PlaySound(3);
+  } else if (ELF_MENU->unk_b != 0) {
+    ELF_MENU->unk_b--;
+  } else {
+    g->mode[3] = 2;
+    MENU->unk_4b = 0;
+    ELF_MENU->tab = 0;
+    if (ELF_MENU->plttAnimID != 0) {
+      RemovePaletteAnimation(ELF_MENU->plttAnimID);
+      ELF_MENU->plttAnimID = 0;
+    }
+    gWindowRegBuffer.dispcnt |= DISPCNT_WIN0_ON;
+    gWindowRegBuffer.winin[0] = 2;
+    gWindowRegBuffer.winin[2] |= 0x11;
+    gWindowRegBuffer.winH.half[0] = 0x1078;
+    gWindowRegBuffer.winV.half[0] = 0x1090;
+    ELF_MENU->unk_d = 0x10;
+  }
 }
 
 NAKED static void ElfMenuFocusLoop_TabSelect(struct GameState* g) {
@@ -2011,192 +1869,64 @@ _080F7874: .4byte gStringData\n\
  .syntax divided\n");
 }
 
-NAKED static void printElfMenuBottomString(struct GameState* g) {
-  asm(".syntax unified\n\
-	push {lr}\n\
-	adds r2, r0, #0\n\
-	ldr r1, _080F7894 @ =0x000064AC\n\
-	adds r0, r2, r1\n\
-	ldr r0, [r0]\n\
-	movs r3, #0\n\
-	ldrb r1, [r2, #3]\n\
-	cmp r1, #2\n\
-	beq _080F78AA\n\
-	cmp r1, #2\n\
-	bgt _080F7898\n\
-	cmp r1, #0\n\
-	beq _080F789E\n\
-	b _080F78FC\n\
-	.align 2, 0\n\
-_080F7894: .4byte 0x000064AC\n\
-_080F7898:\n\
-	cmp r1, #3\n\
-	beq _080F78AE\n\
-	b _080F78FC\n\
-_080F789E:\n\
-	adds r0, #0xb4\n\
-	ldrb r0, [r0, #0x1a]\n\
-	cmp r0, #1\n\
-	beq _080F78FC\n\
-	movs r3, #0xb4\n\
-	b _080F7900\n\
-_080F78AA:\n\
-	movs r3, #0xb8\n\
-	b _080F7900\n\
-_080F78AE:\n\
-	ldr r1, _080F78C4 @ =0x00000DFC\n\
-	adds r0, r2, r1\n\
-	ldrb r0, [r0, #7]\n\
-	cmp r0, #4\n\
-	bhi _080F78FC\n\
-	lsls r0, r0, #2\n\
-	ldr r1, _080F78C8 @ =_080F78CC\n\
-	adds r0, r0, r1\n\
-	ldr r0, [r0]\n\
-	mov pc, r0\n\
-	.align 2, 0\n\
-_080F78C4: .4byte 0x00000DFC\n\
-_080F78C8: .4byte _080F78CC\n\
-_080F78CC: @ jump table\n\
-	.4byte _080F78E0 @ case 0\n\
-	.4byte _080F78E0 @ case 1\n\
-	.4byte _080F78E4 @ case 2\n\
-	.4byte _080F78E8 @ case 3\n\
-	.4byte _080F78FC @ case 4\n\
-_080F78E0:\n\
-	movs r3, #0xb9\n\
-	b _080F7900\n\
-_080F78E4:\n\
-	movs r3, #0xba\n\
-	b _080F7900\n\
-_080F78E8:\n\
-	ldr r1, _080F7918 @ =0x00000E17\n\
-	adds r0, r2, r1\n\
-	ldrb r0, [r0]\n\
-	movs r3, #0xc5\n\
-	cmp r0, #4\n\
-	beq _080F7900\n\
-	movs r3, #0xc0\n\
-	cmp r0, #5\n\
-	bne _080F78FC\n\
-	movs r3, #0xc6\n\
-_080F78FC:\n\
-	cmp r3, #0\n\
-	beq _080F7914\n\
-_080F7900:\n\
-	ldr r1, _080F791C @ =StringOfsTable\n\
-	lsls r0, r3, #1\n\
-	adds r0, r0, r1\n\
-	ldrh r0, [r0]\n\
-	ldr r1, _080F7920 @ =gStringData\n\
-	adds r0, r0, r1\n\
-	movs r1, #1\n\
-	movs r2, #0x12\n\
-	bl PrintString\n\
-_080F7914:\n\
-	pop {r0}\n\
-	bx r0\n\
-	.align 2, 0\n\
-_080F7918: .4byte 0x00000E17\n\
-_080F791C: .4byte StringOfsTable\n\
-_080F7920: .4byte gStringData\n\
- .syntax divided\n");
+static void printElfMenuBottomString(struct GameState* g) {
+  Player* z = g->z2;
+  StringID strId = 0;
+
+  switch (g->mode[3]) {
+    case 0:
+      if (((&z->unk_b4)->status).menuZeroColor != 1) {
+        strId = 0xB4;
+      }
+      break;
+    case 2:
+      strId = 0xB8;
+      break;
+    case 3:
+      switch (ELF_MENU->mode) {
+        case 0:
+        case 1:
+          strId = 0xB9;
+          break;
+        case 2:
+          strId = 0xBA;
+          break;
+        case 3:
+          if (MENU->unk_4b == 4) {
+            strId = 0xC5;
+          } else if (MENU->unk_4b == 5) {
+            strId = 0xC6;
+          } else {
+            strId = 0xC0;
+          }
+          break;
+        case 4:
+          break;
+      }
+      break;
+  }
+  if (strId != 0) {
+    PrintString(STRING(strId), 1, 18);
+  }
 }
 
-NAKED static StringID getElfDescStrID(struct GameState* g, u8 r1) {
-  asm(".syntax unified\n\
-	push {r4, lr}\n\
-	lsls r1, r1, #0x18\n\
-	lsrs r4, r1, #0x18\n\
-	ldr r1, _080F7970 @ =0x000064AC\n\
-	adds r0, r0, r1\n\
-	ldr r2, [r0]\n\
-	ldr r0, _080F7974 @ =gElfAvailability\n\
-	ldr r0, [r0]\n\
-	adds r0, r0, r4\n\
-	ldrb r1, [r0]\n\
-	movs r0, #2\n\
-	ands r0, r1\n\
-	cmp r0, #0\n\
-	beq _080F7996\n\
-	adds r0, r2, #0\n\
-	adds r0, #0xb4\n\
-	ldrb r0, [r0, #0x1a]\n\
-	cmp r0, #2\n\
-	bne _080F7980\n\
-	adds r0, r4, #0\n\
-	bl FUN_080e1cac\n\
-	lsls r0, r0, #0x18\n\
-	cmp r0, #0\n\
-	bne _080F7996\n\
-	ldr r0, _080F7978 @ =StringOfsTable\n\
-	movs r1, #0xbb\n\
-	lsls r1, r1, #2\n\
-	adds r0, r0, r1\n\
-	ldrh r0, [r0]\n\
-	ldr r1, _080F797C @ =gStringData\n\
-	adds r0, r0, r1\n\
-	movs r1, #0x11\n\
-	movs r2, #0xd\n\
-	bl PrintString\n\
-	b _080F7996\n\
-	.align 2, 0\n\
-_080F7970: .4byte 0x000064AC\n\
-_080F7974: .4byte gElfAvailability\n\
-_080F7978: .4byte StringOfsTable\n\
-_080F797C: .4byte gStringData\n\
-_080F7980:\n\
-	ldr r0, _080F79C0 @ =StringOfsTable\n\
-	movs r1, #0xbb\n\
-	lsls r1, r1, #2\n\
-	adds r0, r0, r1\n\
-	ldrh r0, [r0]\n\
-	ldr r1, _080F79C4 @ =gStringData\n\
-	adds r0, r0, r1\n\
-	movs r1, #0x11\n\
-	movs r2, #0xd\n\
-	bl PrintString\n\
-_080F7996:\n\
-	ldr r0, _080F79C8 @ =gElfBreedInfo\n\
-	lsls r1, r4, #2\n\
-	adds r1, r1, r0\n\
-	ldrb r0, [r1]\n\
-	lsls r0, r0, #0x1a\n\
-	lsrs r0, r0, #0x1d\n\
-	cmp r0, #2\n\
-	bne _080F79E0\n\
-	ldr r0, _080F79CC @ =gElfAvailability\n\
-	ldr r0, [r0]\n\
-	adds r0, r0, r4\n\
-	ldrb r1, [r0]\n\
-	movs r0, #4\n\
-	ands r0, r1\n\
-	cmp r0, #0\n\
-	beq _080F79E0\n\
-	cmp r4, #0x1a\n\
-	bhi _080F79D4\n\
-	ldr r1, _080F79D0 @ =0x0000010B\n\
-	adds r0, r4, r1\n\
-	b _080F79E4\n\
-	.align 2, 0\n\
-_080F79C0: .4byte StringOfsTable\n\
-_080F79C4: .4byte gStringData\n\
-_080F79C8: .4byte gElfBreedInfo\n\
-_080F79CC: .4byte gElfAvailability\n\
-_080F79D0: .4byte 0x0000010B\n\
-_080F79D4:\n\
-	cmp r4, #0x27\n\
-	bhi _080F79E0\n\
-	movs r1, #0x81\n\
-	lsls r1, r1, #1\n\
-	adds r0, r4, r1\n\
-	b _080F79E4\n\
-_080F79E0:\n\
-	adds r0, r4, #0\n\
-	adds r0, #0xc8\n\
-_080F79E4:\n\
-	pop {r4}\n\
-	pop {r1}\n\
-	bx r1\n\
- .syntax divided\n");
+bool8 FUN_080e1cac(cyberelf_t n);
+
+static StringID getElfDescStrID(struct GameState* g, u8 e) {
+  Player* z = g->z2;
+
+  if (gElfAvailability[e] & ELF_AVABILITY_USED) {
+    if (((&z->unk_b4)->status).menuZeroColor == MZC_ULTIMATE) {
+      if (!FUN_080e1cac(e)) {
+        PrintString(STRING(374), 17, 13);
+      }
+    } else {
+      PrintString(STRING(374), 17, 13);
+    }
+  }
+  if ((((u32)gElfBreedInfo[e].unk_0 << 26) >> 29) == 2 && (gElfAvailability[e] & ELF_AVABILITY_SATELITE)) {
+    if (e <= 0x1a) return e + 0x10B;
+    if (e <= 0x27) return e + 0x102;
+  }
+  return e + 0xC8;
 }

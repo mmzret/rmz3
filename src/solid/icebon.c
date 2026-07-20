@@ -8,13 +8,12 @@
 static const Coords32 Coord_0836fc80;
 static const struct Rect sSize;
 
-struct IcebonObject {
-  OBJECT_HDR;
-  // props (16bytes, offset: 0xB4..)
-  void* elfx;
-  u8 unk_04[12];
-};
-static_assert(sizeof(struct IcebonObject) == sizeof(struct Solid));
+typedef struct {
+  COLLISION_OBJECT_HDR;
+  void* elfx;     // 0xB4
+  u8 unk_04[12];  // 0xB8
+} IcebonObject;
+static_assert(sizeof(IcebonObject) == sizeof(struct Solid));
 
 static const SolidFunc sIcebonDeathSeq[2];
 const struct Collision sIcebonCollisions[3];
@@ -36,12 +35,12 @@ const SolidRoutine gIcebonRoutine = {
 void nop_080c9e90(struct Body* _ UNUSED) { return; }
 
 // 0x080c9e94
-static void CreateElementEffect(struct IcebonObject* p) {
+static void CreateElementEffect(IcebonObject* p) {
   if ((p->elfx == NULL) && ((p->body).status & BODY_STATUS_WHITE)) {
-    if ((((p->s).coord.y - PIXEL(15)) <= gOverworld.sea) || ((p->body).elemented != ELEMENT_FLAME)) {
-      p->elfx = (void*)ApplyElementEffect(0, (Object*)p, &Coord_0836fc80);
+    if ((((p->coord).y - PIXEL(15)) <= gOverworld.sea) || ((p->body).elemented != ELEMENT_FLAME)) {
+      p->elfx = ApplyElementEffect(0, (Object*)p, &Coord_0836fc80);
       if (p->elfx != NULL) {
-        (p->s).mode[1] = 0, (p->s).mode[2] = 0;
+        p->mode[1] = 0, p->mode[2] = 0;
       }
     }
   }
@@ -51,9 +50,9 @@ static bool8 tryKillIcebon(Object* p) {
   if ((p->body).status & BODY_STATUS_DEAD) {
     SET_SOLID_ROUTINE(p, ENTITY_DIE);
     if ((p->body).status & BODY_STATUS_SLASHED) {
-      (p->s).mode[1] = 1;
+      p->mode[1] = 1;
     } else {
-      (p->s).mode[1] = 0;
+      p->mode[1] = 0;
     }
     Icebon_Die((struct Solid*)p);
     return TRUE;
@@ -174,7 +173,7 @@ _080CA028: .4byte nop_080c9e90\n\
 
 // --------------------------------------------
 
-static void icebon_080ca0b8(struct IcebonObject* p);
+static void icebon_080ca0b8(IcebonObject* p);
 static void nop_080ca0b4(void* _ UNUSED);
 
 static void icebon_080ca0e0(Object* p);
@@ -230,32 +229,32 @@ static void Icebon_Die(struct Solid* p) {
 
 static void nop_080ca0b4(void* _ UNUSED) { return; }
 
-static void icebon_080ca0b8(struct IcebonObject* p) {
+static void icebon_080ca0b8(IcebonObject* p) {
   if ((p->elfx == NULL) || isKilled(p->elfx)) {
     p->elfx = NULL;
-    (p->s).mode[1] = 1, (p->s).mode[2] = 0;
+    p->mode[1] = 1, p->mode[2] = 0;
   }
 }
 
 static void icebon_080ca0e0(Object* p) {
-  if ((p->s).mode[2] == 0) {
+  if (p->mode[2] == 0) {
     SetDDP(&p->body, &sIcebonCollisions[2]);
-    (p->s).mode[2]++;
+    p->mode[2]++;
   }
 }
 
 static void icebon_080ca104(Object* p) {
-  switch ((p->s).mode[2]) {
+  switch (p->mode[2]) {
     case 0: {
       SetDDP(&p->body, &sIcebonCollisions[1]);
       SetSpriteAnimation(p, MOTION(SM016_ICEBON, 0));
-      (p->s).mode[2]++;
+      p->mode[2]++;
       FALLTHROUGH;
     }
     case 1: {
       UpdateSpriteAnimation(p);
-      if (--(p->s).work[2] == 0) {
-        (p->s).mode[1] = 2, (p->s).mode[2] = 0;
+      if (--p->work[2] == 0) {
+        p->mode[1] = 2, p->mode[2] = 0;
       }
       break;
     }

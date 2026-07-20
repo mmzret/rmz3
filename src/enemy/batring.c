@@ -300,113 +300,27 @@ const EnemyFunc sBatringUpdates2[9] = {
 };
 // clang-format on
 
-NAKED static void Batring_Update(struct Enemy* p) {
-  asm(".syntax unified\n\
-	push {r4, lr}\n\
-	adds r4, r0, #0\n\
-	adds r0, #0x8c\n\
-	ldr r0, [r0]\n\
-	movs r1, #0x80\n\
-	lsls r1, r1, #2\n\
-	ands r0, r1\n\
-	cmp r0, #0\n\
-	beq _0806719C\n\
-	ldrb r0, [r4, #0xd]\n\
-	cmp r0, #8\n\
-	bne _08067182\n\
-	adds r0, r4, #0\n\
-	bl IsFrozen\n\
-	cmp r0, #0\n\
-	beq _0806719C\n\
-_08067182:\n\
-	ldr r1, _08067198 @ =gEnemyFnTable\n\
-	ldrb r0, [r4, #9]\n\
-	lsls r0, r0, #2\n\
-	adds r0, r0, r1\n\
-	movs r1, #2\n\
-	str r1, [r4, #0xc]\n\
-	ldr r0, [r0]\n\
-	ldr r0, [r0, #8]\n\
-	str r0, [r4, #0x14]\n\
-	b _080671D8\n\
-	.align 2, 0\n\
-_08067198: .4byte gEnemyFnTable\n\
-_0806719C:\n\
-	ldr r0, _080671B4 @ =pZero2\n\
-	ldr r0, [r0]\n\
-	ldr r0, [r0, #0x54]\n\
-	ldr r1, [r4, #0x54]\n\
-	subs r2, r0, r1\n\
-	cmp r2, #0\n\
-	ble _080671B8\n\
-	movs r0, #0x8c\n\
-	lsls r0, r0, #9\n\
-	cmp r2, r0\n\
-	bgt _080671C2\n\
-	b _080671E4\n\
-	.align 2, 0\n\
-_080671B4: .4byte pZero2\n\
-_080671B8:\n\
-	subs r1, r1, r0\n\
-	movs r0, #0x8c\n\
-	lsls r0, r0, #9\n\
-	cmp r1, r0\n\
-	ble _080671E4\n\
-_080671C2:\n\
-	ldr r1, _080671E0 @ =gEnemyFnTable\n\
-	ldrb r0, [r4, #9]\n\
-	lsls r0, r0, #2\n\
-	adds r0, r0, r1\n\
-	movs r1, #2\n\
-	str r1, [r4, #0xc]\n\
-	ldr r0, [r0]\n\
-	ldr r0, [r0, #8]\n\
-	str r0, [r4, #0x14]\n\
-	movs r0, #1\n\
-	strb r0, [r4, #0x11]\n\
-_080671D8:\n\
-	adds r0, r4, #0\n\
-	bl Batring_Die\n\
-	b _08067222\n\
-	.align 2, 0\n\
-_080671E0: .4byte gEnemyFnTable\n\
-_080671E4:\n\
-	ldr r0, _08067228 @ =sBatringUpdates1\n\
-	ldrb r1, [r4, #0xd]\n\
-	lsls r1, r1, #2\n\
-	adds r1, r1, r0\n\
-	ldr r1, [r1]\n\
-	adds r0, r4, #0\n\
-	bl _call_via_r1\n\
-	adds r0, r4, #0\n\
-	bl batring_08068130\n\
-	ldrb r0, [r4, #0xd]\n\
-	cmp r0, #8\n\
-	beq _08067212\n\
-	cmp r0, #5\n\
-	beq _08067212\n\
-	cmp r0, #7\n\
-	beq _08067212\n\
-	adds r0, r4, #0\n\
-	bl IsFrozen\n\
-	cmp r0, #0\n\
-	bne _08067222\n\
-_08067212:\n\
-	ldr r0, _0806722C @ =sBatringUpdates2\n\
-	ldrb r1, [r4, #0xd]\n\
-	lsls r1, r1, #2\n\
-	adds r1, r1, r0\n\
-	ldr r1, [r1]\n\
-	adds r0, r4, #0\n\
-	bl _call_via_r1\n\
-_08067222:\n\
-	pop {r4}\n\
-	pop {r0}\n\
-	bx r0\n\
-	.align 2, 0\n\
-_08067228: .4byte sBatringUpdates1\n\
-_0806722C: .4byte sBatringUpdates2\n\
- .syntax divided\n");
+static void Batring_Update(struct Enemy* p) {
+  s32 x, zx, diff;
+  if (((p->body).status & BODY_STATUS_DEAD) && ((p->s).mode[1] != 8 || IsFrozen(&p->s))) {
+    SET_ENEMY_ROUTINE(p, ENTITY_DIE);
+    Batring_Die(p);
+    return;
+  }
+  zx = pZero2->s.coord.x;
+  x = (p->s).coord.x;
+  diff = zx - x;
+  if (diff > 0 ? diff > 0x11800 : x - zx > 0x11800) {
+    SET_ENEMY_ROUTINE(p, ENTITY_DIE);
+    (p->s).work[1] = 1;
+    Batring_Die(p);
+    return;
+  }
+  sBatringUpdates1[(p->s).mode[1]](p);
+  batring_08068130(p);
+  if ((p->s).mode[1] == 8 || (p->s).mode[1] == 5 || (p->s).mode[1] == 7 || !IsFrozen(&p->s)) {
+    sBatringUpdates2[(p->s).mode[1]](p);
+  }
 }
 
 // --------------------------------------------

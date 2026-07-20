@@ -187,13 +187,13 @@ EWRAM_DATA ALIGNED(16) struct TextWindow gTextWindow = {};
 EWRAM_DATA ALIGNED(16) struct Intro gIntro = {};
 EWRAM_DATA u32 gUnkMmbn4 = 0;  // 0x02030b54
 EWRAM_DATA ALIGNED(16) struct GameState gGameState = {};
-EWRAM_DATA ALIGNED(16) struct Elf gElfEntities[16] = {};
+EWRAM_DATA ALIGNED(16) CyberElf gElfEntities[16] = {};
 EWRAM_DATA ALIGNED(16) Player gPlayers[1] = {};  // 02037c60
 EWRAM_DATA ALIGNED(16) Pickup gPickups[10] = {};
 
 EWRAM_DATA ALIGNED(16) u8 _unused_020386a0[2352] = {};  // もともともう1種類Entityがあったのかも
 
-EWRAM_DATA ALIGNED(16) struct Weapon gWeapons[24] = {};  // 武器というよりはゼロの武器による攻撃
+EWRAM_DATA ALIGNED(16) Weapon gWeapons[24] = {};  // 武器というよりはゼロの武器による攻撃
 EWRAM_DATA ALIGNED(16) struct Solid gSolids[22] = {};
 EWRAM_DATA ALIGNED(16) struct Boss gBosses[5] = {};
 EWRAM_DATA ALIGNED(16) struct Widget gWidgets[64] = {};

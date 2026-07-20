@@ -39,7 +39,7 @@ static void CyberSpaceElf_Init(struct CyberSpaceElf* p) {
   s32 y;
   SET_VFX_ROUTINE(p, ENTITY_UPDATE);
   EnableSpriteAnimation_Normal(p);
-  ResetDynamicMotion(&p->s);
+  SetSpriteTableDynamic(p);
   (p->s).flags |= DISPLAY;
   (p->s).flags |= FLIPABLE;
   SetSpriteAnimation(p, GetElfMotion((p->s).work[0]));

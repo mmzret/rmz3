@@ -5,15 +5,14 @@
 #include "projectile/unk_06.h"
 
 struct Lamplort {
-  OBJECT_HDR;
-  // props (16bytes, offset: 0xB4..)
-  s32 x_b4;
-  u8 unk_b8;
-  u8 unk_b9;
-  u8 unk_ba;
-  u8 unk_bb;
-  u8 unk_bc;            // 0xBC
-  struct Entity* elfx;  // 0xC0, Element FX
+  COLLISION_OBJECT_HDR;  // 0x00
+  s32 x_b4;              // 0xB4
+  u8 unk_b8;             // 0xB8
+  u8 unk_b9;             // 0xB9
+  u8 unk_ba;             // 0xBA
+  u8 unk_bb;             // 0xBB
+  u8 unk_bc;             // 0xBC
+  struct Entity* elfx;   // 0xC0, Element FX
 };
 static_assert(sizeof(struct Lamplort) == sizeof(struct Enemy));
 
@@ -368,17 +367,17 @@ INCASM("asm/enemy/lamplort.inc");
 static bool32 true_0806cd48(void* _) { return TRUE; }
 
 static void FUN_0806cd4c(struct Lamplort* p) {
-  if ((p->s).mode[2] == 0) {
+  if (p->mode[2] == 0) {
     struct LamplortFlame* flame;
     SetDDP(&p->body, &sCollisions[7]);
-    flame = (struct LamplortFlame*)((p->s).unk_2c);
+    flame = (struct LamplortFlame*)(p->unk_2c);
     flame->unk_b4 |= 2;
-    (p->s).mode[2]++;
+    p->mode[2]++;
   }
   if (IsDead(p->elfx)) {
     SetDDP(&p->body, &sCollisions[0]);
     p->elfx = NULL;
-    (p->s).mode[1] = 1, (p->s).mode[2] = 0;
+    p->mode[1] = 1, p->mode[2] = 0;
   }
 }
 
@@ -389,18 +388,18 @@ static void FUN_0806cda8(void* _) {}
 static bool32 FUN_0806cdac(void* _) { return TRUE; }
 
 static void FUN_0806cdb0(struct Lamplort* p) {
-  if ((p->s).mode[2] == 0) {
+  if (p->mode[2] == 0) {
     struct LamplortFlame* flame;
     SetDDP(&p->body, &sCollisions[7]);
-    flame = (struct LamplortFlame*)((p->s).unk_2c);
+    flame = (struct LamplortFlame*)(p->unk_2c);
     flame->unk_b4 |= 2;
-    (p->s).d.y = 0;
-    (p->s).mode[2]++;
+    p->d.y = 0;
+    p->mode[2]++;
   }
   if (IsDead(p->elfx)) {
     SetDDP(&p->body, &sCollisions[0]);
     p->elfx = NULL;
-    (p->s).mode[1] = 1, (p->s).mode[2] = 0;
+    p->mode[1] = 1, p->mode[2] = 0;
   }
 }
 
@@ -411,9 +410,9 @@ static bool32 lamplort_0806ce08(struct Lamplort* p) {
     p->elfx = (void*)ApplyElementEffect(0, (Object*)p, &sElementCoord);
     if (p->elfx != NULL) {
       if ((p->body).elemented == ELEMENT_THUNDER) {
-        (p->s).mode[1] = 7, (p->s).mode[2] = 0;
+        p->mode[1] = 7, p->mode[2] = 0;
       } else if ((p->body).elemented == ELEMENT_ICE) {
-        (p->s).mode[1] = 9, (p->s).mode[2] = 0;
+        p->mode[1] = 9, p->mode[2] = 0;
       }
     }
   }

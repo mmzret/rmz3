@@ -520,15 +520,14 @@ s16 FUN_08032c30(struct Zero* z) {
 }
 
 // くっそ単純なコードなのにどうしてもコンパイル結果合わない なんでえ？
-NON_MATCH s16 GetSplitHeavenSpeed(struct Zero* z) {
-#if MODERN
+s16 GetSplitHeavenSpeed(struct Zero* z) {
+  s32 v;
   if (z->slow != 0) {
-    return 0x100 - z->slow;
+    v = z->slow;
+    v = 0x100 - v;
+    return v;
   }
   return 0x100;
-#else
-  INCCODE("asm/wip/FUN_08032c60.inc");
-#endif
 }
 
 // 0x08032c84

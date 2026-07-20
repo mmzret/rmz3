@@ -104,7 +104,7 @@ INCASM("asm/vfx/boss_explosion.inc");
 static void initFireball(struct Entity* p) {
   EnableSpriteAnimation_Affine(p);
   p->flags |= DISPLAY;
-  ResetDynamicMotion(p);
+  SetSpriteTableDynamic(p);
   p->flags |= FLIPABLE;
   SetSpriteAnimation(p, MOTION(DM199_BOSS_EXPLOSION, 0));
   UpdateSpriteAnimation(p);
@@ -458,71 +458,18 @@ _080C7F74: .4byte gVFXFnTable\n\
  .syntax divided\n");
 }
 
-NAKED static void FUN_080c7f78(struct VFX* p) {
-  asm(".syntax unified\n\
-	push {r4, r5, lr}\n\
-	adds r4, r0, #0\n\
-	bl UpdateEntityAnim\n\
-	ldr r2, [r4, #0x64]\n\
-	movs r5, #0xff\n\
-	subs r1, r5, r2\n\
-	lsls r0, r1, #2\n\
-	adds r0, r0, r1\n\
-	lsls r0, r0, #4\n\
-	cmp r0, #0\n\
-	bge _080C7F92\n\
-	adds r0, #0xff\n\
-_080C7F92:\n\
-	asrs r0, r0, #8\n\
-	adds r3, r2, r0\n\
-	str r3, [r4, #0x64]\n\
-	ldr r2, [r4, #0x68]\n\
-	subs r1, r5, r2\n\
-	lsls r0, r1, #1\n\
-	adds r0, r0, r1\n\
-	lsls r0, r0, #2\n\
-	cmp r0, #0\n\
-	bge _080C7FA8\n\
-	adds r0, #0xff\n\
-_080C7FA8:\n\
-	asrs r0, r0, #8\n\
-	adds r0, r2, r0\n\
-	str r0, [r4, #0x68]\n\
-	adds r0, r4, #0\n\
-	adds r0, #0x50\n\
-	strh r3, [r0]\n\
-	ldr r0, [r4, #0x68]\n\
-	adds r1, r4, #0\n\
-	adds r1, #0x52\n\
-	strh r0, [r1]\n\
-	ldrb r0, [r4, #0x13]\n\
-	adds r0, #1\n\
-	strb r0, [r4, #0x13]\n\
-	subs r1, #0x2e\n\
-	strb r0, [r1]\n\
-	ldrb r0, [r4, #0x12]\n\
-	subs r0, #1\n\
-	strb r0, [r4, #0x12]\n\
-	lsls r0, r0, #0x18\n\
-	lsrs r0, r0, #0x18\n\
-	cmp r0, #0xff\n\
-	bne _080C7FE6\n\
-	ldr r1, _080C7FEC @ =gVFXFnTable\n\
-	ldrb r0, [r4, #9]\n\
-	lsls r0, r0, #2\n\
-	adds r0, r0, r1\n\
-	movs r1, #2\n\
-	str r1, [r4, #0xc]\n\
-	ldr r0, [r0]\n\
-	ldr r0, [r0, #8]\n\
-	str r0, [r4, #0x14]\n\
-_080C7FE6:\n\
-	pop {r4, r5}\n\
-	pop {r0}\n\
-	bx r0\n\
-	.align 2, 0\n\
-_080C7FEC: .4byte gVFXFnTable\n\
- .syntax divided\n");
+static void FUN_080c7f78(struct VFX* p) {
+  UpdateSpriteAnimation(&p->s);
+  (p->s).unk_coord.x += (0xFF - (p->s).unk_coord.x) * 80 / 256;
+  (p->s).unk_coord.y += (0xFF - (p->s).unk_coord.y) * 12 / 256;
+  (p->s).spr.mag.x = (p->s).unk_coord.x;
+  (p->s).spr.mag.y = (p->s).unk_coord.y;
+  (p->s).work[3]++;
+  (p->s).angle = (p->s).work[3];
+  (p->s).work[2]--;
+  if ((p->s).work[2] == 0xFF) {
+    SET_VFX_ROUTINE(p, ENTITY_DIE);
+  }
 }
 
 static void FUN_080c7ff0(struct VFX* p) {
@@ -532,127 +479,42 @@ static void FUN_080c7ff0(struct VFX* p) {
   if (IsSpriteAnimEnd(p)) SET_VFX_ROUTINE(p, ENTITY_DIE);
 }
 
-NAKED static void updateFireball(struct VFX* p) {
-  asm(".syntax unified\n\
-	push {r4, r5, lr}\n\
-	adds r4, r0, #0\n\
-	ldr r5, [r4, #0x28]\n\
-	bl UpdateEntityAnim\n\
-	adds r2, r4, #0\n\
-	adds r2, #0x50\n\
-	ldrh r1, [r2]\n\
-	ldr r0, _080C807C @ =0x000001FF\n\
-	cmp r1, r0\n\
-	bhi _080C8054\n\
-	adds r0, r1, #4\n\
-	strh r0, [r2]\n\
-	adds r1, r4, #0\n\
-	adds r1, #0x52\n\
-	ldrh r0, [r1]\n\
-	adds r0, #4\n\
-	strh r0, [r1]\n\
-_080C8054:\n\
-	ldrb r0, [r5, #0xc]\n\
-	cmp r0, #4\n\
-	bne _080C8074\n\
-	ldr r1, _080C8080 @ =gVFXFnTable\n\
-	ldrb r0, [r4, #9]\n\
-	lsls r0, r0, #2\n\
-	adds r0, r0, r1\n\
-	movs r1, #2\n\
-	str r1, [r4, #0xc]\n\
-	ldr r0, [r0]\n\
-	ldr r0, [r0, #8]\n\
-	str r0, [r4, #0x14]\n\
-	ldrb r1, [r4, #0xa]\n\
-	movs r0, #0xfe\n\
-	ands r0, r1\n\
-	strb r0, [r4, #0xa]\n\
-_080C8074:\n\
-	pop {r4, r5}\n\
-	pop {r0}\n\
-	bx r0\n\
-	.align 2, 0\n\
-_080C807C: .4byte 0x000001FF\n\
-_080C8080: .4byte gVFXFnTable\n\
-   .syntax divided\n");
+static void updateFireball(struct VFX* p) {
+  struct Entity* e = (p->s).unk_28;
+  UpdateSpriteAnimation(&p->s);
+  if ((p->s).spr.mag.x <= 0x1FF) {
+    (p->s).spr.mag.x += 4;
+    (p->s).spr.mag.y += 4;
+  }
+  if (e->mode[0] == ENTITY_EXIT) {
+    SET_VFX_ROUTINE(p, ENTITY_DIE);
+    (p->s).flags &= ~DISPLAY;
+  }
 }
 
 // --------------------------------------------
 
-NAKED static void FUN_080c8084(struct VFX* p) {
-  asm(".syntax unified\n\
-	push {r4, r5, r6, lr}\n\
-	adds r5, r0, #0\n\
-	ldr r6, [r5, #0x28]\n\
-	ldrb r0, [r5, #0xe]\n\
-	adds r1, r0, #0\n\
-	cmp r1, #0\n\
-	bne _080C8098\n\
-	strb r1, [r5, #0x12]\n\
-	adds r0, #1\n\
-	strb r0, [r5, #0xe]\n\
-_080C8098:\n\
-	ldrb r1, [r5, #0x12]\n\
-	adds r0, r1, #1\n\
-	strb r0, [r5, #0x12]\n\
-	movs r0, #3\n\
-	ands r0, r1\n\
-	cmp r0, #1\n\
-	bls _080C80C4\n\
-	adds r1, r6, #0\n\
-	adds r1, #0x8c\n\
-	ldr r0, [r1]\n\
-	movs r4, #1\n\
-	orrs r0, r4\n\
-	str r0, [r1]\n\
-	adds r1, #4\n\
-	ldr r0, [r1]\n\
-	orrs r0, r4\n\
-	str r0, [r1]\n\
-	adds r0, r6, #0\n\
-	bl PaintEntityWhite\n\
-	strb r4, [r5, #0x11]\n\
-	b _080C80E4\n\
-_080C80C4:\n\
-	adds r1, r6, #0\n\
-	adds r1, #0x8c\n\
-	ldr r0, [r1]\n\
-	movs r2, #2\n\
-	rsbs r2, r2, #0\n\
-	ands r0, r2\n\
-	str r0, [r1]\n\
-	adds r1, #4\n\
-	ldr r0, [r1]\n\
-	ands r0, r2\n\
-	str r0, [r1]\n\
-	adds r0, r6, #0\n\
-	bl UpdateEntityPaletteID\n\
-	movs r0, #0\n\
-	strb r0, [r5, #0x11]\n\
-_080C80E4:\n\
-	ldrb r2, [r6, #0xc]\n\
-	cmp r2, #4\n\
-	bne _080C8102\n\
-	ldrb r1, [r5, #0xa]\n\
-	movs r0, #0xfe\n\
-	ands r0, r1\n\
-	strb r0, [r5, #0xa]\n\
-	ldr r1, _080C8108 @ =gVFXFnTable\n\
-	ldrb r0, [r5, #9]\n\
-	lsls r0, r0, #2\n\
-	adds r0, r0, r1\n\
-	str r2, [r5, #0xc]\n\
-	ldr r0, [r0]\n\
-	ldr r0, [r0, #0x10]\n\
-	str r0, [r5, #0x14]\n\
-_080C8102:\n\
-	pop {r4, r5, r6}\n\
-	pop {r0}\n\
-	bx r0\n\
-	.align 2, 0\n\
-_080C8108: .4byte gVFXFnTable\n\
-   .syntax divided\n");
+static void FUN_080c8084(struct VFX* p) {
+  struct Entity* e = (p->s).unk_28;
+  if ((p->s).mode[2] == 0) {
+    (p->s).work[2] = 0;
+    (p->s).mode[2]++;
+  }
+  if (((p->s).work[2]++ & 3) > 1) {
+    *(u32*)((u8*)e + 0x8c) |= 1;
+    *(u32*)((u8*)e + 0x90) |= 1;
+    PaintEntityWhite(e);
+    (p->s).work[1] = 1;
+  } else {
+    *(u32*)((u8*)e + 0x8c) &= ~1;
+    *(u32*)((u8*)e + 0x90) &= ~1;
+    UpdateEntityPaletteID(e);
+    (p->s).work[1] = 0;
+  }
+  if (e->mode[0] == ENTITY_EXIT) {
+    (p->s).flags &= ~DISPLAY;
+    SET_VFX_ROUTINE(p, ENTITY_EXIT);
+  }
 }
 
 static void FUN_080c810c(struct VFX* p) { SET_VFX_ROUTINE(p, ENTITY_EXIT); }

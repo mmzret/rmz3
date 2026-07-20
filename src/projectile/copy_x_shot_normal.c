@@ -65,88 +65,88 @@ static void Projectile25_Die(Object* p) {
 static const struct Collision sCollisions[];
 
 static void FUN_080a84c4(Object* p) {
-  struct Entity* q = (p->s).unk_28;
+  struct Entity* q = p->unk_28;
   SET_PROJECTILE_ROUTINE(p, ENTITY_UPDATE);
   EnableSpriteAnimation_Normal(p);
-  (p->s).flags |= DISPLAY;
-  (p->s).flags |= FLIPABLE;
+  p->flags |= DISPLAY;
+  p->flags |= FLIPABLE;
   SetSpriteAnimation(p, MOTION(SM093_COPYX_NORMAL_SHOT, 0));
   SET_XFLIP(p, (q->flags & X_FLIP) != 0);
-  if ((p->s).flags & X_FLIP) {
-    (p->s).coord.x += PIXEL(16);
-    (p->s).d.x = PIXEL(4);
+  if (p->flags & X_FLIP) {
+    p->coord.x += PIXEL(16);
+    p->d.x = PIXEL(4);
   } else {
-    (p->s).coord.x -= PIXEL(16);
-    (p->s).d.x = -PIXEL(4);
+    p->coord.x -= PIXEL(16);
+    p->d.x = -PIXEL(4);
   }
-  (p->s).coord.y -= PIXEL(24);
-  (p->s).d.y = 0;
+  p->coord.y -= PIXEL(24);
+  p->d.y = 0;
   INIT_BODY(p, sCollisions, 64, NULL);
   Projectile25_Update((void*)p);
 }
 
 static void FUN_080a85a0(Object* p) {
-  struct Entity* q = (p->s).unk_28;
+  struct Entity* q = p->unk_28;
   SET_PROJECTILE_ROUTINE(p, ENTITY_UPDATE);
   EnableSpriteAnimation_Normal(p);
-  (p->s).flags |= DISPLAY;
-  (p->s).flags |= FLIPABLE;
+  p->flags |= DISPLAY;
+  p->flags |= FLIPABLE;
   SetSpriteAnimation(p, MOTION(SM093_COPYX_NORMAL_SHOT, 1));
   UpdateSpriteAnimation(p);
   SET_XFLIP(p, (q->flags & X_FLIP) != 0);
-  if ((p->s).flags & X_FLIP) {
-    (p->s).coord.x += PIXEL(16);
-    (p->s).d.x = PIXEL(4);
+  if (p->flags & X_FLIP) {
+    p->coord.x += PIXEL(16);
+    p->d.x = PIXEL(4);
   } else {
-    (p->s).coord.x -= PIXEL(16);
-    (p->s).d.x = -PIXEL(4);
+    p->coord.x -= PIXEL(16);
+    p->d.x = -PIXEL(4);
   }
-  (p->s).coord.y -= PIXEL(24);
-  (p->s).d.y = 0;
+  p->coord.y -= PIXEL(24);
+  p->d.y = 0;
   INIT_BODY(p, &sCollisions[2], 64, NULL);
   Projectile25_Update((void*)p);
 }
 
 static void FUN_080a8684(Object* p) {
-  struct Entity* q = (p->s).unk_28;
+  struct Entity* q = p->unk_28;
   SET_PROJECTILE_ROUTINE(p, ENTITY_UPDATE);
-  InitRotatableMotion(&p->s);
-  (p->s).flags |= DISPLAY;
-  (p->s).flags |= FLIPABLE;
+  InitRotatableMotion((void*)p);
+  p->flags |= DISPLAY;
+  p->flags |= FLIPABLE;
   SetSpriteAnimation(p, MOTION(SM093_COPYX_NORMAL_SHOT, 0));
   UpdateSpriteAnimation(p);
   SET_XFLIP(p, (q->flags & X_FLIP) != 0);
-  if ((p->s).flags & X_FLIP) {
-    (p->s).coord.x += PIXEL(16);
-    (p->s).d.x = COS(32) << 2, (p->s).d.y = SIN(32) << 2;
+  if (p->flags & X_FLIP) {
+    p->coord.x += PIXEL(16);
+    p->d.x = COS(32) << 2, p->d.y = SIN(32) << 2;
   } else {
-    (p->s).coord.x -= PIXEL(16);
-    (p->s).d.x = SIN(128 + 32) << 2, (p->s).d.y = COS(32) << 2;
+    p->coord.x -= PIXEL(16);
+    p->d.x = SIN(128 + 32) << 2, p->d.y = COS(32) << 2;
   }
-  *(&(p->s).angle) = 0xE0;
-  (p->s).coord.y -= PIXEL(18);
+  *(&p->angle) = 0xE0;
+  p->coord.y -= PIXEL(18);
   INIT_BODY(p, &sCollisions[4], 64, NULL);
   Projectile25_Update((void*)p);
 }
 
 static void FUN_080a8794(Object* p) {
-  struct Entity* q = (p->s).unk_28;
+  struct Entity* q = p->unk_28;
   SET_PROJECTILE_ROUTINE(p, ENTITY_UPDATE);
-  InitRotatableMotion(&p->s);
-  (p->s).flags |= DISPLAY;
-  (p->s).flags |= FLIPABLE;
+  InitRotatableMotion((void*)p);
+  p->flags |= DISPLAY;
+  p->flags |= FLIPABLE;
   SetSpriteAnimation(p, MOTION(SM093_COPYX_NORMAL_SHOT, 1));
   UpdateSpriteAnimation(p);
   SET_XFLIP(p, (q->flags & X_FLIP) != 0);
-  if ((p->s).flags & X_FLIP) {
-    (p->s).coord.x += PIXEL(16);
-    (p->s).d.x = COS(32) << 2, (p->s).d.y = SIN(32) << 2;
+  if (p->flags & X_FLIP) {
+    p->coord.x += PIXEL(16);
+    p->d.x = COS(32) << 2, p->d.y = SIN(32) << 2;
   } else {
-    (p->s).coord.x -= PIXEL(16);
-    (p->s).d.x = SIN(128 + 32) << 2, (p->s).d.y = COS(32) << 2;
+    p->coord.x -= PIXEL(16);
+    p->d.x = SIN(128 + 32) << 2, p->d.y = COS(32) << 2;
   }
-  *(&(p->s).angle) = 0xE0;
-  (p->s).coord.y -= PIXEL(18);
+  *(&p->angle) = 0xE0;
+  p->coord.y -= PIXEL(18);
   INIT_BODY(p, &sCollisions[2], 64, NULL);
   Projectile25_Update((void*)p);
 }

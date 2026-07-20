@@ -8,7 +8,7 @@
 
 static void AfterImage_Init(struct AfterImage* p);
 static void AfterImage_Update(struct AfterImage* p);
-static void AfterImage_Die(struct Entity* p);
+static void AfterImage_Die(struct AfterImage* p);
 
 // clang-format off
 const VFXRoutine gDashAfterImageRoutine = {
@@ -49,33 +49,33 @@ struct Entity* CreateAfterImages(struct Entity* p) {
 // --------------------------------------------
 
 static void AfterImage_Init(struct AfterImage* p) {
-  struct Entity* q = (p->s).unk_28;
-  struct Entity* parent = (p->s).unk_2c;  // この残像を作った Entity, Zero or OmegaZero のどちらか
+  struct Entity* q = p->unk_28;
+  struct Entity* parent = p->unk_2c;  // この残像を作った Entity, Zero or OmegaZero のどちらか
 
-  Coords32* c1 = &p->c;
-  Coords32* c2 = &(p->s).coord;
+  Coords32* c1 = &p->c_74;
+  Coords32* c2 = &p->coord;
 
   if (q->mode[0] != 0) {
     s32 i;
     EnableSpriteAnimation_Normal(p);
-    (p->s).flags |= DISPLAY;
-    (p->s).spr.c = c1;
+    p->flags |= DISPLAY;
+    (p->spr).c = c1;
 
     if (parent->kind != ENTITY_BOSS) {
       // Zero
-      (p->s).renderPrio = (p->s).work[0] + 17;
-      ForceEntityPalette(&p->s, 12);
+      p->renderPrio = p->work[0] + 17;
+      ForceEntityPalette((void*)p, 12);
     } else {
       // Omega Zero
-      (p->s).renderPrio = (p->s).work[0] + 25;
-      ForceEntityPalette(&p->s, 8);
+      p->renderPrio = p->work[0] + 25;
+      ForceEntityPalette((void*)p, 8);
     }
 
     for (i = 0; i < 3; i++) {
       c2[i].x = (parent->coord).x;
       c2[i].y = (parent->coord).y;
     }
-    (p->s).work[2] = 3;
+    p->work[2] = 3;
 
     SET_VFX_ROUTINE(p, ENTITY_UPDATE);
     AfterImage_Update(p);
@@ -255,7 +255,7 @@ _080B4448: .4byte gVFXFnTable\n\
  .syntax divided\n");
 }
 
-static void AfterImage_Die(struct Entity* p) {
+static void AfterImage_Die(struct AfterImage* p) {
   p->flags &= ~DISPLAY;
   SET_VFX_ROUTINE(p, ENTITY_EXIT);
 }

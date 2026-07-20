@@ -7,7 +7,8 @@
 struct GameState;
 
 struct SquareCursorWidget {
-  struct Entity s;
+  ENTITY_HDR;     // 0x00
+  ENTITY_SPRITE;  // 0x28
   // props (16bytes, offset: 0x74..)
   u16 px;         // 0x74
   u16 py;         // 0x76

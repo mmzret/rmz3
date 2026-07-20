@@ -510,11 +510,11 @@ struct Entity* CreateStageEntity(u8 kind, u8 id) {
   return p;
 }
 
-void DeleteStageEntity(Object* p) {
-  switch ((p->s).kind) {
+void DeleteStageEntity(struct Entity* p) {
+  switch (p->kind) {
     case ENTITY_PLAYER: {
-      (p->s).flags &= ~DISPLAY;
-      (p->s).flags &= ~FLIPABLE;
+      p->flags &= ~DISPLAY;
+      p->flags &= ~FLIPABLE;
       EXIT_BODY(p);
       SET_PLAYER_ROUTINE(p, ENTITY_DISAPPEAR);
       break;
@@ -523,49 +523,49 @@ void DeleteStageEntity(Object* p) {
       break;
     }
     case ENTITY_BOSS: {
-      (p->s).flags &= ~DISPLAY;
-      (p->s).flags &= ~FLIPABLE;
+      p->flags &= ~DISPLAY;
+      p->flags &= ~FLIPABLE;
       EXIT_BODY(p);
       SET_BOSS_ROUTINE(p, ENTITY_DISAPPEAR);
       break;
     }
     case ENTITY_ENEMY: {
-      (p->s).flags &= ~DISPLAY;
-      (p->s).flags &= ~FLIPABLE;
+      p->flags &= ~DISPLAY;
+      p->flags &= ~FLIPABLE;
       EXIT_BODY(p);
       SET_ENEMY_ROUTINE(p, ENTITY_DISAPPEAR);
       break;
     }
     case ENTITY_PROJECTILE: {
-      (p->s).flags &= ~DISPLAY;
-      (p->s).flags &= ~FLIPABLE;
+      p->flags &= ~DISPLAY;
+      p->flags &= ~FLIPABLE;
       EXIT_BODY(p);
       SET_PROJECTILE_ROUTINE(p, ENTITY_DISAPPEAR);
       break;
     }
     case ENTITY_VFX: {
-      (p->s).flags &= ~DISPLAY;
-      (p->s).flags &= ~FLIPABLE;
+      p->flags &= ~DISPLAY;
+      p->flags &= ~FLIPABLE;
       SET_VFX_ROUTINE(p, ENTITY_DISAPPEAR);
       break;
     }
     case ENTITY_SOLID: {
-      (p->s).flags &= ~DISPLAY;
-      (p->s).flags &= ~FLIPABLE;
+      p->flags &= ~DISPLAY;
+      p->flags &= ~FLIPABLE;
       EXIT_BODY(p);
       SET_SOLID_ROUTINE(p, ENTITY_DISAPPEAR);
       break;
     }
     case ENTITY_ITEM: {
-      (p->s).flags &= ~DISPLAY;
-      (p->s).flags &= ~FLIPABLE;
+      p->flags &= ~DISPLAY;
+      p->flags &= ~FLIPABLE;
       EXIT_BODY(p);
       SET_ITEM_ROUTINE(p, ENTITY_DISAPPEAR);
       break;
     }
     case ENTITY_ELF: {
-      (p->s).flags &= ~DISPLAY;
-      (p->s).flags &= ~FLIPABLE;
+      p->flags &= ~DISPLAY;
+      p->flags &= ~FLIPABLE;
       EXIT_BODY(p);
       SET_ELF_ROUTINE(p, ENTITY_DISAPPEAR);
       break;

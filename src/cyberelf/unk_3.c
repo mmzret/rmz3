@@ -6,9 +6,9 @@
 
 // NurseB (Elf2) に従属する何か
 
-static void Elf3_Init(Object* p);
-void Elf3_Update(struct Elf* p);
-void Elf3_Die(struct Elf* p);
+static void Elf3_Init(CyberElf* p);
+void Elf3_Update(CyberElf* p);
+void Elf3_Die(CyberElf* p);
 
 // clang-format off
 const ElfRoutine gElf3Routine = {
@@ -36,14 +36,14 @@ struct Entity* CreateElf3(struct Entity* nurse_b, struct Entity* z) {
 static const struct Collision sElf3Collisions[];
 void FUN_080e2af0(struct Body* body, Coords32* r1 UNUSED, Coords32* r2 UNUSED);
 
-static void Elf3_Init(Object* p) {
-  (p->s).flags |= FLIPABLE;
-  (p->s).spr.xflip = FALSE, (p->s).spr.oam.xflip = FALSE;
-  (p->s).flags &= ~X_FLIP;
+static void Elf3_Init(CyberElf* p) {
+  p->flags |= FLIPABLE;
+  (p->spr).xflip = FALSE, (p->spr).oam.xflip = FALSE;
+  p->flags &= ~X_FLIP;
   INIT_BODY(p, sElf3Collisions, 1, FUN_080e2af0);
-  (p->s).work[2] = 0;
+  p->work[2] = 0;
   SET_ELF_ROUTINE(p, ENTITY_UPDATE);
-  Elf3_Update((void*)p);
+  Elf3_Update(p);
 }
 
 INCASM("asm/cyberelf/unk_3.inc");

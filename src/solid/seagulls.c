@@ -4,17 +4,16 @@
 #include "solid.h"
 #include "syssav.h"
 
-struct Seagulls {
-  OBJECT_HDR;
-  // props (16bytes, offset: 0xB4..)
+typedef struct {
+  COLLISION_OBJECT_HDR;
   s32 unk_b4_x;   // 0xB4
   u8 unk_b8[12];  // 0xB8
-};
-static_assert(sizeof(struct Seagulls) == sizeof(struct Solid));
+} Seagulls;
+static_assert(sizeof(Seagulls) == sizeof(struct Solid));
 
-static void Seagulls_Init(struct Solid* p);
-static void Seagulls_Update(struct Solid* p);
-static void Seagulls_Die(struct Solid* p);
+static void Seagulls_Init(Seagulls* p);
+static void Seagulls_Update(Seagulls* p);
+static void Seagulls_Die(Seagulls* p);
 
 // clang-format off
 const SolidRoutine gSeagullsRoutine = {
@@ -37,14 +36,14 @@ struct Entity* CreateSeagulls(struct Entity* q, u8 t, u8 param_3) {
   return p;
 }
 
-static void FUN_080dcd20(struct Seagulls* p);
-void FUN_080dcdac(struct Solid* p);
-void FUN_080dced4(struct Solid* p);
+static void FUN_080dcd20(Seagulls* p);
+void FUN_080dcdac(Seagulls* p);
+void FUN_080dced4(Seagulls* p);
 
-static void Seagulls_Init(struct Solid* p) {
-  switch ((p->s).work[0]) {
+static void Seagulls_Init(Seagulls* p) {
+  switch (p->work[0]) {
     case 0: {
-      FUN_080dcd20((void*)p);
+      FUN_080dcd20(p);
       break;
     }
     case 1: {
@@ -58,12 +57,12 @@ static void Seagulls_Init(struct Solid* p) {
   }
 }
 
-void FUN_080dd02c(struct Solid* p);
-void FUN_080dd11c(struct Solid* p);
-void FUN_080dd364(struct Solid* p);
+void FUN_080dd02c(Seagulls* p);
+void FUN_080dd11c(Seagulls* p);
+void FUN_080dd364(Seagulls* p);
 
-static void Seagulls_Update(struct Solid* p) {
-  switch ((p->s).work[0]) {
+static void Seagulls_Update(Seagulls* p) {
+  switch (p->work[0]) {
     case 0: {
       FUN_080dd02c(p);
       break;
@@ -79,12 +78,12 @@ static void Seagulls_Update(struct Solid* p) {
   }
 }
 
-void FUN_080dd400(struct Solid* p);
-void FUN_080dd418(struct Solid* p);
-void FUN_080dd430(struct Solid* p);
+void FUN_080dd400(Seagulls* p);
+void FUN_080dd418(Seagulls* p);
+void FUN_080dd430(Seagulls* p);
 
-static void Seagulls_Die(struct Solid* p) {
-  switch ((p->s).work[0]) {
+static void Seagulls_Die(Seagulls* p) {
+  switch (p->work[0]) {
     case 0: {
       FUN_080dd400(p);
       break;
@@ -102,19 +101,19 @@ static void Seagulls_Die(struct Solid* p) {
 
 // --------------------------------------------
 
-static void FUN_080dcd20(struct Seagulls* p) {
+static void FUN_080dcd20(Seagulls* p) {
   SET_SOLID_ROUTINE(p, ENTITY_UPDATE);
   if (!FLAG(gSystemSavedata.flags, MOD_SEAGULLS)) {
-    (p->s).flags &= ~DISPLAY;
-    (p->s).flags &= ~FLIPABLE;
+    p->flags &= ~DISPLAY;
+    p->flags &= ~FLIPABLE;
     EXIT_BODY(p);
     SET_SOLID_ROUTINE(p, ENTITY_DISAPPEAR);
     return;
   }
-  (p->s).unk_2c = (void*)CreateSeagulls((void*)p, 1, 0);
-  p->unk_b4_x = (p->s).coord.x;
-  (p->s).work[2] = 0, (p->s).work[3] = 0;
-  Seagulls_Update((void*)p);
+  p->unk_2c = (void*)CreateSeagulls((void*)p, 1, 0);
+  p->unk_b4_x = p->coord.x;
+  p->work[2] = 0, p->work[3] = 0;
+  Seagulls_Update(p);
 }
 
 INCASM("asm/solid/seagulls.inc");

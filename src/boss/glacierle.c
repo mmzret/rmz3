@@ -6,17 +6,16 @@
 #include "zero.h"
 
 struct Glacierle {
-  OBJECT_HDR;
-  // props (48bytes, offset: 0xB4..)
-  u32 unk_b4;
-  struct Entity* elfx;  // 0xB8, Element Effect
-  s32 unk_bc;
-  u8 unk_c0;
-  u8 unk_c1;
-  bool8 shouldRightDir;
-  u8 unk_c3[5];
-  Coords32 unk_c8;
-  u8 unk_d0[20];
+  COLLISION_OBJECT_HDR;  // 0x00
+  u32 unk_b4;            // 0xB4
+  struct Entity* elfx;   // 0xB8, Element Effect
+  s32 unk_bc;            // 0xBC
+  u8 unk_c0;             // 0xC0
+  u8 unk_c1;             // 0xC1
+  bool8 shouldRightDir;  // 0xC2
+  u8 unk_c3[5];          // 0xC3
+  Coords32 unk_c8;       // 0xC8
+  u8 unk_d0[20];         // 0xD0
 };
 static_assert(sizeof(struct Glacierle) == sizeof(struct Boss));
 
@@ -160,7 +159,7 @@ static void onCollision(struct Body* body, Coords32* r1 UNUSED, Coords32* r2 UNU
   if (body->hitboxFlags & BODY_STATUS_WHITE) {
     (p->unk_c8).x = (q->coord).x;
     (p->unk_c8).y = (q->coord).y;
-    p->shouldRightDir = (p->s).coord.x < (q->coord).x;
+    p->shouldRightDir = (p->coord).x < (q->coord).x;
   }
 }
 
@@ -171,9 +170,9 @@ static bool8 tryKillGlacierle(struct Boss* p) {
     PlaySound(SE_GLACIERLE_DEATH);
     SET_BOSS_ROUTINE(p, ENTITY_DIE);
     if (*status & BODY_STATUS_SLASHED) {
-      (p->s).mode[1] = 1;
+      p->mode[1] = 1;
     } else {
-      (p->s).mode[1] = 0;
+      p->mode[1] = 0;
     }
     Glacierle_Die(p);
     return TRUE;
@@ -465,8 +464,8 @@ static void Glacierle_Update(struct Glacierle* p) {
   if (tryKillGlacierle((void*)p)) {
     return;
   }
-  (sUpdates1[(p->s).mode[1]])((void*)p);
-  (sUpdates2[(p->s).mode[1]])((void*)p);
+  (sUpdates1[p->mode[1]])((void*)p);
+  (sUpdates2[p->mode[1]])((void*)p);
 }
 
 // --------------------------------------------
@@ -479,15 +478,12 @@ static void Glacierle_Die(struct Boss* p) {
       glacierleDeath0,
       glacierleDeath1,
   };
-  (sDeads[(p->s).mode[1]])(p);
+  (sDeads[p->mode[1]])(p);
 }
 
 // --------------------------------------------
 
-static void nop_08057cfc(struct Boss* p) {
-  // nop
-  return;
-}
+static void nop_08057cfc(struct Boss* p) {}
 
 static void glacierle_08057d00(struct Glacierle* p) {
   if (((p->body).status & BODY_STATUS_WHITE) && (p->elfx == NULL)) {
@@ -499,12 +495,12 @@ static void glacierle_08057d00(struct Glacierle* p) {
 static void tryMakeFlinch(struct Glacierle* p) {
   if ((p->body).status & BODY_STATUS_WHITE) {
     if ((p->body).status & BODY_STATUS_RECOILED) {
-      (p->s).mode[1] = 20, (p->s).mode[2] = 0;
+      p->mode[1] = 20, p->mode[2] = 0;
     }
     if (p->elfx == NULL) {
       p->elfx = (void*)ApplyElementEffect(25, (Object*)p, &sElementCoord);
       if (p->elfx != NULL) {
-        (p->s).mode[1] = 19, (p->s).mode[2] = 0;
+        p->mode[1] = 19, p->mode[2] = 0;
       }
     }
   }
@@ -513,11 +509,11 @@ static void tryMakeFlinch(struct Glacierle* p) {
 // --------------------------------------------
 
 static void glacierle_08057d7c(struct Boss* p) {
-  switch ((p->s).mode[2]) {
+  switch (p->mode[2]) {
     case 0: {
-      (p->s).work[2] = 24;
+      p->work[2] = 24;
       SetSpriteAnimation(p, MOTION(DM178_GLACIERLE, 0));
-      (p->s).mode[2]++;
+      p->mode[2]++;
       FALLTHROUGH;
     }
     case 1: {
@@ -525,17 +521,17 @@ static void glacierle_08057d7c(struct Boss* p) {
       SetDDP(&p->body, &sCollisions[1]);
       UpdateSpriteAnimation(p);
 
-      isZeroRight = (p->s).coord.x < (pZero2->s).coord.x;
-      if ((p->s).flags & X_FLIP) {
+      isZeroRight = p->coord.x < (pZero2->s).coord.x;
+      if (p->flags & X_FLIP) {
         if (!isZeroRight) goto _MODE2;
       } else if (isZeroRight) {
       _MODE2:
-        (p->s).mode[1] = 2;
-        (p->s).mode[2] = 0;
+        p->mode[1] = 2;
+        p->mode[2] = 0;
       }
 
-      (p->s).work[2]--;
-      if ((p->s).work[2] == 0) {
+      p->work[2]--;
+      if (p->work[2] == 0) {
         if (!((pZero2->body).status & BODY_STATUS_DEAD) && ((pZero2->body).hp != 0)) {
           calcNextGlacierleAction(p);
         }

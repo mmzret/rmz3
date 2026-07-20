@@ -31,45 +31,45 @@ static void Solid34_Init(Object* p) {
     range : {PIXEL(0), PIXEL(8), PIXEL(32), PIXEL(16)},
   };
 
-  (p->s).flags |= DISPLAY;
-  (p->s).flags |= FLIPABLE;
+  p->flags |= DISPLAY;
+  p->flags |= FLIPABLE;
   EnableSpriteAnimation_Normal(p);
   INIT_BODY(p, &sCollision, 0, NULL);
-  (p->s).coord.y = FUN_0800a134((p->s).coord.x, (p->s).coord.y);
+  p->coord.y = FUN_0800a134(p->coord.x, p->coord.y);
   SET_SOLID_ROUTINE(p, ENTITY_UPDATE);
   Solid34_Update(p);
 }
 
 static void Solid34_Update(Object* p) {
-  switch ((p->s).mode[3]) {
+  switch (p->mode[3]) {
     case 0: {
-      (p->s).work[0] = gOverworld.state[0];
-      if ((p->s).work[0] == 0) {
+      p->work[0] = gOverworld.state[0];
+      if (p->work[0] == 0) {
         SetSpriteAnimation(p, MOTION(SM118_LEVER_SWITCH_RED, 1));
       } else {
         SetSpriteAnimation(p, MOTION(SM118_LEVER_SWITCH_RED, 2));
       }
-      (p->s).mode[3]++;
+      p->mode[3]++;
       FALLTHROUGH;
     }
     case 1: {
       UpdateSpriteAnimation(p);
       if ((p->body).status & BODY_STATUS_B3) gOverworld.state[0] ^= 1;
-      if ((p->s).work[0] != gOverworld.state[0]) {
-        if ((p->s).work[0] == 0) {
+      if (p->work[0] != gOverworld.state[0]) {
+        if (p->work[0] == 0) {
           SetSpriteAnimation(p, MOTION(SM118_LEVER_SWITCH_RED, 3));
         } else {
           SetSpriteAnimation(p, MOTION(SM118_LEVER_SWITCH_RED, 4));
         }
-        (p->s).work[2] = 30;
-        (p->s).mode[3]++;
+        p->work[2] = 30;
+        p->mode[3]++;
       }
       break;
     }
     case 2: {
       UpdateSpriteAnimation(p);
-      if (--(p->s).work[2] == 0) {
-        (p->s).mode[3] = 0;
+      if (--p->work[2] == 0) {
+        p->mode[3] = 0;
       }
       break;
     }

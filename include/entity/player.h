@@ -149,7 +149,8 @@ union MinigamePlayerState {
 // 0x02037c60
 // プレイヤー(ゼロ、ミニゲームの操作キャラ)
 typedef struct Zero {
-  OBJECT_HDR;
+  struct Entity s;
+  struct Body body;
 
   // ここから最後まで全て同じ構造体にまとめられている可能性あり
   struct Zero_b4 unk_b4;  // 0xB4 (addr = 0x2037d14)

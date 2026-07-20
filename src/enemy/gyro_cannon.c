@@ -6,8 +6,7 @@
 #include "vfx.h"
 
 struct GyroCannon {
-  OBJECT_HDR;
-  // props (16bytes, offset: 0xB4..)
+  COLLISION_OBJECT_HDR;
   struct {
     struct VFX* elfx;  // 0xB4
     s32 init_y;        // 0xB8
@@ -16,7 +15,7 @@ struct GyroCannon {
     u8 unk_be;         // 0xBE
     u8 unk_bf;         // 0xBF
     u32 unk_c0;        // 0xC0
-  } props;
+  } props;             // props (16bytes, offset: 0xB4..)
 };
 static_assert(sizeof(struct GyroCannon) == sizeof(struct Enemy));
 
@@ -120,22 +119,22 @@ static void initGyroCannonMainBody(struct GyroCannon* p) {
     _INIT_BODY(p, sCollisions, 16);
   }
   SET_BODY_INTERSECT_HANDLER(p, FUN_0806df10);
-  (p->s).unk_2c = CreateGyroCannon((void*)p, TRUE, 0);
+  p->unk_2c = CreateGyroCannon((void*)p, TRUE, 0);
   (&p->props)->unk_bd = 0;
-  (&p->props)->init_y = (p->s).coord.y;
+  (&p->props)->init_y = p->coord.y;
   (&p->props)->unk_be = 0, (&p->props)->unk_bf = 0;
-  (p->s).d.y = 0;
-  (p->s).work[3] = 0;
+  p->d.y = 0;
+  p->work[3] = 0;
   (&p->props)->elfx = NULL;
-  (p->s).mode[1] = 2;
+  p->mode[1] = 2;
 }
 
 static void initGyroCannonPropeller(struct GyroCannon* p) {
   SetSpriteAnimation(p, MOTION(SM023_GYRO_CANNON, 6));
   UpdateSpriteAnimation(p);
   INIT_BODY(p, &sCollisions[2], 6, NULL);
-  (p->s).flags &= ~X_FLIP;
-  (p->s).spr.xflip = FALSE, (p->s).spr.oam.xflip = FALSE;
+  p->flags &= ~X_FLIP;
+  p->spr.xflip = FALSE, p->spr.oam.xflip = FALSE;
   (p->props).elfx = NULL;
 }
 
@@ -471,9 +470,9 @@ _0806DF0C: .4byte gEnemyFnTable\n\
 // 0x0806df10
 static void FUN_0806df10(struct Body* body, Coords32* r1 UNUSED, Coords32* r2 UNUSED) {
   if (body->hitboxFlags & BODY_STATUS_WHITE) {
-    struct Entity* other = (struct Entity*)body->enemy->parent;
-    struct GyroCannon* self = (struct GyroCannon*)body->parent;
-    (&self->props)->is_right = (other->coord).x > (self->s).coord.x;
+    struct Entity* q = (struct Entity*)body->enemy->parent;
+    struct GyroCannon* p = (struct GyroCannon*)body->parent;
+    (&p->props)->is_right = (q->coord).x > (p->coord).x;
   }
 }
 

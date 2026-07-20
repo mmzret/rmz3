@@ -5,9 +5,7 @@
 #include "overworld.h"
 
 typedef struct {
-  ENTITY_HDR;        // 0x00
-  ENTITY_SPRITE;     // 0x28
-  struct Body body;  // 0x74
+  COLLISION_OBJECT_HDR;
   // props (16bytes, offset: 0xB4..)
   s32 x_b4;      // 0xB4
   u8 unk_b8[4];  // 0xB8

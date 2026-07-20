@@ -26,27 +26,27 @@ const SolidRoutine gSolid33Routine = {
 // clang-format on
 
 static void Solid33_Init(Object* p) {
-  (p->s).flags |= DISPLAY;
-  (p->s).flags |= FLIPABLE;
+  p->flags |= DISPLAY;
+  p->flags |= FLIPABLE;
   EnableSpriteAnimation_Normal(p);
   SetSpriteAnimation(p, MOTION(SM125_WEILLABO_PLATFORM, 0));
   UpdateSpriteAnimation(p);
   INIT_BODY(p, &sCollisions[0], 0, NULL);
-  (p->s).flags2 |= ENTI_PHYSICS;
-  (p->s).size = &sSize;
-  (p->s).physicsAttr = (MTATTR_CONVEYOR1 | SHAPE_BLOCK);
-  (&(p->s).d)->x = (&(p->s).d)->y = 0;
-  (p->s).coord.x += PIXEL(8);
+  p->flags2 |= ENTI_PHYSICS;
+  p->size = &sSize;
+  p->physicsAttr = (MTATTR_CONVEYOR1 | SHAPE_BLOCK);
+  (&p->d)->x = (&p->d)->y = 0;
+  p->coord.x += PIXEL(8);
   SET_SOLID_ROUTINE(p, ENTITY_UPDATE);
   Solid33_Update(p);
 }
 
 static void Solid33_Update(Object* p) {
   s32 y = gOverworld.sea - PIXEL(10);
-  if (((p->body).status & BODY_STATUS_B2) && ((p->s).coord.y + PIXEL(8) > (pZero2->s).coord.y)) {
+  if (((p->body).status & BODY_STATUS_B2) && (p->coord.y + PIXEL(8) > (pZero2->s).coord.y)) {
     y = gOverworld.sea - PIXEL(8);
   }
-  (p->s).coord.y = (((p->s).coord.y * 7) + y) >> 3;
+  (p->coord).y = (((p->coord).y * 7) + y) >> 3;
 }
 
 static void Solid33_Die(void* _) {}

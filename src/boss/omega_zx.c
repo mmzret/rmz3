@@ -13,17 +13,16 @@ struct OmegaZXProjectileTemplate {
 } PACKED;
 
 struct OmegaZX {
-  OBJECT_HDR;
-  // props (48bytes, offset: 0xB4..)
-  u8 unk_b4[4];  // 0xB4
-  s32 unk_y;     // 0xB8
-  struct Entity* unk_bc;
-  u16 unk_c0;
-  u16 unk_c2;
-  void* unk_c4;
-  u8 unk_c8[4];
-  struct Entity* enemy60;
-  u8 unk_d0[20];
+  COLLISION_OBJECT_HDR;    // 0x00
+  u8 unk_b4[4];            // 0xB4
+  s32 unk_y;               // 0xB8
+  struct Entity* unk_bc;   // 0xBC
+  u16 unk_c0;              // 0xC0
+  u16 unk_c2;              // 0xC2
+  void* unk_c4;            // 0xC4
+  u8 unk_c8[4];            // 0xC8
+  struct Entity* enemy60;  // 0xCC
+  u8 unk_d0[20];           // 0xD0
 };
 static_assert(sizeof(struct OmegaZX) == sizeof(struct Boss));
 
@@ -280,8 +279,8 @@ static void OmegaZX_Update(struct Boss* p) {
     }
   }
 
-  (sUpdates1[(p->s).mode[1]])(p);
-  (sUpdates2[(p->s).mode[1]])(p);
+  (sUpdates1[p->mode[1]])(p);
+  (sUpdates2[p->mode[1]])(p);
 }
 
 // --------------------------------------------
@@ -294,7 +293,7 @@ static void OmegaZX_Die(struct Boss* p) {
       (void*)FUN_08060d60,
       (void*)FUN_08060e14,
   };
-  (sDeads[(p->s).mode[1]])(p);
+  (sDeads[p->mode[1]])(p);
 }
 
 // --------------------------------------------
@@ -310,15 +309,15 @@ static void OmegaZX_Disappear(struct Boss* p) {
 // --------------------------------------------
 
 static void FUN_08060d60(Object* p) {
-  switch ((p->s).mode[2]) {
+  switch (p->mode[2]) {
     case 0: {
       if ((gStageRun.missionStatus & MISSION_STAY) && !(gStageRun.vm.active & VM_ACTIVE)) {
         gStageRun.missionStatus &= ~MISSION_STAY;
         gStageRun.missionStatus |= MISSION_SUCCESS;
       }
       EXIT_BODY(p);
-      (p->s).work[2] = 90;
-      (p->s).mode[2]++;
+      p->work[2] = 90;
+      p->mode[2]++;
       FALLTHROUGH;
     }
     case 1: {
@@ -326,17 +325,17 @@ static void FUN_08060d60(Object* p) {
       StepPaletteAnimation(168);
       StepPaletteAnimation(169);
       StepPaletteAnimation(170);
-      if ((p->s).work[2] != 0) {
-        (p->s).work[2]--;
-        if ((p->s).work[2] == 0) {
-          (p->s).mode[2]++;
+      if (p->work[2] != 0) {
+        p->work[2]--;
+        if (p->work[2] == 0) {
+          p->mode[2]++;
         }
       }
       break;
     }
     case 2: {
-      if ((p->s).scriptEntity->flags & (1 << 7)) {
-        (p->s).mode[1] = 1, (p->s).mode[2] = 0;
+      if ((p->scriptEntity)->flags & (1 << 7)) {
+        p->mode[1] = 1, p->mode[2] = 0;
       }
       break;
     }

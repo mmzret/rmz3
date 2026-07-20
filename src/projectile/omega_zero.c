@@ -65,63 +65,56 @@ void CreateRekkoha(struct Entity* e, u8 n) {
   }
 }
 
-void CreateDoubleChargeWave1(struct Entity* e) {
-  s32 ex, x;
+void CreateDoubleChargeWave1(struct Entity* q) {
   struct Entity* p = AllocEntityLast(gProjectileHeaderPtr);
   if (p != NULL) {
     INIT_PROJECTILE_ROUTINE(p, 38);
     p->work[0] = 4;
-    p->work[2] = (e->flags >> 4) & 1;
+    p->work[2] = (q->flags & X_FLIP) != 0;
 
-    // は?
-    ex = (e->coord).x;
-    x = (p->coord).x = ex - PIXEL(26);
-    if (e->flags & X_FLIP) {
-      x = ex + PIXEL(26);
+    {
+      // (p->coord).x = (q->flags & X_FLIP) ? (q->coord).x - PIXEL(26) : (q->coord).x + PIXEL(26);
+      s32 qx = (q->coord).x;
+      s32 x = (p->coord).x = qx - PIXEL(26);
+      if (q->flags & X_FLIP) x = qx + PIXEL(26);
+      (p->coord).x = x;
     }
-    (p->coord).x = x;
-
-    (p->coord).y = (e->coord).y - PIXEL(23);
+    (p->coord).y = (q->coord).y - PIXEL(23);
   }
 }
 
-void CreateDoubleChargeWave2(struct Entity* e) {
-  s32 ex, x;
+void CreateDoubleChargeWave2(struct Entity* q) {
   struct Entity* p = AllocEntityLast(gProjectileHeaderPtr);
   if (p != NULL) {
     INIT_PROJECTILE_ROUTINE(p, 38);
     p->work[0] = 5;
-    p->work[2] = (e->flags >> 4) & 1;
+    p->work[2] = (q->flags & X_FLIP) != 0;
 
-    // は?
-    ex = (e->coord).x;
-    x = (p->coord).x = ex - PIXEL(26);
-    if (e->flags & X_FLIP) {
-      x = ex + PIXEL(26);
+    {
+      // (p->coord).x = (q->flags & X_FLIP) ? (q->coord).x - PIXEL(26) : (q->coord).x + PIXEL(26);
+      s32 qx = (q->coord).x;
+      s32 x = (p->coord).x = qx - PIXEL(26);
+      if (q->flags & X_FLIP) x = qx + PIXEL(26);
+      (p->coord).x = x;
     }
-    (p->coord).x = x;
-
-    (p->coord).y = (e->coord).y - PIXEL(23);
+    (p->coord).y = (q->coord).y - PIXEL(23);
   }
 }
 
-void CreateDoubleChargeWave3(struct Entity* e) {
-  s32 ex, x;
+void CreateDoubleChargeWave3(struct Entity* q) {
   struct Entity* p = AllocEntityLast(gProjectileHeaderPtr);
   if (p != NULL) {
     INIT_PROJECTILE_ROUTINE(p, 38);
     p->work[0] = 6;
-    p->work[2] = (e->flags >> 4) & 1;
-
-    // は?
-    ex = (e->coord).x;
-    x = (p->coord).x = ex - PIXEL(40);
-    if (e->flags & X_FLIP) {
-      x = ex + PIXEL(40);
+    p->work[2] = (q->flags & X_FLIP) != 0;
+    {
+      // (p->coord).x = (q->flags & X_FLIP) ? (q->coord).x - PIXEL(40) : (q->coord).x + PIXEL(40);
+      s32 qx = (q->coord).x;
+      s32 x = (p->coord).x = qx - PIXEL(40);
+      if (q->flags & X_FLIP) x = qx + PIXEL(40);
+      (p->coord).x = x;
     }
-    (p->coord).x = x;
-
-    (p->coord).y = (e->coord).y - PIXEL(15);
+    (p->coord).y = (q->coord).y - PIXEL(15);
   }
 }
 
@@ -185,7 +178,7 @@ static void OmegaZeroProjectile_Update(struct Projectile* p) {
 
 static void OmegaZeroProjectile_Die(Object* p) {
   EXIT_BODY(p);
-  (p->s).flags &= ~(DISPLAY);
+  p->flags &= ~(DISPLAY);
   SET_PROJECTILE_ROUTINE(p, ENTITY_EXIT);
 }
 
@@ -800,24 +793,24 @@ _080AEA48: .4byte gProjectileFnTable\n\
 
 // 01 04 xx --
 static void DoubleChargeWave1_Update(Object* p) {
-  switch ((p->s).mode[2]) {
+  switch (p->mode[2]) {
     case 0: {
       SetDDP(&p->body, &gOmegaZeroProjectileCollisions_0836c9c0[5]);
-      SET_XFLIP(p, (p->s).work[2]);
-      (p->s).d.x = (p->s).work[2] * PIXEL(9) - PIXEL(9) / 2;
-      (p->s).work[2] = 128;  // lifetime
+      SET_XFLIP(p, p->work[2]);
+      p->d.x = p->work[2] * PIXEL(9) - PIXEL(9) / 2;
+      p->work[2] = 128;  // lifetime
       SetSpriteAnimation(p, MOTION(SM128_UNK, 7));
-      (p->s).mode[2]++;
+      p->mode[2]++;
       FALLTHROUGH;
     }
     case 1: {
       UpdateSpriteAnimation(p);
-      if ((p->s).motion.cmdIdx > 2) (p->s).coord.x += (p->s).d.x;
+      if (p->motion.cmdIdx > 2) p->coord.x += p->d.x;
       // 128フレーム経過 or 画面外に出たら消える
-      if ((p->s).work[2] == 0 || (--(p->s).work[2] == 0)) {
-        if (Camera_GetDistance(&gStageRun.vm.camera, &(p->s).coord) > PIXEL(64)) {
-          (p->s).flags &= ~DISPLAY;
-          (p->s).flags &= ~FLIPABLE;
+      if (p->work[2] == 0 || (--p->work[2] == 0)) {
+        if (Camera_GetDistance(&gStageRun.vm.camera, &p->coord) > PIXEL(64)) {
+          p->flags &= ~DISPLAY;
+          p->flags &= ~FLIPABLE;
           EXIT_BODY(p);
           SET_PROJECTILE_ROUTINE(p, ENTITY_DISAPPEAR);
         }
@@ -998,25 +991,25 @@ _080AEC94: .4byte gProjectileFnTable\n\
 
 // 01 06 xx --
 static void DoubleChargeWave3_Update(Object* p) {
-  switch ((p->s).mode[2]) {
+  switch (p->mode[2]) {
     case 0: {
       SetDDP(&p->body, &gOmegaZeroProjectileCollisions_0836c9c0[7]);
-      SET_XFLIP(p, (p->s).work[2]);
-      (p->s).d.x = (p->s).work[2] * PIXEL(9) - PIXEL(9) / 2;
-      (p->s).unk_coord.x = 128;  // lifetime
-      (p->s).work[3] = 0;
+      SET_XFLIP(p, p->work[2]);
+      p->d.x = p->work[2] * PIXEL(9) - PIXEL(9) / 2;
+      p->unk_coord.x = 128;  // lifetime
+      p->work[3] = 0;
       SetSpriteAnimation(p, MOTION(SM128_UNK, 5));
-      (p->s).mode[2]++;
+      p->mode[2]++;
       FALLTHROUGH;
     }
     case 1: {
       UpdateSpriteAnimation(p);
-      (p->s).coord.x += (p->s).d.x;
+      p->coord.x += p->d.x;
       // 128フレーム経過 or 画面外に出たら消える
-      if ((p->s).unk_coord.x == 0 || (--(p->s).unk_coord.x == 0)) {
-        if (Camera_GetDistance(&gStageRun.vm.camera, &(p->s).coord) > PIXEL(64)) {
-          (p->s).flags &= ~DISPLAY;
-          (p->s).flags &= ~FLIPABLE;
+      if (p->unk_coord.x == 0 || (--p->unk_coord.x == 0)) {
+        if (Camera_GetDistance(&gStageRun.vm.camera, &p->coord) > PIXEL(64)) {
+          p->flags &= ~DISPLAY;
+          p->flags &= ~FLIPABLE;
           EXIT_BODY(p);
           SET_PROJECTILE_ROUTINE(p, ENTITY_DISAPPEAR);
         }

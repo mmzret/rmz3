@@ -84,14 +84,14 @@
   }
 
 // initGyroCannonMainBody のコードを見るに、マクロはこれが正しいと思われる
-#define _INIT_BODY(obj, collisions, hp)                           \
-  {                                                               \
-    struct Body* body;                                            \
-    (((Object*)(obj))->s).flags |= COLLIDABLE;                    \
-    body = &(((Object*)(obj))->body);                             \
-    InitBody(body, collisions, &(((Object*)(obj))->s).coord, hp); \
-    body->parent = (void*)(obj);                                  \
-    body->fn = NULL;                                              \
+#define _INIT_BODY(obj, collisions, hp)                       \
+  {                                                           \
+    struct Body* body;                                        \
+    ((Object*)(obj))->flags |= COLLIDABLE;                    \
+    body = &(((Object*)(obj))->body);                         \
+    InitBody(body, collisions, &((Object*)(obj))->coord, hp); \
+    body->parent = (void*)(obj);                              \
+    body->fn = NULL;                                          \
   }
 
 #define SET_BODY_INTERSECT_HANDLER(obj, handler)   \
@@ -111,6 +111,6 @@
   (((Object*)enti)->body).status = 0;         \
   (((Object*)enti)->body).prevStatus = 0;     \
   (((Object*)enti)->body).invincibleTime = 0; \
-  (((Object*)enti)->s).flags &= ~COLLIDABLE;
+  ((Object*)enti)->flags &= ~COLLIDABLE;
 
 #endif  // GUARD_RMZ3_ENTITY_MACROS_H

@@ -162,7 +162,7 @@ static void buster_0(struct Zero* z) {
   s32 y = -PIXEL(16);
   bool8 xflip = ((z->s).flags >> 4);
   u8 ok = TRUE;
-  struct Weapon* w = CreateBuster(z, x, y, xflip & ok);
+  Weapon* w = CreateBuster(z, x, y, xflip & ok);
   if (w == NULL) {
     (z->unk_b4).attackState8[0] = 0;
   } else {
@@ -230,8 +230,8 @@ static void buster_3(struct Zero* z) {
   struct Zero_b4* b4;
 
   motion_t m = MOTION_VALUE(z);
-  if (m != MOTION(DM010_ZERO_BUSTER_DASH, 0x01)) {
-    GotoMotion(&z->s, MOTION(DM010_ZERO_BUSTER_DASH, 0x01), 2, z->atkCooltime);
+  if (m != MOTION(DM010_ZERO_BUSTER_DASH, 1)) {
+    GotoSpriteAnimation(z, MOTION(DM010_ZERO_BUSTER_DASH, 1), 2, z->atkCooltime);
   }
 
   b4 = &(z->unk_b4);

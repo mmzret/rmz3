@@ -30,11 +30,11 @@ struct Entity* FUN_080bdd74(struct Entity* e, Coords32* c, u8 kind) {
 }
 
 struct Entity* FUN_080bddcc(Coords32* c, u8 kind, motion_t m, u32 val) {
-  struct VFXUnkCommon* p = (struct VFXUnkCommon*)AllocEntityLast(gVFXHeaderPtr);
+  VFXUnkCommon* p = AllocEntityLast(gVFXHeaderPtr);
   if (p != NULL) {
     INIT_VFX_ROUTINE(p, VFX_UNK_041);
-    (p->s).work[0] = kind, (p->s).work[1] = 1;
-    (p->s).coord.x = c->x, (p->s).coord.y = c->y;
+    p->work[0] = kind, p->work[1] = 1;
+    p->coord.x = c->x, p->coord.y = c->y;
     p->m_74 = m;
     p->unk_78 = val;
   }
@@ -42,27 +42,27 @@ struct Entity* FUN_080bddcc(Coords32* c, u8 kind, motion_t m, u32 val) {
 }
 
 struct Entity* createHellbatElectricBeam(struct Entity* e, Coords32* c, u8 kind, u8 param_4) {
-  struct VFXUnkCommon* p = (struct VFXUnkCommon*)AllocEntityLast(gVFXHeaderPtr);
+  VFXUnkCommon* p = AllocEntityLast(gVFXHeaderPtr);
   if (p != NULL) {
     INIT_VFX_ROUTINE(p, VFX_UNK_041);
-    (p->s).work[0] = kind;
+    p->work[0] = kind;
     p->unk_7c = param_4;
-    (p->s).work[1] = 2;
-    (p->s).coord.x = c->x, (p->s).coord.y = c->y;
-    (p->s).unk_28 = (void*)e;
+    p->work[1] = 2;
+    p->coord.x = c->x, p->coord.y = c->y;
+    p->unk_28 = (void*)e;
   }
   return (void*)p;
 }
 
 struct Entity* FUN_080bde9c(struct Entity* e, Coords32* c, u8 kind, u8 param_4) {
-  struct VFXUnkCommon* p = (struct VFXUnkCommon*)AllocEntityLast(gVFXHeaderPtr);
+  VFXUnkCommon* p = AllocEntityLast(gVFXHeaderPtr);
   if (p != NULL) {
     INIT_VFX_ROUTINE(p, VFX_UNK_041);
-    (p->s).work[0] = kind;
+    p->work[0] = kind;
     p->unk_7c = param_4;
-    (p->s).work[1] = 3;
-    (p->s).coord.x = c->x, (p->s).coord.y = c->y;
-    (p->s).unk_28 = (void*)e;
+    p->work[1] = 3;
+    p->coord.x = c->x, p->coord.y = c->y;
+    p->unk_28 = (void*)e;
   }
   return (void*)p;
 }
@@ -73,7 +73,7 @@ static void VFX41_Init(struct Entity* p) {
   EnableSpriteAnimation_Normal(p);
   p->flags |= DISPLAY;
   p->flags |= FLIPABLE;
-  ResetDynamicMotion(p);
+  SetSpriteTableDynamic(p);
   if (p->work[0] == 0) {
     SET_XFLIP(p, FALSE);
     (p->d).x = PIXEL(1) / 2;

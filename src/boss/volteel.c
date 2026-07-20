@@ -23,11 +23,11 @@ const BossRoutine gVolteelRoutine = {
 // clang-format on
 
 struct Boss* CreateVolteel(Coords32* c, u8 n) {
-  struct Boss* p = (struct Boss*)AllocEntityLast(gBossHeaderPtr);
+  struct Boss* p = AllocEntityLast(gBossHeaderPtr);
   if (p != NULL) {
     INIT_BOSS_ROUTINE(p, BOSS_VOLTEEL);
-    (p->s).coord = *c;
-    (p->s).work[0] = n;
+    p->coord = *c;
+    p->work[0] = n;
   }
   return p;
 }
@@ -271,17 +271,17 @@ static void Volteel_Update(struct Boss* p) {
     SET_BOSS_ROUTINE(p, ENTITY_DIE);
     PlaySound(SE_VOLTEEL_DEATH);
     if ((p->body).status & BODY_STATUS_SLASHED) {
-      (p->s).mode[3] = 1;
+      p->mode[3] = 1;
     } else {
-      (p->s).mode[3] = 0;
+      p->mode[3] = 0;
     }
     Volteel_Die(p);
     return;
   }
 
-  (sUpdates1[(p->s).mode[1]])(p);
+  (sUpdates1[p->mode[1]])(p);
   volteel_080457c4(p);
-  (sUpdates2[(p->s).mode[1]])(p);
+  (sUpdates2[p->mode[1]])(p);
 }
 
 // --------------------------------------------
@@ -294,7 +294,7 @@ static void Volteel_Die(struct Boss* p) {
       volteelDeath0,
       volteelDeath1,
   };
-  (seq[(p->s).mode[1]])(p);
+  (seq[p->mode[1]])(p);
 }
 
 INCASM("asm/boss/volteel.inc");

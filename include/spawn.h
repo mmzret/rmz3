@@ -7,7 +7,6 @@
 #include "types.h"
 
 struct Entity;
-struct CollidableEntity;
 
 // SF は SpawnFlag の略 (名前変えるかも)
 // SpawnTemplate.flag, SpawnedEntity.flag
@@ -130,7 +129,7 @@ extern struct SpawnManager gSpawnManager;
 
 void InitSpawnManager(u8 stageID, bool8 missionDone);
 struct Entity* CreateStageEntity(u8 kind, u8 id);
-void DeleteStageEntity(struct CollidableEntity* e);
+void DeleteStageEntity(struct Entity* e);
 void ClipSpawnRange(s32 top, s32 bottom);
 
 #endif  // GUARD_RMZ3_SPAWN_H

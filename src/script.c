@@ -185,10 +185,8 @@ void DeleteScriptEntity(u8 n) {
       resetSateliteElfPosition(gGameState.z2);
       StoreZeroStatus(gGameState.z2, &gGameState.save.status);
     }
-    if (n == 1) {
-      gHUD.unk_0c = NULL;
-    }
-    DeleteStageEntity((struct CollidableEntity*)e);
+    if (n == 1) gHUD.unk_0c = NULL;
+    DeleteStageEntity(e);
     s->entity = NULL;
   }
 }

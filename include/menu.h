@@ -12,13 +12,13 @@
     idx=3: メインメニューなら選択しているコンポーネント メイン=1, サブ=2, ..., フット=6
 */
 
-struct Elf;
+struct CyberElf;
 struct Widget;
 struct Zero;
 
 struct GameState;
 typedef void (*MenuLoopFunc)(struct GameState*);
-typedef struct Elf* (*MenuElfFunc)(struct Zero*, u8, u8, u8);
+typedef struct CyberElf* (*MenuElfFunc)(struct Zero*, u8, u8, u8);
 
 #define MENU (&(g->sceneState).menu)
 #define ELF_MENU (&((g->sceneState).menu).elf)
@@ -60,7 +60,10 @@ struct MenuState {
   u16 unk_08;
   u8 unk_0a;
   u8 unk_0b;
-  u32 unk_0c;
+  u8 unk_0c;
+  u8 unk_0d;
+  u8 unk_0e;
+  u8 unk_0f;
   u32 rank;
   struct Widget* mc_14;  // e.g. 0203d938
   struct Widget* mc_18;  // e.g. 0203d830

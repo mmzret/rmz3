@@ -4,7 +4,7 @@
 #include "overworld.h"
 
 struct Deathtanz {
-  OBJECT_HDR;
+  COLLISION_OBJECT_HDR;  // 0x00
   // props (48bytes, offset: 0xB4..)
   Coords32 unk_b4;
   u8 unk_bc;
@@ -147,7 +147,7 @@ static void onCollision(struct Body* body, Coords32* c1, Coords32* c2) {
   if (body->hitboxFlags & BODY_STATUS_WHITE) {
     (p->unk_c8).x = (z->s).coord.x;
     (p->unk_c8).y = (z->s).coord.y;
-    p->shouldTurnRight = (p->s).coord.x < (z->s).coord.x;
+    p->shouldTurnRight = (p->coord).x < (z->s).coord.x;
   }
 }
 
@@ -156,9 +156,9 @@ static bool8 tryKillDeathtanz(struct Boss* p) {
     PlaySound(SE_DEATHTANZ_DEATH);
     SET_BOSS_ROUTINE(p, ENTITY_DIE);
     if ((p->body).status & BODY_STATUS_SLASHED) {
-      (p->s).mode[1] = 1;
+      p->mode[1] = 1;
     } else {
-      (p->s).mode[1] = 0;
+      p->mode[1] = 0;
     }
     Deathtanz_Die(p);
     return TRUE;
@@ -180,23 +180,23 @@ static void Deathtanz_Init(struct Deathtanz* p) {
 #endif
 
   SET_BOSS_ROUTINE(p, ENTITY_UPDATE);
-  (p->s).mode[1] = sInitModes[(p->s).work[0]];
-  (p->s).flags |= FLIPABLE;
-  (p->s).flags |= DISPLAY;
+  p->mode[1] = sInitModes[p->work[0]];
+  p->flags |= FLIPABLE;
+  p->flags |= DISPLAY;
   EnableSpriteAnimation_Normal(p);
-  ResetDynamicMotion(&p->s);
+  SetSpriteTableDynamic(p);
 
   ResetBossBody((void*)p, &sCollisions[0], 64);
   SET_BOSS_COLLISION_HANDLER(p, onCollision);
 
-  if ((p->s).work[0] == 0) {
+  if (p->work[0] == 0) {
     LOAD_STATIC_GRAPHIC(SM054_DEATHTANZ_ROCK);
     LOAD_STATIC_GRAPHIC(SM055_DEATHTANZ_PROJECTILE);
 
-    (p->s).coord.y = FUN_08009f6c((p->s).coord.x, (p->s).coord.y);
-    p->unk_b4.x = (p->s).coord.x >> 8;
+    p->coord.y = FUN_08009f6c(p->coord.x, p->coord.y);
+    p->unk_b4.x = p->coord.x >> 8;
     p->unk_b4.x = ((p->unk_b4.x / 240) * PIXEL(240)) + PIXEL(120);
-    p->unk_b4.y = (p->s).coord.y;
+    p->unk_b4.y = p->coord.y;
     p->unk_bd = 0;
     p->unk_c1 = 3;
 #if MODERN
@@ -295,8 +295,8 @@ static void Deathtanz_Update(struct Boss* p) {
 
   bool8 killed = tryKillDeathtanz(p);
   if (!killed) {
-    (sUpdates1[(p->s).mode[1]])(p);
-    (sUpdates2[(p->s).mode[1]])(p);
+    (sUpdates1[p->mode[1]])(p);
+    (sUpdates2[p->mode[1]])(p);
   }
 }
 
@@ -310,7 +310,7 @@ static void Deathtanz_Die(struct Boss* p) {
       (BossFunc)FUN_0804ac44,
       (BossFunc)deathtanz_0804adb0,
   };
-  (sDeads[(p->s).mode[1]])(p);
+  (sDeads[p->mode[1]])(p);
 }
 
 // --------------------------------------------
@@ -320,8 +320,7 @@ static void nop_0804908c(void* p) {}
 static void tryMakeFlinch(struct Boss* p) {
   if ((p->body).status & BODY_STATUS_WHITE) {
     if ((p->body).status & BODY_STATUS_RECOILED) {
-      (p->s).mode[1] = 20;
-      (p->s).mode[2] = 0;
+      p->mode[1] = 20, p->mode[2] = 0;
     }
   }
 }

@@ -143,9 +143,9 @@ static const u8 sInitModes[];
 
 static void Projectile20_Init(Object* p) {
   SET_PROJECTILE_ROUTINE(p, ENTITY_UPDATE);
-  (p->s).mode[1] = sInitModes[(p->s).work[0]];
-  (p->s).flags |= FLIPABLE;
-  (p->s).flags |= DISPLAY;
+  p->mode[1] = sInitModes[p->work[0]];
+  p->flags |= FLIPABLE;
+  p->flags |= DISPLAY;
   EnableSpriteAnimation_Normal(p);
   INIT_BODY(p, &sCollisions[0], 1, onCollision);
   Projectile20_Update((void*)p);
@@ -193,17 +193,17 @@ static void Projectile20_Update(Object* p) {
   }; // 0x0836ba78
   // clang-format on
 
-  struct Entity* q = (struct Entity*)(p->s).unk_28;
-  if ((q->mode[0] >= ENTITY_DIE) && ((p->s).mode[1] != 7)) {
-    (p->s).mode[1] = 7, (p->s).mode[2] = 0;
+  struct Entity* q = (struct Entity*)p->unk_28;
+  if ((q->mode[0] >= ENTITY_DIE) && (p->mode[1] != 7)) {
+    p->mode[1] = 7, p->mode[2] = 0;
   }
-  (sUpdates1[(p->s).mode[1]])((void*)p);
-  (sUpdates2[(p->s).mode[1]])((void*)p);
+  (sUpdates1[p->mode[1]])((void*)p);
+  (sUpdates2[p->mode[1]])((void*)p);
 }
 
 static void Projectile20_Die(Object* p) {
   EXIT_BODY(p);
-  CreateSmoke(3, &p->s.coord);
+  CreateSmoke(3, &p->coord);
   SET_PROJECTILE_ROUTINE(p, ENTITY_EXIT);
 }
 

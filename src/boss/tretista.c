@@ -20,11 +20,11 @@ const BossRoutine gTretistaRoutine = {
 // clang-format on
 
 struct Boss* CreateTretista(Coords32* c, u8 n) {
-  struct Boss* p = (struct Boss*)AllocEntityLast(gBossHeaderPtr);
+  struct Boss* p = AllocEntityLast(gBossHeaderPtr);
   if (p != NULL) {
     INIT_BOSS_ROUTINE(p, BOSS_TRETISTA);
-    (p->s).coord = *c;
-    (p->s).work[0] = n;
+    p->coord = *c;
+    p->work[0] = n;
   }
   return p;
 }
@@ -231,16 +231,16 @@ static void Tretista_Update(struct Boss* p) {
     SET_BOSS_ROUTINE(p, ENTITY_DIE);
     PlaySound(SE_TRETISTA_DEATH);
     if ((p->body).status & BODY_STATUS_SLASHED) {
-      (p->s).mode[3] = 1;
+      p->mode[3] = 1;
     } else {
-      (p->s).mode[3] = 0;
+      p->mode[3] = 0;
     }
     Tretista_Die(p);
     return;
   }
 
-  (sUpdates1[(p->s).mode[1]])(p);
-  (sUpdates2[(p->s).mode[1]])(p);
+  (sUpdates1[p->mode[1]])(p);
+  (sUpdates2[p->mode[1]])(p);
 }
 
 // --------------------------------------------
@@ -253,7 +253,7 @@ static void Tretista_Die(struct Boss* p) {
       FUN_0804d804,
       tretista_0804d8e8,
   };
-  (sDeads[(p->s).mode[1]])(p);
+  (sDeads[p->mode[1]])(p);
 }
 
 INCASM("asm/boss/tretista.inc");

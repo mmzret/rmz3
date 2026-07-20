@@ -3,15 +3,14 @@
 #include "global.h"
 #include "physics.h"
 
-struct Volcaire {
-  OBJECT_HDR;
-  // props (16bytes, offset: 0xB4..)
-  u8 unk_b4[4];
-  u8 unk_b8;
-  u8 unk_b9[3];
-  u8 unk_bc[8];
-};
-static_assert(sizeof(struct Volcaire) == sizeof(struct Enemy));
+typedef struct {
+  COLLISION_OBJECT_HDR;
+  u8 unk_b4[4];  // 0xB4
+  u8 unk_b8;     // 0xB8
+  u8 unk_b9[3];  // 0xB9
+  u8 unk_bc[8];  // 0xBC
+} Volcaire;
+static_assert(sizeof(Volcaire) == sizeof(struct Enemy));
 
 void Volcaire_Init(struct Enemy* p);
 void Volcaire_Update(struct Enemy* p);
@@ -19,11 +18,11 @@ void Volcaire_Die(struct Enemy* p);
 
 // clang-format off
 const EnemyRoutine gVolcaireRoutine = {
-    [ENTITY_INIT] =      Volcaire_Init,
-    [ENTITY_UPDATE] =    Volcaire_Update,
-    [ENTITY_DIE] =       Volcaire_Die,
+    [ENTITY_INIT] =      (void*)Volcaire_Init,
+    [ENTITY_UPDATE] =    (void*)Volcaire_Update,
+    [ENTITY_DIE] =       (void*)Volcaire_Die,
     [ENTITY_DISAPPEAR] = (void*)DeleteEnemy,
-    [ENTITY_EXIT] =      (EnemyFunc)DeleteEntity,
+    [ENTITY_EXIT] =      (void*)DeleteEntity,
 };
 // clang-format on
 
@@ -60,7 +59,7 @@ void FUN_08077174(struct Entity* e) {
   }
 }
 
-void FUN_080771cc(struct Volcaire* e, s32 x, s32 y, u8 n) {
+void FUN_080771cc(Volcaire* e, s32 x, s32 y, u8 n) {
   struct Entity* p = AllocEntityLast(gEnemyHeaderPtr);
   if (p != NULL) {
     INIT_ENEMY_ROUTINE(p, ENEMY_VOLCAIRE);
@@ -74,17 +73,12 @@ void FUN_080771cc(struct Volcaire* e, s32 x, s32 y, u8 n) {
       p->coord.y = y + PIXEL(7);
     }
     p->work[2] = n;
-    if (e != NULL) {
-      e->unk_b8++;
-    }
+    if (e != NULL) e->unk_b8++;
     p->unk_28 = (void*)e;
   }
 }
 
-static void onCollision(struct Body* body UNUSED, Coords32* r1 UNUSED, Coords32* r2 UNUSED) {
-  // NOP
-  return;
-}
+static void onCollision(struct Body* body UNUSED, Coords32* r1 UNUSED, Coords32* r2 UNUSED) { return; }
 
 NAKED static bool8 FUN_08077260(struct Enemy* p) {
   asm(".syntax unified\n\

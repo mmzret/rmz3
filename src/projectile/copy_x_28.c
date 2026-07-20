@@ -7,7 +7,7 @@
 
 // コピーXのチャージショット + レイジングエクスチャージ(ﾓｳﾕﾙｻﾝ!)
 typedef struct {
-  OBJECT_HDR;
+  COLLISION_OBJECT_HDR;
   // props (16bytes, offset: 0xB4..)
   Coords32 c_b4;  // 0xB4
   u8 unk_bc[8];   // 0xBC
@@ -84,7 +84,7 @@ static void Projectile28_Update(struct Entity* p) {
 }
 
 static void Projectile28_Die(Object* p) {
-  if ((p->s).work[0] >= PJ28_2_RAGING_EX_CHARGE) {
+  if (p->work[0] >= PJ28_2_RAGING_EX_CHARGE) {
     gWindowRegBuffer.dispcnt &= ~DISPCNT_WIN1_ON;
     gWindowRegBuffer.winin[2] |= 0xFE;
     gPaletteManager.buf[0] = RGB_BLACK;
@@ -98,49 +98,49 @@ static void Projectile28_Die(Object* p) {
 static const struct Collision sCollisions[];
 
 static void FUN_080a9b90(Projectile28* p) {
-  struct Entity* q = (p->s).unk_28;
+  struct Entity* q = p->unk_28;
   SET_PROJECTILE_ROUTINE(p, ENTITY_UPDATE);
   EnableSpriteAnimation_Normal(p);
-  (p->s).flags |= DISPLAY;
-  (p->s).flags |= FLIPABLE;
+  p->flags |= DISPLAY;
+  p->flags |= FLIPABLE;
   SetSpriteAnimation(p, MOTION(SM095_COPYX_CHARGE, 0));
   SET_XFLIP(p, (q->flags & X_FLIP) != 0);
-  if ((p->s).flags & X_FLIP) {
-    (p->s).coord.x += PIXEL(31);
-    (p->s).d.x = PIXEL(1) / 2;
-    (p->s).work[2] = 0x7F;
+  if (p->flags & X_FLIP) {
+    p->coord.x += PIXEL(31);
+    p->d.x = PIXEL(1) / 2;
+    p->work[2] = 0x7F;
   } else {
-    (p->s).coord.x -= PIXEL(31);
-    (p->s).d.x = -PIXEL(1) / 2;
-    (p->s).work[2] = 0x0;
+    p->coord.x -= PIXEL(31);
+    p->d.x = -PIXEL(1) / 2;
+    p->work[2] = 0x0;
   }
-  (p->s).coord.y -= PIXEL(24);
-  (p->s).d.y = 0;
-  (p->s).work[3] = 0;
+  p->coord.y -= PIXEL(24);
+  p->d.y = 0;
+  p->work[3] = 0;
   INIT_BODY(p, &sCollisions[0], 64, NULL);
-  (p->c_b4).x = (p->s).coord.x, (p->c_b4).y = (p->s).coord.y;
-  (p->s).mode[2] = 1;
+  (p->c_b4).x = p->coord.x, (p->c_b4).y = p->coord.y;
+  p->mode[2] = 1;
   Projectile28_Update((void*)p);
 }
 
 static void FUN_080a9c88(Projectile28* p) {
   UpdateSpriteAnimation(p);
-  if ((p->s).flags & X_FLIP) {
-    (p->s).coord.x = (p->c_b4).x + COS((p->s).work[2]) * 11;
-    (p->s).coord.y = (p->c_b4).y + SIN((p->s).work[2]) * 22;
-    (p->s).work[2] += 16;
-    (p->s).d.x += 8;
-    if ((p->s).d.x > PIXEL(2)) (p->s).d.x = PIXEL(2);
+  if (p->flags & X_FLIP) {
+    (p->coord).x = (p->c_b4).x + COS(p->work[2]) * 11;
+    (p->coord).y = (p->c_b4).y + SIN(p->work[2]) * 22;
+    p->work[2] += 16;
+    p->d.x += 8;
+    if (p->d.x > PIXEL(2)) p->d.x = PIXEL(2);
   } else {
-    (p->s).coord.x = (p->c_b4).x + COS((p->s).work[2]) * 11;
-    (p->s).coord.y = (p->c_b4).y + SIN((p->s).work[2]) * 22;
-    (p->s).work[2] -= 16;
-    (p->s).d.x -= 8;
-    if ((p->s).d.x < -PIXEL(2)) (p->s).d.x = -PIXEL(2);
+    (p->coord).x = (p->c_b4).x + COS(p->work[2]) * 11;
+    (p->coord).y = (p->c_b4).y + SIN(p->work[2]) * 22;
+    p->work[2] -= 16;
+    p->d.x -= 8;
+    if (p->d.x < -PIXEL(2)) p->d.x = -PIXEL(2);
   }
-  if ((((p->s).work[3]++) & 3) == 0) FUN_080a90a0(&p->s, 6, 0);
-  (p->c_b4).x += (p->s).d.x;
-  if (FUN_080098a4((p->s).coord.x, (p->s).coord.y)) {
+  if (((p->work[3]++) & 3) == 0) FUN_080a90a0((void*)p, 6, 0);
+  (p->c_b4).x += p->d.x;
+  if (FUN_080098a4((p->coord).x, (p->coord).y)) {
     SET_PROJECTILE_ROUTINE(p, ENTITY_DIE);
   }
 }
@@ -156,8 +156,8 @@ static void FUN_080a9d88(struct Entity* p) {
 
 static void FUN_080a9dcc(struct Projectile* p) {
   struct BossCopyX* q = (struct BossCopyX*)((p->s).unk_28);
-  (p->s).coord = (q->s).coord;
-  SET_XFLIP(p, ((q->s).flags & X_FLIP) != 0);
+  (p->s).coord = q->coord;
+  SET_XFLIP(p, (q->flags & X_FLIP) != 0);
   if (q->unk_c6) {
     if ((p->s).mode[2] != 0) SetSpriteAnimation(p, MOTION(SM095_COPYX_CHARGE, 1));
     (p->s).flags |= DISPLAY;
@@ -167,7 +167,7 @@ static void FUN_080a9dcc(struct Projectile* p) {
     (p->s).mode[2] = 1;
   }
   UpdateSpriteAnimation(p);
-  if ((q->s).mode[0] >= ENTITY_DIE) SET_PROJECTILE_ROUTINE(p, ENTITY_DIE);
+  if (q->mode[0] >= ENTITY_DIE) SET_PROJECTILE_ROUTINE(p, ENTITY_DIE);
 }
 
 void FUN_080a9fe4(void* t, struct DrawPivot* c);

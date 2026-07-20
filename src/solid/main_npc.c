@@ -205,19 +205,19 @@ static const struct Collision Collision_ARRAY_08371410[2] = {
 };
 
 static void UpdateSearchConsole(Object* p) {
-  switch ((p->s).mode[1]) {
+  switch (p->mode[1]) {
     case 0: {
-      (p->s).flags |= FLIPABLE;
+      p->flags |= FLIPABLE;
       INIT_BODY(p, Collision_ARRAY_08371410, 64, NULL);
-      (p->s).coord.y = FUN_08009f6c((p->s).coord.x, (p->s).coord.y);
-      (p->s).mode[1]++;
+      p->coord.y = FUN_08009f6c(p->coord.x, p->coord.y);
+      p->mode[1]++;
       FALLTHROUGH;
     }
     case 1: {
       if (((p->body).status & BODY_STATUS_CHAT) && gInChat && (gCollisionManager.talkTo == &p->body)) {
         PlaySound(SE_ARCADIA_RINGTONE);
         SetGameMode(&gGameState, GAMEMODE(MAINGAME, OVERWORLD, 7, 0));
-        (p->s).mode[1]++;
+        p->mode[1]++;
       }
       break;
     }
@@ -226,7 +226,7 @@ static void UpdateSearchConsole(Object* p) {
         return;
       }
       gInChat = FALSE;
-      (p->s).mode[1] = 1;
+      p->mode[1] = 1;
       break;
     }
     default: {
@@ -236,26 +236,26 @@ static void UpdateSearchConsole(Object* p) {
 }
 
 static void FUN_080db930(Object* p) {
-  switch ((p->s).mode[1]) {
+  switch (p->mode[1]) {
     case 0: {
       if (FLAG(gCurStory.s.gameflags, FLAG_LATER4_DONE) || !FLAG(gCurStory.s.gameflags, FLAG_MISSILE_DONE)) {
-        (p->s).flags &= ~DISPLAY;
-        (p->s).flags &= ~FLIPABLE;
+        p->flags &= ~DISPLAY;
+        p->flags &= ~FLIPABLE;
         EXIT_BODY(p);
         SET_SOLID_ROUTINE(p, ENTITY_DISAPPEAR);
         break;
       }
-      (p->s).flags |= FLIPABLE;
+      p->flags |= FLIPABLE;
       INIT_BODY(p, Collision_ARRAY_08371410, 64, NULL);
-      (p->s).coord.x += PIXEL(8);
-      (p->s).coord.y = FUN_08009f6c((p->s).coord.x, (p->s).coord.y);
-      (p->s).mode[1]++;
+      p->coord.x += PIXEL(8);
+      p->coord.y = FUN_08009f6c(p->coord.x, p->coord.y);
+      p->mode[1]++;
       FALLTHROUGH;
     }
     case 1: {
       if (((p->body).status & BODY_STATUS_CHAT) && gInChat && (gCollisionManager.talkTo == &p->body)) {
         PrintNormalMessage(0x1333);  // メンテナンス・ルーム 使用中…
-        (p->s).mode[1]++;
+        p->mode[1]++;
       }
       break;
     }
@@ -264,7 +264,7 @@ static void FUN_080db930(Object* p) {
         return;
       }
       gInChat = FALSE;
-      (p->s).mode[1] = 1;
+      p->mode[1] = 1;
       break;
     }
     default: {

@@ -3,15 +3,14 @@
 #include "global.h"
 #include "overworld.h"
 
-struct PAquaMod {
-  OBJECT_HDR;
-  // props (48bytes, offset: 0xB4..)
-  u8 unk_b4[6];
-  u16 x;
-  s32 y;
-  u8 unk_c0[36];
-};
-static_assert(sizeof(struct PAquaMod) == sizeof(struct Boss));
+typedef struct {
+  COLLISION_OBJECT_HDR;  // 0x00
+  u8 unk_b4[6];          // 0xB4
+  u16 x;                 // 0xBA
+  s32 y;                 // 0xBC
+  u8 unk_c0[36];         // 0xC0
+} PAquaMod;
+static_assert(sizeof(PAquaMod) == sizeof(struct Boss));
 
 void PantheonAquaMod_Init(struct Boss* p);
 void PantheonAquaMod_Update(struct Boss* p);
@@ -32,17 +31,17 @@ static void onCollision(struct Body* body UNUSED, Coords32* r1 UNUSED, Coords32*
 bool8 tryKillPantheonAquaMod(struct Boss* p) {
   if ((((p->body).status & BODY_STATUS_DEAD) || ((p->body).hp == 0)) && !(gStageRun.missionStatus & MISSION_PLAYER_DEAD)) {
     SET_BOSS_ROUTINE(p, ENTITY_DIE);
-    (p->s).mode[1] = 0;
+    p->mode[1] = 0;
     PantheonAquaMod_Die(p);
     return TRUE;
   }
   return FALSE;
 }
 
-static void paquam_080512f8(struct PAquaMod* p) {
+static void paquam_080512f8(PAquaMod* p) {
   p->x += PIXEL(1);
-  (p->s).coord.y = p->y;
-  (p->s).coord.y += gSineTable[COORD_TO_PIXEL(p->x)] << 2;
+  (p->coord).y = p->y;
+  (p->coord).y += gSineTable[COORD_TO_PIXEL(p->x)] << 2;
 }
 
 INCASM("asm/boss/pantheon_aqua_mod.inc");

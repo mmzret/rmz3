@@ -5,10 +5,9 @@
 #include "story.h"
 
 struct ShrimporinObject {
-  OBJECT_HDR;
-  // props (16bytes, offset: 0xB4..)
-  struct Entity* elfx;
-  u8 unk_004[12];
+  COLLISION_OBJECT_HDR;
+  struct Entity* elfx;  // 0xB4, Element Effect
+  u8 unk_b8[12];        // 0xB8
 };
 static_assert(sizeof(struct ShrimporinObject) == sizeof(struct Enemy));
 
@@ -167,11 +166,11 @@ _0806998C:\n\
 void shrimporin_08069994(struct ShrimporinObject* p) {
   if (p->elfx == NULL && ((p->body).status & BODY_STATUS_WHITE)) {
     if (((p->body).status & BODY_STATUS_RECOILED)) {
-      (p->s).mode[1] = 7, (p->s).mode[2] = 0;
+      p->mode[1] = 7, p->mode[2] = 0;
     } else {
       p->elfx = (void*)ApplyElementEffect(0, (Object*)p, &sElementCoord);
       if (p->elfx != NULL) {
-        (p->s).mode[1] = 0, (p->s).mode[2] = 0;
+        p->mode[1] = 0, p->mode[2] = 0;
       }
     }
   }
@@ -420,13 +419,11 @@ static void shrimporin_08069c24(struct ShrimporinObject* p) {
   if (elfx == NULL || IsDead(elfx)) {
     p->elfx = NULL;
     SetDDP(&p->body, &sCollisions[1]);
-    if (!IsFrozen(p)) {
-      (p->s).mode[1] = 6, (p->s).mode[2] = 0;
-    }
+    if (!IsFrozen(p)) p->mode[1] = 6, p->mode[2] = 0;
   }
 
   if (((p->body).status & (BODY_STATUS_RECOILED | BODY_STATUS_WHITE)) == (BODY_STATUS_RECOILED | BODY_STATUS_WHITE)) {
-    (p->s).mode[1] = 7, (p->s).mode[2] = 0;
+    p->mode[1] = 7, p->mode[2] = 0;
   }
 }
 

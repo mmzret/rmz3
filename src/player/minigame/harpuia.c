@@ -39,7 +39,7 @@ static void Harpuia_Init(struct Zero* z) {
   s32 x, y;
 
   EnableSpriteAnimation_Normal(z);
-  ResetDynamicMotion(&z->s);
+  SetSpriteTableDynamic(z);
   (z->s).flags |= DISPLAY;
   (z->s).flags |= FLIPABLE;
 

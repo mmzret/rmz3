@@ -81,18 +81,18 @@ static void ExIcon_Die(struct Widget* w) {
 
 // clang-format off
 static const motion_t sExIconMotions[12] = {
-    MOTION(0x45, 0x05),
-    MOTION(0x45, 0x04),
-    MOTION(0x45, 0x06),
-    MOTION(0x45, 0x07),
-    MOTION(0x45, 0x03),
-    MOTION(0x45, 0x00),
-    MOTION(0x45, 0x01),
-    MOTION(0x45, 0x02),
-    MOTION(0x45, 0x08),
-    MOTION(0x45, 0x09),
-    MOTION(0x45, 0x0B),
-    MOTION(0x45, 0x0A),
+    MOTION(SM069_EXSKILL_ICON, 5),
+    MOTION(SM069_EXSKILL_ICON, 4),
+    MOTION(SM069_EXSKILL_ICON, 6),
+    MOTION(SM069_EXSKILL_ICON, 7),
+    MOTION(SM069_EXSKILL_ICON, 3),
+    MOTION(SM069_EXSKILL_ICON, 0),
+    MOTION(SM069_EXSKILL_ICON, 1),
+    MOTION(SM069_EXSKILL_ICON, 2),
+    MOTION(SM069_EXSKILL_ICON, 8),
+    MOTION(SM069_EXSKILL_ICON, 9),
+    MOTION(SM069_EXSKILL_ICON, 11),
+    MOTION(SM069_EXSKILL_ICON, 10),
 };
 // clang-format on
 
