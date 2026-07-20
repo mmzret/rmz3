@@ -1449,29 +1449,29 @@ static void BlizzardArrow_Update(struct ZeroBuster* p) {
 // 0x08037ed8
 extern const s16 s16_ARRAY_0835ee8c[];
 
-static u8 shouldDelete(struct Weapon* w) {
-  struct ZeroBusterProps* b = &((struct ZeroBuster*)w)->props;
-  struct Zero* z = b->z;
+static u8 shouldDelete(Weapon* p) {
+  struct ZeroBusterProps* b = &((struct ZeroBuster*)p)->props;
+  Player* z = b->z;
   metatile_attr_t attr;
   if (b->unk_c3 != 0) {
     b->unk_c3--;
     return 0;
   }
-  attr = FUN_080098a4((w->s).coord.x, (w->s).coord.y);
+  attr = FUN_080098a4((p->coord).x, (p->coord).y);
   if (attr == MT_LADDER_FLOOR || attr == MT_LADDER) {
     attr = 0;
   }
   if (attr & MTATTR_SOFT_PLATFORM) {
     attr = 0;
   }
-  if (attr & 0xf) {
-    CreateParticle(&(w->s).coord, 7, ((w->s).flags >> 4) & 1);
+  if (attr & 0xF) {
+    CreateParticle(&p->coord, 7, (p->flags & X_FLIP) != 0);
     return 1;
   }
-  if (z->body.status & 8) {
+  if ((z->body).status & BODY_STATUS_B3) {
     return 1;
   }
-  if (Camera_GetDistance(&gStageRun.vm.camera, &(w->s).coord) > s16_ARRAY_0835ee8c[(w->s).work[0]]) {
+  if (Camera_GetDistance(&gStageRun.vm.camera, &p->coord) > s16_ARRAY_0835ee8c[p->work[0]]) {
     return 2;
   }
   return 0;
