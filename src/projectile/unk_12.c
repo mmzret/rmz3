@@ -3,12 +3,18 @@
 #include "projectile.h"
 
 // for Volteel Biblio's thunder
+typedef struct {
+  COLLISION_OBJECT_HDR;  // 0x00
+  u8 unk_b4;             // 0xB4
+  u8 unk_b5[15];         // 0xB5
+} Projectile12;
+static_assert(sizeof(Projectile12) == sizeof(struct Projectile));
 
 static const struct Collision sCollisions[4];
 
-static void Projectile12_Init(struct Projectile* p);
-static void Projectile12_Update(struct Projectile* p);
-static void Projectile12_Die(struct Projectile* p);
+static void Projectile12_Init(Projectile12* p);
+static void Projectile12_Update(Projectile12* p);
+static void Projectile12_Die(Projectile12* p);
 
 // clang-format off
 const ProjectileRoutine gProjectile12Routine = {
@@ -33,77 +39,77 @@ struct Entity* FUN_0809f48c(struct Entity* q, Coords32* c) {
   return p;
 }
 
-struct Projectile* FUN_0809f4dc(struct Entity* e, Coords32* c, Coords32* d, u8 n) {
-  struct Projectile* p = (struct Projectile*)AllocEntityLast(gProjectileHeaderPtr);
+struct ProjectileV2* FUN_0809f4dc(struct Entity* e, Coords32* c, Coords32* d, u8 n) {
+  Projectile12* p = AllocEntityLast(gProjectileHeaderPtr);
   if (p != NULL) {
     INIT_PROJECTILE_ROUTINE(p, 12);
-    (p->s).work[0] = 1;
-    (p->s).d = *d;
-    (p->s).coord = *c;
-    (p->s).unk_28 = e;
-    p->buffer[0] = n;
+    p->work[0] = 1;
+    p->d = *d;
+    p->coord = *c;
+    p->unk_28 = e;
+    p->unk_b4 = n;
   }
-  return p;
+  return (void*)p;
 }
 
 // --------------------------------------------
 
-static void Projectile12_Init(struct Projectile* p) {
+static void Projectile12_Init(Projectile12* p) {
   EnableSpriteAnimation_Affine(p);
-  (p->s).angle = 0;
-  (p->s).spr.mag.x = 0x100;
-  (p->s).spr.mag.y = 0x100;
-  (p->s).flags |= DISPLAY;
-  (p->s).flags |= FLIPABLE;
+  p->angle = 0;
+  p->spr.mag.x = 0x100;
+  p->spr.mag.y = 0x100;
+  p->flags |= DISPLAY;
+  p->flags |= FLIPABLE;
   SetSpriteTableDynamic(p);
-  if ((p->s).work[0] == 0) {
+  if (p->work[0] == 0) {
     INIT_BODY(p, &sCollisions[0], 1, NULL);
-  } else if ((p->s).work[0] == 1) {
+  } else if (p->work[0] == 1) {
     INIT_BODY(p, &sCollisions[1], 1, NULL);
   }
-  (p->s).work[2] = 0xFF;
+  p->work[2] = 0xFF;
   SET_PROJECTILE_ROUTINE(p, ENTITY_UPDATE);
-  (p->s).mode[1] = 1, (p->s).mode[2] = 0, (p->s).mode[3] = 0;
+  p->mode[1] = 1, p->mode[2] = 0, p->mode[3] = 0;
   Projectile12_Update(p);
 }
 
-// --------------------------------------------
+static void FUN_0809f640(Projectile12* p);
+void FUN_0809f64c(Projectile12* p);
 
-static void FUN_0809f640(struct Projectile* p);
-void FUN_0809f64c(struct Projectile* p);
+void FUN_0809f7c8(Projectile12* p);
+void FUN_0809f7d4(Projectile12* p);
 
-void FUN_0809f7c8(struct Projectile* p);
-void FUN_0809f7d4(struct Projectile* p);
+typedef void (*Projectile12Func)(Projectile12*);
 
-static void Projectile12_Update(struct Projectile* p) {
-  static const ProjectileFunc sUpdates1[2] = {
+static void Projectile12_Update(Projectile12* p) {
+  static const Projectile12Func sUpdates1[2] = {
       FUN_0809f640,
       FUN_0809f64c,
   };
-  static const ProjectileFunc sUpdates2[2] = {
+  static const Projectile12Func sUpdates2[2] = {
       FUN_0809f7c8,
       FUN_0809f7d4,
   };
-  static const ProjectileFunc* const sUpdates[2] = {
+  static const Projectile12Func* const sUpdates[2] = {
       sUpdates1,
       sUpdates2,
   };
-  ((sUpdates[(p->s).work[0]])[(p->s).mode[1]])(p);
+  ((sUpdates[p->work[0]])[p->mode[1]])(p);
 }
 
 // --------------------------------------------
 
-static void Projectile12_Die(struct Projectile* p) {
-  (p->s).flags &= ~DISPLAY;
+static void Projectile12_Die(Projectile12* p) {
+  p->flags &= ~DISPLAY;
   EXIT_BODY(p);
   SET_PROJECTILE_ROUTINE(p, ENTITY_EXIT);
 }
 
 // --------------------------------------------
 
-static void FUN_0809f640(struct Projectile* p) {
-  (p->s).mode[1] = 1;
-  (p->s).mode[2] = 0;
+static void FUN_0809f640(Projectile12* p) {
+  p->mode[1] = 1;
+  p->mode[2] = 0;
 }
 
 INCASM("asm/projectile/unk_12.inc");

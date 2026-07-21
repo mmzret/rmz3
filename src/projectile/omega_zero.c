@@ -3,9 +3,15 @@
 #include "overworld.h"
 #include "projectile.h"
 
-static void OmegaZeroProjectile_Init(struct Projectile* p);
-static void OmegaZeroProjectile_Update(struct Projectile* p);
-static void OmegaZeroProjectile_Die(Object* p);
+typedef struct {
+  COLLISION_OBJECT_HDR;  // 0x00
+  u8 unk_b4[16];         // 0xB4
+} OmegaZeroProjectile;
+static_assert(sizeof(OmegaZeroProjectile) == sizeof(struct Projectile));
+
+static void OmegaZeroProjectile_Init(OmegaZeroProjectile* p);
+static void OmegaZeroProjectile_Update(OmegaZeroProjectile* p);
+static void OmegaZeroProjectile_Die(OmegaZeroProjectile* p);
 
 // clang-format off
 const ProjectileRoutine gOmegaZeroProjectileRoutine = {
@@ -43,14 +49,14 @@ void CreateMessenkou(struct Entity* e) {
   }
 }
 
-struct Projectile* CreateOmegaZeroSaber(struct Entity* e, u8 kind) {
+struct ProjectileV2* CreateOmegaZeroSaber(struct Entity* e, u8 kind) {
   struct Entity* p = AllocEntityLast(gProjectileHeaderPtr);
   if (p != NULL) {
     INIT_PROJECTILE_ROUTINE(p, 38);
     p->work[0] = 0, p->work[1] = kind;
     p->unk_28 = e;
   }
-  return (struct Projectile*)p;
+  return (struct ProjectileV2*)p;
 }
 
 // 0x080ae300
@@ -126,57 +132,53 @@ static const struct Collision gOmegaZeroProjectileCollisions_0836c9c0[41];
 // 0x080ae4d8
 static void onCollision(struct Body* body, Coords32* r1 UNUSED, Coords32* r2 UNUSED) {}
 
-static void OmegaZeroProjectile_Init(struct Projectile* p) {
+static void OmegaZeroProjectile_Init(OmegaZeroProjectile* p) {
   SET_PROJECTILE_ROUTINE(p, ENTITY_UPDATE);
-  (p->s).mode[1] = sOmegaZeroProjectileInitModes[(p->s).work[0]];
-  (p->s).flags |= FLIPABLE;
-  (p->s).flags |= DISPLAY;
+  p->mode[1] = sOmegaZeroProjectileInitModes[p->work[0]];
+  p->flags |= FLIPABLE;
+  p->flags |= DISPLAY;
   EnableSpriteAnimation_Normal(p);
   INIT_BODY(p, &gOmegaZeroProjectileCollisions_0836c9c0[0], 1, onCollision);
   OmegaZeroProjectile_Update(p);
 }
 
-// --------------------------------------------
+static void nop_080ae5b4(OmegaZeroProjectile* _ UNUSED);
+static void OmegaZeroSaber_Update(OmegaZeroProjectile* p);
+static void Messenkou_Update(OmegaZeroProjectile* p);
+static void ArcBlade_Update(OmegaZeroProjectile* p);
+static void Rekkoha_Update(OmegaZeroProjectile* p);
+static void DoubleChargeWave1_Update(OmegaZeroProjectile* p);
+static void DoubleChargeWave2_Update(OmegaZeroProjectile* p);
+static void DoubleChargeWave3_Update(OmegaZeroProjectile* p);
 
-static void nop_080ae5b4(void* _ UNUSED);
-static void OmegaZeroSaber_Update(struct Projectile* p);
-static void Messenkou_Update(struct Projectile* p);
-static void ArcBlade_Update(struct Projectile* p);
-static void Rekkoha_Update(struct Projectile* p);
-static void DoubleChargeWave1_Update(Object* p);
-static void DoubleChargeWave2_Update(struct Projectile* p);
-static void DoubleChargeWave3_Update(Object* p);
-
-static void OmegaZeroProjectile_Update(struct Projectile* p) {
+static void OmegaZeroProjectile_Update(OmegaZeroProjectile* p) {
   // clang-format off
-  static const EntityFunc sUpdates1[7] = {
-      (void*)nop_080ae5b4,
-      (void*)nop_080ae5b4,
-      (void*)nop_080ae5b4,
-      (void*)nop_080ae5b4,
-      (void*)nop_080ae5b4,
-      (void*)nop_080ae5b4,
-      (void*)nop_080ae5b4,
+  static void (*const sUpdates1[7])(OmegaZeroProjectile*) = {
+      nop_080ae5b4,
+      nop_080ae5b4,
+      nop_080ae5b4,
+      nop_080ae5b4,
+      nop_080ae5b4,
+      nop_080ae5b4,
+      nop_080ae5b4,
   };
   // clang-format on
   // clang-format off
-  static const ProjectileFunc sUpdates2[7] = {
-      (void*)OmegaZeroSaber_Update, // All Saber Attack
-      (void*)Messenkou_Update,
-      (void*)ArcBlade_Update,
-      (void*)Rekkoha_Update,
-      (void*)DoubleChargeWave1_Update, // 1st shot
-      (void*)DoubleChargeWave2_Update, // 2nd shot
-      (void*)DoubleChargeWave3_Update, // O-Saber wave
+  static void (*const sUpdates2[7])(OmegaZeroProjectile*) = {
+      OmegaZeroSaber_Update, // All Saber Attack
+      Messenkou_Update,
+      ArcBlade_Update,
+      Rekkoha_Update,
+      DoubleChargeWave1_Update, // 1st shot
+      DoubleChargeWave2_Update, // 2nd shot
+      DoubleChargeWave3_Update, // O-Saber wave
   };
   // clang-format on
-  (sUpdates1[(p->s).mode[1]])((void*)p);
-  (sUpdates2[(p->s).mode[1]])(p);
+  (sUpdates1[p->mode[1]])(p);
+  (sUpdates2[p->mode[1]])(p);
 }
 
-// --------------------------------------------
-
-static void OmegaZeroProjectile_Die(Object* p) {
+static void OmegaZeroProjectile_Die(OmegaZeroProjectile* p) {
   EXIT_BODY(p);
   p->flags &= ~(DISPLAY);
   SET_PROJECTILE_ROUTINE(p, ENTITY_EXIT);
@@ -184,48 +186,49 @@ static void OmegaZeroProjectile_Die(Object* p) {
 
 // --------------------------------------------
 
-static void nop_080ae5b4(void* _) {}
+static void nop_080ae5b4(OmegaZeroProjectile* _) {}
 
 // 01 00 xx --
 extern const motion_t gOmegaZeroSaberMotions[16];
 extern const struct Collision* const* const PTR_ARRAY_0836d28c[16];
 
-static void OmegaZeroSaber_Update(struct Projectile* p) {
-  struct Entity* parent = (p->s).unk_28;
-  switch ((p->s).mode[2]) {
-    case 0:
+static void OmegaZeroSaber_Update(OmegaZeroProjectile* p) {
+  struct Entity* parent = p->unk_28;
+  switch (p->mode[2]) {
+    case 0: {
       SetSpriteTableDynamic(p);
-      (p->s).tileNum = 512;
-      (p->s).palID = 5;
-      SetSpriteAnimation(p, gOmegaZeroSaberMotions[(p->s).work[1]]);
-      SET_XFLIP(p, (parent->flags >> 4) & 1);
-      (p->s).mode[2]++;
-      // fallthrough
-    case 1:
-      (p->s).coord.x = parent->coord.x;
-      (p->s).coord.y = parent->coord.y;
-      if ((p->s).work[1] > 9) {
+      p->tileNum = 512, p->palID = 5;
+      SetSpriteAnimation(p, gOmegaZeroSaberMotions[p->work[1]]);
+      SET_XFLIP(p, (parent->flags & X_FLIP) != 0);
+      p->mode[2]++;
+      FALLTHROUGH;
+    }
+    case 1: {
+      p->coord.x = parent->coord.x;
+      p->coord.y = parent->coord.y;
+      if (p->work[1] > 9) {
         _FUN_0801779c(p);
         UpdateSpriteAnimation(p);
       } else {
         UpdateSpriteAnimation(p);
       }
-      SetDDP(&p->body, PTR_ARRAY_0836d28c[(p->s).work[1]][(p->s).motion.cmdIdx]);
-      if ((p->s).motion.state == 3) {
+      SetDDP(&p->body, PTR_ARRAY_0836d28c[p->work[1]][(p->motion).cmdIdx]);
+      if (IsSpriteAnimEnd(p)) {
         SET_PROJECTILE_ROUTINE(p, ENTITY_DIE);
       }
       break;
+    }
   }
   if (parent->mode[0] > 1) {
-    (p->s).flags &= ~DISPLAY;
-    (p->s).flags &= ~FLIPABLE;
+    p->flags &= ~DISPLAY;
+    p->flags &= ~FLIPABLE;
     EXIT_BODY(p);
     SET_PROJECTILE_ROUTINE(p, ENTITY_DISAPPEAR);
   }
 }
 
 // 01 01 xx --
-NAKED static void Messenkou_Update(struct Projectile* p) {
+NAKED static void Messenkou_Update(OmegaZeroProjectile* p) {
   asm(".syntax unified\n\
 	push {r4, r5, lr}\n\
 	adds r4, r0, #0\n\
@@ -362,7 +365,7 @@ _080AE7E4: .4byte gProjectileFnTable\n\
 }
 
 // 01 02 xx --
-NAKED static void ArcBlade_Update(struct Projectile* p) {
+NAKED static void ArcBlade_Update(OmegaZeroProjectile* p) {
   asm(".syntax unified\n\
 	push {r4, r5, lr}\n\
 	adds r4, r0, #0\n\
@@ -507,7 +510,7 @@ _080AE900: .4byte gProjectileFnTable\n\
 }
 
 // 01 03 xx --
-NAKED static void Rekkoha_Update(struct Projectile* p) {
+NAKED static void Rekkoha_Update(OmegaZeroProjectile* p) {
   asm(".syntax unified\n\
 	push {r4, r5, lr}\n\
 	adds r4, r0, #0\n\
@@ -679,7 +682,7 @@ _080AEA48: .4byte gProjectileFnTable\n\
 }
 
 // 01 04 xx --
-static void DoubleChargeWave1_Update(Object* p) {
+static void DoubleChargeWave1_Update(OmegaZeroProjectile* p) {
   switch (p->mode[2]) {
     case 0: {
       SetDDP(&p->body, &gOmegaZeroProjectileCollisions_0836c9c0[5]);
@@ -708,7 +711,7 @@ static void DoubleChargeWave1_Update(Object* p) {
 }
 
 // 01 05 xx --
-NAKED static void DoubleChargeWave2_Update(struct Projectile* p) {
+NAKED static void DoubleChargeWave2_Update(OmegaZeroProjectile* p) {
   asm(".syntax unified\n\
 	push {r4, r5, r6, lr}\n\
 	adds r4, r0, #0\n\
@@ -877,7 +880,7 @@ _080AEC94: .4byte gProjectileFnTable\n\
 }
 
 // 01 06 xx --
-static void DoubleChargeWave3_Update(Object* p) {
+static void DoubleChargeWave3_Update(OmegaZeroProjectile* p) {
   switch (p->mode[2]) {
     case 0: {
       SetDDP(&p->body, &gOmegaZeroProjectileCollisions_0836c9c0[7]);

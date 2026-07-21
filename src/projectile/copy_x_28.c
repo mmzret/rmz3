@@ -24,9 +24,9 @@ enum {
 
 void FUN_080a90a0(struct Entity* e, u8 param_2, u8 param_3);
 
-static void Projectile28_Init(struct Entity* p);
-static void Projectile28_Update(struct Entity* p);
-static void Projectile28_Die(Object* p);
+static void Projectile28_Init(Projectile28* p);
+static void Projectile28_Update(Projectile28* p);
+static void Projectile28_Die(Projectile28* p);
 
 // clang-format off
 const ProjectileRoutine gProjectile28Routine = {
@@ -54,36 +54,36 @@ void CreateProjectile28(struct Entity* e, u8 kind, u8 unusedval) {
 // --------------------------------------------
 
 static void FUN_080a9b90(Projectile28* p);
-static void FUN_080a9d88(struct Entity* p);
-static void Projectile28_Init_RagingEXCharge(struct Entity* p);
-void FUN_080aa08c(struct Projectile* p);
+static void FUN_080a9d88(Projectile28* p);
+static void Projectile28_Init_RagingEXCharge(Projectile28* p);
+void FUN_080aa08c(Projectile28* p);
 
-static void Projectile28_Init(struct Entity* p) {
-  static const EntityFunc PTR_ARRAY_0836c20c[4] = {
-      (void*)FUN_080a9b90,
-      (void*)FUN_080a9d88,
-      (void*)Projectile28_Init_RagingEXCharge,
-      (void*)FUN_080aa08c,
+static void Projectile28_Init(Projectile28* p) {
+  static void (*const PTR_ARRAY_0836c20c[4])(Projectile28*) = {
+      FUN_080a9b90,
+      FUN_080a9d88,
+      Projectile28_Init_RagingEXCharge,
+      FUN_080aa08c,
   };  // 0x0836c20c
   (PTR_ARRAY_0836c20c[p->work[0]])(p);
 }
 
 static void FUN_080a9c88(Projectile28* p);
-static void FUN_080a9dcc(struct Projectile* p);
-void FUN_080a9ef8(struct Projectile* p);
-void FUN_080aa120(struct Projectile* p);
+static void FUN_080a9dcc(Projectile28* p);
+void FUN_080a9ef8(Projectile28* p);
+void FUN_080aa120(Projectile28* p);
 
-static void Projectile28_Update(struct Entity* p) {
-  static const EntityFunc PTR_ARRAY_0836c21c[4] = {
-      (void*)FUN_080a9c88,
-      (void*)FUN_080a9dcc,
-      (void*)FUN_080a9ef8,
-      (void*)FUN_080aa120,
+static void Projectile28_Update(Projectile28* p) {
+  static void (*const PTR_ARRAY_0836c21c[4])(Projectile28*) = {
+      FUN_080a9c88,
+      FUN_080a9dcc,
+      FUN_080a9ef8,
+      FUN_080aa120,
   };  // 0x0836c21c
   (PTR_ARRAY_0836c21c[p->work[0]])(p);
 }
 
-static void Projectile28_Die(Object* p) {
+static void Projectile28_Die(Projectile28* p) {
   if (p->work[0] >= PJ28_2_RAGING_EX_CHARGE) {
     gWindowRegBuffer.dispcnt &= ~DISPCNT_WIN1_ON;
     gWindowRegBuffer.winin[2] |= 0xFE;
@@ -145,7 +145,7 @@ static void FUN_080a9c88(Projectile28* p) {
   }
 }
 
-static void FUN_080a9d88(struct Entity* p) {
+static void FUN_080a9d88(Projectile28* p) {
   SET_PROJECTILE_ROUTINE(p, ENTITY_UPDATE);
   EnableSpriteAnimation_Normal(p);
   (p->flags) |= FLIPABLE;
@@ -154,17 +154,17 @@ static void FUN_080a9d88(struct Entity* p) {
   Projectile28_Update(p);
 }
 
-static void FUN_080a9dcc(struct Projectile* p) {
-  struct BossCopyX* q = (struct BossCopyX*)((p->s).unk_28);
-  (p->s).coord = q->coord;
+static void FUN_080a9dcc(Projectile28* p) {
+  struct BossCopyX* q = (struct BossCopyX*)(p->unk_28);
+  p->coord = q->coord;
   SET_XFLIP(p, (q->flags & X_FLIP) != 0);
   if (q->unk_c6) {
-    if ((p->s).mode[2] != 0) SetSpriteAnimation(p, MOTION(SM095_COPYX_CHARGE, 1));
-    (p->s).flags |= DISPLAY;
-    (p->s).mode[2] = 0;
+    if (p->mode[2] != 0) SetSpriteAnimation(p, MOTION(SM095_COPYX_CHARGE, 1));
+    p->flags |= DISPLAY;
+    p->mode[2] = 0;
   } else {
-    (p->s).flags &= ~DISPLAY;
-    (p->s).mode[2] = 1;
+    p->flags &= ~DISPLAY;
+    p->mode[2] = 1;
   }
   UpdateSpriteAnimation(p);
   if (q->mode[0] >= ENTITY_DIE) SET_PROJECTILE_ROUTINE(p, ENTITY_DIE);
@@ -173,7 +173,7 @@ static void FUN_080a9dcc(struct Projectile* p) {
 void FUN_080a9fe4(void* t, struct DrawPivot* c);
 
 // 0x080a9e74
-static void Projectile28_Init_RagingEXCharge(struct Entity* p) {
+static void Projectile28_Init_RagingEXCharge(Projectile28* p) {
   struct Entity* q = p->unk_28;
   SET_PROJECTILE_ROUTINE(p, ENTITY_UPDATE);
   SetTaskCallback((void*)&p->spr, FUN_080a9fe4);

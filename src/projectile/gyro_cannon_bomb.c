@@ -6,9 +6,9 @@
 
 // GyroCannon bomb
 
-static void Projectile8_Init(struct Projectile* p);
-static void Projectile8_Update(struct Projectile* p);
-static void Projectile8_Die(struct Projectile* p);
+static void Projectile8_Init(struct ProjectileV2* p);
+static void Projectile8_Update(struct ProjectileV2* p);
+static void Projectile8_Die(struct ProjectileV2* p);
 
 // clang-format off
 const ProjectileRoutine gProjectile8Routine = {
@@ -21,7 +21,7 @@ const ProjectileRoutine gProjectile8Routine = {
 // clang-format on
 
 void CreateProjectile8(s32 x, s32 y) {
-  struct Entity* p = AllocEntityLast(gProjectileHeaderPtr);
+  struct ProjectileV2* p = AllocEntityLast(gProjectileHeaderPtr);
   if (p != NULL) {
     INIT_PROJECTILE_ROUTINE(p, 8);
     (p->coord).x = x, (p->coord).y = y;
@@ -30,7 +30,7 @@ void CreateProjectile8(s32 x, s32 y) {
 
 static const struct Collision sCollisions[2];
 
-static void Projectile8_Init(struct Projectile* p) {
+static void Projectile8_Init(struct ProjectileV2* p) {
   static const struct Collision sCollision = {
     kind : DDP,
     faction : FACTION_ENEMY,
@@ -40,17 +40,17 @@ static void Projectile8_Init(struct Projectile* p) {
   };
 
   EnableSpriteAnimation_Normal(p);
-  (p->s).flags |= DISPLAY;
-  (p->s).flags |= FLIPABLE;
+  p->flags |= DISPLAY;
+  p->flags |= FLIPABLE;
   SetSpriteAnimation(p, MOTION(SM023_GYRO_CANNON, 9));
   SET_XFLIP(p, FALSE);
   INIT_BODY(p, &sCollision, 8, NULL);
-  (p->s).d.y = 0;
+  (p->d).y = 0;
   SET_PROJECTILE_ROUTINE(p, ENTITY_UPDATE);
   Projectile8_Update(p);
 }
 
-static void Projectile8_Update(struct Projectile* p) {
+static void Projectile8_Update(struct ProjectileV2* p) {
   static const struct Collision sCollision = {
     kind : DDP,
     faction : FACTION_ENEMY,
@@ -60,26 +60,26 @@ static void Projectile8_Update(struct Projectile* p) {
   };
 
   if (IS_METTAUR) {
-    (p->s).flags &= ~DISPLAY;
-    (p->s).flags &= ~FLIPABLE;
+    p->flags &= ~DISPLAY;
+    p->flags &= ~FLIPABLE;
     EXIT_BODY(p);
     SET_PROJECTILE_ROUTINE(p, ENTITY_DISAPPEAR);
     return;
   }
 
   UpdateSpriteAnimation(p);
-  if ((p->s).mode[2] == 0) {
-    if ((p->s).d.y < PIXEL(7)) (p->s).d.y += (PIXEL(1) / 4);
-    (p->s).coord.y += (p->s).d.y;
-    if ((((p->body).status & BODY_STATUS_B2)) || (FUN_080098a4((p->s).coord.x, (p->s).coord.y) != 0)) {
+  if (p->mode[2] == 0) {
+    if (p->d.y < PIXEL(7)) p->d.y += (PIXEL(1) / 4);
+    p->coord.y += p->d.y;
+    if ((((p->body).status & BODY_STATUS_B2)) || (FUN_080098a4(p->coord.x, p->coord.y) != 0)) {
       SetSpriteAnimation(p, MOTION(SM023_GYRO_CANNON, 10));
       UpdateSpriteAnimation(p);
       PlaySound(SE_UNK_35);
       SetDDP(&p->body, &sCollision);
-      (p->s).mode[2]++;
+      p->mode[2]++;
     }
   } else {
-    if ((p->s).motion.cmdIdx == 2) {
+    if ((p->motion).cmdIdx == 2) {
       EXIT_BODY(p);
     }
     if (IsSpriteAnimEnd(p)) {
@@ -89,10 +89,10 @@ static void Projectile8_Update(struct Projectile* p) {
   }
 }
 
-static void Projectile8_Die(struct Projectile* p) {
+static void Projectile8_Die(struct ProjectileV2* p) {
   if (IS_METTAUR) {
-    (p->s).flags &= ~DISPLAY;
-    (p->s).flags &= ~FLIPABLE;
+    p->flags &= ~DISPLAY;
+    p->flags &= ~FLIPABLE;
     EXIT_BODY(p);
     SET_PROJECTILE_ROUTINE(p, ENTITY_DISAPPEAR);
     return;

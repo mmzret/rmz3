@@ -95,6 +95,13 @@ struct Projectile {
   u8 buffer[16];  // 0xB4
 };  // 196 bytes
 
+// Entity.kind = 4
+// 飛び道具だと思ってたけど、特定のエンティティに従属しているエンティティのことを指すかも？
+struct ProjectileV2 {
+  COLLISION_OBJECT_HDR;  // 0x00, Projectile の COLLISION_OBJECT_HDR 使う版, こっちに統一する
+  u8 buffer[16];         // 0xB4
+};  // 196 bytes
+
 // Entity.kind = 5, VFX: プレイヤーと干渉しない、グラフィックエフェクト的な存在 (Visual Effect -> VFX)
 //   例: ダッシュの残像, パーティクル, ミッションアラート, ハンマー振り子のボールチェーン, エネミーが死んで飛び散った残骸, etc...
 //   NOTE: Ghost から VFX にリネームしたけど、まだ変数名や関数名に Ghost が残っているものがある
