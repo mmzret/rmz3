@@ -61,11 +61,10 @@ static void OmegaWhite_Init(Omega1* p) {
   ResetBossBody((void*)p, &sCollisions[0], 64);
   SET_BOSS_COLLISION_HANDLER(p, onCollision);
 
-  p->unk_b4[0] = 0;
-  p->unk_b4[1] = 0xFF;
-  p->unk_b4[2] = 0xFF;
+  p->unk_b4 = 0;
+  p->prevModes[0] = -1, p->prevModes[1] = -1;
   p->unk_bc = NULL;
-  p->unk_b4[3] = 0;
+  p->unk_b7 = 0;
   p->unk_c0 = 0;
   p->unk_d4 = 0;
 
@@ -261,13 +260,13 @@ static bool8 changeOmegaWhiteMode(Omega1* p) {
   if (--p->work[3] != 0) return TRUE;
 
   if ((RANDOM(RNG_0202f388) & 0xF) < 8) {
-    if ((p->unk_b4[1] != 0) || (p->unk_b4[2] != 0)) {
+    if ((p->prevModes[0] != 0) || (p->prevModes[1] != 0)) {
       p->mode[1] = 4, p->mode[2] = 0;
     } else {
       p->mode[1] = 5, p->mode[2] = 0;
     }
   } else {
-    if ((p->unk_b4[1] == 1) && (p->unk_b4[2] == 1)) {
+    if ((p->prevModes[0] == 1) && (p->prevModes[1] == 1)) {
       p->mode[1] = 4, p->mode[2] = 0;
     } else {
       p->mode[1] = 5, p->mode[2] = 0;

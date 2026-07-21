@@ -6,7 +6,9 @@
 
 typedef struct {
   COLLISION_OBJECT_HDR;   // 0x00
-  u8 unk_b4[4];           // 0xB4
+  u8 unk_b4;              // 0xB4
+  s8 prevModes[2];        // 0xB5
+  u8 unk_b7;              // 0xB7
   s32 unk_y;              // 0xB8
   struct Entity* unk_bc;  // 0xBC, omegaWhite_080b91d4
   u16 unk_c0;             // 0xC0
