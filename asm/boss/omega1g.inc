@@ -4,40 +4,6 @@
 	
 	.text
 
-	thumb_func_start OmegaGold_Die
-OmegaGold_Die: @ 0x0805B22C
-	push {lr}
-	ldr r2, _0805B240 @ =0x08364C6C
-	ldrb r1, [r0, #0xd]
-	lsls r1, r1, #2
-	adds r1, r1, r2
-	ldr r1, [r1]
-	bl _call_via_r1
-	pop {r0}
-	bx r0
-	.align 2, 0
-_0805B240: .4byte 0x08364C6C
-
-	thumb_func_start OmegaGold_Disappear
-OmegaGold_Disappear: @ 0x0805B244
-	push {r4, lr}
-	adds r4, r0, #0
-	movs r0, #0xb
-	bl RemovePaletteAnimation
-	movs r0, #0x66
-	bl RemovePaletteAnimation
-	movs r0, #0x67
-	bl RemovePaletteAnimation
-	ldr r0, _0805B26C @ =0x0000010F
-	bl RemovePaletteAnimation
-	adds r0, r4, #0
-	bl DeleteBoss
-	pop {r4}
-	pop {r0}
-	bx r0
-	.align 2, 0
-_0805B26C: .4byte 0x0000010F
-
 	thumb_func_start FUN_0805b270
 FUN_0805b270: @ 0x0805B270
 	push {r4, r5, lr}

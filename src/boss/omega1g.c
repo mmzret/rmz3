@@ -13,8 +13,8 @@ static void Omega1g_OnCollision(struct Body* body, Coords32* c1, Coords32* c2);
 
 static void OmegaGold_Init(Omega1* p);
 static void OmegaGold_Update(Omega1* p);
-void OmegaGold_Die(Omega1* p);
-void OmegaGold_Disappear(struct Boss* p);
+static void OmegaGold_Die(Omega1* p);
+static void OmegaGold_Disappear(Omega1* p);
 
 // clang-format off
 const BossRoutine gOmegaGoldRoutine = {
@@ -102,7 +102,7 @@ void goldOmega1Neutral(struct Boss* p);
 void goldOmega1Laser(struct Boss* p);
 void FUN_0805b744(struct Boss* p);
 void FUN_0805b7f0(struct Boss* p);
-static void FUN_0805b878(struct Entity* p);
+static void FUN_0805b878(Omega1* p);
 
 static void OmegaGold_Update(Omega1* p) {
   // clang-format off
@@ -142,23 +142,32 @@ static void OmegaGold_Update(Omega1* p) {
   (sUpdates2[p->mode[1]])(p);
 }
 
+void FUN_0805b270(Omega1* p);
+void FUN_0805b358(Omega1* p);
+
+static void OmegaGold_Die(Omega1* p) {
+  static void (*const sDeads[2])(Omega1*) = {
+      FUN_0805b270,
+      FUN_0805b358,
+  };
+  (sDeads[p->mode[1]])(p);
+}
+
+static void OmegaGold_Disappear(Omega1* p) {
+  RemovePaletteAnimation(11);
+  RemovePaletteAnimation(102);
+  RemovePaletteAnimation(103);
+  RemovePaletteAnimation(271);
+  DeleteBoss((void*)p);
+}
+
 INCASM("asm/boss/omega1g.inc");
-
-// --------------------------------------------
-
-void FUN_0805b270(struct Boss* p);
-void FUN_0805b358(struct Boss* p);
-
-static const BossFunc sDeads[2] = {
-    FUN_0805b270,
-    FUN_0805b358,
-};
 
 // --------------------------------------------
 
 static bool8 nop_0805b874(Omega1* _) { return TRUE; }
 
-static void FUN_0805b878(struct Entity* p) {
+static void FUN_0805b878(Omega1* p) {
   switch (p->mode[2]) {
     case 0: {
       (p->d).x = 0, (p->d).y = 0;
