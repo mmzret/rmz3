@@ -7,11 +7,21 @@
 #include "sound.h"
 #include "stagerun.h"
 
+typedef struct {
+  COLLISION_OBJECT_HDR;    // 0x00
+  u8 unk_b4[12];           // 0xB4
+  struct Entity* enti_c0;  // 0xC0
+  u8 unk_c4[4];            // 0xC4
+  u8 unk_c8;               // 0xC8
+  u8 unk_c9[27];           // 0xC9
+} Cubit;
+static_assert(sizeof(Cubit) == sizeof(Boss));
+
 static const struct Collision sCollisions[];
 
-void Cubit_Init(struct Boss* p);
-void Cubit_Update(struct Boss* p);
-void Cubit_Die(struct Boss* p);
+void Cubit_Init(Cubit* p);
+void Cubit_Update(Cubit* p);
+void Cubit_Die(Cubit* p);
 
 // clang-format off
 const BossRoutine gCubitRoutine = {
@@ -23,8 +33,8 @@ const BossRoutine gCubitRoutine = {
 };
 // clang-format on
 
-struct Boss* CreateCubit(Coords32* c, u8 n) {
-  struct Boss* p = AllocEntityLast(gBossHeaderPtr);
+Cubit* Unused_CreateCubit(Coords32* c, u8 n) {
+  Cubit* p = AllocEntityLast(gBossHeaderPtr);
   if (p != NULL) {
     INIT_BOSS_ROUTINE(p, BOSS_CUBIT);
     p->coord = *c;
@@ -38,11 +48,11 @@ INCASM("asm/boss/cubit_a.inc");
 static const BossFunc sUpdates1[12];
 static const BossFunc sUpdates2[12];
 static const BossFunc sDeads[2];
-void cubit_080544c0(struct Boss* p);
+void cubit_080544c0(Cubit* p);
 
-void Cubit_Update(struct Boss* p) {
+void Cubit_Update(Cubit* p) {
   if (!((p->body).status & BODY_STATUS_DEAD)) {
-    if (*(s16*)((u8*)p + 0xa4) != 0) {
+    if ((p->body).hp != 0) {
       goto alive;
     }
   }
@@ -50,155 +60,156 @@ void Cubit_Update(struct Boss* p) {
     goto alive;
   }
   SET_BOSS_ROUTINE(p, ENTITY_DIE);
-  PlaySound(0xd2);
+  PlaySound(SE_CUBIT_DEATH);
   if ((p->body).status & BODY_STATUS_SLASHED) {
-    (p->s).mode[3] = 1;
+    p->mode[3] = 1;
   } else {
-    (p->s).mode[3] = 0;
+    p->mode[3] = 0;
   }
   Cubit_Die(p);
   return;
 
 alive:
-  (sUpdates1[(p->s).mode[1]])(p);
-  (sUpdates2[(p->s).mode[1]])(p);
+  (sUpdates1[p->mode[1]])((void*)p);
+  (sUpdates2[p->mode[1]])((void*)p);
   cubit_080544c0(p);
 }
 
-void Cubit_Die(struct Boss* p) { (sDeads[(p->s).mode[1]])(p); }
+void Cubit_Die(Cubit* p) { (sDeads[p->mode[1]])((void*)p); }
 
 INCASM("asm/boss/cubit_b.inc");
 
-bool8 FUN_08052b48(struct Boss* p) { return TRUE; }
+bool8 FUN_08052b48(Cubit* p) { return TRUE; }
 
-void cubitMode0(struct Boss* p) {
-  switch ((p->s).mode[2]) {
+void cubitMode0(Cubit* p) {
+  switch (p->mode[2]) {
     case 0:
-      (p->s).flags |= 1;
-      SetSpriteAnimation(p, MOTION(0xb0, 2));
-      (p->s).mode[2]++;
+      p->flags |= DISPLAY;
+      SetSpriteAnimation(p, MOTION(DM176_CUBIT, 2));
+      p->mode[2]++;
       FALLTHROUGH;
     case 1:
       UpdateSpriteAnimation(p);
-      if ((p->s).scriptEntity->flags & 1) {
-        (p->s).mode[1] = 1, (p->s).mode[2] = 0;
+      if ((p->scriptEntity)->flags & (1 << 0)) {
+        p->mode[1] = 1, p->mode[2] = 0;
       }
       break;
   }
 }
 
-bool8 FUN_08052b98(struct Boss* p) { return TRUE; }
+bool8 FUN_08052b98(Cubit* p) { return TRUE; }
 
 INCASM("asm/boss/cubit_c.inc");
 
-bool8 FUN_08052c30(struct Boss* p) { return TRUE; }
+bool8 FUN_08052c30(Cubit* p) { return TRUE; }
 
-void cubitMode2(struct Boss* p) {
-  switch ((p->s).mode[2]) {
+void cubitMode2(Cubit* p) {
+  switch (p->mode[2]) {
     case 0:
-      SetSpriteAnimation(p, MOTION(0xb0, 2));
-      (p->s).mode[2]++;
+      SetSpriteAnimation(p, MOTION(DM176_CUBIT, 2));
+      p->mode[2]++;
       FALLTHROUGH;
     case 1:
       if (!(gStageRun.vm.active & VM_ACTIVE)) {
-        (p->s).mode[1] = 3, (p->s).mode[2] = 0;
+        p->mode[1] = 3, p->mode[2] = 0;
       }
       UpdateSpriteAnimation(p);
       break;
   }
 }
 
-bool8 FUN_08052c78(struct Boss* p) { return TRUE; }
+bool8 FUN_08052c78(Cubit* p) { return TRUE; }
 
 INCASM("asm/boss/cubit_d.inc");
 
-bool8 FUN_08052f08(struct Boss* p) { return TRUE; }
+bool8 FUN_08052f08(Cubit* p) { return TRUE; }
 
 INCASM("asm/boss/cubit_e.inc");
 
-bool8 FUN_080533bc(struct Boss* p) { return TRUE; }
+bool8 FUN_080533bc(Cubit* p) { return TRUE; }
 
-void cubitMode5(struct Boss* p) {
-  switch ((p->s).mode[2]) {
+void cubitMode5(Cubit* p) {
+  switch (p->mode[2]) {
     case 0:
-      (p->s).d.y = 0;
-      (p->s).mode[2]++;
+      (p->d).y = 0;
+      p->mode[2]++;
       FALLTHROUGH;
     case 1: {
       s32 push;
-      (p->s).d.y += 0x40;
-      (p->s).coord.x += (p->s).d.x;
-      (p->s).coord.y += (p->s).d.y;
+      (p->d).y += PIXEL(1) / 4;
+      (p->coord).x += (p->d).x;
+      (p->coord).y += (p->d).y;
       UpdateSpriteAnimation(p);
-      push = PushoutToUp1((p->s).coord.x, (p->s).coord.y);
+      push = PushoutToUp1((p->coord).x, (p->coord).y);
       if (push != 0) {
-        (p->s).coord.y += push;
-        (p->s).mode[2]++;
+        (p->coord).y += push;
+        p->mode[2]++;
       }
       break;
     }
     case 2:
-      SetSpriteAnimation(p, 0xb014);
+      SetSpriteAnimation(p, MOTION(DM176_CUBIT, 20));
       SetDDP(&p->body, &sCollisions[1]);
-      *(u8*)((u8*)p + 0xc8) = 0;
-      (p->s).mode[2]++;
+      p->unk_c8 = 0;
+      p->mode[2]++;
       FALLTHROUGH;
     case 3:
       UpdateSpriteAnimation(p);
-      if ((p->s).motion.state == 3) {
-        (p->s).mode[1] = 3, (p->s).mode[2] = 0;
+      if (IsSpriteAnimEnd(p)) {
+        p->mode[1] = 3, p->mode[2] = 0;
       }
       break;
   }
 }
 
-bool8 nop_08053460(struct Boss* p) { return TRUE; }
+bool8 nop_08053460(Cubit* p) { return TRUE; }
 
 INCASM("asm/boss/cubit_f.inc");
 
-bool8 FUN_08053724(struct Boss* p) { return TRUE; }
+bool8 FUN_08053724(Cubit* p) { return TRUE; }
 
 INCASM("asm/boss/cubit_g.inc");
 
-bool8 FUN_08053a08(struct Boss* p) { return TRUE; }
+bool8 FUN_08053a08(Cubit* p) { return TRUE; }
 
 INCASM("asm/boss/cubit_h.inc");
 
-bool8 FUN_08053d08(struct Boss* p) { return TRUE; }
+bool8 FUN_08053d08(Cubit* p) { return TRUE; }
 
 INCASM("asm/boss/cubit_i.inc");
 
-bool8 FUN_080542c8(struct Boss* p) { return TRUE; }
+bool8 FUN_080542c8(Cubit* p) { return TRUE; }
 
-void cubitMode10(struct Boss* p) {
-  switch ((p->s).mode[2]) {
-    case 0:
-      InitNonAffineMotion(&p->s);
-      ResetDynamicMotion(&p->s);
-      (p->s).angle = 0;
-      (p->s).spr.mag.x = 0x100;
-      (p->s).spr.mag.y = 0x100;
+void cubitMode10(Cubit* p) {
+  switch (p->mode[2]) {
+    case 0: {
+      EnableSpriteAnimation_Normal(p);
+      SetSpriteTableDynamic(p);
+      p->angle = 0;
+      (p->spr).mag.x = 0x100;
+      (p->spr).mag.y = 0x100;
       PlaySound(0xd1);
-      SetSpriteAnimation(p, MOTION(0xb0, 0x1e));
-      (p->s).mode[2]++;
+      SetSpriteAnimation(p, MOTION(DM176_CUBIT, 30));
+      p->mode[2]++;
       FALLTHROUGH;
-    case 1:
+    }
+    case 1: {
       UpdateSpriteAnimation(p);
+      break;
+    }
   }
-  if (isKilled(*(struct Entity**)((u8*)p + 0xc0))) {
-    *(struct Entity**)((u8*)p + 0xc0) = NULL;
-    (p->s).mode[1] = 3;
-    (p->s).mode[2] = 0;
-    (p->s).mode[3] = 0xff;
+  if (isKilled(p->enti_c0)) {
+    p->enti_c0 = NULL;
+    p->mode[1] = 3, p->mode[2] = 0, p->mode[3] = 0xFF;
   }
 }
 
-bool8 FUN_0805433c(struct Boss* p) { return TRUE; }
+bool8 FUN_0805433c(Cubit* p) { return TRUE; }
 
 INCASM("asm/boss/cubit_j.inc");
 
-bool8 cubit_08054674(struct Boss* p) {
-  if (*(u8*)((u8*)p + 0xc8) != 0) {
+bool8 cubit_08054674(Cubit* p) {
+  if (p->unk_c8 != 0) {
     return TRUE;
   }
   return FALSE;
@@ -207,7 +218,6 @@ bool8 cubit_08054674(struct Boss* p) {
 INCASM("asm/boss/cubit_k.inc");
 
 // --------------------------------------------
-
 
 // clang-format off
 static const BossFunc sUpdates1[12] = {
@@ -226,40 +236,40 @@ static const BossFunc sUpdates1[12] = {
 };
 // clang-format on
 
-void cubitMode1(struct Boss* p);
-void cubitNeutral(struct Boss* p);
-void cubitMode4(struct Boss* p);
-void cubitMode6(struct Boss* p);
-void cubitMode7(struct Boss* p);
-void cubitMode8(struct Boss* p);
-void cubitEX(struct Boss* p);
-void cubitKnockBackDamage(struct Boss* p);
+void cubitMode1(Cubit* p);
+void cubitNeutral(Cubit* p);
+void cubitMode4(Cubit* p);
+void cubitMode6(Cubit* p);
+void cubitMode7(Cubit* p);
+void cubitMode8(Cubit* p);
+void cubitEX(Cubit* p);
+void cubitKnockBackDamage(Cubit* p);
 
 // clang-format off
 static const BossFunc sUpdates2[12] = {
-    cubitMode0,
-    cubitMode1,
-    cubitMode2,
-    cubitNeutral,
-    cubitMode4,
-    cubitMode5,
-    cubitMode6,
-    cubitMode7,
-    cubitMode8,
-    cubitEX,
-    cubitMode10,
-    cubitKnockBackDamage,
+    (void*)cubitMode0,
+    (void*)cubitMode1,
+    (void*)cubitMode2,
+    (void*)cubitNeutral,
+    (void*)cubitMode4,
+    (void*)cubitMode5,
+    (void*)cubitMode6,
+    (void*)cubitMode7,
+    (void*)cubitMode8,
+    (void*)cubitEX,
+    (void*)cubitMode10,
+    (void*)cubitKnockBackDamage,
 };
 // clang-format on
 
 // --------------------------------------------
 
-void cubitDeath0(struct Boss* p);
-void cubitDeath1(struct Boss* p);
+void cubitDeath0(Cubit* p);
+void cubitDeath1(Cubit* p);
 
 static const BossFunc sDeads[2] = {
-    cubitDeath0,
-    cubitDeath1,
+    (void*)cubitDeath0,
+    (void*)cubitDeath1,
 };
 
 // --------------------------------------------
