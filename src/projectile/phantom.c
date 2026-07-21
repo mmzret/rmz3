@@ -215,7 +215,93 @@ static void FUN_080af32c(struct Projectile* p) {
   (PTR_ARRAY_0836d418[(p->s).mode[1]])(p);
 }
 
-INCASM("asm/projectile/phantom.inc");
+static const ProjectileFunc PTR_ARRAY_0836d430[2];
+static const ProjectileFunc PTR_ARRAY_0836d438[2];
+static const ProjectileFunc PTR_ARRAY_0836d440[3];
+static const ProjectileFunc PTR_ARRAY_0836d44c[2];
+
+INCASM("asm/projectile/phantom_a.inc");
+
+bool8 FUN_080afdf0(struct Entity* e, struct Coord* a, struct Coord* b, struct Coord* c);
+
+void FUN_080af5cc(struct Projectile* p) {
+  if (FUN_080afdf0((p->s).unk_28, &(p->s).coord, &(p->s).d, &(p->s).unk_coord)) {
+    (p->s).mode[2] = 2;
+  }
+}
+
+bool8 FUN_080afe38(struct Entity* e, struct Coord* a, struct Coord* b, struct Coord* c);
+
+void FUN_080af5f4(struct Projectile* p) {
+  if (FUN_080afe38((p->s).unk_28, &(p->s).coord, &(p->s).d, &(p->s).unk_coord)) {
+    (p->s).mode[2] = 1;
+  }
+}
+
+void FUN_080af61c(struct Projectile* p) {
+  (PTR_ARRAY_0836d430[(p->s).mode[1]])(p);
+}
+
+void FUN_080af65c(struct Projectile* p);
+
+void FUN_080af634(struct Projectile* p) {
+  SetSpriteAnimation(p, MOTION(0x86, 5));
+  (p->s).angle = (p->s).work[2] + 0x20;
+  (p->s).mode[1] = 1;
+  FUN_080af65c(p);
+}
+
+INCASM("asm/projectile/phantom_b.inc");
+
+void FUN_080af70c(struct Projectile* p) {
+  *(u32*)((u8*)p + 0x8c) = 0;
+  *(u32*)((u8*)p + 0x90) = 0;
+  *(u8*)((u8*)p + 0x94) = 0;
+  (p->s).flags &= ~COLLIDABLE;
+  SET_PROJECTILE_ROUTINE(p, ENTITY_UPDATE);
+  (p->s).mode[1] = 0;
+  PhantomProjectile_Update(p);
+}
+
+void FUN_080af748(struct Projectile* p) {
+  (PTR_ARRAY_0836d438[(p->s).mode[1]])(p);
+}
+
+INCASM("asm/projectile/phantom_c.inc");
+
+void FUN_080af8b0(struct Projectile* p) {
+  (PTR_ARRAY_0836d440[(p->s).mode[1]])(p);
+}
+
+void FUN_080af8e8(struct Projectile* p);
+
+
+void FUN_080af8c8(struct Projectile* p) {
+  SetSpriteAnimation(p, MOTION(0x86, 5));
+  (p->s).mode[1] = 1;
+  FUN_080af8e8(p);
+}
+
+INCASM("asm/projectile/phantom_d.inc");
+
+void nop_080af9ac(struct Projectile* p) {}
+
+
+void FUN_080af9b0(struct Projectile* p) {
+  (PTR_ARRAY_0836d44c[(p->s).mode[1]])(p);
+}
+
+void FUN_080af9f4(struct Projectile* p);
+
+void FUN_080af9c8(struct Projectile* p) {
+  SetSpriteAnimation(p, MOTION(0x86, 2));
+  (p->s).angle = (p->s).work[2] + 0x20;
+  (p->s).mode[1] = 1;
+  (p->s).work[3] = 0;
+  FUN_080af9f4(p);
+}
+
+INCASM("asm/projectile/phantom_e.inc");
 
 void FUN_080af518(struct Projectile* p);
 void FUN_080af5cc(struct Projectile* p);
