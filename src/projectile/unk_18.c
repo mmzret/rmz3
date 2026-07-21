@@ -1,35 +1,50 @@
 #include "collision.h"
 #include "global.h"
 #include "projectile.h"
+#include "vfx.h"
 
 static const ProjectileFunc PTR_ARRAY_0836b434[5];
 static const ProjectileFunc PTR_ARRAY_0836b448[5];
 static const struct Collision sCollisions[4];
-static const u8 sInitModes[4];
+
+void Projectile18_Init(struct Projectile* p);
+void Projectile18_Update(struct Projectile* p);
+void Projectile18_Die(struct Projectile* p);
+
+// clang-format off
+const ProjectileRoutine gProjectile18Routine = {
+    [ENTITY_INIT] =      (void*)Projectile18_Init,
+    [ENTITY_UPDATE] =    (void*)Projectile18_Update,
+    [ENTITY_DIE] =       (void*)Projectile18_Die,
+    [ENTITY_DISAPPEAR] = (void*)DeleteProjectile,
+    [ENTITY_EXIT] =      (void*)DeleteEntity,
+};
+// clang-format on
 
 INCASM("asm/projectile/unk_18_a.inc");
 
 void FUN_080a2ee8(s32 x, s32 y) {
-  struct Projectile* p = (struct Projectile*)AllocEntityFirst(gProjectileHeaderPtr);
+  struct Entity* p = AllocEntityFirst(gProjectileHeaderPtr);
   if (p != NULL) {
     INIT_PROJECTILE_ROUTINE(p, 18);
-    (p->s).work[0] = 1;
-    (p->s).coord.x = x;
-    (p->s).coord.y = y;
+    p->work[0] = 1;
+    (p->coord).x = x, (p->coord).y = y;
   }
 }
 
 INCASM("asm/projectile/unk_18_b.inc");
 
-void FUN_080a2fa4(struct Enemy* p) {}
+void Projectile18_OnCollision(struct Body* _, Coords32* c1, Coords32* c2) {}
+
+static const u8 sProjectile18_InitModes[4];
 
 void Projectile18_Init(struct Projectile* p) {
   SET_PROJECTILE_ROUTINE(p, ENTITY_UPDATE);
-  (p->s).mode[1] = sInitModes[(p->s).work[0]];
+  (p->s).mode[1] = sProjectile18_InitModes[(p->s).work[0]];
   (p->s).flags |= FLIPABLE;
   (p->s).flags |= DISPLAY;
   EnableSpriteAnimation_Normal(p);
-  INIT_BODY(p, sCollisions, 1, (void*)FUN_080a2fa4);
+  INIT_BODY(p, sCollisions, 1, Projectile18_OnCollision);
   Projectile18_Update(p);
 }
 
@@ -49,25 +64,6 @@ void FUN_080a308c(struct Projectile* p) {}
 void FUN_080a3090(struct Projectile* p) {}
 
 INCASM("asm/projectile/unk_18_c.inc");
-
-static const struct Collision sCollisions[4];
-static const u8 sInitModes[4];
-
-void Projectile18_Init(struct Projectile* p);
-void Projectile18_Update(struct Projectile* p);
-void Projectile18_Die(struct Projectile* p);
-
-// clang-format off
-const ProjectileRoutine gProjectile18Routine = {
-    [ENTITY_INIT] =      Projectile18_Init,
-    [ENTITY_UPDATE] =    Projectile18_Update,
-    [ENTITY_DIE] =       Projectile18_Die,
-    [ENTITY_DISAPPEAR] = (void*)DeleteProjectile,
-    [ENTITY_EXIT] =      (ProjectileFunc)DeleteEntity,
-};
-// clang-format on
-
-// --------------------------------------------
 
 void FUN_080a3090(struct Projectile* p);
 void FUN_080a308c(struct Projectile* p);
@@ -136,4 +132,4 @@ static const struct Collision sCollisions[4] = {
     },
 };
 
-static const u8 sInitModes[4] = {0, 3, 4, 0};
+static const u8 sProjectile18_InitModes[4] = {0, 3, 4, 0};

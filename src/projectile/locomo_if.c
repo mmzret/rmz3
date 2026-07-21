@@ -1,8 +1,22 @@
 #include "collision.h"
 #include "global.h"
 #include "projectile.h"
+#include "vfx.h"
 
 // LocomoIF
+void Projectile23_Init(struct Projectile* p);
+void Projectile23_Update(struct Projectile* p);
+void Projectile23_Die(struct Projectile* p);
+
+// clang-format off
+const ProjectileRoutine gProjectile23Routine = {
+    [ENTITY_INIT] =      (void*)Projectile23_Init,
+    [ENTITY_UPDATE] =    (void*)Projectile23_Update,
+    [ENTITY_DIE] =       (void*)Projectile23_Die,
+    [ENTITY_DISAPPEAR] = (void*)DeleteProjectile,
+    [ENTITY_EXIT] =      (void*)DeleteEntity,
+};
+// clang-format on
 
 static const ProjectileFunc sUpdates1[];
 static const ProjectileFunc sUpdates2[];
@@ -10,24 +24,22 @@ static const struct Collision sCollisions[4];
 static const u8 u8_ARRAY_0836bec4[2];
 
 void FUN_080a7c60(s32 x, s32 y, u8 a2) {
-  struct Projectile* p = (struct Projectile*)AllocEntityFirst(gProjectileHeaderPtr);
+  struct Entity* p = AllocEntityFirst(gProjectileHeaderPtr);
   if (p != NULL) {
     INIT_PROJECTILE_ROUTINE(p, 23);
-    (p->s).work[0] = 0;
-    (p->s).coord.x = x;
-    (p->s).coord.y = y;
-    (p->s).work[2] = a2;
+    p->work[0] = 0;
+    (p->coord).x = x, (p->coord).y = y;
+    p->work[2] = a2;
   }
 }
 
 void FUN_080a7cb0(s32 x, s32 y, u8 a2) {
-  struct Projectile* p = (struct Projectile*)AllocEntityFirst(gProjectileHeaderPtr);
+  struct Entity* p = AllocEntityFirst(gProjectileHeaderPtr);
   if (p != NULL) {
     INIT_PROJECTILE_ROUTINE(p, 23);
-    (p->s).work[0] = 1;
-    (p->s).coord.x = x;
-    (p->s).coord.y = y;
-    (p->s).work[2] = a2;
+    p->work[0] = 1;
+    (p->coord).x = x, (p->coord).y = y;
+    p->work[2] = a2;
   }
 }
 
@@ -56,7 +68,6 @@ void Projectile23_Die(struct Projectile* p) {
 
 void FUN_080a7de8(struct Projectile* p) {}
 
-
 void FUN_080a7dec(struct Projectile* p) {
   if ((p->body).status & BODY_STATUS_BINDING) {
     (p->s).mode[1] = 2;
@@ -65,20 +76,6 @@ void FUN_080a7dec(struct Projectile* p) {
 }
 
 INCASM("asm/projectile/locomo_if_a.inc");
-
-void Projectile23_Init(struct Projectile* p);
-void Projectile23_Update(struct Projectile* p);
-void Projectile23_Die(struct Projectile* p);
-
-// clang-format off
-const ProjectileRoutine gProjectile23Routine = {
-    [ENTITY_INIT] =      Projectile23_Init,
-    [ENTITY_UPDATE] =    Projectile23_Update,
-    [ENTITY_DIE] =       Projectile23_Die,
-    [ENTITY_DISAPPEAR] = (void*)DeleteProjectile,
-    [ENTITY_EXIT] =      (ProjectileFunc)DeleteEntity,
-};
-// clang-format on
 
 // --------------------------------------------
 
