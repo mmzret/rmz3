@@ -1,7 +1,14 @@
 #include "collision.h"
+#include "element.h"
 #include "enemy.h"
 #include "global.h"
-#include "element.h"
+
+typedef struct {
+  COLLISION_OBJECT_HDR;  // 0x00
+  void* elfx;            // 0xB4, Element FX
+  u8 unk_b8[12];         // 0xB8
+} PantheonZombie;
+static_assert(sizeof(PantheonZombie) == sizeof(struct Enemy));
 
 static const EnemyFunc sUpdates1[8];
 static const EnemyFunc sUpdates2[8];
@@ -10,25 +17,36 @@ static const struct Collision sCollisions[8];
 static const u8 sInitModes[4];
 static const Coords32 sElementCoord;
 
+void PantheonZombie_Init(struct Enemy* p);
+void PantheonZombie_Update(struct Enemy* p);
+void PantheonZombie_Die(PantheonZombie* p);
+
+// clang-format off
+const EnemyRoutine gPantheonZombieRoutine = {
+    [ENTITY_INIT] =      (void*)PantheonZombie_Init,
+    [ENTITY_UPDATE] =    (void*)PantheonZombie_Update,
+    [ENTITY_DIE] =       (void*)PantheonZombie_Die,
+    [ENTITY_DISAPPEAR] = (void*)DeleteEnemy,
+    [ENTITY_EXIT] =      (void*)DeleteEntity,
+};
+// clang-format on
+
 INCASM("asm/enemy/pantheon_zombie_a.inc");
 
-void FUN_0807fd84(struct Body* body) {
-  struct Enemy* self = (struct Enemy*)body->parent;
-  if ((body->hitboxFlags & 0x800) && (self->s).mode[1] != 4) {
-    (self->s).mode[1] = 4;
-    (self->s).mode[2] = 0;
+void PantheonZombie_OnCollision(struct Body* body, Coords32* c1, Coords32* c2) {
+  PantheonZombie* p = (PantheonZombie*)body->parent;
+  if ((body->hitboxFlags & 0x800) && p->mode[1] != 4) {
+    p->mode[1] = 4, p->mode[2] = 0;
   }
 }
 
-void PantheonZombie_Die(struct Enemy* p);
-
-bool8 FUN_0807fda8(struct Enemy* p) {
+bool8 FUN_0807fda8(PantheonZombie* p) {
   if ((p->body).status & 0x200) {
     SET_ENEMY_ROUTINE(p, ENTITY_DIE);
     if ((p->body).status & 0x20000) {
-      (p->s).mode[1] = 2;
+      p->mode[1] = 2;
     } else {
-      (p->s).mode[1] = 0;
+      p->mode[1] = 0;
     }
     PantheonZombie_Die(p);
     return TRUE;
@@ -36,19 +54,14 @@ bool8 FUN_0807fda8(struct Enemy* p) {
   return FALSE;
 }
 
-void FUN_0807fdf8(struct Enemy* p) {
-  if (*(struct VFX**)&p->buffer[0] == NULL && ((p->body).status & 1)) {
-    struct VFX* e = ApplyElementEffect(0, &p->s, &sElementCoord);
-    *(struct VFX**)&p->buffer[0] = e;
-    if (e != NULL) {
-      (p->s).mode[1] = 0;
-      (p->s).mode[2] = 0;
+void FUN_0807fdf8(PantheonZombie* p) {
+  if (p->elfx == NULL && ((p->body).status & 1)) {
+    p->elfx = ApplyElementEffect(0, (void*)p, &sElementCoord);
+    if (p->elfx != NULL) {
+      p->mode[1] = 0, p->mode[2] = 0;
     }
   }
 }
-
-void PantheonZombie_Update(struct Enemy* p);
-extern const u8 sInitModes[4];
 
 void PantheonZombie_Init(struct Enemy* p) {
   SET_ENEMY_ROUTINE(p, ENTITY_UPDATE);
@@ -56,7 +69,7 @@ void PantheonZombie_Init(struct Enemy* p) {
   (p->s).flags |= FLIPABLE;
   (p->s).flags |= DISPLAY;
   InitNonAffineMotion(&p->s);
-  INIT_BODY(p, sCollisions, 20, (void*)FUN_0807fd84);
+  INIT_BODY(p, sCollisions, 20, PantheonZombie_OnCollision);
   *(u32*)&p->buffer[0] = 0;
   p->buffer[4] = 0;
   PantheonZombie_Update(p);
@@ -66,21 +79,18 @@ void PantheonZombie_Update(struct Enemy* p) {
   if (*(u32*)((u8*)(p->s).unk_28 + 0xc0) & 0x100) {
     SET_ENEMY_ROUTINE(p, ENTITY_DIE);
     (p->s).mode[1] = 1;
-    PantheonZombie_Die(p);
+    PantheonZombie_Die((void*)p);
   } else {
-    if (FUN_0807fda8(p)) return;
-    FUN_0807fdf8(p);
+    if (FUN_0807fda8((void*)p)) return;
+    FUN_0807fdf8((void*)p);
     (sUpdates1[(p->s).mode[1]])(p);
     (sUpdates2[(p->s).mode[1]])(p);
   }
 }
 
-void PantheonZombie_Die(struct Enemy* p) {
-  (sDeads[(p->s).mode[1]])(p);
-}
+void PantheonZombie_Die(PantheonZombie* p) { (sDeads[p->mode[1]])((void*)p); }
 
 void nop_0807ff3c(struct Enemy* p) {}
-
 
 void FUN_0807ff40(struct Enemy* p) {
   u32 status = (p->body).status;
@@ -144,20 +154,6 @@ void FUN_08080610(struct Enemy* p) {
 }
 
 INCASM("asm/enemy/pantheon_zombie_c.inc");
-
-void PantheonZombie_Init(struct Enemy* p);
-void PantheonZombie_Update(struct Enemy* p);
-void PantheonZombie_Die(struct Enemy* p);
-
-// clang-format off
-const EnemyRoutine gPantheonZombieRoutine = {
-    [ENTITY_INIT] =      PantheonZombie_Init,
-    [ENTITY_UPDATE] =    PantheonZombie_Update,
-    [ENTITY_DIE] =       PantheonZombie_Die,
-    [ENTITY_DISAPPEAR] = (void*)DeleteEnemy,
-    [ENTITY_EXIT] =      (EnemyFunc)DeleteEntity,
-};
-// clang-format on
 
 void FUN_0807ffb0(struct Enemy* p);
 void FUN_0807ff40(struct Enemy* p);

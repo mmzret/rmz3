@@ -7,17 +7,18 @@
 typedef struct {
   COLLISION_OBJECT_HDR;
   // props (16bytes, offset: 0xB4..)
-  s32 x_b4;      // 0xB4
-  u8 unk_b8[4];  // 0xB8
-  u8 unk_bc;     // 0xBC
-  u8 unk_bd;     // 0xBD
-  u8 unk_be;     // 0xBE
-  u8 unk_bf;     // 0xBF
-  s32 unk_c0;    // 0xC0
+  s32 x_b4;               // 0xB4
+  u8 unk_b8[4];           // 0xB8
+  u8 xflip_bc;            // 0xBC
+  u8 unk_bd;              // 0xBD
+  u8 unk_be;              // 0xBE
+  u8 unk_bf;              // 0xBF
+  struct Entity* unk_c0;  // 0xC0
 } SharksealX;
 static_assert(sizeof(SharksealX) == sizeof(struct Enemy));
 
 static const struct Collision sCollisions[];
+SharksealX* forceWaterLanding(SharksealX* p);
 
 static void SharksealX_Init(SharksealX* p);
 void SharksealX_Update(SharksealX* p);
@@ -65,12 +66,12 @@ static void SharksealX_Init(SharksealX* p) {
   }
   p->x_b4 = (p->coord).x;
   (&p->d)->x = (&p->d)->y = 0;
-  p->unk_c0 = 0;
+  p->unk_c0 = NULL;
   p->unk_bd = 0;
   p->x_b4 = (p->coord).x;
   (p->unk_coord).y = (p->coord).y;
   (&p->d)->x = (&p->d)->y = 0;
-  p->unk_bc = 0;
+  p->xflip_bc = FALSE;
   if (IsFrozen(p)) {
     SetSpriteAnimation(p, MOTION(SM024_SHARKSEAL_X, 0));
     UpdateSpriteAnimation(p);
@@ -83,91 +84,82 @@ static void SharksealX_Init(SharksealX* p) {
 
 INCASM("asm/enemy/sharkseal_x_a.inc");
 
-bool8 FUN_080707d0(struct Enemy* p) { return TRUE; }
+bool8 FUN_080707d0(SharksealX* p) { return TRUE; }
 
+void nop_080707d4(SharksealX* p) {}
 
-void nop_080707d4(struct Enemy* p) {}
-
-bool8 FUN_080707d8(struct Enemy* p) { return TRUE; }
+bool8 FUN_080707d8(SharksealX* p) { return TRUE; }
 
 INCASM("asm/enemy/sharkseal_x_b.inc");
 
-bool8 FUN_080708dc(struct Enemy* p) { return TRUE; }
+bool8 FUN_080708dc(SharksealX* p) { return TRUE; }
 
-short forceWaterLanding(struct Entity* p);
-
-void sharksealxMode2(struct Enemy* p) {
-  switch ((p->s).mode[2]) {
-    case 0:
-      SetSpriteAnimation(p, 0x1800);
+void sharksealxMode2(SharksealX* p) {
+  switch (p->mode[2]) {
+    case 0: {
+      SetSpriteAnimation(p, MOTION(SM024_SHARKSEAL_X, 0));
       SetDDP(&p->body, &sCollisions[0]);
-      (p->s).d.y = 0;
-      (p->s).d.x = 0;
-      SET_XFLIP(p, *(u8*)((u8*)p + 0xbc));
-      (p->s).work[2] = 0x18;
-      (p->s).mode[2]++;
+      (&p->d)->x = (&p->d)->y = 0;
+      SET_XFLIP(p, p->xflip_bc);
+      p->work[2] = 24;
+      p->mode[2]++;
       FALLTHROUGH;
-    case 1:
+    }
+    case 1: {
       UpdateSpriteAnimation(p);
-      (p->s).d.y += 0x20;
-      if ((p->s).d.y > 0x100) {
-        (p->s).d.y = 0x100;
-      }
-      (p->s).coord.y += (p->s).d.y;
-      forceWaterLanding(&p->s);
-      if ((p->s).work[2] == 0 || --(p->s).work[2] == 0) {
-        (p->s).mode[1] = 3;
-        (p->s).mode[2] = 0;
+      (p->d).y += PIXEL(1) / 8;
+      if ((p->d).y > PIXEL(1)) (p->d).y = PIXEL(1);
+      p->coord.y += (p->d).y;
+      forceWaterLanding(p);
+      if (p->work[2] == 0 || --p->work[2] == 0) {
+        p->mode[1] = 3, p->mode[2] = 0;
       }
       break;
+    }
   }
 }
 
-bool8 FUN_08070990(struct Enemy* p) { return TRUE; }
+bool8 FUN_08070990(SharksealX* p) { return TRUE; }
 
 INCASM("asm/enemy/sharkseal_x_c.inc");
 
-bool8 FUN_08070c68(struct Enemy* p) { return TRUE; }
+bool8 FUN_08070c68(SharksealX* p) { return TRUE; }
 
 INCASM("asm/enemy/sharkseal_x_d.inc");
 
-bool8 FUN_08070f3c(struct Enemy* p) { return TRUE; }
+bool8 FUN_08070f3c(SharksealX* p) { return TRUE; }
 
-void sharksealxMode5(struct Enemy* p) {
-  struct Entity** slot;
-  if ((p->s).mode[2] == 0) {
+void sharksealxMode5(SharksealX* p) {
+  if (p->mode[2] == 0) {
     SetDDP(&p->body, &sCollisions[4]);
-    (p->s).mode[2]++;
+    p->mode[2]++;
   }
-  slot = (struct Entity**)((u8*)p + 0xc0);
-  if (isKilled(*slot)) {
+  if (isKilled(p->unk_c0)) {
     SetDDP(&p->body, &sCollisions[0]);
-    *slot = NULL;
-    (p->s).mode[1] = 1;
-    (p->s).mode[2] = 0;
+    p->unk_c0 = NULL;
+    p->mode[1] = 1, p->mode[2] = 0;
   }
 }
 
-bool8 FUN_08070f8c(struct Enemy* p) { return TRUE; }
+bool8 FUN_08070f8c(SharksealX* p) { return TRUE; }
 
+void nop_08070f90(SharksealX* p) {}
 
-void nop_08070f90(struct Enemy* p) {}
-
-bool8 FUN_08070f94(struct Enemy* p) { return TRUE; }
+bool8 FUN_08070f94(SharksealX* p) { return TRUE; }
 
 INCASM("asm/enemy/sharkseal_x_e.inc");
 
-bool8 FUN_080707d0(struct Enemy* p);
-bool8 FUN_080707d8(struct Enemy* p);
-bool8 FUN_080708dc(struct Enemy* p);
-bool8 FUN_08070990(struct Enemy* p);
-bool8 FUN_08070c68(struct Enemy* p);
-bool8 FUN_08070f3c(struct Enemy* p);
-bool8 FUN_08070f8c(struct Enemy* p);
-bool8 FUN_08070f94(struct Enemy* p);
+bool8 FUN_080707d0(SharksealX* p);
+bool8 FUN_080707d8(SharksealX* p);
+bool8 FUN_080708dc(SharksealX* p);
+bool8 FUN_08070990(SharksealX* p);
+bool8 FUN_08070c68(SharksealX* p);
+bool8 FUN_08070f3c(SharksealX* p);
+bool8 FUN_08070f8c(SharksealX* p);
+bool8 FUN_08070f94(SharksealX* p);
 
 // clang-format off
-static void (*const sSharksealXUpdates1[8])(SharksealX*) = {
+static bool8 (*const sSharksealXUpdates1[8])(SharksealX*) = {
     FUN_080707d0,
     FUN_080707d8,
     FUN_080708dc,
@@ -179,13 +171,13 @@ static void (*const sSharksealXUpdates1[8])(SharksealX*) = {
 }; // 0x08366A04
 // clang-format on
 
-void nop_080707d4(struct Enemy* p);
+void nop_080707d4(SharksealX* p);
 void sharksealxMode1(SharksealX* p);
-void sharksealxMode2(struct Enemy* p);
+void sharksealxMode2(SharksealX* p);
 void sharksealxMode3(SharksealX* p);
 void sharksealxMode4(SharksealX* p);
-void sharksealxMode5(struct Enemy* p);
-void nop_08070f90(struct Enemy* p);
+void sharksealxMode5(SharksealX* p);
+void nop_08070f90(SharksealX* p);
 void sharksealxMode7(SharksealX* p);
 
 // clang-format off

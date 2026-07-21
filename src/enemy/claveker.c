@@ -1,7 +1,7 @@
 #include "collision.h"
+#include "element.h"
 #include "enemy.h"
 #include "global.h"
-#include "element.h"
 
 void Claveker_Init(struct Enemy* p);
 void Claveker_Update(struct Enemy* p);
@@ -117,7 +117,6 @@ void FUN_0808f15c(struct Enemy* p) {
 
 bool8 FUN_0808f198(struct Enemy* p) { return TRUE; }
 
-
 void FUN_0808f19c(struct Enemy* p) {}
 
 bool8 FUN_0808f1a0(struct Enemy* p) { return TRUE; }
@@ -139,7 +138,7 @@ void FUN_0808f1a4(struct Enemy* p) {
 bool8 FUN_0808f1e0(struct Enemy* p) {
   struct VFX** slot = (struct VFX**)((u8*)p + 0xbc);
   if (*slot == NULL && ((p->body).status & 1)) {
-    struct VFX* e = ApplyElementEffect(0, &p->s, &sElementCoord);
+    struct VFX* e = (void*)ApplyElementEffect(0, (void*)p, &sElementCoord);
     *slot = e;
     if (e != NULL) {
       u8 attr = *(u8*)((u8*)p + 0x97) & 0xf0;

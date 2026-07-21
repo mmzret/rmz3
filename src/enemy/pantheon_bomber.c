@@ -1,14 +1,22 @@
 #include "collision.h"
+#include "element.h"
 #include "enemy.h"
 #include "global.h"
-#include "element.h"
 
-struct Enemy* CreatePantheonBomber(struct Coord* c, u8 mode) {
-  struct Enemy* p = (struct Enemy*)AllocEntityLast(gEnemyHeaderPtr);
+typedef struct {
+  COLLISION_OBJECT_HDR;  // 0x00
+  u8 unk_b4[8];          // 0xB4
+  void* elfx;            // 0xBC, Element FX
+  u8 unk_c0[4];          // 0xC0
+} PantheonBomber;
+static_assert(sizeof(PantheonBomber) == sizeof(struct Enemy));
+
+PantheonBomber* Unused_CreatePantheonBomber(struct Coord* c, u8 mode) {
+  PantheonBomber* p = AllocEntityLast(gEnemyHeaderPtr);
   if (p != NULL) {
     INIT_ENEMY_ROUTINE(p, ENEMY_P_BOMBER);
-    (p->s).coord = *c;
-    (p->s).work[0] = mode;
+    p->coord = *c;
+    p->work[0] = mode;
   }
   return p;
 }
@@ -22,7 +30,7 @@ INCASM("asm/enemy/pantheon_bomber_a.inc");
 
 extern const EnemyFunc sUpdates1[6];
 extern const EnemyFunc sUpdates2[6];
-bool8 pBomber_08086628(struct Enemy* p);
+bool8 pBomber_08086628(PantheonBomber* p);
 void PantheonBomber_Die(struct Enemy* p);
 
 void PantheonBomber_Update(struct Enemy* p) {
@@ -34,7 +42,7 @@ void PantheonBomber_Update(struct Enemy* p) {
     return;
   }
   (sUpdates1[(p->s).mode[1]])(p);
-  pBomber_08086628(p);
+  pBomber_08086628((void*)p);
   slot = (struct Entity**)((u8*)p + 0xbc);
   if (*slot == NULL) {
     if (IsFrozen(&p->s)) {
@@ -98,23 +106,20 @@ void FUN_080865d4(struct Enemy* p) {
 
 bool8 nop_080865f8(struct Enemy* p) { return TRUE; }
 
-
 void nop_080865fc(struct Enemy* p) {}
 
 bool8 nop_08086600(struct Enemy* p) { return TRUE; }
 
-
-void FUN_08086604(struct Enemy* p) {
-  if ((p->s).mode[2] == 0) {
+void FUN_08086604(PantheonBomber* p) {
+  if (p->mode[2] == 0) {
     SetDDP(&p->body, &sCollisions[2]);
-    (p->s).mode[2]++;
+    p->mode[2]++;
   }
 }
 
-bool8 pBomber_08086628(struct Enemy* p) {
-  struct VFX** slot = (struct VFX**)((u8*)p + 0xbc);
-  if (*slot == NULL && ((p->body).status & 1)) {
-    *slot = ApplyElementEffect(0, &p->s, &sElementCoord);
+bool8 pBomber_08086628(PantheonBomber* p) {
+  if (p->elfx == NULL && ((p->body).status & 1)) {
+    p->elfx = ApplyElementEffect(0, (void*)p, &sElementCoord);
   }
   return TRUE;
 }
@@ -170,7 +175,7 @@ void pantheon_bomber_080863a4(struct Enemy* p);
 void pantheon_bomber_08086418(struct Enemy* p);
 void FUN_080865d4(struct Enemy* p);
 void nop_080865fc(struct Enemy* p);
-void FUN_08086604(struct Enemy* p);
+void FUN_08086604(PantheonBomber* p);
 
 // clang-format off
 static const EnemyFunc sUpdates2[6] = {
@@ -179,7 +184,7 @@ static const EnemyFunc sUpdates2[6] = {
     pantheon_bomber_08086418,
     FUN_080865d4,
     nop_080865fc,
-    FUN_08086604,
+    (void*)FUN_08086604,
 };
 // clang-format on
 
