@@ -6,7 +6,8 @@
 typedef struct {
   COLLISION_OBJECT_HDR;  // 0x00
   void* elfx;            // 0xB4, Element FX
-  u8 unk_b8[12];         // 0xB8
+  u8 unk_b8;             // 0xB8
+  u8 unk_b9[11];         // 0xB9
 } PantheonZombie;
 static_assert(sizeof(PantheonZombie) == sizeof(struct Enemy));
 
@@ -31,7 +32,16 @@ const EnemyRoutine gPantheonZombieRoutine = {
 };
 // clang-format on
 
-INCASM("asm/enemy/pantheon_zombie_a.inc");
+void createPantheonZombie(Boss* anubis, s32 x, s32 y) {
+  PantheonZombie* p = AllocEntityLast(gEnemyHeaderPtr);
+  if (p != NULL) {
+    anubis->buffer[23]++;
+    INIT_ENEMY_ROUTINE(p, ENEMY_P_ZOMBIE);
+    p->work[0] = 0;
+    p->unk_28 = (void*)anubis;
+    (p->coord).x = x, (p->coord).y = y;
+  }
+}
 
 void PantheonZombie_OnCollision(struct Body* body, Coords32* c1, Coords32* c2) {
   PantheonZombie* p = (PantheonZombie*)body->parent;
@@ -41,9 +51,9 @@ void PantheonZombie_OnCollision(struct Body* body, Coords32* c1, Coords32* c2) {
 }
 
 bool8 FUN_0807fda8(PantheonZombie* p) {
-  if ((p->body).status & 0x200) {
+  if ((p->body).status & BODY_STATUS_DEAD) {
     SET_ENEMY_ROUTINE(p, ENTITY_DIE);
-    if ((p->body).status & 0x20000) {
+    if ((p->body).status & BODY_STATUS_RECOILED) {
       p->mode[1] = 2;
     } else {
       p->mode[1] = 0;
@@ -55,7 +65,7 @@ bool8 FUN_0807fda8(PantheonZombie* p) {
 }
 
 void FUN_0807fdf8(PantheonZombie* p) {
-  if (p->elfx == NULL && ((p->body).status & 1)) {
+  if (p->elfx == NULL && ((p->body).status & BODY_STATUS_WHITE)) {
     p->elfx = ApplyElementEffect(0, (void*)p, &sElementCoord);
     if (p->elfx != NULL) {
       p->mode[1] = 0, p->mode[2] = 0;
@@ -121,41 +131,38 @@ void FUN_0807ff94(struct Enemy* p) {
   }
 }
 
-void FUN_0807ffb0(struct Enemy* p) {
-  struct Entity** slot = (struct Entity**)((u8*)p + 0xb4);
-  if (*slot == NULL || isKilled(*slot)) {
-    *slot = NULL;
-    (p->s).mode[1] = 1;
-    (p->s).mode[2] = 0;
+void FUN_0807ffb0(PantheonZombie* p) {
+  if (p->elfx == NULL || isKilled(p->elfx)) {
+    p->elfx = NULL;
+    p->mode[1] = 1, p->mode[2] = 0;
   }
 }
 
 INCASM("asm/enemy/pantheon_zombie_b.inc");
 
-void FUN_08080610(struct Enemy* p) {
-  switch ((p->s).mode[2]) {
-    case 0:
+void FUN_08080610(PantheonZombie* p) {
+  switch (p->mode[2]) {
+    case 0: {
       SetDDP(&p->body, &sCollisions[1]);
-      (p->s).work[2] = 0x10;
-      SetSpriteAnimation(p, MOTION(0x4c, 2));
-      (p->s).mode[2]++;
+      p->work[2] = 16;
+      SetSpriteAnimation(p, MOTION(SM076_PANTHEON_ZOMBIE, 2));
+      p->mode[2]++;
       FALLTHROUGH;
-    case 1:
-      if (--(p->s).work[2] == 0) {
-        (p->s).mode[1] = 1;
-        (p->s).mode[2] = 0;
+    }
+    case 1: {
+      if (--p->work[2] == 0) {
+        p->mode[1] = 1, p->mode[2] = 0;
       }
-      if (p->buffer[4] != 0) {
-        (p->s).coord.y += 0x20;
-      }
+      if (p->unk_b8) p->coord.y += PIXEL(1) / 8;
       UpdateSpriteAnimation(p);
       break;
+    }
   }
 }
 
 INCASM("asm/enemy/pantheon_zombie_c.inc");
 
-void FUN_0807ffb0(struct Enemy* p);
+void FUN_0807ffb0(PantheonZombie* p);
 void FUN_0807ff40(struct Enemy* p);
 void nop_0807ff3c(struct Enemy* p);
 void FUN_0807ff6c(struct Enemy* p);
@@ -164,14 +171,14 @@ void FUN_0807ff6c(struct Enemy* p);
 
 // clang-format off
 static const EnemyFunc sUpdates1[8] = {
-    FUN_0807ffb0,
-    FUN_0807ff40,
-    nop_0807ff3c,
-    FUN_0807ff6c,
-    FUN_0807ff94,
-    FUN_0807ff6c,
-    nop_0807ff3c,
-    nop_0807ff3c,
+    (void*)FUN_0807ffb0,
+    (void*)FUN_0807ff40,
+    (void*)nop_0807ff3c,
+    (void*)FUN_0807ff6c,
+    (void*)FUN_0807ff94,
+    (void*)FUN_0807ff6c,
+    (void*)nop_0807ff3c,
+    (void*)nop_0807ff3c,
 };
 // clang-format on
 
@@ -181,19 +188,19 @@ void FUN_0808027c(struct Enemy* p);
 void FUN_08080324(struct Enemy* p);
 void FUN_080803dc(struct Enemy* p);
 void FUN_080804a8(struct Enemy* p);
-void FUN_08080610(struct Enemy* p);
+void FUN_08080610(PantheonZombie* p);
 void FUN_08080734(struct Enemy* p);
 
 // clang-format off
 static const EnemyFunc sUpdates2[8] = {
-    FUN_0807ffd8,
-    FUN_08080054,
-    FUN_0808027c,
-    FUN_08080324,
-    FUN_080803dc,
-    FUN_080804a8,
-    FUN_08080610,
-    FUN_08080734,
+    (void*)FUN_0807ffd8,
+    (void*)FUN_08080054,
+    (void*)FUN_0808027c,
+    (void*)FUN_08080324,
+    (void*)FUN_080803dc,
+    (void*)FUN_080804a8,
+    (void*)FUN_08080610,
+    (void*)FUN_08080734,
 };
 // clang-format on
 

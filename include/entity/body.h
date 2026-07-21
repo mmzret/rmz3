@@ -14,7 +14,7 @@
 #define BODY_STATUS_B6 (1 << 6)
 #define BODY_STATUS_B7 (1 << 7)
 #define BODY_STATUS_B8 (1 << 8)
-#define BODY_STATUS_DEAD (1 << 9)  // ボディのHPが0になるとセット、ゼロのときにこのフラグを立てるとミッション失敗になるのでおそらく死亡判定
+#define BODY_STATUS_DEAD (1 << 9)  // 0x200, ボディのHPが0になるとセット、ゼロのときにこのフラグを立てるとミッション失敗になるのでおそらく死亡判定
 #define BODY_STATUS_BINDED (1 << 10)
 #define BODY_STATUS_BINDING (1 << 11)
 #define BODY_STATUS_BLOCKED (1 << 12)  // 硬いものにあたって無効化されたか
@@ -22,7 +22,7 @@
 #define BODY_STATUS_B14 (1 << 14)
 #define BODY_STATUS_B15 (1 << 15)
 #define BODY_STATUS_SLASHED (1 << 16)   // 死亡時の切断演出の有無？
-#define BODY_STATUS_RECOILED (1 << 17)  // Pushed by recoil rod
+#define BODY_STATUS_RECOILED (1 << 17)  // 0x20000, Pushed by recoil rod
 #define BODY_STATUS_B22 (1 << 22)
 #define BODY_STATUS_B23 (1 << 23)
 #define BODY_STATUS_B28 (1 << 28)
