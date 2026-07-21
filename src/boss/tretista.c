@@ -2,12 +2,26 @@
 #include "collision.h"
 #include "global.h"
 #include "overworld.h"
+#include "palette_animation.h"
+
+typedef struct {
+  COLLISION_OBJECT_HDR;  // 0x00
+  u8 unk_b4;             // 0xB4
+  s8 unk_b5[2];          // 0xB5
+  u8 unk_b7;             // 0xB7
+  u8 unk_b8[8];          // 0xB8
+  void* unk_c0;          // 0xC0
+  u8 unk_c4[20];         // 0xC4
+  u8 unk_d8;             // 0xD8
+  u8 unk_d9[11];         // 0xD9
+} Tretista;
+static_assert(sizeof(Tretista) == sizeof(Boss));
 
 static const struct Collision sCollisions[13];
 
-static void Tretista_Init(struct Boss* p);
-static void Tretista_Update(struct Boss* p);
-static void Tretista_Die(struct Boss* p);
+static void Tretista_Init(Tretista* p);
+static void Tretista_Update(Tretista* p);
+static void Tretista_Die(Tretista* p);
 
 // clang-format off
 const BossRoutine gTretistaRoutine = {
@@ -15,12 +29,12 @@ const BossRoutine gTretistaRoutine = {
     [ENTITY_UPDATE] =    (void*)Tretista_Update,
     [ENTITY_DIE] =       (void*)Tretista_Die,
     [ENTITY_DISAPPEAR] = (void*)DeleteBoss,
-    [ENTITY_EXIT] =      (BossFunc)DeleteEntity,
+    [ENTITY_EXIT] =      (void*)DeleteEntity,
 };
 // clang-format on
 
-struct Boss* CreateTretista(Coords32* c, u8 n) {
-  struct Boss* p = AllocEntityLast(gBossHeaderPtr);
+static Tretista* Unused_CreateTretista(Coords32* c, u8 n) {
+  Tretista* p = AllocEntityLast(gBossHeaderPtr);
   if (p != NULL) {
     INIT_BOSS_ROUTINE(p, BOSS_TRETISTA);
     p->coord = *c;
@@ -29,7 +43,7 @@ struct Boss* CreateTretista(Coords32* c, u8 n) {
   return p;
 }
 
-NAKED static void Tretista_Init(struct Boss* p) {
+NAKED static void Tretista_Init(Tretista* p) {
   asm(".syntax unified\n\
 	push {r4, r5, r6, r7, lr}\n\
 	adds r5, r0, #0\n\
@@ -166,35 +180,35 @@ _0804D750: .4byte gBossFnTable\n\
    .syntax divided\n");
 }
 
-void FUN_0804dc8c(struct Boss* p);
-void FUN_0804df70(struct Boss* p);
-void FUN_0804e01c(struct Boss* p);
-void FUN_0804e08c(struct Boss* p);
-void FUN_0804e3f0(struct Boss* p);
-void FUN_0804e544(struct Boss* p);
-void FUN_0804eb38(struct Boss* p);
-void FUN_0804f2b4(struct Boss* p);
-void FUN_0804f5c0(struct Boss* p);
-void FUN_0804f7d8(struct Boss* p);
-void FUN_0804fc6c(struct Boss* p);
-void FUN_0804e8f4(struct Boss* p);
+static bool8 FUN_0804dc8c(Tretista* p);
+bool8 FUN_0804df70(Tretista* p);
+bool8 FUN_0804e01c(Tretista* p);
+bool8 FUN_0804e08c(Tretista* p);
+bool8 FUN_0804e3f0(Tretista* p);
+bool8 FUN_0804e544(Tretista* p);
+bool8 FUN_0804eb38(Tretista* p);
+bool8 FUN_0804f2b4(Tretista* p);
+bool8 FUN_0804f5c0(Tretista* p);
+bool8 FUN_0804f7d8(Tretista* p);
+bool8 FUN_0804fc6c(Tretista* p);
+bool8 FUN_0804e8f4(Tretista* p);
 
-void tretista_0804dc90(struct Boss* p);
-void tretista_0804df74(struct Boss* p);
-void tretista_0804e020(struct Boss* p);
-void tretistaNeutral(struct Boss* p);
-void tretista_0804e3f4(struct Boss* p);
-void tretista_0804e548(struct Boss* p);
-void tretistaPipeThrow(struct Boss* p);
-void tretistaHellBouncers(struct Boss* p);
-void tretistaBreathGas(struct Boss* p);
-void tretistaLaserCraw(struct Boss* p);
-void tretista_0804fc70(struct Boss* p);
-void FUN_0804e8f8(struct Boss* p);
+void tretista_0804dc90(Tretista* p);
+void tretista_0804df74(Tretista* p);
+void tretista_0804e020(Tretista* p);
+void tretistaNeutral(Tretista* p);
+void tretista_0804e3f4(Tretista* p);
+void tretista_0804e548(Tretista* p);
+void tretistaPipeThrow(Tretista* p);
+void tretistaHellBouncers(Tretista* p);
+void tretistaBreathGas(Tretista* p);
+void tretistaLaserCraw(Tretista* p);
+void tretista_0804fc70(Tretista* p);
+void FUN_0804e8f8(Tretista* p);
 
-static void Tretista_Update(struct Boss* p) {
+static void Tretista_Update(Tretista* p) {
   // clang-format off
-  static const BossFunc sUpdates1[12] = {
+  static bool8 (*const sUpdates1[12])(Tretista*) = {
       FUN_0804dc8c,
       FUN_0804df70,
       FUN_0804e01c,
@@ -211,19 +225,19 @@ static void Tretista_Update(struct Boss* p) {
   // clang-format on
 
   // clang-format off
-  static const BossFunc sUpdates2[12] = {
-      tretista_0804dc90,
-      tretista_0804df74,
-      tretista_0804e020,
-      tretistaNeutral,
-      tretista_0804e3f4,
-      tretista_0804e548,
-      tretistaPipeThrow,
-      tretistaHellBouncers,
-      tretistaBreathGas,
-      tretistaLaserCraw,
-      tretista_0804fc70,
-      FUN_0804e8f8,
+  static void (*const sUpdates2[12])(Tretista*) = {
+      (void*)tretista_0804dc90,
+      (void*)tretista_0804df74,
+      (void*)tretista_0804e020,
+      (void*)tretistaNeutral,
+      (void*)tretista_0804e3f4,
+      (void*)tretista_0804e548,
+      (void*)tretistaPipeThrow,
+      (void*)tretistaHellBouncers,
+      (void*)tretistaBreathGas,
+      (void*)tretistaLaserCraw,
+      (void*)tretista_0804fc70,
+      (void*)FUN_0804e8f8,
   };
   // clang-format on
 
@@ -243,18 +257,54 @@ static void Tretista_Update(struct Boss* p) {
   (sUpdates2[p->mode[1]])(p);
 }
 
-// --------------------------------------------
+static void FUN_0804d804(Tretista* p);
+static void tretista_0804d8e8(Tretista* p);
 
-void FUN_0804d804(struct Boss* p);
-void tretista_0804d8e8(struct Boss* p);
-
-static void Tretista_Die(struct Boss* p) {
-  static const BossFunc sDeads[2] = {
+static void Tretista_Die(Tretista* p) {
+  static void (*const sDeads[2])(Tretista*) = {
       FUN_0804d804,
       tretista_0804d8e8,
   };
   (sDeads[p->mode[1]])(p);
 }
+
+static void FUN_0804d804(Tretista* p) {
+  StepPaletteAnimation(73);
+  StepPaletteAnimation(74);
+  StepPaletteAnimation(75);
+  StepPaletteAnimation(76);
+
+  switch (p->mode[2]) {
+    case 0: {
+      if ((gStageRun.missionStatus & MISSION_STAY) && !(gStageRun.vm.active & VM_ACTIVE)) {
+        gStageRun.missionStatus &= ~MISSION_STAY;
+        gStageRun.missionStatus |= MISSION_SUCCESS;
+      }
+      SetSpriteAnimation(p, MOTION(DM171_TRETISTA, 37));
+      p->flags |= DISPLAY;
+      (p->spr).yflip = FALSE, (p->spr).oam.yflip = FALSE;
+      p->flags &= ~Y_FLIP;
+      EXIT_BODY(p);
+      (&p->d)->x = (&p->d)->y = 0;
+      p->work[2] = 1;
+      p->mode[2]++;
+      FALLTHROUGH;
+    }
+    case 1: {
+      UpdateSpriteAnimation(p);
+      if (p->work[2] > 0 && --(p->work[2]) == 0) p->mode[2]++;
+      break;
+    }
+    case 2: {
+      p->mode[1] = 1, p->mode[2] = 0;
+      break;
+    }
+  }
+}
+
+NAKED static void tretista_0804d8e8(Tretista* p) { INCCODE("asm/wip/tretista_0804d8e8.inc"); }
+
+static bool8 FUN_0804dc8c(Tretista* p) { return TRUE; }
 
 INCASM("asm/boss/tretista.inc");
 
@@ -388,7 +438,7 @@ static const struct Collision sCollisions[13] = {
     },
 };
 
-static const Coords32 sExplosionCoords[2] = {
+static const Coords32 sTretista_ExplosionOffsets[2] = {
     {PIXEL(0), -PIXEL(48)},
     {PIXEL(0), -PIXEL(48)},
-};
+};  // 0x083634E8

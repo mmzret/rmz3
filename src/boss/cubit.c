@@ -105,16 +105,18 @@ bool8 FUN_08052c30(Cubit* p) { return TRUE; }
 
 void cubitMode2(Cubit* p) {
   switch (p->mode[2]) {
-    case 0:
+    case 0: {
       SetSpriteAnimation(p, MOTION(DM176_CUBIT, 2));
       p->mode[2]++;
       FALLTHROUGH;
-    case 1:
+    }
+    case 1: {
       if (!(gStageRun.vm.active & VM_ACTIVE)) {
         p->mode[1] = 3, p->mode[2] = 0;
       }
       UpdateSpriteAnimation(p);
       break;
+    }
   }
 }
 

@@ -160,8 +160,6 @@ static void OmegaWhite_Disappear(Omega1* p) {
 }
 
 static void omegaWhite_0803e148(Omega1* p) {
-  Coords32* velocity;
-
   StepPaletteAnimation(11);
   switch (p->mode[2]) {
     case 0: {
@@ -171,8 +169,7 @@ static void omegaWhite_0803e148(Omega1* p) {
       }
       PlaySound(SE_OMEGA1_DEATH);
       EXIT_BODY(p);
-      velocity = &p->d;
-      velocity->x = velocity->y = 0;
+      (&p->d)->x = (&p->d)->y = 0;
       p->work[2] = 90;
       p->mode[2]++;
       FALLTHROUGH;

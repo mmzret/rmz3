@@ -63,7 +63,7 @@
 
 #define METATILE_SIZE 16
 
-#define MOTION(id, idx) ((id << 8) | idx)
+#define MOTION(id, idx) ((id << 8) | (idx))
 #define GAMEMODE(m0, m1, m2, m3) ((m3 << 24) | (m2 << 16) | (m1 << 8) | m0)
 
 #define PLTTDATA(u16val) {u16val & 0x1F, (u16val >> 5) & 0x1F, (u16val >> 10) & 0x1F, (u16val >> 15) & 0x1}

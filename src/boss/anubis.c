@@ -1,12 +1,14 @@
+#include "boss/anubis.h"
+
 #include "boss.h"
 #include "collision.h"
 #include "global.h"
 
 INCASM("asm/boss/anubis.inc");
 
-void Anubis_Init(struct Boss* p);
-void Anubis_Update(struct Boss* p);
-void Anubis_Die(struct Boss* p);
+void Anubis_Init(Anubis* p);
+void Anubis_Update(Anubis* p);
+void Anubis_Die(Anubis* p);
 
 // clang-format off
 const BossRoutine gAnubisRoutine = {
@@ -20,10 +22,10 @@ const BossRoutine gAnubisRoutine = {
 
 // --------------------------------------------
 
-void nop_080503c8(struct Boss* p);
+void nop_080503c8(Anubis* p);
 
 // clang-format off
-static const BossFunc sUpdates1[11] = {
+static void (*const sUpdates1[11])(Anubis*) = {
     nop_080503c8,
     nop_080503c8,
     nop_080503c8,
@@ -38,20 +40,20 @@ static const BossFunc sUpdates1[11] = {
 };
 // clang-format on
 
-void anubisMode0(struct Boss* p);
-void anubisNeutral(struct Boss* p);
-void anubisMode2(struct Boss* p);
-void anubisMode3(struct Boss* p);
-void anubisMode4(struct Boss* p);
-void anubisMode5(struct Boss* p);
-void anubisMode6(struct Boss* p);
-void anubisMode7(struct Boss* p);
-void anubisMode8(struct Boss* p);
-void FUN_08050e44(struct Boss* p);
-void anubis_08050f38(struct Boss* p);
+void anubisMode0(Anubis* p);
+void anubisNeutral(Anubis* p);
+void anubisMode2(Anubis* p);
+void anubisMode3(Anubis* p);
+void anubisMode4(Anubis* p);
+void anubisMode5(Anubis* p);
+void anubisMode6(Anubis* p);
+void anubisMode7(Anubis* p);
+void anubisMode8(Anubis* p);
+void FUN_08050e44(Anubis* p);
+void anubis_08050f38(Anubis* p);
 
 // clang-format off
-static const BossFunc sUpdates2[11] = {
+static void (*const sUpdates2[11])(Anubis*) = {
     anubisMode0,
     anubisNeutral,
     anubisMode2,
@@ -66,12 +68,10 @@ static const BossFunc sUpdates2[11] = {
 };
 // clang-format on
 
-// --------------------------------------------
+void anubis_08051018(Anubis* p);
+void anubis_080510f0(Anubis* p);
 
-void anubis_08051018(struct Boss* p);
-void anubis_080510f0(struct Boss* p);
-
-static const BossFunc sDeads[2] = {
+static void (*const sDeads[2])(Anubis*) = {
     anubis_08051018,
     anubis_080510f0,
 };

@@ -3,30 +3,35 @@
 #include "gfx.h"
 #include "global.h"
 #include "overworld.h"
+#include "projectile/blazin_tail.h"
 #include "sound.h"
 #include "zero.h"
 
-static const BossFunc sUpdates1[12];
-static const BossFunc sUpdates2[12];
+typedef struct {
+  COLLISION_OBJECT_HDR;  // 0x00
+  u8 unk_b4[16];         // 0xB4
+  BlazinTail* tail;      // 0xC4
+  u16 anim_c8;           // 0xC8
+  u8 unk_ca[26];         // 0xC8
+} Blazin;
+static_assert(sizeof(Blazin) == sizeof(Boss));
 
-bool8 FUN_0803ffc0(struct Boss* p);
-
-static void Blazin_Init(struct Boss* p);
-static void Blazin_Update(struct Boss* p);
-static void Blazin_Die(struct Boss* p);
+static void Blazin_Init(Blazin* p);
+static void Blazin_Update(Blazin* p);
+static void Blazin_Die(Blazin* p);
 
 // clang-format off
 const BossRoutine gBlazinRoutine = {
-    [ENTITY_INIT] =      (BossFunc)Blazin_Init,
-    [ENTITY_UPDATE] =    (BossFunc)Blazin_Update,
-    [ENTITY_DIE] =       (BossFunc)Blazin_Die,
-    [ENTITY_DISAPPEAR] = (BossFunc)DeleteBoss,
-    [ENTITY_EXIT] =      (BossFunc)DeleteEntity,
+    [ENTITY_INIT] =      (void*)Blazin_Init,
+    [ENTITY_UPDATE] =    (void*)Blazin_Update,
+    [ENTITY_DIE] =       (void*)Blazin_Die,
+    [ENTITY_DISAPPEAR] = (void*)DeleteBoss,
+    [ENTITY_EXIT] =      (void*)DeleteEntity,
 };
 // clang-format on
 
-struct Entity* CreateBlazin(Coords32* c, u8 n) {
-  struct Entity* p = AllocEntityLast(gBossHeaderPtr);
+Blazin* Unused_CreateBlazin(Coords32* c, u8 n) {
+  Blazin* p = AllocEntityLast(gBossHeaderPtr);
   if (p != NULL) {
     INIT_BOSS_ROUTINE(p, BOSS_BLAZIN);
     p->coord = *c;
@@ -35,7 +40,7 @@ struct Entity* CreateBlazin(Coords32* c, u8 n) {
   return p;
 }
 
-NAKED static void Blazin_Init(struct Boss* p) {
+NAKED static void Blazin_Init(Blazin* p) {
   asm(".syntax unified\n\
 	push {r4, r5, r6, r7, lr}\n\
 	adds r5, r0, #0\n\
@@ -188,72 +193,71 @@ _0803E9EC: .4byte gBossFnTable\n\
  .syntax divided\n");
 }
 
-// --------------------------------------------
+static bool8 nop_0803ee2c(Blazin* _);
+static bool8 FUN_0803ee8c(Blazin* _);
+static bool8 FUN_0803ef64(Blazin* _);
+bool8 true_0803efc4(Blazin* _);
+bool8 nop_0803f280(Blazin* _);
+bool8 FUN_0803f3fc(Blazin* _);
+bool8 nop_0803f538(Blazin* _);
+bool8 nop_0803f710(Blazin* _);
+bool8 FUN_0803f9a8(Blazin* _);
+bool8 FUN_0803f9c0(Blazin* _);
+bool8 FUN_0803fc70(Blazin* _);
+bool8 FUN_0803fd58(Blazin* _);
 
-static bool8 nop_0803ee2c(struct Boss* _);
-bool8 FUN_0803ee8c(struct Boss* _);
-bool8 FUN_0803ef64(struct Boss* _);
-bool8 true_0803efc4(struct Boss* _);
-bool8 nop_0803f280(struct Boss* _);
-bool8 FUN_0803f3fc(struct Boss* _);
-bool8 nop_0803f538(struct Boss* _);
-bool8 nop_0803f710(struct Boss* _);
-bool8 FUN_0803f9a8(struct Boss* _);
-bool8 FUN_0803f9c0(struct Boss* _);
-bool8 FUN_0803fc70(struct Boss* _);
-bool8 FUN_0803fd58(struct Boss* _);
-
-// clang-format off
-static const BossFunc sUpdates1[12] = {
-    (BossFunc)nop_0803ee2c,
-    (BossFunc)FUN_0803ee8c,
-    (BossFunc)FUN_0803ef64,
-    (BossFunc)true_0803efc4,
-    (BossFunc)nop_0803f280,
-    (BossFunc)FUN_0803f3fc,
-    (BossFunc)nop_0803f538,
-    (BossFunc)nop_0803f710,
-    (BossFunc)FUN_0803f9a8,
-    (BossFunc)FUN_0803f9c0,
-    (BossFunc)FUN_0803fc70,
-    (BossFunc)FUN_0803fd58,
-};
-// clang-format on
-
-void blazinMode0(struct Boss* p);
-void blazinMode1(struct Boss* p);
-void blazinMode2(struct Boss* p);
-void blazinNeutral(struct Boss* p);
-void blazinMode4(struct Boss* p);
-void blazinMode5(struct Boss* p);
-void blazinMode6(struct Boss* p);
-void blazinMode7(struct Boss* p);
-void blazinMode8(struct Boss* p);
-void blazinEX(struct Boss* p);
-void blazinMode10(struct Boss* p);
-void blazinKnockBackDamage(struct Boss* p);
-
-// clang-format off
-static const BossFunc sUpdates2[12] = {
-    blazinMode0,
-    blazinMode1,
-    blazinMode2,
-    blazinNeutral,
-    blazinMode4,
-    blazinMode5,
-    blazinMode6,
-    blazinMode7,
-    blazinMode8,
-    blazinEX,
-    blazinMode10,
-    blazinKnockBackDamage,
-};
-// clang-format on
+void blazinMode0(Blazin* p);
+void blazinMode1(Blazin* p);
+void blazinMode2(Blazin* p);
+void blazinNeutral(Blazin* p);
+void blazinMode4(Blazin* p);
+void blazinMode5(Blazin* p);
+void blazinMode6(Blazin* p);
+void blazinMode7(Blazin* p);
+void blazinMode8(Blazin* p);
+void blazinEX(Blazin* p);
+void blazinMode10(Blazin* p);
+void blazinKnockBackDamage(Blazin* p);
 
 u32 blazin_0803fed8(void* p);
+static bool8 FUN_0803ffc0(Blazin* p);
 
-static void Blazin_Update(struct Boss* p) {
-  if (((p->body).status & BODY_STATUS_DEAD || (p->body).hp == 0) && !(gStageRun.missionStatus & 8)) {
+static void Blazin_Update(Blazin* p) {
+  // clang-format off
+  static bool8 (*const sUpdates1[12])(Blazin*) = {
+      nop_0803ee2c,
+      FUN_0803ee8c,
+      FUN_0803ef64,
+      true_0803efc4,
+      nop_0803f280,
+      FUN_0803f3fc,
+      nop_0803f538,
+      nop_0803f710,
+      FUN_0803f9a8,
+      FUN_0803f9c0,
+      FUN_0803fc70,
+      FUN_0803fd58,
+  };
+  // clang-format on
+
+  // clang-format off
+  static void (*const sUpdates2[12])(Blazin*) = {
+      blazinMode0,
+      blazinMode1,
+      blazinMode2,
+      blazinNeutral,
+      blazinMode4,
+      blazinMode5,
+      blazinMode6,
+      blazinMode7,
+      blazinMode8,
+      blazinEX,
+      blazinMode10,
+      blazinKnockBackDamage,
+  };
+  // clang-format on
+
+  if (((p->body).status & BODY_STATUS_DEAD || (p->body).hp == 0) && !(gStageRun.missionStatus & MISSION_PLAYER_DEAD)) {
     SET_BOSS_ROUTINE(p, ENTITY_DIE);
     PlaySound(SE_BLAZIN_DEATH);
     if ((p->body).status & BODY_STATUS_SLASHED) {
@@ -263,12 +267,11 @@ static void Blazin_Update(struct Boss* p) {
     }
     Blazin_Die(p);
   } else {
-    struct Projectile** tailSlot = (struct Projectile**)((u8*)p + 0xc4);
-    struct Projectile* tail = *tailSlot;
-    if (tail != NULL && (tail->s).mode[0] > 1) {
-      *tailSlot = NULL;
+    BlazinTail* tail = p->tail;
+    if (tail != NULL && tail->mode[0] > ENTITY_UPDATE) {
+      p->tail = NULL;
       FUN_0803ffc0(p);
-      *(u16*)((u8*)p + 0xc8) = 0x15;
+      p->anim_c8 = 21;
     }
     sUpdates1[p->mode[1]](p);
     blazin_0803fed8(p);
@@ -276,21 +279,18 @@ static void Blazin_Update(struct Boss* p) {
   }
 }
 
-// --------------------------------------------
+static void blazinDeath0(Blazin* p);
+static void blazinDeath1(Blazin* p);
 
-static void blazinDeath0(struct Boss* p);
-static void blazinDeath1(struct Boss* p);
-
-static void Blazin_Die(struct Boss* p) {
-  static const BossFunc sDeads[2] = {
+static void Blazin_Die(Blazin* p) {
+  static void (*const sDeads[2])(Blazin*) = {
       blazinDeath0,
       blazinDeath1,
   };
   (sDeads[p->mode[1]])(p);
 }
 
-static void blazinDeath0(struct Boss* p) {
-  Coords32* velocity;
+static void blazinDeath0(Blazin* p) {
   switch (p->mode[2]) {
     case 0: {
       if ((gStageRun.missionStatus & MISSION_STAY) && !(gStageRun.vm.active & VM_ACTIVE)) {
@@ -300,8 +300,7 @@ static void blazinDeath0(struct Boss* p) {
       if (isSoundPlaying(SE_COPYX_FIRESHOT)) StopSound(SE_COPYX_FIRESHOT);
       if (isSoundPlaying(SE_BLAZIN_EX)) StopSound(SE_BLAZIN_EX);
       EXIT_BODY(p);
-      velocity = &p->d;
-      velocity->x = velocity->y = 0;
+      (&p->d)->x = (&p->d)->y = 0;
       p->work[2] = 1;
       p->mode[2]++;
       FALLTHROUGH;
@@ -323,7 +322,7 @@ static void blazinDeath0(struct Boss* p) {
   }
 }
 
-NAKED static void blazinDeath1(struct Boss* p) {
+NAKED static void blazinDeath1(Blazin* p) {
   asm(".syntax unified\n\
 	push {r4, lr}\n\
 	sub sp, #8\n\
@@ -660,108 +659,104 @@ _0803EE28: .4byte gStageRun\n\
 
 // --------------------------------------------
 
-static bool8 nop_0803ee2c(struct Boss* _) { return TRUE; }
+static bool8 nop_0803ee2c(Blazin* _) { return TRUE; }
 
-void blazinMode0(struct Boss* p) {
+void blazinMode0(Blazin* p) {
   switch (p->mode[2]) {
     case 0:
-      p->flags |= 1;
-      SetSpriteAnimation(p, (motion_t)((*(u16*)((u8*)p + 0xc8) + 0x15) | 0xA200));
+      p->flags |= DISPLAY;
+      SetSpriteAnimation(p, MOTION(DM162_BLAZIN, p->anim_c8 + 21));
       p->mode[2]++;
       FALLTHROUGH;
     case 1:
       UpdateSpriteAnimation(p);
-      if ((p->scriptEntity)->flags & 1) {
+      if ((p->scriptEntity)->flags & (1 << 0)) {
         p->mode[1] = 1, p->mode[2] = 0;
       }
       break;
   }
 }
 
-bool8 FUN_0803ee8c(struct Boss* _) { return TRUE; }
+static bool8 FUN_0803ee8c(Blazin* _) { return TRUE; }
 
 INCASM("asm/boss/blazin_a.inc");
 
-bool8 FUN_0803ef64(struct Boss* _) { return TRUE; }
+static bool8 FUN_0803ef64(Blazin* _) { return TRUE; }
 
-struct Projectile* createBlazinTail(struct Entity* e, s32 hp);
-
-void blazinMode2(struct Boss* p) {
-  struct Projectile** tailSlot;
+void blazinMode2(Blazin* p) {
   switch (p->mode[2]) {
-    case 0:
-      tailSlot = (struct Projectile**)((u8*)p + 0xc4);
-      *tailSlot = NULL;
-      *tailSlot = createBlazinTail((void*)p, 2);
-      SetSpriteAnimation(p, (motion_t)(*(u16*)((u8*)p + 0xc8) | 0xA200));
+    case 0: {
+      p->tail = NULL;
+      p->tail = createBlazinTail((void*)p, 2);
+      SetSpriteAnimation(p, MOTION(DM162_BLAZIN, p->anim_c8));
       p->mode[2]++;
       FALLTHROUGH;
-    case 1:
+    }
+    case 1: {
       if (!(gStageRun.vm.active & VM_ACTIVE)) p->mode[1] = 3, p->mode[2] = 0;
       UpdateSpriteAnimation(p);
       break;
+    }
   }
 }
 
-bool8 true_0803efc4(struct Boss* _) { return TRUE; }
+bool8 true_0803efc4(Blazin* _) { return TRUE; }
 
 INCASM("asm/boss/blazin_b.inc");
 
-bool8 nop_0803f280(struct Boss* _) { return TRUE; }
+bool8 nop_0803f280(Blazin* _) { return TRUE; }
 
 INCASM("asm/boss/blazin_c.inc");
 
-bool8 FUN_0803f3fc(struct Boss* _) { return TRUE; }
+bool8 FUN_0803f3fc(Blazin* _) { return TRUE; }
 
 INCASM("asm/boss/blazin_d.inc");
 
-bool8 nop_0803f538(struct Boss* _) { return TRUE; }
+bool8 nop_0803f538(Blazin* _) { return TRUE; }
 
 INCASM("asm/boss/blazin_e.inc");
 
-bool8 nop_0803f710(struct Boss* _) { return TRUE; }
+bool8 nop_0803f710(Blazin* _) { return TRUE; }
 
 INCASM("asm/boss/blazin_f.inc");
 
-bool8 FUN_0803f9a8(struct Boss* _) { return TRUE; }
+bool8 FUN_0803f9a8(Blazin* _) { return TRUE; }
 
-void blazinMode8(struct Boss* p) {
+void blazinMode8(Blazin* p) {
   if (p->mode[2] == 0) p->mode[2] = 1;
 }
 
-bool8 FUN_0803f9c0(struct Boss* _) { return TRUE; }
+bool8 FUN_0803f9c0(Blazin* _) { return TRUE; }
 
 INCASM("asm/boss/blazin_g.inc");
 
-bool8 FUN_0803fc70(struct Boss* _) { return TRUE; }
+bool8 FUN_0803fc70(Blazin* _) { return TRUE; }
 
 INCASM("asm/boss/blazin_h.inc");
 
-bool8 FUN_0803fd58(struct Boss* _) { return TRUE; }
+bool8 FUN_0803fd58(Blazin* _) { return TRUE; }
 
 INCASM("asm/boss/blazin_i.inc");
 
 struct Enemy* FUN_0809c430(struct Entity* e, Coords32* c);
 
-bool8 FUN_0803ffc0(struct Boss* p) {
+static bool8 FUN_0803ffc0(Blazin* p) {
   Coords32 c;
-  c.x = p->coord.x;
-  c.y = p->coord.y;
-  FUN_0809c430((struct Entity*)p, &c);
+  c.x = (p->coord).x;
+  c.y = (p->coord).y;
+  FUN_0809c430((void*)p, &c);
   return TRUE;
 }
 
 INCASM("asm/boss/blazin_j.inc");
 
-s32 howFarBlazin(struct Boss* p) {
-  s32 zx = (pZero2->s).coord.x;
-  s32 sx = p->coord.x;
+s32 howFarBlazin(Blazin* p) {
+  s32 zx = ((pZero2->s).coord).x;
+  s32 sx = (p->coord).x;
   s32 d = zx - sx;
-  if (d <= 0) {
-    d = sx - zx;
-  }
-  if (d <= 0x4eff) return 0;
-  if (d <= 0x8eff) return 1;
+  if (d <= 0) d = sx - zx;
+  if (d < PIXEL(79)) return 0;
+  if (d < PIXEL(143)) return 1;
   return 2;
 }
 

@@ -1500,7 +1500,6 @@ void zeroDoor2D(struct Zero* z) {
 // 0x0802c168
 static void door2D_0(struct Zero* z) {
   struct Zero_b4* b4;
-  Coords32* velocity;
 
   if (z->unk_b4.prevMode == 0) {
     SetSpriteAnimation(z, MOTION(DM002_ZERO_RUN, 0));  // Ground
@@ -1519,11 +1518,7 @@ static void door2D_0(struct Zero* z) {
   z->rodID = 0xFF;
   z->unk_12e = 0xFF;
   z->unk_127 = 0xFF;
-
-  velocity = &(z->s).d;
-  velocity->y = 0;
-  velocity->x = 0;
-
+  (&(z->s).d)->x = (&(z->s).d)->y = 0;
   (z->s).mode[2] = 1;
   door2D_1(z);
 }

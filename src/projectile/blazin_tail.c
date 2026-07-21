@@ -1,23 +1,16 @@
+#include "projectile/blazin_tail.h"
+
 #include "collision.h"
 #include "global.h"
 #include "projectile.h"
 
-struct BlazinTail {
-  COLLISION_OBJECT_HDR;
-  // props (16bytes, offset: 0xB4..)
-  s32 hp;        // 0xB4
-  s32 xflip;     // 0xB8
-  u8 unk_bc[8];  // 0xBC
-};
-static_assert(sizeof(struct BlazinTail) == sizeof(struct Projectile));
-
 static const struct Collision sCollisions[2];
 
-static void BlazinTail_Init(struct BlazinTail* p);
-static void BlazinTail_Update(struct BlazinTail* p);
-static void BlazinTail_Die(Object* p);
+static void BlazinTail_Init(BlazinTail* p);
+static void BlazinTail_Update(BlazinTail* p);
+static void BlazinTail_Die(BlazinTail* p);
 
-static void onCollision(struct Body* body, Coords32* r1 UNUSED, Coords32* r2 UNUSED);
+static void BlazinTail_OnCollision(struct Body* body, Coords32* r1 UNUSED, Coords32* r2 UNUSED);
 
 // clang-format off
 const ProjectileRoutine gBlazinTailRoutine = {
@@ -31,85 +24,85 @@ const ProjectileRoutine gBlazinTailRoutine = {
 
 // --------------------------------------------
 
-struct Projectile* createBlazinTail(struct Entity* e, s32 hp) {
-  struct BlazinTail* p = AllocEntityLast(gProjectileHeaderPtr);
+BlazinTail* createBlazinTail(struct Entity* e, s32 hp) {
+  BlazinTail* p = AllocEntityLast(gProjectileHeaderPtr);
   if (p != NULL) {
     INIT_PROJECTILE_ROUTINE(p, 10);
     p->work[0] = 0;
     p->unk_28 = e;
     p->hp = hp;
   }
-  return (struct Projectile*)p;
+  return p;
 }
 
 // --------------------------------------------
 
-static void BlazinTail_Init(struct BlazinTail* p) {
+static void BlazinTail_Init(BlazinTail* p) {
   p->flags |= FLIPABLE;
-  INIT_BODY(p, &sCollisions[0], *((s16*)&p->hp), onCollision);
+  INIT_BODY(p, &sCollisions[0], *((s16*)&p->hp), BlazinTail_OnCollision);
   SET_PROJECTILE_ROUTINE(p, ENTITY_UPDATE);
   p->mode[1] = 0, p->mode[2] = 0, p->mode[3] = 0;
   BlazinTail_Update(p);
 }
 
-// --------------------------------------------
+static void FUN_0809f140(BlazinTail* p);
 
-static void FUN_0809f140(struct Projectile* p);
-
-static void BlazinTail_Update(struct BlazinTail* p) {
-  static const EntityFunc sUpdates[1] = {
-      (void*)FUN_0809f140,
+static void BlazinTail_Update(BlazinTail* p) {
+  static void (*const sUpdates[1])(BlazinTail*) = {
+      FUN_0809f140,
   };
 
   if ((p->body).hp < 1) {
     SET_PROJECTILE_ROUTINE(p, ENTITY_DIE);
-    BlazinTail_Die((void*)p);
+    BlazinTail_Die(p);
     return;
   }
   p->xflip = ((p->unk_28)->flags & X_FLIP) ? 1 : 0;
-  (sUpdates[p->mode[1]])((void*)p);
+  (sUpdates[p->mode[1]])(p);
 }
 
-// --------------------------------------------
-
-static void BlazinTail_Die(Object* p) {
+static void BlazinTail_Die(BlazinTail* p) {
   EXIT_BODY(p);
   SET_PROJECTILE_ROUTINE(p, ENTITY_EXIT);
 }
 
 // --------------------------------------------
 
-static void FUN_0809f140(struct Projectile* p) {
-  if (((p->s).unk_28)->mode[0] > 1) {
+static void FUN_0809f140(BlazinTail* p) {
+  if ((p->unk_28)->mode[0] > 1) {
     SET_PROJECTILE_ROUTINE(p, ENTITY_DIE);
     return;
   }
-  switch ((p->s).mode[2]) {
-    case 0:
+
+  switch (p->mode[2]) {
+    case 0: {
       SetDDP(&p->body, &sCollisions[1]);
-      (p->s).mode[2]++;
-      // fallthrough
-    case 1:
-      SET_XFLIP(p, (((p->s).unk_28)->flags >> 4) & 1);
-      (p->s).coord.x = ((p->s).unk_28)->coord.x;
-      (p->s).coord.y = ((p->s).unk_28)->coord.y;
-      if (((p->s).unk_28)->mode[1] == 9) {
+      p->mode[2]++;
+      FALLTHROUGH;
+    }
+    case 1: {
+      SET_XFLIP(p, ((p->unk_28)->flags & X_FLIP) != 0);
+      (p->coord).x = ((p->unk_28)->coord).x;
+      (p->coord).y = ((p->unk_28)->coord).y;
+      if ((p->unk_28)->mode[1] == 9) {
         SetDDP(&p->body, &sCollisions[0]);
-        (p->s).mode[2]++;
+        p->mode[2]++;
       }
       break;
-    case 2:
-      SET_XFLIP(p, (((p->s).unk_28)->flags >> 4) & 1);
-      (p->s).coord.x = ((p->s).unk_28)->coord.x;
-      (p->s).coord.y = ((p->s).unk_28)->coord.y;
-      if (((p->s).unk_28)->mode[1] != 9) {
-        (p->s).mode[2] = 0;
+    }
+    case 2: {
+      SET_XFLIP(p, ((p->unk_28)->flags & X_FLIP) != 0);
+      (p->coord).x = ((p->unk_28)->coord).x;
+      (p->coord).y = ((p->unk_28)->coord).y;
+      if ((p->unk_28)->mode[1] != 9) {
+        p->mode[2] = 0;
       }
       break;
+    }
   }
 }
 
-NAKED static void onCollision(struct Body* body, Coords32* r1 UNUSED, Coords32* r2 UNUSED) {
+NAKED static void BlazinTail_OnCollision(struct Body* body, Coords32* r1 UNUSED, Coords32* r2 UNUSED) {
   asm(".syntax unified\n\
 	push {lr}\n\
 	movs r3, #0\n\

@@ -3,107 +3,96 @@
 #include "projectile.h"
 
 // Hanumachine
+typedef struct {
+  COLLISION_OBJECT_HDR;
+  u8 buffer[16];  // 0xB4
+} Projectile36;
+static_assert(sizeof(Projectile36) == sizeof(struct Projectile));
 
-static const ProjectileFunc sInitializers[4];
-static const ProjectileFunc sUpdates[4];
+void Projectile36_Init(Projectile36* p);
+void Projectile36_Update(Projectile36* p);
+void Projectile36_Die(Projectile36* p);
+
+// clang-format off
+const ProjectileRoutine gProjectile36Routine = {
+    [ENTITY_INIT] =      (void*)Projectile36_Init,
+    [ENTITY_UPDATE] =    (void*)Projectile36_Update,
+    [ENTITY_DIE] =       (void*)Projectile36_Die,
+    [ENTITY_DISAPPEAR] = (void*)DeleteProjectile,
+    [ENTITY_EXIT] =      (void*)DeleteEntity,
+};
+// clang-format on
 
 void hanu_080ad598(struct Entity* e, u8 a1, u8 a2) {
-  struct Projectile* p = (struct Projectile*)AllocEntityLast(gProjectileHeaderPtr);
+  Projectile36* p = AllocEntityLast(gProjectileHeaderPtr);
   if (p != NULL) {
     INIT_PROJECTILE_ROUTINE(p, 36);
-    (p->s).work[0] = a1;
-    (p->s).work[1] = a2;
-    (p->s).unk_28 = e;
-    (p->s).coord = e->coord;
+    p->work[0] = a1, p->work[1] = a2;
+    p->unk_28 = e;
+    p->coord = e->coord;
   }
 }
 
 void FUN_080ad5f0(struct Entity* e, u8 a1, u8 a2) {
-  struct Projectile* p = (struct Projectile*)AllocEntityLast(gProjectileHeaderPtr);
+  Projectile36* p = AllocEntityLast(gProjectileHeaderPtr);
   if (p != NULL) {
     INIT_PROJECTILE_ROUTINE(p, 36);
-    (p->s).work[0] = a1;
-    (p->s).work[1] = a2;
-    (p->s).unk_28 = e;
-    (p->s).coord = e->coord;
+    p->work[0] = a1, p->work[1] = a2;
+    p->unk_28 = e;
+    p->coord = e->coord;
   }
 }
 
-void Projectile36_Init(struct Projectile* p) {
-  (sInitializers[(p->s).work[0]])(p);
+void FUN_080ad698(Projectile36* p);
+void FUN_080ad7d0(Projectile36* p);
+void FUN_080ad8b8(Projectile36* p);
+void FUN_080ad994(Projectile36* p);
+
+void Projectile36_Init(Projectile36* p) {
+  static void (*const sInitializers[4])(Projectile36*) = {
+      FUN_080ad698,
+      FUN_080ad7d0,
+      FUN_080ad8b8,
+      FUN_080ad994,
+  };
+  (sInitializers[p->work[0]])(p);
 }
 
+void FUN_080ad778(Projectile36* p);
+void FUN_080ad840(Projectile36* p);
+void FUN_080ad958(Projectile36* p);
+void FUN_080ada50(Projectile36* p);
 
-void Projectile36_Update(struct Projectile* p) {
-  (sUpdates[(p->s).work[0]])(p);
+void Projectile36_Update(Projectile36* p) {
+  static void (*const sUpdates[4])(Projectile36*) = {
+      FUN_080ad778,
+      FUN_080ad840,
+      FUN_080ad958,
+      FUN_080ada50,
+  };
+  (sUpdates[p->work[0]])(p);
 }
 
-void Projectile36_Die(struct Projectile* p) {
-  (p->s).flags &= ~DISPLAY;
+void Projectile36_Die(Projectile36* p) {
+  p->flags &= ~DISPLAY;
   SET_PROJECTILE_ROUTINE(p, ENTITY_EXIT);
 }
 
 INCASM("asm/projectile/unk_36_a.inc");
 
-void FUN_080ad958(struct Projectile* p) {
+void FUN_080ad958(Projectile36* p) {
   UpdateSpriteAnimation(p);
-  (p->s).work[2] += (p->s).work[3];
-  (p->s).angle = (p->s).work[2];
-  if ((p->s).motion.state == 3) {
-    SET_PROJECTILE_ROUTINE(p, ENTITY_DIE);
-  }
+  p->work[2] += p->work[3];
+  p->angle = p->work[2];
+  if (IsSpriteAnimEnd(p)) SET_PROJECTILE_ROUTINE(p, ENTITY_DIE);
 }
 
 INCASM("asm/projectile/unk_36_b.inc");
 
-void FUN_080ada50(struct Projectile* p) {
+void FUN_080ada50(Projectile36* p) {
   UpdateSpriteAnimation(p);
-  if ((p->s).motion.state == 3) {
-    SET_PROJECTILE_ROUTINE(p, ENTITY_DIE);
-  }
+  if (IsSpriteAnimEnd(p)) SET_PROJECTILE_ROUTINE(p, ENTITY_DIE);
 }
-
-void Projectile36_Init(struct Projectile* p);
-void Projectile36_Update(struct Projectile* p);
-void Projectile36_Die(struct Projectile* p);
-
-// clang-format off
-const ProjectileRoutine gProjectile36Routine = {
-    [ENTITY_INIT] =      Projectile36_Init,
-    [ENTITY_UPDATE] =    Projectile36_Update,
-    [ENTITY_DIE] =       Projectile36_Die,
-    [ENTITY_DISAPPEAR] = (void*)DeleteProjectile,
-    [ENTITY_EXIT] =      (ProjectileFunc)DeleteEntity,
-};
-// clang-format on
-
-// --------------------------------------------
-
-void FUN_080ad698(struct Projectile* p);
-void FUN_080ad7d0(struct Projectile* p);
-void FUN_080ad8b8(struct Projectile* p);
-void FUN_080ad994(struct Projectile* p);
-
-static const ProjectileFunc sInitializers[4] = {
-    FUN_080ad698,
-    FUN_080ad7d0,
-    FUN_080ad8b8,
-    FUN_080ad994,
-};
-
-// --------------------------------------------
-
-void FUN_080ad778(struct Projectile* p);
-void FUN_080ad840(struct Projectile* p);
-void FUN_080ad958(struct Projectile* p);
-void FUN_080ada50(struct Projectile* p);
-
-static const ProjectileFunc sUpdates[4] = {
-    FUN_080ad778,
-    FUN_080ad840,
-    FUN_080ad958,
-    FUN_080ada50,
-};
 
 // --------------------------------------------
 

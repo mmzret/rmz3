@@ -2,17 +2,23 @@
 #include "global.h"
 #include "projectile.h"
 
-static void PhantomProjectile_Init(struct Projectile* p);
-static void PhantomProjectile_Update(struct Projectile* p);
-void PhantomProjectile_Die(struct Projectile* p);
+typedef struct {
+  COLLISION_OBJECT_HDR;  // 0x00
+  u8 unk_b4[16];         // 0xB4
+} PhantomProjectile;
+static_assert(sizeof(PhantomProjectile) == sizeof(struct Projectile));
+
+static void PhantomProjectile_Init(PhantomProjectile* p);
+static void PhantomProjectile_Update(PhantomProjectile* p);
+void PhantomProjectile_Die(PhantomProjectile* p);
 
 // clang-format off
 const ProjectileRoutine gPhantomProjectileRoutine = {
-    [ENTITY_INIT] =      PhantomProjectile_Init,
-    [ENTITY_UPDATE] =    PhantomProjectile_Update,
-    [ENTITY_DIE] =       PhantomProjectile_Die,
+    [ENTITY_INIT] =      (void*)PhantomProjectile_Init,
+    [ENTITY_UPDATE] =    (void*)PhantomProjectile_Update,
+    [ENTITY_DIE] =       (void*)PhantomProjectile_Die,
     [ENTITY_DISAPPEAR] = (void*)DeleteProjectile,
-    [ENTITY_EXIT] =      (ProjectileFunc)DeleteEntity,
+    [ENTITY_EXIT] =      (void*)DeleteEntity,
 };
 // clang-format on
 
@@ -97,16 +103,16 @@ static const struct Collision sCollisions[8] = {
 
 // --------------------------------------------
 
-static void FUN_080af114(struct Projectile* p);
-static void FUN_080af1b4(struct Projectile* p);
-static void FUN_080af214(struct Projectile* p);
-static void FUN_080af250(struct Projectile* p);
-void FUN_080af70c(struct Projectile* p);
-static void FUN_080af2b0(struct Projectile* p);
+static void FUN_080af114(PhantomProjectile* p);
+static void FUN_080af1b4(PhantomProjectile* p);
+static void FUN_080af214(PhantomProjectile* p);
+static void FUN_080af250(PhantomProjectile* p);
+static void FUN_080af70c(PhantomProjectile* p);
+static void FUN_080af2b0(PhantomProjectile* p);
 
-static void PhantomProjectile_Init(struct Projectile* p) {
+static void PhantomProjectile_Init(PhantomProjectile* p) {
   // clang-format off
-  static const ProjectileFunc sInitializers[6] = {
+  static void (*const sInitializers[6])(PhantomProjectile*) = {
     FUN_080af114,
     FUN_080af1b4,
     FUN_080af214,
@@ -115,76 +121,76 @@ static void PhantomProjectile_Init(struct Projectile* p) {
     FUN_080af2b0,
   };
   // clang-format on
-  (sInitializers[(p->s).work[0]])(p);
+  (sInitializers[p->work[0]])(p);
 }
 
-static void FUN_080af114(struct Projectile* p) {
-  if (((p->s).unk_28)->mode[0] > 1) {
-    (p->s).flags &= ~DISPLAY;
-    (p->s).flags &= ~FLIPABLE;
+static void FUN_080af114(PhantomProjectile* p) {
+  if ((p->unk_28)->mode[0] > 1) {
+    p->flags &= ~DISPLAY;
+    p->flags &= ~FLIPABLE;
     EXIT_BODY(p);
     SET_PROJECTILE_ROUTINE(p, ENTITY_DISAPPEAR);
-  } else if (*((u16*)&((p->s).unk_28)->mode[2]) == 0x101) {
+  } else if (*((u16*)&(p->unk_28)->mode[2]) == 0x101) {
     SET_PROJECTILE_ROUTINE(p, ENTITY_UPDATE);
-    (p->s).mode[1] = 0;
+    p->mode[1] = 0;
     EnableSpriteAnimation_Normal(p);
-    (p->s).renderPrio = 25;
-    (p->s).flags |= DISPLAY;
-    (p->s).flags |= FLIPABLE;
+    p->renderPrio = 25;
+    p->flags |= DISPLAY;
+    p->flags |= FLIPABLE;
     SetSpriteAnimation(p, MOTION(SM134_NINJA_STAR, 3));
     PhantomProjectile_Update(p);
   }
 }
 
-static void FUN_080af1b4(struct Projectile* p) {
+static void FUN_080af1b4(PhantomProjectile* p) {
   INIT_BODY(p, &sCollisions[0], 0, NULL);
   SET_PROJECTILE_ROUTINE(p, ENTITY_UPDATE);
-  (p->s).mode[1] = 0;
-  InitRotatableMotion(&p->s);
-  (p->s).flags |= DISPLAY;
-  (p->s).flags |= FLIPABLE;
+  p->mode[1] = 0;
+  InitRotatableMotion((void*)p);
+  p->flags |= DISPLAY;
+  p->flags |= FLIPABLE;
   PhantomProjectile_Update(p);
 }
 
-static void FUN_080af214(struct Projectile* p) {
+static void FUN_080af214(PhantomProjectile* p) {
   SET_PROJECTILE_ROUTINE(p, ENTITY_UPDATE);
-  (p->s).mode[1] = 0;
-  InitRotatableMotion(&p->s);
-  (p->s).flags |= DISPLAY;
-  (p->s).flags |= FLIPABLE;
+  p->mode[1] = 0;
+  InitRotatableMotion((void*)p);
+  p->flags |= DISPLAY;
+  p->flags |= FLIPABLE;
   PhantomProjectile_Update(p);
 }
 
-static void FUN_080af250(struct Projectile* p) {
+static void FUN_080af250(PhantomProjectile* p) {
   INIT_BODY(p, &sCollisions[4], 0, NULL);
   SET_PROJECTILE_ROUTINE(p, ENTITY_UPDATE);
-  (p->s).mode[1] = 0;
+  p->mode[1] = 0;
   EnableSpriteAnimation_Normal(p);
-  (p->s).flags |= DISPLAY;
-  (p->s).flags |= FLIPABLE;
+  p->flags |= DISPLAY;
+  p->flags |= FLIPABLE;
   PhantomProjectile_Update(p);
 }
 
-static void FUN_080af2b0(struct Projectile* p) {
+static void FUN_080af2b0(PhantomProjectile* p) {
   INIT_BODY(p, &sCollisions[6], 0, NULL);
   SET_PROJECTILE_ROUTINE(p, ENTITY_UPDATE);
-  (p->s).flags &= ~DISPLAY;
-  (p->s).flags |= FLIPABLE;
+  p->flags &= ~DISPLAY;
+  p->flags |= FLIPABLE;
   PhantomProjectile_Update(p);
 }
 
 // --------------------------------------------
 
-static void FUN_080af32c(struct Projectile* p);
-void FUN_080af61c(struct Projectile* p);
-void FUN_080af8b0(struct Projectile* p);
-void FUN_080af9b0(struct Projectile* p);
-void FUN_080af748(struct Projectile* p);
-void FUN_080afb1c(struct Projectile* p);
+static void FUN_080af32c(PhantomProjectile* p);
+static void FUN_080af61c(PhantomProjectile* p);
+void FUN_080af8b0(PhantomProjectile* p);
+void FUN_080af9b0(PhantomProjectile* p);
+void FUN_080af748(PhantomProjectile* p);
+void FUN_080afb1c(PhantomProjectile* p);
 
-static void PhantomProjectile_Update(struct Projectile* p) {
+static void PhantomProjectile_Update(PhantomProjectile* p) {
   // clang-format off
-  static const ProjectileFunc sUpdates[6] = {
+  static void (*const sUpdates[6])(PhantomProjectile*) = {
     FUN_080af32c,
     FUN_080af61c,
     FUN_080af8b0,
@@ -193,156 +199,146 @@ static void PhantomProjectile_Update(struct Projectile* p) {
     FUN_080afb1c,
   };
   // clang-format on
-  (sUpdates[(p->s).work[0]])(p);
+  (sUpdates[p->work[0]])(p);
   UpdateSpriteAnimation(p);
 }
 
-void FUN_080af368(struct Projectile* p);
-void FUN_080af3ec(struct Projectile* p);
-void FUN_080af46c(struct Projectile* p);
+void FUN_080af368(PhantomProjectile* p);
+void FUN_080af3ec(PhantomProjectile* p);
+void FUN_080af46c(PhantomProjectile* p);
 
-static void FUN_080af32c(struct Projectile* p) {
-  static const ProjectileFunc PTR_ARRAY_0836d418[3] = {
+static void FUN_080af32c(PhantomProjectile* p) {
+  static void (*const PTR_ARRAY_0836d418[3])(PhantomProjectile*) = {
       FUN_080af368,
       FUN_080af3ec,
       FUN_080af46c,
   };
 
-  if (((p->s).unk_28)->mode[0] >= 2) {
+  if ((p->unk_28)->mode[0] >= 2) {
     SET_PROJECTILE_ROUTINE(p, ENTITY_DIE);
     return;
   }
-  (PTR_ARRAY_0836d418[(p->s).mode[1]])(p);
+  (PTR_ARRAY_0836d418[p->mode[1]])(p);
 }
 
-static const ProjectileFunc PTR_ARRAY_0836d430[2];
-static const ProjectileFunc PTR_ARRAY_0836d438[2];
-static const ProjectileFunc PTR_ARRAY_0836d440[3];
-static const ProjectileFunc PTR_ARRAY_0836d44c[2];
+static void (*const PTR_ARRAY_0836d430[2])(PhantomProjectile*);
+static void (*const PTR_ARRAY_0836d438[2])(PhantomProjectile*);
+static void (*const PTR_ARRAY_0836d440[3])(PhantomProjectile*);
+static void (*const PTR_ARRAY_0836d44c[2])(PhantomProjectile*);
 
 INCASM("asm/projectile/phantom_a.inc");
 
 bool8 FUN_080afdf0(struct Entity* e, struct Coord* a, struct Coord* b, struct Coord* c);
 
-void FUN_080af5cc(struct Projectile* p) {
-  if (FUN_080afdf0((p->s).unk_28, &(p->s).coord, &(p->s).d, &(p->s).unk_coord)) {
-    (p->s).mode[2] = 2;
+void FUN_080af5cc(PhantomProjectile* p) {
+  if (FUN_080afdf0(p->unk_28, &p->coord, &p->d, &p->unk_coord)) {
+    p->mode[2] = 2;
   }
 }
 
 bool8 FUN_080afe38(struct Entity* e, struct Coord* a, struct Coord* b, struct Coord* c);
 
-void FUN_080af5f4(struct Projectile* p) {
-  if (FUN_080afe38((p->s).unk_28, &(p->s).coord, &(p->s).d, &(p->s).unk_coord)) {
-    (p->s).mode[2] = 1;
+void FUN_080af5f4(PhantomProjectile* p) {
+  if (FUN_080afe38(p->unk_28, &p->coord, &p->d, &p->unk_coord)) {
+    p->mode[2] = 1;
   }
 }
 
-void FUN_080af61c(struct Projectile* p) {
-  (PTR_ARRAY_0836d430[(p->s).mode[1]])(p);
-}
+static void FUN_080af61c(PhantomProjectile* p) { (PTR_ARRAY_0836d430[p->mode[1]])((void*)p); }
 
-void FUN_080af65c(struct Projectile* p);
+void FUN_080af65c(PhantomProjectile* p);
 
-void FUN_080af634(struct Projectile* p) {
+void FUN_080af634(PhantomProjectile* p) {
   SetSpriteAnimation(p, MOTION(0x86, 5));
-  (p->s).angle = (p->s).work[2] + 0x20;
-  (p->s).mode[1] = 1;
+  p->angle = p->work[2] + 0x20;
+  p->mode[1] = 1;
   FUN_080af65c(p);
 }
 
 INCASM("asm/projectile/phantom_b.inc");
 
-void FUN_080af70c(struct Projectile* p) {
+static void FUN_080af70c(PhantomProjectile* p) {
   *(u32*)((u8*)p + 0x8c) = 0;
   *(u32*)((u8*)p + 0x90) = 0;
   *(u8*)((u8*)p + 0x94) = 0;
-  (p->s).flags &= ~COLLIDABLE;
+  p->flags &= ~COLLIDABLE;
   SET_PROJECTILE_ROUTINE(p, ENTITY_UPDATE);
-  (p->s).mode[1] = 0;
+  p->mode[1] = 0;
   PhantomProjectile_Update(p);
 }
 
-void FUN_080af748(struct Projectile* p) {
-  (PTR_ARRAY_0836d438[(p->s).mode[1]])(p);
-}
+void FUN_080af748(PhantomProjectile* p) { (PTR_ARRAY_0836d438[p->mode[1]])(p); }
 
 INCASM("asm/projectile/phantom_c.inc");
 
-void FUN_080af8b0(struct Projectile* p) {
-  (PTR_ARRAY_0836d440[(p->s).mode[1]])(p);
-}
+void FUN_080af8b0(PhantomProjectile* p) { (PTR_ARRAY_0836d440[p->mode[1]])(p); }
 
-void FUN_080af8e8(struct Projectile* p);
+void FUN_080af8e8(PhantomProjectile* p);
 
-
-void FUN_080af8c8(struct Projectile* p) {
+void FUN_080af8c8(PhantomProjectile* p) {
   SetSpriteAnimation(p, MOTION(0x86, 5));
-  (p->s).mode[1] = 1;
+  p->mode[1] = 1;
   FUN_080af8e8(p);
 }
 
 INCASM("asm/projectile/phantom_d.inc");
 
-void nop_080af9ac(struct Projectile* p) {}
+void nop_080af9ac(PhantomProjectile* p) {}
 
+void FUN_080af9b0(PhantomProjectile* p) { (PTR_ARRAY_0836d44c[p->mode[1]])(p); }
 
-void FUN_080af9b0(struct Projectile* p) {
-  (PTR_ARRAY_0836d44c[(p->s).mode[1]])(p);
-}
+void FUN_080af9f4(PhantomProjectile* p);
 
-void FUN_080af9f4(struct Projectile* p);
-
-void FUN_080af9c8(struct Projectile* p) {
+void FUN_080af9c8(PhantomProjectile* p) {
   SetSpriteAnimation(p, MOTION(0x86, 2));
-  (p->s).angle = (p->s).work[2] + 0x20;
-  (p->s).mode[1] = 1;
-  (p->s).work[3] = 0;
+  p->angle = p->work[2] + 0x20;
+  p->mode[1] = 1;
+  p->work[3] = 0;
   FUN_080af9f4(p);
 }
 
 INCASM("asm/projectile/phantom_e.inc");
 
-void FUN_080af518(struct Projectile* p);
-void FUN_080af5cc(struct Projectile* p);
-void FUN_080af5f4(struct Projectile* p);
+void FUN_080af518(PhantomProjectile* p);
+void FUN_080af5cc(PhantomProjectile* p);
+void FUN_080af5f4(PhantomProjectile* p);
 
 static const ProjectileFunc PTR_ARRAY_0836d424[3] = {
-    FUN_080af518,
-    FUN_080af5cc,
-    FUN_080af5f4,
+    (void*)FUN_080af518,
+    (void*)FUN_080af5cc,
+    (void*)FUN_080af5f4,
 };
 
-void FUN_080af634(struct Projectile* p);
-void FUN_080af65c(struct Projectile* p);
+void FUN_080af634(PhantomProjectile* p);
+void FUN_080af65c(PhantomProjectile* p);
 
-static const ProjectileFunc PTR_ARRAY_0836d430[2] = {
-    FUN_080af634,
-    FUN_080af65c,
+static void (*const PTR_ARRAY_0836d430[2])(PhantomProjectile*) = {
+    (void*)FUN_080af634,
+    (void*)FUN_080af65c,
 };
 
-void FUN_080af760(struct Projectile* p);
-void FUN_080af7b0(struct Projectile* p);
+void FUN_080af760(PhantomProjectile* p);
+void FUN_080af7b0(PhantomProjectile* p);
 
-static const ProjectileFunc PTR_ARRAY_0836d438[2] = {
+static void (*const PTR_ARRAY_0836d438[2])(PhantomProjectile*) = {
     FUN_080af760,
     FUN_080af7b0,
 };
 
-void FUN_080af8c8(struct Projectile* p);
-void FUN_080af8e8(struct Projectile* p);
-void nop_080af9ac(struct Projectile* p);
+void FUN_080af8c8(PhantomProjectile* p);
+void FUN_080af8e8(PhantomProjectile* p);
+void nop_080af9ac(PhantomProjectile* p);
 
-static const ProjectileFunc PTR_ARRAY_0836d440[3] = {
+static void (*const PTR_ARRAY_0836d440[3])(PhantomProjectile*) = {
     FUN_080af8c8,
     FUN_080af8e8,
     nop_080af9ac,
 };
 
-void FUN_080af9c8(struct Projectile* p);
-void FUN_080af9f4(struct Projectile* p);
+void FUN_080af9c8(PhantomProjectile* p);
+void FUN_080af9f4(PhantomProjectile* p);
 
-static const ProjectileFunc PTR_ARRAY_0836d44c[2] = {
+static void (*const PTR_ARRAY_0836d44c[2])(PhantomProjectile*) = {
     FUN_080af9c8,
     FUN_080af9f4,
 };

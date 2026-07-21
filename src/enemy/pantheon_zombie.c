@@ -1,3 +1,4 @@
+#include "boss/anubis.h"
 #include "collision.h"
 #include "element.h"
 #include "enemy.h"
@@ -18,8 +19,8 @@ static const struct Collision sCollisions[8];
 static const u8 sInitModes[4];
 static const Coords32 sElementCoord;
 
-void PantheonZombie_Init(struct Enemy* p);
-void PantheonZombie_Update(struct Enemy* p);
+void PantheonZombie_Init(PantheonZombie* p);
+void PantheonZombie_Update(PantheonZombie* p);
 void PantheonZombie_Die(PantheonZombie* p);
 
 // clang-format off
@@ -32,10 +33,10 @@ const EnemyRoutine gPantheonZombieRoutine = {
 };
 // clang-format on
 
-void createPantheonZombie(Boss* anubis, s32 x, s32 y) {
+void createPantheonZombie(Anubis* anubis, s32 x, s32 y) {
   PantheonZombie* p = AllocEntityLast(gEnemyHeaderPtr);
   if (p != NULL) {
-    anubis->buffer[23]++;
+    anubis->pzombieCount++;
     INIT_ENEMY_ROUTINE(p, ENEMY_P_ZOMBIE);
     p->work[0] = 0;
     p->unk_28 = (void*)anubis;
@@ -45,7 +46,7 @@ void createPantheonZombie(Boss* anubis, s32 x, s32 y) {
 
 void PantheonZombie_OnCollision(struct Body* body, Coords32* c1, Coords32* c2) {
   PantheonZombie* p = (PantheonZombie*)body->parent;
-  if ((body->hitboxFlags & 0x800) && p->mode[1] != 4) {
+  if ((body->hitboxFlags & BODY_STATUS_BINDING) && p->mode[1] != 4) {
     p->mode[1] = 4, p->mode[2] = 0;
   }
 }
@@ -73,28 +74,29 @@ void FUN_0807fdf8(PantheonZombie* p) {
   }
 }
 
-void PantheonZombie_Init(struct Enemy* p) {
+void PantheonZombie_Init(PantheonZombie* p) {
   SET_ENEMY_ROUTINE(p, ENTITY_UPDATE);
-  (p->s).mode[1] = sInitModes[(p->s).work[0]];
-  (p->s).flags |= FLIPABLE;
-  (p->s).flags |= DISPLAY;
-  InitNonAffineMotion(&p->s);
+  p->mode[1] = sInitModes[p->work[0]];
+  p->flags |= FLIPABLE;
+  p->flags |= DISPLAY;
+  EnableSpriteAnimation_Normal(p);
   INIT_BODY(p, sCollisions, 20, PantheonZombie_OnCollision);
-  *(u32*)&p->buffer[0] = 0;
-  p->buffer[4] = 0;
+  p->elfx = NULL;
+  p->unk_b8 = 0;
   PantheonZombie_Update(p);
 }
 
-void PantheonZombie_Update(struct Enemy* p) {
-  if (*(u32*)((u8*)(p->s).unk_28 + 0xc0) & 0x100) {
+void PantheonZombie_Update(PantheonZombie* p) {
+  Anubis* anubis = (Anubis*)p->unk_28;
+  if (anubis->unk_c0 & 0x100) {
     SET_ENEMY_ROUTINE(p, ENTITY_DIE);
-    (p->s).mode[1] = 1;
-    PantheonZombie_Die((void*)p);
+    p->mode[1] = 1;
+    PantheonZombie_Die(p);
   } else {
     if (FUN_0807fda8((void*)p)) return;
     FUN_0807fdf8((void*)p);
-    (sUpdates1[(p->s).mode[1]])(p);
-    (sUpdates2[(p->s).mode[1]])(p);
+    (sUpdates1[p->mode[1]])((void*)p);
+    (sUpdates2[p->mode[1]])((void*)p);
   }
 }
 
