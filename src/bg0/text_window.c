@@ -1333,7 +1333,7 @@ static void _UpdateTextWindow_3_Unk3(TextWindowText* t) {
 
 extern const u16 TextOfs_System[];
 extern const u16 TextOffsets_OpenSecretDisk[];
-extern const u16 TextOfs_CielChats[];
+extern const u16 TextOfs_ResistanceBase[];
 extern const u16 TextOfs_SpaceCraft[];
 extern const u16 TextOfs_Volcano[];
 extern const u16 TextOfs_OceanHighwayRuins[];
@@ -1357,7 +1357,7 @@ extern const u16 TextOfs_Others[];
 static const u16* const gTextOffsetTable[20] = {
   TextOfs_System,
   TextOffsets_OpenSecretDisk,
-  TextOfs_CielChats,
+  TextOfs_ResistanceBase,
   TextOfs_SpaceCraft,
   TextOfs_Volcano,
   TextOfs_OceanHighwayRuins,
@@ -1380,7 +1380,7 @@ static const u16* const gTextOffsetTable[20] = {
 
 extern const char_t Text_System[];
 extern const char_t Texts_OpenSecretDisk[];
-extern const char_t Text_CielChats[];
+extern const char_t Text_ResistanceBase[];
 extern const char_t Text_SpaceCraft[];
 extern const char_t Text_Volcano[];
 extern const char_t Text_OceanHighwayRuins[];
@@ -1404,7 +1404,7 @@ extern const char_t Text_Others[];
 static const char_t* const gTextTable[20] = {
   [TB_SYSTEM] =    Text_System,
   [TB_OPEN_DISK] = Texts_OpenSecretDisk,
-  [TB_BANK2]     = Text_CielChats,
+  [TB_BANK2]     = Text_ResistanceBase,
   [TB_SPACECRAFT] = Text_SpaceCraft,
     Text_Volcano,
     Text_OceanHighwayRuins,
