@@ -1,178 +1,242 @@
 #include "collision.h"
 #include "enemy.h"
 #include "global.h"
+#include "mod.h"
+#include "score.h"
+#include "story.h"
 #include "vfx.h"
+
+typedef struct {
+  COLLISION_OBJECT_HDR;  // 0x00
+  s32 x_b4;              // 0xB4
+  u8 unk_b8;             // 0xB8
+  u8 unk_b9;             // 0xB9
+  u8 unk_ba;             // 0xBA
+  u8 unk_bb;             // 0xBB
+  Entity* elfx;          // 0xBC, Element FX
+  u8 unk_c0;             // 0xC0
+  u8 unk_c1[3];          // 0xC1
+} PillerCannon;
+static_assert(sizeof(PillerCannon) == sizeof(struct Enemy));
 
 static const struct Collision sCollisions[14];
 static const motion_t sMotions[7];
 
-void PillerCannon_Init(struct Enemy* p);
-void PillerCannon_Update(struct Enemy* p);
-void PillerCannon_Die(struct Enemy* p);
+static void PillerCannon_Init(PillerCannon* p);
+static void PillerCannon_Update(PillerCannon* p);
+static void PillerCannon_Die(PillerCannon* p);
 
 // clang-format off
 const EnemyRoutine gPillerCannonRoutine = {
-    [ENTITY_INIT] =      PillerCannon_Init,
-    [ENTITY_UPDATE] =    PillerCannon_Update,
-    [ENTITY_DIE] =       PillerCannon_Die,
+    [ENTITY_INIT] =      (void*)PillerCannon_Init,
+    [ENTITY_UPDATE] =    (void*)PillerCannon_Update,
+    [ENTITY_DIE] =       (void*)PillerCannon_Die,
     [ENTITY_DISAPPEAR] = (void*)DeleteEnemy,
-    [ENTITY_EXIT] =      (EnemyFunc)DeleteEntity,
+    [ENTITY_EXIT] =      (void*)DeleteEntity,
 };
 // clang-format on
 
-struct Enemy* CreatePillerCannon(Coords32* c, u8 n) {
-  struct Enemy* p = (struct Enemy*)AllocEntityLast(gEnemyHeaderPtr);
+static PillerCannon* Unused_CreatePillerCannon(Coords32* c, u8 n) {
+  PillerCannon* p = AllocEntityLast(gEnemyHeaderPtr);
   if (p != NULL) {
     INIT_ENEMY_ROUTINE(p, ENEMY_PILLER_CANNON);
-    (p->s).coord = *c;
-    (p->s).work[0] = n;
+    p->coord = *c;
+    p->work[0] = n;
   }
   return p;
 }
 
-INCASM("asm/enemy/piller_cannon_a.inc");
+void PillerCannon_OnCollision(struct Body* body, Coords32* c1, Coords32* _ UNUSED);
 
-extern const EnemyFunc sUpdates1[9];
-extern const EnemyFunc sUpdates2[9];
-void FUN_08068f08(struct Enemy* p);
-void PillerCannon_Die(struct Enemy* p);
+static void PillerCannon_Init(PillerCannon* p) {
+  EnableSpriteAnimation_Normal(p);
+  p->flags |= DISPLAY;
+  p->flags |= FLIPABLE;
+  if (FLAG(gSystemSavedata.flags, MOD_PILLER_CANNON) && !FLAG(gCurStory.s.gameflags, DEMO_PLAY)) {
+    _INIT_BODY(p, sCollisions, 12);
+  } else {
+    _INIT_BODY(p, sCollisions, 8);
+  }
+  SET_BODY_INTERSECT_HANDLER(p, PillerCannon_OnCollision);
+  p->x_b4 = (p->coord).x;
+  p->d = p->coord;
+  p->unk_b8 = 0;
+  p->elfx = NULL;
+  p->unk_b9 = 0;
+  p->unk_bb = 0;
+  p->unk_c0 = 0;
+  (p->coord).x += PIXEL(8);
+  if (p->work[0] == 0) {
+    SET_ENEMY_ROUTINE(p, ENTITY_UPDATE);
+    p->mode[1] = 1, p->mode[2] = 0, p->mode[3] = 0;
+  } else {
+    SET_ENEMY_ROUTINE(p, ENTITY_UPDATE);
+    p->mode[1] = 2, p->mode[2] = 0, p->mode[3] = 0;
+  }
+  if (IsFrozen(p)) {
+    SetSpriteAnimation(p, MOTION(SM008_PILLAR_CANNON, 0));
+    UpdateSpriteAnimation(p);
+  }
+  PillerCannon_Update(p);
+}
 
-void PillerCannon_Update(struct Enemy* p) {
-  struct Entity** slot;
-  u8 m;
-  u8* t;
+bool8 FUN_0806860c(PillerCannon* p);
+bool8 FUN_08068614(PillerCannon* p);
+bool8 FUN_080686b0(PillerCannon* p);
+bool8 FUN_08068780(PillerCannon* p);
+bool8 FUN_08068ad8(PillerCannon* p);
+bool8 FUN_08068c84(PillerCannon* p);
+bool8 FUN_08068e60(PillerCannon* p);
+bool8 FUN_08068eb0(PillerCannon* p);
+bool8 FUN_08068eb8(PillerCannon* p);
+
+void FUN_08068610(PillerCannon* p);
+void FUN_08068618(PillerCannon* p);
+void FUN_080686b4(PillerCannon* p);
+void FUN_08068784(PillerCannon* p);
+void FUN_08068adc(PillerCannon* p);
+void FUN_08068c88(PillerCannon* p);
+void FUN_08068e64(PillerCannon* p);
+void FUN_08068eb4(PillerCannon* p);
+void FUN_08068ebc(PillerCannon* p);
+
+void FUN_08068f08(PillerCannon* p);
+
+void PillerCannon_Update(PillerCannon* p) {
+  // clang-format off
+  static bool8 (*const sUpdates1[9])(PillerCannon*) = {
+      FUN_0806860c,
+      FUN_08068614,
+      FUN_080686b0,
+      FUN_08068780,
+      FUN_08068ad8,
+      FUN_08068c84,
+      FUN_08068e60,
+      FUN_08068eb0,
+      FUN_08068eb8,
+  };
+  // clang-format on
+  // clang-format off
+  static void (*const sUpdates2[9])(PillerCannon*) = {
+      FUN_08068610,
+      FUN_08068618,
+      FUN_080686b4,
+      FUN_08068784,
+      FUN_08068adc,
+      FUN_08068c88,
+      FUN_08068e64,
+      FUN_08068eb4,
+      FUN_08068ebc,
+  };
+  // clang-format on
+
   if ((p->body).status & BODY_STATUS_DEAD) {
     SET_ENEMY_ROUTINE(p, ENTITY_DIE);
     PillerCannon_Die(p);
     return;
   }
-  (sUpdates1[(p->s).mode[1]])(p);
+  (sUpdates1[p->mode[1]])(p);
   FUN_08068f08(p);
-  m = (p->s).mode[1];
-  if (m == 6) goto check2;
-  if (m == 8) goto check2;
-  if (IsFrozen(&p->s)) {
-    p->buffer[6] = (p->s).mode[1];
+
+  if (p->mode[1] != 6 && p->mode[1] != 8 && IsFrozen(p)) {
+    p->unk_ba = p->mode[1];
     return;
   }
-check2:
-  slot = (struct Entity**)((u8*)p + 0xbc);
-  if (*slot != NULL) {
-    if (!isKilled(*slot)) {
+  if (p->elfx != NULL) {
+    if (!isKilled(p->elfx)) {
       SetDDP(&p->body, &sCollisions[12]);
       return;
     }
     SetDDP(&p->body, &sCollisions[11]);
-    *slot = NULL;
+    p->elfx = NULL;
   }
-  t = (u8*)((u8*)p + 0xc0);
-  if (*t != 0) {
-    *t = *t - 1;
+  if (p->unk_c0 > 0) {
+    p->unk_c0--;
     return;
   }
-  (sUpdates2[(p->s).mode[1]])(p);
+  (sUpdates2[p->mode[1]])(p);
 }
 
-INCASM("asm/enemy/piller_cannon_b.inc");
+static void PillerCannon_Die(PillerCannon* p) {
+  Coords32 c;
+  if (FLAG(gCurStory.s.gameflags, METTAUR_ENABLED)) {
+    p->flags &= ~DISPLAY;
+    p->flags &= ~FLIPABLE;
+    EXIT_BODY(p);
+    SET_ENEMY_ROUTINE(p, ENTITY_DISAPPEAR);
+    return;
+  }
 
-bool8 FUN_0806860c(struct Enemy* p) { return TRUE; }
+  switch (p->mode[2]) {
+    case 0: {
+      p->mode[2] = 1;
+      EXIT_BODY(p);
+      FALLTHROUGH;
+    }
+    case 1: {
+      c.x = (p->coord).x, c.y = (p->coord).y;  // ??
+      p->mode[2]++;
+      break;
+    }
+    case 2: {
+      c.x = (p->d).x, c.y = (p->d).y;
+      CreateSmoke(1, &c);
+      PlaySound(SE_ZAKO_EXPLODE);
+      TryDropItem(4, &p->coord);
+      if (gScore.enemyCount < 9999) gScore.enemyCount++;
+      DropEnemyDisk(p, &p->coord);
+      p->flags &= ~DISPLAY;
+      SET_ENEMY_ROUTINE(p, ENTITY_EXIT);
+      break;
+    }
+  }
+}
 
+bool8 FUN_0806860c(PillerCannon* p) { return TRUE; }
 
-void FUN_08068610(struct Enemy* p) {}
+void FUN_08068610(PillerCannon* p) {}
 
-bool8 FUN_08068614(struct Enemy* p) { return TRUE; }
+bool8 FUN_08068614(PillerCannon* p) { return TRUE; }
 
 INCASM("asm/enemy/piller_cannon_c.inc");
 
-bool8 FUN_080686b0(struct Enemy* p) { return TRUE; }
+bool8 FUN_080686b0(PillerCannon* p) { return TRUE; }
 
 INCASM("asm/enemy/piller_cannon_d.inc");
 
-bool8 FUN_08068780(struct Enemy* p) { return TRUE; }
+bool8 FUN_08068780(PillerCannon* p) { return TRUE; }
 
 INCASM("asm/enemy/piller_cannon_e.inc");
 
-bool8 FUN_08068ad8(struct Enemy* p) { return TRUE; }
+bool8 FUN_08068ad8(PillerCannon* p) { return TRUE; }
 
 INCASM("asm/enemy/piller_cannon_f.inc");
 
-bool8 FUN_08068c84(struct Enemy* p) { return TRUE; }
+bool8 FUN_08068c84(PillerCannon* p) { return TRUE; }
 
 INCASM("asm/enemy/piller_cannon_g.inc");
 
-bool8 FUN_08068e60(struct Enemy* p) { return TRUE; }
+bool8 FUN_08068e60(PillerCannon* p) { return TRUE; }
 
-void FUN_08068e64(struct Enemy* p) {
-  struct Entity** slot;
-  if ((p->s).mode[2] == 0) {
+void FUN_08068e64(PillerCannon* p) {
+  if (p->mode[2] == 0) {
     SetDDP(&p->body, &sCollisions[12]);
-    (p->s).mode[2]++;
+    p->mode[2]++;
   }
-  slot = (struct Entity**)((u8*)p + 0xbc);
-  if (isKilled(*slot)) {
+  if (isKilled(p->elfx)) {
     SetDDP(&p->body, &sCollisions[11]);
-    *slot = NULL;
-    (p->s).mode[1] = 1;
-    (p->s).mode[2] = 0;
+    p->elfx = NULL;
+    p->mode[1] = 1, p->mode[2] = 0;
   }
 }
 
-bool8 FUN_08068eb0(struct Enemy* p) { return TRUE; }
+bool8 FUN_08068eb0(PillerCannon* p) { return TRUE; }
 
+void FUN_08068eb4(PillerCannon* p) {}
 
-void FUN_08068eb4(struct Enemy* p) {}
-
-bool8 FUN_08068eb8(struct Enemy* p) { return TRUE; }
+bool8 FUN_08068eb8(PillerCannon* p) { return TRUE; }
 
 INCASM("asm/enemy/piller_cannon_h.inc");
-
-bool8 FUN_0806860c(struct Enemy* p);
-bool8 FUN_08068614(struct Enemy* p);
-bool8 FUN_080686b0(struct Enemy* p);
-bool8 FUN_08068780(struct Enemy* p);
-bool8 FUN_08068ad8(struct Enemy* p);
-bool8 FUN_08068c84(struct Enemy* p);
-bool8 FUN_08068e60(struct Enemy* p);
-bool8 FUN_08068eb0(struct Enemy* p);
-bool8 FUN_08068eb8(struct Enemy* p);
-
-// clang-format off
-static const EnemyFunc sUpdates1[9] = {
-    (EnemyFunc)FUN_0806860c,
-    (EnemyFunc)FUN_08068614,
-    (EnemyFunc)FUN_080686b0,
-    (EnemyFunc)FUN_08068780,
-    (EnemyFunc)FUN_08068ad8,
-    (EnemyFunc)FUN_08068c84,
-    (EnemyFunc)FUN_08068e60,
-    (EnemyFunc)FUN_08068eb0,
-    (EnemyFunc)FUN_08068eb8,
-};
-// clang-format on
-
-void FUN_08068610(struct Enemy* p);
-void FUN_08068618(struct Enemy* p);
-void FUN_080686b4(struct Enemy* p);
-void FUN_08068784(struct Enemy* p);
-void FUN_08068adc(struct Enemy* p);
-void FUN_08068c88(struct Enemy* p);
-void FUN_08068e64(struct Enemy* p);
-void FUN_08068eb4(struct Enemy* p);
-void FUN_08068ebc(struct Enemy* p);
-
-// clang-format off
-static const EnemyFunc sUpdates2[9] = {
-    FUN_08068610,
-    FUN_08068618,
-    FUN_080686b4,
-    FUN_08068784,
-    FUN_08068adc,
-    FUN_08068c88,
-    FUN_08068e64,
-    FUN_08068eb4,
-    FUN_08068ebc,
-};
-// clang-format on
 
 // 0x0836609c
 static const struct Collision sCollisions[14] = {
@@ -315,13 +379,13 @@ const Coords32 Coord_083661ec = {0xFFFFF500, 0x0};
 // clang-format off
 // 0x083661f4
 static const motion_t sMotions[7] = {
-    MOTION(SM008_PILLAR_CANNON, 0x01),
-    MOTION(SM008_PILLAR_CANNON, 0x02),
-    MOTION(SM008_PILLAR_CANNON, 0x03),
-    MOTION(SM008_PILLAR_CANNON, 0x04),
-    MOTION(SM008_PILLAR_CANNON, 0x03),
-    MOTION(SM008_PILLAR_CANNON, 0x02),
-    MOTION(SM008_PILLAR_CANNON, 0x01),
+    MOTION(SM008_PILLAR_CANNON, 1),
+    MOTION(SM008_PILLAR_CANNON, 2),
+    MOTION(SM008_PILLAR_CANNON, 3),
+    MOTION(SM008_PILLAR_CANNON, 4),
+    MOTION(SM008_PILLAR_CANNON, 3),
+    MOTION(SM008_PILLAR_CANNON, 2),
+    MOTION(SM008_PILLAR_CANNON, 1),
 };
 // clang-format on
 

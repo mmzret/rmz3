@@ -50,8 +50,6 @@ void FUN_08016080(void*);
 static void OmegaGold_Init(Omega1* p) {
   s32 y;
   Coords32 c;
-  struct Body* body;
-  void* fn;
 
   FUN_08016080(p);
   gOverworld.state[1] = 1;

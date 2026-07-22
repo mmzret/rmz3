@@ -168,9 +168,7 @@ static bool8 tryKillDeathtanz(struct Boss* p) {
 }
 
 static void Deathtanz_Init(struct Deathtanz* p) {
-  struct Body* body;
   s32 y;
-  void* fn;
 
   // TODO: Kill them all
 #if MODERN == 0

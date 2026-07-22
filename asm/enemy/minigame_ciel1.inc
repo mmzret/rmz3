@@ -87,7 +87,7 @@ CielMinigameEnemy_Init: @ 0x0809BE34
 	lsls r1, r1, #0x18
 	lsrs r1, r1, #0x18
 	adds r0, r4, #0
-	bl ForceEntityPalette
+	bl _ForceEntityPalette
 	movs r2, #0
 	ldrb r1, [r4, #0xa]
 	movs r0, #0xef

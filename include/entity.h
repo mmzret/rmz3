@@ -58,7 +58,6 @@ void DrawCollidableEntity(struct EntityHeader* h, Renderer* r);
 void DrawWeapon(Renderer* r);
 struct Entity* GetNearestEntity(struct EntityHeader* h, Coords32* c);
 
-void InitRotatableMotion(struct Entity* e);
 u16 countSpecificEntities1(struct EntityHeader* h, u8 id);
 u16 countSpecificEntities2(struct EntityHeader* h, u8 id, u8 r2, u8 r3);
 
@@ -83,5 +82,8 @@ void PaintEntityWhite(struct Entity* p);
 
 bool32 isKilled(struct Entity* p);
 #define IsDead(p) (isKilled((struct Entity*)(p)))
+
+u8 _GetEntityPaletteID(struct Entity* p);
+static inline u8 GetEntityPaletteID(void* enti) { return _GetEntityPaletteID((struct Entity*)enti); }
 
 #endif  // GUARD_RMZ3_ENTITY_H

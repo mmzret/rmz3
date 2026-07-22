@@ -315,8 +315,8 @@ _08045864:
 	pop {r1}
 	bx r1
 
-	thumb_func_start FUN_0804586c
-FUN_0804586c: @ 0x0804586C
+	thumb_func_start Volteel_OnCollision
+Volteel_OnCollision: @ 0x0804586C
 	push {r4, lr}
 	adds r3, r0, #0
 	ldr r0, [r3, #0xc]

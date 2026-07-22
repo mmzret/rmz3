@@ -5,41 +5,44 @@
 #include "story.h"
 #include "zero.h"
 
-struct PantheonGuardianObject {
+typedef struct {
   COLLISION_OBJECT_HDR;
   // props (16bytes, offset: 0xB4..)
-  s32 x;  // 0xB4
-  u8 unk_b8[4];
-  u8 unk_bc;
-  u8 unk_bd;
-  u8 unk_be;
-  u8 unk_bf;
-  struct Entity* unk_c0;
-};
-static_assert(sizeof(struct PantheonGuardianObject) == sizeof(struct Enemy));
+  s32 x;           // 0xB4
+  bool8 xflip_b8;  // 0xB8
+  u8 unk_b9;       // 0xB9
+  u8 unk_ba;       // 0xBA
+  u8 unk_bb;       // 0xBB
+  u8 unk_bc;       // 0xBC
+  u8 unk_bd;       // 0xBD
+  u8 unk_be;       // 0xBE
+  u8 unk_bf;       // 0xBF
+  Entity* elfx;    // 0xC0, Element FX
+} PantheonGuardian;
+static_assert(sizeof(PantheonGuardian) == sizeof(struct Enemy));
 
 static const struct Collision sCollisions[];
 static const Coords32 Coord_08365b70;
 
-void FUN_0806465c(struct Body* body, Coords32* c1, Coords32* c2);
+void PantheonGuardian_OnCollision(struct Body* body, Coords32* c1, Coords32* c2);
 
 // ------------------------------------------------------------------------------------------------------------------------------------
 
-static void PantheonGuardian_Init(struct PantheonGuardianObject* p);
-void PantheonGuardian_Update(struct Enemy* p);
-void PantheonGuardian_Die(struct Enemy* p);
+static void PantheonGuardian_Init(PantheonGuardian* p);
+void PantheonGuardian_Update(PantheonGuardian* p);
+void PantheonGuardian_Die(PantheonGuardian* p);
 
 // clang-format off
 const EnemyRoutine gPantheonGuardianRoutine = {
-    [ENTITY_INIT] =      (EnemyFunc)PantheonGuardian_Init,
-    [ENTITY_UPDATE] =    (EnemyFunc)PantheonGuardian_Update,
-    [ENTITY_DIE] =       (EnemyFunc)PantheonGuardian_Die,
-    [ENTITY_DISAPPEAR] = (EnemyFunc)DeleteEnemy,
-    [ENTITY_EXIT] =      (EnemyFunc)DeleteEntity,
+    [ENTITY_INIT] =      (void*)PantheonGuardian_Init,
+    [ENTITY_UPDATE] =    (void*)PantheonGuardian_Update,
+    [ENTITY_DIE] =       (void*)PantheonGuardian_Die,
+    [ENTITY_DISAPPEAR] = (void*)DeleteEnemy,
+    [ENTITY_EXIT] =      (void*)DeleteEntity,
 };
 // clang-format on
 
-static void PantheonGuardian_Init(struct PantheonGuardianObject* p) {
+static void PantheonGuardian_Init(PantheonGuardian* p) {
   EnableSpriteAnimation_Normal(p);
   p->flags |= DISPLAY;
   p->flags |= FLIPABLE;
@@ -48,70 +51,69 @@ static void PantheonGuardian_Init(struct PantheonGuardianObject* p) {
   } else {
     _INIT_BODY(p, sCollisions, 10);
   }
-  SET_BODY_INTERSECT_HANDLER(p, FUN_0806465c);
-  p->x = p->coord.x;
-  p->coord.y = FUN_08009f6c(p->coord.x, p->coord.y);
-  p->d.x = p->d.y = 0;
-  p->unk_c0 = NULL;
-  p->unk_b8[0] = 0, p->unk_b8[1] = 0;
+  SET_BODY_INTERSECT_HANDLER(p, PantheonGuardian_OnCollision);
+  p->x = (p->coord).x;
+  (p->coord).y = FUN_08009f6c((p->coord).x, (p->coord).y);
+  (p->d).x = (p->d).y = 0;
+  p->elfx = NULL;
+  p->xflip_b8 = 0;
+  p->unk_b9 = 0;
 
   SET_ENEMY_ROUTINE(p, ENTITY_UPDATE);
-  if ((pZero2->s).coord.x - p->coord.x < 0) {
+  if (((pZero2->s).coord).x - (p->coord).x < 0) {
     p->mode[1] = 1, p->mode[2] = 0;
   } else {
     p->mode[1] = 2, p->mode[2] = 0;
   }
-  PantheonGuardian_Update((void*)p);
+  PantheonGuardian_Update(p);
 }
 
 INCASM("asm/enemy/pantheon_guardian.inc");
 
-void FUN_08063da0(struct Enemy* p);
-void doNothing_08063e10(struct Enemy* p);
-void FUN_08063e28(struct Enemy* p);
-void FUN_08063e80(struct Enemy* p);
-void FUN_08063ec8(struct Enemy* p);
-void FUN_08063ef4(struct Enemy* p);
-void FUN_08063f28(struct Enemy* p);
+void FUN_08063da0(PantheonGuardian* p);
+void doNothing_08063e10(PantheonGuardian* p);
+void FUN_08063e28(PantheonGuardian* p);
+void FUN_08063e80(PantheonGuardian* p);
+void FUN_08063ec8(PantheonGuardian* p);
+void FUN_08063ef4(PantheonGuardian* p);
+void FUN_08063f28(PantheonGuardian* p);
 
 // clang-format off
-// 0x08365a80
-const EnemyFunc sPantheonGuardianUpdates1[9] = {
-    (EnemyFunc)FUN_08063da0,
-    (EnemyFunc)FUN_08063da0,
-    (EnemyFunc)FUN_08063da0,
-    (EnemyFunc)doNothing_08063e10,
-    (EnemyFunc)FUN_08063e28,
-    (EnemyFunc)FUN_08063e80,
-    (EnemyFunc)FUN_08063ec8,
-    (EnemyFunc)FUN_08063ef4,
-    (EnemyFunc)FUN_08063f28,
-};
+static void (*const sPantheonGuardianUpdates1[9])(PantheonGuardian*) = {
+    FUN_08063da0,
+    FUN_08063da0,
+    FUN_08063da0,
+    doNothing_08063e10,
+    FUN_08063e28,
+    FUN_08063e80,
+    FUN_08063ec8,
+    FUN_08063ef4,
+    FUN_08063f28,
+}; // 0x08365a80
 // clang-format on
 
-void FUN_08063f50(struct Enemy* p);
-void FUN_08063fd8(struct Enemy* p);
-void FUN_080640dc(struct Enemy* p);
-void FUN_080641ec(struct Enemy* p);
-void FUN_0806429c(struct Enemy* p);
-void FUN_08064354(struct Enemy* p);
-void FUN_08064444(struct Enemy* p);
-void FUN_0806447c(struct Enemy* p);
-void FUN_080644fc(struct Enemy* p);
+void FUN_08063f50(PantheonGuardian* p);
+void FUN_08063fd8(PantheonGuardian* p);
+void FUN_080640dc(PantheonGuardian* p);
+void FUN_080641ec(PantheonGuardian* p);
+void FUN_0806429c(PantheonGuardian* p);
+void FUN_08064354(PantheonGuardian* p);
+void FUN_08064444(PantheonGuardian* p);
+void FUN_0806447c(PantheonGuardian* p);
+void FUN_080644fc(PantheonGuardian* p);
 
 // clang-format off
-// 0x08365aa4
-static const EnemyFunc sPantheonGuardianUpdates2[9] = {
-    (EnemyFunc)FUN_08063f50,
-    (EnemyFunc)FUN_08063fd8,
-    (EnemyFunc)FUN_080640dc,
-    (EnemyFunc)FUN_080641ec,
-    (EnemyFunc)FUN_0806429c,
-    (EnemyFunc)FUN_08064354,
-    (EnemyFunc)FUN_08064444,
-    (EnemyFunc)FUN_0806447c,
-    (EnemyFunc)FUN_080644fc,
-};
+static void (*const sPantheonGuardianUpdates2[9])(PantheonGuardian*) = {
+    FUN_08063f50,
+    FUN_08063fd8,
+    FUN_080640dc,
+    FUN_080641ec,
+    FUN_0806429c,
+    FUN_08064354,
+    FUN_08064444,
+    FUN_0806447c,
+    FUN_080644fc,
+};  // 0x08365aa4
 // clang-format on
 
 // --------------------------------------------

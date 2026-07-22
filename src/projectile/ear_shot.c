@@ -7,94 +7,91 @@
 static const u8 sInitModes[4];
 static const struct Collision sCollisions[4];
 
-static void EarShot_Init(struct Projectile* p);
-static void EarShot_Update(struct Projectile* p);
-static void EarShot_Die(struct Projectile* p);
+static void EarShot_Init(struct ProjectileV2* p);
+static void EarShot_Update(struct ProjectileV2* p);
+static void EarShot_Die(struct ProjectileV2* p);
 
 // clang-format off
 const ProjectileRoutine gEarShotRoutine = {
-    [ENTITY_INIT] =      EarShot_Init,
-    [ENTITY_UPDATE] =    EarShot_Update,
-    [ENTITY_DIE] =       EarShot_Die,
+    [ENTITY_INIT] =      (void*)EarShot_Init,
+    [ENTITY_UPDATE] =    (void*)EarShot_Update,
+    [ENTITY_DIE] =       (void*)EarShot_Die,
     [ENTITY_DISAPPEAR] = (void*)DeleteProjectile,
-    [ENTITY_EXIT] =      (ProjectileFunc)DeleteEntity,
+    [ENTITY_EXIT] =      (void*)DeleteEntity,
 };
 // clang-format on
 
 // --------------------------------------------
 
 void createEarShot(s32 x, s32 y, u8 n, bool8 is_big) {
-  struct Projectile* p = AllocEntityFirst(gProjectileHeaderPtr);
+  struct ProjectileV2* p = AllocEntityFirst(gProjectileHeaderPtr);
   if (p != NULL) {
     INIT_PROJECTILE_ROUTINE(p, 11);
-    (p->s).work[0] = !!is_big;
-    (p->s).work[2] = n;
-    (p->s).coord.x = x;
-    (p->s).coord.y = y;
+    p->work[0] = !!is_big;
+    p->work[2] = n;
+    (p->coord).x = x, (p->coord).y = y;
   }
 }
 
 // 0x0809f2f0
-static void onCollision(struct Body* body, Coords32* r1 UNUSED, Coords32* r2 UNUSED) { return; }
+static void EarShot_OnCollision(struct Body* body, Coords32* r1 UNUSED, Coords32* r2 UNUSED) { return; }
 
 // --------------------------------------------
 
-static void EarShot_Init(struct Projectile* p) {
+static void EarShot_Init(struct ProjectileV2* p) {
   SET_PROJECTILE_ROUTINE(p, ENTITY_UPDATE);
-  (p->s).mode[1] = sInitModes[(p->s).work[0]];
-  (p->s).flags |= FLIPABLE;
-  (p->s).flags |= DISPLAY;
+  p->mode[1] = sInitModes[p->work[0]];
+  p->flags |= FLIPABLE;
+  p->flags |= DISPLAY;
   EnableSpriteAnimation_Normal(p);
-  INIT_BODY(p, &sCollisions[(p->s).work[0] == 1], 1, onCollision);
+  INIT_BODY(p, &sCollisions[p->work[0] == 1], 1, EarShot_OnCollision);
   EarShot_Update(p);
 }
 
-// --------------------------------------------
+static void nop_0809f3d0(struct ProjectileV2* p);
+static void _EarShot_Update(struct ProjectileV2* p);
 
-static void nop_0809f3d0(struct Projectile* p);
-static void FUN_0809f3d4(struct Projectile* p);
-
-static void EarShot_Update(struct Projectile* p) {
-  static const ProjectileFunc sUpdates1[1] = {
+static void EarShot_Update(struct ProjectileV2* p) {
+  static const ProjectileV2Func sUpdates1[1] = {
       nop_0809f3d0,
   };
-  static const ProjectileFunc sUpdates2[1] = {
-      FUN_0809f3d4,
+  static const ProjectileV2Func sUpdates2[1] = {
+      _EarShot_Update,
   };
-  (sUpdates1[(p->s).mode[1]])(p);
-  (sUpdates2[(p->s).mode[1]])(p);
+  (sUpdates1[p->mode[1]])(p);
+  (sUpdates2[p->mode[1]])(p);
 }
 
-// --------------------------------------------
-
-static void EarShot_Die(struct Projectile* p) {
+static void EarShot_Die(struct ProjectileV2* p) {
   EXIT_BODY(p);
   SET_PROJECTILE_ROUTINE(p, ENTITY_EXIT);
 }
 
 // --------------------------------------------
 
-static void nop_0809f3d0(struct Projectile* p) { return; }
+static void nop_0809f3d0(struct ProjectileV2* p) {}
 
-static void FUN_0809f3d4(struct Projectile* p) {
-  switch ((p->s).mode[2]) {
-    case 0:
-      if ((p->s).work[0] == 0) {
+static void _EarShot_Update(struct ProjectileV2* p) {
+  switch (p->mode[2]) {
+    case 0: {
+      if (p->work[0] == 0) {
         SetSpriteAnimation(p, MOTION(SM037_EAR_SHOT, 0));
       } else {
         SetSpriteAnimation(p, MOTION(SM037_EAR_SHOT, 1));
       }
-      (p->s).d.x = ((p->s).work[2] << 11) - 0x400;
-      SET_XFLIP(p, (p->s).work[2]);
-      (p->s).mode[2]++;
-      // fallthrough
-    case 1:
-      (p->s).coord.x += (p->s).d.x;
+      (p->d).x = (p->work[2] << 11) - PIXEL(4);
+      SET_XFLIP(p, p->work[2]);
+      p->mode[2]++;
+      FALLTHROUGH;
+    }
+    case 1: {
+      (p->coord).x += (p->d).x;
       UpdateSpriteAnimation(p);
-      if (Camera_GetDistance(&gStageRun.vm.camera, &(p->s).coord) > 0x6000) {
+      if (Camera_GetDistance(&gStageRun.vm.camera, &p->coord) > PIXEL(96)) {
         SET_PROJECTILE_ROUTINE(p, ENTITY_DIE);
       }
       break;
+    }
   }
 }
 

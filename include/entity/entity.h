@@ -44,11 +44,11 @@ struct Zero;
   Coords32 unk_coord;      /* 0x64, 何かしらの座標を格納することが多いが、フレームカウンタとして使うことも多い (Coords32 ではなくただの汎用バッファかもしれない) */ \
   AnimState motion;
 
-struct Entity {
+typedef struct Entity {
   ENTITY_HDR;     // 0x00
   ENTITY_SPRITE;  // 0x28
-};  // 116 bytes
-static_assert(sizeof(struct Entity) == 116);
+} Entity;         // 116 bytes
+static_assert(sizeof(Entity) == 116);
 
 // Entity + Sprite + Body
 #define COLLISION_OBJECT_HDR   \
@@ -82,7 +82,7 @@ typedef struct Boss {
 
 // Entity.kind = 3
 struct Enemy {
-  struct Entity s;
+  Entity s;
   struct Body body;
   u8 buffer[16];  // 0xB4
 };  // 196 bytes
@@ -90,7 +90,7 @@ struct Enemy {
 // Entity.kind = 4
 // 飛び道具だと思ってたけど、特定のエンティティに従属しているエンティティのことを指すかも？
 struct Projectile {
-  struct Entity s;
+  Entity s;
   struct Body body;
   u8 buffer[16];  // 0xB4
 };  // 196 bytes
@@ -106,13 +106,13 @@ struct ProjectileV2 {
 //   例: ダッシュの残像, パーティクル, ミッションアラート, ハンマー振り子のボールチェーン, エネミーが死んで飛び散った残骸, etc...
 //   NOTE: Ghost から VFX にリネームしたけど、まだ変数名や関数名に Ghost が残っているものがある
 struct VFX {
-  struct Entity s;
+  Entity s;
   u8 buffer[16];  // 0x74
 };  // 132 bytes
 
 // Entity.kind = 6
 struct Solid {
-  struct Entity s;
+  Entity s;
   struct Body body;
   u8 buffer[16];  // 0xB4
 };  // 196 bytes
@@ -133,7 +133,7 @@ typedef struct CyberElf {
 
 // --------------------------------------------
 
-typedef void (*EntityFunc)(struct Entity*);
+typedef void (*EntityFunc)(Entity*);
 typedef void (*ObjectFunc)(Object*);
 
 #endif  // GUARD_RMZ3_ENTITY_ENTITY_H

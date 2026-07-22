@@ -3452,7 +3452,7 @@ _080D336C:
 	b _080D358C
 _080D3380:
 	adds r0, r7, #0
-	bl GetEntityPalID
+	bl _GetEntityPaletteID
 	adds r1, r0, #0
 	lsls r1, r1, #0x18
 	lsrs r1, r1, #0x13
@@ -3479,7 +3479,7 @@ _080D33B2:
 	b _080D357C
 _080D33BA:
 	adds r0, r7, #0
-	bl GetEntityPalID
+	bl _GetEntityPaletteID
 	adds r1, r0, #0
 	lsls r1, r1, #0x18
 	lsrs r1, r1, #0x13
@@ -3506,7 +3506,7 @@ _080D33F0:
 	movs r0, #0xf9
 	bl RemovePaletteAnimation
 	adds r0, r7, #0
-	bl GetEntityPalID
+	bl _GetEntityPaletteID
 	adds r1, r0, #0
 	lsls r1, r1, #0x18
 	lsrs r1, r1, #0x13
@@ -3664,7 +3664,7 @@ _080D34F8:
 	ldrb r4, [r7, #0x11]
 	adds r4, #0xfb
 	adds r0, r7, #0
-	bl GetEntityPalID
+	bl _GetEntityPaletteID
 	adds r1, r0, #0
 	lsls r1, r1, #0x18
 	lsrs r1, r1, #0x13
@@ -7064,7 +7064,7 @@ _080D505C:
 	ands r1, r0
 	adds r1, #5
 	adds r0, r7, #0
-	bl ForceEntityPalette
+	bl _ForceEntityPalette
 _080D50D2:
 	ldrb r0, [r7, #0x12]
 	adds r2, r0, #1

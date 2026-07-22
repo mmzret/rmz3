@@ -3,12 +3,12 @@
 
 // キュービットフォクスター の炎に関係
 typedef struct {
-  ENTITY_HDR;
-  ENTITY_SPRITE;
+  ENTITY_HDR;     // 0x00
+  ENTITY_SPRITE;  // 0x28
   // props (16bytes, offset: 0x74..)
-  u8 unk_74[8];
-  u8 unk_7c;
-  u8 unk_7d[7];
+  u8 unk_74[8];  // 0x74
+  u8 unk_7c;     // 0x7C
+  u8 unk_7d[7];  // 0x7D
 } VFX50;
 static_assert(sizeof(VFX50) == sizeof(struct VFX));
 

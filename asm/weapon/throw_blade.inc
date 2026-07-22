@@ -58,7 +58,7 @@ ThrowBlade_Init: @ 0x0803BED0
 	bl SetMotion
 	adds r0, r6, #0
 	movs r1, #1
-	bl ForceEntityPalette
+	bl _ForceEntityPalette
 	movs r0, #0x40
 	strb r0, [r6, #0x12]
 	adds r0, r4, #0

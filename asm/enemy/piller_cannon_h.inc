@@ -93,8 +93,8 @@ _08068F5C:
 	.align 2, 0
 _08068F64: .4byte 0x083661EC
 
-	thumb_func_start FUN_08068f68
-FUN_08068f68: @ 0x08068F68
+	thumb_func_start PillerCannon_OnCollision
+PillerCannon_OnCollision: @ 0x08068F68
 	push {r4, lr}
 	adds r4, r0, #0
 	ldr r0, [r4, #0xc]

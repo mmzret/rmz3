@@ -6,8 +6,8 @@
 
 struct ShrimporinObject {
   COLLISION_OBJECT_HDR;
-  struct Entity* elfx;  // 0xB4, Element Effect
-  u8 unk_b8[12];        // 0xB8
+  Entity* elfx;   // 0xB4, Element Effect
+  u8 unk_b8[12];  // 0xB8
 };
 static_assert(sizeof(struct ShrimporinObject) == sizeof(struct Enemy));
 

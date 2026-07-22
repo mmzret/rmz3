@@ -103,7 +103,7 @@ enum ModID {
   MOD_ARCHIM_ATK4,  // 88: Archim atk +4
   MOD_SABER_ATK2,   // 89: Saber atk +2
   MOD_90,           // bit 2: 40EC(Room 3C)
-  MOD_91,           // bit 3: Pantheon Bomber HP +4
+  MOD_P_BOMBER,     // bit 3: Pantheon Bomber HP +4
   MOD_92,           // bit 4: 32EC(3F)
   MOD_93,           // bit 5: 52EC(Room 3D)
   MOD_94,           // bit 6: Pantheon Aqua Mod HP +16
@@ -116,16 +116,16 @@ enum ModID {
   MOD_100,         // bit 4: Shell Crawler HP +4
   MOD_101,         // bit 5: Icebon HP +4
   MOD_102,         // bit 6: Generator Cannon HP +4
-  MOD_103,         // bit 7: Claveker HP +4
+  MOD_CLAVEKER,    // bit 7: Claveker HP +4
   // 104..
-  MOD_104,  // bit 0: Shotcounter HP +4
-  MOD_105,  // bit 1: Grand Cannon HP +4
-  MOD_106,  // bit 2: Shrimporin HP +4
-  MOD_107,  // bit 3: Batring HP +4
-  MOD_108,  // bit 4: PCannon HP +4
-  MOD_109,  // bit 5: Volcaire HP +4
-  MOD_110,  // bit 6: Snakecord HP +4
-  MOD_111,  // bit 7: Lemmingles HP +4
+  MOD_104,            // bit 0: Shotcounter HP +4
+  MOD_105,            // bit 1: Grand Cannon HP +4
+  MOD_106,            // bit 2: Shrimporin HP +4
+  MOD_107,            // bit 3: Batring HP +4
+  MOD_PILLER_CANNON,  // bit 4: Piller Cannon HP +4
+  MOD_109,            // bit 5: Volcaire HP +4
+  MOD_110,            // bit 6: Snakecord HP +4
+  MOD_111,            // bit 7: Lemmingles HP +4
   // 112..
   MOD_112,  // bit 0: Lamplort HP +4
   MOD_113,  // bit 1: Tile Cannon HP +4

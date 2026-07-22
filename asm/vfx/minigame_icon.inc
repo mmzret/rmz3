@@ -693,7 +693,7 @@ _080C86B6:
 _080C86BE:
 	adds r0, r4, #0
 	movs r1, #0xe
-	bl ForceEntityPalette
+	bl _ForceEntityPalette
 	movs r0, #0
 	strb r0, [r4, #0x12]
 	strb r0, [r4, #0x13]
@@ -730,7 +730,7 @@ _080C86F6:
 	strb r0, [r4, #0x13]
 	adds r0, r4, #0
 	movs r1, #0xf
-	bl ForceEntityPalette
+	bl _ForceEntityPalette
 _080C870E:
 	adds r0, r4, #0
 	bl UpdateEntityAnim

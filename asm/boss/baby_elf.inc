@@ -1022,7 +1022,7 @@ _0804633C:
 	str r0, [r6, #0x5c]
 	str r0, [r6, #0x60]
 	adds r0, r6, #0
-	bl GetEntityPalID
+	bl _GetEntityPaletteID
 	adds r1, r0, #0
 	lsls r1, r1, #0x18
 	lsrs r1, r1, #0x13
@@ -1138,7 +1138,7 @@ _08046410:
 	cmp r0, #0
 	bne _0804644A
 	adds r0, r6, #0
-	bl GetEntityPalID
+	bl _GetEntityPaletteID
 	adds r1, r0, #0
 	lsls r1, r1, #0x18
 	lsrs r1, r1, #0x13
@@ -1154,7 +1154,7 @@ _08046410:
 	b _0804646A
 _0804644A:
 	adds r0, r6, #0
-	bl GetEntityPalID
+	bl _GetEntityPaletteID
 	adds r1, r0, #0
 	lsls r1, r1, #0x18
 	lsrs r1, r1, #0x13
@@ -1231,7 +1231,7 @@ _080464AA:
 	cmp r0, #0
 	bne _08046508
 	adds r0, r6, #0
-	bl GetEntityPalID
+	bl _GetEntityPaletteID
 	adds r1, r0, #0
 	lsls r1, r1, #0x18
 	lsrs r1, r1, #0x13
@@ -1247,7 +1247,7 @@ _080464AA:
 	b _08046528
 _08046508:
 	adds r0, r6, #0
-	bl GetEntityPalID
+	bl _GetEntityPaletteID
 	adds r1, r0, #0
 	lsls r1, r1, #0x18
 	lsrs r1, r1, #0x13
@@ -1417,7 +1417,7 @@ _0804663E:
 	cmp r0, #0
 	bne _08046686
 	adds r0, r6, #0
-	bl GetEntityPalID
+	bl _GetEntityPaletteID
 	adds r1, r0, #0
 	lsls r1, r1, #0x18
 	lsrs r1, r1, #0x13
@@ -1433,7 +1433,7 @@ _0804663E:
 	b _080466A6
 _08046686:
 	adds r0, r6, #0
-	bl GetEntityPalID
+	bl _GetEntityPaletteID
 	adds r1, r0, #0
 	lsls r1, r1, #0x18
 	lsrs r1, r1, #0x13
@@ -1727,7 +1727,7 @@ _08046AAC:
 	cmp r0, #0
 	bne _08046AD0
 	adds r0, r4, #0
-	bl GetEntityPalID
+	bl _GetEntityPaletteID
 	adds r1, r0, #0
 	lsls r1, r1, #0x18
 	lsrs r1, r1, #0x13
@@ -1741,7 +1741,7 @@ _08046AAC:
 	b _08046AEC
 _08046AD0:
 	adds r0, r4, #0
-	bl GetEntityPalID
+	bl _GetEntityPaletteID
 	adds r1, r0, #0
 	lsls r1, r1, #0x18
 	lsrs r1, r1, #0x13
@@ -1835,7 +1835,7 @@ _08046B80:
 	cmp r6, #0
 	bne _08046BC2
 	adds r0, r4, #0
-	bl GetEntityPalID
+	bl _GetEntityPaletteID
 	adds r1, r0, #0
 	lsls r1, r1, #0x18
 	lsrs r1, r1, #0x13
@@ -2131,7 +2131,7 @@ _08046DC0:
 	cmp r0, #0
 	bne _08046DFA
 	adds r0, r7, #0
-	bl GetEntityPalID
+	bl _GetEntityPaletteID
 	adds r1, r0, #0
 	lsls r1, r1, #0x18
 	lsrs r1, r1, #0x13
@@ -2147,7 +2147,7 @@ _08046DC0:
 	b _08046E1A
 _08046DFA:
 	adds r0, r7, #0
-	bl GetEntityPalID
+	bl _GetEntityPaletteID
 	adds r1, r0, #0
 	lsls r1, r1, #0x18
 	lsrs r1, r1, #0x13
@@ -3064,7 +3064,7 @@ _080478D8:
 	strb r4, [r6]
 _080478E8:
 	adds r0, r5, #0
-	bl GetEntityPalID
+	bl _GetEntityPaletteID
 	adds r1, r0, #0
 	lsls r1, r1, #0x18
 	lsrs r1, r1, #0x13
@@ -3120,7 +3120,7 @@ _0804792C:
 	strb r7, [r4]
 _08047960:
 	adds r0, r5, #0
-	bl GetEntityPalID
+	bl _GetEntityPaletteID
 	adds r1, r0, #0
 	lsls r1, r1, #0x18
 	lsrs r1, r1, #0x13
@@ -3219,7 +3219,7 @@ _080479FC:
 	cmp r0, #0
 	bne _08047A50
 	mov r0, r8
-	bl GetEntityPalID
+	bl _GetEntityPaletteID
 	adds r1, r0, #0
 	lsls r1, r1, #0x18
 	lsrs r1, r1, #0x13
@@ -3238,7 +3238,7 @@ _08047A48: .4byte 0x00000117
 _08047A4C: .4byte sCollisions+(1*24)
 _08047A50:
 	mov r0, r8
-	bl GetEntityPalID
+	bl _GetEntityPaletteID
 	adds r1, r0, #0
 	lsls r1, r1, #0x18
 	lsrs r1, r1, #0x13
@@ -3342,7 +3342,7 @@ _08047B20:
 	cmp r0, #0
 	bne _08047B46
 	mov r0, r8
-	bl GetEntityPalID
+	bl _GetEntityPaletteID
 	adds r1, r0, #0
 	lsls r1, r1, #0x18
 	lsrs r1, r1, #0x13
@@ -3356,7 +3356,7 @@ _08047B20:
 	b _08047B62
 _08047B46:
 	mov r0, r8
-	bl GetEntityPalID
+	bl _GetEntityPaletteID
 	adds r1, r0, #0
 	lsls r1, r1, #0x18
 	lsrs r1, r1, #0x13
@@ -4818,7 +4818,7 @@ _080487D2:
 	strb r5, [r6]
 _080487F0:
 	adds r0, r4, #0
-	bl GetEntityPalID
+	bl _GetEntityPaletteID
 	adds r1, r0, #0
 	lsls r1, r1, #0x18
 	lsrs r1, r1, #0x13
@@ -4873,7 +4873,7 @@ _0804885C:
 	cmp r0, #0
 	bne _08048880
 	adds r0, r4, #0
-	bl GetEntityPalID
+	bl _GetEntityPaletteID
 	adds r1, r0, #0
 	lsls r1, r1, #0x18
 	lsrs r1, r1, #0x13
@@ -4887,7 +4887,7 @@ _0804885C:
 	b _0804889C
 _08048880:
 	adds r0, r4, #0
-	bl GetEntityPalID
+	bl _GetEntityPaletteID
 	adds r1, r0, #0
 	lsls r1, r1, #0x18
 	lsrs r1, r1, #0x13
@@ -4976,7 +4976,7 @@ _08048922:
 	cmp r0, #0
 	bne _08048958
 	adds r0, r7, #0
-	bl GetEntityPalID
+	bl _GetEntityPaletteID
 	adds r1, r0, #0
 	lsls r1, r1, #0x18
 	lsrs r1, r1, #0x13
@@ -4990,7 +4990,7 @@ _08048922:
 	b _08048974
 _08048958:
 	adds r0, r7, #0
-	bl GetEntityPalID
+	bl _GetEntityPaletteID
 	adds r1, r0, #0
 	lsls r1, r1, #0x18
 	lsrs r1, r1, #0x13
@@ -5058,7 +5058,7 @@ _080489C8:
 	cmp r0, #0
 	bne _080489FE
 	adds r0, r7, #0
-	bl GetEntityPalID
+	bl _GetEntityPaletteID
 	adds r1, r0, #0
 	lsls r1, r1, #0x18
 	lsrs r1, r1, #0x13

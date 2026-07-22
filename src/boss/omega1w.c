@@ -48,8 +48,6 @@ struct Entity* CreateOmegaWhite(Coords32* c, u8 n) {
 static void OmegaWhite_Init(Omega1* p) {
   s32 y;
   Coords32 c;
-  struct Body* body;
-  void* fn;
 
   omegaWhite_0800bd24((void*)p);
   gOverworld.state[1] = 0;

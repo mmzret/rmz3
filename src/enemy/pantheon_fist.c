@@ -2,30 +2,36 @@
 #include "enemy.h"
 #include "global.h"
 
+typedef struct {
+  COLLISION_OBJECT_HDR;  // 0x00
+  u8 buffer[16];         // 0xB4
+} PantheonFist;
+static_assert(sizeof(PantheonFist) == sizeof(struct Enemy));
+
 INCASM("asm/enemy/pantheon_fist.inc");
 
-void PantheonFist_Init(struct Enemy* p);
-void PantheonFist_Update(struct Enemy* p);
-void PantheonFist_Die(struct Enemy* p);
+void PantheonFist_Init(PantheonFist* p);
+void PantheonFist_Update(PantheonFist* p);
+void PantheonFist_Die(PantheonFist* p);
 
 // clang-format off
 const EnemyRoutine gPantheonFistRoutine = {
-    [ENTITY_INIT] =      PantheonFist_Init,
-    [ENTITY_UPDATE] =    PantheonFist_Update,
-    [ENTITY_DIE] =       PantheonFist_Die,
+    [ENTITY_INIT] =      (void*)PantheonFist_Init,
+    [ENTITY_UPDATE] =    (void*)PantheonFist_Update,
+    [ENTITY_DIE] =       (void*)PantheonFist_Die,
     [ENTITY_DISAPPEAR] = (void*)DeleteEnemy,
-    [ENTITY_EXIT] =      (EnemyFunc)DeleteEntity,
+    [ENTITY_EXIT] =      (void*)DeleteEntity,
 };
 // clang-format on
 
 // --------------------------------------------
 
-void FUN_080953ac(struct Enemy* p);
-void FUN_080953b0(struct Enemy* p);
-void FUN_080953d0(struct Enemy* p);
+void FUN_080953ac(PantheonFist* p);
+void FUN_080953b0(PantheonFist* p);
+void FUN_080953d0(PantheonFist* p);
 
 // clang-format off
-static const EnemyFunc sUpdates1[9] = {
+static void (*const sUpdates1[9])(PantheonFist*) = {
     FUN_080953d0,
     FUN_080953b0,
     FUN_080953b0,
@@ -38,18 +44,18 @@ static const EnemyFunc sUpdates1[9] = {
 };
 // clang-format on
 
-void FUN_0809542c(struct Enemy* p);
-void FUN_080954a4(struct Enemy* p);
-void FUN_08095578(struct Enemy* p);
-void FUN_08095664(struct Enemy* p);
-void FUN_08095778(struct Enemy* p);
-void FUN_080957d4(struct Enemy* p);
-void FUN_08095914(struct Enemy* p);
-void FUN_0809596c(struct Enemy* p);
-void FUN_08095ac4(struct Enemy* p);
+void FUN_0809542c(PantheonFist* p);
+void FUN_080954a4(PantheonFist* p);
+void FUN_08095578(PantheonFist* p);
+void FUN_08095664(PantheonFist* p);
+void FUN_08095778(PantheonFist* p);
+void FUN_080957d4(PantheonFist* p);
+void FUN_08095914(PantheonFist* p);
+void FUN_0809596c(PantheonFist* p);
+void FUN_08095ac4(PantheonFist* p);
 
 // clang-format off
-static const EnemyFunc sUpdates2[9] = {
+static void (*const sUpdates2[9])(PantheonFist*) = {
     FUN_0809542c,
     FUN_080954a4,
     FUN_08095578,
@@ -62,13 +68,11 @@ static const EnemyFunc sUpdates2[9] = {
 };
 // clang-format on
 
-// --------------------------------------------
+void FUN_08095b70(PantheonFist* p);
+void FUN_08095c20(PantheonFist* p);
+void FUN_0809596c(PantheonFist* p);
 
-void FUN_08095b70(struct Enemy* p);
-void FUN_08095c20(struct Enemy* p);
-void FUN_0809596c(struct Enemy* p);
-
-static const EnemyFunc sDeads[3] = {
+static void (*const sDeads[3])(PantheonFist*) = {
     FUN_08095b70,
     FUN_08095c20,
     FUN_0809596c,

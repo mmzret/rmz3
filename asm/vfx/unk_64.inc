@@ -471,13 +471,13 @@ _080C401A:
 	cmp r0, #3
 	ble _080C403C
 	adds r0, r4, #0
-	bl GetEntityPalID
+	bl _GetEntityPaletteID
 	adds r1, r0, #0
 	adds r1, #1
 	lsls r1, r1, #0x18
 	lsrs r1, r1, #0x18
 	adds r0, r4, #0
-	bl ForceEntityPalette
+	bl _ForceEntityPalette
 _080C403C:
 	adds r0, r4, #0
 	bl UpdateEntityAnim
@@ -534,13 +534,13 @@ _080C4092:
 	cmp r0, #3
 	ble _080C40B4
 	adds r0, r4, #0
-	bl GetEntityPalID
+	bl _GetEntityPaletteID
 	adds r1, r0, #0
 	adds r1, #1
 	lsls r1, r1, #0x18
 	lsrs r1, r1, #0x18
 	adds r0, r4, #0
-	bl ForceEntityPalette
+	bl _ForceEntityPalette
 _080C40B4:
 	adds r0, r4, #0
 	bl UpdateEntityAnim

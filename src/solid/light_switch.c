@@ -83,7 +83,7 @@ _080DBEDE:\n\
 	movs r0, #0xbd\n\
 	bl RemovePaletteAnimation\n\
 	adds r0, r5, #0\n\
-	bl GetEntityPalID\n\
+	bl _GetEntityPaletteID\n\
 	adds r1, r0, #0\n\
 	lsls r1, r1, #0x18\n\
 	lsrs r1, r1, #0x13\n\
@@ -147,7 +147,7 @@ _080DBF74:\n\
 	movs r0, #0xbe\n\
 	bl RemovePaletteAnimation\n\
 	adds r0, r5, #0\n\
-	bl GetEntityPalID\n\
+	bl _GetEntityPaletteID\n\
 	adds r1, r0, #0\n\
 	lsls r1, r1, #0x18\n\
 	lsrs r1, r1, #0x13\n\

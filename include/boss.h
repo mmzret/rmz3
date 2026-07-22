@@ -8,8 +8,8 @@ struct Collision;
 
 #define SET_BOSS_COLLISION_HANDLER(boss, onCollision) \
   {                                                   \
-    fn = onCollision;                                 \
-    body = &boss->body;                               \
+    void* fn = onCollision;                           \
+    struct Body* body = &boss->body;                  \
     body->fn = fn;                                    \
   }
 

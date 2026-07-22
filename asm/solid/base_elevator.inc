@@ -40,7 +40,7 @@ _080CFF80:
 	movs r0, #0xbb
 	strb r0, [r4, #0x12]
 	adds r0, r4, #0
-	bl GetEntityPalID
+	bl _GetEntityPaletteID
 	adds r1, r4, #0
 	adds r1, #0xc2
 	strb r0, [r1]

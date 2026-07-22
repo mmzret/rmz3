@@ -8,18 +8,16 @@ static void CielMinigameEnemy2_Die(struct Enemy* p);
 
 // clang-format off
 const EnemyRoutine gCielMinigameEnemy2Routine = {
-    [ENTITY_INIT] =      CielMinigameEnemy2_Init,
-    [ENTITY_UPDATE] =    CielMinigameEnemy2_Update,
-    [ENTITY_DIE] =       CielMinigameEnemy2_Die,
+    [ENTITY_INIT] =      (void*)CielMinigameEnemy2_Init,
+    [ENTITY_UPDATE] =    (void*)CielMinigameEnemy2_Update,
+    [ENTITY_DIE] =       (void*)CielMinigameEnemy2_Die,
     [ENTITY_DISAPPEAR] = (void*)DeleteEnemy,
-    [ENTITY_EXIT] =      (EnemyFunc)DeleteEntity,
+    [ENTITY_EXIT] =      (void*)DeleteEntity,
 };
 // clang-format on
 
-// --------------------------------------------
-
 struct Enemy* FUN_0809c1cc(struct Entity* e, u8 a, u8 b) {
-  struct Enemy* p = (struct Enemy*)AllocEntityLast(gEnemyHeaderPtr);
+  struct Enemy* p = AllocEntityLast(gEnemyHeaderPtr);
   if (p != NULL) {
     INIT_ENEMY_ROUTINE(p, ENEMY_CIEL_MG_2);
     (p->s).unk_28 = e;
@@ -28,8 +26,6 @@ struct Enemy* FUN_0809c1cc(struct Entity* e, u8 a, u8 b) {
   }
   return p;
 }
-
-// --------------------------------------------
 
 NAKED static void CielMinigameEnemy2_Init(struct Enemy* p) {
   asm(".syntax unified\n\
@@ -90,7 +86,7 @@ NAKED static void CielMinigameEnemy2_Init(struct Enemy* p) {
 	lsls r1, r1, #0x18\n\
 	lsrs r1, r1, #0x18\n\
 	adds r0, r5, #0\n\
-	bl ForceEntityPalette\n\
+	bl _ForceEntityPalette\n\
 	movs r0, #0xd8\n\
 	lsls r0, r0, #8\n\
 	str r0, [r5, #0x54]\n\
@@ -155,7 +151,7 @@ static void CielMinigameEnemy2_Update(struct Enemy* p) {
       (p->s).coord.x += (p->s).d.x;
       (p->s).coord.y += (p->s).d.y;
       if ((p->s).coord.y >= *(s32*)&p->buffer[4] + 0x1000) {
-        ForceEntityPalette(&p->s, (p->s).work[2] + 5);
+        ForceEntityPalette(p, (p->s).work[2] + 5);
         (p->s).coord.x = *(s32*)&p->buffer[0];
         (p->s).coord.y = *(s32*)&p->buffer[4];
         (p->s).mode[1] = 0;

@@ -18,4 +18,7 @@ void DeleteEnemy(struct Entity* p);
 
 bool32 IsFrozen(void* enemy_entity);
 
+void TryDropZakoDisk(struct Entity* p, Coords32* c);
+#define DropEnemyDisk(enti, c) (TryDropZakoDisk(((struct Entity*)(enti)), (c)))
+
 #endif  // GUARD_RMZ3_ENEMY_H

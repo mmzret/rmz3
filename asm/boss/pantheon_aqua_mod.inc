@@ -393,7 +393,7 @@ _08051638:
 	strb r5, [r6]
 _08051658:
 	adds r0, r4, #0
-	bl GetEntityPalID
+	bl _GetEntityPaletteID
 	adds r1, r0, #0
 	lsls r1, r1, #0x18
 	lsrs r1, r1, #0x13
@@ -964,7 +964,7 @@ _08051ADC:
 	b _08051B82
 _08051AE4:
 	adds r0, r4, #0
-	bl GetEntityPalID
+	bl _GetEntityPaletteID
 	adds r1, r0, #0
 	lsls r1, r1, #0x18
 	lsrs r1, r1, #0x13
@@ -1096,7 +1096,7 @@ _08051BAC:
 	strb r6, [r5]
 _08051BDE:
 	adds r0, r4, #0
-	bl GetEntityPalID
+	bl _GetEntityPaletteID
 	adds r1, r0, #0
 	lsls r1, r1, #0x18
 	lsrs r1, r1, #0x13
@@ -1133,7 +1133,7 @@ _08051C0A:
 	strb r0, [r5]
 _08051C2C:
 	adds r0, r4, #0
-	bl GetEntityPalID
+	bl _GetEntityPaletteID
 	adds r1, r0, #0
 	lsls r1, r1, #0x18
 	lsrs r1, r1, #0x13
@@ -1179,7 +1179,7 @@ _08051C6C:
 	strb r0, [r5]
 _08051C8E:
 	adds r0, r4, #0
-	bl GetEntityPalID
+	bl _GetEntityPaletteID
 	adds r1, r0, #0
 	lsls r1, r1, #0x18
 	lsrs r1, r1, #0x13
@@ -1262,7 +1262,7 @@ _08051CFA:
 	strb r5, [r6]
 _08051D2E:
 	adds r0, r4, #0
-	bl GetEntityPalID
+	bl _GetEntityPaletteID
 	adds r1, r0, #0
 	lsls r1, r1, #0x18
 	lsrs r1, r1, #0x13
@@ -1821,7 +1821,7 @@ _080523D6:
 	strb r4, [r5]
 _080523F4:
 	adds r0, r7, #0
-	bl GetEntityPalID
+	bl _GetEntityPaletteID
 	adds r1, r0, #0
 	lsls r1, r1, #0x18
 	lsrs r1, r1, #0x13

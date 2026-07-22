@@ -7,7 +7,7 @@
 /**
  * @note 直接呼ばずに EnableSpriteAnimation_Normal() を呼ぶ
  */
-void InitNonAffineMotion(struct Entity* p) {
+void InitNonAffineMotion(Entity* p) {
   struct Sprite* spr = &p->spr;
   ResetAnimState(&p->motion, gStaticMotionCmdTable[0]);
   InitNonAffineSprite(spr, (struct MetaspriteHeader*)gStaticMotionMetaspriteTable[0], &p->coord);
@@ -26,7 +26,7 @@ void InitNonAffineMotion(struct Entity* p) {
   p->flags2 &= ~PALETTE_FORCED;
 }
 
-void InitRotatableMotion(struct Entity* p) {
+void InitRotatableMotion(Entity* p) {
   struct Sprite* spr = &p->spr;
   ResetAnimState(&p->motion, gStaticMotionCmdTable[0]);
   InitRotatableSprite(spr, (struct MetaspriteHeader*)gStaticMotionMetaspriteTable[0], &p->coord);
@@ -46,7 +46,7 @@ void InitRotatableMotion(struct Entity* p) {
   p->flags2 &= ~PALETTE_FORCED;
 }
 
-void InitScalerotMotion1(struct Entity* p) {
+void InitScalerotMotion1(Entity* p) {
   struct Sprite* spr = &p->spr;
   ResetAnimState(&p->motion, gStaticMotionCmdTable[0]);
   InitScalerotSprite1(spr, (struct MetaspriteHeader*)gStaticMotionMetaspriteTable[0], &p->coord);
@@ -67,7 +67,7 @@ void InitScalerotMotion1(struct Entity* p) {
   p->flags2 &= ~PALETTE_FORCED;
 }
 
-void InitScalerotMotion2(struct Entity* p) {
+void InitScalerotMotion2(Entity* p) {
   struct Sprite* spr = &p->spr;
   ResetAnimState(&p->motion, gStaticMotionCmdTable[0]);
   InitScalerotSprite2(spr, (struct MetaspriteHeader*)gStaticMotionMetaspriteTable[0], &p->coord);
@@ -88,13 +88,13 @@ void InitScalerotMotion2(struct Entity* p) {
   p->flags2 &= ~PALETTE_FORCED;
 }
 
-void ResetDynamicMotion(struct Entity* p) {
+void ResetDynamicMotion(Entity* p) {
   p->motionID = 0xFF;
   p->texture = 0xFF;
   p->flags2 |= DYNAMIC;
 }
 
-NON_MATCH void SetMotion(struct Entity* p, motion_t m) {
+NON_MATCH void SetMotion(Entity* p, motion_t m) {
 #if MODERN
   motion_id_t id = m >> 8;
   if (id != p->motionID) {
@@ -126,14 +126,14 @@ NON_MATCH void SetMotion(struct Entity* p, motion_t m) {
 }
 
 // SetMotion は cmdIdx とかは 0 つまり motion の初めからになるが、これはmotionの途中状態にもセットできる
-void GotoMotion(struct Entity* p, motion_t motion, u16 cmdIdx, u16 duration) {
+void GotoMotion(Entity* p, motion_t motion, u16 cmdIdx, u16 duration) {
   SetSpriteAnimation(p, motion);
   (p->motion).cmdIdx = cmdIdx;
   (p->motion).duration = duration;
 }
 
 // 0x0801765C
-NON_MATCH void UpdateEntityAnim(struct Entity* p) {
+NON_MATCH void UpdateEntityAnim(Entity* p) {
 #if MODERN
   u8 spriteIdx;
   struct Sprite* spr = &p->spr;
@@ -174,7 +174,7 @@ NON_MATCH void UpdateEntityAnim(struct Entity* p) {
 #endif
 }
 
-NON_MATCH void FUN_0801779c(struct Entity* p) {
+NON_MATCH void FUN_0801779c(Entity* p) {
 #if MODERN
   StepAnimState(&p->motion);
   (p->spr).spriteIdx = (p->motion).table[(p->motion).id][(p->motion).cmdIdx].param;
@@ -203,9 +203,9 @@ NON_MATCH void FUN_0801779c(struct Entity* p) {
 #endif
 }
 
-NAKED static void unused_0801785c(struct Entity* p) { INCCODE("asm/unused/unused_0801785c.inc"); }
+NAKED static void unused_0801785c(Entity* p) { INCCODE("asm/unused/unused_0801785c.inc"); }
 
-void UpdateEntityPaletteID(struct Entity* p) {
+void UpdateEntityPaletteID(Entity* p) {
   u16 pal;
   if (p->flags2 & DYNAMIC) {
     pal = p->palID + wDynamicMotionPalIDs[p->motionID];
@@ -217,7 +217,8 @@ void UpdateEntityPaletteID(struct Entity* p) {
   p->flags2 &= ~PALETTE_FORCED;
 }
 
-u8 GetEntityPalID(struct Entity* p) {
+// NOTE: ラッパー関数の GetEntityPaletteID から呼び出す
+u8 _GetEntityPaletteID(Entity* p) {
   u16 palID;
   if (p->flags2 & DYNAMIC) {
     palID = p->palID + wDynamicMotionPalIDs[p->motionID];
@@ -227,13 +228,14 @@ u8 GetEntityPalID(struct Entity* p) {
   return palID;
 }
 
-void ForceEntityPalette(struct Entity* p, u8 palID) {
+// NOTE: ラッパー関数の ForceEntityPalette から呼び出す
+void _ForceEntityPalette(Entity* p, u8 palID) {
   p->flags2 |= PALETTE_FORCED;
   (p->spr).oam.paletteNum = palID;
   p->savedPalID = palID;
 }
 
-void PaintEntityWhite(struct Entity* p) {
+void PaintEntityWhite(Entity* p) {
   u8 palID = 13;
   SET_FLAG32(gWhitePaintFlags, p->invincibleID);
   p->flags2 |= PALETTE_FORCED;

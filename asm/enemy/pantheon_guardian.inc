@@ -1819,8 +1819,8 @@ _08064650: .4byte sCollisions+(24*6)
 _08064654: .4byte 0xFFFFE800
 _08064658: .4byte gEnemyFnTable
 
-	thumb_func_start FUN_0806465c
-FUN_0806465c: @ 0x0806465C
+	thumb_func_start PantheonGuardian_OnCollision
+PantheonGuardian_OnCollision: @ 0x0806465C
 	push {lr}
 	adds r2, r0, #0
 	ldr r0, [r2, #0x14]

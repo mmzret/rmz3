@@ -167,7 +167,7 @@ _08049200:
 	adds r0, r4, #0
 	bl SetMotion
 	adds r0, r4, #0
-	bl GetEntityPalID
+	bl _GetEntityPaletteID
 	adds r1, r0, #0
 	lsls r1, r1, #0x18
 	lsrs r1, r1, #0x13
@@ -212,7 +212,7 @@ _08049254:
 	movs r0, #0x29
 	bl RemovePaletteAnimation
 	adds r0, r4, #0
-	bl GetEntityPalID
+	bl _GetEntityPaletteID
 	adds r1, r0, #0
 	lsls r1, r1, #0x18
 	lsrs r1, r1, #0x13

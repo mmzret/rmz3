@@ -146,7 +146,7 @@ static void FUN_080af1b4(PhantomProjectile* p) {
   INIT_BODY(p, &sCollisions[0], 0, NULL);
   SET_PROJECTILE_ROUTINE(p, ENTITY_UPDATE);
   p->mode[1] = 0;
-  InitRotatableMotion((void*)p);
+  EnableSpriteAnimation_Rotatable(p);
   p->flags |= DISPLAY;
   p->flags |= FLIPABLE;
   PhantomProjectile_Update(p);
@@ -155,7 +155,7 @@ static void FUN_080af1b4(PhantomProjectile* p) {
 static void FUN_080af214(PhantomProjectile* p) {
   SET_PROJECTILE_ROUTINE(p, ENTITY_UPDATE);
   p->mode[1] = 0;
-  InitRotatableMotion((void*)p);
+  EnableSpriteAnimation_Rotatable(p);
   p->flags |= DISPLAY;
   p->flags |= FLIPABLE;
   PhantomProjectile_Update(p);

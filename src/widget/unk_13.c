@@ -455,7 +455,7 @@ _080E87DA:\n\
 	lsls r1, r1, #0x18\n\
 	lsrs r1, r1, #0x18\n\
 	adds r0, r6, #0\n\
-	bl ForceEntityPalette\n\
+	bl _ForceEntityPalette\n\
 	adds r0, r6, #0\n\
 	adds r0, #0x4c\n\
 	strb r4, [r0]\n\

@@ -40,7 +40,7 @@ void CreateGhost18(Coords32* c, u8 kind, bool8 xflip, u8 r3) {
 }
 
 static void Ghost18_Init(struct VFX18* p) {
-  InitRotatableMotion(&p->s);
+  EnableSpriteAnimation_Rotatable(p);
   (p->s).flags |= DISPLAY;
   (p->s).flags |= FLIPABLE;
   SetSpriteAnimation(p, MOTION(SM019_PANTHEON_HUNTER, 5));

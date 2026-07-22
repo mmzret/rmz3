@@ -83,7 +83,7 @@ FUN_080b2384: @ 0x080B2384
 	lsls r1, r1, #0x18
 	lsrs r1, r1, #0x18
 	adds r0, r4, #0
-	bl ForceEntityPalette
+	bl _ForceEntityPalette
 	movs r2, #0
 	ldrb r1, [r4, #0xa]
 	movs r0, #0xef
@@ -160,7 +160,7 @@ FUN_080b2428: @ 0x080B2428
 	lsls r1, r1, #0x18
 	lsrs r1, r1, #0x18
 	adds r0, r4, #0
-	bl ForceEntityPalette
+	bl _ForceEntityPalette
 	adds r1, r4, #0
 	adds r1, #0x25
 	movs r0, #9

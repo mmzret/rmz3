@@ -385,7 +385,7 @@ _080CE03A:
 _080CE050: .4byte 0x00004B01
 _080CE054:
 	adds r0, r4, #0
-	bl GetEntityPalID
+	bl _GetEntityPaletteID
 	adds r1, r0, #0
 	lsls r1, r1, #0x18
 	lsrs r1, r1, #0x13
@@ -471,7 +471,7 @@ _080CE0F4:
 	movs r0, #0x46
 	bl RemovePaletteAnimation
 	adds r0, r4, #0
-	bl GetEntityPalID
+	bl _GetEntityPaletteID
 	adds r1, r0, #0
 	lsls r1, r1, #0x18
 	lsrs r1, r1, #0x13
@@ -614,7 +614,7 @@ _080CE214:
 	movs r0, #0x47
 	bl RemovePaletteAnimation
 	adds r0, r4, #0
-	bl GetEntityPalID
+	bl _GetEntityPaletteID
 	adds r1, r0, #0
 	lsls r1, r1, #0x18
 	lsrs r1, r1, #0x13

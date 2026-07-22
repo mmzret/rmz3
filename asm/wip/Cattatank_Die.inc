@@ -1,11 +1,3 @@
-	.include "asm/macros.inc"
-
-	.syntax unified
-	
-	.text
-
-	thumb_func_start Cattatank_Die
-Cattatank_Die: @ 0x08098B20
 	push {r4, r5, r6, r7, lr}
 	mov r7, sl
 	mov r6, sb

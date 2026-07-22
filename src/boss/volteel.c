@@ -3,14 +3,35 @@
 #include "entity.h"
 #include "global.h"
 #include "overworld.h"
+#include "physics.h"
+
+typedef struct {
+  COLLISION_OBJECT_HDR;  // 0x00
+  u8 unk_b4;             // 0xB4
+  s8 prevModes[2];       // 0xB5
+  u8 unk_b7;             // 0xB7
+  Coords32 initCoords;   // 0xB8
+  void* unk_c0;          // 0xC0
+  u8 unk_c4[5];          // 0xC4
+  u8 unk_c9;             // 0xC9
+  u8 unk_ca;             // 0xCA
+  u8 unk_cb[9];          // 0xCB
+  s32 unk_d4;            // 0xD4
+  s32 unk_d8;            // 0xD8
+  s32 unk_dc;            // 0xDC
+  s32 unk_e0;            // 0xE0
+} Volteel;
+static_assert(sizeof(Volteel) == sizeof(Boss));
 
 static const struct Collision sCollisions[24];
 
-bool8 volteel_080457c4(struct Boss* p);
+bool8 volteel_080457c4(Volteel* p);
 
-static void Volteel_Init(struct Boss* p);
-static void Volteel_Update(struct Boss* p);
-static void Volteel_Die(struct Boss* p);
+void Volteel_OnCollision(struct Body* body, Coords32* c1, Coords32* c2);
+
+static void Volteel_Init(Volteel* p);
+static void Volteel_Update(Volteel* p);
+static void Volteel_Die(Volteel* p);
 
 // clang-format off
 const BossRoutine gVolteelRoutine = {
@@ -22,8 +43,8 @@ const BossRoutine gVolteelRoutine = {
 };
 // clang-format on
 
-struct Boss* CreateVolteel(Coords32* c, u8 n) {
-  struct Boss* p = AllocEntityLast(gBossHeaderPtr);
+static Volteel* Unused_CreateVolteel(Coords32* c, u8 n) {
+  Volteel* p = AllocEntityLast(gBossHeaderPtr);
   if (p != NULL) {
     INIT_BOSS_ROUTINE(p, BOSS_VOLTEEL);
     p->coord = *c;
@@ -32,226 +53,101 @@ struct Boss* CreateVolteel(Coords32* c, u8 n) {
   return p;
 }
 
-NAKED static void Volteel_Init(struct Boss* p) {
-  asm(".syntax unified\n\
-	push {r4, r5, r6, r7, lr}\n\
-	mov r7, r8\n\
-	push {r7}\n\
-	adds r7, r0, #0\n\
-	bl InitNonAffineMotion\n\
-	adds r0, r7, #0\n\
-	adds r0, #0x24\n\
-	movs r4, #0\n\
-	strb r4, [r0]\n\
-	adds r1, r7, #0\n\
-	adds r1, #0x50\n\
-	movs r0, #0\n\
-	mov r8, r0\n\
-	movs r0, #0x80\n\
-	lsls r0, r0, #1\n\
-	strh r0, [r1]\n\
-	adds r1, #2\n\
-	strh r0, [r1]\n\
-	adds r0, r7, #0\n\
-	bl ResetDynamicMotion\n\
-	ldrb r1, [r7, #0xa]\n\
-	movs r0, #0xfe\n\
-	ands r0, r1\n\
-	movs r1, #2\n\
-	orrs r0, r1\n\
-	strb r0, [r7, #0xa]\n\
-	adds r0, r7, #0\n\
-	adds r0, #0x4c\n\
-	mov r1, r8\n\
-	strb r1, [r0]\n\
-	adds r2, r7, #0\n\
-	adds r2, #0x4a\n\
-	ldrb r1, [r2]\n\
-	movs r0, #0x11\n\
-	rsbs r0, r0, #0\n\
-	ands r0, r1\n\
-	strb r0, [r2]\n\
-	ldrb r1, [r7, #0xa]\n\
-	movs r0, #0xef\n\
-	ands r0, r1\n\
-	strb r0, [r7, #0xa]\n\
-	ldr r1, _08043444 @ =sCollisions\n\
-	adds r0, r7, #0\n\
-	movs r2, #0x40\n\
-	bl ResetBossBody\n\
-	adds r1, r7, #0\n\
-	adds r1, #0xc9\n\
-	movs r0, #0x40\n\
-	strb r0, [r1]\n\
-	ldr r1, _08043448 @ =FUN_0804586c\n\
-	adds r0, r7, #0\n\
-	adds r0, #0x74\n\
-	str r1, [r0, #0x24]\n\
-	adds r0, #0x40\n\
-	mov r1, r8\n\
-	strb r1, [r0]\n\
-	adds r1, r7, #0\n\
-	adds r1, #0xb5\n\
-	movs r0, #0xff\n\
-	strb r0, [r1]\n\
-	adds r1, #1\n\
-	strb r0, [r1]\n\
-	adds r0, r7, #0\n\
-	adds r0, #0xc0\n\
-	str r4, [r0]\n\
-	subs r0, #9\n\
-	mov r1, r8\n\
-	strb r1, [r0]\n\
-	ldr r1, [r7, #0x58]\n\
-	ldr r0, _0804344C @ =0xFFFFC000\n\
-	adds r1, r1, r0\n\
-	ldr r0, [r7, #0x54]\n\
-	bl FUN_0800a05c\n\
-	str r0, [r7, #0x58]\n\
-	adds r1, r7, #0\n\
-	adds r1, #0xb8\n\
-	ldr r0, [r7, #0x54]\n\
-	str r0, [r1]\n\
-	adds r1, #4\n\
-	ldr r0, [r7, #0x58]\n\
-	str r0, [r1]\n\
-	ldr r0, [r7, #0x54]\n\
-	ldr r1, [r7, #0x58]\n\
-	bl FUN_0800a134\n\
-	adds r5, r0, #0\n\
-	ldr r0, [r7, #0x54]\n\
-	adds r1, r5, #0\n\
-	bl FUN_0800a22c\n\
-	adds r6, r0, #0\n\
-	ldr r0, [r7, #0x54]\n\
-	adds r1, r5, #0\n\
-	bl FUN_0800a31c\n\
-	adds r4, r0, #0\n\
-	subs r0, r6, r4\n\
-	asrs r5, r0, #1\n\
-	adds r5, r4, r5\n\
-	ldr r1, [r7, #0x58]\n\
-	adds r0, r5, #0\n\
-	bl FUN_0800a134\n\
-	adds r1, r7, #0\n\
-	adds r1, #0xd4\n\
-	str r0, [r1]\n\
-	ldr r1, [r7, #0x58]\n\
-	adds r0, r5, #0\n\
-	bl FUN_0800a05c\n\
-	adds r1, r7, #0\n\
-	adds r1, #0xd8\n\
-	str r0, [r1]\n\
-	adds r0, r7, #0\n\
-	adds r0, #0xdc\n\
-	str r4, [r0]\n\
-	adds r0, #4\n\
-	str r6, [r0]\n\
-	subs r0, #0x16\n\
-	mov r1, r8\n\
-	strb r1, [r0]\n\
-	ldrb r0, [r7, #0x10]\n\
-	cmp r0, #0\n\
-	bne _08043454\n\
-	ldr r1, _08043450 @ =gBossFnTable\n\
-	ldrb r0, [r7, #9]\n\
-	lsls r0, r0, #2\n\
-	adds r0, r0, r1\n\
-	movs r1, #1\n\
-	str r1, [r7, #0xc]\n\
-	ldr r0, [r0]\n\
-	ldr r0, [r0, #4]\n\
-	str r0, [r7, #0x14]\n\
-	mov r0, r8\n\
-	strb r0, [r7, #0xd]\n\
-	strb r0, [r7, #0xe]\n\
-	strb r0, [r7, #0xf]\n\
-	b _08043470\n\
-	.align 2, 0\n\
-_08043444: .4byte sCollisions\n\
-_08043448: .4byte FUN_0804586c\n\
-_0804344C: .4byte 0xFFFFC000\n\
-_08043450: .4byte gBossFnTable\n\
-_08043454:\n\
-	ldr r1, _08043484 @ =gBossFnTable\n\
-	ldrb r0, [r7, #9]\n\
-	lsls r0, r0, #2\n\
-	adds r0, r0, r1\n\
-	movs r1, #1\n\
-	str r1, [r7, #0xc]\n\
-	ldr r0, [r0]\n\
-	ldr r0, [r0, #4]\n\
-	str r0, [r7, #0x14]\n\
-	movs r0, #3\n\
-	strb r0, [r7, #0xd]\n\
-	mov r1, r8\n\
-	strb r1, [r7, #0xe]\n\
-	strb r1, [r7, #0xf]\n\
-_08043470:\n\
-	movs r0, #0\n\
-	strb r0, [r7, #0x11]\n\
-	adds r0, r7, #0\n\
-	bl Volteel_Update\n\
-	pop {r3}\n\
-	mov r8, r3\n\
-	pop {r4, r5, r6, r7}\n\
-	pop {r0}\n\
-	bx r0\n\
-	.align 2, 0\n\
-_08043484: .4byte gBossFnTable\n\
- .syntax divided\n");
+NON_MATCH static void Volteel_Init(Volteel* p) {
+#if MODERN
+  s32 y;
+  EnableSpriteAnimation_Normal(p);
+  p->angle = 0;
+  (p->spr).mag.x = 0x100, (p->spr).mag.y = 0x100;
+  SetSpriteTableDynamic(p);
+  p->flags &= ~DISPLAY;
+  p->flags |= FLIPABLE;
+  (p->spr).xflip = FALSE, (p->spr).oam.xflip = FALSE;
+  p->flags &= ~X_FLIP;
+  ResetBossBody((void*)p, &sCollisions[0], 64);
+  p->unk_c9 = 64;
+  SET_BOSS_COLLISION_HANDLER(p, Volteel_OnCollision);
+  p->unk_b4 = 0;
+  p->prevModes[0] = -1, p->prevModes[1] = -1;
+  p->unk_c0 = NULL;
+  p->unk_b7 = 0;
+  y = (p->coord).y - PIXEL(64);
+  (p->coord).y = FUN_0800a05c((p->coord).x, y);
+  (p->initCoords).x = (p->coord).x, (p->initCoords).y = (p->coord).y;
+
+  {
+    s32 tmp = FUN_0800a134((p->coord).x, (p->coord).y);
+    s32 tmp_e0 = FUN_0800a22c((p->coord).x, tmp);
+    s32 tmp_dc = FUN_0800a31c((p->coord).x, tmp);
+    s32 tmpX = tmp_dc + ((tmp_e0 - tmp_dc) >> 1);
+    p->unk_d4 = FUN_0800a134(tmpX, (p->coord).y);
+    p->unk_d8 = FUN_0800a05c(tmpX, (p->coord).y);
+    p->unk_dc = tmp_dc;
+    p->unk_e0 = tmp_e0;
+  }
+  p->unk_ca = 0;
+  if (p->work[0] == 0) {
+    SET_BOSS_ROUTINE(p, ENTITY_UPDATE);
+    p->mode[1] = 0, p->mode[2] = 0, p->mode[3] = 0;
+  } else {
+    SET_BOSS_ROUTINE(p, ENTITY_UPDATE);
+    p->mode[1] = 3, p->mode[2] = 0, p->mode[3] = 0;
+  }
+  p->work[1] = 0;
+  Volteel_Update(p);
+#else
+  INCCODE("asm/wip/Volteel_Init.inc");
+#endif
 }
 
-// --------------------------------------------
+bool8 nop_080438a4(Volteel* p);
+bool8 FUN_080438f0(Volteel* p);
+bool8 FUN_08043988(Volteel* p);
+bool8 nop_080439d0(Volteel* p);
+bool8 nop_08043db0(Volteel* p);
+bool8 FUN_080440c0(Volteel* p);
+bool8 FUN_080449f0(Volteel* p);
+bool8 FUN_08044cb4(Volteel* p);
+bool8 FUN_08044f00(Volteel* p);
+bool8 FUN_080450bc(Volteel* p);
+bool8 FUN_08045464(Volteel* p);
+bool8 FUN_08045570(Volteel* p);
+bool8 FUN_08045610(Volteel* p);
 
-bool8 nop_080438a4(struct Boss* p);
-bool8 FUN_080438f0(struct Boss* p);
-bool8 FUN_08043988(struct Boss* p);
-bool8 nop_080439d0(struct Boss* p);
-bool8 nop_08043db0(struct Boss* p);
-bool8 FUN_080440c0(struct Boss* p);
-bool8 FUN_080449f0(struct Boss* p);
-bool8 FUN_08044cb4(struct Boss* p);
-bool8 FUN_08044f00(struct Boss* p);
-bool8 FUN_080450bc(struct Boss* p);
-bool8 FUN_08045464(struct Boss* p);
-bool8 FUN_08045570(struct Boss* p);
-bool8 FUN_08045610(struct Boss* p);
+void volteelMode0(Volteel* p);
+void volteelMode1(Volteel* p);
+void volteelMode2(Volteel* p);
+void volteelNeutral(Volteel* p);
+void volteelMode4(Volteel* p);
+void volteelMode5(Volteel* p);
+void volteelMode6(Volteel* p);
+void volteelElectricCage(Volteel* p);
+void volteelMode8(Volteel* p);
+void volteelMode9(Volteel* p);
+void volteelEX(Volteel* p);
+void volteelMode11(Volteel* p);
+void volteelKnockBackDamage(Volteel* p);
 
-void volteelMode0(struct Boss* p);
-void volteelMode1(struct Boss* p);
-void volteelMode2(struct Boss* p);
-void volteelNeutral(struct Boss* p);
-void volteelMode4(struct Boss* p);
-void volteelMode5(struct Boss* p);
-void volteelMode6(struct Boss* p);
-void volteelElectricCage(struct Boss* p);
-void volteelMode8(struct Boss* p);
-void volteelMode9(struct Boss* p);
-void volteelEX(struct Boss* p);
-void volteelMode11(struct Boss* p);
-void volteelKnockBackDamage(struct Boss* p);
-
-static void Volteel_Update(struct Boss* p) {
+static void Volteel_Update(Volteel* p) {
   // clang-format off
-  static const BossFunc sUpdates1[] = {
-      (BossFunc)nop_080438a4,
-      (BossFunc)FUN_080438f0,
-      (BossFunc)FUN_08043988,
-      (BossFunc)nop_080439d0,
-      (BossFunc)nop_08043db0,
-      (BossFunc)FUN_080440c0,
-      (BossFunc)FUN_080449f0,
-      (BossFunc)FUN_08044cb4,
-      (BossFunc)FUN_08044f00,
-      (BossFunc)FUN_080450bc,
-      (BossFunc)FUN_08045464,
-      (BossFunc)FUN_08045570,
-      (BossFunc)FUN_08045610,
+  static bool8 (*const sUpdates1[])(Volteel*) = {
+      nop_080438a4,
+      FUN_080438f0,
+      FUN_08043988,
+      nop_080439d0,
+      nop_08043db0,
+      FUN_080440c0,
+      FUN_080449f0,
+      FUN_08044cb4,
+      FUN_08044f00,
+      FUN_080450bc,
+      FUN_08045464,
+      FUN_08045570,
+      FUN_08045610,
   };
   // clang-format on
   // clang-format off
-  static const BossFunc sUpdates2[] = {
+  static void (*const sUpdates2[])(Volteel*) = {
       volteelMode0,
       volteelMode1,
       volteelMode2,
@@ -284,13 +180,11 @@ static void Volteel_Update(struct Boss* p) {
   (sUpdates2[p->mode[1]])(p);
 }
 
-// --------------------------------------------
+void volteelDeath0(Volteel* p);
+void volteelDeath1(Volteel* p);
 
-void volteelDeath0(struct Boss* p);
-void volteelDeath1(struct Boss* p);
-
-static void Volteel_Die(struct Boss* p) {
-  static const BossFunc seq[] = {
+static void Volteel_Die(Volteel* p) {
+  static void (*const seq[2])(Volteel*) = {
       volteelDeath0,
       volteelDeath1,
   };
@@ -299,82 +193,86 @@ static void Volteel_Die(struct Boss* p) {
 
 INCASM("asm/boss/volteel_a.inc");
 
-bool8 nop_080438a4(struct Boss* p) { return TRUE; }
+bool8 nop_080438a4(Volteel* p) { return TRUE; }
 
-void volteelMode0(struct Boss* p) {
+void volteelMode0(Volteel* p) {
   switch (p->mode[2]) {
-    case 0:
+    case 0: {
       p->flags |= DISPLAY;
       SetSpriteAnimation(p, MOTION(DM165_VOLTEEL, 0));
       p->mode[2]++;
       FALLTHROUGH;
-    case 1:
+    }
+    case 1: {
       UpdateSpriteAnimation(p);
       if ((p->scriptEntity)->flags & (1 << 0)) p->mode[1] = 1, p->mode[2] = 0;
       break;
+    }
   }
 }
 
-bool8 FUN_080438f0(struct Boss* p) { return TRUE; }
+bool8 FUN_080438f0(Volteel* p) { return TRUE; }
 
 INCASM("asm/boss/volteel_b.inc");
 
-bool8 FUN_08043988(struct Boss* p) { return TRUE; }
+bool8 FUN_08043988(Volteel* p) { return TRUE; }
 
-void volteelMode2(struct Boss* p) {
+void volteelMode2(Volteel* p) {
   switch (p->mode[2]) {
-    case 0:
+    case 0: {
       SetSpriteAnimation(p, MOTION(DM165_VOLTEEL, 0));
       p->mode[2]++;
       FALLTHROUGH;
-    case 1:
+    }
+    case 1: {
       if (!(gStageRun.vm.active & VM_ACTIVE)) p->mode[1] = 3, p->mode[2] = 0;
       UpdateSpriteAnimation(p);
       break;
+    }
   }
 }
 
-bool8 nop_080439d0(struct Boss* p) { return TRUE; }
+bool8 nop_080439d0(Volteel* p) { return TRUE; }
 
 INCASM("asm/boss/volteel_c.inc");
 
-bool8 nop_08043db0(struct Boss* p) { return TRUE; }
+bool8 nop_08043db0(Volteel* p) { return TRUE; }
 
 INCASM("asm/boss/volteel_d.inc");
 
-bool8 FUN_080440c0(struct Boss* p) { return TRUE; }
+bool8 FUN_080440c0(Volteel* p) { return TRUE; }
 
 INCASM("asm/boss/volteel_e.inc");
 
-bool8 FUN_080449f0(struct Boss* p) { return TRUE; }
+bool8 FUN_080449f0(Volteel* p) { return TRUE; }
 
 INCASM("asm/boss/volteel_f.inc");
 
-bool8 FUN_08044cb4(struct Boss* p) { return TRUE; }
+bool8 FUN_08044cb4(Volteel* p) { return TRUE; }
 
 INCASM("asm/boss/volteel_g.inc");
 
-bool8 FUN_08044f00(struct Boss* p) { return TRUE; }
+bool8 FUN_08044f00(Volteel* p) { return TRUE; }
 
 INCASM("asm/boss/volteel_h.inc");
 
-bool8 FUN_080450bc(struct Boss* p) { return TRUE; }
+bool8 FUN_080450bc(Volteel* p) { return TRUE; }
 
 INCASM("asm/boss/volteel_i.inc");
 
-bool8 FUN_08045464(struct Boss* p) { return TRUE; }
+bool8 FUN_08045464(Volteel* p) { return TRUE; }
 
 INCASM("asm/boss/volteel_j.inc");
 
-bool8 FUN_08045570(struct Boss* p) { return TRUE; }
+bool8 FUN_08045570(Volteel* p) { return TRUE; }
 
 INCASM("asm/boss/volteel_k.inc");
 
-bool8 FUN_08045610(struct Boss* p) { return TRUE; }
+bool8 FUN_08045610(Volteel* p) { return TRUE; }
 
 INCASM("asm/boss/volteel_l.inc");
 
-bool8 FUN_080459d4(struct Boss* p) {
+bool8 FUN_080459d4(Volteel* p) {
   if (p->mode[1] == 5) return TRUE;
   return FALSE;
 }

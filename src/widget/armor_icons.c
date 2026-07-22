@@ -132,7 +132,7 @@ NAKED static void FUN_080e6ab8(ArmorIcons* p) {
 	bl SetMotion\n\
 	adds r0, r5, #0\n\
 	movs r1, #5\n\
-	bl ForceEntityPalette\n\
+	bl _ForceEntityPalette\n\
 	b _080E6B64\n\
 	.align 2, 0\n\
 _080E6B0C: .4byte 0x000064AC\n\
@@ -154,7 +154,7 @@ _080E6B18:\n\
 	adds r0, r0, r1\n\
 	ldrb r1, [r0]\n\
 	adds r0, r5, #0\n\
-	bl ForceEntityPalette\n\
+	bl _ForceEntityPalette\n\
 	b _080E6B64\n\
 	.align 2, 0\n\
 _080E6B40: .4byte sBodyChipMotions\n\
@@ -171,7 +171,7 @@ _080E6B48:\n\
 	bl SetMotion\n\
 	adds r0, r5, #0\n\
 	movs r1, #5\n\
-	bl ForceEntityPalette\n\
+	bl _ForceEntityPalette\n\
 _080E6B64:\n\
 	adds r0, r5, #0\n\
 	adds r0, #0x4c\n\
@@ -251,7 +251,7 @@ NAKED static void FUN_080e6bb8(ArmorIcons* p) {
 	bl SetMotion\n\
 	adds r0, r4, #0\n\
 	movs r1, #5\n\
-	bl ForceEntityPalette\n\
+	bl _ForceEntityPalette\n\
 	b _080E6C50\n\
 	.align 2, 0\n\
 _080E6C04: .4byte gWidgetFnTable\n\
@@ -271,7 +271,7 @@ _080E6C0C:\n\
 	adds r0, r0, r1\n\
 	ldrb r1, [r0]\n\
 	adds r0, r4, #0\n\
-	bl ForceEntityPalette\n\
+	bl _ForceEntityPalette\n\
 	b _080E6C50\n\
 	.align 2, 0\n\
 _080E6C30: .4byte sBodyChipMotions\n\
@@ -286,7 +286,7 @@ _080E6C38:\n\
 	bl SetMotion\n\
 	adds r0, r4, #0\n\
 	movs r1, #5\n\
-	bl ForceEntityPalette\n\
+	bl _ForceEntityPalette\n\
 _080E6C50:\n\
 	adds r0, r4, #0\n\
 	adds r0, #0x4c\n\
@@ -627,7 +627,7 @@ _080E6EC4:\n\
 	bl SetMotion\n\
 	adds r0, r6, #0\n\
 	movs r1, #5\n\
-	bl ForceEntityPalette\n\
+	bl _ForceEntityPalette\n\
 	b _080E6F40\n\
 	.align 2, 0\n\
 _080E6EF0: .4byte sHeadChipMotions\n\
@@ -647,7 +647,7 @@ _080E6EF4:\n\
 	adds r0, r0, r1\n\
 	ldrb r1, [r0]\n\
 	adds r0, r6, #0\n\
-	bl ForceEntityPalette\n\
+	bl _ForceEntityPalette\n\
 	b _080E6F40\n\
 	.align 2, 0\n\
 _080E6F1C: .4byte sBodyChipMotions\n\
@@ -664,7 +664,7 @@ _080E6F24:\n\
 	bl SetMotion\n\
 	adds r0, r6, #0\n\
 	movs r1, #5\n\
-	bl ForceEntityPalette\n\
+	bl _ForceEntityPalette\n\
 _080E6F40:\n\
 	adds r0, r6, #0\n\
 	bl UpdateEntityAnim\n\

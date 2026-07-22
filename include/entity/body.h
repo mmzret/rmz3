@@ -61,7 +61,7 @@ struct Body {
   u8 unk_21;              // 0x21
   u8 invincibleLv;        // 0x22, 無敵レベル(防御側の連鎖値)
   u8 unk_23 : 4;          // 0x23.0-3
-  u8 elemented : 4;       // 0x23.4-7, Element damaged?
+  u8 elemented : 4;       // 0x23.4-7, 0: None, 1: Thunder, 2: Flame, 3: Ice
   BodyFunc fn;            // 0x24, ダメージを与えた時 or 食らった時 に呼び出される
   u32 unk_28;             // 0x28
   struct Entity* parent;  // 0x2C, Objectの親ステート

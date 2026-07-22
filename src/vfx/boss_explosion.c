@@ -1,107 +1,109 @@
 #include "global.h"
 #include "vfx.h"
 
-/*
-ボス死亡時の爆発
-爆発時には、火球や漏れ出る光、誘爆のエフェクトなどがあるが、すべてのエフェクトをここで担う
-エフェクトの種類は various (例: 030073ac) で分けている
+// ボス死亡時の爆発, 爆発時には、火球や漏れ出る光、誘爆のエフェクトなどがあるが、すべてのエフェクトをここで担う
+typedef struct {
+  ENTITY_HDR;     // 0x00
+  ENTITY_SPRITE;  // 0x28
+  u8 unk_74[16];  // 0x74
+} BossExplosion;
+static_assert(sizeof(BossExplosion) == sizeof(struct VFX));
 
-various:
-  0:
-  1:
-  2: 誘爆エフェクト？
-  3: 火球
-*/
+// Entity.work[0]
+enum {
+  BOSS_EXPLOSION_MODE_0 = 0,
+  BOSS_EXPLOSION_MODE_1 = 1,
+  BOSS_EXPLOSION_MODE_2 = 2,  // 誘爆エフェクト？
+  BOSS_EXPLOSION_MODE_3 = 3,  // 火球
+};
 
-static void BossExplosion_Init(struct Entity* p);
-static void BossExplosion_Update(struct Entity* p);
-static void BossExplosion_Die(struct Entity* p);
+static void BossExplosion_Init(BossExplosion* p);
+static void BossExplosion_Update(BossExplosion* p);
+static void BossExplosion_Die(BossExplosion* p);
 
 // clang-format off
 const VFXRoutine gBossExplosionRoutine = {
-    [ENTITY_INIT] =      (VFXFunc)BossExplosion_Init,
-    [ENTITY_UPDATE] =    (VFXFunc)BossExplosion_Update,
-    [ENTITY_DIE] =       (VFXFunc)BossExplosion_Die,
-    [ENTITY_DISAPPEAR] = (VFXFunc)DeleteVFX,
-    [ENTITY_EXIT] =      (VFXFunc)DeleteEntity,
+    [ENTITY_INIT] =      (void*)BossExplosion_Init,
+    [ENTITY_UPDATE] =    (void*)BossExplosion_Update,
+    [ENTITY_DIE] =       (void*)BossExplosion_Die,
+    [ENTITY_DISAPPEAR] = (void*)DeleteVFX,
+    [ENTITY_EXIT] =      (void*)DeleteEntity,
 };
 // clang-format on
 
-struct Entity* CreateBossExplosion(struct Entity* boss, Coords32* c) {
-  struct Entity* p = AllocEntityLast(gVFXHeaderPtr);
+Entity* CreateBossExplosion(Entity* boss, Coords32* c) {
+  BossExplosion* p = AllocEntityLast(gVFXHeaderPtr);
   if (p != NULL) {
     INIT_VFX_ROUTINE(p, VFX_BOSS_EXPLOSION);
     p->unk_28 = (void*)boss;
     p->d = *c;
-    p->work[0] = 0;
-    p->work[1] = 0;
+    p->work[0] = 0, p->work[1] = 0;
   }
-  return p;
+  return (Entity*)p;
 }
 
-static void FUN_080c7984(struct Entity* e, Coords32* c, u8 kind1, u8 kind2) {
-  struct Entity* p = AllocEntityLast(gVFXHeaderPtr);
+static void FUN_080c7984(Entity* e, Coords32* c, u8 kind1, u8 kind2) {
+  BossExplosion* p = AllocEntityLast(gVFXHeaderPtr);
   if (p != NULL) {
     INIT_VFX_ROUTINE(p, VFX_BOSS_EXPLOSION);
     p->unk_28 = (void*)e;
     p->coord = *c;
-    p->work[0] = kind1;
-    p->work[1] = kind2;
+    p->work[0] = kind1, p->work[1] = kind2;
   }
 }
 
 // --------------------------------------------
 
-void FUN_080c7a28(struct VFX* p);
-void FUN_080c7a90(struct VFX* p);
-void FUN_080c7bc4(struct VFX* p);
-static void initFireball(struct Entity* p);
+void FUN_080c7a28(BossExplosion* p);
+void FUN_080c7a90(BossExplosion* p);
+void FUN_080c7bc4(BossExplosion* p);
+static void initFireball(BossExplosion* p);
 
-static void BossExplosion_Init(struct Entity* p) {
-  static const VFXFunc sInitializers[4] = {
-      (VFXFunc)FUN_080c7a28,
-      (VFXFunc)FUN_080c7a90,
-      (VFXFunc)FUN_080c7bc4,
-      (VFXFunc)initFireball,
+static void BossExplosion_Init(BossExplosion* p) {
+  static void (*const sInitializers[4])(BossExplosion*) = {
+      FUN_080c7a28,
+      FUN_080c7a90,
+      FUN_080c7bc4,
+      initFireball,
   };  // 0x0836f940
-  (sInitializers[p->work[0]])((void*)p);
+  (sInitializers[p->work[0]])(p);
 }
 
-static void FUN_080c7cc0(struct VFX* p);
-static void FUN_080c7f78(struct VFX* p);
-static void FUN_080c7ff0(struct VFX* p);
-static void updateFireball(struct VFX* p);
+static void FUN_080c7cc0(BossExplosion* p);
+static void FUN_080c7f78(BossExplosion* p);
+static void FUN_080c7ff0(BossExplosion* p);
+static void updateFireball(BossExplosion* p);
 
-static void BossExplosion_Update(struct Entity* p) {
-  static const VFXFunc sUpdates[4] = {
-      (VFXFunc)FUN_080c7cc0,
-      (VFXFunc)FUN_080c7f78,
-      (VFXFunc)FUN_080c7ff0,
-      (VFXFunc)updateFireball,
+static void BossExplosion_Update(BossExplosion* p) {
+  static void (*const sUpdates[4])(BossExplosion*) = {
+      FUN_080c7cc0,
+      FUN_080c7f78,
+      FUN_080c7ff0,
+      updateFireball,
   };  // 0x0836f950
-  (sUpdates[p->work[0]])((void*)p);
+  (sUpdates[p->work[0]])(p);
 }
 
-static void FUN_080c8084(struct VFX* p);
-static void FUN_080c810c(struct VFX* p);
-static void FUN_080c8124(struct VFX* p);
-static void deleteFireball(struct VFX* p);
+static void FUN_080c8084(BossExplosion* p);
+static void FUN_080c810c(BossExplosion* p);
+static void FUN_080c8124(BossExplosion* p);
+static void deleteFireball(BossExplosion* p);
 
-static void BossExplosion_Die(struct Entity* p) {
-  static const VFXFunc sDeinitializers[4] = {
-      (VFXFunc)FUN_080c8084,
-      (VFXFunc)FUN_080c810c,
-      (VFXFunc)FUN_080c8124,
-      (VFXFunc)deleteFireball,
+static void BossExplosion_Die(BossExplosion* p) {
+  static void (*const sDeinitializers[4])(BossExplosion*) = {
+      FUN_080c8084,
+      FUN_080c810c,
+      FUN_080c8124,
+      deleteFireball,
   };  // 0x0836F960
-  (sDeinitializers[p->work[0]])((void*)p);
+  (sDeinitializers[p->work[0]])(p);
 }
 
 // --------------------------------------------
 
 INCASM("asm/vfx/boss_explosion.inc");
 
-static void initFireball(struct Entity* p) {
+static void initFireball(BossExplosion* p) {
   EnableSpriteAnimation_Affine(p);
   p->flags |= DISPLAY;
   SetSpriteTableDynamic(p);
@@ -113,12 +115,10 @@ static void initFireball(struct Entity* p) {
   (p->spr).mag.y = (p->spr).mag.x = 0x10;
   p->angle = 0;
   SET_VFX_ROUTINE(p, ENTITY_UPDATE);
-  BossExplosion_Update((void*)p);
+  BossExplosion_Update(p);
 }
 
-// --------------------------------------------
-
-NAKED static void FUN_080c7cc0(struct VFX* p) {
+NAKED static void FUN_080c7cc0(BossExplosion* p) {
   asm(".syntax unified\n\
 	push {r4, r5, r6, r7, lr}\n\
 	mov r7, sl\n\
@@ -458,67 +458,65 @@ _080C7F74: .4byte gVFXFnTable\n\
  .syntax divided\n");
 }
 
-static void FUN_080c7f78(struct VFX* p) {
-  UpdateSpriteAnimation(&p->s);
-  (p->s).unk_coord.x += (0xFF - (p->s).unk_coord.x) * 80 / 256;
-  (p->s).unk_coord.y += (0xFF - (p->s).unk_coord.y) * 12 / 256;
-  (p->s).spr.mag.x = (p->s).unk_coord.x;
-  (p->s).spr.mag.y = (p->s).unk_coord.y;
-  (p->s).work[3]++;
-  (p->s).angle = (p->s).work[3];
-  (p->s).work[2]--;
-  if ((p->s).work[2] == 0xFF) {
-    SET_VFX_ROUTINE(p, ENTITY_DIE);
-  }
+static void FUN_080c7f78(BossExplosion* p) {
+  UpdateSpriteAnimation(p);
+  (p->unk_coord).x += (0xFF - (p->unk_coord).x) * 80 / 256;
+  (p->unk_coord).y += (0xFF - (p->unk_coord).y) * 12 / 256;
+  (p->spr).mag.x = (p->unk_coord).x;
+  (p->spr).mag.y = (p->unk_coord).y;
+  p->work[3]++;
+  p->angle = p->work[3];
+  p->work[2]--;
+  if (p->work[2] == 0xFF) SET_VFX_ROUTINE(p, ENTITY_DIE);
 }
 
-static void FUN_080c7ff0(struct VFX* p) {
+static void FUN_080c7ff0(BossExplosion* p) {
   UpdateSpriteAnimation(p);
-  (p->s).coord.x += (p->s).d.x;
-  (p->s).coord.y += (p->s).d.y;
+  (p->coord).x += (p->d).x;
+  (p->coord).y += (p->d).y;
   if (IsSpriteAnimEnd(p)) SET_VFX_ROUTINE(p, ENTITY_DIE);
 }
 
-static void updateFireball(struct VFX* p) {
-  struct Entity* e = (p->s).unk_28;
-  UpdateSpriteAnimation(&p->s);
-  if ((p->s).spr.mag.x <= 0x1FF) {
-    (p->s).spr.mag.x += 4;
-    (p->s).spr.mag.y += 4;
+static void updateFireball(BossExplosion* p) {
+  Entity* boss = p->unk_28;
+  UpdateSpriteAnimation(p);
+  if ((p->spr).mag.x <= 0x1FF) {
+    (p->spr).mag.x += 4;
+    (p->spr).mag.y += 4;
   }
-  if (e->mode[0] == ENTITY_EXIT) {
+  if (boss->mode[0] == ENTITY_EXIT) {
     SET_VFX_ROUTINE(p, ENTITY_DIE);
-    (p->s).flags &= ~DISPLAY;
+    p->flags &= ~DISPLAY;
   }
 }
 
 // --------------------------------------------
 
-static void FUN_080c8084(struct VFX* p) {
-  struct Entity* e = (p->s).unk_28;
-  if ((p->s).mode[2] == 0) {
-    (p->s).work[2] = 0;
-    (p->s).mode[2]++;
+static void FUN_080c8084(BossExplosion* p) {
+  Boss* boss = (Boss*)p->unk_28;
+  if (p->mode[2] == 0) {
+    p->work[2] = 0;
+    p->mode[2]++;
   }
-  if (((p->s).work[2]++ & 3) > 1) {
-    *(u32*)((u8*)e + 0x8c) |= 1;
-    *(u32*)((u8*)e + 0x90) |= 1;
-    PaintEntityWhite(e);
-    (p->s).work[1] = 1;
+  if ((p->work[2]++ & 3) > 1) {
+    (boss->body).status |= BODY_STATUS_WHITE;
+    (boss->body).prevStatus |= BODY_STATUS_WHITE;
+    PaintEntityWhite((void*)boss);
+    p->work[1] = 1;
   } else {
-    *(u32*)((u8*)e + 0x8c) &= ~1;
-    *(u32*)((u8*)e + 0x90) &= ~1;
-    UpdateEntityPaletteID(e);
-    (p->s).work[1] = 0;
+    (boss->body).status &= ~BODY_STATUS_WHITE;
+    (boss->body).prevStatus &= ~BODY_STATUS_WHITE;
+    UpdateEntityPaletteID((void*)boss);
+    p->work[1] = 0;
   }
-  if (e->mode[0] == ENTITY_EXIT) {
-    (p->s).flags &= ~DISPLAY;
+  if (boss->mode[0] == ENTITY_EXIT) {
+    p->flags &= ~DISPLAY;
     SET_VFX_ROUTINE(p, ENTITY_EXIT);
   }
 }
 
-static void FUN_080c810c(struct VFX* p) { SET_VFX_ROUTINE(p, ENTITY_EXIT); }
+static void FUN_080c810c(BossExplosion* p) { SET_VFX_ROUTINE(p, ENTITY_EXIT); }
 
-static void FUN_080c8124(struct VFX* p) { SET_VFX_ROUTINE(p, ENTITY_EXIT); }
+static void FUN_080c8124(BossExplosion* p) { SET_VFX_ROUTINE(p, ENTITY_EXIT); }
 
-static void deleteFireball(struct VFX* p) { SET_VFX_ROUTINE(p, ENTITY_EXIT); }
+static void deleteFireball(BossExplosion* p) { SET_VFX_ROUTINE(p, ENTITY_EXIT); }

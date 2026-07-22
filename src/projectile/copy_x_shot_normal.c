@@ -110,7 +110,7 @@ static void FUN_080a85a0(Object* p) {
 static void FUN_080a8684(Object* p) {
   struct Entity* q = p->unk_28;
   SET_PROJECTILE_ROUTINE(p, ENTITY_UPDATE);
-  InitRotatableMotion((void*)p);
+  EnableSpriteAnimation_Rotatable(p);
   p->flags |= DISPLAY;
   p->flags |= FLIPABLE;
   SetSpriteAnimation(p, MOTION(SM093_COPYX_NORMAL_SHOT, 0));
@@ -132,7 +132,7 @@ static void FUN_080a8684(Object* p) {
 static void FUN_080a8794(Object* p) {
   struct Entity* q = p->unk_28;
   SET_PROJECTILE_ROUTINE(p, ENTITY_UPDATE);
-  InitRotatableMotion((void*)p);
+  EnableSpriteAnimation_Rotatable(p);
   p->flags |= DISPLAY;
   p->flags |= FLIPABLE;
   SetSpriteAnimation(p, MOTION(SM093_COPYX_NORMAL_SHOT, 1));

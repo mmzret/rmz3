@@ -87,7 +87,7 @@ _080E7F74: .4byte gWidgetFnTable\n\
 _080E7F78:\n\
 	adds r0, r4, #0\n\
 	movs r1, #0xb\n\
-	bl ForceEntityPalette\n\
+	bl _ForceEntityPalette\n\
 	ldrb r0, [r4, #0xd]\n\
 	cmp r0, #1\n\
 	bne _080E7F88\n\
@@ -333,7 +333,7 @@ _080E8118:\n\
 	bne _080E8198\n\
 	adds r0, r4, #0\n\
 	movs r1, #0xc\n\
-	bl ForceEntityPalette\n\
+	bl _ForceEntityPalette\n\
 	b _080E8198\n\
 	.align 2, 0\n\
 _080E8178: .4byte u8_ARRAY_08372198\n\
@@ -345,7 +345,7 @@ _080E818C: .4byte 0x00000DFC\n\
 _080E8190:\n\
 	adds r0, r4, #0\n\
 	movs r1, #0xc\n\
-	bl ForceEntityPalette\n\
+	bl _ForceEntityPalette\n\
 _080E8198:\n\
 	ldrb r0, [r4, #0x10]\n\
 	cmp r0, r5\n\

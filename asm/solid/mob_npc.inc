@@ -932,7 +932,7 @@ alouette_080d9eb8: @ 0x080D9EB8
 	strh r0, [r1]
 	adds r0, r6, #0
 	movs r1, #9
-	bl ForceEntityPalette
+	bl _ForceEntityPalette
 	b _080D9F3A
 	.align 2, 0
 _080D9F00: .4byte gSystemSavedata
@@ -961,7 +961,7 @@ _080D9F08:
 	strh r0, [r1]
 	adds r0, r6, #0
 	movs r1, #7
-	bl ForceEntityPalette
+	bl _ForceEntityPalette
 _080D9F3A:
 	ldrb r1, [r6, #0xa]
 	movs r0, #4

@@ -63,35 +63,28 @@ static void CielComputer_Init(struct Solid* p) {
   CielComputer_Update((void*)p);
 }
 
-u8 GetEntityPalID(struct Entity* p);
-
 static void CielComputer_Update(struct Solid* p) {
   UpdateSpriteAnimation(p);
   switch ((p->s).mode[1]) {
-    case 0:
-      if (!((p->body).status & BODY_STATUS_CHAT)) {
-        return;
-      }
-      if (gInChat == 0) {
-        return;
-      }
-      if (gCollisionManager.talkTo != &p->body) {
-        return;
-      }
+    case 0: {
+      if (!((p->body).status & BODY_STATUS_CHAT)) return;
+      if (!gInChat) return;
+      if (gCollisionManager.talkTo != &p->body) return;
       if (gSystemSavedata.cielComputer <= 3) {
         SetSpriteAnimation(p, sMotions[gSystemSavedata.cielComputer] | 1);
         if (gSystemSavedata.cielComputer == 3) {
-          StartPaletteAnimation(241, ((u8)GetEntityPalID(&p->s) << 5) | 0x200);
+          StartPaletteAnimation(241, ((u8)GetEntityPaletteID(p) << 5) | 0x200);
         }
       }
       if (gSystemSavedata.cielComputer == 4) {
-        StartPaletteAnimation(242, ((u8)GetEntityPalID(&p->s) << 5) | 0x200);
+        StartPaletteAnimation(242, ((u8)GetEntityPaletteID(p) << 5) | 0x200);
       }
       PlaySound(0x12A);
       SetGameMode(&gGameState, 0x00060400);
       (p->s).mode[1]++;
       break;
-    case 1:
+    }
+    case 1: {
       StepPaletteAnimation(241);
       StepPaletteAnimation(242);
       if (gGameState.mode[2] == 0) {
@@ -106,6 +99,7 @@ static void CielComputer_Update(struct Solid* p) {
         (p->s).mode[1] = 0;
       }
       break;
+    }
   }
 }
 

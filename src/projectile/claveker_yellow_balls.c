@@ -5,142 +5,142 @@
 #include "story.h"
 #include "vfx.h"
 
+typedef struct {
+  COLLISION_OBJECT_HDR;  // 0x00
+  u8 buffer[16];         // 0xB4
+} ClavekerYellowBalls;
+static_assert(sizeof(ClavekerYellowBalls) == sizeof(struct Projectile));
+
 static const struct Collision sCollisions[2];
 
-static void ClavekerYellowBalls_Init(struct Projectile* p);
-static void ClavekerYellowBalls_Update(struct Projectile* p);
-static void ClavekerYellowBalls_Die(struct Projectile* p);
+static void ClavekerYellowBalls_Init(ClavekerYellowBalls* p);
+static void ClavekerYellowBalls_Update(ClavekerYellowBalls* p);
+static void ClavekerYellowBalls_Die(ClavekerYellowBalls* p);
 
 // clang-format off
 const ProjectileRoutine gClavekerYellowBallsRoutine = {
-    [ENTITY_INIT] =      ClavekerYellowBalls_Init,
-    [ENTITY_UPDATE] =    ClavekerYellowBalls_Update,
-    [ENTITY_DIE] =       ClavekerYellowBalls_Die,
+    [ENTITY_INIT] =      (void*)ClavekerYellowBalls_Init,
+    [ENTITY_UPDATE] =    (void*)ClavekerYellowBalls_Update,
+    [ENTITY_DIE] =       (void*)ClavekerYellowBalls_Die,
     [ENTITY_DISAPPEAR] = (void*)DeleteProjectile,
-    [ENTITY_EXIT] =      (ProjectileFunc)DeleteEntity,
+    [ENTITY_EXIT] =      (void*)DeleteEntity,
 };
 // clang-format on
 
-struct Projectile* FUN_080aed8c(struct Entity* boss, Coords32* c1, Coords32* c2, u8 n) {
-  struct Projectile* p = (struct Projectile*)AllocEntityLast(gProjectileHeaderPtr);
+ClavekerYellowBalls* FUN_080aed8c(Entity* q, Coords32* c1, Coords32* c2, u8 n) {
+  ClavekerYellowBalls* p = AllocEntityLast(gProjectileHeaderPtr);
   if (p != NULL) {
     INIT_PROJECTILE_ROUTINE(p, 39);
-    (p->s).work[0] = n;
-    (p->s).work[1] = 0;
-    (p->s).coord.x = c1->x;
-    (p->s).coord.y = c1->y;
-    (p->s).unk_coord.x = c2->x;
-    (p->s).unk_coord.y = c2->y;
-    (p->s).unk_28 = boss;
+    p->work[0] = n, p->work[1] = 0;
+    (p->coord).x = c1->x, (p->coord).y = c1->y;
+    (p->unk_coord).x = c2->x, (p->unk_coord).y = c2->y;
+    p->unk_28 = q;
   }
   return p;
 }
 
-static void ClavekerYellowBalls_Init(struct Projectile* p) {
-  if ((p->s).work[1] == 0) {
+static void ClavekerYellowBalls_Init(ClavekerYellowBalls* p) {
+  if (p->work[1] == 0) {
     EnableSpriteAnimation_Normal(p);
-    (p->s).flags |= DISPLAY;
-    (p->s).flags |= FLIPABLE;
+    p->flags |= DISPLAY;
+    p->flags |= FLIPABLE;
     INIT_BODY(p, &sCollisions[0], 2, NULL);
     SET_PROJECTILE_ROUTINE(p, ENTITY_UPDATE);
-    (p->s).mode[1] = 0;
-    (p->s).mode[2] = 0;
-    (p->s).mode[3] = 0;
+    p->mode[1] = 0, p->mode[2] = 0, p->mode[3] = 0;
   }
-  (p->s).work[2] = 0xFF;
+  p->work[2] = 0xFF;
   ClavekerYellowBalls_Update(p);
 }
 
-static void FUN_080aeefc(struct Projectile* p);
+static void FUN_080aeefc(ClavekerYellowBalls* p);
 
-static void ClavekerYellowBalls_Update(struct Projectile* p) {
-  static const ProjectileFunc sUpdates[1] = {
+static void ClavekerYellowBalls_Update(ClavekerYellowBalls* p) {
+  static void (*const sUpdates[1])(ClavekerYellowBalls*) = {
       FUN_080aeefc,
   };
 
   if (IS_METTAUR) {
-    (p->s).flags &= ~DISPLAY;
+    p->flags &= ~DISPLAY;
     EXIT_BODY(p);
     SET_PROJECTILE_ROUTINE(p, ENTITY_DIE);
     ClavekerYellowBalls_Die(p);
     return;
   }
-  (sUpdates[(p->s).mode[1]])(p);
+  (sUpdates[p->mode[1]])(p);
 }
 
-static void ClavekerYellowBalls_Die(struct Projectile* p) {
-  (p->s).flags &= ~DISPLAY;
+static void ClavekerYellowBalls_Die(ClavekerYellowBalls* p) {
+  p->flags &= ~DISPLAY;
   EXIT_BODY(p);
   SET_PROJECTILE_ROUTINE(p, ENTITY_EXIT);
 }
 
-static void FUN_080aeefc(struct Projectile* p) {
-  if ((p->body).status & 0x200) {
+static void FUN_080aeefc(ClavekerYellowBalls* p) {
+  if ((p->body).status & BODY_STATUS_DEAD) {
     EXIT_BODY(p);
-    CreateSmoke(2, &(p->s).coord);
+    CreateSmoke(2, &p->coord);
     SET_PROJECTILE_ROUTINE(p, ENTITY_DIE);
-    if (((p->s).unk_28)->mode[0] <= 1) {
-      (*(u8*)((u8*)(p->s).unk_28 + 0xb9))++;
+    if ((p->unk_28)->mode[0] <= 1) {
+      (*(u8*)((u8*)p->unk_28 + 0xb9))++;
     }
-    if (*(u8*)((u8*)(p->s).unk_28 + 0xb9) > 7) {
-      CreateSmoke(1, &(p->s).coord);
-      TryDropItem(6, &(p->s).coord);
+    if (*(u8*)((u8*)p->unk_28 + 0xb9) > 7) {
+      CreateSmoke(1, &p->coord);
+      TryDropItem(6, &p->coord);
     }
   } else if ((p->body).status & BODY_STATUS_B2) {
     EXIT_BODY(p);
-    CreateSmoke(2, &(p->s).coord);
+    CreateSmoke(2, &p->coord);
     SET_PROJECTILE_ROUTINE(p, ENTITY_DIE);
-  } else if (--(p->s).work[2] == 0) {
-    CreateSmoke(3, &(p->s).coord);
+  } else if (--p->work[2] == 0) {
+    CreateSmoke(3, &p->coord);
     SET_PROJECTILE_ROUTINE(p, ENTITY_DIE);
   } else {
-    switch ((p->s).mode[2]) {
-      case 0:
+    switch (p->mode[2]) {
+      case 0: {
         SetSpriteAnimation(p, MOTION(SM117_CLAVEKER, 10));
-        (p->s).d.y = 0;
-        (p->s).d.x = (RANDOM(RNG_0202f388) % 0x1e0) - 0xf0;
-        (p->s).work[2] = 0x78;
-        (p->s).mode[2]++;
-        // fallthrough
-      case 1:
-        (p->s).d.y += 0x40;
-        if ((p->s).d.y > 0x700) {
-          (p->s).d.y = 0x700;
-        }
-        (p->s).coord.x += (p->s).d.x;
-        (p->s).coord.y += (p->s).d.y;
+        (p->d).y = 0;
+        (p->d).x = (RANDOM(RNG_0202f388) % 0x1E0) - 0xF0;
+        p->work[2] = 120;
+        p->mode[2]++;
+        FALLTHROUGH;
+      }
+      case 1: {
+        (p->d).y += PIXEL(1) / 4;
+        if ((p->d).y > PIXEL(7)) (p->d).y = PIXEL(7);
+        (p->coord).x += (p->d).x;
+        (p->coord).y += (p->d).y;
         {
-          s32 push = PushoutToUp1((p->s).coord.x, (p->s).coord.y);
-          if (push != 0 && push >= -0x700) {
+          s32 push = PushoutToUp1((p->coord).x, (p->coord).y);
+          if (push != 0 && push >= -PIXEL(7)) {
             s32 pushH;
-            if ((p->s).d.x > 0) {
-              pushH = PushoutToLeft1((p->s).coord.x, (p->s).coord.y);
+            if ((p->d).x > 0) {
+              pushH = PushoutToLeft1((p->coord).x, (p->coord).y);
             } else {
-              pushH = PushoutToRight1((p->s).coord.x, (p->s).coord.y);
+              pushH = PushoutToRight1((p->coord).x, (p->coord).y);
             }
             if (pushH == 0) {
-              (p->s).d.y = -((p->s).d.y >> 1);
+              (p->d).y = -((p->d).y >> 1);
             } else if (pushH == -1) {
-              (p->s).d.y = -((p->s).d.y >> 1);
-            } else if (abs(pushH) > 0x100 && abs(pushH) <= 0x700 && abs(pushH) <= abs(push)) {
-              (p->s).d.x = -(p->s).d.x;
+              (p->d).y = -((p->d).y >> 1);
+            } else if (abs(pushH) > PIXEL(1) && abs(pushH) <= PIXEL(7) && abs(pushH) <= abs(push)) {
+              (p->d).x = -(p->d).x;
             } else {
-              (p->s).d.y = -((p->s).d.y >> 1);
+              (p->d).y = -((p->d).y >> 1);
             }
-            (p->s).mode[2]++;
+            p->mode[2]++;
           }
         }
         UpdateSpriteAnimation(p);
         break;
-      case 2:
-        (p->s).d.y += PIXEL(1) / 4;
-        if ((p->s).d.y > PIXEL(7)) {
-          (p->s).d.y = PIXEL(7);
-        }
-        (p->s).coord.x += (p->s).d.x;
-        (p->s).coord.y += (p->s).d.y;
+      }
+      case 2: {
+        (p->d).y += PIXEL(1) / 4;
+        if ((p->d).y > PIXEL(7)) (p->d).y = PIXEL(7);
+        (p->coord).x += (p->d).x;
+        (p->coord).y += (p->d).y;
         UpdateSpriteAnimation(p);
         break;
+      }
     }
   }
 }

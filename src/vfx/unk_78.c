@@ -118,7 +118,7 @@ static void FUN_080c89c8(struct VFX* p) {
   SetSpriteAnimation(p, MOTION(SM233_UNK, 11));
   SET_XFLIP(p, RANDOM(RNG_0202f388) & 1);
   SET_YFLIP(p, RANDOM(RNG_0202f388) & 1);
-  ForceEntityPalette(&p->s, p->buffer[9] + 5);
+  ForceEntityPalette(p, p->buffer[9] + 5);
   (p->s).work[2] = 0x20;
   (p->s).d.x = 0;
   (p->s).d.y = 0x70;
@@ -238,7 +238,7 @@ _080C8B8E:\n\
 	lsls r1, r1, #0x18\n\
 	lsrs r1, r1, #0x18\n\
 	adds r0, r5, #0\n\
-	bl ForceEntityPalette\n\
+	bl _ForceEntityPalette\n\
 	movs r0, #0x20\n\
 	strb r0, [r5, #0x12]\n\
 	ldrb r0, [r5, #0x11]\n\

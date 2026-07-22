@@ -142,7 +142,7 @@ _0806179C:
 	adds r1, r4, #0
 	bl SetMotion
 	adds r0, r7, #0
-	bl GetEntityPalID
+	bl _GetEntityPaletteID
 	adds r1, r0, #0
 	lsls r1, r1, #0x18
 	lsrs r1, r1, #0x13
@@ -157,7 +157,7 @@ _0806179C:
 	adds r1, r4, #0
 	bl SetMotion
 	adds r0, r7, #0
-	bl GetEntityPalID
+	bl _GetEntityPaletteID
 	adds r1, r0, #0
 	lsls r1, r1, #0x18
 	lsrs r1, r1, #0x13

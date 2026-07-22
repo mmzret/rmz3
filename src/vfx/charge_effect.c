@@ -170,7 +170,7 @@ _080B3490:\n\
 	bne _080B34C4\n\
 	adds r0, r4, #0\n\
 	movs r1, #0xf\n\
-	bl ForceEntityPalette\n\
+	bl _ForceEntityPalette\n\
 	b _080B34CC\n\
 	.align 2, 0\n\
 _080B34B8: .4byte sChargeEffectXOffsets\n\
@@ -179,7 +179,7 @@ _080B34C0: .4byte sChargeEffectYOffsets\n\
 _080B34C4:\n\
 	adds r0, r4, #0\n\
 	movs r1, #0xe\n\
-	bl ForceEntityPalette\n\
+	bl _ForceEntityPalette\n\
 _080B34CC:\n\
 	ldr r0, [r4, #0x74]\n\
 	cmp r0, #0\n\

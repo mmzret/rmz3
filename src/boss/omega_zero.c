@@ -144,9 +144,6 @@ static bool8 tryKillOmegaZero(BossOmegaZero* p) {
 
 NON_MATCH static void OmegaZero_Init(BossOmegaZero* p) {
 #if MODERN
-  struct Body* body;
-  void* fn;
-
   SET_BOSS_ROUTINE(p, ENTITY_UPDATE);
   p->mode[1] = sInitModes[p->work[0]];
   p->flags |= FLIPABLE;

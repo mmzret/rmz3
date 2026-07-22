@@ -64,11 +64,11 @@ static void AfterImage_Init(struct AfterImage* p) {
     if (parent->kind != ENTITY_BOSS) {
       // Zero
       p->renderPrio = p->work[0] + 17;
-      ForceEntityPalette((void*)p, 12);
+      ForceEntityPalette(p, 12);
     } else {
       // Omega Zero
       p->renderPrio = p->work[0] + 25;
-      ForceEntityPalette((void*)p, 8);
+      ForceEntityPalette(p, 8);
     }
 
     for (i = 0; i < 3; i++) {

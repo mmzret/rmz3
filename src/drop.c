@@ -56,7 +56,7 @@ u32 TryDropItem(u32 table, Coords32* c) {
   return n;
 }
 
-NAKED void TryDropZakoDisk(struct Enemy* p, Coords32* c) {
+NAKED void TryDropZakoDisk(struct Entity* p, Coords32* c) {
   asm(".syntax unified\n\
 	push {r4, r5, r6, r7, lr}\n\
 	mov r7, sl\n\

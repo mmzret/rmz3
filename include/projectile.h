@@ -7,6 +7,7 @@
 #include "types.h"
 
 typedef void (*ProjectileFunc)(struct Projectile*);
+typedef void (*ProjectileV2Func)(struct ProjectileV2*);
 typedef ProjectileFunc ProjectileRoutine[5];
 extern const ProjectileRoutine* const gProjectileFnTable[PROJECTILE_ENTITY_COUNT];
 

@@ -80,7 +80,7 @@ static void nop_0803abf4(void* _) { return; }
 static void _Weapon6_Update(Weapon* p) {
   switch (p->mode[2]) {
     case 0: {
-      InitRotatableMotion((void*)p);
+      EnableSpriteAnimation_Rotatable(p);
       p->flags2 &= ~DYNAMIC;
       p->tileNum = 0, p->palID = 0;
       SetSpriteAnimation(p, MOTION(SM033_FEFNIR_FIREBALL, 0));

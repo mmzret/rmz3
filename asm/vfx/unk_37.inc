@@ -709,7 +709,7 @@ _080BCBEA:
 	orrs r0, r1
 	strb r0, [r4, #0xa]
 	adds r0, r4, #0
-	bl GetEntityPalID
+	bl _GetEntityPaletteID
 	adds r1, r0, #0
 	lsls r1, r1, #0x18
 	lsrs r1, r1, #0x13
@@ -951,7 +951,7 @@ _080BCDAC:
 	movs r0, #0x19
 	strb r0, [r1]
 	adds r0, r4, #0
-	bl GetEntityPalID
+	bl _GetEntityPaletteID
 	adds r1, r0, #0
 	lsls r1, r1, #0x18
 	lsrs r1, r1, #0x13

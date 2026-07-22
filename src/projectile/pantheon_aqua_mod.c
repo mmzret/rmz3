@@ -10,7 +10,6 @@ static const ProjectileFunc PTR_ARRAY_0836bb0c[3];
 static const struct Collision sCollisions[2];
 static const u8 sInitModes[2];
 static const motion_t sMotions[10];
-u8 GetEntityPalID(struct Entity* p);
 
 void PantheonAquaModProjectile_Init(struct Projectile* p);
 void PantheonAquaModProjectile_Update(struct Projectile* p);
@@ -69,7 +68,7 @@ void FUN_080a5cfc(struct Projectile* p) {
     case 0:
       SetDDP(&p->body, &sCollisions[0]);
       SetSpriteAnimation(p, sMotions[(p->s).work[2]]);
-      StartPaletteAnimation(87, ((u8)GetEntityPalID(&p->s) << 5) | 0x200);
+      StartPaletteAnimation(87, ((u8)GetEntityPaletteID(p) << 5) | 0x200);
       (p->s).d.x = gSineTable[(u8)(-0x40 - (p->s).work[2] * 0x20)] * 3;
       (p->s).d.y = gSineTable[(u8)(-0x80 - (p->s).work[2] * 0x20)] * 3;
       SET_XFLIP(p, (p->s).work[2] > 2);
