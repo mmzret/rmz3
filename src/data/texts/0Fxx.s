@@ -5,15 +5,16 @@
 @ preproc: treat "label::" as ".global label ; label:"
 
 TextOfs_SunkenLibrary:: @ 0x083817f0
-	.2byte (Text0-Start), (Text1-Start), (Text2-Start), (Text3-Start), (Text4-Start), (Text5-Start), (Text6-Start), (Text7-Start)
-	.2byte (Text8-Start), (Text9-Start), (Text10-Start), (Text11-Start), (Text12-Start), (Text13-Start), (Text14-Start), (Text15-Start)
-	.2byte (Text16-Start), (Text17-Start), (Text18-Start), (Text19-Start), (Text20-Start), (Text21-Start), (Text22-Start), (Text23-Start)
-	.2byte (Text24-Start), (Text25-Start), (Text26-Start), (Text27-Start), (Text28-Start)
+	.2byte (Text_SunkenLibrary_GoToDataRoom-Start), (Text_SunkenLibrary_Operator_2-Start), (Text_SunkenLibrary_PushUpOnControlPad-Start), (Text_SunkenLibrary_FourMatchesWeilOmegaDark-Start), (Text_SunkenLibrary_ThreeMoreMatches-Start), (Text_SunkenLibrary_TwoMoreMatches-Start), (Text_SunkenLibrary_LastOne-Start), (Text_SunkenLibrary_SpecifySearchData-Start)
+	.2byte (Text_SunkenLibrary_AreaWithWeilS-Start), (Text_SunkenLibrary_AreaWithOmegaS-Start), (Text_SunkenLibrary_AreaWithDarkElfS-Start), (Text_SunkenLibrary_AreaWithData-Start), (Text_SunkenLibrary_WhoDaresIntrude-Start), (Text_SunkenLibrary_IAmVolteelBiblio-Start), (Text_SunkenLibrary_HehehehehYouCanTHave-Start), (Text_SunkenLibrary_WhatSUpWithYou-Start)
+	.2byte (Text_SunkenLibrary_OperatorMission-Start), (Text_SunkenLibrary_YouGotWeilSData-Start), (Text_SunkenLibrary_YouGotOmegaSData-Start), (Text_SunkenLibrary_YouGotTheDarkElf-Start), (Text_SunkenLibrary_YouGotTheElfWars-Start), (Text_SunkenLibrary_File650326-Start), (Text_SunkenLibrary_u16_ARRAY_0834ce8c_0-Start), (Text_SunkenLibrary_File815156-Start)
+	.2byte (Text_SunkenLibrary_u16_ARRAY_0834ce8c_1-Start), (Text_SunkenLibrary_File351848-Start), (Text_SunkenLibrary_SoTheDarkElf-Start), (Text_SunkenLibrary_File945388-Start), (Text_SunkenLibrary_CielZeroItLooksLikethat-Start)
 
 Text_SunkenLibrary:: @ 0x0838182a
 Start:
 
-Text0: @ 0x0838182A
+Text_SunkenLibrary_GoToDataRoom: @ 0x0838182A
+	@ EN: Operator: / First, please go to / the Data Room. / That room has the / highest probability / of containing / information about / Weil and Omega.
 	.string "{WINDOW 0x64}"
 		.string "オペレーター:\n"
 		.string "「まずはデータルームへ\n"
@@ -22,7 +23,8 @@ Text0: @ 0x0838182A
 		.string " ジョウホウがあるカノウセイは…\n"
 		.string " そこがもっとも高そうです$"
 
-Text1: @ 0x08381874
+Text_SunkenLibrary_Operator_2: @ 0x08381874
+	@ EN: Operator: / This is the Data / Room. / Please search for / information on Weil / at that console. / After searching, / the data's location / will be displayed. / Please go to that / area, and recover / the data.
 	.string "{WINDOW 0x64}"
 		.string "オペレーター:\n"
 		.string "「ここがデータルームです…▼"
@@ -36,33 +38,40 @@ Text1: @ 0x08381874
 		.string " データをカイシュウして\n"
 		.string " いただけませんか？$"
 
-Text2: @ 0x083818F9
+Text_SunkenLibrary_PushUpOnControlPad: @ 0x083818F9
+	@ EN: Push Up on +Control Pad.
 	.string "{WINDOW 0x00}"
 		.string "モニターの前で✚ボタンの上をおしてください$"
 
-Text3: @ 0x08381914
+Text_SunkenLibrary_FourMatchesWeilOmegaDark: @ 0x08381914
+	@ EN: Four matches... / Weil, Omega, Dark / Elf, Elf Wars...
 	.string "{WINDOW 0x04}"
 		.string "ガイトウするデータが4つ…▼"
 		.string "バイル、オメガ、ダークエルフ\n"
 		.string "ヨウセイ戦争……$"
 
-Text4: @ 0x0838193E
+Text_SunkenLibrary_ThreeMoreMatches: @ 0x0838193E
+	@ EN: Three more matches.
 	.string "{WINDOW 0x04}"
 		.string "のこりのデータは3つ…$"
 
-Text5: @ 0x0838194C
+Text_SunkenLibrary_TwoMoreMatches: @ 0x0838194C
+	@ EN: Two more matches.
 	.string "{WINDOW 0x04}"
 		.string "のこりのデータは2つ…$"
 
-Text6: @ 0x0838195A
+Text_SunkenLibrary_LastOne: @ 0x0838195A
+	@ EN: Last one...
 	.string "{WINDOW 0x04}"
 		.string "サイゴのデータか…$"
 
-Text7: @ 0x08381966
+Text_SunkenLibrary_SpecifySearchData: @ 0x08381966
+	@ EN: Specify search data.
 	.string "{WINDOW 0x6A}"
 		.string "ドノ データヲ サーチ シマスカ？$"
 
-Text8: @ 0x0838197A
+Text_SunkenLibrary_AreaWithWeilS: @ 0x0838197A
+	@ EN: Area with Weil's / data found. / To search for more / information, use the / console again.
 	.string "{WINDOW 0x6A}"
 		.string "バイル ノ データガ アル\n"
 		.string "エリアヲ サーチシマシタ▼"
@@ -70,7 +79,8 @@ Text8: @ 0x0838197A
 		.string "ヒツヨウナ トキハ\n"
 		.string "コンソールヲ シラベテクダサイ$"
 
-Text9: @ 0x083819BC
+Text_SunkenLibrary_AreaWithOmegaS: @ 0x083819BC
+	@ EN: Area with Omega's / data found. / To search for more / information, use the / console again.
 	.string "{WINDOW 0x6A}"
 		.string "オメガ ノ データガ アル\n"
 		.string "エリアヲ サーチシマシタ▼"
@@ -78,7 +88,8 @@ Text9: @ 0x083819BC
 		.string "ヒツヨウナ トキハ\n"
 		.string "コンソールヲ シラベテクダサイ$"
 
-Text10: @ 0x083819FE
+Text_SunkenLibrary_AreaWithDarkElfS: @ 0x083819FE
+	@ EN: Area with Dark Elf's / data found. / To search for more / information, use the / console again.
 	.string "{WINDOW 0x6A}"
 		.string "ダークエルフ ノ データガ アル\n"
 		.string "エリアヲ サーチシマシタ▼"
@@ -86,7 +97,8 @@ Text10: @ 0x083819FE
 		.string "ヒツヨウナ トキハ\n"
 		.string "コンソールヲ シラベテクダサイ$"
 
-Text11: @ 0x08381A43
+Text_SunkenLibrary_AreaWithData: @ 0x08381A43
+	@ EN: Area with data / concerning the Elf / Wars found. / To search for more / information, use the / console again.
 	.string "{WINDOW 0x6A}"
 		.string "ヨウセイ戦争 ノ データガ アル\n"
 		.string "エリアヲ サーチシマシタ▼"
@@ -94,7 +106,8 @@ Text11: @ 0x08381A43
 		.string "ヒツヨウナ トキハ\n"
 		.string "コンソールヲ シラベテクダサイ$"
 
-Text12: @ 0x08381A8A
+Text_SunkenLibrary_WhoDaresIntrude: @ 0x08381A8A
+	@ EN: Who dares intrude / upon my territory? / ...Ze-Zero! Heheh! / So, it's you! / Heheh!
 	.string "{WINDOW 0x23}"
 		.string "…だ…だれだ…\n"
 		.string "オレの…なわばりに\n"
@@ -103,7 +116,8 @@ Text12: @ 0x08381A8A
 		.string "そうか…オマエか…！\n"
 		.string "ひひっ…！$"
 
-Text13: @ 0x08381AC8
+Text_SunkenLibrary_IAmVolteelBiblio: @ 0x08381AC8
+	@ EN: I am Volteel Biblio, / of Weil's Numbers. / What is that you've / got there? Give that / data back! Nooowww!
 	.string "{WINDOW 0x13}"
 		.string "オレは…バイル・ナンバーズ…\n"
 		.string "ヴォルティール・ビブリーオ▼"
@@ -111,13 +125,15 @@ Text13: @ 0x08381AC8
 		.string "そのデータ…かえせ…\n"
 		.string "かえせぇぇぇっ！$"
 
-Text14: @ 0x08381B0D
+Text_SunkenLibrary_HehehehehYouCanTHave: @ 0x08381B0D
+	@ EN: Heheheheh! / You can't have this / data! Nyah nyah / nyah nyaaaah nyah!
 	.string "{WINDOW 0x12}"
 		.string "ひひひひひひっ！▼"
 		.string "わたさないっ…このデータ…\n"
 		.string "わたさないっ！ ひひっ！$"
 
-Text15: @ 0x08381B33
+Text_SunkenLibrary_WhatSUpWithYou: @ 0x08381B33
+	@ EN: What's up with you! / You're opposing / Lord Weil?! Aren't / you afraid of him?! / You...you're crazy! / Aaaaaarrrggghhh!!!
 	.string "{WINDOW 0x12}"
 		.string "なんだ…なんなんだオマエ…！▼"
 		.string "バイルさまにさからうのが…\n"
@@ -125,28 +141,34 @@ Text15: @ 0x08381B33
 		.string "い…いかれてる！▼"
 		.string "ひゃあああああああっ！$"
 
-Text16: @ 0x08381B72
+Text_SunkenLibrary_OperatorMission: @ 0x08381B72
+	@ EN: Operator: Mission / completed. Commencing / transfer.
 	.string "{WINDOW 0x00}"
 		.string "オペレーター「ミッションしゅうりょう▼"
 		.string "転送をカイシします$"
 
-Text17: @ 0x08381B93
+Text_SunkenLibrary_YouGotWeilSData: @ 0x08381B93
+	@ EN: You got Weil's data!
 	.string "{WINDOW 0x00}"
 		.string "バイルのデータをゲットした！$"
 
-Text18: @ 0x08381BA4
+Text_SunkenLibrary_YouGotOmegaSData: @ 0x08381BA4
+	@ EN: You got Omega's data!
 	.string "{WINDOW 0x00}"
 		.string "オメガのデータをゲットした！$"
 
-Text19: @ 0x08381BB5
+Text_SunkenLibrary_YouGotTheDarkElf: @ 0x08381BB5
+	@ EN: You got the Dark Elf data!
 	.string "{WINDOW 0x00}"
 		.string "ダークエルフのデータをゲットした！$"
 
-Text20: @ 0x08381BC9
+Text_SunkenLibrary_YouGotTheElfWars: @ 0x08381BC9
+	@ EN: You got the Elf Wars data!
 	.string "{WINDOW 0x00}"
 		.string "ヨウセイ戦争のデータをゲットした！$"
 
-Text21: @ 0x08381BDF
+Text_SunkenLibrary_File650326: @ 0x08381BDF
+	@ EN: File ↾650326 / == Dr. Weil == / From Neo Arcadia... / Creator of Omega... / Altered the Mother / Elf, sparking the / Elf Wars... / Banished from Neo / Arcadia after the / Elf Wars...
 	.string "{WINDOW 0x04}"
 		.string "ファイルナンバー650326\n"
 		.string "--ドクター・バイル--▼"
@@ -158,13 +180,15 @@ Text21: @ 0x08381BDF
 		.string "ネオ・アルカディアを\n"
 		.string "ツイホウされる…$"
 
-Text22: @ 0x08381C5D
+Text_SunkenLibrary_u16_ARRAY_0834ce8c_0: @ 0x08381C5D
+	@ EN: If we can analyze / this data, we might / be able to find some / new information / about Weil...
 	.string "{WINDOW 0x04}"
 		.string "このデータをカイセキすれば、\n"
 		.string "バイルについて さらにジョウホウが\n"
 		.string "手に入るかもしれない………$"
 
-Text23: @ 0x08381C90
+Text_SunkenLibrary_File815156: @ 0x08381C90
+	@ EN: File ↾815156 / == Omega == / The ultimate / Reploid, created by / Dr. Weil... / Possesses incredible / power when combined / with the Dark Elf. / Banished to outer / space to avoid / another Elf War...
 	.string "{WINDOW 0x04}"
 		.string "ファイルナンバー815156\n"
 		.string "--オメガ--▼"
@@ -177,13 +201,15 @@ Text23: @ 0x08381C90
 		.string "くりかえさぬため…\n"
 		.string "ウチュウへツイホウされる……$"
 
-Text24: @ 0x08381D11
+Text_SunkenLibrary_u16_ARRAY_0834ce8c_1: @ 0x08381D11
+	@ EN: If we can analyze / this data, we might / be able to find out / something new / about Omega...
 	.string "{WINDOW 0x04}"
 		.string "このデータをカイセキすれば、\n"
 		.string "オメガについて さらにジョウホウが\n"
 		.string "手に入るかもしれない………$"
 
-Text25: @ 0x08381D44
+Text_SunkenLibrary_File351848: @ 0x08381D44
+	@ EN: File ↾351848 / == Dark Elf == / Officially known as / the "Mother Elf." / Creator unknown. / This Cyber-elf was / originally created / for the purpose of / restoring Maverick / Programs to their / original state... / But the Mother Elf / was altered by Dr. / Weil so she could be / used to manipulate / Reploids, by freely / rewriting programs. / Although the / organized fighting / of the Reploids / manipulated by the / altered Mother Elf / did end the wars, / this terrible power / was sealed off to / prevent misuse.
 	.string "{WINDOW 0x04}"
 		.string "ファイルナンバー351848\n"
 		.string "--ダークエルフ--▼"
@@ -209,7 +235,8 @@ Text25: @ 0x08381D44
 		.string "悪用されることをおそれ\n"
 		.string "ふういんされる$"
 
-Text26: @ 0x08381E63
+Text_SunkenLibrary_SoTheDarkElf: @ 0x08381E63
+	@ EN: So, the Dark Elf... / What's going on? / ... / If we can analyze / this data, we might / be able to find out / something new / about her...
 	.string "{WINDOW 0x04}"
 		.string "ダークエルフ…か…\n"
 		.string "アイツはいったい……▼"
@@ -218,7 +245,8 @@ Text26: @ 0x08381E63
 		.string "アイツについて 他にも何か\n"
 		.string "わかるかもしれない………$"
 
-Text27: @ 0x08381EA9
+Text_SunkenLibrary_File945388: @ 0x08381EA9
+	@ EN: File ↾945388 / == Elf Wars == / .........end of the / .........Wars...... / Cyber-elves......used... / ...........from this time / .................... / ........................... / ....Elf Wars.............. / ...............the use... / ......................... / ...."Dark Elf," / and copies........ / ................... / ....... / ...amplify the power / .............. / while............ / ............at / will... / ..........the worst / ....in......... / .......... / .................... / ............the war... / ...end................. / Approximately 90%... / ............. / ...................... / .........wiped.....
 	.string "{WINDOW 0x04}"
 		.string "ファイルナンバー945388\n"
 		.string "--ヨウセイ戦争--▼"
@@ -243,7 +271,8 @@ Text27: @ 0x08381EA9
 		.string "………………ほぼ90%……▼"
 		.string "…………………した……$"
 
-Text28: @ 0x08381FBF
+Text_SunkenLibrary_CielZeroItLooksLikethat: @ 0x08381FBF
+	@ EN: Ciel: Zero? It looks like / that data is corrupt. I / think we may be able to / repair it at the base. / Thank you...Zero...
 	.string "{WINDOW 0x00}"
 		.string "シエル「ゼロ…？▼"
 		.string "どうやらデータがこわれているみたいね…▼"

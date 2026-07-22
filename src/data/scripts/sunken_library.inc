@@ -122,7 +122,7 @@ Script_0_083567d0: @ 0x083567d0
   wait 15
   force 6, 0, 0
   wait 60
-  message 1, 0, 0x0F00
+  message 1, 0, TEXT_SUNKEN_LIBRARY_GO_TO_DATA_ROOM
   wait_msgbox_end
   stop_bgm
   wait 15
@@ -168,7 +168,7 @@ Script_3_08356948: @ 0x08356948
   pause
   walkto 5328*PX
   lock
-  message 1, 0, 0x0F01
+  message 1, 0, TEXT_SUNKEN_LIBRARY_OPERATOR_2
   wait_msgbox_end
   wait 15
   cutscene_end
@@ -284,7 +284,7 @@ Script_11_08356c20: @ 0x08356c20
   play_bgm BGM_GUARDER_ROOM
   spawn 3, Entity_08356750
   wait 60
-  message 1, 0, 0x0F0C
+  message 1, 0, TEXT_SUNKEN_LIBRARY_WHO_DARES_INTRUDE
   wait_msgbox_end
   wait 15
   entityflag 3, 0, TRUE
@@ -292,8 +292,8 @@ Script_11_08356c20: @ 0x08356c20
   spawn 1, Entity_08356790
   wait 60
   destroy 3
-  triumphant_message 0, 0x0F0E
-  message 1, 0, 0x0F0D
+  triumphant_message 0, TEXT_SUNKEN_LIBRARY_HEHEHEHEH_YOU_CAN_THAVE
+  message 1, 0, TEXT_SUNKEN_LIBRARY_IAM_VOLTEEL_BIBLIO
   wait_msgbox_end
   cutscene_end
   entityflag 1, 0, TRUE
@@ -325,7 +325,7 @@ Script_12_08356d58: @ 0x08356d58
   play_bgm BGM_GUARDER_ROOM
   spawn 3, Entity_08356760
   wait 60
-  message 1, 0, 0x0F0C
+  message 1, 0, TEXT_SUNKEN_LIBRARY_WHO_DARES_INTRUDE
   wait_msgbox_end
   wait 15
   entityflag 3, 0, TRUE
@@ -333,8 +333,8 @@ Script_12_08356d58: @ 0x08356d58
   spawn 1, Entity_083567a0
   wait 60
   destroy 3
-  triumphant_message 0, 0x0F0E
-  message 1, 0, 0x0F0D
+  triumphant_message 0, TEXT_SUNKEN_LIBRARY_HEHEHEHEH_YOU_CAN_THAVE
+  message 1, 0, TEXT_SUNKEN_LIBRARY_IAM_VOLTEEL_BIBLIO
   wait_msgbox_end
   cutscene_end
   entityflag 1, 0, TRUE
@@ -366,7 +366,7 @@ Script_13_08356e90: @ 0x08356e90
   play_bgm BGM_GUARDER_ROOM
   spawn 3, Entity_08356770
   wait 60
-  message 1, 0, 0x0F0C
+  message 1, 0, TEXT_SUNKEN_LIBRARY_WHO_DARES_INTRUDE
   wait_msgbox_end
   wait 15
   entityflag 3, 0, TRUE
@@ -374,8 +374,8 @@ Script_13_08356e90: @ 0x08356e90
   spawn 1, Entity_083567b0
   wait 60
   destroy 3
-  triumphant_message 0, 0x0F0E
-  message 1, 0, 0x0F0D
+  triumphant_message 0, TEXT_SUNKEN_LIBRARY_HEHEHEHEH_YOU_CAN_THAVE
+  message 1, 0, TEXT_SUNKEN_LIBRARY_IAM_VOLTEEL_BIBLIO
   wait_msgbox_end
   cutscene_end
   entityflag 1, 0, TRUE
@@ -407,7 +407,7 @@ Script_14_08356fc8: @ 0x08356fc8
   play_bgm BGM_GUARDER_ROOM
   spawn 3, Entity_08356780
   wait 60
-  message 1, 0, 0x0F0C
+  message 1, 0, TEXT_SUNKEN_LIBRARY_WHO_DARES_INTRUDE
   wait_msgbox_end
   wait 15
   entityflag 3, 0, TRUE
@@ -415,8 +415,8 @@ Script_14_08356fc8: @ 0x08356fc8
   spawn 1, Entity_083567c0
   wait 60
   destroy 3
-  triumphant_message 0, 0x0F0E
-  message 1, 0, 0x0F0D
+  triumphant_message 0, TEXT_SUNKEN_LIBRARY_HEHEHEHEH_YOU_CAN_THAVE
+  message 1, 0, TEXT_SUNKEN_LIBRARY_IAM_VOLTEEL_BIBLIO
   wait_msgbox_end
   cutscene_end
   entityflag 1, 0, TRUE
@@ -440,7 +440,7 @@ Script_15_08357100: @ 0x08357100
   walkto 528*PX
   lock
   cutscene_end
-  triumphant_message 0, 0x0F0E
+  triumphant_message 0, TEXT_SUNKEN_LIBRARY_HEHEHEHEH_YOU_CAN_THAVE
   entityflag 1, 0, TRUE
   stop_bgm
   wait 120
@@ -461,7 +461,7 @@ Script_16_08357198: @ 0x08357198
   walkto 1968*PX
   lock
   cutscene_end
-  triumphant_message 0, 0x0F0E
+  triumphant_message 0, TEXT_SUNKEN_LIBRARY_HEHEHEHEH_YOU_CAN_THAVE
   entityflag 1, 0, TRUE
   stop_bgm
   wait 120
@@ -482,7 +482,7 @@ Script_17_08357230: @ 0x08357230
   walkto 1248*PX
   lock
   cutscene_end
-  triumphant_message 0, 0x0F0E
+  triumphant_message 0, TEXT_SUNKEN_LIBRARY_HEHEHEHEH_YOU_CAN_THAVE
   entityflag 1, 0, TRUE
   stop_bgm
   wait 120
@@ -503,7 +503,7 @@ Script_18_083572c8: @ 0x083572c8
   walkto 2688*PX
   lock
   cutscene_end
-  triumphant_message 0, 0x0F0E
+  triumphant_message 0, TEXT_SUNKEN_LIBRARY_HEHEHEHEH_YOU_CAN_THAVE
   entityflag 1, 0, TRUE
   stop_bgm
   wait 120
@@ -524,7 +524,7 @@ Script_19_08357360: @ 0x08357360
   lock
   normal_screen
   wait_transition_end
-  triumphant_message 0, 0x0F0E
+  triumphant_message 0, TEXT_SUNKEN_LIBRARY_HEHEHEHEH_YOU_CAN_THAVE
   entityflag 1, 0, TRUE
   wait 120
   change_camera_mode 6
@@ -545,7 +545,7 @@ Script_20_083573f8: @ 0x083573f8
   lock
   normal_screen
   wait_transition_end
-  triumphant_message 0, 0x0F0E
+  triumphant_message 0, TEXT_SUNKEN_LIBRARY_HEHEHEHEH_YOU_CAN_THAVE
   entityflag 1, 0, TRUE
   wait 120
   change_camera_mode 6
@@ -566,7 +566,7 @@ Script_21_08357490: @ 0x08357490
   lock
   normal_screen
   wait_transition_end
-  triumphant_message 0, 0x0F0E
+  triumphant_message 0, TEXT_SUNKEN_LIBRARY_HEHEHEHEH_YOU_CAN_THAVE
   entityflag 1, 0, TRUE
   wait 120
   change_camera_mode 6
@@ -587,7 +587,7 @@ Script_22_08357528: @ 0x08357528
   lock
   normal_screen
   wait_transition_end
-  triumphant_message 0, 0x0F0E
+  triumphant_message 0, TEXT_SUNKEN_LIBRARY_HEHEHEHEH_YOU_CAN_THAVE
   entityflag 1, 0, TRUE
   wait 120
   change_camera_mode 6
@@ -606,7 +606,7 @@ Script_23_083575c0: @ 0x083575c0
   stop_bgm
   wait 1
   lock
-  message 1, 0, 0x0F0F
+  message 1, 0, TEXT_SUNKEN_LIBRARY_WHAT_SUP_WITH_YOU
   wait_msgbox_end
   entityflag 1, 7, TRUE
   cmd08_wait_set 1

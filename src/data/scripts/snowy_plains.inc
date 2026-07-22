@@ -91,7 +91,7 @@ Script_08355d94:
   wait 75
   entityflag 3, 0, TRUE
   wait 45
-  message 1, 0, 0x0E00
+  message 1, 0, TEXT_SNOWY_PLAINS_AH_MR_ZERO_THE_ENEMY
   wait_msgbox_end
   stop_bgm
   wait 15
@@ -205,14 +205,14 @@ Script_083560ec:
   adjust_camera 11, 0 13504*PX
   adjust_camera 12, 0 13808*PX
   wait 75
-  message 1, 0, 0x0E01
+  message 1, 0, TEXT_SNOWY_PLAINS_IS_THAT_IT
   wait_msgbox_end
   wait 15
   emotion_bubble 0, 16, -40, 0
   wait 75
   spawn 3, Entity_08355d64
   wait 60
-  message 1, 0, 0x0E02
+  message 1, 0, TEXT_SNOWY_PLAINS_HAH_THAT_CONTAINER_WAS
   wait_msgbox_end
   wait 15
   entityflag 3, 0, TRUE
@@ -220,8 +220,8 @@ Script_083560ec:
   spawn 1, Entity_08355d74
   wait 60
   destroy 3
-  triumphant_message 0, 0x0E04
-  message 1, 0, 0x0E03
+  triumphant_message 0, TEXT_SNOWY_PLAINS_HAH_CONSIDER_YOUR_SINS
+  message 1, 0, TEXT_SNOWY_PLAINS_IGLACIER_LE
   wait_msgbox_end
   cutscene_end
   entityflag 1, 0, TRUE
@@ -251,7 +251,7 @@ Script_0835623c:
   adjust_camera 12, 0 13808*PX
   wait 60
   cutscene_end
-  triumphant_message 0, 0x0E04
+  triumphant_message 0, TEXT_SNOWY_PLAINS_HAH_CONSIDER_YOUR_SINS
   entityflag 1, 0, TRUE
   stop_bgm
   wait 120
@@ -273,7 +273,7 @@ Script_0835630c:
   lock
   normal_screen
   wait_transition_end
-  triumphant_message 0, 0x0E04
+  triumphant_message 0, TEXT_SNOWY_PLAINS_HAH_CONSIDER_YOUR_SINS
   entityflag 1, 0, TRUE
   stop_bgm
   wait 120
@@ -293,7 +293,7 @@ Script_083563ac:
   stop_bgm
   wait 1
   lock
-  message 1, 0, 0x0E05
+  message 1, 0, TEXT_SNOWY_PLAINS_OH_MY_NOT_STOPPING_AT
   wait_msgbox_end
   entityflag 1, 7, TRUE
   cmd08_wait_set 1
@@ -324,10 +324,10 @@ Script_08356464:
   play_bgm BGM_ANTAN
   spawn 3, Entity_08355d84
   wait 150
-  message 1, 0, 0x0E06
+  message 1, 0, TEXT_SNOWY_PLAINS_WE_VE_DISCOVERED
   wait_msgbox_end
   wait 30
-  message 1, 0, 0x0E07
+  message 1, 0, TEXT_SNOWY_PLAINS_OPERATOR_MISSION_COMPLETED_COMMENCING_TRANSFER
   wait_msgbox_end
   wait 15
   stop_bgm

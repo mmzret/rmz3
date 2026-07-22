@@ -1,0 +1,13 @@
+# This repo builds with LF line endings; CRLF corrupts tool shebangs
+# (tools/dev/*.ts) and breaks the asset pipeline. Force LF on checkout for
+# text files; leave binary assets untouched.
+* text=auto eol=lf
+
+# Binary assets — never normalize
+*.png   binary
+*.bin   binary
+*.4bpp  binary
+*.gbapal binary
+*.lz    binary
+*.gba   binary
+*.bak   binary

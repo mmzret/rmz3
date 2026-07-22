@@ -67,7 +67,7 @@ Script_0834edb8:
   wait 15
   force 6, 0, 0
   wait 60
-  message 1, 0, 0x0400
+  message 1, 0, TEXT_VOLCANO_STRONG_ENERGY_READING
   wait_msgbox_end
   stop_bgm
   wait 15
@@ -190,7 +190,7 @@ Script_0834f118:
   lock
   emotion_bubble 0, 16, -40, 0
   wait 75
-  message 1, 0, 0x0402
+  message 1, 0, TEXT_VOLCANO_IALMOST_GAVE_UP_ON_2
   wait_msgbox_end
   wait 15
   entityflag 3, 0, TRUE
@@ -198,8 +198,8 @@ Script_0834f118:
   spawn 1, Entity_0834eda8
   wait 60
   destroy 3
-  triumphant_message 0, 0x0404
-  message 1, 0, 0x0403
+  triumphant_message 0, TEXT_VOLCANO_WHAT_IS_THAT_ALL
+  message 1, 0, TEXT_VOLCANO_SSYAAAAAH_GET_READY_FOR
   wait_msgbox_end
   cutscene_end
   entityflag 1, 0, TRUE
@@ -221,7 +221,7 @@ Script_0834f208:
   force 9, 0, 11568*PX
   lock
   cutscene_end
-  triumphant_message 0, 0x0404
+  triumphant_message 0, TEXT_VOLCANO_WHAT_IS_THAT_ALL
   entityflag 1, 0, TRUE
   stop_bgm
   wait 120
@@ -240,7 +240,7 @@ Script_0834f298:
   lock
   normal_screen
   wait_transition_end
-  triumphant_message 0, 0x0404
+  triumphant_message 0, TEXT_VOLCANO_WHAT_IS_THAT_ALL
   entityflag 1, 0, TRUE
   wait 120
   warning_indicator
@@ -256,7 +256,7 @@ Script_0834f320:
   stop_bgm
   wait 1
   lock
-  message 1, 0, 0x0405
+  message 1, 0, TEXT_VOLCANO_WHO_ARE_YOU_TO_PUT
   wait_msgbox_end
   entityflag 1, 7, TRUE
   cmd08_wait_set 1

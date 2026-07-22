@@ -160,8 +160,8 @@ Script_08354b00:
   adjust_camera 12, 0, 1138688
   gimmick 1, 0, 1
   wait 75
-  triumphant_message 0, 0x0C02
-  message 1, 0, 0x0C01
+  triumphant_message 0, TEXT_AREA_X2_AHA_AHAHAHAH_DID_YOU_S
+  message 1, 0, TEXT_AREA_X2_SO_YOU_VE_COME
   wait_msgbox_end
   cutscene_end
   entityflag 1, 0, TRUE
@@ -194,7 +194,7 @@ Script_08354c00:
   adjust_camera 12, 0, 1138688
   gimmick 1, 0, 1
   wait 75
-  triumphant_message 0, 0x0C02
+  triumphant_message 0, TEXT_AREA_X2_AHA_AHAHAHAH_DID_YOU_S
   cutscene_end
   entityflag 1, 0, TRUE
   stop_bgm
@@ -221,7 +221,7 @@ Script_08354cf0:
   wait 1
   gimmick 1, 0, 1
   wait_transition_end
-  triumphant_message 0, 0x0C02
+  triumphant_message 0, TEXT_AREA_X2_AHA_AHAHAHAH_DID_YOU_S
   entityflag 1, 0, TRUE
   stop_bgm
   gimmick 1, 0, 2
@@ -257,24 +257,24 @@ Script_08354db0:
   wait 15
   waitabs 90
   play_bgm BGM_ANTAN
-  message 1, 0, 0x0C03 @ くソっ…ナぜだ…！
+  message 1, 0, TEXT_AREA_X2_NNO_WH_WHY_WHY @ くソっ…ナぜだ…！
   wait_msgbox_end
   wait 60
-  message 1, 0, 0x0C04 @ カレはもう… ここにはいないよ
+  message 1, 0, TEXT_AREA_X2_HE_IS_NO_LONGER_HERE @ カレはもう… ここにはいないよ
   wait_msgbox_end
   emotion_bubble 1, 12, -40, 0
   wait 60
   spawn 3, Entity_083548e8
   wait 180
-  message 1, 0, 0x0C05
+  message 1, 0, TEXT_AREA_X2_WHO_AARE_YOU_X
   wait_msgbox_end
   entityflag 1, 7, TRUE
   wait 30
-  message 1, 0, 0x0C06
+  message 1, 0, TEXT_AREA_X2_HAAAAAH_OH_NO_WEIL_HAS
   wait_msgbox_end
   entityflag 1, 1, TRUE
   wait 30
-  message 1, 0, 0x0C07
+  message 1, 0, TEXT_AREA_X2_GEE_GAGAGA_ICAN_T
   wait_msgbox_end
   stop_bgm
   wait 60
@@ -323,16 +323,16 @@ Script_08354fc0:
   wait_transition_end
   play_se 317
   play_bgm BGM_ANTAN
-  message 1, 0, 0x0C08
+  message 1, 0, TEXT_AREA_X2_WEIL_KNEW_FROM_THE
   wait_msgbox_end
   wait 60
-  message 1, 0, 0x0C09
+  message 1, 0, TEXT_AREA_X2_HEAR_ME_CITIZENS_OF
   wait_msgbox_end
   wait 15
   emotion_bubble 0, 16, -40, 0
   stop_bgm
   wait 75
-  message 1, 0, 0x0C0A
+  message 1, 0, TEXT_AREA_X2_DR_WEIL
   wait_msgbox_end
   fadeout_se 60, 317
   blackout_screen
@@ -343,7 +343,7 @@ Script_08354fc0:
   wait_transition_end
   play_bgm 166
   wait 15
-  message 1, 0, 0x0C0B
+  message 1, 0, TEXT_AREA_X2_JUST_NOW_OUR_HERO_MASTER
   wait_msgbox_end
   wait 15
   blackout_screen
@@ -354,16 +354,16 @@ Script_08354fc0:
   wait_transition_end
   play_se 317
   wait 60
-  message 1, 0, 0x0C0C
+  message 1, 0, TEXT_AREA_X2_THANK_YOU_ALL_I
   wait_msgbox_end
   stop_bgm
   wait 120
   play_bgm BGM_ANTAN
-  message 1, 0, 0x0C0D
+  message 1, 0, TEXT_AREA_X2_IT_SALL_GOING
   wait_msgbox_end
   emotion_bubble 0, 16, -40, 1
   wait 75
-  message 1, 0, 0x0C0E
+  message 1, 0, TEXT_AREA_X2_WHAT_IS_IT_WELL_NEVER
   wait_msgbox_end
   wait 15
   stop_se 317
@@ -373,7 +373,7 @@ Script_08354fc0:
   wait 210
   force 2, 0, 0
   wait 60
-  message 1, 0, 0x0C0F
+  message 1, 0, TEXT_AREA_X2_THE_HEART
   wait_msgbox_end
   wait 30
   force 5, 0, 0

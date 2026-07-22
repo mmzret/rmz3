@@ -1,4 +1,5 @@
 #include "game.h"
+#include "string_ids.h"
 #include "gfx.h"
 #include "global.h"
 #include "menu.h"
@@ -137,10 +138,10 @@ static void ElfMenuLoop_Update(struct GameState* g) {
         LoadPalette(&gPalette_Unk39, 0);
       }
       if ((ELF_MENU->mode == 0) && (((&z->unk_b4)->status).satelites[0] != ELF_NONE)) {
-        PrintString(STRING(100 + ((&z->unk_b4)->status).satelites[0]), 21, 1);
+        PrintString(STRING(STR_CYBERELF_NAME + ((&z->unk_b4)->status).satelites[0]), 21, 1);
       }
       if ((ELF_MENU->mode == 1) && (((&z->unk_b4)->status).satelites[1] != ELF_NONE)) {
-        PrintString(STRING(100 + ((&z->unk_b4)->status).satelites[1]), 21, 1);
+        PrintString(STRING(STR_CYBERELF_NAME + ((&z->unk_b4)->status).satelites[1]), 21, 1);
       }
     }
 
@@ -1552,12 +1553,12 @@ static void printElfNames(struct GameState* g) {
     u16 i;
     for (i = 0; i < 6; i++) {
       if (((&MENU->elf)->displayed)[i] != ELF_NONE) {
-        PrintString(STRING(((&MENU->elf)->displayed)[i] + 100), 2, 2 + (i * 2));
+        PrintString(STRING(((&MENU->elf)->displayed)[i] + STR_CYBERELF_NAME), 2, 2 + (i * 2));
       }
     }
 
     if (((&MENU->elf)->displayed)[0] == ELF_NONE) {
-      PrintString(STRING(174), 2, 2);
+      PrintString(STRING(STR_CYBERELF_NONE), 2, 2);
     }
   }
 }

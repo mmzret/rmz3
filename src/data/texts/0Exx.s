@@ -5,13 +5,14 @@
 @ preproc: treat "label::" as ".global label ; label:"
 
 TextOfs_SnowyPlains:: @ 0x083815dc
-    .2byte Text0-Start, Text1-Start, Text2-Start, Text3-Start
-    .2byte Text4-Start, Text5-Start, Text6-Start, Text7-Start
+    .2byte Text_SnowyPlains_AhMrZeroTheEnemy-Start, Text_SnowyPlains_IsThatIt-Start, Text_SnowyPlains_HahThatContainerWas-Start, Text_SnowyPlains_IGlacierLe-Start
+    .2byte Text_SnowyPlains_HahConsiderYourSins-Start, Text_SnowyPlains_OhMyNotStoppingAt-Start, Text_SnowyPlains_WeVeDiscovered-Start, Text_SnowyPlains_OperatorMissionCompletedCommencingTransfer-Start
 
 Texts_SnowyPlains:: @ 0x083815ec
 Start:
 
-Text0: @ 0x083815ec
+Text_SnowyPlains_AhMrZeroTheEnemy: @ 0x083815ec
+	@ EN: Ah, Mr. Zero! / The enemy is / waiting in ambush up / ahead... / There's no way we / can break through. / Mr. Zero, if you can / make an opening, / we'll follow you.
 	.string "{WINDOW 0x6D}"
 		.string "あ！ ゼロさん！▼"
 		.string "このさきにテキが、\n"
@@ -23,11 +24,13 @@ Text0: @ 0x083815ec
 		.string "トッパコウを開いてくだされば\n"
 		.string "ワレワレも後につづきます$"
 
-Text1: @ 0x0838164B
+Text_SnowyPlains_IsThatIt: @ 0x0838164B
+	@ EN: Is that it?
 	.string "{WINDOW 0x04}"
 		.string "…あれか$"
 
-Text2: @ 0x08381652
+Text_SnowyPlains_HahThatContainerWas: @ 0x08381652
+	@ EN: Hah! / That container was / on Omega's ship. So / you see, it's ours. / Has the legendary / hero stooped to / thievery? / How deplorable. / As king of the Snow / Plains, I do hereby / judge your crime.
 	.string "{WINDOW 0x21}"
 		.string "んんーっ▼"
 		.string "このコンテナは\n"
@@ -40,7 +43,8 @@ Text2: @ 0x08381652
 		.string "オマエのつみを\n"
 		.string "さばいてやるのであーる$"
 
-Text3: @ 0x083816CD
+Text_SnowyPlains_IGlacierLe: @ 0x083816CD
+	@ EN: I, Glacier Le / Cactank, of / Weil's Numbers, / have reached a / verdict. / The punishment for / thievery is death!
 	.string "{WINDOW 0x11}"
 		.string "けだかきバイル・ナンバーズ\n"
 		.string "グラチャー・レ・カクタンクの\n"
@@ -48,13 +52,15 @@ Text3: @ 0x083816CD
 		.string "ドロボウのつみは…\n"
 		.string "死けいであーる！$"
 
-Text4: @ 0x08381710
+Text_SnowyPlains_HahConsiderYourSins: @ 0x08381710
+	@ EN: Hah! / Consider your sins / from deep beneath / the silent snow!
 	.string "{WINDOW 0x10}"
 		.string "んんーっ！▼"
 		.string "ユキの下で深くしずかに\n"
 		.string "ハンセイするのであーる！$"
 
-Text5: @ 0x08381733
+Text_SnowyPlains_OhMyNotStoppingAt: @ 0x08381733
+	@ EN: Oh...my... / Not stopping at / thievery, you also / defy Lord Weil!? / Lord Weil's new / order will issue / judgment upon you! / Arrrrgh!
 	.string "{WINDOW 0x10}"
 		.string "お…おお…▼"
 		.string "ドロボウだけにあきたらず…\n"
@@ -64,7 +70,8 @@ Text5: @ 0x08381733
 		.string "新しきチツジョのもとに…！▼"
 		.string "グッ…オオオオッ！$"
 
-Text6: @ 0x08381788
+Text_SnowyPlains_WeVeDiscovered: @ 0x08381788
+	@ EN: We've discovered / data inside the / container! / Mr. Zero! / We've recovered all / of the data! / I will continue / searching for more / data.
 	.string "{WINDOW 0x6D}"
 		.string "コンテナの中からデータを発見！▼"
 		.string "ゼロさん！\n"
@@ -73,7 +80,8 @@ Text6: @ 0x08381788
 		.string "わたしは ひきつづき\n"
 		.string "データをさがします$"
 
-Text7: @ 0x083817cf
+Text_SnowyPlains_OperatorMissionCompletedCommencingTransfer: @ 0x083817cf
+	@ EN: Operator: Mission completed. / Commencing transfer.
 	.string "{WINDOW 0x00}"
 		.string "オペレーター「ミッションしゅうりょう▼"
 		.string "転送をカイシします$"

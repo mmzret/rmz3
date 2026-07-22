@@ -72,7 +72,7 @@ Script_08355430:
   wait 15
   force 6, 0, 0
   wait 60
-  message 1, 0, 0x0D00
+  message 1, 0, TEXT_ENERGY_FACTORY_FACILITY_CORE
   wait_msgbox_end
   stop_bgm
   wait 15
@@ -222,14 +222,14 @@ Script_08355850:
   walkto 11328*PX
   lock
   wait 15
-  message 1, 0, 0x0D01
+  message 1, 0, TEXT_ENERGY_FACTORY_WHAT_STHIS
   wait_msgbox_end
   wait 15
   emotion_bubble 0, 16, -40, 0
   wait 75
   spawn 3, Entity_08355410
   wait 60
-  message 1, 0, 0x0D02
+  message 1, 0, TEXT_ENERGY_FACTORY_TEEHEEHEE_HEY_YOU_WEREN_T
   wait_msgbox_end
   wait 15
   entityflag 3, 0, TRUE
@@ -237,8 +237,8 @@ Script_08355850:
   spawn 1, Entity_08355420
   wait 60
   destroy 3
-  triumphant_message 0, 0x0D04
-  message 1, 0, 0x0D03
+  triumphant_message 0, TEXT_ENERGY_FACTORY_TEEHEE_THAT_SIT
+  message 1, 0, TEXT_ENERGY_FACTORY_IAM_CUBIT_FOXTAR
   wait_msgbox_end
   cutscene_end
   entityflag 1, 0, TRUE
@@ -258,7 +258,7 @@ Script_08355960:
   walkto 11328*PX
   lock
   cutscene_end
-  triumphant_message 0, 0x0D04
+  triumphant_message 0, TEXT_ENERGY_FACTORY_TEEHEE_THAT_SIT
   entityflag 1, 0, TRUE
   stop_bgm
   wait 120
@@ -276,7 +276,7 @@ Script_083559e0:
   lock
   normal_screen
   wait_transition_end
-  triumphant_message 0, 0x0D04
+  triumphant_message 0, TEXT_ENERGY_FACTORY_TEEHEE_THAT_SIT
   entityflag 1, 0, TRUE
   wait 120
   warning_indicator
@@ -292,7 +292,7 @@ Script_08355a60:
   stop_bgm
   wait 1
   lock
-  message 1, 0, 0x0D05
+  message 1, 0, TEXT_ENERGY_FACTORY_IF_IAM_DEFEATED
   wait_msgbox_end
   entityflag 1, 7, TRUE
   cmd08_wait_set 1

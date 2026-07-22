@@ -72,7 +72,7 @@ Script_08350324:
   wait 15
   force 6, 0, 0
   wait 60
-  message 1, 0, 0x0600
+  message 1, 0, TEXT_WEAPON_REPAIR_FACTORY_FACTORY_CONTROL_UNIT
   wait_msgbox_end
   stop_bgm
   wait 15
@@ -192,7 +192,7 @@ Script_08350664:
   adjust_camera 11, 0, 1796096
   adjust_camera 12, 0, 1871872
   wait 75
-  message 1, 0, 0x0602
+  message 1, 0, TEXT_WEAPON_REPAIR_FACTORY_WELL_IF_IT_ISN_T_ALIAS1
   wait_msgbox_end
   wait 15
   entityflag 3, 0, TRUE
@@ -200,8 +200,8 @@ Script_08350664:
   spawn 1, Entity_08350314
   wait 60
   destroy 3
-  triumphant_message 0, 0x0604
-  message 1, 0, 0x0603
+  triumphant_message 0, TEXT_WEAPON_REPAIR_FACTORY_KEKE_THE_BLOOD_OF_A
+  message 1, 0, TEXT_WEAPON_REPAIR_FACTORY_KEKEKE_THE_FIRST_LESSON_A
   wait_msgbox_end
   cutscene_end
   entityflag 1, 0, TRUE
@@ -232,7 +232,7 @@ Script_0835078c:
   adjust_camera 12, 0, 1871872
   wait 60
   cutscene_end
-  triumphant_message 0, 0x0604
+  triumphant_message 0, TEXT_WEAPON_REPAIR_FACTORY_KEKE_THE_BLOOD_OF_A
   entityflag 1, 0, TRUE
   stop_bgm
   wait 120
@@ -254,7 +254,7 @@ Script_08350864:
   lock
   normal_screen
   wait_transition_end
-  triumphant_message 0, 0x0604
+  triumphant_message 0, TEXT_WEAPON_REPAIR_FACTORY_KEKE_THE_BLOOD_OF_A
   entityflag 1, 0, TRUE
   stop_bgm
   wait 120
@@ -274,7 +274,7 @@ Script_08350904:
   stop_bgm
   wait 1
   lock
-  message 1, 0, 0x0605
+  message 1, 0, TEXT_WEAPON_REPAIR_FACTORY_KE_KEKE_NO_MANNERS
   wait_msgbox_end
   entityflag 1, 7, TRUE
   cmd08_wait_set 1

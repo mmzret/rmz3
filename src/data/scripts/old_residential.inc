@@ -106,7 +106,7 @@ Script_08350c88:
   wait 15
   force 6, 0, 0
   wait 60
-  message 1, 0, 0x0700
+  message 1, 0, TEXT_OLD_LIFE_SPACE_BURN_AWAY_THE_IVY
   wait_msgbox_end
   stop_bgm
   wait 15
@@ -157,7 +157,7 @@ Script_08350e00:
   stop_bgm
   wait 120
   play_bgm 169
-  message 1, 0, 0x0704 @ おかーさーん
+  message 1, 0, TEXT_OLD_LIFE_SPACE_MAAAMA_ALIAS1 @ おかーさーん
   wait_msgbox_end
   wait 15
   play_se 276
@@ -165,7 +165,7 @@ Script_08350e00:
   wait 30
   entityflag 3, 6, FALSE
   wait 15
-  message 1, 0, 0x0705 @ ねえ プリエ ここにも おかーさん いないね
+  message 1, 0, TEXT_OLD_LIFE_SPACE_HEY_PREA @ ねえ プリエ ここにも おかーさん いないね
   wait_msgbox_end
   wait 15
   play_se 277
@@ -173,7 +173,7 @@ Script_08350e00:
   wait 30
   entityflag 3, 7, FALSE
   wait 15
-  message 1, 0, 0x0706
+  message 1, 0, TEXT_OLD_LIFE_SPACE_THAT_SRIGHT_CREA
   wait_msgbox_end
   wait 15
   play_se 276
@@ -181,7 +181,7 @@ Script_08350e00:
   wait 30
   entityflag 3, 6, FALSE
   wait 15
-  message 1, 0, 0x0707
+  message 1, 0, TEXT_OLD_LIFE_SPACE_HEY_PREA_2
   wait_msgbox_end
   wait 15
   play_se 277
@@ -189,7 +189,7 @@ Script_08350e00:
   wait 30
   entityflag 3, 7, FALSE
   wait 15
-  message 1, 0, 0x0708
+  message 1, 0, TEXT_OLD_LIFE_SPACE_THAT_SRIGHT_CREA_2
   wait_msgbox_end
   entityflag 3, 1, TRUE
   wait 60
@@ -197,17 +197,17 @@ Script_08350e00:
   wait 120
   play_bgm 174
   wait 30
-  message 1, 0, 0x0709
+  message 1, 0, TEXT_OLD_LIFE_SPACE_THOSE_MUST_BE
   wait_msgbox_end
-  message 1, 0, 0x070A
+  message 1, 0, TEXT_OLD_LIFE_SPACE_CIEL_ZERO_IVE_PICKEDUP
   wait_msgbox_end
-  message 1, 0, 0x070B
+  message 1, 0, TEXT_OLD_LIFE_SPACE_THEIR_MOTHER_THEY_MUST_BE
   wait_msgbox_end
-  message 1, 0, 0x070C
+  message 1, 0, TEXT_OLD_LIFE_SPACE_CIEL_HEY_ZERO_CAN_YOUPROTECT
   wait_msgbox_end
-  message 1, 0, 0x070D
+  message 1, 0, TEXT_OLD_LIFE_SPACE_ALRIGHT_ILL_FIND_THEM
   wait_msgbox_end
-  message 1, 0, 0x070E
+  message 1, 0, TEXT_OLD_LIFE_SPACE_CIEL_THANK_YOU_ZERO
   wait_msgbox_end
   wait 15
   destroy 3
@@ -322,7 +322,7 @@ Script_08351270:
   wait 30
   entityflag 4, 6, FALSE
   wait 15
-  message 1, 0, 0x070F @ あなたは だあれ？ おかーさんと おなじニオイが するよ
+  message 1, 0, TEXT_OLD_LIFE_SPACE_WHO_ARE_YOU_YOU_SMELL @ あなたは だあれ？ おかーさんと おなじニオイが するよ
   wait_msgbox_end
   wait 15
   play_se 277
@@ -330,10 +330,10 @@ Script_08351270:
   wait 30
   entityflag 4, 7, FALSE
   wait 15
-  message 1, 0, 0x0710
+  message 1, 0, TEXT_OLD_LIFE_SPACE_WHO_ARE_YOU_YOU_SMELL_2
   wait_msgbox_end
   wait 15
-  message 1, 0, 0x0711 @ ギチギチギチ… コイツらがベビーエルフか…
+  message 1, 0, TEXT_OLD_LIFE_SPACE_CHIKACHIKA_SO_THESE_ARE_BABY @ ギチギチギチ… コイツらがベビーエルフか…
   wait_msgbox_end
   wait 15
   force 1, 0, 0
@@ -341,7 +341,7 @@ Script_08351270:
   walkto 7488*PX
   gameflag FLAG_2, TRUE
   lock
-  message 1, 0, 0x0712
+  message 1, 0, TEXT_OLD_LIFE_SPACE_HAND_OVER_THE
   wait_msgbox_end
   wait 15
   entityflag 4, 6, TRUE
@@ -362,7 +362,7 @@ Script_08351270:
   wait 30
   entityflag 4, 6, FALSE
   wait 15
-  message 1, 0, 0x0713
+  message 1, 0, TEXT_OLD_LIFE_SPACE_OH_IKNOW_HIM_HE
   wait_msgbox_end
   wait 15
   play_se 277
@@ -370,7 +370,7 @@ Script_08351270:
   wait 30
   entityflag 4, 7, FALSE
   wait 15
-  message 1, 0, 0x0714
+  message 1, 0, TEXT_OLD_LIFE_SPACE_IKNOW_HIM_TOO_THAT
   wait_msgbox_end
   wait 15
   play_se 276
@@ -378,7 +378,7 @@ Script_08351270:
   wait 30
   entityflag 4, 6, FALSE
   wait 15
-  message 1, 0, 0x0715
+  message 1, 0, TEXT_OLD_LIFE_SPACE_YOU_FAKER
   wait_msgbox_end
   wait 15
   play_se 277
@@ -386,10 +386,10 @@ Script_08351270:
   wait 30
   entityflag 4, 7, FALSE
   wait 15
-  message 1, 0, 0x0716
+  message 1, 0, TEXT_OLD_LIFE_SPACE_YOU_FAKER_2
   wait_msgbox_end
   wait 15
-  message 1, 0, 0x0717
+  message 1, 0, TEXT_OLD_LIFE_SPACE_HMM_CHIKACHIKA
   wait_msgbox_end
   wait 15
   play_se 276
@@ -397,7 +397,7 @@ Script_08351270:
   wait 30
   entityflag 4, 6, FALSE
   wait 15
-  message 1, 0, 0x0718
+  message 1, 0, TEXT_OLD_LIFE_SPACE_WAAAAAAH
   wait_msgbox_end
   wait 15
   play_se 277
@@ -405,7 +405,7 @@ Script_08351270:
   wait 30
   entityflag 4, 7, FALSE
   wait 15
-  message 1, 0, 0x0719
+  message 1, 0, TEXT_OLD_LIFE_SPACE_WAAAAAAH_2
   wait_msgbox_end
   wait 15
   entityflag 4, 1, TRUE
@@ -413,7 +413,7 @@ Script_08351270:
   stop_bgm
   wait 90
   play_bgm BGM_GUARDER_ROOM
-  message 1, 0, 0x071A
+  message 1, 0, TEXT_OLD_LIFE_SPACE_THOSE_TWO_BELONG
   wait_msgbox_end
   wait 15
   destroy 4
@@ -422,8 +422,8 @@ Script_08351270:
   spawn 1, Entity_08350c58
   wait 60
   destroy 3
-  triumphant_message 0, 0x0701
-  message 1, 0, 0x071B
+  triumphant_message 0, TEXT_OLD_LIFE_SPACE_ICAN_CUT_ANYTHING
+  message 1, 0, TEXT_OLD_LIFE_SPACE_IMDEATHTANZ
   wait_msgbox_end
   cutscene_end
   entityflag 1, 0, TRUE
@@ -448,7 +448,7 @@ Script_083516a8:
   walkto 7488*PX
   lock
   cutscene_end
-  triumphant_message 0, 0x0701
+  triumphant_message 0, TEXT_OLD_LIFE_SPACE_ICAN_CUT_ANYTHING
   entityflag 1, 0, TRUE
   stop_bgm
   wait 210
@@ -467,7 +467,7 @@ Script_08351738:
   lock
   normal_screen
   wait_transition_end
-  triumphant_message 0, 0x0701
+  triumphant_message 0, TEXT_OLD_LIFE_SPACE_ICAN_CUT_ANYTHING
   entityflag 1, 0, TRUE
   stop_bgm
   wait 210
@@ -483,7 +483,7 @@ Script_083517c0:
   stop_bgm
   wait 1
   lock
-  message 1, 0, 0x0702
+  message 1, 0, TEXT_OLD_LIFE_SPACE_CHIKACHIKA_EVEN_IF_YOU_DEFEAT
   wait_msgbox_end
   entityflag 1, 7, TRUE
   cmd08_wait_set 1
@@ -518,7 +518,7 @@ Script_08351870:
   wait 30
   entityflag 4, 6, FALSE
   wait 15
-  message 1, 0, 0x071C @ おじちゃんは だあれ？
+  message 1, 0, TEXT_OLD_LIFE_SPACE_WHO_ARE_YOU_MISTER_I @ おじちゃんは だあれ？
   wait_msgbox_end
   wait 15
   play_se 277
@@ -526,12 +526,12 @@ Script_08351870:
   wait 30
   entityflag 4, 7, FALSE
   wait 15
-  message 1, 0, 0x071D
+  message 1, 0, TEXT_OLD_LIFE_SPACE_WHO_ARE_YOU_MISTER_I_2
   wait_msgbox_end
   wait 15
   entityflag 3, 0, TRUE
   wait 90
-  message 1, 0, 0x071E
+  message 1, 0, TEXT_OLD_LIFE_SPACE_HEHEHEHEHEEE
   wait_msgbox_end
   wait 30
   entityflag 4, 6, TRUE
@@ -552,7 +552,7 @@ Script_08351870:
   wait 30
   entityflag 4, 6, FALSE
   wait 15
-  message 1, 0, 0x071F
+  message 1, 0, TEXT_OLD_LIFE_SPACE_PREA_DID_YOU_HEAR
   wait_msgbox_end
   wait 15
   play_se 277
@@ -560,12 +560,12 @@ Script_08351870:
   wait 30
   entityflag 4, 7, FALSE
   wait 15
-  message 1, 0, 0x0720
+  message 1, 0, TEXT_OLD_LIFE_SPACE_IHEARD_CREA_HE_S
   wait_msgbox_end
   wait 15
   entityflag 3, 0, FALSE
   wait 90
-  message 1, 0, 0x0721
+  message 1, 0, TEXT_OLD_LIFE_SPACE_IMLOOKING_FOR_THE
   wait_msgbox_end
   wait 15
   play_se 276
@@ -573,7 +573,7 @@ Script_08351870:
   wait 30
   entityflag 4, 6, FALSE
   wait 15
-  message 1, 0, 0x0722
+  message 1, 0, TEXT_OLD_LIFE_SPACE_OKAY_LET_SGO
   wait_msgbox_end
   wait 15
   play_se 277
@@ -581,7 +581,7 @@ Script_08351870:
   wait 30
   entityflag 4, 7, FALSE
   wait 15
-  message 1, 0, 0x0723
+  message 1, 0, TEXT_OLD_LIFE_SPACE_OKAY_LET_SGO_2
   wait_msgbox_end
   spawn 0, Entity_08350bf8
   forcekeyinput DPAD_RIGHT
@@ -589,7 +589,7 @@ Script_08351870:
   pause
   wait 8
   lock
-  message 1, 0, 0x0724
+  message 1, 0, TEXT_OLD_LIFE_SPACE_WAIT
   wait_msgbox_end
   wait 15
   entityflag 3, 1, TRUE
@@ -597,13 +597,13 @@ Script_08351870:
   stop_bgm
   wait 150
   play_bgm BGM_ANTAN
-  message 1, 0, 0x0725
+  message 1, 0, TEXT_OLD_LIFE_SPACE_DARN_CIEL_CAN_YOU_FOLLOW
   wait_msgbox_end
-  message 1, 0, 0x0726
+  message 1, 0, TEXT_OLD_LIFE_SPACE_CIEL_IMSORRY_ZERO
   wait_msgbox_end
-  message 1, 0, 0x0727
+  message 1, 0, TEXT_OLD_LIFE_SPACE_EMPTY
   wait_msgbox_end
-  message 1, 0, 0x0728
+  message 1, 0, TEXT_OLD_LIFE_SPACE_OPERATOR_MR_ZERO_PLEASE_RETURN
   wait_msgbox_end
   stop_bgm
   force 4, 0, 0

@@ -5,21 +5,23 @@
 @ preproc: treat "label::" as ".global label ; label:"
 
 TextOfs_SubArcadia:: @ 0x083820fc
-	.2byte (Text0-Start),  (Text1-Start), (Text2-Start), (Text3-Start), (Text4-Start), (Text5-Start), (Text6-Start), (Text7-Start)
-	.2byte (Text8-Start),  (Text9-Start), (Text10-Start), (Text11-Start), (Text12-Start), (Text13-Start), (Text14-Start), (Text15-Start)
-	.2byte (Text16-Start), (Text17-Start)
+	.2byte (Text_SubArcadia_Empty-Start),  (Text_SubArcadia_DrWeil-Start), (Text_SubArcadia_HeheheheheeeHowGallantYouAre-Start), (Text_SubArcadia_CreaPrea-Start), (Text_SubArcadia_HeSBack-Start), (Text_SubArcadia_HeSBack_2-Start), (Text_SubArcadia_ILlRipYouTo-Start), (Text_SubArcadia_ILlTearYouTo-Start)
+	.2byte (Text_SubArcadia_Ahahahahahahaa-Start),  (Text_SubArcadia_PreaThereS-Start), (Text_SubArcadia_YesCreaThereS-Start), (Text_SubArcadia_IFeelLikeIM-Start), (Text_SubArcadia_IFeelLikeIM_2-Start), (Text_SubArcadia_CielZeroAreYouAllright-Start), (Text_SubArcadia_Understood-Start), (Text_SubArcadia_INeverThoughtI-Start)
+	.2byte (Text_SubArcadia_AllLegendsAre-Start), (Text_SubArcadia_GaspYouTrulyDid-Start)
 
 Text_SubArcadia:: @ 0x08382120
 Start:
 
-Text0: @ 0x08382120
+Text_SubArcadia_Empty: @ 0x08382120
 		.string "$"
 
-Text1: @ 0x08382121
+Text_SubArcadia_DrWeil: @ 0x08382121
+	@ EN: Dr. Weil!
 	.string "{WINDOW 0x04}"
 		.string "ドクター・バイル…！$"
 
-Text2: @ 0x0838212E
+Text_SubArcadia_HeheheheheeeHowGallantYouAre: @ 0x0838212E
+	@ EN: Heheheheheee... / How gallant you are, / Zero. To play hero, / all by yourself! / All the Reploids in / the entire world are / now under my power. / Humans are like / pigs, dependent upon / the Reploids for / their very / existence... / You do realize, / don't you, that if I / felt like it, / I could wipe all / humans out in the / blink of an eye?
 	.string "{WINDOW 0x3B}"
 		.string "クーックックックッ…▼"
 		.string "いさましいな…ゼロ…\n"
@@ -33,7 +35,8 @@ Text2: @ 0x0838212E
 		.string "いつでもシマツできるのだ▼"
 		.string "わかっているな？$"
 
-Text3: @ 0x083821BD
+Text_SubArcadia_CreaPrea: @ 0x083821BD
+	@ EN: Crea! Prea! / Do with this one as / you please! / I've got some pig / squeals to enjoy. / The squeals of / indolent pigs, / wasting their / pitiful lives on / idle pursuits. / Would you like to / know who rules this / world?! / Heheheheheee... / Bwahahahahah!
 	.string "{WINDOW 0x53}"
 		.string "クリエ！ プリエ！\n"
 		.string "ソイツをすきにしていいぞ！▼"
@@ -48,27 +51,32 @@ Text3: @ 0x083821BD
 		.string "クーックックックッ…▼"
 		.string "クヒャーッハッハッハッハッ！$"
 
-Text4: @ 0x08382248
+Text_SubArcadia_HeSBack: @ 0x08382248
+	@ EN: He's back! / The bad Reploid!
 	.string "{WINDOW 0x66}"
 		.string "またきたー！\n"
 		.string "わるいレプリロイドー！$"
 
-Text5: @ 0x0838225D
+Text_SubArcadia_HeSBack_2: @ 0x0838225D
+	@ EN: He's back! / The fake Reploid!
 	.string "{WINDOW 0x69}"
 		.string "またきたー！\n"
 		.string "ニセモノレプリロイドー！$"
 
-Text6: @ 0x08382273
+Text_SubArcadia_ILlRipYouTo: @ 0x08382273
+	@ EN: I'll rip you to / pieces!
 	.string "{WINDOW 0x66}"
 		.string "おまえなんか\n"
 		.string "バラバラにしてやるー！$"
 
-Text7: @ 0x08382288
+Text_SubArcadia_ILlTearYouTo: @ 0x08382288
+	@ EN: I'll tear you to / shreds!
 	.string "{WINDOW 0x69}"
 		.string "おまえなんか\n"
 		.string "ズタズタにしてやるー！$"
 
-Text8: @ 0x0838229D
+Text_SubArcadia_Ahahahahahahaa: @ 0x0838229D
+	@ EN: Ahahahahahahaa! / He's all ripped to / pieces! / Teheheheeehee! / He's all torn to / shreds!
 	.string "{WINDOW 0x66}"
 		.string "あははははははっ！\n"
 		.string "バラバラになったー！▼"
@@ -76,38 +84,45 @@ Text8: @ 0x0838229D
 		.string "うふふふふふふっ！\n"
 		.string "ズタズタになったー！$"
 
-Text9: @ 0x083822CB
+Text_SubArcadia_PreaThereS: @ 0x083822CB
+	@ EN: Prea, there's / something wrong...
 	.string "{WINDOW 0x66}"
 		.string "あれ…プリエ…\n"
 		.string "なんだかへんだよ…$"
 
-Text10: @ 0x083822DF
+Text_SubArcadia_YesCreaThereS: @ 0x083822DF
+	@ EN: Yes Crea, there's / something wrong...
 	.string "{WINDOW 0x69}"
 		.string "うん…クリエ…\n"
 		.string "なんだかへんだよ…$"
 
-Text11: @ 0x083822F3
+Text_SubArcadia_IFeelLikeIM: @ 0x083822F3
+	@ EN: I feel like I'm / being stabbed with / pins and needles...
 	.string "{WINDOW 0x66}"
 		.string "からだが…いっぱ…い\n"
 		.string "チクチク…す…るよ…$"
 
-Text12: @ 0x0838230B
+Text_SubArcadia_IFeelLikeIM_2: @ 0x0838230B
+	@ EN: I feel like I'm / being smashed with / clubs and hammers... / Mi...meeeeeee!
 	.string "{WINDOW 0x69}"
 		.string "か…らだが…いっぱ…い\n"
 		.string "ズキ…ズキ…す…る…▼"
 		.string "ミ…ミーーーーーーーッ！$"
 
-Text13: @ 0x08382331
+Text_SubArcadia_CielZeroAreYouAllright: @ 0x08382331
+	@ EN: Ciel: Zero, are you all / right? I just received / some new information / from X. Come back to the / Resistance Base.
 	.string "{WINDOW 0x00}"
 		.string "シエル「ゼロ、だいじょうぶ？▼"
 		.string "エックスから、新しいジョウホウをもらったわ▼"
 		.string "…いちどレジスタンスベースにもどってきて…$"
 
-Text14: @ 0x0838236F
+Text_SubArcadia_Understood: @ 0x0838236F
+	@ EN: Understood. / Transfer me.
 	.string "{WINDOW 0x04}"
 		.string "わかった…転送しろ$"
 
-Text15: @ 0x0838237D
+Text_SubArcadia_INeverThoughtI: @ 0x0838237D
+	@ EN: I never thought I / would meet you again / in this world. / If, thanks to Omega / and his ilk, the / portal to Cyberspace / has been opened, / then fate is truly / an ironic thing. / Phantom...one of the / Four Guardians of / Neo Arcadia! / But... / I defeated you... / This is a shadow / world, where both / Reploid souls and / Cyber-elves live. / After you defeated / me, I became a mere / soul, and somehow / drifted back to / Cyberspace. / This space, where / all data flows to / in the end... / And there I learned / all truths. / About Omega... / The Dark Elf... / And you, Zero... / That's right. / Everything. / So...what's your / point? / Exactly this. You / never had what it / takes to be a hero. / I can't stand to / look at you. Now it / is time for your / deletion, by my / hand!
 	.string "{WINDOW 0x33}"
 		.string "…かような地で\n"
 		.string "キサマと再び\n"
@@ -146,13 +161,15 @@ Text15: @ 0x0838237D
 		.string "せめて せっしゃの手で\n"
 		.string "消し去ってくれよう！$"
 
-Text16: @ 0x08382503
+Text_SubArcadia_AllLegendsAre: @ 0x08382503
+	@ EN: All legends are / forgotten in the / end. Goodbye, Zero!
 	.string "{WINDOW 0x32}"
 		.string "いかに伝説といえど、\n"
 		.string "いつかは わすれさられる…\n"
 		.string "さらばだ！ ゼロ！$"
 
-Text17: @ 0x0838252A
+Text_SubArcadia_GaspYouTrulyDid: @ 0x0838252A
+	@ EN: *gasp* / You truly did... / have the soul of a / hero... / Go... / Cross blades with / Omega, and show what / that body can do! / Will your blade / flinch after you / learn the truth? / Do you have what it / takes...to be a / hero? / You must be the / one to determine / that!
 	.string "{WINDOW 0x32}"
 		.string "くっ…▼"
 		.string "…エイユウのタマシイ\n"

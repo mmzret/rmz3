@@ -1,4 +1,5 @@
 #include "game.h"
+#include "string_ids.h"
 #include "gfx.h"
 #include "global.h"
 #include "menu.h"
@@ -93,11 +94,11 @@ NON_MATCH static void ExMenuLoop_Update(struct GameState* g) {
     (EXSKILL_MENU->cursor)->py = (EXSKILL_MENU->selected >> 2) * 24 + 40;
 
     if ((((&z->unk_b4)->status).unlockedExSkill & (1 << EXSKILL_MENU->selected)) >> EXSKILL_MENU->selected) {
-      PrintString(STRING(450 + EXSKILL_MENU->selected), 2, 14);
-      PrintString(STRING(463 + EXSKILL_MENU->selected), 17, 1);
+      PrintString(STRING(STR_EXSKILL_NAME + EXSKILL_MENU->selected), 2, 14);
+      PrintString(STRING(STR_EXSKILL_DESC + EXSKILL_MENU->selected), 17, 1);
     } else {
-      PrintString(STRING(462), 2, 14);
-      PrintString(STRING(475), 17, 1);
+      PrintString(STRING(STR_EXSKILL_DESC_NONE), 2, 14);
+      PrintString(STRING(STR_EXSKILL_DESC_NONE2), 17, 1);
     }
   }
 #else

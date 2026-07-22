@@ -1,4 +1,5 @@
 #include "game.h"
+#include "text_ids.h"
 #include "global.h"
 #include "spawn.h"
 
@@ -764,7 +765,7 @@ _080F2C20: .4byte 0x0000FFFE\n\
  * @brief 図書館で検索マシンで検索した時のゼロのリアクション
  * @note idx = まだ取得してないデータ数-1
  */
-static const TextID SearchReactionTexts[4] = {0x0F06, 0x0F05, 0x0F04, 0x0F03};
+static const TextID SearchReactionTexts[4] = {TEXT_SUNKEN_LIBRARY_LAST_ONE, TEXT_SUNKEN_LIBRARY_TWO_MORE_MATCHES, TEXT_SUNKEN_LIBRARY_THREE_MORE_MATCHES, TEXT_SUNKEN_LIBRARY_FOUR_MATCHES_WEIL_OMEGA_DARK};
 
 static const disk_t SunkenSecretDisks[4] = {
     DISK_ID(DISK_FILE_D),
@@ -782,4 +783,4 @@ static const str_id_t StrID_ARRAY_08386294[4] = {0x03DE, 0x03DF, 0x03E0, 0x03E1}
   ヒツヨウナ トキハ
   コンソールヲ シラベテクダサイ
 */
-static const TextID AfterSearchTextIDs[4] = {0x0F08, 0x0F09, 0x0F0A, 0x0F0B};
+static const TextID AfterSearchTextIDs[4] = {TEXT_SUNKEN_LIBRARY_AREA_WITH_WEIL_S, TEXT_SUNKEN_LIBRARY_AREA_WITH_OMEGA_S, TEXT_SUNKEN_LIBRARY_AREA_WITH_DARK_ELF_S, TEXT_SUNKEN_LIBRARY_AREA_WITH_DATA};

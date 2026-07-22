@@ -153,7 +153,7 @@ Script_08351fac:
   wait 15
   force 6, 0, 0
   wait 60
-  message 1, 0, 0x0800
+  message 1, 0, TEXT_MISSILE_FACTORY_YOU_MADE_IT
   wait_msgbox_end
   stop_bgm
   wait 15
@@ -205,7 +205,7 @@ Script_08352124:
   stop_bgm
   emotion_bubble 0, 16, -40, 0
   wait 60
-  message 1, 0, 0x0801
+  message 1, 0, TEXT_MISSILE_FACTORY_NO
   wait_msgbox_end
   wait 15
   change_camera_mode 1
@@ -243,11 +243,11 @@ Script_08352124:
   set_camera_target_y 1560*PX
   set_chase_mode 2
   wait_transition_end
-  message 1, 0, 0x0802
+  message 1, 0, TEXT_MISSILE_FACTORY_CIEL_THEY_LAUNCHED_IT_ZERO
   wait_msgbox_end
-  message 1, 0, 0x0803
+  message 1, 0, TEXT_MISSILE_FACTORY_IHAVE_TO_ACT_NOW
   wait_msgbox_end
-  message 1, 0, 0x0804
+  message 1, 0, TEXT_MISSILE_FACTORY_CIEL_ZERO
   wait_msgbox_end
   cutscene_end
   wait 15
@@ -346,7 +346,7 @@ Script_0835252c:
   adjust_camera 11, 0 6832*PX
   adjust_camera 12, 0 7072*PX
   wait 75
-  message 1, 0, 0x0805
+  message 1, 0, TEXT_MISSILE_FACTORY_BABY_ELVES
   wait_msgbox_end
   wait 15
   play_se 276
@@ -354,7 +354,7 @@ Script_0835252c:
   wait 30
   entityflag 1, 6, FALSE
   wait 15
-  message 1, 0, 0x0806
+  message 1, 0, TEXT_MISSILE_FACTORY_HE_CAME
   wait_msgbox_end
   wait 15
   play_se 277
@@ -362,7 +362,7 @@ Script_0835252c:
   wait 30
   entityflag 1, 7, FALSE
   wait 15
-  message 1, 0, 0x0807
+  message 1, 0, TEXT_MISSILE_FACTORY_HE_CAME_2
   wait_msgbox_end
   wait 15
   play_se 276
@@ -370,7 +370,7 @@ Script_0835252c:
   wait 30
   entityflag 1, 6, FALSE
   wait 15
-  message 1, 0, 0x0808
+  message 1, 0, TEXT_MISSILE_FACTORY_OMEGA_WILL_GO
   wait_msgbox_end
   wait 15
   play_se 277
@@ -378,9 +378,9 @@ Script_0835252c:
   wait 30
   entityflag 1, 7, FALSE
   wait 15
-  message 1, 0, 0x0809
+  message 1, 0, TEXT_MISSILE_FACTORY_WE_LL_PROTECT_HIM
   wait_msgbox_end
-  triumphant_message 0, 0x080A
+  triumphant_message 0, TEXT_MISSILE_FACTORY_HEHE_GRANDPA_WILL
   cutscene_end
   entityflag 1, 0, TRUE
   stop_bgm
@@ -406,7 +406,7 @@ Script_08352704:
   adjust_camera 11, 0 6832*PX
   adjust_camera 12, 0 7072*PX
   wait 75
-  triumphant_message 0, 0x080A
+  triumphant_message 0, TEXT_MISSILE_FACTORY_HEHE_GRANDPA_WILL
   cutscene_end
   entityflag 1, 0, TRUE
   stop_bgm
@@ -426,7 +426,7 @@ Script_083527c4:
   lock
   normal_screen
   wait_transition_end
-  triumphant_message 0, 0x080A
+  triumphant_message 0, TEXT_MISSILE_FACTORY_HEHE_GRANDPA_WILL
   entityflag 1, 0, TRUE
   wait 120
   warning_indicator
@@ -445,11 +445,11 @@ Script_08352844:
   lock
   force 8, 0, 0
   cutscene_start CS_MISSILE_22
-  message 1, 0, 0x080B
+  message 1, 0, TEXT_MISSILE_FACTORY_WAAAAAH
   walkto 6920*PX
   turn_right 0
   wait_msgbox_end
-  message 1, 0, 0x080C
+  message 1, 0, TEXT_MISSILE_FACTORY_OWWWWWW
   wait_msgbox_end
   wait 60
   play_se 269
@@ -461,7 +461,7 @@ Script_08352844:
   wait 30
   entityflag 1, 6, FALSE
   wait 15
-  message 1, 0, 0x080D
+  message 1, 0, TEXT_MISSILE_FACTORY_WE_MAY_HAVE_LOST
   wait_msgbox_end
   wait 15
   quake 0, 0, 5
@@ -470,7 +470,7 @@ Script_08352844:
   wait 30
   entityflag 1, 7, FALSE
   wait 15
-  message 1, 0, 0x080E
+  message 1, 0, TEXT_MISSILE_FACTORY_WE_MAY_HAVE_LOST_2
   wait_msgbox_end
   change_camera_mode 1
   scroll_speed_x 0
@@ -518,7 +518,7 @@ Script_08352a6c:
   wait 28
   time 0
   play_se 231
-  message 1, 0, 0x080F @ グ…オオ…！
+  message 1, 0, TEXT_MISSILE_FACTORY_GRRAWRRR @ グ…オオ…！
   wait_msgbox_end
   waitabs 120
   play_bgm 223
@@ -549,7 +549,7 @@ Script_08352a6c:
   wait 30
   entityflag 4, 6, FALSE
   wait 15
-  message 1, 0, 0x0810 @ わーい！ おかーさん！ おかーさん！
+  message 1, 0, TEXT_MISSILE_FACTORY_YAY @ わーい！ おかーさん！ おかーさん！
   wait_msgbox_end
   wait 15
   play_se 277
@@ -557,7 +557,7 @@ Script_08352a6c:
   wait 30
   entityflag 4, 7, FALSE
   wait 15
-  message 1, 0, 0x0811
+  message 1, 0, TEXT_MISSILE_FACTORY_YAY_2
   wait_msgbox_end
   wait 15
   entityflag 6, 0, TRUE
@@ -566,7 +566,7 @@ Script_08352a6c:
   wait 6
   play_se 269
   wait 90
-  message 1, 0, 0x0812
+  message 1, 0, TEXT_MISSILE_FACTORY_GRRARRAARRRR
   play_se 231
   wait_msgbox_end
   wait 16
@@ -585,7 +585,7 @@ Script_08352a6c:
   wait 180
   play_bgm 165
   wait 120
-  message 1, 0, 0x0813
+  message 1, 0, TEXT_MISSILE_FACTORY_GRRARRAARRRR_2
   play_se 231
   wait_msgbox_end
   wait 15
@@ -594,7 +594,7 @@ Script_08352a6c:
   wait 30
   entityflag 4, 6, FALSE
   wait 15
-  message 1, 0, 0x0814
+  message 1, 0, TEXT_MISSILE_FACTORY_HEY_CAN_YOU_BEAT_UP
   wait_msgbox_end
   wait 15
   play_se 277
@@ -602,7 +602,7 @@ Script_08352a6c:
   wait 30
   entityflag 4, 7, FALSE
   wait 15
-  message 1, 0, 0x0815
+  message 1, 0, TEXT_MISSILE_FACTORY_YEAH_CAN_YOU_BEAT
   wait_msgbox_end
   wait 15
   play_se 231
@@ -617,7 +617,7 @@ Script_08352a6c:
   wait 30
   entityflag 6, 4, FALSE
   wait 90
-  message 1, 0, 0x0816
+  message 1, 0, TEXT_MISSILE_FACTORY_WE_THE_REPLOIDS_OF
   wait_msgbox_end
   wait 15
   entityflag 5, 0, TRUE
@@ -665,12 +665,12 @@ Script_08352a6c:
   destroy 11
   destroy 8
   wait 60
-  message 1, 0, 0x0817
+  message 1, 0, TEXT_MISSILE_FACTORY_ARRRRGGH_IIAM
   wait_msgbox_end
   wait 15
   entityflag 3, 1, TRUE
   wait 60
-  message 1, 0, 0x0818
+  message 1, 0, TEXT_MISSILE_FACTORY_HARPUIA
   wait_msgbox_end
   wait 15
   play_se 276
@@ -678,7 +678,7 @@ Script_08352a6c:
   wait 30
   entityflag 4, 6, FALSE
   wait 15
-  message 1, 0, 0x0819
+  message 1, 0, TEXT_MISSILE_FACTORY_PERFECT
   wait_msgbox_end
   wait 15
   play_se 277
@@ -686,13 +686,13 @@ Script_08352a6c:
   wait 30
   entityflag 4, 7, FALSE
   wait 15
-  message 1, 0, 0x081A
+  message 1, 0, TEXT_MISSILE_FACTORY_GET_HIM_GET_HIM
   wait_msgbox_end
   wait 15
-  message 1, 0, 0x081B
+  message 1, 0, TEXT_MISSILE_FACTORY_CIEL_ZERO_DON_TMOVE
   wait_msgbox_end
   wait 15
-  print_message 60, 0x081C
+  print_message 60, TEXT_MISSILE_FACTORY_OPERATOR_TRANSFERRING
   entityflag 5, 3, TRUE
   entityflag 3, 2, TRUE
   wait 45

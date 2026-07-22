@@ -115,7 +115,7 @@ Script_0834f6ec:
   emotion_bubble 0, 16, -40, 0
   wait 75
   destroy 3
-  message 1, 0, 0x0500
+  message 1, 0, TEXT_OCEAN_HIGHWAY_RUINS_GOT_AREADING
   wait_msgbox_end
   stop_bgm
   wait 15
@@ -176,7 +176,7 @@ Script_0834f89c:
   wait 75
   entityflag 4, 0, TRUE
   wait 45
-  message 1, 0, 0x0503 @ なんだ、オマエは？
+  message 1, 0, TEXT_OCEAN_HIGHWAY_RUINS_WHO_THE_HECK_RE_YOU_2_ALIAS1 @ なんだ、オマエは？
   wait_msgbox_end
   wait 15
   change_camera_mode 1
@@ -194,7 +194,7 @@ Script_0834f89c:
   set_chase_mode 4
   adjust_camera 11, 0, 217088
   wait 60
-  message 1, 0, 0x0504
+  message 1, 0, TEXT_OCEAN_HIGHWAY_RUINS_CIEL_CAN_YOU_HEAR_ME
   wait_msgbox_end
   wait 15
   entityflag 3, 1, TRUE
@@ -255,17 +255,17 @@ Script_0834fb0c:
   emotion_bubble 0, 16, -40, 0
   wait 75
   play_bgm 223
-  message 1, 0, 0x0508
+  message 1, 0, TEXT_OCEAN_HIGHWAY_RUINS_WHO_THE_HECK_RE_YOU_2_ALIAS4
   wait_msgbox_end
   wait 15
   entityflag 1, 1, TRUE
   wait 30
-  message 1, 0, 0x0509
+  message 1, 0, TEXT_OCEAN_HIGHWAY_RUINS_STOOOOOOP_IIIIIIT
   wait_msgbox_end
   wait 15
   entityflag 1, 2, TRUE
   wait 300
-  message 1, 0, 0x050A
+  message 1, 0, TEXT_OCEAN_HIGHWAY_RUINS_EMPTY
   wait_msgbox_end
   wait 15
   entityflag 1, 3, TRUE
@@ -277,7 +277,7 @@ Script_0834fb0c:
   wait 40
   lock
   wait 10
-  message 1, 0, 0x050B
+  message 1, 0, TEXT_OCEAN_HIGHWAY_RUINS_ILL_HAVE_TO_TAKE
   wait_msgbox_end
   stop_bgm
   wait 60
@@ -366,8 +366,8 @@ Script_0834fe3c:
   walkto 11328*PX
   lock
   wait 30
-  triumphant_message 0, 0x050D
-  message 1, 0, 0x050C
+  triumphant_message 0, TEXT_OCEAN_HIGHWAY_RUINS_YOU_RE_SHARK_FOOD
+  message 1, 0, TEXT_OCEAN_HIGHWAY_RUINS_WHAT_APAIN_YOU_ARE
   wait_msgbox_end
   cutscene_end
   entityflag 1, 0, TRUE
@@ -389,7 +389,7 @@ Script_0834fee4:
   walkto 11328*PX
   lock
   cutscene_end
-  triumphant_message 0, 0x050D
+  triumphant_message 0, TEXT_OCEAN_HIGHWAY_RUINS_YOU_RE_SHARK_FOOD
   entityflag 1, 0, TRUE
   stop_bgm
   wait 120
@@ -407,7 +407,7 @@ Script_0834ff6c:
   lock
   normal_screen
   wait_transition_end
-  triumphant_message 0, 0x050D
+  triumphant_message 0, TEXT_OCEAN_HIGHWAY_RUINS_YOU_RE_SHARK_FOOD
   entityflag 1, 0, TRUE
   stop_bgm
   wait 120
@@ -423,7 +423,7 @@ Script_0834ffec:
   stop_bgm
   wait 1
   lock
-  message 1, 0, 0x050E
+  message 1, 0, TEXT_OCEAN_HIGHWAY_RUINS_YOU_RE_KIDDING_ME_WHY
   wait_msgbox_end
   entityflag 1, 7, TRUE
   cmd08_wait_set 1

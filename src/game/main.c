@@ -14,6 +14,7 @@
 #include "score.h"
 #include "sound.h"
 #include "story.h"
+#include "string_ids.h"
 #include "system.h"
 #include "text.h"
 #include "weapon.h"
@@ -56,25 +57,25 @@ static const u16 u16_ARRAY_08386130[32] = {
  */
 NON_MATCH void PrintSaveDataRowText(u8 idx, u8 rank, u32 playTime, u8 lap, u8 mode, u8 y8) {
 #if MODERN
-  PrintString(STRING(31 + idx), 7, y8);         // ${idx+1}
-  PrintString(STRING(40 + rank), (7 + 2), y8);  // レベル${rank}
+  PrintString(STRING(STR_DIGIT_1 + idx), 7, y8);      // ${idx+1}
+  PrintString(STRING(STR_RANK + rank), (7 + 2), y8);  // レベル${rank}
 
-  PrintString(STRING(30 + (playTime / (60 * 60 * 60 * 10))), (7 + 7), y8);    // Hour (digit 10)
-  PrintString(STRING(30 + ((playTime / (60 * 60 * 60)) % 10)), (7 + 8), y8);  // Hour (digit 1)
-  PrintString(STRING(7), (7 + 9), y8);                                        // :
-  PrintString(STRING(30 + ((playTime / (60 * 60 * 10)) % 6)), (7 + 10), y8);  // Minute (digit 10)
-  PrintString(STRING(30 + ((playTime / (60 * 60)) % 10)), (7 + 11), y8);      // Minute (digit 1)
-  PrintString(STRING(8), (7 + 12), y8);                                       // '
-  PrintString(STRING(30 + ((playTime / (60 * 10)) % 6)), (7 + 13), y8);       // Second (digit 10)
-  PrintString(STRING(30 + ((playTime / 60) % 10)), (7 + 14), y8);             // Second (digit 1)
+  PrintString(STRING(STR_DIGIT + (playTime / (60 * 60 * 60 * 10))), (7 + 7), y8);    // Hour (digit 10)
+  PrintString(STRING(STR_DIGIT + ((playTime / (60 * 60 * 60)) % 10)), (7 + 8), y8);  // Hour (digit 1)
+  PrintString(STRING(STR_COLON), (7 + 9), y8);                                       // :
+  PrintString(STRING(STR_DIGIT + ((playTime / (60 * 60 * 10)) % 6)), (7 + 10), y8);  // Minute (digit 10)
+  PrintString(STRING(STR_DIGIT + ((playTime / (60 * 60)) % 10)), (7 + 11), y8);      // Minute (digit 1)
+  PrintString(STRING(STR_APOSTROPHE), (7 + 12), y8);                                 // '
+  PrintString(STRING(STR_DIGIT + ((playTime / (60 * 10)) % 6)), (7 + 13), y8);       // Second (digit 10)
+  PrintString(STRING(STR_DIGIT + ((playTime / 60) % 10)), (7 + 14), y8);             // Second (digit 1)
   if (lap > 0) {
-    if (lap > 9) PrintString(STRING(30 + (lap / 10)), (7 + 16), y8);
-    PrintString(STRING(30 + (lap % 10)), (7 + 17), y8);
+    if (lap > 9) PrintString(STRING(STR_DIGIT + (lap / 10)), (7 + 16), y8);
+    PrintString(STRING(STR_DIGIT + (lap % 10)), (7 + 17), y8);
   }
-  if (mode == 1) {                         // H (Hardmode)
-    PrintString(STRING(3), (7 + 18), y8);  // ここの (7+18) のコンパイル結果だけが一致しない (しかも意味不明)
-  } else if (mode == 2) {                  // U (Ultimate mode)
-    PrintString(STRING(4), (7 + 18), y8);  // ここの (7+18) のコンパイル結果だけが一致しない (しかも意味不明)
+  if (mode == 1) {                                 // H (Hardmode)
+    PrintString(STRING(STR_HUD_H), (7 + 18), y8);  // ここの (7+18) のコンパイル結果だけが一致しない (しかも意味不明)
+  } else if (mode == 2) {                          // U (Ultimate mode)
+    PrintString(STRING(STR_HUD_U), (7 + 18), y8);  // ここの (7+18) のコンパイル結果だけが一致しない (しかも意味不明)
   }
 #else
   INCCODE("asm/wip/PrintSaveDataRowText.inc");
@@ -916,9 +917,9 @@ static void GameLoop_GameOver(struct GameState* g) {
     }
   }
   // sGameOver
-  PrintString(STRING((g->unk_006 != 0) ? 521 : 520), 0, 8);   // コンティニュー
-  PrintString(STRING((g->unk_006 != 1) ? 523 : 522), 0, 10);  // セーブした場所からやりなおす
-  PrintString(STRING((g->unk_006 != 2) ? 525 : 524), 0, 12);  // ゲームをやめる
+  PrintString(STRING((g->unk_006 != 0) ? STR_GAMEOVER_CONTINUE : STR_GAMEOVER_CONTINUE_SEL), 0, 8);  // コンティニュー
+  PrintString(STRING((g->unk_006 != 1) ? STR_GAMEOVER_RESTART : STR_GAMEOVER_RESTART_SEL), 0, 10);   // セーブした場所からやりなおす
+  PrintString(STRING((g->unk_006 != 2) ? STR_GAMEOVER_QUIT : STR_GAMEOVER_QUIT_SEL), 0, 12);         // ゲームをやめる
   if (gProcessManager.masterFrame & 1) {
     BgOfs* bg3ofs = (BgOfs*)gVideoRegBuffer.bgofs[3];
     bg3ofs->x++;

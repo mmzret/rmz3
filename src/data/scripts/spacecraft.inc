@@ -300,7 +300,7 @@ Script_0834d608: @ 0x0834d608
   wait SECOND*8+20
   scroll_speed_x 80
   wait SECOND*2
-  print_message 0x50, 0x0300
+  print_message 0x50, TEXT_SPACE_CRAFT_IT_SURE_IS_QUIET_THERE
   wait_msgbox_end
   wait SECOND*6
   entityflag 4, 0, TRUE
@@ -325,16 +325,16 @@ Script_0834d608: @ 0x0834d608
   wait SECOND
   emotion_bubble 3, 12, -40, 1
   wait SECOND*2
-  print_message 0x50, 0x0301
+  print_message 0x50, TEXT_SPACE_CRAFT_THE_READING_IS
   wait_msgbox_end
   gimmick 1, 0, 1
   wait SECOND*3
-  print_message 0x50, 0x0302 @ 0x0837f1de
+  print_message 0x50, TEXT_SPACE_CRAFT_THE_SNOW_IS_LETTING @ 0x0837f1de
   wait_msgbox_end
   wait SECOND*2
   emotion_bubble 6, 8, -40, 0
   wait SECOND
-  print_message 0x50, 0x0303 @ 0x0837f1eb
+  print_message 0x50, TEXT_SPACE_CRAFT_WWOW_LOOK_AT_THAT @ 0x0837f1eb
   wait_msgbox_end
   wait SECOND/4
   entityflag 4, 1, TRUE
@@ -350,10 +350,10 @@ Script_0834d608: @ 0x0834d608
   normal_screen
   play_find_spacecraft_movie 1
   wait SECOND/2
-  message 1, 0, 0x0304
+  message 1, 0, TEXT_SPACE_CRAFT_IS_THAT_SOME_KIND
   wait_msgbox_end
   wait SECOND/2
-  message 1, 0, 0x0305
+  message 1, 0, TEXT_SPACE_CRAFT_MS_CIEL_DID_THAT_HUGE
   wait_msgbox_end
   wait SECOND/4
   blackout_screen
@@ -369,7 +369,7 @@ Script_0834d608: @ 0x0834d608
   normal_screen
   wait_transition_end
   wait SECOND/4
-  message 1, 0, 0x0306
+  message 1, 0, TEXT_SPACE_CRAFT_NEO_ARCADIA_HAS_THE
   wait_msgbox_end
   wait SECOND/4
   entityflag 3, 1, TRUE
@@ -433,7 +433,7 @@ Script_0834da48: @ 0x0834da48
   wait 90*FRAME
   start_talk
   wait 45*FRAME
-  message 1, 0, 0x307 @ このおく……か、ダークエルフのハンノウがあったのは……
+  message 1, 0, TEXT_SPACE_CRAFT_UP_AHEAD_THAT_SWHERE @ このおく……か、ダークエルフのハンノウがあったのは……
   wait_msgbox_end
   wait SECOND/4
   blackout_screen
@@ -443,7 +443,7 @@ Script_0834da48: @ 0x0834da48
   normal_screen
   wait_transition_end
   wait SECOND/4
-  message 1, 0, 0x308 @ アイツは俺のことを知っていた.. 世界を滅ぼしかけたエルフがなぜオレのことを..
+  message 1, 0, TEXT_SPACE_CRAFT_SHE_KNEW_WHO_I @ アイツは俺のことを知っていた.. 世界を滅ぼしかけたエルフがなぜオレのことを..
   wait_msgbox_end
   blackout_screen
   wait_transition_end
@@ -453,10 +453,10 @@ Script_0834da48: @ 0x0834da48
   normal_screen
   wait_transition_end
   wait SECOND/2
-  message 1, 0, 0x309
+  message 1, 0, TEXT_SPACE_CRAFT_CIEL_ZERO_ARE_YOU_THERE
   wait_msgbox_end
   wait SECOND/4
-  message 1, 0, 0x30A
+  message 1, 0, TEXT_SPACE_CRAFT_MAINTAIN_RADIO
   wait_msgbox_end
   wait SECOND/4
   blackout_screen
@@ -469,13 +469,13 @@ Script_0834da48: @ 0x0834da48
   normal_screen
   wait_transition_end
   wait SECOND/4
-  message 1, 0, 0x30B
+  message 1, 0, TEXT_SPACE_CRAFT_OH_IIMSORRY
   wait_msgbox_end
   wait SECOND/2
   emotion_bubble 4, 8, -40, 0
   stop_bgm
   wait SECOND
-  message 1, 0, 0x30C
+  message 1, 0, TEXT_SPACE_CRAFT_GET_DOWN
   wait SECOND
   play_bgm BGM_ANTAN
   wait_msgbox_end
@@ -484,7 +484,7 @@ Script_0834da48: @ 0x0834da48
   wait SECOND/4
   entityflag 4, 0, TRUE
   wait 15
-  message 1, 0, 0x030E
+  message 1, 0, TEXT_SPACE_CRAFT_NEO_ARCADIANS_MS_CIEL_LOOK_ALIAS1
   wait_msgbox_end
   wait 15
   entityflag 5, 1, TRUE
@@ -512,7 +512,7 @@ Script_0834da48: @ 0x0834da48
   normal_screen
   wait_transition_end
   play_bgm 166
-  message 1, 0, 0x030F
+  message 1, 0, TEXT_SPACE_CRAFT_NO
   wait_msgbox_end
   wait 30
   emotion_bubble 0, 12, -40, 0
@@ -521,29 +521,29 @@ Script_0834da48: @ 0x0834da48
   wait 60
   spawn 3, Entity_0834d3f0
   wait 90
-  message 1, 0, 0x0310
+  message 1, 0, TEXT_SPACE_CRAFT_RELAX
   wait_msgbox_end
   wait 15
   entityflag 3, 0, TRUE
   wait 30
-  message 1, 0, 0x0311
+  message 1, 0, TEXT_SPACE_CRAFT_SCRAM_IDON_THAVE
   wait_msgbox_end
   entityflag 3, 1, TRUE
   wait 15
   entityflag 3, 2, TRUE
   wait 180
-  message 1, 0, 0x0312
+  message 1, 0, TEXT_SPACE_CRAFT_EMPTY
   wait_msgbox_end
   wait 90
-  message 1, 0, 0x0313
+  message 1, 0, TEXT_SPACE_CRAFT_CIEL_ZERO_CAN_YOU_HEAR
   wait_msgbox_end
   wait 15
   force 2, 0, 0
   wait 60
-  message 1, 0, 0x0314
+  message 1, 0, TEXT_SPACE_CRAFT_SEEMS_YOU_RE_OKAY_LEAVE
   wait_msgbox_end
   wait 15
-  message 1, 0, 0x0315
+  message 1, 0, TEXT_SPACE_CRAFT_CIEL_BUT_ZERO
   wait_msgbox_end
   wait 60
   destroy 3
@@ -551,7 +551,7 @@ Script_0834da48: @ 0x0834da48
   wait 180
   emotion_bubble 0, 12, -40, 0
   wait 60
-  message 1, 0, 0x0316
+  message 1, 0, TEXT_SPACE_CRAFT_IVE_HEARD_THAT
   wait_msgbox_end
   wait 15
   blackout_screen
@@ -561,7 +561,7 @@ Script_0834da48: @ 0x0834da48
   normal_screen
   wait_transition_end
   wait 15
-  message 1, 0, 0x0317 @ オレを…呼んでいるのか…？
+  message 1, 0, TEXT_SPACE_CRAFT_IS_IT_CALLING_ME @ オレを…呼んでいるのか…？
   wait_msgbox_end
   wait 15
   blackout_screen
@@ -681,19 +681,19 @@ Script_PreOmegaWhiteBattle:
   destroy 4
   destroy 5
   wait 90
-  message 1, 0, 0x0319
+  message 1, 0, TEXT_SPACE_CRAFT_NOW_YOU_RE_ASKIN
   wait_msgbox_end
   wait 15
   entityflag 8, 0, TRUE
   wait 90
-  message 1, 0, 0x031A
+  message 1, 0, TEXT_SPACE_CRAFT_ILL_BLAST_YOU_TO
   wait_msgbox_end
   wait 15
   entityflag 8, 1, TRUE
   wait 60
   entityflag 7, 1, TRUE
   wait 60
-  message 1, 0, 0x031B
+  message 1, 0, TEXT_SPACE_CRAFT_OOPH
   wait_msgbox_end
   wait 15
   spawn 1, Entity_OmegaWhite
@@ -715,7 +715,7 @@ Script_PreOmegaWhiteBattle:
   wait 15
   cmd06 116, 4, 0
   wait 15
-  message 1, 0, 0x031C
+  message 1, 0, TEXT_SPACE_CRAFT_PANT_PANT_ARE_YOU_ALIVE
   wait_msgbox_end
   wait 15
   blackout_screen
@@ -733,14 +733,14 @@ Script_PreOmegaWhiteBattle:
   gameflag FLAG_2, TRUE
   emotion_bubble 8, 16, -40, 0
   wait 60
-  message 1, 0, 0x031D
+  message 1, 0, TEXT_SPACE_CRAFT_ZERO_WHAT_THE_HECK_ARE
   wait_msgbox_end
   wait 15
   change_camera_mode 1
   set_chase_mode 2
   set_camera_target_x 1013760
   wait 60
-  message 1, 0, 0x031E
+  message 1, 0, TEXT_SPACE_CRAFT_THAT_SOMEGA
   wait_msgbox_end
   wait 15
   entityflag 6, 1, TRUE
@@ -749,7 +749,7 @@ Script_PreOmegaWhiteBattle:
   set_chase_mode 2
   set_camera_target_x 1028096
   wait 60
-  message 1, 0, 0x031F @ ちっ、レヴィアタンめ… くそっ、体がいうことをきかねえ… ... それまで死ぬんじゃねーぞ… ゼロ……！
+  message 1, 0, TEXT_SPACE_CRAFT_BAH_THAT @ ちっ、レヴィアタンめ… くそっ、体がいうことをきかねえ… ... それまで死ぬんじゃねーぞ… ゼロ……！
   wait_msgbox_end
   wait 15
   entityflag 8, 2, TRUE
@@ -763,7 +763,7 @@ Script_PreOmegaWhiteBattle:
   wait 120
   play_se SE_OMEGA1_GROWL
   wait 180
-  message 1, 0, 0x0320 @ オメガとか言ったな… オマエか… オレを呼んでいたのは…
+  message 1, 0, TEXT_SPACE_CRAFT_OMEGA_HUH_SO_YOU_WERE @ オメガとか言ったな… オマエか… オレを呼んでいたのは…
   wait_msgbox_end
   wait 15
   destroy 6
@@ -838,7 +838,7 @@ Script_0834e628:
   cutscene_start CS_SPACECRAFT_AFTER_BOSS
   entityflag 1, 7, TRUE
   wait 90
-  message 1, 0, 0x0321
+  message 1, 0, TEXT_SPACE_CRAFT_GRRR
   wait_msgbox_end
   wait 15
   force 8, 0, 0
@@ -853,7 +853,7 @@ Script_0834e628:
   wait 90
   play_se 231
   wait 240
-  message 1, 0, 0x0322
+  message 1, 0, TEXT_SPACE_CRAFT_YOU_JUST_DON_TGIVE
   wait_msgbox_end
   wait 15
   emotion_bubble 0, 16, -40, 0
@@ -891,10 +891,10 @@ Script_0834e628:
   wait 60
   entityflag 1, 0, FALSE
   wait 90
-  message 1, 0, 0x0324
+  message 1, 0, TEXT_SPACE_CRAFT_GAAARRRRWL
   wait_msgbox_end
   wait 15
-  message 1, 0, 0x0323
+  message 1, 0, TEXT_SPACE_CRAFT_SO_YOU_RE_OMEGA_I
   wait_msgbox_end
   entityflag 1, 0, TRUE
   wait 30
@@ -902,7 +902,7 @@ Script_0834e628:
   wait 90
   play_se 231
   wait 210
-  message 1, 0, 0x0325
+  message 1, 0, TEXT_SPACE_CRAFT_HEHEHEHE_OMEGA_THAT_WILL_BE
   wait_msgbox_end
   stop_bgm
   wait 15
@@ -910,11 +910,11 @@ Script_0834e628:
   emotion_bubble 3, 12, -48, 0
   wait 90
   play_bgm 166
-  message 1, 0, 0x0326
+  message 1, 0, TEXT_SPACE_CRAFT_FROM_THIS_DAY
   wait_msgbox_end
   wait 60
   play_se 231
-  message 1, 0, 0x0327
+  message 1, 0, TEXT_SPACE_CRAFT_GAARWL
   wait_msgbox_end
   spawn 4, Entity_0834d500
   wait 210
@@ -925,7 +925,7 @@ Script_0834e628:
   normal_screen
   wait_transition_end
   wait 15
-  message 1, 0, 0x0328
+  message 1, 0, TEXT_SPACE_CRAFT_HEHEHEHE_IAM_WEIL_YOU
   wait_msgbox_end
   stop_bgm
   wait 15
@@ -941,27 +941,27 @@ Script_0834e628:
   wait 15
   spawn 5, Entity_0834d510
   wait 60
-  message 1, 0, 0x0329
+  message 1, 0, TEXT_SPACE_CRAFT_MMASTER_X
   wait_msgbox_end
   wait 15
   entityflag 3, 1, TRUE
   wait 150
-  message 1, 0, 0x032A
+  message 1, 0, TEXT_SPACE_CRAFT_HARPUIA_HEHE_YOU
   wait_msgbox_end
   wait 60
-  message 1, 0, 0x032B
+  message 1, 0, TEXT_SPACE_CRAFT_YOU_MUST_BE
   wait_msgbox_end
   emotion_bubble 3, 12, -40, 0
   wait 60
-  message 1, 0, 0x032C
+  message 1, 0, TEXT_SPACE_CRAFT_BUT_MASTER_XTHINK
   wait_msgbox_end
   wait 30
-  message 1, 0, 0x032D
+  message 1, 0, TEXT_SPACE_CRAFT_WEIL_YOU_SO_ZERO_YOU
   wait_msgbox_end
   wait 15
   entityflag 5, 0, TRUE
   wait 120
-  message 1, 0, 0x032E
+  message 1, 0, TEXT_SPACE_CRAFT_HEHEHE_NOW_THINGS
   wait_msgbox_end
   wait 15
   entityflag 3, 2, TRUE
@@ -978,14 +978,14 @@ Script_0834e628:
   force 2, 0, 0
   wait 75
   play_bgm BGM_ANTAN
-  message 1, 0, 0x032F
+  message 1, 0, TEXT_SPACE_CRAFT_WITH_THAT_BODY
   wait_msgbox_end
   wait 15
-  message 1, 0, 0x0330
+  message 1, 0, TEXT_SPACE_CRAFT_CIEL_ZERO_THIS_IS_TERRIBLE
   wait_msgbox_end
-  message 1, 0, 0x0331
+  message 1, 0, TEXT_SPACE_CRAFT_SO_YOU_WERE
   wait_msgbox_end
-  message 1, 0, 0x0332
+  message 1, 0, TEXT_SPACE_CRAFT_CIEL_HURRY_BACK_TO_BASE
   wait_msgbox_end
   stop_bgm
   wait 15

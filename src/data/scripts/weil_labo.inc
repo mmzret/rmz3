@@ -503,9 +503,9 @@ Script_5_08359674: @ 0x08359674
   spawn 3, Entity_08358ff4
   play_bgm BGM_GUARDER_ROOM
   wait 60
-  triumphant_message 0, 0x120B
-  triumphant_message 1, 0x120C
-  message 1, 0, 0x120A @ 100年前のガラクタなど ... ギチギチギチギチィッ！
+  triumphant_message 0, TEXT_WEIL_LABO_CHIKA_CHIKACHIKA_WATCH_AS_I
+  triumphant_message 1, TEXT_WEIL_LABO_HOW_COULD_ITHE
+  message 1, 0, TEXT_WEIL_LABO_WHAT_STHE_USE_OF @ 100年前のガラクタなど ... ギチギチギチギチィッ！
   wait_msgbox_end
   wait 15
   entityflag 3, 0, TRUE
@@ -540,8 +540,8 @@ Script_6_08359784: @ 0x08359784
   spawn 1, Entity_Boss_Deathtanz
   play_bgm BGM_GUARDER_ROOM
   wait 60
-  triumphant_message 0, 0x120B
-  triumphant_message 1, 0x120C
+  triumphant_message 0, TEXT_WEIL_LABO_CHIKA_CHIKACHIKA_WATCH_AS_I
+  triumphant_message 1, TEXT_WEIL_LABO_HOW_COULD_ITHE
   entityflag 1, 0, TRUE
   stop_bgm
   wait 210
@@ -568,9 +568,9 @@ Script_7_0835985c: @ 0x0835985c
   spawn 3, Entity_08359004
   play_bgm BGM_GUARDER_ROOM
   wait 60
-  triumphant_message 0, 0x1208
-  triumphant_message 1, 0x1209
-  message 1, 0, 0x1207
+  triumphant_message 0, TEXT_WEIL_LABO_GO_BACK_HOME_BACK_TO
+  triumphant_message 1, TEXT_WEIL_LABO_KEKEKE_YOU_SILLY
+  message 1, 0, TEXT_WEIL_LABO_YOU_SURE_ARE_A
   wait_msgbox_end
   wait 15
   entityflag 3, 0, TRUE
@@ -608,8 +608,8 @@ Script_8_08359984: @ 0x08359984
   spawn 1, Entity_08359044
   play_bgm BGM_GUARDER_ROOM
   wait 60
-  triumphant_message 0, 0x1208
-  triumphant_message 1, 0x1209
+  triumphant_message 0, TEXT_WEIL_LABO_GO_BACK_HOME_BACK_TO
+  triumphant_message 1, TEXT_WEIL_LABO_KEKEKE_YOU_SILLY
   entityflag 1, 0, TRUE
   stop_bgm
   wait 120
@@ -639,9 +639,9 @@ Script_9_08359a74: @ 0x08359a74
   spawn 3, Entity_08359014
   play_bgm BGM_GUARDER_ROOM
   wait 60
-  triumphant_message 0, 0x1205
-  triumphant_message 1, 0x1206
-  message 1, 0, 0x1204
+  triumphant_message 0, TEXT_WEIL_LABO_YOU_SURE_ARE_SLOW
+  triumphant_message 1, TEXT_WEIL_LABO_OOPH_YOU_CAN_HURRY_AS
+  message 1, 0, TEXT_WEIL_LABO_YOU_DUNDERHEAD_LORD_WEIL_S
   wait_msgbox_end
   wait 15
   entityflag 3, 0, TRUE
@@ -676,8 +676,8 @@ Script_10_08359b84: @ 0x08359b84
   spawn 1, Entity_Boss_Childre
   play_bgm BGM_GUARDER_ROOM
   wait 60
-  triumphant_message 0, 0x1205
-  triumphant_message 1, 0x1206
+  triumphant_message 0, TEXT_WEIL_LABO_YOU_SURE_ARE_SLOW
+  triumphant_message 1, TEXT_WEIL_LABO_OOPH_YOU_CAN_HURRY_AS
   entityflag 1, 0, TRUE
   stop_bgm
   wait 120
@@ -704,9 +704,9 @@ Script_11_08359c5c: @ 0x08359c5c
   spawn 3, Entity_08359024
   play_bgm BGM_GUARDER_ROOM
   wait 60
-  triumphant_message 0, 0x1202
-  triumphant_message 1, 0x1203
-  message 1, 0, 0x1201
+  triumphant_message 0, TEXT_WEIL_LABO_YAAAAAAAH_INSCRIBE_HIS_NAME
+  triumphant_message 1, TEXT_WEIL_LABO_YAAH_HOT_SO_HOT_I
+  message 1, 0, TEXT_WEIL_LABO_YAAAAAH_ILOVE_LORD_WEIL
   wait_msgbox_end
   wait 15
   entityflag 3, 0, TRUE
@@ -741,8 +741,8 @@ Script_12_08359d6c: @ 0x08359d6c
   spawn 1, Entity_Boss_Blazin
   play_bgm BGM_GUARDER_ROOM
   wait 60
-  triumphant_message 0, 0x1202
-  triumphant_message 1, 0x1203
+  triumphant_message 0, TEXT_WEIL_LABO_YAAAAAAAH_INSCRIBE_HIS_NAME
+  triumphant_message 1, TEXT_WEIL_LABO_YAAH_HOT_SO_HOT_I
   entityflag 1, 0, TRUE
   stop_bgm
   wait 120
@@ -844,9 +844,9 @@ Script_16_0835a06c: @ 0x0835a06c
   spawn 3, Entity_083590fc
   play_bgm BGM_GUARDER_ROOM
   wait 60
-  triumphant_message 0, 0x1217
-  triumphant_message 1, 0x1218
-  message 1, 0, 0x1216
+  triumphant_message 0, TEXT_WEIL_LABO_GRRARWOOORRR_THERE_SNOT_ENOUGH
+  triumphant_message 1, TEXT_WEIL_LABO_HHOW_DID_THIS
+  message 1, 0, TEXT_WEIL_LABO_IAM_THE_GUARD_DOG
   wait_msgbox_end
   wait 15
   entityflag 3, 0, TRUE
@@ -885,8 +885,8 @@ Script_17_0835a19c: @ 0x0835a19c
   spawn 1, Entity_0835913c
   play_bgm BGM_GUARDER_ROOM
   wait 60
-  triumphant_message 0, 0x1217
-  triumphant_message 1, 0x1218
+  triumphant_message 0, TEXT_WEIL_LABO_GRRARWOOORRR_THERE_SNOT_ENOUGH
+  triumphant_message 1, TEXT_WEIL_LABO_HHOW_DID_THIS
   entityflag 1, 0, TRUE
   stop_bgm
   wait 60
@@ -917,9 +917,9 @@ Script_18_0835a294: @ 0x0835a294
   spawn 3, Entity_0835910c
   play_bgm BGM_GUARDER_ROOM
   wait 60
-  triumphant_message 0, 0x1214
-  triumphant_message 1, 0x1215
-  message 1, 0, 0x1213
+  triumphant_message 0, TEXT_WEIL_LABO_HEHEHEHEHEHE_LOOK_AT_YOU
+  triumphant_message 1, TEXT_WEIL_LABO_HEHE_HE
+  message 1, 0, TEXT_WEIL_LABO_HEHEHEHE_SO_YOU_RE_BACK
   wait_msgbox_end
   wait 15
   entityflag 3, 0, TRUE
@@ -956,8 +956,8 @@ Script_19_0835a3b4: @ 0x0835a3b4
   spawn 1, Entity_0835914c
   play_bgm BGM_GUARDER_ROOM
   wait 60
-  triumphant_message 0, 0x1214
-  triumphant_message 1, 0x1215
+  triumphant_message 0, TEXT_WEIL_LABO_HEHEHEHEHEHE_LOOK_AT_YOU
+  triumphant_message 1, TEXT_WEIL_LABO_HEHE_HE
   entityflag 1, 0, TRUE
   stop_bgm
   wait 120
@@ -986,9 +986,9 @@ Script_20_0835a49c: @ 0x0835a49c
   spawn 3, Entity_0835911c
   play_bgm BGM_GUARDER_ROOM
   wait 60
-  triumphant_message 0, 0x1211
-  triumphant_message 1, 0x1212
-  message 1, 0, 0x1210
+  triumphant_message 0, TEXT_WEIL_LABO_HAH_THOSE_WHO_DISRUPT
+  triumphant_message 1, TEXT_WEIL_LABO_WHAT_IS_THIS_YOU
+  message 1, 0, TEXT_WEIL_LABO_HAH_FIRST_THIEVERY_AND
   wait_msgbox_end
   wait 15
   entityflag 3, 0, TRUE
@@ -1026,8 +1026,8 @@ Script_21_0835a5c4: @ 0x0835a5c4
   spawn 1, Entity_0835915c
   play_bgm BGM_GUARDER_ROOM
   wait 60
-  triumphant_message 0, 0x1211
-  triumphant_message 1, 0x1212
+  triumphant_message 0, TEXT_WEIL_LABO_HAH_THOSE_WHO_DISRUPT
+  triumphant_message 1, TEXT_WEIL_LABO_WHAT_IS_THIS_YOU
   entityflag 1, 0, TRUE
   stop_bgm
   wait 120
@@ -1057,9 +1057,9 @@ Script_22_0835a6b4: @ 0x0835a6b4
   spawn 3, Entity_0835912c
   play_bgm BGM_GUARDER_ROOM
   wait 60
-  triumphant_message 0, 0x120E
-  triumphant_message 1, 0x120F
-  message 1, 0, 0x120D
+  triumphant_message 0, TEXT_WEIL_LABO_GOOD_NIGHT_LITTLE
+  triumphant_message 1, TEXT_WEIL_LABO_ARRGH
+  message 1, 0, TEXT_WEIL_LABO_WHAT_ARE_YOU_DOING
   wait_msgbox_end
   wait 15
   entityflag 3, 0, TRUE
@@ -1094,8 +1094,8 @@ Script_23_0835a7c4: @ 0x0835a7c4
   spawn 1, Entity_Boss_Cubit
   play_bgm BGM_GUARDER_ROOM
   wait 60
-  triumphant_message 0, 0x120E
-  triumphant_message 1, 0x120F
+  triumphant_message 0, TEXT_WEIL_LABO_GOOD_NIGHT_LITTLE
+  triumphant_message 1, TEXT_WEIL_LABO_ARRGH
   entityflag 1, 0, TRUE
   stop_bgm
   wait 120
@@ -1152,7 +1152,7 @@ Script_26_0835a94c: @ 0x0835a94c
   wait 90
   play_bgm 166
   wait 60
-  message 1, 0, 0x1219
+  message 1, 0, TEXT_WEIL_LABO_HEHEHEHE_HAVING_FUN_PLAYING
   wait_msgbox_end
   blackout_screen
   wait_transition_end
@@ -1160,7 +1160,7 @@ Script_26_0835a94c: @ 0x0835a94c
   cmd06 123, 0, 0
   normal_screen
   wait_transition_end
-  message 1, 0, 0x121A
+  message 1, 0, TEXT_WEIL_LABO_THAT_SRIGHT
   wait_msgbox_end
   blackout_screen
   wait_transition_end
@@ -1169,7 +1169,7 @@ Script_26_0835a94c: @ 0x0835a94c
   normal_screen
   wait_transition_end
   wait 15
-  message 1, 0, 0x121B
+  message 1, 0, TEXT_WEIL_LABO_IBET_MOST_DECENT
   wait_msgbox_end
   stop_bgm
   wait 15
@@ -1180,7 +1180,7 @@ Script_26_0835a94c: @ 0x0835a94c
   play_bgm 165
   destroy 3
   wait 15
-  message 1, 0, 0x121C
+  message 1, 0, TEXT_WEIL_LABO_OH_OH_HO_ZEEERROO_YOU
   wait_msgbox_end
   cutscene_end
   entityflag 1, 0, TRUE
@@ -1250,7 +1250,7 @@ Script_29_0835ac4c: @ 0x0835ac4c
   lock
   waitabs 120
   play_bgm BGM_ANTAN
-  message 1, 0, 0x121D
+  message 1, 0, TEXT_WEIL_LABO_GRRR_RARWRARR_HEHEHE
   wait_msgbox_end
   entityflag 1, 7, TRUE
   wait 15
@@ -1260,7 +1260,7 @@ Script_29_0835ac4c: @ 0x0835ac4c
   gimmick 1, 3, 2
   wait 15
   wait 60
-  message 1, 0, 0x121E
+  message 1, 0, TEXT_WEIL_LABO_GRRRRRRRRRRRAAWRR
   wait_msgbox_end
   wait 15
   cmd08_wait_set 1
@@ -1400,7 +1400,7 @@ Script_32_0835b024: @ 0x0835b024
   wait 120
   emotion_bubble 0, 16, -40, 0
   wait 75
-  message 1, 0, 0x121F
+  message 1, 0, TEXT_WEIL_LABO_WHAT_IS_THIS_PLACE
   wait_msgbox_end
   blackout_screen
   wait_transition_end
@@ -1418,10 +1418,10 @@ Script_32_0835b024: @ 0x0835b024
   wait 15
   force 2, 0, 0
   wait 45
-  message 1, 0, 0x1220
+  message 1, 0, TEXT_WEIL_LABO_THIS_IS_WHERE_IWAS
   wait_msgbox_end
   wait 90
-  message 1, 0, 0x1221
+  message 1, 0, TEXT_WEIL_LABO_HEHEHEHEHE
   wait_msgbox_end
   wait 15
   emotion_bubble 0, 12, -40, 0
@@ -1447,7 +1447,7 @@ Script_32_0835b024: @ 0x0835b024
   spawn 1, Entity_08359264
   gimmick 1, 3, 100
   wait_transition_end
-  message 1, 0, 0x1223
+  message 1, 0, TEXT_WEIL_LABO_HEHEHEHE_YOU_THOUGHT_YOU_WERE
   wait_msgbox_end
   wait 15
   cutscene_end
@@ -1586,14 +1586,14 @@ Script_36_0835b60c: @ 0x0835b60c
   wait 120
   entityflag 5, 0, TRUE
   wait 90
-  message 1, 0, 0x1224
+  message 1, 0, TEXT_WEIL_LABO_YOU_PLAN_TO
   wait_msgbox_end
   wait 24
   entityflag 3, 0, TRUE
   wait 32
   entityflag 4, 1, TRUE
   wait 120
-  message 1, 0, 0x1225
+  message 1, 0, TEXT_WEIL_LABO_GULP_HEHEHE
   wait_msgbox_end
   wait 90
   entityflag 4, 2, TRUE
@@ -1604,12 +1604,12 @@ Script_36_0835b60c: @ 0x0835b60c
   wait 30
   entityflag 4, 3, FALSE
   wait 90
-  message 1, 0, 0x1226
+  message 1, 0, TEXT_WEIL_LABO_HURRY_STAND_UP
   wait_msgbox_end
   wait 15
   spawn 7, Entity_083592c4
   wait 135
-  message 1, 0, 0x1227
+  message 1, 0, TEXT_WEIL_LABO_HEY_IMHERE_TO
   wait_msgbox_end
   wait 15
   spawn 8, Entity_083592d4
@@ -1617,21 +1617,21 @@ Script_36_0835b60c: @ 0x0835b60c
   entityflag 4, 3, TRUE
   entityflag 4, 4, TRUE
   wait 120
-  message 1, 0, 0x1228
+  message 1, 0, TEXT_WEIL_LABO_TIME_TO_STRAIGHTEN
   wait_msgbox_end
   entityflag 5, 1, TRUE
   wait 15
-  message 1, 0, 0x1229
+  message 1, 0, TEXT_WEIL_LABO_YOU_GUYS_WEIL_IS_TRYING
   wait_msgbox_end
   wait 15
   entityflag 5, 2, TRUE
   wait 75
-  message 1, 0, 0x122A
+  message 1, 0, TEXT_WEIL_LABO_ZEEEERROOOO_WHAT_IS_IT_DARK
   wait_msgbox_end
   wait 15
   spawn 9, Entity_083592e4
   wait 120
-  message 1, 0, 0x122B
+  message 1, 0, TEXT_WEIL_LABO_HER_THE_DARK_ELF_S
   wait_msgbox_end
   wait 30
   entityflag 3, 1, TRUE
@@ -1641,7 +1641,7 @@ Script_36_0835b60c: @ 0x0835b60c
   wait 1
   destroy 3
   wait 30
-  message 1, 0, 0x122C
+  message 1, 0, TEXT_WEIL_LABO_ZERO_DON_TDO_IT
   wait_msgbox_end
   stop_bgm
   wait 15
@@ -1696,7 +1696,7 @@ Script_38_0835b97c: @ 0x0835b97c
   start_transition 5
   wait_transition_end
   wait 30
-  message 1, 0, 0x122E
+  message 1, 0, TEXT_WEIL_LABO_CAN_YOU_HEAR_ME
   wait_msgbox_end
   wait 30
   fadeout_se 120, 317
@@ -1715,25 +1715,25 @@ Script_38_0835b97c: @ 0x0835b97c
   start_transition 5
   wait_transition_end
   wait 60
-  message 1, 0, 0x122F
+  message 1, 0, TEXT_WEIL_LABO_ZERO_WAKE_UP
   wait_msgbox_end
   wait 120
   entityflag 3, 2, TRUE
   wait 120
-  message 1, 0, 0x1230
+  message 1, 0, TEXT_WEIL_LABO_ZERO_AH_WHAT_ARELIEF
   wait_msgbox_end
   wait 15
   entityflag 7, 0, TRUE
   wait 30
-  message 1, 0, 0x1231
+  message 1, 0, TEXT_WEIL_LABO_HEY_EVERYONE_MR_ZERO_IS
   wait_msgbox_end
   wait 15
   entityflag 3, 3, TRUE
   wait 60
-  message 1, 0, 0x1232
+  message 1, 0, TEXT_WEIL_LABO_WHERE_IS_THIS_THE
   wait_msgbox_end
   wait 60
-  message 1, 0, 0x1233
+  message 1, 0, TEXT_WEIL_LABO_ZERRROOOO
   wait_msgbox_end
   wait 15
   emotion_bubble 3, 12, -40, 0
@@ -1745,12 +1745,12 @@ Script_38_0835b97c: @ 0x0835b97c
   wait 60
   spawn 8, Entity_08359364
   wait 300
-  message 1, 0, 0x1234
+  message 1, 0, TEXT_WEIL_LABO_DARK_ELF_WAIT_NO_YOU
   wait_msgbox_end
   wait 15
   entityflag 8, 0, TRUE
   wait 300
-  message 1, 0, 0x1235
+  message 1, 0, TEXT_WEIL_LABO_SHOULDN_TWE_FOLLOW
   wait_msgbox_end
   wait 15
   change_camera_mode 1
@@ -1760,7 +1760,7 @@ Script_38_0835b97c: @ 0x0835b97c
   destroy 8
   entityflag 4, 1, TRUE
   wait 180
-  message 1, 0, 0x1236
+  message 1, 0, TEXT_WEIL_LABO_XTOLD_ME_ABOUT_YOU
   wait_msgbox_end
   wait 15
   entityflag 4, 2, TRUE
@@ -1769,7 +1769,7 @@ Script_38_0835b97c: @ 0x0835b97c
   wait 210
   entityflag 3, 5, TRUE
   wait 90
-  message 1, 0, 0x1237
+  message 1, 0, TEXT_WEIL_LABO_CIEL_THANK_YOU_ZE_ZERO
   wait_msgbox_end
   blackout_screen
   wait_transition_end
@@ -1778,7 +1778,7 @@ Script_38_0835b97c: @ 0x0835b97c
   normal_screen
   wait_transition_end
   wait 60
-  print_message 90, 0x1238
+  print_message 90, TEXT_WEIL_LABO_IT_SJUST_ME_I
   wait_msgbox_end
   stop_bgm
   wait 60

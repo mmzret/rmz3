@@ -1,4 +1,6 @@
 #include "game.h"
+#include "string_ids.h"
+#include "text_ids.h"
 #include "global.h"
 #include "story.h"
 #include "text.h"
@@ -18,8 +20,8 @@ void OverworldLoop_CerveauTalk(struct GameState* g) {
           (&gTextWindow.text)->flag |= TEXT_FLAG_TERMINATE;
           break;
         }
-        gTextPrinter.variable = (char_t*)STRING(892);
-        PrintTextWindow(0x100, 0x5A);
+        gTextPrinter.variable = (char_t*)STRING(STR_DISK_092);
+        PrintTextWindow(TEXT_OPEN_SECRET_DISK_YOU_GOT_THE_SECRET_DISK, 0x5A);
         getDiskInStageRun(0x5b);
         break;
       }

@@ -125,8 +125,8 @@ Script_08353d18:
   adjust_camera 11, 0 7480*PX
   adjust_camera 12, 0 7760*PX
   wait 75
-  triumphant_message 0, 0x0A01
-  message 1, 0, 0x0A00
+  triumphant_message 0, TEXT_ANATRE_FOREST_JUSTICE_IS_ON_THE
+  message 1, 0, TEXT_ANATRE_FOREST_MY_BODY_HAS_RETURNED
   wait_msgbox_end
   cutscene_end
   entityflag 1, 0, TRUE
@@ -156,7 +156,7 @@ Script_08353e00:
   adjust_camera 11, 0 7480*PX
   adjust_camera 12, 0 7760*PX
   wait 75
-  triumphant_message 0, 0x0A01 @ セイギは、われら
+  triumphant_message 0, TEXT_ANATRE_FOREST_JUSTICE_IS_ON_THE @ セイギは、われら
   cutscene_end
   entityflag 1, 0, TRUE
   stop_bgm
@@ -182,7 +182,7 @@ Script_08353ed8:
   lock
   normal_screen
   wait_transition_end
-  triumphant_message 0, 0x0A01
+  triumphant_message 0, TEXT_ANATRE_FOREST_JUSTICE_IS_ON_THE
   entityflag 1, 0, TRUE
   wait 60
   warning_indicator
@@ -201,7 +201,7 @@ Script_08353f80:
   stop_bgm
   wait 1
   lock
-  message 1, 0, 0x0A02
+  message 1, 0, TEXT_ANATRE_FOREST_AN_IMPRESSIVE_FIGHT
   wait_msgbox_end
   entityflag 1, 7, TRUE
   cmd08_wait_set 1

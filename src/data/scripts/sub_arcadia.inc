@@ -150,8 +150,8 @@ Script_4_08358398: @ 0x08358398
   spawn 1, Entity_083581b8
   play_bgm BGM_GUARDER_ROOM
   wait 90
-  triumphant_message 0, 0x1110
-  message 1, 0, 0x110F
+  triumphant_message 0, TEXT_SUB_ARCADIA_ALL_LEGENDS_ARE
+  message 1, 0, TEXT_SUB_ARCADIA_INEVER_THOUGHT_I
   wait_msgbox_end
   cutscene_end
   entityflag 1, 0, TRUE
@@ -172,7 +172,7 @@ Script_5_08358440: @ 0x08358440
   spawn 1, Entity_083581b8
   play_bgm BGM_GUARDER_ROOM
   wait 90
-  triumphant_message 0, 0x1110
+  triumphant_message 0, TEXT_SUB_ARCADIA_ALL_LEGENDS_ARE
   entityflag 1, 0, TRUE
   wait 60
   warning_indicator
@@ -191,7 +191,7 @@ Script_6_083584c8: @ 0x083584c8
   wait 1
   force 11, 0, 0
   wait_transition_end
-  triumphant_message 0, 0x1110
+  triumphant_message 0, TEXT_SUB_ARCADIA_ALL_LEGENDS_ARE
   entityflag 1, 0, TRUE
   wait 80
   warning_indicator
@@ -208,7 +208,7 @@ Script_7_08358550: @ 0x08358550
   lock
   force 8, 0, 0
   message 6, 0, 0
-  message 1, 0, 0x1111
+  message 1, 0, TEXT_SUB_ARCADIA_GASP_YOU_TRULY_DID
   wait_msgbox_end
   entityflag 1, 7, TRUE
   cmd08_wait_set 1
@@ -293,12 +293,12 @@ Script_11_08358770: @ 0x08358770
   wait 60
   play_bgm 166
   wait 15
-  message 1, 0, 0x1101
+  message 1, 0, TEXT_SUB_ARCADIA_DR_WEIL
   wait_msgbox_end
   wait 15
   entityflag 3, 0, TRUE
   wait 60
-  message 1, 0, 0x1102
+  message 1, 0, TEXT_SUB_ARCADIA_HEHEHEHEHEEE_HOW_GALLANT_YOU_ARE
   wait_msgbox_end
   wait 15
   emotion_bubble 0, 16, -40, 0
@@ -309,7 +309,7 @@ Script_11_08358770: @ 0x08358770
   wait 15
   walkto 3760*PX
   wait 60
-  message 1, 0, 0x1103
+  message 1, 0, TEXT_SUB_ARCADIA_CREA_PREA
   wait_msgbox_end
   wait 15
   destroy 3
@@ -324,7 +324,7 @@ Script_11_08358770: @ 0x08358770
   wait 30
   entityflag 1, 6, FALSE
   wait 15
-  message 1, 0, 0x1104
+  message 1, 0, TEXT_SUB_ARCADIA_HE_SBACK
   wait_msgbox_end
   wait 15
   play_se 277
@@ -332,7 +332,7 @@ Script_11_08358770: @ 0x08358770
   wait 30
   entityflag 1, 7, FALSE
   wait 15
-  message 1, 0, 0x1105
+  message 1, 0, TEXT_SUB_ARCADIA_HE_SBACK_2
   wait_msgbox_end
   wait 15
   play_se 276
@@ -340,7 +340,7 @@ Script_11_08358770: @ 0x08358770
   wait 30
   entityflag 1, 6, FALSE
   wait 15
-  message 1, 0, 0x1106
+  message 1, 0, TEXT_SUB_ARCADIA_ILL_RIP_YOU_TO
   wait_msgbox_end
   wait 15
   play_se 277
@@ -348,10 +348,10 @@ Script_11_08358770: @ 0x08358770
   wait 30
   entityflag 1, 7, FALSE
   wait 15
-  message 1, 0, 0x1107
+  message 1, 0, TEXT_SUB_ARCADIA_ILL_TEAR_YOU_TO
   wait_msgbox_end
   wait 15
-  triumphant_message 0, 0x1108
+  triumphant_message 0, TEXT_SUB_ARCADIA_AHAHAHAHAHAHAA
   cutscene_end
   entityflag 1, 0, TRUE
   stop_bgm
@@ -378,7 +378,7 @@ Script_12_08358a20: @ 0x08358a20
   adjust_camera 11, 0 3712*PX
   adjust_camera 12, 0 3952*PX
   wait 60
-  triumphant_message 0, 0x1108
+  triumphant_message 0, TEXT_SUB_ARCADIA_AHAHAHAHAHAHAA
   cutscene_end
   entityflag 1, 0, TRUE
   stop_bgm
@@ -398,7 +398,7 @@ Script_13_08358ae0: @ 0x08358ae0
   lock
   normal_screen
   wait_transition_end
-  triumphant_message 0, 0x080A
+  triumphant_message 0, TEXT_MISSILE_FACTORY_HEHE_GRANDPA_WILL
   entityflag 1, 0, TRUE
   wait 120
   warning_indicator
@@ -421,22 +421,22 @@ Script_14_08358b60: @ 0x08358b60
   play_bgm 169
   play_se 276
   wait 45
-  message 1, 0, 0x1109
+  message 1, 0, TEXT_SUB_ARCADIA_PREA_THERE_S
   wait_msgbox_end
   wait 15
   play_se 277
   wait 45
-  message 1, 0, 0x110A
+  message 1, 0, TEXT_SUB_ARCADIA_YES_CREA_THERE_S
   wait_msgbox_end
   wait 15
   play_se 276
   wait 45
-  message 1, 0, 0x110B
+  message 1, 0, TEXT_SUB_ARCADIA_IFEEL_LIKE_IM
   wait_msgbox_end
   wait 15
   play_se 277
   wait 45
-  message 1, 0, 0x110C
+  message 1, 0, TEXT_SUB_ARCADIA_IFEEL_LIKE_IM_2
   wait_msgbox_end
   wait 15
   stop_bgm
@@ -444,12 +444,12 @@ Script_14_08358b60: @ 0x08358b60
   cmd08_wait_set 1
   wait 120
   play_bgm BGM_ANTAN
-  message 1, 0, 0x110D
+  message 1, 0, TEXT_SUB_ARCADIA_CIEL_ZERO_ARE_YOU_ALLRIGHT
   wait_msgbox_end
   wait 15
   force 2, 0, 0
   wait 45
-  message 1, 0, 0x110E
+  message 1, 0, TEXT_SUB_ARCADIA_UNDERSTOOD
   wait_msgbox_end
   wait 15
   stop_bgm

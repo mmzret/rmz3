@@ -174,7 +174,7 @@ Script_ReturnFromStageRun:
   gimmick 1, 0, 1
   cmd1c 1, 0, 0
   wait_transition_end
-  print_message 0x14, 0x0050
+  print_message 0x14, TEXT_SYSTEM_TRANSFERRING
   wait_msgbox_end
   play_se SE_TENSOU_VOICE
   wait SECOND
@@ -185,7 +185,7 @@ Script_ReturnFromStageRun:
   gimmick 1, 0, 2
   wait SECOND
   stop_bgm
-  print_message 0x14, 0x0051 @ おつかれさまでした
+  print_message 0x14, TEXT_SYSTEM_TRANSFER_COMPLETE @ おつかれさまでした
   wait_msgbox_end
   reset_camera Camera_0835bdec
   play_bgm BGM_RBASE
@@ -203,7 +203,7 @@ Script_ReturnFromStageRun:
   wait 8*FRAME
   gimmick 1, 1, 0x80
   wait 45*FRAME
-  message 1, 0, 0x1300
+  message 1, 0, TEXT_OTHERS_MS_CIEL_PLEASE
   wait_msgbox_end
   wait SECOND/2
   entityflag 3, 0, TRUE
@@ -227,12 +227,12 @@ Script_ReturnFromStageRun:
 
 Script_0835c288:
   lock
-  message 1, 0, 0x1310
+  message 1, 0, TEXT_OTHERS_YOU_HAVE_COMPLETED
   wait_msgbox_end
   wait SECOND/4
   gimmick 1, 1, 2
   wait SECOND/2
-  message 1, 0, 0x1311
+  message 1, 0, TEXT_OTHERS_WE_HAVE_TO_DO
   wait_msgbox_end
   wait SECOND/4
   gimmick 1, 1, 0
@@ -252,25 +252,25 @@ Script_ReceiveRod:
   lock
   wait_msgbox_end
   wait 70*FRAME
-  message 1, 0, 0x011F @ リコイルロッドを手に入れた！
+  message 1, 0, TEXT_OPEN_SECRET_DISK_YOU_GOT_THE_RECOIL_ROD @ リコイルロッドを手に入れた！
   wait_msgbox_end
-  message 1, 0, 0x0120
-  wait_msgbox_end
-  wait SECOND/4
-  message 1, 0, 0x1308
+  message 1, 0, TEXT_OPEN_SECRET_DISK_YOU_GOT_THE_SBOOMERANG
   wait_msgbox_end
   wait SECOND/4
-  message 1, 0, 0x1309
+  message 1, 0, TEXT_OTHERS_OH_ONE_MORE_THING
+  wait_msgbox_end
+  wait SECOND/4
+  message 1, 0, TEXT_OTHERS_OPERATOR_MR_ZERO_PLEASE_COME
   wait_msgbox_end
   wait SECOND
-  message 1, 0, 0x130A
+  message 1, 0, TEXT_OTHERS_HMM_ZERO_THEY_RE
   wait_msgbox_end
   wait SECOND/2
   end_talk
   wait SECOND/2
   walkto 0xD5000
   wait SECOND/2
-  message 1, 0, 0x130B @ リコイルロッド使いやすそうだ...
+  message 1, 0, TEXT_OTHERS_THIS_RECOIL_ROD @ リコイルロッド使いやすそうだ...
   wait_msgbox_end
   wait SECOND/4
   sweep 2, 0, 0
@@ -282,7 +282,7 @@ Script_ReceiveRod:
   stop_camera
   normal_screen
   wait_transition_end
-  message 1, 0, 0x130C @ シエルにはまだ...ささえてやってくれ ゼロ....
+  message 1, 0, TEXT_OTHERS_THE_WORLD_IS_TOO @ シエルにはまだ...ささえてやってくれ ゼロ....
   wait_msgbox_end
   sweep 3, 0, 0
   wait 32*FRAME
@@ -301,7 +301,7 @@ Script_0835c480:
   walkto 360*PX
   wait SECOND/4
   turn_left 0
-  message 1, 0, 0x46
+  message 1, 0, TEXT_SYSTEM_MISSION_ASSIGNED_ALIAS4
   wait_msgbox_end
   stop_bgm
   play_se SE_TENSOU_BEEP
@@ -309,10 +309,10 @@ Script_0835c480:
   gimmick 1, 0, 1
   force 4, 0, 0
   wait SECOND
-  print_message 0x1E, 0x47
+  print_message 0x1E, TEXT_SYSTEM_PREPARATIONS_FOR
   wait_msgbox_end
   wait SECOND/4
-  print_message 0x14, 0x48
+  print_message 0x14, TEXT_SYSTEM_TRANSFER
   wait SECOND/4
   play_se SE_TENSOU_VOICE
   wait SECOND*3/4
@@ -341,7 +341,7 @@ Script_0835c5b0:
   gimmick 1, 0, 1
   cmd1c 1, 0, 0
   wait_transition_end
-  print_message 0x14, 0x50
+  print_message 0x14, TEXT_SYSTEM_TRANSFERRING
   wait_msgbox_end
   play_se SE_TENSOU_VOICE
   wait SECOND
@@ -352,7 +352,7 @@ Script_0835c5b0:
   gimmick 1, 0, 2
   wait SECOND
   stop_bgm
-  print_message 0x14, 0x51 @ おつかれさまでした
+  print_message 0x14, TEXT_SYSTEM_TRANSFER_COMPLETE @ おつかれさまでした
   wait_msgbox_end
   reset_camera Camera_0835bdec
   play_bgm BGM_RBASE
@@ -382,10 +382,10 @@ Script_FreeRunTransport:
   gimmick 1, 0, 1
   force 4, 0, 0
   wait SECOND
-  print_message 0x1E, 0x47
+  print_message 0x1E, TEXT_SYSTEM_PREPARATIONS_FOR
   wait_msgbox_end
   wait SECOND/4
-  print_message 0x14, 0x48
+  print_message 0x14, TEXT_SYSTEM_TRANSFER
   wait SECOND/4
   play_se SE_TENSOU_VOICE
   wait SECOND*3/4
@@ -416,7 +416,7 @@ Script_0835c7b0:
   gimmick 1, 0, 2
   wait SECOND
   stop_bgm
-  print_message 0x14, 0x51 @ おつかれさまでした
+  print_message 0x14, TEXT_SYSTEM_TRANSFER_COMPLETE @ おつかれさまでした
   wait_msgbox_end
   reset_camera Camera_0835bdec
   play_bgm BGM_RBASE
@@ -439,16 +439,16 @@ Script_0835c868:
   wait_transition_end
   play_bgm BGM_X
   wait 120
-  message 1, 0, 0x1315 @ エックスさま…… まだ、あのオトコ…バイルを
+  message 1, 0, TEXT_OTHERS_MASTER_XDO_YOU_STILL @ エックスさま…… まだ、あのオトコ…バイルを
   wait_msgbox_end
   entityflag 4, 0, TRUE
   wait 30
-  message 1, 0, 0x1316
+  message 1, 0, TEXT_OTHERS_BUT_HEHEHE
   wait_msgbox_end
   wait 15
   spawn 5, Entity_0835bf00
   wait 60
-  message 1, 0, 0x1317
+  message 1, 0, TEXT_OTHERS_IDR_WEIL_SHALL
   wait_msgbox_end
   blackout_screen
   wait_transition_end
@@ -457,7 +457,7 @@ Script_0835c868:
   normal_screen
   wait_transition_end
   wait 15
-  message 1, 0, 0x1318
+  message 1, 0, TEXT_OTHERS_STILL_TO_GOSSIP
   wait_msgbox_end
   wait 15
   blackout_screen
@@ -469,15 +469,15 @@ Script_0835c868:
   wait 15
   entityflag 5, 0, TRUE
   wait 90
-  message 1, 0, 0x1319
+  message 1, 0, TEXT_OTHERS_MASTER_XTHE_DARK_ELF
   wait_msgbox_end
   emotion_bubble 4, 12, -48, 0
   wait 75
-  message 1, 0, 0x131A
+  message 1, 0, TEXT_OTHERS_WE_LL_GO_LEVIATHAN_AND
   wait_msgbox_end
   entityflag 5, 0, FALSE
   wait 75
-  message 1, 0, 0x131B
+  message 1, 0, TEXT_OTHERS_HEHEHEHE
   wait_msgbox_end
   stop_bgm
   wait 60
@@ -508,44 +508,44 @@ Script_0835ca60:
   emotion_bubble 0, 8, -40, 0
   wait 75
   play_bgm BGM_ANTAN
-  message 1, 0, 0x131C @ 巨大ミサイルが ハッシャじゅんびに入りました
+  message 1, 0, TEXT_OTHERS_PREPARATIONS_HAVE @ 巨大ミサイルが ハッシャじゅんびに入りました
   wait_msgbox_end
   wait 15
   force 9, 0, 92160
   lock
   wait 15
-  message 1, 0, 0x131D
+  message 1, 0, TEXT_OTHERS_CIEL_ENTER_THE_COORDI
   wait_msgbox_end
   sweep 2, 0, 0
   wait 15
   gimmick 1, 1, 1
   wait 30
-  message 1, 0, 0x131E
+  message 1, 0, TEXT_OTHERS_THAT_SDANGEROUS
   wait_msgbox_end
   wait 15
   force 2, 0, 0
   wait 45
-  message 1, 0, 0x131F
+  message 1, 0, TEXT_OTHERS_OPERATOR_HURRY_UP_AND_PREPARE
   wait_msgbox_end
   wait 15
   gimmick 1, 1, 0
   wait 30
-  message 1, 0, 0x1320
+  message 1, 0, TEXT_OTHERS_ZERO_IMNOT_SURE
   wait_msgbox_end
   wait 15
   gimmick 1, 1, 2
   wait 15
-  message 1, 0, 0x1321
+  message 1, 0, TEXT_OTHERS_EMPTY
   wait_msgbox_end
   wait 90
   gimmick 1, 1, 0
   wait 15
-  message 1, 0, 0x1322
+  message 1, 0, TEXT_OTHERS_OKAY
   wait_msgbox_end
   wait 15
   gimmick 1, 0, 1
   wait 75
-  print_message 20, 0x0048
+  print_message 20, TEXT_SYSTEM_TRANSFER
   wait 15
   play_se 153
   wait 45
@@ -556,7 +556,7 @@ Script_0835ca60:
   fadeout_se 60, 293
   gimmick 1, 1, 1
   wait 30
-  message 1, 0, 0x1323
+  message 1, 0, TEXT_OTHERS_ZERO_ELLIPSIS
   wait 15
   emergency_off
   wait_msgbox_end
@@ -584,13 +584,13 @@ Script_0835ccc8:
   wait 30
   gimmick 1, 1, 1
   wait 30
-  message 1, 0, 0x1324
+  message 1, 0, TEXT_OTHERS_ZERO_IMSO_HAPPY
   wait_msgbox_end
   wait 15
   gimmick 1, 1, 0
   wait 8
   gimmick 1, 1, 2
-  message 1, 0, 0x1325
+  message 1, 0, TEXT_OTHERS_CERVEAU_TOOK_HIM_TO
   wait_msgbox_end
   wait 15
   gimmick 1, 1, 0
@@ -615,7 +615,7 @@ Script_0835cdf0:
   wait 30
   play_se 298
   wait 90
-  message 1, 0, 0x1329 @ ツウシンかいせんに キョウセイわりこみ……！
+  message 1, 0, TEXT_OTHERS_SOMEONE_HAS_BROKEN @ ツウシンかいせんに キョウセイわりこみ……！
   wait_msgbox_end
   wait 15
   emotion_bubble 0, 8, -40, 0
@@ -623,7 +623,7 @@ Script_0835cdf0:
   sweep 2, 0, 0
   force 2, 0, 0
   wait 60
-  message 1, 0, 0x132A
+  message 1, 0, TEXT_OTHERS_PUT_THEM_THROUGH
   wait_msgbox_end
   stop_bgm
   wait 15
@@ -635,7 +635,7 @@ Script_0835cdf0:
   wait_transition_end
   play_bgm 166
   wait 15
-  message 1, 0, 0x132B
+  message 1, 0, TEXT_OTHERS_CAN_YOU_HHHEAR
   wait_msgbox_end
   wait 15
   blackout_screen
@@ -645,17 +645,17 @@ Script_0835cdf0:
   normal_screen
   wait_transition_end
   wait 15
-  message 1, 0, 0x132C
+  message 1, 0, TEXT_OTHERS_SURRENDER_HAND_OVER_THE_NEW
   wait_msgbox_end
   wait 15
   gimmick 1, 1, 2
   wait 90
-  message 1, 0, 0x132D
+  message 1, 0, TEXT_OTHERS_ICAN_TTRUST_YOU
   wait_msgbox_end
   wait 15
   gimmick 1, 1, 0
   wait 15
-  message 1, 0, 0x132E
+  message 1, 0, TEXT_OTHERS_YOU_WERE_PREPARED_TO
   wait_msgbox_end
   blackout_screen
   wait_transition_end
@@ -664,7 +664,7 @@ Script_0835cdf0:
   normal_screen
   wait_transition_end
   wait 15
-  message 1, 0, 0x132F
+  message 1, 0, TEXT_OTHERS_IS_THAT_YYOUR
   wait_msgbox_end
   wait 15
   blackout_screen
@@ -675,13 +675,13 @@ Script_0835cdf0:
   wait_transition_end
   wait 15
   stop_bgm
-  message 1, 0, 0x1330
+  message 1, 0, TEXT_OTHERS_THE_TRANSMISSION_WAS
   wait_msgbox_end
   wait 15
   play_se 293
   emergency_on
   wait 90
-  message 1, 0, 0x1331
+  message 1, 0, TEXT_OTHERS_THE_NEO_ARCADIAN
   wait_msgbox_end
   fadeout_se 60, 293
   emergency_off
@@ -721,7 +721,7 @@ Script_0835d108:
   wait 15
   force 2, 0, 0
   wait 30
-  message 1, 0, 0x1335
+  message 1, 0, TEXT_OTHERS_LIVES_WITH_PLENTY
   wait_msgbox_end
   wait 15
   gimmick 1, 1, 0
@@ -737,7 +737,7 @@ Script_0835d108:
 
 Script_0835d1a8:
   lock
-  message 1, 0, 0x1338
+  message 1, 0, TEXT_OTHERS_AND_THERE_WE_VE_JUST
   wait_msgbox_end
   wait 15
   force 2, 0, 0
@@ -762,35 +762,35 @@ Script_0835d208:
   emotion_bubble 4, 16, -40, 0
   wait 75
   play_bgm BGM_ANTAN
-  message 1, 0, 0x133C @ もう…たてるのか さすがだな ハルピュイア……
+  message 1, 0, TEXT_OTHERS_CAN_YOU_STAND_UP @ もう…たてるのか さすがだな ハルピュイア……
   wait_msgbox_end
   wait 15
   entityflag 4, 0, TRUE
   wait 120
-  message 1, 0, 0x133D
+  message 1, 0, TEXT_OTHERS_WHAT_ARE_YOU_UP_TO
   wait_msgbox_end
   wait 15
   spawn 5, Entity_0835bf50
   wait 105
-  message 1, 0, 0x133E
+  message 1, 0, TEXT_OTHERS_OH_YOU_RE_AWAKE_HOW
   wait_msgbox_end
-  message 1, 0, 0x133F
+  message 1, 0, TEXT_OTHERS_WAIT_YOUR_WOUNDS_ARE_NOT
   wait_msgbox_end
   wait 15
   entityflag 3, 0, TRUE
   wait 120
-  message 1, 0, 0x1340
+  message 1, 0, TEXT_OTHERS_SO_HARPUIA_REFUSES
   wait_msgbox_end
   wait 60
-  message 1, 0, 0x1341
+  message 1, 0, TEXT_OTHERS_OPERATOR_MR_ZERO_COME_TO
   wait_msgbox_end
   wait 15
-  message 1, 0, 0x1342
+  message 1, 0, TEXT_OTHERS_THEY_SURE_RUN_YOU
   wait_msgbox_end
   wait 15
   entityflag 4, 1, TRUE
   wait 120
-  message 1, 0, 0x1343
+  message 1, 0, TEXT_OTHERS_ZERO_HARPUIA_DON_TYOU
   wait_msgbox_end
   stop_bgm
   wait 15
@@ -826,7 +826,7 @@ Script_0835d3f0:
 Script_0835d438:
   cutscene_start CS_RBASE_45
   lock
-  message 1, 1, 0x1346
+  message 1, 1, TEXT_OTHERS_ZERO_IMSORRY_YOU
   message 2, 1, 0
   kill_message
   wait_msgbox_end
@@ -839,7 +839,7 @@ Script_0835d438:
   wait_transition_end
   play_bgm 223
   wait 60
-  message 1, 0, 0x1347
+  message 1, 0, TEXT_OTHERS_FILE945388
   wait_msgbox_end
   wait 15
   normal_screen
@@ -847,7 +847,7 @@ Script_0835d438:
   cmd06 122, 0, 0
   wait_transition_end
   wait 15
-  message 1, 0, 0x1348
+  message 1, 0, TEXT_OTHERS_NEAR_THE_END_OF_THE
   wait_msgbox_end
   wait 15
   blackout_screen
@@ -857,20 +857,20 @@ Script_0835d438:
   normal_screen
   wait_transition_end
   wait 15
-  message 1, 0, 0x1349
+  message 1, 0, TEXT_OTHERS_THE_TECHNOLOGY_USED
   wait_msgbox_end
   stop_bgm
   wait 60
-  message 1, 0, 0x134A
+  message 1, 0, TEXT_OTHERS_HEHEHEHE_EXCELLENT_DETECTIVE
   wait_msgbox_end
   play_bgm 166
   wait 15
   emotion_bubble 0, 12, -40, 0
   wait 75
-  message 1, 0, 0x134B
+  message 1, 0, TEXT_OTHERS_WHAT_UNFORTUNATELY_YOU_WERE_A
   wait_msgbox_end
   wait 30
-  message 1, 0, 0x134C
+  message 1, 0, TEXT_OTHERS_IS_THAT_DR_WEIL
   wait_msgbox_end
   wait 15
   blackout_screen
@@ -882,21 +882,21 @@ Script_0835d438:
   wait 15
   play_brain_control_movie 1
   wait 15
-  message 1, 1, 0x134D
+  message 1, 1, TEXT_OTHERS_HEHEHE_THIS_TIME_OMEGA_IS
   message 2, 1, 0
-  message 1, 1, 0x134E
-  message 2, 1, 0
-  wait 15
-  play_se 333
-  start_transition 5
-  wait 15
-  message 1, 1, 0x134F
+  message 1, 1, TEXT_OTHERS_NOW_YOU_WILL_SEE
   message 2, 1, 0
   wait 15
   play_se 333
   start_transition 5
   wait 15
-  message 1, 1, 0x1350
+  message 1, 1, TEXT_OTHERS_TASTE_THE_FEAR_FOOLISH_REPLOIDS
+  message 2, 1, 0
+  wait 15
+  play_se 333
+  start_transition 5
+  wait 15
+  message 1, 1, TEXT_OTHERS_INSCRIBE_MY_NAME
   message 2, 1, 0
   wait 15
   play_se 333
@@ -917,7 +917,7 @@ Script_0835d438:
   play_se 333
   start_transition 5
   wait 15
-  message 1, 1, 0x1351
+  message 1, 1, TEXT_OTHERS_THAT_NAME_IS
   message 2, 1, 0
   kill_message
   wait_msgbox_end
@@ -931,9 +931,9 @@ Script_0835d438:
   start_transition 5
   wait_transition_end
   wait 15
-  message 1, 0, 0x1352
+  message 1, 0, TEXT_OTHERS_HEHEHEHEHEEE_BWAHAHAHAHAH
   wait_msgbox_end
-  message 1, 0, 0x1353
+  message 1, 0, TEXT_OTHERS_NO
   wait_msgbox_end
   wait 15
   spawn 3, Entity_0835bf70
@@ -944,29 +944,29 @@ Script_0835d438:
   wait 15
   turn_right 0
   wait 15
-  message 1, 0, 0x1354
+  message 1, 0, TEXT_OTHERS_RRR_GRRPH
   wait_msgbox_end
   wait 30
-  message 1, 0, 0x1355
+  message 1, 0, TEXT_OTHERS_THIS_CAN_TBE
   wait_msgbox_end
   wait 15
   spawn 4, Entity_0835bf80
   wait 60
-  message 1, 0, 0x1356
+  message 1, 0, TEXT_OTHERS_ANEW_WORLD
   wait_msgbox_end
   wait 15
   force 9, 0, 100352
   wait 15
-  message 1, 0, 0x1357
+  message 1, 0, TEXT_OTHERS_CIEL_BACK
   wait_msgbox_end
   wait 15
   spawn 5, Entity_0835bf90
   spawn 6, Entity_0835bfa0
   wait 75
-  message 1, 0, 0x1358
+  message 1, 0, TEXT_OTHERS_ZERO_INSCRIBE_IT_UPON_THE
   wait_msgbox_end
   wait 30
-  message 1, 0, 0x1359
+  message 1, 0, TEXT_OTHERS_BOTH_OF_YOU_FREEZE
   wait_msgbox_end
   wait 30
   spawn 7, Entity_0835bfb0
@@ -979,7 +979,7 @@ Script_0835d438:
   start_transition 5
   stop_bgm
   wait 90
-  message 1, 0, 0x135A
+  message 1, 0, TEXT_OTHERS_ARGH_IT_SOKAY_THEY
   wait 30
   play_bgm BGM_ANTAN
   wait_msgbox_end
@@ -987,13 +987,13 @@ Script_0835d438:
   turn_left 0
   force 2, 0, 0
   wait 45
-  message 1, 0, 0x135B
+  message 1, 0, TEXT_OTHERS_TOOK_YOU_LONG
   wait_msgbox_end
   wait 15
   entityflag 7, 0, TRUE
   entityflag 7, 1, TRUE
   wait 210
-  message 1, 0, 0x135C
+  message 1, 0, TEXT_OTHERS_IIVE_VERIFIED_THE
   wait_msgbox_end
   wait 15
   force 3, 0, 0
@@ -1001,7 +1001,7 @@ Script_0835d438:
   force 9, 0, 92160
   wait 15
   turn_left 0
-  message 1, 0, 0x135D
+  message 1, 0, TEXT_OTHERS_ROGER_ALL
   wait_msgbox_end
   stop_bgm
   play_se 293
@@ -1009,10 +1009,10 @@ Script_0835d438:
   gimmick 1, 0, 1
   force 4, 0, 0
   wait 60
-  print_message 30, 0x135E
+  print_message 30, TEXT_OTHERS_PREPARATIONS_FOR
   wait_msgbox_end
   wait 15
-  print_message 20, 0x135F
+  print_message 20, TEXT_OTHERS_TRANSFER
   wait 15
   play_se 153
   wait 45
@@ -1040,16 +1040,16 @@ Script_0835d438:
 
 Script_0835dae0:
   wait SECOND/4
-  message 1, 0, 0x1360
+  message 1, 0, TEXT_OTHERS_COORDINATE_DATA
   wait_msgbox_end
   wait SECOND/4
-  message 1, 0, 0x1361
+  message 1, 0, TEXT_OTHERS_THE_COORDINATES
   wait_msgbox_end
   wait 90*FRAME
-  message 1, 0, 0x1362
+  message 1, 0, TEXT_OTHERS_ZERO_BE_CAREFUL_IWILL
   wait_msgbox_end
   wait SECOND/4
-  message 1, 0, 0x1363
+  message 1, 0, TEXT_OTHERS_YOU_CAN_GO_AT_ANY
   wait_msgbox_end
   wait SECOND/4
   end

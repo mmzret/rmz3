@@ -125,8 +125,8 @@ Script_0835440c:
   set_chase_mode 4
   adjust_camera 11, 0 8520*PX
   wait 75
-  triumphant_message 0, 0x0B01
-  message 1, 0, 0x0B00
+  triumphant_message 0, TEXT_ICE_BASE_HMPH_ACENTURY_IS_NOT
+  message 1, 0, TEXT_ICE_BASE_HMPH_IAM_IMPRESSED
   wait_msgbox_end
   cutscene_end
   entityflag 1, 0, TRUE
@@ -154,7 +154,7 @@ Script_083544e4:
   set_chase_mode 4
   adjust_camera 11, 0 8520*PX
   wait 75
-  triumphant_message 0, 0x0B01
+  triumphant_message 0, TEXT_ICE_BASE_HMPH_ACENTURY_IS_NOT
   cutscene_end
   entityflag 1, 0, TRUE
   stop_bgm
@@ -178,7 +178,7 @@ Script_083545ac:
   lock
   normal_screen
   wait_transition_end
-  triumphant_message 0, 0x0B01
+  triumphant_message 0, TEXT_ICE_BASE_HMPH_ACENTURY_IS_NOT
   entityflag 1, 0, TRUE
   stop_bgm
   wait 90
@@ -198,7 +198,7 @@ Script_08354654:
   stop_bgm
   wait 1
   lock
-  message 1, 0, 0x0B02
+  message 1, 0, TEXT_ICE_BASE_GROAN
   wait_msgbox_end
   entityflag 1, 7, TRUE
   cmd08_wait_set 1

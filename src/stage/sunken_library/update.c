@@ -1,4 +1,5 @@
 #include "global.h"
+#include "text_ids.h"
 #include "overworld.h"
 
 static const Coords32 sSunkenLibRoom[24];
@@ -798,24 +799,24 @@ const disk_t gSunkenDataFileIdxs[4] = {
 };
 
 const TextID gSunkenDataTextIDs[4] = {
-    0x0F11,
-    0x0F12,
-    0x0F13,
-    0x0F14,
+    TEXT_SUNKEN_LIBRARY_YOU_GOT_WEIL_SDATA,
+    TEXT_SUNKEN_LIBRARY_YOU_GOT_OMEGA_SDATA,
+    TEXT_SUNKEN_LIBRARY_YOU_GOT_THE_DARK_ELF,
+    TEXT_SUNKEN_LIBRARY_YOU_GOT_THE_ELF_WARS,
 };
 
 const TextID u16_ARRAY_0834ce84[4] = {
-    0x0F15,
-    0x0F17,
-    0x0F19,
-    0x0F1B,
+    TEXT_SUNKEN_LIBRARY_FILE650326,
+    TEXT_SUNKEN_LIBRARY_FILE815156,
+    TEXT_SUNKEN_LIBRARY_FILE351848,
+    TEXT_SUNKEN_LIBRARY_FILE945388,
 };
 
 const TextID u16_ARRAY_0834ce8c[4] = {
-    0x0F16,
-    0x0F18,
-    0x0F1A,
-    0x0F1C,
+    TEXT_SUNKEN_LIBRARY_U16_ARRAY_0834CE8C_0,
+    TEXT_SUNKEN_LIBRARY_U16_ARRAY_0834CE8C_1,
+    TEXT_SUNKEN_LIBRARY_SO_THE_DARK_ELF,
+    TEXT_SUNKEN_LIBRARY_CIEL_ZERO_IT_LOOKS_LIKETHAT,
 };
 
 const s32 s32_ARRAY_0834ce94[4] = {

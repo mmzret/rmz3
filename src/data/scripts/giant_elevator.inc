@@ -202,8 +202,8 @@ Script_9_08357c30: @ 0x08357c30
   set_chase_mode 4
   set_camera_target_x 5280*PX
   wait 60
-  triumphant_message 0, 0x1002
-  message 1, 0, 0x1001
+  triumphant_message 0, TEXT_GIANT_ELEVATOR_WHAT_STHIS_AHH_I
+  message 1, 0, TEXT_GIANT_ELEVATOR_GRRR_SO_YOU_RE
   wait_msgbox_end
   cutscene_end
   gimmick 1, 1, 1
@@ -233,7 +233,7 @@ Script_10_08357d40: @ 0x08357d40
   set_camera_target_x 5280*PX
   wait 60
   cutscene_end
-  triumphant_message 0, 0x1002
+  triumphant_message 0, TEXT_GIANT_ELEVATOR_WHAT_STHIS_AHH_I
   gimmick 1, 1, 1
   warning_indicator
   stop_bgm
@@ -257,7 +257,7 @@ Script_11_08357e10: @ 0x08357e10
   lock
   normal_screen
   wait_transition_end
-  triumphant_message 0, 0x1002
+  triumphant_message 0, TEXT_GIANT_ELEVATOR_WHAT_STHIS_AHH_I
   gimmick 1, 1, 1
   warning_indicator
   wait 120
@@ -278,7 +278,7 @@ Script_12_08357ec0: @ 0x08357ec0
   stop_bgm
   wait 1
   lock
-  message 1, 0, 0x1003
+  message 1, 0, TEXT_GIANT_ELEVATOR_HUH
   wait_msgbox_end
   entityflag 1, 7, TRUE
   cmd08_wait_set 1

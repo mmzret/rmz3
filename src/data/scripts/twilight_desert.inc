@@ -192,8 +192,8 @@ Script_0835360c:
   waitabs 120
   play_bgm BGM_GUARDER_ROOM
   wait 240
-  triumphant_message 0, 0x0901
-  message 1, 0, 0x0900
+  triumphant_message 0, TEXT_TWILIGHT_DESERT_THERE_IS_NO_ETERNITY
+  message 1, 0, TEXT_TWILIGHT_DESERT_IHAVE_BEEN_SUMMONED
   wait_msgbox_end
   cutscene_end
   entityflag 1, 0, TRUE
@@ -226,7 +226,7 @@ Script_08353714:
   waitabs 120
   play_bgm BGM_GUARDER_ROOM
   wait 240
-  triumphant_message 0, 0x0901
+  triumphant_message 0, TEXT_TWILIGHT_DESERT_THERE_IS_NO_ETERNITY
   cutscene_end
   entityflag 1, 0, TRUE
   stop_bgm
@@ -245,7 +245,7 @@ Script_08353804:
   lock
   normal_screen
   wait_transition_end
-  triumphant_message 0, 0x0901
+  triumphant_message 0, TEXT_TWILIGHT_DESERT_THERE_IS_NO_ETERNITY
   entityflag 1, 0, TRUE
   wait 60
   warning_indicator
@@ -260,7 +260,7 @@ Script_0835387c:
   stop_bgm
   wait 1
   lock
-  message 1, 0, 0x0902
+  message 1, 0, TEXT_TWILIGHT_DESERT_YOU_OF_THE_ANCIENT
   wait_msgbox_end
   entityflag 1, 7, TRUE
   cmd08_wait_set 1

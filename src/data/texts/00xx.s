@@ -5,129 +5,146 @@
 @ preproc: treat "label::" as ".global label ; label:"
 
 TextOfs_System:: @ 0x08376920
-	.2byte (Text0-Start), (Text1-Start), (Text2-Start), (Text3-Start), (Text4-Start), (Text5-Start), (Text6-Start), (Text7-Start)
-	.2byte (Text8-Start), (Text9-Start), (Text10-Start), (Text11-Start), (Text12-Start), (Text13-Start), (Text14-Start), (Text15-Start)
-	.2byte (Text16-Start), (Text17-Start), (Text18-Start), (Text19-Start), (Text20-Start), (Text21-Start), (Text22-Start), (Text23-Start)
-	.2byte (Text24-Start), (Text25-Start), (Text26-Start), (Text27-Start), (Text28-Start), (Text29-Start), (Text30-Start), (Text31-Start)
-	.2byte (Text32-Start), (Text33-Start), (Text34-Start), (Text35-Start), (Text36-Start), (Text37-Start), (Text38-Start), (Text39-Start)
-	.2byte (Text40-Start), (Text41-Start), (Text42-Start), (Text43-Start), (Text44-Start), (Text45-Start), (Text46-Start), (Text47-Start)
-	.2byte (Text48-Start), (Text49-Start), (Text50-Start), (Text51-Start), (Text52-Start), (Text53-Start), (Text54-Start), (Text55-Start)
-	.2byte (Text56-Start), (Text57-Start), (Text58-Start), (Text59-Start), (Text60-Start), (Text61-Start), (Text62-Start), (Text63-Start)
-	.2byte (Text64-Start), (Text65-Start), (Text66-Start), (Text67-Start), (Text68-Start), (Text69-Start), (Text70-Start), (Text71-Start)
-	.2byte (Text72-Start), (Text73-Start), (Text74-Start), (Text75-Start), (Text76-Start), (Text77-Start), (Text78-Start), (Text79-Start)
-	.2byte (Text80-Start), (Text81-Start), (Text82-Start), (Text83-Start), (Text84-Start), (Text85-Start), (Text86-Start), (Text87-Start)
-	.2byte (Text88-Start), (Text89-Start), (Text90-Start), (Text91-Start), (Text92-Start), (Text93-Start), (Text94-Start), (Text95-Start)
-	.2byte (Text96-Start), (Text97-Start), (Text98-Start), (Text99-Start), (Text100-Start), (Text101-Start), (Text102-Start), (Text103-Start)
-	.2byte (Text104-Start), (Text105-Start), (Text106-Start), (Text107-Start), (Text108-Start), (Text109-Start), (Text110-Start), (Text111-Start)
-	.2byte (Text112-Start), (Text113-Start), (Text114-Start), (Text115-Start), (Text116-Start), (Text117-Start), (Text118-Start), (Text119-Start)
-	.2byte (Text120-Start), (Text121-Start), (Text122-Start), (Text123-Start), (Text124-Start), (Text125-Start), (Text126-Start), (Text127-Start)
-	.2byte (Text128-Start), (Text129-Start), (Text130-Start), (Text131-Start), (Text132-Start), (Text133-Start), (Text134-Start), (Text135-Start)
-	.2byte (Text136-Start), (Text137-Start), (Text138-Start), (Text139-Start), (Text140-Start), (Text141-Start), (Text142-Start), (Text143-Start)
-	.2byte (Text144-Start), (Text145-Start), (Text146-Start), (Text147-Start), (Text148-Start), (Text149-Start), (Text150-Start), (Text151-Start)
-	.2byte (Text152-Start), (Text153-Start), (Text154-Start), (Text155-Start), (Text156-Start), (Text157-Start), (Text158-Start), (Text159-Start)
-	.2byte (Text160-Start), (Text161-Start), (Text162-Start), (Text163-Start), (Text164-Start), (Text165-Start), (Text166-Start), (Text167-Start)
-	.2byte (Text168-Start), (Text169-Start), (Text170-Start), (Text171-Start), (Text172-Start), (Text173-Start), (Text174-Start), (Text175-Start)
-	.2byte (Text176-Start), (Text177-Start), (Text178-Start), (Text179-Start), (Text180-Start), (Text181-Start), (Text182-Start), (Text183-Start)
-	.2byte (Text184-Start), (Text185-Start), (Text186-Start), (Text187-Start), (Text188-Start), (Text189-Start), (Text190-Start), (Text191-Start)
-	.2byte (Text192-Start), (Text193-Start), (Text194-Start), (Text195-Start), (Text196-Start), (Text197-Start), (Text198-Start), (Text199-Start)
-	.2byte (Text200-Start), (Text201-Start), (Text202-Start), (Text203-Start), (Text204-Start), (Text205-Start), (Text206-Start), (Text207-Start)
-	.2byte (Text208-Start), (Text209-Start), (Text210-Start), (Text211-Start), (Text212-Start), (Text213-Start), (Text214-Start), (Text215-Start)
-	.2byte (Text216-Start), (Text217-Start), (Text218-Start)
+	.2byte (Text_System_WhoWillYouTalkWith-Start), (Text_System_WhatDoYouNeed-Start), (Text_System_SaveData-Start), (Text_System_SaveDataWhere-Start), (Text_System_OkToOverwrite-Start), (Text_System_LoadWhichData-Start), (Text_System_OkToLoad-Start), (Text_System_EraseWhichData-Start)
+	.2byte (Text_System_OkToErase-Start), (Text_System_DataSaved-Start), (Text_System_DataLoaded-Start), (Text_System_DataErased-Start), (Text_System_YourOrdersPlease-Start), (Text_System_YourOrdersPlease_Alias1-Start), (Text_System_YourOrdersPlease_Alias2-Start), (Text_System_YourOrdersPlease_Alias3-Start)
+	.2byte (Text_System_DisplayingThe-Start), (Text_System_AllRightLetS-Start), (Text_System_TheseAreTheOnly-Start), (Text_System_Empty-Start), (Text_System_TheNeoArcadian-Start), (Text_System_DoSomeScouting-Start), (Text_System_WeVeVerifiedA-Start), (Text_System_MissionAsk_1-Start)
+	.2byte (Text_System_WeHaveDiscoveredA-Start), (Text_System_MissionAsk_2-Start), (Text_System_ThisWasAResi-Start), (Text_System_MissionAsk_3-Start), (Text_System_MissionSummary_4-Start), (Text_System_MissionAsk_4-Start), (Text_System_MissionSummary_5-Start), (Text_System_MissionAsk_5-Start)
+	.2byte (Text_System_MissionSummary_6-Start), (Text_System_MissionAsk_6-Start), (Text_System_WeHaveAnalyzedThe-Start), (Text_System_MissionAsk_7-Start), (Text_System_ThisIsANeo-Start), (Text_System_MissionAsk_8-Start), (Text_System_ContainersHave-Start), (Text_System_MissionAsk_9-Start)
+	.2byte (Text_System_TheRuinsOfAn-Start), (Text_System_MissionAsk_10-Start), (Text_System_NeoArcadiaHas-Start), (Text_System_MissionAsk_11-Start), (Text_System_CommencingTransfer-Start), (Text_System_AreYouReady-Start), (Text_System_WhereToTransfer-Start), (Text_System_WhereToTransfer_Alias1-Start)
+	.2byte (Text_System_WhereToTransfer_Alias2-Start), (Text_System_WhereToTransfer_Alias3-Start), (Text_System_WhereToTransfer_Alias4-Start), (Text_System_DerelictSpacecraft-Start), (Text_System_AegisVolcanoBase-Start), (Text_System_OceanicHwyRuins-Start), (Text_System_WRFactory-Start), (Text_System_OldResidential-Start)
+	.2byte (Text_System_MissileFactory-Start), (Text_System_TwilightDesert-Start), (Text_System_ForestOfAnatre-Start), (Text_System_FrontlineIceBase-Start), (Text_System_AreaX2-Start), (Text_System_EnergyFacility-Start), (Text_System_SnowyPlains-Start), (Text_System_SunkenLibrary-Start)
+	.2byte (Text_System_GiantElevator-Start), (Text_System_SubArcadia-Start), (Text_System_MissionAssigned-Start), (Text_System_MissionAssigned_Alias1-Start), (Text_System_MissionAssigned_Alias2-Start), (Text_System_MissionAssigned_Alias3-Start), (Text_System_MissionAssigned_Alias4-Start), (Text_System_PreparationsFor-Start)
+	.2byte (Text_System_Transfer-Start), (Text_System_ZeroBeCareful-Start), (Text_System_ZeroBeCareful_Alias1-Start), (Text_System_ZeroEllipsis-Start), (Text_System_ZeroComeBackSafely-Start), (Text_System_DonTDoAnything-Start), (Text_System_ZeroComeBackSafely_2-Start), (Text_System_Zerrroooo-Start)
+	.2byte (Text_System_Transferring-Start), (Text_System_TransferComplete-Start), (Text_System_WhatShouldIDoWell-Start), (Text_System_WhatShouldIDoWell_Alias1-Start), (Text_System_WhatShouldIDoWell_Alias2-Start), (Text_System_WhatShouldIDoWell_Alias3-Start), (Text_System_WhatShouldIDoWell_Alias4-Start), (Text_System_WhatShouldIDoWell_Alias5-Start)
+	.2byte (Text_System_WhatShouldIDoWell_Alias6-Start), (Text_System_WhatShouldIDoWell_Alias7-Start), (Text_System_ThankYouZeroWeFailed-Start), (Text_System_ZeroIMSorryYou-Start), (Text_System_ZeroThankYouThatRecycling-Start), (Text_System_ZeroThankYouTheReports-Start), (Text_System_CielGoodluck_7-Start), (Text_System_CielGoodluck_8-Start)
+	.2byte (Text_System_CielGoodluck_9-Start), (Text_System_WelcomeBackZeroItAppears-Start), (Text_System_CielGoodluck_12-Start), (Text_System_CielGoodluck_13-Start), (Text_System_ThankYouZeroItLooks-Start), (Text_System_ZeroItSGreatTo-Start), (Text_System_WhatWillItBe-Start), (Text_System_BootCompleted-Start)
+	.2byte (Text_System_EnterCommand-Start), (Text_System_CanTradeBattlechipsW-Start), (Text_System_BeginTransmission-Start), (Text_System_WaitingForTransmission-Start), (Text_System_CommunicatingWith-Start), (Text_System_TransmissionError-Start), (Text_System_TransmissionComplete-Start), (Text_System_TransmissionComplete_2-Start)
+	.2byte (Text_System_MegaBoosterCardReceived-Start), (Text_System_MegaBoosterCardReceived_Alias1-Start), (Text_System_MegaBoosterCardReceived_Alias2-Start), (Text_System_MegaBoosterCardReceived_Alias3-Start), (Text_System_TransmissionError_2-Start), (Text_System_CardBoostReverted-Start), (Text_System_TitleBackgroundPicture-Start), (Text_System_TitleBackgroundPicture_Alias1-Start)
+	.2byte (Text_System_TitleBackgroundPicture_Alias2-Start), (Text_System_TitleBackgroundPicture_Alias3-Start), (Text_System_PottedPlantAddedTo-Start), (Text_System_DesignOfElevatorIn-Start), (Text_System_ModCard_3-Start), (Text_System_PHunterEnergy-Start), (Text_System_PGuardianEnergy-Start), (Text_System_DesignOfNurseElvesHas-Start)
+	.2byte (Text_System_ModCard_7-Start), (Text_System_TheDesignOfBustershot-Start), (Text_System_TheDesignOfTheZ-Start), (Text_System_TheDesignOfAlouetteS-Start), (Text_System_ModCard_11-Start), (Text_System_ZeroSDefenseIsNow-Start), (Text_System_TheDesignOfTheMessage-Start), (Text_System_TheDesignOfLifeEnergy-Start)
+	.2byte (Text_System_ModCard_18-Start), (Text_System_AllBoostedItemsHave-Start), (Text_System_ThereIsALostCat-Start), (Text_System_ItIsSnowingAtThe-Start), (Text_System_TheDesignOfThe-Start), (Text_System_ModCard_23-Start), (Text_System_ModCard_24-Start), (Text_System_DesignOfComputerIn-Start)
+	.2byte (Text_System_AMysteriousCyberElfHas-Start), (Text_System_ModCard_27-Start), (Text_System_APaintingHasBeenHung-Start), (Text_System_ANewDoorHasAppeared-Start), (Text_System_ModCard_30-Start), (Text_System_ModCard_31-Start), (Text_System_AFlowerHasBloomedOn-Start), (Text_System_TheDesignOfAnimalElves-Start)
+	.2byte (Text_System_AndrewLooksYoungerNow-Start), (Text_System_ModCard_38-Start), (Text_System_SeagullsNowFlyInThe-Start), (Text_System_ModCard_41-Start), (Text_System_TheDesignOfSecretDisks-Start), (Text_System_ModCard_43-Start), (Text_System_SomebodyHasDrawnGraffiti-Start), (Text_System_ModCard_48-Start)
+	.2byte (Text_System_ModCard_52-Start), (Text_System_ModCard_60-Start), (Text_System_ModCard_61-Start), (Text_System_ModCard_64-Start), (Text_System_ModCard_65-Start), (Text_System_TheDesignOfHackerElves-Start), (Text_System_EnergyOfCrossbyneHas-Start), (Text_System_EnergyOfPBase-Start)
+	.2byte (Text_System_ModCard_69-Start), (Text_System_ItIsNowNighttimeAt-Start), (Text_System_EnergyOfPAqua-Start), (Text_System_FishNowJumpAroundThe-Start), (Text_System_ModCard_78-Start), (Text_System_ModCard_79-Start), (Text_System_ModCard_81-Start), (Text_System_ModCard_82-Start)
+	.2byte (Text_System_EnergyOfPBomber-Start), (Text_System_EnergyOfAlteredP-Start), (Text_System_ModCard_90-Start), (Text_System_EnergyOfPurplenerple-Start), (Text_System_EnergyOfShellcrawler-Start), (Text_System_EnergyOfIcebonIncreased-Start), (Text_System_EnergyOfGCannon-Start), (Text_System_EnergyOfClaveker-Start)
+	.2byte (Text_System_EnergyOfShotcounter-Start), (Text_System_EnergyOfGrandCannon-Start), (Text_System_EnergyOfShrimpolin-Start), (Text_System_EnergyOfBatring-Start), (Text_System_EnergyOfPCannon-Start), (Text_System_EnergyOfVolcaire-Start), (Text_System_EnergyOfSnakecord-Start), (Text_System_EnergyOfLemmingles-Start)
+	.2byte (Text_System_EnergyOfLamplort-Start), (Text_System_EnergyOfTileCannon-Start), (Text_System_EnergyOfShelluno-Start), (Text_System_EnergyOfHeavyCannon-Start), (Text_System_EnergyOfMothjiro-Start), (Text_System_EnergyOfCCannon-Start), (Text_System_EnergyOfCalibeeG-Start), (Text_System_EnergyOfDeathlock-Start)
+	.2byte (Text_System_EnergyOfGyroCannon-Start), (Text_System_EnergyOfSharkshielX-Start), (Text_System_EnergyOfOlwarmer-Start), (Text_System_EnergyOfBranwarmer-Start), (Text_System_EnergyOfLocomoIf-Start), (Text_System_EnergyOfBeeserver-Start), (Text_System_EnergyOfMegamilpa-Start), (Text_System_ZeroSMiniGame-Start)
+	.2byte (Text_System_ZeroSMiniGame_Alias1-Start), (Text_System_ZeroSMiniGame_Alias2-Start), (Text_System_ZeroSMiniGame_Alias3-Start), (Text_System_CielSMiniGame-Start), (Text_System_CopyXSMiniGame-Start), (Text_System_HarpuiaSMiniGame-Start), (Text_System_FefnirSMiniGame-Start), (Text_System_LeviathanSMiniGame-Start)
+	.2byte (Text_System_PhantomSMiniGame-Start), (Text_System_HardModeAddedPlayIn-Start), (Text_System_UltimateModeAddedPlayIn-Start)
 
 Text_System:: @ 0x08376ad6
 Start:
     # シエル
-Text0: @ 0x08376AD6
+Text_System_WhoWillYouTalkWith: @ 0x08376AD6
+	@ EN: Who will you talk with? / Operator / Ciel
 	.string "{WINDOW 0x02}"
 		.string "だれに、話しかけますか？\n"
 		.string "  オペレーター\n"
 		.string "  シエル$"
 
-Text1: @ 0x08376AF5
+Text_System_WhatDoYouNeed: @ 0x08376AF5
+	@ EN: What do you need? / Manage data / Talk
 	.string "{WINDOW 0x40}"
 		.string "なにかしら？ なんでも言ってね\n"
 		.string "  データのかんり\n"
 		.string "  話をする$"
 
-Text2: @ 0x08376B1A
+Text_System_SaveData: @ 0x08376B1A
+	@ EN: Save data / Load data / Erase data
 	.string "{WINDOW 0x40}"
 		.string "  データをキロクします\n"
 		.string "  データを呼び出します\n"
 		.string "  データを消します$"
 
-Text3: @ 0x08376B44
+Text_System_SaveDataWhere: @ 0x08376B44
+	@ EN: Save data where?
 	.string "{WINDOW 0x40}"
 		.string "どこにデータをキロクしますか？$"
 
-Text4: @ 0x08376B56
+Text_System_OkToOverwrite: @ 0x08376B56
+	@ EN: : OK to overwrite? / YES / NO
 	.string "{WINDOW 0x40}"
 		.string " のデータを上がきしていいですか？\n"
 		.string "  はい\n"
 		.string "  いいえ$"
 
-Text5: @ 0x08376B76
+Text_System_LoadWhichData: @ 0x08376B76
+	@ EN: Load which data?
 	.string "{WINDOW 0x40}"
 		.string "どのデータを呼び出しますか？$"
 
-Text6: @ 0x08376B89
+Text_System_OkToLoad: @ 0x08376B89
+	@ EN: : OK to load? / YES / NO
 	.string "{WINDOW 0x40}"
 		.string " のデータを呼び出していいですか？\n"
 		.string "  はい\n"
 		.string "  いいえ$"
 
-Text7: @ 0x08376BAA
+Text_System_EraseWhichData: @ 0x08376BAA
+	@ EN: Erase which data?
 	.string "{WINDOW 0x40}"
 		.string "どのデータを消しますか？$"
 
-Text8: @ 0x08376BBA
+Text_System_OkToErase: @ 0x08376BBA
+	@ EN: : OK to erase? / YES / NO
 	.string "{WINDOW 0x40}"
 		.string " のデータを消していいですか？\n"
 		.string "  はい\n"
 		.string "  いいえ$"
 
-Text9: @ 0x08376BD8
+Text_System_DataSaved: @ 0x08376BD8
+	@ EN: Data saved.
 	.string "{WINDOW 0x40}"
 		.string "データをキロクしました$"
 
-Text10: @ 0x08376BE6
+Text_System_DataLoaded: @ 0x08376BE6
+	@ EN: Data loaded.
 	.string "{WINDOW 0x40}"
 		.string "データを呼び出しました$"
 
-Text11: @ 0x08376BF6
+Text_System_DataErased: @ 0x08376BF6
+	@ EN: Data erased.
 	.string "{WINDOW 0x40}"
 		.string "データを消しました$"
 
 @ オペレータ
-Text12: @ 0x08376C03
-Text13: @ 0x08376C03
-Text14: @ 0x08376C03
-Text15: @ 0x08376C03
+Text_System_YourOrdersPlease: @ 0x08376C03
+Text_System_YourOrdersPlease_Alias1: @ 0x08376C03
+Text_System_YourOrdersPlease_Alias2: @ 0x08376C03
+Text_System_YourOrdersPlease_Alias3: @ 0x08376C03
+	@ EN: Your orders, please. / Select mission / Transfer back
 	.string "{WINDOW 0x62}"
 		.string "{TOP}しじを おねがいします\n"
 		.string "  ミッションへ行く\n"
 		.string "  いちど行ったエリアへ転送$"
 
-Text16: @ 0x08376C30
+Text_System_DisplayingThe: @ 0x08376C30
+	@ EN: Displaying the / available missions:
 	.string "{WINDOW 0x62}"
 		.string "{TOP}センタクできるミッションを\n"
 		.string "ひょうじ します$"
 
-Text17: @ 0x08376C4A
+Text_System_AllRightLetS: @ 0x08376C4A
+	@ EN: All right, let's / look at something / else.
 	.string "{WINDOW 0x62}"
 		.string "{BOTTOM}では、他を見てみましょう$"
 
-Text18: @ 0x08376C5C
+Text_System_TheseAreTheOnly: @ 0x08376C5C
+	@ EN: These are the only / available missions. / Return when ready.
 	.string "{WINDOW 0x62}"
 		.string "{BOTTOM}このミッションしかセンタクできません\n"
 		.string "ジュンビができましたら\n"
 		.string "いつでも声をおかけください…$"
 
-Text19: @ 0x08376C8E
+Text_System_Empty: @ 0x08376C8E
 	.string "{WINDOW 0x02}"
 		.string "{BOTTOM}$"
 
 @ ミッション選択(序盤4)
-Text20: @ 0x08376C92
+Text_System_TheNeoArcadian: @ 0x08376C92
+	@ EN: The Neo Arcadian / army is building up / at the base in Aegis / Volcano. / We do not know what / their intention is.
 	.string "{WINDOW 0x61}"
 		.string "{BOTTOM}ネオ・アルカディア軍が\n"
 		.string "アグニスかざんにある基地に\n"
@@ -135,13 +152,15 @@ Text20: @ 0x08376C92
 		.string "カレらの目的は、\n"
 		.string "現在のところ不明…$"
 
-Text21: @ 0x08376CD8
+Text_System_DoSomeScouting: @ 0x08376CD8
+	@ EN: Do some scouting? / YES / NO
 	.string "{WINDOW 0x62}"
 		.string "{BOTTOM}テイサツをおねがいしたいのですが…\n"
 		.string "  はい\n"
 		.string "  いいえ$"
 
-Text22: @ 0x08376CF8
+Text_System_WeVeVerifiedA: @ 0x08376CF8
+	@ EN: We've verified a / reading similar to / the Dark Elf on the / ruins of an inter- / continental oceanic / highway... / We have verified / that Neo Arcadia / is pursuing this. / We believe it will / take some time for / them to reach the / source of this / reading. / If possible, you / should verify / this signal, / and if it is indeed / the Dark Elf, / protect it.
 	.string "{WINDOW 0x61}"
 		.string "{BOTTOM}カイジョウをはしる\n"
 		.string "タイリク間ハイウェイあとちにて\n"
@@ -157,13 +176,15 @@ Text22: @ 0x08376CF8
 		.string "ダークエルフであった場合、\n"
 		.string "ホゴしていただきたいのですが…$"
 
-Text23: @ 0x08376DA0
+Text_System_MissionAsk_1: @ 0x08376DA0
+	@ EN: Do you accept? / YES / NO
 	.string "{WINDOW 0x62}"
 		.string "{BOTTOM}おねがいできますか…\n"
 		.string "  はい\n"
 		.string "  いいえ$"
 
-Text24: @ 0x08376DB9
+Text_System_WeHaveDiscoveredA: @ 0x08376DB9
+	@ EN: We have discovered a / Neo Arcadian weapons / factory. / They are fixing and / refitting broken / weaponry. / It seems this is / more efficient than / making new ones. / They have doubled / weapon production / recently. / Destroy this factory / to cut Neo Arcadia's / military power.
 	.string "{WINDOW 0x61}"
 		.string "{BOTTOM}ネオ・アルカディアの\n"
 		.string "ヘイキ再生工場を発見しました▼"
@@ -178,13 +199,15 @@ Text24: @ 0x08376DB9
 		.string "ネオ・アルカディアの戦力を\n"
 		.string "弱体化させたいのですが…$"
 
-Text25: @ 0x08376E5F
+Text_System_MissionAsk_2: @ 0x08376E5F
+	@ EN: Do you accept? / YES / NO
 	.string "{WINDOW 0x62}"
 		.string "{BOTTOM}おねがいできますか…\n"
 		.string "  はい\n"
 		.string "  いいえ$"
 
-Text26: @ 0x08376E78
+Text_System_ThisWasAResi: @ 0x08376E78
+	@ EN: This was a resi- / dential area where / humans once lived. / We sent some people / to investigate... / And received news / that Dark Elf may / have been seen. / For some reason, we / are unable to scan / this area. / We would like you to / go there to investi- / gate first-hand.
 	.string "{WINDOW 0x61}"
 		.string "{BOTTOM}ここは かつて人間がすんでいた\n"
 		.string "きょじゅうくのあとちです▼"
@@ -198,14 +221,16 @@ Text26: @ 0x08376E78
 		.string "チョウサに行って\n"
 		.string "いただきたいのですが…$"
 
-Text27: @ 0x08376F0D
+Text_System_MissionAsk_3: @ 0x08376F0D
+	@ EN: Can you investigate? / YES / NO
 	.string "{WINDOW 0x62}"
 		.string "{BOTTOM}チョウサ…おねがいできますか？\n"
 		.string "  はい\n"
 		.string "  いいえ$"
 
 @ ミッション選択(中盤4)
-Text28: @ 0x08376F2B
+Text_System_MissionSummary_4: @ 0x08376F2B
+	@ EN: We have detected / Neo Arcadian units / moving through the / southern desert. / These forces must be / intercepted as / soon as possible.
 	.string "{WINDOW 0x61}"
 		.string "{BOTTOM}ミナミの砂ばくをすすむ\n"
 		.string "ネオ・アルカディア軍を\n"
@@ -213,13 +238,15 @@ Text28: @ 0x08376F2B
 		.string "ヒカク的はやめのゲイゲキが\n"
 		.string "ヒツヨウかと思われます$"
 
-Text29: @ 0x08376F6A
+Text_System_MissionAsk_4: @ 0x08376F6A
+	@ EN: Can you intercept? / YES / NO
 	.string "{WINDOW 0x62}"
 		.string "{BOTTOM}ゲイゲキをおねがいしたいのですが…\n"
 		.string "  はい\n"
 		.string "  いいえ$"
 
-Text30: @ 0x08376F8A
+Text_System_MissionSummary_5: @ 0x08376F8A
+	@ EN: We have detected / Neo Arcadian units / moving through the / Forest of Anatre... / These forces must be / intercepted as / soon as possible.
 	.string "{WINDOW 0x61}"
 		.string "{BOTTOM}アナトレーのモリをすすむ\n"
 		.string "ネオ・アルカディア軍を\n"
@@ -227,13 +254,15 @@ Text30: @ 0x08376F8A
 		.string "ヒカク的はやめのゲイゲキが\n"
 		.string "ヒツヨウかと思われます$"
 
-Text31: @ 0x08376FC9
+Text_System_MissionAsk_5: @ 0x08376FC9
+	@ EN: Can you intercept? / YES / NO
 	.string "{WINDOW 0x62}"
 		.string "{BOTTOM}ゲイゲキをおねがいしたいのですが…\n"
 		.string "  はい\n"
 		.string "  いいえ$"
 
-Text32: @ 0x08376FE9
+Text_System_MissionSummary_6: @ 0x08376FE9
+	@ EN: We have detected / Neo Arcadian units / moving through the / northern tundra... / The enemy is / constructing a / frontline base. / There seems to be a / reasonable amount of / time left to act.
 	.string "{WINDOW 0x61}"
 		.string "{BOTTOM}キタのツンドラをすすむ\n"
 		.string "ネオ・アルカディア軍を\n"
@@ -244,13 +273,15 @@ Text32: @ 0x08376FE9
 		.string "タショウの時間的ヨユウが\n"
 		.string "あるものと思われます…$"
 
-Text33: @ 0x08377044
+Text_System_MissionAsk_6: @ 0x08377044
+	@ EN: Can you intercept? / YES / NO
 	.string "{WINDOW 0x62}"
 		.string "{BOTTOM}ゲイゲキに向かわれますか…\n"
 		.string "  はい\n"
 		.string "  いいえ$"
 
-Text34: @ 0x08377061
+Text_System_WeHaveAnalyzedThe: @ 0x08377061
+	@ EN: We have analyzed the / enemy's movements... / As a result, we have / succeeded in / determining the / location of the Neo / Arcadian HQ. / It seems that Copy X / and Weil are / commanding the / entire army from / this base. / If you strike here, / you may be able to / stop Neo Arcadia.
 	.string "{WINDOW 0x61}"
 		.string "{BOTTOM}テキのしんこうルートを\n"
 		.string "カイセキし…▼"
@@ -265,14 +296,16 @@ Text34: @ 0x08377061
 		.string "ネオ・アルカディアを\n"
 		.string "止めることができる…か…$"
 
-Text35: @ 0x083770E3
+Text_System_MissionAsk_7: @ 0x083770E3
+	@ EN: Are you ready? / YES / NO
 	.string "{WINDOW 0x61}"
 		.string "{BOTTOM}ジュンビは、よろしいでしょうか？\n"
 		.string "  はい\n"
 		.string "  いいえ$"
 
 @ ミッション選択(後半4)
-Text36: @ 0x08377102
+Text_System_ThisIsANeo: @ 0x08377102
+	@ EN: This is a Neo / Arcadian energy / plant. It is / currently shut. / What is so important / that they had to / shut down the plant / in the middle of an / energy crisis? / The place was shut / down around the time / Weil appeared, so it / bears investigation.
 	.string "{WINDOW 0x61}"
 		.string "{BOTTOM}ここはネオ・アルカディアの\n"
 		.string "エネルギーしせつなのですが…\n"
@@ -283,13 +316,15 @@ Text36: @ 0x08377102
 		.string "ちょうどバイルが現れたあたりに\n"
 		.string "ヘイサされたのが気になります$"
 
-Text37: @ 0x0837717E
+Text_System_MissionAsk_8: @ 0x0837717E
+	@ EN: Can you investigate? / YES / NO
 	.string "{WINDOW 0x62}"
 		.string "{BOTTOM}チョウサをおねがいしたいのですが…\n"
 		.string "  はい\n"
 		.string "  いいえ$"
 
-Text38: @ 0x0837719E
+Text_System_ContainersHave: @ 0x0837719E
+	@ EN: Containers have / fallen out of a / space ship, / which fell onto / snowy plains. / It is possible that / they contain data / about Omega or Weil. / We sent a scouting / party, but the / Neo Arcadian forces / are too strong, and / they cannot pass. / We would like you to / reinforce them, and / retrieve the data.
 	.string "{WINDOW 0x61}"
 		.string "{BOTTOM}ウチュウセンがおちてきた\n"
 		.string "あのセツゲンに…▼"
@@ -308,13 +343,15 @@ Text38: @ 0x0837719E
 		.string "データをカイシュウして\n"
 		.string "いただきたいのですが…$"
 
-Text39: @ 0x08377267
+Text_System_MissionAsk_9: @ 0x08377267
+	@ EN: Do you accept? / YES / NO
 	.string "{WINDOW 0x62}"
 		.string "{BOTTOM}おねがいできますか…\n"
 		.string "  はい\n"
 		.string "  いいえ$"
 
-Text40: @ 0x08377280
+Text_System_TheRuinsOfAn: @ 0x08377280
+	@ EN: The ruins of an / ancient library have / been found. / It's completely / soaked inside, but / there may still be / some data around. / We'd like you to / search for data on / Weil or Omega.
 	.string "{WINDOW 0x61}"
 		.string "{BOTTOM}旧ジダイのトショカンのイセキが\n"
 		.string "発見されました▼"
@@ -324,13 +361,15 @@ Text40: @ 0x08377280
 		.string "バイルやオメガのデータを\n"
 		.string "さがしていただきたいのですが…$"
 
-Text41: @ 0x083772E2
+Text_System_MissionAsk_10: @ 0x083772E2
+	@ EN: Do you accept? / YES / NO
 	.string "{WINDOW 0x62}"
 		.string "{BOTTOM}おねがいできますか…\n"
 		.string "  はい\n"
 		.string "  いいえ$"
 
-Text42: @ 0x083772FB
+Text_System_NeoArcadiaHas: @ 0x083772FB
+	@ EN: Neo Arcadia has / completed a giant / elevator. / We do not know its / purpose. / They are bringing / something up from / deep underground.
 	.string "{WINDOW 0x61}"
 		.string "{BOTTOM}ネオ・アルカディアが\n"
 		.string "巨大なエレベーターを\n"
@@ -339,13 +378,15 @@ Text42: @ 0x083772FB
 		.string "地下深くより\n"
 		.string "何かをはこんでいるようです$"
 
-Text43: @ 0x0837734B
+Text_System_MissionAsk_11: @ 0x0837734B
+	@ EN: Can you investigate? / YES / NO
 	.string "{WINDOW 0x62}"
 		.string "{BOTTOM}チョウサをおねがいできますか\n"
 		.string "  はい\n"
 		.string "  いいえ$"
 
-Text44: @ 0x08377368
+Text_System_CommencingTransfer: @ 0x08377368
+	@ EN: Commencing transfer / to the coordinates / obtained from / Original X. / Zero... / Please be careful.
 	.string "{WINDOW 0x61}"
 		.string "オリジナルエックスより\n"
 		.string "入手した ざひょうに転送します▼"
@@ -353,176 +394,205 @@ Text44: @ 0x08377368
 		.string "ゼロ……▼"
 		.string "気をつけてね………$"
 
-Text45: @ 0x0837739C
+Text_System_AreYouReady: @ 0x0837739C
+	@ EN: Are you ready? / YES / NO
 	.string "{WINDOW 0x62}"
 		.string "ジュンビは、よろしいでしょうか？\n"
 		.string "  はい\n"
 		.string "  いいえ$"
 
 @ フリーラン
-Text46: @ 0x083773BA
-Text47: @ 0x083773BA
-Text48: @ 0x083773BA
-Text49: @ 0x083773BA
-Text50: @ 0x083773BA
+Text_System_WhereToTransfer: @ 0x083773BA
+Text_System_WhereToTransfer_Alias1: @ 0x083773BA
+Text_System_WhereToTransfer_Alias2: @ 0x083773BA
+Text_System_WhereToTransfer_Alias3: @ 0x083773BA
+Text_System_WhereToTransfer_Alias4: @ 0x083773BA
+	@ EN: Where to transfer?
 	.string "{WINDOW 0x62}"
 		.string "どこに転送しますか？$"
 
-Text51: @ 0x083773C9
+Text_System_DerelictSpacecraft: @ 0x083773C9
+	@ EN: DERELICT SPACECRAFT? / YES / NO
 	.string "{WINDOW 0x62}"
 		.string "{RED}こわれたウチュウセン{RED_END}ですね？\n"
 		.string "  はい\n"
 		.string "  いいえ$"
 
-Text52: @ 0x083773E7
+Text_System_AegisVolcanoBase: @ 0x083773E7
+	@ EN: AEGIS VOLCANO BASE? / YES / NO
 	.string "{WINDOW 0x62}"
 		.string "{RED}アグニスかざんの基地{RED_END}ですね？\n"
 		.string "  はい\n"
 		.string "  いいえ$"
 
-Text53: @ 0x08377407
+Text_System_OceanicHwyRuins: @ 0x08377407
+	@ EN: OCEANIC HWY RUINS? / YES / NO
 	.string "{WINDOW 0x62}"
 		.string "{RED}カイジョウのハイウェイあとち{RED_END}ですね？\n"
 		.string "  はい\n"
 		.string "  いいえ$"
 
-Text54: @ 0x08377429
+Text_System_WRFactory: @ 0x08377429
+	@ EN: W.R. FACTORY? / YES / NO
 	.string "{WINDOW 0x62}"
 		.string "{RED}ヘイキ再生工場{RED_END}ですね？\n"
 		.string "  はい\n"
 		.string "  いいえ$"
 
-Text55: @ 0x08377447
+Text_System_OldResidential: @ 0x08377447
+	@ EN: OLD RESIDENTIAL? / YES / NO
 	.string "{WINDOW 0x62}"
 		.string "{RED}旧きょじゅうく{RED_END}ですね？\n"
 		.string "  はい\n"
 		.string "  いいえ$"
 
-Text56: @ 0x08377463
+Text_System_MissileFactory: @ 0x08377463
+	@ EN: MISSILE FACTORY? / YES / NO
 	.string "{WINDOW 0x62}"
 		.string "{RED}ミサイル工場{RED_END}ですね？\n"
 		.string "  はい\n"
 		.string "  いいえ$"
 
-Text57: @ 0x0837747E
+Text_System_TwilightDesert: @ 0x0837747E
+	@ EN: TWILIGHT DESERT? / YES / NO
 	.string "{WINDOW 0x62}"
 		.string "{RED}ゆうやみの砂ばく{RED_END}ですね？\n"
 		.string "  はい\n"
 		.string "  いいえ$"
 
-Text58: @ 0x0837749B
+Text_System_ForestOfAnatre: @ 0x0837749B
+	@ EN: FOREST OF ANATRE? / YES / NO
 	.string "{WINDOW 0x62}"
 		.string "{RED}アナトレーのモリ{RED_END}ですね？\n"
 		.string "  はい\n"
 		.string "  いいえ$"
 
-Text59: @ 0x083774B7
+Text_System_FrontlineIceBase: @ 0x083774B7
+	@ EN: FRONTLINE ICE BASE? / YES / NO
 	.string "{WINDOW 0x62}"
 		.string "{RED}コオリのゼンセン基地{RED_END}ですね？\n"
 		.string "  はい\n"
 		.string "  いいえ$"
 
-Text60: @ 0x083774D7
+Text_System_AreaX2: @ 0x083774D7
+	@ EN: AREA X-2? / YES / NO
 	.string "{WINDOW 0x62}"
 		.string "{RED}エリアX-2{RED_END}ですね？\n"
 		.string "  はい\n"
 		.string "  いいえ$"
 
-Text61: @ 0x083774F1
+Text_System_EnergyFacility: @ 0x083774F1
+	@ EN: ENERGY FACILITY? / YES / NO
 	.string "{WINDOW 0x62}"
 		.string "{RED}エネルギーしせつ{RED_END}ですね？\n"
 		.string "  はい\n"
 		.string "  いいえ$"
 
-Text62: @ 0x0837750D
+Text_System_SnowyPlains: @ 0x0837750D
+	@ EN: SNOWY PLAINS? / YES / NO
 	.string "{WINDOW 0x62}"
 		.string "{RED}セツゲン{RED_END}ですね？\n"
 		.string "  はい\n"
 		.string "  いいえ$"
 
-Text63: @ 0x08377525
+Text_System_SunkenLibrary: @ 0x08377525
+	@ EN: SUNKEN LIBRARY? / YES / NO
 	.string "{WINDOW 0x62}"
 		.string "{RED}すいぼつしたトショカン{RED_END}ですね？\n"
 		.string "  はい\n"
 		.string "  いいえ$"
 
-Text64: @ 0x08377544
+Text_System_GiantElevator: @ 0x08377544
+	@ EN: GIANT ELEVATOR? / YES / NO
 	.string "{WINDOW 0x62}"
 		.string "{RED}巨大エレベーター{RED_END}ですね？\n"
 		.string "  はい\n"
 		.string "  いいえ$"
 
-Text65: @ 0x08377562
+Text_System_SubArcadia: @ 0x08377562
+	@ EN: SUB ARCADIA? / YES / NO
 	.string "{WINDOW 0x62}"
 		.string "{RED}アンダー・アルカディア{RED_END}ですね？\n"
 		.string "  はい\n"
 		.string "  いいえ$"
 
 @ 転送
-Text66: @ 0x08377581
-Text67: @ 0x08377581
-Text68: @ 0x08377581
-Text69: @ 0x08377581
-Text70: @ 0x08377581
+Text_System_MissionAssigned: @ 0x08377581
+Text_System_MissionAssigned_Alias1: @ 0x08377581
+Text_System_MissionAssigned_Alias2: @ 0x08377581
+Text_System_MissionAssigned_Alias3: @ 0x08377581
+Text_System_MissionAssigned_Alias4: @ 0x08377581
+	@ EN: Mission assigned... / All personnel, / prepare to transfer.
 	.string "{WINDOW 0x61}"
 		.string "ミッションはつれい…\n"
 		.string "かくいん、転送じゅんびにかかれ$"
 
-Text71: @ 0x083775A0
+Text_System_PreparationsFor: @ 0x083775A0
+	@ EN: Preparations for / transfer complete.
 	.string "{WINDOW 0x62}"
 		.string "転送じゅんびカンリョウ…$"
 
-Text72: @ 0x083775B1
+Text_System_Transfer: @ 0x083775B1
+	@ EN: Transfer!
 	.string "{WINDOW 0x61}"
 		.string "転送！$"
 
 @ シエルの見送りメッセージ
-Text73: @ 0x083775B9
-Text74: @ 0x083775B9
+Text_System_ZeroBeCareful: @ 0x083775B9
+Text_System_ZeroBeCareful_Alias1: @ 0x083775B9
+	@ EN: Zero... Be careful.
 	.string "{WINDOW 0x40}"
 		.string "ゼロ…気をつけて……$"
-Text75: @ 0x083775C7
+Text_System_ZeroEllipsis: @ 0x083775C7
+	@ EN: Zero...
 	.string "{WINDOW 0x40}"
 		.string "ゼロ……$"
 
-Text76: @ 0x083775CE
+Text_System_ZeroComeBackSafely: @ 0x083775CE
+	@ EN: Zero... / Come back safely... / Okay?
 	.string "{WINDOW 0x40}"
 		.string "ゼロ……▼"
 		.string "かならず…\n"
 		.string "かえってきて…ね…$"
 
-Text77: @ 0x083775E5
+Text_System_DonTDoAnything: @ 0x083775E5
+	@ EN: Don't do anything / dangerous, Zero...
 	.string "{WINDOW 0x40}"
 		.string "無理しないでね…ゼロ$"
 
-Text78: @ 0x083775F4
+Text_System_ZeroComeBackSafely_2: @ 0x083775F4
+	@ EN: Zero... / Come back safely...
 	.string "{WINDOW 0x40}"
 		.string "ゼロ……▼"
 		.string "かえって…きてね……$"
 
-Text79: @ 0x08377606
+Text_System_Zerrroooo: @ 0x08377606
+	@ EN: Zerrroooo!
 	.string "{WINDOW 0x40}"
 		.string "ゼローーーーーー！$"
 
 @ ミッション終了後
-Text80: @ 0x08377612
+Text_System_Transferring: @ 0x08377612
+	@ EN: Transferring... / Two... / One...
 	.string "{WINDOW 0x62}"
 		.string "転送カンリョウまで…     \n"
 		.string "2…     \n"
 		.string "1…$"
 
-Text81: @ 0x08377631
+Text_System_TransferComplete: @ 0x08377631
+	@ EN: Transfer complete.
 	.string "{WINDOW 0x61}"
 		.string "おつかれさまでした$"
 
-Text82: @ 0x0837763D
-Text83: @ 0x0837763D
-Text84: @ 0x0837763D
-Text85: @ 0x0837763D
-Text86: @ 0x0837763D
-Text87: @ 0x0837763D
-Text88: @ 0x0837763D
-Text89: @ 0x0837763D
+Text_System_WhatShouldIDoWell: @ 0x0837763D
+Text_System_WhatShouldIDoWell_Alias1: @ 0x0837763D
+Text_System_WhatShouldIDoWell_Alias2: @ 0x0837763D
+Text_System_WhatShouldIDoWell_Alias3: @ 0x0837763D
+Text_System_WhatShouldIDoWell_Alias4: @ 0x0837763D
+Text_System_WhatShouldIDoWell_Alias5: @ 0x0837763D
+Text_System_WhatShouldIDoWell_Alias6: @ 0x0837763D
+Text_System_WhatShouldIDoWell_Alias7: @ 0x0837763D
+	@ EN: What should I do? / Well, for now... / Not letting Neo / Arcadia have the / Dark Elf... / That would be / priority number one. / I will calculate / our best course of / action, giving / priority to the / search for the / Dark Elf. / I will report to / Ms. Ciel as soon as / the results are in.
 	.string "{WINDOW 0x40}"
 		.string "どうしたらいいんだろう……\n"
 		.string "わたし………▼"
@@ -540,7 +610,8 @@ Text89: @ 0x0837763D
 		.string "ケッカがわかりしだい\n"
 		.string "シエルさんにホウコクしますね$"
 
-Text90: @ 0x083776DA
+Text_System_ThankYouZeroWeFailed: @ 0x083776DA
+	@ EN: Thank you, Zero. / We failed to destroy / the missile, / but I believe we / succeeded in / delaying its / construction. / I will analyze the / route to the missile / factory as quickly / as possible. / Please wait a bit / longer, okay?
 	.string "{WINDOW 0x40}"
 		.string "ありがとう…ゼロ▼"
 		.string "ミサイルは、\n"
@@ -553,7 +624,8 @@ Text90: @ 0x083776DA
 		.string "もうしばらく\n"
 		.string "時間をちょうだい…ね$"
 
-Text91: @ 0x0837774D
+Text_System_ZeroIMSorryYou: @ 0x0837774D
+	@ EN: Zero, I'm sorry. / You risked your life / to go after the Dark / Elf... / But the Dark Elf was / too fast, and we / lost sight of it. / I scanned that area / again, / but there's no / reading anywhere / in the vicinity. / I know an apology is / not enough, but I am / truly sorry, Zero.
 	.string "{WINDOW 0x40}"
 		.string "ゼロ…ごめんなさい……▼"
 		.string "せっかくゼロがいのちがけで\n"
@@ -571,14 +643,16 @@ Text91: @ 0x0837774D
 		.string "あやまってすむことじゃないけど……\n"
 		.string "本当にごめんなさい…ゼロ$"
 
-Text92: @ 0x083777FD
+Text_System_ZeroThankYouThatRecycling: @ 0x083777FD
+	@ EN: Zero... Thank you. / That recycling plant / will be out of / operation for some / time, I think. / Thank you so much...
 	.string "{WINDOW 0x40}"
 		.string "ゼロ…ありがとう▼"
 		.string "これで再生工場は、\n"
 		.string "しばらく動かないと思うわ…▼"
 		.string "本当に…ありがとう…$"
 
-Text93: @ 0x08377832
+Text_System_ZeroThankYouTheReports: @ 0x08377832
+	@ EN: Zero... Thank you. / The reports of the / Dark Elf... / They were really / Baby Elf sitings... / I wonder what Neo / Arcadia is planning / on doing with them.
 	.string "{WINDOW 0x40}"
 		.string "ゼロ、ありがとう…▼"
 		.string "ホウコクにあった\n"
@@ -589,7 +663,8 @@ Text93: @ 0x08377832
 		.string "あのコたちを使って\n"
 		.string "何をするつもりなのかしら……$"
 
-Text94: @ 0x0837788B
+Text_System_CielGoodluck_7: @ 0x0837788B
+	@ EN: Thank you, Zero. / Now that they are / without a leader, / the Neo Arcadians in / that area have / retreated. / Thank you so much...
 	.string "{WINDOW 0x40}"
 		.string "ありがとう…ゼロ…▼"
 		.string "リーダーをうしなって\n"
@@ -597,7 +672,8 @@ Text94: @ 0x0837788B
 		.string "タイキャクしたみたい…▼"
 		.string "本当にありがとう…$"
 
-Text95: @ 0x083778CB
+Text_System_CielGoodluck_8: @ 0x083778CB
+	@ EN: Thank you, Zero. / Now that they are / without a leader, / the Neo Arcadians in / that area have / retreated. / Thank you so much...
 	.string "{WINDOW 0x40}"
 		.string "ありがとう…ゼロ…▼"
 		.string "リーダーをうしなって\n"
@@ -605,7 +681,8 @@ Text95: @ 0x083778CB
 		.string "タイキャクしたみたい…▼"
 		.string "本当にありがとう…$"
 
-Text96: @ 0x0837790B
+Text_System_CielGoodluck_9: @ 0x0837790B
+	@ EN: Thank you, Zero. / Now that they are / without a leader, / the Neo Arcadians in / that area have / retreated. / Thank you so much...
 	.string "{WINDOW 0x40}"
 		.string "ありがとう…ゼロ…▼"
 		.string "リーダーをうしなって\n"
@@ -613,7 +690,8 @@ Text96: @ 0x0837790B
 		.string "タイキャクしたみたい…▼"
 		.string "本当にありがとう…$"
 
-Text97: @ 0x0837794B
+Text_System_WelcomeBackZeroItAppears: @ 0x0837794B
+	@ EN: Welcome back, Zero. / It appears that Weil / was attempting to / mass-produce Baby / Elves at that / factory. / But I wonder... / What was he planning / on doing with all / those Baby Elves?
 	.string "{WINDOW 0x40}"
 		.string "おかえりなさい…ゼロ…▼"
 		.string "バイルは、あの工場で\n"
@@ -623,7 +701,8 @@ Text97: @ 0x0837794B
 		.string "ベビーエルフをあんなに作って…\n"
 		.string "バイルは何するつもりだったのかしら$"
 
-Text98: @ 0x083779AE
+Text_System_CielGoodluck_12: @ 0x083779AE
+	@ EN: Zero... Thank you. / I'm analyzing all of / the data you / recovered for us. / We may be able to / figure out what Weil / is attempting to do, / by analyzing past / data. / I'll do my best.
 	.string "{WINDOW 0x40}"
 		.string "ゼロ…ありがとう…▼"
 		.string "カイシュウしてくれたデータは\n"
@@ -636,7 +715,8 @@ Text98: @ 0x083779AE
 		.string "わかるかもしれない▼"
 		.string "わたしも…がんばるから…ね$"
 
-Text99: @ 0x08377A21
+Text_System_CielGoodluck_13: @ 0x08377A21
+	@ EN: Zero... Thank you. / I'm analyzing all of / the data you / recovered for us. / We may be able to / figure out what Weil / is attempting to do, / by analyzing past / data. / I'll do my best.
 	.string "{WINDOW 0x40}"
 		.string "ゼロ…ありがとう…▼"
 		.string "カイシュウしてくれたデータは\n"
@@ -649,7 +729,8 @@ Text99: @ 0x08377A21
 		.string "わかるかもしれない▼"
 		.string "わたしも…がんばるから…ね…$"
 
-Text100: @ 0x08377A95
+Text_System_ThankYouZeroItLooks: @ 0x08377A95
+	@ EN: Thank you, Zero. / It looks like that / elevator was being / used to carry mass / amounts of / E-Crystals. / But, I wonder... / What was Weil up to / with all that / energy?
 	.string "{WINDOW 0x40}"
 		.string "ありがとう…ゼロ…▼"
 		.string "あのエレベーターは、\n"
@@ -659,7 +740,8 @@ Text100: @ 0x08377A95
 		.string "あんなにエネルギーを集めて…\n"
 		.string "バイルは何するつもりだったのかしら$"
 
-Text101: @ 0x08377AF2
+Text_System_ZeroItSGreatTo: @ 0x08377AF2
+	@ EN: Zero, it's great to / see you back safe. / X just sent us some / new coordinates. / Apparently, they / indicate where / Weil and Omega are. / This may be the last / battle... / Come talk to me when / you are ready.
 	.string "{WINDOW 0x40}"
 		.string "ゼロ…無事でよかった…▼"
 		.string "さっきエックスから\n"
@@ -672,24 +754,28 @@ Text101: @ 0x08377AF2
 		.string "声をかけてね…$"
 
 @ セルヴォ
-Text102: @ 0x08377B60
+Text_System_WhatWillItBe: @ 0x08377B60
+	@ EN: What will it be? / Secret Disk / Talk
 	.string "{WINDOW 0x43}"
 		.string "なんのようかな？\n"
 		.string "  シークレットディスクのカイセキ\n"
 		.string "  話をする$"
 
 @ コンピュータ
-Text103: @ 0x08377B85
+Text_System_BootCompleted: @ 0x08377B85
+	@ EN: Boot completed.
 	.string "{WINDOW 0x02}"
 		.string "キドウシマシタ$"
 
-Text104: @ 0x08377B8F
+Text_System_EnterCommand: @ 0x08377B8F
+	@ EN: Enter command. / Look something up / Transmission
 	.string "{WINDOW 0x02}"
 		.string "コマンド ヲ センタク シテ クダサイ\n"
 		.string "  何かをしらべる\n"
 		.string "  通信する$"
 
-Text105: @ 0x08377BB9
+Text_System_CanTradeBattlechipsW: @ 0x08377BB9
+	@ EN: Can trade BattleChips w /  / "MMBN 4 Red Sun" and / "MMBN 4 Blue Moon." / Send BattleChips to / "MMZ 3" to change / enemies in Cyberspace. / Begin transmission by / selecting "BattleChips" from / "Trade" in "Comm." / on the PET screen of "Mega / Man Battle Network 4."
 	.string "{WINDOW 0x02}"
 		.string "「ロックマンエグゼ4 レッドサン」\n"
 		.string "「ロックマンエグゼ4 ブルームーン」 ト\n"
@@ -700,540 +786,644 @@ Text105: @ 0x08377BB9
 		.string "「つうしん」 ノ 「トレード」 カラ\n"
 		.string "「バトルチップ」 ヲ センタク シテ 通信シテクダサイ$"
 
-Text106: @ 0x08377C75
+Text_System_BeginTransmission: @ 0x08377C75
+	@ EN: Begin transmission? / YES / NO
 	.string "{WINDOW 0x02}"
 		.string "通信ヲ カイシ シマスカ？\n"
 		.string "  はい\n"
 		.string "  いいえ$"
 
-Text107: @ 0x08377C92
+Text_System_WaitingForTransmission: @ 0x08377C92
+	@ EN: Waiting for transmission. /  / (Cancel with the B BUTTON)
 	.string "{WINDOW 0x02}"
 		.string "通信タイキ中デス\n"
 		.string "\n"
 		.string "(Bボタン デ キャンセル デキマス)$"
 
-Text108: @ 0x08377CB5
+Text_System_CommunicatingWith: @ 0x08377CB5
+	@ EN: Communicating with / MMBN 4. Enter / commands from MMBN 4.
 	.string "{WINDOW 0x02}"
 		.string "ロックマンエグゼ4 ト 通信中デス\n"
 		.string "ロックマンエグゼ4 ガワ デ ソウサ シテ クダサイ$"
 
-Text109: @ 0x08377CE7
+Text_System_TransmissionError: @ 0x08377CE7
+	@ EN: Transmission error. / Ending transmission.
 	.string "{WINDOW 0x02}"
 		.string "通信エラー デス\n"
 		.string "通信ヲ シュウリョウ シマス$"
 
-Text110: @ 0x08377D05
+Text_System_TransmissionComplete: @ 0x08377D05
+	@ EN: Transmission complete. / Cyberspace has changed!
 	.string "{WINDOW 0x02}"
 		.string "通信カンリョウ\n"
 		.string "サイバークウカン ガ ヘンカ シマシタ！$"
 
-Text111: @ 0x08377D26
+Text_System_TransmissionComplete_2: @ 0x08377D26
+	@ EN: Transmission complete.
 	.string "{WINDOW 0x02}"
 		.string "通信カンリョウ$"
 
 @ 改造カード
-Text112: @ 0x08377D32
-Text113: @ 0x08377D32
-Text114: @ 0x08377D32
-Text115: @ 0x08377D32
+Text_System_MegaBoosterCardReceived: @ 0x08377D32
+Text_System_MegaBoosterCardReceived_Alias1: @ 0x08377D32
+Text_System_MegaBoosterCardReceived_Alias2: @ 0x08377D32
+Text_System_MegaBoosterCardReceived_Alias3: @ 0x08377D32
+	@ EN: Mega Booster Card received. / BOOST UP / CANCEL
 	.string "{WINDOW 0x02}"
 		.string "{BOTTOM}改造カードをじゅしんしました\n"
 		.string "  改造じっこう\n"
 		.string "  やめておく$"
 
-Text116: @ 0x08377D59
+Text_System_TransmissionError_2: @ 0x08377D59
+	@ EN: Transmission error.
 	.string "{WINDOW 0x02}"
 		.string "{BOTTOM}通信エラーです$"
 
-Text117: @ 0x08377D66
+Text_System_CardBoostReverted: @ 0x08377D66
+	@ EN: Card boost reverted / to previous state.
 	.string "{WINDOW 0x02}"
 		.string "{BOTTOM}カード{VARIABLE}の改造を もとにもどしました$"
 
-Text118: @ 0x08377D7E
-Text119: @ 0x08377D7E
-Text120: @ 0x08377D7E
-Text121: @ 0x08377D7E
+Text_System_TitleBackgroundPicture: @ 0x08377D7E
+Text_System_TitleBackgroundPicture_Alias1: @ 0x08377D7E
+Text_System_TitleBackgroundPicture_Alias2: @ 0x08377D7E
+Text_System_TitleBackgroundPicture_Alias3: @ 0x08377D7E
+	@ EN: Title background picture / has changed.
 	.string "{WINDOW 0x02}"
 		.string "{BOTTOM}タイトルバックのえが\n"
 		.string "ちがうものに かわりました$"
 
-Text122: @ 0x08377D9A
+Text_System_PottedPlantAddedTo: @ 0x08377D9A
+	@ EN: Potted plant added to / Resistance Base, somewhere.
 	.string "{WINDOW 0x02}"
 		.string "{BOTTOM}レジスタンスベースのどこかに\n"
 		.string "はちうえが おかれました$"
 
-Text123: @ 0x08377DB9
+Text_System_DesignOfElevatorIn: @ 0x08377DB9
+	@ EN: Design of elevator in / Resistance Base changed.
 	.string "{WINDOW 0x02}"
 		.string "{BOTTOM}レジスタンスベースのエレベーターの\n"
 		.string "デザインが かわりました$"
 
-Text124: @ 0x08377DDB
+Text_System_ModCard_3: @ 0x08377DDB
+	@ EN: Attack of Z Saber increased / by 1.
 	.string "{WINDOW 0x02}"
 		.string "{BOTTOM}ゼットセイバーのコウゲキりょくが\n"
 		.string "つうじょう時より{RED}1{RED_END}ふえました$"
 
-Text125: @ 0x08377E01
+Text_System_PHunterEnergy: @ 0x08377E01
+	@ EN: P. Hunter energy / increased by 4.
 	.string "{WINDOW 0x02}"
 		.string "{BOTTOM}パンテオン・ハンターの体力が\n"
 		.string "{RED}4{RED_END}ふえました$"
 
-Text126: @ 0x08377E1E
+Text_System_PGuardianEnergy: @ 0x08377E1E
+	@ EN: P. Guardian energy / increased by 4.
 	.string "{WINDOW 0x02}"
 		.string "{BOTTOM}パンテオン・ガーディアンの体力が\n"
 		.string "{RED}4{RED_END}ふえました$"
 
-Text127: @ 0x08377E3D
+Text_System_DesignOfNurseElvesHas: @ 0x08377E3D
+	@ EN: Design of Nurse elves has / changed.
 	.string "{WINDOW 0x02}"
 		.string "{BOTTOM}ナース系エルフの\n"
 		.string "デザインが かわりました$"
 
-Text128: @ 0x08377E57
+Text_System_ModCard_7: @ 0x08377E57
+	@ EN: You have a new friend some- / where on the second floor / of the Resistance Base.
 	.string "{WINDOW 0x02}"
 		.string "{BOTTOM}レジスタンスベースの2かいの\n"
 		.string "どこかに 仲間が ふえました$"
 
-Text129: @ 0x08377E7A
+Text_System_TheDesignOfBustershot: @ 0x08377E7A
+	@ EN: The design of BusterShot / bullets has changed.
 	.string "{WINDOW 0x02}"
 		.string "{BOTTOM}バスターショットのタマの\n"
 		.string "デザインが かわりました$"
 
-Text130: @ 0x08377E97
+Text_System_TheDesignOfTheZ: @ 0x08377E97
+	@ EN: The design of the Z Panels / in the game has changed.
 	.string "{WINDOW 0x02}"
 		.string "{BOTTOM}ゲーム中に出現するZパネルの\n"
 		.string "デザインが かわりました$"
 
-Text131: @ 0x08377EB9
+Text_System_TheDesignOfAlouetteS: @ 0x08377EB9
+	@ EN: The design of Alouette's / clothing has changed.
 	.string "{WINDOW 0x02}"
 		.string "{BOTTOM}アルエットのきている ふくの\n"
 		.string "デザインが かわりました$"
 
-Text132: @ 0x08377ED8
+Text_System_ModCard_11: @ 0x08377ED8
+	@ EN: Attack of Animal elves / Archim and Archil have / increased by 1.
 	.string "{WINDOW 0x02}"
 		.string "{BOTTOM}アニマル系エルフのアーチムと\n"
 		.string "アーチルのコウゲキりょくが\n"
 		.string "つうじょう時より{RED}1{RED_END}ふえました$"
 
-Text133: @ 0x08377F0B
+Text_System_ZeroSDefenseIsNow: @ 0x08377F0B
+	@ EN: Zero's Defense is now / doubled.
 	.string "{WINDOW 0x02}"
 		.string "{BOTTOM}ゼロのボウギョりょくが\n"
 		.string "つうじょう時の2倍になりました$"
 
-Text134: @ 0x08377F2C
+Text_System_TheDesignOfTheMessage: @ 0x08377F2C
+	@ EN: The design of the message / window has changed.
 	.string "{WINDOW 0x02}"
 		.string "{BOTTOM}メッセージウィンドウの\n"
 		.string "デザインが かわりました$"
 
-Text135: @ 0x08377F48
+Text_System_TheDesignOfLifeEnergy: @ 0x08377F48
+	@ EN: The design of Life Energy / has changed.
 	.string "{WINDOW 0x02}"
 		.string "{BOTTOM}ライフエネルギーの\n"
 		.string "デザインが かわりました$"
 
-Text136: @ 0x08377F62
+Text_System_ModCard_18: @ 0x08377F62
+	@ EN: Attack of Recoil Rod has / increased by 1.
 	.string "{WINDOW 0x02}"
 		.string "{BOTTOM}リコイルロッドのコウゲキりょくが\n"
 		.string "つうじょう時より{RED}1{RED_END}ふえました$"
 
-Text137: @ 0x08377F88
+Text_System_AllBoostedItemsHave: @ 0x08377F88
+	@ EN: All boosted items have / been reset to default.
 	.string "{WINDOW 0x02}"
 		.string "{BOTTOM}これまで改造したものを\n"
 		.string "すべて リセットしました$"
 
-Text138: @ 0x08377FA6
+Text_System_ThereIsALostCat: @ 0x08377FA6
+	@ EN: There is a lost cat / somewhere in the / Resistance Base.
 	.string "{WINDOW 0x02}"
 		.string "{BOTTOM}レジスタンスベースのどこかに\n"
 		.string "ネコが まよいこみました$"
 
-Text139: @ 0x08377FC5
+Text_System_ItIsSnowingAtThe: @ 0x08377FC5
+	@ EN: It is snowing at the / Resistance Base.
 	.string "{WINDOW 0x02}"
 		.string "{BOTTOM}レジスタンスベースに\n"
 		.string "ユキが ふってきました$"
 
-Text140: @ 0x08377FDF
+Text_System_TheDesignOfThe: @ 0x08377FDF
+	@ EN: The design of the / E-Crystals in the / game has changed.
 	.string "{WINDOW 0x02}"
 		.string "{BOTTOM}ゲーム中に出現する\n"
 		.string "Eクリスタルの\n"
 		.string "デザインが かわりました$"
 
-Text141: @ 0x08378004
+Text_System_ModCard_23: @ 0x08378004
+	@ EN: Attack of S.Boomerang / has increased by 1.
 	.string "{WINDOW 0x02}"
 		.string "{BOTTOM}シールドブーメランの\n"
 		.string "コウゲキりょくが\n"
 		.string "つうじょう時より{RED}1{RED_END}ふえました$"
 
-Text142: @ 0x0837802D
+Text_System_ModCard_24: @ 0x0837802D
+	@ EN: Attack of Animal elves / Beetack and Beenipe have / increased by 1.
 	.string "{WINDOW 0x02}"
 		.string "{BOTTOM}アニマル系エルフのビータックと\n"
 		.string "ビーナイプのコウゲキりょくが\n"
 		.string "つうじょう時より{RED}1{RED_END}ふえました$"
 
-Text143: @ 0x08378062
+Text_System_DesignOfComputerIn: @ 0x08378062
+	@ EN: Design of computer in / Ciel's room has changed.
 	.string "{WINDOW 0x02}"
 		.string "{BOTTOM}シエルのへやのコンピューターの\n"
 		.string "デザインが かわりました$"
 
-Text144: @ 0x08378082
+Text_System_AMysteriousCyberElfHas: @ 0x08378082
+	@ EN: A mysterious Cyber-elf has / appeared somewhere in the / Resistance Base.
 	.string "{WINDOW 0x02}"
 		.string "{BOTTOM}レジスタンスベースのどこかに\n"
 		.string "なぞのサイバーエルフが現れました$"
 
-Text145: @ 0x083780A6
+Text_System_ModCard_27: @ 0x083780A6
+	@ EN: The Attack of BusterShots / has increased by 1.
 	.string "{WINDOW 0x02}"
 		.string "{BOTTOM}バスターショットのコウゲキりょくが\n"
 		.string "つうじょう時より{RED}1{RED_END}ふえました$"
 
-Text146: @ 0x083780CD
+Text_System_APaintingHasBeenHung: @ 0x083780CD
+	@ EN: A painting has been hung / from the Resistance Base / wall.
 	.string "{WINDOW 0x02}"
 		.string "{BOTTOM}レジスタンスベースのかべに\n"
 		.string "カイガが かけられました$"
 
-Text147: @ 0x083780EB
+Text_System_ANewDoorHasAppeared: @ 0x083780EB
+	@ EN: A new door has appeared / somewhere in the Resistance / Base.
 	.string "{WINDOW 0x02}"
 		.string "{BOTTOM}レジスタンスベースのどこかに\n"
 		.string "新しくトビラが出現しました$"
 
-Text148: @ 0x0837810E
+Text_System_ModCard_30: @ 0x0837810E
+	@ EN: The Attack of BusterShots / has increased by 2.
 	.string "{WINDOW 0x02}"
 		.string "{BOTTOM}バスターショットのコウゲキりょくが\n"
 		.string "つうじょう時より{RED}2{RED_END}ふえました$"
 
-Text149: @ 0x08378135
+Text_System_ModCard_31: @ 0x08378135
+	@ EN: You have a new friend some- / where on the first floor / of the Resistance Base.
 	.string "{WINDOW 0x02}"
 		.string "{BOTTOM}レジスタンスベースの1かいの\n"
 		.string "どこかに 仲間が ふえました$"
 
-Text150: @ 0x08378158
+Text_System_AFlowerHasBloomedOn: @ 0x08378158
+	@ EN: A flower has bloomed on the / Resistance Base roof.
 	.string "{WINDOW 0x02}"
 		.string "{BOTTOM}レジスタンスベースのおくじょうに\n"
 		.string "はなが さきました$"
 
-Text151: @ 0x08378176
+Text_System_TheDesignOfAnimalElves: @ 0x08378176
+	@ EN: The design of Animal elves / has changed.
 	.string "{WINDOW 0x02}"
 		.string "{BOTTOM}アニマル系エルフの\n"
 		.string "デザインが かわりました$"
 
-Text152: @ 0x08378191
+Text_System_AndrewLooksYoungerNow: @ 0x08378191
+	@ EN: Andrew looks younger now.
 	.string "{WINDOW 0x02}"
 		.string "{BOTTOM}アンドリューのすがたが\n"
 		.string "わかがえりました$"
 
-Text153: @ 0x083781A9
+Text_System_ModCard_38: @ 0x083781A9
+	@ EN: Attack of Animal elves / Archim and Archil have / increased by 2.
 	.string "{WINDOW 0x02}"
 		.string "{BOTTOM}アニマル系エルフのアーチムと\n"
 		.string "アーチルのコウゲキりょくが\n"
 		.string "つうじょう時より{RED}2{RED_END}ふえました$"
 
-Text154: @ 0x083781DC
+Text_System_SeagullsNowFlyInThe: @ 0x083781DC
+	@ EN: Seagulls now fly in the sky / above the Resistance Base.
 	.string "{WINDOW 0x02}"
 		.string "{BOTTOM}レジスタンスベースのそらに\n"
 		.string "カモメが やってきました$"
 
-Text155: @ 0x083781FA
+Text_System_ModCard_41: @ 0x083781FA
+	@ EN: Attack of Animal elves / Beetack and Beenipe have / increased by 2.
 	.string "{WINDOW 0x02}"
 		.string "{BOTTOM}アニマル系エルフのビータックと\n"
 		.string "ビーナイプのコウゲキりょくが\n"
 		.string "つうじょう時より{RED}2{RED_END}ふえました$"
 
-Text156: @ 0x0837822F
+Text_System_TheDesignOfSecretDisks: @ 0x0837822F
+	@ EN: The design of Secret Disks / has changed.
 	.string "{WINDOW 0x02}"
 		.string "{BOTTOM}シークレットディスクの\n"
 		.string "デザインが かわりました$"
 
-Text157: @ 0x0837824B
+Text_System_ModCard_43: @ 0x0837824B
+	@ EN: Attack of S.Boomerang / has increased by 2.
 	.string "{WINDOW 0x02}"
 		.string "{BOTTOM}シールドブーメランの\n"
 		.string "コウゲキりょくが\n"
 		.string "つうじょう時より{RED}2{RED_END}ふえました$"
 
-Text158: @ 0x08378274
+Text_System_SomebodyHasDrawnGraffiti: @ 0x08378274
+	@ EN: Somebody has drawn graffiti / on the Resistance Base / wall.
 	.string "{WINDOW 0x02}"
 		.string "{BOTTOM}レジスタンスベースのかべに\n"
 		.string "だれかが ラクガキしました$"
 
-Text159: @ 0x08378293
+Text_System_ModCard_48: @ 0x08378293
+	@ EN: Attack of Recoil Rod has / increased by 2.
 	.string "{WINDOW 0x02}"
 		.string "{BOTTOM}リコイルロッドのコウゲキりょくが\n"
 		.string "つうじょう時より{RED}2{RED_END}ふえました$"
 
-Text160: @ 0x083782B9
+Text_System_ModCard_52: @ 0x083782B9
+	@ EN: The conversation with the / Resistance fighter in the / watchtower at the right / side of the base has / changed.
 	.string "{WINDOW 0x02}"
 		.string "{BOTTOM}レジスタンスベースの右の\n"
 		.string "カンシトウにいるレジスタンスの\n"
 		.string "会話のナイヨウが かわりました$"
 
-Text161: @ 0x083782EC
+Text_System_ModCard_60: @ 0x083782EC
+	@ EN: Attack of S.Boomerang / has increased by 3.
 	.string "{WINDOW 0x02}"
 		.string "{BOTTOM}シールドブーメランの\n"
 		.string "コウゲキりょくが\n"
 		.string "つうじょう時より{RED}3{RED_END}ふえました$"
 
-Text162: @ 0x08378315
+Text_System_ModCard_61: @ 0x08378315
+	@ EN: The conversation with the / Resistance fighter in the / watchtower at the left / side of the base has / changed.
 	.string "{WINDOW 0x02}"
 		.string "{BOTTOM}レジスタンスベースの左の\n"
 		.string "カンシトウにいるレジスタンスの\n"
 		.string "会話のナイヨウが かわりました$"
 
-Text163: @ 0x08378348
+Text_System_ModCard_64: @ 0x08378348
+	@ EN: Attack of Animal elves / Beetack and Beenipe have / increased by 3.
 	.string "{WINDOW 0x02}"
 		.string "{BOTTOM}アニマル系エルフのビータックと\n"
 		.string "ビーナイプのコウゲキりょくが\n"
 		.string "つうじょう時より{RED}3{RED_END}ふえました$"
 
-Text164: @ 0x0837837D
+Text_System_ModCard_65: @ 0x0837837D
+	@ EN: Attack of Animal elves / Archim and Archil have / increased by 3.
 	.string "{WINDOW 0x02}"
 		.string "{BOTTOM}アニマル系エルフのアーチムと\n"
 		.string "アーチルのコウゲキりょくが\n"
 		.string "つうじょう時より{RED}3{RED_END}ふえました$"
 
-Text165: @ 0x083783B0
+Text_System_TheDesignOfHackerElves: @ 0x083783B0
+	@ EN: The design of Hacker elves / has changed.
 	.string "{WINDOW 0x02}"
 		.string "{BOTTOM}ハッカー系エルフの\n"
 		.string "デザインが かわりました$"
 
-Text166: @ 0x083783CB
+Text_System_EnergyOfCrossbyneHas: @ 0x083783CB
+	@ EN: Energy of Crossbyne has / increased by 4.
 	.string "{WINDOW 0x02}"
 		.string "{BOTTOM}クロスバインの体力が\n"
 		.string "{RED}4{RED_END}ふえました$"
 
-Text167: @ 0x083783E4
+Text_System_EnergyOfPBase: @ 0x083783E4
+	@ EN: Energy of P. Base / has increased by 4.
 	.string "{WINDOW 0x02}"
 		.string "{BOTTOM}パンテオン・ベースの体力が\n"
 		.string "{RED}4{RED_END}ふえました$"
 
-Text168: @ 0x08378400
+Text_System_ModCard_69: @ 0x08378400
+	@ EN: The Attack of BusterShots / has increased by 3.
 	.string "{WINDOW 0x02}"
 		.string "{BOTTOM}バスターショットのコウゲキりょくが\n"
 		.string "つうじょう時より{RED}3{RED_END}ふえました$"
 
-Text169: @ 0x08378427
+Text_System_ItIsNowNighttimeAt: @ 0x08378427
+	@ EN: It is now nighttime at the / Resistance Base.
 	.string "{WINDOW 0x02}"
 		.string "{BOTTOM}レジスタンスベースが\n"
 		.string "よるに なりました$"
 
-Text170: @ 0x0837843F
+Text_System_EnergyOfPAqua: @ 0x0837843F
+	@ EN: Energy of P. Aqua / has increased by 4.
 	.string "{WINDOW 0x02}"
 		.string "{BOTTOM}パンテオン・アクアの体力が\n"
 		.string "{RED}4{RED_END}ふえました$"
 
-Text171: @ 0x0837845B
+Text_System_FishNowJumpAroundThe: @ 0x0837845B
+	@ EN: Fish now jump around the / Resistance Base harbor.
 	.string "{WINDOW 0x02}"
 		.string "{BOTTOM}レジスタンスベースのミナトで\n"
 		.string "サカナが はねるようになりました$"
 
-Text172: @ 0x0837847E
+Text_System_ModCard_78: @ 0x0837847E
+	@ EN: Attack of Recoil Rod has / increased by 3.
 	.string "{WINDOW 0x02}"
 		.string "{BOTTOM}リコイルロッドのコウゲキりょくが\n"
 		.string "つうじょう時より{RED}3{RED_END}ふえました$"
 
-Text173: @ 0x083784A4
+Text_System_ModCard_79: @ 0x083784A4
+	@ EN: You have a new friend some- / where on the third floor / of the Resistance Base.
 	.string "{WINDOW 0x02}"
 		.string "{BOTTOM}レジスタンスベースの3かいの\n"
 		.string "どこかに 仲間が ふえました$"
 
-Text174: @ 0x083784C7
+Text_System_ModCard_81: @ 0x083784C7
+	@ EN: Attack of Animal elves / Archim and Archil have / increased by 4.
 	.string "{WINDOW 0x02}"
 		.string "{BOTTOM}アニマル系エルフのアーチムと\n"
 		.string "アーチルのコウゲキりょくが\n"
 		.string "つうじょう時より{RED}4{RED_END}ふえました$"
 
-Text175: @ 0x083784FA
+Text_System_ModCard_82: @ 0x083784FA
+	@ EN: Attack of Z Saber increased / by 2.
 	.string "{WINDOW 0x02}"
 		.string "{BOTTOM}ゼットセイバーのコウゲキりょくが\n"
 		.string "つうじょう時より{RED}2{RED_END}ふえました$"
 
-Text176: @ 0x08378520
+Text_System_EnergyOfPBomber: @ 0x08378520
+	@ EN: Energy of P. Bomber / has increased by 4.
 	.string "{WINDOW 0x02}"
 		.string "{BOTTOM}パンテオン・ボマーの体力が\n"
 		.string "{RED}4{RED_END}ふえました$"
 
-Text177: @ 0x0837853C
+Text_System_EnergyOfAlteredP: @ 0x0837853C
+	@ EN: Energy of altered P. / Aqua has increased by / 16.
 	.string "{WINDOW 0x02}"
 		.string "{BOTTOM}かいぞうパンテオン・アクアの体力が\n"
 		.string "{RED}16{RED_END}ふえました$"
 
-Text178: @ 0x0837855D
+Text_System_ModCard_90: @ 0x0837855D
+	@ EN: Attack of Z Saber increased / by 3.
 	.string "{WINDOW 0x02}"
 		.string "{BOTTOM}ゼットセイバーのコウゲキりょくが\n"
 		.string "つうじょう時より{RED}3{RED_END}ふえました$"
 
-Text179: @ 0x08378583
+Text_System_EnergyOfPurplenerple: @ 0x08378583
+	@ EN: Energy of PurpleNerple / increased by 4.
 	.string "{WINDOW 0x02}"
 		.string "{BOTTOM}パープルナープルの体力が\n"
 		.string "{RED}4{RED_END}ふえました$"
 
-Text180: @ 0x0837859E
+Text_System_EnergyOfShellcrawler: @ 0x0837859E
+	@ EN: Energy of Shellcrawler / increased by 4.
 	.string "{WINDOW 0x02}"
 		.string "{BOTTOM}シェルクローラーの体力が\n"
 		.string "{RED}4{RED_END}ふえました$"
 
-Text181: @ 0x083785B9
+Text_System_EnergyOfIcebonIncreased: @ 0x083785B9
+	@ EN: Energy of Icebon increased / by 4.
 	.string "{WINDOW 0x02}"
 		.string "{BOTTOM}アイスボンの体力が\n"
 		.string "{RED}4{RED_END}ふえました$"
 
-Text182: @ 0x083785D1
+Text_System_EnergyOfGCannon: @ 0x083785D1
+	@ EN: Energy of G. Cannon / increased by 4.
 	.string "{WINDOW 0x02}"
 		.string "{BOTTOM}ジェネレーターキャノンの体力が\n"
 		.string "{RED}4{RED_END}ふえました$"
 
-Text183: @ 0x083785EF
+Text_System_EnergyOfClaveker: @ 0x083785EF
+	@ EN: Energy of Claveker / increased by 4.
 	.string "{WINDOW 0x02}"
 		.string "{BOTTOM}クラベッガーの体力が\n"
 		.string "{RED}4{RED_END}ふえました$"
 
-Text184: @ 0x08378608
+Text_System_EnergyOfShotcounter: @ 0x08378608
+	@ EN: Energy of Shotcounter / increased by 4.
 	.string "{WINDOW 0x02}"
 		.string "{BOTTOM}シャットカウンターの体力が\n"
 		.string "{RED}4{RED_END}ふえました$"
 
-Text185: @ 0x08378624
+Text_System_EnergyOfGrandCannon: @ 0x08378624
+	@ EN: Energy of Grand Cannon / increased by 4.
 	.string "{WINDOW 0x02}"
 		.string "{BOTTOM}グランドキャノンの体力が\n"
 		.string "{RED}4{RED_END}ふえました$"
 
-Text186: @ 0x0837863F
+Text_System_EnergyOfShrimpolin: @ 0x0837863F
+	@ EN: Energy of Shrimpolin / increased by 4.
 	.string "{WINDOW 0x02}"
 		.string "{BOTTOM}シュリンポリンの体力が\n"
 		.string "{RED}4{RED_END}ふえました$"
 
-Text187: @ 0x08378659
+Text_System_EnergyOfBatring: @ 0x08378659
+	@ EN: Energy of Batring / increased by 4.
 	.string "{WINDOW 0x02}"
 		.string "{BOTTOM}バットンリングの体力が\n"
 		.string "{RED}4{RED_END}ふえました$"
 
-Text188: @ 0x08378673
+Text_System_EnergyOfPCannon: @ 0x08378673
+	@ EN: Energy of P. Cannon / increased by 4.
 	.string "{WINDOW 0x02}"
 		.string "{BOTTOM}ピラーキャノンの体力が\n"
 		.string "{RED}4{RED_END}ふえました$"
 
-Text189: @ 0x0837868D
+Text_System_EnergyOfVolcaire: @ 0x0837868D
+	@ EN: Energy of Volcaire / increased by 4.
 	.string "{WINDOW 0x02}"
 		.string "{BOTTOM}ヴォルケールの体力が\n"
 		.string "{RED}4{RED_END}ふえました$"
 
-Text190: @ 0x083786A6
+Text_System_EnergyOfSnakecord: @ 0x083786A6
+	@ EN: Energy of Snakecord / increased by 4.
 	.string "{WINDOW 0x02}"
 		.string "{BOTTOM}スネーケーブルの体力が\n"
 		.string "{RED}4{RED_END}ふえました$"
 
-Text191: @ 0x083786C0
+Text_System_EnergyOfLemmingles: @ 0x083786C0
+	@ EN: Energy of Lemmingles / increased by 4.
 	.string "{WINDOW 0x02}"
 		.string "{BOTTOM}レミングルスの体力が\n"
 		.string "{RED}4{RED_END}ふえました$"
 
-Text192: @ 0x083786D9
+Text_System_EnergyOfLamplort: @ 0x083786D9
+	@ EN: Energy of Lamplort / increased by 4.
 	.string "{WINDOW 0x02}"
 		.string "{BOTTOM}ランプロートの体力が\n"
 		.string "{RED}4{RED_END}ふえました$"
 
-Text193: @ 0x083786F2
+Text_System_EnergyOfTileCannon: @ 0x083786F2
+	@ EN: Energy of Tile Cannon / increased by 4.
 	.string "{WINDOW 0x02}"
 		.string "{BOTTOM}タイルキャノンの体力が\n"
 		.string "{RED}4{RED_END}ふえました$"
 
-Text194: @ 0x0837870C
+Text_System_EnergyOfShelluno: @ 0x0837870C
+	@ EN: Energy of Shelluno / increased by 4.
 	.string "{WINDOW 0x02}"
 		.string "{BOTTOM}シェルーノーの体力が\n"
 		.string "{RED}4{RED_END}ふえました$"
 
-Text195: @ 0x08378725
+Text_System_EnergyOfHeavyCannon: @ 0x08378725
+	@ EN: Energy of Heavy Cannon / increased by 4.
 	.string "{WINDOW 0x02}"
 		.string "{BOTTOM}ヘビーキャノンの体力が\n"
 		.string "{RED}4{RED_END}ふえました$"
 
-Text196: @ 0x0837873F
+Text_System_EnergyOfMothjiro: @ 0x0837873F
+	@ EN: Energy of Mothjiro / increased by 4.
 	.string "{WINDOW 0x02}"
 		.string "{BOTTOM}モスジーロの体力が\n"
 		.string "{RED}4{RED_END}ふえました$"
 
-Text197: @ 0x08378757
+Text_System_EnergyOfCCannon: @ 0x08378757
+	@ EN: Energy of C. Cannon / increased by 4.
 	.string "{WINDOW 0x02}"
 		.string "{BOTTOM}カプセルキャノンの体力が\n"
 		.string "{RED}4{RED_END}ふえました$"
 
-Text198: @ 0x08378772
+Text_System_EnergyOfCalibeeG: @ 0x08378772
+	@ EN: Energy of Calibee G / increased by 16.
 	.string "{WINDOW 0x02}"
 		.string "{BOTTOM}キャリビーGの体力が\n"
 		.string "{RED}16{RED_END}ふえました$"
 
-Text199: @ 0x0837878C
+Text_System_EnergyOfDeathlock: @ 0x0837878C
+	@ EN: Energy of Deathlock / increased by 4.
 	.string "{WINDOW 0x02}"
 		.string "{BOTTOM}ダスロックの体力が\n"
 		.string "{RED}4{RED_END}ふえました$"
 
-Text200: @ 0x083787A4
+Text_System_EnergyOfGyroCannon: @ 0x083787A4
+	@ EN: Energy of Gyro Cannon / increased by 4.
 	.string "{WINDOW 0x02}"
 		.string "{BOTTOM}ジャイロキャノンの体力が\n"
 		.string "{RED}4{RED_END}ふえました$"
 
-Text201: @ 0x083787BF
+Text_System_EnergyOfSharkshielX: @ 0x083787BF
+	@ EN: Energy of Sharkshiel X / increased by 4.
 	.string "{WINDOW 0x02}"
 		.string "{BOTTOM}シャークシールXの体力が\n"
 		.string "{RED}4{RED_END}ふえました$"
 
-Text202: @ 0x083787DA
+Text_System_EnergyOfOlwarmer: @ 0x083787DA
+	@ EN: Energy of Olwarmer / increased by 16.
 	.string "{WINDOW 0x02}"
 		.string "{BOTTOM}オールワーマーの体力が\n"
 		.string "{RED}16{RED_END}ふえました$"
 
-Text203: @ 0x083787F5
+Text_System_EnergyOfBranwarmer: @ 0x083787F5
+	@ EN: Energy of Branwarmer / increased by 16.
 	.string "{WINDOW 0x02}"
 		.string "{BOTTOM}ブランワーマーの体力が\n"
 		.string "{RED}16{RED_END}ふえました$"
 
-Text204: @ 0x08378810
+Text_System_EnergyOfLocomoIf: @ 0x08378810
+	@ EN: Energy of Locomo IF / increased by 16.
 	.string "{WINDOW 0x02}"
 		.string "{BOTTOM}ロコモIFの体力が\n"
 		.string "{RED}16{RED_END}ふえました$"
 
-Text205: @ 0x08378829
+Text_System_EnergyOfBeeserver: @ 0x08378829
+	@ EN: Energy of Beeserver / increased by 16.
 	.string "{WINDOW 0x02}"
 		.string "{BOTTOM}ビーサーバーの体力が\n"
 		.string "{RED}16{RED_END}ふえました$"
 
-Text206: @ 0x08378843
+Text_System_EnergyOfMegamilpa: @ 0x08378843
+	@ EN: Energy of Megamilpa / increased by 16.
 	.string "{WINDOW 0x02}"
 		.string "{BOTTOM}メガミルパの体力が\n"
 		.string "{RED}16{RED_END}ふえました$"
 
-Text207: @ 0x0837885C
-Text208: @ 0x0837885C
-Text209: @ 0x0837885C
-Text210: @ 0x0837885C
+Text_System_ZeroSMiniGame: @ 0x0837885C
+Text_System_ZeroSMiniGame_Alias1: @ 0x0837885C
+Text_System_ZeroSMiniGame_Alias2: @ 0x0837885C
+Text_System_ZeroSMiniGame_Alias3: @ 0x0837885C
+	@ EN: Zero's mini game / added!
 	.string "{WINDOW 0x02}"
 		.string "{BOTTOM}{RED}ゼロ{RED_END}のミニゲームが ツイカされました$"
 
-Text211: @ 0x08378874
+Text_System_CielSMiniGame: @ 0x08378874
+	@ EN: Ciel's mini game / added!
 	.string "{WINDOW 0x02}"
 		.string "{BOTTOM}{RED}シエル{RED_END}のミニゲームが ツイカされました$"
 
-Text212: @ 0x0837888D
+Text_System_CopyXSMiniGame: @ 0x0837888D
+	@ EN: Copy X's mini game / added!
 	.string "{WINDOW 0x02}"
 		.string "{BOTTOM}{RED}コピーエックス{RED_END}のミニゲームが ツイカされました$"
 
-Text213: @ 0x083788AA
+Text_System_HarpuiaSMiniGame: @ 0x083788AA
+	@ EN: Harpuia's mini game / added!
 	.string "{WINDOW 0x02}"
 		.string "{BOTTOM}{RED}ハルピュイア{RED_END}のミニゲームが ツイカされました$"
 
-Text214: @ 0x083788C6
+Text_System_FefnirSMiniGame: @ 0x083788C6
+	@ EN: Fefnir's mini game / added!
 	.string "{WINDOW 0x02}"
 		.string "{BOTTOM}{RED}ファーブニル{RED_END}のミニゲームが ツイカされました$"
 
-Text215: @ 0x083788E2
+Text_System_LeviathanSMiniGame: @ 0x083788E2
+	@ EN: Leviathan's mini game / added!
 	.string "{WINDOW 0x02}"
 		.string "{BOTTOM}{RED}レヴィアタン{RED_END}のミニゲームが ツイカされました$"
 
-Text216: @ 0x083788FE
+Text_System_PhantomSMiniGame: @ 0x083788FE
+	@ EN: Phantom's mini game / added!
 	.string "{WINDOW 0x02}"
 		.string "{BOTTOM}{RED}ファントム{RED_END}のミニゲームが ツイカされました$"
 
-Text217: @ 0x08378919
+Text_System_HardModeAddedPlayIn: @ 0x08378919
+	@ EN: Hard Mode added! / Play in Hard Mode by / holding the L BUTTON down / while selecting NEW GAME.
 	.string "{WINDOW 0x02}"
 		.string "{BOTTOM}{RED}ハードモード{RED_END}が ツイカされました▼"
 		.string "Lボタンをおしながら\n"
 		.string "「はじめから」をせんたくすると\n"
 		.string "ハードモードでプレイすることができます$"
 
-Text218: @ 0x0837895E
+Text_System_UltimateModeAddedPlayIn: @ 0x0837895E
+	@ EN: Ultimate Mode added! / Play in Ultimate Mode by / holding the R BUTTON down / while selecting NEW GAME.
 	.string "{WINDOW 0x02}"
 		.string "{BOTTOM}{RED}アルティメットモード{RED_END}が ツイカされました▼"
 		.string "Rボタンをおしながら\n"

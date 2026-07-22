@@ -1,4 +1,5 @@
 #include "gfx.h"
+#include "string_ids.h"
 #include "global.h"
 #include "input.h"
 #include "sound.h"
@@ -1035,7 +1036,7 @@ static void _UpdateTextWindow_1_MugshotMessage(TextWindowText* t) {
           }
           {
             // Draw cursor
-            const char* s = STRING(0);  // ▷
+            const char* s = STRING(STR_CURSOR);  // ▷
             s32 no_left_mugshot = 0;
             u32 x8, y8;
             if (t->mugshotRight || t->mugshot == NO_MUGSHOT) no_left_mugshot = 1;

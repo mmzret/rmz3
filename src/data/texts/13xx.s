@@ -5,24 +5,25 @@
 @ preproc: treat "label::" as ".global label ; label:"
 
 TextOfs_Others:: @ 0x083836cc
-	.2byte (Text0-Start), (Text1-Start), (Text2-Start), (Text3-Start), (Text4-Start), (Text5-Start), (Text6-Start), (Text7-Start)
-	.2byte (Text8-Start), (Text9-Start), (Text10-Start), (Text11-Start), (Text12-Start), (Text13-Start), (Text14-Start), (Text15-Start)
-	.2byte (Text16-Start), (Text17-Start), (Text18-Start), (Text19-Start), (Text20-Start), (Text21-Start), (Text22-Start), (Text23-Start)
-	.2byte (Text24-Start), (Text25-Start), (Text26-Start), (Text27-Start), (Text28-Start), (Text29-Start), (Text30-Start), (Text31-Start)
-	.2byte (Text32-Start), (Text33-Start), (Text34-Start), (Text35-Start), (Text36-Start), (Text37-Start), (Text38-Start), (Text39-Start)
-	.2byte (Text40-Start), (Text41-Start), (Text42-Start), (Text43-Start), (Text44-Start), (Text45-Start), (Text46-Start), (Text47-Start)
-	.2byte (Text48-Start), (Text49-Start), (Text50-Start), (Text51-Start), (Text52-Start), (Text53-Start), (Text54-Start), (Text55-Start)
-	.2byte (Text56-Start), (Text57-Start), (Text58-Start), (Text59-Start), (Text60-Start), (Text61-Start), (Text62-Start), (Text63-Start)
-	.2byte (Text64-Start), (Text65-Start), (Text66-Start), (Text67-Start), (Text68-Start), (Text69-Start), (Text70-Start), (Text71-Start)
-	.2byte (Text72-Start), (Text73-Start), (Text74-Start), (Text75-Start), (Text76-Start), (Text77-Start), (Text78-Start), (Text79-Start)
-	.2byte (Text80-Start), (Text81-Start), (Text82-Start), (Text83-Start), (Text84-Start), (Text85-Start), (Text86-Start), (Text87-Start)
-	.2byte (Text88-Start), (Text89-Start), (Text90-Start), (Text91-Start), (Text92-Start), (Text93-Start), (Text94-Start), (Text95-Start)
-	.2byte (Text96-Start), (Text97-Start), (Text98-Start), (Text99-Start)
+	.2byte (Text_Others_MsCielPlease-Start), (Text_Others_TheSimulationWill-Start), (Text_Others_ILlSaveOurData-Start), (Text_Others_ILlTakeCareOf-Start), (Text_Others_ShouldnTYouBe-Start), (Text_Others_HaveYouTalkedTo-Start), (Text_Others_CerveauSRoomGoThrough-Start), (Text_Others_HeyZeroYouRe-Start)
+	.2byte (Text_Others_OhOneMoreThing-Start), (Text_Others_OperatorMrZeroPleaseCome-Start), (Text_Others_HmmZeroTheyRe-Start), (Text_Others_ThisRecoilRod-Start), (Text_Others_TheWorldIsToo-Start), (Text_Others_SorryThisTookSo-Start), (Text_Others_SelectAMission-Start), (Text_Others_WheneverYouRe-Start)
+	.2byte (Text_Others_YouHaveCompleted-Start), (Text_Others_WeHaveToDo-Start), (Text_Others_AllRightOhYeah-Start), (Text_Others_WeLlContactYou-Start), (Text_Others_OkayButPlease-Start), (Text_Others_MasterXDoYouStill-Start), (Text_Others_ButHehehe-Start), (Text_Others_IDrWeilShall-Start)
+	.2byte (Text_Others_StillToGossip-Start), (Text_Others_MasterXTheDarkElf-Start), (Text_Others_WeLlGoLeviathanAnd-Start), (Text_Others_Hehehehe-Start), (Text_Others_PreparationsHave-Start), (Text_Others_CielEnterTheCoordi-Start), (Text_Others_ThatSDangerous-Start), (Text_Others_OperatorHurryUpAndPrepare-Start)
+	.2byte (Text_Others_ZeroIMNotSure-Start), (Text_Others_Empty-Start), (Text_Others_Okay-Start), (Text_Others_ZeroEllipsis-Start), (Text_Others_ZeroIMSoHappy-Start), (Text_Others_CerveauTookHimTo-Start), (Text_Others_ThenAtLeast-Start), (Text_Others_IStillDonTUnder-Start)
+	.2byte (Text_Others_OkayIStillDonT-Start), (Text_Others_SomeoneHasBroken-Start), (Text_Others_PutThemThrough-Start), (Text_Others_CanYouHHHear-Start), (Text_Others_SurrenderHandOverTheNew-Start), (Text_Others_ICanTTrustYou-Start), (Text_Others_YouWerePreparedTo-Start), (Text_Others_IsThatYYour-Start)
+	.2byte (Text_Others_TheTransmissionWas-Start), (Text_Others_TheNeoArcadian-Start), (Text_Others_ZeroIYouBelievedIn-Start), (Text_Others_MaintenanceRoomInUse-Start), (Text_Others_SoThisIsWhatIt-Start), (Text_Others_LivesWithPlenty-Start), (Text_Others_YesButFirst-Start), (Text_Others_WeVeIsolatedSome-Start)
+	.2byte (Text_Others_AndThereWeVeJust-Start), (Text_Others_ThanksToZero-Start), (Text_Others_OhYesThatReminds-Start), (Text_Others_Okay_2-Start), (Text_Others_CanYouStandUp-Start), (Text_Others_WhatAreYouUpTo-Start), (Text_Others_OhYouReAwakeHow-Start), (Text_Others_WaitYourWoundsAreNot-Start)
+	.2byte (Text_Others_SoHarpuiaRefuses-Start), (Text_Others_OperatorMrZeroComeTo-Start), (Text_Others_TheySureRunYou-Start), (Text_Others_ZeroHarpuiaDonTYou-Start), (Text_Others_WeAreAnalyzingThe-Start), (Text_Others_InformationAnalysis-Start), (Text_Others_ZeroIMSorryYou-Start), (Text_Others_File945388-Start)
+	.2byte (Text_Others_NearTheEndOfThe-Start), (Text_Others_TheTechnologyUsed-Start), (Text_Others_HeheheheExcellentDetective-Start), (Text_Others_WhatUnfortunatelyYouWereA-Start), (Text_Others_IsThatDrWeil-Start), (Text_Others_HeheheThisTimeOmegaIs-Start), (Text_Others_NowYouWillSee-Start), (Text_Others_TasteTheFearFoolishReploids-Start)
+	.2byte (Text_Others_InscribeMyName-Start), (Text_Others_ThatNameIs-Start), (Text_Others_HeheheheheeeBwahahahahah-Start), (Text_Others_No-Start), (Text_Others_RrrGrrph-Start), (Text_Others_ThisCanTBe-Start), (Text_Others_ANewWorld-Start), (Text_Others_CielBack-Start)
+	.2byte (Text_Others_ZeroInscribeItUponThe-Start), (Text_Others_BothOfYouFreeze-Start), (Text_Others_ArghItSOkayThey-Start), (Text_Others_TookYouLong-Start), (Text_Others_IIVeVerifiedThe-Start), (Text_Others_RogerAll-Start), (Text_Others_PreparationsFor-Start), (Text_Others_Transfer-Start)
+	.2byte (Text_Others_CoordinateData-Start), (Text_Others_TheCoordinates-Start), (Text_Others_ZeroBeCarefulIWill-Start), (Text_Others_YouCanGoAtAny-Start)
 
 Text_Others:: @ 0x08383794
 Start:
 
-Text0: @ 0x08383794
+Text_Others_MsCielPlease: @ 0x08383794
+	@ EN: Ms. Ciel, please / cheer up. / Everything's turned / out alright before, / hasn't it?! / That's right. / We believe in you, / Ms. Ciel. And in / Mr. Zero, too! / Thank you, everyone.
 	.string "{WINDOW 0x6C}"
 		.string "シエルさん、ゲンキ出してください▼"
 		.string "今までだって、\n"
@@ -35,7 +36,8 @@ Text0: @ 0x08383794
 	.string "{WINDOW 0x40}"
 		.string "あ…ありがとう、みんな………$"
 
-Text1: @ 0x083837FB
+Text_Others_TheSimulationWill: @ 0x083837FB
+	@ EN: The simulation will / take a while longer / to finish... / I think we're going / to need your help / again, Zero... / But you should get a / little rest, first. / For now...
 	.string "{WINDOW 0x40}"
 		.string "シミュレーションの\n"
 		.string "ケッカが出るまで\n"
@@ -47,12 +49,14 @@ Text1: @ 0x083837FB
 		.string "カラダをやすめて…もらえるかしら▼"
 		.string "とりあえず……$"
 
-Text2: @ 0x08383869
+Text_Others_ILlSaveOurData: @ 0x08383869
+	@ EN: I'll save our data. / YES / NO
 		.string "今までのことをキロクしておくわね…\n"
 		.string "  はい\n"
 		.string "  いいえ$"
 
-Text3: @ 0x08383887
+Text_Others_ILlTakeCareOf: @ 0x08383887
+	@ EN: I'll take care of / managing the data, / just like always. / If you need any- / thing, let me know. / One more thing... / You should go see / Cerveau. / I hear he's finished / his Secret Disk / analyzer. / If you find any / Secret Disks that / you can't analyze, / ask Cerveau to have / a look for you.
 	.string "{WINDOW 0x40}"
 		.string "データのカンリは、\n"
 		.string "いつものように\n"
@@ -69,7 +73,8 @@ Text3: @ 0x08383887
 		.string "シークレットディスクは\n"
 		.string "セルヴォに おねがいするといいわ$"
 
-Text4: @ 0x0838391F
+Text_Others_ShouldnTYouBe: @ 0x0838391F
+	@ EN: Shouldn't you be / resting? Don't / overdo it. / I'll manage the / data. Tell me if / you need anything. / One more thing... / You should go see / Cerveau. / I hear he's finished / his Secret Disk / analyzer. / If you find any / Secret Disks that / you can't analyze, / ask Cerveau to have / a look for you.
 	.string "{WINDOW 0x40}"
 		.string "やすまなくてヘイキ？\n"
 		.string "無理はしないでね▼"
@@ -86,14 +91,16 @@ Text4: @ 0x0838391F
 		.string "シークレットディスクは\n"
 		.string "セルヴォに おねがいするといいわ$"
 
-Text5: @ 0x083839CA
+Text_Others_HaveYouTalkedTo: @ 0x083839CA
+	@ EN: Have you talked to / Cerveau yet? / I hear he can't wait / to try out his / disk analyzer!
 	.string "{WINDOW 0x40}"
 		.string "セルヴォには、もう会ったの？▼"
 		.string "セルヴォったら、\n"
 		.string "ディスクのカイセキそうちを\n"
 		.string "はやく ためしてみたいそうよ$"
 
-Text6: @ 0x08383A02
+Text_Others_CerveauSRoomGoThrough: @ 0x08383A02
+	@ EN: Cerveau's room? / Go through the / commander's room to / the right, and it's / the room right in / front of you. / It's convenient / that the base is so / big now, but it sure / is easy to get lost!
 	.string "{WINDOW 0x6C}"
 		.string "セルヴォのへやですか？▼"
 		.string "シレイシツを 右へぬけて、\n"
@@ -102,7 +109,8 @@ Text6: @ 0x08383A02
 		.string "うれしいですけど…\n"
 		.string "こうひろいと まよっちゃいますよね$"
 
-Text7: @ 0x08383A53
+Text_Others_HeyZeroYouRe: @ 0x08383A53
+	@ EN: Hey, Zero! You're / all right! / I heard the news. / Despite the new / energy, the world is / still not at peace. / I never thought / peace would be easy, / but still... / ... / Anyway, I just / finished a new / weapon for you. / I also fixed your / S.Boomerang! / Here, take it!
 	.string "{WINDOW 0x43}"
 		.string "おお！ ゼロ！ 無事だったか！！▼"
 		.string "話は聞いたぞ▼"
@@ -120,7 +128,8 @@ Text7: @ 0x08383A53
 		.string "シュウリしておいたぞ！▼"
 		.string "もっていきなさい！$"
 
-Text8: @ 0x08383B0E
+Text_Others_OhOneMoreThing: @ 0x08383B0E
+	@ EN: Oh, one more thing. / About Secret Disks. / Secret Disks contain / things that you / can't decode, right? / Well, I can analyze / them for you, so / stop by anytime. / You can also talk to / me if you ever want / to look at the / contents of a disk / we've already / analyzed.
 	.string "{WINDOW 0x43}"
 		.string "あっ、そうそう\n"
 		.string "シークレットディスクに\n"
@@ -135,28 +144,33 @@ Text8: @ 0x08383B0E
 		.string "ナイヨウをカクニンしたい時は\n"
 		.string "わたしのところに来なさい$"
 
-Text9: @ 0x08383BA5
+Text_Others_OperatorMrZeroPleaseCome: @ 0x08383BA5
+	@ EN: Operator: Mr. Zero... / Please come to the / commander's room, / immediately.
 	.string "{WINDOW 0x00}"
 		.string "オペレーター「ゼロさん、ゼロさん…▼"
 		.string "シキュウ、シレイシツまでおこしください…$"
 
-Text10: @ 0x08383BCE
+Text_Others_HmmZeroTheyRe: @ 0x08383BCE
+	@ EN: Hmm? Zero, they're / asking for you.
 	.string "{WINDOW 0x43}"
 		.string "ん？ ゼロ…呼んどるようだぞ$"
 
-Text11: @ 0x08383BE0
+Text_Others_ThisRecoilRod: @ 0x08383BE0
+	@ EN: This Recoil Rod / looks easy to use. / Thanks.
 	.string "{WINDOW 0x04}"
 		.string "リコイルロッド……使いやすそうだ\n"
 		.string "カンシャする…$"
 
-Text12: @ 0x08383BFC
+Text_Others_TheWorldIsToo: @ 0x08383BFC
+	@ EN: The world is too / much for Ciel to / bear alone... / Take good care of / her, Zero...
 	.string "{WINDOW 0x43}"
 		.string "シエルにはまだ……\n"
 		.string "世界は、おも過ぎる……▼"
 		.string "ささえてやってくれ\n"
 		.string "ゼロ……$"
 
-Text13: @ 0x08383C26
+Text_Others_SorryThisTookSo: @ 0x08383C26
+	@ EN: Sorry this took so / long, Zero. / Are you ready? / We've simulated our / options based on the / information at hand. / I've had the results / prepared in the form / of missions. / The first two are... / Missions to prevent / Neo Arcadia getting / the Dark Elf. / The other two are... / Guerilla attacks / on Neo Arcadia. / to protect everyone / from its threat. / ... / ... / Zero...is fighting / our only option? / I mean, we've / developed this new / energy... / I thought the world / would finally be at / peace... / Do we really have to / keep fighting? / Ciel... / You're already doing / the best you can. / And you're not / alone. / Leave the rest to / us. / Ze...Zero... / Mr. Zero, we're / ready. You can leave / at any time.
 	.string "{WINDOW 0x40}"
 		.string "またせちゃったわね\n"
 		.string "ゼロ…\n"
@@ -198,18 +212,21 @@ Text13: @ 0x08383C26
 		.string "ゼロさん\n"
 		.string "いつでも行けます……$"
 
-Text14: @ 0x08383DB4
+Text_Others_SelectAMission: @ 0x08383DB4
+	@ EN: Select a mission? / YES / NO
 	.string "{WINDOW 0x62}"
 		.string "ミッションをセンタクしますか？\n"
 		.string "  はい\n"
 		.string "  いいえ$"
 
-Text15: @ 0x08383DD1
+Text_Others_WheneverYouRe: @ 0x08383DD1
+	@ EN: Whenever you're / ready, just let me / know.
 	.string "{WINDOW 0x62}"
 		.string "{TOP}では、ジュンビができましたら\n"
 		.string "いつでも声をおかけください…$"
 
-Text16: @ 0x08383DF3
+Text_Others_YouHaveCompleted: @ 0x08383DF3
+	@ EN: You have completed / all the missions. / This next mission / involves deciding / what to do with a / missile factory / that's been newly / discovered. / We are currently / also searching for / the Dark Elf, / while we look into / solutions for this / problem.
 	.string "{WINDOW 0x61}"
 		.string "これですべてのミッションが\n"
 		.string "シュウリョウしました▼"
@@ -221,7 +238,8 @@ Text16: @ 0x08383DF3
 		.string "このモンダイへの\n"
 		.string "タイオウをケントウ中です$"
 
-Text17: @ 0x08383E65
+Text_Others_WeHaveToDo: @ 0x08383E65
+	@ EN: We have to do / something about that / missile right now. / We had to calculate / the transfer / coordinates for the / missile factory / based on old satel- / lite photographs... / ...so the coordi- / nates would be too / dangerous to use as / a direct transfer / route. / The land route to / the missile factory / is also dangerous, / due to the scout / patrols that are / searching the area. / We're scanning / for the Dark Elf, / but no luck yet. / Understood. / Let me know if / anything changes.
 	.string "{WINDOW 0x40}"
 		.string "イッコクもはやく\n"
 		.string "あのミサイルをなんとか\n"
@@ -243,24 +261,28 @@ Text17: @ 0x08383E65
 		.string "ジョウキョウがかわったら\n"
 		.string "おしえてくれ…$"
 
-Text18: @ 0x08383F4B
+Text_Others_AllRightOhYeah: @ 0x08383F4B
+	@ EN: All right. / Oh, yeah...
 	.string "{WINDOW 0x40}"
 		.string "わかったわ…▼"
 		.string "あっ、そうだ…$"
 
-Text19: @ 0x08383F5C
+Text_Others_WeLlContactYou: @ 0x08383F5C
+	@ EN: We'll contact you / right away if we / learn anything new. / Please get some rest / until then.
 	.string "{WINDOW 0x40}"
 		.string "何か わかったら、\n"
 		.string "すぐにレンラクするから…\n"
 		.string "それまで、ゆっくりやすんで…ね$"
 
-Text20: @ 0x08383F86
+Text_Others_OkayButPlease: @ 0x08383F86
+	@ EN: Okay...but please / try not to overdo / it. / We'll contact you / soon, so please get / some rest for now.
 	.string "{WINDOW 0x40}"
 		.string "そう…でも無理はしないでね▼"
 		.string "すぐにレンラクするから…\n"
 		.string "それまで、ゆっくりやすんで…ね$"
 
-Text21: @ 0x08383FB5
+Text_Others_MasterXDoYouStill: @ 0x08383FB5
+	@ EN: Master X... / Do you still trust / that man...Weil? / His banishment did / not follow official / ch-channels. / Just because what he / did resulted i-in a / terrible calamity... / Do-does not mean / that banishing him / was justified. / He has returned to / Neo Arcadia in a / legal manner. / What reason-n is / there to drive him / out? / Don't worr-rr-rry. / He learned many / things from his / mistakes of the / past. / He'll do things / right th-this time.
 	.string "{WINDOW 0x2C}"
 		.string "エックスさま……▼"
 		.string "まだ、あのオトコ…バイルを\n"
@@ -285,14 +307,16 @@ Text21: @ 0x08383FB5
 		.string "今度こそウマくやるに\n"
 		.string "チガいなイ……$"
 
-Text22: @ 0x083840CD
+Text_Others_ButHehehe: @ 0x083840CD
+	@ EN: But... / Hehehe... / Thank you, Master X.
 	.string "{WINDOW 0x2C}"
 		.string "ですが…！▼"
 	.string "{WINDOW 0x3B}"
 		.string "クックック…\n"
 		.string "さすがは、エックスさま$"
 
-Text23: @ 0x083840EA
+Text_Others_IDrWeilShall: @ 0x083840EA
+	@ EN: I, Dr. Weil, shall / never repeat my / past mistakes. / Never again. Yes. / Hehehe...
 	.string "{WINDOW 0x3B}"
 		.string "このバイル、\n"
 		.string "同じアヤマチは、\n"
@@ -300,7 +324,8 @@ Text23: @ 0x083840EA
 		.string "そう…にどと……ね\n"
 		.string "クックック…$"
 
-Text24: @ 0x08384118
+Text_Others_StillToGossip: @ 0x08384118
+	@ EN: Still, to gossip / about me behind my / back... / My, how the almighty / Four Guardians have / fallen! / What?! Weil!
 	.string "{WINDOW 0x3B}"
 		.string "{BOTTOM}しかし…\n"
 		.string "ワシのいないところで\n"
@@ -310,7 +335,8 @@ Text24: @ 0x08384118
 	.string "{WINDOW 0x2C}"
 		.string "{BOTTOM}なんだと……バイル…！$"
 
-Text25: @ 0x08384157
+Text_Others_MasterXTheDarkElf: @ 0x08384157
+	@ EN: Master X. / The Dark Elf has / appeared in Neo / Arcadia. / Area Z-3079... / It's the farthest / area from here. / A human / residential / district.
 	.string "{WINDOW 0x3B}"
 		.string "ところでエックスさま▼"
 		.string "ダークエルフが\n"
@@ -320,7 +346,8 @@ Text25: @ 0x08384157
 		.string "ここから、もっともはなれた\n"
 		.string "人間の きょじゅうくなんですが…$"
 
-Text26: @ 0x083841AD
+Text_Others_WeLlGoLeviathanAnd: @ 0x083841AD
+	@ EN: We'll go. / Leviathan and / Fefnir are still / undergoing / maintenance, but if / we hurry things / along a bit... / Harpuia, how long do / you plan to act like / you're in charge? / Letting th-the / Resistance get away / with countless / uprisings... / Even letting th-the / Dark Elf escape... / I'm tired of useless / p-people like you. / The Four Guardians / are going to be / stepped down. / But...Master X?! / Dr. Weil... / I'm entrusting you / with the leadership / of our ar-armies. / Will you accept?
 	.string "{WINDOW 0x2C}"
 		.string "われわれが行きます▼"
 		.string "レヴィアタンとファーブニルは、\n"
@@ -345,7 +372,8 @@ Text26: @ 0x083841AD
 		.string "キミにまカせる▼"
 		.string "やっテクれる…ナ$"
 
-Text27: @ 0x08384296
+Text_Others_Hehehehe: @ 0x08384296
+	@ EN: Hehehehe... / Yes sir! / I will capture the / Dark Elf, without / fail... / ...Before she falls / into the hands of / the Resistance and / becomes a threat to / this world...
 	.string "{WINDOW 0x3B}"
 		.string "クーックックックッ…\n"
 		.string "リョウカイいたしました…▼"
@@ -355,7 +383,8 @@ Text27: @ 0x08384296
 		.string "この世界のキョウイとならぬよう…\n"
 		.string "クーックックッ$"
 
-Text28: @ 0x083842F2
+Text_Others_PreparationsHave: @ 0x083842F2
+	@ EN: Preparations have / begun for the launch / of the missile. / We do not know the / target area, but we / are attempting to / hack our way in and / find out. / A tremendous energy / is emanating / from the missile. / It seems that Omega / is on board. / Omega?! / That Omega, on the / missile!? / ...
 	.string "{WINDOW 0x61}"
 		.string "巨大ミサイルが\n"
 		.string "ハッシャじゅんびに入りました▼"
@@ -372,32 +401,38 @@ Text28: @ 0x083842F2
 	.string "{WINDOW 0x04}"
 		.string "………$"
 
-Text29: @ 0x0838437D
+Text_Others_CielEnterTheCoordi: @ 0x0838437D
+	@ EN: Ciel... / Enter the coordi- / nates you found.
 	.string "{WINDOW 0x04}"
 		.string "シエル…▼"
 		.string "オマエがカイセキした\n"
 		.string "ザヒョウを入力させろ$"
 
-Text30: @ 0x0838439C
+Text_Others_ThatSDangerous: @ 0x0838439C
+	@ EN: That's...dangerous!
 	.string "{WINDOW 0x40}"
 		.string "そんな…キケンだわ！$"
 
-Text31: @ 0x083843A9
+Text_Others_OperatorHurryUpAndPrepare: @ 0x083843A9
+	@ EN: Operator. / Hurry up and prepare / for transfer.
 	.string "{WINDOW 0x04}"
 		.string "オペレーター▼"
 		.string "転送ジュンビいそげ$"
 
-Text32: @ 0x083843BE
+Text_Others_ZeroIMNotSure: @ 0x083843BE
+	@ EN: Zero, I'm not sure / about this! / I believe in you.
 	.string "{WINDOW 0x40}"
 		.string "ゼロ……自信がない！！▼"
 	.string "{WINDOW 0x04}"
 		.string "オレは、オマエを信じている$"
 
-Text33: @ 0x083843DF
+Text_Others_Empty: @ 0x083843DF
+	@ EN: ...
 	.string "{WINDOW 0x40}"
 		.string "………………$"
 
-Text34: @ 0x083843E8
+Text_Others_Okay: @ 0x083843E8
+	@ EN: Okay... / ... / Enter...the data... / Please, transfer / him! / Understood. / Commencing transfer / preparations.
 	.string "{WINDOW 0x40}"
 		.string "わかった……\n"
 		.string "………\n"
@@ -407,11 +442,13 @@ Text34: @ 0x083843E8
 		.string "リョウカイ\n"
 		.string "転送ジュンビかいし…$"
 
-Text35: @ 0x08384425
+Text_Others_ZeroEllipsis: @ 0x08384425
+	@ EN: Zero...
 	.string "{WINDOW 0x40}"
 		.string "ゼロ………$"
 
-Text36: @ 0x0838442D
+Text_Others_ZeroIMSoHappy: @ 0x0838442D
+	@ EN: Zero... / I'm so happy that / you're safe... / Please...never do / anything as crazy as / that again.... / ... / I'll think about it. / By the way... / How is Harpuia?
 	.string "{WINDOW 0x40}"
 		.string "ゼロ………▼"
 		.string "ほんとに…無事でよかった……▼"
@@ -424,7 +461,8 @@ Text36: @ 0x0838442D
 		.string "ところで……\n"
 		.string "ハルピュイアは…？$"
 
-Text37: @ 0x08384489
+Text_Others_CerveauTookHimTo: @ 0x08384489
+	@ EN: Cerveau took him to / the maintenance / room. / He wasn't hurt very / badly, but... / He'll have to rest / and recuperate for / a while. / ... / Things really have / gotten horrible... / The operators will / collect as much / info as possible. / Analyzing all of the / information will / take a while. / Try to get some rest / until then. / I'm all right.
 	.string "{WINDOW 0x40}"
 		.string "セルヴォがメンテナンス・ルームに\n"
 		.string "つれていったわ▼"
@@ -444,11 +482,13 @@ Text37: @ 0x08384489
 	.string "{WINDOW 0x05}"
 		.string "だいじょうぶだ$"
 
-Text38: @ 0x0838454C
+Text_Others_ThenAtLeast: @ 0x0838454C
+	@ EN: Then, at least...
 	.string "{WINDOW 0x40}"
 		.string "じゃあ、せめて……$"
 
-Text39: @ 0x08384558
+Text_Others_IStillDonTUnder: @ 0x08384558
+	@ EN: I still don't under- / stand how Neo / Arcadia could fire a / missile into an / area where humans / live... / ...even to obtain / the Dark Elf...
 	.string "{WINDOW 0x40}"
 		.string "…それにしても、\n"
 		.string "ダークエルフのためとは言え…▼"
@@ -456,7 +496,8 @@ Text39: @ 0x08384558
 		.string "人間たちのいるエリアに\n"
 		.string "ミサイルを おとすなんて…$"
 
-Text40: @ 0x0838459A
+Text_Others_OkayIStillDonT: @ 0x0838459A
+	@ EN: Okay... / I still don't under- / stand how Neo / Arcadia could fire a / missile into an / area where humans / live... / ...even to obtain / the Dark Elf.
 	.string "{WINDOW 0x40}"
 		.string "そう…わかったわ……▼"
 		.string "…それにしても、\n"
@@ -465,17 +506,20 @@ Text40: @ 0x0838459A
 		.string "人間たちのいるエリアに\n"
 		.string "ミサイルを おとすなんて…$"
 
-Text41: @ 0x083845E7
+Text_Others_SomeoneHasBroken: @ 0x083845E7
+	@ EN: Someone has broken / into our trans- / mission circuit! / It's Neo Arcadia!
 	.string "{WINDOW 0x61}"
 		.string "ツウシンかいせんに\n"
 		.string "キョウセイわりこみ……！▼"
 		.string "ネオ・アルカディアからです！$"
 
-Text42: @ 0x0838460F
+Text_Others_PutThemThrough: @ 0x0838460F
+	@ EN: Put them through!
 	.string "{WINDOW 0x05}"
 		.string "つなげろ！$"
 
-Text43: @ 0x08384617
+Text_Others_CanYouHHHear: @ 0x08384617
+	@ EN: Can you h-h-hear me? / Members of the / Resistance. / And...Dr. C-Ciel. / Copy X! / We have custody of / the D-Dark Elf. / Let us put a-a / stop to this foolish / conflict. / We ask that you / surrender t-to us.
 	.string "{WINDOW 0x36}"
 		.string "{BOTTOM}ギ…ギギッ…きコえるカい…\n"
 		.string "レジスタンスのショクん…▼"
@@ -490,7 +534,8 @@ Text43: @ 0x08384617
 		.string "キミたちに コウフクを\n"
 		.string "よびカけるこトに したよ$"
 
-Text44: @ 0x0838469E
+Text_Others_SurrenderHandOverTheNew: @ 0x0838469E
+	@ EN: Surrender? / Hand over the new / energy you invented, / the Ciel System. / If you do this, I / guarantee the safety / of you Mavericks. / He's got to be... / As a result of our / analysis of the / Ciel System / information you so / kindly sent us... / We have determined / that by combining it / with the Dark Elf, / it may be possible / to generate enormous / amounts of energy. / This would solve the / energy crisis in / one fell swoop. / There would no / longer be a reason / for us to fight. / Ciel... / A single answer from / you will bring peace / t-to the world.
 	.string "{WINDOW 0x40}"
 		.string "コウフクですって…？▼"
 	.string "{WINDOW 0x3B}"
@@ -520,7 +565,8 @@ Text44: @ 0x0838469E
 		.string "キみのコタエひとつで\n"
 		.string "世界は、平和になルんだよ…$"
 
-Text45: @ 0x083847BB
+Text_Others_ICanTTrustYou: @ 0x083847BB
+	@ EN: ... / I can't... / trust...you. / What's th-that?
 	.string "{WINDOW 0x40}"
 		.string "……………▼"
 		.string "あなたたちは……▼"
@@ -528,7 +574,8 @@ Text45: @ 0x083847BB
 	.string "{WINDOW 0x37}"
 		.string "…なんだっテ？$"
 
-Text46: @ 0x083847E5
+Text_Others_YouWerePreparedTo: @ 0x083847E5
+	@ EN: You were prepared to / sacrifice humans to / obtain the Dark Elf! / I cannot trust you / after seeing that. / You cannot have the / Ciel System. / It was built so that / humans and Reploids / could live in peace!
 	.string "{WINDOW 0x40}"
 		.string "ダークエルフを手に入れるために\n"
 		.string "人間をぎせいにするような……▼"
@@ -538,7 +585,8 @@ Text46: @ 0x083847E5
 		.string "これは、人とレプリロイドが\n"
 		.string "平和にくらすためのものだから！$"
 
-Text47: @ 0x08384853
+Text_Others_IsThatYYour: @ 0x08384853
+	@ EN: Is that...y-your / answer? / Fine. / You have a-a / monopoly on energy / resources... / And Zero, a Reploid / with terrifying / f-fighting skills... / Y-you are nothing / more than filthy / extremists! / Ciel... / I was holding-ng / back until now, / because you were / there, a human... / Now, you can face / the consequences, / along with your / Maverick friends!
 	.string "{WINDOW 0x37}"
 		.string "{BOTTOM}…そレが…こたえか…▼"
 		.string "いいだろウ…▼"
@@ -555,11 +603,13 @@ Text47: @ 0x08384853
 		.string "イレギュラー ともドモ\n"
 		.string "ショブンしてヤる！$"
 
-Text48: @ 0x083848FA
+Text_Others_TheTransmissionWas: @ 0x083848FA
+	@ EN: The transmission was / cut off.
 	.string "{WINDOW 0x61}"
 		.string "ツウシンとだえました$"
 
-Text49: @ 0x08384907
+Text_Others_TheNeoArcadian: @ 0x08384907
+	@ EN: The Neo Arcadian / military has begun / advancing on our / base from multiple / areas. / They've launched a / total offensive.
 	.string "{WINDOW 0x62}"
 		.string "ネオ・アルカディア軍が\n"
 		.string "かくエリアから べースへ向けて\n"
@@ -567,7 +617,8 @@ Text49: @ 0x08384907
 		.string "ソウコウゲキを\n"
 		.string "しかけてくるもようです$"
 
-Text50: @ 0x08384949
+Text_Others_ZeroIYouBelievedIn: @ 0x08384949
+	@ EN: Zero...I... / You believed in / yourself, and fought / accordingly. / What comes next... / is my job. / Tell me which areas / they are in. / I will intercept. / Zero... / Displaying the Neo / Arcadian movements / on the monitor...
 	.string "{WINDOW 0x40}"
 		.string "ゼロ……わたし………▼"
 	.string "{WINDOW 0x05}"
@@ -583,11 +634,13 @@ Text50: @ 0x08384949
 		.string "しんこうルートを\n"
 		.string "モニターにヒョウジします$"
 
-Text51: @ 0x083849BE
+Text_Others_MaintenanceRoomInUse: @ 0x083849BE
+	@ EN: Maintenance room in use...
 	.string "{WINDOW 0x00}"
 		.string "メンテナンス・ルーム 使用中…$"
 
-Text52: @ 0x083849D3
+Text_Others_SoThisIsWhatIt: @ 0x083849D3
+	@ EN: So this is what it / has come to... / Dr. Weil as the / ruler of Neo / Arcadia... / Those humans haven't / been told a thing... / No, that's not it. / They haven't tried / to learn a thing...
 	.string "{WINDOW 0x40}"
 		.string "とうとう\n"
 		.string "ドクター・バイルが……▼"
@@ -601,7 +654,8 @@ Text52: @ 0x083849D3
 		.string "何も知ろうとしない\n"
 		.string "人間たち…か$"
 
-Text53: @ 0x08384A35
+Text_Others_LivesWithPlenty: @ 0x08384A35
+	@ EN: Lives with plenty / of food and / comfort... / People have stopped / bothering to think / with their heads... / There may still be / some people who want / to do something. / If we could somehow / let those kinds of / people know what / Dr. Weil is really / thinking... / We might be able to / change Neo Arcadia. / Who is this / Dr. Weil, anyway? / What has he been / doing since he / reappeared? / If you can gather / some information... / We might be able to / analyze it to / determine where he / is presently, and / what he's been doing / until now. / Okay. / Where do I need to / Go. Just tell me...
 	.string "{WINDOW 0x40}"
 		.string "たべものにも、\n"
 		.string "すむバショにも不自由しない\n"
@@ -634,17 +688,20 @@ Text53: @ 0x08384A35
 		.string "どこへ行けばいいか\n"
 		.string "おしえてくれ…$"
 
-Text54: @ 0x08384B81
+Text_Others_YesButFirst: @ 0x08384B81
+	@ EN: Yes, but first...
 	.string "{WINDOW 0x40}"
 		.string "ええ、でも その前に…$"
 
-Text55: @ 0x08384B90
+Text_Others_WeVeIsolatedSome: @ 0x08384B90
+	@ EN: We've isolated some / locations for you to / gather information.
 	.string "{WINDOW 0x61}"
 		.string "ジョウホウが\n"
 		.string "入手できそうなバショを\n"
 		.string "ピックアップしてみました$"
 
-Text56: @ 0x08384BB4
+Text_Others_AndThereWeVeJust: @ 0x08384BB4
+	@ EN: And...there. / We've just finished / inputting the data / recovered so far. / Now, to begin the / analysis.
 	.string "{WINDOW 0x61}"
 		.string "ゼロさんが今までカイシュウされた\n"
 		.string "データの入力……▼"
@@ -652,7 +709,8 @@ Text56: @ 0x08384BB4
 	.string "{WINDOW 0x62}"
 		.string "カイセキにうつります$"
 
-Text57: @ 0x08384BEB
+Text_Others_ThanksToZero: @ 0x08384BEB
+	@ EN: Thanks to Zero, / we've collected / much information. / It will take time to / analyze the data, so / for now...
 	.string "{WINDOW 0x40}"
 		.string "ゼロのおかげで、\n"
 		.string "いろいろなジョウホウが\n"
@@ -661,7 +719,8 @@ Text57: @ 0x08384BEB
 		.string "少し時間がかかりそうだから\n"
 		.string "今のうちに……$"
 
-Text58: @ 0x08384C31
+Text_Others_OhYesThatReminds: @ 0x08384C31
+	@ EN: Oh yes, that reminds / me. / Cerveau told me that / Harpuia's condition / has improved a lot. / Why don't you go / pay your respects?
 	.string "{WINDOW 0x40}"
 		.string "あっ、そうだ\n"
 		.string "そういえばセルヴォが……▼"
@@ -671,7 +730,8 @@ Text58: @ 0x08384C31
 		.string "おみまいに……\n"
 		.string "行ってあげたら…どうかしら？$"
 
-Text59: @ 0x08384C81
+Text_Others_Okay_2: @ 0x08384C81
+	@ EN: Okay... / But please, don't / overdo it. / Oh yes, that reminds / me. / Cerveau told me that / Harpuia's condition / has improved a lot. / Why don't you go / pay your respects?
 	.string "{WINDOW 0x40}"
 		.string "わかったわ…\n"
 		.string "でも……無理…しないでね……▼"
@@ -683,13 +743,15 @@ Text59: @ 0x08384C81
 		.string "おみまいに……\n"
 		.string "行ってあげたら…どうかしら？$"
 
-Text60: @ 0x08384CE9
+Text_Others_CanYouStandUp: @ 0x08384CE9
+	@ EN: Can you stand up / already? / Wow, Harpuia, you're / hard to keep down...
 	.string "{WINDOW 0x04}"
 		.string "もう…たてるのか▼"
 		.string "さすがだな\n"
 		.string "ハルピュイア……$"
 
-Text61: @ 0x08384D03
+Text_Others_WhatAreYouUpTo: @ 0x08384D03
+	@ EN: What are you up to? / Why did you rescue / me? / Do you expect some / favor in return? / Perhaps.
 	.string "{WINDOW 0x2D}"
 		.string "どういうつもりだ？\n"
 		.string "なぜ助けた？▼"
@@ -697,7 +759,8 @@ Text61: @ 0x08384D03
 	.string "{WINDOW 0x04}"
 		.string "さあな$"
 
-Text62: @ 0x08384D30
+Text_Others_OhYouReAwakeHow: @ 0x08384D30
+	@ EN: Oh, you're awake. / How do you feel? / Horrible. / Just the thought of / being helped by you / makes me nauseous. / Stripped of my / position, and driven / out of Neo Arcadia. / I'm used goods... / That's not true. / You just stood up / for your beliefs, / just like we do. / You've made no / mistakes. / My beliefs... / I can't sit back / any longer... / We must protect the / humans from Weil. / We have to stop him / immediately. That... / that...Weil!!!
 	.string "{WINDOW 0x42}"
 		.string "おお、気がついたか▼"
 		.string "気分はどうだね？▼"
@@ -725,7 +788,8 @@ Text62: @ 0x08384D30
 		.string "はやくアイツを止めなければ……\n"
 		.string "アイツは……アイツは…！$"
 
-Text63: @ 0x08384E33
+Text_Others_WaitYourWoundsAreNot: @ 0x08384E33
+	@ EN: Wait! / Your wounds are not / fully healed yet! / I am a warrior, born / to protect humans. / I am a proud warrior / of Neo Arcadia! I / don't need any help! / Even if my body / should fall into / ruin... / I will still gladly / fight for humanity!
 	.string "{WINDOW 0x42}"
 		.string "まちたまえ！▼"
 		.string "キミのキズはまだカンゼンには\n"
@@ -741,7 +805,8 @@ Text63: @ 0x08384E33
 		.string "人間のためなら\n"
 		.string "よろこんで戦おう！$"
 
-Text64: @ 0x08384EC7
+Text_Others_SoHarpuiaRefuses: @ 0x08384EC7
+	@ EN: So... / Harpuia refuses / to go with us. / ...
 	.string "{WINDOW 0x42}"
 		.string "やはり…われわれとは▼"
 		.string "いっしょに\n"
@@ -749,37 +814,43 @@ Text64: @ 0x08384EC7
 	.string "{WINDOW 0x04}"
 		.string "………$"
 
-Text65: @ 0x08384EEC
+Text_Others_OperatorMrZeroComeTo: @ 0x08384EEC
+	@ EN: Operator: Mr. Zero... / Come to the commander's / room immediately.
 	.string "{WINDOW 0x00}"
 		.string "オペレーター「ゼロさん、ゼロさん…▼"
 		.string "シキュウ、シレイシツまでおこしください…$"
 
-Text66: @ 0x08384F15
+Text_Others_TheySureRunYou: @ 0x08384F15
+	@ EN: They sure run you / ragged, don't they, / Zero. / I'll be back later.
 	.string "{WINDOW 0x42}"
 		.string "いきつくひまもないな…\n"
 		.string "ゼロ……▼"
 	.string "{WINDOW 0x04}"
 		.string "…行ってくる$"
 
-Text67: @ 0x08384F32
+Text_Others_ZeroHarpuiaDonTYou: @ 0x08384F32
+	@ EN: Zero... / Harpuia... / Don't you dare / die...
 	.string "{WINDOW 0x42}"
 		.string "ゼロ……▼"
 		.string "ハルピュイア……▼"
 		.string "みんな…死ぬんじゃないぞ……$"
 
-Text68: @ 0x08384F52
+Text_Others_WeAreAnalyzingThe: @ 0x08384F52
+	@ EN: We are analyzing the / data. Please wait a / little longer.
 	.string "{WINDOW 0x61}"
 		.string "データのカイセキ中です\n"
 		.string "しばらく おまちください$"
 
-Text69: @ 0x08384F6E
+Text_Others_InformationAnalysis: @ 0x08384F6E
+	@ EN: Information analysis / is complete. / Ms. Ciel will report / on what we've found.
 	.string "{WINDOW 0x61}"
 		.string "ジョウホウのカイセキ…\n"
 		.string "カンリョウしました▼"
 		.string "シエルさんから\n"
 		.string "ホウコクしていただきます……$"
 
-Text70: @ 0x08384F9D
+Text_Others_ZeroIMSorryYou: @ 0x08384F9D
+	@ EN: Zero... I'm sorry. / You gathered a lot / of information for / us, but... / We still do not know / where Weil is. / But we have figured / out what he might / be attempting to do. / Before we talk about / Weil... / I'll open the data / file for the Elf / Wars that you found.
 	.string "{WINDOW 0x40}"
 		.string "ゼロ…ごめんなさい▼"
 		.string "せっかくゼロにいろいろな\n"
@@ -796,12 +867,14 @@ Text70: @ 0x08384F9D
 		.string "ヨウセイ戦争の\n"
 		.string "データファイルをひらくわね$"
 
-Text71: @ 0x08385043
+Text_Others_File945388: @ 0x08385043
+	@ EN: File ↾945388 / == Elf Wars ==
 	.string "{WINDOW 0x02}"
 		.string "{BOTTOM}ファイルナンバー945388\n"
 		.string "--ヨウセイ戦争--$"
 
-Text72: @ 0x08385062
+Text_Others_NearTheEndOfThe: @ 0x08385062
+	@ EN: Near the end of the / Maverick Wars, many / Cyber-elves were used... / The period from this time / until the end of the / fighting was referred to as / the Elf Wars, as a result. / In particular, the use of / the gigantic elf known as / the "Dark Elf," / and copies of this / elf, known as "Baby / Elves," / to amplify the power / of Reploids... / while controlling / said Reploids at / will... / made this the worst / war in recorded / history... / While use of the Dark / Elf brought the war to / an end in four years... / Approximately 90% of / all Reploids, / and 60% of all humans, / were wiped out.
 	.string "{WINDOW 0x02}"
 		.string "{BOTTOM}イレギュラー戦争の終わりごろ、\n"
 		.string "サイバーエルフがタイリョウに\n"
@@ -824,7 +897,8 @@ Text72: @ 0x08385062
 		.string "レプリロイドのほぼ90%……▼"
 		.string "人間の60%がシメツした……$"
 
-Text73: @ 0x08385187
+Text_Others_TheTechnologyUsed: @ 0x08385187
+	@ EN: The technology used / at this time... / ...the technology of / using Baby Elves to / control Reploids. / This must be what / Weil is attempting / to use again. / I'm sure that what / Zero saw at the Dark / Elf copy factory, / was machinery / prepared for just / this purpose.
 	.string "{WINDOW 0x40}"
 		.string "この時、使用したギジュツ……▼"
 		.string "ベビーエルフを使って\n"
@@ -839,25 +913,29 @@ Text73: @ 0x08385187
 		.string "きっと、そのために 用意した\n"
 		.string "モノだと思うんだけど……$"
 
-Text74: @ 0x0838521D
+Text_Others_HeheheheExcellentDetective: @ 0x0838521D
+	@ EN: ... / Hehehehe... / Excellent detective / work, Dr. Ciel.
 	.string "{WINDOW 0x62}"
 		.string "………▼"
 		.string "クックックック……▼"
 		.string "よくしらべたな\n"
 		.string "ドクター・シエル……$"
 
-Text75: @ 0x08385240
+Text_Others_WhatUnfortunatelyYouWereA: @ 0x08385240
+	@ EN: What? / Unfortunately... / ...you were a little / too late.
 	.string "{WINDOW 0x40}"
 		.string "な？▼"
 	.string "{WINDOW 0x61}"
 		.string "だが少し………▼"
 		.string "おそすぎたんじゃないかね$"
 
-Text76: @ 0x0838525D
+Text_Others_IsThatDrWeil: @ 0x0838525D
+	@ EN: Is that Dr. Weil?!
 	.string "{WINDOW 0x04}"
 		.string "ドクター・バイルか！？$"
 
-Text77: @ 0x0838526B
+Text_Others_HeheheThisTimeOmegaIs: @ 0x0838526B
+	@ EN: Hehehe... / This time, Omega is / absolutely perfect. / I can now manipulate / all the Reploids on / the planet, / without using the / Baby Elves, / and make them do / whatever I want! / Hehehehe... / Time to start, / Omega.
 	.string "{WINDOW 0x3A}"
 		.string "{BOTTOM}クーックックッ…▼"
 		.string "今度のオメガは、まさに\n"
@@ -872,25 +950,29 @@ Text77: @ 0x0838526B
 		.string "さあ…はじめるとするか…\n"
 		.string "オメガよ…$"
 
-Text78: @ 0x083852EC
+Text_Others_NowYouWillSee: @ 0x083852EC
+	@ EN: Now you will see, / pitiful humans, / what you get for / banishing Dr. Weil!
 	.string "{WINDOW 0x3A}"
 		.string "{BOTTOM}今こそ思い知れ…▼"
 		.string "ワシをツイホウした\n"
 		.string "人間どもよ！$"
 
-Text79: @ 0x0838530E
+Text_Others_TasteTheFearFoolishReploids: @ 0x0838530E
+	@ EN: Taste the fear... / Foolish Reploids, / who banished me!
 	.string "{WINDOW 0x3A}"
 		.string "{BOTTOM}キョウフしろ…▼"
 		.string "ワシをツイホウした\n"
 		.string "レプリロイドどもよ！$"
 
-Text80: @ 0x0838532E
+Text_Others_InscribeMyName: @ 0x0838532E
+	@ EN: Inscribe my name, / upon this world... / The name of your / new ruler!
 	.string "{WINDOW 0x3A}"
 		.string "{BOTTOM}きざみこむのだ\n"
 		.string "この世界に…▼"
 		.string "シハイシャたるワシの名を！$"
 
-Text81: @ 0x08385351
+Text_Others_ThatNameIs: @ 0x08385351
+	@ EN: That name is / Dr. Weil. / The entire world is / in my hands... / I have the power to / crush it between my / fingers at any time!
 	.string "{WINDOW 0x3A}"
 		.string "{BOTTOM}わが名はドクター・バイル▼"
 		.string "世界は、わが手の中にある…\n"
@@ -898,35 +980,42 @@ Text81: @ 0x08385351
 		.string "この世界を終わらすことが\n"
 		.string "できるのだ！！$"
 
-Text82: @ 0x0838539D
+Text_Others_HeheheheheeeBwahahahahah: @ 0x0838539D
+	@ EN: Heheheheheee... / Bwahahahahah!
 	.string "{WINDOW 0x61}"
 		.string "クーックックックッ…▼"
 		.string "クヒャーッハッハッハッハッ！$"
 
-Text83: @ 0x083853B9
+Text_Others_No: @ 0x083853B9
+	@ EN: No!
 	.string "{WINDOW 0x40}"
 		.string "まっ、まさか！？$"
 
-Text84: @ 0x083853C4
+Text_Others_RrrGrrph: @ 0x083853C4
+	@ EN: Rrr...grrph...
 	.string "{WINDOW 0x5F}"
 		.string "う…うう…$"
 
-Text85: @ 0x083853CC
+Text_Others_ThisCanTBe: @ 0x083853CC
+	@ EN: This can't be / happening!
 	.string "{WINDOW 0x40}"
 		.string "そ、そんな……！$"
 
-Text86: @ 0x083853D7
+Text_Others_ANewWorld: @ 0x083853D7
+	@ EN: A new world... / A new order... / History is once / again in motion...
 	.string "{WINDOW 0x5E}"
 		.string "新たなる世界…\n"
 		.string "新たなるチツジョ…▼"
 		.string "とじられたレキシが…\n"
 		.string "再び 動きはじめる…$"
 
-Text87: @ 0x08385407
+Text_Others_CielBack: @ 0x08385407
+	@ EN: Ciel! Back!
 	.string "{WINDOW 0x05}"
 		.string "さがれ！ シエル！$"
 
-Text88: @ 0x08385413
+Text_Others_ZeroInscribeItUponThe: @ 0x08385413
+	@ EN: Zero?! / Inscribe it upon the / world... The name of / our ruler... / Weil! Weil! Weil! / Weil! Weil! Weil! / Weil! Weil! Weil!
 	.string "{WINDOW 0x40}"
 		.string "ゼロ！？▼"
 	.string "{WINDOW 0x5E}"
@@ -936,11 +1025,13 @@ Text88: @ 0x08385413
 		.string "バイル！ バイル！ バイル！\n"
 		.string "バイル！ バイル！ バイル！$"
 
-Text89: @ 0x08385462
+Text_Others_BothOfYouFreeze: @ 0x08385462
+	@ EN: Both of you, freeze!
 	.string "{WINDOW 0x34}"
 		.string "ふたりとも、動かないで！$"
 
-Text90: @ 0x08385472
+Text_Others_ArghItSOkayThey: @ 0x08385472
+	@ EN: Argh! / It's okay. They're / just unconscious. / All I did was / disable the power of / the Dark Elf. / But my current power / can only protect / those at this base.
 	.string "{WINDOW 0x40}"
 		.string "あ…！▼"
 	.string "{WINDOW 0x34}"
@@ -952,7 +1043,8 @@ Text90: @ 0x08385472
 		.string "このベースの中のみんなを守るので\n"
 		.string "せいいっぱいだけど…$"
 
-Text91: @ 0x083854D1
+Text_Others_TookYouLong: @ 0x083854D1
+	@ EN: Took you long / enough, X. / Where's Weil? / In Neo Arcadia's / underground power / system... / "Sub Arcadia"! / Omega is there too, / transmitting the / power of the Dark / Elf around the / world. / Apparently... / X and I are the only / ones who can move / around freely. / X. / Tell us the / coordinates for / Sub Arcadia. / So you plan on / fighting against / Omega? / Yes... / Why? / Nothing,I'm sure / you'll be fine... / Be careful, Zero.
 	.string "{WINDOW 0x05}"
 		.string "おそいぞエックス……▼"
 		.string "バイルはどこだ▼"
@@ -979,7 +1071,8 @@ Text91: @ 0x083854D1
 		.string "いや、キミならだいじょうぶだ…▼"
 		.string "気をつけて………ゼロ$"
 
-Text92: @ 0x083855B0
+Text_Others_IIVeVerifiedThe: @ 0x083855B0
+	@ EN: I... / I've verified the / coordinates for / Sub Arcadia on the / transfer device. / Transfer me.
 	.string "{WINDOW 0x61}"
 		.string "て…▼"
 		.string "転送ソウチに…\n"
@@ -988,26 +1081,31 @@ Text92: @ 0x083855B0
 	.string "{WINDOW 0x04}"
 		.string "転送をたのむ$"
 
-Text93: @ 0x083855E6
+Text_Others_RogerAll: @ 0x083855E6
+	@ EN: Roger. All / personnel, prepare / for transfer.
 	.string "{WINDOW 0x61}"
 		.string "リョウカイ…\n"
 		.string "カクイン…転送じゅんびにかかれ$"
 
-Text94: @ 0x08385601
+Text_Others_PreparationsFor: @ 0x08385601
+	@ EN: Preparations for / transfer complete.
 	.string "{WINDOW 0x62}"
 		.string "転送じゅんびカンリョウ…$"
 
-Text95: @ 0x08385612
+Text_Others_Transfer: @ 0x08385612
+	@ EN: Transfer!
 	.string "{WINDOW 0x61}"
 		.string "転送…$"
 
-Text96: @ 0x0838561A
+Text_Others_CoordinateData: @ 0x0838561A
+	@ EN: Coordinate data / obtained from / Original X... / ...has been / input completely.
 	.string "{WINDOW 0x61}"
 		.string "オリジナルエックスより\n"
 		.string "入手しました ざひょうデータ…▼"
 		.string "入力…カンリョウしました$"
 
-Text97: @ 0x08385649
+Text_Others_TheCoordinates: @ 0x08385649
+	@ EN: The coordinates / lead to an abandoned / research lab. / According to our / records, this is / where Weil used to / carry out his / research. / It's right next to / the place were you / were sleeping, Zero. / Weil and Omega are / there, aren't they.
 	.string "{WINDOW 0x40}"
 		.string "ザヒョウがしめすバショは\n"
 		.string "ハイキされた\n"
@@ -1021,7 +1119,8 @@ Text97: @ 0x08385649
 		.string "そこに…\n"
 		.string "バイルとオメガがいるんだな$"
 
-Text98: @ 0x083856C3
+Text_Others_ZeroBeCarefulIWill: @ 0x083856C3
+	@ EN: Zero... / Be careful... / I will. / Operator... / Is everything ready?
 	.string "{WINDOW 0x40}"
 		.string "ゼロ……▼"
 		.string "気をつけてね………▼"
@@ -1030,7 +1129,8 @@ Text98: @ 0x083856C3
 		.string "オペレーター…\n"
 		.string "行けるか？$"
 
-Text99: @ 0x083856EB
+Text_Others_YouCanGoAtAny: @ 0x083856EB
+	@ EN: You can go at any / time, Mr. Zero.
 	.string "{WINDOW 0x61}"
 		.string "いつでも行けます$"
 

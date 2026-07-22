@@ -5,18 +5,19 @@
 @ preproc: treat "label::" as ".global label ; label:"
 
 TextOfs_SpaceCraft:: @ 0x0837f00c
-  .2byte (Text0-Start), (Text1-Start), (Text2-Start), (Text3-Start), (Text4-Start), (Text5-Start), (Text6-Start), (Text7-Start)
-  .2byte (Text8-Start), (Text9-Start), (Text10-Start), (Text11-Start), (Text12-Start), (Text13-Start), (Text14-Start), (Text15-Start)
-  .2byte (Text16-Start), (Text17-Start), (Text18-Start), (Text19-Start), (Text20-Start), (Text21-Start), (Text22-Start), (Text23-Start)
-  .2byte (Text24-Start), (Text25-Start), (Text26-Start), (Text27-Start), (Text28-Start), (Text29-Start), (Text30-Start), (Text31-Start)
-  .2byte (Text32-Start), (Text33-Start), (Text34-Start), (Text35-Start), (Text36-Start), (Text37-Start), (Text38-Start), (Text39-Start)
-  .2byte (Text40-Start), (Text41-Start), (Text42-Start), (Text43-Start), (Text44-Start), (Text45-Start), (Text46-Start), (Text47-Start)
-  .2byte (Text48-Start), (Text49-Start), (Text50-Start)
+  .2byte (Text_SpaceCraft_ItSureIsQuietThere-Start), (Text_SpaceCraft_TheReadingIs-Start), (Text_SpaceCraft_TheSnowIsLetting-Start), (Text_SpaceCraft_WWowLookAtThat-Start), (Text_SpaceCraft_IsThatSomeKind-Start), (Text_SpaceCraft_MsCielDidThatHuge-Start), (Text_SpaceCraft_NeoArcadiaHasThe-Start), (Text_SpaceCraft_UpAheadThatSWhere-Start)
+  .2byte (Text_SpaceCraft_SheKnewWhoI-Start), (Text_SpaceCraft_CielZeroAreYouThere-Start), (Text_SpaceCraft_MaintainRadio-Start), (Text_SpaceCraft_OhIIMSorry-Start), (Text_SpaceCraft_GetDown-Start), (Text_SpaceCraft_NeoArcadiansMsCielLook-Start), (Text_SpaceCraft_NeoArcadiansMsCielLook_Alias1-Start), (Text_SpaceCraft_No-Start)
+  .2byte (Text_SpaceCraft_Relax-Start), (Text_SpaceCraft_ScramIDonTHave-Start), (Text_SpaceCraft_Empty-Start), (Text_SpaceCraft_CielZeroCanYouHear-Start), (Text_SpaceCraft_SeemsYouReOkayLeave-Start), (Text_SpaceCraft_CielButZero-Start), (Text_SpaceCraft_IVeHeardThat-Start), (Text_SpaceCraft_IsItCallingMe-Start)
+  .2byte (Text_SpaceCraft_Aaaaaargh-Start), (Text_SpaceCraft_NowYouReAskin-Start), (Text_SpaceCraft_ILlBlastYouTo-Start), (Text_SpaceCraft_Ooph-Start), (Text_SpaceCraft_PantPantAreYouAlive-Start), (Text_SpaceCraft_ZeroWhatTheHeckAre-Start), (Text_SpaceCraft_ThatSOmega-Start), (Text_SpaceCraft_BahThat-Start)
+  .2byte (Text_SpaceCraft_OmegaHuhSoYouWere-Start), (Text_SpaceCraft_Grrr-Start), (Text_SpaceCraft_YouJustDonTGive-Start), (Text_SpaceCraft_SoYouReOmegaI-Start), (Text_SpaceCraft_Gaaarrrrwl-Start), (Text_SpaceCraft_HeheheheOmegaThatWillBe-Start), (Text_SpaceCraft_FromThisDay-Start), (Text_SpaceCraft_Gaarwl-Start)
+  .2byte (Text_SpaceCraft_HeheheheIAmWeilYou-Start), (Text_SpaceCraft_MMasterX-Start), (Text_SpaceCraft_HarpuiaHeheYou-Start), (Text_SpaceCraft_YouMustBe-Start), (Text_SpaceCraft_ButMasterXThink-Start), (Text_SpaceCraft_WeilYouSoZeroYou-Start), (Text_SpaceCraft_HeheheNowThings-Start), (Text_SpaceCraft_WithThatBody-Start)
+  .2byte (Text_SpaceCraft_CielZeroThisIsTerrible-Start), (Text_SpaceCraft_SoYouWere-Start), (Text_SpaceCraft_CielHurryBackToBase-Start)
 
 Text_SpaceCraft:: @ 0x0837f072
 Start:
 
-Text0: @ 0x0837F072
+Text_SpaceCraft_ItSureIsQuietThere: @ 0x0837F072
+	@ EN: It sure is quiet... / There haven't been / many Neo Arcadian / attacks lately. / Things are almost / too peaceful now... / Ms. Ciel completed / her research on the / new energy... / And if it solves / the energy crisis, / Neo Arcadia won't / have a reason to / fight us anymore. / Actually... / I already informed / Neo Arcadia about / this new energy, / the "Ciel System"... / But... / I haven't received / a reply yet... / Don't worry! I'm / sure their answer / will come soon! / There's no more / reason to fight. We / can live in peace! / Right?! / We're in the middle / of a mission. / So put a lid on it / and walk! / *gulp!* Sorry!
 	.string "{WINDOW 0x6C}"
 		.string "しずかだな…▼"
 		.string "最近…\n"
@@ -53,25 +54,30 @@ Text0: @ 0x0837F072
 	.string "{WINDOW 0x40}"
 		.string "ご、ごめんなさい$"
 
-Text1: @ 0x0837F1BE
+Text_SpaceCraft_TheReadingIs: @ 0x0837F1BE
+	@ EN: The reading is / getting stronger. / We're close...
 	.string "{WINDOW 0x40}"
 		.string "ハンノウが強くなってきたわ\n"
 		.string "このあたりのはずなんだけど…$"
 
-Text2: @ 0x0837F1DE
+Text_SpaceCraft_TheSnowIsLetting: @ 0x0837F1DE
+	@ EN: The snow is letting / up...
 	.string "{WINDOW 0x6D}"
 		.string "ユキがはれてきたな…$"
 
-Text3: @ 0x0837F1EB
+Text_SpaceCraft_WWowLookAtThat: @ 0x0837F1EB
+	@ EN: W-wow! / Look at that!
 	.string "{WINDOW 0x6C}"
 		.string "お、おい…！▼"
 		.string "あれを見ろ！！$"
 
-Text4: @ 0x0837F1FD
+Text_SpaceCraft_IsThatSomeKind: @ 0x0837F1FD
+	@ EN: Is that...some kind / of ship?
 	.string "{WINDOW 0x05}"
 		.string "これは…フネ…か？$"
 
-Text5: @ 0x0837F209
+Text_SpaceCraft_MsCielDidThatHuge: @ 0x0837F209
+	@ EN: Ms. Ciel... / Did that...huge / thing...fall from / outer space?! / Yes...but what's / more... / It's giving out the / same energy reading / as the Dark Elf... / of which there is / only one in the / whole world... / Zero was against the / idea, but I just had / to find out... / What could possibly / be going on here?
 	.string "{WINDOW 0x6C}"
 		.string "シエルさん…▼"
 		.string "あんな…ばかでかいものが……\n"
@@ -90,7 +96,8 @@ Text5: @ 0x0837F209
 		.string "この世界に……いったい…\n"
 		.string "何がおきようとしているのか$"
 
-Text6: @ 0x0837F2C0
+Text_SpaceCraft_NeoArcadiaHasThe: @ 0x0837F2C0
+	@ EN: Neo Arcadia has the / area ahead of us / cordoned off. / What?! / You guys stay here / until I make sure / it's safe. / Okay... / Be careful, Zero...
 	.string "{WINDOW 0x05}"
 		.string "ここからさきに\n"
 		.string "ネオ・アルカディアの\n"
@@ -105,48 +112,57 @@ Text6: @ 0x0837F2C0
 		.string "わかったわ……\n"
 		.string "気をつけてね…ゼロ……$"
 
-Text7: @ 0x0837F32A
+Text_SpaceCraft_UpAheadThatSWhere: @ 0x0837F32A
+	@ EN: Up ahead... / That's where the / Dark Elf reading is / coming from.
 	.string "{WINDOW 0x04}"
 		.string "このおく……か、▼"
 		.string "ダークエルフのハンノウが\n"
 		.string "あったのは……$"
 
-Text8: @ 0x0837F34A
+Text_SpaceCraft_SheKnewWhoI: @ 0x0837F34A
+	@ EN: She knew who I / was... / Why would the elf / who almost destroyed / the world know me?
 	.string "{WINDOW 0x04}"
 		.string "{BOTTOM}アイツは…\n"
 		.string "オレのことを 知っていた…▼"
 		.string "世界をほろぼしかけたエルフが\n"
 		.string "なぜオレのことを…$"
 
-Text9: @ 0x0837F37D
+Text_SpaceCraft_CielZeroAreYouThere: @ 0x0837F37D
+	@ EN: Ciel: Zero? Are you there?
 	.string "{WINDOW 0x00}"
 		.string "シエル「ゼロ？ 聞こえる？$"
 
-Text10: @ 0x0837F38E
+Text_SpaceCraft_MaintainRadio: @ 0x0837F38E
+	@ EN: Maintain radio / silence! / The enemy is near...
 	.string "{WINDOW 0x04}"
 		.string "つうしんヘイサだ！▼"
 		.string "テキが近い……$"
 
-Text11: @ 0x0837F3A3
+Text_SpaceCraft_OhIIMSorry: @ 0x0837F3A3
+	@ EN: Oh, I-I'm sorry...
 	.string "{WINDOW 0x41}"
 		.string "えっ、ご、ごめんなさい……$"
 
-Text12: @ 0x0837F3B3
+Text_SpaceCraft_GetDown: @ 0x0837F3B3
+	@ EN: Get down!
 	.string "{WINDOW 0x6C}"
 		.string "ふせて！！$"
 
-Text13: @ 0x0837F3BB
-Text14: @ 0x0837F3BB
+Text_SpaceCraft_NeoArcadiansMsCielLook: @ 0x0837F3BB
+Text_SpaceCraft_NeoArcadiansMsCielLook_Alias1: @ 0x0837F3BB
+	@ EN: Neo Arcadians! / Ms. Ciel, look out!
 	.string "{WINDOW 0x6C}"
 		.string "ネオ・アルカディアか！▼"
 	.string "{WINDOW 0x6D}"
 		.string "シエルさん！ さがって！$"
 
-Text15: @ 0x0837F3D8
+Text_SpaceCraft_No: @ 0x0837F3D8
+	@ EN: No!
 	.string "{WINDOW 0x04}"
 		.string "ちっ…$"
 
-Text16: @ 0x0837F3DE
+Text_SpaceCraft_Relax: @ 0x0837F3DE
+	@ EN: Relax. / They won't come to / any harm. / Harpuia?! / I'm letting you off / the hook this time. / But you and those / Resistance fighters / must leave, now! / You're letting us / off the hook?!
 	.string "{WINDOW 0x2D}"
 		.string "安心しろ\n"
 		.string "イノチまではとらん▼"
@@ -159,22 +175,26 @@ Text16: @ 0x0837F3DE
 	.string "{WINDOW 0x04}"
 		.string "見のがす…だと？$"
 
-Text17: @ 0x0837F434
+Text_SpaceCraft_ScramIDonTHave: @ 0x0837F434
+	@ EN: Scram! / I don't have time to / mess with you now!
 	.string "{WINDOW 0x2D}"
 		.string "さっさと消えろ▼"
 		.string "今は、オマエたちに\n"
 		.string "かまっているバアイじゃないんだ…$"
 
-Text18: @ 0x0837F45B
+Text_SpaceCraft_Empty: @ 0x0837F45B
+	@ EN: ...
 	.string "{WINDOW 0x04}"
 		.string "………$"
 
-Text19: @ 0x0837F461
+Text_SpaceCraft_CielZeroCanYouHear: @ 0x0837F461
+	@ EN: Ciel: Zero... / Can you hear me?
 	.string "{WINDOW 0x00}"
 		.string "シエル「ゼ…ゼロ▼"
 		.string "聞こえる…かしら……？$"
 
-Text20: @ 0x0837F479
+Text_SpaceCraft_SeemsYouReOkayLeave: @ 0x0837F479
+	@ EN: Seems you're okay... / Leave the rest of / this up to me. / I want you all to / head back to the / Resistance Base.
 	.string "{WINDOW 0x04}"
 		.string "無事だったようだな…▼"
 		.string "ここからさきは…\n"
@@ -182,37 +202,45 @@ Text20: @ 0x0837F479
 		.string "オマエたちは、\n"
 		.string "レジスタンスベースにもどれ$"
 
-Text21: @ 0x0837F4B4
+Text_SpaceCraft_CielButZero: @ 0x0837F4B4
+	@ EN: Ciel: But, Zero...
 	.string "{WINDOW 0x00}"
 		.string "シエル「で、でも……$"
 
-Text22: @ 0x0837F4C1
+Text_SpaceCraft_IVeHeardThat: @ 0x0837F4C1
+	@ EN: I've heard that / voice somewhere / before...
 	.string "{WINDOW 0x04}"
 		.string "この声…\n"
 		.string "前にも どこかで………$"
 
-Text23: @ 0x0837F4D6
+Text_SpaceCraft_IsItCallingMe: @ 0x0837F4D6
+	@ EN: Is it...calling me?
 	.string "{WINDOW 0x04}"
 		.string "{BOTTOM}オレを…\n"
 		.string "呼んでいるのか…？$"
 
-Text24: @ 0x0837F4E9
+Text_SpaceCraft_Aaaaaargh: @ 0x0837F4E9
+	@ EN: Aaaaaargh!
 	.string "{WINDOW 0x2F}"
 		.string "きゃああああっ…！$"
 
-Text25: @ 0x0837F4F5
+Text_SpaceCraft_NowYouReAskin: @ 0x0837F4F5
+	@ EN: Now you're askin' / for it!
 	.string "{WINDOW 0x31}"
 		.string "やりやがったな！$"
 
-Text26: @ 0x0837F500
+Text_SpaceCraft_ILlBlastYouTo: @ 0x0837F500
+	@ EN: I'll blast you to / pieces!
 	.string "{WINDOW 0x31}"
 		.string "ふっとびやがれえっ！$"
 
-Text27: @ 0x0837F50D
+Text_SpaceCraft_Ooph: @ 0x0837F50D
+	@ EN: Ooph!
 	.string "{WINDOW 0x31}"
 		.string "グオオオオッ！$"
 
-Text28: @ 0x0837F517
+Text_SpaceCraft_PantPantAreYouAlive: @ 0x0837F517
+	@ EN: *pant pant* / Are you alive, / Fefnir? / What a monster... / The two of us / fighting together, / and not a scratch. / Omega, the evil / Reploid banished / from Neo Arcadia... / He's pretty tough...
 	.string "{WINDOW 0x2F}"
 		.string "{BOTTOM}はあ…はあ…▼"
 		.string "生きてる…？\n"
@@ -227,14 +255,16 @@ Text28: @ 0x0837F517
 		.string "アクマのレプリロイド…オメガ…▼"
 		.string "ケッコウやるわね…$"
 
-Text29: @ 0x0837F58C
+Text_SpaceCraft_ZeroWhatTheHeckAre: @ 0x0837F58C
+	@ EN: Zero?! / What the heck are / YOU doing here?! / What is that thing?
 	.string "{WINDOW 0x30}"
 		.string "…ゼロ！？▼"
 		.string "なんでテメーがここに…！？▼"
 	.string "{WINDOW 0x05}"
 		.string "ヤツは何者だ？$"
 
-Text30: @ 0x0837F5AE
+Text_SpaceCraft_ThatSOmega: @ 0x0837F5AE
+	@ EN: That's Omega. / His mere existence / defies reality... / He's strong, but... / He's not as fun to / fight as you are. / Hehe... / I don't feel like / fighting him, so / he's all yours... / See you later, Zero.
 	.string "{WINDOW 0x2E}"
 		.string "アイツは、オメガ……\n"
 		.string "そんざいジタイが\n"
@@ -246,7 +276,8 @@ Text30: @ 0x0837F5AE
 		.string "あとは…あなたにまかせるわ……▼"
 		.string "またね…ゼロ……$"
 
-Text31: @ 0x0837F61B
+Text_SpaceCraft_BahThat: @ 0x0837F61B
+	@ EN: Bah, that / Leviathan... / Grr, I can't move! / We'll have to finish / this another time! / Hey, Zero! / I'll get you and / that Omega one of / these days! / Don't you dare die / before then, Zero!
 	.string "{WINDOW 0x30}"
 		.string "ちっ、レヴィアタンめ…▼"
 		.string "くそっ、体がいうことをきかねえ…\n"
@@ -257,39 +288,46 @@ Text31: @ 0x0837F61B
 		.string "それまで死ぬんじゃねーぞ…\n"
 		.string "ゼロ……！$"
 
-Text32: @ 0x0837F682
+Text_SpaceCraft_OmegaHuhSoYouWere: @ 0x0837F682
+	@ EN: Omega, huh? / So you were the one / who called me here?
 	.string "{WINDOW 0x04}"
 		.string "オメガとか言ったな…▼"
 		.string "オマエか…\n"
 		.string "オレを呼んでいたのは…$"
 
-Text33: @ 0x0837F6A3
+Text_SpaceCraft_Grrr: @ 0x0837F6A3
+	@ EN: Grrr...
 	.string "{WINDOW 0x3D}"
 		.string "グ…オオ……！$"
 
-Text34: @ 0x0837F6AD
+Text_SpaceCraft_YouJustDonTGive: @ 0x0837F6AD
+	@ EN: You just don't give / up, do you...
 	.string "{WINDOW 0x04}"
 		.string "ちっ…\n"
 		.string "しぶといヤツだ$"
 
-Text35: @ 0x0837F6BB
+Text_SpaceCraft_SoYouReOmegaI: @ 0x0837F6BB
+	@ EN: So you're Omega. / I'm afraid I can't / let you leave this / place, ever. / Time for your / destruction!
 	.string "{WINDOW 0x2C}"
 		.string "オマエがオメガ…か…▼"
 		.string "オマエのようなものを\n"
 		.string "ここから出すわけにはいかん▼"
 		.string "ここで…ハカイする！！$"
 
-Text36: @ 0x0837F6EE
+Text_SpaceCraft_Gaaarrrrwl: @ 0x0837F6EE
+	@ EN: Gaaarrrrwl!
 	.string "{WINDOW 0x3D}"
 		.string "グオオオオオッ！$"
 
-Text37: @ 0x0837F6F9
+Text_SpaceCraft_HeheheheOmegaThatWillBe: @ 0x0837F6F9
+	@ EN: Hehehehe... / Omega, that will be / quite enough.
 	.string "{WINDOW 0x3B}"
 		.string "クーックックックッ…▼"
 		.string "オメガよ…\n"
 		.string "そのくらいにしておけ$"
 
-Text38: @ 0x0837F717
+Text_SpaceCraft_FromThisDay: @ 0x0837F717
+	@ EN: From this day / forward... / You will fight with / this person as a / Neo Arcadian. / It's not polite, / smashing a friend / like that.
 	.string "{WINDOW 0x3B}"
 		.string "オマエは今日から…▼"
 		.string "ネオ・アルカディアの\n"
@@ -299,7 +337,8 @@ Text38: @ 0x0837F717
 		.string "ころしてしまっては、\n"
 		.string "いごこちも悪かろう…$"
 
-Text39: @ 0x0837F76A
+Text_SpaceCraft_Gaarwl: @ 0x0837F76A
+	@ EN: Gaarwl... / Lord...Weil... / A Neo Arcadian?! / Who is this guy?!
 	.string "{WINDOW 0x3D}"
 		.string "グ…オオ…\n"
 		.string "バイル…サマ…▼"
@@ -308,7 +347,8 @@ Text39: @ 0x0837F76A
 		.string "メンバーだと！？▼"
 		.string "何者だ！？$"
 
-Text40: @ 0x0837F79A
+Text_SpaceCraft_HeheheheIAmWeilYou: @ 0x0837F79A
+	@ EN: Hehehehe... / I am Weil. You may / call me Dr. Weil. / You must know my / name, Harpuia of the / Four Guardians? / And you...the / legendary hero. / Zero... / Dr. Weil?! / You're kidding me! / It can't be! Why / are you, who were / banished from Neo / Arcadia a century / ago, with Omega?! / That's simple. / I-I brought him.
 	.string "{WINDOW 0x3B}"
 		.string "{BOTTOM}クーックックックッ…▼"
 		.string "わが名はバイル…\n"
@@ -327,19 +367,22 @@ Text40: @ 0x0837F79A
 		.string "{BOTTOM}ボくが…▼"
 		.string "よンだのサ…$"
 
-Text41: @ 0x0837F847
+Text_SpaceCraft_MMasterX: @ 0x0837F847
+	@ EN: M...Master X?! / Is that you?!
 	.string "{WINDOW 0x2C}"
 		.string "エ…\n"
 		.string "エックス…さま！？$"
 
-Text42: @ 0x0837F856
+Text_SpaceCraft_HarpuiaHeheYou: @ 0x0837F856
+	@ EN: Harpuia! Hehe, you / haven't ch-changed! / And th-then / there's... / I missed y-you, / Zero...
 	.string "{WINDOW 0x37}"
 		.string "ギギッ…ハルピュイアか\n"
 		.string "フフ…かわりない…な▼"
 		.string "そしテ……▼"
 		.string "会いタかッたよ……ゼロ$"
 
-Text43: @ 0x0837F882
+Text_SpaceCraft_YouMustBe: @ 0x0837F882
+	@ EN: You must be... / You're a copy, / aren't you? / Hehehe! / I brought back / Master X, whom you / defeated long ago! / To protect humanity / from the chaos of / this world! / Weil saved my life. / I owe h-him, see... / I'll take Omega / back, thank y-you. / Harpuia, you k-keep / searching for the / Dark Elf. / Omega and the Dark / Elf... / We'll need them / both for what's to / c-come...
 	.string "{WINDOW 0x04}"
 		.string "オマエ……\n"
 		.string "コピーだな……▼"
@@ -362,7 +405,8 @@ Text43: @ 0x0837F882
 		.string "これカらのボくたちに\n"
 		.string "ひつヨウなものだからネ…$"
 
-Text44: @ 0x0837F955
+Text_SpaceCraft_ButMasterXThink: @ 0x0837F955
+	@ EN: But Master X! Think / how many humans died / because of the Dark / Elf and Omega, both / built by this man... / How can you justify / exposing humanity to / such a grave danger, / especially now with / the energy crisis / almost solved?! / What's this? Are you / trying to tell / Master X what to do? / When did you grow so / bold, Harpuia?
 	.string "{WINDOW 0x2C}"
 		.string "し…しかし！ エックスさま！▼"
 		.string "このオトコが作った\n"
@@ -379,7 +423,8 @@ Text44: @ 0x0837F955
 		.string "いつからそんなに、\n"
 		.string "えらくなった$"
 
-Text45: @ 0x0837FA09
+Text_SpaceCraft_WeilYouSoZeroYou: @ 0x0837FA09
+	@ EN: Weil...you... / So, Zero. / You g-guys are / also searching for / the Dark Elf, right? / Let's m-make a / contest out of it! / I'll sh-show you / who the real hero / i-is!
 	.string "{WINDOW 0x2C}"
 		.string "{TOP}くっ…バイル……▼"
 	.string "{WINDOW 0x37}"
@@ -392,7 +437,8 @@ Text45: @ 0x0837FA09
 		.string "ボクこそガ…\n"
 		.string "本当のエイユウなんダからネ！$"
 
-Text46: @ 0x0837FA77
+Text_SpaceCraft_HeheheNowThings: @ 0x0837FA77
+	@ EN: Hehehe... Now things / are getting / interesting, Zero! / Let's see how far / you get with that / body! Hehehe...
 	.string "{WINDOW 0x3B}"
 		.string "{BOTTOM}クーックックックッ…\n"
 		.string "たのしくなってきたな、ゼロ！▼"
@@ -400,21 +446,25 @@ Text46: @ 0x0837FA77
 		.string "見せてもらうとしよう！\n"
 		.string "クックックッ…$"
 
-Text47: @ 0x0837FAB9
+Text_SpaceCraft_WithThatBody: @ 0x0837FAB9
+	@ EN: "With that body"...? / ...
 	.string "{WINDOW 0x04}"
 		.string "そのカラダ…だと…？▼"
 		.string "………$"
 
-Text48: @ 0x0837FACA
+Text_SpaceCraft_CielZeroThisIsTerrible: @ 0x0837FACA
+	@ EN: Ciel: Zero... / This is terrible...
 	.string "{WINDOW 0x00}"
 		.string "シエル「ゼロ……▼"
 		.string "タイヘンなことになったわね……$"
 
-Text49: @ 0x0837FAE5
+Text_SpaceCraft_SoYouWere: @ 0x0837FAE5
+	@ EN: So you were / monitoring the whole / thing?
 	.string "{WINDOW 0x04}"
 		.string "モニターしていたのか……$"
 
-Text50: @ 0x0837FAF4
+Text_SpaceCraft_CielHurryBackToBase: @ 0x0837FAF4
+	@ EN: Ciel: Hurry back to base. / Operator? / Operator: Commencing trans.
 	.string "{WINDOW 0x00}"
 		.string "シエル「すぐにベースへもどってきて……▼"
 		.string "オペレーターさん…おねがい▼"

@@ -1,4 +1,5 @@
 #include "disk.h"
+#include "string_ids.h"
 #include "game.h"
 #include "global.h"
 #include "palette_animation.h"
@@ -1429,7 +1430,7 @@ static void printThreeDigitNumber(u16 n, u8 x, u8 y) {
   u8 i;
   for (i = 0; i < 3; i++) {
     u32 digit = n % 10;
-    PrintString(STRING(digit + 30), x - i, y);
+    PrintString(STRING(digit + STR_DIGIT), x - i, y);
     n /= 10;
   }
 }

@@ -82,6 +82,7 @@ StringOfsTable:: @ StringOfsTable
 
 gStringData:: @ 0x08372aa0
 
+@ EN: ▷
 sCursor:: @ 0x08372aa0
   .string "▷$"
   .string "データがありません$"
@@ -94,10 +95,12 @@ sCursor:: @ 0x08372aa0
   .byte 0xD0, 0xFF
   .byte 0xE9, 0xFF
 
+@ EN: The legendary Reploid Zero / awoke from a long slumber... / / / With Ciel's Resi
 sRecap:: @ 0x08372ac0
   .include "src/data/strings/recap.inc"
   .string "あれから2ヶ月後$"
 
+@ EN: 0
 sNumber:: @ 0x08372d60
   .string "0$"
   .string "1$"
@@ -110,6 +113,7 @@ sNumber:: @ 0x08372d60
   .string "8$"
   .string "9$"
 
+@ EN: Lv.F
 sRanks:: @ 0x08372d74
   .string "レベルF$"
   .string "レベルE$"
@@ -119,6 +123,7 @@ sRanks:: @ 0x08372d74
   .string "レベルA$"
   .string "レベルS$"
 
+@ EN: DERELICT SPACECRAFT
 sStageNames:: @ 0x08372d97
   .string "こわれたウチュウセン$"
   .string "アグニスかざんの基地$"
@@ -136,61 +141,73 @@ sStageNames:: @ 0x08372d97
   .string "巨大エレベーター$"
   .string "アンダー・アルカディア$"
 
+@ EN: AREA: AEGIS VOLCANO BASE / BOSS: BLAZIN' FLIZARD / MISSION: N.A. ARMY RECON
 Text_MissionDesc_00:: @ 0x08372E32
 	.string "エリア  :アグニスかざんの基地\n"
 	.string "ボス   :ブレイジン・フリザード\n"
 	.string "ミッション:ネオ・アルカディア軍テイサツ$"
 
+@ EN: AREA: OCEANIC HWY RUINS / BOSS: CHILDRE INARABITTA / MISSION: TRACK D.E. SIGNAL
 Text_MissionDesc_01:: @ 0x08372E6D
 	.string "エリア  :カイジョウのハイウェイあとち\n"
 	.string "ボス   :チルドレ・イナラビッタ\n"
 	.string "ミッション:ダークエルフハンノウのカクニン$"
 
+@ EN: AREA: W.R. FACTORY / BOSS: DEVILBAT SCHILT / MISSION: DESTROY FACTORY
 Text_MissionDesc_02:: @ 0x08372EAA
 	.string "エリア  :ヘイキ再生工場\n"
 	.string "ボス   :ヘルバット・シルト\n"
 	.string "ミッション:工場のハカイ$"
 
+@ EN: AREA: OLD RESIDENTIAL / BOSS: DEATHTANZ MANTISK / MISSION: FIND DARK ELF
 Text_MissionDesc_03:: @ 0x08372ED9
 	.string "エリア  :旧きょじゅうく\n"
 	.string "ボス   :デスタンツ・マンティスク\n"
 	.string "ミッション:ダークエルフのチョウサ$"
 
+@ EN: AREA: TWILIGHT DESERT / BOSS: ANUBIS NECROMANCESS V / MISSION: ENGAGE N.A. ARMY
 Text_MissionDesc_04:: @ 0x08372F0D
 	.string "エリア  :ゆうやみの砂ばく\n"
 	.string "ボス   :アヌビステップ・ネクロマンセス5世\n"
 	.string "ミッション:ネオ・アルカディア軍のゲイゲキ$"
 
+@ EN: AREA: FOREST OF ANATRE / BOSS: HANUMACHINE R / MISSION: ENGAGE N.A. ARMY
 Text_MissionDesc_05:: @ 0x08372F4D
 	.string "エリア  :アナトレーのモリ\n"
 	.string "ボス   :ハヌマシーンR\n"
 	.string "ミッション:ネオ・アルカディア軍のゲイゲキ$"
 
+@ EN: AREA: FRONTLINE ICE BASE / BOSS: BLIZZACK STAGGROFF R / MISSION: ENGAGE N.A. ARM
 Text_MissionDesc_06:: @ 0x08372F81
 	.string "エリア  :コオリのゼンセン基地\n"
 	.string "ボス   :ブリザック・スタグロフR\n"
 	.string "ミッション:ネオ・アルカディア軍のゲイゲキ$"
 
+@ EN: AREA: AREA X-2 / BOSS: COPY X MARK II / MISSION: INFILTRATE N.A.
 Text_MissionDesc_07:: @ 0x08372FBE
 	.string "エリア  :エリアX-2\n"
 	.string "ボス   :コピーエックスMK2\n"
 	.string "ミッション:ネオ・アルカディアせんにゅう$"
 
+@ EN: AREA: ENERGY FACILITY / BOSS: CUBIT FOXTAR / MISSION: SEARCH FACILITY
 Text_MissionDesc_08:: @ 0x08372FF1
 	.string "エリア  :エネルギーしせつ\n"
 	.string "ボス   :キュービット・フォクスター\n"
 	.string "ミッション:しせつのチョウサ$"
 
+@ EN: AREA: SNOWY PLAINS / BOSS: GLACIER LE CACTANK / MISSION: RETRIEVE DATA
 Text_MissionDesc_09:: @ 0x08373023
 	.string "エリア  :セツゲン\n"
 	.string "ボス   :グラチャー・レ・カクタンク\n"
 	.string "ミッション:データのカイシュウ$"
 
+@ EN: AREA: SUNKEN LIBRARY / BOSS: VOLTEEL BIBLIO / MISSION: RETRIEVE DATA FILE
 Text_MissionDesc_10:: @ 0x08373052
 	.string "エリア  :すいぼつしたトショカン\n"
 	.string "ボス   :ヴォルティール・ビブリーオ\n"
 	.string "ミッション:データファイルのカイシュウ$"
 
+@ EN: AREA: GIANT ELEVATOR / BOSS: TRETISTA KELVERIAN / MISSION: SEARCH FACILITY
 Text_MissionDesc_11:: @ 0x0837308C
 	.string "エリア  :巨大エレベーター\n"
 	.string "ボス   :トレテスタ・ケルベリアン\n"
@@ -198,6 +215,7 @@ Text_MissionDesc_11:: @ 0x0837308C
 
   .string "このミッションは、すでにしゅうりょうしています$"
 
+@ EN: Martina
 sCyberElfNames:: @ 0x083730d7
   .string "マルティナ$"
   .string "ミルピィ$"
@@ -274,6 +292,7 @@ sCyberElfNames:: @ 0x083730d7
   .string "エナータ$"
   .string "エワーネ$"
 
+@ EN: None
 sCyberElfMenu:: @ 0x0837325e
   .string "なし$"
   .string "{RED}サテライト1そうびちゅう{RED_END}$"
@@ -282,6 +301,7 @@ sCyberElfMenu:: @ 0x0837325e
   .string "サイバーエルフを\nそだてたり\n改造したりします$"
   .string "げんざい もっている\nサイバーエルフの\nリストが見られます$"
 
+@ EN: Select and press A BUTTON.
 sCyberElfMenu2:: @ 0x083732db
   .string "上下でえらんで Aボタンをおしてください$"
   .string "ライフにかんする\nサポートをする\nエルフたちです$"
@@ -292,48 +312,59 @@ sCyberElfMenu2:: @ 0x083732db
   .string "✚ボタンでえらんで Aボタンをおしてください$"
   .string "ひつよう/もっているEC$"
 
+@ EN: Upgrade one / level? / Yes No
 Text_CyberElfGrowUp00:: @ 0x083733B4
 	.string "1だんかい\n"
 	.string "せいちょうさせますか？\n"
 	.string "  はい   いいえ$"
 
+@ EN: Upgrade to / Satellite? / Yes No
 Text_CyberElfGrowUp01:: @ 0x083733D1
 	.string "サテライトタイプに\n"
 	.string "改造しますか？\n"
 	.string "  はい   いいえ$"
 
+@ EN: Upgrade to / Fusion type? / Yes No
 Text_CyberElfGrowUp02:: @ 0x083733F0
 	.string "フュージョンタイプに\n"
 	.string "改造しますか？\n"
 	.string "  はい   いいえ$"
 
+@ EN: Upgrade to / new version? / Yes No
 Text_CyberElfGrowUp03:: @ 0x08373410
 	.string "ヴァージョンアップ\n"
 	.string "改造しますか？\n"
 	.string "  はい   いいえ$"
 
+@ EN: Select and press A BUTTON.
 str_0837342f:: @ 0x0837342f
   .string "✚ボタンでえらんで Aボタンをおしてください$"
   .string "✚ボタンでえらんで Aボタンをおしてください$"
 
+@ EN: EC
 sEC:: @ 0x0837345f
   .string "EC$"
 
+@ EN: Satellite 1 / not equipped / with an Elf.
 sNoSatelite:: @ 0x08373462
   .string "げんざいサテライト1に\nエルフはそうびされて\nいません$"
   .string "げんざいサテライト2に\nエルフはそうびされて\nいません$"
 
+@ EN: Insufficient E-Crystals.
 s_0837349a:: @ 0x0837349a
   .string "Eクリスタルがたりません$"
   .string "そうびちゅうは 改造できません$"
   .string "エルフがサブタンクにかわった！$"
 
+@ EN: I double / your / vitality.
 Text_Cyberelfs:: @ 0x083734c9
   .include "src/data/strings/cyberelf.inc"
 
+@ EN: None
 sNothing:: @ 0x0837413f
   .string "なし$"
 
+@ EN: Your main weapon.
 s_08374142:: @ 0x08374142
   .string "メインでそうびしているブキ$"
   .string "サブでそうびしているブキ$"
@@ -342,20 +373,24 @@ s_08374142:: @ 0x08374142
   .string "そうびしているボディチップ$"
   .string "そうびしているフットチップ$"
 
+@ EN: Abort completed missions.
 sEscape:: @ 0x083741a1
   .string "ボスをたおしたエリアなら、いつでもだっしゅつできる$"
   .string "A:エスケープ B:キャンセル$"
   .string "今はエスケープできません$"
 
+@ EN: BUSTER SHOT
 sWeaponNames:: @ 0x083741d9
   .string "バスターショット$"
   .string "ゼットセイバー$"
   .string "リコイルロッド$"
   .string "シールドブーメラン$"
 
+@ EN: Remaining energy:
 sSubtankRemaining:: @ 0x083741fc
   .string "エネルギーざんりょう:$"
 
+@ EN: A normal Head Chip.
 sChipEffects:: @ 0x08374208
   .string "ノーマルじょうたいのヘッドチップ$"
   .string "たち止まっていると自動的に体力をかいふくしてくれる$"
@@ -393,6 +428,7 @@ sElfVoices: @ 0x0837436d
   .string "Eクリスタルの力で\nパワーアップしたいな$"
   .string "{RED}シメイを終えました{RED_END}$"
 
+@ EN: OK to save the current data? / YES / NO
 sSave:: @ 0x0837446c
   .string "データをセーブしますか？\n  はい\n  いいえ$"
   .string "どこにデータをセーブしますか？$"
@@ -400,10 +436,12 @@ sSave:: @ 0x0837446c
   .string "このデータに上がきしていいですか？\n  はい\n  いいえ$"
   .string "データを上がきセーブしました$"
 
+@ EN: ReflectLaser
 sUnused_083744ce:: @ 0x083744ce
   .string "「NEWレジスタンスベース」$"
   .string "「メンテナンス・ルーム」$"
 
+@ EN: ReflectLaser
 sExSkillNames:: @ 0x083744ea
   .string "リフレクトレーザー$"
   .string "Vショット$"
@@ -418,14 +456,17 @@ sExSkillNames:: @ 0x083744ea
   .string "クロールシールド$"
   .string "サーキュラシールド$"
 
+@ EN: None learned
 Text_ExskillDesc_00:: @ 0x0837454E
 	.string "おぼえていない$"
 
+@ EN: BUSTER SHOT / Reflects off / of walls.
 Text_ExskillDesc_01:: @ 0x08374556
 	.string "{RED}バスターショット{RED_END}\n"
 	.string "かべやゆかにあたると\n"
 	.string "はんしゃする$"
 
+@ EN: BUSTER SHOT / Splits shot / when used / with Thunder / Body Chip.
 Text_ExskillDesc_02:: @ 0x08374573
 	.string "{RED}バスターショット{RED_END}\n"
 	.string "ボディチップを\n"
@@ -433,6 +474,7 @@ Text_ExskillDesc_02:: @ 0x08374573
 	.string "上下にわかれたショットを\n"
 	.string "うつことができる$"
 
+@ EN: BUSTER SHOT / Explodes / when used / with Flame / Body Chip.
 Text_ExskillDesc_03:: @ 0x083745AA
 	.string "{RED}バスターショット{RED_END}\n"
 	.string "ボディチップを\n"
@@ -440,6 +482,7 @@ Text_ExskillDesc_03:: @ 0x083745AA
 	.string "バクフウで テキを\n"
 	.string "まきこむことができる$"
 
+@ EN: BUSTER SHOT / Shoots ice / when used / with Ice / Body Chip.
 Text_ExskillDesc_04:: @ 0x083745DE
 	.string "{RED}バスターショット{RED_END}\n"
 	.string "ボディチップを\n"
@@ -447,12 +490,14 @@ Text_ExskillDesc_04:: @ 0x083745DE
 	.string "コオリのヤイバが\n"
 	.string "とんでいく$"
 
+@ EN: Z SABER / Skewer foes / by dashing / with saber.
 Text_ExskillDesc_05:: @ 0x0837460B
 	.string "{RED}ゼットセイバー{RED_END}\n"
 	.string "ダッシュをしながら\n"
 	.string "セイバーでコウゲキすると\n"
 	.string "テキをつきさす$"
 
+@ EN: Z SABER / Press Down / and slash / during fall / or slide to / skewer foes / bel
 Text_ExskillDesc_06:: @ 0x08374634
 	.string "{RED}ゼットセイバー{RED_END}\n"
 	.string "ジャンプ中や らっか中に\n"
@@ -462,6 +507,7 @@ Text_ExskillDesc_06:: @ 0x08374634
 	.string "真下にいるテキを\n"
 	.string "つきさすことができる$"
 
+@ EN: Z SABER / Press Up and / use Saber / to slice / upward.
 Text_ExskillDesc_07:: @ 0x08374680
 	.string "{RED}ゼットセイバー{RED_END}\n"
 	.string "✚ボタンの上を\n"
@@ -469,6 +515,7 @@ Text_ExskillDesc_07:: @ 0x08374680
 	.string "セイバーでコウゲキすると\n"
 	.string "ジャンプできりあげる$"
 
+@ EN: Z SABER / Press Down / and slash / to shoot a / blade ahead.
 Text_ExskillDesc_08:: @ 0x083746B2
 	.string "{RED}ゼットセイバー{RED_END}\n"
 	.string "✚ボタンの下を\n"
@@ -476,12 +523,14 @@ Text_ExskillDesc_08:: @ 0x083746B2
 	.string "セイバーでコウゲキすると\n"
 	.string "前方にヤイバがとんでいく$"
 
+@ EN: RECOIL ROD / Rapidly use / Rod for / multi atk.
 Text_ExskillDesc_09:: @ 0x083746E8
 	.string "{RED}リコイルロッド{RED_END}\n"
 	.string "ロッドをレンダすると\n"
 	.string "前方にレンゾクで\n"
 	.string "コウゲキができる$"
 
+@ EN: RECOIL ROD / Press Up and / charge Rod / to shoot / above.
 Text_ExskillDesc_10:: @ 0x08374711
 	.string "{RED}リコイルロッド{RED_END}\n"
 	.string "✚ボタンの上を\n"
@@ -489,12 +538,14 @@ Text_ExskillDesc_10:: @ 0x08374711
 	.string "チャージでコウゲキすると\n"
 	.string "上に向けて タマをうてる$"
 
+@ EN: S.BOOMERANG / S.Boomerang / skims the / ground.
 Text_ExskillDesc_11:: @ 0x0837474C
 	.string "{RED}シールドブーメラン{RED_END}\n"
 	.string "地形にそって\n"
 	.string "シールドブーメランが\n"
 	.string "とんでいく$"
 
+@ EN: S.BOOMERANG / Press Down / and use S. / Boomerang / to form a / shield.
 Text_ExskillDesc_12:: @ 0x08374772
 	.string "{RED}シールドブーメラン{RED_END}\n"
 	.string "✚ボタンの下を\n"
@@ -503,35 +554,44 @@ Text_ExskillDesc_12:: @ 0x08374772
 	.string "なげると 自分のまわりを\n"
 	.string "シールドがまわる$"
 
+@ EN: None learned
 Text_ExskillDesc_13:: @ 0x083747B1
 	.string "おぼえていない\n"
 	.string "$"
 
+@ EN: Press A BUTTON to analyze.
 sDiskAnalysisGuide:: @ 0x083747ba
   .string "✚ボタンでえらんで Aボタンでカイセキできます$"
   .string "Bボタンでしゅうりょうします$"
   .string "NO.$"
   .string "このディスクは\nカイセキされていません$"
 
+@ EN: \xF7 NEW GAME
 sTitleMenu:: @ 0x083747fa
   .string "{F7 0x00}はじめから${F7 0x01}はじめから$"
   .string "{F7 0x00}つづきから${F7 0x01}つづきから$"
   .string "{F7 0x00}ミニゲーム${F7 0x01}ミニゲーム$"
 
+@ EN: \xF74PLEASE WAIT...
 sConnections_0:: @ 0x0837482a
   .string "{F7 0x05}つうしん まちうけちゅう$"
+@ EN: \xF7 B BUTTON: CANCEL
 sConnections_1:: @ 0x08374839
   .string "{F7 0x00}Bボタンでキャンセル$"
+@ EN: \xF74 Exe 4 is / \xF74selecting chip.
 sConnections_2:: @ 0x08374846
   .string "{F7 0x05}    エグゼ4が\n{F7 0x05}チップをせんたくちゅうです$"
+@ EN: \xF73LINK / TERMINATED.
 sConnections_3:: @ 0x08374862
   .string "{F7 0x04}つうしんエラーが\nはっせいしました$"
 
+@ EN: \xF7 CONTINUE
 sGameOver:: @ 0x08374876
   .string "{F7 0x00}    コンティニュー${F7 0x01}    コンティニュー$"
   .string " {F7 0x00}セーブした場所からやりなおす$ {F7 0x01}セーブした場所からやりなおす$"
   .string "{F7 0x00}    ゲームをやめる${F7 0x01}    ゲームをやめる$"
 
+@ EN: \xF7 ZERO
 sMiniGameNames:: @ 0x083748d2
   .string " {F7 0x00}  ゼロ$ {F7 0x01}  ゼロ$"
   .string "{F7 0x00}  シエル${F7 0x01}  シエル$"
@@ -542,15 +602,19 @@ sMiniGameNames:: @ 0x083748d2
   .string "{F7 0x00} ファントム${F7 0x01} ファントム$"
 
 # size is 1516 bytes
+@ EN: STAFF / / / / / DIRECTOR / RYOTA ITO / YOSHINORI KAWANO / / / GAME DESIGNER / YO
 sStaffRoll:: @ 0x08374954
   .include "src/data/strings/staff_roll.inc"
 
+@ EN: AUTO-CHARGE / (Head Chip) / / Automatic / charge to / your weapon.
 sDiskContents:: @ 0x08374f40
   .include "src/data/strings/disk.inc"
 
+@ EN: 000
 sDiskNumbers:: @ 0x08375f5e
   .include "src/data/strings/disk_number.inc"
 
+@ EN: Dr. Weil
 sSubmergedLibFileNames:: @ 0x0837639c
   .string "バイルのデータ$"
   .string "オメガのデータ$"
@@ -558,9 +622,11 @@ sSubmergedLibFileNames:: @ 0x0837639c
   .string "ヨウセイ戦争のデータ$"
 
 @ size is 996 bytes
+@ EN: RULES
 Text_MiniGameRules:: @ 0x083763c4
   .string "{RED}ルール{RED_END}$"
 
+@ EN: Aim with +Control Pad and / use B BUTTON to hit / Mellnets with Recoil Rod. / Di
 Text_MinigameDesc_Zero::
 	.string "6方向から とんでくる メルネットを\n"
 	.string "✚ボタンで ねらいをさだめ、\n"
@@ -570,6 +636,7 @@ Text_MinigameDesc_Zero::
 	.string "ふきとばさなくてはいけません。\n"
 	.string "3回ミスをすると ゲームオーバーです。$"
 
+@ EN: Guide 5 colored jewels to / the right colored beaker. / The jewels will take all
 Text_MinigameDesc_Ciel::
 	.string "上から おちてくる 5しょくのジュエルを\n"
 	.string "ただしい いろのビーカーへと みちびきます。\n"
@@ -579,6 +646,7 @@ Text_MinigameDesc_Ciel::
 	.string "外したりして、うまく ゆうどうしてください。\n"
 	.string "3回ミスをすると ゲームオーバーです。$"
 
+@ EN: Using 3 elements, destroy / panels on a belt conveyor. / The L BUTTON and R BUTT
 Text_MinigameDesc_X::
 	.string "サンダー・フレイム・アイスのエレメントを\n"
 	.string "きりかえて、ベルトコンベアをながれてくるパネルを\n"
@@ -588,6 +656,7 @@ Text_MinigameDesc_X::
 	.string "サンダーのコウゲキでハカイできます。\n"
 	.string "3回ミスをすると ゲームオーバーです。$"
 
+@ EN: Riding Aztec Falcon jump / over obstacles and slash / foes. A BUTTON to jump\xED
 Text_MinigameDesc_Harpuia::
 	.string "アステファルコンにのり、しょうがいぶつを\n"
 	.string "ジャンプでとびこえ、\n"
@@ -596,6 +665,7 @@ Text_MinigameDesc_Harpuia::
 	.string "しょうがいぶつやテキに3回当たるか、はさまれたり\n"
 	.string "あなにおちたりすると ゲームオーバーです。$"
 
+@ EN: Stop Carryarms from taking / the items. +Control Pad / to move Fefnir\xED B BUTT
 Text_MinigameDesc_Fefnir::
 	.string "キャリアームに ブッシをうばわれないように\n"
 	.string "✚ボタンで左右にファーブニルを動かし、\n"
@@ -605,6 +675,7 @@ Text_MinigameDesc_Fefnir::
 	.string "ブッシが 1つでも エリアの外に\n"
 	.string "もっていかれてしまうと、ゲームオーバーです。$"
 
+@ EN: Move Leviathan w/ +Control / Pad\xED B BUTTON for spear. / Earn score and time b
 Text_MinigameDesc_Leviathan::
 	.string "✚ボタンでレヴィアタンを左右に動かし、\n"
 	.string "Bボタンでスピアを下につきます。\n"
@@ -614,6 +685,7 @@ Text_MinigameDesc_Leviathan::
 	.string "のがさずレンゾクでつくと 高とくてんです。\n"
 	.string "タイムが0になると ゲームオーバーです。$"
 
+@ EN: Jump from one shuriken to / another. +Control Pad to / move\xED A BUTTON to jump
 Text_MinigameDesc_Phantom::
 	.string "シュリケンからシュリケンへと おちないように\n"
 	.string "✚ボタンでファントムを左右に動かしながら\n"
