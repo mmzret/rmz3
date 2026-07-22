@@ -40,7 +40,7 @@ s32 CalcAngleBetweenPoints(s32 x1, s32 y1, s32 x2, s32 y2) { return CalcAngle(x2
 
 s32 CalcAngleBetweenCoords(Coords32* c1, Coords32* c2) { return CalcAngleBetweenPoints(c1->x, c1->y, c2->x, c2->y); }
 
-NAKED u8 FUN_080e964c(u32 r0, s32 r1, s32 r2) {
+NAKED u32 FUN_080e964c(u32 r0, s32 r1, s32 r2) {
   asm(".syntax unified\n\
 	push {r4, r5, r6, lr}\n\
 	adds r6, r0, #0\n\
@@ -74,9 +74,13 @@ _080E9678:\n\
  .syntax divided\n");
 }
 
-NAKED static void unused_080e9680(void* param_1, void* param_2, void* param_3, void* param_4, void* param_5, void* param_6) { INCCODE("asm/unused/unused_080e9680.inc"); }
+static u32 unused_080e9680(s32 x1, s32 y1, s32 x2, s32 y2, s32 b, s32 c) {
+  return FUN_080e964c(CalcAngleBetweenPoints(x1, y1, x2, y2), b, c);
+}
 
-NAKED static void unused_080e9698(void* param_1, void* param_2, u32 param_3, u32 param_4) { INCCODE("asm/unused/unused_080e9698.inc"); }
+static u32 unused_080e9698(Coords32* c1, Coords32* c2, s32 b, s32 c) {
+  return unused_080e9680(c1->x, c1->y, c2->x, c2->y, b, c);
+}
 
 static s32 unused_080e96c8(s32 a, s32 b) {
   register s32 c asm("r2") = 0x100 - a;
