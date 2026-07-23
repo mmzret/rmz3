@@ -1052,7 +1052,26 @@ NAKED static void unused_08005d34(void) { INCCODE("asm/unused/unused_08005d34.in
 NAKED static void unused_080061a4(void) { INCCODE("asm/unused/unused_080061a4.inc"); }
 NAKED static void unused_08006474(void) { INCCODE("asm/unused/unused_08006474.inc"); }
 NAKED static void unused_08006738(void) { INCCODE("asm/unused/unused_08006738.inc"); }
-NAKED static void unused_080069e0(void) { INCCODE("asm/unused/unused_080069e0.inc"); }
+static void unused_080069e0(u32* bgmap, Metatile* tiledata, u16 metatileID) {
+  u32 a, b;
+  s32 y, x, y2;
+  u32 ofs;
+  u32* p;
+
+  y = 0;
+  a = *(u32*)&tiledata[metatileID][0];
+  b = *(u32*)&tiledata[metatileID][2];
+  for (; y < 16; y = y2) {
+    ofs = y * 0x80;
+    y2 = y + 1;
+    p = (u32*)(ofs + (u32)bgmap);
+    for (x = 15; x >= 0; x--) {
+      *p = a;
+      p[16] = b;
+      p++;
+    }
+  }
+}
 
 /**
  * @brief STAGE_LAYER_TERRAIN を dst に(GBAのBGマップとして)描画する関数 その1
