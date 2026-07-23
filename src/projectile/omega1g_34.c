@@ -11,7 +11,7 @@ typedef struct {
   u32 unk_bc;    // 0xBC
   u8 pad_c0[4];  // 0xC0
 } Projectile34;
-static_assert(sizeof(Projectile34) == sizeof(struct Projectile));
+static_assert(sizeof(Projectile34) == sizeof(Projectile));
 
 void Projectile34_Init(Projectile34* p);
 void Projectile34_Update(Projectile34* p);

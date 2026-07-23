@@ -56,7 +56,7 @@ static void FUN_080c7984(Entity* e, Coords32* c, u8 kind1, u8 kind2) {
 
 void FUN_080c7a28(BossExplosion* p);
 void FUN_080c7a90(BossExplosion* p);
-void FUN_080c7bc4(BossExplosion* p);
+static void FUN_080c7bc4(BossExplosion* p);
 static void initFireball(BossExplosion* p);
 
 static void BossExplosion_Init(BossExplosion* p) {
@@ -99,9 +99,18 @@ static void BossExplosion_Die(BossExplosion* p) {
   (sDeinitializers[p->work[0]])(p);
 }
 
-// --------------------------------------------
-
 INCASM("asm/vfx/boss_explosion.inc");
+
+static void FUN_080c7bc4(BossExplosion* p) {
+  EnableSpriteAnimation_Normal(p);
+  p->flags |= DISPLAY;
+  p->flags |= FLIPABLE;
+  SetSpriteAnimation(p, MOTION(SM000_BATTLE_EFFECT, 1));
+  UpdateSpriteAnimation(p);
+  (p->d).x = COS(p->work[1]), (p->d).y = SIN(p->work[1]);
+  SET_VFX_ROUTINE(p, ENTITY_UPDATE);
+  BossExplosion_Update(p);
+}
 
 static void initFireball(BossExplosion* p) {
   EnableSpriteAnimation_Affine(p);

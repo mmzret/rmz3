@@ -4,19 +4,19 @@
 #include "global.h"
 #include "overworld.h"
 
-void InitProjectileHeader(struct EntityHeader* h, struct Projectile* p, s16 len) {
+void InitProjectileHeader(struct EntityHeader* h, Projectile* p, s16 len) {
   s16 i;
 
-  InitEntityHeader(h, ENTITY_PROJECTILE, &p->s, sizeof(struct Projectile), len);
+  InitEntityHeader(h, ENTITY_PROJECTILE, (Entity*)p, sizeof(Projectile), len);
   for (i = 0; i < len; i++) {
-    p[i].s.uniqueID = gEntityIDGenerator + i;
+    p[i].uniqueID = gEntityIDGenerator + i;
   }
   gEntityIDGenerator += len;
   gProjectileHeaderPtr = h;
 }
 
 void UpdateProjectiles(void) {
-  struct Entity* p;
+  Entity* p;
   struct EntityHeader* h = gProjectileHeaderPtr;
   if ((gStageRun.id != STAGE_SPACE_CRAFT) && (((!(gStageRun.missionStatus & MISSION_STAY)) || (gStageRun.vm.active & VM_ACTIVE) || (gStageRun.vm.unk_004 & 1)) || gInChat || gIsUsingDoor3D)) {
     gIsLemonCollisionRemoved = TRUE;
@@ -26,19 +26,19 @@ void UpdateProjectiles(void) {
 
   p = StartEntityListIteration(h);
 
-  while (p != (struct Entity*)&h->tail) {
+  while (p != (Entity*)&h->tail) {
     ((EntityFunc)p->onUpdate)(p);
     p = GetNextEntity(h);
   }
 }
 
-void DeleteProjectile(struct Entity* p) {
+void DeleteProjectile(Entity* p) {
   p->flags &= ~DISPLAY;
   SET_PROJECTILE_ROUTINE(p, ENTITY_EXIT);
 }
 
-static Coords32* unused_0809c978(struct Entity* q) {
-  struct Entity* p = GetNearestEntity(gWeaponHeaderPtr, &q->coord);
+static Coords32* unused_0809c978(Entity* q) {
+  Entity* p = GetNearestEntity(gWeaponHeaderPtr, &q->coord);
   if (p != NULL) return &p->coord;
   return NULL;
 }

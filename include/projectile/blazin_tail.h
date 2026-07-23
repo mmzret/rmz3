@@ -11,8 +11,8 @@ typedef struct {
   s32 xflip;     // 0xB8
   u8 unk_bc[8];  // 0xBC
 } BlazinTail;
-static_assert(sizeof(BlazinTail) == sizeof(struct Projectile));
+static_assert(sizeof(BlazinTail) == sizeof(Projectile));
 
-BlazinTail* createBlazinTail(struct Entity* e, s32 hp);
+BlazinTail* createBlazinTail(Entity* e, s32 hp);
 
 #endif  // __INCLUDE_PROJECTILE_BLAZIN_TAIL_H__

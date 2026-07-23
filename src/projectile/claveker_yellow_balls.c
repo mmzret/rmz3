@@ -9,7 +9,7 @@ typedef struct {
   COLLISION_OBJECT_HDR;  // 0x00
   u8 buffer[16];         // 0xB4
 } ClavekerYellowBalls;
-static_assert(sizeof(ClavekerYellowBalls) == sizeof(struct Projectile));
+static_assert(sizeof(ClavekerYellowBalls) == sizeof(Projectile));
 
 static const struct Collision sCollisions[2];
 

@@ -4,22 +4,22 @@
 
 INCASM("asm/projectile/unk_44.inc");
 
-void FUN_080b16f4(struct Projectile* p);
-void FUN_080b1764(struct Projectile* p);
-void FUN_080b1798(struct Projectile* p);
+void FUN_080b16f4(Projectile* p);
+void FUN_080b1764(Projectile* p);
+void FUN_080b1798(Projectile* p);
 
 // clang-format off
 const ProjectileRoutine gProjectile44Routine = {
-    [ENTITY_INIT] =      FUN_080b16f4,
-    [ENTITY_UPDATE] =    FUN_080b1764,
-    [ENTITY_DIE] =       FUN_080b1798,
+    [ENTITY_INIT] =      (void*)FUN_080b16f4,
+    [ENTITY_UPDATE] =    (void*)FUN_080b1764,
+    [ENTITY_DIE] =       (void*)FUN_080b1798,
     [ENTITY_DISAPPEAR] = (void*)DeleteProjectile,
-    [ENTITY_EXIT] =      (ProjectileFunc)DeleteEntity,
+    [ENTITY_EXIT] =      (void*)DeleteEntity,
 };
 // clang-format on
 
-void FUN_080b17d8(struct Projectile* p);
-void FUN_080b17dc(struct Projectile* p);
+void FUN_080b17d8(Projectile* p);
+void FUN_080b17dc(Projectile* p);
 
 // clang-format off
 static const ProjectileFunc PTR_ARRAY_0836d794[2] = {

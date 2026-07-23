@@ -6,35 +6,35 @@
 
 static const struct Collision sCollisions[2];
 
-static void ShotcounterBullet_Init(struct Projectile* p);
-static void ShotcounterBullet_Update(struct Projectile* p);
-void ShotcounterBullet_Die(struct Projectile* p);
+static void ShotcounterBullet_Init(Projectile* p);
+static void ShotcounterBullet_Update(Projectile* p);
+void ShotcounterBullet_Die(Projectile* p);
 
 // clang-format off
 const ProjectileRoutine gShotcounterBulletRoutine = {
-    [ENTITY_INIT] =      ShotcounterBullet_Init,
-    [ENTITY_UPDATE] =    ShotcounterBullet_Update,
-    [ENTITY_DIE] =       ShotcounterBullet_Die,
+    [ENTITY_INIT] =      (void*)ShotcounterBullet_Init,
+    [ENTITY_UPDATE] =    (void*)ShotcounterBullet_Update,
+    [ENTITY_DIE] =       (void*)ShotcounterBullet_Die,
     [ENTITY_DISAPPEAR] = (void*)DeleteProjectile,
-    [ENTITY_EXIT] =      (ProjectileFunc)DeleteEntity,
+    [ENTITY_EXIT] =      (void*)DeleteEntity,
 };
 // clang-format on
 
-struct Projectile* CreateShotcounterBullet(Coords32* c, Coords32* d, u8 r2, u8 r3) {
-  struct Projectile* p = (struct Projectile*)AllocEntityLast(gProjectileHeaderPtr);
+Entity* CreateShotcounterBullet(Coords32* c, Coords32* d, u8 r2, u8 r3) {
+  Entity* p = AllocEntityLast(gProjectileHeaderPtr);
   if (p != NULL) {
     INIT_PROJECTILE_ROUTINE(p, PROJECTILE_SHOTCOUNTER_BULLET);
-    (p->s).work[0] = r2;
-    (p->s).work[1] = r3;
-    (p->s).coord.x = c->x;
-    (p->s).coord.y = c->y;
-    (p->s).d.x = d->x;
-    (p->s).d.y = d->y;
+    p->work[0] = r2;
+    p->work[1] = r3;
+    p->coord.x = c->x;
+    p->coord.y = c->y;
+    p->d.x = d->x;
+    p->d.y = d->y;
   }
   return p;
 }
 
-NAKED static void ShotcounterBullet_Init(struct Projectile* p) {
+NAKED static void ShotcounterBullet_Init(Projectile* p) {
   asm(".syntax unified\n\
 	push {r4, r5, r6, r7, lr}\n\
 	adds r6, r0, #0\n\
@@ -128,24 +128,24 @@ _0809CE00: .4byte gProjectileFnTable\n\
 
 // --------------------------------------------
 
-void nop_0809ceac(struct Projectile* p);
-void FUN_0809ceb0(struct Projectile* p);
-void FUN_0809cf98(struct Projectile* p);
+void nop_0809ceac(Projectile* p);
+void FUN_0809ceb0(Projectile* p);
+void FUN_0809cf98(Projectile* p);
 
-static void ShotcounterBullet_Update(struct Projectile* p) {
+static void ShotcounterBullet_Update(Projectile* p) {
   static const ProjectileFunc sUpdates[] = {
       nop_0809ceac,
       FUN_0809ceb0,
       FUN_0809cf98,
   };
   if (IS_METTAUR) {
-    (p->s).flags &= ~DISPLAY;
+    p->flags &= ~DISPLAY;
     EXIT_BODY(p);
     SET_PROJECTILE_ROUTINE(p, ENTITY_DIE);
     ShotcounterBullet_Die(p);
     return;
   }
-  (sUpdates[(p->s).mode[1]])(p);
+  (sUpdates[p->mode[1]])(p);
 }
 
 INCASM("asm/projectile/shotcounter_bullet.inc");

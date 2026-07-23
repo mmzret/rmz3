@@ -4,9 +4,9 @@
 
 // CopyX (Fire Shot)
 
-void Projectile26_Init(struct Projectile* p);
-void Projectile26_Update(struct Projectile* p);
-void Projectile26_Die(struct Projectile* p);
+void Projectile26_Init(Projectile* p);
+void Projectile26_Update(Projectile* p);
+void Projectile26_Die(Projectile* p);
 
 // clang-format off
 const ProjectileRoutine gProjectile26Routine = {
@@ -18,25 +18,23 @@ const ProjectileRoutine gProjectile26Routine = {
 };
 // clang-format on
 
-void FUN_080a88a4(struct Entity* e, u8 param_2, u8 param_3) {
-  struct Entity* p = AllocEntityLast(gProjectileHeaderPtr);
+void FUN_080a88a4(Entity* q, u8 param_2, u8 param_3) {
+  Entity* p = AllocEntityLast(gProjectileHeaderPtr);
   if (p != NULL) {
     INIT_PROJECTILE_ROUTINE(p, 26);
     p->work[0] = param_2, p->work[1] = param_3;
-    p->unk_28 = (void*)e;
-    (p->coord) = e->coord;
+    p->unk_28 = (void*)q;
+    (p->coord) = q->coord;
   }
 }
 
 INCASM("asm/projectile/copy_x_shot_fire.inc");
 
-// --------------------------------------------
-
-void FUN_080a8a38(struct Projectile* p);
-void FUN_080a8b50(struct Projectile* p);
-void FUN_080a8c74(struct Projectile* p);
-void FUN_080a8d70(struct Projectile* p);
-void FUN_080a8e64(struct Projectile* p);
+void FUN_080a8a38(Projectile* p);
+void FUN_080a8b50(Projectile* p);
+void FUN_080a8c74(Projectile* p);
+void FUN_080a8d70(Projectile* p);
+void FUN_080a8e64(Projectile* p);
 
 // clang-format off
 static const ProjectileFunc PTR_ARRAY_0836c01c[6] = {
@@ -49,11 +47,9 @@ static const ProjectileFunc PTR_ARRAY_0836c01c[6] = {
 };
 // clang-format on
 
-// --------------------------------------------
-
-void FUN_080a8f14(struct Projectile* p);
-void FUN_080a8fa8(struct Projectile* p);
-void FUN_080a8ff0(struct Projectile* p);
+void FUN_080a8f14(Projectile* p);
+void FUN_080a8fa8(Projectile* p);
+void FUN_080a8ff0(Projectile* p);
 
 // clang-format off
 static const ProjectileFunc PTR_ARRAY_0836c034[6] = {

@@ -6,9 +6,9 @@
 
 // GyroCannon bomb
 
-static void Projectile8_Init(struct ProjectileV2* p);
-static void Projectile8_Update(struct ProjectileV2* p);
-static void Projectile8_Die(struct ProjectileV2* p);
+static void Projectile8_Init(Projectile* p);
+static void Projectile8_Update(Projectile* p);
+static void Projectile8_Die(Projectile* p);
 
 // clang-format off
 const ProjectileRoutine gProjectile8Routine = {
@@ -21,7 +21,7 @@ const ProjectileRoutine gProjectile8Routine = {
 // clang-format on
 
 void CreateProjectile8(s32 x, s32 y) {
-  struct ProjectileV2* p = AllocEntityLast(gProjectileHeaderPtr);
+  Projectile* p = AllocEntityLast(gProjectileHeaderPtr);
   if (p != NULL) {
     INIT_PROJECTILE_ROUTINE(p, 8);
     (p->coord).x = x, (p->coord).y = y;
@@ -30,7 +30,7 @@ void CreateProjectile8(s32 x, s32 y) {
 
 static const struct Collision sCollisions[2];
 
-static void Projectile8_Init(struct ProjectileV2* p) {
+static void Projectile8_Init(Projectile* p) {
   static const struct Collision sCollision = {
     kind : DDP,
     faction : FACTION_ENEMY,
@@ -50,7 +50,7 @@ static void Projectile8_Init(struct ProjectileV2* p) {
   Projectile8_Update(p);
 }
 
-static void Projectile8_Update(struct ProjectileV2* p) {
+static void Projectile8_Update(Projectile* p) {
   static const struct Collision sCollision = {
     kind : DDP,
     faction : FACTION_ENEMY,
@@ -89,7 +89,7 @@ static void Projectile8_Update(struct ProjectileV2* p) {
   }
 }
 
-static void Projectile8_Die(struct ProjectileV2* p) {
+static void Projectile8_Die(Projectile* p) {
   if (IS_METTAUR) {
     p->flags &= ~DISPLAY;
     p->flags &= ~FLIPABLE;

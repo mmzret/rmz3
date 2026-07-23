@@ -8,9 +8,9 @@
 static const ProjectileFunc sUpdates[1];
 static const struct Collision sCollision;
 
-static void Projectile2_Init(struct Projectile* p);
-static void Projectile2_Update(struct Projectile* p);
-static void Projectile2_Die(struct Projectile* p);
+static void Projectile2_Init(Projectile* p);
+static void Projectile2_Update(Projectile* p);
+static void Projectile2_Die(Projectile* p);
 
 // clang-format off
 const ProjectileRoutine gProjectile2Routine = {
@@ -22,8 +22,8 @@ const ProjectileRoutine gProjectile2Routine = {
 };
 // clang-format on
 
-struct Entity* CreateProjectile2(Coords32* c1, Coords32* c2, u8 n) {
-  struct Entity* p = AllocEntityLast(gProjectileHeaderPtr);
+Entity* CreateProjectile2(Coords32* c1, Coords32* c2, u8 n) {
+  Entity* p = AllocEntityLast(gProjectileHeaderPtr);
   if (p != NULL) {
     INIT_PROJECTILE_ROUTINE(p, 2);
     p->work[0] = n;
@@ -35,47 +35,47 @@ struct Entity* CreateProjectile2(Coords32* c1, Coords32* c2, u8 n) {
 
 // --------------------------------------------
 
-static void Projectile2_Init(struct Projectile* p) {
+static void Projectile2_Init(Projectile* p) {
   EnableSpriteAnimation_Normal(p);
-  (p->s).flags |= DISPLAY;
-  (p->s).flags |= FLIPABLE;
-  INIT_BODY(p, &sCollision, 1, NULL);
-  if ((p->s).work[0] == 0) {
+  p->flags |= DISPLAY;
+  p->flags |= FLIPABLE;
+  _INIT_BODY(p, &sCollision, 1);
+  if (p->work[0] == 0) {
     SET_XFLIP(p, FALSE);
   } else {
     SET_XFLIP(p, TRUE);
   }
-  (p->s).work[2] = 0xFF;
+  p->work[2] = 0xFF;
   SET_PROJECTILE_ROUTINE(p, ENTITY_UPDATE);
-  (p->s).mode[1] = 0, (p->s).mode[2] = 0, (p->s).mode[3] = 0;
+  p->mode[1] = 0, p->mode[2] = 0, p->mode[3] = 0;
   Projectile2_Update(p);
 }
 
-static void _Projectile2_Update(struct Projectile* p);
+static void _Projectile2_Update(Projectile* p);
 
-static void Projectile2_Update(struct Projectile* p) {
+static void Projectile2_Update(Projectile* p) {
   static const ProjectileFunc sUpdates[1] = {
       _Projectile2_Update,
   };
 
   if (IS_METTAUR) {
-    (p->s).flags &= ~DISPLAY;
+    p->flags &= ~DISPLAY;
     EXIT_BODY(p);
     SET_PROJECTILE_ROUTINE(p, ENTITY_DIE);
     Projectile2_Die(p);
     return;
   }
-  (sUpdates[(p->s).mode[1]])(p);
+  (sUpdates[p->mode[1]])(p);
 }
 
-static void Projectile2_Die(struct Projectile* p) {
-  (p->s).flags &= ~DISPLAY;
+static void Projectile2_Die(Projectile* p) {
+  p->flags &= ~DISPLAY;
   EXIT_BODY(p);
   SET_PROJECTILE_ROUTINE(p, ENTITY_EXIT);
 }
 
 // 0x0809d14c
-NAKED static void _Projectile2_Update(struct Projectile* p) {
+NAKED static void _Projectile2_Update(Projectile* p) {
   asm(".syntax unified\n\
 	push {r4, r5, lr}\n\
 	adds r4, r0, #0\n\

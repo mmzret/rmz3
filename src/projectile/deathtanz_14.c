@@ -8,7 +8,7 @@ typedef struct {
   u8 unk_bc;     // 0xBC
   u32 unk_c0;    // 0xC0
 } Projectile14;
-static_assert(sizeof(Projectile14) == sizeof(struct Projectile));
+static_assert(sizeof(Projectile14) == sizeof(Projectile));
 
 void Projectile14_Init(Projectile14* p);
 void Projectile14_Update(Projectile14* p);

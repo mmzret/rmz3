@@ -11,9 +11,9 @@ static const struct Collision sCollisions[2];
 static const u8 sInitModes[2];
 static const motion_t sMotions[10];
 
-void PantheonAquaModProjectile_Init(struct Projectile* p);
-void PantheonAquaModProjectile_Update(struct Projectile* p);
-void PantheonAquaModProjectile_Die(struct Projectile* p);
+static void PantheonAquaModProjectile_Init(Projectile* p);
+static void PantheonAquaModProjectile_Update(Projectile* p);
+static void PantheonAquaModProjectile_Die(Projectile* p);
 
 // clang-format off
 const ProjectileRoutine gPantheonAquaModProjectileRoutine = {
@@ -28,7 +28,7 @@ const ProjectileRoutine gPantheonAquaModProjectileRoutine = {
 void FUN_080a5bb4(s32 x, s32 y) {
   s32 i;
   for (i = 0; i < 5; i++) {
-    struct Entity* p = AllocEntityLast(gProjectileHeaderPtr);
+    Entity* p = AllocEntityLast(gProjectileHeaderPtr);
     if (p != NULL) {
       INIT_PROJECTILE_ROUTINE(p, 21);
       p->work[0] = 0;
@@ -40,104 +40,104 @@ void FUN_080a5bb4(s32 x, s32 y) {
 
 void PantheonAquaModProjectile_OnCollision(struct Body* _, Coords32* c1, Coords32* c2) {}
 
-void PantheonAquaModProjectile_Init(struct Projectile* p) {
+static void PantheonAquaModProjectile_Init(Projectile* p) {
   SET_PROJECTILE_ROUTINE(p, ENTITY_UPDATE);
-  (p->s).mode[1] = sInitModes[(p->s).work[0]];
-  (p->s).flags |= FLIPABLE;
-  (p->s).flags |= DISPLAY;
+  p->mode[1] = sInitModes[p->work[0]];
+  p->flags |= FLIPABLE;
+  p->flags |= DISPLAY;
   EnableSpriteAnimation_Normal(p);
   INIT_BODY(p, sCollisions, 1, PantheonAquaModProjectile_OnCollision);
   PantheonAquaModProjectile_Update(p);
 }
 
-void PantheonAquaModProjectile_Update(struct Projectile* p) {
-  (PTR_ARRAY_0836bb00[(p->s).mode[1]])(p);
-  (PTR_ARRAY_0836bb0c[(p->s).mode[1]])(p);
+static void PantheonAquaModProjectile_Update(Projectile* p) {
+  (PTR_ARRAY_0836bb00[p->mode[1]])(p);
+  (PTR_ARRAY_0836bb0c[p->mode[1]])(p);
 }
 
-void PantheonAquaModProjectile_Die(struct Projectile* p) {
+static void PantheonAquaModProjectile_Die(Projectile* p) {
   EXIT_BODY(p);
-  CreateSmoke(3, &(p->s).coord);
+  CreateSmoke(3, &p->coord);
   SET_PROJECTILE_ROUTINE(p, ENTITY_EXIT);
 }
 
-void FUN_080a5cf8(struct Projectile* p) {}
+void FUN_080a5cf8(Projectile* p) {}
 
-void FUN_080a5cfc(struct Projectile* p) {
-  switch ((p->s).mode[2]) {
-    case 0:
+void FUN_080a5cfc(Projectile* p) {
+  switch (p->mode[2]) {
+    case 0: {
       SetDDP(&p->body, &sCollisions[0]);
-      SetSpriteAnimation(p, sMotions[(p->s).work[2]]);
+      SetSpriteAnimation(p, sMotions[p->work[2]]);
       StartPaletteAnimation(87, ((u8)GetEntityPaletteID(p) << 5) | 0x200);
-      (p->s).d.x = gSineTable[(u8)(-0x40 - (p->s).work[2] * 0x20)] * 3;
-      (p->s).d.y = gSineTable[(u8)(-0x80 - (p->s).work[2] * 0x20)] * 3;
-      SET_XFLIP(p, (p->s).work[2] > 2);
-      (p->s).mode[2]++;
+      p->d.x = gSineTable[(u8)(-0x40 - p->work[2] * 0x20)] * 3;
+      p->d.y = gSineTable[(u8)(-0x80 - p->work[2] * 0x20)] * 3;
+      SET_XFLIP(p, p->work[2] > 2);
+      p->mode[2]++;
       FALLTHROUGH;
-    case 1:
+    }
+    case 1: {
       StepPaletteAnimation(87);
-      (p->s).coord.x += (p->s).d.x;
-      (p->s).coord.y += (p->s).d.y;
+      p->coord.x += p->d.x;
+      p->coord.y += p->d.y;
       UpdateSpriteAnimation(p);
-      if (FUN_080098a4((p->s).coord.x, (p->s).coord.y) != 0) {
-        (p->s).mode[1] = 1;
-        (p->s).mode[2] = 0;
+      if (FUN_080098a4(p->coord.x, p->coord.y) != 0) {
+        p->mode[1] = 1;
+        p->mode[2] = 0;
       }
       break;
+    }
   }
 }
 
-void FUN_080a5e00(struct Projectile* p) {
-  switch ((p->s).mode[2]) {
+void FUN_080a5e00(Projectile* p) {
+  switch (p->mode[2]) {
     case 0: {
       const motion_t* m;
       SetDDP(&p->body, &sCollisions[1]);
       m = &sMotions[5];
-      SetSpriteAnimation(p, m[(p->s).work[2]]);
-      (p->s).work[3] = 0x30;
-      (p->s).mode[2]++;
+      SetSpriteAnimation(p, m[p->work[2]]);
+      p->work[3] = 0x30;
+      p->mode[2]++;
       FALLTHROUGH;
     }
     case 1:
       StepPaletteAnimation(87);
       UpdateSpriteAnimation(p);
-      if (--(p->s).work[3] == 0) {
-        (p->s).mode[1] = 2;
-        (p->s).mode[2] = 0;
+      if (--p->work[3] == 0) {
+        p->mode[1] = 2;
+        p->mode[2] = 0;
       }
       break;
   }
 }
 
-void FUN_080a5e64(struct Projectile* p) {
-  s32 m = (p->s).mode[2];
-  switch (m) {
-    case 0:
-      (p->body).status = m;
-      (p->body).prevStatus = m;
-      (p->body).invincibleTime = m;
-      (p->s).flags &= ~COLLIDABLE;
-      (p->s).work[3] = 0xa;
-      (p->s).mode[2]++;
+void FUN_080a5e64(Projectile* p) {
+  switch (p->mode[2]) {
+    case 0: {
+      EXIT_BODY(p);
+      p->work[3] = 10;
+      p->mode[2]++;
       FALLTHROUGH;
-    case 1:
-      if ((p->s).work[3] & 1) {
-        (p->s).flags &= ~DISPLAY;
+    }
+    case 1: {
+      if (p->work[3] & 1) {
+        p->flags &= ~DISPLAY;
       } else {
-        (p->s).flags |= DISPLAY;
+        p->flags |= DISPLAY;
       }
-      if (--(p->s).work[3] == 0) {
+      if (--p->work[3] == 0) {
         RemovePaletteAnimation(87);
-        (p->s).flags &= ~DISPLAY;
-        (p->s).flags &= ~FLIPABLE;
+        p->flags &= ~DISPLAY;
+        p->flags &= ~FLIPABLE;
         EXIT_BODY(p);
         SET_PROJECTILE_ROUTINE(p, ENTITY_DISAPPEAR);
       }
       break;
+    }
   }
 }
 
-void FUN_080a5cf8(struct Projectile* p);
+void FUN_080a5cf8(Projectile* p);
 
 static const ProjectileFunc PTR_ARRAY_0836bb00[3] = {
     FUN_080a5cf8,
@@ -145,9 +145,9 @@ static const ProjectileFunc PTR_ARRAY_0836bb00[3] = {
     FUN_080a5cf8,
 };
 
-void FUN_080a5cfc(struct Projectile* p);
-void FUN_080a5e00(struct Projectile* p);
-void FUN_080a5e64(struct Projectile* p);
+void FUN_080a5cfc(Projectile* p);
+void FUN_080a5e00(Projectile* p);
+void FUN_080a5e64(Projectile* p);
 
 static const ProjectileFunc PTR_ARRAY_0836bb0c[3] = {
     FUN_080a5cfc,

@@ -4,11 +4,11 @@
 
 // CopyX (Elec Shot + Ice Shot)
 
-void CreateVFX53(struct Entity* e, u8 n);
+void CreateVFX53(Entity* e, u8 n);
 
-static void Projectile27_Init(struct Entity* p);
-static void Projectile27_Update(struct Entity* p);
-static void Projectile27_Die(Object* p);
+static void Projectile27_Init(Projectile* p);
+static void Projectile27_Update(Projectile* p);
+static void Projectile27_Die(Projectile* p);
 
 // clang-format off
 const ProjectileRoutine gProjectile27Routine = {
@@ -20,8 +20,8 @@ const ProjectileRoutine gProjectile27Routine = {
 };
 // clang-format on
 
-void FUN_080a9048(struct Entity* e, u8 param_2, u8 param_3) {
-  struct Entity* p = AllocEntityLast(gProjectileHeaderPtr);
+void FUN_080a9048(Entity* e, u8 param_2, u8 param_3) {
+  Projectile* p = AllocEntityLast(gProjectileHeaderPtr);
   if (p != NULL) {
     INIT_PROJECTILE_ROUTINE(p, 27);
     p->work[0] = param_2, p->work[1] = param_3;
@@ -30,8 +30,8 @@ void FUN_080a9048(struct Entity* e, u8 param_2, u8 param_3) {
   }
 }
 
-void FUN_080a90a0(struct Entity* e, u8 param_2, u8 param_3) {
-  struct Entity* p = AllocEntityLast(gProjectileHeaderPtr);
+void FUN_080a90a0(Entity* e, u8 param_2, u8 param_3) {
+  Projectile* p = AllocEntityLast(gProjectileHeaderPtr);
   if (p != NULL) {
     INIT_PROJECTILE_ROUTINE(p, 27);
     p->work[0] = param_2, p->work[1] = param_3;
@@ -42,15 +42,15 @@ void FUN_080a90a0(struct Entity* e, u8 param_2, u8 param_3) {
 
 // --------------------------------------------
 
-void FUN_080a9158(struct Projectile* p);
-void FUN_080a9250(struct Projectile* p);
-void FUN_080a946c(struct Projectile* p);
-void FUN_080a9604(struct Projectile* p);
-void FUN_080a96f8(struct Projectile* p);
-void FUN_080a9920(struct Projectile* p);
-void FUN_080a9a30(struct Projectile* p);
+void FUN_080a9158(Projectile* p);
+void FUN_080a9250(Projectile* p);
+void FUN_080a946c(Projectile* p);
+void FUN_080a9604(Projectile* p);
+void FUN_080a96f8(Projectile* p);
+void FUN_080a9920(Projectile* p);
+void FUN_080a9a30(Projectile* p);
 
-static void Projectile27_Init(struct Entity* p) {
+static void Projectile27_Init(Projectile* p) {
   // clang-format off
   static const ProjectileFunc sInitializers[7] = {
       (void*)FUN_080a9158,
@@ -65,13 +65,13 @@ static void Projectile27_Init(struct Entity* p) {
   (sInitializers[p->work[0]])((void*)p);
 }
 
-void FUN_080a9358(struct Projectile* p);
-void FUN_080a953c(struct Projectile* p);
-void FUN_080a9810(struct Projectile* p);
-void FUN_080a99d4(struct Projectile* p);
-static void FUN_080a9a74(struct Entity* p);
+void FUN_080a9358(Projectile* p);
+void FUN_080a953c(Projectile* p);
+void FUN_080a9810(Projectile* p);
+void FUN_080a99d4(Projectile* p);
+static void FUN_080a9a74(Projectile* p);
 
-static void Projectile27_Update(struct Entity* p) {
+static void Projectile27_Update(Projectile* p) {
   // clang-format off
   static const ProjectileFunc sUpdates[7] = {
       (void*)FUN_080a9358,
@@ -86,16 +86,16 @@ static void Projectile27_Update(struct Entity* p) {
   (sUpdates[p->work[0]])((void*)p);
 }
 
-static void Projectile27_Die(Object* p) {
+static void Projectile27_Die(Projectile* p) {
   EXIT_BODY(p);
   SET_PROJECTILE_ROUTINE(p, ENTITY_EXIT);
 }
 
 INCASM("asm/projectile/copy_x_shot_elecice.inc");
 
-static void FUN_080a9a74(struct Entity* p) {
+static void FUN_080a9a74(Projectile* p) {
   UpdateSpriteAnimation(p);
-  CreateVFX53(p, p->work[1]);
+  CreateVFX53((void*)p, p->work[1]);
   SET_PROJECTILE_ROUTINE(p, ENTITY_DIE);
 }
 

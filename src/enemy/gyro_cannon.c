@@ -5,25 +5,25 @@
 #include "story.h"
 #include "vfx.h"
 
-struct GyroCannon {
+typedef struct {
   COLLISION_OBJECT_HDR;
   struct {
-    struct VFX* elfx;  // 0xB4
-    s32 init_y;        // 0xB8
-    bool8 is_right;    // 0xBC
-    u8 unk_bd;         // 0xBD
-    u8 unk_be;         // 0xBE
-    u8 unk_bf;         // 0xBF
-    u32 unk_c0;        // 0xC0
-  } props;             // props (16bytes, offset: 0xB4..)
-};
-static_assert(sizeof(struct GyroCannon) == sizeof(struct Enemy));
+    Entity* elfx;    // 0xB4
+    s32 init_y;      // 0xB8
+    bool8 is_right;  // 0xBC
+    u8 unk_bd;       // 0xBD
+    u8 unk_be;       // 0xBE
+    u8 unk_bf;       // 0xBF
+    u32 unk_c0;      // 0xC0
+  } props;           // props (16bytes, offset: 0xB4..)
+} GyroCannon;
+static_assert(sizeof(GyroCannon) == sizeof(struct Enemy));
 
 static const struct Collision sCollisions[];
 
-static void GyroCannon_Init(struct Enemy* p);
-static void GyroCannon_Update(struct Enemy* p);
-static void GyroCannon_Die(struct Enemy* p);
+static void GyroCannon_Init(GyroCannon* p);
+static void GyroCannon_Update(GyroCannon* p);
+static void GyroCannon_Die(GyroCannon* p);
 
 // clang-format off
 const EnemyRoutine gGyroCannonRoutine = {
@@ -35,11 +35,11 @@ const EnemyRoutine gGyroCannonRoutine = {
 };
 // clang-format on
 
-static struct Entity* CreateGyroCannon(struct Entity* e, bool8 isPropeller, u8 r2) {
-  struct Entity* p = AllocEntityLast(gEnemyHeaderPtr);
+static Entity* CreateGyroCannon(Entity* q, bool8 isPropeller, u8 r2) {
+  Entity* p = AllocEntityLast(gEnemyHeaderPtr);
   if (p != NULL) {
     INIT_ENEMY_ROUTINE(p, ENEMY_GYRO_CANNON);
-    p->unk_28 = e;
+    p->unk_28 = q;
     p->work[0] = isPropeller, p->work[1] = r2;
   }
   return p;
@@ -47,58 +47,52 @@ static struct Entity* CreateGyroCannon(struct Entity* e, bool8 isPropeller, u8 r
 
 // --------------------------------------------
 
-static void initGyroCannonMainBody(struct GyroCannon* p);
-static void initGyroCannonPropeller(struct GyroCannon* p);
+static void initGyroCannonMainBody(GyroCannon* p);
+static void initGyroCannonPropeller(GyroCannon* p);
 
-static void GyroCannon_Init(struct Enemy* p) {
+static void GyroCannon_Init(GyroCannon* p) {
   SET_ENEMY_ROUTINE(p, ENTITY_UPDATE);
   EnableSpriteAnimation_Normal(p);
-  (p->s).flags |= DISPLAY;
-  (p->s).flags |= FLIPABLE;
-  if ((p->s).work[0] != 0) {  // propeller
-    initGyroCannonPropeller((void*)p);
+  p->flags |= DISPLAY;
+  p->flags |= FLIPABLE;
+  if (p->work[0] != 0) {  // propeller
+    initGyroCannonPropeller(p);
   } else {
-    initGyroCannonMainBody((void*)p);
+    initGyroCannonMainBody(p);
   }
   GyroCannon_Update(p);
 }
 
-// --------------------------------------------
+void gyrocannon_0806d32c(GyroCannon* p);
+static void gyrocannon_0806d1b4(GyroCannon* p);
 
-void gyrocannon_0806d32c(struct Enemy* p);
-static void gyrocannon_0806d1b4(struct Enemy* p);
-
-static void GyroCannon_Update(struct Enemy* p) {
+static void GyroCannon_Update(GyroCannon* p) {
   if (IS_METTAUR) {
-    (p->s).flags &= ~DISPLAY;
-    (p->s).flags &= ~FLIPABLE;
+    p->flags &= ~DISPLAY;
+    p->flags &= ~FLIPABLE;
     EXIT_BODY(p);
     SET_ENEMY_ROUTINE(p, ENTITY_DISAPPEAR);
     return;
   }
-
-  if ((p->s).work[0] != 0) {
+  if (p->work[0] != 0) {
     gyrocannon_0806d32c(p);  // propeller
   } else {
     gyrocannon_0806d1b4(p);
   }
 }
 
-// --------------------------------------------
+void FUN_0806d524(GyroCannon* p);
+void FUN_0806d470(GyroCannon* p);
 
-void FUN_0806d524(struct Enemy* p);
-void FUN_0806d470(struct Enemy* p);
-
-static void GyroCannon_Die(struct Enemy* p) {
+static void GyroCannon_Die(GyroCannon* p) {
   if (IS_METTAUR) {
-    (p->s).flags &= ~DISPLAY;
-    (p->s).flags &= ~FLIPABLE;
+    p->flags &= ~DISPLAY;
+    p->flags &= ~FLIPABLE;
     EXIT_BODY(p);
     SET_ENEMY_ROUTINE(p, ENTITY_DISAPPEAR);
     return;
   }
-
-  if ((p->s).work[0] != 0) {
+  if (p->work[0] != 0) {
     FUN_0806d524(p);  // propeller
   } else {
     FUN_0806d470(p);
@@ -107,18 +101,18 @@ static void GyroCannon_Die(struct Enemy* p) {
 
 // --------------------------------------------
 
-static void FUN_0806df10(struct Body* body, Coords32* r1 UNUSED, Coords32* r2 UNUSED);
+static void GyroCannon_OnCollision(struct Body* body, Coords32* r1 UNUSED, Coords32* r2 UNUSED);
 
 // 0x0806d0a8
-static void initGyroCannonMainBody(struct GyroCannon* p) {
+static void initGyroCannonMainBody(GyroCannon* p) {
   SetSpriteAnimation(p, MOTION(SM023_GYRO_CANNON, 0));
   UpdateSpriteAnimation(p);
-  if (FLAG(gSystemSavedata.flags, MOD_120) && !FLAG(gCurStory.s.gameflags, DEMO_PLAY)) {
+  if (FLAG(gSystemSavedata.flags, MOD_GYRO_CANNON) && !FLAG(gCurStory.s.gameflags, DEMO_PLAY)) {
     _INIT_BODY(p, sCollisions, 20);
   } else {
     _INIT_BODY(p, sCollisions, 16);
   }
-  SET_BODY_INTERSECT_HANDLER(p, FUN_0806df10);
+  SET_BODY_INTERSECT_HANDLER(p, GyroCannon_OnCollision);
   p->unk_2c = CreateGyroCannon((void*)p, TRUE, 0);
   (&p->props)->unk_bd = 0;
   (&p->props)->init_y = p->coord.y;
@@ -129,19 +123,16 @@ static void initGyroCannonMainBody(struct GyroCannon* p) {
   p->mode[1] = 2;
 }
 
-static void initGyroCannonPropeller(struct GyroCannon* p) {
+static void initGyroCannonPropeller(GyroCannon* p) {
   SetSpriteAnimation(p, MOTION(SM023_GYRO_CANNON, 6));
   UpdateSpriteAnimation(p);
   INIT_BODY(p, &sCollisions[2], 6, NULL);
   p->flags &= ~X_FLIP;
-  p->spr.xflip = FALSE, p->spr.oam.xflip = FALSE;
+  (p->spr).xflip = FALSE, (p->spr).oam.xflip = FALSE;
   (p->props).elfx = NULL;
 }
 
-static const Coords32 sElementCoord;
-static const EnemyFunc PTR_ARRAY_0836666c[10];
-
-NAKED static void gyrocannon_0806d1b4(struct Enemy* p) {
+NAKED static void gyrocannon_0806d1b4(GyroCannon* p) {
   asm(".syntax unified\n\
 	push {r4, r5, r6, lr}\n\
 	adds r4, r0, #0\n\
@@ -329,7 +320,7 @@ _0806D328: .4byte PTR_ARRAY_0836666c\n\
 
 INCASM("asm/enemy/gyro_cannon.inc");
 
-NAKED static void FUN_0806ddfc(struct Enemy* p) {
+NAKED static void FUN_0806ddfc(GyroCannon* p) {
   asm(".syntax unified\n\
 	push {r4, r5, r6, r7, lr}\n\
 	mov r7, r8\n\
@@ -468,27 +459,27 @@ _0806DF0C: .4byte gEnemyFnTable\n\
 }
 
 // 0x0806df10
-static void FUN_0806df10(struct Body* body, Coords32* r1 UNUSED, Coords32* r2 UNUSED) {
+static void GyroCannon_OnCollision(struct Body* body, Coords32* r1 UNUSED, Coords32* r2 UNUSED) {
   if (body->hitboxFlags & BODY_STATUS_WHITE) {
-    struct Entity* q = (struct Entity*)body->enemy->parent;
-    struct GyroCannon* p = (struct GyroCannon*)body->parent;
+    Entity* q = (Entity*)body->enemy->parent;
+    GyroCannon* p = (GyroCannon*)body->parent;
     (&p->props)->is_right = (q->coord).x > (p->coord).x;
   }
 }
 
-void FUN_0806d618(struct Enemy* p);
-void FUN_0806d684(struct Enemy* p);
-void FUN_0806d7e0(struct Enemy* p);
-void FUN_0806d8b0(struct Enemy* p);
-void FUN_0806d998(struct Enemy* p);
-void FUN_0806d9d4(struct Enemy* p);
-void FUN_0806da20(struct Enemy* p);
-void FUN_0806da5c(struct Enemy* p);
-void FUN_0806dab8(struct Enemy* p);
-void FUN_0806db58(struct Enemy* p);
+void FUN_0806d618(GyroCannon* p);
+void FUN_0806d684(GyroCannon* p);
+void FUN_0806d7e0(GyroCannon* p);
+void FUN_0806d8b0(GyroCannon* p);
+void FUN_0806d998(GyroCannon* p);
+void FUN_0806d9d4(GyroCannon* p);
+void FUN_0806da20(GyroCannon* p);
+void FUN_0806da5c(GyroCannon* p);
+void FUN_0806dab8(GyroCannon* p);
+void FUN_0806db58(GyroCannon* p);
 
 // clang-format off
-static const EnemyFunc PTR_ARRAY_0836666c[10] = {
+static void (*const PTR_ARRAY_0836666c[10])(GyroCannon*) = {
     FUN_0806d618,
     FUN_0806d684,
     FUN_0806d7e0,
@@ -502,11 +493,11 @@ static const EnemyFunc PTR_ARRAY_0836666c[10] = {
 };
 // clang-format on
 
-void gyroCannon_0806db8c(struct Enemy* p);
-void gyroCannon_0806dccc(struct Enemy* p);
-static void FUN_0806ddfc(struct Enemy* p);
+void gyroCannon_0806db8c(GyroCannon* p);
+void gyroCannon_0806dccc(GyroCannon* p);
+static void FUN_0806ddfc(GyroCannon* p);
 
-static const EnemyFunc sUpdates2[3] = {
+static void (*const sUpdates2[3])(GyroCannon*) = {
     gyroCannon_0806db8c,
     gyroCannon_0806dccc,
     FUN_0806ddfc,

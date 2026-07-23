@@ -10,7 +10,7 @@ typedef struct {
   s32 timer_bc;  // 0xBC
   u32 unk_c0;    // 0xC0
 } Projectile4;
-static_assert(sizeof(Projectile4) == sizeof(struct Projectile));
+static_assert(sizeof(Projectile4) == sizeof(Projectile));
 
 static const struct Collision sCollisions[2];
 
@@ -28,7 +28,7 @@ const ProjectileRoutine gOmegaWhiteProjectileRoutine = {
 };
 // clang-format on
 
-struct Projectile* createOmega1Laser(s32 x, u8 n, s32 lifetime, struct Entity* omega) {
+Entity* createOmega1Laser(s32 x, u8 n, s32 lifetime, Entity* omega) {
   Projectile4* p = AllocEntityLast(gProjectileHeaderPtr);
   if (p != NULL) {
     INIT_PROJECTILE_ROUTINE(p, 4);
@@ -38,10 +38,10 @@ struct Projectile* createOmega1Laser(s32 x, u8 n, s32 lifetime, struct Entity* o
     p->timer_bc = lifetime;
     p->unk_28 = omega;
   }
-  return (struct Projectile*)p;
+  return (void*)p;
 }
 
-struct Projectile* CreateOmegaWhiteHoop(s32 x, s32 y, u8 n) {
+Entity* CreateOmegaWhiteHoop(s32 x, s32 y, u8 n) {
   Projectile4* p = AllocEntityLast(gProjectileHeaderPtr);
   if (p != NULL) {
     INIT_PROJECTILE_ROUTINE(p, 4);
@@ -52,7 +52,7 @@ struct Projectile* CreateOmegaWhiteHoop(s32 x, s32 y, u8 n) {
     p->timer_bc = 1;
     p->unk_28 = NULL;
   }
-  return (struct Projectile*)p;
+  return (void*)p;
 }
 
 NAKED static void OmegaWhiteProjectile_Init(Projectile4* p) {

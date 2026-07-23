@@ -6,8 +6,7 @@
 #include "entity.h"
 #include "types.h"
 
-typedef void (*ProjectileFunc)(struct Projectile*);
-typedef void (*ProjectileV2Func)(struct ProjectileV2*);
+typedef void (*ProjectileFunc)(Projectile*);
 typedef ProjectileFunc ProjectileRoutine[5];
 extern const ProjectileRoutine* const gProjectileFnTable[PROJECTILE_ENTITY_COUNT];
 
@@ -17,8 +16,8 @@ extern const ProjectileRoutine* const gProjectileFnTable[PROJECTILE_ENTITY_COUNT
 // --------------------------------------------
 
 void UpdateProjectiles(void);
-void DeleteProjectile(struct Entity* p);
+void DeleteProjectile(Entity* p);
 
-struct Projectile* CreateLemon(Coords32* c, s32 r1, u8 r2);
+Entity* CreateLemon(Coords32* c, s32 r1, u8 r2);
 
 #endif  // GUARD_RMZ3_PROJECTILE_H

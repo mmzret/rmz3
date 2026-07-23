@@ -4,7 +4,7 @@
 #include "entity/entity.h"
 #include "gba/gba.h"
 
-struct BossCopyX {
+typedef struct BossCopyX {
   COLLISION_OBJECT_HDR;  // 0x00
   u8 unk_b4[16];         // 0xB4
   u8 unk_c4;             // 0xC4
@@ -15,7 +15,7 @@ struct BossCopyX {
   u8 unk_dc;             // 0xDC
   s8 unk_dd;             // 0xDD
   u8 unk_de[6];          // 0xDE
-};
-static_assert(sizeof(struct BossCopyX) == sizeof(struct Boss));
+} BossCopyX;
+static_assert(sizeof(BossCopyX) == sizeof(Boss));
 
 #endif  // __INCLUDE_BOSS_COPY_X_H__

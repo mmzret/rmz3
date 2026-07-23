@@ -416,7 +416,7 @@ INCASM("asm/boss/omega_zx_c.inc");
 
 bool8 FUN_080612d4(struct Boss* p) { return TRUE; }
 
-struct Projectile* FUN_080afedc(struct Entity* parent, Coords32* c, u8 n);
+Projectile* FUN_080afedc(Entity* parent, Coords32* c, u8 n);
 
 void FUN_080612d8(OmegaZX* p) {
   Coords32 c;
@@ -440,7 +440,7 @@ void FUN_080612d8(OmegaZX* p) {
     case 2:
       c.x = 0xffffdd00;
       c.y = 0xffffaa00;
-      p->unk_c4 = (struct Entity*)FUN_080afedc((void*)p, &c, 3);
+      p->unk_c4 = (Entity*)FUN_080afedc((void*)p, &c, 3);
       p->work[2] = 0xff;
       p->work[3] = -1;
       p->mode[2]++;
@@ -461,48 +461,53 @@ void FUN_080612d8(OmegaZX* p) {
 
 bool8 FUN_080613b8(struct Boss* p) { return TRUE; }
 
-struct Projectile* FUN_080aff34(struct Entity* parent, Coords32* c, u8 n);
-struct Projectile* FUN_080c4f04(struct Entity* parent, Coords32* c, u8 n);
+Projectile* FUN_080aff34(Entity* parent, Coords32* c, u8 n);
+Entity* FUN_080c4f04(Entity* parent, Coords32* c, u8 n);
 void FUN_080616fc(OmegaZX* p);
 
 void FUN_080613bc(OmegaZX* p) {
   Coords32 c;
   switch (p->mode[2]) {
-    case 0:
-      RemovePaletteAnimation(0xa7);
-      RemovePaletteAnimation(0xa8);
-      RemovePaletteAnimation(0xa9);
-      RemovePaletteAnimation(0xaa);
-      StartPaletteAnimation(0xa8, 0x2e0);
+    case 0: {
+      RemovePaletteAnimation(167);
+      RemovePaletteAnimation(168);
+      RemovePaletteAnimation(169);
+      RemovePaletteAnimation(170);
+      StartPaletteAnimation(168, 0x2E0);
       FUN_080c4f04((void*)p, &p->coord, 0);
-      p->work[2] = 0x1e;
+      p->work[2] = 30;
       p->mode[2]++;
       FALLTHROUGH;
-    case 1:
+    }
+    case 1: {
       FUN_080616fc(p);
       if (p->work[2] != 0 && --p->work[2] == 0) {
         p->mode[2]++;
       }
       break;
-    case 2:
+    }
+    case 2: {
       c.x = p->coord.x + 0xfffffc00;
       c.y = p->coord.y + 0xffffde00;
-      p->unk_c4 = (struct Entity*)FUN_080aff34((void*)p, &c, 0);
+      p->unk_c4 = (Entity*)FUN_080aff34((void*)p, &c, 0);
       p->mode[2]++;
       break;
-    case 3:
+    }
+    case 3: {
       FUN_080616fc(p);
-      StepPaletteAnimation(0xa8);
+      StepPaletteAnimation(168);
       if ((p->unk_c4)->mode[0] > 1) {
         p->unk_c4 = NULL;
         p->mode[2]++;
       }
       break;
-    case 4:
+    }
+    case 4: {
       FUN_080616fc(p);
-      RemovePaletteAnimation(0xa8);
+      RemovePaletteAnimation(168);
       p->mode[1] = 3, p->mode[2] = 0;
       break;
+    }
   }
 }
 

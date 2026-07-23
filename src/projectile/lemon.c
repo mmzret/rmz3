@@ -10,7 +10,7 @@ typedef struct {
   s32 amplitude;  // 0xB4
   u8 unk_b8[12];  // 0xB8
 } ProjectileLemon;
-static_assert(sizeof(ProjectileLemon) == sizeof(struct Projectile));
+static_assert(sizeof(ProjectileLemon) == sizeof(Projectile));
 
 static const struct Collision sCollisions[6];
 
@@ -31,7 +31,7 @@ const ProjectileRoutine gLemonRoutine = {
 // ------------------------------------------------------------------------------------------------------------------------------------
 
 // 0x0809c99c
-struct Projectile* CreateLemon(Coords32* c, s32 amplitude, u8 r2) {
+Entity* CreateLemon(Coords32* c, s32 amplitude, u8 r2) {
   ProjectileLemon* p = AllocEntityLast(gProjectileHeaderPtr);
   if (p != NULL) {
     INIT_PROJECTILE_ROUTINE(p, 0);

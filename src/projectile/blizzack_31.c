@@ -4,9 +4,9 @@
 
 // Blizzack のつらら飛ばし?(Blizzack関連なのは確定)
 
-void Projectile31_Init(struct Projectile* p);
-void Projectile31_Update(struct Projectile* p);
-static void Projectile31_Die(struct Projectile* p);
+void Projectile31_Init(Projectile* p);
+void Projectile31_Update(Projectile* p);
+static void Projectile31_Die(Projectile* p);
 
 // clang-format off
 const ProjectileRoutine gProjectile31Routine = {
@@ -21,21 +21,21 @@ const ProjectileRoutine gProjectile31Routine = {
 // --------------------------------------------
 
 // 0x080aa7a8
-struct Entity* CreateProjectile31(struct Entity* q, u8 kind1, u8 kind2) {
-  struct Entity* p = AllocEntityLast(gProjectileHeaderPtr);
+Entity* CreateProjectile31(Entity* q, u8 kind1, u8 kind2) {
+  Projectile* p = AllocEntityLast(gProjectileHeaderPtr);
   if (p != NULL) {
     INIT_PROJECTILE_ROUTINE(p, 31);
     p->work[0] = kind1, p->work[1] = kind2;
     p->unk_28 = (void*)q;
     (p->coord) = q->coord;
-    return p;
+    return (void*)p;
   }
   return NULL;
 }
 
 INCASM("asm/projectile/blizzack_31.inc");
 
-static void Projectile31_Die(struct Projectile* p) {
+static void Projectile31_Die(Projectile* p) {
   EXIT_BODY(p);
   SET_PROJECTILE_ROUTINE(p, ENTITY_EXIT);
 }

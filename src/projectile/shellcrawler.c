@@ -8,7 +8,7 @@
 
 static void Projectile43_Init(struct Entity* p);
 static void Projectile43_Update(Object* p);
-static void Projectile43_Die(struct Projectile* p);
+static void Projectile43_Die(Projectile* p);
 
 // clang-format off
 const ProjectileRoutine gShellcrawlerProjectileRoutine = {
@@ -94,8 +94,8 @@ static void _Projectile43_Update(Object* p) {
   }
 }
 
-static void Projectile43_Die(struct Projectile* p) {
-  (p->s).flags &= ~DISPLAY;
+static void Projectile43_Die(Projectile* p) {
+  p->flags &= ~DISPLAY;
   EXIT_BODY(p);
   SET_PROJECTILE_ROUTINE(p, ENTITY_EXIT);
 }

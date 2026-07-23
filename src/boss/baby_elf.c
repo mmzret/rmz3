@@ -3,12 +3,20 @@
 #include "entity.h"
 #include "global.h"
 #include "overworld.h"
+#include "palette_animation.h"
 
-INCASM("asm/boss/baby_elf.inc");
+typedef struct {
+  COLLISION_OBJECT_HDR;  // 0x00
+  u8 unk_b4[27];         // 0xB4
+  u8 unk_cf;             // 0xCF
+  u8 unk_d0;             // 0xD0
+  u8 unk_d1[19];         // 0xD1
+} BabyElf;
+static_assert(sizeof(BabyElf) == sizeof(Boss));
 
-void BabyElf_Init(struct Boss* p);
-void BabyElf_Update(struct Boss* p);
-void BabyElf_Die(struct Boss* p);
+void BabyElf_Init(BabyElf* p);
+void BabyElf_Update(BabyElf* p);
+void BabyElf_Die(BabyElf* p);
 
 // clang-format off
 const BossRoutine gBabyElfRoutine = {
@@ -20,10 +28,35 @@ const BossRoutine gBabyElfRoutine = {
 };
 // clang-format on
 
-void nop_08046150(struct Boss* p);
+static void FUN_08045b68(BabyElf* p) {
+  if (p->work[0] == 0) {
+    switch (p->unk_d0) {
+      case 0: {
+        if (p->unk_cf) {
+          StartPaletteAnimation(25, 0x320);
+          StepPaletteAnimation(25);
+          p->unk_d0++;
+        }
+        break;
+      }
+      case 1: {
+        StepPaletteAnimation(25);
+        if (!p->unk_cf) {
+          RemovePaletteAnimation(25);
+          p->unk_d0 = 0;
+        }
+        break;
+      }
+    }
+  }
+}
+
+INCASM("asm/boss/baby_elf.inc");
+
+void nop_08046150(BabyElf* p);
 
 // clang-format off
-static const BossFunc sUpdates1[19] = {
+static void (*const sUpdates1[19])(BabyElf*) = {
     nop_08046150,
     nop_08046150,
     nop_08046150,
@@ -43,33 +76,31 @@ static const BossFunc sUpdates1[19] = {
     nop_08046150,
     nop_08046150,
     nop_08046150,
-};
+}; // 0x083625BC
 // clang-format on
 
-// --------------------------------------------
-
-void babyelf_08046154(struct Boss* p);
-void babyelf_0804662c(struct Boss* p);
-void babyelf_080467c4(struct Boss* p);
-void babyelf_08046a7c(struct Boss* p);
-void FUN_08046ccc(struct Boss* p);
-void babyelf_08046e5c(struct Boss* p);
-void babyelf_08047184(struct Boss* p);
-void babyelf_08047338(struct Boss* p);
-void babyelf_080475a0(struct Boss* p);
-void babyelf_080477b8(struct Boss* p);
-void FUN_080478b8(struct Boss* p);
-void babyelf_080479d4(struct Boss* p);
-void babyelf_08047c70(struct Boss* p);
-void babyelf_08047e30(struct Boss* p);
-void FUN_08047f84(struct Boss* p);
-void FUN_08048190(struct Boss* p);
-void FUN_0804839c(struct Boss* p);
-void FUN_08048548(struct Boss* p);
-void FUN_0804874c(struct Boss* p);
+void babyelf_08046154(BabyElf* p);
+void babyelf_0804662c(BabyElf* p);
+void babyelf_080467c4(BabyElf* p);
+void babyelf_08046a7c(BabyElf* p);
+void FUN_08046ccc(BabyElf* p);
+void babyelf_08046e5c(BabyElf* p);
+void babyelf_08047184(BabyElf* p);
+void babyelf_08047338(BabyElf* p);
+void babyelf_080475a0(BabyElf* p);
+void babyelf_080477b8(BabyElf* p);
+void FUN_080478b8(BabyElf* p);
+void babyelf_080479d4(BabyElf* p);
+void babyelf_08047c70(BabyElf* p);
+void babyelf_08047e30(BabyElf* p);
+void FUN_08047f84(BabyElf* p);
+void FUN_08048190(BabyElf* p);
+void FUN_0804839c(BabyElf* p);
+void FUN_08048548(BabyElf* p);
+void FUN_0804874c(BabyElf* p);
 
 // clang-format off
-static const BossFunc sUpdates2[19] = {
+static void (*const sUpdates2[19])(BabyElf*) = {
     babyelf_08046154,
     babyelf_0804662c,
     babyelf_080467c4,
@@ -89,18 +120,16 @@ static const BossFunc sUpdates2[19] = {
     FUN_0804839c,
     FUN_08048548,
     FUN_0804874c,
-};
+}; // 0x08362608
 // clang-format on
 
-// --------------------------------------------
+void FUN_08048788(BabyElf* p);
+void FUN_080488cc(BabyElf* p);
 
-void FUN_08048788(struct Boss* p);
-void FUN_080488cc(struct Boss* p);
-
-static const BossFunc sDeinitializers[2] = {
+static void (*const sDeinitializers[2])(BabyElf*) = {
     FUN_08048788,
     FUN_080488cc,
-};
+};  // 0x08362654
 
 // --------------------------------------------
 

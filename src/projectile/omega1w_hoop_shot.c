@@ -14,7 +14,7 @@ typedef struct {
   s32 lifetime;  // 0xBC
   u32 unk_c0;    // 0xC0
 } Projectile5;
-static_assert(sizeof(Projectile5) == sizeof(struct Projectile));
+static_assert(sizeof(Projectile5) == sizeof(Projectile));
 
 static const ProjectileFunc sUpdates[2];
 static const struct Collision sCollisions[];

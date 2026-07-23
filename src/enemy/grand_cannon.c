@@ -6,11 +6,11 @@
 #include "story.h"
 #include "vfx.h"
 
-struct GrandCannon {
+typedef struct {
   COLLISION_OBJECT_HDR;
   // props (16bytes, offset: 0xB4..)
   struct GrandCannonProps {
-    struct Entity* elfx;  // ElementEffect
+    Entity* elfx;  // 0xB4, ElementEffect
     u8 unk_004;
     u8 unk_005;
     u16 unk_006;
@@ -20,8 +20,8 @@ struct GrandCannon {
     u8 unk_00b;
     u8 unk_00c[4];
   } props;
-};
-static_assert(sizeof(struct GrandCannon) == sizeof(struct Enemy));
+} GrandCannon;
+static_assert(sizeof(GrandCannon) == sizeof(struct Enemy));
 
 static const struct Collision sCollisions[3];
 static const struct Rect sSize;
@@ -29,14 +29,10 @@ static const motion_t sMotions[4];
 static const Coords32 sElementCoord;
 static const u8 sInitModes[2];
 
-static const EnemyFunc sUpdates1[4];
-static const EnemyFunc sUpdates2[4];
-static const EnemyFunc sDeads[3];
-
-static void GrandCannon_Init(struct GrandCannon* p);
-static void GrandCannon_Update(struct Enemy* p);
-static void GrandCannon_Die(struct Enemy* p);
-static void GrandCannon_Dissappear(struct Entity* p);
+static void GrandCannon_Init(GrandCannon* p);
+static void GrandCannon_Update(GrandCannon* p);
+static void GrandCannon_Die(GrandCannon* p);
+static void GrandCannon_Dissappear(GrandCannon* p);
 
 // clang-format off
 const EnemyRoutine gGrandCannonRoutine = {
@@ -49,35 +45,35 @@ const EnemyRoutine gGrandCannonRoutine = {
 // clang-format on
 
 // グランドキャノンの砲台の方を生成
-void CreateGrandCannonBattery(struct Entity* e) {
-  struct Entity* p = AllocEntityFirst(gEnemyHeaderPtr);
+static void CreateGrandCannonBattery(GrandCannon* turret) {
+  GrandCannon* p = AllocEntityFirst(gEnemyHeaderPtr);
   if (p != NULL) {
-    p->unk_28 = e;
+    p->unk_28 = (void*)turret;
     INIT_ENEMY_ROUTINE(p, ENEMY_GRAND_CANNON);
     p->work[0] = GRAND_CANNON_BATTERY;
     p->flags2 |= WHITE_PAINTABLE;
-    p->invincibleID = e->uniqueID;
+    p->invincibleID = turret->uniqueID;
   }
 }
 
-static void onCollision(struct Body* body, Coords32* r1 UNUSED, Coords32* r2 UNUSED) {
+static void GrandCannon_OnCollision(struct Body* body, Coords32* r1 UNUSED, Coords32* r2 UNUSED) {
   if (body->hitboxFlags & BODY_STATUS_WHITE) {
-    struct Entity* q = (body->enemy)->parent;
-    struct Entity* p = body->parent;
-    if (*((u16*)&q->kind) == 0x304) {
+    Entity* q = (body->enemy)->parent;
+    GrandCannon* p = (GrandCannon*)body->parent;
+    if (q->kind == ENTITY_PROJECTILE && q->id == 3) {
       SET_ENEMY_ROUTINE(p, ENTITY_DIE);
       p->mode[1] = 0;
     }
   }
 }
 
-static bool8 tryKillGrandCannon(struct Enemy* p) {
+static bool8 tryKillGrandCannon(GrandCannon* p) {
   if ((p->body).status & BODY_STATUS_DEAD) {
     SET_ENEMY_ROUTINE(p, ENTITY_DIE);
     if ((p->body).status & BODY_STATUS_SLASHED) {
-      (p->s).mode[1] = 1;
+      p->mode[1] = 1;
     } else {
-      (p->s).mode[1] = 0;
+      p->mode[1] = 0;
     }
     GrandCannon_Die(p);
     return TRUE;
@@ -85,37 +81,35 @@ static bool8 tryKillGrandCannon(struct Enemy* p) {
   return FALSE;
 }
 
-static void nop_0806937c(struct Enemy* p);
-static void grandcannon_08069380(struct GrandCannon* p);
+static void nop_0806937c(GrandCannon* p);
+static void grandcannon_08069380(GrandCannon* p);
 
-static const EnemyFunc sUpdates1[4] = {
-    (void*)nop_0806937c,
-    (void*)nop_0806937c,
-    (void*)nop_0806937c,
-    (void*)grandcannon_08069380,
+static void (*const sUpdates1[4])(GrandCannon*) = {
+    nop_0806937c,
+    nop_0806937c,
+    nop_0806937c,
+    grandcannon_08069380,
 };
 
-// --------------------------------------------
+static void grandCannon_080693b4(GrandCannon* p);
+void grandcannonMoveTurret(GrandCannon* p);
+void grandcannonBombShot(GrandCannon* p);
+void grandcannon_08069608(GrandCannon* p);
 
-static void grandCannon_080693b4(struct Enemy* p);
-void grandcannonMoveTurret(struct Enemy* p);
-void grandcannonBombShot(struct Enemy* p);
-void grandcannon_08069608(struct Enemy* p);
-
-static const EnemyFunc sUpdates2[4] = {
+static void (*const sUpdates2[4])(GrandCannon*) = {
     grandCannon_080693b4,
     grandcannonMoveTurret,
     grandcannonBombShot,
     grandcannon_08069608,
 };
 
-static bool8 FUN_08069098(struct GrandCannon* p) {
+static bool8 FUN_08069098(GrandCannon* p) {
   if ((p->props).elfx == NULL) {
     switch (p->mode[3]) {
       case 0: {
         if (IsFrozen(p)) {
-          (sUpdates1[p->mode[1]])((void*)p);
-          (sUpdates2[p->mode[1]])((void*)p);
+          (sUpdates1[p->mode[1]])(p);
+          (sUpdates2[p->mode[1]])(p);
           p->mode[3]++;
           UpdateSpriteAnimation(p);
           return TRUE;
@@ -132,10 +126,10 @@ static bool8 FUN_08069098(struct GrandCannon* p) {
   return FALSE;
 }
 
-static void FUN_0806910c(struct GrandCannon* p) {
+static void FUN_0806910c(GrandCannon* p) {
   if ((p->props).elfx == NULL) {
     if ((p->body).status & BODY_STATUS_WHITE) {
-      (p->props).elfx = (void*)ApplyElementEffect(0, (Object*)p, &sElementCoord);
+      (p->props).elfx = ApplyElementEffect(0, (Object*)p, &sElementCoord);
       if ((p->props).elfx != NULL) {
         p->mode[1] = 3, p->mode[2] = 0;
       }
@@ -145,7 +139,7 @@ static void FUN_0806910c(struct GrandCannon* p) {
 
 // --------------------------------------------
 
-static void GrandCannon_Init(struct GrandCannon* p) {
+static void GrandCannon_Init(GrandCannon* p) {
   SET_ENEMY_ROUTINE(p, ENTITY_UPDATE);
   p->mode[1] = sInitModes[p->work[0]];
   p->flags |= FLIPABLE;
@@ -159,25 +153,25 @@ static void GrandCannon_Init(struct GrandCannon* p) {
     } else {
       _INIT_BODY(p, sCollisions, 8);
     }
-    SET_BODY_INTERSECT_HANDLER(p, onCollision);
-    CreateGrandCannonBattery((struct Entity*)p);
+    SET_BODY_INTERSECT_HANDLER(p, GrandCannon_OnCollision);
+    CreateGrandCannonBattery(p);
     (p->props).elfx = NULL;
   } else {
     (p->props).unk_004 = 0;
   }
 
-  GrandCannon_Update((void*)p);
+  GrandCannon_Update(p);
 }
 
-NON_MATCH static void GrandCannon_Update(struct Enemy* p) {
+NON_MATCH static void GrandCannon_Update(GrandCannon* p) {
 #if MODERN
-  if ((p->s).work[0] == GRAND_CANNON_BATTERY) {
-    struct Entity* turret = (p->s).unk_28;
+  if (p->work[0] == GRAND_CANNON_BATTERY) {
+    struct Entity* turret = p->unk_28;
     if (!IS_METTAUR) {
       if (turret->mode[0] != ENTITY_EXIT) {
         if (turret->mode[0] > ENTITY_UPDATE) {
           SET_ENEMY_ROUTINE(p, ENTITY_DIE);
-          (p->s).mode[1] = 2;
+          p->mode[1] = 2;
           GrandCannon_Die(p);
           return;
         }
@@ -185,57 +179,57 @@ NON_MATCH static void GrandCannon_Update(struct Enemy* p) {
       }
     }
 
-    (p->s).flags &= ~DISPLAY;
-    (p->s).flags &= ~FLIPABLE;
+    p->flags &= ~DISPLAY;
+    p->flags &= ~FLIPABLE;
     EXIT_BODY(p);
     SET_ENEMY_ROUTINE(p, ENTITY_DISAPPEAR);
   } else {
     if (tryKillGrandCannon(p)) {
       return;
     }
-    FUN_0806910c((void*)p);
-    if (FUN_08069098((void*)p)) {
+    FUN_0806910c(p);
+    if (FUN_08069098(p)) {
       return;
     }
   _UPDATE:
-    (sUpdates1[(p->s).mode[1]])(p);
-    (sUpdates2[(p->s).mode[1]])(p);
+    (sUpdates1[p->mode[1]])(p);
+    (sUpdates2[p->mode[1]])(p);
   }
 #else
   INCCODE("asm/wip/GrandCannon_Update.inc");
 #endif
 }
 
-void explodeGrandCannon(struct Enemy* p);
-void slashGrandCannon(struct Enemy* p);
-void FUN_080697bc(struct Enemy* p);
+void explodeGrandCannon(GrandCannon* p);
+void slashGrandCannon(GrandCannon* p);
+void FUN_080697bc(GrandCannon* p);
 
-static void GrandCannon_Die(struct Enemy* p) {
-  static const EnemyFunc sDeads[3] = {
+static void GrandCannon_Die(GrandCannon* p) {
+  static void (*const sDeads[3])(GrandCannon*) = {
       explodeGrandCannon,
       slashGrandCannon,
       FUN_080697bc,
   };
-  if (IS_METTAUR) {
-    (p->s).flags &= ~DISPLAY;
-    (p->s).flags &= ~FLIPABLE;
+  if (FLAG(gCurStory.s.gameflags, METTAUR_ENABLED)) {
+    p->flags &= ~DISPLAY;
+    p->flags &= ~FLIPABLE;
     EXIT_BODY(p);
     SET_ENEMY_ROUTINE(p, ENTITY_DISAPPEAR);
     return;
   }
-  (sDeads[(p->s).mode[1]])(p);
+  (sDeads[p->mode[1]])(p);
 }
 
-static void GrandCannon_Dissappear(struct Entity* p) {
+static void GrandCannon_Dissappear(GrandCannon* p) {
   p->flags2 &= ~ENTI_PHYSICS;
-  DeleteEnemy(p);
+  DeleteEnemy((Entity*)p);
 }
 
 // --------------------------------------------
 
-static void nop_0806937c(struct Enemy* p) { return; }
+static void nop_0806937c(GrandCannon* p) { return; }
 
-static void grandcannon_08069380(struct GrandCannon* p) {
+static void grandcannon_08069380(GrandCannon* p) {
   struct Entity* elfx = (p->props).elfx;
   if (elfx == NULL || IsDead(elfx)) {
     (p->props).elfx = NULL;
@@ -244,21 +238,20 @@ static void grandcannon_08069380(struct GrandCannon* p) {
   }
 }
 
-// --------------------------------------------
-
-static void grandCannon_080693b4(struct Enemy* p) {
-  switch ((p->s).mode[2]) {
+static void grandCannon_080693b4(GrandCannon* p) {
+  switch (p->mode[2]) {
     case 0: {
       SetDDP(&p->body, &sCollisions[1]);
-      (p->s).flags2 |= ENTI_PHYSICS;
-      (p->s).size = &sSize;
-      (p->s).physicsAttr = MTATTR_SLIP | SHAPE_BLOCK;
+      p->flags2 |= ENTI_PHYSICS;
+      p->size = &sSize;
+      p->physicsAttr = MTATTR_SLIP | SHAPE_BLOCK;
       SetSpriteAnimation(p, MOTION(SM007_GRAND_CANNON, 0));
-      (p->s).mode[2]++;
+      p->mode[2]++;
       FALLTHROUGH;
     }
     case 1: {
       UpdateSpriteAnimation(p);
+      break;
     }
   }
 }

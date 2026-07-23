@@ -7,9 +7,9 @@
 static const u8 sInitModes[4];
 static const struct Collision sCollisions[4];
 
-static void EarShot_Init(struct ProjectileV2* p);
-static void EarShot_Update(struct ProjectileV2* p);
-static void EarShot_Die(struct ProjectileV2* p);
+static void EarShot_Init(Projectile* p);
+static void EarShot_Update(Projectile* p);
+static void EarShot_Die(Projectile* p);
 
 // clang-format off
 const ProjectileRoutine gEarShotRoutine = {
@@ -24,7 +24,7 @@ const ProjectileRoutine gEarShotRoutine = {
 // --------------------------------------------
 
 void createEarShot(s32 x, s32 y, u8 n, bool8 is_big) {
-  struct ProjectileV2* p = AllocEntityFirst(gProjectileHeaderPtr);
+  Projectile* p = AllocEntityFirst(gProjectileHeaderPtr);
   if (p != NULL) {
     INIT_PROJECTILE_ROUTINE(p, 11);
     p->work[0] = !!is_big;
@@ -38,7 +38,7 @@ static void EarShot_OnCollision(struct Body* body, Coords32* r1 UNUSED, Coords32
 
 // --------------------------------------------
 
-static void EarShot_Init(struct ProjectileV2* p) {
+static void EarShot_Init(Projectile* p) {
   SET_PROJECTILE_ROUTINE(p, ENTITY_UPDATE);
   p->mode[1] = sInitModes[p->work[0]];
   p->flags |= FLIPABLE;
@@ -48,30 +48,30 @@ static void EarShot_Init(struct ProjectileV2* p) {
   EarShot_Update(p);
 }
 
-static void nop_0809f3d0(struct ProjectileV2* p);
-static void _EarShot_Update(struct ProjectileV2* p);
+static void nop_0809f3d0(Projectile* p);
+static void _EarShot_Update(Projectile* p);
 
-static void EarShot_Update(struct ProjectileV2* p) {
-  static const ProjectileV2Func sUpdates1[1] = {
+static void EarShot_Update(Projectile* p) {
+  static const ProjectileFunc sUpdates1[1] = {
       nop_0809f3d0,
   };
-  static const ProjectileV2Func sUpdates2[1] = {
+  static const ProjectileFunc sUpdates2[1] = {
       _EarShot_Update,
   };
   (sUpdates1[p->mode[1]])(p);
   (sUpdates2[p->mode[1]])(p);
 }
 
-static void EarShot_Die(struct ProjectileV2* p) {
+static void EarShot_Die(Projectile* p) {
   EXIT_BODY(p);
   SET_PROJECTILE_ROUTINE(p, ENTITY_EXIT);
 }
 
 // --------------------------------------------
 
-static void nop_0809f3d0(struct ProjectileV2* p) {}
+static void nop_0809f3d0(Projectile* p) {}
 
-static void _EarShot_Update(struct ProjectileV2* p) {
+static void _EarShot_Update(Projectile* p) {
   switch (p->mode[2]) {
     case 0: {
       if (p->work[0] == 0) {

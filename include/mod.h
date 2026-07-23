@@ -136,13 +136,13 @@ enum ModID {
   MOD_118,  // bit 6: CalibeeG HP +16
   MOD_119,  // bit 7: Deathlock HP +4
   // 120..
-  MOD_120,        //  bit 0: Gyro Cannon HP +4
-  MOD_121,        //  bit 1: SharksealX HP +4
-  MOD_122,        //  bit 2: OlWormer HP +16
-  MOD_123,        //  bit 3: BranWormer HP +16
-  MOD_124,        //  bit 4: LocomoIF HP +16
-  MOD_125,        //  bit 5: BeeServer HP +16
-  MOD_MEGAMILPA,  //  bit 6: Megamilpa HP +16
+  MOD_GYRO_CANNON,  //  bit 0: Gyro Cannon HP +4
+  MOD_121,          //  bit 1: SharksealX HP +4
+  MOD_122,          //  bit 2: OlWormer HP +16
+  MOD_123,          //  bit 3: BranWormer HP +16
+  MOD_124,          //  bit 4: LocomoIF HP +16
+  MOD_125,          //  bit 5: BeeServer HP +16
+  MOD_MEGAMILPA,    //  bit 6: Megamilpa HP +16
   MOD_127,
 };
 

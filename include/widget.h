@@ -4,13 +4,6 @@
 #include "entity/entity.h"
 #include "types.h"
 
-struct Widget {
-  struct Entity s;
-  u8 props[16];
-};  // 132 bytes
-
-// --------------------------------------------
-
 extern struct Widget gWidgets[64];
 
 struct EntityHeader;

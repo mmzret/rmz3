@@ -4,24 +4,24 @@
 
 INCASM("asm/projectile/pantheon_bomber.inc");
 
-void PantheonBombProjectile_Init(struct Projectile* p);
-void PantheonBombProjectile_Update(struct Projectile* p);
-void PantheonBombProjectile_Die(struct Projectile* p);
+void PantheonBombProjectile_Init(Projectile* p);
+void PantheonBombProjectile_Update(Projectile* p);
+void PantheonBombProjectile_Die(Projectile* p);
 
 // clang-format off
 const ProjectileRoutine gPantheonBombProjectileRoutine = {
-    [ENTITY_INIT] =      PantheonBombProjectile_Init,
-    [ENTITY_UPDATE] =    PantheonBombProjectile_Update,
-    [ENTITY_DIE] =       PantheonBombProjectile_Die,
+    [ENTITY_INIT] =      (void*)PantheonBombProjectile_Init,
+    [ENTITY_UPDATE] =    (void*)PantheonBombProjectile_Update,
+    [ENTITY_DIE] =       (void*)PantheonBombProjectile_Die,
     [ENTITY_DISAPPEAR] = (void*)DeleteProjectile,
-    [ENTITY_EXIT] =      (ProjectileFunc)DeleteEntity,
+    [ENTITY_EXIT] =      (void*)DeleteEntity,
 };
 // clang-format on
 
 // --------------------------------------------
 
-void _pantheonBombAI(struct Projectile* p);
-void pantheonBombBlastAI(struct Projectile* p);
+void _pantheonBombAI(Projectile* p);
+void pantheonBombBlastAI(Projectile* p);
 
 static const ProjectileFunc sUpdates[2] = {
     _pantheonBombAI,

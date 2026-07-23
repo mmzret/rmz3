@@ -4,9 +4,9 @@
 
 // Baby Elf's projectile
 
-void Projectile13_Init(struct Projectile* p);
-void Projectile13_Update(struct Projectile* p);
-void Projectile13_Die(struct Projectile* p);
+void Projectile13_Init(Projectile* p);
+void Projectile13_Update(Projectile* p);
+void Projectile13_Die(Projectile* p);
 
 // clang-format off
 const ProjectileRoutine gProjectile13Routine = {
@@ -18,10 +18,10 @@ const ProjectileRoutine gProjectile13Routine = {
 };
 // clang-format on
 
-void FUN_0809f8ac(struct Entity* q) {
+void FUN_0809f8ac(Entity* q) {
   s32 i;
   for (i = 0; i < 4; i++) {
-    struct Entity* p = AllocEntityFirst(gProjectileHeaderPtr);
+    Entity* p = AllocEntityFirst(gProjectileHeaderPtr);
     if (p != NULL) {
       INIT_PROJECTILE_ROUTINE(p, 13);
       p->work[0] = 5, p->work[2] = i;
@@ -30,11 +30,33 @@ void FUN_0809f8ac(struct Entity* q) {
   }
 }
 
+void FUN_0809f8fc(s32 x, s32 y, u8 sineidx) {
+  Entity* p = AllocEntityFirst(gProjectileHeaderPtr);
+  if (p != NULL) {
+    INIT_PROJECTILE_ROUTINE(p, 13);
+    p->work[0] = 0;
+    (p->coord).x = x, (p->coord).y = y;
+    (p->d).x = COS(sineidx) << 1;
+    (p->d).y = -(SIN(sineidx) << 1);
+  }
+}
+
+void FUN_0809f970(s32 x, s32 y, u8 work2) {
+  Entity* p = AllocEntityFirst(gProjectileHeaderPtr);
+  if (p != NULL) {
+    INIT_PROJECTILE_ROUTINE(p, 13);
+    p->work[0] = 1, p->work[2] = work2;
+    (p->unk_coord).x = x, (p->unk_coord).y = y;
+    (p->coord).x = x - PIXEL(4) + (RANDOM(RNG_0202f388) & 0x7FF);
+    (p->coord).y = y;
+  }
+}
+
 INCASM("asm/projectile/baby_elf.inc");
 
 // --------------------------------------------
 
-void nop_0809fbd8(struct Projectile* p);
+void nop_0809fbd8(Projectile* p);
 
 // clang-format off
 static const ProjectileFunc sUpdates1[7] = {
@@ -50,13 +72,13 @@ static const ProjectileFunc sUpdates1[7] = {
 
 // --------------------------------------------
 
-void FUN_0809fbdc(struct Projectile* p);
-void FUN_0809fcfc(struct Projectile* p);
-void FUN_0809ff74(struct Projectile* p);
-void FUN_080a025c(struct Projectile* p);
-void FUN_080a03ac(struct Projectile* p);
-void FUN_080a04d4(struct Projectile* p);
-void FUN_080a06c0(struct Projectile* p);
+void FUN_0809fbdc(Projectile* p);
+void FUN_0809fcfc(Projectile* p);
+void FUN_0809ff74(Projectile* p);
+void FUN_080a025c(Projectile* p);
+void FUN_080a03ac(Projectile* p);
+void FUN_080a04d4(Projectile* p);
+void FUN_080a06c0(Projectile* p);
 
 // clang-format off
 static const ProjectileFunc sUpdates2[7] = {

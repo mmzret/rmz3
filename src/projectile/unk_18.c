@@ -5,9 +5,9 @@
 
 static const struct Collision sCollisions[4];
 
-void Projectile18_Init(struct ProjectileV2* p);
-void Projectile18_Update(struct ProjectileV2* p);
-void Projectile18_Die(struct ProjectileV2* p);
+void Projectile18_Init(Projectile* p);
+void Projectile18_Update(Projectile* p);
+void Projectile18_Die(Projectile* p);
 
 // clang-format off
 const ProjectileRoutine gProjectile18Routine = {
@@ -22,7 +22,7 @@ const ProjectileRoutine gProjectile18Routine = {
 void FUN_080a2ea0(void) {
   s32 i;
   for (i = 0; i < 5; i++) {
-    struct ProjectileV2* p = AllocEntityFirst(gProjectileHeaderPtr);
+    Projectile* p = AllocEntityFirst(gProjectileHeaderPtr);
     if (p != NULL) {
       INIT_PROJECTILE_ROUTINE(p, 18);
       p->work[0] = 2;
@@ -31,7 +31,7 @@ void FUN_080a2ea0(void) {
 }
 
 void FUN_080a2ee8(s32 x, s32 y) {
-  struct ProjectileV2* p = AllocEntityFirst(gProjectileHeaderPtr);
+  Projectile* p = AllocEntityFirst(gProjectileHeaderPtr);
   if (p != NULL) {
     INIT_PROJECTILE_ROUTINE(p, 18);
     p->work[0] = 1;
@@ -42,7 +42,7 @@ void FUN_080a2ee8(s32 x, s32 y) {
 void FUN_080a2f34(s32 x, s32 y) {
   s32 i;
   for (i = 0; i < 2; i++) {
-    struct ProjectileV2* p = AllocEntityFirst(gProjectileHeaderPtr);
+    Projectile* p = AllocEntityFirst(gProjectileHeaderPtr);
     if (p != NULL) {
       INIT_PROJECTILE_ROUTINE(p, 18);
       p->work[0] = 0;
@@ -57,7 +57,7 @@ void Projectile18_OnCollision(struct Body* _, Coords32* c1, Coords32* c2) {}
 
 static const u8 sProjectile18_InitModes[4];
 
-void Projectile18_Init(struct ProjectileV2* p) {
+void Projectile18_Init(Projectile* p) {
   SET_PROJECTILE_ROUTINE(p, ENTITY_UPDATE);
   p->mode[1] = sProjectile18_InitModes[p->work[0]];
   p->flags |= FLIPABLE;
@@ -67,16 +67,16 @@ void Projectile18_Init(struct ProjectileV2* p) {
   Projectile18_Update(p);
 }
 
-void FUN_080a3090(struct ProjectileV2* p);
-void FUN_080a308c(struct ProjectileV2* p);
+void FUN_080a3090(Projectile* p);
+void FUN_080a308c(Projectile* p);
 
-void FUN_080a3094(struct ProjectileV2* p);
-void FUN_080a31c0(struct ProjectileV2* p);
-void FUN_080a3298(struct ProjectileV2* p);
-void FUN_080a3418(struct ProjectileV2* p);
-void FUN_080a34a0(struct ProjectileV2* p);
+void FUN_080a3094(Projectile* p);
+void FUN_080a31c0(Projectile* p);
+void FUN_080a3298(Projectile* p);
+void FUN_080a3418(Projectile* p);
+void FUN_080a34a0(Projectile* p);
 
-void Projectile18_Update(struct ProjectileV2* p) {
+void Projectile18_Update(Projectile* p) {
   // clang-format off
   static const ProjectileFunc PTR_ARRAY_0836b434[5] = {
       (void*)FUN_080a3090,
@@ -99,15 +99,15 @@ void Projectile18_Update(struct ProjectileV2* p) {
   (PTR_ARRAY_0836b448[p->mode[1]])((void*)p);
 }
 
-void Projectile18_Die(struct ProjectileV2* p) {
+void Projectile18_Die(Projectile* p) {
   EXIT_BODY(p);
   CreateSmoke(3, &p->coord);
   SET_PROJECTILE_ROUTINE(p, ENTITY_EXIT);
 }
 
-void FUN_080a308c(struct ProjectileV2* p) {}
+void FUN_080a308c(Projectile* p) {}
 
-void FUN_080a3090(struct ProjectileV2* p) {}
+void FUN_080a3090(Projectile* p) {}
 
 INCASM("asm/projectile/unk_18_c.inc");
 

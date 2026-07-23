@@ -3,9 +3,11 @@
 #include "gfx.h"
 #include "global.h"
 #include "overworld.h"
-#include "projectile/blazin_tail.h"
 #include "sound.h"
 #include "zero.h"
+//
+#include "projectile/blazin.h"
+#include "projectile/blazin_tail.h"
 
 typedef struct {
   COLLISION_OBJECT_HDR;  // 0x00

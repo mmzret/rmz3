@@ -17,8 +17,8 @@ const ProjectileRoutine gProjectile16Routine = {
 };
 // clang-format on
 
-struct Entity* FUN_080a244c(Coords32* c1, Coords32* c2, bool8 isDirRight) {
-  struct Entity* p = AllocEntityLast(gProjectileHeaderPtr);
+Entity* FUN_080a244c(Coords32* c1, Coords32* c2, bool8 isDirRight) {
+  Entity* p = AllocEntityLast(gProjectileHeaderPtr);
   if (p != NULL) {
     INIT_PROJECTILE_ROUTINE(p, 16);
     p->work[0] = isDirRight;
@@ -48,14 +48,14 @@ static void Projectile16_Init(Object* p) {
   Projectile16_Update((void*)p);
 }
 
-void FUN_080a25f8(struct Projectile* p);
-void FUN_080a2710(struct Projectile* p);
+void FUN_080a25f8(Projectile* p);
+void FUN_080a2710(Projectile* p);
 
 static void Projectile16_Update(Object* p) {
   // 0x0836b350
   static const ProjectileFunc sUpdates[2] = {
-      (void*)FUN_080a25f8,
-      (void*)FUN_080a2710,
+      FUN_080a25f8,
+      FUN_080a2710,
   };
 
   if (IS_METTAUR) {

@@ -41,7 +41,7 @@ void CreateOzChargeSaberRock(s32 x, u8 r1);
 void oz_080b3820(Coords32* c, bool8 isRight);
 void oz_080c3b44(struct Entity* p);
 void oz_080c3b9c(struct Entity* p);
-struct Projectile* CreateOmegaZeroSaber(struct Entity* e, u8 kind);
+Projectile* CreateOmegaZeroSaber(Entity* e, u8 kind);
 
 static const BossFunc gOmegaZeroMainRoutine1[24];
 static const BossFunc gOmegaZeroMainRoutine2[24];

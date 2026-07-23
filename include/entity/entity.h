@@ -63,61 +63,55 @@ static_assert(sizeof(struct CollisionObject) == 180);
 
 // --------------------------------------------
 
-// サイズが同じものは、用途によっては同じ構造体にしていいかもしれない(要検討)
+// NOTE:
+// buffer のレイアウトが Entity によって違うため、基本的に、各Entityの実装ではこの構造体は使わず各自で定義する(e.g. src/boss/childre.c の Childre)
+// buffer を使わないものは普通にここの構造体でいい
 
-// Entity.kind = 0, プレイヤー
+// Entity.kind = 0(ENTITY_PLAYER), プレイヤー
 // -> include/entity/player.h
 
-// Entity.kind = 1, ゼロの武器
+// Entity.kind = 1(ENTITY_WEAPON), ゼロの武器
 typedef struct Weapon {
   COLLISION_OBJECT_HDR;  // 0x00
   u8 buffer[56];         // 0xB4
 } Weapon;                // 236 bytes
 
-// Entity.kind = 2
+// Entity.kind = 2(ENTITY_BOSS), ボス(中ボス含む)
 typedef struct Boss {
   COLLISION_OBJECT_HDR;  // 0x00
   u8 buffer[48];         // 0xB4
 } Boss;                  // 228 bytes
 
-// Entity.kind = 3
+// Entity.kind = 3(ENTITY_ENEMY)
 struct Enemy {
-  Entity s;
-  struct Body body;
-  u8 buffer[16];  // 0xB4
+  Entity s;          // 0x00
+  struct Body body;  // 0x74
+  u8 buffer[16];     // 0xB4
 };  // 196 bytes
 
-// Entity.kind = 4
-// 飛び道具だと思ってたけど、特定のエンティティに従属しているエンティティのことを指すかも？
-struct Projectile {
-  Entity s;
-  struct Body body;
-  u8 buffer[16];  // 0xB4
-};  // 196 bytes
-
-// Entity.kind = 4
-// 飛び道具だと思ってたけど、特定のエンティティに従属しているエンティティのことを指すかも？
-struct ProjectileV2 {
-  COLLISION_OBJECT_HDR;  // 0x00, Projectile の COLLISION_OBJECT_HDR 使う版, こっちに統一する
+// Entity.kind = 4(ENTITY_PROJECTILE)
+// 敵側の ENTITY_WEAPON に相当?
+typedef struct Projectile {
+  COLLISION_OBJECT_HDR;  // 0x00
   u8 buffer[16];         // 0xB4
-};  // 196 bytes
+} Projectile;            // 196 bytes
 
-// Entity.kind = 5, VFX: プレイヤーと干渉しない、グラフィックエフェクト的な存在 (Visual Effect -> VFX)
+// Entity.kind = 5(ENTITY_VFX), VFX: プレイヤーと干渉しない、グラフィックエフェクト的な存在 (Visual Effect -> VFX)
 //   例: ダッシュの残像, パーティクル, ミッションアラート, ハンマー振り子のボールチェーン, エネミーが死んで飛び散った残骸, etc...
 //   NOTE: Ghost から VFX にリネームしたけど、まだ変数名や関数名に Ghost が残っているものがある
 struct VFX {
-  Entity s;
+  Entity s;       // 0x00
   u8 buffer[16];  // 0x74
 };  // 132 bytes
 
-// Entity.kind = 6
+// Entity.kind = 6(ENTITY_SOLID)
 struct Solid {
-  Entity s;
-  struct Body body;
-  u8 buffer[16];  // 0xB4
+  Entity s;          // 0x00
+  struct Body body;  // 0x74
+  u8 buffer[16];     // 0xB4
 };  // 196 bytes
 
-// Entity.kind = 7, アイテム
+// Entity.kind = 7(ENTITY_ITEM), アイテム
 typedef struct Pickup {
   COLLISION_OBJECT_HDR;  // 0x00
   s32 y;                 // 0xB4
@@ -125,11 +119,17 @@ typedef struct Pickup {
   u8 _[8];               // 0xBC, unused?
 } Pickup;                // 196 bytes
 
-// Entity.kind = 8, サイバーエルフ
+// Entity.kind = 8(ENTITY_ELF), サイバーエルフ
 typedef struct CyberElf {
   COLLISION_OBJECT_HDR;  // 0x00
   u8 buffer[16];         // 0xB4
 } CyberElf;              // 196 bytes
+
+// Entity.kind = 9(ENTITY_WIDGET), ウィジェット(メニュー画面のUIパーツ)
+struct Widget {
+  Entity s;      // 0x00
+  u8 props[16];  // 0x74
+};  // 132 bytes
 
 // --------------------------------------------
 

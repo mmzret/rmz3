@@ -9,11 +9,11 @@
 
 struct Entity* CreateVFX55(struct Boss* e, u8 r1, u8 r2);
 
-void copyx_08057744(struct Boss* p);
+void copyx_08057744(BossCopyX* p);
 
-static void CopyX_Init(struct Boss* p);
-static void CopyX_Update(struct BossCopyX* p);
-static void CopyX_Die(struct Boss* p);
+static void CopyX_Init(BossCopyX* p);
+static void CopyX_Update(BossCopyX* p);
+static void CopyX_Die(BossCopyX* p);
 
 // clang-format off
 const BossRoutine gCopyXRoutine = {
@@ -27,12 +27,11 @@ const BossRoutine gCopyXRoutine = {
 
 // --------------------------------------------
 
-void CreateCopyX(Coords32* c) {
-  struct Entity* p = AllocEntityLast(gBossHeaderPtr);
+static void Unused_CreateCopyX(Coords32* c) {
+  BossCopyX* p = AllocEntityLast(gBossHeaderPtr);
   if (p != NULL) {
     INIT_BOSS_ROUTINE(p, BOSS_COPY_X);
-    (p->coord).x = c->x;
-    (p->coord).y = c->y;
+    (p->coord).x = c->x, (p->coord).y = c->y;
     p->work[0] = 0, p->work[1] = 0;
   }
 }
@@ -41,7 +40,7 @@ void CreateCopyX(Coords32* c) {
 
 static const struct Collision sCollisions[];
 
-NAKED static void CopyX_Init(struct Boss* p) {
+NAKED static void CopyX_Init(BossCopyX* p) {
   asm(".syntax unified\n\
 	push {r4, r5, r6, r7, lr}\n\
 	mov r7, sl\n\
@@ -373,7 +372,7 @@ static void copyx_080557a4(struct Boss* p);
 static void copyxMode1(struct Boss* p);
 static void copyxNeutral(struct Boss* p);
 static void copyxNextMode(Object* p);
-static void copyxMode4(struct BossCopyX* p);
+static void copyxMode4(BossCopyX* p);
 void copyxMode5(struct Boss* p);
 void copyxMode6(struct Boss* p);
 void copyxMode7(struct Boss* p);
@@ -409,7 +408,7 @@ void copyxMode36(struct Boss* p);
 void copyx_08057094(struct Boss* p);
 void copyxMode38(struct Boss* p);
 
-static void CopyX_Update(struct BossCopyX* p) {
+static void CopyX_Update(BossCopyX* p) {
   // clang-format off
   static const BossFunc sUpdates[39] = {
       [0] =  (void*)copyx_080557a4,
@@ -461,11 +460,11 @@ static void CopyX_Update(struct BossCopyX* p) {
     SET_BOSS_ROUTINE(p, ENTITY_DIE);
     p->mode[2] = 1;
     EXIT_BODY(p);
-    CopyX_Die((void*)p);
+    CopyX_Die(p);
     return;
   }
 
-  copyx_08057744((void*)p);
+  copyx_08057744(p);
   if (p->mode[1] != 33) {
     p->unk_dd = (p->body).hp - 16;
     if (p->unk_dd < 0) {
@@ -495,15 +494,15 @@ static void CopyX_Update(struct BossCopyX* p) {
   UpdateSpriteAnimation(p);
 }
 
-void copyx_08057204(struct Boss* p);
-void copyx_08057418(struct Boss* p);
-void copyx_08057520(struct Boss* p);
-void copyx_08057590(struct Boss* p);
-void copyx_0805763c(struct Boss* p);
+void copyx_08057204(BossCopyX* p);
+void copyx_08057418(BossCopyX* p);
+void copyx_08057520(BossCopyX* p);
+void copyx_08057590(BossCopyX* p);
+void copyx_0805763c(BossCopyX* p);
 
-static void CopyX_Die(struct Boss* p) {
+static void CopyX_Die(BossCopyX* p) {
   // clang-format off
-  static const BossFunc sDeads[5] = {
+  static void (*const sDeads[5])(BossCopyX*) = {
       [0] = copyx_08057204,
       [1] = copyx_08057418,
       [2] = copyx_08057520,
@@ -893,12 +892,10 @@ static void copyxNextMode(Object* p) {
 }
 
 // 0x08055aec
-static void copyxMode4(struct BossCopyX* p) {
+static void copyxMode4(BossCopyX* p) {
   UpdateSpriteAnimation(p);
   p->unk_c6 = 1;
-  p->mode[1] = 3;
-  p->mode[2] = 1;
-  p->mode[3] = 2;
+  p->mode[1] = 3, p->mode[2] = 1, p->mode[3] = 2;
   {
     s16 hp = (p->body).hp;
     if (hp < 32) {

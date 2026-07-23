@@ -4,54 +4,6 @@
 	
 	.text
 
-	thumb_func_start FUN_08045b68
-FUN_08045b68: @ 0x08045B68
-	push {r4, r5, lr}
-	adds r4, r0, #0
-	ldrb r0, [r4, #0x10]
-	cmp r0, #0
-	bne _08045BBC
-	adds r5, r4, #0
-	adds r5, #0xd0
-	ldrb r0, [r5]
-	cmp r0, #0
-	beq _08045B82
-	cmp r0, #1
-	beq _08045BA4
-	b _08045BBC
-_08045B82:
-	adds r0, r4, #0
-	adds r0, #0xcf
-	ldrb r0, [r0]
-	cmp r0, #0
-	beq _08045BBC
-	movs r1, #0xc8
-	lsls r1, r1, #2
-	movs r0, #0x19
-	bl StartPaletteAnimation
-	movs r0, #0x19
-	bl StepPaletteAnimation
-	ldrb r0, [r5]
-	adds r0, #1
-	strb r0, [r5]
-	b _08045BBC
-_08045BA4:
-	movs r0, #0x19
-	bl StepPaletteAnimation
-	adds r0, r4, #0
-	adds r0, #0xcf
-	ldrb r4, [r0]
-	cmp r4, #0
-	bne _08045BBC
-	movs r0, #0x19
-	bl RemovePaletteAnimation
-	strb r4, [r5]
-_08045BBC:
-	pop {r4, r5}
-	pop {r0}
-	bx r0
-	.align 2, 0
-
 	thumb_func_start babyelf_08045bc4
 babyelf_08045bc4: @ 0x08045BC4
 	push {r4, r5, r6, r7, lr}

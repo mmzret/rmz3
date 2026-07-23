@@ -4,9 +4,9 @@
 
 // キャリビーG の ミサイル + そのミサイルを撃つ部分
 
-void Projectile37_Init(struct Projectile* p);
-void Projectile37_Update(struct Projectile* p);
-void Projectile37_Die(struct Projectile* p);
+void Projectile37_Init(Projectile* p);
+void Projectile37_Update(Projectile* p);
+void Projectile37_Die(Projectile* p);
 
 // clang-format off
 const ProjectileRoutine gProjectile37Routine = {
@@ -18,8 +18,8 @@ const ProjectileRoutine gProjectile37Routine = {
 };
 // clang-format on
 
-static struct Entity* unused_FUN_080ada80(void* e, u8 kind) {
-  struct Entity* p = AllocEntityLast(gProjectileHeaderPtr);
+static Entity* unused_FUN_080ada80(void* e, u8 kind) {
+  Entity* p = AllocEntityLast(gProjectileHeaderPtr);
   if (p != NULL) {
     INIT_PROJECTILE_ROUTINE(p, 37);
     p->work[0] = kind, p->work[1] = 1;
@@ -28,8 +28,8 @@ static struct Entity* unused_FUN_080ada80(void* e, u8 kind) {
   return p;
 }
 
-struct Entity* FUN_080adad0(Coords32* c, u8 kind) {
-  struct Entity* p = AllocEntityLast(gProjectileHeaderPtr);
+Entity* FUN_080adad0(Coords32* c, u8 kind) {
+  Entity* p = AllocEntityLast(gProjectileHeaderPtr);
   if (p != NULL) {
     INIT_PROJECTILE_ROUTINE(p, 37);
     p->work[0] = kind, p->work[1] = 0;
@@ -42,8 +42,8 @@ INCASM("asm/projectile/unk_37.inc");
 
 // --------------------------------------------
 
-void FUN_080adc84(struct Projectile* p);
-void FUN_080ae140(struct Projectile* p);
+void FUN_080adc84(Projectile* p);
+void FUN_080ae140(Projectile* p);
 
 static const ProjectileFunc sUpdates[2] = {
     FUN_080adc84,

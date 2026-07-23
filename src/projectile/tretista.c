@@ -2,9 +2,9 @@
 #include "global.h"
 #include "projectile.h"
 
-void TretistaProjectile_Init(struct Projectile* p);
-void TretistaProjectile_Update(struct Projectile* p);
-void TretistaProjectile_Die(struct Projectile* p);
+void TretistaProjectile_Init(Projectile* p);
+void TretistaProjectile_Update(Projectile* p);
+void TretistaProjectile_Die(Projectile* p);
 
 // clang-format off
 const ProjectileRoutine gTretistaProjectileRoutine = {
@@ -16,8 +16,8 @@ const ProjectileRoutine gTretistaProjectileRoutine = {
 };
 // clang-format on
 
-struct Entity* createTretistaBreathGas(struct Entity* e, Coords32* c, u8 kind) {
-  struct Entity* p = AllocEntityLast(gProjectileHeaderPtr);
+Entity* createTretistaBreathGas(Entity* e, Coords32* c, u8 kind) {
+  Entity* p = AllocEntityLast(gProjectileHeaderPtr);
   if (p != NULL) {
     INIT_PROJECTILE_ROUTINE(p, 19);
     p->work[0] = 0, p->work[1] = kind;
@@ -29,10 +29,10 @@ struct Entity* createTretistaBreathGas(struct Entity* e, Coords32* c, u8 kind) {
 
 INCASM("asm/projectile/tretista.inc");
 
-void FUN_080a38e8(struct Projectile* p);
-void FUN_080a3c58(struct Projectile* p);
-void FUN_080a44c0(struct Projectile* p);
-void FUN_080a4d0c(struct Projectile* p);
+void FUN_080a38e8(Projectile* p);
+void FUN_080a3c58(Projectile* p);
+void FUN_080a44c0(Projectile* p);
+void FUN_080a4d0c(Projectile* p);
 
 static const ProjectileFunc PTR_ARRAY_0836b4d4[4] = {
     FUN_080a38e8,

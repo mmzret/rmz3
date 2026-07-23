@@ -1,88 +1,90 @@
+#include "projectile/blazin.h"
+
 #include "collision.h"
 #include "global.h"
 #include "projectile.h"
 
+typedef void (*BlazinProjectileFunc)(BlazinProjectile*);
+
 static const struct Collision sCollisions[14];
 
-static void Projectile9_Init(struct Projectile* p);
-static void Projectile9_Update(struct Projectile* p);
-static void Projectile9_Die(struct Projectile* p);
+static void Projectile9_Init(BlazinProjectile* p);
+static void Projectile9_Update(BlazinProjectile* p);
+static void Projectile9_Die(BlazinProjectile* p);
 
 // clang-format off
 const ProjectileRoutine gBlazinProjectileRoutine = {
-    [ENTITY_INIT] =      (ProjectileFunc)Projectile9_Init,
-    [ENTITY_UPDATE] =    (ProjectileFunc)Projectile9_Update,
-    [ENTITY_DIE] =       (ProjectileFunc)Projectile9_Die,
-    [ENTITY_DISAPPEAR] = (ProjectileFunc)DeleteProjectile,
-    [ENTITY_EXIT] =      (ProjectileFunc)DeleteEntity,
+    [ENTITY_INIT] =      (void*)Projectile9_Init,
+    [ENTITY_UPDATE] =    (void*)Projectile9_Update,
+    [ENTITY_DIE] =       (void*)Projectile9_Die,
+    [ENTITY_DISAPPEAR] = (void*)DeleteProjectile,
+    [ENTITY_EXIT] =      (void*)DeleteEntity,
 };
 // clang-format on
 
+BlazinProjectile* Unused_FUN_0809e4b0(Entity* q, Coords32* c) {
+  BlazinProjectile* p = AllocEntityLast(gProjectileHeaderPtr);
+  if (p != NULL) {
+    INIT_PROJECTILE_ROUTINE(p, 9);
+    p->work[0] = 0;
+    p->coord = *c;
+    p->unk_28 = q;
+  }
+  return p;
+}
+
+BlazinProjectile* FUN_0809e500(Entity* e, Coords32* c, Coords32* d) {
+  BlazinProjectile* p = AllocEntityLast(gProjectileHeaderPtr);
+  if (p != NULL) {
+    INIT_PROJECTILE_ROUTINE(p, 9);
+    p->work[0] = 1;
+    p->d = *d;
+    p->coord = *c;
+    p->unk_28 = e;
+  }
+  return p;
+}
+
+BlazinProjectile* FUN_0809e55c(Entity* e, Coords32* c, Coords32* c2) {
+  BlazinProjectile* p = AllocEntityLast(gProjectileHeaderPtr);
+  if (p != NULL) {
+    INIT_PROJECTILE_ROUTINE(p, 9);
+    p->work[0] = 2;
+    p->coord = *c;
+    p->unk_coord = *c2;
+    p->unk_28 = e;
+  }
+  return p;
+}
+
+BlazinProjectile* _createBlazinEXFireBall(Entity* e, Coords32* c, Coords32* d, u8 angle) {
+  BlazinProjectile* p = AllocEntityLast(gProjectileHeaderPtr);
+  if (p != NULL) {
+    INIT_PROJECTILE_ROUTINE(p, 9);
+    p->work[0] = 3;
+    p->angle_b4 = angle;
+    p->coord = *c;
+    p->d = *d;
+    p->unk_28 = e;
+  }
+  return p;
+}
+
+BlazinProjectile* blazin_0809e620(Entity* e, Coords32* c, Coords32* d) {
+  BlazinProjectile* p = AllocEntityLast(gProjectileHeaderPtr);
+  if (p != NULL) {
+    INIT_PROJECTILE_ROUTINE(p, 9);
+    p->work[0] = 4;
+    p->d = *d;
+    p->coord = *c;
+    p->unk_28 = e;
+  }
+  return p;
+}
+
 // --------------------------------------------
 
-struct Projectile* FUN_0809e4b0(struct Entity* e, Coords32* c) {
-  struct Projectile* p = (struct Projectile*)AllocEntityLast(gProjectileHeaderPtr);
-  if (p != NULL) {
-    INIT_PROJECTILE_ROUTINE(p, 9);
-    (p->s).work[0] = 0;
-    (p->s).coord = *c;
-    (p->s).unk_28 = e;
-  }
-  return p;
-}
-
-struct Projectile* FUN_0809e500(struct Entity* e, Coords32* c, Coords32* d) {
-  struct Projectile* p = (struct Projectile*)AllocEntityLast(gProjectileHeaderPtr);
-  if (p != NULL) {
-    INIT_PROJECTILE_ROUTINE(p, 9);
-    (p->s).work[0] = 1;
-    (p->s).d = *d;
-    (p->s).coord = *c;
-    (p->s).unk_28 = e;
-  }
-  return p;
-}
-
-struct Projectile* FUN_0809e55c(struct Entity* e, Coords32* c, Coords32* c2) {
-  struct Projectile* p = (struct Projectile*)AllocEntityLast(gProjectileHeaderPtr);
-  if (p != NULL) {
-    INIT_PROJECTILE_ROUTINE(p, 9);
-    (p->s).work[0] = 2;
-    (p->s).coord = *c;
-    (p->s).unk_coord = *c2;
-    (p->s).unk_28 = e;
-  }
-  return p;
-}
-
-struct Projectile* _createBlazinEXFireBall(struct Entity* e, Coords32* c, Coords32* d, u8 angle) {
-  struct Projectile* p = (struct Projectile*)AllocEntityLast(gProjectileHeaderPtr);
-  if (p != NULL) {
-    INIT_PROJECTILE_ROUTINE(p, 9);
-    (p->s).work[0] = 3;
-    p->buffer[0] = angle;
-    (p->s).coord = *c;
-    (p->s).d = *d;
-    (p->s).unk_28 = e;
-  }
-  return p;
-}
-
-struct Projectile* blazin_0809e620(struct Entity* e, Coords32* c, Coords32* d) {
-  struct Projectile* p = (struct Projectile*)AllocEntityLast(gProjectileHeaderPtr);
-  if (p != NULL) {
-    INIT_PROJECTILE_ROUTINE(p, 9);
-    (p->s).work[0] = 4;
-    (p->s).d = *d;
-    (p->s).coord = *c;
-    (p->s).unk_28 = e;
-  }
-  return p;
-}
-
-// --------------------------------------------
-
-NAKED static void Projectile9_Init(struct Projectile* p) {
+NAKED static void Projectile9_Init(BlazinProjectile* p) {
   asm(".syntax unified\n\
 	push {r4, r5, r6, lr}\n\
 	adds r5, r0, #0\n\
@@ -199,21 +201,19 @@ _0809E754: .4byte gProjectileFnTable\n\
  .syntax divided\n");
 }
 
-// --------------------------------------------
-
-static void FUN_0809e7b4(struct Projectile* p);
-void FUN_0809e7c0(struct Projectile* p);
-void FUN_0809e9b8(struct Projectile* p);
-void FUN_0809e9c4(struct Projectile* p);
-void FUN_0809eadc(struct Projectile* p);
-void FUN_0809eae8(struct Projectile* p);
-void FUN_0809ec18(struct Projectile* p);
-void FUN_0809ec24(struct Projectile* p);
-void FUN_0809edfc(struct Projectile* p);
-void FUN_0809ee08(struct Projectile* p);
+static void FUN_0809e7b4(BlazinProjectile* p);
+void FUN_0809e7c0(BlazinProjectile* p);
+void FUN_0809e9b8(BlazinProjectile* p);
+void FUN_0809e9c4(BlazinProjectile* p);
+void FUN_0809eadc(BlazinProjectile* p);
+void FUN_0809eae8(BlazinProjectile* p);
+void FUN_0809ec18(BlazinProjectile* p);
+void FUN_0809ec24(BlazinProjectile* p);
+void FUN_0809edfc(BlazinProjectile* p);
+void FUN_0809ee08(BlazinProjectile* p);
 
 // clang-format off
-static const ProjectileFunc PTR_ARRAY_ARRAY_0836ad24[5][2] = {
+static const BlazinProjectileFunc PTR_ARRAY_ARRAY_0836ad24[5][2] = {
     {FUN_0809e7b4, FUN_0809e7c0},
     {FUN_0809e9b8, FUN_0809e9c4},
     {FUN_0809eadc, FUN_0809eae8},
@@ -222,9 +222,9 @@ static const ProjectileFunc PTR_ARRAY_ARRAY_0836ad24[5][2] = {
 };
 // clang-format on
 
-static void Projectile9_Update(struct Projectile* p) {
+static void Projectile9_Update(BlazinProjectile* p) {
   // clang-format off
-  static const ProjectileFunc* const sUpdates[5] = {
+  static const BlazinProjectileFunc* const sUpdates[5] = {
     PTR_ARRAY_ARRAY_0836ad24[0],
     PTR_ARRAY_ARRAY_0836ad24[1],
     PTR_ARRAY_ARRAY_0836ad24[2],
@@ -232,22 +232,20 @@ static void Projectile9_Update(struct Projectile* p) {
     PTR_ARRAY_ARRAY_0836ad24[4],
   };
   // clang-format on
-  ((sUpdates[(p->s).work[0]])[(p->s).mode[1]])(p);
+  ((sUpdates[p->work[0]])[p->mode[1]])(p);
 }
 
-// --------------------------------------------
-
-static void Projectile9_Die(struct Projectile* p) {
-  (p->s).flags &= ~DISPLAY;
+static void Projectile9_Die(BlazinProjectile* p) {
+  p->flags &= ~DISPLAY;
   EXIT_BODY(p);
   SET_PROJECTILE_ROUTINE(p, ENTITY_EXIT);
 }
 
 // --------------------------------------------
 
-static void FUN_0809e7b4(struct Projectile* p) {
-  (p->s).mode[1] = 1;
-  (p->s).mode[2] = 0;
+static void FUN_0809e7b4(BlazinProjectile* p) {
+  p->mode[1] = 1;
+  p->mode[2] = 0;
 }
 
 INCASM("asm/projectile/blazin.inc");

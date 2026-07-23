@@ -3,59 +3,65 @@
 #include "projectile.h"
 #include "story.h"
 
-static void Projectile7_Init(struct Projectile* p);
-static void Projectile7_Update(struct Projectile* p);
-static void Projectile7_Die(struct Projectile* p);
+typedef struct {
+  COLLISION_OBJECT_HDR;  // 0x00
+  s32 amplitude_b4;      // 0xB4
+  u8 unk_b8[12];         // 0xB8
+} Projectile7;
+static_assert(sizeof(Projectile7) == sizeof(Projectile));
+
+static void Projectile7_Init(Projectile7* p);
+static void Projectile7_Update(Projectile7* p);
+static void Projectile7_Die(Projectile7* p);
 
 // clang-format off
 const ProjectileRoutine gProjectile7Routine = {
-    [ENTITY_INIT] =      Projectile7_Init,
-    [ENTITY_UPDATE] =    Projectile7_Update,
-    [ENTITY_DIE] =       Projectile7_Die,
+    [ENTITY_INIT] =      (void*)Projectile7_Init,
+    [ENTITY_UPDATE] =    (void*)Projectile7_Update,
+    [ENTITY_DIE] =       (void*)Projectile7_Die,
     [ENTITY_DISAPPEAR] = (void*)DeleteProjectile,
-    [ENTITY_EXIT] =      (ProjectileFunc)DeleteEntity,
+    [ENTITY_EXIT] =      (void*)DeleteEntity,
 };
 // clang-format on
 
-struct Projectile* CreateProjectile7(Coords32* c, s32 amplitude, u8 angle) {
-  struct Projectile* p = (struct Projectile*)AllocEntityLast(gProjectileHeaderPtr);
+Entity* CreateProjectile7(Coords32* c, s32 amplitude, u8 angle) {
+  Projectile7* p = AllocEntityLast(gProjectileHeaderPtr);
   if (p != NULL) {
     INIT_PROJECTILE_ROUTINE(p, 7);
-    (p->s).coord.x = c->x;
-    (p->s).coord.y = c->y;
+    (p->coord).x = c->x, (p->coord).y = c->y;
     angle += 0x80;
-    *(s32*)p->buffer = amplitude;
-    (p->s).d.x = Cos(angle, amplitude);
-    (p->s).d.y = Sin(angle, amplitude);
+    p->amplitude_b4 = amplitude;
+    (p->d).x = Cos(angle, amplitude);
+    (p->d).y = Sin(angle, amplitude);
   }
-  return p;
+  return (void*)p;
 }
 
 static const struct Collision sCollisions[2];
 
-static void Projectile7_Init(struct Projectile* p) {
+static void Projectile7_Init(Projectile7* p) {
   EnableSpriteAnimation_Normal(p);
-  (p->s).flags |= DISPLAY;
-  (p->s).flags |= FLIPABLE;
-  INIT_BODY(p, &sCollisions[0], 0, NULL);
+  p->flags |= DISPLAY;
+  p->flags |= FLIPABLE;
+  _INIT_BODY(p, &sCollisions[0], 0);
   SetSpriteAnimation(p, MOTION(SM000_BATTLE_EFFECT, 1));
-  (p->s).work[2] = 0xFF;
-  (p->s).spr.oam.priority = 1;
+  p->work[2] = 0xFF;
+  (p->spr).oam.priority = 1;
   SET_PROJECTILE_ROUTINE(p, ENTITY_UPDATE);
   Projectile7_Update(p);
 }
 
-static void Projectile7_Update(struct Projectile* p) {
+static void Projectile7_Update(Projectile7* p) {
   if (IS_METTAUR) {
-    (p->s).flags &= ~DISPLAY;
-    (p->s).flags &= ~FLIPABLE;
+    p->flags &= ~DISPLAY;
+    p->flags &= ~FLIPABLE;
     EXIT_BODY(p);
     SET_PROJECTILE_ROUTINE(p, ENTITY_DISAPPEAR);
     return;
   }
 
-  (p->s).coord.x += (p->s).d.x;
-  (p->s).coord.y += (p->s).d.y;
+  (p->coord).x += (p->d).x;
+  (p->coord).y += (p->d).y;
   UpdateSpriteAnimation(p);
   if (IsSpriteAnimEnd(p)) {
     EXIT_BODY(p);
@@ -63,8 +69,8 @@ static void Projectile7_Update(struct Projectile* p) {
   }
 }
 
-static void Projectile7_Die(struct Projectile* p) {
-  (p->s).flags &= ~DISPLAY;
+static void Projectile7_Die(Projectile7* p) {
+  p->flags &= ~DISPLAY;
   EXIT_BODY(p);
   SET_PROJECTILE_ROUTINE(p, ENTITY_EXIT);
 }

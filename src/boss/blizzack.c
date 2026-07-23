@@ -2,22 +2,28 @@
 #include "collision.h"
 #include "global.h"
 
-void Blizzack_Init(struct Boss* p);
-void Blizzack_Update(struct Boss* p);
-void Blizzack_Die(struct Boss* p);
+typedef struct {
+  COLLISION_OBJECT_HDR;  // 0x00
+  u8 unk_b4[48];         // 0xB4
+} Blizzack;
+static_assert(sizeof(Blizzack) == sizeof(Boss));
+
+void Blizzack_Init(Blizzack* p);
+void Blizzack_Update(Blizzack* p);
+void Blizzack_Die(Blizzack* p);
 
 // clang-format off
 const BossRoutine gBlizzackRoutine = {
-    [ENTITY_INIT] =      (BossFunc)Blizzack_Init,
-    [ENTITY_UPDATE] =    (BossFunc)Blizzack_Update,
-    [ENTITY_DIE] =       (BossFunc)Blizzack_Die,
-    [ENTITY_DISAPPEAR] = (BossFunc)DeleteBoss,
-    [ENTITY_EXIT] =      (BossFunc)DeleteEntity,
+    [ENTITY_INIT] =      (void*)Blizzack_Init,
+    [ENTITY_UPDATE] =    (void*)Blizzack_Update,
+    [ENTITY_DIE] =       (void*)Blizzack_Die,
+    [ENTITY_DISAPPEAR] = (void*)DeleteBoss,
+    [ENTITY_EXIT] =      (void*)DeleteEntity,
 };
 // clang-format on
 
 void CreateBlizzack(Coords32* c) {
-  struct Entity* p = AllocEntityLast(gBossHeaderPtr);
+  Blizzack* p = AllocEntityLast(gBossHeaderPtr);
   if (p != NULL) {
     INIT_BOSS_ROUTINE(p, BOSS_BLIZZACK);
     p->coord = *c;
@@ -29,65 +35,65 @@ void CreateBlizzack(Coords32* c) {
 
 INCASM("asm/boss/blizzack.inc");
 
-void blizzackMode0(struct Boss* p);
-void blizzackMode1(struct Boss* p);
-void blizzackNeutral(struct Boss* p);
-void blizzackPreAI(struct Boss* p);
-void blizzackNextMode(struct Boss* p);
-void blizzackJump(struct Boss* p);
-void blizzackStamp(struct Boss* p);
-void blizzackMode7(struct Boss* p);
-void blizzackMode8(struct Boss* p);
-void blizzackMode9(struct Boss* p);
-void blizzackStartBlizzard(struct Boss* p);
-void blizzackBlizzard(struct Boss* p);
-void blizzackEndBlizzard(struct Boss* p);
-void blizzackBombJump(struct Boss* p);
-void blizzackBomb(struct Boss* p);
-void blizzackBombFall(struct Boss* p);
-void blizzackBombStamp(struct Boss* p);
-void blizzackMode17(struct Boss* p);
-void blizzackMode18(struct Boss* p);
-void blizzackMode19(struct Boss* p);
-void blizzackMode20(struct Boss* p);
+void blizzackMode0(Blizzack* p);
+void blizzackMode1(Blizzack* p);
+void blizzackNeutral(Blizzack* p);
+void blizzackPreAI(Blizzack* p);
+void blizzackNextMode(Blizzack* p);
+void blizzackJump(Blizzack* p);
+void blizzackStamp(Blizzack* p);
+void blizzackMode7(Blizzack* p);
+void blizzackMode8(Blizzack* p);
+void blizzackMode9(Blizzack* p);
+void blizzackStartBlizzard(Blizzack* p);
+void blizzackBlizzard(Blizzack* p);
+void blizzackEndBlizzard(Blizzack* p);
+void blizzackBombJump(Blizzack* p);
+void blizzackBomb(Blizzack* p);
+void blizzackBombFall(Blizzack* p);
+void blizzackBombStamp(Blizzack* p);
+void blizzackMode17(Blizzack* p);
+void blizzackMode18(Blizzack* p);
+void blizzackMode19(Blizzack* p);
+void blizzackMode20(Blizzack* p);
 
 // clang-format off
 // 0x08364b50
-static const BossFunc sUpdates[21] = {
-    (BossFunc)blizzackMode0,
-    (BossFunc)blizzackMode1,
-    (BossFunc)blizzackNeutral,
-    (BossFunc)blizzackPreAI,
-    (BossFunc)blizzackNextMode,
-    (BossFunc)blizzackJump,
-    (BossFunc)blizzackStamp,
-    (BossFunc)blizzackMode7,
-    (BossFunc)blizzackMode8,
-    (BossFunc)blizzackMode9,
-    (BossFunc)blizzackStartBlizzard,
-    (BossFunc)blizzackBlizzard,
-    (BossFunc)blizzackEndBlizzard,
-    (BossFunc)blizzackBombJump,
-    (BossFunc)blizzackBomb,
-    (BossFunc)blizzackBombFall,
-    (BossFunc)blizzackBombStamp,
-    (BossFunc)blizzackMode17,
-    (BossFunc)blizzackMode18,
-    (BossFunc)blizzackMode19,
-    (BossFunc)blizzackMode20,
+static void (*const sUpdates[21])(Blizzack*) = {
+    blizzackMode0,
+    blizzackMode1,
+    blizzackNeutral,
+    blizzackPreAI,
+    blizzackNextMode,
+    blizzackJump,
+    blizzackStamp,
+    blizzackMode7,
+    blizzackMode8,
+    blizzackMode9,
+    blizzackStartBlizzard,
+    blizzackBlizzard,
+    blizzackEndBlizzard,
+    blizzackBombJump,
+    blizzackBomb,
+    blizzackBombFall,
+    blizzackBombStamp,
+    blizzackMode17,
+    blizzackMode18,
+    blizzackMode19,
+    blizzackMode20,
 };
 // clang-format on
 
 // --------------------------------------------
 
-void blizzack_0805ac5c(struct Boss* p);
-void blizzack_0805ad2c(struct Boss* p);
-void blizzack_0805add0(struct Boss* p);
+void blizzack_0805ac5c(Blizzack* p);
+void blizzack_0805ad2c(Blizzack* p);
+void blizzack_0805add0(Blizzack* p);
 
-static const BossFunc sDeads[3] = {
-    (BossFunc)blizzack_0805ac5c,
-    (BossFunc)blizzack_0805ad2c,
-    (BossFunc)blizzack_0805add0,
+static void (*const sDeads[3])(Blizzack*) = {
+    blizzack_0805ac5c,
+    blizzack_0805ad2c,
+    blizzack_0805add0,
 };
 
 // --------------------------------------------

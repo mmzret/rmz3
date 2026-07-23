@@ -4,9 +4,9 @@
 
 // CopyX (Reflect Laser?)
 
-void Projectile29_Init(struct Projectile* p);
-void Projectile29_Update(struct Projectile* p);
-static void Projectile29_Die(struct Entity* p);
+void Projectile29_Init(Projectile* p);
+void Projectile29_Update(Projectile* p);
+static void Projectile29_Die(Projectile* p);
 
 // clang-format off
 const ProjectileRoutine gProjectile29Routine = {
@@ -18,8 +18,8 @@ const ProjectileRoutine gProjectile29Routine = {
 };
 // clang-format on
 
-void copyx_080aa24c(struct Entity* q, u8 kind1, u8 kind2) {
-  struct Entity* p = AllocEntityLast(gProjectileHeaderPtr);
+void copyx_080aa24c(Entity* q, u8 kind1, u8 kind2) {
+  Projectile* p = AllocEntityLast(gProjectileHeaderPtr);
   if (p != NULL) {
     INIT_PROJECTILE_ROUTINE(p, 29);
     p->unk_28 = q;
@@ -29,7 +29,7 @@ void copyx_080aa24c(struct Entity* q, u8 kind1, u8 kind2) {
 
 INCASM("asm/projectile/copy_x_29.inc");
 
-static void Projectile29_Die(struct Entity* p) {
+static void Projectile29_Die(Projectile* p) {
   p->flags &= ~DISPLAY;
   SET_PROJECTILE_ROUTINE(p, ENTITY_EXIT);
 }

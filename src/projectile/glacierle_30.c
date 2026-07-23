@@ -4,9 +4,9 @@
 
 // glacierle に関連するのは確定
 
-void Projectile30_Init(struct Projectile* p);
-void Projectile30_Update(struct Projectile* p);
-void Projectile30_Die(struct Projectile* p);
+void Projectile30_Init(Projectile* p);
+void Projectile30_Update(Projectile* p);
+void Projectile30_Die(Projectile* p);
 
 // clang-format off
 const ProjectileRoutine gProjectile30Routine = {
@@ -19,7 +19,7 @@ const ProjectileRoutine gProjectile30Routine = {
 // clang-format on
 
 void FUN_080aa5e8(s32 x, s32 y, s32 dx, s32 dy) {
-  struct Entity* p = AllocEntityLast(gProjectileHeaderPtr);
+  Entity* p = AllocEntityLast(gProjectileHeaderPtr);
   if (p != NULL) {
     INIT_PROJECTILE_ROUTINE(p, 30);
     p->work[0] = 0;
@@ -35,13 +35,13 @@ INCASM("asm/projectile/glacierle_30.inc");
 
 // --------------------------------------------
 
-void FUN_080aa710(struct Projectile* p);
+void FUN_080aa710(Projectile* p);
 
 static const ProjectileFunc sUpdates1[1] = {
     FUN_080aa710,
 };
 
-void FUN_080aa714(struct Projectile* p);
+void FUN_080aa714(Projectile* p);
 
 static const ProjectileFunc sUpdates2[1] = {
     FUN_080aa714,

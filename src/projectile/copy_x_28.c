@@ -12,7 +12,7 @@ typedef struct {
   Coords32 c_b4;  // 0xB4
   u8 unk_bc[8];   // 0xBC
 } Projectile28;
-static_assert(sizeof(Projectile28) == sizeof(struct Projectile));
+static_assert(sizeof(Projectile28) == sizeof(Projectile));
 
 // Entity.work[0]
 enum {
@@ -155,7 +155,7 @@ static void FUN_080a9d88(Projectile28* p) {
 }
 
 static void FUN_080a9dcc(Projectile28* p) {
-  struct BossCopyX* q = (struct BossCopyX*)(p->unk_28);
+  BossCopyX* q = (BossCopyX*)(p->unk_28);
   p->coord = q->coord;
   SET_XFLIP(p, (q->flags & X_FLIP) != 0);
   if (q->unk_c6) {

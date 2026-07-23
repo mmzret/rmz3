@@ -4,9 +4,9 @@
 
 INCASM("asm/projectile/omega1g_33.inc");
 
-void OmegaGoldProjectile_Init(struct Projectile* p);
-void OmegaGoldProjectile_Update(struct Projectile* p);
-void OmegaGoldProjectile_Die(struct Projectile* p);
+void OmegaGoldProjectile_Init(Projectile* p);
+void OmegaGoldProjectile_Update(Projectile* p);
+void OmegaGoldProjectile_Die(Projectile* p);
 
 // clang-format off
 const ProjectileRoutine gOmegaGoldProjectileRoutine = {
@@ -20,9 +20,9 @@ const ProjectileRoutine gOmegaGoldProjectileRoutine = {
 
 // --------------------------------------------
 
-void doGoldOmega1Laser1(struct Projectile* p);
-void doGoldOmega1Laser2(struct Projectile* p);
-void FUN_080ac700(struct Projectile* p);
+void doGoldOmega1Laser1(Projectile* p);
+void doGoldOmega1Laser2(Projectile* p);
+void FUN_080ac700(Projectile* p);
 
 static const ProjectileFunc sUpdates[3] = {
     doGoldOmega1Laser1,

@@ -7,7 +7,7 @@ typedef struct {
   COLLISION_OBJECT_HDR;  // 0x00
   u8 unk_b4[16];         // 0xB4
 } OmegaZeroProjectile;
-static_assert(sizeof(OmegaZeroProjectile) == sizeof(struct Projectile));
+static_assert(sizeof(OmegaZeroProjectile) == sizeof(Projectile));
 
 static void OmegaZeroProjectile_Init(OmegaZeroProjectile* p);
 static void OmegaZeroProjectile_Update(OmegaZeroProjectile* p);
@@ -49,14 +49,14 @@ void CreateMessenkou(struct Entity* e) {
   }
 }
 
-struct ProjectileV2* CreateOmegaZeroSaber(struct Entity* e, u8 kind) {
-  struct Entity* p = AllocEntityLast(gProjectileHeaderPtr);
+Projectile* CreateOmegaZeroSaber(struct Entity* e, u8 kind) {
+  Projectile* p = AllocEntityLast(gProjectileHeaderPtr);
   if (p != NULL) {
     INIT_PROJECTILE_ROUTINE(p, 38);
     p->work[0] = 0, p->work[1] = kind;
     p->unk_28 = e;
   }
-  return (struct ProjectileV2*)p;
+  return (Projectile*)p;
 }
 
 // 0x080ae300

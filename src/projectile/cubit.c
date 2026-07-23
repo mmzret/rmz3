@@ -4,30 +4,30 @@
 
 INCASM("asm/projectile/cubit.inc");
 
-void CubitProjectile_Init(struct Projectile* p);
-void CubitProjectile_Update(struct Projectile* p);
-void CubitProjectile_Die(struct Projectile* p);
+void CubitProjectile_Init(Projectile* p);
+void CubitProjectile_Update(Projectile* p);
+void CubitProjectile_Die(Projectile* p);
 
 // clang-format off
 const ProjectileRoutine gCubitProjectileRoutine = {
-    [ENTITY_INIT] =      CubitProjectile_Init,
-    [ENTITY_UPDATE] =    CubitProjectile_Update,
-    [ENTITY_DIE] =       CubitProjectile_Die,
+    [ENTITY_INIT] =      (void*)CubitProjectile_Init,
+    [ENTITY_UPDATE] =    (void*)CubitProjectile_Update,
+    [ENTITY_DIE] =       (void*)CubitProjectile_Die,
     [ENTITY_DISAPPEAR] = (void*)DeleteProjectile,
-    [ENTITY_EXIT] =      (ProjectileFunc)DeleteEntity,
+    [ENTITY_EXIT] =      (void*)DeleteEntity,
 };
 // clang-format on
 
 // --------------------------------------------
 
-void cubit_080a63ac(struct Projectile* p);
-void FUN_080a6718(struct Projectile* p);
-void FUN_080a6d3c(struct Projectile* p);
-void cubit_080a6ed4(struct Projectile* p);
-void cubit_080a725c(struct Projectile* p);
-void FUN_080a7478(struct Projectile* p);
-void FUN_080a7a70(struct Projectile* p);
-void FUN_080a7a7c(struct Projectile* p);
+void cubit_080a63ac(Projectile* p);
+void FUN_080a6718(Projectile* p);
+void FUN_080a6d3c(Projectile* p);
+void cubit_080a6ed4(Projectile* p);
+void cubit_080a725c(Projectile* p);
+void FUN_080a7478(Projectile* p);
+void FUN_080a7a70(Projectile* p);
+void FUN_080a7a7c(Projectile* p);
 
 // clang-format off
 static const ProjectileFunc PTR_ARRAY_ARRAY_0836bb74[4][2] = {

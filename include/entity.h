@@ -24,7 +24,7 @@ extern Player gPlayers[1];
 extern Weapon gWeapons[24];
 extern struct Boss gBosses[5];
 extern struct Enemy gEnemies[18];
-extern struct Projectile gProjectiles[24];
+extern Projectile gProjectiles[24];
 extern struct VFX gVFXs[64];
 extern struct Solid gSolids[22];
 extern CyberElf gElfEntities[16];

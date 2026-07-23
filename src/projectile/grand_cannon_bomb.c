@@ -6,9 +6,9 @@
 
 static const struct Collision sCollision;
 
-static void GrandCannonBomb_Init(struct ProjectileV2* p);
-static void GrandCannonBomb_Update(struct ProjectileV2* p);
-static void GrandCannonBomb_Die(struct ProjectileV2* p);
+static void GrandCannonBomb_Init(Projectile* p);
+static void GrandCannonBomb_Update(Projectile* p);
+static void GrandCannonBomb_Die(Projectile* p);
 
 // clang-format off
 const ProjectileRoutine gGrandCannonBombRoutine = {
@@ -21,7 +21,7 @@ const ProjectileRoutine gGrandCannonBombRoutine = {
 // clang-format on
 
 void CreateGrandCannonBomb(Coords32* c, s32 amplitude, u8 angle) {
-  struct ProjectileV2* p = AllocEntityLast(gProjectileHeaderPtr);
+  Projectile* p = AllocEntityLast(gProjectileHeaderPtr);
   if (p != NULL) {
     INIT_PROJECTILE_ROUTINE(p, 3);
     (p->coord).x = c->x;
@@ -33,7 +33,7 @@ void CreateGrandCannonBomb(Coords32* c, s32 amplitude, u8 angle) {
 
 // --------------------------------------------
 
-static void GrandCannonBomb_Init(struct ProjectileV2* p) {
+static void GrandCannonBomb_Init(Projectile* p) {
   SET_PROJECTILE_ROUTINE(p, ENTITY_UPDATE);
   p->mode[1] = 0;
   p->flags |= FLIPABLE;
@@ -43,9 +43,9 @@ static void GrandCannonBomb_Init(struct ProjectileV2* p) {
   GrandCannonBomb_Update(p);
 }
 
-static void _parabolaGrandcannonBomb(struct ProjectileV2* p);  // グランドキャノンの砲弾が放物線を描いて飛ぶ処理
+static void _parabolaGrandcannonBomb(Projectile* p);  // グランドキャノンの砲弾が放物線を描いて飛ぶ処理
 
-static void GrandCannonBomb_Update(struct ProjectileV2* p) {
+static void GrandCannonBomb_Update(Projectile* p) {
   static const ProjectileFunc sUpdates[1] = {
       (void*)_parabolaGrandcannonBomb,
   };
@@ -60,7 +60,7 @@ static void GrandCannonBomb_Update(struct ProjectileV2* p) {
   (sUpdates[p->mode[1]])((void*)p);
 }
 
-static void GrandCannonBomb_Die(struct ProjectileV2* p) {
+static void GrandCannonBomb_Die(Projectile* p) {
   EXIT_BODY(p);
   CreateSmoke(3, &p->coord);
   SET_PROJECTILE_ROUTINE(p, ENTITY_EXIT);
@@ -68,7 +68,7 @@ static void GrandCannonBomb_Die(struct ProjectileV2* p) {
 
 // --------------------------------------------
 
-static void _parabolaGrandcannonBomb(struct ProjectileV2* p) {
+static void _parabolaGrandcannonBomb(Projectile* p) {
   switch (p->mode[2]) {
     case 0: {
       SetSpriteAnimation(p, MOTION(SM007_GRAND_CANNON, 8));

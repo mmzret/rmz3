@@ -8,7 +8,7 @@ typedef struct {
   u8 unk_b4;             // 0xB4
   u8 unk_b5[15];         // 0xB5
 } Projectile12;
-static_assert(sizeof(Projectile12) == sizeof(struct Projectile));
+static_assert(sizeof(Projectile12) == sizeof(Projectile));
 
 static const struct Collision sCollisions[4];
 
@@ -28,8 +28,8 @@ const ProjectileRoutine gProjectile12Routine = {
 
 // --------------------------------------------
 
-struct Entity* FUN_0809f48c(struct Entity* q, Coords32* c) {
-  struct Entity* p = AllocEntityLast(gProjectileHeaderPtr);
+Entity* FUN_0809f48c(struct Entity* q, Coords32* c) {
+  Entity* p = AllocEntityLast(gProjectileHeaderPtr);
   if (p != NULL) {
     INIT_PROJECTILE_ROUTINE(p, 12);
     p->work[0] = 0;
@@ -39,7 +39,7 @@ struct Entity* FUN_0809f48c(struct Entity* q, Coords32* c) {
   return p;
 }
 
-struct ProjectileV2* FUN_0809f4dc(struct Entity* e, Coords32* c, Coords32* d, u8 n) {
+Projectile* FUN_0809f4dc(struct Entity* e, Coords32* c, Coords32* d, u8 n) {
   Projectile12* p = AllocEntityLast(gProjectileHeaderPtr);
   if (p != NULL) {
     INIT_PROJECTILE_ROUTINE(p, 12);
@@ -56,9 +56,7 @@ struct ProjectileV2* FUN_0809f4dc(struct Entity* e, Coords32* c, Coords32* d, u8
 
 static void Projectile12_Init(Projectile12* p) {
   EnableSpriteAnimation_Affine(p);
-  p->angle = 0;
-  p->spr.mag.x = 0x100;
-  p->spr.mag.y = 0x100;
+  p->angle = 0, (p->spr).mag.x = 0x100, (p->spr).mag.y = 0x100;
   p->flags |= DISPLAY;
   p->flags |= FLIPABLE;
   SetSpriteTableDynamic(p);

@@ -1,6 +1,6 @@
 #include "entity.h"
 
-IWRAM_DATA ALIGNED(16) struct Projectile gProjectiles[24] = {};
+IWRAM_DATA ALIGNED(16) Projectile gProjectiles[24] = {};
 IWRAM_DATA struct Enemy gEnemies[18] = {};
 IWRAM_DATA ALIGNED(16) struct VFX gVFXs[64] = {};
 

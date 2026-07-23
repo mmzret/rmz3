@@ -3,11 +3,17 @@
 #include "global.h"
 #include "overworld.h"
 
+typedef struct {
+  COLLISION_OBJECT_HDR;  // 0x00
+  u8 unk_b4[48];         // 0xB4
+} BeeServer;
+static_assert(sizeof(BeeServer) == sizeof(Boss));
+
 static const struct Collision sCollisions[8];
 
-void BeeServer_Init(struct Boss* p);
-void BeeServer_Update(struct Boss* p);
-void BeeServer_Die(struct Boss* p);
+void BeeServer_Init(BeeServer* p);
+void BeeServer_Update(BeeServer* p);
+void BeeServer_Die(BeeServer* p);
 
 // clang-format off
 const BossRoutine gBeeServerRoutine = {
@@ -21,7 +27,7 @@ const BossRoutine gBeeServerRoutine = {
 
 static void onCollision(struct Body* body UNUSED, Coords32* r1 UNUSED, Coords32* r2 UNUSED) { return; }
 
-static bool8 tryKillBeeServer(struct Boss* p) {
+static bool8 tryKillBeeServer(BeeServer* p) {
   if ((((p->body).status & BODY_STATUS_DEAD) || ((p->body).hp == 0)) && !(gStageRun.missionStatus & MISSION_PLAYER_DEAD)) {
     SET_BOSS_ROUTINE(p, ENTITY_DIE);
     p->mode[1] = 0;
@@ -33,37 +39,31 @@ static bool8 tryKillBeeServer(struct Boss* p) {
 
 INCASM("asm/boss/bee_server.inc");
 
-// --------------------------------------------
+void FUN_0804d0a4(BeeServer* p);
+void nop_0804d0a0(BeeServer* p);
 
-void FUN_0804d0a4(struct Boss* p);
-void nop_0804d0a0(struct Boss* p);
-
-static const BossFunc sUpdates1[4] = {
+static void (*const sUpdates1[4])(BeeServer*) = {
     FUN_0804d0a4,
     nop_0804d0a0,
     FUN_0804d0a4,
     FUN_0804d0a4,
 };
 
-// --------------------------------------------
+void FUN_0804d0f8(BeeServer* p);
+void FUN_0804d1ac(BeeServer* p);
+void FUN_0804d240(BeeServer* p);
+void FUN_0804d418(BeeServer* p);
 
-void FUN_0804d0f8(struct Boss* p);
-void FUN_0804d1ac(struct Boss* p);
-void FUN_0804d240(struct Boss* p);
-void FUN_0804d418(struct Boss* p);
-
-static const BossFunc sUpdates2[4] = {
+static void (*const sUpdates2[4])(BeeServer*) = {
     FUN_0804d0f8,
     FUN_0804d1ac,
     FUN_0804d240,
     FUN_0804d418,
 };  // 0x08363244
 
-// --------------------------------------------
+void FUN_0804d494(BeeServer* p);
 
-void FUN_0804d494(struct Boss* p);
-
-static const BossFunc sDeads[1] = {
+static void (*const sDeads[1])(BeeServer*) = {
     FUN_0804d494,
 };  // 0x08363254
 

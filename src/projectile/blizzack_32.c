@@ -3,10 +3,15 @@
 #include "projectile.h"
 
 // Blizzack関連なのは確定
+typedef struct {
+  COLLISION_OBJECT_HDR;  // 0x00
+  u8 buffer[16];         // 0xB4
+} Projectile32;
+static_assert(sizeof(Projectile32) == sizeof(Projectile));
 
-void Projectile32_Init(struct Projectile* p);
-void Projectile32_Update(struct Projectile* p);
-void Projectile32_Die(struct Projectile* p);
+void Projectile32_Init(Projectile32* p);
+void Projectile32_Update(Projectile32* p);
+void Projectile32_Die(Projectile32* p);
 
 // clang-format off
 const ProjectileRoutine gProjectile32Routine = {
@@ -18,8 +23,8 @@ const ProjectileRoutine gProjectile32Routine = {
 };
 // clang-format on
 
-struct Entity* FUN_080aaa80(struct Entity* q, u8 kind1, u8 kind2) {
-  struct Entity* p = AllocEntityLast(gProjectileHeaderPtr);
+Entity* FUN_080aaa80(Entity* q, u8 kind1, u8 kind2) {
+  Entity* p = AllocEntityLast(gProjectileHeaderPtr);
   if (p != NULL) {
     INIT_PROJECTILE_ROUTINE(p, 32);
     p->work[0] = kind1, p->work[1] = kind2;
@@ -30,8 +35,8 @@ struct Entity* FUN_080aaa80(struct Entity* q, u8 kind1, u8 kind2) {
   return NULL;
 }
 
-void blizzack_080aaae0(struct Entity* q, u8 val) {
-  struct Entity* p = AllocEntityLast(gProjectileHeaderPtr);
+void blizzack_080aaae0(Entity* q, u8 val) {
+  Entity* p = AllocEntityLast(gProjectileHeaderPtr);
   if (p != NULL) {
     INIT_PROJECTILE_ROUTINE(p, 32);
     p->work[0] = 1, p->work[1] = val;
@@ -44,18 +49,18 @@ INCASM("asm/projectile/blizzack_32.inc");
 
 // --------------------------------------------
 
-void nop_080aaecc(struct Projectile* p);
-void FUN_080aaed8(struct Projectile* p);
-void FUN_080ab190(struct Projectile* p);
-void FUN_080ab550(struct Projectile* p);
-void FUN_080ab784(struct Projectile* p);
-void FUN_080ab9f0(struct Projectile* p);
-void FUN_080abb44(struct Projectile* p);
-void FUN_080abdf8(struct Projectile* p);
-void FUN_080abec0(struct Projectile* p);
+void nop_080aaecc(Projectile32* p);
+void FUN_080aaed8(Projectile32* p);
+void FUN_080ab190(Projectile32* p);
+void FUN_080ab550(Projectile32* p);
+void FUN_080ab784(Projectile32* p);
+void FUN_080ab9f0(Projectile32* p);
+void FUN_080abb44(Projectile32* p);
+void FUN_080abdf8(Projectile32* p);
+void FUN_080abec0(Projectile32* p);
 
 // clang-format off
-static const ProjectileFunc sInitializers[9] = {
+static void (*const sInitializers[9])(Projectile32*) = {
     nop_080aaecc,
     FUN_080aaed8,
     FUN_080ab190,
@@ -68,20 +73,18 @@ static const ProjectileFunc sInitializers[9] = {
 };
 // clang-format on
 
-// --------------------------------------------
-
-void nop_080aaed0(struct Projectile* p);
-void FUN_080ab004(struct Projectile* p);
-void FUN_080ab21c(struct Projectile* p);
-void FUN_080ab668(struct Projectile* p);
-void FUN_080ab8cc(struct Projectile* p);
-void FUN_080aba60(struct Projectile* p);
-void FUN_080abbb8(struct Projectile* p);
-void FUN_080abe54(struct Projectile* p);
-void FUN_080abf54(struct Projectile* p);
+void nop_080aaed0(Projectile32* p);
+void FUN_080ab004(Projectile32* p);
+void FUN_080ab21c(Projectile32* p);
+void FUN_080ab668(Projectile32* p);
+void FUN_080ab8cc(Projectile32* p);
+void FUN_080aba60(Projectile32* p);
+void FUN_080abbb8(Projectile32* p);
+void FUN_080abe54(Projectile32* p);
+void FUN_080abf54(Projectile32* p);
 
 // clang-format off
-static const ProjectileFunc sUpdates[9] = {
+static void (*const sUpdates[9])(Projectile32*) = {
     nop_080aaed0,
     FUN_080ab004,
     FUN_080ab21c,
@@ -94,20 +97,18 @@ static const ProjectileFunc sUpdates[9] = {
 };
 // clang-format on
 
-// --------------------------------------------
-
-void nop_080aaed4(struct Projectile* p);
-void FUN_080ab178(struct Projectile* p);
-void FUN_080ab3ac(struct Projectile* p);
-void FUN_080ab724(struct Projectile* p);
-void FUN_080ab990(struct Projectile* p);
-void FUN_080abb2c(struct Projectile* p);
-void FUN_080abdc8(struct Projectile* p);
-void FUN_080abea8(struct Projectile* p);
-void FUN_080abfbc(struct Projectile* p);
+void nop_080aaed4(Projectile32* p);
+void FUN_080ab178(Projectile32* p);
+void FUN_080ab3ac(Projectile32* p);
+void FUN_080ab724(Projectile32* p);
+void FUN_080ab990(Projectile32* p);
+void FUN_080abb2c(Projectile32* p);
+void FUN_080abdc8(Projectile32* p);
+void FUN_080abea8(Projectile32* p);
+void FUN_080abfbc(Projectile32* p);
 
 // clang-format off
-static const ProjectileFunc PTR_ARRAY_0836c408[9] = {
+static void (*const PTR_ARRAY_0836c408[9])(Projectile32*) = {
     nop_080aaed4,
     FUN_080ab178,
     FUN_080ab3ac,

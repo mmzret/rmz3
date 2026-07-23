@@ -6,7 +6,7 @@ typedef struct {
   COLLISION_OBJECT_HDR;  // 0x00
   u8 unk_b4[16];         // 0xB4
 } PhantomProjectile;
-static_assert(sizeof(PhantomProjectile) == sizeof(struct Projectile));
+static_assert(sizeof(PhantomProjectile) == sizeof(Projectile));
 
 static void PhantomProjectile_Init(PhantomProjectile* p);
 static void PhantomProjectile_Update(PhantomProjectile* p);
