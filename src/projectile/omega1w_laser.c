@@ -1,6 +1,7 @@
 #include "collision.h"
 #include "global.h"
 #include "projectile.h"
+#include "vfx.h"
 
 // オメガ第一形態(白)の攻撃オブジェクト
 typedef struct {
@@ -163,6 +164,28 @@ static void OmegaWhiteProjectile_Die(Projectile4* p) {
   p->flags &= ~DISPLAY;
   EXIT_BODY(p);
   SET_PROJECTILE_ROUTINE(p, ENTITY_EXIT);
+}
+
+void doOmega1BallLaser1(Projectile4* p) {
+  if ((p->unk_28)->mode[0] > 1) {
+    CreateSmoke(3, &p->coord);
+    SET_PROJECTILE_ROUTINE(p, ENTITY_DIE);
+  } else {
+    switch (p->mode[2]) {
+      case 0:
+        SetSpriteAnimation(p, MOTION(SM010_OMEGA_RING, 6));
+        p->mode[2]++;
+        FALLTHROUGH;
+      case 1:
+        (p->coord).x = (p->unk_28)->coord.x;
+        (p->coord).y = (p->unk_28)->coord.y - 0x6600;
+        UpdateSpriteAnimation(p);
+        break;
+    }
+    if (p->timer_bc == 0 || (--p->timer_bc) == 0) {
+      p->mode[1] = 1, p->mode[2] = 0;
+    }
+  }
 }
 
 INCASM("asm/projectile/omega1w_laser.inc");

@@ -1,8 +1,43 @@
 #include "collision.h"
 #include "global.h"
 #include "projectile.h"
+#include "vfx.h"
 
-INCASM("asm/projectile/omega1g_33.inc");
+// オメガ第一形態に関係 (same layout as omega1w_laser.c's Projectile4)
+typedef struct {
+  COLLISION_OBJECT_HDR;
+  u8 idx_b4;     // 0xB4
+  s32 unk_b8;    // 0xB8
+  s32 timer_bc;  // 0xBC
+  u32 unk_c0;    // 0xC0
+} Projectile33;
+static_assert(sizeof(Projectile33) == sizeof(Projectile));
+
+INCASM("asm/projectile/omega1g_33_a.inc");
+
+void doGoldOmega1Laser1(Projectile33* p) {
+  if ((p->unk_28)->mode[0] > 1) {
+    CreateSmoke(3, &p->coord);
+    SET_PROJECTILE_ROUTINE(p, ENTITY_DIE);
+  } else {
+    switch (p->mode[2]) {
+      case 0:
+        SetSpriteAnimation(p, MOTION(SM010_OMEGA_RING, 6));
+        p->mode[2]++;
+        FALLTHROUGH;
+      case 1:
+        (p->coord).x = (p->unk_28)->coord.x;
+        (p->coord).y = (p->unk_28)->coord.y - 0x6600;
+        UpdateSpriteAnimation(p);
+        break;
+    }
+    if (p->timer_bc == 0 || (--p->timer_bc) == 0) {
+      p->mode[1] = 1, p->mode[2] = 0;
+    }
+  }
+}
+
+INCASM("asm/projectile/omega1g_33_b.inc");
 
 void OmegaGoldProjectile_Init(Projectile* p);
 void OmegaGoldProjectile_Update(Projectile* p);
@@ -20,12 +55,12 @@ const ProjectileRoutine gOmegaGoldProjectileRoutine = {
 
 // --------------------------------------------
 
-void doGoldOmega1Laser1(Projectile* p);
+void doGoldOmega1Laser1(Projectile33* p);
 void doGoldOmega1Laser2(Projectile* p);
 void FUN_080ac700(Projectile* p);
 
 static const ProjectileFunc sUpdates[3] = {
-    doGoldOmega1Laser1,
+    (ProjectileFunc)doGoldOmega1Laser1,
     doGoldOmega1Laser2,
     FUN_080ac700,
 };
