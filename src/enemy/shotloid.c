@@ -2,9 +2,42 @@
 #include "element.h"
 #include "enemy.h"
 #include "global.h"
+#include "metatile.h"
 #include "story.h"
 
-INCASM("asm/enemy/shotloid_a.inc");
+INCASM("asm/enemy/shotloid_a_s1.inc");
+
+bool8 FUN_080939e8(struct Enemy* p, s32 d) {
+  s32 x = (p->s).coord.x;
+  x -= PIXEL(14);
+  if (d > 0) {
+    x += PIXEL(28);
+  }
+  if (FUN_080098a4(x, (p->s).coord.y + PIXEL(10)) != 0) {
+    return TRUE;
+  }
+  return FALSE;
+}
+
+INCASM("asm/enemy/shotloid_a_s2.inc");
+
+u32 FUN_08093a98(struct Enemy* p, s32 d) {
+  if (d != 0) {
+    if (d < 0) {
+      if (FUN_080098a4((p->s).coord.x - PIXEL(14), (p->s).coord.y - PIXEL(10)) != 0) {
+        return 1;
+      }
+    } else {
+      if (FUN_080098a4((p->s).coord.x + PIXEL(14), (p->s).coord.y - PIXEL(10)) != 0) {
+        return 2;
+      }
+    }
+    (p->s).coord.x += d;
+  }
+  return 0;
+}
+
+INCASM("asm/enemy/shotloid_a_s3.inc");
 
 bool8 FUN_08093afc(struct Enemy* p) {
   if ((p->body).status & BODY_STATUS_DEAD) {

@@ -2,6 +2,7 @@
 #include "element.h"
 #include "enemy.h"
 #include "global.h"
+#include "metatile.h"
 #include "story.h"
 
 typedef struct {
@@ -11,7 +12,39 @@ typedef struct {
 } PantheonFist;
 static_assert(sizeof(PantheonFist) == sizeof(struct Enemy));
 
-INCASM("asm/enemy/pantheon_fist_a.inc");
+INCASM("asm/enemy/pantheon_fist_a_s1.inc");
+
+bool8 FUN_08094fa8(struct Enemy* p, s32 d) {
+  s32 x = (p->s).coord.x;
+  x -= PIXEL(14);
+  if (d > 0) {
+    x += PIXEL(28);
+  }
+  if (FUN_080098a4(x, (p->s).coord.y + PIXEL(10)) != 0) {
+    return TRUE;
+  }
+  return FALSE;
+}
+
+INCASM("asm/enemy/pantheon_fist_a_s2.inc");
+
+u32 FUN_08095014(struct Enemy* p, s32 d) {
+  if (d != 0) {
+    if (d < 0) {
+      if (FUN_080098a4((p->s).coord.x - PIXEL(14), (p->s).coord.y - PIXEL(10)) != 0) {
+        return 1;
+      }
+    } else {
+      if (FUN_080098a4((p->s).coord.x + PIXEL(14), (p->s).coord.y - PIXEL(10)) != 0) {
+        return 2;
+      }
+    }
+    (p->s).coord.x += d;
+  }
+  return 0;
+}
+
+INCASM("asm/enemy/pantheon_fist_a_s3.inc");
 
 bool8 FUN_080950d0(struct Enemy* p) {
   if ((p->body).status & BODY_STATUS_DEAD) {
