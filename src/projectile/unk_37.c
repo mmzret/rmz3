@@ -1,5 +1,6 @@
 #include "collision.h"
 #include "global.h"
+#include "story.h"
 #include "projectile.h"
 
 // キャリビーG の ミサイル + そのミサイルを撃つ部分
@@ -38,7 +39,22 @@ Entity* FUN_080adad0(Coords32* c, u8 kind) {
   return p;
 }
 
-INCASM("asm/projectile/unk_37.inc");
+INCASM("asm/projectile/unk_37_a.inc");
+
+static const ProjectileFunc sUpdates[2];
+
+void Projectile37_Update(Projectile* p) {
+  if (IS_METTAUR) {
+    p->flags &= ~DISPLAY;
+    EXIT_BODY(p);
+    SET_PROJECTILE_ROUTINE(p, ENTITY_DIE);
+    Projectile37_Die(p);
+    return;
+  }
+  (sUpdates[p->mode[1]])(p);
+}
+
+INCASM("asm/projectile/unk_37_b.inc");
 
 // --------------------------------------------
 
