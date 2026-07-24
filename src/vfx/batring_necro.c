@@ -102,6 +102,48 @@ static void nop_080b788c(void* _) {}
 
 INCASM("asm/vfx/unk_21.inc");
 
+void FUN_080b7a04(struct VFX* vfx) {
+  VFXUnkCommon* w = (void*)vfx;
+  u16 attr;
+  w->work[2]--;
+  if (w->work[2] == 0 ||
+      ((attr = FUN_080098a4((w->coord).x, (w->coord).y)) != 0 &&
+       !(attr & 0x8000) && (w->d).y > 0)) {
+    CreateSmoke(2, &w->coord);
+    SET_VFX_ROUTINE(w, ENTITY_DIE);
+  } else {
+    switch (w->mode[2]) {
+      case 0: {
+        const s32* const* tbl = PTR_s32_ARRAY_0836e9c4;
+        motion_t* mp = &w->m_74;
+        u32 base = (u32)tbl[*mp % 3];
+        const s32* pair = (const s32*)(w->unk_78 * 8 + base);
+        (w->d).y = pair[1] + (RANDOM(RNG_0202f388) & 0x1F);
+        (w->d).x = pair[0] - (RANDOM(RNG_0202f388) & 0x3F);
+        SetSpriteAnimation(w, *mp);
+        w->work[3] = 0;
+        w->mode[2]++;
+        FALLTHROUGH;
+      }
+      case 1: {
+        if ((u8)++w->work[3] & 1) {
+          w->flags |= DISPLAY;
+        } else {
+          w->flags &= ~DISPLAY;
+        }
+        (w->d).y += 0x20;
+        if ((w->d).y > 0x700) {
+          (w->d).y = 0x700;
+        }
+        (w->coord).y += (w->d).y;
+        (w->coord).x += (w->d).x;
+        UpdateSpriteAnimation(w);
+        break;
+      }
+    }
+  }
+}
+
 // --------------------------------------------
 
 static const s32 s32_ARRAY_0836e964[8 * 3] = {
