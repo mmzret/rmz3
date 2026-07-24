@@ -306,7 +306,28 @@ NAKED static void tretista_0804d8e8(Tretista* p) { INCCODE("asm/wip/tretista_080
 
 static bool8 FUN_0804dc8c(Tretista* p) { return TRUE; }
 
-INCASM("asm/boss/tretista.inc");
+INCASM("asm/boss/tretista_a.inc");
+
+extern const u16 u16_ARRAY_080fef2c[6];
+
+u16 tretista_0804fecc(void* _, u32 a, bool32 rankAS) {
+  s32 i;
+  if (rankAS == 1) {
+    for (i = 0; i < (s32)ARRAY_COUNT(u16_ARRAY_080fef2c); i++) {
+      if (u16_ARRAY_080fef2c[i] == a) {
+        return u16_ARRAY_080fef2c[(i + 1) % 6];
+      }
+    }
+  } else {
+    for (i = 0; i < (s32)ARRAY_COUNT(u16_ARRAY_080fef2c) - 1; i++) {
+      if (u16_ARRAY_080fef2c[i] == a) {
+        return u16_ARRAY_080fef2c[(i + 1) % 5];
+      }
+    }
+  }
+}
+
+INCASM("asm/boss/tretista_b.inc");
 
 // 0x083633b0
 static const struct Collision sCollisions[13] = {

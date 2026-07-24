@@ -72,7 +72,29 @@ struct Entity* FUN_080c1c94(Coords32* c, u8 n, motion_t param_3) {
   return (void*)p;
 }
 
-INCASM("asm/vfx/unk_58.inc");
+INCASM("asm/vfx/unk_58_a.inc");
+
+void FUN_080c2124(struct VFX* p) {
+  (p->s).work[2]--;
+  if ((p->s).work[2] == 0) {
+    (p->s).work[2] = 8, (p->s).mode[1] = 1, (p->s).mode[2] = 0;
+    return;
+  }
+
+  switch ((p->s).mode[2]) {
+    case 0: {
+      SetSpriteAnimation(&p->s, MOTION(SM010_OMEGA_RING, 8));
+      (p->s).mode[2]++;
+      FALLTHROUGH;
+    }
+    case 1: {
+      UpdateSpriteAnimation(&p->s);
+      break;
+    }
+  }
+}
+
+INCASM("asm/vfx/unk_58_b.inc");
 
 // --------------------------------------------
 

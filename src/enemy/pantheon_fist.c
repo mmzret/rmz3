@@ -1,14 +1,33 @@
 #include "collision.h"
+#include "element.h"
 #include "enemy.h"
 #include "global.h"
 
 typedef struct {
   COLLISION_OBJECT_HDR;  // 0x00
-  u8 buffer[16];         // 0xB4
+  Entity* elfx;          // 0xB4, Element Effect
+  u8 unk_b8[12];         // 0xB8
 } PantheonFist;
 static_assert(sizeof(PantheonFist) == sizeof(struct Enemy));
 
-INCASM("asm/enemy/pantheon_fist.inc");
+INCASM("asm/enemy/pantheon_fist_a.inc");
+
+static const Coords32 sElementCoord;
+
+void FUN_080951b4(PantheonFist* p) {
+  if (p->elfx == NULL && ((p->body).status & BODY_STATUS_WHITE)) {
+    if (((p->body).status & BODY_STATUS_RECOILED)) {
+      p->mode[1] = 7, p->mode[2] = 0;
+    } else {
+      p->elfx = (void*)ApplyElementEffect(0, (Object*)p, &sElementCoord);
+      if (p->elfx != NULL) {
+        p->mode[1] = 0, p->mode[2] = 0;
+      }
+    }
+  }
+}
+
+INCASM("asm/enemy/pantheon_fist_b.inc");
 
 void PantheonFist_Init(PantheonFist* p);
 void PantheonFist_Update(PantheonFist* p);

@@ -1,8 +1,33 @@
 #include "collision.h"
+#include "element.h"
 #include "enemy.h"
 #include "global.h"
 
-INCASM("asm/enemy/gallisni.inc");
+INCASM("asm/enemy/gallisni_a.inc");
+
+typedef struct {
+  COLLISION_OBJECT_HDR;  // 0x00
+  Entity* elfx;          // 0xB4, Element Effect
+  u8 unk_b8[12];         // 0xB8
+} Gallisni;
+static_assert(sizeof(Gallisni) == sizeof(struct Enemy));
+
+static const Coords32 sElementCoord;
+
+void gallisni_080871b4(Gallisni* p) {
+  if (p->elfx == NULL && ((p->body).status & BODY_STATUS_WHITE)) {
+    if (((p->body).status & BODY_STATUS_RECOILED)) {
+      p->mode[1] = 7, p->mode[2] = 0;
+    } else {
+      p->elfx = (void*)ApplyElementEffect(0, (Object*)p, &sElementCoord);
+      if (p->elfx != NULL) {
+        p->mode[1] = 0, p->mode[2] = 0;
+      }
+    }
+  }
+}
+
+INCASM("asm/enemy/gallisni_b.inc");
 
 void Gallisni_Init(struct Enemy* p);
 void Gallisni_Update(struct Enemy* p);

@@ -1,8 +1,33 @@
 #include "collision.h"
+#include "element.h"
 #include "enemy.h"
 #include "global.h"
 
-INCASM("asm/enemy/shotloid.inc");
+INCASM("asm/enemy/shotloid_a.inc");
+
+typedef struct {
+  COLLISION_OBJECT_HDR;  // 0x00
+  Entity* elfx;          // 0xB4, Element Effect
+  u8 unk_b8[12];         // 0xB8
+} Shotloid;
+static_assert(sizeof(Shotloid) == sizeof(struct Enemy));
+
+static const Coords32 sElementCoord;
+
+void FUN_08093be0(Shotloid* p) {
+  if (p->elfx == NULL && ((p->body).status & BODY_STATUS_WHITE)) {
+    if (((p->body).status & BODY_STATUS_RECOILED)) {
+      p->mode[1] = 7, p->mode[2] = 0;
+    } else {
+      p->elfx = (void*)ApplyElementEffect(0, (Object*)p, &sElementCoord);
+      if (p->elfx != NULL) {
+        p->mode[1] = 0, p->mode[2] = 0;
+      }
+    }
+  }
+}
+
+INCASM("asm/enemy/shotloid_b.inc");
 
 void Shotloid_Init(struct Enemy* p);
 void Shotloid_Update(struct Enemy* p);
