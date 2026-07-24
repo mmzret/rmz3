@@ -55,6 +55,7 @@
 #define BG_UNK_66 66
 #define BG_UNK_67 67
 #define BG_UNK_68 68
+#define BG_UNK_77 77
 #define BG_UNK_78 78
 #define BG_UNK_79 79
 #define BG_UNK_80 80

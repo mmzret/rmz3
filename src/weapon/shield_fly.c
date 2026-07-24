@@ -181,7 +181,39 @@ static void onHit(struct Body* body, Coords32* r1 UNUSED, Coords32* r2 UNUSED) {
   if (body->hitboxFlags & BODY_STATUS_B2) IncWeaponUseCount(WEAPON_SHIELD);
 }
 
-INCASM("asm/weapon/shield_fly.inc");
+INCASM("asm/weapon/shield_fly_a.inc");
+
+// 0x0803A574: a verbatim copy of CalcAngle
+s32 FUN_0803a574(s32 x, s32 y) {
+  u16 angle;
+  s32 tmp;
+  while (TRUE) {
+    if (abs(x) < 0x8000) {
+      if (abs(y) < 0x8000) {
+        break;
+      }
+    }
+
+    // Ceiling x
+    tmp = x;
+    if (tmp < 0) {
+      tmp += 0xF;
+    }
+    x = (tmp >> 4);
+
+    // Ceiling y
+    tmp = y;
+    if (tmp < 0) {
+      tmp += 0xF;
+    }
+    y = (tmp >> 4);
+  }
+
+  angle = ArcTan2(x, y);
+  return (((s32)(angle) + 0x80) >> 8) & 0xFF;
+}
+
+INCASM("asm/weapon/shield_fly_b.inc");
 
 // 0x0836126c
 static const motion_t sShieldFlyMotions[3][4] = {
