@@ -1,4 +1,5 @@
 #include "collision.h"
+#include "element.h"
 #include "enemy.h"
 #include "global.h"
 
@@ -29,6 +30,51 @@ static bool8 FUN_08084708(struct Enemy* p) {
     return TRUE;
   }
   return FALSE;
+}
+
+typedef struct {
+  COLLISION_OBJECT_HDR;  // 0x00
+  void* elfx;            // 0xB4, Element FX
+  u8 unk_b8[12];         // 0xB8
+} EyeCannon;
+static_assert(sizeof(EyeCannon) == sizeof(struct Enemy));
+
+static const EnemyFunc sUpdates1[6];
+static const EnemyFunc sUpdates2[6];
+static const Coords32 sElementCoord;
+
+bool8 FUN_08084744(EyeCannon* p) {
+  if (p->elfx == NULL) {
+    switch (p->mode[3]) {
+      case 0: {
+        if (IsFrozen((void*)p)) {
+          (sUpdates1[p->mode[1]])((void*)p);
+          (sUpdates2[p->mode[1]])((void*)p);
+          p->mode[3]++;
+          UpdateSpriteAnimation(p);
+          return TRUE;
+        }
+        break;
+      }
+      case 1: {
+        if (IsFrozen((void*)p)) {
+          return TRUE;
+        }
+        p->mode[3] = 0;
+        break;
+      }
+    }
+  }
+  return FALSE;
+}
+
+void FUN_080847b8(EyeCannon* p) {
+  if (p->elfx == NULL && ((p->body).status & BODY_STATUS_WHITE)) {
+    p->elfx = ApplyElementEffect(0, (void*)p, &sElementCoord);
+    if (p->elfx != NULL) {
+      p->mode[1] = 0, p->mode[2] = 0;
+    }
+  }
 }
 
 INCASM("asm/enemy/eye_cannon.inc");

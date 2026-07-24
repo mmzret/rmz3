@@ -1,10 +1,12 @@
 #include "collision.h"
+#include "element.h"
 #include "enemy.h"
 #include "global.h"
 
 typedef struct {
   COLLISION_OBJECT_HDR;
-  u8 props[16];  // 0xB4
+  void* elfx;    // 0xB4, Element FX
+  u8 unk_b8[12];  // 0xB8
 } TileCannon;
 static_assert(sizeof(TileCannon) == sizeof(struct Enemy));
 
@@ -34,7 +36,20 @@ bool32 FUN_080780c4(TileCannon* p) {
   return FALSE;
 }
 
-INCASM("asm/enemy/tile_cannon.inc");
+INCASM("asm/enemy/tile_cannon_a.inc");
+
+static const Coords32 sElementCoord;
+
+void tilecannon_08078210(TileCannon* p) {
+  if (p->elfx == NULL && ((p->body).status & BODY_STATUS_WHITE)) {
+    p->elfx = ApplyElementEffect(0, (void*)p, &sElementCoord);
+    if (p->elfx != NULL) {
+      p->mode[1] = 0, p->mode[2] = 0;
+    }
+  }
+}
+
+INCASM("asm/enemy/tile_cannon_b.inc");
 
 void FUN_08078480(struct Enemy* p);
 void FUN_0807847c(struct Enemy* p);

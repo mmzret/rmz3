@@ -1,8 +1,29 @@
 #include "collision.h"
+#include "element.h"
 #include "enemy.h"
 #include "global.h"
 
-INCASM("asm/enemy/pantheon_base.inc");
+INCASM("asm/enemy/pantheon_base_a.inc");
+
+typedef struct {
+  COLLISION_OBJECT_HDR;  // 0x00
+  void* elfx;            // 0xB4, Element FX
+  u8 unk_b8[12];         // 0xB8
+} PantheonBase;
+static_assert(sizeof(PantheonBase) == sizeof(struct Enemy));
+
+static const Coords32 sElementCoord;
+
+void pBase_0808a210(PantheonBase* p) {
+  if (p->elfx == NULL && ((p->body).status & BODY_STATUS_WHITE)) {
+    p->elfx = ApplyElementEffect(0, (void*)p, &sElementCoord);
+    if (p->elfx != NULL) {
+      p->mode[1] = 0, p->mode[2] = 0;
+    }
+  }
+}
+
+INCASM("asm/enemy/pantheon_base_b.inc");
 
 void PantheonBase_Init(struct Enemy* p);
 void PantheonBase_Update(struct Enemy* p);

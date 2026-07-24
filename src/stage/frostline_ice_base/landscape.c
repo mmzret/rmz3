@@ -245,4 +245,18 @@ const struct Stage gFrostlineIceBaseLandscape = {
   behavior : sScreenBehavior,
 };
 
-INCASM("asm/stage_gfx/frostline_ice_base.inc");
+INCASM("asm/stage_gfx/frostline_ice_base_a.inc");
+
+// 0x080111DC
+void icebase_080111dc(struct StageLayer* l, const struct Stage* _ UNUSED) {
+  if (l->phase == 0) {
+    const u16 n = (l->bgIdx << 16) >> 20;
+    BGCNT16(n) = (l->prio | l->screenBase) | BGCNT_CHARBASE(1) | BGCNT_MOSAIC | BGCNT_TXT256x512;
+    RESET_BGOFS(n);
+    CpuFastCopy(BGMAP(BG_UNK_63), SCREEN_ADDR(n), BG_SCREEN_SIZE);
+    CpuFastCopy(BGMAP(BG_UNK_64), SCREEN_ADDR(n) + BG_SCREEN_SIZE, BG_SCREEN_SIZE);
+    l->phase++;
+  }
+}
+
+INCASM("asm/stage_gfx/frostline_ice_base_b.inc");
