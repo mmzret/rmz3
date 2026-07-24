@@ -1,6 +1,7 @@
 #include "collision.h"
 #include "global.h"
 #include "projectile.h"
+#include "vfx.h"
 
 // オメガ第一形態に関係
 typedef struct {
@@ -12,6 +13,8 @@ typedef struct {
   u8 pad_c0[4];  // 0xC0
 } Projectile34;
 static_assert(sizeof(Projectile34) == sizeof(Projectile));
+
+static const struct Collision sCollisions[5];
 
 void Projectile34_Init(Projectile34* p);
 void Projectile34_Update(Projectile34* p);
@@ -39,7 +42,79 @@ struct Entity* FUN_080ac818(Coords32* c, s32 val1, s32 val2, struct Entity* e) {
   return (void*)p;
 }
 
-INCASM("asm/projectile/unk_34.inc");
+INCASM("asm/projectile/unk_34_a.inc");
+
+void FUN_080acb54(Projectile34* p) {
+  if ((p->unk_28)->mode[0] >= ENTITY_DIE) {
+    CreateSmoke(3, &p->coord);
+    SET_PROJECTILE_ROUTINE(p, ENTITY_DIE);
+    return;
+  }
+  switch (p->mode[2]) {
+    case 0: {
+      if (p->work[0] == 0) {
+        SetSpriteAnimation(p, MOTION(SM010_OMEGA_RING, 0));
+      } else {
+        SetSpriteAnimation(p, MOTION(SM010_OMEGA_RING, 3));
+      }
+      p->mode[2]++;
+      FALLTHROUGH;
+    }
+    case 1: {
+      UpdateSpriteAnimation(p);
+      FALLTHROUGH;
+    }
+    default: {
+      if (p->unk_bc == 0 || (--p->unk_bc) == 0) {
+        p->work[2] = 127;
+        p->mode[1] = 1, p->mode[2] = 0;
+      }
+      break;
+    }
+  }
+}
+
+void FUN_080acbe0(Projectile34* p) {
+  if ((p->unk_28)->mode[0] > 1) {
+    CreateSmoke(3, &p->coord);
+    SET_PROJECTILE_ROUTINE(p, ENTITY_DIE);
+  } else if (--p->work[2] == 0) {
+    SET_PROJECTILE_ROUTINE(p, ENTITY_DIE);
+  } else {
+    s32 m = p->mode[2];
+    switch (m) {
+      case 0:
+        if (p->work[0] == 0) {
+          SetSpriteAnimation(p, MOTION(SM010_OMEGA_RING, 1));
+          SetDDP(&p->body, &sCollisions[1]);
+          (p->d).y = p->unk_b8;
+          (p->d).x = m;
+        } else {
+          SetSpriteAnimation(p, MOTION(SM010_OMEGA_RING, 4));
+          SetDDP(&p->body, &sCollisions[2]);
+          (p->d).x = -p->unk_b8;
+          (p->d).y = m;
+        }
+        p->work[3] = RANDOM(RNG_0202f388) & 1;
+        p->mode[2]++;
+        FALLTHROUGH;
+      case 1:
+        UpdateSpriteAnimation(p);
+        if (IsSpriteAnimEnd(p)) {
+          p->flags |= DISPLAY;
+          p->mode[2]++;
+        }
+        break;
+      case 2:
+        (p->coord).x += (p->d).x;
+        (p->coord).y += (p->d).y;
+        UpdateSpriteAnimation(p);
+        break;
+    }
+  }
+}
+
+INCASM("asm/projectile/unk_34_b.inc");
 
 // --------------------------------------------
 
