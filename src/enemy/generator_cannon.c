@@ -1,6 +1,7 @@
 #include "collision.h"
 #include "enemy.h"
 #include "global.h"
+#include "story.h"
 
 void GeneratorCannon_Init(struct Enemy* p);
 void GeneratorCannon_Update(struct Enemy* p);
@@ -28,7 +29,22 @@ static void CreateGeneratorCannon(s32 x, s32 y, u8 n) {
 
 static void onCollision(struct Body* body UNUSED, Coords32* r1 UNUSED, Coords32* r2 UNUSED) { return; }
 
-INCASM("asm/enemy/generator_cannon.inc");
+INCASM("asm/enemy/generator_cannon_a.inc");
+
+static const EnemyFunc sDeads[4];
+
+void GeneratorCannon_Die(struct Enemy* p) {
+  if (IS_METTAUR) {
+    (p->s).flags &= ~DISPLAY;
+    (p->s).flags &= ~FLIPABLE;
+    EXIT_BODY(p);
+    SET_ENEMY_ROUTINE(p, ENTITY_DISAPPEAR);
+    return;
+  }
+  (sDeads[(p->s).mode[1]])(p);
+}
+
+INCASM("asm/enemy/generator_cannon_b.inc");
 
 void FUN_0808c760(struct Enemy* p);
 void FUN_0808c764(struct Enemy* p);

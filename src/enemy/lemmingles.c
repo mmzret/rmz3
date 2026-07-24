@@ -1,6 +1,7 @@
 #include "collision.h"
 #include "enemy.h"
 #include "global.h"
+#include "story.h"
 
 struct EnemyLemmingles {
   COLLISION_OBJECT_HDR;
@@ -44,7 +45,22 @@ void FUN_0806e590(struct Entity* e, u8 kind1, u8 kind2, u8 kind3) {
 // 0x0806e600
 static void onCollision(struct Body* body UNUSED, Coords32* r1 UNUSED, Coords32* r2 UNUSED) { return; }
 
-INCASM("asm/enemy/lemmingles.inc");
+INCASM("asm/enemy/lemmingles_a.inc");
+
+static const EnemyFunc sDeads[3];
+
+void Lemmingles_Die(struct Enemy* p) {
+  if (IS_METTAUR) {
+    (p->s).flags &= ~DISPLAY;
+    (p->s).flags &= ~FLIPABLE;
+    EXIT_BODY(p);
+    SET_ENEMY_ROUTINE(p, ENTITY_DISAPPEAR);
+    return;
+  }
+  (sDeads[(p->s).mode[1]])(p);
+}
+
+INCASM("asm/enemy/lemmingles_b.inc");
 
 // --------------------------------------------
 

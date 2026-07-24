@@ -1,6 +1,7 @@
 #include "collision.h"
 #include "enemy.h"
 #include "global.h"
+#include "story.h"
 #include "physics.h"
 
 typedef struct {
@@ -167,7 +168,22 @@ _080772F2:\n\
  .syntax divided\n");
 }
 
-INCASM("asm/enemy/volcaire.inc");
+INCASM("asm/enemy/volcaire_a.inc");
+
+static const EnemyFunc sDeads[3];
+
+void Volcaire_Die(struct Enemy* p) {
+  if (IS_METTAUR) {
+    (p->s).flags &= ~DISPLAY;
+    (p->s).flags &= ~FLIPABLE;
+    EXIT_BODY(p);
+    SET_ENEMY_ROUTINE(p, ENTITY_DISAPPEAR);
+    return;
+  }
+  (sDeads[(p->s).mode[1]])(p);
+}
+
+INCASM("asm/enemy/volcaire_b.inc");
 
 // --------------------------------------------
 
