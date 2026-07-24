@@ -827,8 +827,8 @@ static bool32 Cmd_printstring(struct VM* vm) {
 レジスタンスベースによるステージへの転送時、リトライ時などに実行される
 */
 static bool32 Cmd_indicator(struct VM* vm) {
-  struct VFX* indicator;
-  struct Boss* boss = (struct Boss*)vm->entities[1].entity;
+  Entity* indicator;
+  Boss* boss = (Boss*)vm->entities[1].entity;
   struct GameCommandCommon* c = &(vm->pc)->c;
 
   if (c->status == 0) {
@@ -844,10 +844,10 @@ static bool32 Cmd_indicator(struct VM* vm) {
   }
 
   // Remove old indicator
-  indicator = vm->indicator;
+  indicator = (Entity*)vm->indicator;
   if (indicator != NULL) {
-    (indicator->s).flags &= ~DISPLAY;
-    (indicator->s).flags &= ~FLIPABLE;
+    indicator->flags &= ~DISPLAY;
+    indicator->flags &= ~FLIPABLE;
     SET_VFX_ROUTINE(indicator, ENTITY_DISAPPEAR);
   }
 

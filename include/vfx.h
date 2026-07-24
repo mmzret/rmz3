@@ -27,22 +27,24 @@ extern const VFXRoutine* const gVFXFnTable[85];
 
 void DeleteVFX(struct Entity* p);
 
-struct Entity* CreateSmoke(u8 kind, Coords32* c);
-struct VFX* CreateChargeEffect(struct Zero* z, struct VFX* v, u8 r2);
+Entity* CreateSmoke(u8 kind, Coords32* c);
 void CreateParticle(Coords32* c, u8 action, bool8 isRight);
 void oz_080b3820(Coords32* omegaCoord, bool8 isRight);
 void CreateWallDust(Coords32* c, bool8 isRight);
 struct VFX* CreateRipple(struct Zero* z, bool8 outOfSea);
-struct Entity* CreateEmotionBubble(u8 kind, Coords32* target, Coords32* c);
+Entity* CreateEmotionBubble(u8 kind, Coords32* target, Coords32* c);
 struct VFX* CreateCopyXIcon(struct Zero* z, Coords32* c, u8 n);
-struct VFX* CreateExlifeIndicator(u8 extraLife);
-struct VFX* CreateMissionAlert(u8 kind);
+Entity* CreateExlifeIndicator(u8 extraLife);
+Entity* CreateMissionAlert(u8 kind);
 struct VFX* CreateSlashedEnemy(Coords32* c, const struct SlashedEnemy* data, u8 r2, u8 r3);
-struct Entity* FUN_080bfce8(Coords32* c, u8 r1);
-struct Entity* CreateBossExplosion(struct Entity* boss, Coords32* c);
+Entity* FUN_080bfce8(Coords32* c, u8 r1);
+Entity* CreateBossExplosion(Entity* boss, Coords32* c);
 void CreateVFX31_1(s32 x, s32 y);
 void CreateVFX31_2(s32 x, s32 y);
-void FUN_080b81a0(struct Entity* e, Coords32* c, motion_t* motions, u8 len);
-void FUN_080b7ffc(struct Entity* e, Coords32* c, motion_t* motions, u8 len);
+void FUN_080b81a0(Entity* e, Coords32* c, motion_t* motions, u8 len);
+void FUN_080b7ffc(Entity* e, Coords32* c, motion_t* motions, u8 len);
+
+struct ZChargeEffect;
+struct ZChargeEffect* CreateChargeEffect(Player* z, struct ZChargeEffect* q, bool8 isSubWeapon);
 
 #endif  // GUARD_RMZ3_VFX_H

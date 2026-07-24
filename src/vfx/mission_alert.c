@@ -31,17 +31,15 @@ const VFXRoutine gMissionAlertRoutine = {
 };
 // clang-format on
 
-// ------------------------------------------------------------------------------------------------------------------------------------
-
-struct VFX* CreateMissionAlert(u8 kind) {
-  struct Entity* p = AllocEntityLast(gVFXHeaderPtr);
+Entity* CreateMissionAlert(u8 kind) {
+  Entity* p = AllocEntityLast(gVFXHeaderPtr);
   if (p != NULL) {
     INIT_VFX_ROUTINE(p, VFX_MISSION_ALERT);
     p->work[0] = kind, p->work[1] = 0;
   } else {
     return NULL;
   }
-  return (void*)p;
+  return p;
 }
 
 // --------------------------------------------
@@ -64,8 +62,6 @@ static void MissionAlert_Init(struct VFX* p) {
   (sInitializers[(p->s).work[0]])(p);
 }
 
-// --------------------------------------------
-
 static void updateMissionXXX(struct VFX* p);
 static void updateWarning(struct VFX* p);
 static void updateGameOver(struct VFX* p);
@@ -82,8 +78,6 @@ static void MissionAlert_Update(struct VFX* p) {
   // clang-format on
   (sUpdates[(p->s).work[0]])(p);
 }
-
-// --------------------------------------------
 
 static void MissionAlert_Die(struct VFX* p) {
   (p->s).flags &= ~DISPLAY;

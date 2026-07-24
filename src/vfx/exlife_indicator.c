@@ -21,11 +21,11 @@ const VFXRoutine gExlifeIndicatorRoutine = {
 };
 // clang-format on
 
-struct VFX* CreateExlifeIndicator(u8 extraLife) {
-  struct VFX* p = (struct VFX*)AllocEntityLast(gVFXHeaderPtr);
+Entity* CreateExlifeIndicator(u8 extraLife) {
+  Entity* p = AllocEntityLast(gVFXHeaderPtr);
   if (p != NULL) {
     INIT_VFX_ROUTINE(p, VFX_EXLIFE_INDICATOR);
-    (p->s).work[0] = extraLife;
+    p->work[0] = extraLife;
   }
   return p;
 }

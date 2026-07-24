@@ -58,7 +58,7 @@ union SceneGameState {
 };
 
 // 0x02030B60
-struct GameState {
+typedef struct GameState {
   u8 mode[4];                                     // 0x0000 (addr:0x02030B60)
   s16 frames;                                     // 0x0004 (addr:0x02030B64)
   s16 unk_006;                                    // 0x0006 (addr:0x02030B66), GameOver時のカーソル位置 (それ以外の用途は不明)
@@ -87,7 +87,7 @@ struct GameState {
   GameSavedata save;                              // 0x625C (addr:0x02036DBC)
   struct Zero* z2;                                // 0x64AC (addr:0x0203700C)
   struct Zero* z3;                                // 0x64B0 (addr:0x02037010)
-};
+} GameState;
 static_assert(sizeof(struct GameState) == 25780);
 
 extern struct GameState gGameState;
@@ -96,7 +96,7 @@ extern u16 gCyberSpaceColorHashtable[96];
 extern u32* PTR_0202f384;
 extern GameSavedata SaveState_020003a8;
 
-void SetGameMode(struct GameState* p, u32 mode);
+void SetGameMode(struct GameState* g, u32 mode);
 
 struct Pickup;
 struct CyberElf;

@@ -77,7 +77,7 @@ void FUN_08034d40(struct Zero* z);
 void phantom_08034dc0(struct Zero* z);
 void FUN_08034e50(struct Zero* z);
 
-static void PhantomMini_Update(struct Entity* p) {
+static void PhantomMini_Update(Entity* p) {
   s32 max_y;
   static const ZeroFunc sUpdates1[4] = {
       (void*)FUN_08034b28,
@@ -93,13 +93,13 @@ static void PhantomMini_Update(struct Entity* p) {
   };
 
   struct MinigameState* q = (struct MinigameState*)p->unk_28;
-  p->coord.x += q->unk_14;
+  (p->coord).x += q->mg_unk_14;
   (sUpdates1[p->mode[1]])((void*)p);
   (sUpdates2[p->mode[1]])((void*)p);
 
   max_y = p->unk_coord.y + PIXEL(240);
-  if (p->coord.y > max_y) {
-    p->coord.y = max_y;
+  if ((p->coord).y > max_y) {
+    (p->coord).y = max_y;
   }
 }
 

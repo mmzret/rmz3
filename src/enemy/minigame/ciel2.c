@@ -1,10 +1,18 @@
 #include "collision.h"
 #include "enemy.h"
+#include "game.h"
 #include "global.h"
 
-static void CielMinigameEnemy2_Init(struct Enemy* p);
-static void CielMinigameEnemy2_Update(struct Enemy* p);
-static void CielMinigameEnemy2_Die(struct Enemy* p);
+typedef struct {
+  COLLISION_OBJECT_HDR;  // 0x00
+  Coords32 c_b4;         // 0xB4
+  u8 unk_bc[8];          // 0xBC
+} CielMinigameEnemy2;
+static_assert(sizeof(CielMinigameEnemy2) == sizeof(struct Enemy));
+
+static void CielMinigameEnemy2_Init(CielMinigameEnemy2* p);
+static void CielMinigameEnemy2_Update(CielMinigameEnemy2* p);
+static void CielMinigameEnemy2_Die(CielMinigameEnemy2* p);
 
 // clang-format off
 const EnemyRoutine gCielMinigameEnemy2Routine = {
@@ -16,18 +24,17 @@ const EnemyRoutine gCielMinigameEnemy2Routine = {
 };
 // clang-format on
 
-struct Enemy* FUN_0809c1cc(struct Entity* e, u8 a, u8 b) {
-  struct Enemy* p = AllocEntityLast(gEnemyHeaderPtr);
+Entity* FUN_0809c1cc(Entity* q, u8 a, u8 b) {
+  CielMinigameEnemy2* p = AllocEntityLast(gEnemyHeaderPtr);
   if (p != NULL) {
     INIT_ENEMY_ROUTINE(p, ENEMY_CIEL_MG_2);
-    (p->s).unk_28 = e;
-    (p->s).work[0] = a;
-    (p->s).work[1] = b;
+    p->unk_28 = q;
+    p->work[0] = a, p->work[1] = b;
   }
-  return p;
+  return (void*)p;
 }
 
-NAKED static void CielMinigameEnemy2_Init(struct Enemy* p) {
+NAKED static void CielMinigameEnemy2_Init(CielMinigameEnemy2* p) {
   asm(".syntax unified\n\
 	push {r4, r5, lr}\n\
 	adds r5, r0, #0\n\
@@ -136,29 +143,31 @@ _0809C2DE:\n\
  .syntax divided\n");
 }
 
-static void CielMinigameEnemy2_Update(struct Enemy* p) {
-  struct Entity* e = (p->s).unk_28;
+static void CielMinigameEnemy2_Update(CielMinigameEnemy2* p) {
+  GameState* g = (GameState*)p->unk_28;
 
-  switch ((p->s).mode[1]) {
-    case 0:
-      if (*((u8*)e + 0xE0F) <= gEnemyHeaderPtr->remaining && *((u8*)e + 0xE12) == 0) {
-        u8* tbl = (u8*)e + 0xDE0;
-        (p->s).work[2] = tbl[(p->s).work[0]];
-        (p->s).mode[1]++;
+  switch (p->mode[1]) {
+    case 0: {
+      if ((g->sceneState).raw[0x43] <= gEnemyHeaderPtr->remaining && (g->sceneState).raw[0x46] == 0) {
+        u8* tbl = &(g->sceneState).raw[0x14];
+        p->work[2] = tbl[p->work[0]];
+        p->mode[1]++;
       }
       break;
-    case 1:
-      (p->s).coord.x += (p->s).d.x;
-      (p->s).coord.y += (p->s).d.y;
-      if ((p->s).coord.y >= *(s32*)&p->buffer[4] + 0x1000) {
-        ForceEntityPalette(p, (p->s).work[2] + 5);
-        (p->s).coord.x = *(s32*)&p->buffer[0];
-        (p->s).coord.y = *(s32*)&p->buffer[4];
-        (p->s).mode[1] = 0;
+    }
+    case 1: {
+      (p->coord).x += (p->d).x;
+      (p->coord).y += (p->d).y;
+      if ((p->coord).y >= (p->c_b4).y + PIXEL(16)) {
+        ForceEntityPalette(p, p->work[2] + 5);
+        (p->coord).x = (p->c_b4).x;
+        (p->coord).y = (p->c_b4).y;
+        p->mode[1] = 0;
       }
       break;
+    }
   }
   UpdateSpriteAnimation(p);
 }
 
-static void CielMinigameEnemy2_Die(struct Enemy* p) { SET_ENEMY_ROUTINE(p, ENTITY_EXIT); }
+static void CielMinigameEnemy2_Die(CielMinigameEnemy2* p) { SET_ENEMY_ROUTINE(p, ENTITY_EXIT); }

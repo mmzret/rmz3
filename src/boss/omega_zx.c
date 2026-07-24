@@ -13,26 +13,26 @@ struct OmegaZXProjectileTemplate {
 } PACKED;
 
 typedef struct {
-  COLLISION_OBJECT_HDR;    // 0x00
-  u8 unk_b4[4];            // 0xB4
-  s32 unk_y;               // 0xB8
-  struct Entity* unk_bc;   // 0xBC
-  u16 unk_c0;              // 0xC0
-  u16 unk_c2;              // 0xC2
-  struct Entity* unk_c4;   // 0xC4
-  u8 unk_c8[4];            // 0xC8
-  struct Entity* enemy60;  // 0xCC
-  s32 y_d0;                // 0xD0
-  u8 unk_d4[16];           // 0xD4
+  COLLISION_OBJECT_HDR;  // 0x00
+  u8 unk_b4[4];          // 0xB4
+  s32 unk_y;             // 0xB8
+  Entity* unk_bc;        // 0xBC
+  u16 unk_c0;            // 0xC0
+  u16 unk_c2;            // 0xC2
+  Entity* unk_c4;        // 0xC4
+  u8 unk_c8[4];          // 0xC8
+  Entity* enemy60;       // 0xCC
+  s32 y_d0;              // 0xD0
+  u8 unk_d4[16];         // 0xD4
 } OmegaZX;
-static_assert(sizeof(OmegaZX) == sizeof(struct Boss));
+static_assert(sizeof(OmegaZX) == sizeof(Boss));
 
-struct Entity* FUN_08092444(Coords32* c, u8 kind, struct Entity* boss);
+Entity* FUN_08092444(Coords32* c, u8 kind, Entity* boss);
 
 static void OmegaZX_Init(OmegaZX* p);
-static void OmegaZX_Update(struct Boss* p);
-static void OmegaZX_Die(struct Boss* p);
-static void OmegaZX_Disappear(struct Boss* p);
+static void OmegaZX_Update(OmegaZX* p);
+static void OmegaZX_Die(OmegaZX* p);
+static void OmegaZX_Disappear(OmegaZX* p);
 
 // clang-format off
 const BossRoutine gOmegaZXRoutine = {
@@ -44,8 +44,8 @@ const BossRoutine gOmegaZXRoutine = {
 };
 // clang-format on
 
-struct Entity* CreateOmegaZX(Coords32* c, u8 n) {
-  struct Entity* p = AllocEntityLast(gBossHeaderPtr);
+static Entity* Unused_CreateOmegaZX(Coords32* c, u8 n) {
+  Entity* p = AllocEntityLast(gBossHeaderPtr);
   if (p != NULL) {
     INIT_BOSS_ROUTINE(p, BOSS_OMEGA_ZX);
     p->coord = *c;
@@ -223,52 +223,52 @@ _08060CA0: .4byte gBossFnTable\n\
  .syntax divided\n");
 }
 
-bool8 FUN_08060f98(struct Boss* p);
-bool8 FUN_08060fd8(struct Boss* p);
-bool8 FUN_08061064(struct Boss* p);
-void FUN_080610a8(struct Boss* p);
-bool8 FUN_08061230(struct Boss* p);
-bool8 FUN_080612d4(struct Boss* p);
-bool8 FUN_080613b8(struct Boss* p);
-bool8 FUN_080614a4(struct Boss* p);
-bool8 FUN_080615d8(struct Boss* p);
+static bool8 FUN_08060f98(OmegaZX* p);
+static bool8 FUN_08060fd8(OmegaZX* p);
+static bool8 FUN_08061064(OmegaZX* p);
+bool8 FUN_080610a8(OmegaZX* p);
+static bool8 FUN_08061230(OmegaZX* p);
+static bool8 FUN_080612d4(OmegaZX* p);
+static bool8 FUN_080613b8(OmegaZX* p);
+static bool8 FUN_080614a4(OmegaZX* p);
+static bool8 FUN_080615d8(OmegaZX* p);
 
-void FUN_08060f9c(OmegaZX* p);
-void FUN_08060fdc(OmegaZX* p);
-void FUN_08061068(OmegaZX* p);
-void Boss22Neutral(struct Boss* p);
-void FUN_08061234(struct Boss* p);
+static void FUN_08060f9c(OmegaZX* p);
+static void FUN_08060fdc(OmegaZX* p);
+static void FUN_08061068(OmegaZX* p);
+void Boss22Neutral(OmegaZX* p);
+void FUN_08061234(OmegaZX* p);
 void FUN_080612d8(OmegaZX* p);
 void FUN_080613bc(OmegaZX* p);
-void FUN_080614a8(struct Boss* p);
+void FUN_080614a8(OmegaZX* p);
 void FUN_080615dc(OmegaZX* p);
 
-static void OmegaZX_Update(struct Boss* p) {
+static void OmegaZX_Update(OmegaZX* p) {
   // clang-format off
-  static const BossFunc sUpdates1[9] = {
-      (BossFunc)FUN_08060f98,
-      (BossFunc)FUN_08060fd8,
-      (BossFunc)FUN_08061064,
+  static bool8 (*const sUpdates1[9])(OmegaZX*) = {
+      FUN_08060f98,
+      FUN_08060fd8,
+      FUN_08061064,
       FUN_080610a8,
-      (BossFunc)FUN_08061230,
-      (BossFunc)FUN_080612d4,
-      (BossFunc)FUN_080613b8,
-      (BossFunc)FUN_080614a4,
-      (BossFunc)FUN_080615d8,
+      FUN_08061230,
+      FUN_080612d4,
+      FUN_080613b8,
+      FUN_080614a4,
+      FUN_080615d8,
   };
   // clang-format on
 
   // clang-format off
-  static const BossFunc sUpdates2[9] = {
-      (void*)FUN_08060f9c,
-      (void*)FUN_08060fdc,
-      (void*)FUN_08061068,
-      (void*)Boss22Neutral,
-      (void*)FUN_08061234,
-      (void*)FUN_080612d8,
-      (void*)FUN_080613bc,
-      (void*)FUN_080614a8,
-      (void*)FUN_080615dc,
+  static void (*const sUpdates2[9])(OmegaZX*) = {
+      FUN_08060f9c,
+      FUN_08060fdc,
+      FUN_08061068,
+      Boss22Neutral,
+      FUN_08061234,
+      FUN_080612d8,
+      FUN_080613bc,
+      FUN_080614a8,
+      FUN_080615dc,
   };
   // clang-format on
 
@@ -284,22 +284,18 @@ static void OmegaZX_Update(struct Boss* p) {
   (sUpdates2[p->mode[1]])(p);
 }
 
-// --------------------------------------------
+static void FUN_08060d60(OmegaZX* p);
+void FUN_08060e14(OmegaZX* p);
 
-static void FUN_08060d60(Object* p);
-void FUN_08060e14(struct Boss* p);
-
-static void OmegaZX_Die(struct Boss* p) {
-  static const BossFunc sDeads[2] = {
-      (void*)FUN_08060d60,
-      (void*)FUN_08060e14,
+static void OmegaZX_Die(OmegaZX* p) {
+  static void (*const sDeads[2])(OmegaZX*) = {
+      FUN_08060d60,
+      FUN_08060e14,
   };
   (sDeads[p->mode[1]])(p);
 }
 
-// --------------------------------------------
-
-static void OmegaZX_Disappear(struct Boss* p) {
+static void OmegaZX_Disappear(OmegaZX* p) {
   RemovePaletteAnimation(167);
   RemovePaletteAnimation(168);
   RemovePaletteAnimation(169);
@@ -309,7 +305,7 @@ static void OmegaZX_Disappear(struct Boss* p) {
 
 // --------------------------------------------
 
-static void FUN_08060d60(Object* p) {
+static void FUN_08060d60(OmegaZX* p) {
   switch (p->mode[2]) {
     case 0: {
       if ((gStageRun.missionStatus & MISSION_STAY) && !(gStageRun.vm.active & VM_ACTIVE)) {
@@ -328,9 +324,7 @@ static void FUN_08060d60(Object* p) {
       StepPaletteAnimation(170);
       if (p->work[2] != 0) {
         p->work[2]--;
-        if (p->work[2] == 0) {
-          p->mode[2]++;
-        }
+        if (p->work[2] == 0) p->mode[2]++;
       }
       break;
     }
@@ -345,31 +339,34 @@ static void FUN_08060d60(Object* p) {
 
 INCASM("asm/boss/omega_zx_a.inc");
 
-bool8 FUN_08060f98(struct Boss* p) { return TRUE; }
+static bool8 FUN_08060f98(OmegaZX* p) { return TRUE; }
 
-void FUN_08060f9c(OmegaZX* p) {
+static void FUN_08060f9c(OmegaZX* p) {
   switch (p->mode[2]) {
-    case 0:
-      p->mode[2] = 1;
+    case 0: {
+      p->mode[2]++;
       FALLTHROUGH;
-    case 1:
+    }
+    case 1: {
       if ((p->scriptEntity)->flags & (1 << 0)) {
         gOverworld.state[1] = 1;
         p->mode[1] = 1, p->mode[2] = 0;
       }
       break;
+    }
   }
 }
 
-bool8 FUN_08060fd8(struct Boss* p) { return TRUE; }
+static bool8 FUN_08060fd8(OmegaZX* p) { return TRUE; }
 
-void FUN_08060fdc(OmegaZX* p) {
+static void FUN_08060fdc(OmegaZX* p) {
   switch (p->mode[2]) {
-    case 0:
+    case 0: {
       p->mode[2] = 1;
       p->y_d0 = 0x280;
       p->work[2] = 0xf0;
       FALLTHROUGH;
+    }
     case 1: {
       s32 vy = p->y_d0;
       vy += ((0x98 - vy) * 10) >> 8;
@@ -382,84 +379,92 @@ void FUN_08060fdc(OmegaZX* p) {
       }
       break;
     }
-    case 2:
+    case 2: {
       p->mode[1] = p->mode[2];
       p->mode[2] = 0;
       break;
+    }
   }
 }
 
-bool8 FUN_08061064(struct Boss* p) { return TRUE; }
+static bool8 FUN_08061064(OmegaZX* p) { return TRUE; }
 
-struct VFX* FUN_080c4e58(Coords32* c, void* _, struct Entity* e);
+Entity* FUN_080c4e58(Coords32* c, void* _, Entity* e);
 
-void FUN_08061068(OmegaZX* p) {
-  Coords32 c;
+static void FUN_08061068(OmegaZX* p) {
   switch (p->mode[2]) {
-    case 0:
-      p->mode[2] = 1;
+    case 0: {
+      p->mode[2]++;
       FALLTHROUGH;
-    case 1:
+    }
+    case 1: {
       if (!(gStageRun.vm.active & VM_ACTIVE)) {
-        p->unk_2c = (struct Entity*)FUN_080c4e58(&c, NULL, (void*)p);
+        Coords32 c;
+        p->unk_2c = FUN_080c4e58(&c, NULL, (void*)p);
         p->mode[1] = 3, p->mode[2] = 0;
       }
       break;
+    }
   }
 }
 
 INCASM("asm/boss/omega_zx_b.inc");
 
-bool8 FUN_08061230(struct Boss* p) { return TRUE; }
+static bool8 FUN_08061230(OmegaZX* p) { return TRUE; }
 
 INCASM("asm/boss/omega_zx_c.inc");
 
-bool8 FUN_080612d4(struct Boss* p) { return TRUE; }
+static bool8 FUN_080612d4(OmegaZX* p) { return TRUE; }
 
 Projectile* FUN_080afedc(Entity* parent, Coords32* c, u8 n);
 
 void FUN_080612d8(OmegaZX* p) {
   Coords32 c;
   switch (p->mode[2]) {
-    case 0:
+    case 0: {
       RemovePaletteAnimation(0xa7);
       RemovePaletteAnimation(0xa8);
       RemovePaletteAnimation(0xa9);
-      RemovePaletteAnimation(0xaa);
-      StartPaletteAnimation(0xaa, 0x2c0);
+      RemovePaletteAnimation(170);
+      StartPaletteAnimation(170, 0x2C0);
       FUN_080afedc((void*)p, &p->coord, 1);
-      p->work[2] = 0x1e;
+      p->work[2] = 30;
       p->mode[2]++;
       FALLTHROUGH;
-    case 1:
-      StepPaletteAnimation(0xaa);
+    }
+    case 1: {
+      StepPaletteAnimation(170);
       if (p->work[2] != 0 && --p->work[2] == 0) {
         p->mode[2]++;
       }
       break;
-    case 2:
-      c.x = 0xffffdd00;
-      c.y = 0xffffaa00;
+    }
+    case 2: {
+      c.x = -PIXEL(35);
+      c.y = -PIXEL(86);
       p->unk_c4 = (Entity*)FUN_080afedc((void*)p, &c, 3);
-      p->work[2] = 0xff;
+      p->work[2] = 0xFF;
       p->work[3] = -1;
       p->mode[2]++;
       break;
-    case 3:
-      StepPaletteAnimation(0xaa);
+    }
+    case 3: {
+      StepPaletteAnimation(170);
       if ((p->unk_c4)->mode[0] > 1) {
         p->unk_c4 = NULL;
         p->mode[2]++;
       }
       break;
-    case 4:
-      RemovePaletteAnimation(0xaa);
+    }
+    case 4: {
+      RemovePaletteAnimation(170);
       p->mode[1] = 3, p->mode[2] = 0;
       break;
+    }
   }
 }
 
-bool8 FUN_080613b8(struct Boss* p) { return TRUE; }
+static bool8 FUN_080613b8(OmegaZX* p) { return TRUE; }
 
 Projectile* FUN_080aff34(Entity* parent, Coords32* c, u8 n);
 Entity* FUN_080c4f04(Entity* parent, Coords32* c, u8 n);
@@ -511,54 +516,54 @@ void FUN_080613bc(OmegaZX* p) {
   }
 }
 
-bool8 FUN_080614a4(struct Boss* p) { return TRUE; }
+static bool8 FUN_080614a4(OmegaZX* p) { return TRUE; }
 
 INCASM("asm/boss/omega_zx_d.inc");
 
-bool8 FUN_080615d8(struct Boss* p) { return TRUE; }
+static bool8 FUN_080615d8(OmegaZX* p) { return TRUE; }
 
 void FUN_080615dc(OmegaZX* p) {
   switch (p->mode[2]) {
-    case 0:
-      RemovePaletteAnimation(0xa7);
-      RemovePaletteAnimation(0xa8);
-      RemovePaletteAnimation(0xa9);
-      RemovePaletteAnimation(0xaa);
-      StartPaletteAnimation(0xa7, 0x2c0);
+    case 0: {
+      RemovePaletteAnimation(167);
+      RemovePaletteAnimation(168);
+      RemovePaletteAnimation(169);
+      RemovePaletteAnimation(170);
+      StartPaletteAnimation(167, 0x2C0);
       FUN_080616fc(p);
       p->mode[2]++;
       break;
-    case 1:
+    }
+    case 1: {
       FUN_080616fc(p);
-      StepPaletteAnimation(0xa7);
+      StepPaletteAnimation(167);
       if ((p->enemy60)->mode[1] != 7) {
-        RemovePaletteAnimation(0xa7);
+        RemovePaletteAnimation(167);
         p->mode[1] = 3, p->mode[2] = 0;
       }
       break;
+    }
   }
 }
 
 INCASM("asm/boss/omega_zx_e.inc");
 
-void FUN_080616b8(struct Boss* p) {
-  struct Entity* slot;
-
-  slot = (struct Entity*)(p->unk_2c)->unk_2c;
-  if (slot != NULL) {
-    if (slot->mode[0] > 1) {
+void FUN_080616b8(OmegaZX* p) {
+  Entity* q = (Entity*)(p->unk_2c)->unk_2c;
+  if (q != NULL) {
+    if (q->mode[0] > 1) {
       (p->unk_2c)->unk_2c = NULL;
     } else {
-      slot->flags &= ~DISPLAY;
+      q->flags &= ~DISPLAY;
     }
   }
 
-  slot = *(struct Entity**)((u8*)p->unk_2c + 0xbc);
-  if (slot != NULL) {
-    if (slot->mode[0] > 1) {
+  q = *(struct Entity**)((u8*)p->unk_2c + 0xbc);
+  if (q != NULL) {
+    if (q->mode[0] > 1) {
       *(struct Entity**)((u8*)p->unk_2c + 0xbc) = NULL;
     } else {
-      slot->flags &= ~DISPLAY;
+      q->flags &= ~DISPLAY;
     }
   }
 }

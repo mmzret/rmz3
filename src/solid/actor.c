@@ -1,10 +1,10 @@
 #include "collision.h"
-#include "vfx/after_image.h"
 #include "entity.h"
 #include "global.h"
 #include "overworld.h"
 #include "solid.h"
 #include "vfx.h"
+#include "vfx/after_image.h"
 #include "zero.h"
 
 /*
@@ -558,62 +558,68 @@ static void loadNeutralZeroColor(struct Solid* p) {
 
 static void Actor1_Update(struct Solid* p) {
   switch ((p->s).mode[1]) {
-    case 0:
+    case 0: {
       (p->s).renderPrio = 0x10;
       (p->s).coord.y = FUN_08009f6c((p->s).coord.x + PIXEL(240), (p->s).coord.y);
       (p->s).unk_2c = NULL;
       (p->s).renderPrio = 0x10;
-      SetMotion(&p->s, MOTION(DM196_ZERO_WALK, 0));
+      SetSpriteAnimation(p, MOTION(DM196_ZERO_WALK, 0));
       (p->s).mode[1]++;
-      // fallthrough
-    case 1:
-      UpdateSpriteAnimation(&p->s);
+      FALLTHROUGH;
+    }
+    case 1: {
+      UpdateSpriteAnimation(p);
       (p->s).coord.x += 0x50;
       if ((p->s).scriptEntity->flags & 1) {
         if ((p->s).motion.state == 4) {
-          SetMotion(&p->s, MOTION(DM051_ZERO_UNK, 3));
+          SetSpriteAnimation(p, MOTION(DM051_ZERO_UNK, 3));
           (p->s).work[2] = 0x10;
           (p->s).mode[1]++;
         }
       }
       break;
-    case 2:
-      UpdateSpriteAnimation(&p->s);
+    }
+    case 2: {
+      UpdateSpriteAnimation(p);
       (p->s).work[2]--;
-      if ((u8)(p->s).work[2] == 0) {
-        SET_XFLIP(&p->s, 0);
+      if ((p->s).work[2] == 0) {
+        SET_XFLIP(p, 0);
         (p->s).mode[1]++;
       }
       break;
-    case 3:
-      UpdateSpriteAnimation(&p->s);
-      if ((p->s).scriptEntity->flags & 2) {
-        SetMotion(&p->s, MOTION(DM051_ZERO_UNK, 1));
+    }
+    case 3: {
+      UpdateSpriteAnimation(p);
+      if ((p->s).scriptEntity->flags & (1 << 1)) {
+        SetSpriteAnimation(p, MOTION(DM051_ZERO_UNK, 1));
         (p->s).mode[1]++;
       }
       break;
-    case 4:
-      UpdateSpriteAnimation(&p->s);
-      if ((p->s).motion.state == 3) {
+    }
+    case 4: {
+      UpdateSpriteAnimation(p);
+      if (IsSpriteAnimEnd(p)) {
         (p->s).work[2] = 8;
         (p->s).mode[1]++;
       }
       break;
-    case 5:
-      UpdateSpriteAnimation(&p->s);
+    }
+    case 5: {
+      UpdateSpriteAnimation(p);
       (p->s).work[2]--;
-      if ((u8)(p->s).work[2] == 0) {
+      if ((p->s).work[2] == 0) {
         bool8 isRight = 1;
-        SET_XFLIP(&p->s, isRight);
-        SetMotion(&p->s, MOTION(DM003_ZERO_DASH, 0));
+        SET_XFLIP(p, isRight);
+        SetSpriteAnimation(p, MOTION(DM003_ZERO_DASH, 0));
         CreateParticle(&(p->s).coord, 0, ((p->s).flags >> 4) & isRight);
         PlaySound(SE_DASH_1);
         (p->s).work[2] = 0x20;
         (p->s).mode[1]++;
       }
       break;
-    case 6:
-      UpdateSpriteAnimation(&p->s);
+    }
+    case 6: {
+      UpdateSpriteAnimation(p);
       if ((p->s).work[2] != 0) {
         (p->s).work[2]--;
         if ((p->s).unk_2c == NULL) {
@@ -624,6 +630,7 @@ static void Actor1_Update(struct Solid* p) {
       }
       (p->s).coord.x += 0x380;
       break;
+    }
   }
 }
 
@@ -646,27 +653,24 @@ static void Actor2_Update(struct Solid* p) {
       }
       break;
     }
-
     case 2: {
       UpdateSpriteAnimation(p);
-      if (((p->s).scriptEntity->flags & (1 << 1)) == 0) {
+      if (!((p->s).scriptEntity->flags & (1 << 1))) {
         return;
       }
       SetSpriteAnimation(p, MOTION(DM194_CIEL, 19));
       (p->s).mode[1]++;
       break;
     }
-
     case 3: {
       UpdateSpriteAnimation(p);
-      if (((p->s).scriptEntity->flags & (1 << 2)) == 0) {
+      if (!((p->s).scriptEntity->flags & (1 << 2))) {
         return;
       }
       SetSpriteAnimation(p, MOTION(DM194_CIEL, 17));
       (p->s).mode[1]++;
       break;
     }
-
     case 4: {
       UpdateSpriteAnimation(p);
       break;
@@ -718,146 +722,165 @@ static void Actor3_Update(struct Solid* p) {
 
 static void Actor4_Update(struct Solid* p) {
   switch ((p->s).mode[1]) {
-    case 0:
+    case 0: {
       (p->s).coord.y = FUN_08009f6c((p->s).coord.x, (p->s).coord.y);
-      SetMotion(&p->s, MOTION(DM194_CIEL, 16));
+      SetSpriteAnimation(p, MOTION(DM194_CIEL, 16));
       (p->s).mode[1]++;
-      // fallthrough
-    case 1:
-      UpdateSpriteAnimation(&p->s);
+      FALLTHROUGH;
+    }
+    case 1: {
+      UpdateSpriteAnimation(p);
       if ((p->s).scriptEntity->flags & 1) {
-        SetMotion(&p->s, MOTION(DM194_CIEL, 20));
+        SetSpriteAnimation(p, MOTION(DM194_CIEL, 20));
         (p->s).mode[1]++;
       }
       break;
-    case 2:
-      UpdateSpriteAnimation(&p->s);
+    }
+    case 2: {
+      UpdateSpriteAnimation(p);
       if ((p->s).scriptEntity->flags & 2) {
-        SetMotion(&p->s, MOTION(DM194_CIEL, 17));
+        SetSpriteAnimation(p, MOTION(DM194_CIEL, 17));
         (p->s).work[2] = 8;
         (p->s).mode[1]++;
       }
       break;
-    case 3:
-      SET_XFLIP(&p->s, 0);
-      UpdateSpriteAnimation(&p->s);
+    }
+    case 3: {
+      SET_XFLIP(p, 0);
+      UpdateSpriteAnimation(p);
       (p->s).work[2]--;
-      if ((u8)(p->s).work[2] == 0) {
-        SetMotion(&p->s, MOTION(DM194_CIEL, 18));
+      if ((p->s).work[2] == 0) {
+        SetSpriteAnimation(p, MOTION(DM194_CIEL, 18));
         (p->s).mode[1]++;
       }
       break;
-    case 4:
-      UpdateSpriteAnimation(&p->s);
+    }
+    case 4: {
+      UpdateSpriteAnimation(p);
       break;
+    }
   }
 }
 
 static void Actor5_Update(struct Solid* p) {
   switch ((p->s).mode[1]) {
-    case 0:
+    case 0: {
       (p->s).coord.y = FUN_08009f6c((p->s).coord.x, (p->s).coord.y);
       if ((p->s).work[1] == 0) {
         LOAD_STATIC_GRAPHIC(SM140_RESISTANCE_MOB);
       }
-      SetMotion(&p->s, MOTION(SM140_RESISTANCE_MOB, 5));
+      SetSpriteAnimation(p, MOTION(SM140_RESISTANCE_MOB, 5));
       (p->s).mode[1]++;
-      // fallthrough
-    case 1:
-      UpdateSpriteAnimation(&p->s);
-      if ((p->s).scriptEntity->flags & 1) {
-        SetMotion(&p->s, MOTION(SM140_RESISTANCE_MOB, 6));
-        (p->s).work[2] = 0x2D;
+      FALLTHROUGH;
+    }
+    case 1: {
+      UpdateSpriteAnimation(p);
+      if ((p->s).scriptEntity->flags & (1 << 0)) {
+        SetSpriteAnimation(p, MOTION(SM140_RESISTANCE_MOB, 6));
+        (p->s).work[2] = 45;
         (p->s).mode[1]++;
       }
-      if ((p->s).scriptEntity->flags & 2) {
-        SetMotion(&p->s, MOTION(SM140_RESISTANCE_MOB, 7));
-        (p->s).work[2] = 0xE;
+      if ((p->s).scriptEntity->flags & (1 << 1)) {
+        SetSpriteAnimation(p, MOTION(SM140_RESISTANCE_MOB, 7));
+        (p->s).work[2] = 14;
         (p->s).mode[1] = 3;
       }
       break;
-    case 2:
-      if ((p->s).work[2]++ > 0x2C) {
+    }
+    case 2: {
+      if ((p->s).work[2]++ > 44) {
         PlaySound(SE_UNK_59);
         (p->s).work[2] = 0;
       }
-      UpdateSpriteAnimation(&p->s);
+      UpdateSpriteAnimation(p);
       break;
-    case 3:
-      UpdateSpriteAnimation(&p->s);
+    }
+    case 3: {
+      UpdateSpriteAnimation(p);
       (p->s).coord.x += 0x1C0;
       (p->s).work[2]--;
-      if ((u8)(p->s).work[2] == 0) {
-        SetMotion(&p->s, MOTION(SM140_RESISTANCE_MOB, 5));
+      if ((p->s).work[2] == 0) {
+        SetSpriteAnimation(p, MOTION(SM140_RESISTANCE_MOB, 5));
         (p->s).work[2] = 8;
         (p->s).mode[1]++;
       }
       break;
-    case 4:
-      UpdateSpriteAnimation(&p->s);
+    }
+    case 4: {
+      UpdateSpriteAnimation(p);
       (p->s).work[2]--;
-      if ((u8)(p->s).work[2] == 0) {
-        SET_XFLIP(&p->s, 0);
+      if ((p->s).work[2] == 0) {
+        SET_XFLIP(p, FALSE);
         (p->s).work[2] = 8;
         (p->s).mode[1]++;
       }
       break;
-    case 5:
-      UpdateSpriteAnimation(&p->s);
+    }
+    case 5: {
+      UpdateSpriteAnimation(p);
       (p->s).work[2]--;
-      if ((u8)(p->s).work[2] == 0) {
-        SetMotion(&p->s, MOTION(SM140_RESISTANCE_MOB, 6));
+      if ((p->s).work[2] == 0) {
+        SetSpriteAnimation(p, MOTION(SM140_RESISTANCE_MOB, 6));
         (p->s).mode[1]++;
       }
       break;
-    case 6:
-      UpdateSpriteAnimation(&p->s);
+    }
+    case 6: {
+      UpdateSpriteAnimation(p);
       break;
+    }
   }
 }
 
 static void Actor6_Update(struct Solid* p) {
   switch ((p->s).mode[1]) {
-    case 0:
+    case 0: {
       if (FUN_080d0aa0(&p->s, MOTION(DM190_HARPUIA, 0), 1) != 0) {
         (p->s).mode[1] += 2;
       }
       break;
-    case 2:
-      UpdateSpriteAnimation(&p->s);
-      if ((p->s).scriptEntity->flags & 1) {
-        SetMotion(&p->s, MOTION(DM190_HARPUIA, 28));
+    }
+    case 2: {
+      UpdateSpriteAnimation(p);
+      if ((p->s).scriptEntity->flags & (1 << 0)) {
+        SetSpriteAnimation(p, MOTION(DM190_HARPUIA, 28));
         (p->s).mode[1]++;
       }
       break;
-    case 3:
-      UpdateSpriteAnimation(&p->s);
-      if ((p->s).scriptEntity->flags & 2) {
-        SetMotion(&p->s, MOTION(DM190_HARPUIA, 29));
+    }
+    case 3: {
+      UpdateSpriteAnimation(p);
+      if ((p->s).scriptEntity->flags & (1 << 1)) {
+        SetSpriteAnimation(p, MOTION(DM190_HARPUIA, 29));
         (p->s).mode[1]++;
       }
       break;
-    case 4:
-      UpdateSpriteAnimation(&p->s);
-      if ((p->s).motion.state == 3) {
-        SetMotion(&p->s, MOTION(DM190_HARPUIA, 0));
+    }
+    case 4: {
+      UpdateSpriteAnimation(p);
+      if (IsSpriteAnimEnd(p)) {
+        SetSpriteAnimation(p, MOTION(DM190_HARPUIA, 0));
         (p->s).mode[1]++;
       }
       break;
-    case 5:
-      UpdateSpriteAnimation(&p->s);
-      if ((p->s).scriptEntity->flags & 4) {
-        (p->s).work[2] = 0x1E;
+    }
+    case 5: {
+      UpdateSpriteAnimation(p);
+      if ((p->s).scriptEntity->flags & (1 << 2)) {
+        (p->s).work[2] = 30;
         (p->s).mode[1]++;
       }
       break;
-    case 6:
+    }
+    case 6: {
       if (FUN_080d0934(&p->s, MOTION(DM190_HARPUIA, 0), 1) != 0) {
         (p->s).mode[1]++;
       }
       break;
-    case 7:
+    }
+    case 7: {
       break;
+    }
   }
 }
 

@@ -3,19 +3,20 @@
 #include "vfx.h"
 
 // シエルのミニゲームに関係
-struct VFX78 {
-  struct Entity s;
+typedef struct {
+  ENTITY_HDR;     // 0x00
+  ENTITY_SPRITE;  // 0x28
   // props (16bytes, offset: 0x74..)
-  u8 unk_74[8];  // 0x74
-  u8 unk_7c;     // 0x7C
-  u8 unk_7d;     // 0x7D
-  u32 pad80;     // 0x80
-};
-static_assert(sizeof(struct VFX78) == sizeof(struct VFX));
+  u8 unk_74[8];   // 0x74
+  u8 unk_7c;      // 0x7C
+  u8 plttIdx_7d;  // 0x7D
+  u32 pad80;      // 0x80
+} VFX78;
+static_assert(sizeof(VFX78) == sizeof(struct VFX));
 
-static void Ghost78_Init(struct VFX* p);
-static void Ghost78_Update(struct VFX* p);
-static void Ghost78_Die(struct VFX* p);
+static void Ghost78_Init(VFX78* p);
+static void Ghost78_Update(VFX78* p);
+static void Ghost78_Die(VFX78* p);
 
 // clang-format off
 const VFXRoutine gGhost78Routine = {
@@ -27,8 +28,8 @@ const VFXRoutine gGhost78Routine = {
 };
 // clang-format on
 
-void CreateGhost78_1(struct Entity* e, Coords32* c, u8 r2, u8 r3) {
-  struct Entity* p = AllocEntityLast(gVFXHeaderPtr);
+void CreateGhost78_1(Entity* e, Coords32* c, u8 r2, u8 r3) {
+  VFX78* p = AllocEntityLast(gVFXHeaderPtr);
   if (p != NULL) {
     INIT_VFX_ROUTINE(p, VFX_UNK_078);
     p->unk_28 = e;
@@ -37,95 +38,89 @@ void CreateGhost78_1(struct Entity* e, Coords32* c, u8 r2, u8 r3) {
   }
 }
 
-void CreateGhost78_2(Coords32* c, u8 r1, u8 r2, u8 r3) {
-  struct VFX78* p = (struct VFX78*)AllocEntityLast(gVFXHeaderPtr);
+void CreateGhost78_2(Coords32* c, u8 r1, u8 r2, u8 plttIdx_7d) {
+  VFX78* p = AllocEntityLast(gVFXHeaderPtr);
   if (p != NULL) {
     INIT_VFX_ROUTINE(p, VFX_UNK_078);
-    (p->s).coord = *c;
-    (p->s).work[0] = r1, (p->s).work[1] = r2;
-    p->unk_7d = r3;
+    p->coord = *c;
+    p->work[0] = r1, p->work[1] = r2;
+    p->plttIdx_7d = plttIdx_7d;
   }
 }
 
-// --------------------------------------------
+static void FUN_080c8938(VFX78* p);
+static void FUN_080c89c8(VFX78* p);
+static void FUN_080c8acc(VFX78* p);
 
-static void FUN_080c8938(struct VFX* p);
-static void FUN_080c89c8(struct VFX* p);
-static void FUN_080c8acc(struct VFX* p);
-
-static void Ghost78_Init(struct VFX* p) {
-  static VFXFunc const sInitializers[] = {
+static void Ghost78_Init(VFX78* p) {
+  static void (*const sInitializers[3])(VFX78*) = {
       FUN_080c8938,
       FUN_080c89c8,
       FUN_080c8acc,
   };
-  (sInitializers[(p->s).work[0]])(p);
+  (sInitializers[p->work[0]])(p);
 }
 
-// --------------------------------------------
+static void FUN_080c8c00(VFX78* p);
+static void FUN_080c8ccc(VFX78* p);
+static void FUN_080c8d30(VFX78* p);
 
-static void FUN_080c8c00(struct VFX* p);
-static void FUN_080c8ccc(struct VFX* p);
-static void FUN_080c8d30(struct VFX* p);
-
-static void Ghost78_Update(struct VFX* p) {
-  static VFXFunc const sUpdates[] = {
+static void Ghost78_Update(VFX78* p) {
+  static void (*const sUpdates[3])(VFX78*) = {
       FUN_080c8c00,
       FUN_080c8ccc,
       FUN_080c8d30,
   };
-  (sUpdates[(p->s).work[0]])(p);
+  (sUpdates[p->work[0]])(p);
 }
 
-// --------------------------------------------
+static void FUN_080c8da0(VFX78* p);
+static void FUN_080c8db8(VFX78* p);
+static void FUN_080c8dd0(VFX78* p);
 
-static void FUN_080c8da0(struct VFX* p);
-static void FUN_080c8db8(struct VFX* p);
-static void FUN_080c8dd0(struct VFX* p);
-
-static void Ghost78_Die(struct VFX* p) {
-  static VFXFunc const sDeinitializers[] = {
+static void Ghost78_Die(VFX78* p) {
+  static void (*const sDeinitializers[3])(VFX78*) = {
       FUN_080c8da0,
       FUN_080c8db8,
       FUN_080c8dd0,
   };
-  (sDeinitializers[(p->s).work[0]])(p);
+  (sDeinitializers[p->work[0]])(p);
 }
 
 // --------------------------------------------
 
-static void FUN_080c8938(struct VFX* p) {
+static void FUN_080c8938(VFX78* p) {
   SET_VFX_ROUTINE(p, ENTITY_UPDATE);
   EnableSpriteAnimation_Normal(p);
-  (p->s).flags |= DISPLAY;
-  (p->s).flags |= FLIPABLE;
+  p->flags |= DISPLAY;
+  p->flags |= FLIPABLE;
   SetSpriteAnimation(p, MOTION(SM234_UNK, 3));
   SET_XFLIP(p, FALSE);
-  (p->s).work[2] = 0x3c;
-  (p->s).coord.x += 0x1000;
-  (p->s).coord.y += 0x1d00;
-  (p->s).d.x = (0xD000 - (p->s).coord.x) / 0x3c;
-  (p->s).d.y = 0;
-  (p->s).unk_coord.y = -4;
+  p->work[2] = 60;
+  (p->coord).x += PIXEL(16);
+  (p->coord).y += PIXEL(29);
+  (p->d).x = (PIXEL(208) - (p->coord).x) / 60;
+  (p->d).y = 0;
+  p->unk_coord.y = -4;
   Ghost78_Update(p);
 }
 
-static void FUN_080c89c8(struct VFX* p) {
+static void FUN_080c89c8(VFX78* p) {
   SET_VFX_ROUTINE(p, ENTITY_UPDATE);
   EnableSpriteAnimation_Normal(p);
-  (p->s).flags |= DISPLAY;
-  (p->s).flags |= FLIPABLE;
+  p->flags |= DISPLAY;
+  p->flags |= FLIPABLE;
   SetSpriteAnimation(p, MOTION(SM233_UNK, 11));
   SET_XFLIP(p, RANDOM(RNG_0202f388) & 1);
   SET_YFLIP(p, RANDOM(RNG_0202f388) & 1);
-  ForceEntityPalette(p, p->buffer[9] + 5);
-  (p->s).work[2] = 0x20;
-  (p->s).d.x = 0;
-  (p->s).d.y = 0x70;
+  ForceEntityPalette(p, p->plttIdx_7d + 5);
+  p->work[2] = 0x20;
+  p->d.x = 0;
+  p->d.y = 0x70;
   Ghost78_Update(p);
 }
 
-NAKED static void FUN_080c8acc(struct VFX* p) {
+NAKED static void FUN_080c8acc(VFX78* p) {
   asm(".syntax unified\n\
 	push {r4, r5, r6, lr}\n\
 	adds r5, r0, #0\n\
@@ -276,9 +271,7 @@ _080C8BFC: .4byte gSineTable\n\
  .syntax divided\n");
 }
 
-// --------------------------------------------
-
-NAKED static void FUN_080c8c00(struct VFX* p) {
+NAKED static void FUN_080c8c00(VFX78* p) {
   asm(".syntax unified\n\
 	push {r4, r5, lr}\n\
 	adds r5, r0, #0\n\
@@ -377,44 +370,42 @@ _080C8CC8: .4byte gVFXFnTable\n\
  .syntax divided\n");
 }
 
-static void FUN_080c8ccc(struct VFX* p) {
+static void FUN_080c8ccc(VFX78* p) {
   UpdateSpriteAnimation(p);
-  (p->s).coord.x += (p->s).d.x;
-  (p->s).coord.y += (p->s).d.y;
-  if ((p->s).work[2] & 1) {
-    (p->s).flags |= DISPLAY;
+  (p->coord).x += p->d.x;
+  (p->coord).y += p->d.y;
+  if (p->work[2] & 1) {
+    p->flags |= DISPLAY;
   } else {
-    (p->s).flags &= ~DISPLAY;
+    p->flags &= ~DISPLAY;
   }
-  (p->s).work[2]--;
-  if ((p->s).work[2] == 0xFF) {
+  p->work[2]--;
+  if (p->work[2] == 0xFF) {
     SET_VFX_ROUTINE(p, ENTITY_DIE);
     Ghost78_Die(p);
   }
 }
 
-static void FUN_080c8d30(struct VFX* p) {
+static void FUN_080c8d30(VFX78* p) {
   UpdateSpriteAnimation(p);
-  (p->s).coord.x += (p->s).d.x;
-  (p->s).coord.y += (p->s).d.y;
-  (p->s).d.x += (p->s).unk_coord.x;
-  (p->s).d.y += (p->s).unk_coord.y;
-  if ((p->s).work[2] & 1) {
-    (p->s).flags |= DISPLAY;
+  (p->coord).x += (p->d).x;
+  (p->coord).y += (p->d).y;
+  (p->d).x += p->unk_coord.x;
+  (p->d).y += p->unk_coord.y;
+  if (p->work[2] & 1) {
+    p->flags |= DISPLAY;
   } else {
-    (p->s).flags &= ~DISPLAY;
+    p->flags &= ~DISPLAY;
   }
-  (p->s).work[2]--;
-  if ((p->s).work[2] == 0xFF) {
+  p->work[2]--;
+  if (p->work[2] == 0xFF) {
     SET_VFX_ROUTINE(p, ENTITY_DIE);
     Ghost78_Die(p);
   }
 }
 
-// --------------------------------------------
+static void FUN_080c8da0(VFX78* p) { SET_VFX_ROUTINE(p, ENTITY_EXIT); }
 
-static void FUN_080c8da0(struct VFX* p) { SET_VFX_ROUTINE(p, ENTITY_EXIT); }
+static void FUN_080c8db8(VFX78* p) { SET_VFX_ROUTINE(p, ENTITY_EXIT); }
 
-static void FUN_080c8db8(struct VFX* p) { SET_VFX_ROUTINE(p, ENTITY_EXIT); }
-
-static void FUN_080c8dd0(struct VFX* p) { SET_VFX_ROUTINE(p, ENTITY_EXIT); }
+static void FUN_080c8dd0(VFX78* p) { SET_VFX_ROUTINE(p, ENTITY_EXIT); }

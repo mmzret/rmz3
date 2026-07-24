@@ -3,7 +3,7 @@
 
 #include "gba/gba.h"
 
-// 全種類のミニゲームで同じレイアウトなのか、unionを使うべきかは調査中
+// 全種類のミニゲームで同じレイアウトなのか、unionを使うべきかは調査中 (おそらくレイアウトが違うと思われる)
 struct MinigameState {
   u8 unk_00[4];  // unk_00: s16 in CopyX
   s16 unk_04;    // zero と copy_x で s16
@@ -13,10 +13,10 @@ struct MinigameState {
   u8 unk_0d;
   u8 unk_0e;
   u8 unk_0f;
-  u16 unk_10;  // u16 in leviathanMode0Pre
-  u16 unk_12;  // u16 in leviathanMode0Pre
-  s32 unk_14;  // used by Phantom
-  u16 unk_18;  // ?16 in fefnir_080347f0
+  u16 unk_10;     // u16 in leviathanMode0Pre
+  u16 unk_12;     // u16 in leviathanMode0Pre
+  s32 mg_unk_14;  // used as xcoords by PhantomMini_Update, use as u8[] by CielMinigameEnemy2_Update
+  u16 unk_18;     // ?16 in fefnir_080347f0
   u8 unk_1a;
   u8 unk_1b;
   u8 unk_1c[4];

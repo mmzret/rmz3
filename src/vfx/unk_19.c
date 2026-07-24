@@ -12,11 +12,11 @@ static void Ghost19_Die(struct VFX* p);
 
 // clang-format off
 const VFXRoutine gMegamilpaDeadRoutine = {
-    [ENTITY_INIT] =      (VFXFunc)Ghost19_Init,
-    [ENTITY_UPDATE] =    (VFXFunc)Ghost19_Update,
-    [ENTITY_DIE] =       (VFXFunc)Ghost19_Die,
-    [ENTITY_DISAPPEAR] = (VFXFunc)DeleteVFX,
-    [ENTITY_EXIT] =      (VFXFunc)DeleteEntity,
+    [ENTITY_INIT] =      (void*)Ghost19_Init,
+    [ENTITY_UPDATE] =    (void*)Ghost19_Update,
+    [ENTITY_DIE] =       (void*)Ghost19_Die,
+    [ENTITY_DISAPPEAR] = (void*)DeleteVFX,
+    [ENTITY_EXIT] =      (void*)DeleteEntity,
 };
 // clang-format on
 
@@ -25,28 +25,28 @@ const VFXRoutine gMegamilpaDeadRoutine = {
 // 0x080b6e84
 struct VFX* CreateGhost19_1(Coords32* c, Coords32* d) {
   s32 x, y, dx, dy;
-  struct VFX* g = (struct VFX*)AllocEntityLast(gVFXHeaderPtr);
-  if (g != NULL) {
-    INIT_VFX_ROUTINE(g, VFX_MEGAMILPA_DEAD);
+  struct VFX* p = AllocEntityLast(gVFXHeaderPtr);
+  if (p != NULL) {
+    INIT_VFX_ROUTINE(p, VFX_MEGAMILPA_DEAD);
     x = c->x;
     y = c->y;
-    (g->s).coord.x = x;
-    (g->s).coord.y = y;
+    (p->s).coord.x = x;
+    (p->s).coord.y = y;
 
     dx = d->x;
     dy = d->y;
-    (g->s).d.x = dx;
-    (g->s).d.y = dy;
+    (p->s).d.x = dx;
+    (p->s).d.y = dy;
 
-    (g->s).work[0] = 0;  // メガミルパが死ぬ時に発生する石
+    (p->s).work[0] = 0;  // メガミルパが死ぬ時に発生する石
   }
-  return g;
+  return p;
 }
 
-void CreateGhost19_2(struct Entity* e, Coords32* c) {
+void CreateGhost19_2(Entity* e, Coords32* c) {
   s32 i;
   for (i = 0; i < 4; i++) {
-    struct Entity* p = AllocEntityLast(gVFXHeaderPtr);
+    Entity* p = AllocEntityLast(gVFXHeaderPtr);
     if (p != NULL) {
       INIT_VFX_ROUTINE(p, VFX_MEGAMILPA_DEAD);
       p->work[0] = 1, p->work[1] = i;
@@ -70,8 +70,6 @@ static void Ghost19_Init(struct VFX* p) {
   Ghost19_Update(p);
 }
 
-// --------------------------------------------
-
 static void FUN_080b6fc8(struct VFX* p);
 static void FUN_080b705c(struct VFX* p);
 
@@ -82,8 +80,6 @@ static void Ghost19_Update(struct VFX* p) {
   };
   (sUpdates[(p->s).mode[1]])(p);
 }
-
-// --------------------------------------------
 
 static void Ghost19_Die(struct VFX* p) { SET_VFX_ROUTINE(p, ENTITY_EXIT); }
 
@@ -97,15 +93,18 @@ static void FUN_080b6fc8(struct VFX* p) {
       const motion_t* m = motion_t_ARRAY_0836e8aa;
       SetSpriteAnimation(p, m[RANDOM(RNG_0202f388) % 3]);
       (p->s).mode[2]++;
+      FALLTHROUGH;
     }
-    case 1:
+    case 1: {
       (p->s).coord.x += (p->s).d.x;
       (p->s).coord.y += (p->s).d.y;
-      (p->s).d.y += 0x40;
+      (p->s).d.y += PIXEL(1) / 4;
       if ((p->s).d.y > 0 && FUN_080098a4((p->s).coord.x, (p->s).coord.y)) {
         SET_VFX_ROUTINE(p, ENTITY_DIE);
       }
       UpdateSpriteAnimation(p);
+      break;
+    }
   }
 }
 

@@ -26,8 +26,8 @@ enum {
 static const struct Collision sCollisions[9];
 
 static void Projectile15_Init(HellbatProjectile* p);
-void Projectile15_Update(HellbatProjectile* p);
-void Projectile15_Die(HellbatProjectile* p);
+static void Projectile15_Update(HellbatProjectile* p);
+static void Projectile15_Die(HellbatProjectile* p);
 
 // clang-format off
 const ProjectileRoutine gHellbatProjectileRoutine = {
@@ -136,50 +136,50 @@ static void Projectile15_Init(HellbatProjectile* p) {
 
 static const HellbatProjectileFunc* const sUpdates[5];
 
-void Projectile15_Update(HellbatProjectile* p) { (sUpdates[p->work[0]][p->mode[1]])(p); }
+static void Projectile15_Update(HellbatProjectile* p) { (sUpdates[p->work[0]][p->mode[1]])(p); }
 
-void Projectile15_Die(HellbatProjectile* p) {
+static void Projectile15_Die(HellbatProjectile* p) {
   p->flags &= ~DISPLAY;
   EXIT_BODY(p);
   SET_PROJECTILE_ROUTINE(p, ENTITY_EXIT);
 }
 
-void FUN_080a176c(HellbatProjectile* p) {
+static void FUN_080a176c(HellbatProjectile* p) {
   p->mode[1] = 1;
   p->mode[2] = 0;
 }
 
 INCASM("asm/projectile/hellbat_b.inc");
 
-void FUN_080a1a10(HellbatProjectile* p) {
+static void FUN_080a1a10(HellbatProjectile* p) {
   p->mode[1] = 1;
   p->mode[2] = 0;
 }
 
 INCASM("asm/projectile/hellbat_c.inc");
 
-void FUN_080a1f10(HellbatProjectile* p) {
+static void FUN_080a1f10(HellbatProjectile* p) {
   p->mode[1] = 1;
   p->mode[2] = 0;
 }
 
 INCASM("asm/projectile/hellbat_d.inc");
 
-void FUN_080a2020(HellbatProjectile* p) {
+static void FUN_080a2020(HellbatProjectile* p) {
   p->mode[1] = 1;
   p->mode[2] = 0;
 }
 
 INCASM("asm/projectile/hellbat_e.inc");
 
-void FUN_080a22ec(HellbatProjectile* p) {
+static void FUN_080a22ec(HellbatProjectile* p) {
   p->mode[1] = 1;
   p->mode[2] = 0;
 }
 
 INCASM("asm/projectile/hellbat_f.inc");
 
-void FUN_080a176c(HellbatProjectile* p);
+static void FUN_080a176c(HellbatProjectile* p);
 void FUN_080a1778(HellbatProjectile* p);
 
 static const HellbatProjectileFunc sUpdates1[2] = {
@@ -187,7 +187,7 @@ static const HellbatProjectileFunc sUpdates1[2] = {
     FUN_080a1778,
 };
 
-void FUN_080a1a10(HellbatProjectile* p);
+static void FUN_080a1a10(HellbatProjectile* p);
 void FUN_080a1a1c(HellbatProjectile* p);
 
 static const HellbatProjectileFunc sUpdates2[2] = {
@@ -195,7 +195,7 @@ static const HellbatProjectileFunc sUpdates2[2] = {
     FUN_080a1a1c,
 };
 
-void FUN_080a1f10(HellbatProjectile* p);
+static void FUN_080a1f10(HellbatProjectile* p);
 void FUN_080a1f1c(HellbatProjectile* p);
 
 static const HellbatProjectileFunc sUpdates3[2] = {
@@ -203,7 +203,7 @@ static const HellbatProjectileFunc sUpdates3[2] = {
     FUN_080a1f1c,
 };
 
-void FUN_080a2020(HellbatProjectile* p);
+static void FUN_080a2020(HellbatProjectile* p);
 void FUN_080a202c(HellbatProjectile* p);
 
 static const HellbatProjectileFunc sUpdates4[2] = {
@@ -211,7 +211,7 @@ static const HellbatProjectileFunc sUpdates4[2] = {
     FUN_080a202c,
 };
 
-void FUN_080a22ec(HellbatProjectile* p);
+static void FUN_080a22ec(HellbatProjectile* p);
 void FUN_080a22f8(HellbatProjectile* p);
 
 static const HellbatProjectileFunc sUpdates5[2] = {

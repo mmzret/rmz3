@@ -1,4 +1,5 @@
 #include "collision.h"
+#include "enemy/claveker.h"
 #include "global.h"
 #include "physics.h"
 #include "projectile.h"
@@ -27,14 +28,14 @@ const ProjectileRoutine gClavekerYellowBallsRoutine = {
 };
 // clang-format on
 
-ClavekerYellowBalls* FUN_080aed8c(Entity* q, Coords32* c1, Coords32* c2, u8 n) {
+ClavekerYellowBalls* FUN_080aed8c(Entity* claveker, Coords32* c1, Coords32* c2, u8 n) {
   ClavekerYellowBalls* p = AllocEntityLast(gProjectileHeaderPtr);
   if (p != NULL) {
     INIT_PROJECTILE_ROUTINE(p, 39);
     p->work[0] = n, p->work[1] = 0;
     (p->coord).x = c1->x, (p->coord).y = c1->y;
     (p->unk_coord).x = c2->x, (p->unk_coord).y = c2->y;
-    p->unk_28 = q;
+    p->unk_28 = claveker;
   }
   return p;
 }
@@ -44,7 +45,7 @@ static void ClavekerYellowBalls_Init(ClavekerYellowBalls* p) {
     EnableSpriteAnimation_Normal(p);
     p->flags |= DISPLAY;
     p->flags |= FLIPABLE;
-    INIT_BODY(p, &sCollisions[0], 2, NULL);
+    _INIT_BODY(p, &sCollisions[0], 2);
     SET_PROJECTILE_ROUTINE(p, ENTITY_UPDATE);
     p->mode[1] = 0, p->mode[2] = 0, p->mode[3] = 0;
   }
@@ -80,10 +81,10 @@ static void FUN_080aeefc(ClavekerYellowBalls* p) {
     EXIT_BODY(p);
     CreateSmoke(2, &p->coord);
     SET_PROJECTILE_ROUTINE(p, ENTITY_DIE);
-    if ((p->unk_28)->mode[0] <= 1) {
-      (*(u8*)((u8*)p->unk_28 + 0xb9))++;
+    if ((p->unk_28)->mode[0] < ENTITY_DIE) {
+      ((Claveker*)p->unk_28)->unk_b9++;
     }
-    if (*(u8*)((u8*)p->unk_28 + 0xb9) > 7) {
+    if (((Claveker*)p->unk_28)->unk_b9 > 7) {
       CreateSmoke(1, &p->coord);
       TryDropItem(6, &p->coord);
     }

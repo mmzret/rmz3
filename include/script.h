@@ -100,8 +100,8 @@ struct VM {
     s16 n;  // strings.s
     u8 x;
     u8 y;
-  } string;               // ((string_id << 16) | (y << 8) | x)
-  struct VFX* indicator;  // ステージへオペレータに転送されたとき(もしくはミッション開始時に)右下に出てくる "Z x 9" や `MISSION START`などのオーバーレイ
+  } string;                  // ((string_id << 16) | (y << 8) | x)
+  struct Entity* indicator;  // ステージへオペレータに転送されたとき(もしくはミッション開始時に)右下に出てくる "Z x 9" や `MISSION START`などのオーバーレイ
   SoundID32 bgm;
   TextID zeroDeathTextIDs[2];  // ゼロがボス戦で死んだ時にボスが喋るメッセージのテキストID配列
   Coords32 forceCoord;         // 0xFFFFFFFF以外に設定するとそこにゼロが瞬間移動 & 座標固定される(侵入可能エリアなら死)

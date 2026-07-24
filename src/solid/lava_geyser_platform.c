@@ -7,9 +7,7 @@
 static const u8 sInitModes[4];
 static const struct Rect sSize;
 
-bool8 FUN_080cc814(struct Entity* p);
-
-// ------------------------------------------------------------------------------------------------------------------------------------
+bool8 FUN_080cc814(Entity* p);
 
 static void Solid6_Init(struct Solid* p);
 static void Solid6_Update(struct Solid* p);
@@ -46,8 +44,6 @@ static void Solid6_Init(struct Solid* p) {
   Solid6_Update(p);
 }
 
-// --------------------------------------------
-
 static void nop_080cc69c(struct Solid* p);
 static void FUN_080cc6a0(struct Solid* p);
 
@@ -79,26 +75,28 @@ static void Solid6_Die(struct Solid* p) {
 static void nop_080cc69c(struct Solid* p) { return; }
 
 static void FUN_080cc6a0(struct Solid* p) {
-  struct Entity* anchor = (p->s).unk_28;
+  Entity* anchor = (p->s).unk_28;
   switch ((p->s).mode[2]) {
-    case 0:
+    case 0: {
       SetSpriteAnimation(p, MOTION(SM058_VOLCANO_RISING_PLATFORM, 1));
       (p->s).mode[2]++;
-    case 1:
-      if (FUN_080cc814(anchor)) {
-        (p->s).mode[2]++;
-      }
+      FALLTHROUGH;
+    }
+    case 1: {
+      if (FUN_080cc814(anchor)) (p->s).mode[2]++;
       UpdateSpriteAnimation(p);
       break;
-    case 2:
+    }
+    case 2: {
       SetSpriteAnimation(p, MOTION(SM058_VOLCANO_RISING_PLATFORM, 0));
       (p->s).mode[2]++;
-    case 3:
-      if (!FUN_080cc814(anchor)) {
-        (p->s).mode[2] = 0;
-      }
+      FALLTHROUGH;
+    }
+    case 3: {
+      if (!FUN_080cc814(anchor)) (p->s).mode[2] = 0;
       UpdateSpriteAnimation(p);
       break;
+    }
   }
   (p->s).coord.x = anchor->coord.x;
   (p->s).coord.y = anchor->coord.y - PIXEL(15);

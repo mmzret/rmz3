@@ -1,8 +1,8 @@
+#include "camera.h"
 #include "entity.h"
 #include "gfx.h"
 #include "global.h"
 #include "stagerun.h"
-#include "camera.h"
 #include "vfx.h"
 
 /*
@@ -1070,12 +1070,13 @@ _080C65A6:\n\
 
 static void FUN_080c65ac(struct VFX* p) {
   switch ((p->s).mode[1]) {
-    case 0:
+    case 0: {
       (p->s).work[2] = 0x10;
       (p->s).mode[1]++;
-    case 1:
-      gBlendRegBuffer.bldalpha =
-          ((p->s).work[2] & 0x1f) | ((0x10 - (p->s).work[2]) << 8);
+      FALLTHROUGH;
+    }
+    case 1: {
+      gBlendRegBuffer.bldalpha = ((p->s).work[2] & 0x1F) | ((0x10 - (p->s).work[2]) << 8);
       if ((p->s).work[2] != 0) {
         (p->s).work[2]--;
       } else {
@@ -1083,6 +1084,8 @@ static void FUN_080c65ac(struct VFX* p) {
         (p->s).flags &= ~DISPLAY;
         SET_VFX_ROUTINE(p, ENTITY_EXIT);
       }
+      break;
+    }
   }
 }
 

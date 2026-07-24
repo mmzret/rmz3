@@ -29,7 +29,7 @@ const EnemyRoutine gEnemy59Routine = {
 };
 // clang-format on
 
-void FUN_08091280(struct Entity* p) {
+void FUN_08091280(Enemy59* p) {
   s32 x, y, amplitude;
   u8 theta;
   x = (p->coord).x + PIXEL((RANDOM(RNG_0202f388) & 0x1F) - 16);
@@ -39,8 +39,8 @@ void FUN_08091280(struct Entity* p) {
   FUN_080c4c2c(x, y, amplitude, theta);
 }
 
-void FUN_0809130c(struct Entity* e, u8 idx) {
-  struct Entity* p = AllocEntityLast(gEnemyHeaderPtr);
+void FUN_0809130c(Entity* e, u8 idx) {
+  Entity* p = AllocEntityLast(gEnemyHeaderPtr);
   if (p != NULL) {
     INIT_ENEMY_ROUTINE(p, ENEMY_59);
     (p->coord).x = (e->coord).x, (p->coord).y = (e->coord).y;
@@ -80,7 +80,7 @@ void FUN_080913c0(Enemy59* q, u8 kind) {
  * @note まきびし?
  * @note 0x0809142C
  */
-void FUN_0809142c(struct Entity* q, u8 kind) {
+void FUN_0809142c(Entity* q, u8 kind) {
   Enemy59* p = AllocEntityLast(gEnemyHeaderPtr);
   if (p != NULL) {
     INIT_ENEMY_ROUTINE(p, ENEMY_59);
@@ -346,7 +346,7 @@ static const EnemyFunc sUpdates2[10] = {
 
 void FUN_08091fa8(struct Enemy* p);
 void FUN_080921c8(struct Enemy* p);
-static void FUN_080922e0(struct Entity* p);
+static void FUN_080922e0(Enemy59* p);
 static void FUN_080923ec(Enemy59* p);
 
 static const EnemyFunc sDeads[4] = {
@@ -356,7 +356,7 @@ static const EnemyFunc sDeads[4] = {
     (void*)FUN_080923ec,
 };
 
-NON_MATCH static void FUN_080922e0(struct Entity* p) {
+NON_MATCH static void FUN_080922e0(Enemy59* p) {
 #if MODERN
   switch (p->mode[2]) {
     case 0: {

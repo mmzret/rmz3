@@ -83,17 +83,19 @@ bool8 FUN_08052b48(Cubit* p) { return TRUE; }
 
 void cubitMode0(Cubit* p) {
   switch (p->mode[2]) {
-    case 0:
+    case 0: {
       p->flags |= DISPLAY;
       SetSpriteAnimation(p, MOTION(DM176_CUBIT, 2));
       p->mode[2]++;
       FALLTHROUGH;
-    case 1:
+    }
+    case 1: {
       UpdateSpriteAnimation(p);
       if ((p->scriptEntity)->flags & (1 << 0)) {
         p->mode[1] = 1, p->mode[2] = 0;
       }
       break;
+    }
   }
 }
 

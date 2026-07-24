@@ -2,8 +2,8 @@
 #include "game.h"
 #include "gfx.h"
 #include "global.h"
-#include "palette_animation.h"
 #include "menu.h"
+#include "palette_animation.h"
 
 // 08547280 のidx
 const u8 u8_ARRAY_08386378[16] = {
@@ -1272,12 +1272,12 @@ _080F473E:\n\
 // 01 02 02 xx
 static void MainMenuLoop_SlideOut(struct GameState* g) {
   if (MENU->unk_4d == 1) {
-    (*(u16*)((u8*)&gVideoRegBuffer + 16)) += 0x10;
+    BGnHOFS(1) += 16;
   } else {
-    (*(u16*)((u8*)&gVideoRegBuffer + 16)) -= 0x10;
+    BGnHOFS(1) -= 16;
   }
-  (*(u16*)((u8*)&gVideoRegBuffer + 16)) &= 0x1FF;
-  if (((*(u16*)((u8*)&gVideoRegBuffer + 16)) & 0xFF) == 0) {
+  BGnHOFS(1) &= 0x1FF;
+  if ((BGnHOFS(1) & 0xFF) == 0) {
     MENU->unk_4c = MENU->unk_4d;
     g->mode[2] = 1;
     MainMenuLoop_Exit(g);

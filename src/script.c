@@ -443,8 +443,8 @@ static void PrintScriptString(struct VM* vm) {
 }
 
 static void tryDeleteIndicator(struct VM* vm) {
-  struct VFX* z = vm->indicator;
-  if ((z != NULL) && (ENTITY_UPDATE < (z->s).mode[0])) {
+  Entity* p = vm->indicator;
+  if ((p != NULL) && (ENTITY_UPDATE < p->mode[0])) {
     vm->indicator = NULL;
   }
 }

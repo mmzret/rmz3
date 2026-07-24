@@ -208,8 +208,8 @@ bool8 FUN_0803f9c0(Blazin* _);
 bool8 FUN_0803fc70(Blazin* _);
 bool8 FUN_0803fd58(Blazin* _);
 
-void blazinMode0(Blazin* p);
-void blazinMode1(Blazin* p);
+static void blazinMode0(Blazin* p);
+static void blazinMode1(Blazin* p);
 void blazinMode2(Blazin* p);
 void blazinNeutral(Blazin* p);
 void blazinMode4(Blazin* p);
@@ -310,9 +310,7 @@ static void blazinDeath0(Blazin* p) {
     case 1: {
       if (p->work[2] != 0) {
         p->work[2]--;
-        if (p->work[2] == 0) {
-          p->mode[2]++;
-        }
+        if (p->work[2] == 0) p->mode[2]++;
       }
       break;
     }
@@ -663,25 +661,71 @@ _0803EE28: .4byte gStageRun\n\
 
 static bool8 nop_0803ee2c(Blazin* _) { return TRUE; }
 
-void blazinMode0(Blazin* p) {
+static void blazinMode0(Blazin* p) {
   switch (p->mode[2]) {
-    case 0:
+    case 0: {
       p->flags |= DISPLAY;
       SetSpriteAnimation(p, MOTION(DM162_BLAZIN, p->anim_c8 + 21));
       p->mode[2]++;
       FALLTHROUGH;
-    case 1:
+    }
+    case 1: {
       UpdateSpriteAnimation(p);
       if ((p->scriptEntity)->flags & (1 << 0)) {
         p->mode[1] = 1, p->mode[2] = 0;
       }
       break;
+    }
   }
 }
 
 static bool8 FUN_0803ee8c(Blazin* _) { return TRUE; }
 
-INCASM("asm/boss/blazin_a.inc");
+static void blazinMode1(Blazin* p) {
+  switch (p->mode[2]) {
+    case 0: {
+      p->work[2] = 26;
+      SetSpriteAnimation(p, MOTION(DM162_BLAZIN, p->anim_c8 + 39));
+      PlaySound(SE_BLAZIN_PREBATTLE);
+      p->mode[2]++;
+      FALLTHROUGH;
+    }
+    case 1: {
+      UpdateSpriteAnimation(p);
+      if (IsSpriteAnimEnd(p)) p->mode[2]++;
+      break;
+    }
+    case 2: {
+      if ((p->work[2] == 0) || (--p->work[2]) == 0) {
+        p->mode[2]++;
+      }
+      break;
+    }
+    case 3: {
+      p->work[2] = 30;
+      SetSpriteAnimation(p, MOTION(DM162_BLAZIN, p->anim_c8 + 40));
+      p->mode[2]++;
+      FALLTHROUGH;
+    }
+    case 4: {
+      UpdateSpriteAnimation(p);
+      if (IsSpriteAnimEnd(p)) {
+        if ((p->work[2] == 0) || (--p->work[2]) == 0) {
+          p->mode[2]++;
+        }
+      }
+      break;
+    }
+    case 5: {
+      UpdateSpriteAnimation(p);
+      p->mode[1] = 2, p->mode[2] = 0;
+      break;
+    }
+    default: {
+      break;
+    }
+  }
+}
 
 static bool8 FUN_0803ef64(Blazin* _) { return TRUE; }
 

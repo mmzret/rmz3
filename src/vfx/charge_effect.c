@@ -1,52 +1,50 @@
 #include "global.h"
 #include "vfx.h"
 
-/*
-  ゼロの武器チャージエフェクト(メイン、サブ両方)
-*/
+// ゼロの武器チャージエフェクト(メイン、サブ両方)
+typedef struct ZChargeEffect {
+  ENTITY_HDR;     // 0x00
+  ENTITY_SPRITE;  // 0x28
+  u8 buffer[16];  // 0x74
+} ZChargeEffect;
+static_assert(sizeof(ZChargeEffect) == sizeof(struct VFX));
 
 static const motion_t sMotions[2];
 
-static void ChargeEffect_Init(struct Entity* p);
-static void ChargeEffect_Update(struct VFX* p);
-static void ChargeEffect_Die(struct VFX* p);
+static void ChargeEffect_Init(ZChargeEffect* p);
+static void ChargeEffect_Update(ZChargeEffect* p);
+static void ChargeEffect_Die(ZChargeEffect* p);
 
 // clang-format off
 const VFXRoutine gChargeEffectRoutine = {
-    [ENTITY_INIT] =      (VFXFunc)ChargeEffect_Init,
-    [ENTITY_UPDATE] =    (VFXFunc)ChargeEffect_Update,
-    [ENTITY_DIE] =       (VFXFunc)ChargeEffect_Die,
-    [ENTITY_DISAPPEAR] = (VFXFunc)DeleteVFX,
-    [ENTITY_EXIT] =      (VFXFunc)DeleteEntity,
+    [ENTITY_INIT] =      (void*)ChargeEffect_Init,
+    [ENTITY_UPDATE] =    (void*)ChargeEffect_Update,
+    [ENTITY_DIE] =       (void*)ChargeEffect_Die,
+    [ENTITY_DISAPPEAR] = (void*)DeleteVFX,
+    [ENTITY_EXIT] =      (void*)DeleteEntity,
 };
 // clang-format on
 
-struct VFX* CreateChargeEffect(struct Zero* z, struct VFX* v, u8 r2) {
-  struct VFX* g = (struct VFX*)AllocEntityLast(gVFXHeaderPtr);
-  if (g != NULL) {
-    INIT_VFX_ROUTINE(g, VFX_CHARGE_EFFECT);
-    (g->s).unk_28 = &z->s;
-    (g->s).unk_2c = &v->s;
-    (g->s).work[0] = r2;
-    (g->s).work[1] = 0;
+ZChargeEffect* CreateChargeEffect(Player* z, ZChargeEffect* q, bool8 isSubWeapon) {
+  ZChargeEffect* p = AllocEntityLast(gVFXHeaderPtr);
+  if (p != NULL) {
+    INIT_VFX_ROUTINE(p, VFX_CHARGE_EFFECT);
+    p->unk_28 = (void*)z;
+    p->unk_2c = (void*)q;
+    p->work[0] = isSubWeapon, p->work[1] = 0;
   }
-
-  return g;
+  return p;
 }
 
-// ------------------------------------------------------------------------------------------------------------------------------------
-
-static void ChargeEffect_Init(struct Entity* p) {
+static void ChargeEffect_Init(ZChargeEffect* p) {
   EnableSpriteAnimation_Normal(p);
   p->flags |= FLIPABLE;
   SET_XFLIP(p, FALSE);
   SET_VFX_ROUTINE(p, ENTITY_UPDATE);
-  ChargeEffect_Update((void*)p);
+  ChargeEffect_Update(p);
 }
 
-// --------------------------------------------
-
-NAKED static void ChargeEffect_Update(struct VFX* vfx) {
+NAKED static void ChargeEffect_Update(ZChargeEffect* p) {
   asm(".syntax unified\n\
 	push {r4, r5, r6, r7, lr}\n\
 	mov r7, r8\n\
@@ -264,9 +262,7 @@ _080B3556:\n\
  .syntax divided\n");
 }
 
-// --------------------------------------------
-
-static void ChargeEffect_Die(struct VFX* vfx) { SET_VFX_ROUTINE(vfx, ENTITY_EXIT); }
+static void ChargeEffect_Die(ZChargeEffect* p) { SET_VFX_ROUTINE(p, ENTITY_EXIT); }
 
 // --------------------------------------------
 
