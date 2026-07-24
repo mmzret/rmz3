@@ -2,6 +2,7 @@
 #include "element.h"
 #include "enemy.h"
 #include "global.h"
+#include "story.h"
 
 typedef struct {
   COLLISION_OBJECT_HDR;  // 0x00
@@ -11,6 +12,23 @@ typedef struct {
 static_assert(sizeof(PantheonFist) == sizeof(struct Enemy));
 
 INCASM("asm/enemy/pantheon_fist_a.inc");
+
+bool8 FUN_080950d0(struct Enemy* p) {
+  if ((p->body).status & BODY_STATUS_DEAD) {
+    SET_ENEMY_ROUTINE(p, ENTITY_DIE);
+    if ((p->body).status & BODY_STATUS_SLASHED) {
+      (p->s).mode[1] = 1;
+    } else if ((p->body).status & BODY_STATUS_RECOILED) {
+      (p->s).mode[1] = 2;
+    } else {
+      (p->s).mode[1] = 0;
+    }
+    return TRUE;
+  }
+  return FALSE;
+}
+
+INCASM("asm/enemy/pantheon_fist_a2.inc");
 
 static const Coords32 sElementCoord;
 
