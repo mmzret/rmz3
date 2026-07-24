@@ -2,8 +2,29 @@
 #include "element.h"
 #include "enemy.h"
 #include "global.h"
+#include "story.h"
 
-INCASM("asm/enemy/gallisni_a.inc");
+INCASM("asm/enemy/gallisni_a1.inc");
+
+void Gallisni_Die(struct Enemy* p);
+
+bool8 gallisni_080870bc(struct Enemy* p) {
+  if ((p->body).status & BODY_STATUS_DEAD) {
+    SET_ENEMY_ROUTINE(p, ENTITY_DIE);
+    if ((p->body).status & BODY_STATUS_SLASHED) {
+      (p->s).mode[1] = 1;
+    } else if ((p->body).status & BODY_STATUS_RECOILED) {
+      (p->s).mode[1] = 2;
+    } else {
+      (p->s).mode[1] = 0;
+    }
+    Gallisni_Die(p);
+    return TRUE;
+  }
+  return FALSE;
+}
+
+INCASM("asm/enemy/gallisni_a2.inc");
 
 typedef struct {
   COLLISION_OBJECT_HDR;  // 0x00
