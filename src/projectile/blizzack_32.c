@@ -1,5 +1,7 @@
 #include "collision.h"
 #include "global.h"
+#include "gpu_regs.h"
+#include "sound.h"
 #include "projectile.h"
 
 // Blizzack関連なのは確定
@@ -45,7 +47,29 @@ void blizzack_080aaae0(Entity* q, u8 val) {
   }
 }
 
-INCASM("asm/projectile/blizzack_32.inc");
+INCASM("asm/projectile/blizzack_32_s1.inc");
+
+void FUN_080ab724(Projectile32* p) {
+  gVideoRegBuffer.dispcnt &= ~(DISPCNT_WIN0_ON | DISPCNT_BG2_ON);
+  gWindowRegBuffer.dispcnt &= ~DISPCNT_WIN1_ON;
+  gWindowRegBuffer.winin[2] |= 0xFE;
+  StopSound(*(s16*)&p->buffer[0xC]);
+  p->flags &= ~DISPLAY;
+  SET_PROJECTILE_ROUTINE(p, ENTITY_EXIT);
+}
+
+INCASM("asm/projectile/blizzack_32_s2.inc");
+
+void FUN_080ab990(Projectile32* p) {
+  gVideoRegBuffer.dispcnt &= ~(DISPCNT_WIN0_ON | DISPCNT_BG2_ON);
+  gWindowRegBuffer.dispcnt &= ~DISPCNT_WIN1_ON;
+  gWindowRegBuffer.winin[2] |= 0xFE;
+  StopSound(*(s16*)&p->buffer[0xC]);
+  p->flags &= ~DISPLAY;
+  SET_PROJECTILE_ROUTINE(p, ENTITY_EXIT);
+}
+
+INCASM("asm/projectile/blizzack_32_s3.inc");
 
 // --------------------------------------------
 
