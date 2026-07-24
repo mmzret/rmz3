@@ -75,7 +75,43 @@ struct Entity* FUN_080bed5c(struct Entity* e, Coords32* c, u8 kind, u8 param_4) 
   return (void*)p;
 }
 
-INCASM("asm/vfx/unk_46.inc");
+INCASM("asm/vfx/unk_46_a.inc");
+
+void VFX46_Init(struct VFX* p) {
+  EnableSpriteAnimation_Normal(&p->s);
+  (p->s).flags |= DISPLAY;
+  (p->s).flags |= FLIPABLE;
+  SetSpriteTableDynamic(&p->s);
+  if ((p->s).work[0] == 0) {
+    SET_XFLIP(p, FALSE);
+    ((p->s).d).x = PIXEL(1) / 2;
+  } else {
+    SET_XFLIP(p, TRUE);
+    ((p->s).d).x = -PIXEL(1) / 2;
+  }
+  ((p->s).d).y = 0;
+
+  if ((p->s).work[1] == 0) {
+    (p->s).work[2] = 0xFF;
+    SET_VFX_ROUTINE(p, ENTITY_UPDATE);
+    (p->s).mode[1] = 1, (p->s).mode[2] = 0, (p->s).mode[3] = 0;
+  } else if ((p->s).work[1] == 1) {
+    (p->s).work[2] = 0xFF;
+    SET_VFX_ROUTINE(p, ENTITY_UPDATE);
+    (p->s).mode[1] = 0, (p->s).mode[2] = 0, (p->s).mode[3] = 0;
+  } else if ((p->s).work[1] == 2) {
+    (p->s).work[2] = 0xFF;
+    SET_VFX_ROUTINE(p, ENTITY_UPDATE);
+    (p->s).mode[1] = 2, (p->s).mode[2] = 0, (p->s).mode[3] = 0;
+  } else if ((p->s).work[1] == 3) {
+    (p->s).work[2] = 0xFF;
+    SET_VFX_ROUTINE(p, ENTITY_UPDATE);
+    (p->s).mode[1] = 3, (p->s).mode[2] = 0, (p->s).mode[3] = 0;
+  }
+  VFX46_Update(p);
+}
+
+INCASM("asm/vfx/unk_46_b.inc");
 
 void FUN_080bef44(struct VFX* vfx);
 void FUN_080bf0a0(struct VFX* vfx);
