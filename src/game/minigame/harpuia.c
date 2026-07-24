@@ -2,7 +2,16 @@
 #include "global.h"
 #include "minigame.h"
 
-INCASM("asm/minigame/harpuia.inc");
+INCASM("asm/minigame/harpuia_a.inc");
+
+extern const MinigameFunc HarpuiaMinigameLoops[3];
+
+bool32 harpuiaMinigame(struct GameState* g) {
+  struct MinigameState* s = &(g->sceneState).mg;
+  return (HarpuiaMinigameLoops[s->unk_04])(g);
+}
+
+INCASM("asm/minigame/harpuia_b.inc");
 
 bool32 harpuia_minigame_080fab10(struct GameState* g);
 bool32 harpuia_minigame_080fabe8(struct GameState* g);
