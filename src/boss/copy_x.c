@@ -368,45 +368,45 @@ _0805564C: .4byte gBossFnTable\n\
  .syntax divided\n");
 }
 
-static void copyx_080557a4(struct Boss* p);
-static void copyxMode1(struct Boss* p);
-static void copyxNeutral(struct Boss* p);
+static void copyx_080557a4(Boss* p);
+static void copyxMode1(Boss* p);
+static void copyxNeutral(Boss* p);
 static void copyxNextMode(Object* p);
 static void copyxMode4(BossCopyX* p);
-void copyxMode5(struct Boss* p);
-void copyxMode6(struct Boss* p);
-void copyxMode7(struct Boss* p);
-void copyxMode8(struct Boss* p);
-void copyxMode9(struct Boss* p);
-void copyxMode10(struct Boss* p);
-void copyxMode11(struct Boss* p);
-void copyxMode12(struct Boss* p);
-void copyxJumpForNovaStrike(struct Boss* p);
-void copyxNovaStrike2(struct Boss* p);
-void copyxNovaStrike3(struct Boss* p);
-void copyxMode16(struct Boss* p);
-void copyxMode17(struct Boss* p);
-void copyxMode18(struct Boss* p);
-void copyxMode19(struct Boss* p);
-void copyx_08056508(struct Boss* p);
-void copyx_080565c0(struct Boss* p);
-void copyx_080566b0(struct Boss* p);
-void copyx_08056724(struct Boss* p);
-void copyx_08056794(struct Boss* p);
-void copyx_080568bc(struct Boss* p);
-void copyx_08056908(struct Boss* p);
-void FUN_080569a4(struct Boss* p);
-void copyx_080569e4(struct Boss* p);
-void FUN_08056a80(struct Boss* p);
-void copyx_08056ac0(struct Boss* p);
-void copyx_08056b6c(struct Boss* p);
-void copyx_08056bd0(struct Boss* p);
-void copyxKnockBackDamage(struct Boss* p);
-void FUN_08056d58(struct Boss* p);
-void copyxRaisingExcharge(struct Boss* p);
-void copyxMode36(struct Boss* p);
-void copyx_08057094(struct Boss* p);
-void copyxMode38(struct Boss* p);
+void copyxMode5(Boss* p);
+void copyxMode6(Boss* p);
+void copyxMode7(Boss* p);
+void copyxMode8(Boss* p);
+void copyxMode9(Boss* p);
+void copyxMode10(Boss* p);
+void copyxMode11(Boss* p);
+void copyxMode12(Boss* p);
+void copyxJumpForNovaStrike(Boss* p);
+void copyxNovaStrike2(Boss* p);
+void copyxNovaStrike3(Boss* p);
+void copyxMode16(Boss* p);
+void copyxMode17(Boss* p);
+void copyxMode18(Boss* p);
+void copyxMode19(Boss* p);
+void copyx_08056508(Boss* p);
+void copyx_080565c0(Boss* p);
+void copyx_080566b0(Boss* p);
+void copyx_08056724(Boss* p);
+void copyx_08056794(Boss* p);
+void copyx_080568bc(Boss* p);
+void copyx_08056908(Boss* p);
+void FUN_080569a4(Boss* p);
+void copyx_080569e4(Boss* p);
+void FUN_08056a80(Boss* p);
+void copyx_08056ac0(Boss* p);
+void copyx_08056b6c(Boss* p);
+void copyx_08056bd0(Boss* p);
+void copyxKnockBackDamage(Boss* p);
+void FUN_08056d58(Boss* p);
+void copyxRaisingExcharge(Boss* p);
+void copyxMode36(Boss* p);
+void copyx_08057094(Boss* p);
+void copyxMode38(Boss* p);
 
 static void CopyX_Update(BossCopyX* p) {
   // clang-format off
@@ -516,13 +516,13 @@ static void CopyX_Die(BossCopyX* p) {
 
 // --------------------------------------------
 
-static void copyx_080557a4(struct Boss* p) {
+static void copyx_080557a4(Boss* p) {
   if (p->scriptEntity->flags & (1 << 0)) {
     p->mode[1] = 1, p->mode[2] = 1;
   }
 }
 
-static void copyxMode1(struct Boss* p) {
+static void copyxMode1(Boss* p) {
   if (p->mode[2] != 0) {
     SetSpriteAnimation(p, MOTION(DM179_COPY_X, 26));
     CreateVFX55(p, 0, 0);
@@ -542,7 +542,7 @@ static void copyxMode1(struct Boss* p) {
 }
 
 // 0x08055848
-NAKED static void copyxNeutral(struct Boss* p) {
+NAKED static void copyxNeutral(Boss* p) {
   asm(".syntax unified\n\
 	push {r4, r5, r6, r7, lr}\n\
 	mov r7, r8\n\
@@ -908,7 +908,42 @@ static void copyxMode4(BossCopyX* p) {
   }
 }
 
-INCASM("asm/boss/copy_x.inc");
+INCASM("asm/boss/copy_x_a.inc");
+
+void copyxNovaStrike2(Boss* p) {
+  if (p->mode[2] != 0) {
+    SetMotion((struct Entity*)p, MOTION(0xb3, 0x09));
+    p->mode[2] = 0;
+    p->d.x = 0;
+    p->d.y = 0;
+  }
+  UpdateMotionGraphic((struct Entity*)p);
+  p->coord.y += p->d.y;
+  p->d.y += 0x10;
+  if (p->motion.state == 3) {
+    p->mode[1] = 15;
+    p->mode[2] = 1;
+  }
+}
+
+INCASM("asm/boss/copy_x_b.inc");
+
+void copyx_080568bc(Boss* p) {
+  if (p->mode[2] != 0) {
+    SetMotion((struct Entity*)p, MOTION(0xb3, 0x18));
+    p->mode[2] = 0;
+  }
+  UpdateMotionGraphic((struct Entity*)p);
+  p->coord.x += p->d.x;
+  p->coord.y += p->d.y;
+  p->d.y += 0x40;
+  if (p->motion.state == 3) {
+    p->mode[1] = 11;
+    p->mode[2] = 1;
+  }
+}
+
+INCASM("asm/boss/copy_x_c.inc");
 
 // 0x08363c18
 static const struct Collision sCollisions[10] = {

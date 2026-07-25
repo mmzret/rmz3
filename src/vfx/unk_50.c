@@ -1,3 +1,4 @@
+#include "motion.h"
 #include "global.h"
 #include "vfx.h"
 
@@ -11,6 +12,8 @@ typedef struct {
   u8 unk_7d[7];  // 0x7D
 } VFX50;
 static_assert(sizeof(VFX50) == sizeof(struct VFX));
+
+static const motion_t sVFX50Animations[3];
 
 static void VFX50_Init(VFX50* p);
 static void VFX50_Update(VFX50* p);
@@ -94,7 +97,27 @@ static void VFX50_Die(VFX50* p) {
   SET_VFX_ROUTINE(p, ENTITY_EXIT);
 }
 
-INCASM("asm/vfx/unk_50.inc");
+void FUN_080c094c(VFX50* p) {
+  switch (p->mode[2]) {
+    case 0:
+      SetMotion((struct Entity*)p, sVFX50Animations[p->unk_7c]);
+      p->renderPrio = 9;
+      p->work[3] = 10;
+      p->d.y = 0;
+      p->mode[2]++;
+      // fallthrough
+    case 1:
+      p->d.y -= 0x20;
+      p->coord.y += p->d.y;
+      UpdateMotionGraphic((struct Entity*)p);
+      if (p->work[3] == 0 || --p->work[3] == 0) {
+        SET_VFX_ROUTINE(p, ENTITY_DIE);
+      }
+      break;
+  }
+}
+
+INCASM("asm/vfx/unk_50_a.inc");
 
 static const motion_t sVFX50Animations[3] = {
     MOTION(DM177_CUBIT_FLAME, 9),

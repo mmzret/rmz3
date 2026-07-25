@@ -1,3 +1,5 @@
+#include "motion.h"
+#include "trig.h"
 #include "collision.h"
 #include "enemy.h"
 #include "global.h"
@@ -67,7 +69,41 @@ static void Flopper_Update(struct FlopperObject* p) {
   (sUpdates[p->mode[1]])((void*)p);
 }
 
-INCASM("asm/enemy/flopper.inc");
+INCASM("asm/enemy/flopper_a.inc");
+
+void FUN_0806bfdc(struct FlopperObject* p) {
+  switch (p->mode[2]) {
+    case 0:
+      p->unk_08 = 0;
+      SetMotion((struct Entity*)p, MOTION(0x16, 0x00));
+      p->mode[2]++;
+      // fallthrough
+    case 1:
+      p->coord.y = (p->c).y;
+      p->coord.y += SIN(p->unk_08 >> 8) * 45;
+      p->unk_08 = (p->unk_08 + 0x200) & 0xFFFF;
+      UpdateMotionGraphic((struct Entity*)p);
+      break;
+  }
+}
+
+void FUN_0806c04c(struct FlopperObject* p) {
+  switch (p->mode[2]) {
+    case 0:
+      p->unk_08 = 0;
+      SetMotion((struct Entity*)p, MOTION(0x16, 0x00));
+      p->mode[2]++;
+      // fallthrough
+    case 1:
+      p->coord.x = (p->c).x;
+      p->coord.x += SIN(p->unk_08 >> 8) * 45;
+      p->unk_08 = (p->unk_08 + 0x200) & 0xFFFF;
+      UpdateMotionGraphic((struct Entity*)p);
+      break;
+  }
+}
+
+INCASM("asm/enemy/flopper_b.inc");
 
 static const struct Collision sCollisions[2] = {
     {
@@ -90,14 +126,14 @@ static const struct Collision sCollisions[2] = {
     },
 };
 
-void FUN_0806bfdc(struct Enemy* p);
-void FUN_0806c04c(struct Enemy* p);
+void FUN_0806bfdc(struct FlopperObject* p);
+void FUN_0806c04c(struct FlopperObject* p);
 void FUN_0806c0bc(struct Enemy* p);
 void FUN_0806c150(struct Enemy* p);
 
 static const EnemyFunc sUpdates[4] = {
-    FUN_0806bfdc,
-    FUN_0806c04c,
+    (EnemyFunc)FUN_0806bfdc,
+    (EnemyFunc)FUN_0806c04c,
     FUN_0806c0bc,
     FUN_0806c150,
 };

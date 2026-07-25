@@ -1,3 +1,5 @@
+#include "zero.h"
+#include "motion.h"
 #include "collision.h"
 #include "global.h"
 #include "projectile.h"
@@ -109,7 +111,29 @@ void FUN_080a308c(Projectile* p) {}
 
 void FUN_080a3090(Projectile* p) {}
 
-INCASM("asm/projectile/unk_18_c.inc");
+INCASM("asm/projectile/unk_18_c_a.inc");
+
+void FUN_080a3418(Projectile* p) {
+  switch (p->mode[2]) {
+    case 0:
+      SetMotion((struct Entity*)p, MOTION(0x46, 0x07));
+      p->mode[2]++;
+      // fallthrough
+    case 1:
+      p->coord.x = (pZero2->s).coord.x;
+      p->coord.y = (pZero2->s).coord.y - 0x1000;
+      UpdateMotionGraphic((struct Entity*)p);
+      if (p->motion.state == 3) {
+        p->flags &= ~DISPLAY;
+        p->flags &= ~FLIPABLE;
+        EXIT_BODY(p);
+        SET_PROJECTILE_ROUTINE(p, ENTITY_DISAPPEAR);
+      }
+      break;
+  }
+}
+
+INCASM("asm/projectile/unk_18_c_b.inc");
 
 // --------------------------------------------
 

@@ -1,3 +1,4 @@
+#include "motion.h"
 #include "global.h"
 #include "vfx.h"
 
@@ -124,7 +125,30 @@ static void VFX47_Update(struct Entity* p) {
 
 static void VFX47_Die(struct Entity* p) { SET_VFX_ROUTINE(p, ENTITY_EXIT); }
 
-INCASM("asm/vfx/unk_47.inc");
+INCASM("asm/vfx/unk_47_a.inc");
+
+void FUN_080bfa10(struct VFX* p) {
+  switch ((p->s).mode[2]) {
+    case 0:
+      if ((p->s).work[2] != 0) {
+        SetMotion(&p->s, MOTION(0x4a, 0x01));
+      } else {
+        SetMotion(&p->s, MOTION(0x4a, 0x00));
+      }
+      (p->s).mode[2]++;
+      // fallthrough
+    case 1:
+      UpdateMotionGraphic(&p->s);
+      if ((p->s).motion.state == 3) {
+        (p->s).flags &= ~DISPLAY;
+        (p->s).flags &= ~FLIPABLE;
+        SET_VFX_ROUTINE(p, ENTITY_DISAPPEAR);
+      }
+      break;
+  }
+}
+
+INCASM("asm/vfx/unk_47_b.inc");
 
 // --------------------------------------------
 
