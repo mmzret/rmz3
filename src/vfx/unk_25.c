@@ -128,7 +128,7 @@ static void VFX25_Init(struct VFX25* p) {
 static void FUN_080b9494(struct Entity* p);
 void FUN_080b94dc(struct Entity* p);
 void FUN_080b9530(struct VFX* vfx);
-void FUN_080b963c(struct VFX* vfx);
+void FUN_080b963c(struct VFX25* p);
 void FUN_080b970c(struct VFX* vfx);
 void FUN_080b9738(struct VFX* vfx);
 static void FUN_080b97f4(struct Entity* p);
@@ -195,6 +195,45 @@ void FUN_080b94dc(struct Entity* p) {
 }
 
 INCASM("asm/vfx/unk_25.inc");
+
+// 0x080b963c
+void FUN_080b963c(struct VFX25* p) {
+  if ((p->s).unk_28->mode[0] > 1 || --(p->s).work[2] == 0) {
+    SET_VFX_ROUTINE(p, ENTITY_DIE);
+  } else {
+    struct Entity* parent;
+    switch ((p->s).mode[2]) {
+      case 0:
+        SetSpriteAnimation(p, MOTION(SM011_OMEGA_RECOVER, 1));
+        (p->s).work[3] = 0;
+        (p->s).mode[2]++;
+        FALLTHROUGH;
+      case 1: {
+        u8 t;
+        Object* obj;
+        parent = (p->s).unk_28;
+        (p->s).coord.x = parent->coord.x + p->c.x;
+        (p->s).coord.y = parent->coord.y + p->c.y;
+        t = (p->s).work[3]++ & 1;
+        obj = (Object*)parent;
+        if (t) {
+          (p->s).flags |= DISPLAY;
+        } else {
+          (p->s).flags &= ~DISPLAY;
+        }
+        if (obj->body.invincibleTime != 0 ||
+            (gWhitePaintFlags[obj->invincibleID >> 5] & (1 << (obj->invincibleID & 0x1F))) ||
+            (obj->body.status & BODY_STATUS_WHITE)) {
+          (p->s).flags &= ~DISPLAY;
+        }
+        UpdateSpriteAnimation(p);
+        break;
+      }
+    }
+  }
+}
+
+INCASM("asm/vfx/unk_25_b.inc");
 
 static void FUN_080b97f4(struct Entity* p) {
   switch (p->mode[2]) {
