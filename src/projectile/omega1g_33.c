@@ -81,7 +81,52 @@ void doGoldOmega1Laser2(Projectile33* p) {
   }
 }
 
-INCASM("asm/projectile/omega1g_33_b.inc");
+
+static const s32* const PTR_ARRAY_0836c6f4[4];
+
+// 0x080ac700
+void FUN_080ac700(Projectile* p) {
+  if (p->body.status & 0x200) {
+    p->body.status = 0;
+    p->body.prevStatus = 0;
+    p->body.invincibleTime = 0;
+    p->flags &= ~4;
+    CreateSmoke(1, &p->coord);
+    SET_PROJECTILE_ROUTINE(p, ENTITY_DIE);
+  } else {
+    switch (p->mode[2]) {
+      case 0: {
+        const s32* base = PTR_ARRAY_0836c6f4[p->work[1] % 4];
+        RNG_0202f388 = LCG(RNG_0202f388);
+        (p->d).y = base[1] - ((RNG_0202f388 >> 16) & 0x1F);
+        {
+          s32 x = base[0] - 0x20;
+          RNG_0202f388 = LCG(RNG_0202f388);
+          (p->d).x = x + ((RNG_0202f388 >> 16) & 0x3F);
+        }
+        SetSpriteAnimation(p, MOTION(SM012_OMEGA_RUBBLE, 1));
+        p->work[2] = 0x3C;
+        p->mode[2]++;
+        FALLTHROUGH;
+      }
+      case 1:
+        if (p->work[2] == 0x32) {
+          SetDDP(&p->body, &sCollisions[2]);
+        }
+        (p->d).y += 0x20;
+        if ((p->d).y > 0x700) {
+          (p->d).y = 0x700;
+        }
+        (p->coord).y += (p->d).y;
+        (p->coord).x += (p->d).x;
+        UpdateSpriteAnimation(p);
+        if (p->work[2] == 0 || --p->work[2] == 0) {
+          SET_PROJECTILE_ROUTINE(p, ENTITY_DIE);
+        }
+        break;
+    }
+  }
+}
 
 void OmegaGoldProjectile_Init(Projectile* p);
 void OmegaGoldProjectile_Update(Projectile* p);
