@@ -318,7 +318,7 @@ _0806D328: .4byte PTR_ARRAY_0836666c\n\
  .syntax divided\n");
 }
 
-static const struct SlashedEnemy sSlashedEnemies[4];
+const struct SlashedEnemy sSlashedEnemies[4];
 
 INCASM("asm/enemy/gyro_cannon_a.inc");
 
@@ -612,7 +612,7 @@ static const struct Collision sCollisions[5] = {
 };
 
 // 0x08366720
-static const struct SlashedEnemy sSlashedEnemies[4] = {
+const struct SlashedEnemy sSlashedEnemies[4] = {
     {
       m : 0x170B,
       unk_02 : {255, 17},
