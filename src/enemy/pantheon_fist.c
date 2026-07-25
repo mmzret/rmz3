@@ -12,6 +12,42 @@ typedef struct {
 } PantheonFist;
 static_assert(sizeof(PantheonFist) == sizeof(struct Enemy));
 
+static void (*const sUpdates1[9])(PantheonFist*);
+static void (*const sUpdates2[9])(PantheonFist*);
+
+// 0x08095124
+bool8 FUN_08095124(PantheonFist* p) {
+  if (p->mode[1] != 7) {
+    Entity* v = p->elfx;
+    if (v == NULL) {
+      switch (p->mode[3]) {
+        case 0:
+          if (IsFrozen(p)) {
+            (sUpdates1[p->mode[1]])(p);
+            (sUpdates2[p->mode[1]])(p);
+            p->mode[3]++;
+            UpdateSpriteAnimation(p);
+            return TRUE;
+          }
+          break;
+        case 1:
+          if (IsFrozen(p)) {
+            if ((p->body.status & (BODY_STATUS_RECOILED | BODY_STATUS_WHITE)) ==
+                (BODY_STATUS_RECOILED | BODY_STATUS_WHITE)) {
+              p->mode[3] = 0;
+            } else {
+              return TRUE;
+            }
+          } else {
+            p->mode[3] = 0;
+          }
+          break;
+      }
+    }
+  }
+  return FALSE;
+}
+
 INCASM("asm/enemy/pantheon_fist_a_s1.inc");
 
 bool8 FUN_08094fa8(struct Enemy* p, s32 d) {
@@ -60,8 +96,6 @@ bool8 FUN_080950d0(struct Enemy* p) {
   }
   return FALSE;
 }
-
-INCASM("asm/enemy/pantheon_fist_a2.inc");
 
 static const Coords32 sElementCoord;
 

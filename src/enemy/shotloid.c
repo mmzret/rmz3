@@ -54,14 +54,48 @@ bool8 FUN_08093afc(struct Enemy* p) {
   return FALSE;
 }
 
-INCASM("asm/enemy/shotloid_a2.inc");
-
 typedef struct {
   COLLISION_OBJECT_HDR;  // 0x00
   Entity* elfx;          // 0xB4, Element Effect
   u8 unk_b8[12];         // 0xB8
 } Shotloid;
 static_assert(sizeof(Shotloid) == sizeof(struct Enemy));
+
+static const EnemyFunc sUpdates1[9];
+static const EnemyFunc sUpdates2[9];
+
+// 0x08093b50
+bool8 FUN_08093b50(Shotloid* p) {
+  if (p->mode[1] != 7) {
+    Entity* v = p->elfx;
+    if (v == NULL) {
+      switch (p->mode[3]) {
+        case 0:
+          if (IsFrozen(p)) {
+            (sUpdates1[p->mode[1]])((struct Enemy*)p);
+            (sUpdates2[p->mode[1]])((struct Enemy*)p);
+            p->mode[3]++;
+            UpdateSpriteAnimation(p);
+            return TRUE;
+          }
+          break;
+        case 1:
+          if (IsFrozen(p)) {
+            if ((p->body.status & (BODY_STATUS_RECOILED | BODY_STATUS_WHITE)) ==
+                (BODY_STATUS_RECOILED | BODY_STATUS_WHITE)) {
+              p->mode[3] = 0;
+            } else {
+              return TRUE;
+            }
+          } else {
+            p->mode[3] = 0;
+          }
+          break;
+      }
+    }
+  }
+  return FALSE;
+}
 
 static const Coords32 sElementCoord;
 
