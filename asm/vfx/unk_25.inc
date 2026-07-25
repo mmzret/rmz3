@@ -4,52 +4,6 @@
 	
 	.text
 
-	thumb_func_start FUN_080b94dc
-FUN_080b94dc: @ 0x080B94DC
-	push {r4, lr}
-	adds r4, r0, #0
-	ldrb r0, [r4, #0x12]
-	subs r0, #1
-	strb r0, [r4, #0x12]
-	lsls r0, r0, #0x18
-	cmp r0, #0
-	bne _080B9504
-	ldr r1, _080B9500 @ =gVFXFnTable
-	ldrb r0, [r4, #9]
-	lsls r0, r0, #2
-	adds r0, r0, r1
-	movs r1, #2
-	str r1, [r4, #0xc]
-	ldr r0, [r0]
-	ldr r0, [r0, #8]
-	str r0, [r4, #0x14]
-	b _080B9524
-	.align 2, 0
-_080B9500: .4byte gVFXFnTable
-_080B9504:
-	ldrb r0, [r4, #0xe]
-	cmp r0, #0
-	beq _080B9510
-	cmp r0, #1
-	beq _080B951E
-	b _080B9524
-_080B9510:
-	ldr r1, _080B952C @ =0x00000A09
-	adds r0, r4, #0
-	bl SetMotion
-	ldrb r0, [r4, #0xe]
-	adds r0, #1
-	strb r0, [r4, #0xe]
-_080B951E:
-	adds r0, r4, #0
-	bl UpdateEntityAnim
-_080B9524:
-	pop {r4}
-	pop {r0}
-	bx r0
-	.align 2, 0
-_080B952C: .4byte 0x00000A09
-
 	thumb_func_start FUN_080b9530
 FUN_080b9530: @ 0x080B9530
 	push {r4, r5, lr}
@@ -428,4 +382,5 @@ _080B97E0:
 _080B97E8: .4byte RNG_0202f388
 _080B97EC: .4byte 0x000343FD
 _080B97F0: .4byte 0x00269EC3
+
 

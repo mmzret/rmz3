@@ -1,4 +1,5 @@
 #include "collision.h"
+#include "element.h"
 #include "enemy.h"
 #include "global.h"
 
@@ -30,7 +31,30 @@ struct Entity* CreatePuffy(Coords32* c, u8 kind) {
 
 static const struct Collision sCollisions[];
 
-INCASM("asm/enemy/puffy.inc");
+INCASM("asm/enemy/puffy_a.inc");
+
+static const Coords32 sElementCoord;
+
+bool32 FUN_0807cb50(struct Enemy* p) {
+  struct VFX** slot = (struct VFX**)((u8*)p + 0xBC);
+  struct VFX* e = *slot;
+  if (e == NULL && ((p->body).status & BODY_STATUS_WHITE)) {
+    struct VFX* n = (struct VFX*)ApplyElementEffect(0, (void*)p, &sElementCoord);
+    *slot = n;
+    if (n != NULL) {
+      u8 b = *((u8*)p + 0x97) & 0xF0;
+      if (b == 0x10) {
+        // e is provably NULL here; stored through it to keep the register
+        (p->s).mode[1] = 1, (p->s).mode[2] = (u32)e;
+      } else if (b == 0x30) {
+        (p->s).mode[1] = 3, (p->s).mode[2] = (u32)e;
+      }
+    }
+  }
+  return TRUE;
+}
+
+INCASM("asm/enemy/puffy_b.inc");
 
 void nop_0807c968(struct Enemy* p);
 void nop_0807ca98(struct Enemy* p);
