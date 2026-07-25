@@ -7,7 +7,8 @@
 struct VFX58 {
   struct Entity s;
   // props (16bytes, offset: 0x74..)
-  u8 unk_74[12];
+  Coords32 c;  // 0x74
+  u8 unk_7c[4];
   motion_t m_80;
 };
 static_assert(sizeof(struct VFX58) == sizeof(struct VFX));
@@ -112,12 +113,51 @@ void FUN_080c216c(struct Entity* p) {
 
 INCASM("asm/vfx/unk_58_b.inc");
 
+// 0x080c2294
+void FUN_080c2294(struct VFX58* p) {
+  if ((p->s).unk_28->mode[0] > 1 || --(p->s).work[2] == 0) {
+    SET_VFX_ROUTINE(p, ENTITY_DIE);
+  } else {
+    struct Entity* parent;
+    switch ((p->s).mode[2]) {
+      case 0:
+        SetSpriteAnimation(p, MOTION(SM011_OMEGA_RECOVER, 1));
+        (p->s).work[3] = 0;
+        (p->s).mode[2]++;
+        FALLTHROUGH;
+      case 1: {
+        u8 t;
+        Object* obj;
+        parent = (p->s).unk_28;
+        (p->s).coord.x = parent->coord.x + p->c.x;
+        (p->s).coord.y = parent->coord.y + p->c.y;
+        t = (p->s).work[3]++ & 1;
+        obj = (Object*)parent;
+        if (t) {
+          (p->s).flags |= DISPLAY;
+        } else {
+          (p->s).flags &= ~DISPLAY;
+        }
+        if (obj->body.invincibleTime != 0 ||
+            (gWhitePaintFlags[obj->invincibleID >> 5] & (1 << (obj->invincibleID & 0x1F))) ||
+            (obj->body.status & BODY_STATUS_WHITE)) {
+          (p->s).flags &= ~DISPLAY;
+        }
+        UpdateSpriteAnimation(p);
+        break;
+      }
+    }
+  }
+}
+
+INCASM("asm/vfx/unk_58_c.inc");
+
 // --------------------------------------------
 
 void FUN_080c2124(struct VFX* p);
 void FUN_080c216c(struct Entity* p);
 void FUN_080c21c0(struct VFX* p);
-void FUN_080c2294(struct VFX* p);
+void FUN_080c2294(struct VFX58* p);
 void FUN_080c2364(struct VFX* p);
 void FUN_080c2390(struct VFX* p);
 void FUN_080c248c(struct VFX* p);
