@@ -1,4 +1,5 @@
 #include "collision.h"
+#include "element.h"
 #include "enemy.h"
 #include "global.h"
 #include "story.h"
@@ -46,6 +47,54 @@ void FUN_0806e590(struct Entity* e, u8 kind1, u8 kind2, u8 kind3) {
 static void onCollision(struct Body* body UNUSED, Coords32* r1 UNUSED, Coords32* r2 UNUSED) { return; }
 
 INCASM("asm/enemy/lemmingles_a.inc");
+
+static const EnemyFunc sUpdates1[7];
+static const EnemyFunc sUpdates2[7];
+static const Coords32 sElementCoord;
+
+bool8 FUN_0806e674(struct Enemy* p) {
+  if ((p->s).mode[1] != 6 && *(struct VFX**)&p->buffer[0] == NULL) {
+    switch ((p->s).mode[3]) {
+      case 0:
+        if (IsFrozen((void*)p)) {
+          (sUpdates1[(p->s).mode[1]])(p);
+          (sUpdates2[(p->s).mode[1]])(p);
+          (p->s).mode[3]++;
+          UpdateSpriteAnimation(p);
+          return TRUE;
+        }
+        break;
+      case 1:
+        if (IsFrozen((void*)p)) {
+          if (((p->body).status & 0x20001) == 0x20001) {
+            (p->s).mode[3] = 0;
+          } else {
+            return TRUE;
+          }
+        } else {
+          (p->s).mode[3] = 0;
+        }
+        break;
+    }
+  }
+  return FALSE;
+}
+
+void FUN_0806e704(struct Enemy* p) {
+  if (*(struct VFX**)&p->buffer[0] == NULL && ((p->body).status & BODY_STATUS_WHITE)) {
+    if (((p->body).status & BODY_STATUS_RECOILED)) {
+      (p->s).mode[1] = 6;
+      (p->s).mode[2] = 0;
+    } else {
+      struct VFX* e = (struct VFX*)ApplyElementEffect(0, (void*)p, &sElementCoord);
+      *(struct VFX**)&p->buffer[0] = e;
+      if (e != NULL) {
+        (p->s).mode[1] = 0;
+        (p->s).mode[2] = 0;
+      }
+    }
+  }
+}
 
 static const EnemyFunc sDeads[3];
 
