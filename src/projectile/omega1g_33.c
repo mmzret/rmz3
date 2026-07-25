@@ -1,5 +1,6 @@
 #include "collision.h"
 #include "global.h"
+#include "physics.h"
 #include "projectile.h"
 #include "vfx.h"
 
@@ -7,6 +8,7 @@
 typedef struct {
   COLLISION_OBJECT_HDR;
   u8 idx_b4;     // 0xB4
+  u8 unk_b5;     // 0xB5
   s32 unk_b8;    // 0xB8
   s32 timer_bc;  // 0xBC
   u32 unk_c0;    // 0xC0
@@ -37,6 +39,48 @@ void doGoldOmega1Laser1(Projectile33* p) {
   }
 }
 
+static const struct Collision sCollisions[4];
+
+struct Entity* FUN_080c1b98(Coords32* c, u8 n);
+
+void doGoldOmega1Laser2(Projectile33* p) {
+  if ((p->unk_28)->mode[0] > 1 || --p->work[2] == 0) {
+    CreateSmoke(3, &p->coord);
+    SET_PROJECTILE_ROUTINE(p, ENTITY_DIE);
+  } else {
+    s32 push;
+    switch (p->mode[2]) {
+      case 0:
+        p->unk_b8 = (u32)(p->unk_b8 * 5 << 6) >> 8;
+        p->work[3] = 0;
+        SetSpriteAnimation(p, MOTION(SM010_OMEGA_RING, 7));
+        SetDDP(&p->body, &sCollisions[3]);
+        p->d.x = -((u32)(SIN(p->idx_b4) * p->unk_b8) >> 8);
+        p->d.y = (u32)(COS(p->idx_b4) * p->unk_b8) >> 8;
+        p->unk_b5 = 1;
+        PlaySound(SE_OMEGA1_LASER);
+        p->mode[2]++;
+        FALLTHROUGH;
+      case 1: {
+        u8 t = p->work[3]++;
+        if ((t & 1) == 0) {
+          FUN_080c1b98(&p->coord, 0);
+        }
+      }
+        p->coord.x += p->d.x;
+        p->coord.y += p->d.y;
+        push = PushoutToUp1(p->coord.x, p->coord.y);
+        if (push != 0 && p->unk_b5 != 0) {
+          p->unk_b5 = 0;
+          p->coord.y += push;
+          p->d.y = -p->d.y;
+        }
+        UpdateSpriteAnimation(p);
+        break;
+    }
+  }
+}
+
 INCASM("asm/projectile/omega1g_33_b.inc");
 
 void OmegaGoldProjectile_Init(Projectile* p);
@@ -56,12 +100,12 @@ const ProjectileRoutine gOmegaGoldProjectileRoutine = {
 // --------------------------------------------
 
 void doGoldOmega1Laser1(Projectile33* p);
-void doGoldOmega1Laser2(Projectile* p);
+void doGoldOmega1Laser2(Projectile33* p);
 void FUN_080ac700(Projectile* p);
 
 static const ProjectileFunc sUpdates[3] = {
     (ProjectileFunc)doGoldOmega1Laser1,
-    doGoldOmega1Laser2,
+    (ProjectileFunc)doGoldOmega1Laser2,
     FUN_080ac700,
 };
 
