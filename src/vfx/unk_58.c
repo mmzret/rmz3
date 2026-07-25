@@ -152,6 +152,84 @@ void FUN_080c2294(struct VFX58* p) {
 
 INCASM("asm/vfx/unk_58_c.inc");
 
+extern const s32* const PTR_s32_ARRAY_0836f2f0[3];
+
+// 0x080c2500
+void FUN_080c2500(struct VFX58* p) {
+  switch ((p->s).mode[2]) {
+    case 0: {
+      const s32* const* tbl = PTR_s32_ARRAY_0836f2f0;
+      u16* mp = &p->m_80;
+      u16 idx = *mp % 3;
+      const s32* base = tbl[idx];
+      {
+        const s32* e = base + (p->s).work[1] * 2;
+        RNG_0202f388 = LCG(RNG_0202f388);
+        (p->s).d.y = e[1] - ((RNG_0202f388 >> 16) & 0x1F);
+      }
+      {
+        s32 x = base[(p->s).work[1] * 2] - 0x20;
+        RNG_0202f388 = LCG(RNG_0202f388);
+        (p->s).d.x = x + ((RNG_0202f388 >> 16) & 0x3F);
+      }
+      SetSpriteAnimation(p, *mp);
+      (p->s).work[2] = 0x50;
+      (p->s).mode[2]++;
+      FALLTHROUGH;
+    }
+    case 1:
+      UpdateSpriteAnimation(p);
+      (p->s).d.y += 0x20;
+      if ((p->s).d.y > 0x700) {
+        (p->s).d.y = 0x700;
+      }
+      (p->s).coord.y += (p->s).d.y;
+      (p->s).coord.x += (p->s).d.x;
+      if ((p->s).work[2] == 0 || --(p->s).work[2] == 0) {
+        SET_VFX_ROUTINE(p, ENTITY_DIE);
+      }
+      break;
+  }
+}
+
+// 0x080c25f4
+void FUN_080c25f4(struct VFX58* p) {
+  switch ((p->s).mode[2]) {
+    case 0: {
+      const s32* const* tbl = PTR_s32_ARRAY_0836f2f0;
+      u16* mp = &p->m_80;
+      u16 idx = *mp % 3;
+      const s32* base = tbl[idx];
+      {
+        const s32* e = base + (p->s).work[1] * 2;
+        RNG_0202f388 = LCG(RNG_0202f388);
+        (p->s).d.y = e[1] - ((RNG_0202f388 >> 16) & 0x1F);
+      }
+      {
+        s32 x = base[(p->s).work[1] * 2] - 0x20;
+        RNG_0202f388 = LCG(RNG_0202f388);
+        (p->s).d.x = x + ((RNG_0202f388 >> 16) & 0x3F);
+      }
+      SetSpriteAnimation(p, *mp);
+      (p->s).work[2] = 0x50;
+      (p->s).mode[2]++;
+      FALLTHROUGH;
+    }
+    case 1:
+      UpdateSpriteAnimation(p);
+      (p->s).d.y += 0x20;
+      if ((p->s).d.y > 0x700) {
+        (p->s).d.y = 0x700;
+      }
+      (p->s).coord.y += (p->s).d.y;
+      (p->s).coord.x += (p->s).d.x;
+      if ((p->s).work[2] == 0 || --(p->s).work[2] == 0) {
+        SET_VFX_ROUTINE(p, ENTITY_DIE);
+      }
+      break;
+  }
+}
+
 // --------------------------------------------
 
 void FUN_080c2124(struct VFX* p);
@@ -161,8 +239,8 @@ void FUN_080c2294(struct VFX58* p);
 void FUN_080c2364(struct VFX* p);
 void FUN_080c2390(struct VFX* p);
 void FUN_080c248c(struct VFX* p);
-void FUN_080c2500(struct VFX* p);
-void FUN_080c25f4(struct VFX* p);
+void FUN_080c2500(struct VFX58* p);
+void FUN_080c25f4(struct VFX58* p);
 
 // clang-format off
 static const VFXFunc sUpdates[9] = {
