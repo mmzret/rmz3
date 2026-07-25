@@ -94,12 +94,28 @@ void FUN_080c2124(struct VFX* p) {
   }
 }
 
+void FUN_080c216c(struct Entity* p) {
+  if (--p->work[2] == 0) {
+    SET_VFX_ROUTINE(p, ENTITY_DIE);
+  } else {
+    switch (p->mode[2]) {
+      case 0:
+        SetSpriteAnimation(p, MOTION(SM010_OMEGA_RING, 9));
+        p->mode[2]++;
+        FALLTHROUGH;
+      case 1:
+        UpdateSpriteAnimation(p);
+        break;
+    }
+  }
+}
+
 INCASM("asm/vfx/unk_58_b.inc");
 
 // --------------------------------------------
 
 void FUN_080c2124(struct VFX* p);
-void FUN_080c216c(struct VFX* p);
+void FUN_080c216c(struct Entity* p);
 void FUN_080c21c0(struct VFX* p);
 void FUN_080c2294(struct VFX* p);
 void FUN_080c2364(struct VFX* p);
