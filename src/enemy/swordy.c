@@ -34,10 +34,10 @@ INCASM("asm/enemy/swordy.inc");
 static const Coords32 sElementCoord;
 
 bool32 FUN_0807c530(struct Enemy* p) {
-  struct VFX** slot = (struct VFX**)((u8*)p + 0xBC);
-  struct VFX* e = *slot;
+  struct Entity** slot = (struct Entity**)((u8*)p + 0xBC);
+  struct Entity* e = *slot;
   if (e == NULL && ((p->body).status & BODY_STATUS_WHITE)) {
-    struct VFX* n = (struct VFX*)ApplyElementEffect(0, (void*)p, &sElementCoord);
+    struct Entity* n = ApplyElementEffect(0, (void*)p, &sElementCoord);
     *slot = n;
     if (n != NULL) {
       u8 b = *((u8*)p + 0x97) & 0xF0;
