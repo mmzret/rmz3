@@ -50,10 +50,15 @@ jobs:
       - name: Compare against rmz3.sha1
         run: make compare
 
-      - name: Upload ROM
+      # Uploaded even on failure: when `make compare` reports a mismatch, the
+      # ROM is what tells you *where* it went wrong, and the map turns that
+      # offset back into a symbol name.
+      - name: Upload ROM and map
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: rmz3.gba
-          path: rmz3.gba
+          path: |
+            rmz3.gba
+            build/rmz3/rmz3.map
           if-no-files-found: ignore

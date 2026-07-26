@@ -481,7 +481,7 @@ void FUN_0809664c(struct Enemy* p) {
 
   switch ((p->s).mode[2]) {
     case 0:
-      e = AllocEntityFirst(gEnemyHeaderPtr);
+      e = AllocEntityLast(gEnemyHeaderPtr);
       if (e != NULL) {
         INIT_ENEMY_ROUTINE(e, ENEMY_SHELLCRAWLER);
         e->work[0] = 4;
