@@ -1,6 +1,9 @@
 #include "collision.h"
 #include "enemy.h"
 #include "global.h"
+#include "element.h"
+
+static const Coords32 sElementCoord;
 
 void Crossbyne_Init(struct Enemy* p);
 void Crossbyne_Update(struct Enemy* p);
@@ -8,9 +11,9 @@ void Crossbyne_Die(struct Enemy* p);
 
 // clang-format off
 const EnemyRoutine gCrossbyneRoutine = {
-    [ENTITY_INIT] =      Crossbyne_Init,
-    [ENTITY_UPDATE] =    Crossbyne_Update,
-    [ENTITY_DIE] =       Crossbyne_Die,
+    [ENTITY_INIT] =      (void*)Crossbyne_Init,
+    [ENTITY_UPDATE] =    (void*)Crossbyne_Update,
+    [ENTITY_DIE] =       (void*)Crossbyne_Die,
     [ENTITY_DISAPPEAR] = (void*)DeleteEnemy,
     [ENTITY_EXIT] =      (EnemyFunc)DeleteEntity,
 };
@@ -70,7 +73,24 @@ static void FUN_0807cce0(s32 x, s32 y) {
 // 0x0807cd70
 static void onCollision(struct Body* body UNUSED, Coords32* r1 UNUSED, Coords32* r2 UNUSED) {}
 
-INCASM("asm/enemy/crossbyne.inc");
+INCASM("asm/enemy/crossbyne_a.inc");
+
+void crossbyne_0807cdc4(struct Enemy* p) {
+  struct Entity** slot;
+
+  if ((p->s).work[0] <= 1 && (p->s).mode[1] == 2) {
+    slot = (struct Entity**)&p->buffer[0];
+    if (*slot == NULL && ((p->body).status & 1)) {
+      *slot = ApplyElementEffect(0, (Object*)p, &sElementCoord);
+      if (*slot != NULL) {
+        (p->s).mode[1] = 0;
+        (p->s).mode[2] = 0;
+      }
+    }
+  }
+}
+
+INCASM("asm/enemy/crossbyne_b.inc");
 
 // --------------------------------------------
 
