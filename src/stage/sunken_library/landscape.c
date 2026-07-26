@@ -1,4 +1,6 @@
 #include "global.h"
+#include "sound.h"
+#include "solid.h"
 #include "overworld.h"
 #include "palette_animation.h"
 
@@ -191,6 +193,25 @@ static void FUN_08013908(struct StageLayer* l UNUSED, const struct Stage* _ UNUS
 #undef STAGE
 
 INCASM("asm/stage_gfx/sunken_library.inc");
+
+void FUN_08013dd4(struct StageLayer* l, const struct Stage* stage) {
+  s32 i;
+  for (i = 0; i < 4; i++) {
+    struct Entity* e = (*(struct Entity* (*)[4]) & (l->work))[i];
+    if (e != NULL) {
+      u8 fl = e->flags & ~DISPLAY;
+      e->flags = fl & ~FLIPABLE;
+      (((struct Solid*)e)->body).status = 0;
+      (((struct Solid*)e)->body).prevStatus = 0;
+      (((struct Solid*)e)->body).invincibleTime = 0;
+      e->flags &= ~COLLIDABLE;
+      SET_SOLID_ROUTINE(e, ENTITY_DISAPPEAR);
+    }
+  }
+  if (isSoundPlaying(0x124)) {
+    StopSound(0x124);
+  }
+}
 
 // ------------------------------------------------------------------------------------------------------------------------------------
 
