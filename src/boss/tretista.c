@@ -44,7 +44,7 @@ static Tretista* Unused_CreateTretista(Coords32* c, u8 n) {
   return p;
 }
 
-static void Tretista_Init(Tretista* p) {
+NAKED static void Tretista_Init(Tretista* p) {
   asm(".syntax unified\n\
 	push {r4, r5, r6, r7, lr}\n\
 	adds r5, r0, #0\n\
@@ -303,7 +303,7 @@ static void FUN_0804d804(Tretista* p) {
   }
 }
 
-static void tretista_0804d8e8(Tretista* p) { INCCODE("asm/wip/tretista_0804d8e8.inc"); }
+NAKED static void tretista_0804d8e8(Tretista* p) { INCCODE("asm/wip/tretista_0804d8e8.inc"); }
 
 static bool8 FUN_0804dc8c(Tretista* p) { return TRUE; }
 
