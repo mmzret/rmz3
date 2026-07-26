@@ -4,6 +4,77 @@
 	
 	.text
 
+	thumb_func_start doOmega1BallLaser1
+doOmega1BallLaser1: @ 0x0809D600
+	push {r4, lr}
+	adds r4, r0, #0
+	ldr r0, [r4, #0x28]
+	ldrb r0, [r0, #0xc]
+	cmp r0, #1
+	bls _0809D630
+	adds r1, r4, #0
+	adds r1, #0x54
+	movs r0, #3
+	bl CreateSmoke
+	ldr r1, _0809D62C @ =gProjectileFnTable
+	ldrb r0, [r4, #9]
+	lsls r0, r0, #2
+	adds r0, r0, r1
+	movs r1, #2
+	str r1, [r4, #0xc]
+	ldr r0, [r0]
+	ldr r0, [r0, #8]
+	str r0, [r4, #0x14]
+	b _0809D678
+	.align 2, 0
+_0809D62C: .4byte gProjectileFnTable
+_0809D630:
+	ldrb r0, [r4, #0xe]
+	cmp r0, #0
+	beq _0809D63C
+	cmp r0, #1
+	beq _0809D64A
+	b _0809D65E
+_0809D63C:
+	ldr r1, _0809D680 @ =0x00000A06
+	adds r0, r4, #0
+	bl SetMotion
+	ldrb r0, [r4, #0xe]
+	adds r0, #1
+	strb r0, [r4, #0xe]
+_0809D64A:
+	ldr r1, [r4, #0x28]
+	ldr r0, [r1, #0x54]
+	str r0, [r4, #0x54]
+	ldr r0, [r1, #0x58]
+	ldr r1, _0809D684 @ =0xFFFF9A00
+	adds r0, r0, r1
+	str r0, [r4, #0x58]
+	adds r0, r4, #0
+	bl UpdateEntityAnim
+_0809D65E:
+	adds r1, r4, #0
+	adds r1, #0xbc
+	ldr r0, [r1]
+	cmp r0, #0
+	beq _0809D670
+	subs r0, #1
+	str r0, [r1]
+	cmp r0, #0
+	bne _0809D678
+_0809D670:
+	movs r1, #0
+	movs r0, #1
+	strb r0, [r4, #0xd]
+	strb r1, [r4, #0xe]
+_0809D678:
+	pop {r4}
+	pop {r0}
+	bx r0
+	.align 2, 0
+_0809D680: .4byte 0x00000A06
+_0809D684: .4byte 0xFFFF9A00
+
 	thumb_func_start doOmega1BallLaser2
 doOmega1BallLaser2: @ 0x0809D688
 	push {r4, r5, r6, lr}
@@ -270,4 +341,3 @@ _0809D88C:
 _0809D894: .4byte 0x00000A07
 _0809D898: .4byte sCollisions+24
 _0809D89C: .4byte gSineTable
-
