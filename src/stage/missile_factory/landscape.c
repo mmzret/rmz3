@@ -14,10 +14,10 @@ static void FUN_0800e6f8(Coords32* _ UNUSED);
 static void exitMissileFactory(Coords32* _ UNUSED);
 
 static const StageFunc sStageRoutine[4] = {
-    initMissileFactory,
-    FUN_0800e460,
-    FUN_0800e6f8,
-    exitMissileFactory,
+    (StageFunc)initMissileFactory,
+    (StageFunc)FUN_0800e460,
+    (StageFunc)FUN_0800e6f8,
+    (StageFunc)exitMissileFactory,
 };
 
 static void initMissileFactory(Coords32* _ UNUSED) {
@@ -304,7 +304,17 @@ static void LayerUpdate_4(struct StageLayer* l, const struct Stage* _ UNUSED) {
   l->unk_10 += 0x10;
 }
 
-INCASM("asm/stage_gfx/missile_factory.inc");
+INCASM("asm/stage_gfx/missile_factory_a.inc");
+
+void FUN_0800f840(struct StageLayer* l, const struct Stage* _ UNUSED) {
+  const u16 n = l->bgIdx;
+  if (l->phase == 0) {
+    BGCNT16(n >> 4) = (BGCNT16(n >> 4) & 0xFFFC) | 3;
+    l->phase++;
+  }
+}
+
+INCASM("asm/stage_gfx/missile_factory_b.inc");
 
 // clang-format off
 static const u8 sChunkMap1[4 + (32 * 14)] = {
