@@ -54,7 +54,7 @@ static const EnemyFunc sDeads[4];
 static const struct Collision sCollisions[16];
 
 
-void FUN_080b145c(struct Coord* c, s32 dx);
+void CreateProjectile43(struct Coord* c, s32 dx);
 struct Entity* FUN_080b2b40(u8 kind, struct Coord* c, u16 r2, bool16 isDirRight);
 struct VFX* FUN_080c6880(struct Entity* e);
 void FUN_080c68cc(struct Entity* e, struct Coord* c);
@@ -195,7 +195,7 @@ void Shellcrawler_Update(struct Enemy* p) {
   if ((p->s).work[0] == 4) {
     goto handlers;
   }
-  if (CalcFromCamera(&gStageRun.vm.camera, &(p->s).coord) > 0x8000) {
+  if (Camera_GetDistance(&gStageRun.vm.camera, &(p->s).coord) > 0x8000) {
     (p->s).flags &= ~DISPLAY;
     (p->s).flags &= ~FLIPABLE;
     (p->body).status = st;
@@ -702,7 +702,7 @@ void FUN_080969d0(struct Enemy* p) {
         x = (p->s).coord.x - PIXEL(16);
         c.x = dir * PIXEL(32) + x;
         c.y = (p->s).coord.y - PIXEL(10);
-        FUN_080b145c(&c, dir * PIXEL(6) - PIXEL(3));
+        CreateProjectile43(&c, dir * PIXEL(6) - PIXEL(3));
       }
       (p->s).work[2]++;
       UpdateEntityAnim(&p->s);
