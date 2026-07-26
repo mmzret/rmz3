@@ -79,163 +79,48 @@ static void Ghost67_Die(struct Entity* p) {
 // --------------------------------------------
 
 // 0x080c4aac
-NAKED static void _VFX67_Update(VFXUnkCommon* p) {
-  asm(".syntax unified\n\
-	push {r4, r5, r6, r7, lr}\n\
-	mov r7, sb\n\
-	mov r6, r8\n\
-	push {r6, r7}\n\
-	adds r7, r0, #0\n\
-	ldrb r0, [r7, #0x12]\n\
-	subs r0, #1\n\
-	strb r0, [r7, #0x12]\n\
-	lsls r0, r0, #0x18\n\
-	cmp r0, #0\n\
-	beq _080C4AE2\n\
-	ldr r0, [r7, #0x54]\n\
-	ldr r1, [r7, #0x58]\n\
-	bl FUN_080098a4\n\
-	lsls r0, r0, #0x10\n\
-	lsrs r1, r0, #0x10\n\
-	cmp r1, #0\n\
-	beq _080C4B04\n\
-	movs r0, #0x80\n\
-	lsls r0, r0, #8\n\
-	ands r0, r1\n\
-	cmp r0, #0\n\
-	bne _080C4B04\n\
-	ldr r0, [r7, #0x60]\n\
-	cmp r0, #0\n\
-	ble _080C4B04\n\
-_080C4AE2:\n\
-	adds r1, r7, #0\n\
-	adds r1, #0x54\n\
-	movs r0, #2\n\
-	bl CreateSmoke\n\
-	ldr r1, _080C4B00 @ =gVFXFnTable\n\
-	ldrb r0, [r7, #9]\n\
-	lsls r0, r0, #2\n\
-	adds r0, r0, r1\n\
-	movs r1, #2\n\
-	str r1, [r7, #0xc]\n\
-	ldr r0, [r0]\n\
-	ldr r0, [r0, #8]\n\
-	str r0, [r7, #0x14]\n\
-	b _080C4BD2\n\
-	.align 2, 0\n\
-_080C4B00: .4byte gVFXFnTable\n\
-_080C4B04:\n\
-	ldrb r0, [r7, #0xe]\n\
-	mov sb, r0\n\
-	cmp r0, #0\n\
-	beq _080C4B12\n\
-	cmp r0, #1\n\
-	beq _080C4B7C\n\
-	b _080C4BD2\n\
-_080C4B12:\n\
-	ldr r4, _080C4B94 @ =PTR_ARRAY_0836f6b0\n\
-	movs r1, #0x74\n\
-	adds r1, r1, r7\n\
-	mov r8, r1\n\
-	ldrh r0, [r1]\n\
-	movs r1, #3\n\
-	bl __umodsi3\n\
-	lsls r0, r0, #0x10\n\
-	lsrs r0, r0, #0xe\n\
-	adds r0, r0, r4\n\
-	ldr r0, [r0]\n\
-	ldr r2, [r7, #0x78]\n\
-	lsls r2, r2, #3\n\
-	adds r2, r2, r0\n\
-	ldr r3, _080C4B98 @ =RNG_0202f388\n\
-	ldr r0, [r3]\n\
-	ldr r6, _080C4B9C @ =0x000343FD\n\
-	adds r1, r0, #0\n\
-	muls r1, r6, r1\n\
-	ldr r5, _080C4BA0 @ =0x00269EC3\n\
-	adds r1, r1, r5\n\
-	lsls r1, r1, #1\n\
-	lsrs r4, r1, #1\n\
-	str r4, [r3]\n\
-	lsrs r1, r1, #0x11\n\
-	movs r0, #0x1f\n\
-	ands r1, r0\n\
-	ldr r0, [r2, #4]\n\
-	adds r0, r0, r1\n\
-	str r0, [r7, #0x60]\n\
-	adds r1, r4, #0\n\
-	muls r1, r6, r1\n\
-	adds r1, r1, r5\n\
-	lsls r1, r1, #1\n\
-	lsrs r0, r1, #1\n\
-	str r0, [r3]\n\
-	lsrs r1, r1, #0x11\n\
-	movs r0, #0x3f\n\
-	ands r1, r0\n\
-	ldr r0, [r2]\n\
-	subs r0, r0, r1\n\
-	str r0, [r7, #0x5c]\n\
-	mov r0, r8\n\
-	ldrh r1, [r0]\n\
-	adds r0, r7, #0\n\
-	bl SetMotion\n\
-	mov r1, sb\n\
-	strb r1, [r7, #0x13]\n\
-	ldrb r0, [r7, #0xe]\n\
-	adds r0, #1\n\
-	strb r0, [r7, #0xe]\n\
-_080C4B7C:\n\
-	ldrb r0, [r7, #0x13]\n\
-	adds r0, #1\n\
-	strb r0, [r7, #0x13]\n\
-	movs r1, #0xff\n\
-	ands r0, r1\n\
-	movs r1, #1\n\
-	ands r0, r1\n\
-	cmp r0, #0\n\
-	beq _080C4BA4\n\
-	ldrb r0, [r7, #0xa]\n\
-	orrs r0, r1\n\
-	b _080C4BAA\n\
-	.align 2, 0\n\
-_080C4B94: .4byte PTR_ARRAY_0836f6b0\n\
-_080C4B98: .4byte RNG_0202f388\n\
-_080C4B9C: .4byte 0x000343FD\n\
-_080C4BA0: .4byte 0x00269EC3\n\
-_080C4BA4:\n\
-	ldrb r1, [r7, #0xa]\n\
-	movs r0, #0xfe\n\
-	ands r0, r1\n\
-_080C4BAA:\n\
-	strb r0, [r7, #0xa]\n\
-	ldr r0, [r7, #0x60]\n\
-	adds r0, #0x20\n\
-	str r0, [r7, #0x60]\n\
-	movs r1, #0xe0\n\
-	lsls r1, r1, #3\n\
-	cmp r0, r1\n\
-	ble _080C4BBC\n\
-	str r1, [r7, #0x60]\n\
-_080C4BBC:\n\
-	ldr r0, [r7, #0x58]\n\
-	ldr r1, [r7, #0x60]\n\
-	adds r0, r0, r1\n\
-	str r0, [r7, #0x58]\n\
-	ldr r0, [r7, #0x54]\n\
-	ldr r1, [r7, #0x5c]\n\
-	adds r0, r0, r1\n\
-	str r0, [r7, #0x54]\n\
-	adds r0, r7, #0\n\
-	bl UpdateEntityAnim\n\
-_080C4BD2:\n\
-	pop {r3, r4}\n\
-	mov r8, r3\n\
-	mov sb, r4\n\
-	pop {r4, r5, r6, r7}\n\
-	pop {r0}\n\
-	bx r0\n\
-	.align 2, 0\n\
- .syntax divided\n");
+extern const s32* const PTR_ARRAY_0836f6b0[3];
+
+static void _VFX67_Update(VFXUnkCommon* p) {
+  VFXUnkCommon* w = (void*)p;
+  u16 attr;
+  w->work[2]--;
+  if (w->work[2] == 0 ||
+      ((attr = FUN_080098a4((w->coord).x, (w->coord).y)) != 0 &&
+       !(attr & 0x8000) && (w->d).y > 0)) {
+    CreateSmoke(2, &w->coord);
+    SET_VFX_ROUTINE(w, ENTITY_DIE);
+  } else {
+    switch (w->mode[2]) {
+      case 0: {
+        const s32* const* tbl = PTR_ARRAY_0836f6b0;
+        motion_t* mp = &w->m_74;
+        u32 base = (u32)tbl[*mp % 3];
+        const s32* pair = (const s32*)(w->unk_78 * 8 + base);
+        (w->d).y = pair[1] + (RANDOM(RNG_0202f388) & 0x1F);
+        (w->d).x = pair[0] - (RANDOM(RNG_0202f388) & 0x3F);
+        SetSpriteAnimation(w, *mp);
+        w->work[3] = 0;
+        w->mode[2]++;
+        FALLTHROUGH;
+      }
+      case 1: {
+        if ((u8)++w->work[3] & 1) {
+          w->flags |= DISPLAY;
+        } else {
+          w->flags &= ~DISPLAY;
+        }
+        (w->d).y += 0x20;
+        if ((w->d).y > 0x700) {
+          (w->d).y = 0x700;
+        }
+        (w->coord).y += (w->d).y;
+        (w->coord).x += (w->d).x;
+        UpdateSpriteAnimation(w);
+        break;
+      }
+    }
+  }
 }
 
 // --------------------------------------------

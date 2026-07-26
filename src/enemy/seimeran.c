@@ -2,6 +2,7 @@
 #include "element.h"
 #include "enemy.h"
 #include "global.h"
+#include "story.h"
 
 // Entity.work[0]
 #define SEIMERAN_ROOT 0
@@ -151,7 +152,22 @@ static void FUN_0808f424(Seimeran* p) {
 
 // --------------------------------------------
 
-INCASM("asm/enemy/seimeran.inc");
+INCASM("asm/enemy/seimeran_a.inc");
+
+static const EnemyFunc PTR_ARRAY_08369414[2];
+
+void Seimeran_Die(struct Enemy* p) {
+  if (IS_METTAUR) {
+    (p->s).flags &= ~DISPLAY;
+    (p->s).flags &= ~FLIPABLE;
+    EXIT_BODY(p);
+    SET_ENEMY_ROUTINE(p, ENTITY_DISAPPEAR);
+    return;
+  }
+  (PTR_ARRAY_08369414[(p->s).mode[1]])(p);
+}
+
+INCASM("asm/enemy/seimeran_b.inc");
 
 // --------------------------------------------
 
