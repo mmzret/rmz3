@@ -1,8 +1,62 @@
+#include "entity/macros.h"
 #include "collision.h"
 #include "enemy.h"
 #include "global.h"
 
-INCASM("asm/enemy/glacierle_arm.inc");
+INCASM("asm/enemy/glacierle_arm_a.inc");
+
+struct Enemy* createGlacierleJoint(struct Entity* e, struct Entity* parent) {
+  struct Enemy* p = (struct Enemy*)AllocEntityFirst(gEnemyHeaderPtr);
+
+  if (p != NULL) {
+    struct Entity* prev;
+
+    INIT_ENEMY_ROUTINE(p, 39);
+    (p->s).work[0] = 1;
+    (p->s).unk_2c = e->unk_2c;
+    (p->s).unk_28 = e;
+    prev = e->unk_2c;
+    if (prev != NULL) {
+      prev->unk_28 = (struct Entity*)p;
+      (p->s).d.x = prev->d.x;
+      (p->s).d.y = prev->d.y;
+      (p->s).coord.x = prev->coord.x;
+      (p->s).coord.y = prev->coord.y;
+      if (prev->unk_2c != NULL) {
+        (p->s).coord.x += prev->coord.x - (prev->unk_2c)->coord.x;
+        (p->s).coord.y += prev->coord.y - (prev->unk_2c)->coord.y;
+      }
+      (p->s).unk_coord.x = (p->s).coord.x;
+      (p->s).unk_coord.y = (p->s).coord.y;
+    } else {
+      (p->s).d.x = 0;
+      (p->s).d.y = 0;
+    }
+    (p->s).flags2 |= WHITE_PAINTABLE;
+    (p->s).invincibleID = parent->uniqueID;
+    *(struct Entity**)&p->buffer[8] = parent;
+    e->unk_2c = (struct Entity*)p;
+    p->buffer[2] = ((struct Enemy*)e)->buffer[0];
+    ((struct Enemy*)e)->buffer[0]++;
+  }
+  return p;
+}
+
+struct Enemy* createGlacierleSucker(struct Entity* e, struct Entity* parent) {
+  struct Enemy* p = (struct Enemy*)AllocEntityFirst(gEnemyHeaderPtr);
+
+  if (p != NULL) {
+    INIT_ENEMY_ROUTINE(p, 39);
+    (p->s).work[0] = 2;
+    (p->s).unk_2c = e;
+    (p->s).flags2 |= WHITE_PAINTABLE;
+    (p->s).invincibleID = parent->uniqueID;
+    *(struct Entity**)&p->buffer[8] = parent;
+  }
+  return p;
+}
+
+INCASM("asm/enemy/glacierle_arm_b.inc");
 
 void GlacierleAtkArm_Init(struct Enemy* p);
 void GlacierleAtkArm_Update(struct Enemy* p);

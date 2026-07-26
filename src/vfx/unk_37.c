@@ -1,5 +1,7 @@
+#include "entity/macros.h"
 #include "global.h"
 #include "vfx.h"
+#include "trig.h"
 
 // ベビーエルフ関連
 
@@ -63,7 +65,38 @@ void FUN_080bc660(s32 x, s32 y) {
   }
 }
 
-INCASM("asm/vfx/unk_37.inc");
+void FUN_080bc6ac(struct Entity* e, s32 x, s32 y, s32 speed, u8 angle) {
+  struct VFX* p = (struct VFX*)AllocEntityLast(gVFXHeaderPtr);
+
+  if (p != NULL) {
+    INIT_VFX_ROUTINE(p, 37);
+    (p->s).work[0] = 4;
+    (p->s).coord.x = x;
+    (p->s).coord.y = y;
+    (p->s).d.x = Cos(angle, speed);
+    (p->s).d.y = -Sin(angle, speed);
+    (p->s).unk_28 = e;
+    *((u8*)e + 0xCF) += 1;
+  }
+}
+
+INCASM("asm/vfx/unk_37_a.inc");
+
+void FUN_080bc7a4(s32 x, s32 y, s32 speed, u8 angle, u8 n) {
+  struct VFX* p = (struct VFX*)AllocEntityLast(gVFXHeaderPtr);
+
+  if (p != NULL) {
+    INIT_VFX_ROUTINE(p, 37);
+    (p->s).work[0] = 6;
+    (p->s).coord.x = x;
+    (p->s).coord.y = y;
+    (p->s).d.x = Cos(angle, speed);
+    (p->s).d.y = -Sin(angle, speed);
+    (p->s).work[2] = n;
+  }
+}
+
+INCASM("asm/vfx/unk_37_b.inc");
 
 // --------------------------------------------
 

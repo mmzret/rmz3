@@ -1,6 +1,8 @@
+#include "entity/macros.h"
 #include "collision.h"
 #include "global.h"
 #include "projectile.h"
+#include "trig.h"
 
 typedef struct {
   COLLISION_OBJECT_HDR;  // 0x00
@@ -297,7 +299,24 @@ void FUN_080af9c8(PhantomProjectile* p) {
   FUN_080af9f4(p);
 }
 
-INCASM("asm/projectile/phantom_e.inc");
+INCASM("asm/projectile/phantom_e_a.inc");
+
+struct Projectile* FUN_080afbfc(struct Coord* c, s32 speed, u8 angle, u8 n) {
+  Projectile* p = (struct Projectile*)AllocEntityLast(gProjectileHeaderPtr);
+
+  if (p != NULL) {
+    INIT_PROJECTILE_ROUTINE(p, 40);
+    p->work[0] = 1;
+    p->coord = *c;
+    p->d.x = Cos(angle, speed);
+    p->d.y = Sin(angle, speed);
+    p->work[2] = angle;
+    p->work[1] = n;
+  }
+  return p;
+}
+
+INCASM("asm/projectile/phantom_e_b.inc");
 
 void FUN_080af518(PhantomProjectile* p);
 void FUN_080af5cc(PhantomProjectile* p);

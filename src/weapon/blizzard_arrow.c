@@ -1,3 +1,5 @@
+#include "entity/macros.h"
+#include "zero.h"
 #include "collision.h"
 #include "global.h"
 #include "weapon.h"
@@ -63,7 +65,33 @@ void MenuExit_BlizzardArrow(Weapon* p) {
   }
 }
 
-INCASM("asm/weapon/blizzard_arrow.inc");
+struct Weapon* CreateBlizzardArrow(struct Zero* z, struct Coord* c, u8 n, bool8 xflip) {
+  Weapon* w = (struct Weapon*)AllocEntityFirst(gWeaponHeaderPtr);
+
+  if (w != NULL) {
+    if ((z->unk_b4).mainCopy == WEAPON_BUSTER) {
+      INIT_WEAPON_ROUTINE(w, 10);
+      w->flags2 &= ~ENTITY_FLAGS2_B6;
+      w->renderPrio = 16;
+      w->tileNum = gWeaponTileNum[0];
+      w->palID = gWeaponPalIDs[0];
+    } else {
+      INIT_WEAPON_ROUTINE(w, 10);
+      w->flags2 &= ~ENTITY_FLAGS2_B6;
+      w->renderPrio = 16;
+      w->tileNum = gWeaponTileNum[1];
+      w->palID = gWeaponPalIDs[1];
+    }
+    w->unk_28 = (struct Entity*)z;
+    SET_XFLIP(w, xflip);
+    w->coord = *c;
+    w->work[0] = n;
+    w->work[1] = 0;
+  }
+  return w;
+}
+
+INCASM("asm/weapon/blizzard_arrow_a.inc");
 
 // --------------------------------------------
 
