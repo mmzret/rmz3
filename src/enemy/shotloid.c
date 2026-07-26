@@ -2,88 +2,7 @@
 #include "enemy.h"
 #include "global.h"
 
-void FUN_08093de4(struct Enemy* p);
-
-void FUN_08093de0(struct Enemy* p);
-
-void FUN_08093e04(struct Enemy* p);
-
-void Shotloid_Update(struct Enemy* p);
-
-static const EnemyFunc sUpdates1[9];
-static const EnemyFunc sUpdates2[9];
-static const struct Collision sCollisions[3];
-
-INCASM("asm/enemy/shotloid_a.inc");
-
-bool8 FUN_08093a64(struct Enemy* p, s32 dy) {
-  if (dy > 0) {
-    s32 diff;
-    (p->s).coord.y += dy;
-    diff = FUN_08009f6c((p->s).coord.x, (p->s).coord.y) - (p->s).coord.y;
-    if (diff <= 0x7ff) {
-      (p->s).coord.y = (p->s).coord.y + diff;
-      return TRUE;
-    }
-  }
-  return FALSE;
-}
-
-INCASM("asm/enemy/shotloid_b_a.inc");
-
-void nop_08093af8(struct Enemy* p) {}
-
-INCASM("asm/enemy/shotloid_c.inc");
-
-extern const EnemyFunc sUpdates1[9];
-extern const EnemyFunc sUpdates2[9];
-bool8 FUN_08093afc(struct Enemy* p);
-bool8 FUN_08093b50(struct Enemy* p);
-void FUN_08093be0(struct Enemy* p);
-
-void Shotloid_Update(struct Enemy* p) {
-  if (!FUN_08093afc(p)) {
-    if ((p->s).work[0] == 0) {
-      FUN_08093be0(p);
-      if (FUN_08093b50(p)) {
-        return;
-      }
-    }
-    (sUpdates1[(p->s).mode[1]])((void*)p);
-    (sUpdates2[(p->s).mode[1]])((void*)p);
-  }
-}
-
-INCASM("asm/enemy/shotloid_d.inc");
-
-void FUN_08093de0(struct Enemy* p) {}
-
-
-void FUN_08093de4(struct Enemy* p) {
-  if (((p->body).status & 0x00020001) == 0x00020001) {
-    (p->s).mode[1] = 7;
-    (p->s).mode[2] = 0;
-  }
-}
-
-
-void FUN_08093e04(struct Enemy* p) {
-  struct Entity** slot = (struct Entity**)((u8*)p + 0xb4);
-  if (*slot == NULL || isKilled(*slot)) {
-    *slot = NULL;
-    SetDDP(&p->body, &sCollisions[0]);
-    if (!IsFrozen(&p->s)) {
-      (p->s).mode[1] = 1;
-      (p->s).mode[2] = 0;
-    }
-  }
-  if (((p->body).status & 0x00020001) == 0x00020001) {
-    (p->s).mode[1] = 7;
-    (p->s).mode[2] = 0;
-  }
-}
-
-INCASM("asm/enemy/shotloid_e.inc");
+INCASM("asm/enemy/shotloid.inc");
 
 void Shotloid_Init(struct Enemy* p);
 void Shotloid_Update(struct Enemy* p);
@@ -91,9 +10,9 @@ void Shotloid_Die(struct Enemy* p);
 
 // clang-format off
 const EnemyRoutine gShotloidRoutine = {
-    [ENTITY_INIT] =      (void*)Shotloid_Init,
-    [ENTITY_UPDATE] =    (void*)Shotloid_Update,
-    [ENTITY_DIE] =       (void*)Shotloid_Die,
+    [ENTITY_INIT] =      Shotloid_Init,
+    [ENTITY_UPDATE] =    Shotloid_Update,
+    [ENTITY_DIE] =       Shotloid_Die,
     [ENTITY_DISAPPEAR] = (void*)DeleteEnemy,
     [ENTITY_EXIT] =      (EnemyFunc)DeleteEntity,
 };

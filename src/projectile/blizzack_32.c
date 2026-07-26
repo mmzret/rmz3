@@ -45,64 +45,7 @@ void blizzack_080aaae0(Entity* q, u8 val) {
   }
 }
 
-static void (*const sInitializers[9])(Projectile32*);
-static void (*const sUpdates[9])(Projectile32*);
-static void (*const PTR_ARRAY_0836c408[9])(Projectile32*);
-
-INCASM("asm/projectile/blizzack_32_a.inc");
-
-void Projectile32_Init(Projectile32* p) {
-  (sInitializers[p->work[0]])((void*)p);
-}
-
-
-void Projectile32_Update(Projectile32* p) {
-  (sUpdates[p->work[0]])((void*)p);
-}
-
-
-void Projectile32_Die(Projectile32* p) {
-  (PTR_ARRAY_0836c408[p->work[0]])((void*)p);
-}
-
-
-void nop_080aaecc(Projectile32* p) {}
-
-
-void nop_080aaed0(Projectile32* p) {}
-
-
-void nop_080aaed4(Projectile32* p) {}
-
-INCASM("asm/projectile/blizzack_32_b.inc");
-
-void FUN_080ab178(Projectile32* p) {
-  SET_PROJECTILE_ROUTINE(p, ENTITY_EXIT);
-}
-
-INCASM("asm/projectile/blizzack_32_c.inc");
-
-void FUN_080abb2c(Projectile32* p) {
-  SET_PROJECTILE_ROUTINE(p, ENTITY_EXIT);
-}
-
-INCASM("asm/projectile/blizzack_32_d.inc");
-
-void FUN_080abdc8(Projectile32* p) {
-  *(u32*)((u8*)p + 0x8c) = 0;
-  *(u32*)((u8*)p + 0x90) = 0;
-  *(u8*)((u8*)p + 0x94) = 0;
-  p->flags &= ~COLLIDABLE;
-  SET_PROJECTILE_ROUTINE(p, ENTITY_EXIT);
-}
-
-INCASM("asm/projectile/blizzack_32_e.inc");
-
-void FUN_080abea8(Projectile32* p) {
-  SET_PROJECTILE_ROUTINE(p, ENTITY_EXIT);
-}
-
-INCASM("asm/projectile/blizzack_32_f.inc");
+INCASM("asm/projectile/blizzack_32.inc");
 
 // --------------------------------------------
 
