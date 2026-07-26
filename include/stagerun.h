@@ -115,4 +115,5 @@ s16 SunkenLib_FreeUpdate(struct StageRun* p);
 s16 GiantElevator_FreeUpdate(struct StageRun* p);
 s16 SubArcadia_FreeUpdate(struct StageRun* p);
 
+u32 CalcFromCamera(struct Camera* p, Coords32* c);
 #endif  // GUARD_RMZ3_STAGE_RUN_H
