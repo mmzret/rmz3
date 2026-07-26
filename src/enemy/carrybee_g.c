@@ -10,10 +10,10 @@ void CarrybeeG_Disappear(struct Enemy* p);
 
 // clang-format off
 const EnemyRoutine gCarrybeeGRoutine = {
-    [ENTITY_INIT] =      CarrybeeG_Init,
-    [ENTITY_UPDATE] =    CarrybeeG_Update,
-    [ENTITY_DIE] =       CarrybeeG_Die,
-    [ENTITY_DISAPPEAR] = CarrybeeG_Disappear,
+    [ENTITY_INIT] =      (void*)CarrybeeG_Init,
+    [ENTITY_UPDATE] =    (void*)CarrybeeG_Update,
+    [ENTITY_DIE] =       (void*)CarrybeeG_Die,
+    [ENTITY_DISAPPEAR] = (void*)CarrybeeG_Disappear,
     [ENTITY_EXIT] =      (EnemyFunc)DeleteEntity,
 };
 // clang-format on
@@ -55,7 +55,7 @@ void CarrybeeG_Update(struct Enemy* p) {
     CarrybeeG_Die(p);
     return;
   }
-  (sUpdates1[(p->s).mode[1]])(p);
+  (sUpdates1[(p->s).mode[1]])((void*)p);
   if ((p->s).work[0] != 0) {
     if (IsFrozen(&p->s)) {
       par = (p->s).unk_28;
@@ -124,7 +124,7 @@ void CarrybeeG_Update(struct Enemy* p) {
     }
   }
 dispatch2:
-  (sUpdates2[(p->s).mode[1]])(p);
+  (sUpdates2[(p->s).mode[1]])((void*)p);
 }
 
 INCASM("asm/enemy/carrybee_g_b.inc");

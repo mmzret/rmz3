@@ -3,6 +3,16 @@
 #include "global.h"
 #include "story.h"
 
+void FUN_0808d6f4(struct Enemy* p);
+
+void FUN_0808d76c(struct Enemy* p);
+
+void FUN_0808d6f8(struct Enemy* p);
+
+void Deathlock_Die(struct Enemy* p);
+
+void Deathlock_Update(struct Enemy* p);
+
 static const EnemyFunc sUpdates1[8];
 static const EnemyFunc sUpdates2[8];
 static const EnemyFunc sDeads[4];
@@ -56,12 +66,12 @@ void Deathlock_Update(struct Enemy* p) {
   if (FUN_0808d370(p)) {
     return;
   }
-  (sUpdates1[(p->s).mode[1]])(p);
-  (sUpdates2[(p->s).mode[1]])(p);
+  (sUpdates1[(p->s).mode[1]])((void*)p);
+  (sUpdates2[(p->s).mode[1]])((void*)p);
 }
 
 void Deathlock_Die(struct Enemy* p) {
-  (sDeads[(p->s).mode[1]])(p);
+  (sDeads[(p->s).mode[1]])((void*)p);
 }
 
 void FUN_0808d6f4(struct Enemy* p) {}

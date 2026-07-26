@@ -8,12 +8,18 @@ void Beetank_Die(struct Enemy* p);
 
 // clang-format off
 const EnemyRoutine gBeetankRoutine = {
-    [ENTITY_INIT] =      Beetank_Init,
-    [ENTITY_UPDATE] =    Beetank_Update,
-    [ENTITY_DIE] =       Beetank_Die,
+    [ENTITY_INIT] =      (void*)Beetank_Init,
+    [ENTITY_UPDATE] =    (void*)Beetank_Update,
+    [ENTITY_DIE] =       (void*)Beetank_Die,
     [ENTITY_DISAPPEAR] = (void*)DeleteEnemy,
     [ENTITY_EXIT] =      (EnemyFunc)DeleteEntity,
 };
+
+
+
+void FUN_0807be20(struct Enemy* p);
+void nop_0807be18(struct Enemy* p);
+void FUN_0807bde8(struct Enemy* p);
 // clang-format on
 
 struct Enemy* CreateBeetank(Coords32* c, u8 n) {

@@ -4,6 +4,7 @@
 #include "element.h"
 #include "score.h"
 #include "story.h"
+#include "vfx.h"
 
 void EyeCannon_Init(struct Enemy* p);
 void EyeCannon_Update(struct Enemy* p);
@@ -11,12 +12,22 @@ void EyeCannon_Die(struct Enemy* p);
 
 // clang-format off
 const EnemyRoutine gEyeCannonRoutine = {
-    [ENTITY_INIT] =      EyeCannon_Init,
-    [ENTITY_UPDATE] =    EyeCannon_Update,
-    [ENTITY_DIE] =       EyeCannon_Die,
+    [ENTITY_INIT] =      (void*)EyeCannon_Init,
+    [ENTITY_UPDATE] =    (void*)EyeCannon_Update,
+    [ENTITY_DIE] =       (void*)EyeCannon_Die,
     [ENTITY_DISAPPEAR] = (void*)DeleteEnemy,
     [ENTITY_EXIT] =      (EnemyFunc)DeleteEntity,
 };
+
+
+
+
+
+void _killEyeCannon(struct Enemy* p);
+void FUN_08084cbc(struct Enemy* p);
+void FUN_08084974(struct Enemy* p);
+void FUN_08084930(struct Enemy* p);
+void FUN_08084934(struct Enemy* p);
 // clang-format on
 
 static void onCollision(struct Body* body UNUSED, Coords32* r1 UNUSED, Coords32* r2 UNUSED) {
@@ -48,9 +59,9 @@ INCASM("asm/enemy/eye_cannon_a.inc");
 extern const struct Coord sElementCoord;
 
 void FUN_080847b8(struct Enemy* p) {
-  struct VFX** slot = (struct VFX**)((u8*)p + 0xb4);
+  struct Entity** slot = (struct Entity**)((u8*)p + 0xb4);
   if (*slot == NULL && ((p->body).status & 1)) {
-    struct VFX* e = ApplyElementEffect(0, &p->s, &sElementCoord);
+    struct Entity* e = ApplyElementEffect(0, (Object*)p, &sElementCoord);
     *slot = e;
     if (e != NULL) {
       (p->s).mode[1] = 0;
@@ -65,14 +76,14 @@ void EyeCannon_Update(struct Enemy* p) {
   if (!FUN_08084708(p)) {
     FUN_080847b8(p);
     if (!FUN_08084744(p)) {
-      (sUpdates1[(p->s).mode[1]])(p);
-      (sUpdates2[(p->s).mode[1]])(p);
+      (sUpdates1[(p->s).mode[1]])((void*)p);
+      (sUpdates2[(p->s).mode[1]])((void*)p);
     }
   }
 }
 
 void EyeCannon_Die(struct Enemy* p) {
-  (sDeads[(p->s).mode[1]])(p);
+  (sDeads[(p->s).mode[1]])((void*)p);
 }
 
 void FUN_08084930(struct Enemy* p) {}
@@ -123,7 +134,6 @@ void FUN_08084cbc(struct Enemy* p) {
 }
 
 extern void FUN_080b7f70(struct Enemy* p, struct Coord* c, motion_t* m, s32 n);
-extern void TryDropZakoDisk(struct Enemy* p, struct Coord* c);
 static const u32 u32_ARRAY_08368358[4];
 static const motion_t sMotions[3];
 
@@ -140,7 +150,7 @@ void _killEyeCannon(struct Enemy* p) {
   if (gScore.enemyCount <= 0x270e) {
     gScore.enemyCount++;
   }
-  TryDropZakoDisk(p, &(p->s).coord);
+  DropEnemyDisk(p, &(p->s).coord);
   SET_ENEMY_ROUTINE(p, ENTITY_EXIT);
   if ((p->s).work[0] != 0) {
     SET_FLAG(gCurStory.s.gameflags, u32_ARRAY_08368358[(p->s).work[0] - 1]);

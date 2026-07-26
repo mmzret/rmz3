@@ -5,6 +5,22 @@
 #include "camera.h"
 #include "story.h"
 
+void FUN_080874ac(struct Enemy* p);
+
+void FUN_08087434(struct Enemy* p);
+
+void FUN_080873fc(struct Enemy* p);
+
+void FUN_08087380(struct Enemy* p);
+
+void nop_0808737c(struct Enemy* p);
+
+void FUN_080873a0(struct Enemy* p);
+
+void Gallisni_Die(struct Enemy* p);
+
+void Gallisni_Update(struct Enemy* p);
+
 static const EnemyFunc sUpdates1[8];
 static const EnemyFunc sUpdates2[8];
 static const EnemyFunc sDeads[3];
@@ -59,12 +75,12 @@ void Gallisni_Update(struct Enemy* p) {
   if (gallisni_08087118(p)) {
     return;
   }
-  (sUpdates1[(p->s).mode[1]])(p);
-  (sUpdates2[(p->s).mode[1]])(p);
+  (sUpdates1[(p->s).mode[1]])((void*)p);
+  (sUpdates2[(p->s).mode[1]])((void*)p);
 }
 
 void Gallisni_Die(struct Enemy* p) {
-  (sDeads[(p->s).mode[1]])(p);
+  (sDeads[(p->s).mode[1]])((void*)p);
 }
 
 void nop_0808737c(struct Enemy* p) {}
@@ -155,9 +171,9 @@ void Gallisni_Die(struct Enemy* p);
 
 // clang-format off
 const EnemyRoutine gGallisniRoutine = {
-    [ENTITY_INIT] =      Gallisni_Init,
-    [ENTITY_UPDATE] =    Gallisni_Update,
-    [ENTITY_DIE] =       Gallisni_Die,
+    [ENTITY_INIT] =      (void*)Gallisni_Init,
+    [ENTITY_UPDATE] =    (void*)Gallisni_Update,
+    [ENTITY_DIE] =       (void*)Gallisni_Die,
     [ENTITY_DISAPPEAR] = (void*)DeleteEnemy,
     [ENTITY_EXIT] =      (EnemyFunc)DeleteEntity,
 };

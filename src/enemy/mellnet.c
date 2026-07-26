@@ -2,6 +2,18 @@
 #include "enemy.h"
 #include "global.h"
 
+void FUN_0807da34(struct Enemy* p);
+
+void FUN_0807da10(struct Enemy* p);
+
+void FUN_0807d9b4(struct Enemy* p);
+
+void FUN_0807d994(struct Enemy* p);
+
+void FUN_0807d990(struct Enemy* p);
+
+void Mellnet_Update(struct Enemy* p);
+
 void FUN_0807d6c0(s32 x, s32 y, u8 a2) {
   struct Enemy* p = (struct Enemy*)AllocEntityFirst(gEnemyHeaderPtr);
   if (p != NULL) {
@@ -32,8 +44,8 @@ void Mellnet_Update(struct Enemy* p) {
   if (!FUN_0807d724(p)) {
     FUN_0807d810(p);
     if (!FUN_0807d780(p)) {
-      (sUpdates1[(p->s).mode[1]])(p);
-      (sUpdates2[(p->s).mode[1]])(p);
+      (sUpdates1[(p->s).mode[1]])((void*)p);
+      (sUpdates2[(p->s).mode[1]])((void*)p);
     }
   }
 }
@@ -100,9 +112,9 @@ void Mellnet_Die(struct Enemy* p);
 
 // clang-format off
 const EnemyRoutine gMellnetRoutine = {
-    [ENTITY_INIT] =      Mellnet_Init,
-    [ENTITY_UPDATE] =    Mellnet_Update,
-    [ENTITY_DIE] =       Mellnet_Die,
+    [ENTITY_INIT] =      (void*)Mellnet_Init,
+    [ENTITY_UPDATE] =    (void*)Mellnet_Update,
+    [ENTITY_DIE] =       (void*)Mellnet_Die,
     [ENTITY_DISAPPEAR] = (void*)DeleteEnemy,
     [ENTITY_EXIT] =      (EnemyFunc)DeleteEntity,
 };

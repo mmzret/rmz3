@@ -15,6 +15,10 @@ const EnemyRoutine gPuffyRoutine = {
     [ENTITY_DISAPPEAR] = (void*)DeleteEnemy,
     [ENTITY_EXIT] =      (void*)DeleteEntity,
 };
+
+
+void nop_0807cacc(struct Enemy* p);
+void FUN_0807ca9c(struct Enemy* p);
 // clang-format on
 
 struct Entity* CreatePuffy(Coords32* c, u8 kind) {
@@ -46,13 +50,13 @@ void Puffy_Update(struct Enemy* p) {
     SET_ENEMY_ROUTINE(p, ENTITY_DIE);
     Puffy_Die(p);
   } else {
-    (PTR_ARRAY_08367aec[(p->s).mode[1]])(p);
+    (PTR_ARRAY_08367aec[(p->s).mode[1]])((void*)p);
     FUN_0807cb50(p);
     if (IsFrozen(&p->s)) {
       u8 m = (p->s).mode[1];
       *(u8*)((u8*)p + 0xba) = m;
     } else {
-      (PTR_ARRAY_08367afc[(p->s).mode[1]])(p);
+      (PTR_ARRAY_08367afc[(p->s).mode[1]])((void*)p);
     }
   }
 }

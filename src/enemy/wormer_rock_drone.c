@@ -1,6 +1,15 @@
 #include "collision.h"
 #include "enemy.h"
 #include "global.h"
+#include "vfx.h"
+
+void FUN_080770ac(struct Enemy* p);
+
+void FUN_08076fe4(struct Enemy* p);
+
+void WormerRockDrone_Update(struct Enemy* p);
+
+void WormerRockDrone_Init(struct Enemy* p);
 
 static const EnemyFunc sUpdates1[1];
 static const EnemyFunc sUpdates2[1];
@@ -48,13 +57,13 @@ void WormerRockDrone_Init(struct Enemy* p) {
 
 void WormerRockDrone_Update(struct Enemy* p) {
   if (!FUN_08076ee4(p)) {
-    (sUpdates1[(p->s).mode[1]])(p);
-    (sUpdates2[(p->s).mode[1]])(p);
+    (sUpdates1[(p->s).mode[1]])((void*)p);
+    (sUpdates2[(p->s).mode[1]])((void*)p);
   }
 }
 
 void WormerRockDrone_Die(struct Enemy* p) {
-  (sDeads[(p->s).mode[1]])(p);
+  (sDeads[(p->s).mode[1]])((void*)p);
 }
 
 void FUN_08076fe4(struct Enemy* p) {}
@@ -80,9 +89,9 @@ void WormerRockDrone_Die(struct Enemy* p);
 
 // clang-format off
 const EnemyRoutine gWormerRockDroneRoutine = {
-    [ENTITY_INIT] =      WormerRockDrone_Init,
-    [ENTITY_UPDATE] =    WormerRockDrone_Update,
-    [ENTITY_DIE] =       WormerRockDrone_Die,
+    [ENTITY_INIT] =      (void*)WormerRockDrone_Init,
+    [ENTITY_UPDATE] =    (void*)WormerRockDrone_Update,
+    [ENTITY_DIE] =       (void*)WormerRockDrone_Die,
     [ENTITY_DISAPPEAR] = (void*)DeleteEnemy,
     [ENTITY_EXIT] =      (EnemyFunc)DeleteEntity,
 };
