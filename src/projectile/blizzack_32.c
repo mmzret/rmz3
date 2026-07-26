@@ -1,6 +1,3 @@
-#include "enemy.h"
-#include "zero.h"
-#include "entity/macros.h"
 #include "collision.h"
 #include "global.h"
 #include "projectile.h"
@@ -48,63 +45,7 @@ void blizzack_080aaae0(Entity* q, u8 val) {
   }
 }
 
-void FUN_080aab38(struct Enemy* e, struct Entity* parent) {
-  Projectile* p = (struct Projectile*)AllocEntityFirst(gProjectileHeaderPtr);
-
-  if (p != NULL) {
-    INIT_PROJECTILE_ROUTINE(p, 32);
-    p->work[0] = 2;
-    p->work[1] = 0;
-    p->unk_28 = parent;
-    SET_XFLIP(p, (e->s).d.x > 0);
-    p->coord = (e->s).coord;
-    p->coord.y = *(s32*)&e->buffer[4];
-  }
-}
-
-INCASM("asm/projectile/blizzack_32_a.inc");
-
-void FUN_080aac7c(struct Coord* c, bool8 xflip, struct Entity* e) {
-  Projectile* p = (struct Projectile*)AllocEntityLast(gProjectileHeaderPtr);
-
-  if (p != NULL) {
-    INIT_PROJECTILE_ROUTINE(p, 32);
-    p->work[0] = 5;
-    p->work[1] = 0;
-    p->coord = *c;
-    SET_XFLIP(p, xflip);
-    p->unk_28 = e;
-  }
-}
-
-void FUN_080aad0c(struct Coord* c, bool8 xflip, struct Entity* e) {
-  Projectile* p = (struct Projectile*)AllocEntityLast(gProjectileHeaderPtr);
-
-  if (p != NULL) {
-    INIT_PROJECTILE_ROUTINE(p, 32);
-    p->work[0] = 6;
-    p->work[1] = 0;
-    p->coord = *c;
-    SET_XFLIP(p, xflip);
-    p->unk_28 = e;
-    p->unk_2c = e->unk_28;
-  }
-}
-
-void FUN_080aada0(struct Entity* e, u8 n) {
-  Projectile* p = (struct Projectile*)AllocEntityLast(gProjectileHeaderPtr);
-
-  if (p != NULL) {
-    INIT_PROJECTILE_ROUTINE(p, 32);
-    p->work[0] = 7;
-    p->work[1] = n;
-    p->coord = e->coord;
-    SET_XFLIP(p, (e->flags >> 4) & 1);
-    p->unk_28 = e;
-  }
-}
-
-INCASM("asm/projectile/blizzack_32_b.inc");
+INCASM("asm/projectile/blizzack_32.inc");
 
 // --------------------------------------------
 
