@@ -1,54 +1,8 @@
 #include "collision.h"
-#include "element.h"
 #include "enemy.h"
 #include "global.h"
-#include "story.h"
 
-INCASM("asm/enemy/gallisni_a1.inc");
-
-void Gallisni_Die(struct Enemy* p);
-
-bool8 gallisni_080870bc(struct Enemy* p) {
-  if ((p->body).status & BODY_STATUS_DEAD) {
-    SET_ENEMY_ROUTINE(p, ENTITY_DIE);
-    if ((p->body).status & BODY_STATUS_SLASHED) {
-      (p->s).mode[1] = 1;
-    } else if ((p->body).status & BODY_STATUS_RECOILED) {
-      (p->s).mode[1] = 2;
-    } else {
-      (p->s).mode[1] = 0;
-    }
-    Gallisni_Die(p);
-    return TRUE;
-  }
-  return FALSE;
-}
-
-INCASM("asm/enemy/gallisni_a2.inc");
-
-typedef struct {
-  COLLISION_OBJECT_HDR;  // 0x00
-  Entity* elfx;          // 0xB4, Element Effect
-  u8 unk_b8[12];         // 0xB8
-} Gallisni;
-static_assert(sizeof(Gallisni) == sizeof(struct Enemy));
-
-static const Coords32 sElementCoord;
-
-void gallisni_080871b4(Gallisni* p) {
-  if (p->elfx == NULL && ((p->body).status & BODY_STATUS_WHITE)) {
-    if (((p->body).status & BODY_STATUS_RECOILED)) {
-      p->mode[1] = 7, p->mode[2] = 0;
-    } else {
-      p->elfx = (void*)ApplyElementEffect(0, (Object*)p, &sElementCoord);
-      if (p->elfx != NULL) {
-        p->mode[1] = 0, p->mode[2] = 0;
-      }
-    }
-  }
-}
-
-INCASM("asm/enemy/gallisni_b.inc");
+INCASM("asm/enemy/gallisni.inc");
 
 void Gallisni_Init(struct Enemy* p);
 void Gallisni_Update(struct Enemy* p);
