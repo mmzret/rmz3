@@ -2,7 +2,176 @@
 #include "enemy.h"
 #include "global.h"
 
-INCASM("asm/enemy/gallisni.inc");
+bool8 gallisni_080870bc(struct Enemy* p);
+
+struct GallisniObject {
+  struct Entity s;
+  struct Body body;
+  // props (16bytes, offset: 0xB4..)
+  struct VFX* elementEffect;
+  u8 unk_004[12];
+};
+
+
+static const struct Collision sCollisions[5];
+static const EnemyFunc sDeads[3];
+static const Coords32 sElementCoord;
+void CreateGallisni(s32 x, s32 y, u8 a2) {
+  struct Enemy* p = (struct Enemy*)AllocEntityFirst(gEnemyHeaderPtr);
+  if (p != NULL) {
+    INIT_ENEMY_ROUTINE(p, ENEMY_GALLISNI);
+    (p->s).work[0] = 1;
+    (p->s).coord.x = x;
+    (p->s).coord.y = y;
+    (p->s).work[2] = a2;
+  }
+}
+
+INCASM("asm/enemy/gallisni_a.inc");
+
+bool8 gallisni_080870bc(struct Enemy* p) {
+  if ((p->body).status & BODY_STATUS_DEAD) {
+    SET_ENEMY_ROUTINE(p, ENTITY_DIE);
+    if ((p->body).status & BODY_STATUS_SLASHED) {
+      (p->s).mode[1] = 1;
+    } else if ((p->body).status & BODY_STATUS_RECOILED) {
+      (p->s).mode[1] = 2;
+    } else {
+      (p->s).mode[1] = 0;
+    }
+    Gallisni_Die(p);
+    return TRUE;
+  }
+  return FALSE;
+}
+
+INCASM("asm/enemy/gallisni_b.inc");
+
+void gallisni_080871b4(struct GallisniObject* p) {
+  if (p->elementEffect == NULL && ((p->body).status & BODY_STATUS_WHITE)) {
+    if (((p->body).status & BODY_STATUS_RECOILED)) {
+      (p->s).mode[1] = 7;
+      (p->s).mode[2] = 0;
+    } else {
+      p->elementEffect = ApplyElementEffect(0, &p->s, &sElementCoord);
+      if (p->elementEffect != NULL) {
+        (p->s).mode[1] = 0;
+        (p->s).mode[2] = 0;
+      }
+    }
+  }
+}
+
+INCASM("asm/enemy/gallisni_c.inc");
+
+void Gallisni_Die(struct Enemy* p) {
+  (sDeads[(p->s).mode[1]])(p);
+}
+
+void nop_0808737c(struct Enemy* p) {}
+
+void FUN_08087380(struct Enemy* p) {
+  if (((p->body).status & 0x00020001) == 0x00020001) {
+    (p->s).mode[1] = 7;
+    (p->s).mode[2] = 0;
+  }
+}
+
+void FUN_080873a0(struct Enemy* p) {
+  struct Entity** slot = (struct Entity**)((u8*)p + 0xb4);
+  if (*slot == NULL || isKilled(*slot)) {
+    *slot = NULL;
+    SetDDP(&p->body, &sCollisions[2]);
+    if (!IsFrozen(&p->s)) {
+      (p->s).mode[1] = 3;
+      (p->s).mode[2] = 0;
+    }
+  }
+  if (((p->body).status & 0x00020001) == 0x00020001) {
+    (p->s).mode[1] = 7;
+    (p->s).mode[2] = 0;
+  }
+}
+
+void FUN_080873fc(struct Enemy* p) {
+  if ((p->s).mode[2] == 0) {
+    SetMotion(&p->s, MOTION(0x67, 3));
+    UpdateMotionGraphic(&p->s);
+    SetDDP(&p->body, &sCollisions[3]);
+    (p->s).mode[2]++;
+  }
+}
+
+void FUN_08087434(struct Enemy* p) {
+  switch ((p->s).mode[2]) {
+    case 0:
+      SetDDP(&p->body, &sCollisions[0]);
+      (p->s).work[2] = 0x80;
+      (p->s).renderPrio = 0xf;
+      SetMotion(&p->s, MOTION(0x67, 1));
+      (p->s).mode[2]++;
+      // fallthrough
+    case 1:
+      (p->s).work[2]--;
+      if ((p->s).work[2] == 0) {
+        (p->s).mode[1] = 2;
+        (p->s).mode[2] = 0;
+      }
+      UpdateMotionGraphic(&p->s);
+      if ((s8)(p->s).motion.cmdIdx == 8) {
+        SetDDP(&p->body, &sCollisions[1]);
+      }
+      break;
+  }
+}
+
+void FUN_080874ac(struct Enemy* p) {
+  switch ((p->s).mode[2]) {
+    case 0:
+      (p->s).work[2] = 0x18;
+      SetDDP(&p->body, &sCollisions[0]);
+      SetMotion(&p->s, MOTION(0x67, 2));
+      (p->s).mode[2]++;
+      // fallthrough
+    case 1:
+      if (p->buffer[4] != 0) p->buffer[4]--;
+      if ((p->s).work[2] == 0 || --(p->s).work[2] == 0) {
+        if (p->buffer[4] == 0) {
+          (p->s).mode[1] = 1;
+          (p->s).mode[2] = 0;
+        }
+      }
+      UpdateMotionGraphic(&p->s);
+      break;
+  }
+}
+
+INCASM("asm/enemy/gallisni_d.inc");
+
+void FUN_0808772c(struct Enemy* p) {
+  switch ((p->s).mode[2]) {
+    case 0: {
+      s32 speed = 0x400;
+
+      (p->s).d.x = speed - ((p->s).work[2] & 1) * 0x800;
+      (p->s).work[3] = 4;
+      SetMotion(&p->s, MOTION(0x67, 0x03));
+      (p->s).mode[2]++;
+    }
+      // fallthrough
+    case 1:
+      UpdateMotionGraphic(&p->s);
+      (p->s).coord.x += (p->s).d.x;
+      (p->s).work[3]--;
+      if ((p->s).work[3] == 0) {
+        (p->s).mode[1] = 6;
+        (p->s).mode[2] = 0;
+      }
+      break;
+  }
+}
+
+INCASM("asm/enemy/gallisni_e.inc");
 
 void Gallisni_Init(struct Enemy* p);
 void Gallisni_Update(struct Enemy* p);
