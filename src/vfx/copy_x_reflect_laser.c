@@ -20,7 +20,7 @@ const VFXRoutine gVFX56Routine = {
 // --------------------------------------------
 
 void CreateVFX56(struct Entity* e, u8 kind1, u8 kind2) {
-  struct Entity* p = AllocEntityLast(gVFXHeaderPtr);
+  struct Entity* p = (struct Entity*)AllocEntityLast(gVFXHeaderPtr);
   if (p != NULL) {
     INIT_VFX_ROUTINE(p, VFX_COPYX_REFLECTLASER);
     p->unk_28 = (void*)e;
@@ -46,7 +46,7 @@ static void VFX56_Init(struct Entity* p) {
   p->flags |= DISPLAY;
   p->flags |= FLIPABLE;
   SetSpriteAnimation(p, MOTION(SM096_COPYX_REFLECT_LASER, 1));
-  (sInitializers[p->work[0]])(p);
+  (sInitializers[p->work[0]])((void*)p);
 }
 
 void FUN_080c17e8(struct VFX* p);
@@ -59,7 +59,7 @@ static void VFX56_Update(struct Entity* p) {
       (void*)FUN_080c182c,
       (void*)FUN_080c188c,
   };  // 0x0836f238
-  (sUpdates[p->work[0]])(p);
+  (sUpdates[p->work[0]])((void*)p);
 }
 
 static void VFX56_Die(struct Entity* p) {
@@ -69,4 +69,19 @@ static void VFX56_Die(struct Entity* p) {
 
 // --------------------------------------------
 
-INCASM("asm/vfx/copy_x_reflect_laser.inc");
+INCASM("asm/vfx/copy_x_reflect_laser_a.inc");
+
+void FUN_080c17e8(struct VFX* p) {
+  if ((p->s).work[2] == 0) {
+    UpdateEntityAnim((struct Entity*)p);
+    (p->s).work[2] = 3;
+  } else {
+    (p->s).work[2]--;
+  }
+  if (((p->s).motion).state == 3) {
+    SET_VFX_ROUTINE(p, ENTITY_DIE);
+    VFX56_Die((struct Entity*)p);
+  }
+}
+
+INCASM("asm/vfx/copy_x_reflect_laser_b.inc");
