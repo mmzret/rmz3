@@ -236,6 +236,18 @@ void FUN_08068eb4(PillerCannon* p) {}
 
 bool8 FUN_08068eb8(PillerCannon* p) { return TRUE; }
 
+void FUN_08068ebc(PillerCannon* p) {
+  if (p->mode[2] == 0) {
+    SetDDP(&p->body, &sCollisions[12]);
+    p->mode[2]++;
+  }
+  if (isKilled(p->elfx)) {
+    SetDDP(&p->body, &sCollisions[11]);
+    p->elfx = NULL;
+    p->mode[1] = 1, p->mode[2] = 0;
+  }
+}
+
 INCASM("asm/enemy/piller_cannon_h.inc");
 
 // 0x0836609c

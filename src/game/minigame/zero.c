@@ -2,7 +2,16 @@
 #include "global.h"
 #include "minigame.h"
 
-INCASM("asm/minigame/zero.inc");
+INCASM("asm/minigame/zero_a.inc");
+
+extern const GameLoopFunc ZeroMinigameLoops[3];
+
+bool32 zeroMinigame(struct GameState* g) {
+  struct MinigameState* s = &(g->sceneState).mg;
+  return ((MinigameFunc)ZeroMinigameLoops[s->unk_04])(g);
+}
+
+INCASM("asm/minigame/zero_b.inc");
 
 void zeroMinigamePhase0(struct GameState* g);
 void zeroMinigamePhase1(struct GameState* g);
