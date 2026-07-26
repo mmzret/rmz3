@@ -3,6 +3,9 @@
 #include "global.h"
 #include "overworld.h"
 #include "palette_animation.h"
+#include "zero.h"
+
+extern const u16 u16_ARRAY_080fef2c[6];
 
 typedef struct {
   COLLISION_OBJECT_HDR;  // 0x00
@@ -19,7 +22,7 @@ static_assert(sizeof(Tretista) == sizeof(Boss));
 
 static const struct Collision sCollisions[13];
 
-static void Tretista_Init(Tretista* p);
+NAKED static void Tretista_Init(Tretista* p);
 static void Tretista_Update(Tretista* p);
 static void Tretista_Die(Tretista* p);
 
@@ -258,7 +261,7 @@ static void Tretista_Update(Tretista* p) {
 }
 
 static void FUN_0804d804(Tretista* p);
-static void tretista_0804d8e8(Tretista* p);
+NAKED static void tretista_0804d8e8(Tretista* p);
 
 static void Tretista_Die(Tretista* p) {
   static void (*const sDeads[2])(Tretista*) = {
@@ -306,7 +309,107 @@ NAKED static void tretista_0804d8e8(Tretista* p) { INCCODE("asm/wip/tretista_080
 
 static bool8 FUN_0804dc8c(Tretista* p) { return TRUE; }
 
-INCASM("asm/boss/tretista.inc");
+INCASM("asm/boss/tretista_a.inc");
+
+bool8 FUN_0804df70(Tretista* p) { return TRUE; }
+
+INCASM("asm/boss/tretista_b.inc");
+
+bool8 FUN_0804e01c(Tretista* p) { return TRUE; }
+
+void tretista_0804e020(Tretista* p) {
+  switch (p->mode[2]) {
+    case 0:
+      p->flags |= DISPLAY;
+      SetMotion((struct Entity*)p, 0xAB09);
+      p->work[2] = 0;
+      p->mode[2]++;
+      // fallthrough
+    case 1:
+      if ((p->scriptEntity->flags & 1) && p->work[2] == 0) {
+        p->work[2] = 1;
+        PlaySound(0xD4);
+      }
+      if (!(gStageRun.vm.active & 1)) {
+        p->work[2] = 0;
+        p->mode[1] = 3;
+        p->mode[2] = 0;
+      }
+      UpdateMotionGraphic((struct Entity*)p);
+      break;
+  }
+}
+
+bool8 FUN_0804e08c(Tretista* p) { return TRUE; }
+
+INCASM("asm/boss/tretista_c.inc");
+
+bool8 FUN_0804e3f0(Tretista* p) { return TRUE; }
+
+INCASM("asm/boss/tretista_d.inc");
+
+bool8 FUN_0804e544(Tretista* p) { return TRUE; }
+
+INCASM("asm/boss/tretista_e.inc");
+
+bool8 FUN_0804e8f4(Tretista* p) { return TRUE; }
+
+INCASM("asm/boss/tretista_f.inc");
+
+bool8 FUN_0804eb38(Tretista* p) { return TRUE; }
+
+INCASM("asm/boss/tretista_g.inc");
+
+bool8 FUN_0804f2b4(Tretista* p) { return TRUE; }
+
+INCASM("asm/boss/tretista_h.inc");
+
+bool8 FUN_0804f5c0(Tretista* p) { return TRUE; }
+
+INCASM("asm/boss/tretista_i.inc");
+
+bool8 FUN_0804f7d8(Tretista* p) { return TRUE; }
+
+INCASM("asm/boss/tretista_j.inc");
+
+bool8 FUN_0804fc6c(Tretista* p) { return TRUE; }
+
+INCASM("asm/boss/tretista_k.inc");
+
+u16 tretista_0804fecc(void* _, u32 a, bool32 rankAS) {
+  s32 i;
+  if (rankAS == 1) {
+    for (i = 0; i < (s32)ARRAY_COUNT(u16_ARRAY_080fef2c); i++) {
+      if (u16_ARRAY_080fef2c[i] == a) {
+        return u16_ARRAY_080fef2c[(i + 1) % 6];
+      }
+    }
+  } else {
+    for (i = 0; i < (s32)ARRAY_COUNT(u16_ARRAY_080fef2c) - 1; i++) {
+      if (u16_ARRAY_080fef2c[i] == a) {
+        return u16_ARRAY_080fef2c[(i + 1) % 5];
+      }
+    }
+  }
+}
+
+bool8 isTretistaFarAway(Boss* p) {
+  s32 zx = (pZero2->s).coord.x;
+  s32 sx = p->coord.x;
+  s32 dx = zx - sx;
+  if (dx > 0) {
+    if (dx <= 0x86FF) {
+      return FALSE;
+    }
+    return TRUE;
+  }
+  if (sx - zx > 0x86FF) {
+    return TRUE;
+  }
+  return FALSE;
+}
+
+INCASM("asm/boss/tretista_l.inc");
 
 // 0x083633b0
 static const struct Collision sCollisions[13] = {
