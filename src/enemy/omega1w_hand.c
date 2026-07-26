@@ -4,6 +4,7 @@
 #include "entity.h"
 #include "global.h"
 #include "trig.h"
+#include "vfx.h"
 
 typedef struct {
   COLLISION_OBJECT_HDR;
