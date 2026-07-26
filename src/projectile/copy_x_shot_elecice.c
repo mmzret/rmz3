@@ -91,7 +91,29 @@ static void Projectile27_Die(Projectile* p) {
   SET_PROJECTILE_ROUTINE(p, ENTITY_EXIT);
 }
 
-INCASM("asm/projectile/copy_x_shot_elecice.inc");
+INCASM("asm/projectile/copy_x_shot_elecice_a.inc");
+
+void FUN_080a99d4(Projectile* p) {
+  UpdateEntityAnim((struct Entity*)p);
+  p->coord.x += p->d.x;
+  p->coord.y += p->d.y;
+  if (p->mode[1] == 0) {
+    if ((u8)--p->work[2] == 0xff) {
+      p->mode[1]++;
+    }
+  } else if (FUN_080098a4(p->coord.x, p->coord.y)) {
+    SET_PROJECTILE_ROUTINE(p, ENTITY_DIE);
+  }
+}
+
+void FUN_080a9a30(Projectile* p) {
+  EnableSpriteAnimation_Normal(p);
+  p->flags |= DISPLAY;
+  p->flags |= FLIPABLE;
+  SetSpriteAnimation(p, MOTION(0x5c, 4));
+  SET_PROJECTILE_ROUTINE(p, ENTITY_UPDATE);
+  Projectile27_Update(p);
+}
 
 static void FUN_080a9a74(Projectile* p) {
   UpdateSpriteAnimation(p);
