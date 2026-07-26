@@ -1,6 +1,7 @@
 #include "collision.h"
 #include "enemy.h"
 #include "global.h"
+#include "element.h"
 
 bool8 FUN_08085c4c(struct Enemy* p);
 
@@ -100,14 +101,14 @@ void FUN_08085c38(struct Enemy* p) {
 }
 
 bool8 FUN_08085c4c(struct Enemy* p) {
-  struct VFX** slot = (struct VFX**)&p->buffer[8];
+  struct Entity** slot = (struct Entity**)&p->buffer[8];
   u8 attr;
 
   if (*slot == NULL && ((p->body).status & 1)) {
     if ((p->s).flags & X_FLIP) {
-      *slot = ApplyElementEffect(0, &p->s, &sElementCoord);
+      *slot = ApplyElementEffect(0, (Object*)p, &sElementCoord);
     } else {
-      *slot = ApplyElementEffect(0, &p->s, &sElementCoord);
+      *slot = ApplyElementEffect(0, (Object*)p, &sElementCoord);
     }
     if (*(struct VFX**)&p->buffer[8] != NULL) {
       attr = *(u8*)((u8*)p + 0x97) & 0xf0;
@@ -132,12 +133,12 @@ bool8 FUN_08085c34(struct Enemy* p);
 
 // clang-format off
 static const EnemyFunc sUpdates1[6] = {
-    FUN_08085a08,
-    FUN_08085a10,
-    FUN_08085a9c,
-    FUN_08085c14,
-    FUN_08085c2c,
-    FUN_08085c34,
+    (EnemyFunc)FUN_08085a08,
+    (EnemyFunc)FUN_08085a10,
+    (EnemyFunc)FUN_08085a9c,
+    (EnemyFunc)FUN_08085c14,
+    (EnemyFunc)FUN_08085c2c,
+    (EnemyFunc)FUN_08085c34,
 };
 // clang-format on
 
