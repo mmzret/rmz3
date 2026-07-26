@@ -245,4 +245,11 @@ const struct Stage gFrostlineIceBaseLandscape = {
   behavior : sScreenBehavior,
 };
 
-INCASM("asm/stage_gfx/frostline_ice_base.inc");
+INCASM("asm/stage_gfx/frostline_ice_base_a.inc");
+
+void FUN_080111bc(struct StageLayer* l UNUSED, const struct Stage* _ UNUSED) {
+  gBlendRegBuffer.bldclt = 0;
+  (gOverworld.sea) = PIXEL(10240);
+}
+
+INCASM("asm/stage_gfx/frostline_ice_base_b.inc");
