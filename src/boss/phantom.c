@@ -339,43 +339,43 @@ void FUN_0805f464(struct Boss* p);
 INCASM("asm/boss/phantom_a.inc");
 
 void FUN_0805f180(struct Boss* p) {
-  (PTR_ARRAY_0836544c[(p->s).mode[3]])(p);
+  (PTR_ARRAY_0836544c[p->mode[3]])(p);
 }
 
 INCASM("asm/boss/phantom_b.inc");
 
 void FUN_0805f26c(struct Boss* p) {
-  (PTR_ARRAY_08365454[(p->s).mode[3]])(p);
+  (PTR_ARRAY_08365454[p->mode[3]])(p);
 }
 
 INCASM("asm/boss/phantom_c.inc");
 
 void FUN_0805f338(struct Boss* p) {
-  (PTR_ARRAY_0836545c[(p->s).mode[3]])(p);
+  (PTR_ARRAY_0836545c[p->mode[3]])(p);
 }
 
 void FUN_0805f350(struct Boss* p) {
   SetDDP(&p->body, &sCollisions[0]);
-  (p->s).d.x = 0x300;
-  (p->s).d.x = 0x300 - ((*(u8*)((u8*)p + 0xcb) * 3) << 9);
-  (p->s).flags |= DISPLAY;
+  p->d.x = 0x300;
+  p->d.x = 0x300 - ((*(u8*)((u8*)p + 0xcb) * 3) << 9);
+  p->flags |= DISPLAY;
   FUN_080607a0((void*)p, 0x11);
-  (p->s).work[2] = 0x1e;
-  (p->s).mode[3] = 1;
+  p->work[2] = 0x1e;
+  p->mode[3] = 1;
 }
 
 void FUN_0805f394(struct Boss* p) {
-  FUN_08060864(p, (p->s).d.x);
-  (p->s).d.x = (p->s).d.x * 0xe6 / 256;
-  if (--(p->s).work[2] == 0) {
+  FUN_08060864(p, p->d.x);
+  p->d.x = p->d.x * 0xe6 / 256;
+  if (--p->work[2] == 0) {
     FUN_080607a0((void*)p, 0x12);
-    (p->s).mode[1] = 0;
+    p->mode[1] = 0;
     *(u16*)((u8*)p + 0xe) = 0;
   }
 }
 
 void FUN_0805f3d0(struct Boss* p) {
-  (PTR_ARRAY_08365464[(p->s).mode[2]])(p);
+  (PTR_ARRAY_08365464[p->mode[2]])(p);
 }
 
 void FUN_0805f3e8(struct Boss* p) {
@@ -384,9 +384,9 @@ void FUN_0805f3e8(struct Boss* p) {
   FUN_080608c8(p);
   RNG_0202f388 = LCG(RNG_0202f388);
   if ((RNG_0202f388 >> 16) & 6) {
-    (p->s).d.y = -0x5C0;
+    p->d.y = -0x5C0;
   } else {
-    (p->s).d.y = -0x6C0;
+    p->d.y = -0x6C0;
   }
 }
 
@@ -400,17 +400,17 @@ void FUN_0805f444(struct Boss* p) {
 
 void FUN_0805f464(struct Boss* p) {
   FUN_08060924(p);
-  if ((p->s).d.y > 0) {
+  if (p->d.y > 0) {
     *(u16*)((u8*)p + 0xe) = 4;
     FUN_080607a0((void*)p, 8);
-    (p->s).work[2] = 0;
+    p->work[2] = 0;
   }
 }
 
 
 void FUN_0805f488(struct Boss* p) {
   if ((s8)FUN_08060974(p) < 0) {
-    (p->s).mode[1] = 0;
+    p->mode[1] = 0;
     *(u16*)((u8*)p + 0xe) = 0;
   }
 }
@@ -425,12 +425,12 @@ void FUN_0805f52c(struct Boss* p) {
 }
 
 void FUN_0805f54c(struct Boss* p) {
-  (PTR_ARRAY_0836547c[(p->s).mode[2]])(p);
+  (PTR_ARRAY_0836547c[p->mode[2]])(p);
 }
 
 
 void FUN_0805f564(struct Boss* p) {
-  (PTR_ARRAY_08365494[(p->s).mode[3]])(p);
+  (PTR_ARRAY_08365494[p->mode[3]])(p);
 }
 
 struct Projectile* FUN_080afbb0(struct Entity* parent, u8 r1);
@@ -438,18 +438,18 @@ struct Projectile* FUN_080afbb0(struct Entity* parent, u8 r1);
 
 void FUN_0805f57c(struct Boss* p) {
   SetDDP(&p->body, &sCollisions[0]);
-  (p->s).mode[3] = 1;
+  p->mode[3] = 1;
   FUN_080608c8(p);
-  (p->s).unk_2c = (struct Entity*)FUN_080afbb0(&p->s, 0);
+  p->unk_2c = (struct Entity*)FUN_080afbb0((struct Entity*)p, 0);
 }
 
 INCASM("asm/boss/phantom_e.inc");
 
 void FUN_0805f630(struct Boss* p) {
   SetDDP(&p->body, &sCollisions[12]);
-  FUN_08060864(p, (p->s).d.x);
+  FUN_08060864(p, p->d.x);
   if (FUN_08060924(p)) {
-    (p->s).mode[3] = 3;
+    p->mode[3] = 3;
   }
 }
 
@@ -457,16 +457,16 @@ void FUN_0805f630(struct Boss* p) {
 void FUN_0805f660(struct Boss* p) {
   SetDDP(&p->body, &sCollisions[0]);
   if (FUN_08060974(p) > 0) {
-    (p->s).mode[3] = 4;
+    p->mode[3] = 4;
     FUN_080607a0((void*)p, 0);
-    (p->s).work[2] = 4;
+    p->work[2] = 4;
   }
 }
 
 
 void FUN_0805f690(struct Boss* p) {
-  u32 w = (p->s).work[2] - 1;
-  (p->s).work[2] = w;
+  u32 w = p->work[2] - 1;
+  p->work[2] = w;
   if (w == 0) {
     *(u16*)((u8*)p + 0xe) = 1;
     FUN_080607a0((void*)p, 5);
@@ -475,31 +475,31 @@ void FUN_0805f690(struct Boss* p) {
 
 
 void FUN_0805f6b0(struct Boss* p) {
-  (PTR_ARRAY_083654a8[(p->s).mode[3]])(p);
+  (PTR_ARRAY_083654a8[p->mode[3]])(p);
 }
 
 void FUN_0805f6c8(struct Boss* p) {
-  if ((s8)(p->s).motion.duration <= 1) {
-    (p->s).mode[3] = 1;
+  if ((s8)p->motion.duration <= 1) {
+    p->mode[3] = 1;
   }
 }
 
 void FUN_0805f6e0(struct Boss* p) {
-  if (((struct Entity*)(p->s).unk_2c)->mode[1] == 1) {
-    (p->s).mode[3] = 2;
+  if (((struct Entity*)p->unk_2c)->mode[1] == 1) {
+    p->mode[3] = 2;
     FUN_080607a0((void*)p, 6);
   }
 }
 
 void FUN_0805f6fc(struct Boss* p) {
-  if ((s8)(p->s).motion.duration <= 1) {
+  if ((s8)p->motion.duration <= 1) {
     PlaySound(0xfc);
-    (p->s).mode[3] = 3;
+    p->mode[3] = 3;
   }
 }
 
 void FUN_0805f71c(struct Boss* p) {
-  if ((p->s).motion.state == 3) {
+  if (p->motion.state == 3) {
     *(u16*)((u8*)p + 0xe) = 2;
     FUN_080607a0((void*)p, 0);
   }
@@ -520,11 +520,11 @@ void FUN_0805f738(struct Boss* p) {
 }
 
 void FUN_0805f76c(struct Boss* p) {
-  (PTR_ARRAY_083654b8[(p->s).mode[3]])(p);
+  (PTR_ARRAY_083654b8[p->mode[3]])(p);
 }
 
 void FUN_0805f784(struct Boss* p) {
-  (p->s).mode[3] = 1;
+  p->mode[3] = 1;
   FUN_080608c8(p);
 }
 
@@ -534,12 +534,12 @@ void FUN_0805f820(struct Boss* p);
 void FUN_0805f794(struct Boss* p) {
   if (FUN_080608e0(p)) {
     u8 counter;
-    (p->s).mode[3] = 2;
+    p->mode[3] = 2;
     counter = *(u8*)((u8*)p + 0xb7);
-    (p->s).d.y = -((counter + 1) << 6);
+    p->d.y = -((counter + 1) << 6);
     *(u8*)((u8*)p + 0xb7) = counter + 8;
-    *(s32*)((u8*)p + 0xb8) = (p->s).coord.x;
-    (p->s).work[2] = 0;
+    *(s32*)((u8*)p + 0xb8) = p->coord.x;
+    p->work[2] = 0;
     FUN_0805f7d0(p);
   }
 }
@@ -547,33 +547,33 @@ void FUN_0805f794(struct Boss* p) {
 void FUN_0805f7d0(struct Boss* p) {
   s32 dx;
   s32 t;
-  t = (p->s).work[2] + 1;
-  (p->s).work[2] = t;
+  t = p->work[2] + 1;
+  p->work[2] = t;
   dx = (*(s32*)((u8*)p + 0xbc) - *(s32*)((u8*)p + 0xb8)) * t;
   dx /= *(u8*)((u8*)p + 0xb7);
-  (p->s).coord.x = *(s32*)((u8*)p + 0xb8) + dx;
+  p->coord.x = *(s32*)((u8*)p + 0xb8) + dx;
   FUN_08060924(p);
-  if ((p->s).d.y > 0 && (p->s).coord.y >= ((p->s).unk_2c->coord.y - 0x80)) {
+  if (p->d.y > 0 && p->coord.y >= (p->unk_2c->coord.y - 0x80)) {
     *(u16*)((u8*)p + 0xe) = 4;
     FUN_0805f820(p);
   }
 }
 
 void FUN_0805f820(struct Boss* p) {
-  (PTR_ARRAY_083654c4[(p->s).mode[3]])(p);
+  (PTR_ARRAY_083654c4[p->mode[3]])(p);
 }
 
 
 void FUN_0805f838(struct Boss* p) {
   SetDDP(&p->body, &sCollisions[12]);
-  (p->s).mode[3] = 1;
+  p->mode[3] = 1;
   FUN_080607a0((void*)p, 9);
 }
 
 
 void FUN_0805f85c(struct Boss* p) {
-  if ((p->s).motion.state == 3) {
-    (p->s).mode[3] = 2;
+  if (p->motion.state == 3) {
+    p->mode[3] = 2;
   }
 }
 
@@ -583,7 +583,7 @@ void nop_0805f930(struct Boss* p) {}
 
 
 void FUN_0805f934(struct Boss* p) {
-  (PTR_ARRAY_083654d8[(p->s).mode[3]])(p);
+  (PTR_ARRAY_083654d8[p->mode[3]])(p);
 }
 
 void FUN_0805f97c(struct Boss* p);
@@ -591,48 +591,48 @@ void FUN_0805f97c(struct Boss* p);
 
 void FUN_0805f94c(struct Boss* p) {
   SetDDP(&p->body, &sCollisions[2]);
-  (p->s).mode[3] = 1;
+  p->mode[3] = 1;
   FUN_080607a0((void*)p, 0xb);
-  (p->s).d.y = -0x500;
+  p->d.y = -0x500;
   FUN_0805f97c(p);
 }
 
 
 void FUN_0805f97c(struct Boss* p) {
   FUN_08060924(p);
-  if ((p->s).motion.state == 3) {
-    (p->s).mode[3] = 2;
+  if (p->motion.state == 3) {
+    p->mode[3] = 2;
     FUN_080607a0((void*)p, 0xc);
   }
 }
 
 void FUN_0805f9a0(struct Boss* p) {
   if ((p->body).status & 4) {
-    (p->s).d.y = -PIXEL(3);
+    p->d.y = -PIXEL(3);
     FUN_080607a0((void*)p, 0xd);
-    (p->s).mode[3] = 3;
+    p->mode[3] = 3;
   } else if (FUN_08060924(p)) {
-    (p->s).mode[3] = 4;
+    p->mode[3] = 4;
   }
 }
 
 void FUN_0805f9dc(struct Boss* p) {
   if (FUN_08060924(p)) {
-    (p->s).mode[3] = 4;
+    p->mode[3] = 4;
   }
 }
 
 
 void FUN_0805f9f4(struct Boss* p) {
   if (FUN_08060974(p) < 0) {
-    (p->s).mode[1] = 0;
+    p->mode[1] = 0;
     *(u16*)((u8*)p + 0xe) = 0;
   }
 }
 
 
 void FUN_0805fa10(struct Boss* p) {
-  (PTR_ARRAY_083654ec[(p->s).mode[2]])(p);
+  (PTR_ARRAY_083654ec[p->mode[2]])(p);
 }
 
 
@@ -643,28 +643,28 @@ void FUN_0805fa28(struct Boss* p) {
 
 
 void FUN_0805fa44(struct Boss* p) {
-  (PTR_ARRAY_08365504[(p->s).mode[3]])(p);
+  (PTR_ARRAY_08365504[p->mode[3]])(p);
 }
 
 INCASM("asm/boss/phantom_g.inc");
 
 void FUN_0805fac4(struct Boss* p) {
   if (FUN_080608e0(p)) {
-    (p->s).mode[3] = 2;
+    p->mode[3] = 2;
   }
 }
 
 void FUN_0805fadc(struct Boss* p) {
-  FUN_08060864(p, (p->s).d.x);
+  FUN_08060864(p, p->d.x);
   if (FUN_08060924(p)) {
-    (p->s).mode[3] = 3;
+    p->mode[3] = 3;
   }
 }
 
 void FUN_0805fafc(struct Boss* p) {
   if (FUN_08060974(p)) {
     PlaySound(0xfd);
-    (p->s).mode[3] = 4;
+    p->mode[3] = 4;
     FUN_080607a0((void*)p, 0xe);
   }
 }
@@ -672,45 +672,45 @@ void FUN_0805fafc(struct Boss* p) {
 INCASM("asm/boss/phantom_h.inc");
 
 void FUN_0805fd5c(struct Boss* p) {
-  (PTR_ARRAY_08365520[(p->s).mode[3]])(p);
+  (PTR_ARRAY_08365520[p->mode[3]])(p);
 }
 
 void FUN_0805fd74(struct Boss* p) {
   SetDDP(&p->body, &sCollisions[6]);
-  InitScalerotMotion1(&p->s);
-  ResetDynamicMotion(&p->s);
+  EnableSpriteAnimation_Affine(p);
+  SetSpriteTableDynamic(p);
   FUN_080607a0((void*)p, 0xf);
-  (p->s).mode[3] = 1;
-  (p->s).work[2] = 0;
+  p->mode[3] = 1;
+  p->work[2] = 0;
   *(s32*)((u8*)p + 0xc4) = 4;
 }
 
 INCASM("asm/boss/phantom_i.inc");
 
 void FUN_0805ff64(struct Boss* p) {
-  (PTR_ARRAY_0836552c[(p->s).mode[3]])(p);
+  (PTR_ARRAY_0836552c[p->mode[3]])(p);
 }
 
 void FUN_0805ffb4(struct Boss* p);
 
 void FUN_0805ff7c(struct Boss* p) {
   SetDDP(&p->body, &sCollisions[0]);
-  (p->s).mode[3] = 1;
-  (p->s).d.y = -0x5c0;
+  p->mode[3] = 1;
+  p->d.y = -0x5c0;
   FUN_080608c8(p);
   *(s32*)((u8*)p + 0xc4) = 2;
   FUN_0805ffb4(p);
 }
 
 void FUN_0805ffb4(struct Boss* p) {
-  (p->s).work[2]++;
-  if ((p->s).work[2] & 3) {
-    (p->s).flags |= DISPLAY;
+  p->work[2]++;
+  if (p->work[2] & 3) {
+    p->flags |= DISPLAY;
   } else {
-    (p->s).flags &= ~DISPLAY;
+    p->flags &= ~DISPLAY;
   }
   if (FUN_080608e0(p)) {
-    (p->s).mode[3] = 2;
+    p->mode[3] = 2;
   }
 }
 
@@ -718,87 +718,87 @@ INCASM("asm/boss/phantom_j.inc");
 
 void FUN_080600c8(struct Boss* p) {
   if (FUN_08060924(p)) {
-    (p->s).mode[3] = 5;
+    p->mode[3] = 5;
   }
 }
 
 
 void FUN_080600e0(struct Boss* p) {
   if ((s8)FUN_08060974(p) < 0) {
-    (p->s).mode[1] = 0;
+    p->mode[1] = 0;
     *(u16*)((u8*)p + 0xe) = 0;
   }
 }
 
 
 void FUN_080600fc(struct Boss* p) {
-  (PTR_ARRAY_08365544[(p->s).mode[3]])(p);
+  (PTR_ARRAY_08365544[p->mode[3]])(p);
 }
 
 INCASM("asm/boss/phantom_k.inc");
 
 void FUN_0806016c(struct Boss* p) {
-  if (--(p->s).work[2] == 0) {
-    (p->s).flags |= DISPLAY;
+  if (--p->work[2] == 0) {
+    p->flags |= DISPLAY;
     SetDDP(&p->body, &sCollisions[2]);
-    (p->s).mode[3] = 2;
+    p->mode[3] = 2;
   }
 }
 
 bool8 FUN_0806089c(struct Boss* p, s32 dy);
 
 void FUN_0806019c(struct Boss* p) {
-  (p->s).d.y += 0x40;
-  if ((p->s).d.y > 0x700) {
-    (p->s).d.y = 0x700;
+  p->d.y += 0x40;
+  if (p->d.y > 0x700) {
+    p->d.y = 0x700;
   }
   if ((p->body).status & 4) {
-    (p->s).d.y = -PIXEL(3);
+    p->d.y = -PIXEL(3);
     FUN_080607a0((void*)p, 0xd);
-    (p->s).mode[3] = 4;
+    p->mode[3] = 4;
   }
-  if (FUN_0806089c(p, (p->s).d.y)) {
+  if (FUN_0806089c(p, p->d.y)) {
     FUN_080607a0((void*)p, 4);
-    (p->s).mode[3] = 3;
+    p->mode[3] = 3;
   }
 }
 
 void FUN_080601f0(struct Boss* p) {
-  if ((p->s).motion.state == 3) {
-    (p->s).mode[1] = 0;
+  if (p->motion.state == 3) {
+    p->mode[1] = 0;
     *(u16*)((u8*)p + 0xe) = 0;
   }
 }
 
 void FUN_08060208(struct Boss* p) {
-  (p->s).d.y += 0x40;
-  if ((p->s).d.y > 0x700) {
-    (p->s).d.y = 0x700;
+  p->d.y += 0x40;
+  if (p->d.y > 0x700) {
+    p->d.y = 0x700;
   }
-  if (FUN_0806089c(p, (p->s).d.y)) {
-    (p->s).d.y = 0xfffffd00;
+  if (FUN_0806089c(p, p->d.y)) {
+    p->d.y = 0xfffffd00;
     FUN_080607a0((void*)p, 4);
-    (p->s).mode[3] = 3;
+    p->mode[3] = 3;
   }
 }
 
 INCASM("asm/boss/phantom_l.inc");
 
 void FUN_080603b8(struct Boss* p) {
-  (PTR_ARRAY_08365558[(p->s).mode[2]])(p);
+  (PTR_ARRAY_08365558[p->mode[2]])(p);
 }
 
 
 void FUN_080603d0(struct Boss* p) {
-  switch ((p->s).mode[3]) {
+  switch (p->mode[3]) {
     case 0:
       SetSpriteAnimation(p, MOTION(0xbc, 0x16));
-      (p->s).mode[3]++;
+      p->mode[3]++;
       break;
     case 1:
-      if ((p->s).motion.state == 3) {
-        (p->s).mode[3] = 0;
-        (p->s).mode[2]++;
+      if (p->motion.state == 3) {
+        p->mode[3] = 0;
+        p->mode[2]++;
       }
       break;
   }
@@ -807,7 +807,7 @@ void FUN_080603d0(struct Boss* p) {
 INCASM("asm/boss/phantom_m.inc");
 
 void Phantom_Die(struct Boss* p) {
-  (sDeads[(p->s).mode[1]])(p);
+  (sDeads[p->mode[1]])(p);
 }
 
 INCASM("asm/boss/phantom_n.inc");
@@ -831,36 +831,36 @@ bool8 FUN_08060838(struct Boss* p);
 INCASM("asm/boss/phantom_p.inc");
 
 bool8 FUN_08060838(struct Boss* p) {
-  s32 px = (p->s).coord.x;
+  s32 px = p->coord.x;
   s32 zx = pZero2->s.coord.x;
   if (px != zx) {
     return px < zx;
   }
-  return ((p->s).flags >> 4) & 1;
+  return (p->flags >> 4) & 1;
 }
 
 bool8 FUN_08060864(struct Boss* p, s32 dx) {
-  s32 newx = (p->s).coord.x + dx;
+  s32 newx = p->coord.x + dx;
   s32 left = *(s32*)((u8*)p + 0xd4);
   if ((u32)(newx - left) <= (u32)*(s32*)((u8*)p + 0xdc)) {
-    (p->s).coord.x = newx;
+    p->coord.x = newx;
     return 0;
   }
   if (newx < left) {
-    (p->s).coord.x = left;
+    p->coord.x = left;
   } else {
-    (p->s).coord.x = *(s32*)((u8*)p + 0xd8);
+    p->coord.x = *(s32*)((u8*)p + 0xd8);
   }
   return 1;
 }
 
 bool8 FUN_0806089c(struct Boss* p, s32 dy) {
-  s32 newy = (p->s).coord.y + dy;
-  if (newy < FUN_08009f6c((p->s).coord.x, (p->s).coord.y)) {
-    (p->s).coord.y = newy;
+  s32 newy = p->coord.y + dy;
+  if (newy < FUN_08009f6c(p->coord.x, p->coord.y)) {
+    p->coord.y = newy;
     return 0;
   }
-  (p->s).coord.y = FUN_08009f6c((p->s).coord.x, (p->s).coord.y);
+  p->coord.y = FUN_08009f6c(p->coord.x, p->coord.y);
   return 1;
 }
 
@@ -871,9 +871,9 @@ void FUN_080608c8(struct Boss* p) {
 
 bool8 FUN_080608e0(struct Boss* p) {
   if ((s8)*(u8*)((u8*)p + 0x71) == 1 && (s8)*(u8*)((u8*)p + 0x72) <= 1) {
-    (p->s).spr.xflip = 0;
-    (p->s).spr.oam.xflip = 0;
-    (p->s).flags &= ~X_FLIP;
+    p->spr.xflip = 0;
+    p->spr.oam.xflip = 0;
+    p->flags &= ~X_FLIP;
     return TRUE;
   }
   return FALSE;
@@ -882,24 +882,24 @@ bool8 FUN_080608e0(struct Boss* p) {
 bool8 FUN_08060924(struct Boss* p) {
   s32 dy;
   SetDDP(&p->body, &sCollisions[12]);
-  dy = (p->s).d.y;
+  dy = p->d.y;
   if (FUN_0806089c(p, dy)) {
     FUN_080607a0((void*)p, 4);
     FUN_080607f0(p);
     return TRUE;
   }
-  if ((p->s).mode[2] == 5) {
-    (p->s).d.y = dy + 0xa8;
+  if (p->mode[2] == 5) {
+    p->d.y = dy + 0xa8;
   } else {
-    (p->s).d.y = dy + 0x40;
+    p->d.y = dy + 0x40;
   }
   return FALSE;
 }
 
 s8 FUN_08060974(struct Boss* p) {
   SetDDP(&p->body, &sCollisions[0]);
-  if ((p->s).motion.state == 2) return -1;
-  if ((p->s).motion.state == 3) return 1;
+  if (p->motion.state == 2) return -1;
+  if (p->motion.state == 3) return 1;
   return 0;
 }
 
