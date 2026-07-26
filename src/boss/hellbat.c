@@ -206,19 +206,19 @@ void hellbatKnockBackDamage(struct Boss* p);
 static void Hellbat_Update(struct Boss* p) {
   // clang-format off
   static const BossFunc sUpdates1[12] = {
-      (BossFunc)nop_0804b520,
-      (BossFunc)nop_0804b56c,
-      (BossFunc)nop_0804b5e8,
-      (BossFunc)nop_0804b6b4,
-      FUN_0804b900,
-      FUN_0804ba40,
-      FUN_0804bcf4,
-      FUN_0804bee0,
-      FUN_0804c220,
-      FUN_0804c554,
-      nop_0804c9ec,
-      FUN_0804caa0,
-  };
+    (BossFunc)nop_0804b520,
+    (BossFunc)nop_0804b56c,
+    (BossFunc)nop_0804b5e8,
+    (BossFunc)nop_0804b6b4,
+    (BossFunc)FUN_0804b900,
+    (BossFunc)FUN_0804ba40,
+    (BossFunc)FUN_0804bcf4,
+    (BossFunc)FUN_0804bee0,
+    (BossFunc)FUN_0804c220,
+    (BossFunc)FUN_0804c554,
+    (BossFunc)nop_0804c9ec,
+    (BossFunc)FUN_0804caa0,
+};
   // clang-format on
 
   // clang-format off
@@ -802,37 +802,37 @@ bool8 nop_0804c9ec(struct Boss* p) { return TRUE; }
 
 void hellbatDamage(struct Boss* p) {
   struct Entity** slot;
-  switch ((p->s).mode[2]) {
+  switch (p->mode[2]) {
     case 0:
-      (p->s).flags |= DISPLAY;
+      p->flags |= DISPLAY;
       PlaySound(0x8a);
-      if ((p->s).flags & Y_FLIP) {
-        (p->s).spr.yflip = 0;
-        (p->s).spr.oam.yflip = 0;
-        (p->s).flags &= ~Y_FLIP;
-        (p->s).coord.y += 0x3900;
+      if (p->flags & Y_FLIP) {
+        p->spr.yflip = 0;
+        p->spr.oam.yflip = 0;
+        p->flags &= ~Y_FLIP;
+        p->coord.y += 0x3900;
       }
-      (p->s).d.y = 0;
-      (p->s).mode[2]++;
+      p->d.y = 0;
+      p->mode[2]++;
       FALLTHROUGH;
     case 1:
-      (p->s).d.y += 0x40;
-      if ((p->s).d.y > 0x700) {
-        (p->s).d.y = 0x700;
+      p->d.y += 0x40;
+      if (p->d.y > 0x700) {
+        p->d.y = 0x700;
       }
-      if (FUN_080098a4((p->s).coord.x, (p->s).coord.y + (p->s).d.y) != 0) {
-        (p->s).d.y = 0;
-        (p->s).coord.y = FUN_08009f6c((p->s).coord.x, (p->s).coord.y) + 0x200;
+      if (FUN_080098a4(p->coord.x, p->coord.y + p->d.y) != 0) {
+        p->d.y = 0;
+        p->coord.y = FUN_08009f6c(p->coord.x, p->coord.y) + 0x200;
       } else {
-        (p->s).coord.y += (p->s).d.y;
+        p->coord.y += p->d.y;
       }
       break;
   }
   slot = (struct Entity**)((u8*)p + 0xc0);
   if (isKilled(*slot)) {
     *slot = NULL;
-    (p->s).mode[1] = 5;
-    (p->s).mode[2] = 0;
+    p->mode[1] = 5;
+    p->mode[2] = 0;
   }
 }
 

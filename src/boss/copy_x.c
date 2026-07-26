@@ -912,76 +912,76 @@ static void copyxMode4(BossCopyX* p) {
 INCASM("asm/boss/copy_x_a.inc");
 
 void copyxMode9(struct Boss* p) {
-  if ((p->s).mode[2] != 0) {
+  if (p->mode[2] != 0) {
     SetSpriteAnimation(p, 0xB305);
-    (p->s).mode[2] = 0;
+    p->mode[2] = 0;
   }
   UpdateSpriteAnimation(p);
-  if ((p->s).motion.state == 3) {
-    (p->s).mode[1] = 0xa;
-    (p->s).mode[2] = 1;
+  if (p->motion.state == 3) {
+    p->mode[1] = 0xa;
+    p->mode[2] = 1;
   }
 }
 
 void copyxMode10(struct Boss* p) {
-  if ((p->s).mode[2] != 0) {
+  if (p->mode[2] != 0) {
     SetSpriteAnimation(p, 0xb306);
-    (p->s).mode[2] = 0;
+    p->mode[2] = 0;
     SetDDP(&p->body, &sCollisions[0]);
   }
   UpdateSpriteAnimation(p);
-  (p->s).coord.x += (p->s).d.x;
-  (p->s).coord.y += (p->s).d.y;
-  (p->s).d.y += 0x40;
-  if ((p->s).d.y > 0) {
-    (p->s).mode[1] = (p->s).mode[3];
-    (p->s).mode[2] = 1;
+  p->coord.x += p->d.x;
+  p->coord.y += p->d.y;
+  p->d.y += 0x40;
+  if (p->d.y > 0) {
+    p->mode[1] = p->mode[3];
+    p->mode[2] = 1;
   }
 }
 
 INCASM("asm/boss/copy_x_b.inc");
 
 void copyxMode12(struct Boss* p) {
-  if ((p->s).mode[2] != 0) {
+  if (p->mode[2] != 0) {
     SetSpriteAnimation(p, 0xB305);
-    (p->s).mode[2] = 0;
+    p->mode[2] = 0;
   }
   UpdateSpriteAnimation(p);
-  (p->s).mode[1] = 3;
-  (p->s).mode[2] = 1;
-  (p->s).mode[3] = 2;
-  (p->s).work[2] = 6;
+  p->mode[1] = 3;
+  p->mode[2] = 1;
+  p->mode[3] = 2;
+  p->work[2] = 6;
 }
 
 INCASM("asm/boss/copy_x_c.inc");
 
 void FUN_080569a4(struct Boss* p) {
-  if ((p->s).mode[2] != 0) {
+  if (p->mode[2] != 0) {
     SetSpriteAnimation(p, MOTION(0xb3, 0xc));
-    (p->s).mode[2] = 0;
+    p->mode[2] = 0;
   }
   UpdateSpriteAnimation(p);
   if (IsSpriteAnimEnd(p)) {
-    (p->s).mode[1] = ANIM_END;
-    (p->s).mode[2] = 1;
-    (p->s).mode[3] = 2;
-    (p->s).work[2] = 4;
+    p->mode[1] = ANIM_END;
+    p->mode[2] = 1;
+    p->mode[3] = 2;
+    p->work[2] = 4;
   }
 }
 
 INCASM("asm/boss/copy_x_d.inc");
 
 void FUN_08056a80(struct Boss* p) {
-  if ((p->s).mode[2] != 0) {
+  if (p->mode[2] != 0) {
     SetSpriteAnimation(p, MOTION(0xb3, 0xe));
-    (p->s).mode[2] = 0;
+    p->mode[2] = 0;
   }
   UpdateSpriteAnimation(p);
   if (IsSpriteAnimEnd(p)) {
-    (p->s).mode[1] = ANIM_END;
-    (p->s).mode[2] = 1;
-    (p->s).mode[3] = 2;
-    (p->s).work[2] = 4;
+    p->mode[1] = ANIM_END;
+    p->mode[2] = 1;
+    p->mode[3] = 2;
+    p->work[2] = 4;
   }
 }
 
@@ -991,7 +991,7 @@ void CopyX_OnDamage(struct Body* body) {
   if (body->hitboxFlags & 1) {
     struct Boss* self = (struct Boss*)body->parent;
     u8 r = 0;
-    if ((self->s).coord.x < (pZero2->s).coord.x) {
+    if (self->coord.x < (pZero2->s).coord.x) {
       r = 1;
     }
     *(u8*)((u8*)self + 0xc4) = r;

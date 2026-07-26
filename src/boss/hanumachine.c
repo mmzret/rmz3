@@ -33,63 +33,63 @@ void Hanumachine_Update(struct Boss* p) {
   return;
 
 alive:
-  *(s32*)((u8*)p + 0xc8) = (p->s).coord.x;
-  *(s32*)((u8*)p + 0xcc) = (p->s).coord.y;
-  if ((p->s).mode[1] != 0x1d) {
+  *(s32*)((u8*)p + 0xc8) = p->coord.x;
+  *(s32*)((u8*)p + 0xcc) = p->coord.y;
+  if (p->mode[1] != 0x1d) {
     if (((p->body).status & 0x00020001) == 0x00020001) {
       if (FUN_0805d594(p, 0, 0) == 0) {
-        (p->s).mode[1] = 0x1d;
-        (p->s).mode[2] = 0;
+        p->mode[1] = 0x1d;
+        p->mode[2] = 0;
       }
     }
   }
   if (((p->body).status & 1) && *(struct Entity**)((u8*)p + 0xc4) == NULL) {
-    *(struct Entity**)((u8*)p + 0xc4) = (struct Entity*)ApplyElementEffect(0x1c, &p->s, &sElementCoord);
+    *(struct Entity**)((u8*)p + 0xc4) = ApplyElementEffect(0x1c, (Object*)p, &sElementCoord);
   }
   if (isKilled(*(struct Entity**)((u8*)p + 0xc4))) {
     *(struct Entity**)((u8*)p + 0xc4) = NULL;
   }
-  if (sUpdates2[(p->s).mode[1]] != NULL) {
-    (sUpdates2[(p->s).mode[1]])(p);
+  if (sUpdates2[p->mode[1]] != NULL) {
+    (sUpdates2[p->mode[1]])(p);
   }
-  (sUpdates1[(p->s).mode[1]])(p);
+  (sUpdates1[p->mode[1]])(p);
 }
 
 INCASM("asm/boss/hanumachine_b.inc");
 
 void FUN_0805bcdc(struct Boss* p) {
-  s32 push = PushoutToUp1((p->s).coord.x, (p->s).coord.y + 1);
+  s32 push = PushoutToUp1(p->coord.x, p->coord.y + 1);
   if (push == 0) {
-    (p->s).mode[1] = 0x19;
-    (p->s).mode[2] = push;
+    p->mode[1] = 0x19;
+    p->mode[2] = push;
   }
 }
 
 void hanu_0805bcfc(struct Boss* p) {
-  u8 m = (p->s).mode[2];
+  u8 m = p->mode[2];
   if (m == 0) {
     SetSpriteAnimation(p, MOTION(0xb5, 0));
-    (p->s).mode[2]++;
-    (p->s).mode[3] = m;
+    p->mode[2]++;
+    p->mode[3] = m;
   }
   UpdateSpriteAnimation(p);
-  if ((p->s).scriptEntity->flags & 1) {
-    (p->s).mode[1] = 1;
-    (p->s).mode[2] = 0;
+  if (p->scriptEntity->flags & 1) {
+    p->mode[1] = 1;
+    p->mode[2] = 0;
   }
 }
 
 INCASM("asm/boss/hanumachine_c.inc");
 
 void FUN_0805c3cc(struct Boss* p) {
-  if ((p->s).mode[2] == 0) {
+  if (p->mode[2] == 0) {
     SetSpriteAnimation(p, 0xB50B);
-    (p->s).mode[2]++;
+    p->mode[2]++;
   }
   UpdateSpriteAnimation(p);
-  if ((p->s).motion.state == 3) {
-    (p->s).mode[1] = 3;
-    (p->s).mode[2] = 0;
+  if (p->motion.state == 3) {
+    p->mode[1] = 3;
+    p->mode[2] = 0;
   }
 }
 
@@ -100,7 +100,7 @@ void FUN_0805d568(struct Body* body) {
     struct Boss* atk = (struct Boss*)((body->enemy)->parent);
     struct Boss* self = (struct Boss*)body->parent;
     u8 r = 0;
-    if ((atk->s).coord.x > (self->s).coord.x) {
+    if (atk->coord.x > self->coord.x) {
       r = 1;
     }
     *(u8*)((u8*)self + 0xbc) = r;
@@ -108,11 +108,11 @@ void FUN_0805d568(struct Body* body) {
 }
 
 u16 FUN_0805d594(struct Boss* p, s32 a, s32 b) {
-  u16 r = FUN_080098a4((p->s).coord.x + a, (p->s).coord.y);
+  u16 r = FUN_080098a4(p->coord.x + a, p->coord.y);
   if (r != 0) {
     return r;
   }
-  r = FUN_080098a4((p->s).coord.x + a, (p->s).coord.y - 0x2000);
+  r = FUN_080098a4(p->coord.x + a, p->coord.y - 0x2000);
   if (r != 0) {
     return r;
   }

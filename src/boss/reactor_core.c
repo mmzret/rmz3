@@ -14,22 +14,22 @@ INCASM("asm/boss/reactor_core_a.inc");
 void ReactorCore_Die(struct Boss* p) {
   StepPaletteAnimation(0xcb);
   StepPaletteAnimation(0xcc);
-  (sDeads[(p->s).mode[1]])(p);
+  (sDeads[p->mode[1]])(p);
 }
 
 void ReactorCore_Disappear(struct Boss* p) {
   RemovePaletteAnimation(0xcb);
   RemovePaletteAnimation(0xcc);
-  DeleteBoss(p);
+  DeleteBoss((void*)p);
 }
 
 void nop_08061a74(struct Boss* p) {}
 
 void FUN_08061a78(struct Boss* p) {
-  switch ((p->s).mode[2]) {
+  switch (p->mode[2]) {
     case 0:
       SetSpriteAnimation(p, MOTION(0x8b, 0));
-      (p->s).mode[2]++;
+      p->mode[2]++;
       FALLTHROUGH;
     case 1:
       UpdateSpriteAnimation(p);
@@ -38,37 +38,37 @@ void FUN_08061a78(struct Boss* p) {
 }
 
 void FUN_08061aa4(struct Boss* p) {
-  switch ((p->s).mode[2]) {
+  switch (p->mode[2]) {
     case 0:
-      if ((p->s).scriptEntity->flags & 1) {
-        (p->s).mode[2] = 1;
+      if (p->scriptEntity->flags & 1) {
+        p->mode[2] = 1;
       }
       break;
     case 1:
       if (!(gStageRun.vm.active & VM_ACTIVE)) {
-        (p->s).mode[1] = 0;
-        (p->s).mode[2] = 0;
+        p->mode[1] = 0;
+        p->mode[2] = 0;
       }
       break;
   }
 }
 
 void FUN_08061adc(struct Boss* p) {
-  switch ((p->s).mode[2]) {
+  switch (p->mode[2]) {
     case 0:
       StopSound(0xe0);
-      (p->s).flags2 &= ~0x08;
+      p->flags2 &= ~0x08;
       EXIT_BODY(p);
       if ((gStageRun.missionStatus & 1) && !(gStageRun.vm.active & VM_ACTIVE)) {
         gStageRun.missionStatus = (gStageRun.missionStatus & 0xfffe) | 0x10;
       }
-      (p->s).work[2] = 2;
-      (p->s).mode[2]++;
+      p->work[2] = 2;
+      p->mode[2]++;
       FALLTHROUGH;
     case 1:
-      if (--(p->s).work[2] == 0) {
+      if (--p->work[2] == 0) {
         gStageRun.vm.active |= 2;
-        (p->s).mode[2]++;
+        p->mode[2]++;
       }
       break;
   }
