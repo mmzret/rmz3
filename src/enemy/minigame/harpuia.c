@@ -6,7 +6,7 @@
 static const EnemyFunc sUpdates1[6];
 static const EnemyFunc sUpdates2[6];
 struct Enemy* FUN_0809af20(struct Entity* e, struct Coord* c, u8 a2) {
-  struct Enemy* p = (struct Enemy*)AllocEntityFirst(gEnemyHeaderPtr);
+  struct Enemy* p = (struct Enemy*)AllocEntityLast(gEnemyHeaderPtr);
   if (p != NULL) {
     INIT_ENEMY_ROUTINE(p, ENEMY_HARPUIA_MG);
     (p->s).coord = *c;
@@ -18,7 +18,7 @@ struct Enemy* FUN_0809af20(struct Entity* e, struct Coord* c, u8 a2) {
 }
 
 struct Enemy* FUN_0809af88(struct Entity* e, struct Coord* c, u8 a2) {
-  struct Enemy* p = (struct Enemy*)AllocEntityFirst(gEnemyHeaderPtr);
+  struct Enemy* p = (struct Enemy*)AllocEntityLast(gEnemyHeaderPtr);
   if (p != NULL) {
     INIT_ENEMY_ROUTINE(p, ENEMY_HARPUIA_MG);
     (p->s).coord = *c;
@@ -30,7 +30,7 @@ struct Enemy* FUN_0809af88(struct Entity* e, struct Coord* c, u8 a2) {
 }
 
 struct Enemy* FUN_0809aff0(struct Entity* e, struct Coord* c, u8 a2, u8 a3) {
-  struct Enemy* p = (struct Enemy*)AllocEntityFirst(gEnemyHeaderPtr);
+  struct Enemy* p = (struct Enemy*)AllocEntityLast(gEnemyHeaderPtr);
   if (p != NULL) {
     INIT_ENEMY_ROUTINE(p, ENEMY_HARPUIA_MG);
     (p->s).coord = *c;
@@ -43,7 +43,7 @@ struct Enemy* FUN_0809aff0(struct Entity* e, struct Coord* c, u8 a2, u8 a3) {
 }
 
 struct Enemy* FUN_0809b064(struct Entity* e, struct Coord* c, u8 a2, u8 a3) {
-  struct Enemy* p = (struct Enemy*)AllocEntityFirst(gEnemyHeaderPtr);
+  struct Enemy* p = (struct Enemy*)AllocEntityLast(gEnemyHeaderPtr);
   if (p != NULL) {
     INIT_ENEMY_ROUTINE(p, ENEMY_HARPUIA_MG);
     (p->s).coord = *c;
@@ -119,13 +119,15 @@ bool8 FUN_0809b4d8(struct Enemy* p);
 bool8 FUN_0809b950(struct Enemy* p);
 
 // clang-format off
+// These all return bool8, which is what the retail code does; EnemyFunc is
+// void-returning, so cast as this repo does for DeleteEntity.
 static const EnemyFunc sUpdates1[6] = {
-    FUN_0809b350,
-    FUN_0809b408,
-    FUN_0809b410,
-    FUN_0809b418,
-    FUN_0809b4d8,
-    FUN_0809b950,
+    (EnemyFunc)FUN_0809b350,
+    (EnemyFunc)FUN_0809b408,
+    (EnemyFunc)FUN_0809b410,
+    (EnemyFunc)FUN_0809b418,
+    (EnemyFunc)FUN_0809b4d8,
+    (EnemyFunc)FUN_0809b950,
 };
 // clang-format on
 

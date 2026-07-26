@@ -1,23 +1,22 @@
 #include "collision.h"
 #include "enemy.h"
 #include "global.h"
+#include "element.h"
+
+void Gallisni_Die(struct Enemy* p);
 
 bool8 gallisni_080870bc(struct Enemy* p);
 
-struct GallisniObject {
-  struct Entity s;
-  struct Body body;
-  // props (16bytes, offset: 0xB4..)
-  struct VFX* elementEffect;
-  u8 unk_004[12];
-};
+// The element effect this enemy is carrying, at 0xB4 -- the start of
+// the entity buffer.
+#define ELEMENT_EFFECT(p) (*(struct Entity**)&(p)->buffer[0])
 
 
 static const struct Collision sCollisions[5];
 static const EnemyFunc sDeads[3];
 static const Coords32 sElementCoord;
 void CreateGallisni(s32 x, s32 y, u8 a2) {
-  struct Enemy* p = (struct Enemy*)AllocEntityFirst(gEnemyHeaderPtr);
+  struct Enemy* p = (struct Enemy*)AllocEntityLast(gEnemyHeaderPtr);
   if (p != NULL) {
     INIT_ENEMY_ROUTINE(p, ENEMY_GALLISNI);
     (p->s).work[0] = 1;
@@ -47,14 +46,14 @@ bool8 gallisni_080870bc(struct Enemy* p) {
 
 INCASM("asm/enemy/gallisni_b.inc");
 
-void gallisni_080871b4(struct GallisniObject* p) {
-  if (p->elementEffect == NULL && ((p->body).status & BODY_STATUS_WHITE)) {
+void gallisni_080871b4(struct Enemy* p) {
+  if (ELEMENT_EFFECT(p) == NULL && ((p->body).status & BODY_STATUS_WHITE)) {
     if (((p->body).status & BODY_STATUS_RECOILED)) {
       (p->s).mode[1] = 7;
       (p->s).mode[2] = 0;
     } else {
-      p->elementEffect = ApplyElementEffect(0, &p->s, &sElementCoord);
-      if (p->elementEffect != NULL) {
+      ELEMENT_EFFECT(p) = ApplyElementEffect(0, (Object*)p, &sElementCoord);
+      if (ELEMENT_EFFECT(p) != NULL) {
         (p->s).mode[1] = 0;
         (p->s).mode[2] = 0;
       }
@@ -96,7 +95,7 @@ void FUN_080873a0(struct Enemy* p) {
 void FUN_080873fc(struct Enemy* p) {
   if ((p->s).mode[2] == 0) {
     SetMotion(&p->s, MOTION(0x67, 3));
-    UpdateMotionGraphic(&p->s);
+    UpdateEntityAnim(&p->s);
     SetDDP(&p->body, &sCollisions[3]);
     (p->s).mode[2]++;
   }
@@ -117,7 +116,7 @@ void FUN_08087434(struct Enemy* p) {
         (p->s).mode[1] = 2;
         (p->s).mode[2] = 0;
       }
-      UpdateMotionGraphic(&p->s);
+      UpdateEntityAnim(&p->s);
       if ((s8)(p->s).motion.cmdIdx == 8) {
         SetDDP(&p->body, &sCollisions[1]);
       }
@@ -141,7 +140,7 @@ void FUN_080874ac(struct Enemy* p) {
           (p->s).mode[2] = 0;
         }
       }
-      UpdateMotionGraphic(&p->s);
+      UpdateEntityAnim(&p->s);
       break;
   }
 }
@@ -160,7 +159,7 @@ void FUN_0808772c(struct Enemy* p) {
     }
       // fallthrough
     case 1:
-      UpdateMotionGraphic(&p->s);
+      UpdateEntityAnim(&p->s);
       (p->s).coord.x += (p->s).d.x;
       (p->s).work[3]--;
       if ((p->s).work[3] == 0) {

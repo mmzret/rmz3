@@ -3,6 +3,7 @@
 #include "enemy.h"
 #include "entity.h"
 #include "global.h"
+#include "vfx.h"
 
 typedef struct {
   COLLISION_OBJECT_HDR;
@@ -192,7 +193,7 @@ void FUN_0806ae94(struct Enemy* p) {
       (p->s).mode[2]++;
       // fallthrough
     case 1:
-      UpdateMotionGraphic(&p->s);
+      UpdateEntityAnim(&p->s);
       (p->s).mode[1] = 2;
       (p->s).mode[2] = 0;
       break;
@@ -209,7 +210,7 @@ void FUN_0806aedc(struct Enemy* p) {
       (p->s).mode[2]++;
       // fallthrough
     case 1:
-      UpdateMotionGraphic(&p->s);
+      UpdateEntityAnim(&p->s);
       (p->s).mode[1] = 2;
       (p->s).mode[2] = 0;
       break;
@@ -243,7 +244,7 @@ void FUN_0806af40(struct Enemy* p) {
       wob = gSineTable[(p->s).work[2]];
       (p->s).coord.y = *(s32*)((u8*)p + 0xb8) + ((p->s).unk_28)->coord.y + wob;
       (p->s).coord.x = *(s32*)((u8*)p + 0xb4) + ((p->s).unk_28)->coord.x;
-      UpdateMotionGraphic(&p->s);
+      UpdateEntityAnim(&p->s);
       break;
     }
   }
@@ -269,7 +270,7 @@ void FUN_0806afdc(struct Enemy* p) {
       wob = gSineTable[(p->s).work[2]] << 1;
       (p->s).coord.y = *(s32*)((u8*)p + 0xb8) + ((p->s).unk_28)->coord.y + wob;
       (p->s).coord.x = *(s32*)((u8*)p + 0xb4) + ((p->s).unk_28)->coord.x;
-      UpdateMotionGraphic(&p->s);
+      UpdateEntityAnim(&p->s);
       break;
     }
   }
@@ -286,7 +287,7 @@ void FUN_0806b098(struct Enemy* p) {
       (p->s).mode[2]++;
       // fallthrough
     case 1:
-      UpdateMotionGraphic(&p->s);
+      UpdateEntityAnim(&p->s);
       break;
   }
 }
@@ -300,7 +301,7 @@ void FUN_0806b0dc(struct Enemy* p) {
       (p->s).mode[2]++;
       // fallthrough
     case 1:
-      UpdateMotionGraphic(&p->s);
+      UpdateEntityAnim(&p->s);
       break;
   }
 }

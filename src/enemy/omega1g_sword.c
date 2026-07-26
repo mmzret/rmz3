@@ -73,7 +73,7 @@ void FUN_0808bb88(struct Enemy* p) {
       (p->s).mode[2]++;
       // fallthrough
     case 1:
-      UpdateMotionGraphic(&p->s);
+      UpdateEntityAnim(&p->s);
       if (((struct Enemy*)(p->s).unk_28)->s.scriptEntity->flags & 1) {
         (p->s).mode[1] = 1;
         (p->s).mode[2] = 0;
@@ -112,7 +112,7 @@ void FUN_0808bd1c(struct Enemy* p) {
       owner = (p->s).unk_28;
       (p->s).coord.y = owner->coord.y - 0x4000;
       (p->s).coord.x = owner->coord.x;
-      UpdateMotionGraphic(&p->s);
+      UpdateEntityAnim(&p->s);
       break;
   }
 }
@@ -137,7 +137,7 @@ void FUN_0808c334(struct Enemy* p) {
         (p->s).d.y = 0x40;
       }
       (p->s).coord.y += (p->s).d.y;
-      UpdateMotionGraphic(&p->s);
+      UpdateEntityAnim(&p->s);
       break;
   }
 }

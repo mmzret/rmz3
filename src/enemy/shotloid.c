@@ -2,14 +2,11 @@
 #include "enemy.h"
 #include "global.h"
 #include "story.h"
+#include "element.h"
 
-struct ShotloidObject {
-  struct Entity s;
-  struct Body body;
-  // props (16bytes, offset: 0xB4..)
-  struct VFX* elementEffect;
-  u8 unk_004[12];
-};
+// The element effect this enemy is carrying, at 0xB4 -- the start of
+// the entity buffer.
+#define ELEMENT_EFFECT(p) (*(struct Entity**)&(p)->buffer[0])
 
 
 static const struct Collision sCollisions[3];
@@ -18,7 +15,7 @@ static const Coords32 sElementCoord;
 static const EnemyFunc sUpdates1[9];
 static const EnemyFunc sUpdates2[9];
 struct Enemy* FUN_08093930(s32 x, s32 y, u8 n) {
-  struct Enemy* e = (struct Enemy*)AllocEntityFirst(gEnemyHeaderPtr);
+  struct Enemy* e = (struct Enemy*)AllocEntityLast(gEnemyHeaderPtr);
 
   if (e != NULL) {
     INIT_ENEMY_ROUTINE(e, 62);
@@ -102,7 +99,7 @@ bool8 FUN_08093b50(struct Enemy* p) {
             (sUpdates1[(p->s).mode[1]])(p);
             (sUpdates2[(p->s).mode[1]])(p);
             (p->s).mode[3]++;
-            UpdateMotionGraphic(&p->s);
+            UpdateEntityAnim(&p->s);
             return TRUE;
           }
           break;
@@ -123,14 +120,14 @@ bool8 FUN_08093b50(struct Enemy* p) {
   return FALSE;
 }
 
-void FUN_08093be0(struct ShotloidObject* p) {
-  if (p->elementEffect == NULL && ((p->body).status & BODY_STATUS_WHITE)) {
+void FUN_08093be0(struct Enemy* p) {
+  if (ELEMENT_EFFECT(p) == NULL && ((p->body).status & BODY_STATUS_WHITE)) {
     if (((p->body).status & BODY_STATUS_RECOILED)) {
       (p->s).mode[1] = 7;
       (p->s).mode[2] = 0;
     } else {
-      p->elementEffect = ApplyElementEffect(0, &p->s, &sElementCoord);
-      if (p->elementEffect != NULL) {
+      ELEMENT_EFFECT(p) = ApplyElementEffect(0, (Object*)p, &sElementCoord);
+      if (ELEMENT_EFFECT(p) != NULL) {
         (p->s).mode[1] = 0;
         (p->s).mode[2] = 0;
       }
@@ -143,7 +140,7 @@ INCASM("asm/enemy/shotloid_c.inc");
 void Shotloid_Update(struct Enemy* p) {
   if (!FUN_08093afc(p)) {
     if ((p->s).work[0] == 0) {
-      FUN_08093be0((struct ShotloidObject*)p);
+      FUN_08093be0(p);
       if (FUN_08093b50(p)) {
         return;
       }

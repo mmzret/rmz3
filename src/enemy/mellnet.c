@@ -2,6 +2,9 @@
 #include "enemy.h"
 #include "global.h"
 #include "story.h"
+#include "element.h"
+
+void Mellnet_Die(struct Enemy* p);
 
 bool8 FUN_0807d724(struct Enemy* p);
 bool8 FUN_0807d780(struct Enemy* p);
@@ -15,7 +18,7 @@ static const motion_t sMotions[18];
 static const EnemyFunc sUpdates1[7];
 static const EnemyFunc sUpdates2[7];
 void FUN_0807d6c0(s32 x, s32 y, u8 a2) {
-  struct Enemy* p = (struct Enemy*)AllocEntityLast(gEnemyHeaderPtr);
+  struct Enemy* p = (struct Enemy*)AllocEntityFirst(gEnemyHeaderPtr);
   if (p != NULL) {
     INIT_ENEMY_ROUTINE(p, ENEMY_MELLNET);
     (p->s).work[0] = 1;
@@ -44,14 +47,14 @@ bool8 FUN_0807d724(struct Enemy* p) {
 }
 
 bool8 FUN_0807d780(struct Enemy* p) {
-  if ((p->s).mode[1] != 6 && *(struct VFX**)&p->buffer[0] == NULL) {
+  if ((p->s).mode[1] != 6 && *(struct Entity**)&p->buffer[0] == NULL) {
     switch ((p->s).mode[3]) {
       case 0:
         if (IsFrozen(&p->s)) {
           (sUpdates1[(p->s).mode[1]])(p);
           (sUpdates2[(p->s).mode[1]])(p);
           (p->s).mode[3]++;
-          UpdateMotionGraphic(&p->s);
+          UpdateEntityAnim(&p->s);
           return TRUE;
         }
         break;
@@ -72,13 +75,13 @@ bool8 FUN_0807d780(struct Enemy* p) {
 }
 
 void FUN_0807d810(struct Enemy* p) {
-  if (*(struct VFX**)&p->buffer[0] == NULL && ((p->body).status & BODY_STATUS_WHITE)) {
+  if (*(struct Entity**)&p->buffer[0] == NULL && ((p->body).status & BODY_STATUS_WHITE)) {
     if (((p->body).status & BODY_STATUS_RECOILED)) {
       (p->s).mode[1] = 6;
       (p->s).mode[2] = 0;
     } else {
-      struct VFX* e = ApplyElementEffect(0, &p->s, &sElementCoord);
-      *(struct VFX**)&p->buffer[0] = e;
+      struct Entity* e = ApplyElementEffect(0, (Object*)p, &sElementCoord);
+      *(struct Entity**)&p->buffer[0] = e;
       if (e != NULL) {
         (p->s).mode[1] = 0;
         (p->s).mode[2] = 0;
@@ -155,7 +158,7 @@ void FUN_0807da34(struct Enemy* p) {
         (p->s).mode[1] = 3;
         (p->s).mode[2] = 0;
       }
-      UpdateMotionGraphic(&p->s);
+      UpdateEntityAnim(&p->s);
   }
 }
 
