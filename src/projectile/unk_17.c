@@ -1,5 +1,6 @@
 #include "collision.h"
 #include "global.h"
+#include "story.h"
 #include "projectile.h"
 
 void Projectile17_Init(Projectile* p);
@@ -53,7 +54,23 @@ Entity* FUN_080a2838(Entity* e, Coords32* c1, Coords32* c2, bool8 isDirRight) {
 
 // --------------------------------------------
 
-INCASM("asm/projectile/unk_17.inc");
+INCASM("asm/projectile/unk_17_a.inc");
+
+static const ProjectileFunc PTR_ARRAY_0836b3b4[3];
+
+void Projectile17_Update(Projectile* p) {
+  if (IS_METTAUR) {
+    p->flags &= ~DISPLAY;
+    p->flags &= ~FLIPABLE;
+    EXIT_BODY(p);
+    SET_PROJECTILE_ROUTINE(p, ENTITY_DISAPPEAR);
+    return;
+  }
+
+  (PTR_ARRAY_0836b3b4[p->mode[1]])((void*)p);
+}
+
+INCASM("asm/projectile/unk_17_b.inc");
 
 // --------------------------------------------
 

@@ -1,11 +1,12 @@
 #include "collision.h"
 #include "enemy.h"
 #include "global.h"
+#include "story.h"
 #include "physics.h"
 
 typedef struct {
   COLLISION_OBJECT_HDR;
-  u8 unk_b4[4];  // 0xB4
+  Entity* elfx;  // 0xB4, Element Effect
   u8 unk_b8;     // 0xB8
   u8 unk_b9[3];  // 0xB9
   u8 unk_bc[8];  // 0xBC
@@ -167,7 +168,59 @@ _080772F2:\n\
  .syntax divided\n");
 }
 
-INCASM("asm/enemy/volcaire.inc");
+
+static const EnemyFunc sUpdates1[8];
+static const EnemyFunc sUpdates2[8];
+
+// 0x080772f8
+bool8 FUN_080772f8(Volcaire* p) {
+  if (p->mode[1] != 7) {
+    Entity* v = p->elfx;
+    if (v == NULL) {
+      switch (p->mode[3]) {
+        case 0:
+          if (IsFrozen(p)) {
+            (sUpdates1[p->mode[1]])((struct Enemy*)p);
+            (sUpdates2[p->mode[1]])((struct Enemy*)p);
+            p->mode[3]++;
+            UpdateSpriteAnimation(p);
+            return TRUE;
+          }
+          break;
+        case 1:
+          if (IsFrozen(p)) {
+            if ((p->body.status & (BODY_STATUS_RECOILED | BODY_STATUS_WHITE)) ==
+                (BODY_STATUS_RECOILED | BODY_STATUS_WHITE)) {
+              p->mode[3] = 0;
+            } else {
+              return TRUE;
+            }
+          } else {
+            p->mode[3] = 0;
+          }
+          break;
+      }
+    }
+  }
+  return FALSE;
+}
+
+INCASM("asm/enemy/volcaire_a.inc");
+
+static const EnemyFunc sDeads[3];
+
+void Volcaire_Die(struct Enemy* p) {
+  if (IS_METTAUR) {
+    (p->s).flags &= ~DISPLAY;
+    (p->s).flags &= ~FLIPABLE;
+    EXIT_BODY(p);
+    SET_ENEMY_ROUTINE(p, ENTITY_DISAPPEAR);
+    return;
+  }
+  (sDeads[(p->s).mode[1]])(p);
+}
+
+INCASM("asm/enemy/volcaire_b.inc");
 
 // --------------------------------------------
 
