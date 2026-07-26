@@ -3,6 +3,8 @@
 #include "global.h"
 #include "zero.h"
 
+bool8 FUN_080e1578(struct Coord* c1, struct Coord* c2, struct Coord* c3, u8* param_4, s16 param_5);
+
 struct Zero;
 
 struct CyberElf1 {
@@ -61,10 +63,22 @@ static void Elf1_Init(struct CyberElf1* p) {
   p->unk_b8 = 0;
   p->unk_b9 = 32;
   SET_ELF_ROUTINE(p, ENTITY_UPDATE);
-  Elf1_Update(p);
+  Elf1_Update((struct CyberElf1*)p);
 }
 
-INCASM("asm/cyberelf/unk_1.inc");
+INCASM("asm/cyberelf/unk_1_a.inc");
+
+void FUN_080e2310(CyberElf* p) {
+  struct Coord c;
+  struct Zero* z = *(struct Zero**)&p->buffer[0];
+  c.x = (z->s).coord.x;
+  c.y = (z->s).coord.y;
+  if (FUN_080e1578((struct Coord*)&p->buffer[8], &p->unk_coord, &c, &p->buffer[6], 0xA0)) {
+    p->mode[1]++;
+  }
+}
+
+INCASM("asm/cyberelf/unk_1_b.inc");
 
 void FUN_080e2310(CyberElf* p);
 void FUN_080e234c(CyberElf* p);
