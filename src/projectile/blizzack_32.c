@@ -51,7 +51,7 @@ void blizzack_080aaae0(Entity* q, u8 val) {
 }
 
 void FUN_080aab38(struct Enemy* e, struct Entity* parent) {
-  Projectile* p = (struct Projectile*)AllocEntityLast(gProjectileHeaderPtr);
+  Projectile* p = (struct Projectile*)AllocEntityFirst(gProjectileHeaderPtr);
 
   if (p != NULL) {
     INIT_PROJECTILE_ROUTINE(p, 32);
@@ -65,7 +65,7 @@ void FUN_080aab38(struct Enemy* e, struct Entity* parent) {
 }
 
 void FUN_080aabd4(struct Entity* e) {
-  Projectile* p = (struct Projectile*)AllocEntityFirst(gProjectileHeaderPtr);
+  Projectile* p = (struct Projectile*)AllocEntityLast(gProjectileHeaderPtr);
   if (p != NULL) {
     INIT_PROJECTILE_ROUTINE(p, 32);
     p->work[0] = 3;
@@ -76,7 +76,7 @@ void FUN_080aabd4(struct Entity* e) {
 }
 
 void FUN_080aac28(struct Entity* e) {
-  Projectile* p = (struct Projectile*)AllocEntityFirst(gProjectileHeaderPtr);
+  Projectile* p = (struct Projectile*)AllocEntityLast(gProjectileHeaderPtr);
   if (p != NULL) {
     INIT_PROJECTILE_ROUTINE(p, 32);
     p->work[0] = 4;
@@ -87,7 +87,7 @@ void FUN_080aac28(struct Entity* e) {
 }
 
 void FUN_080aac7c(struct Coord* c, bool8 xflip, struct Entity* e) {
-  Projectile* p = (struct Projectile*)AllocEntityFirst(gProjectileHeaderPtr);
+  Projectile* p = (struct Projectile*)AllocEntityLast(gProjectileHeaderPtr);
 
   if (p != NULL) {
     INIT_PROJECTILE_ROUTINE(p, 32);
@@ -100,7 +100,7 @@ void FUN_080aac7c(struct Coord* c, bool8 xflip, struct Entity* e) {
 }
 
 void FUN_080aad0c(struct Coord* c, bool8 xflip, struct Entity* e) {
-  Projectile* p = (struct Projectile*)AllocEntityFirst(gProjectileHeaderPtr);
+  Projectile* p = (struct Projectile*)AllocEntityLast(gProjectileHeaderPtr);
 
   if (p != NULL) {
     INIT_PROJECTILE_ROUTINE(p, 32);
@@ -114,7 +114,7 @@ void FUN_080aad0c(struct Coord* c, bool8 xflip, struct Entity* e) {
 }
 
 void FUN_080aada0(struct Entity* e, u8 n) {
-  Projectile* p = (struct Projectile*)AllocEntityFirst(gProjectileHeaderPtr);
+  Projectile* p = (struct Projectile*)AllocEntityLast(gProjectileHeaderPtr);
 
   if (p != NULL) {
     INIT_PROJECTILE_ROUTINE(p, 32);
@@ -127,7 +127,7 @@ void FUN_080aada0(struct Entity* e, u8 n) {
 }
 
 struct Projectile* FUN_080aae34(struct Entity* e) {
-  Projectile* p = (struct Projectile*)AllocEntityFirst(gProjectileHeaderPtr);
+  Projectile* p = (struct Projectile*)AllocEntityLast(gProjectileHeaderPtr);
 
   if (p != NULL) {
     INIT_PROJECTILE_ROUTINE(p, 32);
