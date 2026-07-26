@@ -30,6 +30,10 @@ const EnemyRoutine gFlopperRoutine = {
     [ENTITY_DISAPPEAR] = (EnemyFunc)DeleteEnemy,
     [ENTITY_EXIT] =      (EnemyFunc)DeleteEntity,
 };
+
+
+void FUN_0806c04c(struct FlopperObject* p);
+void FUN_0806bfdc(struct FlopperObject* p);
 // clang-format on
 
 static void Flopper_Init(struct FlopperObject* p) {
@@ -53,7 +57,7 @@ static void Flopper_Update(struct FlopperObject* p) {
     p->flags &= ~DISPLAY;
     p->unk_08 = 0;
     p->work[2] = 0;
-    Flopper_Die((void*)p);
+    Flopper_Die((struct Enemy*)p);
     return;
   }
 
