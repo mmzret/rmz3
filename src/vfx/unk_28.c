@@ -85,7 +85,7 @@ static void Ghost28_Update(struct VFX* p) {
     Ghost28_Die(p);
     return;
   }
-  (sUpdates[(p->s).mode[1]])(p);
+  (sUpdates[(p->s).mode[1]])((void*)p);
 }
 
 static void Ghost28_Die(struct VFX* p) {
