@@ -1,8 +1,25 @@
 #include "collision.h"
 #include "global.h"
+#include "story.h"
 #include "projectile.h"
 
-INCASM("asm/projectile/pantheon_bomber.inc");
+INCASM("asm/projectile/pantheon_bomber_a.inc");
+
+static const ProjectileFunc sUpdates[2];
+void PantheonBombProjectile_Die(Projectile* p);
+
+void PantheonBombProjectile_Update(Projectile* p) {
+  if (IS_METTAUR) {
+    p->flags &= ~DISPLAY;
+    EXIT_BODY(p);
+    SET_PROJECTILE_ROUTINE(p, ENTITY_DIE);
+    PantheonBombProjectile_Die(p);
+    return;
+  }
+  (sUpdates[p->mode[1]])(p);
+}
+
+INCASM("asm/projectile/pantheon_bomber_b.inc");
 
 void PantheonBombProjectile_Init(Projectile* p);
 void PantheonBombProjectile_Update(Projectile* p);

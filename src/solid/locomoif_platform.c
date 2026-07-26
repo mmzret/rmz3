@@ -40,7 +40,23 @@ void CreateLocomoIFPlatform(struct Boss* locomoif) {
   }
 }
 
-INCASM("asm/solid/locomoif_platform.inc");
+INCASM("asm/solid/locomoif_platform_a.inc");
+
+extern const u8 u8_ARRAY_08370310[4];
+extern const struct Collision sLocomoIFPlatformCollision;
+void nop_080ce58c(struct Solid* p);
+
+void LocomoIFPlatform_Init(struct Solid* p) {
+  SET_SOLID_ROUTINE(p, ENTITY_UPDATE);
+  (p->s).mode[1] = u8_ARRAY_08370310[(p->s).work[0]];
+  (p->s).flags |= FLIPABLE;
+  (p->s).flags |= DISPLAY;
+  EnableSpriteAnimation_Normal(&p->s);
+  INIT_BODY(p, &sLocomoIFPlatformCollision, 1, (void*)nop_080ce58c);
+  LocomoIFPlatform_Update(p);
+}
+
+INCASM("asm/solid/locomoif_platform_b.inc");
 
 // --------------------------------------------
 
