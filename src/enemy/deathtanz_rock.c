@@ -2,7 +2,22 @@
 #include "enemy.h"
 #include "global.h"
 
-INCASM("asm/enemy/deathtanz_rock.inc");
+bool8 FUN_0807a5c0(struct Enemy* p);
+static const EnemyFunc sUpdates1[3];
+static const EnemyFunc sUpdates2[3];
+
+void DeathtanzRock_Update(struct Enemy* p);
+
+INCASM("asm/enemy/deathtanz_rock_a.inc");
+
+void DeathtanzRock_Update(struct Enemy* p) {
+  if (!FUN_0807a5c0(p)) {
+    (sUpdates1[(p->s).mode[1]])((void*)p);
+    (sUpdates2[(p->s).mode[1]])((void*)p);
+  }
+}
+
+INCASM("asm/enemy/deathtanz_rock_b.inc");
 
 void DeathtanzRock_Init(struct Enemy* p);
 void DeathtanzRock_Update(struct Enemy* p);
@@ -10,9 +25,9 @@ void DeathtanzRock_Die(struct Enemy* p);
 
 // clang-format off
 const EnemyRoutine gDeathtanzRockRoutine = {
-    [ENTITY_INIT] =      DeathtanzRock_Init,
-    [ENTITY_UPDATE] =    DeathtanzRock_Update,
-    [ENTITY_DIE] =       DeathtanzRock_Die,
+    [ENTITY_INIT] =      (void*)DeathtanzRock_Init,
+    [ENTITY_UPDATE] =    (void*)DeathtanzRock_Update,
+    [ENTITY_DIE] =       (void*)DeathtanzRock_Die,
     [ENTITY_DISAPPEAR] = (void*)DeleteEnemy,
     [ENTITY_EXIT] =      (EnemyFunc)DeleteEntity,
 };
