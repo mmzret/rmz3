@@ -5,6 +5,9 @@
 #include "overworld.h"
 #include "palette_animation.h"
 
+bool8 FUN_08045d54(struct Boss* p);
+u16 FUN_080d08d0(struct Boss* p, motion_t m);
+
 typedef struct {
   COLLISION_OBJECT_HDR;  // 0x00
   u8 unk_b4[27];         // 0xB4
@@ -26,6 +29,12 @@ const BossRoutine gBabyElfRoutine = {
     [ENTITY_DISAPPEAR] = (void*)DeleteBoss,
     [ENTITY_EXIT] =      (void*)DeleteEntity,
 };
+
+static void (*const sDeinitializers[2])(BabyElf*);
+
+static void (*const sUpdates1[19])(BabyElf*);
+
+static void (*const sUpdates2[19])(BabyElf*);
 // clang-format on
 
 static void FUN_08045b68(BabyElf* p) {
@@ -51,7 +60,60 @@ static void FUN_08045b68(BabyElf* p) {
   }
 }
 
-INCASM("asm/boss/baby_elf.inc");
+INCASM("asm/boss/baby_elf_a.inc");
+
+void FUN_08045d28(struct Body* body) {
+  struct Entity* self = (struct Entity*)body->parent;
+  if (body->hitboxFlags & 1) {
+    if (self->work[0] == 1) {
+      struct Entity* par = self->unk_28;
+      u16* pf = (u16*)((u8*)par + 0xa4);
+      u16* sf;
+      s32 v = *pf - 0x60;
+      sf = (u16*)((u8*)self + 0xa4);
+      *pf = v + *sf;
+      *sf = 0x60;
+    }
+  }
+}
+
+INCASM("asm/boss/baby_elf_b.inc");
+
+void BabyElf_Update(BabyElf* p) {
+  FUN_08045b68(p);
+  if (!FUN_08045d54((struct Boss*)p)) {
+    (sUpdates1[p->mode[1]])((void*)p);
+    (sUpdates2[p->mode[1]])((void*)p);
+  }
+}
+
+void BabyElf_Die(BabyElf* p) {
+  FUN_08045b68(p);
+  (sDeinitializers[p->mode[1]])((void*)p);
+}
+
+void nop_08046150(BabyElf* p) {}
+
+INCASM("asm/boss/baby_elf_c.inc");
+
+void FUN_0804874c(BabyElf* p) {
+  s32 m = p->mode[2];
+  if (m != 1) {
+    if (m > 1) {
+      return;
+    }
+    if (m != 0) {
+      return;
+    }
+    p->mode[2] = 1;
+  }
+  if (FUN_080d08d0((struct Boss*)p, 0x3000)) {
+    p->flags &= ~DISPLAY;
+    p->mode[2]++;
+  }
+}
+
+INCASM("asm/boss/baby_elf_d.inc");
 
 void nop_08046150(BabyElf* p);
 
