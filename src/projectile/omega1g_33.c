@@ -17,7 +17,7 @@ struct Projectile* createGoldOmega1Laser(s32 a0, u8 a1, s32 a2, struct Entity* e
   if (p != NULL) {
     INIT_PROJECTILE_ROUTINE(p, 33);
     p->work[0] = 0;
-    ((struct Projectile33x*)p)->work[0] = a1;
+    ((struct Projectile33x*)p)->buffer[0] = a1;
     ((struct Projectile33x*)p)->prevCoord.x = a0;
     ((struct Projectile33x*)p)->prevCoord.y = a2;
     p->unk_28 = e;

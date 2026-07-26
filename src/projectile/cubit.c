@@ -16,8 +16,8 @@ struct Projectile* FUN_080a5f00(struct Entity* e, u8 a1) {
     INIT_PROJECTILE_ROUTINE(p, 22);
     p->work[0] = 0;
     p->unk_28 = e;
-    ((struct Projectile33x*)p)->work[2] = 0;
-    ((struct Projectile33x*)p)->work[1] = a1;
+    ((struct Projectile33x*)p)->buffer[2] = 0;
+    ((struct Projectile33x*)p)->buffer[1] = a1;
   }
   return p;
 }
@@ -28,9 +28,9 @@ struct Projectile* FUN_080a5f54(struct Entity* e, struct Coord* c, u8 a2, u8 a3)
     INIT_PROJECTILE_ROUTINE(p, 22);
     p->work[0] = 5;
     p->coord = *c;
-    ((struct Projectile33x*)p)->work[0] = a2;
-    ((struct Projectile33x*)p)->work[1] = a3;
-    ((struct Projectile33x*)p)->work[2] = 0;
+    ((struct Projectile33x*)p)->buffer[0] = a2;
+    ((struct Projectile33x*)p)->buffer[1] = a3;
+    ((struct Projectile33x*)p)->buffer[2] = 0;
     p->unk_28 = e;
   }
   return p;
@@ -41,7 +41,7 @@ struct Projectile* FUN_080a5fc4(struct Entity* e) {
   if (p != NULL) {
     INIT_PROJECTILE_ROUTINE(p, 22);
     p->work[0] = 1;
-    ((struct Projectile33x*)p)->work[2] = 0;
+    ((struct Projectile33x*)p)->buffer[2] = 0;
     p->unk_28 = e;
   }
   return p;
@@ -53,8 +53,8 @@ struct Projectile* FUN_080a6014(struct Entity* e, struct Coord* c, u8 a2, u8 a3)
     INIT_PROJECTILE_ROUTINE(p, 22);
     p->work[0] = 4;
     p->coord = *c;
-    ((struct Projectile33x*)p)->work[1] = a3;
-    ((struct Projectile33x*)p)->work[2] = a2;
+    ((struct Projectile33x*)p)->buffer[1] = a3;
+    ((struct Projectile33x*)p)->buffer[2] = a2;
     p->unk_28 = e;
   }
   return p;
@@ -65,7 +65,7 @@ struct Projectile* cubit_080a6078(struct Entity* e) {
   if (p != NULL) {
     INIT_PROJECTILE_ROUTINE(p, 22);
     p->work[0] = 2;
-    ((struct Projectile33x*)p)->work[2] = 0;
+    ((struct Projectile33x*)p)->buffer[2] = 0;
     p->unk_28 = e;
   }
   return p;
