@@ -45,7 +45,7 @@ static void VFX44_Init(struct Entity* p) {
   p->work[2] = 0xFF;
   SET_VFX_ROUTINE(p, ENTITY_UPDATE);
   p->mode[1] = 0, p->mode[2] = 0, p->mode[3] = 0;
-  VFX44_Update(p);
+  VFX44_Update((struct Entity*)p);
 }
 
 void FUN_080be974(struct Entity* p);
@@ -60,7 +60,7 @@ static void VFX44_Update(struct Entity* p) {
     SET_VFX_ROUTINE(p, ENTITY_DISAPPEAR);
     return;
   }
-  (sUpdates[p->mode[1]])(p);
+  (sUpdates[p->mode[1]])((void*)p);
 }
 
 static void VFX44_Die(struct Entity* p) {
@@ -70,4 +70,36 @@ static void VFX44_Die(struct Entity* p) {
 
 // --------------------------------------------
 
-INCASM("asm/vfx/unk_44.inc");
+void FUN_080be974(struct Entity* p) {
+  switch (p->mode[2]) {
+    case 0:
+      SetMotion(p, 0x3d00);
+      p->work[2] = 0x14;
+      p->mode[2]++;
+      FALLTHROUGH;
+    case 1:
+      UpdateSpriteAnimation(p);
+      if (p->work[2]-- & 2) {
+        p->flags |= DISPLAY;
+      } else {
+        p->flags &= ~DISPLAY;
+      }
+      if (p->work[2] != 0) {
+        break;
+      }
+      p->mode[2]++;
+      break;
+    case 2:
+      SetMotion(p, 0x3d01);
+      PlaySound(0x62);
+      p->flags |= DISPLAY;
+      p->mode[2]++;
+      break;
+    case 3:
+      UpdateSpriteAnimation(p);
+      if (p->motion.state == 3) {
+        SET_VFX_ROUTINE(p, ENTITY_DIE);
+      }
+      break;
+  }
+}

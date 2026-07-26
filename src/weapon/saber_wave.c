@@ -1,5 +1,6 @@
 #include "collision.h"
 #include "global.h"
+#include "score.h"
 #include "weapon.h"
 
 // Saber wave by cyberelf, Cottus
@@ -234,4 +235,18 @@ struct Entity* CreateSaberWave(Player* z, Weapon* saber, bool8 isProjectile) {
   return (struct Entity*)p;
 }
 
-INCASM("asm/weapon/saber_wave.inc");
+INCASM("asm/weapon/saber_wave_a.inc");
+
+void Weapon5_Die(SaverWave* w) {
+  EXIT_BODY(w);
+  w->flags &= ~DISPLAY;
+  SET_WEAPON_ROUTINE(w, ENTITY_EXIT);
+}
+
+static void hitZSaber(struct Body* body) {
+  if (body->hitboxFlags & BODY_STATUS_B2) {
+    if (gScore.weaponCount[WEAPON_SABER] <= 0xFFFE) {
+      gScore.weaponCount[WEAPON_SABER]++;
+    }
+  }
+}

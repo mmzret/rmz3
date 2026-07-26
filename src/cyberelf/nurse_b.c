@@ -41,7 +41,17 @@ struct Entity* CreateNurseBElf(struct Zero* z, u8 breed, u8 availability, u8 sat
   return (struct Entity*)p;
 }
 
-INCASM("asm/cyberelf/nurse_b.inc");
+void FUN_080bfce8(struct Coord* c, s32 r1);
+
+INCASM("asm/cyberelf/nurse_b_a.inc");
+
+void NurseB_Die(CyberElf* p) {
+  FUN_080bfce8(&p->coord, 0);
+  p->flags &= ~DISPLAY;
+  SET_ELF_ROUTINE(p, ENTITY_EXIT);
+}
+
+INCASM("asm/cyberelf/nurse_b_b.inc");
 
 // --------------------------------------------
 

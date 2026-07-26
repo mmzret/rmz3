@@ -2,7 +2,72 @@
 #include "enemy.h"
 #include "global.h"
 
-INCASM("asm/enemy/wormer_snow_ball.inc");
+void FUN_0807b7c0(struct Enemy* p);
+
+void FUN_0807b308(struct Enemy* p);
+
+void FUN_0807b30c(struct Enemy* p);
+
+void WormerSnowBall_Update(struct Enemy* p);
+
+static const EnemyFunc sUpdates1[4];
+static const EnemyFunc sUpdates2[4];
+static const EnemyFunc sDeads[3];
+
+INCASM("asm/enemy/wormer_snow_ball_a.inc");
+
+void nop_0807b1dc(struct Enemy* p) {}
+
+void WormerSnowBall_Die(struct Enemy* p);
+
+
+static bool8 FUN_0807b1e0(struct Enemy* p) {
+  if ((p->body).status & BODY_STATUS_DEAD) {
+    SET_ENEMY_ROUTINE(p, ENTITY_DIE);
+    (p->s).mode[1] = (p->s).work[0];
+    WormerSnowBall_Die(p);
+    return TRUE;
+  }
+  return FALSE;
+}
+
+INCASM("asm/enemy/wormer_snow_ball_b.inc");
+
+extern const EnemyFunc sUpdates1[4];
+extern const EnemyFunc sUpdates2[4];
+
+void WormerSnowBall_Update(struct Enemy* p) {
+  if (!FUN_0807b1e0(p)) {
+    (sUpdates1[(p->s).mode[1]])((void*)p);
+    (sUpdates2[(p->s).mode[1]])((void*)p);
+  }
+}
+
+void WormerSnowBall_Die(struct Enemy* p) {
+  (sDeads[(p->s).mode[1]])((void*)p);
+}
+
+void FUN_0807b308(struct Enemy* p) {}
+
+
+void FUN_0807b30c(struct Enemy* p) {
+  if ((p->body).status & BODY_STATUS_B2) {
+    (p->s).mode[1] = 2;
+    (p->s).mode[2] = 0;
+  }
+}
+
+INCASM("asm/enemy/wormer_snow_ball_c.inc");
+
+void CreateIceballParticle2(s32 x, s32 y);
+
+void FUN_0807b7c0(struct Enemy* p) {
+  EXIT_BODY(p);
+  CreateIceballParticle2((p->s).coord.x, (p->s).coord.y);
+  SET_ENEMY_ROUTINE(p, ENTITY_EXIT);
+}
+
+INCASM("asm/enemy/wormer_snow_ball_d.inc");
 
 void WormerSnowBall_Init(struct Enemy* p);
 void WormerSnowBall_Update(struct Enemy* p);
@@ -10,9 +75,9 @@ void WormerSnowBall_Die(struct Enemy* p);
 
 // clang-format off
 const EnemyRoutine gWormerSnowBallRoutine = {
-    [ENTITY_INIT] =      WormerSnowBall_Init,
-    [ENTITY_UPDATE] =    WormerSnowBall_Update,
-    [ENTITY_DIE] =       WormerSnowBall_Die,
+    [ENTITY_INIT] =      (void*)WormerSnowBall_Init,
+    [ENTITY_UPDATE] =    (void*)WormerSnowBall_Update,
+    [ENTITY_DIE] =       (void*)WormerSnowBall_Die,
     [ENTITY_DISAPPEAR] = (void*)DeleteEnemy,
     [ENTITY_EXIT] =      (EnemyFunc)DeleteEntity,
 };

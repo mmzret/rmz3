@@ -2,6 +2,8 @@
 #include "global.h"
 #include "solid.h"
 
+void ModElf_Die(struct Solid* p);
+
 /*
 various:
   00: エルピス
@@ -10,7 +12,11 @@ various:
 
 static const struct Collision sCollision;
 
-INCASM("asm/solid/mod_elf.inc");
+INCASM("asm/solid/mod_elf_a.inc");
+
+void ModElf_Die(struct Solid* p) {
+  SET_SOLID_ROUTINE(p, ENTITY_EXIT);
+}
 
 void ModElf_Init(struct Solid* p);
 void ModElf_Update(struct Solid* p);

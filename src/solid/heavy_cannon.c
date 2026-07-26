@@ -1,5 +1,6 @@
 #include "collision.h"
 #include "global.h"
+#include "element.h"
 #include "solid.h"
 
 static const struct Collision sCollisions[];
@@ -11,12 +12,18 @@ void FUN_080cc284(struct Solid* p);
 
 // clang-format off
 const SolidRoutine gHeavyCannonRoutine = {
-    [ENTITY_INIT] =      initHeavyCannon,
-    [ENTITY_UPDATE] =    heavyCannonAI,
-    [ENTITY_DIE] =       killHeavyCannon,
-    [ENTITY_DISAPPEAR] = FUN_080cc284,
+    [ENTITY_INIT] =      (void*)initHeavyCannon,
+    [ENTITY_UPDATE] =    (void*)heavyCannonAI,
+    [ENTITY_DIE] =       (void*)killHeavyCannon,
+    [ENTITY_DISAPPEAR] = (void*)FUN_080cc284,
     [ENTITY_EXIT] =      (SolidFunc)DeleteEntity,
 };
+
+
+
+void FUN_080cbe38(struct Solid* p);
+void FUN_080cc4dc(struct Solid* p);
+void FUN_080cc298(struct Solid* p);
 // clang-format on
 
 static bool8 FUN_080cbdc0(Object* p) {
@@ -35,13 +42,76 @@ static bool8 FUN_080cbdc0(Object* p) {
       if (next != NULL) next->unk_28 = prev;
     }
     SET_SOLID_ROUTINE(p, ENTITY_DIE);
-    killHeavyCannon((void*)p);
+    killHeavyCannon((struct Solid*)p);
     return TRUE;
   }
   return FALSE;
 }
 
-INCASM("asm/solid/heavy_cannon.inc");
+void FUN_080cbe38(struct Solid* p) {
+  struct Entity* parent = (p->s).unk_2c;
+  if (parent != NULL) {
+    if ((parent->coord).y - (p->s).coord.y > 0x1000) {
+      (p->s).d.y += 0x40;
+      if ((p->s).d.y > 0x700) {
+        (p->s).d.y = 0x700;
+      }
+      (p->s).coord.y += (p->s).d.y;
+    } else {
+      (p->s).coord.y = (parent->coord).y - 0x1000;
+      (p->s).d.y = 0;
+    }
+  } else {
+    (p->s).d.y += 0x40;
+    if ((p->s).d.y > 0x700) {
+      (p->s).d.y = 0x700;
+    }
+    (p->s).coord.y += (p->s).d.y;
+    if ((p->s).coord.y > *(s32*)((u8*)p + 0xb4)) {
+      (p->s).coord.y = *(s32*)((u8*)p + 0xb4);
+      (p->s).d.y = 0;
+    }
+  }
+}
+
+void nop_080cbea4(struct Solid* p) {}
+
+INCASM("asm/solid/heavy_cannon_a.inc");
+
+void FUN_080cc284(struct Solid* p) {
+  (p->s).flags2 &= ~ENTI_PHYSICS;
+  DeleteSolid((Object*)p);
+}
+
+extern const struct Coord Coord_0836ff28;
+
+void FUN_080cc298(struct Solid* p) {
+  struct Entity** slot = (struct Entity**)((u8*)p + 0xb8);
+  struct Entity* old = *slot;
+  if (old == NULL && (*(u32*)((u8*)p + 0x8c) & 1)) {
+    *slot = ApplyElementEffect(0, (Object*)p, &Coord_0836ff28);
+    if (*slot != NULL) {
+      (p->s).mode[1] = 2;
+      (p->s).mode[3] = (u8)(u32)old;
+    }
+  }
+}
+
+INCASM("asm/solid/heavy_cannon_b.inc");
+
+void FUN_080cc4dc(struct Solid* p) {
+  switch ((p->s).mode[2]) {
+    case 0:
+      SetDDP(&p->body, &sCollisions[1]);
+      SetSpriteAnimation(p, MOTION(0x38, 0));
+      (p->s).mode[2]++;
+      FALLTHROUGH;
+    case 1:
+      UpdateSpriteAnimation(p);
+      break;
+  }
+  FUN_080cbe38(p);
+}
 
 // --------------------------------------------
 
@@ -77,7 +147,7 @@ static void FUN_080cc51c(struct Solid* p) {
     }
     (p->s).mode[3]++;
   }
-  FUN_080cbe38((void*)p);
+  FUN_080cbe38((struct Solid*)p);
 }
 
 // --------------------------------------------

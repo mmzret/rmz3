@@ -69,7 +69,7 @@ static bool8 FUN_0808f348(Seimeran* p) {
     } else {
       p->mode[1] = 0;
     }
-    Seimeran_Die((void*)p);
+    Seimeran_Die((struct Enemy*)p);
     return TRUE;
   }
   return FALSE;
@@ -151,7 +151,51 @@ static void FUN_0808f424(Seimeran* p) {
 
 // --------------------------------------------
 
-INCASM("asm/enemy/seimeran.inc");
+static const struct Collision sCollisions[15];
+
+INCASM("asm/enemy/seimeran_a.inc");
+
+void FUN_0808f728(struct Enemy* p) {}
+
+INCASM("asm/enemy/seimeran_b.inc");
+
+void FUN_0808f8e0(struct Enemy* p) {
+  switch ((p->s).mode[2]) {
+    case 0:
+      SetDDP(&p->body, &sCollisions[11]);
+      (p->s).work[2] = 0xa0;
+      SetSpriteAnimation(p, MOTION(0x77, 0));
+      (p->s).mode[2]++;
+      FALLTHROUGH;
+    case 1:
+      if (--(p->s).work[2] == 0) {
+        (p->s).mode[1] = 3;
+        (p->s).mode[2] = 0;
+      }
+      UpdateSpriteAnimation(p);
+  }
+}
+
+INCASM("asm/enemy/seimeran_c.inc");
+
+void FUN_0808fa24(struct Enemy* p) {
+  switch ((p->s).mode[2]) {
+    case 0:
+      PlaySound(0x103);
+      SetSpriteAnimation(p, MOTION(0x77, 4));
+      (p->s).mode[2]++;
+      FALLTHROUGH;
+    case 1:
+      UpdateSpriteAnimation(p);
+      if ((p->s).motion.state == 3) {
+        (p->s).mode[1] = 2;
+        (p->s).mode[2] = 0;
+      }
+      break;
+  }
+}
+
+INCASM("asm/enemy/seimeran_d.inc");
 
 // --------------------------------------------
 

@@ -33,7 +33,27 @@ struct Entity* CreateElf7(struct Zero* z, u8 breed, u8 availability, u8 _) {
   return (struct Entity*)p;
 }
 
-INCASM("asm/cyberelf/unk_7.inc");
+INCASM("asm/cyberelf/unk_7_a.inc");
+
+void FUN_080e3f24(CyberElf* p) {
+  s32* val = (s32*)((u8*)p + 0xc0);
+  *val += 0x30;
+  if (*val > 0x27FF) {
+    *val = 0x2800;
+    *((u8*)p + 0xbc) = 1;
+    p->mode[1]++;
+  }
+}
+
+void FUN_080e3f54(CyberElf* p) {
+  u32 w = ((struct CyberElf7*)p)->unk_b8[4] - 1;
+  ((struct CyberElf7*)p)->unk_b8[4] = w;
+  if (w == 0) {
+    p->mode[1]++;
+  }
+}
+
+INCASM("asm/cyberelf/unk_7_b.inc");
 
 void FUN_080e3f24(CyberElf* p);
 void FUN_080e3f54(CyberElf* p);

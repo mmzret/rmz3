@@ -1,6 +1,8 @@
 #include "global.h"
 #include "vfx.h"
 
+struct Unk58Props { u8 unk_0[12]; u16 unk_c; u16 unk_e; };
+
 // VFX75 のほぼコピペ?
 // オメガ第一形態の剣の残骸?
 
@@ -13,8 +15,8 @@ struct VFX58 {
 static_assert(sizeof(struct VFX58) == sizeof(struct VFX));
 
 void VFX58_Init(struct VFX* p);
-void VFX58_Update(struct VFX* p);
-void VFX58_Die(struct VFX* p);
+void VFX58_Update(struct VFX* vfx);
+void VFX58_Die(struct VFX* vfx);
 
 // clang-format off
 const VFXRoutine gVFX58Routine = {
@@ -24,6 +26,8 @@ const VFXRoutine gVFX58Routine = {
     [ENTITY_DISAPPEAR] = (void*)DeleteVFX,
     [ENTITY_EXIT] =      (void*)DeleteEntity,
 };
+
+void FUN_080c2364(struct VFX* p);
 // clang-format on
 
 // --------------------------------------------
@@ -72,7 +76,43 @@ struct Entity* FUN_080c1c94(Coords32* c, u8 n, motion_t param_3) {
   return (void*)p;
 }
 
-INCASM("asm/vfx/unk_58.inc");
+static const VFXFunc sUpdates[9];
+
+struct VFX* FUN_080c1cf4(struct Coord* c, u8 a1, u16 a2, u16 a3) {
+  struct VFX* p = (struct VFX*)AllocEntityLast(gVFXHeaderPtr);
+  if (p != NULL) {
+    INIT_VFX_ROUTINE(p, VFX_UNK_058);
+    (p->s).work[0] = 7;
+    (p->s).coord.x = c->x;
+    (p->s).coord.y = c->y;
+    (p->s).work[1] = a1;
+    ((struct Unk58Props*)p->buffer)->unk_e = a2;
+    ((struct Unk58Props*)p->buffer)->unk_c = a3;
+  }
+  return p;
+}
+
+INCASM("asm/vfx/unk_58_a.inc");
+
+void VFX58_Update(struct VFX* vfx) {
+  (sUpdates[(vfx->s).mode[1]])((void*)vfx);
+}
+
+
+void VFX58_Die(struct VFX* vfx) {
+  (vfx->s).flags &= ~DISPLAY;
+  SET_VFX_ROUTINE(vfx, ENTITY_EXIT);
+}
+
+INCASM("asm/vfx/unk_58_b.inc");
+
+void FUN_080c2364(struct VFX* p) {
+  if (--(p->s).work[2] == 0) {
+    SET_VFX_ROUTINE(p, ENTITY_DIE);
+  }
+}
+
+INCASM("asm/vfx/unk_58_c.inc");
 
 // --------------------------------------------
 

@@ -63,7 +63,45 @@ void FUN_080bc660(s32 x, s32 y) {
   }
 }
 
-INCASM("asm/vfx/unk_37.inc");
+static const u8 u8_ARRAY_0836edf0[7];
+
+INCASM("asm/vfx/unk_37_a.inc");
+
+void FUN_080bc758(s32 x, s32 y) {
+  struct Entity* p = AllocEntityLast(gVFXHeaderPtr);
+  if (p != NULL) {
+    INIT_VFX_ROUTINE(p, VFX_UNK_037);
+    p->work[0] = 5;
+    p->coord.x = x;
+    p->coord.y = y;
+  }
+}
+
+INCASM("asm/vfx/unk_37_b.inc");
+
+extern const u8 u8_ARRAY_0836edf0[7];
+
+void VFX37_Init(struct VFX* vfx) {
+  SET_VFX_ROUTINE(vfx, ENTITY_UPDATE);
+  (vfx->s).mode[1] = u8_ARRAY_0836edf0[(vfx->s).work[0]];
+  (vfx->s).flags |= FLIPABLE;
+  (vfx->s).flags |= DISPLAY;
+  EnableSpriteAnimation_Normal(vfx);
+  VFX37_Update(vfx);
+}
+
+extern const VFXFunc PTR_ARRAY_0836edd4[7];
+
+void VFX37_Update(struct VFX* vfx) {
+  (PTR_ARRAY_0836edd4[(vfx->s).mode[1]])((void*)vfx);
+}
+
+
+void VFX37_Die(struct VFX* vfx) {
+  SET_VFX_ROUTINE(vfx, ENTITY_EXIT);
+}
+
+INCASM("asm/vfx/unk_37_c.inc");
 
 // --------------------------------------------
 

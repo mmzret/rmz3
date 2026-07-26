@@ -8,9 +8,9 @@ typedef struct {
 } TileCannon;
 static_assert(sizeof(TileCannon) == sizeof(struct Enemy));
 
-void TileCannon_Init(struct Enemy* p);
-void TileCannon_Update(struct Enemy* p);
-void TileCannon_Die(struct Enemy* p);
+void TileCannon_Init(TileCannon* p);
+void TileCannon_Update(TileCannon* p);
+void TileCannon_Die(TileCannon* p);
 
 // clang-format off
 const EnemyRoutine gTileCannonRoutine = {
@@ -34,46 +34,146 @@ bool32 FUN_080780c4(TileCannon* p) {
   return FALSE;
 }
 
-INCASM("asm/enemy/tile_cannon.inc");
+static const EnemyFunc sUpdates1[9];
+static const EnemyFunc sUpdates2[9];
+static const struct Collision sCollisions[9];
 
-void FUN_08078480(struct Enemy* p);
-void FUN_0807847c(struct Enemy* p);
+TileCannon* FUN_08078108(struct Entity* e) {
+  TileCannon* p = (TileCannon*)AllocEntityLast(gEnemyHeaderPtr);
+  if (p != NULL) {
+    INIT_ENEMY_ROUTINE(p, ENEMY_TILE_CANNON);
+    p->work[0] = 2;
+    p->coord.x = e->coord.x;
+    p->coord.y = e->coord.y;
+    p->unk_28 = e;
+    p->flags2 |= WHITE_PAINTABLE;
+    p->invincibleID = e->uniqueID;
+  }
+  return p;
+}
+
+void FUN_08078170(TileCannon* p) {}
+
+void TileCannon_Die(TileCannon* p);
+
+
+static bool8 tilecannon_08078174(TileCannon* p) {
+  if ((p->body).status & BODY_STATUS_DEAD) {
+    TileCannon_Die(p);
+    return TRUE;
+  }
+  return FALSE;
+}
+
+INCASM("asm/enemy/tile_cannon_a.inc");
+
+extern const EnemyFunc sUpdates1[9];
+extern const EnemyFunc sUpdates2[9];
+void tilecannon_08078210(TileCannon* p);
+bool8 tilecannon_08078198(TileCannon* p);
+
+void TileCannon_Update(TileCannon* p) {
+  if (p->work[0] == 2) {
+    if ((p->unk_28)->mode[0] > 1) {
+      p->flags &= ~DISPLAY;
+      p->flags &= ~FLIPABLE;
+      EXIT_BODY(p);
+      p->flags &= ~COLLIDABLE;
+      SET_ENEMY_ROUTINE(p, ENTITY_DISAPPEAR);
+      return;
+    }
+    tilecannon_08078210(p);
+    if (tilecannon_08078174(p)) {
+      return;
+    }
+  } else {
+    if (tilecannon_08078198(p)) {
+      return;
+    }
+  }
+  (sUpdates1[p->mode[1]])((void*)p);
+  (sUpdates2[p->mode[1]])((void*)p);
+}
+
+INCASM("asm/enemy/tile_cannon_b.inc");
+
+void FUN_0807847c(TileCannon* p) {}
+
+void FUN_08078480(TileCannon* p) {
+  struct Entity** slot = (struct Entity**)((u8*)p + 0xb4);
+  if (*slot == NULL || isKilled(*slot)) {
+    SetDDP(&p->body, &sCollisions[7]);
+    *slot = NULL;
+    p->mode[1] = 7;
+    p->mode[2] = 0;
+  }
+}
+
+void FUN_080784b4(TileCannon* p) {
+  if (p->mode[2] == 0) {
+    SetDDP(&p->body, &sCollisions[8]);
+    p->mode[2]++;
+  }
+}
+
+INCASM("asm/enemy/tile_cannon_c.inc");
+
+void FUN_08078624(TileCannon* p) {
+  switch (p->mode[2]) {
+    case 0:
+      SetSpriteAnimation(p, MOTION(0x2f, 6));
+      p->mode[2]++;
+      FALLTHROUGH;
+    case 1:
+      UpdateSpriteAnimation(p);
+      if (p->motion.state == 3) {
+        p->mode[1] = 5;
+        p->mode[2] = 0;
+      }
+      break;
+  }
+}
+
+INCASM("asm/enemy/tile_cannon_d.inc");
+
+void FUN_08078480(TileCannon* p);
+void FUN_0807847c(TileCannon* p);
 
 // clang-format off
 static const EnemyFunc sUpdates1[9] = {
-    FUN_08078480,
-    FUN_0807847c,
-    FUN_0807847c,
-    FUN_0807847c,
-    FUN_0807847c,
-    FUN_0807847c,
-    FUN_0807847c,
-    FUN_0807847c,
-    FUN_0807847c,
+    (EnemyFunc)FUN_08078480,
+    (EnemyFunc)FUN_0807847c,
+    (EnemyFunc)FUN_0807847c,
+    (EnemyFunc)FUN_0807847c,
+    (EnemyFunc)FUN_0807847c,
+    (EnemyFunc)FUN_0807847c,
+    (EnemyFunc)FUN_0807847c,
+    (EnemyFunc)FUN_0807847c,
+    (EnemyFunc)FUN_0807847c,
 };
 // clang-format on
 
-void FUN_080784b4(struct Enemy* p);
-void FUN_080784d8(struct Enemy* p);
-void FUN_08078550(struct Enemy* p);
-void FUN_080785bc(struct Enemy* p);
-void FUN_08078624(struct Enemy* p);
-void FUN_08078664(struct Enemy* p);
-void FUN_0807874c(struct Enemy* p);
-void FUN_0807884c(struct Enemy* p);
-void FUN_08078908(struct Enemy* p);
+void FUN_080784b4(TileCannon* p);
+void FUN_080784d8(TileCannon* p);
+void FUN_08078550(TileCannon* p);
+void FUN_080785bc(TileCannon* p);
+void FUN_08078624(TileCannon* p);
+void FUN_08078664(TileCannon* p);
+void FUN_0807874c(TileCannon* p);
+void FUN_0807884c(TileCannon* p);
+void FUN_08078908(TileCannon* p);
 
 // clang-format off
 static const EnemyFunc sUpdates2[9] = {
-    FUN_080784b4,
-    FUN_080784d8,
-    FUN_08078550,
-    FUN_080785bc,
-    FUN_08078624,
-    FUN_08078664,
-    FUN_0807874c,
-    FUN_0807884c,
-    FUN_08078908,
+    (EnemyFunc)FUN_080784b4,
+    (EnemyFunc)FUN_080784d8,
+    (EnemyFunc)FUN_08078550,
+    (EnemyFunc)FUN_080785bc,
+    (EnemyFunc)FUN_08078624,
+    (EnemyFunc)FUN_08078664,
+    (EnemyFunc)FUN_0807874c,
+    (EnemyFunc)FUN_0807884c,
+    (EnemyFunc)FUN_08078908,
 };
 // clang-format on
 

@@ -2,7 +2,67 @@
 #include "enemy.h"
 #include "global.h"
 
-INCASM("asm/enemy/pantheon_base.inc");
+void pBase_0808a438(struct Enemy* p);
+
+void nop_0808a3f4(struct Enemy* p);
+
+void pBase_0808a3f8(struct Enemy* p);
+
+void PantheonBase_Die(struct Enemy* p);
+
+static const EnemyFunc sDeads[2];
+static const struct Collision sCollisions[25];
+
+struct Enemy* FUN_0808a0ec(struct Entity* e) {
+  struct Enemy* p = (struct Enemy*)AllocEntityLast(gEnemyHeaderPtr);
+  if (p != NULL) {
+    INIT_ENEMY_ROUTINE(p, ENEMY_P_BASE);
+    (p->s).work[0] = 0;
+    (p->s).unk_28 = e;
+  }
+  return p;
+}
+
+void nop_0808a140(struct Enemy* p) {}
+
+INCASM("asm/enemy/pantheon_base_a.inc");
+
+void PantheonBase_Die(struct Enemy* p) {
+  (sDeads[(p->s).mode[1]])((void*)p);
+}
+
+void nop_0808a3f4(struct Enemy* p) {}
+
+
+void pBase_0808a3f8(struct Enemy* p) {
+  struct Entity** slot = (struct Entity**)((u8*)p + 0xb4);
+  if (*slot == NULL || isKilled(*slot)) {
+    *slot = NULL;
+    SetDDP(&p->body, &sCollisions[0]);
+    if (!IsFrozen(&p->s)) {
+      (p->s).mode[1] = 1;
+      (p->s).mode[2] = 0;
+    }
+  }
+}
+
+void pBase_0808a438(struct Enemy* p) {
+  struct Entity* parent = (p->s).unk_28;
+  switch ((p->s).mode[2]) {
+    case 0:
+      SetSpriteAnimation(p, MOTION(0x6d, 0));
+      UpdateSpriteAnimation(p);
+      SetDDP(&p->body, &sCollisions[3]);
+      (p->s).mode[2]++;
+      FALLTHROUGH;
+    case 1:
+      (p->s).coord.x = parent->coord.x;
+      (p->s).coord.y = parent->coord.y;
+      break;
+  }
+}
+
+INCASM("asm/enemy/pantheon_base_b.inc");
 
 void PantheonBase_Init(struct Enemy* p);
 void PantheonBase_Update(struct Enemy* p);
@@ -10,9 +70,9 @@ void PantheonBase_Die(struct Enemy* p);
 
 // clang-format off
 const EnemyRoutine gPantheonBaseRoutine = {
-    [ENTITY_INIT] =      PantheonBase_Init,
-    [ENTITY_UPDATE] =    PantheonBase_Update,
-    [ENTITY_DIE] =       PantheonBase_Die,
+    [ENTITY_INIT] =      (void*)PantheonBase_Init,
+    [ENTITY_UPDATE] =    (void*)PantheonBase_Update,
+    [ENTITY_DIE] =       (void*)PantheonBase_Die,
     [ENTITY_DISAPPEAR] = (void*)DeleteEnemy,
     [ENTITY_EXIT] =      (EnemyFunc)DeleteEntity,
 };

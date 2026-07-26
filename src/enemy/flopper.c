@@ -14,7 +14,7 @@ static_assert(sizeof(struct FlopperObject) == sizeof(struct Enemy));
 static const struct Collision sCollisions[2];
 static const EnemyFunc sUpdates[4];
 
-void Flopper_onCollision(struct Body* body, Coords32* r1 UNUSED, Coords32* r2 UNUSED);
+void Flopper_onCollision(struct Body* body, struct Coord* r1 UNUSED, struct Coord* r2 UNUSED);
 
 static void Flopper_Init(struct FlopperObject* p);
 static void Flopper_Update(struct FlopperObject* p);
@@ -51,7 +51,7 @@ static void Flopper_Update(struct FlopperObject* p) {
     p->flags &= ~DISPLAY;
     p->unk_08 = 0;
     p->work[2] = 0;
-    Flopper_Die((void*)p);
+    Flopper_Die((struct Enemy*)p);
     return;
   }
 
@@ -67,7 +67,11 @@ static void Flopper_Update(struct FlopperObject* p) {
   (sUpdates[p->mode[1]])((void*)p);
 }
 
-INCASM("asm/enemy/flopper.inc");
+INCASM("asm/enemy/flopper_a.inc");
+
+void Flopper_onCollision(struct Body* body, struct Coord* r1 UNUSED, struct Coord* r2 UNUSED) {}
+
+INCASM("asm/enemy/flopper_b.inc");
 
 static const struct Collision sCollisions[2] = {
     {

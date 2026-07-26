@@ -318,7 +318,66 @@ _0806D328: .4byte PTR_ARRAY_0836666c\n\
  .syntax divided\n");
 }
 
-INCASM("asm/enemy/gyro_cannon.inc");
+const struct SlashedEnemy sSlashedEnemies[4];
+
+INCASM("asm/enemy/gyro_cannon_a.inc");
+
+void FUN_0806d998(GyroCannon* p) {
+  if (p->mode[2] == 0) {
+    SetSpriteAnimation(p, 0x1700);
+    p->work[2] = 8;
+    p->mode[2]++;
+  }
+  if ((u8)(--p->work[2]) == 0xff) {
+    p->mode[1] = 2;
+    p->mode[2] = 0;
+  }
+}
+
+void CreateProjectile8(s32 x, s32 y);
+
+void FUN_0806d9d4(GyroCannon* p) {
+  if (p->mode[2] == 0) {
+    SetSpriteAnimation(p, 0x1704);
+    p->work[2] = 8;
+    p->mode[2]++;
+  }
+  if ((u8)(--p->work[2]) == 0xff) {
+    CreateProjectile8(p->coord.x, p->coord.y + 0xc00);
+    p->mode[1] = 6;
+    p->mode[2] = 0;
+  }
+}
+
+void FUN_0806da20(GyroCannon* p) {
+  if (p->mode[2] == 0) {
+    SetSpriteAnimation(p, 0x1705);
+    p->work[2] = 8;
+    p->mode[2]++;
+  }
+  if ((u8)(--p->work[2]) == 0xff) {
+    p->mode[1] = 2;
+    p->mode[2] = 0;
+  }
+}
+
+INCASM("asm/enemy/gyro_cannon_b.inc");
+
+void FUN_0806db58(GyroCannon* p) {
+  UpdateSpriteAnimation(p);
+  p->coord.y -= 0x200;
+  {
+    s32* base = (s32*)((u8*)p + 0xb4);
+    if (p->coord.y < base[1]) {
+      p->coord.y = base[1];
+      p->mode[1] = 2;
+      p->mode[2] = 0;
+      p->work[3] = 0x7f;
+    }
+  }
+}
+
+INCASM("asm/enemy/gyro_cannon_c.inc");
 
 NAKED static void FUN_0806ddfc(GyroCannon* p) {
   asm(".syntax unified\n\
@@ -553,7 +612,7 @@ static const struct Collision sCollisions[5] = {
 };
 
 // 0x08366720
-static const struct SlashedEnemy sSlashedEnemies[4] = {
+const struct SlashedEnemy sSlashedEnemies[4] = {
     {
       m : 0x170B,
       unk_02 : {255, 17},

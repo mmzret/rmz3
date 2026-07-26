@@ -1,8 +1,115 @@
 #include "collision.h"
 #include "enemy.h"
 #include "global.h"
+#include "story.h"
 
-INCASM("asm/enemy/purple_nerple.inc");
+void FUN_080761b8(struct Enemy* p);
+
+void FUN_08076198(struct Enemy* p);
+
+void FUN_08076178(struct Enemy* p);
+
+void FUN_08076144(struct Enemy* p);
+
+void FUN_08076140(struct Enemy* p);
+
+void PurpleNerple_Update(struct Enemy* p);
+
+static const struct Collision sCollisions[];
+
+INCASM("asm/enemy/purple_nerple_a.inc");
+
+extern const EnemyFunc PTR_ARRAY_083670d0[10];
+extern const EnemyFunc PTR_ARRAY_083670f8[10];
+bool8 FUN_08075d40(struct Enemy* p);
+void FUN_08075e8c(struct Enemy* p);
+bool8 FUN_08075dc8(struct Enemy* p);
+void PurpleNerple_Die(struct Enemy* p);
+
+void PurpleNerple_Update(struct Enemy* p) {
+  if ((p->s).work[0] != 0) {
+    u8 prop = *(u8*)((u8*)p + 0xb9);
+    if (prop == 0 && (gCurStory.s.gameflags[4] & 0x40)) {
+      (p->s).flags &= ~DISPLAY;
+      (p->s).flags &= ~FLIPABLE;
+      (p->body).status = prop;
+      (p->body).prevStatus = prop;
+      (p->body).invincibleTime = prop;
+      (p->s).flags &= ~COLLIDABLE;
+      SET_ENEMY_ROUTINE(p, ENTITY_DISAPPEAR);
+      return;
+    }
+  }
+  if ((p->s).work[0] == 0) {
+    if (*(u8*)((u8*)p + 0xb9) != 0) {
+      if (((p->s).unk_28)->mode[0] > 1) {
+        (p->s).unk_28 = NULL;
+      }
+    }
+  }
+  if (FUN_08075d40(p)) {
+    return;
+  }
+  FUN_08075e8c(p);
+  if (FUN_08075dc8(p)) {
+    return;
+  }
+  (PTR_ARRAY_083670d0[(p->s).mode[1]])((void*)p);
+  (PTR_ARRAY_083670f8[(p->s).mode[1]])((void*)p);
+}
+
+INCASM("asm/enemy/purple_nerple_b.inc");
+
+void FUN_08076140(struct Enemy* p) {}
+
+
+void FUN_08076144(struct Enemy* p) {
+  if (p->buffer[4] != 0) {
+    (p->s).mode[1] = 4;
+    (p->s).mode[2] = 0;
+  }
+  if (((p->body).status & 0x00020001) == 0x00020001) {
+    (p->s).mode[1] = 8;
+    (p->s).mode[2] = 0;
+  }
+}
+
+
+void FUN_08076178(struct Enemy* p) {
+  if (((p->body).status & 0x00020001) == 0x00020001) {
+    (p->s).mode[1] = 8;
+    (p->s).mode[2] = 0;
+  }
+}
+
+void FUN_08076198(struct Enemy* p) {
+  if (((p->body).status & 0x00020001) == 0x00020001) {
+    (p->s).mode[1] = 8;
+    (p->s).mode[2] = 0;
+  }
+}
+
+void FUN_080761b8(struct Enemy* p) {
+  struct Entity** slot = (struct Entity**)((u8*)p + 0xb4);
+  if (*slot == NULL || isKilled(*slot)) {
+    *slot = NULL;
+    SetDDP(&p->body, &sCollisions[1]);
+    if (!IsFrozen(&p->s)) {
+      if (p->buffer[4] != 0) {
+        (p->s).mode[1] = 4;
+      } else {
+        (p->s).mode[1] = 2;
+      }
+      (p->s).mode[2] = 0;
+    }
+  }
+  if (((p->body).status & 0x00020001) == 0x00020001) {
+    (p->s).mode[1] = 8;
+    (p->s).mode[2] = 0;
+  }
+}
+
+INCASM("asm/enemy/purple_nerple_c.inc");
 
 void PurpleNerple_Init(struct Enemy* p);
 void PurpleNerple_Update(struct Enemy* p);
@@ -10,9 +117,9 @@ void PurpleNerple_Die(struct Enemy* p);
 
 // clang-format off
 const EnemyRoutine gPurpleNerpleRoutine = {
-    [ENTITY_INIT] =      PurpleNerple_Init,
-    [ENTITY_UPDATE] =    PurpleNerple_Update,
-    [ENTITY_DIE] =       PurpleNerple_Die,
+    [ENTITY_INIT] =      (void*)PurpleNerple_Init,
+    [ENTITY_UPDATE] =    (void*)PurpleNerple_Update,
+    [ENTITY_DIE] =       (void*)PurpleNerple_Die,
     [ENTITY_DISAPPEAR] = (void*)DeleteEnemy,
     [ENTITY_EXIT] =      (EnemyFunc)DeleteEntity,
 };

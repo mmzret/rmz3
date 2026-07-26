@@ -87,4 +87,14 @@ static const ElfFunc sUpdates[2] = {
     (void*)FUN_080e5d68,
 };
 
-INCASM("asm/cyberelf/bird.inc");
+void FUN_080bfce8(struct Coord* c, s32 r1);
+
+INCASM("asm/cyberelf/bird_a.inc");
+
+void BirdElf_Die(CyberElf* p) {
+  FUN_080bfce8(&p->coord, 0);
+  p->flags &= ~DISPLAY;
+  SET_ELF_ROUTINE(p, ENTITY_EXIT);
+}
+
+INCASM("asm/cyberelf/bird_b.inc");

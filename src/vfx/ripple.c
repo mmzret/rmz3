@@ -15,10 +15,10 @@ void Ripple_Disappear(struct VFX* p);
 
 // clang-format off
 const VFXRoutine gRippleRoutine = {
-    [ENTITY_INIT] =      Ripple_Init,
-    [ENTITY_UPDATE] =    Ripple_Update,
-    [ENTITY_DIE] =       Ripple_Die,
-    [ENTITY_DISAPPEAR] = Ripple_Disappear,
+    [ENTITY_INIT] =      (void*)Ripple_Init,
+    [ENTITY_UPDATE] =    (void*)Ripple_Update,
+    [ENTITY_DIE] =       (void*)Ripple_Die,
+    [ENTITY_DISAPPEAR] = (void*)Ripple_Disappear,
     [ENTITY_EXIT] =      (VFXFunc)DeleteEntity,
 };
 // clang-format on
@@ -72,4 +72,17 @@ static void Ripple_Init(struct VFX* p) {
   Ripple_Update(p);
 }
 
-INCASM("asm/vfx/ripple.inc");
+INCASM("asm/vfx/ripple_a.inc");
+
+void Ripple_Die(struct VFX* p) {
+  struct Zero* z = (struct Zero*)(p->s).unk_28;
+  (p->s).flags &= ~DISPLAY;
+  z->ripple = FALSE;
+  SET_VFX_ROUTINE(p, ENTITY_EXIT);
+}
+
+void Ripple_Disappear(struct VFX* p) {
+  struct Zero* z = (struct Zero*)(p->s).unk_28;
+  z->ripple = FALSE;
+  DeleteVFX(&p->s);
+}

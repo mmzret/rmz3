@@ -15,6 +15,12 @@ const EnemyRoutine gSnakecordRoutine = {
     [ENTITY_DISAPPEAR] = (void*)DeleteEnemy,
     [ENTITY_EXIT] =      (void*)DeleteEntity,
 };
+
+
+
+void FUN_0807461c(struct Enemy* p);
+void FUN_0807472c(struct Enemy* p);
+void FUN_08074618(struct Enemy* p);
 // clang-format on
 
 u32 FUN_08073ea8(struct Entity* p, s32 dx) {
@@ -195,7 +201,78 @@ static bool8 FUN_0807415c(struct Enemy* p) {
   return FALSE;
 }
 
-INCASM("asm/enemy/snakecord.inc");
+static const EnemyFunc PTR_ARRAY_08366e30[12];
+
+INCASM("asm/enemy/snakecord_a.inc");
+
+static const EnemyFunc PTR_ARRAY_08366e30[12];
+extern const EnemyFunc PTR_ARRAY_08366e60[12];
+bool8 FUN_0807415c(struct Enemy* p);
+void FUN_080742ec(struct Enemy* p);
+bool8 FUN_08074208(struct Enemy* p);
+void Snakecord_Die(struct Enemy* p);
+
+void Snakecord_Update(struct Enemy* p) {
+  if ((p->s).work[0] == 1) {
+    struct Entity* par = (p->s).unk_2c;
+    if (par != NULL) {
+      u8 pm = par->mode[0];
+      if (pm > 2) {
+        (p->s).flags &= ~DISPLAY;
+        (p->s).flags &= ~FLIPABLE;
+        EXIT_BODY(p);
+        SET_ENEMY_ROUTINE(p, ENTITY_DISAPPEAR);
+        return;
+      }
+      if (pm > 1) {
+        SET_ENEMY_ROUTINE(p, ENTITY_DIE);
+        (p->s).mode[1] = (p->s).work[0];
+        return;
+      }
+    }
+  }
+  if (FUN_0807415c(p)) {
+    return;
+  }
+  FUN_080742ec(p);
+  if (FUN_08074208(p)) {
+    return;
+  }
+  (PTR_ARRAY_08366e30[(p->s).mode[1]])((void*)p);
+  (PTR_ARRAY_08366e60[(p->s).mode[1]])((void*)p);
+}
+
+INCASM("asm/enemy/snakecord_b.inc");
+
+void FUN_08074618(struct Enemy* p) {}
+
+void FUN_0807461c(struct Enemy* p) {
+  u32 status = (p->body).status;
+  if (status & BODY_STATUS_WHITE) {
+    if (status & BODY_STATUS_RECOILED) {
+      (p->s).mode[1] = 0xa;
+      (p->s).mode[2] = 0;
+    }
+  }
+  if ((p->body).status & BODY_STATUS_BINDING) {
+    (p->s).mode[1] = 9;
+    (p->s).mode[2] = 0;
+  }
+}
+
+INCASM("asm/enemy/snakecord_c.inc");
+
+void FUN_0807472c(struct Enemy* p) {
+  u32 status = (p->body).status;
+  if (status & BODY_STATUS_WHITE) {
+    if (status & BODY_STATUS_RECOILED) {
+      (p->s).mode[1] = 0xa;
+      (p->s).mode[2] = 0;
+    }
+  }
+}
+
+INCASM("asm/enemy/snakecord_d.inc");
 
 // --------------------------------------------
 

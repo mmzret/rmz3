@@ -3,8 +3,77 @@
 #include "boss.h"
 #include "collision.h"
 #include "global.h"
+#include "element.h"
+#include "zero.h"
 
-INCASM("asm/boss/anubis.inc");
+static void (*const sUpdates1[11])(Anubis*);
+static void (*const sUpdates2[11])(Anubis*);
+static void (*const sDeads[2])(Anubis*);
+static const Coords32 sElementCoord;
+
+INCASM("asm/boss/anubis_a.inc");
+
+void FUN_080500c8(struct Body* body) {
+  Anubis* atk = (Anubis*)((body->enemy)->parent);
+  Anubis* self = (Anubis*)body->parent;
+  if (body->hitboxFlags & 1) {
+    u8 r = 0;
+    if (self->coord.x < atk->coord.x) {
+      r = 1;
+    }
+    *(u8*)((u8*)self + 0xcc) = r;
+  }
+}
+
+INCASM("asm/boss/anubis_b.inc");
+
+static void (*const sUpdates1[11])(Anubis*);
+static void (*const sUpdates2[11])(Anubis*);
+bool8 FUN_080500f4(Anubis* p);
+
+void Anubis_Update(Anubis* p) {
+  struct Entity** slot = (struct Entity**)((u8*)p + 0xb4);
+  struct Entity* e;
+  u8* t;
+  s32 v;
+  if (*slot != NULL) {
+    if (!isKilled(*slot)) {
+      goto next;
+    }
+    e = NULL;
+  } else {
+    if (!((p->body).status & 1)) {
+      goto next;
+    }
+    e = ApplyElementEffect(0x14, (Object*)p, &sElementCoord);
+  }
+  *slot = e;
+next:
+  t = (u8*)((u8*)p + 0xca);
+  if (*t != 0) {
+    v = *t - 1;
+  } else {
+    if (!((pZero2->body).status & 1)) {
+      goto skip;
+    }
+    v = 0x60;
+  }
+  *t = v;
+skip:
+  if (FUN_080500f4(p)) {
+    return;
+  }
+  (sUpdates1[p->mode[1]])((void*)p);
+  (sUpdates2[p->mode[1]])((void*)p);
+}
+
+void Anubis_Die(Anubis* p) {
+  (sDeads[p->mode[1]])((void*)p);
+}
+
+void nop_080503c8(Anubis* p) {}
+
+INCASM("asm/boss/anubis_c.inc");
 
 void Anubis_Init(Anubis* p);
 void Anubis_Update(Anubis* p);

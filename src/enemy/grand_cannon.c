@@ -108,8 +108,8 @@ static bool8 FUN_08069098(GrandCannon* p) {
     switch (p->mode[3]) {
       case 0: {
         if (IsFrozen(p)) {
-          (sUpdates1[p->mode[1]])(p);
-          (sUpdates2[p->mode[1]])(p);
+          (sUpdates1[p->mode[1]])((void*)p);
+          (sUpdates2[p->mode[1]])((void*)p);
           p->mode[3]++;
           UpdateSpriteAnimation(p);
           return TRUE;
@@ -192,8 +192,8 @@ NON_MATCH static void GrandCannon_Update(GrandCannon* p) {
       return;
     }
   _UPDATE:
-    (sUpdates1[p->mode[1]])(p);
-    (sUpdates2[p->mode[1]])(p);
+    (sUpdates1[p->mode[1]])((void*)p);
+    (sUpdates2[p->mode[1]])((void*)p);
   }
 #else
   INCCODE("asm/wip/GrandCannon_Update.inc");
@@ -217,7 +217,7 @@ static void GrandCannon_Die(GrandCannon* p) {
     SET_ENEMY_ROUTINE(p, ENTITY_DISAPPEAR);
     return;
   }
-  (sDeads[p->mode[1]])(p);
+  (sDeads[p->mode[1]])((void*)p);
 }
 
 static void GrandCannon_Dissappear(GrandCannon* p) {
@@ -256,7 +256,16 @@ static void grandCannon_080693b4(GrandCannon* p) {
   }
 }
 
-INCASM("asm/enemy/grand_cannon.inc");
+INCASM("asm/enemy/grand_cannon_a.inc");
+
+void grandcannon_08069608(GrandCannon* p) {
+  if (p->mode[2] == 0) {
+    SetDDP(&p->body, &sCollisions[2]);
+    p->mode[2]++;
+  }
+}
+
+INCASM("asm/enemy/grand_cannon_b.inc");
 
 // --------------------------------------------
 

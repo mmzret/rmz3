@@ -102,7 +102,7 @@ static void Solid17_Init(Object* p) {
   p->unk_coord.x = p->coord.x;
   p->unk_coord.y = p->coord.y;
   p->work[3] = 0;
-  Solid17_Update((void*)p);
+  Solid17_Update((struct Entity*)p);
 }
 
 static void nop_080cf208(void* _ UNUSED);
@@ -136,7 +136,22 @@ static void Solid17_Die(struct Entity* p) {
 
 static void nop_080cf208(void* _ UNUSED) {}
 
-INCASM("asm/solid/platform_sub_arcadia.inc");
+extern const motion_t sSolid17Motions[3][4];
+
+void FUN_080cf20c(struct Solid* p) {
+  switch ((p->s).mode[2]) {
+    case 0:
+      SetDDP(&p->body, &sCollisions[1]);
+      SetSpriteAnimation(p, sSolid17Motions[0][(p->s).work[0]]);
+      (p->s).mode[2]++;
+      FALLTHROUGH;
+    case 1:
+      UpdateSpriteAnimation(p);
+      break;
+  }
+}
+
+INCASM("asm/solid/platform_sub_arcadia_a.inc");
 
 // --------------------------------------------
 

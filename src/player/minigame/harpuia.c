@@ -20,6 +20,16 @@ const ZeroRoutine gHarpuiaRoutine = {
   [ENTITY_DISAPPEAR] =  (void*)RemovePlayer,
   [ENTITY_EXIT] =       (void*)DeleteEntity,
 };
+
+
+
+
+
+void FUN_080355c4(struct Zero* z);
+void harpuia_080354d4(struct Zero* z);
+void FUN_0803540c(struct Zero* z);
+void FUN_080353a8(struct Zero* z);
+void FUN_08035330(struct Zero* z);
 // clang-format on
 
 struct Entity* CreatePlayerHarpuia(void* q, Coords32* c, u8 n) {
@@ -71,23 +81,204 @@ static void Harpuia_Init(struct Zero* z) {
   Harpuia_Update(z);
 }
 
-INCASM("asm/player/harpuia.inc");
+INCASM("asm/player/harpuia_a.inc");
+
+void Harpuia_Die(struct Zero* z) {
+  (z->s).flags &= ~DISPLAY;
+  (z->s).flags &= ~FLIPABLE;
+  EXIT_BODY(z);
+  SET_PLAYER_ROUTINE(z, ENTITY_DISAPPEAR);
+}
+
+bool8 FUN_0803532c(struct Zero* z) { return TRUE; }
+
+void FUN_08035330(struct Zero* z) {
+  switch ((z->s).mode[2]) {
+    case 0:
+      SetSpriteAnimation(z, MOTION(0xBE, 0x21));
+      (z->s).work[2] = 0x3c;
+      (z->s).mode[2]++;
+      FALLTHROUGH;
+    case 1:
+      UpdateSpriteAnimation(&z->s);
+      if ((z->s).work[2] == 0 || --(z->s).work[2] == 0) {
+        (z->s).mode[1] = 1;
+        (z->s).mode[2] = 0;
+      }
+      break;
+  }
+}
+
+bool8 FUN_0803537c(struct Zero* z) {
+  if (((struct MinigameState*)(z->s).unk_28)->unk_04 == 1 && (gJoypad[0].pressed & B_BUTTON)) {
+    (z->s).mode[1] = 3;
+    (z->s).mode[2] = 0;
+  }
+  return TRUE;
+}
+
+void FUN_080353a8(struct Zero* z) {
+  switch ((z->s).mode[2]) {
+    case 0:
+      SetSpriteAnimation(z, MOTION(0xBE, 0x21));
+      SetDDP(&z->body, &sCollisions[0]);
+      (z->s).mode[2]++;
+      FALLTHROUGH;
+    case 1:
+      UpdateSpriteAnimation(&z->s);
+      break;
+  }
+}
+
+bool8 FUN_080353e4(struct Zero* z) {
+  if ((z->s).mode[2] > 1 && (gJoypad[0].pressed & B_BUTTON)) {
+    (z->s).mode[1] = 3;
+    (z->s).mode[2] = 0;
+  }
+  return TRUE;
+}
+
+void FUN_0803540c(struct Zero* z) {
+  switch ((z->s).mode[2]) {
+    case 0:
+      SetSpriteAnimation(z, MOTION(0xBE, 0x21));
+      (z->s).work[2] = 0xa;
+      (z->s).mode[2]++;
+      FALLTHROUGH;
+    case 1:
+      UpdateSpriteAnimation(&z->s);
+      if (*(u8*)((u8*)z + 0x73) == 3) {
+        (z->s).work[2] = 0xa;
+        (z->s).mode[2]++;
+      } else if ((z->s).work[2] == 0 || --(z->s).work[2] == 0) {
+        (z->s).mode[2]++;
+      }
+      break;
+    case 2:
+      UpdateSpriteAnimation(&z->s);
+      if (*(u8*)((u8*)z + 0x73) == 3) {
+        (z->s).work[2] = 0xa;
+        (z->s).mode[2]++;
+      }
+      break;
+    case 3:
+      UpdateSpriteAnimation(&z->s);
+      if ((z->s).work[2] == 0 || --(z->s).work[2] == 0) {
+        (z->s).mode[1] = 1;
+        (z->s).mode[2] = 0;
+      }
+      break;
+  }
+}
+
+bool8 FUN_080354a4(struct Zero* z) {
+  if ((z->s).mode[2] == 1 && *(s8*)((u8*)z + 0x71) > 3 && (gJoypad[0].pressed & B_BUTTON)) {
+    (z->s).mode[3] = (z->s).mode[2];
+  }
+  return TRUE;
+}
+
+void harpuia_080354d4(struct Zero* z) {
+  switch ((z->s).mode[2]) {
+    case 0:
+      SetSpriteAnimation(z, MOTION(0xBE, 0x22));
+      SetDDP(&z->body, &sCollisions[1]);
+      PlaySound(0xf9);
+      *(u8*)((u8*)z + 0xf) = 0;
+      (z->s).mode[2]++;
+      FALLTHROUGH;
+    case 1:
+      UpdateSpriteAnimation(&z->s);
+      if ((*(u32*)((u8*)z + 0x70) & 0x00FFFF00) == 0x00010500) {
+        SetDDP(&z->body, &sCollisions[0]);
+      }
+      if (*(u8*)((u8*)z + 0x73) == 3) {
+        if (*(u8*)((u8*)z + 0xf) == 1) {
+          (z->s).mode[2]++;
+        } else {
+          (z->s).mode[1] = 1;
+          (z->s).mode[2] = 0;
+        }
+      }
+      break;
+    case 2:
+      SetSpriteAnimation(z, MOTION(0xBE, 0x23));
+      SetDDP(&z->body, &sCollisions[1]);
+      PlaySound(0xf9);
+      (z->s).mode[2]++;
+      FALLTHROUGH;
+    case 3:
+      UpdateSpriteAnimation(&z->s);
+      if ((*(u32*)((u8*)z + 0x70) & 0x00FFFF00) == 0x00010400) {
+        SetDDP(&z->body, &sCollisions[0]);
+      }
+      if (*(u8*)((u8*)z + 0x73) == 3) {
+        (z->s).mode[1] = 1;
+        (z->s).mode[2] = 0;
+      }
+      break;
+  }
+}
+
+bool8 FUN_080355c0(struct Zero* z) { return TRUE; }
+
+void FUN_080355c4(struct Zero* z) {
+  switch ((z->s).mode[2]) {
+    case 0:
+      SetSpriteAnimation(z, MOTION(0xBE, 0x21));
+      *(u32*)((u8*)z + 0x8c) = 0;
+      *(u32*)((u8*)z + 0x90) = 0;
+      *(u8*)((u8*)z + 0x94) = 0;
+      (z->s).flags &= ~COLLIDABLE;
+      (z->s).d.y = 0;
+      (z->s).mode[2]++;
+      FALLTHROUGH;
+    case 1: {
+      s32 push;
+      (z->s).d.y += 0x40;
+      if ((z->s).d.y > 0x700) {
+        (z->s).d.y = 0x700;
+      }
+      (z->s).coord.y += (z->s).d.y;
+      if ((z->s).coord.y <= 0x12C00) {
+        push = PushoutToUp2((z->s).coord.x, (z->s).coord.y);
+        if (push == 0) {
+          push = PushoutToUp2((z->s).coord.x + 0x1A00, (z->s).coord.y);
+          if (push == 0) {
+            push = PushoutToUp2((z->s).coord.x - 0x1A00, (z->s).coord.y);
+          }
+        }
+        if (push != 0) {
+          (z->s).coord.y += push;
+        }
+      }
+      if ((z->s).coord.y - 0x6400 > 0x14000) {
+        (z->s).d.y = 0;
+        (z->s).flags &= ~DISPLAY;
+      }
+      UpdateSpriteAnimation(&z->s);
+      break;
+    }
+  }
+}
+
+INCASM("asm/player/harpuia_b.inc");
 
 // --------------------------------------------
 
-void FUN_0803532c(struct Zero* z);
-void FUN_0803537c(struct Zero* z);
-void FUN_080353e4(struct Zero* z);
-void FUN_080354a4(struct Zero* z);
-void FUN_080355c0(struct Zero* z);
+bool8 FUN_0803532c(struct Zero* z);
+bool8 FUN_0803537c(struct Zero* z);
+bool8 FUN_080353e4(struct Zero* z);
+bool8 FUN_080354a4(struct Zero* z);
+bool8 FUN_080355c0(struct Zero* z);
 
 // clang-format off
 const ZeroFunc sHarpuiaUpdates1[5] = {
-    FUN_0803532c,
-    FUN_0803537c,
-    FUN_080353e4,
-    FUN_080354a4,
-    FUN_080355c0,
+    (ZeroFunc)FUN_0803532c,
+    (ZeroFunc)FUN_0803537c,
+    (ZeroFunc)FUN_080353e4,
+    (ZeroFunc)FUN_080354a4,
+    (ZeroFunc)FUN_080355c0,
 };
 // clang-format on
 

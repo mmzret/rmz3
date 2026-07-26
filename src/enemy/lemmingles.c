@@ -1,6 +1,9 @@
 #include "collision.h"
 #include "enemy.h"
 #include "global.h"
+#include "stagerun.h"
+#include "camera.h"
+#include "story.h"
 
 struct EnemyLemmingles {
   COLLISION_OBJECT_HDR;
@@ -23,6 +26,12 @@ const EnemyRoutine gLemminglesRoutine = {
     [ENTITY_DISAPPEAR] = (EnemyFunc)DeleteEnemy,
     [ENTITY_EXIT] =      (EnemyFunc)DeleteEntity,
 };
+
+
+
+void nop_0806e96c(struct Enemy* p);
+void FUN_0806e970(struct Enemy* p);
+void FUN_0806e990(struct Enemy* p);
 // clang-format on
 
 // --------------------------------------------
@@ -44,7 +53,80 @@ void FUN_0806e590(struct Entity* e, u8 kind1, u8 kind2, u8 kind3) {
 // 0x0806e600
 static void onCollision(struct Body* body UNUSED, Coords32* r1 UNUSED, Coords32* r2 UNUSED) { return; }
 
-INCASM("asm/enemy/lemmingles.inc");
+static const EnemyFunc sUpdates1[7];
+static const EnemyFunc sUpdates2[7];
+static const struct Collision sCollisions[7];
+
+INCASM("asm/enemy/lemmingles_a.inc");
+
+static const EnemyFunc sUpdates1[7];
+static const EnemyFunc sUpdates2[7];
+bool8 FUN_0806e604(struct Enemy* p);
+void FUN_0806e704(struct Enemy* p);
+bool8 FUN_0806e674(struct Enemy* p);
+void Lemmingles_Die(struct Enemy* p);
+
+void Lemmingles_Update(struct Enemy* p) {
+  struct Entity* par = (p->s).unk_28;
+  if (par != NULL) {
+    if (par->mode[0] > 1) {
+      (p->s).unk_28 = NULL;
+    }
+  }
+  if (Camera_GetDistance(&gStageRun.vm.camera, &(p->s).coord) > 0x6000 ||
+      (gCurStory.s.gameflags[4] & 0x42)) {
+    if (par != NULL) {
+      *(u32*)((u8*)par + 0xb4) &= ~(1 << (p->s).work[1]);
+    }
+    (p->s).flags &= ~DISPLAY;
+    (p->s).flags &= ~FLIPABLE;
+    EXIT_BODY(p);
+    (p->s).flags &= ~COLLIDABLE;
+    SET_ENEMY_ROUTINE(p, ENTITY_DISAPPEAR);
+    return;
+  }
+  if (FUN_0806e604(p)) {
+    return;
+  }
+  FUN_0806e704(p);
+  if (FUN_0806e674(p)) {
+    return;
+  }
+  (sUpdates1[(p->s).mode[1]])((void*)p);
+  (sUpdates2[(p->s).mode[1]])((void*)p);
+}
+
+INCASM("asm/enemy/lemmingles_b.inc");
+
+void nop_0806e96c(struct Enemy* p) {}
+
+
+void FUN_0806e970(struct Enemy* p) {
+  if (((p->body).status & 0x00020001) == 0x00020001) {
+    (p->s).mode[1] = 6;
+    (p->s).mode[2] = 0;
+  }
+}
+
+
+void FUN_0806e990(struct Enemy* p) {
+  struct Entity** slot = (struct Entity**)((u8*)p + 0xb4);
+  if (*slot == NULL || isKilled(*slot)) {
+    *slot = NULL;
+    SetDDP(&p->body, (p->s).work[0] > 1 ? &sCollisions[3] : &sCollisions[1]);
+    if (!IsFrozen(&p->s)) {
+      (p->s).mode[1] = 1;
+      (p->s).mode[2] = 1;
+      *((u8*)p + 0xbd) = 0;
+    }
+  }
+  if (((p->body).status & 0x00020001) == 0x00020001) {
+    (p->s).mode[1] = 6;
+    (p->s).mode[2] = 0;
+  }
+}
+
+INCASM("asm/enemy/lemmingles_c.inc");
 
 // --------------------------------------------
 

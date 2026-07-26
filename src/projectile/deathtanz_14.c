@@ -1,6 +1,7 @@
 #include "collision.h"
 #include "global.h"
 #include "projectile.h"
+#include "vfx.h"
 
 typedef struct {
   COLLISION_OBJECT_HDR;
@@ -81,7 +82,26 @@ void deathtanz_080a09f4(struct Entity* q, s32 x, s32 y, u8 kind, bool8 xflip) {
 // 0x080a0a5c
 static void onCollision(struct Body* body UNUSED, Coords32* r1 UNUSED, Coords32* r2 UNUSED) {}
 
-INCASM("asm/projectile/unk_14.inc");
+static const ProjectileFunc sUpdates1[5];
+static const ProjectileFunc sUpdates2[5];
+
+INCASM("asm/projectile/unk_14_b.inc");
+
+void Projectile14_Update(Projectile14* p) {
+  (sUpdates1[p->mode[1]])((void*)p);
+  (sUpdates2[p->mode[1]])((void*)p);
+}
+
+void Projectile14_Die(Projectile14* p) {
+  EXIT_BODY(p);
+  CreateSmoke(1, &p->coord);
+  PlaySound(0x2a);
+  SET_PROJECTILE_ROUTINE(p, ENTITY_EXIT);
+}
+
+void nop_080a0b6c(Projectile14* p) {}
+
+INCASM("asm/projectile/unk_14_a.inc");
 
 void nop_080a0b6c(Projectile14* p);
 

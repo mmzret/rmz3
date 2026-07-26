@@ -38,7 +38,15 @@ Entity* FUN_080adad0(Coords32* c, u8 kind) {
   return p;
 }
 
-INCASM("asm/projectile/unk_37.inc");
+INCASM("asm/projectile/unk_37_a.inc");
+
+void Projectile37_Die(Projectile* p) {
+  p->flags &= ~DISPLAY;
+  EXIT_BODY(p);
+  SET_PROJECTILE_ROUTINE(p, ENTITY_EXIT);
+}
+
+INCASM("asm/projectile/unk_37_b.inc");
 
 // --------------------------------------------
 

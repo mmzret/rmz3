@@ -4,9 +4,9 @@
 #include "enemy.h"
 #include "global.h"
 
-void MegamilpaNode_Init(struct Enemy* p);
-void MegamilpaNode_Update(struct Enemy* p);
-void MegamilpaNode_Die(struct Enemy* p);
+void MegamilpaNode_Init(MegamilpaNode* p);
+void MegamilpaNode_Update(MegamilpaNode* p);
+void MegamilpaNode_Die(MegamilpaNode* p);
 
 // clang-format off
 const EnemyRoutine gMegamilpaNodeRoutine = {
@@ -32,26 +32,45 @@ MegamilpaNode* CreateMegamilpaNode(u8 idx) {
 
 // --------------------------------------------
 
-INCASM("asm/enemy/megamilpa_node.inc");
+INCASM("asm/enemy/megamilpa_node_a.inc");
 
-void nop_08065928(struct Enemy* p);
+extern const EnemyFunc sMegamilpaNodeUpdates1[3];
+extern const EnemyFunc sMegamilpaNodeUpdates2[3];
+
+void MegamilpaNode_Update(MegamilpaNode* p) {
+  if ((*(struct Entity**)((u8*)p + 0xb4))->mode[0] > 1) {
+    SET_ENEMY_ROUTINE(p, ENTITY_DIE);
+    MegamilpaNode_Die(p);
+  } else {
+    (sMegamilpaNodeUpdates1[p->mode[1]])((void*)p);
+    (sMegamilpaNodeUpdates2[p->mode[1]])((void*)p);
+  }
+}
+
+INCASM("asm/enemy/megamilpa_node_b.inc");
+
+void nop_08065928(MegamilpaNode* p) {}
+
+INCASM("asm/enemy/megamilpa_node_c.inc");
+
+void nop_08065928(MegamilpaNode* p);
 
 const EnemyFunc sMegamilpaNodeUpdates1[3] = {
-    nop_08065928,
-    nop_08065928,
-    nop_08065928,
+    (EnemyFunc)nop_08065928,
+    (EnemyFunc)nop_08065928,
+    (EnemyFunc)nop_08065928,
 };
 
 // --------------------------------------------
 
-void MegamilpaNode_0806592c(struct Enemy* p);
-void MegamilpaNode_08065988(struct Enemy* p);
-void MegamilpaNode_08065cbc(struct Enemy* p);
+void MegamilpaNode_0806592c(MegamilpaNode* p);
+void MegamilpaNode_08065988(MegamilpaNode* p);
+void MegamilpaNode_08065cbc(MegamilpaNode* p);
 
 const EnemyFunc sMegamilpaNodeUpdates2[3] = {
-    MegamilpaNode_0806592c,
-    MegamilpaNode_08065988,
-    MegamilpaNode_08065cbc,
+    (EnemyFunc)MegamilpaNode_0806592c,
+    (EnemyFunc)MegamilpaNode_08065988,
+    (EnemyFunc)MegamilpaNode_08065cbc,
 };
 
 const struct Collision gMegamilpaNodeHitbox[2] = {

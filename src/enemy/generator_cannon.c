@@ -1,6 +1,7 @@
 #include "collision.h"
 #include "enemy.h"
 #include "global.h"
+#include "story.h"
 
 void GeneratorCannon_Init(struct Enemy* p);
 void GeneratorCannon_Update(struct Enemy* p);
@@ -8,12 +9,18 @@ void GeneratorCannon_Die(struct Enemy* p);
 
 // clang-format off
 const EnemyRoutine gGeneratorCannonRoutine = {
-    [ENTITY_INIT] =      GeneratorCannon_Init,
-    [ENTITY_UPDATE] =    GeneratorCannon_Update,
-    [ENTITY_DIE] =       GeneratorCannon_Die,
+    [ENTITY_INIT] =      (void*)GeneratorCannon_Init,
+    [ENTITY_UPDATE] =    (void*)GeneratorCannon_Update,
+    [ENTITY_DIE] =       (void*)GeneratorCannon_Die,
     [ENTITY_DISAPPEAR] = (void*)DeleteEnemy,
     [ENTITY_EXIT] =      (EnemyFunc)DeleteEntity,
 };
+
+
+
+void FUN_0808c784(struct Enemy* p);
+void FUN_0808c764(struct Enemy* p);
+void FUN_0808c760(struct Enemy* p);
 // clang-format on
 
 // 0x0808c388
@@ -28,7 +35,80 @@ static void CreateGeneratorCannon(s32 x, s32 y, u8 n) {
 
 static void onCollision(struct Body* body UNUSED, Coords32* r1 UNUSED, Coords32* r2 UNUSED) { return; }
 
-INCASM("asm/enemy/generator_cannon.inc");
+static const EnemyFunc sUpdates1[8];
+static const EnemyFunc sUpdates2[8];
+static const struct Collision sCollisions[18];
+bool8 FUN_0808c3ec(struct Enemy* p);
+bool8 FUN_0808c450(struct Enemy* p);
+void FUN_0808c4e8(struct Enemy* p);
+
+INCASM("asm/enemy/generator_cannon_a.inc");
+
+void GeneratorCannon_Update(struct Enemy* p) {
+  u8 sf = (u8)(gCurStory.s.gameflags[4] & 2);
+  if (sf) {
+    (p->s).flags &= ~DISPLAY;
+    (p->s).flags &= ~FLIPABLE;
+    (p->body).status = 0;
+    (p->body).prevStatus = 0;
+    (p->body).invincibleTime = 0;
+    (p->s).flags &= ~COLLIDABLE;
+    SET_ENEMY_ROUTINE(p, ENTITY_DISAPPEAR);
+    return;
+  }
+  if ((p->s).work[0] == 1 && (gCurStory.s.gameflags[4] & 0x40)) {
+    (p->s).flags &= ~DISPLAY;
+    (p->s).flags &= ~FLIPABLE;
+    (p->body).status = sf;
+    do {
+      (p->body).prevStatus = sf;
+    } while (0);
+    (p->body).invincibleTime = sf;
+    (p->s).flags &= ~COLLIDABLE;
+    SET_ENEMY_ROUTINE(p, ENTITY_DISAPPEAR);
+    return;
+  }
+  if (FUN_0808c3ec(p)) {
+    return;
+  }
+  FUN_0808c4e8(p);
+  if (FUN_0808c450(p)) {
+    return;
+  }
+  (sUpdates1[(p->s).mode[1]])((void*)p);
+  (sUpdates2[(p->s).mode[1]])((void*)p);
+}
+
+INCASM("asm/enemy/generator_cannon_b.inc");
+
+void FUN_0808c760(struct Enemy* p) {}
+
+
+void FUN_0808c764(struct Enemy* p) {
+  if (((p->body).status & 0x00020001) == 0x00020001) {
+    (p->s).mode[1] = 7;
+    (p->s).mode[2] = 0;
+  }
+}
+
+
+void FUN_0808c784(struct Enemy* p) {
+  struct Entity** slot = (struct Entity**)((u8*)p + 0xb4);
+  if (*slot == NULL || isKilled(*slot)) {
+    *slot = NULL;
+    SetDDP(&p->body, &sCollisions[1]);
+    if (!IsFrozen(&p->s)) {
+      (p->s).mode[1] = 6;
+      (p->s).mode[2] = 0;
+    }
+  }
+  if (((p->body).status & 0x00020001) == 0x00020001) {
+    (p->s).mode[1] = 7;
+    (p->s).mode[2] = 0;
+  }
+}
+
+INCASM("asm/enemy/generator_cannon_c.inc");
 
 void FUN_0808c760(struct Enemy* p);
 void FUN_0808c764(struct Enemy* p);

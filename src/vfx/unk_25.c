@@ -120,7 +120,7 @@ static void VFX25_Init(struct VFX25* p) {
     (p->s).mode[1] = 5, (p->s).mode[2] = 0, (p->s).mode[3] = 0;
   }
 
-  VFX25_Update((void*)p);
+  VFX25_Update((struct Entity*)p);
 }
 
 // --------------------------------------------
@@ -129,7 +129,7 @@ static void FUN_080b9494(struct Entity* p);
 void FUN_080b94dc(struct VFX* vfx);
 void FUN_080b9530(struct VFX* vfx);
 void FUN_080b963c(struct VFX* vfx);
-void FUN_080b970c(struct VFX* vfx);
+void FUN_080b970c(struct VFX* p);
 void FUN_080b9738(struct VFX* vfx);
 static void FUN_080b97f4(struct Entity* p);
 
@@ -145,7 +145,7 @@ static void VFX25_Update(struct Entity* p) {
       (void*)FUN_080b97f4,
   };
   // clang-format on
-  (sUpdates[p->mode[1]])(p);
+  (sUpdates[p->mode[1]])((void*)p);
 }
 
 // --------------------------------------------
@@ -178,7 +178,15 @@ static void FUN_080b9494(struct Entity* p) {
   }
 }
 
-INCASM("asm/vfx/unk_25.inc");
+INCASM("asm/vfx/unk_25_a.inc");
+
+void FUN_080b970c(struct VFX* p) {
+  if (--(p->s).work[2] == 0) {
+    SET_VFX_ROUTINE(p, ENTITY_DIE);
+  }
+}
+
+INCASM("asm/vfx/unk_25_b.inc");
 
 static void FUN_080b97f4(struct Entity* p) {
   switch (p->mode[2]) {

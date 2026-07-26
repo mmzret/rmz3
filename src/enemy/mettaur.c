@@ -1,6 +1,7 @@
 #include "collision.h"
 #include "enemy.h"
 #include "global.h"
+#include "zero.h"
 #include "physics.h"
 #include "vfx.h"
 
@@ -18,6 +19,16 @@ const EnemyRoutine gMettaurRoutine = {
     [ENTITY_DISAPPEAR] = (void*)DeleteEnemy,
     [ENTITY_EXIT] =      (void*)DeleteEntity,
 };
+
+
+
+
+
+void FUN_08089e60(struct Enemy* p);
+void FUN_08089a00(struct Enemy* p);
+void nop_08089268(struct Enemy* p);
+void FUN_080892a4(struct Enemy* p);
+void FUN_0808926c(struct Enemy* p);
 // clang-format on
 
 struct Entity* FUN_08088b4c(s32 x, s32 y, u8 kind) {
@@ -36,7 +47,96 @@ static bool8 FUN_08088ba8(struct Entity* p) {
   return FALSE;
 }
 
-INCASM("asm/enemy/mettaur.inc");
+static const struct Collision sCollisions[8];
+static const EnemyFunc sDeads[3];
+
+INCASM("asm/enemy/mettaur_a.inc");
+
+void CreateVFX62(struct Entity* e, struct Coord* c);
+
+void FUN_08088d54(struct Enemy* p) {
+  struct Coord c;
+  c.x = (p->s).coord.x;
+  c.y = (p->s).coord.y - PIXEL(20);
+  CreateSmoke(2, &c);
+  CreateVFX62(&p->s, &c);
+}
+
+INCASM("asm/enemy/mettaur_b.inc");
+
+void MettaurSwim_Die(struct Enemy* p) {
+  (sDeads[(p->s).mode[1]])((void*)p);
+}
+
+void FUN_08089218(struct Body* body) {
+  struct Enemy* self = (struct Enemy*)body->parent;
+  struct Entity* atkParent = (struct Entity*)(body->enemy)->parent;
+  if (body->hitboxFlags & 8) {
+    if (*(u16*)&atkParent->kind == 0x1206) {
+      SET_ENEMY_ROUTINE(self, ENTITY_DIE);
+      (self->s).mode[1] = 0;
+    }
+  }
+  *(s32*)&self->buffer[0] = (pZero2->s).coord.x - (self->s).coord.x;
+}
+
+void nop_08089268(struct Enemy* p) {}
+
+
+void FUN_0808926c(struct Enemy* p) {
+  if (FUN_08088ba8((struct Entity*)p) == 0) {
+    (p->s).mode[1] = 5;
+    (p->s).mode[2] = 0;
+  }
+  if (((p->body).status & 0x00020001) == 0x00020001) {
+    (p->s).mode[1] = 0xc;
+    (p->s).mode[2] = 0;
+  }
+}
+
+void FUN_080892a4(struct Enemy* p) {
+  if (((p->body).status & 0x00020001) == 0x00020001) {
+    (p->s).mode[1] = 0xc;
+    (p->s).mode[2] = 0;
+  }
+}
+
+INCASM("asm/enemy/mettaur_c.inc");
+
+void FUN_08089a00(struct Enemy* p) {
+  struct Entity* par = (p->s).unk_28;
+  switch ((p->s).mode[2]) {
+    case 0:
+      SetDDP(&p->body, &sCollisions[4]);
+      (p->s).mode[2]++;
+      FALLTHROUGH;
+    case 1:
+      (p->s).coord.x = par->coord.x;
+      (p->s).coord.y = par->coord.y;
+      break;
+  }
+}
+
+INCASM("asm/enemy/mettaur_d.inc");
+
+void FUN_08089e60(struct Enemy* p) {
+  switch ((p->s).mode[2]) {
+    case 0:
+      SetDDP(&p->body, &sCollisions[0]);
+      SetSpriteAnimation(p, MOTION(0xdd, 0xc));
+      (p->s).mode[2]++;
+      FALLTHROUGH;
+    case 1:
+      UpdateSpriteAnimation(p);
+      if ((p->s).motion.state == 3) {
+        (p->s).mode[1] = 9;
+        (p->s).mode[2] = 0;
+      }
+      break;
+  }
+}
+
+INCASM("asm/enemy/mettaur_e.inc");
 
 // --------------------------------------------
 

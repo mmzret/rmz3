@@ -10,9 +10,9 @@ void Solid45_Die(struct Solid* p);
 
 // clang-format off
 const SolidRoutine gGiantElevatorPierRoutine = {
-    [ENTITY_INIT] =      Solid45_Init,
-    [ENTITY_UPDATE] =    Solid45_Update,
-    [ENTITY_DIE] =       Solid45_Die,
+    [ENTITY_INIT] =      (void*)Solid45_Init,
+    [ENTITY_UPDATE] =    (void*)Solid45_Update,
+    [ENTITY_DIE] =       (void*)Solid45_Die,
     [ENTITY_DISAPPEAR] = (void*)DeleteSolid,
     [ENTITY_EXIT] =      (SolidFunc)DeleteEntity,
 };
@@ -233,6 +233,10 @@ _080DE7B0: .4byte gSolidFnTable\n\
  .syntax divided\n");
 }
 
-INCASM("asm/solid/giant_elevator_pier.inc");
+void Solid45_Die(struct Solid* p) {
+  (p->s).flags &= ~DISPLAY;
+  (p->s).flags2 &= ~ENTI_PHYSICS;
+  SET_SOLID_ROUTINE(p, ENTITY_EXIT);
+}
 
 static const struct Rect sSize = {PIXEL(0), PIXEL(7), PIXEL(128), PIXEL(16)};

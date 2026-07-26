@@ -2,6 +2,7 @@
 
 #include "collision.h"
 #include "global.h"
+#include "motion.h"
 #include "projectile.h"
 #include "story.h"
 
@@ -80,7 +81,7 @@ static void Projectile6_Update(Projectile* p) {
 
 _UPDATE:
   SET_XFLIP(p, (l->flags & X_FLIP) != 0);
-  (sUpdates[p->mode[1]])(p);
+  (sUpdates[p->mode[1]])((void*)p);
 }
 
 static void Projectile6_Die(Projectile* p) {
@@ -91,7 +92,101 @@ static void Projectile6_Die(Projectile* p) {
 
 // --------------------------------------------
 
-INCASM("asm/projectile/unk_06.inc");
+void FUN_0809dd60(Projectile* p) {
+  struct Entity* l = p->unk_28;
+  if (l->mode[0] >= ENTITY_DIE) {
+    SET_PROJECTILE_ROUTINE(p, ENTITY_DIE);
+    Projectile6_Die(p);
+    return;
+  }
+
+  SET_XFLIP(p, (l->flags >> 4) & 1);
+  if ((*(u32*)p->buffer) & 1) {
+    *(u32*)p->buffer = 0;
+    p->mode[1] = 1;
+    p->mode[2] = 0;
+    return;
+  }
+
+  if (p->mode[2] == 0) {
+    p->flags &= ~DISPLAY;
+    SetDDP(&p->body, &sCollisions[0]);
+    p->mode[2]++;
+  }
+}
+
+void FUN_0809de04(Projectile* p) {
+  struct Entity* l = p->unk_28;
+  if (l->mode[0] >= ENTITY_DIE) {
+    SET_PROJECTILE_ROUTINE(p, ENTITY_DIE);
+    Projectile6_Die(p);
+    return;
+  }
+
+  SET_XFLIP(p, (l->flags >> 4) & 1);
+  if ((*(u32*)p->buffer) & 2) {
+    *(u32*)p->buffer = 0;
+    p->mode[1] = 0;
+    p->mode[2] = 0;
+    return;
+  }
+
+  switch (p->mode[2]) {
+    case 0:
+      p->flags |= DISPLAY;
+      SetSpriteAnimation(p, MOTION(SM025_LAMPLORT, 5));
+      SetDDP(&p->body, &sCollisions[1]);
+      p->mode[2]++;
+      FALLTHROUGH;
+    case 1:
+      UpdateSpriteAnimation(p);
+      if (p->motion.cmdIdx == 1) {
+        SetDDP(&p->body, &sCollisions[2]);
+        p->mode[2]++;
+      }
+      if (IsSpriteAnimEnd(p)) {
+        p->mode[1] = 2;
+        p->mode[2] = 0;
+      }
+      break;
+    case 2:
+      UpdateSpriteAnimation(p);
+      if (IsSpriteAnimEnd(p)) {
+        p->mode[1] = 2;
+        p->mode[2] = 0;
+      }
+      break;
+  }
+}
+
+void FUN_0809df14(Projectile* p) {
+  struct Entity* l = p->unk_28;
+  if (l->mode[0] >= ENTITY_DIE) {
+    *(u32*)p->buffer = 0;
+    p->mode[1] = 3;
+    p->mode[2] = 0;
+    return;
+  }
+
+  SET_XFLIP(p, (l->flags >> 4) & 1);
+  if ((*(u32*)p->buffer) & 2) {
+    *(u32*)p->buffer = 0;
+    p->mode[1] = 3;
+    p->mode[2] = 0;
+    return;
+  }
+
+  switch (p->mode[2]) {
+    case 0:
+      SetSpriteAnimation(p, MOTION(SM025_LAMPLORT, 7));
+      SetDDP(&p->body, &sCollisions[3]);
+      p->mode[2]++;
+      FALLTHROUGH;
+    case 1:
+      UpdateSpriteAnimation(p);
+      break;
+  }
+}
 
 static void FUN_0809dfb8(Projectile* p) {
   Entity* l = p->unk_28;

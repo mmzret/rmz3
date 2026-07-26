@@ -13,12 +13,14 @@ void killIronStar(struct Solid* p);
 
 // clang-format off
 const SolidRoutine gIronStarRoutine = {
-    [ENTITY_INIT] =      initIronStar,
-    [ENTITY_UPDATE] =    ironStarAI,
-    [ENTITY_DIE] =       killIronStar,
+    [ENTITY_INIT] =      (void*)initIronStar,
+    [ENTITY_UPDATE] =    (void*)ironStarAI,
+    [ENTITY_DIE] =       (void*)killIronStar,
     [ENTITY_DISAPPEAR] = (void*)DeleteSolid,
     [ENTITY_EXIT] =      (SolidFunc)DeleteEntity,
 };
+
+void nop_080cbcc0(struct Solid* p);
 // clang-format on
 
 void CreateIronStar(struct Entity* e, s32 x, s32 y) {
@@ -37,7 +39,16 @@ static void onCollision(struct Body* body UNUSED, Coords32* r1 UNUSED, Coords32*
   return;
 }
 
-INCASM("asm/solid/iron_star.inc");
+INCASM("asm/solid/iron_star_a.inc");
+
+void killIronStar(struct Solid* p) {
+  (p->s).flags2 &= ~ENTI_PHYSICS;
+  SET_SOLID_ROUTINE(p, ENTITY_EXIT);
+}
+
+void nop_080cbcc0(struct Solid* p) {}
+
+INCASM("asm/solid/iron_star_b.inc");
 
 // --------------------------------------------
 
