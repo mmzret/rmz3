@@ -1,8 +1,77 @@
 #include "boss.h"
 #include "collision.h"
 #include "global.h"
+#include "element.h"
 
-INCASM("asm/boss/locomo_if.inc");
+static const BossFunc sDeads[1];
+static const Coords32 sElementCoord;
+static const BossFunc sUpdates1[7];
+static const BossFunc sUpdates2[7];
+bool8 tryKillLocomoIF(struct Boss* p);
+
+void FUN_08054adc(struct Boss* p);
+
+void nop_08054ad8(struct Boss* p);
+
+void LocomoIF_Die(struct Boss* p);
+
+void LocomoIF_Update(struct Boss* p);
+
+void nop_0805474c(struct Boss* p) {}
+
+INCASM("asm/boss/locomo_if_a.inc");
+
+void LocomoIF_Update(struct Boss* p) {
+  struct Entity** slot = (struct Entity**)((u8*)p + 0xb4);
+  struct Entity* e;
+  if (*slot != NULL) {
+    if (!isKilled(*slot)) {
+      goto next;
+    }
+    e = NULL;
+  } else {
+    if (!((p->body).status & 1)) {
+      goto next;
+    }
+    if ((*(u8*)((u8*)p + 0x97) & 0xf0) != 0x20) {
+      goto next;
+    }
+    e = ApplyElementEffect(0x17, (Object*)p, &sElementCoord);
+  }
+  *slot = e;
+next:
+  if (tryKillLocomoIF(p)) {
+    return;
+  }
+  (sUpdates1[p->mode[1]])((void*)p);
+  (sUpdates2[p->mode[1]])((void*)p);
+}
+
+void LocomoIF_Die(struct Boss* p) {
+  (sDeads[p->mode[1]])((void*)p);
+}
+
+void nop_08054ad8(struct Boss* p) {}
+
+void FUN_08054adc(struct Boss* p) {
+  switch (p->mode[2]) {
+    case 0:
+      p->work[2] = 0x1e;
+      SetSpriteAnimation(p, MOTION(0x54, 0));
+      p->mode[2]++;
+      // fallthrough
+    case 1:
+      p->work[2]--;
+      if (p->work[2] == 0) {
+        p->mode[1] = 2;
+        p->mode[2] = 0;
+      }
+      UpdateEntityAnim((struct Entity*)p);
+      break;
+  }
+}
+
+INCASM("asm/boss/locomo_if_b.inc");
 
 void LocomoIF_Init(struct Boss* p);
 void LocomoIF_Update(struct Boss* p);
