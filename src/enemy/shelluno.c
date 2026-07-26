@@ -4,7 +4,7 @@
 #include "overworld.h"
 
 struct Enemy* CreateShelluno(struct Coord* c, u8 mode) {
-  struct Enemy* p = (struct Enemy*)AllocEntityFirst(gEnemyHeaderPtr);
+  struct Enemy* p = (struct Enemy*)AllocEntityLast(gEnemyHeaderPtr);
   if (p != NULL) {
     INIT_ENEMY_ROUTINE(p, ENEMY_SHELLUNO);
     (p->s).coord = *c;
