@@ -1,4 +1,3 @@
-#include "entity/macros.h"
 #include "collision.h"
 #include "global.h"
 #include "projectile.h"
@@ -46,22 +45,7 @@ void blizzack_080aaae0(Entity* q, u8 val) {
   }
 }
 
-INCASM("asm/projectile/blizzack_32_a.inc");
-
-struct Projectile* FUN_080aae34(struct Entity* e) {
-  Projectile* p = (struct Projectile*)AllocEntityLast(gProjectileHeaderPtr);
-
-  if (p != NULL) {
-    INIT_PROJECTILE_ROUTINE(p, 32);
-    p->work[0] = 8;
-    p->work[1] = 0;
-    p->unk_28 = e;
-    return p;
-  }
-  return NULL;
-}
-
-INCASM("asm/projectile/blizzack_32_b.inc");
+INCASM("asm/projectile/blizzack_32.inc");
 
 // --------------------------------------------
 
