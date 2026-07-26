@@ -2,6 +2,7 @@
 #include "enemy.h"
 #include "global.h"
 #include "overworld.h"
+#include "element.h"
 
 bool32 FUN_0807cb50(struct Enemy* p);
 
@@ -83,10 +84,10 @@ bool8 nop_0807cad0(struct Enemy* p) { return TRUE; }
 INCASM("asm/enemy/puffy_d.inc");
 
 bool32 FUN_0807cb50(struct Enemy* p) {
-  struct VFX** slot = (struct VFX**)((u8*)p + 0xBC);
-  struct VFX* e = *slot;
+  struct Entity** slot = (struct Entity**)((u8*)p + 0xBC);
+  struct Entity* e = *slot;
   if (e == NULL && ((p->body).status & BODY_STATUS_WHITE)) {
-    struct VFX* n = ApplyElementEffect(0, &p->s, &sElementCoord);
+    struct Entity* n = ApplyElementEffect(0, (Object*)p, &sElementCoord);
     *slot = n;
     if (n != NULL) {
       u8 b = *((u8*)p + 0x97) & 0xF0;
@@ -121,10 +122,10 @@ bool8 nop_0807cac8(struct Enemy* p);
 bool8 nop_0807cad0(struct Enemy* p);
 
 static const EnemyFunc PTR_ARRAY_08367aec[4] = {
-    nop_0807c968,
-    nop_0807ca98,
-    nop_0807cac8,
-    nop_0807cad0,
+    (EnemyFunc)nop_0807c968,
+    (EnemyFunc)nop_0807ca98,
+    (EnemyFunc)nop_0807cac8,
+    (EnemyFunc)nop_0807cad0,
 };
 
 void FUN_0807c96c(struct Enemy* p);

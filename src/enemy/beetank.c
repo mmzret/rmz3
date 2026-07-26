@@ -1,6 +1,7 @@
 #include "collision.h"
 #include "enemy.h"
 #include "global.h"
+#include "element.h"
 
 bool8 FUN_0807be50(struct Enemy* p);
 
@@ -77,9 +78,9 @@ void FUN_0807be20(struct Enemy* p) {
 }
 
 bool8 FUN_0807be50(struct Enemy* p) {
-  struct VFX** slot = (struct VFX**)((u8*)p + 0xbc);
+  struct Entity** slot = (struct Entity**)((u8*)p + 0xbc);
   if (*slot == NULL && ((p->body).status & 1)) {
-    struct VFX* e = ApplyElementEffect(0, &p->s, &sElementCoord);
+    struct Entity* e = ApplyElementEffect(0, (Object*)p, &sElementCoord);
     *slot = e;
     if (e != NULL) {
       u8 attr = *(u8*)((u8*)p + 0x97) & 0xf0;
@@ -105,11 +106,11 @@ bool8 FUN_0807be1c(struct Enemy* p);
 
 // clang-format off
 static const EnemyFunc sUpdates1[5] = {
-    nop_0807bc8c,
-    nop_0807bd3c,
-    nop_0807bde4,
-    FUN_0807be14,
-    FUN_0807be1c,
+    (EnemyFunc)nop_0807bc8c,
+    (EnemyFunc)nop_0807bd3c,
+    (EnemyFunc)nop_0807bde4,
+    (EnemyFunc)FUN_0807be14,
+    (EnemyFunc)FUN_0807be1c,
 };
 // clang-format on
 

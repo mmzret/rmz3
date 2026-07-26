@@ -3,6 +3,7 @@
 #include "global.h"
 #include "vfx.h"
 #include "zero.h"
+#include "element.h"
 
 bool8 batring_08068130(struct Enemy* p);
 
@@ -269,12 +270,12 @@ const EnemyFunc sBatringUpdates1[9] = {
     (EnemyFunc)FUN_08067694,
     (EnemyFunc)FUN_080676ac,
     (EnemyFunc)FUN_080677dc,
-    FUN_08067a60,
-    FUN_08067c48,
-    FUN_08067f18,
-    FUN_08067f6c,
-    FUN_08067f74,
-    FUN_08068014,
+    (EnemyFunc)FUN_08067a60,
+    (EnemyFunc)FUN_08067c48,
+    (EnemyFunc)FUN_08067f18,
+    (EnemyFunc)FUN_08067f6c,
+    (EnemyFunc)FUN_08067f74,
+    (EnemyFunc)FUN_08068014,
 };
 // clang-format on
 
@@ -1102,12 +1103,12 @@ bool8 FUN_08068014(struct Enemy* p) { return TRUE; }
 INCASM("asm/enemy/batring_d.inc");
 
 bool8 batring_08068130(struct Enemy* p) {
-  struct VFX** slot = (struct VFX**)&p->buffer[8];
-  struct VFX* e;
+  struct Entity** slot = (struct Entity**)&p->buffer[8];
+  struct Entity* e;
   u8 attr;
 
   if (*slot == NULL && ((p->body).status & 1)) {
-    e = ApplyElementEffect(0, &p->s, &sElementCoord);
+    e = ApplyElementEffect(0, (Object*)p, &sElementCoord);
     *slot = e;
     if ((p->s).mode[1] != 8) {
       if (e != NULL) {

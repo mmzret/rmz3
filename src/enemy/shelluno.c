@@ -3,6 +3,8 @@
 #include "global.h"
 #include "overworld.h"
 
+void Shelluno_Die(struct Enemy* p);
+
 s32 FUN_0807a3e8(struct Enemy* p);
 void FUN_0807a244(struct Enemy* p);
 
@@ -145,12 +147,12 @@ bool8 FUN_0807a0fc(struct Enemy* p);
 
 // clang-format off
 static const EnemyFunc sUpdates1[6] = {
-    nop_0807939c,
-    FUN_080795b8,
-    FUN_0807a018,
-    FUN_0807a064,
-    FUN_0807a06c,
-    FUN_0807a0fc,
+    (EnemyFunc)nop_0807939c,
+    (EnemyFunc)FUN_080795b8,
+    (EnemyFunc)FUN_0807a018,
+    (EnemyFunc)FUN_0807a064,
+    (EnemyFunc)FUN_0807a06c,
+    (EnemyFunc)FUN_0807a0fc,
 };
 // clang-format on
 
