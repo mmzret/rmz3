@@ -98,6 +98,8 @@ void FUN_0806e704(struct Enemy* p) {
 
 static const EnemyFunc sDeads[3];
 
+INCASM("asm/enemy/lemmingles_mid.inc");
+
 void Lemmingles_Die(struct Enemy* p) {
   if (IS_METTAUR) {
     (p->s).flags &= ~DISPLAY;
