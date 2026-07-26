@@ -1,8 +1,39 @@
+#include "entity/macros.h"
 #include "collision.h"
 #include "enemy.h"
 #include "global.h"
 
-INCASM("asm/enemy/deathtanz_rock.inc");
+static const s16 s16_ARRAY_0836773c[3];
+
+void CreateDeathtanzRock(struct Entity* e, s32 x, s32 y, u8 n) {
+  struct Enemy* rock = (struct Enemy*)AllocEntityLast(gEnemyHeaderPtr);
+  s32 i;
+
+  if (rock != NULL) {
+    INIT_ENEMY_ROUTINE(rock, 27);
+    (rock->s).work[0] = 0;
+    (rock->s).coord.x = x;
+    (rock->s).coord.y = y;
+    (rock->s).unk_28 = e;
+    (rock->s).work[2] = n;
+  }
+
+  for (i = 0; i <= 2; i++) {
+    struct Enemy* p = (struct Enemy*)AllocEntityLast(gEnemyHeaderPtr);
+
+    if (p != NULL) {
+      INIT_ENEMY_ROUTINE(p, 27);
+      (p->s).work[0] = 1;
+      (p->s).coord.x = x;
+      (p->s).coord.y = y + s16_ARRAY_0836773c[i];
+      (p->s).unk_28 = (struct Entity*)rock;
+      (p->s).work[2] = n;
+      (p->s).work[3] = i;
+    }
+  }
+}
+
+INCASM("asm/enemy/deathtanz_rock_a.inc");
 
 void DeathtanzRock_Init(struct Enemy* p);
 void DeathtanzRock_Update(struct Enemy* p);

@@ -1,8 +1,37 @@
+#include "entity/macros.h"
 #include "boss.h"
 #include "collision.h"
 #include "global.h"
 
-INCASM("asm/boss/spearook.inc");
+INCASM("asm/boss/spearook_a.inc");
+
+struct Boss* FUN_08061c74(struct Entity* e) {
+  Boss* p = (struct Boss*)AllocEntityLast(gBossHeaderPtr);
+
+  if (p != NULL) {
+    INIT_BOSS_ROUTINE(p, 24);
+    p->work[0] = 1;
+    p->unk_28 = e;
+    p->flags2 |= WHITE_PAINTABLE;
+    p->invincibleID = e->uniqueID;
+  }
+  return p;
+}
+
+void FUN_08061ccc(struct Entity* e, struct Entity* e2) {
+  Boss* p = (struct Boss*)AllocEntityLast(gBossHeaderPtr);
+
+  if (p != NULL) {
+    INIT_BOSS_ROUTINE(p, 24);
+    p->work[0] = 2;
+    p->unk_28 = e;
+    p->unk_2c = e2;
+    p->flags2 |= WHITE_PAINTABLE;
+    p->invincibleID = e->uniqueID;
+  }
+}
+
+INCASM("asm/boss/spearook_b.inc");
 
 void Spearook_Init(struct Boss* p);
 void Spearook_Update(struct Boss* p);
