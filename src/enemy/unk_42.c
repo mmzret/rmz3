@@ -51,7 +51,7 @@ static void Enemy42_Init(Enemy42* p) {
       FUN_08084f18,
       FUN_08084fb4,
   };
-  (sInitializers[(p->work)[0]])((void*)p);
+  (sInitializers[(p->work)[0]])(p);
 }
 
 void FUN_08085060(Enemy42* p);
@@ -64,7 +64,7 @@ static void Enemy42_Update(Enemy42* p) {
       FUN_08085124,
       FUN_080852f4,
   };
-  (sUpdates[(p->work)[0]])((void*)p);
+  (sUpdates[(p->work)[0]])(p);
 }
 
 void FUN_0808534c(Enemy42* p);
@@ -77,7 +77,7 @@ static void Enemy42_Die(Enemy42* p) {
       FUN_0808537c,
       FUN_08085578,
   };
-  (sDeads[(p->work)[0]])((void*)p);
+  (sDeads[(p->work)[0]])(p);
 }
 
 // --------------------------------------------
@@ -132,30 +132,7 @@ static void FUN_08084fb4(Enemy42* p) {
   Enemy42_Update(p);
 }
 
-INCASM("asm/enemy/unk_42_a.inc");
-
-void FUN_080852f4(Enemy42* p) {
-  UpdateSpriteAnimation(p);
-  if (p->mode[3] == 0) {
-    p->coord.x += p->d.x;
-    p->d.x += p->unk_coord.x;
-    if (p->work[2]++ > 0x40) {
-      p->mode[3]++;
-      p->work[2] = 0;
-    }
-  } else {
-    if ((p->unk_28)->mode[3] > 3) {
-      SET_ENEMY_ROUTINE(p, ENTITY_DISAPPEAR);
-    }
-  }
-}
-
-void FUN_0808534c(Enemy42* p) {
-  EXIT_BODY(p);
-  SET_ENEMY_ROUTINE(p, ENTITY_EXIT);
-}
-
-INCASM("asm/enemy/unk_42_b.inc");
+INCASM("asm/enemy/unk_42.inc");
 
 static void FUN_08085578(Enemy42* p) { SET_ENEMY_ROUTINE(p, ENTITY_EXIT); }
 
