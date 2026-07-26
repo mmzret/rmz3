@@ -4,66 +4,12 @@
 #include "physics.h"
 #include "vfx.h"
 
-void nop_08063510(struct Boss* p);
-
-void FUN_08063514(struct Boss* p);
-
-void nop_08063170(struct Boss* p);
-
-void nop_0806316c(struct Boss* p);
-
-void FUN_08062268(struct Boss* p);
-
-void FUN_08062264(struct Boss* p);
-
-void FUN_08062304(struct Boss* p);
-
-void Spearook_Die(struct Boss* p);
-
 static const BossFunc sDeads[5];
 
-INCASM("asm/boss/spearook_a_a.inc");
-
-struct Boss* FUN_08061c74(struct Entity* e) {
-  struct Boss* p = (struct Boss*)AllocEntityLast(gBossHeaderPtr);
-
-  if (p != NULL) {
-    p->renderPrio = 24;
-    INIT_BOSS_ROUTINE(p, 24);
-    p->tileNum = 0;
-    p->palID = 0;
-    p->flags2 |= WHITE_PAINTABLE;
-    p->invincibleID = p->uniqueID;
-    p->work[0] = 1;
-    p->unk_28 = e;
-    p->flags2 |= WHITE_PAINTABLE;
-    p->invincibleID = e->uniqueID;
-  }
-  return p;
-}
-
-void FUN_08061ccc(struct Entity* e, struct Entity* e2) {
-  struct Boss* p = (struct Boss*)AllocEntityLast(gBossHeaderPtr);
-
-  if (p != NULL) {
-    p->renderPrio = 24;
-    INIT_BOSS_ROUTINE(p, 24);
-    p->tileNum = 0;
-    p->palID = 0;
-    p->flags2 |= WHITE_PAINTABLE;
-    p->invincibleID = p->uniqueID;
-    p->work[0] = 2;
-    p->unk_28 = e;
-    p->unk_2c = e2;
-    p->flags2 |= WHITE_PAINTABLE;
-    p->invincibleID = e->uniqueID;
-  }
-}
-
-INCASM("asm/boss/spearook_a_b_a.inc");
+INCASM("asm/boss/spearook_a.inc");
 
 void Spearook_Die(struct Boss* p) {
-  (sDeads[p->mode[1]])((void*)p);
+  (sDeads[p->mode[1]])(p);
 }
 
 void FUN_08062264(struct Boss* p) {}
