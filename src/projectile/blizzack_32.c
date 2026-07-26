@@ -1,6 +1,7 @@
 #include "collision.h"
 #include "global.h"
 #include "projectile.h"
+#include "gpu_regs.h"
 
 // Blizzack関連なのは確定
 typedef struct {
@@ -23,6 +24,10 @@ const ProjectileRoutine gProjectile32Routine = {
 };
 // clang-format on
 
+
+static void (*const PTR_ARRAY_0836c408[9])(Projectile32*);
+static void (*const sInitializers[9])(Projectile32*);
+static void (*const sUpdates[9])(Projectile32*);
 Entity* FUN_080aaa80(Entity* q, u8 kind1, u8 kind2) {
   Entity* p = AllocEntityLast(gProjectileHeaderPtr);
   if (p != NULL) {
@@ -45,7 +50,183 @@ void blizzack_080aaae0(Entity* q, u8 val) {
   }
 }
 
-INCASM("asm/projectile/blizzack_32.inc");
+void FUN_080aab38(struct Enemy* e, struct Entity* parent) {
+  Projectile* p = (struct Projectile*)AllocEntityFirst(gProjectileHeaderPtr);
+
+  if (p != NULL) {
+    INIT_PROJECTILE_ROUTINE(p, 32);
+    p->work[0] = 2;
+    p->work[1] = 0;
+    p->unk_28 = parent;
+    SET_XFLIP(p, (e->s).d.x > 0);
+    p->coord = (e->s).coord;
+    p->coord.y = *(s32*)&e->buffer[4];
+  }
+}
+
+void FUN_080aabd4(struct Entity* e) {
+  Projectile* p = (struct Projectile*)AllocEntityLast(gProjectileHeaderPtr);
+  if (p != NULL) {
+    INIT_PROJECTILE_ROUTINE(p, 32);
+    p->work[0] = 3;
+    p->work[1] = 0;
+    p->unk_28 = e;
+    p->coord = e->coord;
+  }
+}
+
+void FUN_080aac28(struct Entity* e) {
+  Projectile* p = (struct Projectile*)AllocEntityLast(gProjectileHeaderPtr);
+  if (p != NULL) {
+    INIT_PROJECTILE_ROUTINE(p, 32);
+    p->work[0] = 4;
+    p->work[1] = 0;
+    p->unk_28 = e;
+    p->coord = e->coord;
+  }
+}
+
+void FUN_080aac7c(struct Coord* c, bool8 xflip, struct Entity* e) {
+  Projectile* p = (struct Projectile*)AllocEntityLast(gProjectileHeaderPtr);
+
+  if (p != NULL) {
+    INIT_PROJECTILE_ROUTINE(p, 32);
+    p->work[0] = 5;
+    p->work[1] = 0;
+    p->coord = *c;
+    SET_XFLIP(p, xflip);
+    p->unk_28 = e;
+  }
+}
+
+void FUN_080aad0c(struct Coord* c, bool8 xflip, struct Entity* e) {
+  Projectile* p = (struct Projectile*)AllocEntityLast(gProjectileHeaderPtr);
+
+  if (p != NULL) {
+    INIT_PROJECTILE_ROUTINE(p, 32);
+    p->work[0] = 6;
+    p->work[1] = 0;
+    p->coord = *c;
+    SET_XFLIP(p, xflip);
+    p->unk_28 = e;
+    p->unk_2c = e->unk_28;
+  }
+}
+
+void FUN_080aada0(struct Entity* e, u8 n) {
+  Projectile* p = (struct Projectile*)AllocEntityLast(gProjectileHeaderPtr);
+
+  if (p != NULL) {
+    INIT_PROJECTILE_ROUTINE(p, 32);
+    p->work[0] = 7;
+    p->work[1] = n;
+    p->coord = e->coord;
+    SET_XFLIP(p, (e->flags >> 4) & 1);
+    p->unk_28 = e;
+  }
+}
+
+struct Projectile* FUN_080aae34(struct Entity* e) {
+  Projectile* p = (struct Projectile*)AllocEntityLast(gProjectileHeaderPtr);
+
+  if (p != NULL) {
+    INIT_PROJECTILE_ROUTINE(p, 32);
+    p->work[0] = 8;
+    p->work[1] = 0;
+    p->unk_28 = e;
+    return p;
+  }
+  return NULL;
+}
+
+void Projectile32_Init(Projectile32* p) {
+  (sInitializers[p->work[0]])(p);
+}
+
+void Projectile32_Update(Projectile32* p) {
+  (sUpdates[p->work[0]])(p);
+}
+
+void Projectile32_Die(Projectile32* p) {
+  (PTR_ARRAY_0836c408[p->work[0]])(p);
+}
+
+void nop_080aaecc(Projectile32* p) {}
+
+void nop_080aaed0(Projectile32* p) {}
+
+void nop_080aaed4(Projectile32* p) {}
+
+INCASM("asm/projectile/blizzack_32_a.inc");
+
+void FUN_080ab178(Projectile32* p) {
+  SET_PROJECTILE_ROUTINE(p, ENTITY_EXIT);
+}
+
+INCASM("asm/projectile/blizzack_32_b.inc");
+
+void FUN_080ab724(Projectile32* p) {
+  gVideoRegBuffer.dispcnt &= ~(DISPCNT_WIN0_ON | DISPCNT_BG2_ON);
+  gWindowRegBuffer.dispcnt &= ~DISPCNT_WIN1_ON;
+  gWindowRegBuffer.winin[2] |= 0xFE;
+  StopSound(*(s16*)((u8*)p + 0xC0));
+  p->flags &= ~DISPLAY;
+  SET_PROJECTILE_ROUTINE(p, ENTITY_EXIT);
+}
+
+INCASM("asm/projectile/blizzack_32_c.inc");
+
+void FUN_080ab990(Projectile32* p) {
+  gVideoRegBuffer.dispcnt &= ~(DISPCNT_WIN0_ON | DISPCNT_BG2_ON);
+  gWindowRegBuffer.dispcnt &= ~DISPCNT_WIN1_ON;
+  gWindowRegBuffer.winin[2] |= 0xFE;
+  StopSound(*(s16*)((u8*)p + 0xC0));
+  p->flags &= ~DISPLAY;
+  SET_PROJECTILE_ROUTINE(p, ENTITY_EXIT);
+}
+
+INCASM("asm/projectile/blizzack_32_d.inc");
+
+void FUN_080abb2c(Projectile32* p) {
+  SET_PROJECTILE_ROUTINE(p, ENTITY_EXIT);
+}
+
+INCASM("asm/projectile/blizzack_32_e.inc");
+
+void FUN_080abdc8(Projectile32* p) {
+  *(u32*)((u8*)p + 0x8c) = 0;
+  *(u32*)((u8*)p + 0x90) = 0;
+  *(u8*)((u8*)p + 0x94) = 0;
+  p->flags &= ~COLLIDABLE;
+  SET_PROJECTILE_ROUTINE(p, ENTITY_EXIT);
+}
+
+INCASM("asm/projectile/blizzack_32_f.inc");
+
+void FUN_080abea8(Projectile32* p) {
+  SET_PROJECTILE_ROUTINE(p, ENTITY_EXIT);
+}
+
+INCASM("asm/projectile/blizzack_32_g.inc");
+
+void FUN_080ac1a4(struct Body* body, struct Coord* r1 UNUSED, struct Coord* r2 UNUSED) {
+  struct Projectile* self = (struct Projectile*)body->parent;
+  struct Zero* z = (struct Zero*)(body->enemy)->parent;
+  s32 kind = (z->s).kind;
+  if (kind != ENTITY_PLAYER) {
+    return;
+  }
+  {
+    s32 v = (self->work[1] == 0) ? 0x180 : 0x280;
+    if (self->flags & X_FLIP) {
+      *(s32*)&z->horizontalSlide = v;
+    } else {
+      *(s32*)&z->horizontalSlide = -v;
+    }
+  }
+}
+
+INCASM("asm/projectile/blizzack_32_h.inc");
 
 // --------------------------------------------
 
