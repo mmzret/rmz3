@@ -25,6 +25,16 @@ const VFXRoutine gVFX58Routine = {
     [ENTITY_DISAPPEAR] = (void*)DeleteVFX,
     [ENTITY_EXIT] =      (void*)DeleteEntity,
 };
+
+
+
+
+
+void FUN_080c25f4(struct VFX58* p);
+void FUN_080c2500(struct VFX58* p);
+void FUN_080c2294(struct VFX58* p);
+void FUN_080c216c(struct Entity* p);
+void FUN_080c2124(struct VFX* p);
 // clang-format on
 
 // --------------------------------------------
