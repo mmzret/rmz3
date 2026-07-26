@@ -68,7 +68,114 @@ static void PantheonGuardian_Init(PantheonGuardian* p) {
   PantheonGuardian_Update(p);
 }
 
-INCASM("asm/enemy/pantheon_guardian.inc");
+INCASM("asm/enemy/pantheon_guardian_a.inc");
+
+void FUN_08063da0(PantheonGuardian* p) {
+  if (*(u32*)((u8*)p + 0xbc) <= 0x2FFF) {
+    p->mode[1] = 4;
+    p->mode[2] = 0;
+  }
+  if (*(u32*)((u8*)p + 0x8c) & 1) {
+    p->mode[1] = 5;
+    p->mode[2] = 0;
+  }
+  if (*(u32*)((u8*)p + 0xc0) != 0) {
+    p->mode[1] = 5;
+    p->mode[2] = 0;
+  }
+  if (FUN_080098a4(p->coord.x, p->coord.y + 0x40) == 0) {
+    p->mode[1] = 3;
+    p->mode[2] = 0;
+  }
+  if (IsFrozen((struct Entity*)p)) {
+    p->mode[1] = 0;
+    p->mode[2] = 0;
+  }
+}
+
+void doNothing_08063e10(PantheonGuardian* p) {
+  if (IsFrozen((struct Entity*)p)) {
+    p->mode[1] = 0;
+    p->mode[2] = 0;
+  }
+}
+
+void FUN_08063e28(PantheonGuardian* p) {
+  if ((p->body).status & 1) {
+    p->mode[1] = 5;
+    p->mode[2] = 0;
+  }
+  if (*(struct Entity**)((u8*)p + 0xc0) != NULL) {
+    p->mode[1] = 5;
+    p->mode[2] = 0;
+  }
+  if (FUN_080098a4(p->coord.x, p->coord.y + 0x40) == 0) {
+    p->mode[1] = 3;
+    p->mode[2] = 0;
+  }
+  if (IsFrozen((struct Entity*)p)) {
+    p->mode[1] = 0;
+    p->mode[2] = 0;
+  }
+}
+
+void FUN_08063e80(PantheonGuardian* p) {
+  if ((p->body).status & 1) {
+    p->mode[1] = 5;
+    p->mode[2] = 0;
+  }
+  if (FUN_080098a4(p->coord.x, p->coord.y + 0x40) == 0) {
+    p->mode[1] = 3;
+    p->mode[2] = 0;
+  }
+  if (IsFrozen((struct Entity*)p)) {
+    p->mode[1] = 0;
+    p->mode[2] = 0;
+  }
+}
+
+void FUN_08063ec8(PantheonGuardian* p) {
+  if (*(struct Entity**)((u8*)p + 0xc0) != NULL) {
+    p->mode[1] = 5;
+    p->mode[2] = 0;
+  }
+  if (IsFrozen((struct Entity*)p)) {
+    p->mode[1] = 0;
+    p->mode[2] = 0;
+  }
+}
+
+void FUN_08063ef4(PantheonGuardian* p) {
+  if (FUN_080098a4(p->coord.x, p->coord.y + 0x40) == 0) {
+    p->mode[1] = 3;
+    p->mode[2] = 0;
+  }
+  if (IsFrozen((struct Entity*)p)) {
+    p->mode[1] = 0;
+    p->mode[2] = 0;
+  }
+}
+
+void FUN_08063f28(PantheonGuardian* p) {
+  if (p->mode[1] == 8) return;
+  if (((p->body).status & 0x00020001) == 0x00020001) {
+    p->mode[1] = 8;
+    p->mode[2] = 0;
+  }
+}
+
+INCASM("asm/enemy/pantheon_guardian_b.inc");
+
+void FUN_08064444(PantheonGuardian* p) {
+  if (p->mode[2] == 0) {
+    SetMotion((struct Entity*)p, MOTION(0x14, 4));
+    SetDDP(&p->body, &sCollisions[0]);
+    p->mode[2]++;
+  }
+  UpdateEntityAnim((struct Entity*)p);
+}
+
+INCASM("asm/enemy/pantheon_guardian_c.inc");
 
 void FUN_08063da0(PantheonGuardian* p);
 void doNothing_08063e10(PantheonGuardian* p);

@@ -157,6 +157,50 @@ static void Ghost64_Die(struct Entity* p) { SET_VFX_ROUTINE(p, ENTITY_EXIT); }
 
 // --------------------------------------------
 
-INCASM("asm/vfx/unk_64.inc");
+INCASM("asm/vfx/unk_64_a.inc");
+
+void FUN_080c3f1c(struct VFX* v) {
+  u8 state;
+
+  switch ((v->s).mode[2]) {
+    case 0:
+      SetMotion(&v->s, MOTION(0x80, 4));
+      (v->s).mode[2]++;
+      // fallthrough
+    case 1:
+      UpdateEntityAnim(&v->s);
+      state = (v->s).motion.state;
+      if (state == 3) {
+        (v->s).flags &= ~DISPLAY;
+        (v->s).flags &= ~FLIPABLE;
+        SET_VFX_ROUTINE(v, ENTITY_DISAPPEAR);
+      }
+      break;
+  }
+}
+
+INCASM("asm/vfx/unk_64_b.inc");
+
+void FUN_080c40ec(struct VFX* v) {
+  u8 state;
+
+  switch ((v->s).mode[2]) {
+    case 0:
+      SetMotion(&v->s, MOTION(0x80, 6));
+      (v->s).mode[2]++;
+      // fallthrough
+    case 1:
+      UpdateEntityAnim(&v->s);
+      state = (v->s).motion.state;
+      if (state == 3) {
+        (v->s).flags &= ~DISPLAY;
+        (v->s).flags &= ~FLIPABLE;
+        SET_VFX_ROUTINE(v, ENTITY_DISAPPEAR);
+      }
+      break;
+  }
+}
+
+INCASM("asm/vfx/unk_64_c.inc");
 
 static const u8 sInitModes[7] = {8, 2, 3, 4, 5, 6, 7};

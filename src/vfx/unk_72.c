@@ -8,9 +8,9 @@ void Ghost72_Die(struct VFX* p);
 
 // clang-format off
 const VFXRoutine gGhost72Routine = {
-    [ENTITY_INIT] =      Ghost72_Init,
-    [ENTITY_UPDATE] =    Ghost72_Update,
-    [ENTITY_DIE] =       Ghost72_Die,
+    [ENTITY_INIT] =      (void*)Ghost72_Init,
+    [ENTITY_UPDATE] =    (void*)Ghost72_Update,
+    [ENTITY_DIE] =       (void*)Ghost72_Die,
     [ENTITY_DISAPPEAR] = (void*)DeleteVFX,
     [ENTITY_EXIT] =      (VFXFunc)DeleteEntity,
 };
@@ -67,7 +67,7 @@ static void Ghost72_Init(struct VFX* p) {
       FUN_080c6b78,
       FUN_080c6cd0,
   };
-  (sInitializers[(p->s).work[0]])(p);
+  (sInitializers[(p->s).work[0]])((void*)p);
 }
 
 // --------------------------------------------
@@ -88,7 +88,7 @@ void Ghost72_Update(struct VFX* p) {
     SET_VFX_ROUTINE(p, ENTITY_DISAPPEAR);
     return;
   }
-  (sUpdates[(p->s).work[0]])(p);
+  (sUpdates[(p->s).work[0]])((void*)p);
 }
 
 // --------------------------------------------
@@ -98,7 +98,26 @@ void Ghost72_Die(struct VFX* p) {
   SET_VFX_ROUTINE(p, ENTITY_EXIT);
 }
 
-INCASM("asm/vfx/unk_72.inc");
+INCASM("asm/vfx/unk_72_a.inc");
+
+void FUN_080c6c60(struct VFX* p) {
+  (p->s).coord.x += (p->s).d.x;
+  (p->s).coord.y += (p->s).d.y;
+  (p->s).d.y += 0x40;
+  UpdateEntityAnim(&p->s);
+  (p->s).work[2]++;
+  if ((p->s).work[2] & 1) {
+    (p->s).flags |= DISPLAY;
+  } else {
+    (p->s).flags &= ~DISPLAY;
+  }
+  if (FUN_080098a4((p->s).coord.x, (p->s).coord.y)) {
+    CreateSmoke(3, &(p->s).coord);
+    SET_VFX_ROUTINE(p, ENTITY_DIE);
+  }
+}
+
+INCASM("asm/vfx/unk_72_b.inc");
 
 // --------------------------------------------
 

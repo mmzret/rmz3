@@ -3,6 +3,10 @@
 #include "global.h"
 #include "overworld.h"
 
+static const BossFunc sDeads[1];
+static const BossFunc sUpdates1[9];
+static const BossFunc sUpdates2[9];
+
 typedef struct {
   COLLISION_OBJECT_HDR;  // 0x00
   u8 unk_b4[6];          // 0xB4
@@ -12,9 +16,9 @@ typedef struct {
 } PAquaMod;
 static_assert(sizeof(PAquaMod) == sizeof(struct Boss));
 
-void PantheonAquaMod_Init(struct Boss* p);
-void PantheonAquaMod_Update(struct Boss* p);
-void PantheonAquaMod_Die(struct Boss* p);
+void PantheonAquaMod_Init(PAquaMod* p);
+void PantheonAquaMod_Update(PAquaMod* p);
+void PantheonAquaMod_Die(PAquaMod* p);
 
 // clang-format off
 const BossRoutine gPantheonAquaModRoutine = {
@@ -28,7 +32,7 @@ const BossRoutine gPantheonAquaModRoutine = {
 
 static void onCollision(struct Body* body UNUSED, Coords32* r1 UNUSED, Coords32* r2 UNUSED) { return; }
 
-bool8 tryKillPantheonAquaMod(struct Boss* p) {
+bool8 tryKillPantheonAquaMod(PAquaMod* p) {
   if ((((p->body).status & BODY_STATUS_DEAD) || ((p->body).hp == 0)) && !(gStageRun.missionStatus & MISSION_PLAYER_DEAD)) {
     SET_BOSS_ROUTINE(p, ENTITY_DIE);
     p->mode[1] = 0;
@@ -44,54 +48,74 @@ static void paquam_080512f8(PAquaMod* p) {
   (p->coord).y += gSineTable[COORD_TO_PIXEL(p->x)] << 2;
 }
 
-INCASM("asm/boss/pantheon_aqua_mod.inc");
+INCASM("asm/boss/pantheon_aqua_mod_a.inc");
 
-void nop_08051620(struct Boss* p);
+void PantheonAquaMod_Update(PAquaMod* p) {
+  struct Entity** slot = (struct Entity**)((u8*)p + 0xc0);
+  if (*slot != NULL && isKilled(*slot)) {
+    *slot = NULL;
+  }
+  if (tryKillPantheonAquaMod(p)) {
+    return;
+  }
+  (sUpdates1[p->mode[1]])((void*)p);
+  (sUpdates2[p->mode[1]])((void*)p);
+}
+
+void PantheonAquaMod_Die(PAquaMod* p) {
+  (sDeads[p->mode[1]])((void*)p);
+}
+
+void nop_08051620(PAquaMod* p) {}
+
+INCASM("asm/boss/pantheon_aqua_mod_b.inc");
+
+void nop_08051620(PAquaMod* p);
 
 // clang-format off
 static const BossFunc sUpdates1[9] = {
-    nop_08051620,
-    nop_08051620,
-    nop_08051620,
-    nop_08051620,
-    nop_08051620,
-    nop_08051620,
-    nop_08051620,
-    nop_08051620,
-    nop_08051620,
+    (BossFunc)nop_08051620,
+    (BossFunc)nop_08051620,
+    (BossFunc)nop_08051620,
+    (BossFunc)nop_08051620,
+    (BossFunc)nop_08051620,
+    (BossFunc)nop_08051620,
+    (BossFunc)nop_08051620,
+    (BossFunc)nop_08051620,
+    (BossFunc)nop_08051620,
 };
 // clang-format on
 
-void paquamNeutral(struct Boss* p);
-void paquam_080517ac(struct Boss* p);
-void paquam_080519d0(struct Boss* p);
-void paquam_08051b8c(struct Boss* p);
-void FUN_08051cdc(struct Boss* p);
-void paquamSweepLaser(struct Boss* p);
-void paquam_08051f44(struct Boss* p);
-void paquqmRubble(struct Boss* p);
-void paqua_mod_08052240(struct Boss* p);
+void paquamNeutral(PAquaMod* p);
+void paquam_080517ac(PAquaMod* p);
+void paquam_080519d0(PAquaMod* p);
+void paquam_08051b8c(PAquaMod* p);
+void FUN_08051cdc(PAquaMod* p);
+void paquamSweepLaser(PAquaMod* p);
+void paquam_08051f44(PAquaMod* p);
+void paquqmRubble(PAquaMod* p);
+void paqua_mod_08052240(PAquaMod* p);
 
 // clang-format off
 static const BossFunc sUpdates2[9] = {
-    paquamNeutral,
-    paquam_080517ac,
-    paquam_080519d0,
-    paquam_08051b8c,
-    FUN_08051cdc,
-    paquamSweepLaser,
-    paquam_08051f44,
-    paquqmRubble,
-    paqua_mod_08052240,
+    (BossFunc)paquamNeutral,
+    (BossFunc)paquam_080517ac,
+    (BossFunc)paquam_080519d0,
+    (BossFunc)paquam_08051b8c,
+    (BossFunc)FUN_08051cdc,
+    (BossFunc)paquamSweepLaser,
+    (BossFunc)paquam_08051f44,
+    (BossFunc)paquqmRubble,
+    (BossFunc)paqua_mod_08052240,
 };
 // clang-format on
 
 // --------------------------------------------
 
-void FUN_080523b8(struct Boss* p);
+void FUN_080523b8(PAquaMod* p);
 
 static const BossFunc sDeads[1] = {
-    FUN_080523b8,
+    (BossFunc)FUN_080523b8,
 };
 
 // --------------------------------------------

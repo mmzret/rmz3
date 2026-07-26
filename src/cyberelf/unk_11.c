@@ -63,11 +63,22 @@ static void Elf11_Init(struct Entity* p) {
   p->flags2 &= ~DYNAMIC;
   p->flags |= DISPLAY;
   p->flags |= FLIPABLE;
-  (sInitializers[(p->work)[0]])(p);
-  Elf11_Update((void*)p);
+  (sInitializers[(p->work)[0]])((void*)p);
+  Elf11_Update((CyberElf*)p);
 }
 
-INCASM("asm/cyberelf/unk_11.inc");
+INCASM("asm/cyberelf/unk_11_a.inc");
+
+void Elf11_Die(CyberElf* p) {
+  (p->body).status = 0;
+  (p->body).prevStatus = 0;
+  (p->body).invincibleTime = 0;
+  p->flags &= ~COLLIDABLE;
+  p->flags &= ~DISPLAY;
+  SET_ELF_ROUTINE(p, ENTITY_EXIT);
+}
+
+INCASM("asm/cyberelf/unk_11_b.inc");
 
 void FUN_080e56a0(CyberElf* p);
 void FUN_080e5718(CyberElf* p);

@@ -1,8 +1,40 @@
 #include "collision.h"
 #include "enemy.h"
 #include "global.h"
+#include "camera.h"
+#include "stagerun.h"
 
-INCASM("asm/enemy/wormer_rock_drone.inc");
+void FUN_08076fe8(struct Enemy* p);
+
+INCASM("asm/enemy/wormer_rock_drone_a.inc");
+
+void FUN_08076fe8(struct Enemy* p) {
+  switch ((p->s).mode[2]) {
+    case 0:
+      (p->s).palID = (p->s).work[2];
+      SetMotion(&p->s, MOTION(0x2c, 1));
+      (p->s).mode[2]++;
+      // fallthrough
+    case 1:
+      (p->s).coord.x += (p->s).d.x;
+      (p->s).coord.y += (p->s).d.y;
+      UpdateEntityAnim(&p->s);
+      if (Camera_GetDistance(&gStageRun.vm.camera, &(p->s).coord) > 0x2000) {
+        (p->s).flags &= ~DISPLAY;
+        (p->s).flags &= ~FLIPABLE;
+        EXIT_BODY(p);
+        SET_ENEMY_ROUTINE(p, ENTITY_DISAPPEAR);
+        break;
+      }
+      if (FUN_080098a4((p->s).coord.x, (p->s).coord.y) != 0) {
+        SET_ENEMY_ROUTINE(p, ENTITY_DIE);
+        (p->s).mode[1] = 0;
+      }
+      break;
+  }
+}
+
+INCASM("asm/enemy/wormer_rock_drone_b.inc");
 
 void WormerRockDrone_Init(struct Enemy* p);
 void WormerRockDrone_Update(struct Enemy* p);
@@ -10,9 +42,9 @@ void WormerRockDrone_Die(struct Enemy* p);
 
 // clang-format off
 const EnemyRoutine gWormerRockDroneRoutine = {
-    [ENTITY_INIT] =      WormerRockDrone_Init,
-    [ENTITY_UPDATE] =    WormerRockDrone_Update,
-    [ENTITY_DIE] =       WormerRockDrone_Die,
+    [ENTITY_INIT] =      (void*)WormerRockDrone_Init,
+    [ENTITY_UPDATE] =    (void*)WormerRockDrone_Update,
+    [ENTITY_DIE] =       (void*)WormerRockDrone_Die,
     [ENTITY_DISAPPEAR] = (void*)DeleteEnemy,
     [ENTITY_EXIT] =      (EnemyFunc)DeleteEntity,
 };

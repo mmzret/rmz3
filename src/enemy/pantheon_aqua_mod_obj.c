@@ -1,6 +1,11 @@
 #include "collision.h"
 #include "enemy.h"
 #include "global.h"
+#include "vfx.h"
+
+static const motion_t sMotions[8];
+static const EnemyFunc sUpdates1[10];
+static const EnemyFunc sUpdates2[10];
 
 void PantheonAquaModObj_Init(struct Enemy* p);
 void PantheonAquaModObj_Update(struct Enemy* p);
@@ -14,6 +19,8 @@ const EnemyRoutine gPantheonAquaModObjRoutine = {
     [ENTITY_DISAPPEAR] = (void*)DeleteEnemy,
     [ENTITY_EXIT] =      (void*)DeleteEntity,
 };
+
+void FUN_08080fe8(struct Enemy* p);
 // clang-format on
 
 void createPAquaModRubble(s32 x) {
@@ -140,7 +147,37 @@ void FUN_08080c64(s32 x, s32 y) {
   }
 }
 
-INCASM("asm/enemy/pantheon_aqua_mod_obj.inc");
+INCASM("asm/enemy/pantheon_aqua_mod_obj_a.inc");
+
+void nop_08080eb8(struct Enemy* p) {}
+
+INCASM("asm/enemy/pantheon_aqua_mod_obj_b.inc");
+
+void PantheonAquaModObj_Update(struct Enemy* p) {
+  if ((p->body).status & BODY_STATUS_DEAD) {
+    SET_ENEMY_ROUTINE(p, ENTITY_DIE);
+    PantheonAquaModObj_Die(p);
+  } else {
+    (sUpdates1[(p->s).mode[1]])((void*)p);
+    (sUpdates2[(p->s).mode[1]])((void*)p);
+  }
+}
+
+void PantheonAquaModObj_Die(struct Enemy* p) {
+  struct Coord c;
+  *(u32*)((u8*)p + 0x8c) = 0;
+  *(u32*)((u8*)p + 0x90) = 0;
+  *(u8*)((u8*)p + 0x94) = 0;
+  (p->s).flags &= ~COLLIDABLE;
+  c.x = (p->s).coord.x;
+  c.y = (p->s).coord.y;
+  FUN_080b81a0(&p->s, &c, (motion_t*)sMotions, 3);
+  SET_ENEMY_ROUTINE(p, ENTITY_EXIT);
+}
+
+void FUN_08080fe8(struct Enemy* p) {}
+
+INCASM("asm/enemy/pantheon_aqua_mod_obj_c.inc");
 
 void FUN_08080fe8(struct Enemy* p);
 
