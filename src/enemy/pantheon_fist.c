@@ -1,118 +1,14 @@
 #include "collision.h"
-#include "element.h"
 #include "enemy.h"
 #include "global.h"
-#include "metatile.h"
-#include "story.h"
 
 typedef struct {
   COLLISION_OBJECT_HDR;  // 0x00
-  Entity* elfx;          // 0xB4, Element Effect
-  u8 unk_b8[12];         // 0xB8
+  u8 buffer[16];         // 0xB4
 } PantheonFist;
 static_assert(sizeof(PantheonFist) == sizeof(struct Enemy));
 
-static void (*const sUpdates1[9])(PantheonFist*);
-static void (*const sUpdates2[9])(PantheonFist*);
-
-// 0x08095124
-bool8 FUN_08095124(PantheonFist* p) {
-  if (p->mode[1] != 7) {
-    Entity* v = p->elfx;
-    if (v == NULL) {
-      switch (p->mode[3]) {
-        case 0:
-          if (IsFrozen(p)) {
-            (sUpdates1[p->mode[1]])(p);
-            (sUpdates2[p->mode[1]])(p);
-            p->mode[3]++;
-            UpdateSpriteAnimation(p);
-            return TRUE;
-          }
-          break;
-        case 1:
-          if (IsFrozen(p)) {
-            if ((p->body.status & (BODY_STATUS_RECOILED | BODY_STATUS_WHITE)) ==
-                (BODY_STATUS_RECOILED | BODY_STATUS_WHITE)) {
-              p->mode[3] = 0;
-            } else {
-              return TRUE;
-            }
-          } else {
-            p->mode[3] = 0;
-          }
-          break;
-      }
-    }
-  }
-  return FALSE;
-}
-
-INCASM("asm/enemy/pantheon_fist_a_s1.inc");
-
-bool8 FUN_08094fa8(struct Enemy* p, s32 d) {
-  s32 x = (p->s).coord.x;
-  x -= PIXEL(14);
-  if (d > 0) {
-    x += PIXEL(28);
-  }
-  if (FUN_080098a4(x, (p->s).coord.y + PIXEL(10)) != 0) {
-    return TRUE;
-  }
-  return FALSE;
-}
-
-INCASM("asm/enemy/pantheon_fist_a_s2.inc");
-
-u32 FUN_08095014(struct Enemy* p, s32 d) {
-  if (d != 0) {
-    if (d < 0) {
-      if (FUN_080098a4((p->s).coord.x - PIXEL(14), (p->s).coord.y - PIXEL(10)) != 0) {
-        return 1;
-      }
-    } else {
-      if (FUN_080098a4((p->s).coord.x + PIXEL(14), (p->s).coord.y - PIXEL(10)) != 0) {
-        return 2;
-      }
-    }
-    (p->s).coord.x += d;
-  }
-  return 0;
-}
-
-INCASM("asm/enemy/pantheon_fist_a_s3.inc");
-
-bool8 FUN_080950d0(struct Enemy* p) {
-  if ((p->body).status & BODY_STATUS_DEAD) {
-    SET_ENEMY_ROUTINE(p, ENTITY_DIE);
-    if ((p->body).status & BODY_STATUS_SLASHED) {
-      (p->s).mode[1] = 1;
-    } else if ((p->body).status & BODY_STATUS_RECOILED) {
-      (p->s).mode[1] = 2;
-    } else {
-      (p->s).mode[1] = 0;
-    }
-    return TRUE;
-  }
-  return FALSE;
-}
-
-static const Coords32 sElementCoord;
-
-void FUN_080951b4(PantheonFist* p) {
-  if (p->elfx == NULL && ((p->body).status & BODY_STATUS_WHITE)) {
-    if (((p->body).status & BODY_STATUS_RECOILED)) {
-      p->mode[1] = 7, p->mode[2] = 0;
-    } else {
-      p->elfx = (void*)ApplyElementEffect(0, (Object*)p, &sElementCoord);
-      if (p->elfx != NULL) {
-        p->mode[1] = 0, p->mode[2] = 0;
-      }
-    }
-  }
-}
-
-INCASM("asm/enemy/pantheon_fist_b.inc");
+INCASM("asm/enemy/pantheon_fist.inc");
 
 void PantheonFist_Init(PantheonFist* p);
 void PantheonFist_Update(PantheonFist* p);
