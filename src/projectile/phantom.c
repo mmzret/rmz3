@@ -302,7 +302,7 @@ void FUN_080af9c8(PhantomProjectile* p) {
 INCASM("asm/projectile/phantom_e_a.inc");
 
 struct Projectile* FUN_080afbfc(struct Coord* c, s32 speed, u8 angle, u8 n) {
-  Projectile* p = (struct Projectile*)AllocEntityLast(gProjectileHeaderPtr);
+  Projectile* p = (struct Projectile*)AllocEntityFirst(gProjectileHeaderPtr);
 
   if (p != NULL) {
     INIT_PROJECTILE_ROUTINE(p, 40);

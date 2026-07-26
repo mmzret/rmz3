@@ -66,7 +66,7 @@ void MenuExit_BlizzardArrow(Weapon* p) {
 }
 
 struct Weapon* CreateBlizzardArrow(struct Zero* z, struct Coord* c, u8 n, bool8 xflip) {
-  Weapon* w = (struct Weapon*)AllocEntityFirst(gWeaponHeaderPtr);
+  Weapon* w = (struct Weapon*)AllocEntityLast(gWeaponHeaderPtr);
 
   if (w != NULL) {
     if ((z->unk_b4).mainCopy == WEAPON_BUSTER) {

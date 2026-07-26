@@ -66,7 +66,7 @@ void FUN_080bc660(s32 x, s32 y) {
 }
 
 void FUN_080bc6ac(struct Entity* e, s32 x, s32 y, s32 speed, u8 angle) {
-  struct VFX* p = (struct VFX*)AllocEntityLast(gVFXHeaderPtr);
+  struct VFX* p = (struct VFX*)AllocEntityFirst(gVFXHeaderPtr);
 
   if (p != NULL) {
     INIT_VFX_ROUTINE(p, 37);
@@ -83,7 +83,7 @@ void FUN_080bc6ac(struct Entity* e, s32 x, s32 y, s32 speed, u8 angle) {
 INCASM("asm/vfx/unk_37_a.inc");
 
 void FUN_080bc7a4(s32 x, s32 y, s32 speed, u8 angle, u8 n) {
-  struct VFX* p = (struct VFX*)AllocEntityLast(gVFXHeaderPtr);
+  struct VFX* p = (struct VFX*)AllocEntityFirst(gVFXHeaderPtr);
 
   if (p != NULL) {
     INIT_VFX_ROUTINE(p, 37);

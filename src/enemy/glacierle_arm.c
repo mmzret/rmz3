@@ -6,7 +6,7 @@
 INCASM("asm/enemy/glacierle_arm_a.inc");
 
 struct Enemy* createGlacierleJoint(struct Entity* e, struct Entity* parent) {
-  struct Enemy* p = (struct Enemy*)AllocEntityFirst(gEnemyHeaderPtr);
+  struct Enemy* p = (struct Enemy*)AllocEntityLast(gEnemyHeaderPtr);
 
   if (p != NULL) {
     struct Entity* prev;
@@ -43,7 +43,7 @@ struct Enemy* createGlacierleJoint(struct Entity* e, struct Entity* parent) {
 }
 
 struct Enemy* createGlacierleSucker(struct Entity* e, struct Entity* parent) {
-  struct Enemy* p = (struct Enemy*)AllocEntityFirst(gEnemyHeaderPtr);
+  struct Enemy* p = (struct Enemy*)AllocEntityLast(gEnemyHeaderPtr);
 
   if (p != NULL) {
     INIT_ENEMY_ROUTINE(p, 39);

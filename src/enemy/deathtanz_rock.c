@@ -6,7 +6,7 @@
 static const s16 s16_ARRAY_0836773c[3];
 
 void CreateDeathtanzRock(struct Entity* e, s32 x, s32 y, u8 n) {
-  struct Enemy* rock = (struct Enemy*)AllocEntityFirst(gEnemyHeaderPtr);
+  struct Enemy* rock = (struct Enemy*)AllocEntityLast(gEnemyHeaderPtr);
   s32 i;
 
   if (rock != NULL) {
@@ -19,7 +19,7 @@ void CreateDeathtanzRock(struct Entity* e, s32 x, s32 y, u8 n) {
   }
 
   for (i = 0; i <= 2; i++) {
-    struct Enemy* p = (struct Enemy*)AllocEntityFirst(gEnemyHeaderPtr);
+    struct Enemy* p = (struct Enemy*)AllocEntityLast(gEnemyHeaderPtr);
 
     if (p != NULL) {
       INIT_ENEMY_ROUTINE(p, 27);

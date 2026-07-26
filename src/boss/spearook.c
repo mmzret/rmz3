@@ -6,7 +6,7 @@
 INCASM("asm/boss/spearook_a.inc");
 
 struct Boss* FUN_08061c74(struct Entity* e) {
-  Boss* p = (struct Boss*)AllocEntityFirst(gBossHeaderPtr);
+  Boss* p = (struct Boss*)AllocEntityLast(gBossHeaderPtr);
 
   if (p != NULL) {
     INIT_BOSS_ROUTINE(p, 24);
@@ -19,7 +19,7 @@ struct Boss* FUN_08061c74(struct Entity* e) {
 }
 
 void FUN_08061ccc(struct Entity* e, struct Entity* e2) {
-  Boss* p = (struct Boss*)AllocEntityFirst(gBossHeaderPtr);
+  Boss* p = (struct Boss*)AllocEntityLast(gBossHeaderPtr);
 
   if (p != NULL) {
     INIT_BOSS_ROUTINE(p, 24);

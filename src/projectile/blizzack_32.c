@@ -49,7 +49,7 @@ void blizzack_080aaae0(Entity* q, u8 val) {
 INCASM("asm/projectile/blizzack_32_a.inc");
 
 struct Projectile* FUN_080aae34(struct Entity* e) {
-  Projectile* p = (struct Projectile*)AllocEntityFirst(gProjectileHeaderPtr);
+  Projectile* p = (struct Projectile*)AllocEntityLast(gProjectileHeaderPtr);
 
   if (p != NULL) {
     INIT_PROJECTILE_ROUTINE(p, 32);
