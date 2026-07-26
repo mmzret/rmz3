@@ -1,15 +1,5 @@
 #include "cyberelf.h"
 #include "global.h"
-#include "zero.h"
-#include "zero.h"
-
-typedef struct {
-  COLLISION_OBJECT_HDR;  // 0x00
-  // props (16bytes, offset: 0xB4..)
-  struct Zero* player;  // 0xB4
-  u8 unk_b8[12];        // 0xB8
-} CyberElfBird;
-static_assert(sizeof(CyberElfBird) == sizeof(CyberElf));
 
 static const ElfFunc sUpdates[2];
 
@@ -99,24 +89,7 @@ static const ElfFunc sUpdates[2] = {
 
 void FUN_080bfce8(struct Coord* c, s32 r1);
 
-CyberElf* CreateBirdElf(struct Zero* z, u8 breed, u8 availability, u8 satelite_slot) {
-  CyberElfBird* p = (CyberElfBird*)AllocEntityLast(gElfHeaderPtr);
-  if (p != NULL) {
-    p->renderPrio = 16;
-    INIT_ELF_ROUTINE(p, 12);
-    p->tileNum = 0, p->palID = 0;
-    p->player = z;
-    p->work[0] = breed, p->work[1] = availability, p->work[2] = satelite_slot;
-    if (satelite_slot == 0) {
-      p->work[3] = SATELITE_1;
-    } else {
-      p->work[3] = SATELITE_2;
-    }
-  }
-  return (CyberElf*)p;
-}
-
-INCASM("asm/cyberelf/bird_a_a.inc");
+INCASM("asm/cyberelf/bird_a.inc");
 
 void BirdElf_Die(CyberElf* p) {
   FUN_080bfce8(&p->coord, 0);
