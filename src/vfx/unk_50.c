@@ -109,7 +109,7 @@ void FUN_080c094c(VFX50* p) {
     case 1:
       p->d.y -= 0x20;
       p->coord.y += p->d.y;
-      UpdateMotionGraphic((struct Entity*)p);
+      UpdateEntityAnim((struct Entity*)p);
       if (p->work[3] == 0 || --p->work[3] == 0) {
         SET_VFX_ROUTINE(p, ENTITY_DIE);
       }

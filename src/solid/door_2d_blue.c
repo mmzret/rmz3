@@ -206,14 +206,14 @@ void FUN_080cb2f8(struct Solid* p) {
       (p->s).mode[2] = 1;
       // fallthrough
     case 1:
-      UpdateMotionGraphic(&p->s);
+      UpdateEntityAnim(&p->s);
       if ((p->s).motion.state == 3) {
         SetMotion(&p->s, MOTION(0x12, 0x00));
         (p->s).mode[2]++;
       }
       break;
     case 2:
-      UpdateMotionGraphic(&p->s);
+      UpdateEntityAnim(&p->s);
       if (((p->s).work[0] & 2) && !FLAG(gCurStory.s.gameflags, FLAG_2)) {
         (p->s).mode[1] = 0;
         (p->s).mode[2] = 0;

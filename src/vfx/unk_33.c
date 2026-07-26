@@ -110,7 +110,7 @@ void FUN_080bba18(struct VFX* p) {
       case 1:
         (p->s).coord.x = (pZero2->s).coord.x;
         (p->s).coord.y = (pZero2->s).coord.y - 0x1000;
-        UpdateMotionGraphic(&p->s);
+        UpdateEntityAnim(&p->s);
         break;
     }
   }

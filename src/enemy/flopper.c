@@ -82,7 +82,7 @@ void FUN_0806bfdc(struct FlopperObject* p) {
       p->coord.y = (p->c).y;
       p->coord.y += SIN(p->unk_08 >> 8) * 45;
       p->unk_08 = (p->unk_08 + 0x200) & 0xFFFF;
-      UpdateMotionGraphic((struct Entity*)p);
+      UpdateEntityAnim((struct Entity*)p);
       break;
   }
 }
@@ -98,7 +98,7 @@ void FUN_0806c04c(struct FlopperObject* p) {
       p->coord.x = (p->c).x;
       p->coord.x += SIN(p->unk_08 >> 8) * 45;
       p->unk_08 = (p->unk_08 + 0x200) & 0xFFFF;
-      UpdateMotionGraphic((struct Entity*)p);
+      UpdateEntityAnim((struct Entity*)p);
       break;
   }
 }

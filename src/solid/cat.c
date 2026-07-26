@@ -69,7 +69,7 @@ static void Cat_Die(struct Solid* p) { SET_SOLID_ROUTINE(p, ENTITY_EXIT); }
 INCASM("asm/solid/cat_a.inc");
 
 void FUN_080dd894(struct Solid* p) {
-  UpdateMotionGraphic(&p->s);
+  UpdateEntityAnim(&p->s);
   if ((p->s).mode[1] != 0) {
     (p->s).work[2]--;
     if ((p->s).work[2] == 0xFF) {

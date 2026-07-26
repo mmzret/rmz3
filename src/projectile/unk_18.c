@@ -122,7 +122,7 @@ void FUN_080a3418(Projectile* p) {
     case 1:
       p->coord.x = (pZero2->s).coord.x;
       p->coord.y = (pZero2->s).coord.y - 0x1000;
-      UpdateMotionGraphic((struct Entity*)p);
+      UpdateEntityAnim((struct Entity*)p);
       if (p->motion.state == 3) {
         p->flags &= ~DISPLAY;
         p->flags &= ~FLIPABLE;

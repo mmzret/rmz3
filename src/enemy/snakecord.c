@@ -205,7 +205,7 @@ void FUN_08074d18(struct Enemy* p) {
       (p->s).mode[2]++;
       // fallthrough
     case 1:
-      UpdateMotionGraphic(&p->s);
+      UpdateEntityAnim(&p->s);
       if ((p->s).motion.state == 4) {
         (p->s).mode[2]++;
       }
@@ -215,7 +215,7 @@ void FUN_08074d18(struct Enemy* p) {
       (p->s).mode[2]++;
       // fallthrough
     case 3:
-      UpdateMotionGraphic(&p->s);
+      UpdateEntityAnim(&p->s);
       if ((p->s).motion.state == 4) {
         (p->s).mode[1] = 7;
         (p->s).mode[2] = 0;

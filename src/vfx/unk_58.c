@@ -83,7 +83,7 @@ void FUN_080c248c(struct VFX* p) {
       (p->s).mode[2]++;
       // fallthrough
     case 1:
-      UpdateMotionGraphic(&p->s);
+      UpdateEntityAnim(&p->s);
       if ((p->s).work[2] & 1) {
         (p->s).flags |= DISPLAY;
       } else {

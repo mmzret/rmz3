@@ -17,7 +17,7 @@ void FUN_0808772c(struct Enemy* p) {
     }
       // fallthrough
     case 1:
-      UpdateMotionGraphic(&p->s);
+      UpdateEntityAnim(&p->s);
       (p->s).coord.x += (p->s).d.x;
       (p->s).work[3]--;
       if ((p->s).work[3] == 0) {

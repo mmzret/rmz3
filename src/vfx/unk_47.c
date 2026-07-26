@@ -138,7 +138,7 @@ void FUN_080bfa10(struct VFX* p) {
       (p->s).mode[2]++;
       // fallthrough
     case 1:
-      UpdateMotionGraphic(&p->s);
+      UpdateEntityAnim(&p->s);
       if ((p->s).motion.state == 3) {
         (p->s).flags &= ~DISPLAY;
         (p->s).flags &= ~FLIPABLE;

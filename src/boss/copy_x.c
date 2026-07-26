@@ -917,7 +917,7 @@ void copyxNovaStrike2(Boss* p) {
     p->d.x = 0;
     p->d.y = 0;
   }
-  UpdateMotionGraphic((struct Entity*)p);
+  UpdateEntityAnim((struct Entity*)p);
   p->coord.y += p->d.y;
   p->d.y += 0x10;
   if (p->motion.state == 3) {
@@ -933,7 +933,7 @@ void copyx_080568bc(Boss* p) {
     SetMotion((struct Entity*)p, MOTION(0xb3, 0x18));
     p->mode[2] = 0;
   }
-  UpdateMotionGraphic((struct Entity*)p);
+  UpdateEntityAnim((struct Entity*)p);
   p->coord.x += p->d.x;
   p->coord.y += p->d.y;
   p->d.y += 0x40;

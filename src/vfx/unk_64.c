@@ -170,7 +170,7 @@ void FUN_080c3e98(struct VFX* p) {
       (p->s).mode[2]++;
       // fallthrough
     case 1:
-      UpdateMotionGraphic(&p->s);
+      UpdateEntityAnim(&p->s);
       if (--(p->s).work[2] == 0) {
         (p->s).flags &= ~DISPLAY;
         (p->s).flags &= ~FLIPABLE;
@@ -198,7 +198,7 @@ void FUN_080c3f74(struct VFX* p) {
       (p->s).mode[2]++;
       // fallthrough
     case 1:
-      UpdateMotionGraphic(&p->s);
+      UpdateEntityAnim(&p->s);
       if (--(p->s).work[2] == 0) {
         (p->s).flags &= ~DISPLAY;
         (p->s).flags &= ~FLIPABLE;
