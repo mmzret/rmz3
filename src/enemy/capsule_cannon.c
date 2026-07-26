@@ -26,101 +26,23 @@ struct Enemy* CreateCapsuleCannon(Coords32* c, u8 n) {
   return p;
 }
 
-static const EnemyFunc sUpdates1[6];
-static const EnemyFunc sUpdates2[6];
-static const struct Collision sCollisions[4];
+INCASM("asm/enemy/capsule_cannon.inc");
 
-INCASM("asm/enemy/capsule_cannon_a.inc");
-
-extern const EnemyFunc sUpdates1[6];
-extern const EnemyFunc sUpdates2[6];
-extern const struct Collision sCollisions[4];
-void FUN_08085c4c(struct Enemy* p);
-void CapsuleCannon_Die(struct Enemy* p);
-
-void CapsuleCannon_Update(struct Enemy* p) {
-  if ((p->body).status & BODY_STATUS_DEAD) {
-    SET_ENEMY_ROUTINE(p, ENTITY_DIE);
-    CapsuleCannon_Die(p);
-    return;
-  }
-  (sUpdates1[(p->s).mode[1]])(p);
-  FUN_08085c4c(p);
-  if (*(struct Entity**)((u8*)p + 0xbc) == NULL) {
-    if (IsFrozen(&p->s)) {
-      return;
-    }
-    if (*(struct Entity**)((u8*)p + 0xbc) == NULL) {
-      goto dispatch2;
-    }
-  }
-  if (isKilled(*(struct Entity**)((u8*)p + 0xbc))) {
-    if ((p->s).mode[1] == 2) {
-      SetDDP(&p->body, &sCollisions[2]);
-    } else {
-      SetDDP(&p->body, &sCollisions[0]);
-    }
-    *(struct Entity**)((u8*)p + 0xbc) = NULL;
-  }
-  return;
-
-dispatch2:
-  (sUpdates2[(p->s).mode[1]])(p);
-}
-
-INCASM("asm/enemy/capsule_cannon_b.inc");
-
-bool8 FUN_08085a08(struct Enemy* p) { return TRUE; }
-
-
-void nop_08085a0c(struct Enemy* p) {}
-
-bool8 FUN_08085a10(struct Enemy* p) { return TRUE; }
-
-INCASM("asm/enemy/capsule_cannon_c.inc");
-
-bool8 FUN_08085a9c(struct Enemy* p) { return TRUE; }
-
-INCASM("asm/enemy/capsule_cannon_d.inc");
-
-bool8 FUN_08085c14(struct Enemy* p) { return TRUE; }
-
-void FUN_08085c18(struct Enemy* p) {
-  if ((p->s).mode[2] == 0) {
-    (p->s).mode[2] = 1;
-  }
-}
-
-bool8 FUN_08085c2c(struct Enemy* p) { return TRUE; }
-
-void FUN_08085c30(struct Enemy* p) {}
-
-bool8 FUN_08085c34(struct Enemy* p) { return TRUE; }
-
-
-void FUN_08085c38(struct Enemy* p) {
-  if ((p->s).mode[2] == 0) {
-    (p->s).mode[2] = 1;
-  }
-}
-
-INCASM("asm/enemy/capsule_cannon_e.inc");
-
-bool8 FUN_08085a08(struct Enemy* p);
-bool8 FUN_08085a10(struct Enemy* p);
-bool8 FUN_08085a9c(struct Enemy* p);
-bool8 FUN_08085c14(struct Enemy* p);
-bool8 FUN_08085c2c(struct Enemy* p);
-bool8 FUN_08085c34(struct Enemy* p);
+void FUN_08085a08(struct Enemy* p);
+void FUN_08085a10(struct Enemy* p);
+void FUN_08085a9c(struct Enemy* p);
+void FUN_08085c14(struct Enemy* p);
+void FUN_08085c2c(struct Enemy* p);
+void FUN_08085c34(struct Enemy* p);
 
 // clang-format off
 static const EnemyFunc sUpdates1[6] = {
-    (EnemyFunc)FUN_08085a08,
-    (EnemyFunc)FUN_08085a10,
-    (EnemyFunc)FUN_08085a9c,
-    (EnemyFunc)FUN_08085c14,
-    (EnemyFunc)FUN_08085c2c,
-    (EnemyFunc)FUN_08085c34,
+    FUN_08085a08,
+    FUN_08085a10,
+    FUN_08085a9c,
+    FUN_08085c14,
+    FUN_08085c2c,
+    FUN_08085c34,
 };
 // clang-format on
 

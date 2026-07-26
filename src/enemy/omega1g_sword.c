@@ -1,7 +1,6 @@
 #include "collision.h"
 #include "enemy.h"
 #include "global.h"
-#include "script.h"
 
 void OmegaGoldSword_Init(struct Enemy* p);
 void OmegaGoldSword_Update(struct Enemy* p);
@@ -31,100 +30,7 @@ struct Entity* CreateOmega1gSword(Coords32* c, u8 r1, void* omega1) {
   return p;
 }
 
-static const EnemyFunc sUpdates1[5];
-static const EnemyFunc sUpdates2[5];
-static const EnemyFunc sDeads[2];
-
-INCASM("asm/enemy/omega1g_sword_a.inc");
-
-extern const EnemyFunc sUpdates1[5];
-extern const EnemyFunc sUpdates2[5];
-
-void OmegaGoldSword_Update(struct Enemy* p) {
-  if (((p->s).unk_28)->mode[0] > 1) {
-    *(u8*)((u8*)p + 0x49) |= 0xc;
-    SET_ENEMY_ROUTINE(p, ENTITY_DIE);
-    OmegaGoldSword_Die(p);
-  } else {
-    (sUpdates1[(p->s).mode[1]])(p);
-    (sUpdates2[(p->s).mode[1]])(p);
-  }
-}
-
-void OmegaGoldSword_Die(struct Enemy* p) {
-  (sDeads[(p->s).mode[1]])(p);
-}
-
-INCASM("asm/enemy/omega1g_sword_b.inc");
-
-void FUN_0808bb58(struct Enemy* p) {
-  if ((p->s).mode[2] == 0) {
-    (p->s).flags &= ~DISPLAY;
-    SET_ENEMY_ROUTINE(p, ENTITY_EXIT);
-  }
-}
-
-bool8 FUN_0808bb84(struct Enemy* p) { return TRUE; }
-
-void FUN_0808bb88(struct Enemy* p) {
-  switch ((p->s).mode[2]) {
-    case 0:
-      (p->s).flags |= 1;
-      SetSpriteAnimation(p, MOTION(0x65, 0));
-      (p->s).coord.y = ((struct Enemy*)(p->s).unk_28)->s.coord.y - 0x4000;
-      (p->s).coord.x = ((struct Enemy*)(p->s).unk_28)->s.coord.x;
-      (p->s).mode[2]++;
-      FALLTHROUGH;
-    case 1:
-      UpdateSpriteAnimation(p);
-      if (((struct Enemy*)(p->s).unk_28)->s.scriptEntity->flags & 1) {
-        (p->s).mode[1] = 1;
-        (p->s).mode[2] = 0;
-      }
-      break;
-  }
-}
-
-bool8 FUN_0808bbe4(struct Enemy* p) { return TRUE; }
-
-INCASM("asm/enemy/omega1g_sword_c.inc");
-
-bool8 FUN_0808bd00(struct Enemy* p) {
-  if (((p->s).unk_28)->mode[1] == 6) {
-    (p->s).mode[1] = 3;
-    (p->s).mode[2] = 0;
-  }
-  return TRUE;
-}
-
-INCASM("asm/enemy/omega1g_sword_d.inc");
-
-bool8 FUN_0808bd8c(struct Enemy* p) { return TRUE; }
-
-INCASM("asm/enemy/omega1g_sword_e.inc");
-
-bool8 FUN_0808c330(struct Enemy* p) { return TRUE; }
-
-void FUN_0808c334(struct Enemy* p) {
-  switch ((p->s).mode[2]) {
-    case 0:
-      EXIT_BODY(p);
-      (p->s).d.x = 0;
-      (p->s).d.y = 0;
-      (p->s).mode[2]++;
-      FALLTHROUGH;
-    case 1:
-      (p->s).d.y += 0x40;
-      if ((p->s).d.y > 0x40) {
-        (p->s).d.y = 0x40;
-      }
-      (p->s).coord.y += (p->s).d.y;
-      UpdateSpriteAnimation(p);
-      break;
-  }
-}
-
-void nop_0808c384(struct Enemy* p) {}
+INCASM("asm/enemy/omega1g_sword.inc");
 
 // --------------------------------------------
 
