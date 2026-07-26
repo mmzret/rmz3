@@ -96,7 +96,7 @@ struct CyberElfBird {
 };
 
 CyberElf* CreateBirdElf(struct Zero* z, u8 r1, u8 r2, u8 isSatelite2) {
-  struct CyberElfBird* p = (struct CyberElfBird*)AllocEntityFirst(gElfHeaderPtr);
+  struct CyberElfBird* p = (struct CyberElfBird*)AllocEntityLast(gElfHeaderPtr);
   if (p != NULL) {
     INIT_ELF_ROUTINE(p, 12);
     p->player = z;

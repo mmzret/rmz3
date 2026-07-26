@@ -95,7 +95,7 @@ struct CyberElfSeaOtter {
 };
 
 CyberElf* CreateSeaotterElf(struct Zero* z, u8 breed, u8 availability, u8 _) {
-  struct CyberElfSeaOtter* p = (struct CyberElfSeaOtter*)AllocEntityFirst(gElfHeaderPtr);
+  struct CyberElfSeaOtter* p = (struct CyberElfSeaOtter*)AllocEntityLast(gElfHeaderPtr);
   if (p != NULL) {
     INIT_ELF_ROUTINE(p, 9);
     p->player = z;

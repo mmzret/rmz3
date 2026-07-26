@@ -8,7 +8,7 @@
 INCASM("asm/enemy/purple_nerple_a.inc");
 
 void FUN_08075b74(struct Entity* e, u8 n) {
-  struct Enemy* p = (struct Enemy*)AllocEntityLast(gEnemyHeaderPtr);
+  struct Enemy* p = (struct Enemy*)AllocEntityFirst(gEnemyHeaderPtr);
 
   if (p != NULL) {
     INIT_ENEMY_ROUTINE(p, 22);
@@ -22,7 +22,7 @@ void FUN_08075bd0(struct Entity* e) {
   s32 i;
 
   for (i = 0; i <= 1; i++) {
-    struct Enemy* p = (struct Enemy*)AllocEntityLast(gEnemyHeaderPtr);
+    struct Enemy* p = (struct Enemy*)AllocEntityFirst(gEnemyHeaderPtr);
 
     if (p != NULL) {
       INIT_ENEMY_ROUTINE(p, 22);
@@ -38,7 +38,7 @@ void FUN_08075bd0(struct Entity* e) {
 INCASM("asm/enemy/purple_nerple_b.inc");
 
 void summonPurpleNerple(struct Entity* e, s32 x) {
-  struct Enemy* p = (struct Enemy*)AllocEntityLast(gEnemyHeaderPtr);
+  struct Enemy* p = (struct Enemy*)AllocEntityFirst(gEnemyHeaderPtr);
 
   if (p != NULL) {
     INIT_ENEMY_ROUTINE(p, 22);

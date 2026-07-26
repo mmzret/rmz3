@@ -6,7 +6,7 @@
 INCASM("asm/enemy/wormer_snow_ball_a.inc");
 
 void FUN_0807b124(s32 x, s32 y, s32 dx, s32 dy) {
-  struct Enemy* p = (struct Enemy*)AllocEntityLast(gEnemyHeaderPtr);
+  struct Enemy* p = (struct Enemy*)AllocEntityFirst(gEnemyHeaderPtr);
 
   if (p != NULL) {
     INIT_ENEMY_ROUTINE(p, 29);

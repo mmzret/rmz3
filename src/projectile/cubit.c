@@ -8,7 +8,7 @@
 INCASM("asm/projectile/cubit_a.inc");
 
 struct Projectile* FUN_080a60c8(struct Entity* e, struct Coord* c, u8 a, u8 b) {
-  Projectile* p = (struct Projectile*)AllocEntityFirst(gProjectileHeaderPtr);
+  Projectile* p = (struct Projectile*)AllocEntityLast(gProjectileHeaderPtr);
 
   if (p != NULL) {
     INIT_PROJECTILE_ROUTINE(p, 22);
@@ -22,7 +22,7 @@ struct Projectile* FUN_080a60c8(struct Entity* e, struct Coord* c, u8 a, u8 b) {
 }
 
 struct Projectile* createFlameRain1(struct Entity* e, struct Coord* c, s32 n) {
-  Projectile* p = (struct Projectile*)AllocEntityFirst(gProjectileHeaderPtr);
+  Projectile* p = (struct Projectile*)AllocEntityLast(gProjectileHeaderPtr);
 
   if (p != NULL) {
     INIT_PROJECTILE_ROUTINE(p, 22);
@@ -37,7 +37,7 @@ struct Projectile* createFlameRain1(struct Entity* e, struct Coord* c, s32 n) {
 }
 
 struct Projectile* createFlameRain2(struct Entity* e, struct Coord* c, s32 n) {
-  Projectile* p = (struct Projectile*)AllocEntityFirst(gProjectileHeaderPtr);
+  Projectile* p = (struct Projectile*)AllocEntityLast(gProjectileHeaderPtr);
 
   if (p != NULL) {
     INIT_PROJECTILE_ROUTINE(p, 22);

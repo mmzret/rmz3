@@ -4,7 +4,7 @@
 #include "global.h"
 
 struct Enemy* FUN_08071470(struct Entity* a, struct Entity* e, s32 x, s32 y, u8 n) {
-  struct Enemy* p = (struct Enemy*)AllocEntityLast(gEnemyHeaderPtr);
+  struct Enemy* p = (struct Enemy*)AllocEntityFirst(gEnemyHeaderPtr);
 
   if (p != NULL) {
     INIT_ENEMY_ROUTINE(p, 17);
@@ -26,7 +26,7 @@ struct Enemy* FUN_08071470(struct Entity* a, struct Entity* e, s32 x, s32 y, u8 
 }
 
 struct Enemy* FUN_08071508(struct Entity* e, s32 x, s32 y) {
-  struct Enemy* p = (struct Enemy*)AllocEntityLast(gEnemyHeaderPtr);
+  struct Enemy* p = (struct Enemy*)AllocEntityFirst(gEnemyHeaderPtr);
 
   if (p != NULL) {
     INIT_ENEMY_ROUTINE(p, 17);

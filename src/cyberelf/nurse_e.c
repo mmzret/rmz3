@@ -13,7 +13,7 @@ struct CyberElfNurseE {
 };
 
 CyberElf* CreateNurseEElf(struct Zero* z, u8 r1, u8 r2, u8 isSatelite2) {
-  struct CyberElfNurseE* p = (struct CyberElfNurseE*)AllocEntityFirst(gElfHeaderPtr);
+  struct CyberElfNurseE* p = (struct CyberElfNurseE*)AllocEntityLast(gElfHeaderPtr);
   if (p != NULL) {
     INIT_ELF_ROUTINE(p, 4);
     p->player = z;
