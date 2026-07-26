@@ -1,6 +1,9 @@
 #include "collision.h"
 #include "enemy.h"
 #include "global.h"
+#include "element.h"
+
+static const Coords32 sElementCoord;
 
 void GeneratorCannon_Init(struct Enemy* p);
 void GeneratorCannon_Update(struct Enemy* p);
@@ -8,9 +11,9 @@ void GeneratorCannon_Die(struct Enemy* p);
 
 // clang-format off
 const EnemyRoutine gGeneratorCannonRoutine = {
-    [ENTITY_INIT] =      GeneratorCannon_Init,
-    [ENTITY_UPDATE] =    GeneratorCannon_Update,
-    [ENTITY_DIE] =       GeneratorCannon_Die,
+    [ENTITY_INIT] =      (void*)GeneratorCannon_Init,
+    [ENTITY_UPDATE] =    (void*)GeneratorCannon_Update,
+    [ENTITY_DIE] =       (void*)GeneratorCannon_Die,
     [ENTITY_DISAPPEAR] = (void*)DeleteEnemy,
     [ENTITY_EXIT] =      (EnemyFunc)DeleteEntity,
 };
@@ -28,7 +31,31 @@ static void CreateGeneratorCannon(s32 x, s32 y, u8 n) {
 
 static void onCollision(struct Body* body UNUSED, Coords32* r1 UNUSED, Coords32* r2 UNUSED) { return; }
 
-INCASM("asm/enemy/generator_cannon.inc");
+INCASM("asm/enemy/generator_cannon_a.inc");
+
+void FUN_0808c4e8(struct Enemy* p) {
+  struct Entity** slot;
+  u32 frozen;
+
+  if ((p->s).work[0] == 1) {
+    slot = (struct Entity**)&p->buffer[0];
+    if (*slot == NULL && ((p->body).status & 1)) {
+      frozen = (p->body).status & 0x20000;
+      if (frozen != 0) {
+        (p->s).mode[1] = 7;
+        (p->s).mode[2] = 0;
+      } else {
+        *slot = ApplyElementEffect(0, (Object*)p, &sElementCoord);
+        if (*slot != NULL) {
+          (p->s).mode[1] = 0;
+          (p->s).mode[2] = 0;
+        }
+      }
+    }
+  }
+}
+
+INCASM("asm/enemy/generator_cannon_b.inc");
 
 void FUN_0808c760(struct Enemy* p);
 void FUN_0808c764(struct Enemy* p);
