@@ -48,8 +48,8 @@ static void Elf3_Init(CyberElf* p) {
 
 INCASM("asm/cyberelf/unk_3_a.inc");
 
-void Elf3_Die(struct Elf* p) {
-  (p->s).flags &= ~DISPLAY;
+void Elf3_Die(CyberElf* p) {
+  p->flags &= ~DISPLAY;
   SET_ELF_ROUTINE(p, ENTITY_EXIT);
 }
 

@@ -10,9 +10,9 @@ static void VFX24_Die(struct VFX* vfx);
 
 // clang-format off
 const VFXRoutine gShrimporinVFXRoutine = {
-    [ENTITY_INIT] =      VFX24_Init,
-    [ENTITY_UPDATE] =    VFX24_Update,
-    [ENTITY_DIE] =       VFX24_Die,
+    [ENTITY_INIT] =      (void*)VFX24_Init,
+    [ENTITY_UPDATE] =    (void*)VFX24_Update,
+    [ENTITY_DIE] =       (void*)VFX24_Die,
     [ENTITY_DISAPPEAR] = (void*)DeleteVFX,
     [ENTITY_EXIT] =      (VFXFunc)DeleteEntity,
 };
@@ -94,7 +94,7 @@ static void VFX24_Update(struct VFX* vfx) {
     SET_VFX_ROUTINE(vfx, ENTITY_DISAPPEAR);
     return;
   }
-  (sUpdates[(vfx->s).mode[1]])(vfx);
+  (sUpdates[(vfx->s).mode[1]])((void*)vfx);
 }
 
 // --------------------------------------------

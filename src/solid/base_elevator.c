@@ -77,7 +77,7 @@ static void BaseElevator_Init(struct Solid* p) {
     FUN_080cff48(p);
     return;
   }
-  rBase_080cfd4c((void*)p);
+  rBase_080cfd4c((struct ElevatorObject*)p);
 }
 
 void BaseElevator_Update(struct Solid* p) {
@@ -135,7 +135,7 @@ static void rBase_080cfd4c(struct ElevatorObject* p) {
   p->unk_c0 = 0;
   p->unk_c1 = 5;
   SET_SOLID_ROUTINE(p, ENTITY_UPDATE);
-  BaseElevator_Update((void*)p);
+  BaseElevator_Update((struct Solid*)p);
 }
 
 void FUN_080d0224(struct Solid* p);

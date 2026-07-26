@@ -3,6 +3,7 @@
 #include "global.h"
 #include "script.h"
 #include "score.h"
+#include "vfx.h"
 
 // OmegaZX のスプライト部分 (というか手前の X っぽい部分)
 
@@ -29,6 +30,24 @@ const EnemyRoutine gEnemy60Routine = {
     [ENTITY_DISAPPEAR] = (void*)DeleteEnemy,
     [ENTITY_EXIT] =      (void*)DeleteEntity,
 };
+
+
+
+
+
+
+
+
+
+void FUN_08092918(struct Enemy* p);
+void FUN_08092ba0(struct Enemy* p);
+void FUN_08092b54(struct Enemy* p);
+void FUN_08092acc(struct OmegaZX_X* p);
+void FUN_08092aac(struct Enemy* p);
+void FUN_08092a60(struct Enemy* p);
+void FUN_080929e8(struct OmegaZX_X* p);
+void FUN_080929c8(struct Enemy* p);
+void FUN_08092980(struct Enemy* p);
 // clang-format on
 
 // --------------------------------------------
@@ -73,7 +92,7 @@ static void Enemy60_Init(struct OmegaZX_X* p) {
     p->flags2 |= WHITE_PAINTABLE;
     p->invincibleID = (p->unk_28)->uniqueID;
   }
-  Enemy60_Update((void*)p);
+  Enemy60_Update((struct Enemy*)p);
 }
 
 static const EnemyFunc sDeads[2];
@@ -81,7 +100,7 @@ static const EnemyFunc sDeads[2];
 INCASM("asm/enemy/omega_zx_x_a.inc");
 
 void Enemy60_Die(struct Enemy* p) {
-  (sDeads[(p->s).mode[1]])(p);
+  (sDeads[(p->s).mode[1]])((void*)p);
 }
 
 INCASM("asm/enemy/omega_zx_x_b.inc");
@@ -96,7 +115,7 @@ void FUN_08092918(struct Enemy* p) {
     if (gScore.enemyCount <= 0x270e) {
       gScore.enemyCount++;
     }
-    TryDropZakoDisk(p, &(p->s).coord);
+    DropEnemyDisk(p, &(p->s).coord);
     (p->s).flags &= ~DISPLAY;
     SET_ENEMY_ROUTINE(p, ENTITY_EXIT);
   }
@@ -132,19 +151,19 @@ void FUN_080929c8(struct Enemy* p) {
 }
 
 void FUN_080929e8(struct OmegaZX_X* p) {
-  switch ((p->s).mode[2]) {
+  switch (p->mode[2]) {
     case 0:
       SetSpriteAnimation(p, 0xb600);
       SET_XFLIP(p, FALSE);
       SetDDP(&p->body, &sCollisions[3]);
-      (p->s).d.y = 0;
-      (p->s).d.x = 0;
-      (p->s).work[2] = 0;
-      (p->s).mode[2]++;
+      p->d.y = 0;
+      p->d.x = 0;
+      p->work[2] = 0;
+      p->mode[2]++;
       FALLTHROUGH;
     case 1:
-      (p->s).coord.y = (p->c).y + (((p->s).unk_28)->coord).y;
-      (p->s).coord.x = (p->c).x + (((p->s).unk_28)->coord).x;
+      p->coord.y = (p->c).y + ((p->unk_28)->coord).y;
+      p->coord.x = (p->c).x + ((p->unk_28)->coord).x;
       UpdateSpriteAnimation(p);
       break;
   }
@@ -180,20 +199,20 @@ void FUN_08092aac(struct Enemy* p) {
 }
 
 void FUN_08092acc(struct OmegaZX_X* p) {
-  switch ((p->s).mode[2]) {
+  switch (p->mode[2]) {
     case 0:
       SetSpriteAnimation(p, 0xb601);
       SET_XFLIP(p, FALSE);
       SetDDP(&p->body, &sCollisions[5]);
-      (p->s).d.y = 0;
-      (p->s).d.x = 0;
-      (p->s).work[2] = 0;
-      (p->s).mode[2]++;
+      p->d.y = 0;
+      p->d.x = 0;
+      p->work[2] = 0;
+      p->mode[2]++;
       FALLTHROUGH;
     case 1:
-      (p->s).work[2] += 2;
-      (p->s).coord.y += (((p->c).y + (((p->s).unk_28)->coord).y - (p->s).coord.y) << 4) >> 8;
-      (p->s).coord.x = (p->c).x + (((p->s).unk_28)->coord).x;
+      p->work[2] += 2;
+      p->coord.y += (((p->c).y + ((p->unk_28)->coord).y - p->coord.y) << 4) >> 8;
+      p->coord.x = (p->c).x + ((p->unk_28)->coord).x;
       UpdateSpriteAnimation(p);
       break;
   }

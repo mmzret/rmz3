@@ -20,6 +20,16 @@ const ZeroRoutine gHarpuiaRoutine = {
   [ENTITY_DISAPPEAR] =  (void*)RemovePlayer,
   [ENTITY_EXIT] =       (void*)DeleteEntity,
 };
+
+
+
+
+
+void FUN_080355c4(struct Zero* z);
+void harpuia_080354d4(struct Zero* z);
+void FUN_0803540c(struct Zero* z);
+void FUN_080353a8(struct Zero* z);
+void FUN_08035330(struct Zero* z);
 // clang-format on
 
 struct Entity* CreatePlayerHarpuia(void* q, Coords32* c, u8 n) {
@@ -264,11 +274,11 @@ bool8 FUN_080355c0(struct Zero* z);
 
 // clang-format off
 const ZeroFunc sHarpuiaUpdates1[5] = {
-    FUN_0803532c,
-    FUN_0803537c,
-    FUN_080353e4,
-    FUN_080354a4,
-    FUN_080355c0,
+    (ZeroFunc)FUN_0803532c,
+    (ZeroFunc)FUN_0803537c,
+    (ZeroFunc)FUN_080353e4,
+    (ZeroFunc)FUN_080354a4,
+    (ZeroFunc)FUN_080355c0,
 };
 // clang-format on
 

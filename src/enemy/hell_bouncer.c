@@ -28,15 +28,13 @@ struct Entity* createHellBouncer(struct Entity* q, Coords32* c, u8 r2, u8 idx) {
   return p;
 }
 
-void TryDropZakoDisk(struct Enemy* p, struct Coord* c);
-
 INCASM("asm/enemy/hell_bouncer_a.inc");
 
 void HellBouncer_Die(struct Enemy* p) {
   if (gScore.enemyCount <= 0x270E) {
     gScore.enemyCount++;
   }
-  TryDropZakoDisk(p, &(p->s).coord);
+  DropEnemyDisk(p, &(p->s).coord);
   (p->s).flags &= ~DISPLAY;
   SET_ENEMY_ROUTINE(p, ENTITY_EXIT);
 }

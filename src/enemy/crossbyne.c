@@ -8,12 +8,20 @@ void Crossbyne_Die(struct Enemy* p);
 
 // clang-format off
 const EnemyRoutine gCrossbyneRoutine = {
-    [ENTITY_INIT] =      Crossbyne_Init,
-    [ENTITY_UPDATE] =    Crossbyne_Update,
-    [ENTITY_DIE] =       Crossbyne_Die,
+    [ENTITY_INIT] =      (void*)Crossbyne_Init,
+    [ENTITY_UPDATE] =    (void*)Crossbyne_Update,
+    [ENTITY_DIE] =       (void*)Crossbyne_Die,
     [ENTITY_DISAPPEAR] = (void*)DeleteEnemy,
     [ENTITY_EXIT] =      (EnemyFunc)DeleteEntity,
 };
+
+
+
+
+void FUN_0807cfac(struct Enemy* p);
+void FUN_0807cf88(struct Enemy* p);
+void FUN_0807cf60(struct Enemy* p);
+void FUN_0807cf5c(struct Enemy* p);
 // clang-format on
 
 // --------------------------------------------
@@ -86,13 +94,13 @@ void crossbyne_0807cdc4(struct Enemy* p);
 void Crossbyne_Update(struct Enemy* p) {
   if (!FUN_0807cd74(p)) {
     crossbyne_0807cdc4(p);
-    (sUpdates1[(p->s).mode[1]])(p);
-    (sUpdates2[(p->s).mode[1]])(p);
+    (sUpdates1[(p->s).mode[1]])((void*)p);
+    (sUpdates2[(p->s).mode[1]])((void*)p);
   }
 }
 
 void Crossbyne_Die(struct Enemy* p) {
-  (sDeads[(p->s).mode[1]])(p);
+  (sDeads[(p->s).mode[1]])((void*)p);
 }
 
 void FUN_0807cf5c(struct Enemy* p) {}

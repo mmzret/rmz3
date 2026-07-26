@@ -237,9 +237,9 @@ struct Entity* CreateSaberWave(Player* z, Weapon* saber, bool8 isProjectile) {
 
 INCASM("asm/weapon/saber_wave_a.inc");
 
-void Weapon5_Die(struct Weapon* w) {
+void Weapon5_Die(SaverWave* w) {
   EXIT_BODY(w);
-  (w->s).flags &= ~DISPLAY;
+  w->flags &= ~DISPLAY;
   SET_WEAPON_ROUTINE(w, ENTITY_EXIT);
 }
 

@@ -26,6 +26,12 @@ const EnemyRoutine gLemminglesRoutine = {
     [ENTITY_DISAPPEAR] = (EnemyFunc)DeleteEnemy,
     [ENTITY_EXIT] =      (EnemyFunc)DeleteEntity,
 };
+
+
+
+void nop_0806e96c(struct Enemy* p);
+void FUN_0806e970(struct Enemy* p);
+void FUN_0806e990(struct Enemy* p);
 // clang-format on
 
 // --------------------------------------------
@@ -86,8 +92,8 @@ void Lemmingles_Update(struct Enemy* p) {
   if (FUN_0806e674(p)) {
     return;
   }
-  (sUpdates1[(p->s).mode[1]])(p);
-  (sUpdates2[(p->s).mode[1]])(p);
+  (sUpdates1[(p->s).mode[1]])((void*)p);
+  (sUpdates2[(p->s).mode[1]])((void*)p);
 }
 
 INCASM("asm/enemy/lemmingles_b.inc");

@@ -106,11 +106,11 @@ static void ZeroMini_Update(struct Zero* z) {
 
   struct MinigameState* s = (struct MinigameState*)(z->s).unk_28;
   if (s->unk_04 != 2) {
-    (sUpdates1[(z->s).mode[1]])(z);
-    (sUpdates2[(z->s).mode[1]])(z);
+    (sUpdates1[(z->s).mode[1]])((void*)z);
+    (sUpdates2[(z->s).mode[1]])((void*)z);
   } else if (s->unk_0c == 0) {
-    (sUpdates1[(z->s).mode[1]])(z);
-    (sUpdates2[(z->s).mode[1]])(z);
+    (sUpdates1[(z->s).mode[1]])((void*)z);
+    (sUpdates2[(z->s).mode[1]])((void*)z);
   }
 
   if ((z->body).status & BODY_STATUS_WHITE) {

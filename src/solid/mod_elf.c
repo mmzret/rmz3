@@ -2,6 +2,8 @@
 #include "global.h"
 #include "solid.h"
 
+void ModElf_Die(struct Solid* p);
+
 /*
 various:
   00: エルピス

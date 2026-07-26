@@ -2,6 +2,10 @@
 #include "enemy.h"
 #include "global.h"
 
+void nop_0809a1ec(struct Enemy* p);
+
+void LeviathanMinigameEnemy_Init(struct Enemy* p);
+
 static const EnemyFunc sUpdates1[7];
 static const EnemyFunc sUpdates2[7];
 static const EnemyFunc sDeads[4];
@@ -57,7 +61,7 @@ void LeviathanMinigameEnemy_Update(struct Enemy* p) {
 }
 
 void LeviathanMinigameEnemy_Die(struct Enemy* p) {
-  (sDeads[(p->s).mode[1]])(p);
+  (sDeads[(p->s).mode[1]])((void*)p);
 }
 
 void nop_0809a1ec(struct Enemy* p) {}
@@ -70,9 +74,9 @@ void LeviathanMinigameEnemy_Die(struct Enemy* p);
 
 // clang-format off
 const EnemyRoutine gLeviathanMinigameEnemyRoutine = {
-    [ENTITY_INIT] =      LeviathanMinigameEnemy_Init,
-    [ENTITY_UPDATE] =    LeviathanMinigameEnemy_Update,
-    [ENTITY_DIE] =       LeviathanMinigameEnemy_Die,
+    [ENTITY_INIT] =      (void*)LeviathanMinigameEnemy_Init,
+    [ENTITY_UPDATE] =    (void*)LeviathanMinigameEnemy_Update,
+    [ENTITY_DIE] =       (void*)LeviathanMinigameEnemy_Die,
     [ENTITY_DISAPPEAR] = (void*)DeleteEnemy,
     [ENTITY_EXIT] =      (EnemyFunc)DeleteEntity,
 };

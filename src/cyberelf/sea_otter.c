@@ -1,5 +1,6 @@
 #include "cyberelf.h"
 #include "global.h"
+#include "vfx.h"
 
 // 敵の動きを止めるサイバーエルフ
 
@@ -88,13 +89,13 @@ _080E45B4: .4byte gElfFnTable\n\
 
 INCASM("asm/cyberelf/sea_otter_a.inc");
 
-void SeaOtterElf_Die(struct Elf* p) {
-  struct Entity* parent = (p->s).unk_2c;
+void SeaOtterElf_Die(CyberElf* p) {
+  struct Entity* parent = p->unk_2c;
   if (parent != NULL) {
     parent->flags2 &= 0x7f;
   }
-  FUN_080bfce8(&(p->s).coord, 0);
-  (p->s).flags &= ~DISPLAY;
+  FUN_080bfce8(&p->coord, 0);
+  p->flags &= ~DISPLAY;
   SET_ELF_ROUTINE(p, ENTITY_EXIT);
 }
 

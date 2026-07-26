@@ -224,8 +224,8 @@ static void Enemy21_Update(struct Enemy* p) {
     }
     FUN_08075a30(p);
   }
-  (sUpdates1[(p->s).mode[1]])(p);
-  (sUpdates2[(p->s).mode[1]])(p);
+  (sUpdates1[(p->s).mode[1]])((void*)p);
+  (sUpdates2[(p->s).mode[1]])((void*)p);
 }
 
 // --------------------------------------------

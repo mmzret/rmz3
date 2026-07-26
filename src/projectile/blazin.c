@@ -3,6 +3,10 @@
 #include "collision.h"
 #include "global.h"
 #include "projectile.h"
+#include "vfx.h"
+#include "physics.h"
+#include "physics.h"
+#include "physics.h"
 
 typedef void (*BlazinProjectileFunc)(BlazinProjectile*);
 
@@ -250,70 +254,70 @@ static void FUN_0809e7b4(BlazinProjectile* p) {
 
 
 // 0x0809e7c0
-void FUN_0809e7c0(struct Projectile* p) {
-  if ((p->s).unk_28->mode[0] > 1) {
-    CreateSmoke(2, &(p->s).coord);
+void FUN_0809e7c0(BlazinProjectile* p) {
+  if (p->unk_28->mode[0] > 1) {
+    CreateSmoke(2, &p->coord);
     SET_PROJECTILE_ROUTINE(p, ENTITY_DIE);
   } else if ((p->body).status & 0x200) {
     Coords32 c;
-    c = (p->s).coord;
+    c = p->coord;
     c.x -= 0x800;
     CreateSmoke(2, &c);
     c.x += 0x800;
     c.y -= 0x400;
     CreateSmoke(2, &c);
     SET_PROJECTILE_ROUTINE(p, ENTITY_DIE);
-  } else if (--(p->s).work[2] == 0) {
-    CreateSmoke(2, &(p->s).coord);
+  } else if (--p->work[2] == 0) {
+    CreateSmoke(2, &p->coord);
     SET_PROJECTILE_ROUTINE(p, ENTITY_DIE);
   } else {
-    switch ((p->s).mode[2]) {
+    switch (p->mode[2]) {
       case 0: {
         u8 f;
         SetSpriteAnimation(p, MOTION(SM163_GRAFFITI_ZERO1, 4));
-        f = (p->s).unk_28->flags & X_FLIP;
+        f = p->unk_28->flags & X_FLIP;
         if (f == 0) {
-          (p->s).d.x = 0xC0;
+          p->d.x = 0xC0;
           SET_XFLIP(p, 0);
         } else {
-          (p->s).d.x = -0xC0;
+          p->d.x = -0xC0;
           SET_XFLIP(p, 1);
         }
-        (p->s).d.y = -0x400;
-        (p->s).work[3] = 0x28;
-        (p->s).mode[2]++;
+        p->d.y = -0x400;
+        p->work[3] = 0x28;
+        p->mode[2]++;
         FALLTHROUGH;
       }
       case 1:
-        if ((p->s).work[3] != 0 && --(p->s).work[3] == 0) {
+        if (p->work[3] != 0 && --p->work[3] == 0) {
           SetDDP(&p->body, &sCollisions[1]);
         }
-        (p->s).d.y += 0x40;
-        if ((p->s).d.y > 0x700) {
-          (p->s).d.y = 0x700;
+        p->d.y += 0x40;
+        if (p->d.y > 0x700) {
+          p->d.y = 0x700;
         }
-        (p->s).coord.x += (p->s).d.x;
-        (p->s).coord.y += (p->s).d.y;
+        p->coord.x += p->d.x;
+        p->coord.y += p->d.y;
         {
-          s32 push = PushoutToUp1((p->s).coord.x, (p->s).coord.y);
+          s32 push = PushoutToUp1(p->coord.x, p->coord.y);
           if (push != 0) {
-            (p->s).coord.y += push;
-            (p->s).d.y = -0x300;
+            p->coord.y += push;
+            p->d.y = -0x300;
           }
         }
-        if ((p->s).d.x > 0) {
-          s32 push = PushoutToLeft1((p->s).coord.x + 0x800, (p->s).coord.y);
+        if (p->d.x > 0) {
+          s32 push = PushoutToLeft1(p->coord.x + 0x800, p->coord.y);
           if (push != 0) {
-            (p->s).d.x = -(p->s).d.x;
-            SET_XFLIP(p, !(((p->s).flags >> 4) & 1));
-            (p->s).coord.x += push;
+            p->d.x = -p->d.x;
+            SET_XFLIP(p, !((p->flags >> 4) & 1));
+            p->coord.x += push;
           }
         } else {
-          s32 push = PushoutToRight1((p->s).coord.x - 0x800, (p->s).coord.y);
+          s32 push = PushoutToRight1(p->coord.x - 0x800, p->coord.y);
           if (push != 0) {
-            (p->s).d.x = -(p->s).d.x;
-            SET_XFLIP(p, !(((p->s).flags >> 4) & 1));
-            (p->s).coord.x += push;
+            p->d.x = -p->d.x;
+            SET_XFLIP(p, !((p->flags >> 4) & 1));
+            p->coord.x += push;
           }
         }
         UpdateSpriteAnimation(p);

@@ -37,15 +37,15 @@ static bool8 tryKillBeeServer(BeeServer* p) {
   return FALSE;
 }
 
-static const BossFunc sDeads[1];
+static void (*const sDeads[1])(BeeServer*);
 
 INCASM("asm/boss/bee_server_a.inc");
 
-void BeeServer_Die(struct Boss* p) {
-  (sDeads[(p->s).mode[1]])(p);
+void BeeServer_Die(BeeServer* p) {
+  (sDeads[p->mode[1]])((void*)p);
 }
 
-void nop_0804d0a0(struct Boss* p) {}
+void nop_0804d0a0(BeeServer* p) {}
 
 INCASM("asm/boss/bee_server_b.inc");
 

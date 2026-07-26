@@ -66,22 +66,22 @@ static void Elf1_Init(struct CyberElf1* p) {
 
 INCASM("asm/cyberelf/unk_1_a.inc");
 
-void FUN_080e23fc(struct Elf* p) {
+void FUN_080e23fc(CyberElf* p) {
   if (((struct CyberElf1*)p)->unk_b8 == 0) {
-    (p->s).mode[1]++;
+    p->mode[1]++;
   }
 }
 
 struct Entity* FUN_080bfce8(struct Coord* c, s32 r1);
 
-void FUN_080e2414(struct Elf* p) {
-  if ((p->s).mode[2] == 0) {
-    (p->s).unk_2c = FUN_080bfce8(&(p->s).coord, 0);
-    (p->s).flags &= ~DISPLAY;
-    (p->s).mode[2]++;
+void FUN_080e2414(CyberElf* p) {
+  if (p->mode[2] == 0) {
+    p->unk_2c = FUN_080bfce8(&p->coord, 0);
+    p->flags &= ~DISPLAY;
+    p->mode[2]++;
   }
-  if (((p->s).unk_2c)->mode[0] > 1) {
-    (p->s).mode[1]++;
+  if ((p->unk_2c)->mode[0] > 1) {
+    p->mode[1]++;
   }
 }
 

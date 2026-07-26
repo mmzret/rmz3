@@ -15,10 +15,10 @@ void Ripple_Disappear(struct VFX* p);
 
 // clang-format off
 const VFXRoutine gRippleRoutine = {
-    [ENTITY_INIT] =      Ripple_Init,
-    [ENTITY_UPDATE] =    Ripple_Update,
-    [ENTITY_DIE] =       Ripple_Die,
-    [ENTITY_DISAPPEAR] = Ripple_Disappear,
+    [ENTITY_INIT] =      (void*)Ripple_Init,
+    [ENTITY_UPDATE] =    (void*)Ripple_Update,
+    [ENTITY_DIE] =       (void*)Ripple_Die,
+    [ENTITY_DISAPPEAR] = (void*)Ripple_Disappear,
     [ENTITY_EXIT] =      (VFXFunc)DeleteEntity,
 };
 // clang-format on

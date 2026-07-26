@@ -15,6 +15,12 @@ const EnemyRoutine gSnakecordRoutine = {
     [ENTITY_DISAPPEAR] = (void*)DeleteEnemy,
     [ENTITY_EXIT] =      (void*)DeleteEntity,
 };
+
+
+
+void FUN_0807461c(struct Enemy* p);
+void FUN_0807472c(struct Enemy* p);
+void FUN_08074618(struct Enemy* p);
 // clang-format on
 
 u32 FUN_08073ea8(struct Entity* p, s32 dx) {
@@ -232,8 +238,8 @@ void Snakecord_Update(struct Enemy* p) {
   if (FUN_08074208(p)) {
     return;
   }
-  (PTR_ARRAY_08366e30[(p->s).mode[1]])(p);
-  (PTR_ARRAY_08366e60[(p->s).mode[1]])(p);
+  (PTR_ARRAY_08366e30[(p->s).mode[1]])((void*)p);
+  (PTR_ARRAY_08366e60[(p->s).mode[1]])((void*)p);
 }
 
 INCASM("asm/enemy/snakecord_b.inc");

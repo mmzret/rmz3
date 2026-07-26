@@ -2,6 +2,18 @@
 #include "enemy.h"
 #include "global.h"
 
+void FUN_08082af8(struct Enemy* p);
+
+void FUN_08082aa0(struct Enemy* p);
+
+void FUN_08082a20(struct Enemy* p);
+
+void nop_08082a1c(struct Enemy* p);
+
+void GlacierleAtkArm_Update(struct Enemy* p);
+
+void GlacierleAtkArm_Init(struct Enemy* p);
+
 static const EnemyFunc sUpdates1[3];
 static const EnemyFunc sUpdates2[3];
 static const struct Collision sCollisions[2];
@@ -41,8 +53,8 @@ void GlacierleAtkArm_Init(struct Enemy* p) {
 }
 
 void GlacierleAtkArm_Update(struct Enemy* p) {
-  (sUpdates1[(p->s).mode[1]])(p);
-  (sUpdates2[(p->s).mode[1]])(p);
+  (sUpdates1[(p->s).mode[1]])((void*)p);
+  (sUpdates2[(p->s).mode[1]])((void*)p);
 }
 
 INCASM("asm/enemy/glacierle_arm_b.inc");
@@ -113,9 +125,9 @@ void GlacierleAtkArm_Die(struct Enemy* p);
 
 // clang-format off
 const EnemyRoutine gGlacierleAtkArmRoutine = {
-    [ENTITY_INIT] =      GlacierleAtkArm_Init,
-    [ENTITY_UPDATE] =    GlacierleAtkArm_Update,
-    [ENTITY_DIE] =       GlacierleAtkArm_Die,
+    [ENTITY_INIT] =      (void*)GlacierleAtkArm_Init,
+    [ENTITY_UPDATE] =    (void*)GlacierleAtkArm_Update,
+    [ENTITY_DIE] =       (void*)GlacierleAtkArm_Die,
     [ENTITY_DISAPPEAR] = (void*)DeleteEnemy,
     [ENTITY_EXIT] =      (EnemyFunc)DeleteEntity,
 };

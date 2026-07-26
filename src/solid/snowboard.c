@@ -11,12 +11,16 @@ void Solid18_Die(struct Solid* p);
 
 // clang-format off
 const SolidRoutine gSnowboardRoutine = {
-    [ENTITY_INIT] =      Solid18_Init,
-    [ENTITY_UPDATE] =    Solid18_Update,
-    [ENTITY_DIE] =       Solid18_Die,
+    [ENTITY_INIT] =      (void*)Solid18_Init,
+    [ENTITY_UPDATE] =    (void*)Solid18_Update,
+    [ENTITY_DIE] =       (void*)Solid18_Die,
     [ENTITY_DISAPPEAR] = (void*)DeleteSolid,
     [ENTITY_EXIT] =      (SolidFunc)DeleteEntity,
 };
+
+
+void nop_080cf918(struct Solid* p);
+void nop_080cf914(struct Solid* p);
 // clang-format on
 
 NAKED bool8 FUN_080cf428(struct Solid* p) {

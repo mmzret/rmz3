@@ -51,7 +51,7 @@ static void Flopper_Update(struct FlopperObject* p) {
     p->flags &= ~DISPLAY;
     p->unk_08 = 0;
     p->work[2] = 0;
-    Flopper_Die((void*)p);
+    Flopper_Die((struct Enemy*)p);
     return;
   }
 

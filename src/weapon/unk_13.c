@@ -56,8 +56,8 @@ struct Entity* CreateWeapon13(struct Zero* z, u8 n) {
 
 INCASM("asm/weapon/unk_13_a.inc");
 
-void Weapon13_Die(struct Weapon* p) {
-  (p->s).flags &= ~DISPLAY;
+void Weapon13_Die(Weapon* p) {
+  p->flags &= ~DISPLAY;
   SET_WEAPON_ROUTINE(p, ENTITY_EXIT);
 }
 

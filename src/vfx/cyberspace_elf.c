@@ -50,7 +50,7 @@ static void CyberSpaceElf_Init(struct CyberSpaceElf* p) {
   (p->c74).y = y;
   (p->s).work[2] = 0;
   (p->s).work[3] = 0x80;
-  CyberSpaceElf_Update((void*)p);
+  CyberSpaceElf_Update((struct VFX*)p);
 }
 
 void FUN_080bfd98(struct Coord* c, u8 r1, u8 r2);

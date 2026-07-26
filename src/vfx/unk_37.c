@@ -93,7 +93,7 @@ void VFX37_Init(struct VFX* vfx) {
 extern const VFXFunc PTR_ARRAY_0836edd4[7];
 
 void VFX37_Update(struct VFX* vfx) {
-  (PTR_ARRAY_0836edd4[(vfx->s).mode[1]])(vfx);
+  (PTR_ARRAY_0836edd4[(vfx->s).mode[1]])((void*)vfx);
 }
 
 

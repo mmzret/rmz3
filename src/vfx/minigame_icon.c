@@ -8,9 +8,9 @@ void Ghost77_Die(struct VFX* p);
 
 // clang-format off
 const VFXRoutine gMinigameIconRoutine = {
-    [ENTITY_INIT] =      Ghost77_Init,
-    [ENTITY_UPDATE] =    Ghost77_Update,
-    [ENTITY_DIE] =       Ghost77_Die,
+    [ENTITY_INIT] =      (void*)Ghost77_Init,
+    [ENTITY_UPDATE] =    (void*)Ghost77_Update,
+    [ENTITY_DIE] =       (void*)Ghost77_Die,
     [ENTITY_DISAPPEAR] = (void*)DeleteVFX,
     [ENTITY_EXIT] =      (VFXFunc)DeleteEntity,
 };
@@ -88,7 +88,7 @@ struct VFX* FUN_080c82b8(struct Entity* e, struct Coord* c, u8 a2, u32 a3, u8 a4
 INCASM("asm/vfx/minigame_icon_a.inc");
 
 void Ghost77_Update(struct VFX* p) {
-  (sUpdates[(p->s).mode[1]])(p);
+  (sUpdates[(p->s).mode[1]])((void*)p);
 }
 
 

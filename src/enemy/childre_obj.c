@@ -12,9 +12,9 @@ static void ChildreObj_Die(struct Enemy* p);
 
 // clang-format off
 const EnemyRoutine gChildreObjRoutine = {
-    [ENTITY_INIT] =      ChildreObj_Init,
-    [ENTITY_UPDATE] =    ChildreObj_Update,
-    [ENTITY_DIE] =       ChildreObj_Die,
+    [ENTITY_INIT] =      (void*)ChildreObj_Init,
+    [ENTITY_UPDATE] =    (void*)ChildreObj_Update,
+    [ENTITY_DIE] =       (void*)ChildreObj_Die,
     [ENTITY_DISAPPEAR] = (void*)DeleteEnemy,
     [ENTITY_EXIT] =      (EnemyFunc)DeleteEntity,
 };
@@ -321,8 +321,8 @@ static void ChildreObj_Update(struct Enemy* p) {
 
   bool8 isDead = FUN_0807383c(p);
   if (!isDead) {
-    (sUpdates1[(p->s).mode[1]])(p);
-    (sUpdates2[(p->s).mode[1]])(p);
+    (sUpdates1[(p->s).mode[1]])((void*)p);
+    (sUpdates2[(p->s).mode[1]])((void*)p);
   }
 }
 
@@ -340,7 +340,7 @@ static void ChildreObj_Die(struct Enemy* p) {
       FUN_08073e18,
       FUN_08073e60,
   };
-  (sDeads[(p->s).mode[1]])(p);
+  (sDeads[(p->s).mode[1]])((void*)p);
 }
 
 // --------------------------------------------

@@ -4,6 +4,16 @@
 #include "zero.h"
 #include "story.h"
 
+void FUN_08097cc8(struct Enemy* p);
+
+void FUN_080978e0(struct Enemy* p);
+
+void FUN_08097904(struct Enemy* p);
+
+void FUN_080978e4(struct Enemy* p);
+
+void CannonHopper_Die(struct Enemy* p);
+
 static const EnemyFunc sDeads[4];
 
 INCASM("asm/enemy/cannon_hopper_a.inc");
@@ -15,7 +25,7 @@ void CannonHopper_Die(struct Enemy* p) {
     EXIT_BODY(p);
     SET_ENEMY_ROUTINE(p, ENTITY_DISAPPEAR);
   } else {
-    (sDeads[(p->s).mode[1]])(p);
+    (sDeads[(p->s).mode[1]])((void*)p);
   }
 }
 
@@ -70,9 +80,9 @@ void CannonHopper_Die(struct Enemy* p);
 
 // clang-format off
 const EnemyRoutine gCannonHopperRoutine = {
-    [ENTITY_INIT] =      CannonHopper_Init,
-    [ENTITY_UPDATE] =    CannonHopper_Update,
-    [ENTITY_DIE] =       CannonHopper_Die,
+    [ENTITY_INIT] =      (void*)CannonHopper_Init,
+    [ENTITY_UPDATE] =    (void*)CannonHopper_Update,
+    [ENTITY_DIE] =       (void*)CannonHopper_Die,
     [ENTITY_DISAPPEAR] = (void*)DeleteEnemy,
     [ENTITY_EXIT] =      (EnemyFunc)DeleteEntity,
 };

@@ -16,6 +16,8 @@ const EnemyRoutine gEnemy61Routine = {
     [ENTITY_DISAPPEAR] = (void*)DeleteEnemy,
     [ENTITY_EXIT] =      (void*)DeleteEntity,
 };
+
+void FUN_08093754(struct Enemy* p);
 // clang-format on
 
 void FUN_080935b4(struct Entity* q, u8 idx, u8 val) {
@@ -42,8 +44,8 @@ void Enemy61_Update(struct Enemy* p) {
   if (((struct Entity*)(p->s).unk_28)->mode[0] > 1) {
     SET_ENEMY_ROUTINE(p, ENTITY_DIE);
   } else {
-    (sUpdates1[(p->s).mode[1]])(p);
-    (sUpdates2[(p->s).mode[1]])(p);
+    (sUpdates1[(p->s).mode[1]])((void*)p);
+    (sUpdates2[(p->s).mode[1]])((void*)p);
   }
 }
 

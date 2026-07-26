@@ -50,8 +50,8 @@ struct Entity* CreateSoulLauncher(struct Zero* z, u8 r1, u8 r2) {
 
 INCASM("asm/weapon/soul_launcher_a.inc");
 
-void SoulLauncher_Die(struct Weapon* p) {
-  (p->s).flags &= ~DISPLAY;
+void SoulLauncher_Die(SoulLauncher* p) {
+  p->flags &= ~DISPLAY;
   SET_WEAPON_ROUTINE(p, ENTITY_EXIT);
 }
 
@@ -61,7 +61,7 @@ void FUN_0803b4b0(struct Body* body) {
     if (gScore.weaponCount[WEAPON_ROD] <= 0xFFFE) {
       gScore.weaponCount[WEAPON_ROD]++;
     }
-    if ((w->s).work[1] == 0) {
+    if (w->work[1] == 0) {
       ((struct SoulLauncherProps*)w->buffer)->unk_c0 = 1;
     }
   }

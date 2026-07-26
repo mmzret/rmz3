@@ -19,6 +19,16 @@ const EnemyRoutine gMettaurRoutine = {
     [ENTITY_DISAPPEAR] = (void*)DeleteEnemy,
     [ENTITY_EXIT] =      (void*)DeleteEntity,
 };
+
+
+
+
+
+void FUN_08089e60(struct Enemy* p);
+void FUN_08089a00(struct Enemy* p);
+void nop_08089268(struct Enemy* p);
+void FUN_080892a4(struct Enemy* p);
+void FUN_0808926c(struct Enemy* p);
 // clang-format on
 
 struct Entity* FUN_08088b4c(s32 x, s32 y, u8 kind) {
@@ -55,7 +65,7 @@ void FUN_08088d54(struct Enemy* p) {
 INCASM("asm/enemy/mettaur_b.inc");
 
 void MettaurSwim_Die(struct Enemy* p) {
-  (sDeads[(p->s).mode[1]])(p);
+  (sDeads[(p->s).mode[1]])((void*)p);
 }
 
 void FUN_08089218(struct Body* body) {
@@ -74,7 +84,7 @@ void nop_08089268(struct Enemy* p) {}
 
 
 void FUN_0808926c(struct Enemy* p) {
-  if (FUN_08088ba8(p) == 0) {
+  if (FUN_08088ba8((struct Entity*)p) == 0) {
     (p->s).mode[1] = 5;
     (p->s).mode[2] = 0;
   }

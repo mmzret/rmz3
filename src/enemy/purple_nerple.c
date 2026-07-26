@@ -3,6 +3,18 @@
 #include "global.h"
 #include "story.h"
 
+void FUN_080761b8(struct Enemy* p);
+
+void FUN_08076198(struct Enemy* p);
+
+void FUN_08076178(struct Enemy* p);
+
+void FUN_08076144(struct Enemy* p);
+
+void FUN_08076140(struct Enemy* p);
+
+void PurpleNerple_Update(struct Enemy* p);
+
 static const struct Collision sCollisions[];
 
 INCASM("asm/enemy/purple_nerple_a.inc");
@@ -42,8 +54,8 @@ void PurpleNerple_Update(struct Enemy* p) {
   if (FUN_08075dc8(p)) {
     return;
   }
-  (PTR_ARRAY_083670d0[(p->s).mode[1]])(p);
-  (PTR_ARRAY_083670f8[(p->s).mode[1]])(p);
+  (PTR_ARRAY_083670d0[(p->s).mode[1]])((void*)p);
+  (PTR_ARRAY_083670f8[(p->s).mode[1]])((void*)p);
 }
 
 INCASM("asm/enemy/purple_nerple_b.inc");
@@ -105,9 +117,9 @@ void PurpleNerple_Die(struct Enemy* p);
 
 // clang-format off
 const EnemyRoutine gPurpleNerpleRoutine = {
-    [ENTITY_INIT] =      PurpleNerple_Init,
-    [ENTITY_UPDATE] =    PurpleNerple_Update,
-    [ENTITY_DIE] =       PurpleNerple_Die,
+    [ENTITY_INIT] =      (void*)PurpleNerple_Init,
+    [ENTITY_UPDATE] =    (void*)PurpleNerple_Update,
+    [ENTITY_DIE] =       (void*)PurpleNerple_Die,
     [ENTITY_DISAPPEAR] = (void*)DeleteEnemy,
     [ENTITY_EXIT] =      (EnemyFunc)DeleteEntity,
 };

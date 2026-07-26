@@ -102,7 +102,7 @@ static void Solid17_Init(Object* p) {
   p->unk_coord.x = p->coord.x;
   p->unk_coord.y = p->coord.y;
   p->work[3] = 0;
-  Solid17_Update((void*)p);
+  Solid17_Update((struct Entity*)p);
 }
 
 static void nop_080cf208(void* _ UNUSED);

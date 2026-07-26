@@ -66,19 +66,19 @@ void MenuExit_BlizzardArrow(Weapon* p) {
 
 INCASM("asm/weapon/blizzard_arrow_a.inc");
 
-void BlizzardArrow_Die(struct Weapon* p) {
-  (p->s).flags &= ~DISPLAY;
+void BlizzardArrow_Die(Weapon* p) {
+  p->flags &= ~DISPLAY;
   SET_WEAPON_ROUTINE(p, ENTITY_EXIT);
 }
 
 void hitBlizzardArrow(struct Body* body) {
   if (body->hitboxFlags & BODY_STATUS_B2) {
-    struct CollidableEntity* p = body->parent;
+    Object* p = (Object*)body->parent;
     if (gScore.weaponCount[WEAPON_BUSTER] <= 0xFFFE) {
       gScore.weaponCount[WEAPON_BUSTER]++;
     }
-    if (!(body->enemy->status & BODY_STATUS_DEAD) || (p->s).work[0] == 0) {
-      (p->s).work[3] = 1;
+    if (!(body->enemy->status & BODY_STATUS_DEAD) || p->work[0] == 0) {
+      p->work[3] = 1;
     }
   }
 }

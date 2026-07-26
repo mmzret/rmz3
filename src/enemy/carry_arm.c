@@ -2,6 +2,12 @@
 #include "enemy.h"
 #include "global.h"
 
+void FUN_08071c70(struct Enemy* p);
+
+void FUN_080716a8(struct Enemy* p);
+
+void CarryArm_Update(struct Enemy* p);
+
 INCASM("asm/enemy/carry_arm_a.inc");
 
 void nop_08071568(struct Enemy* p) {}
@@ -26,13 +32,13 @@ extern const EnemyFunc PTR_ARRAY_08366b78[2];
 
 void CarryArm_Update(struct Enemy* p) {
   if (!FUN_0807156c(p)) {
-    (PTR_ARRAY_08366b48[(p->s).mode[1]])(p);
-    (PTR_ARRAY_08366b60[(p->s).mode[1]])(p);
+    (PTR_ARRAY_08366b48[(p->s).mode[1]])((void*)p);
+    (PTR_ARRAY_08366b60[(p->s).mode[1]])((void*)p);
   }
 }
 
 void CarryArm_Die(struct Enemy* p) {
-  (PTR_ARRAY_08366b78[(p->s).mode[1]])(p);
+  (PTR_ARRAY_08366b78[(p->s).mode[1]])((void*)p);
 }
 
 void FUN_080716a8(struct Enemy* p) {}
@@ -49,9 +55,9 @@ void CarryArm_Die(struct Enemy* p);
 
 // clang-format off
 const EnemyRoutine gCarryArmRoutine = {
-    [ENTITY_INIT] =      CarryArm_Init,
-    [ENTITY_UPDATE] =    CarryArm_Update,
-    [ENTITY_DIE] =       CarryArm_Die,
+    [ENTITY_INIT] =      (void*)CarryArm_Init,
+    [ENTITY_UPDATE] =    (void*)CarryArm_Update,
+    [ENTITY_DIE] =       (void*)CarryArm_Die,
     [ENTITY_DISAPPEAR] = (void*)DeleteEnemy,
     [ENTITY_EXIT] =      (EnemyFunc)DeleteEntity,
 };

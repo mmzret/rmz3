@@ -69,7 +69,7 @@ static bool8 FUN_0808f348(Seimeran* p) {
     } else {
       p->mode[1] = 0;
     }
-    Seimeran_Die((void*)p);
+    Seimeran_Die((struct Enemy*)p);
     return TRUE;
   }
   return FALSE;

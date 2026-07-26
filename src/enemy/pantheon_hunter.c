@@ -18,15 +18,15 @@ static const struct SlashedEnemy sSlashedEnemies[4];
 
 static void onCollision(struct Body* body UNUSED, Coords32* r1 UNUSED, Coords32* r2 UNUSED);
 
-static void PantheonHunter_Init(struct Enemy* p);
-static void PantheonHunter_Update(struct Enemy* p);
-void PantheonHunter_Die(struct Enemy* p);
+static void PantheonHunter_Init(PantheonHunter* p);
+static void PantheonHunter_Update(PantheonHunter* p);
+void PantheonHunter_Die(PantheonHunter* p);
 
 // clang-format off
 const EnemyRoutine gPantheonHunterRoutine = {
-    [ENTITY_INIT] =      PantheonHunter_Init,
-    [ENTITY_UPDATE] =    PantheonHunter_Update,
-    [ENTITY_DIE] =       PantheonHunter_Die,
+    [ENTITY_INIT] =      (void*)PantheonHunter_Init,
+    [ENTITY_UPDATE] =    (void*)PantheonHunter_Update,
+    [ENTITY_DIE] =       (void*)PantheonHunter_Die,
     [ENTITY_DISAPPEAR] = (void*)DeleteEnemy,
     [ENTITY_EXIT] =      (EnemyFunc)DeleteEntity,
 };
@@ -43,7 +43,7 @@ struct Entity* CreatePantheonHunter(Coords32* c, u8 r1, u8 r2) {
   return p;
 }
 
-NAKED static void PantheonHunter_Init(struct Enemy* p) {
+NAKED static void PantheonHunter_Init(PantheonHunter* p) {
   asm(".syntax unified\n\
 	push {r4, r5, r6, lr}\n\
 	adds r6, r0, #0\n\
@@ -225,39 +225,39 @@ _08064828:\n\
 
 // --------------------------------------------
 
-void FUN_08064c38(struct Enemy* p);
-void nop_08064ca8(struct Enemy* p);
-void phunter_08064cac(struct Enemy* p);
-void FUN_08064e0c(struct Enemy* p);
-void nop_08064e34(struct Enemy* p);
-void FUN_08064e38(struct Enemy* p);
-void FUN_08064e7c(struct Enemy* p);
-void phunterRaiseArm(struct Enemy* p);
-void phunterShotBuster(struct Enemy* p);
-void FUN_08065104(struct Enemy* p);
-void phunter_080651c0(struct Enemy* p);
-void phunter_08065218(struct Enemy* p);
-void phunter_080652e8(struct Enemy* p);
+void FUN_08064c38(PantheonHunter* p);
+void nop_08064ca8(PantheonHunter* p);
+void phunter_08064cac(PantheonHunter* p);
+void FUN_08064e0c(PantheonHunter* p);
+void nop_08064e34(PantheonHunter* p);
+void FUN_08064e38(PantheonHunter* p);
+void FUN_08064e7c(PantheonHunter* p);
+void phunterRaiseArm(PantheonHunter* p);
+void phunterShotBuster(PantheonHunter* p);
+void FUN_08065104(PantheonHunter* p);
+void phunter_080651c0(PantheonHunter* p);
+void phunter_08065218(PantheonHunter* p);
+void phunter_080652e8(PantheonHunter* p);
 
 // clang-format off
 static const EnemyFunc sUpdates[13] = {
-    FUN_08064c38,
-    nop_08064ca8,
-    phunter_08064cac,
-    FUN_08064e0c,
-    nop_08064e34,
-    FUN_08064e38,
-    FUN_08064e7c,
-    phunterRaiseArm,
-    phunterShotBuster,
-    FUN_08065104,
-    phunter_080651c0,
-    phunter_08065218,
-    phunter_080652e8,
+    (EnemyFunc)FUN_08064c38,
+    (EnemyFunc)nop_08064ca8,
+    (EnemyFunc)phunter_08064cac,
+    (EnemyFunc)FUN_08064e0c,
+    (EnemyFunc)nop_08064e34,
+    (EnemyFunc)FUN_08064e38,
+    (EnemyFunc)FUN_08064e7c,
+    (EnemyFunc)phunterRaiseArm,
+    (EnemyFunc)phunterShotBuster,
+    (EnemyFunc)FUN_08065104,
+    (EnemyFunc)phunter_080651c0,
+    (EnemyFunc)phunter_08065218,
+    (EnemyFunc)phunter_080652e8,
 };
 // clang-format on
 
-NAKED static void PantheonHunter_Update(struct Enemy* p) {
+NAKED static void PantheonHunter_Update(PantheonHunter* p) {
   asm(".syntax unified\n\
 	push {r4, r5, r6, r7, lr}\n\
 	adds r5, r0, #0\n\
@@ -562,8 +562,8 @@ _08064AC8: .4byte sUpdates\n\
 
 // --------------------------------------------
 
-void explodePHunter(struct Enemy* p);
-void slashPHunter(struct Enemy* p);
+void explodePHunter(PantheonHunter* p);
+void slashPHunter(PantheonHunter* p);
 static void FUN_080656cc(struct Entity* p);
 
 static const EnemyFunc sDeads[3] = {
@@ -574,51 +574,51 @@ static const EnemyFunc sDeads[3] = {
 
 INCASM("asm/enemy/pantheon_hunter_a.inc");
 
-void phunter_08064c10(struct Enemy* p) {
-  if ((p->s).mode[1] == 2) return;
+void phunter_08064c10(PantheonHunter* p) {
+  if (p->mode[1] == 2) return;
   if (((p->body).status & 0x00020001) == 0x00020001) {
-    (p->s).mode[1] = 2;
-    (p->s).mode[2] = 0;
+    p->mode[1] = 2;
+    p->mode[2] = 0;
   }
 }
 
-void FUN_08064c38(struct Enemy* p) {
-  if ((p->s).mode[2] == 0) {
+void FUN_08064c38(PantheonHunter* p) {
+  if (p->mode[2] == 0) {
     SetSpriteAnimation(p, 0x1300);
-    (p->s).d.y = 0;
-    (p->s).d.x = 0;
-    (p->s).mode[2]++;
+    p->d.y = 0;
+    p->d.x = 0;
+    p->mode[2]++;
   }
   UpdateSpriteAnimation(p);
-  (p->s).d.y += 0x40;
-  if ((p->s).d.y > 0x700) {
-    (p->s).d.y = 0x700;
+  p->d.y += 0x40;
+  if (p->d.y > 0x700) {
+    p->d.y = 0x700;
   }
-  (p->s).coord.y += (p->s).d.y;
+  p->coord.y += p->d.y;
   {
-    metatile_attr_t r = FUN_080098a4((p->s).coord.x, (p->s).coord.y);
+    metatile_attr_t r = FUN_080098a4(p->coord.x, p->coord.y);
     if (r != 0x800F && r != 0) {
-      (p->s).coord.y = FUN_08009f6c((p->s).coord.x, (p->s).coord.y);
-      (p->s).mode[1] = 5;
-      (p->s).mode[2] = 0;
-      (p->s).mode[3] = 6;
+      p->coord.y = FUN_08009f6c(p->coord.x, p->coord.y);
+      p->mode[1] = 5;
+      p->mode[2] = 0;
+      p->mode[3] = 6;
     }
   }
 }
 
-void nop_08064ca8(struct Enemy* p) {}
+void nop_08064ca8(PantheonHunter* p) {}
 
 INCASM("asm/enemy/pantheon_hunter_b.inc");
 
-void FUN_08064e0c(struct Enemy* p) {
-  if ((p->s).mode[2] == 0) {
+void FUN_08064e0c(PantheonHunter* p) {
+  if (p->mode[2] == 0) {
     SetSpriteAnimation(p, MOTION(0x13, 3));
-    (p->s).mode[2]++;
+    p->mode[2]++;
   }
   UpdateSpriteAnimation(p);
 }
 
-void nop_08064e34(struct Enemy* p) {}
+void nop_08064e34(PantheonHunter* p) {}
 
 INCASM("asm/enemy/pantheon_hunter_c.inc");
 

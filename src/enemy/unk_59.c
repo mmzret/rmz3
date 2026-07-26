@@ -18,7 +18,7 @@ void CreateGhost18(Coords32* c, u8 kind, bool8 xflip, u8 r3);
 
 static void Enemy59_Init(Enemy59* p);
 void Enemy59_Update(Enemy59* p);
-void Enemy59_Die(struct Enemy* p);
+void Enemy59_Die(Enemy59* p);
 
 // clang-format off
 const EnemyRoutine gEnemy59Routine = {
@@ -95,7 +95,7 @@ void FUN_0809142c(Entity* q, u8 kind) {
 
 static const struct Collision sCollisions[];
 static const u8 u8_ARRAY_08369a14[];
-void FUN_08091790(struct Body* body);
+void FUN_08091790(struct Body* body, Coords32* r1 UNUSED, Coords32* r2 UNUSED);
 
 static void Enemy59_Init(Enemy59* p) {
   if (p->work[0] == 12) {
@@ -128,30 +128,30 @@ static const EnemyFunc sDeads[4];
 
 INCASM("asm/enemy/unk_59_b.inc");
 
-void Enemy59_Die(struct Enemy* p) {
-  (sDeads[(p->s).mode[1]])(p);
+void Enemy59_Die(Enemy59* p) {
+  (sDeads[p->mode[1]])((void*)p);
 }
 
-void FUN_08091790(struct Body* body) {
-  struct Enemy* atk = (struct Enemy*)(body->enemy->parent);
-  struct Enemy* self = (struct Enemy*)(body->parent);
-  if ((self->s).work[0] == 0xc) {
+void FUN_08091790(struct Body* body, Coords32* r1 UNUSED, Coords32* r2 UNUSED) {
+  Enemy59* atk = (Enemy59*)(body->enemy->parent);
+  Enemy59* self = (Enemy59*)(body->parent);
+  if (self->work[0] == 0xc) {
     if ((body->hitboxFlags & 8) &&
-        (s8)(atk->s).kind == 2 &&
-        (atk->s).mode[1] == 1 &&
-        (u8)((atk->s).mode[2] - 1) <= 1 &&
-        (atk->s).id == 0x15 &&
-        ((*(u32*)&(self->s).mode[0]) & 0xffff00) == 0x30800) {
-      *(s32*)((u8*)self + 0xb4) = (atk->s).coord.x - (self->s).coord.x;
-      (self->s).mode[1] = 9;
-      (self->s).mode[2] = 0;
+        (s8)atk->kind == 2 &&
+        atk->mode[1] == 1 &&
+        (u8)(atk->mode[2] - 1) <= 1 &&
+        atk->id == 0x15 &&
+        ((*(u32*)&self->mode[0]) & 0xffff00) == 0x30800) {
+      *(s32*)((u8*)self + 0xb4) = atk->coord.x - self->coord.x;
+      self->mode[1] = 9;
+      self->mode[2] = 0;
     }
   } else {
-    *(s32*)((u8*)self + 0xb4) = pZero2->s.coord.x - (self->s).coord.x;
+    *(s32*)((u8*)self + 0xb4) = pZero2->s.coord.x - self->coord.x;
   }
 }
 
-void FUN_08091810(struct Enemy* p) {}
+void FUN_08091810(Enemy59* p) {}
 
 INCASM("asm/enemy/unk_59_a.inc");
 
@@ -329,53 +329,53 @@ static const struct Collision sCollisions[14] = {
 
 // --------------------------------------------
 
-void FUN_08091810(struct Enemy* p);
+void FUN_08091810(Enemy59* p);
 
 // clang-format off
 static const EnemyFunc sUpdates1[10] = {
-    FUN_08091810,
-    FUN_08091810,
-    FUN_08091810,
-    FUN_08091810,
-    FUN_08091810,
-    FUN_08091810,
-    FUN_08091810,
-    FUN_08091810,
-    FUN_08091810,
-    FUN_08091810,
+    (EnemyFunc)FUN_08091810,
+    (EnemyFunc)FUN_08091810,
+    (EnemyFunc)FUN_08091810,
+    (EnemyFunc)FUN_08091810,
+    (EnemyFunc)FUN_08091810,
+    (EnemyFunc)FUN_08091810,
+    (EnemyFunc)FUN_08091810,
+    (EnemyFunc)FUN_08091810,
+    (EnemyFunc)FUN_08091810,
+    (EnemyFunc)FUN_08091810,
 };
 // clang-format on
 
-void FUN_08091814(struct Enemy* p);
-void FUN_080918ec(struct Enemy* p);
-void FUN_08091980(struct Enemy* p);
-void FUN_08091ab0(struct Enemy* p);
-void FUN_08091b60(struct Enemy* p);
-void FUN_08091c54(struct Enemy* p);
-void FUN_08091d0c(struct Enemy* p);
-void FUN_08091da4(struct Enemy* p);
-void FUN_08091e58(struct Enemy* p);
-void FUN_08091f00(struct Enemy* p);
+void FUN_08091814(Enemy59* p);
+void FUN_080918ec(Enemy59* p);
+void FUN_08091980(Enemy59* p);
+void FUN_08091ab0(Enemy59* p);
+void FUN_08091b60(Enemy59* p);
+void FUN_08091c54(Enemy59* p);
+void FUN_08091d0c(Enemy59* p);
+void FUN_08091da4(Enemy59* p);
+void FUN_08091e58(Enemy59* p);
+void FUN_08091f00(Enemy59* p);
 
 // clang-format off
 static const EnemyFunc sUpdates2[10] = {
-    FUN_08091814,
-    FUN_080918ec,
-    FUN_08091980,
-    FUN_08091ab0,
-    FUN_08091b60,
-    FUN_08091c54,
-    FUN_08091d0c,
-    FUN_08091da4,
-    FUN_08091e58,
-    FUN_08091f00,
+    (EnemyFunc)FUN_08091814,
+    (EnemyFunc)FUN_080918ec,
+    (EnemyFunc)FUN_08091980,
+    (EnemyFunc)FUN_08091ab0,
+    (EnemyFunc)FUN_08091b60,
+    (EnemyFunc)FUN_08091c54,
+    (EnemyFunc)FUN_08091d0c,
+    (EnemyFunc)FUN_08091da4,
+    (EnemyFunc)FUN_08091e58,
+    (EnemyFunc)FUN_08091f00,
 };
 // clang-format on
 
 // --------------------------------------------
 
-void FUN_08091fa8(struct Enemy* p);
-void FUN_080921c8(struct Enemy* p);
+void FUN_08091fa8(Enemy59* p);
+void FUN_080921c8(Enemy59* p);
 static void FUN_080922e0(Enemy59* p);
 static void FUN_080923ec(Enemy59* p);
 

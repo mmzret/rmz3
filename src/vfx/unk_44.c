@@ -45,7 +45,7 @@ static void VFX44_Init(struct Entity* p) {
   p->work[2] = 0xFF;
   SET_VFX_ROUTINE(p, ENTITY_UPDATE);
   p->mode[1] = 0, p->mode[2] = 0, p->mode[3] = 0;
-  VFX44_Update(p);
+  VFX44_Update((struct Entity*)p);
 }
 
 void FUN_080be974(struct Entity* p);
@@ -60,7 +60,7 @@ static void VFX44_Update(struct Entity* p) {
     SET_VFX_ROUTINE(p, ENTITY_DISAPPEAR);
     return;
   }
-  (sUpdates[p->mode[1]])(p);
+  (sUpdates[p->mode[1]])((void*)p);
 }
 
 static void VFX44_Die(struct Entity* p) {

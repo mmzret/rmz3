@@ -322,57 +322,57 @@ const struct SlashedEnemy sSlashedEnemies[4];
 
 INCASM("asm/enemy/gyro_cannon_a.inc");
 
-void FUN_0806d998(struct Enemy* p) {
-  if ((p->s).mode[2] == 0) {
+void FUN_0806d998(GyroCannon* p) {
+  if (p->mode[2] == 0) {
     SetSpriteAnimation(p, 0x1700);
-    (p->s).work[2] = 8;
-    (p->s).mode[2]++;
+    p->work[2] = 8;
+    p->mode[2]++;
   }
-  if ((u8)(--(p->s).work[2]) == 0xff) {
-    (p->s).mode[1] = 2;
-    (p->s).mode[2] = 0;
+  if ((u8)(--p->work[2]) == 0xff) {
+    p->mode[1] = 2;
+    p->mode[2] = 0;
   }
 }
 
 void CreateProjectile8(s32 x, s32 y);
 
-void FUN_0806d9d4(struct Enemy* p) {
-  if ((p->s).mode[2] == 0) {
+void FUN_0806d9d4(GyroCannon* p) {
+  if (p->mode[2] == 0) {
     SetSpriteAnimation(p, 0x1704);
-    (p->s).work[2] = 8;
-    (p->s).mode[2]++;
+    p->work[2] = 8;
+    p->mode[2]++;
   }
-  if ((u8)(--(p->s).work[2]) == 0xff) {
-    CreateProjectile8((p->s).coord.x, (p->s).coord.y + 0xc00);
-    (p->s).mode[1] = 6;
-    (p->s).mode[2] = 0;
+  if ((u8)(--p->work[2]) == 0xff) {
+    CreateProjectile8(p->coord.x, p->coord.y + 0xc00);
+    p->mode[1] = 6;
+    p->mode[2] = 0;
   }
 }
 
-void FUN_0806da20(struct Enemy* p) {
-  if ((p->s).mode[2] == 0) {
+void FUN_0806da20(GyroCannon* p) {
+  if (p->mode[2] == 0) {
     SetSpriteAnimation(p, 0x1705);
-    (p->s).work[2] = 8;
-    (p->s).mode[2]++;
+    p->work[2] = 8;
+    p->mode[2]++;
   }
-  if ((u8)(--(p->s).work[2]) == 0xff) {
-    (p->s).mode[1] = 2;
-    (p->s).mode[2] = 0;
+  if ((u8)(--p->work[2]) == 0xff) {
+    p->mode[1] = 2;
+    p->mode[2] = 0;
   }
 }
 
 INCASM("asm/enemy/gyro_cannon_b.inc");
 
-void FUN_0806db58(struct Enemy* p) {
+void FUN_0806db58(GyroCannon* p) {
   UpdateSpriteAnimation(p);
-  (p->s).coord.y -= 0x200;
+  p->coord.y -= 0x200;
   {
     s32* base = (s32*)((u8*)p + 0xb4);
-    if ((p->s).coord.y < base[1]) {
-      (p->s).coord.y = base[1];
-      (p->s).mode[1] = 2;
-      (p->s).mode[2] = 0;
-      (p->s).work[3] = 0x7f;
+    if (p->coord.y < base[1]) {
+      p->coord.y = base[1];
+      p->mode[1] = 2;
+      p->mode[2] = 0;
+      p->work[3] = 0x7f;
     }
   }
 }

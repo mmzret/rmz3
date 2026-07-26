@@ -2,6 +2,7 @@
 #include "enemy.h"
 #include "global.h"
 #include "stagerun.h"
+#include "vfx.h"
 
 void OmegaZeroRock_Init(struct Enemy* p);
 void OmegaZeroRock_Update(struct Enemy* p);
@@ -15,6 +16,10 @@ const EnemyRoutine gOmegaZeroRockRoutine = {
     [ENTITY_DISAPPEAR] = (void*)DeleteEnemy,
     [ENTITY_EXIT] =      (void*)DeleteEntity,
 };
+
+
+void FUN_0808b708(struct Enemy* p);
+void nop_0808b704(struct Enemy* p);
 // clang-format on
 
 // --------------------------------------------
@@ -46,7 +51,7 @@ static void onCollision(struct Body* body, Coords32* r1 UNUSED, Coords32* r2 UNU
 static bool8 FUN_0808b5e8(Object* p) {
   if ((p->body).status & BODY_STATUS_DEAD) {
     SET_ENEMY_ROUTINE(p, ENTITY_DIE);
-    OmegaZeroRock_Die((void*)p);
+    OmegaZeroRock_Die((struct Enemy*)p);
     return TRUE;
   }
   return FALSE;

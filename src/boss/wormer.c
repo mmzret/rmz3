@@ -19,6 +19,14 @@ const BossRoutine gWormerRoutine = {
     [ENTITY_DISAPPEAR] = (void*)DeleteBoss,
     [ENTITY_EXIT] =      (BossFunc)DeleteEntity,
 };
+
+
+
+
+void FUN_08042f9c(struct Boss* p);
+void FUN_08042d4c(struct Boss* p);
+void FUN_08042894(struct Boss* p);
+void nop_08042890(struct Boss* p);
 // clang-format on
 
 void nop_080423e0(struct Body* _ UNUSED) { return; }
@@ -37,11 +45,11 @@ INCASM("asm/boss/wormer_a.inc");
 void nop_08042890(struct Boss* p) {}
 
 void FUN_08042894(struct Boss* p) {
-  if ((p->s).work[0] == 1) {
+  if (p->work[0] == 1) {
     if (*(u32*)((u8*)p + 0x8c) & 1) {
       if ((*(u8*)((u8*)p + 0x97) & 0xf0) == 0x20) {
-        (p->s).mode[1] = 8;
-        (p->s).mode[2] = 0;
+        p->mode[1] = 8;
+        p->mode[2] = 0;
       }
     }
   }
@@ -50,17 +58,17 @@ void FUN_08042894(struct Boss* p) {
 INCASM("asm/boss/wormer_b.inc");
 
 void FUN_08042d4c(struct Boss* p) {
-  switch ((p->s).mode[2]) {
+  switch (p->mode[2]) {
     case 0:
-      SetDDP(&p->body, &sCollisions[5 + 7 * (p->s).work[0]]);
+      SetDDP(&p->body, &sCollisions[5 + 7 * p->work[0]]);
       SetSpriteAnimation(p, MOTION(0x2b, 7));
-      (p->s).mode[2]++;
+      p->mode[2]++;
       FALLTHROUGH;
     case 1:
       UpdateSpriteAnimation(p);
-      if ((p->s).motion.state == 3) {
-        (p->s).mode[1] = 7;
-        (p->s).mode[2] = 0;
+      if (p->motion.state == 3) {
+        p->mode[1] = 7;
+        p->mode[2] = 0;
       }
       break;
   }
@@ -69,18 +77,18 @@ void FUN_08042d4c(struct Boss* p) {
 INCASM("asm/boss/wormer_c.inc");
 
 void FUN_08042f9c(struct Boss* p) {
-  switch ((p->s).mode[2]) {
+  switch (p->mode[2]) {
     case 0:
       SetSpriteAnimation(p, MOTION(0x2b, 3));
       UpdateSpriteAnimation(p);
-      SetDDP(&p->body, &sCollisions[7 + 7 * (p->s).work[0]]);
-      (p->s).work[2] = 0x20;
-      (p->s).mode[2]++;
+      SetDDP(&p->body, &sCollisions[7 + 7 * p->work[0]]);
+      p->work[2] = 0x20;
+      p->mode[2]++;
       FALLTHROUGH;
     case 1:
-      if (--(p->s).work[2] == 0) {
-        (p->s).mode[1] = 7;
-        (p->s).mode[2] = 0;
+      if (--p->work[2] == 0) {
+        p->mode[1] = 7;
+        p->mode[2] = 0;
       }
       break;
   }

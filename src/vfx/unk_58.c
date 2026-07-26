@@ -26,6 +26,8 @@ const VFXRoutine gVFX58Routine = {
     [ENTITY_DISAPPEAR] = (void*)DeleteVFX,
     [ENTITY_EXIT] =      (void*)DeleteEntity,
 };
+
+void FUN_080c2364(struct VFX* p);
 // clang-format on
 
 // --------------------------------------------
@@ -93,7 +95,7 @@ struct VFX* FUN_080c1cf4(struct Coord* c, u8 a1, u16 a2, u16 a3) {
 INCASM("asm/vfx/unk_58_a.inc");
 
 void VFX58_Update(struct VFX* vfx) {
-  (sUpdates[(vfx->s).mode[1]])(vfx);
+  (sUpdates[(vfx->s).mode[1]])((void*)vfx);
 }
 
 

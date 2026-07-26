@@ -2,6 +2,14 @@
 #include "enemy.h"
 #include "global.h"
 
+void FUN_0807b7c0(struct Enemy* p);
+
+void FUN_0807b308(struct Enemy* p);
+
+void FUN_0807b30c(struct Enemy* p);
+
+void WormerSnowBall_Update(struct Enemy* p);
+
 static const EnemyFunc sUpdates1[4];
 static const EnemyFunc sUpdates2[4];
 static const EnemyFunc sDeads[3];
@@ -30,13 +38,13 @@ extern const EnemyFunc sUpdates2[4];
 
 void WormerSnowBall_Update(struct Enemy* p) {
   if (!FUN_0807b1e0(p)) {
-    (sUpdates1[(p->s).mode[1]])(p);
-    (sUpdates2[(p->s).mode[1]])(p);
+    (sUpdates1[(p->s).mode[1]])((void*)p);
+    (sUpdates2[(p->s).mode[1]])((void*)p);
   }
 }
 
 void WormerSnowBall_Die(struct Enemy* p) {
-  (sDeads[(p->s).mode[1]])(p);
+  (sDeads[(p->s).mode[1]])((void*)p);
 }
 
 void FUN_0807b308(struct Enemy* p) {}
@@ -67,9 +75,9 @@ void WormerSnowBall_Die(struct Enemy* p);
 
 // clang-format off
 const EnemyRoutine gWormerSnowBallRoutine = {
-    [ENTITY_INIT] =      WormerSnowBall_Init,
-    [ENTITY_UPDATE] =    WormerSnowBall_Update,
-    [ENTITY_DIE] =       WormerSnowBall_Die,
+    [ENTITY_INIT] =      (void*)WormerSnowBall_Init,
+    [ENTITY_UPDATE] =    (void*)WormerSnowBall_Update,
+    [ENTITY_DIE] =       (void*)WormerSnowBall_Die,
     [ENTITY_DISAPPEAR] = (void*)DeleteEnemy,
     [ENTITY_EXIT] =      (EnemyFunc)DeleteEntity,
 };

@@ -65,7 +65,7 @@ static void Projectile28_Init(Projectile28* p) {
       Projectile28_Init_RagingEXCharge,
       FUN_080aa08c,
   };  // 0x0836c20c
-  (PTR_ARRAY_0836c20c[p->work[0]])(p);
+  (PTR_ARRAY_0836c20c[p->work[0]])((void*)p);
 }
 
 static void FUN_080a9c88(Projectile28* p);
@@ -80,7 +80,7 @@ static void Projectile28_Update(Projectile28* p) {
       FUN_080a9ef8,
       FUN_080aa120,
   };  // 0x0836c21c
-  (PTR_ARRAY_0836c21c[p->work[0]])(p);
+  (PTR_ARRAY_0836c21c[p->work[0]])((void*)p);
 }
 
 static void Projectile28_Die(Projectile28* p) {
@@ -120,7 +120,7 @@ static void FUN_080a9b90(Projectile28* p) {
   INIT_BODY(p, &sCollisions[0], 64, NULL);
   (p->c_b4).x = p->coord.x, (p->c_b4).y = p->coord.y;
   p->mode[2] = 1;
-  Projectile28_Update((void*)p);
+  Projectile28_Update((Projectile28*)p);
 }
 
 static void FUN_080a9c88(Projectile28* p) {
@@ -192,13 +192,13 @@ static void Projectile28_Init_RagingEXCharge(Projectile28* p) {
 
 INCASM("asm/projectile/copy_x_28_b.inc");
 
-void FUN_080aa120(struct Projectile* p) {
-  struct Entity* par = (p->s).unk_28;
-  (p->s).coord = par->coord;
-  (p->s).work[3]++;
+void FUN_080aa120(Projectile28* p) {
+  struct Entity* par = p->unk_28;
+  p->coord = par->coord;
+  p->work[3]++;
   if (par->mode[1] != 0xf) {
     SET_PROJECTILE_ROUTINE(p, ENTITY_DIE);
-    Projectile28_Die((Object*)p);
+    Projectile28_Die((Projectile28*)p);
   }
 }
 

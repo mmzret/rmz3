@@ -6,19 +6,19 @@
 #include "element.h"
 #include "zero.h"
 
-static const BossFunc sUpdates1[11];
-static const BossFunc sUpdates2[11];
-static const BossFunc sDeads[2];
+static void (*const sUpdates1[11])(Anubis*);
+static void (*const sUpdates2[11])(Anubis*);
+static void (*const sDeads[2])(Anubis*);
 static const Coords32 sElementCoord;
 
 INCASM("asm/boss/anubis_a.inc");
 
 void FUN_080500c8(struct Body* body) {
-  struct Boss* atk = (struct Boss*)((body->enemy)->parent);
-  struct Boss* self = (struct Boss*)body->parent;
+  Anubis* atk = (Anubis*)((body->enemy)->parent);
+  Anubis* self = (Anubis*)body->parent;
   if (body->hitboxFlags & 1) {
     u8 r = 0;
-    if ((self->s).coord.x < (atk->s).coord.x) {
+    if (self->coord.x < atk->coord.x) {
       r = 1;
     }
     *(u8*)((u8*)self + 0xcc) = r;
@@ -27,11 +27,11 @@ void FUN_080500c8(struct Body* body) {
 
 INCASM("asm/boss/anubis_b.inc");
 
-static const BossFunc sUpdates1[11];
-static const BossFunc sUpdates2[11];
-bool8 FUN_080500f4(struct Boss* p);
+static void (*const sUpdates1[11])(Anubis*);
+static void (*const sUpdates2[11])(Anubis*);
+bool8 FUN_080500f4(Anubis* p);
 
-void Anubis_Update(struct Boss* p) {
+void Anubis_Update(Anubis* p) {
   struct Entity** slot = (struct Entity**)((u8*)p + 0xb4);
   struct Entity* e;
   u8* t;
@@ -45,7 +45,7 @@ void Anubis_Update(struct Boss* p) {
     if (!((p->body).status & 1)) {
       goto next;
     }
-    e = (struct Entity*)ApplyElementEffect(0x14, &p->s, &sElementCoord);
+    e = ApplyElementEffect(0x14, (Object*)p, &sElementCoord);
   }
   *slot = e;
 next:
@@ -63,15 +63,15 @@ skip:
   if (FUN_080500f4(p)) {
     return;
   }
-  (sUpdates1[(p->s).mode[1]])(p);
-  (sUpdates2[(p->s).mode[1]])(p);
+  (sUpdates1[p->mode[1]])((void*)p);
+  (sUpdates2[p->mode[1]])((void*)p);
 }
 
-void Anubis_Die(struct Boss* p) {
-  (sDeads[(p->s).mode[1]])(p);
+void Anubis_Die(Anubis* p) {
+  (sDeads[p->mode[1]])((void*)p);
 }
 
-void nop_080503c8(struct Boss* p) {}
+void nop_080503c8(Anubis* p) {}
 
 INCASM("asm/boss/anubis_c.inc");
 

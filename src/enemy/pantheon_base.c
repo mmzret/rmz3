@@ -2,6 +2,14 @@
 #include "enemy.h"
 #include "global.h"
 
+void pBase_0808a438(struct Enemy* p);
+
+void nop_0808a3f4(struct Enemy* p);
+
+void pBase_0808a3f8(struct Enemy* p);
+
+void PantheonBase_Die(struct Enemy* p);
+
 static const EnemyFunc sDeads[2];
 static const struct Collision sCollisions[25];
 
@@ -20,7 +28,7 @@ void nop_0808a140(struct Enemy* p) {}
 INCASM("asm/enemy/pantheon_base_a.inc");
 
 void PantheonBase_Die(struct Enemy* p) {
-  (sDeads[(p->s).mode[1]])(p);
+  (sDeads[(p->s).mode[1]])((void*)p);
 }
 
 void nop_0808a3f4(struct Enemy* p) {}
@@ -62,9 +70,9 @@ void PantheonBase_Die(struct Enemy* p);
 
 // clang-format off
 const EnemyRoutine gPantheonBaseRoutine = {
-    [ENTITY_INIT] =      PantheonBase_Init,
-    [ENTITY_UPDATE] =    PantheonBase_Update,
-    [ENTITY_DIE] =       PantheonBase_Die,
+    [ENTITY_INIT] =      (void*)PantheonBase_Init,
+    [ENTITY_UPDATE] =    (void*)PantheonBase_Update,
+    [ENTITY_DIE] =       (void*)PantheonBase_Die,
     [ENTITY_DISAPPEAR] = (void*)DeleteEnemy,
     [ENTITY_EXIT] =      (EnemyFunc)DeleteEntity,
 };

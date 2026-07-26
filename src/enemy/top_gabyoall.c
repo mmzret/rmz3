@@ -4,6 +4,7 @@
 #include "global.h"
 #include "story.h"
 #include "zero.h"
+#include "vfx.h"
 
 typedef struct {
   COLLISION_OBJECT_HDR;
@@ -19,9 +20,9 @@ static_assert(sizeof(TopGabyoall) == sizeof(struct Enemy));
 static const struct Collision sCollisions[];
 static const Coords32 sElementCoords[];
 
-static void Enemy14_Init(struct Enemy* p);
+static void Enemy14_Init(TopGabyoall* p);
 static void Enemy14_Update(TopGabyoall* p);
-void Enemy14_Die(struct Enemy* p);
+void Enemy14_Die(TopGabyoall* p);
 
 // clang-format off
 const EnemyRoutine gTopGabyoallRoutine = {
@@ -48,25 +49,25 @@ struct Entity* CreateTopGabyoall(Coords32* c, u8 r1, u8 r2) {
 
 // --------------------------------------------
 
-void FUN_0806f5d0(struct Enemy* p);
-void FUN_0806f6cc(struct Enemy* p);
-void FUN_0806f7dc(struct Enemy* p);
-void FUN_0806f89c(struct Enemy* p);
+void FUN_0806f5d0(TopGabyoall* p);
+void FUN_0806f6cc(TopGabyoall* p);
+void FUN_0806f7dc(TopGabyoall* p);
+void FUN_0806f89c(TopGabyoall* p);
 
-static void Enemy14_Init(struct Enemy* p) {
+static void Enemy14_Init(TopGabyoall* p) {
   static const EnemyFunc sInitializers[4] = {
       (EnemyFunc)FUN_0806f5d0,
       (EnemyFunc)FUN_0806f6cc,
       (EnemyFunc)FUN_0806f7dc,
       (EnemyFunc)FUN_0806f89c,
   };
-  (sInitializers[(p->s).work[0]])((void*)p);
+  (sInitializers[p->work[0]])((void*)p);
 }
 
-void FUN_0806f964(struct Enemy* p);
-void FUN_0806fb08(struct Enemy* p);
-void FUN_0806fc78(struct Enemy* p);
-void FUN_0806fe38(struct Enemy* p);
+void FUN_0806f964(TopGabyoall* p);
+void FUN_0806fb08(TopGabyoall* p);
+void FUN_0806fc78(TopGabyoall* p);
+void FUN_0806fe38(TopGabyoall* p);
 
 static const EntityFunc sUpdates[4] = {
     (void*)FUN_0806f964,
@@ -112,10 +113,10 @@ static void Enemy14_Update(TopGabyoall* p) {
   if (!IsFrozen(p)) (sUpdates[p->work[0]])((void*)p);
 }
 
-void Enemy14_Die(struct Enemy* p) {
-  CreateSmoke(1, &(p->s).coord);
+void Enemy14_Die(TopGabyoall* p) {
+  CreateSmoke(1, &p->coord);
   PlaySound(0x2a);
-  (p->s).flags &= ~DISPLAY;
+  p->flags &= ~DISPLAY;
   SET_ENEMY_ROUTINE(p, ENTITY_EXIT);
 }
 

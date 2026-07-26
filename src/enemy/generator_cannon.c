@@ -9,12 +9,18 @@ void GeneratorCannon_Die(struct Enemy* p);
 
 // clang-format off
 const EnemyRoutine gGeneratorCannonRoutine = {
-    [ENTITY_INIT] =      GeneratorCannon_Init,
-    [ENTITY_UPDATE] =    GeneratorCannon_Update,
-    [ENTITY_DIE] =       GeneratorCannon_Die,
+    [ENTITY_INIT] =      (void*)GeneratorCannon_Init,
+    [ENTITY_UPDATE] =    (void*)GeneratorCannon_Update,
+    [ENTITY_DIE] =       (void*)GeneratorCannon_Die,
     [ENTITY_DISAPPEAR] = (void*)DeleteEnemy,
     [ENTITY_EXIT] =      (EnemyFunc)DeleteEntity,
 };
+
+
+
+void FUN_0808c784(struct Enemy* p);
+void FUN_0808c764(struct Enemy* p);
+void FUN_0808c760(struct Enemy* p);
 // clang-format on
 
 // 0x0808c388
@@ -69,8 +75,8 @@ void GeneratorCannon_Update(struct Enemy* p) {
   if (FUN_0808c450(p)) {
     return;
   }
-  (sUpdates1[(p->s).mode[1]])(p);
-  (sUpdates2[(p->s).mode[1]])(p);
+  (sUpdates1[(p->s).mode[1]])((void*)p);
+  (sUpdates2[(p->s).mode[1]])((void*)p);
 }
 
 INCASM("asm/enemy/generator_cannon_b.inc");

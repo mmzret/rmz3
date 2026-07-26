@@ -40,8 +40,8 @@ Entity* FUN_080adad0(Coords32* c, u8 kind) {
 
 INCASM("asm/projectile/unk_37_a.inc");
 
-void Projectile37_Die(struct Projectile* p) {
-  (p->s).flags &= ~DISPLAY;
+void Projectile37_Die(Projectile* p) {
+  p->flags &= ~DISPLAY;
   EXIT_BODY(p);
   SET_PROJECTILE_ROUTINE(p, ENTITY_EXIT);
 }

@@ -10,9 +10,9 @@ void Solid45_Die(struct Solid* p);
 
 // clang-format off
 const SolidRoutine gGiantElevatorPierRoutine = {
-    [ENTITY_INIT] =      Solid45_Init,
-    [ENTITY_UPDATE] =    Solid45_Update,
-    [ENTITY_DIE] =       Solid45_Die,
+    [ENTITY_INIT] =      (void*)Solid45_Init,
+    [ENTITY_UPDATE] =    (void*)Solid45_Update,
+    [ENTITY_DIE] =       (void*)Solid45_Die,
     [ENTITY_DISAPPEAR] = (void*)DeleteSolid,
     [ENTITY_EXIT] =      (SolidFunc)DeleteEntity,
 };

@@ -14,9 +14,9 @@ static_assert(sizeof(LocomoIFPlatform) == sizeof(struct Solid));
 
 // ------------------------------------------------------------------------------------------------------------------------------------
 
-void LocomoIFPlatform_Init(struct Solid* p);
-void LocomoIFPlatform_Update(struct Solid* p);
-void LocomoIFPlatform_Die(struct Solid* p);
+void LocomoIFPlatform_Init(LocomoIFPlatform* p);
+void LocomoIFPlatform_Update(LocomoIFPlatform* p);
+void LocomoIFPlatform_Die(LocomoIFPlatform* p);
 
 // clang-format off
 const SolidRoutine gLocomoIFPlatformRoutine = {
@@ -41,50 +41,49 @@ void CreateLocomoIFPlatform(struct Boss* locomoif) {
   }
 }
 
-void FUN_080ce538(struct Solid* p) {
-  struct LocomoIFPlatformObject* obj = (struct LocomoIFPlatformObject*)p;
-  struct Solid* parent = (struct Solid*)(p->s).unk_28;
-  (p->s).coord.x = (parent->s).coord.x;
-  (p->s).coord.x += (s16)gSineTable[(u8)((obj->unk_00 >> 8) + 0x40)] * 56;
-  (p->s).coord.y = (parent->s).coord.y - 0x1000;
-  (p->s).coord.y += (s16)gSineTable[obj->unk_00 >> 8] * 56;
+void FUN_080ce538(LocomoIFPlatform* p) {
+  LocomoIFPlatform* parent = (LocomoIFPlatform*)p->unk_28;
+  p->coord.x = parent->coord.x;
+  p->coord.x += (s16)gSineTable[(u8)((p->unk_b4 >> 8) + 0x40)] * 56;
+  p->coord.y = parent->coord.y - 0x1000;
+  p->coord.y += (s16)gSineTable[p->unk_b4 >> 8] * 56;
 }
 
-void nop_080ce58c(struct Solid* p) {}
+void nop_080ce58c(LocomoIFPlatform* p) {}
 
 INCASM("asm/solid/locomoif_platform_a.inc");
 
-void LocomoIFPlatform_Die(struct Solid* p) {
+void LocomoIFPlatform_Die(LocomoIFPlatform* p) {
   SET_SOLID_ROUTINE(p, ENTITY_EXIT);
 }
 
-void nop_080ce70c(struct Solid* p) {}
+void nop_080ce70c(LocomoIFPlatform* p) {}
 
 INCASM("asm/solid/locomoif_platform_b.inc");
 
 // --------------------------------------------
 
-void nop_080ce70c(struct Solid* p);
+void nop_080ce70c(LocomoIFPlatform* p);
 
 const SolidFunc sLocomoIFPlatformUpdates1[4] = {
-    nop_080ce70c,
-    nop_080ce70c,
-    nop_080ce70c,
-    nop_080ce70c,
+    (SolidFunc)nop_080ce70c,
+    (SolidFunc)nop_080ce70c,
+    (SolidFunc)nop_080ce70c,
+    (SolidFunc)nop_080ce70c,
 };
 
 // --------------------------------------------
 
-void FUN_080ce710(struct Solid* p);
-void FUN_080ce7a4(struct Solid* p);
-void FUN_080ce760(struct Solid* p);
-void FUN_080ce80c(struct Solid* p);
+void FUN_080ce710(LocomoIFPlatform* p);
+void FUN_080ce7a4(LocomoIFPlatform* p);
+void FUN_080ce760(LocomoIFPlatform* p);
+void FUN_080ce80c(LocomoIFPlatform* p);
 
 const SolidFunc sLocomoIFPlatformUpdates2[4] = {
-    FUN_080ce710,
-    FUN_080ce7a4,
-    FUN_080ce760,
-    FUN_080ce80c,
+    (SolidFunc)FUN_080ce710,
+    (SolidFunc)FUN_080ce7a4,
+    (SolidFunc)FUN_080ce760,
+    (SolidFunc)FUN_080ce80c,
 };
 
 // --------------------------------------------

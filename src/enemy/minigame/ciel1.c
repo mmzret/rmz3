@@ -2,6 +2,8 @@
 #include "enemy.h"
 #include "global.h"
 
+void CielMinigameEnemy_Die(struct Enemy* p);
+
 struct Enemy* FUN_0809bdd4(struct Entity* e, u8 a1, u8 a2) {
   struct Enemy* p = (struct Enemy*)AllocEntityLast(gEnemyHeaderPtr);
   if (p != NULL) {
@@ -27,9 +29,9 @@ void CielMinigameEnemy_Die(struct Enemy* p);
 
 // clang-format off
 const EnemyRoutine gCielMinigameEnemy1Routine = {
-    [ENTITY_INIT] =      CielMinigameEnemy_Init,
-    [ENTITY_UPDATE] =    CielMinigameEnemy_Update,
-    [ENTITY_DIE] =       CielMinigameEnemy_Die,
+    [ENTITY_INIT] =      (void*)CielMinigameEnemy_Init,
+    [ENTITY_UPDATE] =    (void*)CielMinigameEnemy_Update,
+    [ENTITY_DIE] =       (void*)CielMinigameEnemy_Die,
     [ENTITY_DISAPPEAR] = (void*)DeleteEnemy,
     [ENTITY_EXIT] =      (EnemyFunc)DeleteEntity,
 };

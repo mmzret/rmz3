@@ -1,14 +1,15 @@
 #include "cyberelf.h"
 #include "entity.h"
 #include "global.h"
+#include "vfx.h"
 
 // コロップ、ソロップ(つまり、画面上を飛行するエルフ？)
 
 INCASM("asm/cyberelf/nurse_e_a.inc");
 
-void NurseE_Die(struct Elf* p) {
-  FUN_080bfce8(&(p->s).coord, 0);
-  (p->s).flags &= ~DISPLAY;
+void NurseE_Die(CyberElf* p) {
+  FUN_080bfce8(&p->coord, 0);
+  p->flags &= ~DISPLAY;
   SET_ELF_ROUTINE(p, ENTITY_EXIT);
 }
 

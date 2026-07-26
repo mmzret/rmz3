@@ -14,6 +14,10 @@ const EnemyRoutine gSwordyRoutine = {
     [ENTITY_DISAPPEAR] = (void*)DeleteEnemy,
     [ENTITY_EXIT] =      (void*)DeleteEntity,
 };
+
+
+void nop_0807c4b0(struct Enemy* p);
+void FUN_0807c480(struct Enemy* p);
 // clang-format on
 
 struct Entity* CreateSwordy(Coords32* c, u8 n) {
@@ -46,7 +50,7 @@ void Swordy_Update(struct Enemy* p) {
     Swordy_Die(p);
     return;
   }
-  (PTR_ARRAY_08367a38[(p->s).mode[1]])(p);
+  (PTR_ARRAY_08367a38[(p->s).mode[1]])((void*)p);
   FUN_0807c530(p);
   if (IsFrozen(&p->s)) {
     slot = (struct Entity**)((u8*)p + 0xbc);
@@ -62,7 +66,7 @@ void Swordy_Update(struct Enemy* p) {
     }
     return;
   }
-  (PTR_ARRAY_08367a48[(p->s).mode[1]])(p);
+  (PTR_ARRAY_08367a48[(p->s).mode[1]])((void*)p);
 }
 
 INCASM("asm/enemy/swordy_b.inc");

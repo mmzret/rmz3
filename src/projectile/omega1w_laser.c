@@ -3,10 +3,11 @@
 #include "trig.h"
 #include "physics.h"
 #include "projectile.h"
+#include "vfx.h"
 
 struct Projectile33x {
-  OBJECT_HDR;
-  u8 work[4];          // 0xB4
+  COLLISION_OBJECT_HDR;
+  u8 buffer[4];          // 0xB4
   Coords32 prevCoord;  // 0xB8
   u32 unk_c0;          // 0xC0
 };
@@ -166,7 +167,7 @@ static void OmegaWhiteProjectile_Update(Projectile4* p) {
       doOmega1BallLaser2,
       doOmega1Hoopshot,
   };
-  (sUpdates[p->mode[1]])(p);
+  (sUpdates[p->mode[1]])((void*)p);
 }
 
 static void OmegaWhiteProjectile_Die(Projectile4* p) {
@@ -175,25 +176,25 @@ static void OmegaWhiteProjectile_Die(Projectile4* p) {
   SET_PROJECTILE_ROUTINE(p, ENTITY_EXIT);
 }
 
-void doOmega1BallLaser1(struct Projectile* p) {
-  if ((p->s).unk_28->mode[0] > 1) {
-    CreateSmoke(3, &(p->s).coord);
+void doOmega1BallLaser1(Projectile4* p) {
+  if (p->unk_28->mode[0] > 1) {
+    CreateSmoke(3, &p->coord);
     SET_PROJECTILE_ROUTINE(p, ENTITY_DIE);
   } else {
-    switch ((p->s).mode[2]) {
+    switch (p->mode[2]) {
       case 0:
         SetSpriteAnimation(p, 0xa06);
-        (p->s).mode[2]++;
+        p->mode[2]++;
         FALLTHROUGH;
       case 1:
-        (p->s).coord.x = (p->s).unk_28->coord.x;
-        (p->s).coord.y = (p->s).unk_28->coord.y - 0x6600;
+        p->coord.x = p->unk_28->coord.x;
+        p->coord.y = p->unk_28->coord.y - 0x6600;
         UpdateSpriteAnimation(p);
         break;
     }
     if (((struct Projectile33x*)p)->prevCoord.y == 0 || --((struct Projectile33x*)p)->prevCoord.y == 0) {
-      (p->s).mode[1] = 1;
-      (p->s).mode[2] = 0;
+      p->mode[1] = 1;
+      p->mode[2] = 0;
     }
   }
 }

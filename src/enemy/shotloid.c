@@ -2,6 +2,14 @@
 #include "enemy.h"
 #include "global.h"
 
+void FUN_08093de4(struct Enemy* p);
+
+void FUN_08093de0(struct Enemy* p);
+
+void FUN_08093e04(struct Enemy* p);
+
+void Shotloid_Update(struct Enemy* p);
+
 static const EnemyFunc sUpdates1[9];
 static const EnemyFunc sUpdates2[9];
 static const struct Collision sCollisions[3];
@@ -41,8 +49,8 @@ void Shotloid_Update(struct Enemy* p) {
         return;
       }
     }
-    (sUpdates1[(p->s).mode[1]])(p);
-    (sUpdates2[(p->s).mode[1]])(p);
+    (sUpdates1[(p->s).mode[1]])((void*)p);
+    (sUpdates2[(p->s).mode[1]])((void*)p);
   }
 }
 
@@ -83,9 +91,9 @@ void Shotloid_Die(struct Enemy* p);
 
 // clang-format off
 const EnemyRoutine gShotloidRoutine = {
-    [ENTITY_INIT] =      Shotloid_Init,
-    [ENTITY_UPDATE] =    Shotloid_Update,
-    [ENTITY_DIE] =       Shotloid_Die,
+    [ENTITY_INIT] =      (void*)Shotloid_Init,
+    [ENTITY_UPDATE] =    (void*)Shotloid_Update,
+    [ENTITY_DIE] =       (void*)Shotloid_Die,
     [ENTITY_DISAPPEAR] = (void*)DeleteEnemy,
     [ENTITY_EXIT] =      (EnemyFunc)DeleteEntity,
 };

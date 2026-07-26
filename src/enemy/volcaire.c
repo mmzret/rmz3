@@ -13,9 +13,9 @@ typedef struct {
 } Volcaire;
 static_assert(sizeof(Volcaire) == sizeof(struct Enemy));
 
-void Volcaire_Init(struct Enemy* p);
-void Volcaire_Update(struct Enemy* p);
-void Volcaire_Die(struct Enemy* p);
+void Volcaire_Init(Volcaire* p);
+void Volcaire_Update(Volcaire* p);
+void Volcaire_Die(Volcaire* p);
 
 // clang-format off
 const EnemyRoutine gVolcaireRoutine = {
@@ -27,21 +27,21 @@ const EnemyRoutine gVolcaireRoutine = {
 };
 // clang-format on
 
-s32 FUN_08077110(struct Enemy* p, s32 x) {
+s32 FUN_08077110(Volcaire* p, s32 x) {
   s32 dx;
 
   if (x != 0) {
-    (p->s).coord.x += x;
+    p->coord.x += x;
     if (x < 0) {
-      dx = PushoutToRight1((p->s).coord.x - PIXEL(2), (p->s).coord.y - PIXEL(8));
+      dx = PushoutToRight1(p->coord.x - PIXEL(2), p->coord.y - PIXEL(8));
       if (dx > 0) {
-        (p->s).coord.x += dx;
+        p->coord.x += dx;
         return 1;
       }
     } else {
-      dx = PushoutToLeft1((p->s).coord.x + PIXEL(2), (p->s).coord.y - PIXEL(8));
+      dx = PushoutToLeft1(p->coord.x + PIXEL(2), p->coord.y - PIXEL(8));
       if (dx < 0) {
-        (p->s).coord.x += dx;
+        p->coord.x += dx;
         return 2;
       }
     }
@@ -81,7 +81,7 @@ void FUN_080771cc(Volcaire* e, s32 x, s32 y, u8 n) {
 
 static void onCollision(struct Body* body UNUSED, Coords32* r1 UNUSED, Coords32* r2 UNUSED) { return; }
 
-NAKED static bool8 FUN_08077260(struct Enemy* p) {
+NAKED static bool8 FUN_08077260(Volcaire* p) {
   asm(".syntax unified\n\
 	push {r4, r5, lr}\n\
 	adds r2, r0, #0\n\
@@ -175,20 +175,20 @@ INCASM("asm/enemy/volcaire_a.inc");
 
 static const EnemyFunc sUpdates1[8];
 static const EnemyFunc sUpdates2[8];
-void FUN_08077388(struct Enemy* p);
-bool8 FUN_080772f8(struct Enemy* p);
+void FUN_08077388(Volcaire* p);
+bool8 FUN_080772f8(Volcaire* p);
 
-void Volcaire_Update(struct Enemy* p) {
+void Volcaire_Update(Volcaire* p) {
   u8 sf = gCurStory.s.gameflags[4] & 2;
   if (sf == 0) {
-    if ((p->s).work[0] == 0) {
+    if (p->work[0] == 0) {
       goto dispatch;
     }
     {
-      struct Entity* par = (p->s).unk_28;
+      struct Entity* par = p->unk_28;
       if (par != NULL) {
         if (par->mode[0] > 1) {
-          (p->s).unk_28 = (struct Entity*)(u32)sf;
+          p->unk_28 = (struct Entity*)(u32)sf;
           par = NULL;
         }
       }
@@ -200,10 +200,10 @@ void Volcaire_Update(struct Enemy* p) {
       }
     }
   }
-  (p->s).flags &= ~DISPLAY;
-  (p->s).flags &= ~FLIPABLE;
+  p->flags &= ~DISPLAY;
+  p->flags &= ~FLIPABLE;
   EXIT_BODY(p);
-  (p->s).flags &= ~COLLIDABLE;
+  p->flags &= ~COLLIDABLE;
   SET_ENEMY_ROUTINE(p, ENTITY_DISAPPEAR);
   return;
 
@@ -215,35 +215,35 @@ dispatch:
   if (FUN_080772f8(p)) {
     return;
   }
-  (sUpdates1[(p->s).mode[1]])(p);
-  (sUpdates2[(p->s).mode[1]])(p);
+  (sUpdates1[p->mode[1]])((void*)p);
+  (sUpdates2[p->mode[1]])((void*)p);
 }
 
 INCASM("asm/enemy/volcaire_b.inc");
 
-void nop_08077608(struct Enemy* p) {}
+void nop_08077608(Volcaire* p) {}
 
 
-void FUN_0807760c(struct Enemy* p) {
+void FUN_0807760c(Volcaire* p) {
   if (((p->body).status & 0x00020001) == 0x00020001) {
-    (p->s).mode[1] = 7;
-    (p->s).mode[2] = 0;
+    p->mode[1] = 7;
+    p->mode[2] = 0;
   }
 }
 
 INCASM("asm/enemy/volcaire_c.inc");
 
-void FUN_08077af8(struct Enemy* p) {
-  switch ((p->s).mode[2]) {
+void FUN_08077af8(Volcaire* p) {
+  switch (p->mode[2]) {
     case 0:
       SetSpriteAnimation(p, MOTION(0x2e, 5));
-      (p->s).mode[2]++;
+      p->mode[2]++;
       FALLTHROUGH;
     case 1:
       UpdateSpriteAnimation(p);
-      if ((p->s).motion.state == 3) {
-        (p->s).mode[1] = 5;
-        (p->s).mode[2] = 0;
+      if (p->motion.state == 3) {
+        p->mode[1] = 5;
+        p->mode[2] = 0;
       }
       break;
   }
@@ -253,55 +253,55 @@ INCASM("asm/enemy/volcaire_d.inc");
 
 // --------------------------------------------
 
-void FUN_0807762c(struct Enemy* p);
-void nop_08077608(struct Enemy* p);
-void FUN_0807760c(struct Enemy* p);
+void FUN_0807762c(Volcaire* p);
+void nop_08077608(Volcaire* p);
+void FUN_0807760c(Volcaire* p);
 
 // clang-format off
 static const EnemyFunc sUpdates1[8] = {
-    FUN_0807762c,
-    nop_08077608,
-    FUN_0807760c,
-    FUN_0807760c,
-    FUN_0807760c,
-    FUN_0807760c,
-    FUN_0807760c,
-    nop_08077608,
+    (EnemyFunc)FUN_0807762c,
+    (EnemyFunc)nop_08077608,
+    (EnemyFunc)FUN_0807760c,
+    (EnemyFunc)FUN_0807760c,
+    (EnemyFunc)FUN_0807760c,
+    (EnemyFunc)FUN_0807760c,
+    (EnemyFunc)FUN_0807760c,
+    (EnemyFunc)nop_08077608,
 };
 // clang-format on
 
-void FUN_080776ac(struct Enemy* p);
-void FUN_080777cc(struct Enemy* p);
-void FUN_08077834(struct Enemy* p);
-void FUN_08077910(struct Enemy* p);
-void FUN_08077af8(struct Enemy* p);
-void FUN_08077b38(struct Enemy* p);
-void FUN_08077ca4(struct Enemy* p);
-void FUN_08077dd0(struct Enemy* p);
+void FUN_080776ac(Volcaire* p);
+void FUN_080777cc(Volcaire* p);
+void FUN_08077834(Volcaire* p);
+void FUN_08077910(Volcaire* p);
+void FUN_08077af8(Volcaire* p);
+void FUN_08077b38(Volcaire* p);
+void FUN_08077ca4(Volcaire* p);
+void FUN_08077dd0(Volcaire* p);
 
 // clang-format off
 static const EnemyFunc sUpdates2[8] = {
-    FUN_080776ac,
-    FUN_080777cc,
-    FUN_08077834,
-    FUN_08077910,
-    FUN_08077af8,
-    FUN_08077b38,
-    FUN_08077ca4,
-    FUN_08077dd0,
+    (EnemyFunc)FUN_080776ac,
+    (EnemyFunc)FUN_080777cc,
+    (EnemyFunc)FUN_08077834,
+    (EnemyFunc)FUN_08077910,
+    (EnemyFunc)FUN_08077af8,
+    (EnemyFunc)FUN_08077b38,
+    (EnemyFunc)FUN_08077ca4,
+    (EnemyFunc)FUN_08077dd0,
 };
 // clang-format on
 
 // --------------------------------------------
 
-void MaybeKillVolcaire(struct Enemy* p);
-void FUN_08077fa4(struct Enemy* p);
-void FUN_08077dd0(struct Enemy* p);
+void MaybeKillVolcaire(Volcaire* p);
+void FUN_08077fa4(Volcaire* p);
+void FUN_08077dd0(Volcaire* p);
 
 static const EnemyFunc sDeads[3] = {
-    MaybeKillVolcaire,
-    FUN_08077fa4,
-    FUN_08077dd0,
+    (EnemyFunc)MaybeKillVolcaire,
+    (EnemyFunc)FUN_08077fa4,
+    (EnemyFunc)FUN_08077dd0,
 };
 
 // --------------------------------------------

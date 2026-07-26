@@ -1,6 +1,16 @@
 #include "collision.h"
 #include "enemy.h"
 #include "global.h"
+#include "vfx.h"
+#include "physics.h"
+#include "physics.h"
+#include "physics.h"
+
+void FUN_0809c664(struct Enemy* p);
+
+void Enemy72_Die(struct Enemy* p);
+
+void Enemy72_Update(struct Enemy* p);
 
 static const EnemyFunc sUpdates[2];
 
@@ -32,7 +42,7 @@ struct Enemy* FUN_0809c430(struct Entity* e, struct Coord* c) {
 INCASM("asm/enemy/unk_72_a.inc");
 
 void Enemy72_Update(struct Enemy* p) {
-  (sUpdates[(p->s).mode[1]])(p);
+  (sUpdates[(p->s).mode[1]])((void*)p);
 }
 
 void Enemy72_Die(struct Enemy* p) {
@@ -123,9 +133,9 @@ void Enemy72_Die(struct Enemy* p);
 
 // clang-format off
 const EnemyRoutine gEnemy72Routine = {
-    [ENTITY_INIT] =      Enemy72_Init,
-    [ENTITY_UPDATE] =    Enemy72_Update,
-    [ENTITY_DIE] =       Enemy72_Die,
+    [ENTITY_INIT] =      (void*)Enemy72_Init,
+    [ENTITY_UPDATE] =    (void*)Enemy72_Update,
+    [ENTITY_DIE] =       (void*)Enemy72_Die,
     [ENTITY_DISAPPEAR] = (void*)DeleteEnemy,
     [ENTITY_EXIT] =      (EnemyFunc)DeleteEntity,
 };

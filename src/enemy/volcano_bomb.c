@@ -15,9 +15,9 @@ static void VolcanoBomb_Die(struct Enemy* p);
 
 // clang-format off
 const EnemyRoutine gVolcanoBombRoutine = {
-    [ENTITY_INIT] =      VolcanoBomb_Init,
-    [ENTITY_UPDATE] =    VolcanoBomb_Update,
-    [ENTITY_DIE] =       VolcanoBomb_Die,
+    [ENTITY_INIT] =      (void*)VolcanoBomb_Init,
+    [ENTITY_UPDATE] =    (void*)VolcanoBomb_Update,
+    [ENTITY_DIE] =       (void*)VolcanoBomb_Die,
     [ENTITY_DISAPPEAR] = (void*)DeleteEnemy,
     [ENTITY_EXIT] =      (EnemyFunc)DeleteEntity,
 };
@@ -78,8 +78,8 @@ static void VolcanoBomb_Update(struct Enemy* p) {
 
   bool8 killed = FUN_08071298(p);
   if (!killed) {
-    (sUpdates1[(p->s).mode[1]])(p);
-    (sUpdates2[(p->s).mode[1]])(p);
+    (sUpdates1[(p->s).mode[1]])((void*)p);
+    (sUpdates2[(p->s).mode[1]])((void*)p);
   }
 }
 

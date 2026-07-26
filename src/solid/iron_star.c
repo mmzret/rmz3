@@ -13,12 +13,14 @@ void killIronStar(struct Solid* p);
 
 // clang-format off
 const SolidRoutine gIronStarRoutine = {
-    [ENTITY_INIT] =      initIronStar,
-    [ENTITY_UPDATE] =    ironStarAI,
-    [ENTITY_DIE] =       killIronStar,
+    [ENTITY_INIT] =      (void*)initIronStar,
+    [ENTITY_UPDATE] =    (void*)ironStarAI,
+    [ENTITY_DIE] =       (void*)killIronStar,
     [ENTITY_DISAPPEAR] = (void*)DeleteSolid,
     [ENTITY_EXIT] =      (SolidFunc)DeleteEntity,
 };
+
+void nop_080cbcc0(struct Solid* p);
 // clang-format on
 
 void CreateIronStar(struct Entity* e, s32 x, s32 y) {

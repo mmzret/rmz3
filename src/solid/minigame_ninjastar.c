@@ -16,12 +16,14 @@ void MgNinjaStar_Die(struct Solid* p);
 
 // clang-format off
 const SolidRoutine gMinigameNinjaStarRoutine = {
-    [ENTITY_INIT] =      MgNinjaStar_Init,
-    [ENTITY_UPDATE] =    MgNinjaStar_Update,
-    [ENTITY_DIE] =       MgNinjaStar_Die,
+    [ENTITY_INIT] =      (void*)MgNinjaStar_Init,
+    [ENTITY_UPDATE] =    (void*)MgNinjaStar_Update,
+    [ENTITY_DIE] =       (void*)MgNinjaStar_Die,
     [ENTITY_DISAPPEAR] = (void*)DeleteSolid,
     [ENTITY_EXIT] =      (SolidFunc)DeleteEntity,
 };
+
+void nop_080d9304(struct Solid* p);
 // clang-format on
 
 void FUN_080d915c(struct MenuState* m, s32 x, s32 y) {
@@ -68,8 +70,8 @@ void MgNinjaStar_Update(struct Solid* p) {
   } else {
     (p->s).coord.x += *(s32*)((u8*)(p->s).unk_28 + 0x14);
     (p->s).unk_coord.x += *(s32*)((u8*)(p->s).unk_28 + 0x14);
-    (sUpdates1[(p->s).mode[1]])(p);
-    (sUpdates2[(p->s).mode[1]])(p);
+    (sUpdates1[(p->s).mode[1]])((void*)p);
+    (sUpdates2[(p->s).mode[1]])((void*)p);
   }
 }
 

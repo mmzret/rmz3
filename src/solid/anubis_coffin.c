@@ -10,12 +10,14 @@ void AnubisCoffin_Die(struct Solid* p);
 
 // clang-format off
 const SolidRoutine gAnubisCoffinRoutine = {
-    [ENTITY_INIT] =      AnubisCoffin_Init,
-    [ENTITY_UPDATE] =    AnubisCoffin_Update,
-    [ENTITY_DIE] =       AnubisCoffin_Die,
+    [ENTITY_INIT] =      (void*)AnubisCoffin_Init,
+    [ENTITY_UPDATE] =    (void*)AnubisCoffin_Update,
+    [ENTITY_DIE] =       (void*)AnubisCoffin_Die,
     [ENTITY_DISAPPEAR] = (void*)DeleteSolid,
     [ENTITY_EXIT] =      (SolidFunc)DeleteEntity,
 };
+
+void FUN_080cdf34(struct Solid* p);
 // clang-format on
 
 void CreateAnubisCoffins(struct Entity* anubis, bool8 r1) {
@@ -56,8 +58,8 @@ void AnubisCoffin_Init(struct Solid* p) {
 }
 
 void AnubisCoffin_Update(struct Solid* p) {
-  (sAnubisCoffinUpdates1[(p->s).mode[1]])(p);
-  (sAnubisCoffinUpdates2[(p->s).mode[1]])(p);
+  (sAnubisCoffinUpdates1[(p->s).mode[1]])((void*)p);
+  (sAnubisCoffinUpdates2[(p->s).mode[1]])((void*)p);
 }
 
 

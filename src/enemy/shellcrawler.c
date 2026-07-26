@@ -2,6 +2,16 @@
 #include "enemy.h"
 #include "global.h"
 
+void FUN_0809660c(struct Enemy* p);
+
+void FUN_080964bc(struct Enemy* p);
+
+void FUN_08096484(struct Enemy* p);
+
+void FUN_08096468(struct Enemy* p);
+
+void FUN_08096438(struct Enemy* p);
+
 INCASM("asm/enemy/shellcrawler_a.inc");
 
 bool8 FUN_08095d80(struct Enemy* p);
@@ -62,9 +72,9 @@ void Shellcrawler_Die(struct Enemy* p);
 
 // clang-format off
 const EnemyRoutine gShellcrawlerRoutine = {
-    [ENTITY_INIT] =      Shellcrawler_Init,
-    [ENTITY_UPDATE] =    Shellcrawler_Update,
-    [ENTITY_DIE] =       Shellcrawler_Die,
+    [ENTITY_INIT] =      (void*)Shellcrawler_Init,
+    [ENTITY_UPDATE] =    (void*)Shellcrawler_Update,
+    [ENTITY_DIE] =       (void*)Shellcrawler_Die,
     [ENTITY_DISAPPEAR] = (void*)DeleteEnemy,
     [ENTITY_EXIT] =      (EnemyFunc)DeleteEntity,
 };

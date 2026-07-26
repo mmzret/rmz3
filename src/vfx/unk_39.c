@@ -56,7 +56,7 @@ static void VFX39_Init(struct VFX39* p) {
   p->unk_74[3] = 0;
   (p->s).d.y = PIXEL(0);
   SET_VFX_ROUTINE(p, ENTITY_UPDATE);
-  VFX39_Update((void*)p);
+  VFX39_Update((struct VFX*)p);
 }
 
 // --------------------------------------------
@@ -73,7 +73,7 @@ static void VFX39_Update(struct VFX* vfx) {
       FUN_080bd578,
       FUN_080bd578,
   };
-  (sUpdates[(vfx->s).work[0]])(vfx);
+  (sUpdates[(vfx->s).work[0]])((void*)vfx);
 }
 
 // --------------------------------------------

@@ -66,7 +66,7 @@ void VFX61_Update(struct VFX* vfx) {
     SET_VFX_ROUTINE(vfx, ENTITY_DIE);
     VFX61_Die(vfx);
   } else {
-    (sUpdates[(vfx->s).mode[1]])(vfx);
+    (sUpdates[(vfx->s).mode[1]])((void*)vfx);
   }
 }
 

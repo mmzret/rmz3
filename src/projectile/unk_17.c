@@ -55,54 +55,54 @@ Entity* FUN_080a2838(Entity* e, Coords32* c1, Coords32* c2, bool8 isDirRight) {
 
 INCASM("asm/projectile/unk_17_a.inc");
 
-void Projectile17_Die(struct Projectile* p) {
-  (p->s).flags &= ~DISPLAY;
+void Projectile17_Die(Projectile* p) {
+  p->flags &= ~DISPLAY;
   EXIT_BODY(p);
   SET_PROJECTILE_ROUTINE(p, ENTITY_EXIT);
 }
 
 INCASM("asm/projectile/unk_17_b.inc");
 
-void FUN_080a2d9c(struct Projectile* p) {
-  switch ((p->s).mode[2]) {
+void FUN_080a2d9c(Projectile* p) {
+  switch (p->mode[2]) {
     case 0:
       SetSpriteAnimation(p, MOTION(0x42, 4));
-      (p->s).mode[2]++;
+      p->mode[2]++;
       FALLTHROUGH;
     case 1:
       UpdateSpriteAnimation(p);
-      if ((p->s).motion.state == 3) {
+      if (p->motion.state == 3) {
         SET_PROJECTILE_ROUTINE(p, ENTITY_DIE);
       }
       break;
   }
 }
 
-void FUN_080a2dec(struct Projectile* p) {
-  switch ((p->s).mode[2]) {
+void FUN_080a2dec(Projectile* p) {
+  switch (p->mode[2]) {
     case 0:
       SetSpriteAnimation(p, 0x4202);
-      (p->s).work[2] = 0x14;
-      (p->s).d.y = 0x40;
-      (p->s).mode[2]++;
+      p->work[2] = 0x14;
+      p->d.y = 0x40;
+      p->mode[2]++;
       FALLTHROUGH;
     case 1:
-      (p->s).coord.y -= (p->s).d.y;
+      p->coord.y -= p->d.y;
       UpdateSpriteAnimation(p);
-      if ((p->s).work[2] == 0 || --(p->s).work[2] == 0) {
-        (p->s).mode[2]++;
+      if (p->work[2] == 0 || --p->work[2] == 0) {
+        p->mode[2]++;
       }
       break;
     case 2:
       SetSpriteAnimation(p, 0x4203);
-      (p->s).work[2] = 0x14;
-      (p->s).d.y = 0x20;
-      (p->s).mode[2]++;
+      p->work[2] = 0x14;
+      p->d.y = 0x20;
+      p->mode[2]++;
       FALLTHROUGH;
     case 3:
-      (p->s).coord.y -= (p->s).d.y;
+      p->coord.y -= p->d.y;
       UpdateSpriteAnimation(p);
-      if ((p->s).work[2] == 0 || --(p->s).work[2] == 0) {
+      if (p->work[2] == 0 || --p->work[2] == 0) {
         SET_PROJECTILE_ROUTINE(p, ENTITY_DIE);
       }
       break;

@@ -2,6 +2,12 @@
 #include "global.h"
 #include "solid.h"
 
+void CielMinigameObj_Die(struct Solid* p);
+
+void CielMinigameObj_Update(struct Solid* p);
+
+void CielMinigameObj_Init(struct Solid* p);
+
 void FUN_080dddb0(struct Solid* p);
 void FUN_080dde48(struct Solid* p);
 void FUN_080ddec0(struct Solid* p);
@@ -49,9 +55,9 @@ void CielMinigameObj_Die(struct Solid* p);
 
 // clang-format off
 const SolidRoutine gCielMinigameObjRoutine = {
-    [ENTITY_INIT] =      CielMinigameObj_Init,
-    [ENTITY_UPDATE] =    CielMinigameObj_Update,
-    [ENTITY_DIE] =       CielMinigameObj_Die,
+    [ENTITY_INIT] =      (void*)CielMinigameObj_Init,
+    [ENTITY_UPDATE] =    (void*)CielMinigameObj_Update,
+    [ENTITY_DIE] =       (void*)CielMinigameObj_Die,
     [ENTITY_DISAPPEAR] = (void*)DeleteSolid,
     [ENTITY_EXIT] =      (SolidFunc)DeleteEntity,
 };

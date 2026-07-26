@@ -33,12 +33,12 @@ void CreateBlizzack(Coords32* c) {
 
 // --------------------------------------------
 
-static const BossFunc sDeads[3];
+static void (*const sDeads[3])(Blizzack*);
 
 INCASM("asm/boss/blizzack_a.inc");
 
-void Blizzack_Die(struct Boss* p) {
-  (sDeads[(p->s).mode[1]])(p);
+void Blizzack_Die(Blizzack* p) {
+  (sDeads[p->mode[1]])((void*)p);
 }
 
 // blizzackMode0/Mode1 do not match: agbcc schedules the mode[2]=0 zero early,
@@ -59,29 +59,29 @@ INCASM("asm/boss/blizzack_e.inc");
 
 INCASM("asm/boss/blizzack_f.inc");
 
-void FUN_080aabd4(struct Boss* p);
+void FUN_080aabd4(Blizzack* p);
 
-void blizzackMode8(struct Boss* p) {
-  if ((p->s).mode[2] != 0) {
-    (p->s).mode[2] = 0;
-    (p->s).work[2] = 0xb4;
+void blizzackMode8(Blizzack* p) {
+  if (p->mode[2] != 0) {
+    p->mode[2] = 0;
+    p->work[2] = 0xb4;
     FUN_080aabd4(p);
   }
   UpdateSpriteAnimation(p);
-  if ((u8)--(p->s).work[2] == 0xff) {
-    (p->s).mode[1] = 9;
-    (p->s).mode[2] = 1;
+  if ((u8)--p->work[2] == 0xff) {
+    p->mode[1] = 9;
+    p->mode[2] = 1;
   }
 }
 
 INCASM("asm/boss/blizzack_g.inc");
 
-void FUN_0805af14(struct Boss* p) {
-  if ((p->s).coord.x < *(s32*)((u8*)p + 0xb4) + 0x2000 ||
-      (p->s).coord.x > *(s32*)((u8*)p + 0xd8) - 0x2000) {
-    (p->s).coord.x = *(s32*)((u8*)p + 0xc0);
+void FUN_0805af14(Blizzack* p) {
+  if (p->coord.x < *(s32*)((u8*)p + 0xb4) + 0x2000 ||
+      p->coord.x > *(s32*)((u8*)p + 0xd8) - 0x2000) {
+    p->coord.x = *(s32*)((u8*)p + 0xc0);
   }
-  *(s32*)((u8*)p + 0xc0) = (p->s).coord.x;
+  *(s32*)((u8*)p + 0xc0) = p->coord.x;
 }
 
 void blizzackMode0(Blizzack* p);

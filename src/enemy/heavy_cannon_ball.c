@@ -2,6 +2,7 @@
 #include "enemy.h"
 #include "global.h"
 #include "story.h"
+#include "vfx.h"
 
 void HeavyCannon_Init(struct Enemy* p);
 void HeavyCannon_Update(struct Enemy* p);
@@ -15,6 +16,8 @@ const EnemyRoutine gHeavyCannonBallRoutine = {
     [ENTITY_DISAPPEAR] = (void*)DeleteEnemy,
     [ENTITY_EXIT] =      (void*)DeleteEntity,
 };
+
+void FUN_0807acd0(struct Enemy* p);
 // clang-format on
 
 void CreateHeavyCannonBall(s32 x, s32 y, u8 kind) {

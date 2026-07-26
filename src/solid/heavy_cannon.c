@@ -12,12 +12,18 @@ void FUN_080cc284(struct Solid* p);
 
 // clang-format off
 const SolidRoutine gHeavyCannonRoutine = {
-    [ENTITY_INIT] =      initHeavyCannon,
-    [ENTITY_UPDATE] =    heavyCannonAI,
-    [ENTITY_DIE] =       killHeavyCannon,
-    [ENTITY_DISAPPEAR] = FUN_080cc284,
+    [ENTITY_INIT] =      (void*)initHeavyCannon,
+    [ENTITY_UPDATE] =    (void*)heavyCannonAI,
+    [ENTITY_DIE] =       (void*)killHeavyCannon,
+    [ENTITY_DISAPPEAR] = (void*)FUN_080cc284,
     [ENTITY_EXIT] =      (SolidFunc)DeleteEntity,
 };
+
+
+
+void FUN_080cbe38(struct Solid* p);
+void FUN_080cc4dc(struct Solid* p);
+void FUN_080cc298(struct Solid* p);
 // clang-format on
 
 static bool8 FUN_080cbdc0(Object* p) {
@@ -36,7 +42,7 @@ static bool8 FUN_080cbdc0(Object* p) {
       if (next != NULL) next->unk_28 = prev;
     }
     SET_SOLID_ROUTINE(p, ENTITY_DIE);
-    killHeavyCannon((void*)p);
+    killHeavyCannon((struct Solid*)p);
     return TRUE;
   }
   return FALSE;
@@ -83,7 +89,7 @@ void FUN_080cc298(struct Solid* p) {
   struct Entity** slot = (struct Entity**)((u8*)p + 0xb8);
   struct Entity* old = *slot;
   if (old == NULL && (*(u32*)((u8*)p + 0x8c) & 1)) {
-    *slot = (struct Entity*)ApplyElementEffect(0, &p->s, &Coord_0836ff28);
+    *slot = ApplyElementEffect(0, (Object*)p, &Coord_0836ff28);
     if (*slot != NULL) {
       (p->s).mode[1] = 2;
       (p->s).mode[3] = (u8)(u32)old;
@@ -141,7 +147,7 @@ static void FUN_080cc51c(struct Solid* p) {
     }
     (p->s).mode[3]++;
   }
-  FUN_080cbe38((void*)p);
+  FUN_080cbe38((struct Solid*)p);
 }
 
 // --------------------------------------------

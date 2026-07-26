@@ -104,7 +104,7 @@ struct Entity* FUN_080bedc0(struct Entity* e, struct Coord* c, u8 kind, u8 param
 INCASM("asm/vfx/unk_46_a.inc");
 
 void VFX46_Update(struct VFX* vfx) {
-  (sUpdates[(vfx->s).mode[1]])(vfx);
+  (sUpdates[(vfx->s).mode[1]])((void*)vfx);
 }
 
 void VFX46_Die(struct VFX* vfx) {
