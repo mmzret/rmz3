@@ -190,7 +190,15 @@ static void FUN_08013908(struct StageLayer* l UNUSED, const struct Stage* _ UNUS
 
 #undef STAGE
 
-INCASM("asm/stage_gfx/sunken_library.inc");
+INCASM("asm/stage_gfx/sunken_library_a.inc");
+
+void FUN_08013bdc(struct StageLayer* l, const struct Stage* _ UNUSED) {
+  const u16 n = l->bgIdx;
+  BGnHOFS(n >> 4) = (l->viewportLeftTopPixel.x * 3) >> 2;
+  BGnVOFS(n >> 4) = (l->viewportLeftTopPixel.y * 3) >> 2;
+}
+
+INCASM("asm/stage_gfx/sunken_library_b.inc");
 
 // ------------------------------------------------------------------------------------------------------------------------------------
 
