@@ -2,6 +2,9 @@
 #include "enemy.h"
 #include "global.h"
 #include "physics.h"
+#include "element.h"
+
+static const Coords32 sElementCoord;
 
 typedef struct {
   COLLISION_OBJECT_HDR;
@@ -12,9 +15,9 @@ typedef struct {
 } Volcaire;
 static_assert(sizeof(Volcaire) == sizeof(struct Enemy));
 
-void Volcaire_Init(struct Enemy* p);
-void Volcaire_Update(struct Enemy* p);
-void Volcaire_Die(struct Enemy* p);
+void Volcaire_Init(Volcaire* p);
+void Volcaire_Update(Volcaire* p);
+void Volcaire_Die(Volcaire* p);
 
 // clang-format off
 const EnemyRoutine gVolcaireRoutine = {
@@ -26,21 +29,21 @@ const EnemyRoutine gVolcaireRoutine = {
 };
 // clang-format on
 
-s32 FUN_08077110(struct Enemy* p, s32 x) {
+s32 FUN_08077110(Volcaire* p, s32 x) {
   s32 dx;
 
   if (x != 0) {
-    (p->s).coord.x += x;
+    p->coord.x += x;
     if (x < 0) {
-      dx = PushoutToRight1((p->s).coord.x - PIXEL(2), (p->s).coord.y - PIXEL(8));
+      dx = PushoutToRight1(p->coord.x - PIXEL(2), p->coord.y - PIXEL(8));
       if (dx > 0) {
-        (p->s).coord.x += dx;
+        p->coord.x += dx;
         return 1;
       }
     } else {
-      dx = PushoutToLeft1((p->s).coord.x + PIXEL(2), (p->s).coord.y - PIXEL(8));
+      dx = PushoutToLeft1(p->coord.x + PIXEL(2), p->coord.y - PIXEL(8));
       if (dx < 0) {
-        (p->s).coord.x += dx;
+        p->coord.x += dx;
         return 2;
       }
     }
@@ -80,7 +83,7 @@ void FUN_080771cc(Volcaire* e, s32 x, s32 y, u8 n) {
 
 static void onCollision(struct Body* body UNUSED, Coords32* r1 UNUSED, Coords32* r2 UNUSED) { return; }
 
-NAKED static bool8 FUN_08077260(struct Enemy* p) {
+NAKED static bool8 FUN_08077260(Volcaire* p) {
   asm(".syntax unified\n\
 	push {r4, r5, lr}\n\
 	adds r2, r0, #0\n\
@@ -167,59 +170,83 @@ _080772F2:\n\
  .syntax divided\n");
 }
 
-INCASM("asm/enemy/volcaire.inc");
+INCASM("asm/enemy/volcaire_a.inc");
+
+void FUN_08077388(Volcaire* p) {
+  struct Entity** slot;
+  u32 frozen;
+
+  if (p->work[0] != 0) {
+    slot = (struct Entity**)&p->unk_b4[0];
+    if (*slot == NULL && ((p->body).status & 1)) {
+      frozen = (p->body).status & 0x20000;
+      if (frozen != 0) {
+        p->mode[1] = 7;
+        p->mode[2] = 0;
+      } else {
+        *slot = ApplyElementEffect(0, (Object*)p, &sElementCoord);
+        if (*slot != NULL) {
+          p->mode[1] = 0;
+          p->mode[2] = 0;
+        }
+      }
+    }
+  }
+}
+
+INCASM("asm/enemy/volcaire_b.inc");
 
 // --------------------------------------------
 
-void FUN_0807762c(struct Enemy* p);
-void nop_08077608(struct Enemy* p);
-void FUN_0807760c(struct Enemy* p);
+void FUN_0807762c(Volcaire* p);
+void nop_08077608(Volcaire* p);
+void FUN_0807760c(Volcaire* p);
 
 // clang-format off
 static const EnemyFunc sUpdates1[8] = {
-    FUN_0807762c,
-    nop_08077608,
-    FUN_0807760c,
-    FUN_0807760c,
-    FUN_0807760c,
-    FUN_0807760c,
-    FUN_0807760c,
-    nop_08077608,
+    (EnemyFunc)FUN_0807762c,
+    (EnemyFunc)nop_08077608,
+    (EnemyFunc)FUN_0807760c,
+    (EnemyFunc)FUN_0807760c,
+    (EnemyFunc)FUN_0807760c,
+    (EnemyFunc)FUN_0807760c,
+    (EnemyFunc)FUN_0807760c,
+    (EnemyFunc)nop_08077608,
 };
 // clang-format on
 
-void FUN_080776ac(struct Enemy* p);
-void FUN_080777cc(struct Enemy* p);
-void FUN_08077834(struct Enemy* p);
-void FUN_08077910(struct Enemy* p);
-void FUN_08077af8(struct Enemy* p);
-void FUN_08077b38(struct Enemy* p);
-void FUN_08077ca4(struct Enemy* p);
-void FUN_08077dd0(struct Enemy* p);
+void FUN_080776ac(Volcaire* p);
+void FUN_080777cc(Volcaire* p);
+void FUN_08077834(Volcaire* p);
+void FUN_08077910(Volcaire* p);
+void FUN_08077af8(Volcaire* p);
+void FUN_08077b38(Volcaire* p);
+void FUN_08077ca4(Volcaire* p);
+void FUN_08077dd0(Volcaire* p);
 
 // clang-format off
 static const EnemyFunc sUpdates2[8] = {
-    FUN_080776ac,
-    FUN_080777cc,
-    FUN_08077834,
-    FUN_08077910,
-    FUN_08077af8,
-    FUN_08077b38,
-    FUN_08077ca4,
-    FUN_08077dd0,
+    (EnemyFunc)FUN_080776ac,
+    (EnemyFunc)FUN_080777cc,
+    (EnemyFunc)FUN_08077834,
+    (EnemyFunc)FUN_08077910,
+    (EnemyFunc)FUN_08077af8,
+    (EnemyFunc)FUN_08077b38,
+    (EnemyFunc)FUN_08077ca4,
+    (EnemyFunc)FUN_08077dd0,
 };
 // clang-format on
 
 // --------------------------------------------
 
-void MaybeKillVolcaire(struct Enemy* p);
-void FUN_08077fa4(struct Enemy* p);
-void FUN_08077dd0(struct Enemy* p);
+void MaybeKillVolcaire(Volcaire* p);
+void FUN_08077fa4(Volcaire* p);
+void FUN_08077dd0(Volcaire* p);
 
 static const EnemyFunc sDeads[3] = {
-    MaybeKillVolcaire,
-    FUN_08077fa4,
-    FUN_08077dd0,
+    (EnemyFunc)MaybeKillVolcaire,
+    (EnemyFunc)FUN_08077fa4,
+    (EnemyFunc)FUN_08077dd0,
 };
 
 // --------------------------------------------
