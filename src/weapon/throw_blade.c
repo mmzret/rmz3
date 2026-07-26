@@ -1,6 +1,7 @@
 #include "collision.h"
 #include "global.h"
 #include "weapon.h"
+#include "score.h"
 
 // ザンエイダン
 
@@ -126,4 +127,17 @@ Weapon* CreateThrowBlade(Player* z, Weapon* saber, bool8 isIce) {
   return p;
 }
 
-INCASM("asm/weapon/throw_blade.inc");
+INCASM("asm/weapon/throw_blade_a.inc");
+
+void ThrowBlade_Die(Weapon* p) {
+  p->flags &= ~DISPLAY;
+  SET_WEAPON_ROUTINE(p, ENTITY_EXIT);
+}
+
+void zsaber_0803c0f4(struct Body* body) {
+  if (body->hitboxFlags & BODY_STATUS_B2) {
+    if (gScore.weaponCount[WEAPON_SABER] <= 0xFFFE) {
+      gScore.weaponCount[WEAPON_SABER]++;
+    }
+  }
+}
