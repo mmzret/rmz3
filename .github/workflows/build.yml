@@ -1,0 +1,59 @@
+name: Build
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: Build and compare against rmz3.sha1
+    runs-on: ubuntu-latest
+    container: devkitpro/devkitarm:latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install build dependencies
+        run: |
+          apt-get update -qq
+          apt-get install -y -qq build-essential git libpng-dev curl unzip
+
+      # INSTALL.md lists Deno as a prerequisite; the metasprite rules shell out
+      # to it, so the build stops at the first sprites/*/metasprite.inc without it.
+      - name: Install Deno
+        run: |
+          curl -fsSL https://deno.land/install.sh | DENO_INSTALL=/usr/local sh -s -- -y
+          deno --version
+
+      - name: Cache agbcc
+        id: cache-agbcc
+        uses: actions/cache@v4
+        with:
+          path: tools/agbcc
+          key: agbcc-${{ runner.os }}-v1
+
+      - name: Build and install agbcc
+        if: steps.cache-agbcc.outputs.cache-hit != 'true'
+        run: |
+          git clone --depth 1 https://github.com/pret/agbcc.git /tmp/agbcc
+          cd /tmp/agbcc
+          ./build.sh
+          ./install.sh "$GITHUB_WORKSPACE"
+
+      - name: Build
+        env:
+          DEVKITARM: /opt/devkitpro/devkitARM
+        run: make -j"$(nproc)"
+
+      - name: Compare against rmz3.sha1
+        run: make compare
+
+      - name: Upload ROM
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: rmz3.gba
+          path: rmz3.gba
+          if-no-files-found: ignore
