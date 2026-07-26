@@ -1,8 +1,44 @@
+#include "entity/macros.h"
 #include "collision.h"
 #include "enemy.h"
 #include "global.h"
 
-INCASM("asm/enemy/carry_arm.inc");
+struct Enemy* FUN_08071470(struct Entity* a, struct Entity* e, s32 x, s32 y, u8 n) {
+  struct Enemy* p = (struct Enemy*)AllocEntityFirst(gEnemyHeaderPtr);
+
+  if (p != NULL) {
+    INIT_ENEMY_ROUTINE(p, 17);
+    (p->s).work[0] = 0;
+    (p->s).work[1] = n;
+    (p->s).coord.x = x;
+    (p->s).coord.y = y;
+    if (e->unk_2c != NULL) {
+      (p->s).unk_2c = NULL;
+      p->buffer[4] = 1;
+    } else {
+      (p->s).unk_2c = e;
+      p->buffer[4] = 0;
+      e->unk_2c = (struct Entity*)p;
+    }
+    *(struct Entity**)&p->buffer[0] = a;
+  }
+  return p;
+}
+
+struct Enemy* FUN_08071508(struct Entity* e, s32 x, s32 y) {
+  struct Enemy* p = (struct Enemy*)AllocEntityFirst(gEnemyHeaderPtr);
+
+  if (p != NULL) {
+    INIT_ENEMY_ROUTINE(p, 17);
+    (p->s).work[0] = 1;
+    (p->s).coord.x = x;
+    (p->s).coord.y = y;
+    *(struct Entity**)&p->buffer[0] = e;
+  }
+  return p;
+}
+
+INCASM("asm/enemy/carry_arm_a.inc");
 
 void CarryArm_Init(struct Enemy* p);
 void CarryArm_Update(struct Enemy* p);

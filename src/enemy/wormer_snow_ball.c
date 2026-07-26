@@ -1,8 +1,24 @@
+#include "entity/macros.h"
 #include "collision.h"
 #include "enemy.h"
 #include "global.h"
 
-INCASM("asm/enemy/wormer_snow_ball.inc");
+INCASM("asm/enemy/wormer_snow_ball_a.inc");
+
+void FUN_0807b124(s32 x, s32 y, s32 dx, s32 dy) {
+  struct Enemy* p = (struct Enemy*)AllocEntityFirst(gEnemyHeaderPtr);
+
+  if (p != NULL) {
+    INIT_ENEMY_ROUTINE(p, 29);
+    (p->s).work[0] = 2;
+    (p->s).coord.x = x;
+    (p->s).coord.y = y;
+    (p->s).d.x = dx;
+    (p->s).d.y = dy;
+  }
+}
+
+INCASM("asm/enemy/wormer_snow_ball_b.inc");
 
 void WormerSnowBall_Init(struct Enemy* p);
 void WormerSnowBall_Update(struct Enemy* p);

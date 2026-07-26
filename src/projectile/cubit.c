@@ -1,8 +1,57 @@
+#include "enemy.h"
+#include "zero.h"
+#include "entity/macros.h"
 #include "collision.h"
 #include "global.h"
 #include "projectile.h"
 
-INCASM("asm/projectile/cubit.inc");
+INCASM("asm/projectile/cubit_a.inc");
+
+struct Projectile* FUN_080a60c8(struct Entity* e, struct Coord* c, u8 a, u8 b) {
+  Projectile* p = (struct Projectile*)AllocEntityLast(gProjectileHeaderPtr);
+
+  if (p != NULL) {
+    INIT_PROJECTILE_ROUTINE(p, 22);
+    p->work[0] = 6;
+    p->coord = *c;
+    p->buffer[1] = b;
+    p->buffer[2] = a;
+    p->unk_28 = e;
+  }
+  return p;
+}
+
+struct Projectile* createFlameRain1(struct Entity* e, struct Coord* c, s32 n) {
+  Projectile* p = (struct Projectile*)AllocEntityLast(gProjectileHeaderPtr);
+
+  if (p != NULL) {
+    INIT_PROJECTILE_ROUTINE(p, 22);
+    p->work[0] = 3;
+    p->work[1] = 0;
+    p->coord = *c;
+    p->buffer[1] = n;
+    p->buffer[2] = 0;
+    p->unk_28 = e;
+  }
+  return p;
+}
+
+struct Projectile* createFlameRain2(struct Entity* e, struct Coord* c, s32 n) {
+  Projectile* p = (struct Projectile*)AllocEntityLast(gProjectileHeaderPtr);
+
+  if (p != NULL) {
+    INIT_PROJECTILE_ROUTINE(p, 22);
+    p->work[0] = 3;
+    p->work[1] = 1;
+    p->coord = *c;
+    p->buffer[1] = n;
+    p->buffer[2] = 0;
+    p->unk_28 = e;
+  }
+  return p;
+}
+
+INCASM("asm/projectile/cubit_b.inc");
 
 void CubitProjectile_Init(Projectile* p);
 void CubitProjectile_Update(Projectile* p);

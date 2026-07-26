@@ -1,3 +1,5 @@
+#include "entity/macros.h"
+#include "zero.h"
 #include "cyberelf.h"
 #include "global.h"
 
@@ -87,4 +89,25 @@ static const ElfFunc sUpdates[2] = {
     (void*)FUN_080e5d68,
 };
 
-INCASM("asm/cyberelf/bird.inc");
+struct CyberElfBird {
+  COLLISION_OBJECT_HDR;  // 0x00
+  struct Zero* player;   // 0xB4
+  u8 unk_b8[12];         // 0xB8
+};
+
+CyberElf* CreateBirdElf(struct Zero* z, u8 r1, u8 r2, u8 isSatelite2) {
+  struct CyberElfBird* p = (struct CyberElfBird*)AllocEntityLast(gElfHeaderPtr);
+  if (p != NULL) {
+    INIT_ELF_ROUTINE(p, 12);
+    p->player = z;
+    p->work[0] = r1, p->work[1] = r2, p->work[2] = isSatelite2;
+    if (isSatelite2 == 0) {
+      p->work[3] = SATELITE_1;
+    } else {
+      p->work[3] = SATELITE_2;
+    }
+  }
+  return (CyberElf*)p;
+}
+
+INCASM("asm/cyberelf/bird_a.inc");
