@@ -1,34 +1,8 @@
-#include "motion.h"
 #include "collision.h"
 #include "enemy.h"
 #include "global.h"
 
-INCASM("asm/enemy/gallisni_a.inc");
-
-void FUN_0808772c(struct Enemy* p) {
-  switch ((p->s).mode[2]) {
-    case 0: {
-      s32 speed = 0x400;
-
-      (p->s).d.x = speed - ((p->s).work[2] & 1) * 0x800;
-      (p->s).work[3] = 4;
-      SetMotion(&p->s, MOTION(0x67, 0x03));
-      (p->s).mode[2]++;
-    }
-      // fallthrough
-    case 1:
-      UpdateEntityAnim(&p->s);
-      (p->s).coord.x += (p->s).d.x;
-      (p->s).work[3]--;
-      if ((p->s).work[3] == 0) {
-        (p->s).mode[1] = 6;
-        (p->s).mode[2] = 0;
-      }
-      break;
-  }
-}
-
-INCASM("asm/enemy/gallisni_b.inc");
+INCASM("asm/enemy/gallisni.inc");
 
 void Gallisni_Init(struct Enemy* p);
 void Gallisni_Update(struct Enemy* p);
