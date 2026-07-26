@@ -51,7 +51,7 @@ static void FUN_080b22c8(Projectile* p) {
       FUN_080b2384,
       FUN_080b2428,
   };  // 0x0836d8b0
-  (sInitializers[p->work[0]])(p);
+  (sInitializers[p->work[0]])((void*)p);
 }
 
 void FUN_080b24c8(Projectile* p);
@@ -64,7 +64,7 @@ static void FUN_080b22e0(Projectile* p) {
       FUN_080b258c,
       FUN_080b2654,
   };  // 0x0836d8bc
-  (sUpdates[p->work[0]])(p);
+  (sUpdates[p->work[0]])((void*)p);
 }
 
 void FUN_080b274c(Projectile* p);
@@ -77,7 +77,7 @@ static void FUN_080b22f8(Projectile* p) {
       FUN_080b2764,
       FUN_080b277c,
   };  // 0x0836d8c8
-  (PTR_ARRAY_0836d8c8[p->work[0]])(p);
+  (PTR_ARRAY_0836d8c8[p->work[0]])((void*)p);
 }
 
 // --------------------------------------------
@@ -92,7 +92,19 @@ static void FUN_080b2310(Projectile* p) {
   (p->coord).x = PIXEL((p->work[1] * 32) + 24);
   (p->coord).y = PIXEL(0);
   SET_PROJECTILE_ROUTINE(p, ENTITY_UPDATE);
-  FUN_080b22e0(p);
+  FUN_080b22e0((Projectile*)p);
 }
 
-INCASM("asm/projectile/unk_46.inc");
+INCASM("asm/projectile/unk_46_a.inc");
+
+void FUN_080b274c(Projectile* p) {
+  SET_PROJECTILE_ROUTINE(p, ENTITY_EXIT);
+}
+
+void FUN_080b2764(Projectile* p) {
+  SET_PROJECTILE_ROUTINE(p, ENTITY_EXIT);
+}
+
+void FUN_080b277c(Projectile* p) {
+  SET_PROJECTILE_ROUTINE(p, ENTITY_EXIT);
+}
