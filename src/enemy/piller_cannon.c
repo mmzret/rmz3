@@ -5,6 +5,9 @@
 #include "score.h"
 #include "story.h"
 #include "vfx.h"
+#include "element.h"
+
+const Coords32 Coord_083661ec;
 
 typedef struct {
   COLLISION_OBJECT_HDR;  // 0x00
@@ -100,9 +103,9 @@ void FUN_08068e64(PillerCannon* p);
 void FUN_08068eb4(PillerCannon* p);
 void FUN_08068ebc(PillerCannon* p);
 
-void FUN_08068f08(PillerCannon* p);
+bool8 FUN_08068f08(PillerCannon* p);
 
-void PillerCannon_Update(PillerCannon* p) {
+static void PillerCannon_Update(PillerCannon* p) {
   // clang-format off
   static bool8 (*const sUpdates1[9])(PillerCannon*) = {
       FUN_0806860c,
@@ -135,7 +138,7 @@ void PillerCannon_Update(PillerCannon* p) {
     PillerCannon_Die(p);
     return;
   }
-  (sUpdates1[p->mode[1]])(p);
+  (sUpdates1[p->mode[1]])((void*)p);
   FUN_08068f08(p);
 
   if (p->mode[1] != 6 && p->mode[1] != 8 && IsFrozen(p)) {
@@ -154,7 +157,7 @@ void PillerCannon_Update(PillerCannon* p) {
     p->unk_c0--;
     return;
   }
-  (sUpdates2[p->mode[1]])(p);
+  (sUpdates2[p->mode[1]])((void*)p);
 }
 
 static void PillerCannon_Die(PillerCannon* p) {
@@ -236,7 +239,29 @@ void FUN_08068eb4(PillerCannon* p) {}
 
 bool8 FUN_08068eb8(PillerCannon* p) { return TRUE; }
 
-INCASM("asm/enemy/piller_cannon_h.inc");
+INCASM("asm/enemy/piller_cannon_h_a.inc");
+
+bool8 FUN_08068f08(PillerCannon* p) {
+  struct Entity** slot = (struct Entity**)&p->elfx;
+
+  if (*slot == NULL && ((p->body).status & 1)) {
+    if (p->flags & X_FLIP) {
+      *slot = ApplyElementEffect(0, (Object*)p, &Coord_083661ec);
+    } else {
+      *slot = ApplyElementEffect(0, (Object*)p, &Coord_083661ec);
+    }
+    if (*(struct Entity**)&p->elfx == NULL) {
+      if ((*(u8*)((u8*)p + 0x97) & 0xf0) == 0x20) {
+        if (p->unk_c0 == 0) {
+          p->unk_c0 = 100;
+        }
+      }
+    }
+  }
+  return TRUE;
+}
+
+INCASM("asm/enemy/piller_cannon_h_b.inc");
 
 // 0x0836609c
 static const struct Collision sCollisions[14] = {
