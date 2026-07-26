@@ -35,7 +35,7 @@ Entity* FUN_080c4e58(Coords32* c, void* _, Entity* e) {
     (p->coord).x = c->x, (p->coord).y = c->y;
     p->unk_28 = e;
   }
-  return (void*)p;
+  return (Entity*)p;
 }
 
 Entity* FUN_080c4eac(Entity* e, Coords32* c, u8 n) {
@@ -46,7 +46,7 @@ Entity* FUN_080c4eac(Entity* e, Coords32* c, u8 n) {
     (p->unk_coord).x = c->x, (p->unk_coord).y = c->y;
     p->unk_28 = e;
   }
-  return (void*)p;
+  return (Entity*)p;
 }
 
 Entity* FUN_080c4f04(Entity* q, Coords32* c, u8 n) {
@@ -57,7 +57,7 @@ Entity* FUN_080c4f04(Entity* q, Coords32* c, u8 n) {
     (p->coord).x = c->x, (p->coord).y = c->y;
     p->unk_28 = q;
   }
-  return (void*)p;
+  return (Entity*)p;
 }
 
 Entity* FUN_080c4f60(Entity* e, Coords32* c1, Coords32* c2, u8 n) {
@@ -69,7 +69,7 @@ Entity* FUN_080c4f60(Entity* e, Coords32* c1, Coords32* c2, u8 n) {
     (p->c_74).x = c2->x, (p->c_74).y = c2->y;
     p->unk_28 = e;
   }
-  return (void*)p;
+  return (Entity*)p;
 }
 
 static VFX69* FUN_080c4fc8(Coords32* c) {
@@ -108,7 +108,7 @@ static void Ghost69_Init(VFX69* p) {
   SET_VFX_ROUTINE(p, ENTITY_UPDATE);
   p->mode[1] = p->work[0];
   p->mode[2] = 0, p->mode[3] = 0;
-  Ghost69_Update(p);
+  Ghost69_Update((VFX69*)p);
 }
 
 void FUN_080c5144(VFX69* p);
@@ -131,7 +131,7 @@ static void Ghost69_Update(VFX69* p) {
       FUN_080c55bc,
   }; // 0x0836F6F4
   // clang-format on
-  (sGhost69Updates[p->mode[1]])(p);
+  (sGhost69Updates[p->mode[1]])((void*)p);
 }
 
 static void Ghost69_Die(VFX69* p) {
@@ -139,4 +139,29 @@ static void Ghost69_Die(VFX69* p) {
   SET_VFX_ROUTINE(p, ENTITY_EXIT);
 }
 
-INCASM("asm/vfx/unk_69.inc");
+INCASM("asm/vfx/unk_69_a.inc");
+
+void nop_080c552c(VFX69* p) {}
+
+INCASM("asm/vfx/unk_69_b.inc");
+
+void FUN_080c55bc(VFX69* p) {
+  switch (p->mode[2]) {
+    case 0:
+      p->work[2] = 0x50;
+      p->mode[2]++;
+      // fallthrough
+    case 1:
+      UpdateEntityAnim((struct Entity*)p);
+      p->d.y += 0x20;
+      if (p->d.y > 0x700) {
+        p->d.y = 0x700;
+      }
+      p->coord.y += p->d.y;
+      p->coord.x += p->d.x;
+      if (p->work[2] == 0 || --p->work[2] == 0) {
+        SET_VFX_ROUTINE(p, ENTITY_DIE);
+      }
+      break;
+  }
+}
