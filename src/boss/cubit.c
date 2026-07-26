@@ -6,6 +6,9 @@
 #include "script.h"
 #include "sound.h"
 #include "stagerun.h"
+#include "element.h"
+
+static const Coords32 sElementCoords[2];
 
 typedef struct {
   COLLISION_OBJECT_HDR;    // 0x00
@@ -48,7 +51,7 @@ INCASM("asm/boss/cubit_a.inc");
 static const BossFunc sUpdates1[12];
 static const BossFunc sUpdates2[12];
 static const BossFunc sDeads[2];
-void cubit_080544c0(Cubit* p);
+bool8 cubit_080544c0(Cubit* p);
 
 void Cubit_Update(Cubit* p) {
   if (!((p->body).status & BODY_STATUS_DEAD)) {
@@ -210,7 +213,27 @@ void cubitMode10(Cubit* p) {
 
 bool8 FUN_0805433c(Cubit* p) { return TRUE; }
 
-INCASM("asm/boss/cubit_j.inc");
+INCASM("asm/boss/cubit_j_a.inc");
+
+bool8 cubit_080544c0(Cubit* p) {
+  struct Entity** slot = (struct Entity**)&p->enti_c0;
+
+  if (*slot == NULL && ((p->body).status & 1)) {
+    if (((p->motionID << 8) | p->motion.id) == MOTION(0xb0, 0x19)) {
+      if (p->mode[1] == 4 && p->mode[2] != 6) {
+        *slot = ApplyElementEffect(22, (Object*)p, &sElementCoords[1]);
+      }
+    } else {
+      *slot = ApplyElementEffect(22, (Object*)p, &sElementCoords[0]);
+    }
+    if (*(struct Entity**)&p->enti_c0 != NULL) {
+      *(struct Entity**)&p->enti_c0 = NULL;
+    }
+  }
+  return TRUE;
+}
+
+INCASM("asm/boss/cubit_j_b.inc");
 
 bool8 cubit_08054674(Cubit* p) {
   if (p->unk_c8 != 0) {
