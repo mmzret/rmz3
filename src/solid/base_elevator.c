@@ -3,6 +3,9 @@
 #include "overworld.h"
 #include "solid.h"
 
+void FUN_080d0224(struct Solid* p);
+void rBaseElevatorScript(struct Solid* p);
+
 enum ElevatorSkin {
   ELEVATOR_DEFAULT,
   ELEVATOR_WOOD,
@@ -51,7 +54,7 @@ struct Solid* CreateResistanceBaseElevator(u8 lv) {
     p->level = lv;
     p->skin = gSystemSavedata.elevator;
   }
-  return (void*)p;
+  return (struct Solid*)p;
 }
 
 // 0x080cfc40
@@ -77,7 +80,7 @@ static void BaseElevator_Init(struct Solid* p) {
     FUN_080cff48(p);
     return;
   }
-  rBase_080cfd4c((void*)p);
+  rBase_080cfd4c((struct ElevatorObject*)p);
 }
 
 void BaseElevator_Update(struct Solid* p) {
@@ -105,7 +108,7 @@ static void BaseElevator_Disappear(struct ElevatorObject* p) {
       p->se = MUS_NONE;
     }
   }
-  DeleteSolid((void*)p);
+  DeleteSolid((Object*)p);
 }
 
 // 0x080cfd4c
@@ -135,10 +138,20 @@ static void rBase_080cfd4c(struct ElevatorObject* p) {
   p->unk_c0 = 0;
   p->unk_c1 = 5;
   SET_SOLID_ROUTINE(p, ENTITY_UPDATE);
-  BaseElevator_Update((void*)p);
+  BaseElevator_Update((struct Solid*)p);
 }
 
-INCASM("asm/solid/base_elevator.inc");
+INCASM("asm/solid/base_elevator_a.inc");
+
+void FUN_080d0008(struct Solid* p) {
+  if ((p->s).mode[1] != 0) {
+    FUN_080d0224(p);
+  } else {
+    rBaseElevatorScript(p);
+  }
+}
+
+INCASM("asm/solid/base_elevator_b.inc");
 
 // ------------------------------------------------------------------------------------------------------------------------------------
 
