@@ -53,6 +53,12 @@ static const EnemyFunc sUpdates2[11];
 static const EnemyFunc sDeads[4];
 static const struct Collision sCollisions[16];
 
+
+void FUN_080b145c(struct Coord* c, s32 dx);
+struct Entity* FUN_080b2b40(u8 kind, struct Coord* c, u16 r2, bool16 isDirRight);
+struct VFX* FUN_080c6880(struct Entity* e);
+void FUN_080c68cc(struct Entity* e, struct Coord* c);
+void FUN_080c6934(struct Entity* e, u8 n);
 bool8 FUN_08095d80(struct Enemy* p) {
   bool8 r = FALSE;
   s32 t;
@@ -199,12 +205,12 @@ void Shellcrawler_Update(struct Enemy* p) {
     SET_ENEMY_ROUTINE(p, ENTITY_DISAPPEAR);
     return;
   }
-  if ((*(struct VFX**)((u8*)p + 0xb8)) == NULL && ((p->body).status & 1)) {
+  if ((*(struct Entity**)((u8*)p + 0xb8)) == NULL && ((p->body).status & 1)) {
     if ((p->s).mode[1] == 0xa) {
       goto check;
     }
-    (*(struct VFX**)((u8*)p + 0xb8)) = ApplyElementEffect(0, &p->s, &c);
-    if ((*(struct VFX**)((u8*)p + 0xb8)) != NULL) {
+    (*(struct Entity**)((u8*)p + 0xb8)) = ApplyElementEffect(0, (struct CollisionObject*)p, &c);
+    if ((*(struct Entity**)((u8*)p + 0xb8)) != NULL) {
       if ((p->s).work[0] == 0) {
         SetDDP(&p->body, &sCollisions[4]);
       } else {
@@ -217,7 +223,7 @@ void Shellcrawler_Update(struct Enemy* p) {
   if ((p->s).mode[1] == 0xa) {
     goto check;
   }
-  if ((*(struct VFX**)((u8*)p + 0xb8)) != NULL) {
+  if ((*(struct Entity**)((u8*)p + 0xb8)) != NULL) {
     goto check2;
   }
   n = (p->s).mode[3];
@@ -231,7 +237,7 @@ void Shellcrawler_Update(struct Enemy* p) {
     }
   }
   if (n == 1) {
-    UpdateMotionGraphic(&p->s);
+    UpdateEntityAnim(&p->s);
     (p->s).mode[3] = 2;
   }
   if (!IsFrozen(&p->s)) {
@@ -241,7 +247,7 @@ void Shellcrawler_Update(struct Enemy* p) {
     return;
   }
 check:
-  if ((*(struct VFX**)((u8*)p + 0xb8)) == NULL) {
+  if ((*(struct Entity**)((u8*)p + 0xb8)) == NULL) {
     goto handlers;
   }
 check2:
@@ -253,13 +259,13 @@ handlers:
   (sUpdates2[(p->s).mode[1]])(p);
   return;
 rest:
-  if (isKilled((struct Entity*)(*(struct VFX**)((u8*)p + 0xb8)))) {
+  if (isKilled((struct Entity*)(*(struct Entity**)((u8*)p + 0xb8)))) {
     if ((p->s).work[0] == 0) {
       SetDDP(&p->body, sCollisions);
     } else {
       SetDDP(&p->body, &sCollisions[2]);
     }
-    (*(struct VFX**)((u8*)p + 0xb8)) = NULL;
+    (*(struct Entity**)((u8*)p + 0xb8)) = NULL;
     (p->s).d.y = (p->s).unk_coord.y;
   } else if (!IsFrozen(&p->s)) {
     if (PushoutToUp1((p->s).coord.x - 0xA00, (p->s).coord.y) >= 0 &&
@@ -330,7 +336,7 @@ void FUN_08096348(struct Body* body, struct Coord* c1, struct Coord* c2) {
   (p->s).mode[1] = 7;
   (p->s).mode[2] = 0;
   SetMotion(&p->s, MOTION(0xdb, 8));
-  UpdateMotionGraphic(&p->s);
+  UpdateEntityAnim(&p->s);
   if (*(u32*)&p->buffer[4] == 0) {
     SetDDP(&p->body, &sCollisions[2]);
   } else {
@@ -407,7 +413,7 @@ void FUN_080964c0(struct Enemy* p) {
         (p->s).d.x = -(p->s).d.x;
         (p->s).mode[2] = 1;
       }
-      UpdateMotionGraphic(&p->s);
+      UpdateEntityAnim(&p->s);
       break;
   }
 }
@@ -449,7 +455,7 @@ void FUN_08096570(struct Enemy* p) {
         (p->s).mode[1] = m;
         (p->s).mode[2] = 1;
       }
-      UpdateMotionGraphic(&p->s);
+      UpdateEntityAnim(&p->s);
       break;
   }
 }
@@ -461,7 +467,7 @@ void FUN_0809660c(struct Enemy* p) {
       (p->s).mode[2]++;
       // fallthrough
     case 1:
-      UpdateMotionGraphic(&p->s);
+      UpdateEntityAnim(&p->s);
       if ((p->s).motion.state == 3) {
         (p->s).mode[1] = (p->s).motion.state;
         (p->s).mode[2] = 0;
@@ -495,7 +501,7 @@ void FUN_0809664c(struct Enemy* p) {
         (p->s).mode[1] = 8;
         (p->s).mode[2] = 0;
       }
-      UpdateMotionGraphic(&p->s);
+      UpdateEntityAnim(&p->s);
       break;
   }
 }
@@ -510,7 +516,7 @@ void FUN_080966fc(struct Enemy* p) {
       (p->s).mode[2]++;
       // fallthrough
     case 1:
-      UpdateMotionGraphic(&p->s);
+      UpdateEntityAnim(&p->s);
       state = (p->s).motion.state;
       if (state != 3) {
         break;
@@ -563,7 +569,7 @@ void FUN_0809678c(struct Enemy* p) {
         (p->s).mode[1] = m;
         (p->s).mode[2] = 1;
       }
-      UpdateMotionGraphic(&p->s);
+      UpdateEntityAnim(&p->s);
       break;
   }
 }
@@ -632,7 +638,7 @@ void FUN_08096814(struct Enemy* p) {
         (p->s).d.x = -(p->s).d.x;
         (p->s).mode[2] = 1;
       }
-      UpdateMotionGraphic(&p->s);
+      UpdateEntityAnim(&p->s);
       break;
   }
 }
@@ -664,7 +670,7 @@ void FUN_08096950(struct Enemy* p) {
         (p->s).mode[1] = 6;
         (p->s).mode[2] = 0;
       }
-      UpdateMotionGraphic(&p->s);
+      UpdateEntityAnim(&p->s);
       break;
   }
 }
@@ -679,7 +685,7 @@ void FUN_080969d0(struct Enemy* p) {
       SetMotion(&p->s, MOTION(0xdb, 4));
       (p->s).work[2] = 8;
       (p->s).mode[2]++;
-      UpdateMotionGraphic(&p->s);
+      UpdateEntityAnim(&p->s);
       // fallthrough
     case 1:
       if (--(p->s).work[2] == 0) {
@@ -699,7 +705,7 @@ void FUN_080969d0(struct Enemy* p) {
         FUN_080b145c(&c, dir * PIXEL(6) - PIXEL(3));
       }
       (p->s).work[2]++;
-      UpdateMotionGraphic(&p->s);
+      UpdateEntityAnim(&p->s);
       if ((p->s).motion.state == 3) {
         (p->s).mode[1] = 4;
         (p->s).mode[2] = 0;
@@ -766,7 +772,7 @@ void FUN_08096b84(struct Enemy* p) {
       if (gScore.enemyCount <= 0x270E) {
         gScore.enemyCount++;
       }
-      TryDropZakoDisk(p, pc);
+      TryDropZakoDisk(&p->s, pc);
       SET_ENEMY_ROUTINE(p, ENTITY_EXIT);
       break;
   }
@@ -817,10 +823,10 @@ void FUN_08096c28(struct Enemy* p) {
         if (gScore.enemyCount <= 0x270E) {
           gScore.enemyCount++;
         }
-        TryDropZakoDisk(p, pc);
+        TryDropZakoDisk(&p->s, pc);
         (p->s).mode[2]++;
       }
-      UpdateMotionGraphic(&p->s);
+      UpdateEntityAnim(&p->s);
       break;
     case 2:
       (p->s).flags &= ~DISPLAY;
@@ -857,7 +863,7 @@ void FUN_08096d84(struct Enemy* p) {
       if ((p->s).d.y > 0x700) {
         (p->s).d.y = 0x700;
       }
-      UpdateMotionGraphic(&p->s);
+      UpdateEntityAnim(&p->s);
       if (--(p->s).work[2] == 0 || FUN_080098a4((p->s).coord.x, (p->s).coord.y) != 0) {
         c.x = (p->s).coord.x;
         c.y = (p->s).coord.y + PIXEL(1);
@@ -869,7 +875,7 @@ void FUN_08096d84(struct Enemy* p) {
         if (gScore.enemyCount <= 0x270E) {
           gScore.enemyCount++;
         }
-        TryDropZakoDisk(p, pc);
+        TryDropZakoDisk(&p->s, pc);
         (p->s).mode[2]++;
       }
       break;
@@ -898,7 +904,7 @@ void FUN_08096eac(struct Enemy* p) {
       } else {
         SetMotion(&p->s, MOTION(0xdb, 0x0f));
       }
-      UpdateMotionGraphic(&p->s);
+      UpdateEntityAnim(&p->s);
       z = pZero2;
       (p->s).d.x = (p->s).coord.x - (z->s).coord.x;
       dy = (p->s).coord.y - 0x1800;
