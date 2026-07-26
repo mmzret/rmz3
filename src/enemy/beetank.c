@@ -2,6 +2,8 @@
 #include "enemy.h"
 #include "global.h"
 
+bool8 FUN_0807be50(struct Enemy* p);
+
 void Beetank_Init(struct Enemy* p);
 void Beetank_Update(struct Enemy* p);
 void Beetank_Die(struct Enemy* p);
@@ -16,6 +18,8 @@ const EnemyRoutine gBeetankRoutine = {
 };
 // clang-format on
 
+
+static const Coords32 sElementCoord;
 struct Enemy* CreateBeetank(Coords32* c, u8 n) {
   struct Enemy* p = (struct Enemy*)AllocEntityLast(gEnemyHeaderPtr);
   if (p != NULL) {
@@ -28,13 +32,76 @@ struct Enemy* CreateBeetank(Coords32* c, u8 n) {
 
 // --------------------------------------------
 
-INCASM("asm/enemy/beetank.inc");
+INCASM("asm/enemy/beetank_a.inc");
 
-void nop_0807bc8c(struct Enemy* p);
-void nop_0807bd3c(struct Enemy* p);
-void nop_0807bde4(struct Enemy* p);
-void FUN_0807be14(struct Enemy* p);
-void FUN_0807be1c(struct Enemy* p);
+bool8 nop_0807bc8c(struct Enemy* p) { return TRUE; }
+
+INCASM("asm/enemy/beetank_b.inc");
+
+bool8 nop_0807bd3c(struct Enemy* p) { return TRUE; }
+
+INCASM("asm/enemy/beetank_c.inc");
+
+bool8 nop_0807bde4(struct Enemy* p) { return TRUE; }
+
+void FUN_0807bde8(struct Enemy* p) {
+  struct Entity** slot;
+  if ((p->s).mode[2] == 0) (p->s).mode[2] = 1;
+  slot = (struct Entity**)((u8*)p + 0xbc);
+  if (isKilled(*slot)) {
+    *slot = NULL;
+    (p->s).mode[1] = 0;
+    (p->s).mode[2] = 0;
+  }
+}
+
+bool8 FUN_0807be14(struct Enemy* p) { return TRUE; }
+
+void nop_0807be18(struct Enemy* p) {}
+
+bool8 FUN_0807be1c(struct Enemy* p) { return TRUE; }
+
+void FUN_0807be20(struct Enemy* p) {
+  struct Entity** slot;
+  u8 m = (p->s).mode[2];
+  if (m == 0) {
+    (p->s).d.y = m;
+    (p->s).mode[2]++;
+  }
+  slot = (struct Entity**)((u8*)p + 0xbc);
+  if (isKilled(*slot)) {
+    *slot = NULL;
+    (p->s).mode[1] = 0;
+    (p->s).mode[2] = 0;
+  }
+}
+
+bool8 FUN_0807be50(struct Enemy* p) {
+  struct VFX** slot = (struct VFX**)((u8*)p + 0xbc);
+  if (*slot == NULL && ((p->body).status & 1)) {
+    struct VFX* e = ApplyElementEffect(0, &p->s, &sElementCoord);
+    *slot = e;
+    if (e != NULL) {
+      u8 attr = *(u8*)((u8*)p + 0x97) & 0xf0;
+      if (attr == 0x10) {
+        (p->s).mode[1] = 2;
+        (p->s).mode[2] = 0;
+      } else if (attr == 0x30) {
+        (p->s).mode[1] = 4;
+        (p->s).mode[2] = 0;
+      }
+    }
+  }
+  return TRUE;
+}
+
+void nop_0807bea4(struct Enemy* p) {}
+
+bool8 nop_0807bc8c(struct Enemy* p);
+bool8 nop_0807bd3c(struct Enemy* p);
+bool8 nop_0807bde4(struct Enemy* p);
+bool8 FUN_0807be14(struct Enemy* p);
+bool8 FUN_0807be1c(struct Enemy* p);
 
 // clang-format off
 static const EnemyFunc sUpdates1[5] = {

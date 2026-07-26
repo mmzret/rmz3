@@ -8,9 +8,9 @@ bool8 batring_08068130(struct Enemy* p);
 
 static const Coords32 sElementCoord;
 
-static void Batring_Init(struct Enemy* p);
+NAKED static void Batring_Init(struct Enemy* p);
 static void Batring_Update(struct Enemy* p);
-static void Batring_Die(struct Enemy* p);
+NAKED static void Batring_Die(struct Enemy* p);
 
 // clang-format off
 const EnemyRoutine gBatringRoutine = {
@@ -23,6 +23,8 @@ const EnemyRoutine gBatringRoutine = {
 // clang-format on
 
 // Unused
+
+static const struct Collision sCollisions[14];
 static struct Enemy* CreateBatring(Coords32* c, u8 n) {
   struct Enemy* p = (struct Enemy*)AllocEntityLast(gEnemyHeaderPtr);
   if (p != NULL) {
@@ -255,12 +257,12 @@ _0806715C: .4byte 0x00000601\n\
 static bool8 FUN_08067694(struct Enemy* p);
 static bool8 FUN_080676ac(struct Enemy* p);
 static bool8 FUN_080677dc(struct Enemy* p);
-void FUN_08067a60(struct Enemy* p);
-void FUN_08067c48(struct Enemy* p);
-void FUN_08067f18(struct Enemy* p);
-void FUN_08067f6c(struct Enemy* p);
-void FUN_08067f74(struct Enemy* p);
-void FUN_08068014(struct Enemy* p);
+bool8 FUN_08067a60(struct Enemy* p);
+bool8 FUN_08067c48(struct Enemy* p);
+bool8 FUN_08067f18(struct Enemy* p);
+bool8 FUN_08067f6c(struct Enemy* p);
+bool8 FUN_08067f74(struct Enemy* p);
+bool8 FUN_08068014(struct Enemy* p);
 
 // clang-format off
 const EnemyFunc sBatringUpdates1[9] = {
@@ -277,7 +279,7 @@ const EnemyFunc sBatringUpdates1[9] = {
 // clang-format on
 
 static void FUN_08067698(struct Enemy* p);
-static void FUN_080676b0(struct Enemy* p);
+NAKED static void FUN_080676b0(struct Enemy* p);
 void batring_080677e0(struct Enemy* p);
 void FUN_08067a64(struct Enemy* p);
 void FUN_08067c4c(struct Enemy* p);
@@ -1032,7 +1034,107 @@ _080677D6:\n\
 
 static bool8 FUN_080677dc(struct Enemy* p) { return TRUE; }
 
-INCASM("asm/enemy/batring.inc");
+INCASM("asm/enemy/batring_a.inc");
+
+bool8 FUN_08067a60(struct Enemy* p) { return TRUE; }
+
+INCASM("asm/enemy/batring_b.inc");
+
+bool8 FUN_08067c48(struct Enemy* p) { return TRUE; }
+
+INCASM("asm/enemy/batring_c.inc");
+
+bool8 FUN_08067f18(struct Enemy* p) { return TRUE; }
+
+void FUN_08067f1c(struct Enemy* p) {
+  if ((p->s).mode[2] == 0) {
+    SetDDP(&p->body, &sCollisions[3]);
+    (p->s).mode[2]++;
+  }
+  if (isKilled(*(struct Entity**)((u8*)p + 0xbc))) {
+    SetDDP(&p->body, &sCollisions[2]);
+    *(struct Entity**)((u8*)p + 0xbc) = NULL;
+    *(u8*)((u8*)p + 0xc0) = 0;
+    (p->s).mode[1] = 2;
+    (p->s).mode[2] = 0;
+  }
+}
+
+bool8 FUN_08067f6c(struct Enemy* p) { return TRUE; }
+
+void nop_08067f70(struct Enemy* p) {}
+
+bool8 FUN_08067f74(struct Enemy* p) { return TRUE; }
+
+void FUN_08067f78(struct Enemy* p) {
+  struct Entity** slot;
+  switch ((p->s).mode[2]) {
+    case 0:
+      SetDDP(&p->body, &sCollisions[3]);
+      (p->s).d.y = 0;
+      (p->s).mode[2]++;
+      // fallthrough
+    case 1:
+      (p->s).d.y += 0x40;
+      if ((p->s).d.y > 0x700) {
+        (p->s).d.y = 0x700;
+      }
+      if (FUN_080098a4((p->s).coord.x, (p->s).coord.y + (p->s).d.y + 0xe00) != 0) {
+        (p->s).d.y = 0;
+        (p->s).coord.y = FUN_08009f6c((p->s).coord.x, (p->s).coord.y) - 0xe00;
+      } else {
+        (p->s).coord.y += (p->s).d.y;
+      }
+      break;
+  }
+  slot = (struct Entity**)((u8*)p + 0xbc);
+  if (isKilled(*slot)) {
+    *slot = NULL;
+    *(u8*)((u8*)p + 0xc0) = 0;
+    SetDDP(&p->body, &sCollisions[2]);
+    (p->s).mode[1] = 2;
+    (p->s).mode[2] = 0;
+  }
+}
+
+bool8 FUN_08068014(struct Enemy* p) { return TRUE; }
+
+INCASM("asm/enemy/batring_d.inc");
+
+bool8 batring_08068130(struct Enemy* p) {
+  struct VFX** slot = (struct VFX**)&p->buffer[8];
+  struct VFX* e;
+  u8 attr;
+
+  if (*slot == NULL && ((p->body).status & 1)) {
+    e = ApplyElementEffect(0, &p->s, &sElementCoord);
+    *slot = e;
+    if ((p->s).mode[1] != 8) {
+      if (e != NULL) {
+        attr = *(u8*)((u8*)p + 0x97) & 0xf0;
+        if (attr == 0x10) {
+          p->buffer[12] = 1;
+          (p->s).mode[1] = 5;
+          (p->s).mode[2] = 0;
+        } else if (attr == 0x30) {
+          p->buffer[12] = 2;
+          (p->s).mode[1] = 7;
+          (p->s).mode[2] = 0;
+        }
+      }
+    } else if (e != NULL) {
+      attr = *(u8*)((u8*)p + 0x97) & 0xf0;
+      if (attr == 0x10) {
+        p->buffer[12] = 1;
+      } else if (attr == 0x30) {
+        p->buffer[12] = 2;
+      }
+    }
+  }
+  return TRUE;
+}
+
+INCASM("asm/enemy/batring_e.inc");
 
 static const struct Collision sCollisions[14] = {
     [0] = {

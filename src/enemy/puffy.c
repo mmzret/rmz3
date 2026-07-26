@@ -1,6 +1,9 @@
 #include "collision.h"
 #include "enemy.h"
 #include "global.h"
+#include "overworld.h"
+
+bool32 FUN_0807cb50(struct Enemy* p);
 
 void Puffy_Init(struct Enemy* p);
 void Puffy_Update(struct Enemy* p);
@@ -16,6 +19,10 @@ const EnemyRoutine gPuffyRoutine = {
 };
 // clang-format on
 
+
+static const EnemyFunc PTR_ARRAY_08367aec[4];
+static const EnemyFunc PTR_ARRAY_08367afc[4];
+static const Coords32 sElementCoord;
 struct Entity* CreatePuffy(Coords32* c, u8 kind) {
   struct Entity* p = AllocEntityLast(gEnemyHeaderPtr);
   if (p != NULL) {
@@ -30,12 +37,88 @@ struct Entity* CreatePuffy(Coords32* c, u8 kind) {
 
 static const struct Collision sCollisions[];
 
-INCASM("asm/enemy/puffy.inc");
+INCASM("asm/enemy/puffy_a.inc");
 
-void nop_0807c968(struct Enemy* p);
-void nop_0807ca98(struct Enemy* p);
-void nop_0807cac8(struct Enemy* p);
-void nop_0807cad0(struct Enemy* p);
+void Puffy_Update(struct Enemy* p) {
+  if ((p->body).status & BODY_STATUS_DEAD) {
+    SET_ENEMY_ROUTINE(p, ENTITY_DIE);
+    Puffy_Die(p);
+  } else {
+    (PTR_ARRAY_08367aec[(p->s).mode[1]])(p);
+    FUN_0807cb50(p);
+    if (IsFrozen(&p->s)) {
+      u8 m = (p->s).mode[1];
+      *(u8*)((u8*)p + 0xba) = m;
+    } else {
+      (PTR_ARRAY_08367afc[(p->s).mode[1]])(p);
+    }
+  }
+}
+
+INCASM("asm/enemy/puffy_b.inc");
+
+bool8 nop_0807c968(struct Enemy* p) { return TRUE; }
+
+INCASM("asm/enemy/puffy_c.inc");
+
+bool8 nop_0807ca98(struct Enemy* p) { return TRUE; }
+
+void FUN_0807ca9c(struct Enemy* p) {
+  struct Entity** slot;
+  if ((p->s).mode[2] == 0) (p->s).mode[2] = 1;
+  slot = (struct Entity**)((u8*)p + 0xbc);
+  if (isKilled(*slot)) {
+    *slot = NULL;
+    (p->s).mode[1] = 0;
+    (p->s).mode[2] = 0;
+  }
+}
+
+bool8 nop_0807cac8(struct Enemy* p) { return TRUE; }
+
+void nop_0807cacc(struct Enemy* p) {}
+
+bool8 nop_0807cad0(struct Enemy* p) { return TRUE; }
+
+INCASM("asm/enemy/puffy_d.inc");
+
+bool32 FUN_0807cb50(struct Enemy* p) {
+  struct VFX** slot = (struct VFX**)((u8*)p + 0xBC);
+  struct VFX* e = *slot;
+  if (e == NULL && ((p->body).status & BODY_STATUS_WHITE)) {
+    struct VFX* n = ApplyElementEffect(0, &p->s, &sElementCoord);
+    *slot = n;
+    if (n != NULL) {
+      u8 b = *((u8*)p + 0x97) & 0xF0;
+      if (b == 0x10) {
+        // e is provably NULL here; stored through it to keep the register
+        (p->s).mode[1] = 1, (p->s).mode[2] = (u32)e;
+      } else if (b == 0x30) {
+        (p->s).mode[1] = 3, (p->s).mode[2] = (u32)e;
+      }
+    }
+  }
+  return TRUE;
+}
+
+void FUN_0807cba4(struct Body* body) {
+  struct Enemy* parent = (struct Enemy*)body->parent;
+  if ((*(u32*)((u8*)parent + 0x8c) & 0x200) && (gCollisionManager.sweep & 2)) {
+    *(u8*)((u8*)parent + 0xc0) = 0;
+  }
+}
+
+int dragInSea(struct Entity* p) {
+  s32 sea = gOverworld.sea;
+  if (sea > p->coord.y) {
+    p->coord.y = sea;
+  }
+}
+
+bool8 nop_0807c968(struct Enemy* p);
+bool8 nop_0807ca98(struct Enemy* p);
+bool8 nop_0807cac8(struct Enemy* p);
+bool8 nop_0807cad0(struct Enemy* p);
 
 static const EnemyFunc PTR_ARRAY_08367aec[4] = {
     nop_0807c968,
