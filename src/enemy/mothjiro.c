@@ -1,6 +1,9 @@
 #include "collision.h"
 #include "enemy.h"
 #include "global.h"
+#include "element.h"
+
+static const Coords32 sElementCoord;
 
 typedef struct {
   COLLISION_OBJECT_HDR;  // 0x00
@@ -51,7 +54,7 @@ void Mothjiro_Update(Mothjiro* p) {
     return;
   }
 
-  (sUpdates1[p->mode[1]])(p);
+  (sUpdates1[p->mode[1]])((void*)p);
   mothjiro_08088a74(p);
   if (p->enti_c0 == NULL) {
     if (IsFrozen(p)) {
@@ -68,7 +71,7 @@ void Mothjiro_Update(Mothjiro* p) {
   return;
 
 dispatch2:
-  (sUpdates2[p->mode[1]])(p);
+  (sUpdates2[p->mode[1]])((void*)p);
 }
 
 INCASM("asm/enemy/mothjiro_b.inc");
@@ -111,7 +114,22 @@ void mothjiro_08088a50(Mothjiro* p) {
   }
 }
 
-INCASM("asm/enemy/mothjiro_g.inc");
+bool8 mothjiro_08088a74(Mothjiro* p) {
+  struct Entity** slot = (struct Entity**)((u8*)p + 0xc0);
+
+  if (*slot == NULL && ((p->body).status & 1)) {
+    *slot = ApplyElementEffect(0, (Object*)p, &sElementCoord);
+    if (*slot != NULL) {
+      u8 attr = *(u8*)((u8*)p + 0x97) & 0xf0;
+      if (attr == 0x10) {
+        SetDDP(&p->body, &sCollisions[2]);
+      } else if (attr == 0x30) {
+        SetDDP(&p->body, &sCollisions[2]);
+      }
+    }
+  }
+  return TRUE;
+}
 
 Coords32* FUN_08012a64(Coords32* c);
 
