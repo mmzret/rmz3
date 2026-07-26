@@ -2,6 +2,9 @@
 #include "global.h"
 #include "solid.h"
 
+const SolidFunc sGlacierleArmUpdates1[2];
+const SolidFunc sGlacierleArmUpdates2[2];
+
 void GlacierleArm_Init(struct Solid* p);
 void GlacierleArm_Update(struct Solid* p);
 void GlacierleArm_Die(struct Solid* p);
@@ -14,6 +17,8 @@ const SolidRoutine gGlacierleArmRoutine = {
     [ENTITY_DISAPPEAR] = (void*)DeleteSolid,
     [ENTITY_EXIT] =      (void*)DeleteEntity,
 };
+
+void nop_080ceb28(struct Solid* p);
 // clang-format on
 
 void CreateSolidGlacierleArm(struct Entity* e, s32 x, s32 y) {
@@ -41,7 +46,31 @@ static void onCollision(struct Body* body UNUSED, Coords32* r1 UNUSED, Coords32*
   return;
 }
 
-INCASM("asm/solid/glacierle_arm.inc");
+INCASM("asm/solid/glacierle_arm_a.inc");
+
+void GlacierleArm_Update(struct Solid* p) {
+  if ((p->s).work[0] == 0) {
+    if (((p->s).unk_28)->mode[0] > 1) {
+      *(u8*)((u8*)p + 0xbc) = (p->s).work[0];
+      SET_SOLID_ROUTINE(p, ENTITY_DIE);
+      GlacierleArm_Die(p);
+    }
+  }
+  if ((p->body).status & BODY_STATUS_DEAD) {
+    *(u8*)((u8*)p + 0xbc) = 0;
+    SET_SOLID_ROUTINE(p, ENTITY_DIE);
+    GlacierleArm_Die(p);
+    return;
+  }
+  (sGlacierleArmUpdates1[(p->s).mode[1]])((void*)p);
+  (sGlacierleArmUpdates2[(p->s).mode[1]])((void*)p);
+}
+
+INCASM("asm/solid/glacierle_arm_b.inc");
+
+void nop_080ceb28(struct Solid* p) {}
+
+INCASM("asm/solid/glacierle_arm_c.inc");
 
 // --------------------------------------------
 
