@@ -1,8 +1,35 @@
+#include "entity/macros.h"
 #include "collision.h"
 #include "enemy.h"
 #include "global.h"
 
-INCASM("asm/enemy/minigame_leviathan.inc");
+void FUN_08099f54(s32 x, s32 y, s32 a, s32 b) {
+  struct Enemy* p = (struct Enemy*)AllocEntityFirst(gEnemyHeaderPtr);
+
+  if (p != NULL) {
+    INIT_ENEMY_ROUTINE(p, 68);
+    (p->s).work[0] = 6;
+    (p->s).coord.x = x;
+    (p->s).coord.y = y;
+    (p->s).unk_coord.y = a;
+    (p->s).d.x = b;
+  }
+}
+
+void FUN_08099fb8(struct Entity* e, s32 y, u8 n, u8 w) {
+  struct Enemy* p = (struct Enemy*)AllocEntityFirst(gEnemyHeaderPtr);
+
+  if (p != NULL) {
+    INIT_ENEMY_ROUTINE(p, 68);
+    (p->s).work[0] = w;
+    (p->s).coord.x = n * 0x13000 + 0xD000;
+    (p->s).coord.y = y;
+    (p->s).work[2] = n;
+    (p->s).unk_28 = e;
+  }
+}
+
+INCASM("asm/enemy/minigame_leviathan_a.inc");
 
 void LeviathanMinigameEnemy_Init(struct Enemy* p);
 void LeviathanMinigameEnemy_Update(struct Enemy* p);

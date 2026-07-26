@@ -1,3 +1,5 @@
+#include "entity/macros.h"
+#include "zero.h"
 #include "cyberelf.h"
 #include "global.h"
 
@@ -86,7 +88,28 @@ _080E45B4: .4byte gElfFnTable\n\
  .syntax divided\n");
 }
 
-INCASM("asm/cyberelf/sea_otter.inc");
+struct CyberElfSeaOtter {
+  COLLISION_OBJECT_HDR;  // 0x00
+  struct Zero* player;   // 0xB4
+  u8 unk_b8[12];         // 0xB8
+};
+
+CyberElf* CreateSeaotterElf(struct Zero* z, u8 breed, u8 availability, u8 _) {
+  struct CyberElfSeaOtter* p = (struct CyberElfSeaOtter*)AllocEntityFirst(gElfHeaderPtr);
+  if (p != NULL) {
+    INIT_ELF_ROUTINE(p, 9);
+    p->player = z;
+    p->work[0] = breed, p->work[1] = availability, p->work[2] = _;
+    if (_ == 0) {
+      p->work[3] = SATELITE_1;
+    } else {
+      p->work[3] = SATELITE_2;
+    }
+  }
+  return (CyberElf*)p;
+}
+
+INCASM("asm/cyberelf/sea_otter_a.inc");
 
 void FUN_080e4a3c(CyberElf* p);
 void FUN_080e4a88(CyberElf* p);

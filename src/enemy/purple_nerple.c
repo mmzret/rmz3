@@ -1,8 +1,56 @@
+#include "entity/macros.h"
+#include "stagerun.h"
+#include "camera.h"
 #include "collision.h"
 #include "enemy.h"
 #include "global.h"
 
-INCASM("asm/enemy/purple_nerple.inc");
+INCASM("asm/enemy/purple_nerple_a.inc");
+
+void FUN_08075b74(struct Entity* e, u8 n) {
+  struct Enemy* p = (struct Enemy*)AllocEntityLast(gEnemyHeaderPtr);
+
+  if (p != NULL) {
+    INIT_ENEMY_ROUTINE(p, 22);
+    (p->s).work[0] = 1;
+    (p->s).unk_28 = e;
+    p->buffer[5] = n;
+  }
+}
+
+void FUN_08075bd0(struct Entity* e) {
+  s32 i;
+
+  for (i = 0; i <= 1; i++) {
+    struct Enemy* p = (struct Enemy*)AllocEntityLast(gEnemyHeaderPtr);
+
+    if (p != NULL) {
+      INIT_ENEMY_ROUTINE(p, 22);
+      (p->s).work[0] = 2;
+      (p->s).work[1] = i;
+      (p->s).coord.x = e->coord.x;
+      (p->s).coord.y = e->coord.y;
+      p->buffer[5] = 0;
+    }
+  }
+}
+
+INCASM("asm/enemy/purple_nerple_b.inc");
+
+void summonPurpleNerple(struct Entity* e, s32 x) {
+  struct Enemy* p = (struct Enemy*)AllocEntityLast(gEnemyHeaderPtr);
+
+  if (p != NULL) {
+    INIT_ENEMY_ROUTINE(p, 22);
+    (p->s).work[0] = 3;
+    (p->s).coord.x = x;
+    (p->s).coord.y = (&gStageRun.vm.camera)->viewport.y - PIXEL(112);
+    (p->s).unk_28 = e;
+    *(s32*)&p->buffer[8] = e->coord.x;
+  }
+}
+
+INCASM("asm/enemy/purple_nerple_c.inc");
 
 void PurpleNerple_Init(struct Enemy* p);
 void PurpleNerple_Update(struct Enemy* p);
