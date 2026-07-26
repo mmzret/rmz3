@@ -1,24 +1,8 @@
 #include "collision.h"
 #include "enemy.h"
 #include "global.h"
-#include "story.h"
 
-INCASM("asm/enemy/shellcrawler_a.inc");
-
-static const EnemyFunc sDeads[4];
-
-void Shellcrawler_Die(struct Enemy* p) {
-  if (IS_METTAUR) {
-    (p->s).flags &= ~DISPLAY;
-    (p->s).flags &= ~FLIPABLE;
-    EXIT_BODY(p);
-    SET_ENEMY_ROUTINE(p, ENTITY_DISAPPEAR);
-    return;
-  }
-  (sDeads[(p->s).mode[1]])(p);
-}
-
-INCASM("asm/enemy/shellcrawler_b.inc");
+INCASM("asm/enemy/shellcrawler.inc");
 
 void Shellcrawler_Init(struct Enemy* p);
 void Shellcrawler_Update(struct Enemy* p);
