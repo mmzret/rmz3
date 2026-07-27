@@ -80,7 +80,12 @@ static bool8 FUN_0806dfa4(struct Entity* p) {
 
 static const u8 sInitModes[];
 
-INCASM("asm/enemy/lemmingles_nest.inc");
+INCASM("asm/enemy/lemmingles_nest_a.inc");
+
+void nop_0806e284(struct Enemy* p) {
+}
+
+INCASM("asm/enemy/lemmingles_nest_b.inc");
 
 // --------------------------------------------
 
