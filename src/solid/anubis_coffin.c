@@ -2,6 +2,8 @@
 #include "global.h"
 #include "solid.h"
 
+void nop_080cde6c(struct Solid* p);
+
 // ------------------------------------------------------------------------------------------------------------------------------------
 
 void AnubisCoffin_Init(struct Solid* p);
@@ -35,7 +37,17 @@ void CreateAnubisCoffins(struct Entity* anubis, bool8 r1) {
   }
 }
 
-INCASM("asm/solid/anubis_coffin.inc");
+INCASM("asm/solid/anubis_coffin_a.inc");
+
+void nop_080cde6c(struct Solid* p) {
+}
+
+INCASM("asm/solid/anubis_coffin_b.inc");
+
+void FUN_080cdf34(struct Solid* p) {
+}
+
+INCASM("asm/solid/anubis_coffin_c.inc");
 
 // --------------------------------------------
 
