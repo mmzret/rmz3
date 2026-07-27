@@ -3,6 +3,9 @@
 #include "global.h"
 #include "overworld.h"
 #include "zero.h"
+#include "element.h"
+
+static const Coords32 sElementCoord;
 
 struct Hellbat {
   COLLISION_OBJECT_HDR;  // 0x00
@@ -15,7 +18,7 @@ static_assert(sizeof(struct Hellbat) == sizeof(struct Boss));
 static const struct Collision sCollisions[];
 static const Coords32 sExplosionCoords[2];
 
-void hellbat_0804cbe4(struct Boss* p);
+bool8 hellbat_0804cbe4(struct Boss* p);
 
 static void Hellbat_Init(struct Boss* p);
 static void Hellbat_Update(struct Boss* p);
@@ -32,7 +35,7 @@ const BossRoutine gHellbatRoutine = {
 // clang-format on
 
 struct Entity* CreateHellbat(Coords32* c, u8 n) {
-  struct Entity* p = AllocEntityLast(gBossHeaderPtr);
+  struct Entity* p = (struct Entity*)AllocEntityLast(gBossHeaderPtr);
   if (p != NULL) {
     INIT_BOSS_ROUTINE(p, BOSS_HELLBAT);
     p->coord = *c;
@@ -252,9 +255,9 @@ static void Hellbat_Update(struct Boss* p) {
     }
   }
 
-  (sUpdates1[p->mode[1]])(p);
+  (sUpdates1[p->mode[1]])((void*)p);
   hellbat_0804cbe4(p);
-  (sUpdates2[p->mode[1]])(p);
+  (sUpdates2[p->mode[1]])((void*)p);
 }
 
 // --------------------------------------------
@@ -267,7 +270,7 @@ static void Hellbat_Die(struct Boss* p) {
       hellbatDeath0,
       hellbatDeath1,
   };
-  (sDeads[p->mode[1]])(p);
+  (sDeads[p->mode[1]])((void*)p);
 }
 
 // --------------------------------------------
@@ -772,7 +775,26 @@ static void hellbatMode2(struct Hellbat* p) {
 
 static bool32 nop_0804b6b4(void* _) { return TRUE; }
 
-INCASM("asm/boss/hellbat.inc");
+INCASM("asm/boss/hellbat_a.inc");
+
+bool8 hellbat_0804cbe4(struct Boss* p) {
+  struct Entity** slot = (struct Entity**)&p->buffer[12];
+
+  if (*slot == NULL && ((p->body).status & 1)) {
+    *slot = ApplyElementEffect(17, (Object*)p, &sElementCoord);
+    if (*slot != NULL) {
+      *slot = NULL;
+      if ((*(u8*)((u8*)p + 0x97) & 0xf0) == 0x30) {
+        PlaySound(0x8a);
+      } else {
+        *slot = NULL;
+      }
+    }
+  }
+  return TRUE;
+}
+
+INCASM("asm/boss/hellbat_b.inc");
 
 extern const u16 u16_ARRAY_080feedc[6];
 
