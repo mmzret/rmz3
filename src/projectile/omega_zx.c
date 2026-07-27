@@ -20,10 +20,12 @@ const ProjectileRoutine gOmegaZXProjectileRoutine = {
     [ENTITY_DISAPPEAR] = (void*)DeleteProjectile,
     [ENTITY_EXIT] =      (void*)DeleteEntity,
 };
+
+static void (*const sUpdates[9])(OmegaZXProjectile*);
 // clang-format on
 
 Projectile* FUN_080afe84(Entity* parent, Coords32* c, u8 n) {
-  Projectile* p = AllocEntityLast(gProjectileHeaderPtr);
+  Projectile* p = (Projectile*)AllocEntityLast(gProjectileHeaderPtr);
   if (p != NULL) {
     INIT_PROJECTILE_ROUTINE(p, 41);
     p->work[0] = 0, p->work[1] = n;
@@ -34,7 +36,7 @@ Projectile* FUN_080afe84(Entity* parent, Coords32* c, u8 n) {
 }
 
 Projectile* FUN_080afedc(Entity* parent, Coords32* c, u8 n) {
-  Projectile* p = AllocEntityLast(gProjectileHeaderPtr);
+  Projectile* p = (Projectile*)AllocEntityLast(gProjectileHeaderPtr);
   if (p != NULL) {
     INIT_PROJECTILE_ROUTINE(p, 41);
     p->work[0] = n;
@@ -45,7 +47,7 @@ Projectile* FUN_080afedc(Entity* parent, Coords32* c, u8 n) {
 }
 
 Projectile* FUN_080aff34(Entity* parent, Coords32* c) {
-  Projectile* p = AllocEntityLast(gProjectileHeaderPtr);
+  Projectile* p = (Projectile*)AllocEntityLast(gProjectileHeaderPtr);
   if (p != NULL) {
     INIT_PROJECTILE_ROUTINE(p, 41);
     p->work[0] = 4;
@@ -56,7 +58,7 @@ Projectile* FUN_080aff34(Entity* parent, Coords32* c) {
 }
 
 Projectile* FUN_080aff88(Entity* parent, Coords32* c, u8 n) {
-  Projectile* p = AllocEntityLast(gProjectileHeaderPtr);
+  Projectile* p = (Projectile*)AllocEntityLast(gProjectileHeaderPtr);
   if (p != NULL) {
     INIT_PROJECTILE_ROUTINE(p, 41);
     p->work[0] = 5, p->work[1] = n;
@@ -66,7 +68,62 @@ Projectile* FUN_080aff88(Entity* parent, Coords32* c, u8 n) {
   return p;
 }
 
-INCASM("asm/projectile/omega_zx.inc");
+OmegaZXProjectile* FUN_080affe4(struct Entity* parent, struct Coord* c, u16 a2, u8 a3) {
+  OmegaZXProjectile* p = (OmegaZXProjectile*)AllocEntityLast(gProjectileHeaderPtr);
+  if (p != NULL) {
+    INIT_PROJECTILE_ROUTINE(p, 41);
+    p->work[0] = 6;
+    p->work[1] = a3;
+    *(u16*)((u8*)p + 0xbc) = a2;
+    p->coord.x = c->x;
+    p->coord.y = c->y;
+    p->unk_28 = parent;
+  }
+  return p;
+}
+
+OmegaZXProjectile* FUN_080b0048(struct Entity* parent, struct Coord* c) {
+  OmegaZXProjectile* p = (OmegaZXProjectile*)AllocEntityLast(gProjectileHeaderPtr);
+  if (p != NULL) {
+    INIT_PROJECTILE_ROUTINE(p, 41);
+    p->work[0] = 7;
+    p->coord.x = c->x;
+    p->coord.y = c->y;
+    p->unk_28 = parent;
+  }
+  return p;
+}
+
+OmegaZXProjectile* FUN_080b009c(struct Entity* parent) {
+  OmegaZXProjectile* p = (OmegaZXProjectile*)AllocEntityLast(gProjectileHeaderPtr);
+  if (p != NULL) {
+    INIT_PROJECTILE_ROUTINE(p, 41);
+    p->work[0] = 8;
+    p->unk_28 = parent;
+  }
+  return p;
+}
+
+void OmegaZXProjectile_Init(OmegaZXProjectile* p) {
+  SET_PROJECTILE_ROUTINE(p, ENTITY_UPDATE);
+  p->mode[1] = p->work[0];
+  p->mode[2] = 0;
+  p->mode[3] = 0;
+  p->work[2] = 0xFF;
+  OmegaZXProjectile_Update(p);
+}
+
+void OmegaZXProjectile_Update(OmegaZXProjectile* p) {
+  (sUpdates[p->mode[1]])((void*)p);
+}
+
+void OmegaZXProjectile_Die(OmegaZXProjectile* p) {
+  p->flags &= ~DISPLAY;
+  EXIT_BODY(p);
+  SET_PROJECTILE_ROUTINE(p, ENTITY_EXIT);
+}
+
+INCASM("asm/projectile/omega_zx_a.inc");
 
 void FUN_080b0168(OmegaZXProjectile* p);
 void FUN_080b0214(OmegaZXProjectile* p);
