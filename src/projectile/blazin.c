@@ -23,7 +23,7 @@ const ProjectileRoutine gBlazinProjectileRoutine = {
 // clang-format on
 
 BlazinProjectile* Unused_FUN_0809e4b0(Entity* q, Coords32* c) {
-  BlazinProjectile* p = AllocEntityLast(gProjectileHeaderPtr);
+  BlazinProjectile* p = (BlazinProjectile*)AllocEntityLast(gProjectileHeaderPtr);
   if (p != NULL) {
     INIT_PROJECTILE_ROUTINE(p, 9);
     p->work[0] = 0;
@@ -34,7 +34,7 @@ BlazinProjectile* Unused_FUN_0809e4b0(Entity* q, Coords32* c) {
 }
 
 BlazinProjectile* FUN_0809e500(Entity* e, Coords32* c, Coords32* d) {
-  BlazinProjectile* p = AllocEntityLast(gProjectileHeaderPtr);
+  BlazinProjectile* p = (BlazinProjectile*)AllocEntityLast(gProjectileHeaderPtr);
   if (p != NULL) {
     INIT_PROJECTILE_ROUTINE(p, 9);
     p->work[0] = 1;
@@ -46,7 +46,7 @@ BlazinProjectile* FUN_0809e500(Entity* e, Coords32* c, Coords32* d) {
 }
 
 BlazinProjectile* FUN_0809e55c(Entity* e, Coords32* c, Coords32* c2) {
-  BlazinProjectile* p = AllocEntityLast(gProjectileHeaderPtr);
+  BlazinProjectile* p = (BlazinProjectile*)AllocEntityLast(gProjectileHeaderPtr);
   if (p != NULL) {
     INIT_PROJECTILE_ROUTINE(p, 9);
     p->work[0] = 2;
@@ -58,7 +58,7 @@ BlazinProjectile* FUN_0809e55c(Entity* e, Coords32* c, Coords32* c2) {
 }
 
 BlazinProjectile* _createBlazinEXFireBall(Entity* e, Coords32* c, Coords32* d, u8 angle) {
-  BlazinProjectile* p = AllocEntityLast(gProjectileHeaderPtr);
+  BlazinProjectile* p = (BlazinProjectile*)AllocEntityLast(gProjectileHeaderPtr);
   if (p != NULL) {
     INIT_PROJECTILE_ROUTINE(p, 9);
     p->work[0] = 3;
@@ -71,7 +71,7 @@ BlazinProjectile* _createBlazinEXFireBall(Entity* e, Coords32* c, Coords32* d, u
 }
 
 BlazinProjectile* blazin_0809e620(Entity* e, Coords32* c, Coords32* d) {
-  BlazinProjectile* p = AllocEntityLast(gProjectileHeaderPtr);
+  BlazinProjectile* p = (BlazinProjectile*)AllocEntityLast(gProjectileHeaderPtr);
   if (p != NULL) {
     INIT_PROJECTILE_ROUTINE(p, 9);
     p->work[0] = 4;
@@ -248,7 +248,35 @@ static void FUN_0809e7b4(BlazinProjectile* p) {
   p->mode[2] = 0;
 }
 
-INCASM("asm/projectile/blazin.inc");
+INCASM("asm/projectile/blazin_a.inc");
+
+void FUN_0809e9b8(BlazinProjectile* p) {
+  p->mode[1] = 1;
+  p->mode[2] = 0;
+}
+
+INCASM("asm/projectile/blazin_b.inc");
+
+void FUN_0809eadc(BlazinProjectile* p) {
+  p->mode[1] = 1;
+  p->mode[2] = 0;
+}
+
+INCASM("asm/projectile/blazin_c.inc");
+
+void FUN_0809ec18(BlazinProjectile* p) {
+  p->mode[1] = 1;
+  p->mode[2] = 0;
+}
+
+INCASM("asm/projectile/blazin_d.inc");
+
+void FUN_0809edfc(BlazinProjectile* p) {
+  p->mode[1] = 1;
+  p->mode[2] = 0;
+}
+
+INCASM("asm/projectile/blazin_e.inc");
 
 // --------------------------------------------
 
