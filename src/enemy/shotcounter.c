@@ -215,13 +215,13 @@ _08066144: .4byte gEnemyFnTable\n\
 
 static bool8 FUN_080665e0(void* _ UNUSED);
 static bool8 FUN_080665e8(void* _ UNUSED);
-void FUN_080667b8(struct Enemy* p);
-void nop_08066978(struct Enemy* p);
-void FUN_08066ad0(struct Enemy* p);
-void FUN_08066ad8(struct Enemy* p);
-void FUN_08066b30(struct Enemy* p);
-void FUN_08066b38(struct Enemy* p);
-void FUN_08066bdc(struct Enemy* p);
+bool8 FUN_080667b8(struct Enemy* p);
+bool8 nop_08066978(struct Enemy* p);
+bool8 FUN_08066ad0(struct Enemy* p);
+bool8 FUN_08066ad8(struct Enemy* p);
+bool8 FUN_08066b30(struct Enemy* p);
+bool8 FUN_08066b38(struct Enemy* p);
+bool8 FUN_08066bdc(struct Enemy* p);
 
 static void FUN_080665e4(void* _ UNUSED);
 void FUN_080665ec(struct Enemy* p);
@@ -763,7 +763,51 @@ static void FUN_080665e4(void* _) { return; }
 
 static bool8 FUN_080665e8(void* _) { return TRUE; }
 
-INCASM("asm/enemy/shotcounter.inc");
+INCASM("asm/enemy/shotcounter_a.inc");
+
+bool8 FUN_080667b8(struct Enemy* p) {
+  return TRUE;
+}
+
+INCASM("asm/enemy/shotcounter_b.inc");
+
+bool8 nop_08066978(struct Enemy* p) {
+  return TRUE;
+}
+
+INCASM("asm/enemy/shotcounter_c.inc");
+
+bool8 FUN_08066ad0(struct Enemy* p) {
+  return TRUE;
+}
+
+void FUN_08066ad4(struct Enemy* p) {
+}
+
+bool8 FUN_08066ad8(struct Enemy* p) {
+  return TRUE;
+}
+
+INCASM("asm/enemy/shotcounter_d.inc");
+
+bool8 FUN_08066b30(struct Enemy* p) {
+  return TRUE;
+}
+
+void FUN_08066b34(struct Enemy* p) {
+}
+
+bool8 FUN_08066b38(struct Enemy* p) {
+  return TRUE;
+}
+
+INCASM("asm/enemy/shotcounter_e.inc");
+
+bool8 FUN_08066bdc(struct Enemy* p) {
+  return TRUE;
+}
+
+INCASM("asm/enemy/shotcounter_f.inc");
 
 // 0x08365D64
 static const struct Collision sCollisions[12] = {
