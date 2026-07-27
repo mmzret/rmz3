@@ -33,7 +33,7 @@ const BossRoutine gBlazinRoutine = {
 // clang-format on
 
 Blazin* Unused_CreateBlazin(Coords32* c, u8 n) {
-  Blazin* p = AllocEntityLast(gBossHeaderPtr);
+  Blazin* p = (Blazin*)AllocEntityLast(gBossHeaderPtr);
   if (p != NULL) {
     INIT_BOSS_ROUTINE(p, BOSS_BLAZIN);
     p->coord = *c;
@@ -267,16 +267,16 @@ static void Blazin_Update(Blazin* p) {
     } else {
       p->mode[3] = 0;
     }
-    Blazin_Die(p);
+    Blazin_Die((Blazin*)p);
   } else {
     BlazinTail* tail = p->tail;
     if (tail != NULL && tail->mode[0] > ENTITY_UPDATE) {
       p->tail = NULL;
-      FUN_0803ffc0(p);
+      FUN_0803ffc0((Blazin*)p);
       p->anim_c8 = 21;
     }
     sUpdates1[p->mode[1]](p);
-    blazin_0803fed8(p);
+    blazin_0803fed8((void*)p);
     sUpdates2[p->mode[1]](p);
   }
 }
@@ -289,7 +289,7 @@ static void Blazin_Die(Blazin* p) {
       blazinDeath0,
       blazinDeath1,
   };
-  (sDeads[p->mode[1]])(p);
+  (sDeads[p->mode[1]])((void*)p);
 }
 
 static void blazinDeath0(Blazin* p) {
@@ -806,7 +806,17 @@ s32 howFarBlazin(Blazin* p) {
   return 2;
 }
 
-INCASM("asm/boss/blazin_k.inc");
+struct Entity* blazin_080403a0(Blazin* p, u32 n) {
+  if (n == 0) {
+    return *(struct Entity**)&p->unk_ca[10];
+  } else if (n == 1) {
+    return *(struct Entity**)&p->unk_ca[14];
+  } else if (n == 2) {
+    return *(struct Entity**)&p->unk_ca[18];
+  } else {
+    return *(struct Entity**)&p->unk_ca[22];
+  }
+}
 
 // 0x080403c4
 static void setBlazinDirection(struct Entity* p) {
