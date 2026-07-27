@@ -2,6 +2,8 @@
 #include "enemy.h"
 #include "global.h"
 
+void nop_0808b534(struct Enemy* p);
+
 void CarrybeeG_Init(struct Enemy* p);
 void CarrybeeG_Update(struct Enemy* p);
 void CarrybeeG_Die(struct Enemy* p);
@@ -37,7 +39,40 @@ struct Enemy* FUN_0808a8b0(struct Entity* e) {
   return p;
 }
 
-INCASM("asm/enemy/carrybee_g.inc");
+INCASM("asm/enemy/carrybee_g_a.inc");
+
+bool8 FUN_0808af78(struct Enemy* p) {
+  return TRUE;
+}
+
+INCASM("asm/enemy/carrybee_g_b.inc");
+
+bool8 FUN_0808b008(struct Enemy* p) {
+  return TRUE;
+}
+
+INCASM("asm/enemy/carrybee_g_c.inc");
+
+bool8 FUN_0808b108(struct Enemy* p) {
+  return TRUE;
+}
+
+INCASM("asm/enemy/carrybee_g_d.inc");
+
+bool8 FUN_0808b2b0(struct Enemy* p) {
+  return TRUE;
+}
+
+INCASM("asm/enemy/carrybee_g_e.inc");
+
+bool8 FUN_0808b418(struct Enemy* p) {
+  return TRUE;
+}
+
+INCASM("asm/enemy/carrybee_g_f.inc");
+
+void nop_0808b534(struct Enemy* p) {
+}
 
 bool8 FUN_0808af78(struct Enemy* p);
 bool8 FUN_0808b008(struct Enemy* p);
