@@ -269,8 +269,3 @@ _080DDCF0: .4byte 0x000343FD
 _080DDCF4: .4byte 0x00269EC3
 _080DDCF8: .4byte gCurStory
 _080DDCFC: .4byte u16_ARRAY_083716b8
-
-	thumb_func_start VolcanoCoffin_Die
-VolcanoCoffin_Die: @ 0x080DDD00
-	bx lr
-	.align 2, 0
