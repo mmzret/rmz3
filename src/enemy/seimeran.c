@@ -151,7 +151,12 @@ static void FUN_0808f424(Seimeran* p) {
 
 // --------------------------------------------
 
-INCASM("asm/enemy/seimeran.inc");
+INCASM("asm/enemy/seimeran_a.inc");
+
+void FUN_0808f728(struct Enemy* p) {
+}
+
+INCASM("asm/enemy/seimeran_b.inc");
 
 // --------------------------------------------
 
