@@ -2,7 +2,19 @@
 #include "enemy.h"
 #include "global.h"
 
-INCASM("asm/enemy/carry_arm.inc");
+void nop_08071568(struct Enemy* p);
+
+INCASM("asm/enemy/carry_arm_a.inc");
+
+void nop_08071568(struct Enemy* p) {
+}
+
+INCASM("asm/enemy/carry_arm_b.inc");
+
+void FUN_080716a8(struct Enemy* p) {
+}
+
+INCASM("asm/enemy/carry_arm_c.inc");
 
 void CarryArm_Init(struct Enemy* p);
 void CarryArm_Update(struct Enemy* p);
