@@ -1,8 +1,47 @@
 #include "collision.h"
 #include "enemy.h"
 #include "global.h"
+#include "score.h"
 
-INCASM("asm/enemy/wormer_snow_ball.inc");
+void CreateIceballParticle4(s32 x, s32 y);
+
+void FUN_0807b800(struct Enemy* p);
+
+void FUN_0807b0d0(s32 x, s32 y) {
+  struct Enemy* e = (struct Enemy*)AllocEntityFirst(gEnemyHeaderPtr);
+
+  if (e != NULL) {
+    INIT_ENEMY_ROUTINE(e, 29);
+    (e->s).work[0] = 0;
+    (e->s).coord.x = x;
+    (e->s).coord.y = y;
+  }
+}
+
+INCASM("asm/enemy/wormer_snow_ball_a.inc");
+
+void FUN_0807b184(s32 x, s32 y) {
+  struct Enemy* e = (struct Enemy*)AllocEntityFirst(gEnemyHeaderPtr);
+
+  if (e != NULL) {
+    INIT_ENEMY_ROUTINE(e, 29);
+    (e->s).work[0] = 1;
+    (e->s).coord.x = x;
+    (e->s).coord.y = y;
+  }
+}
+
+INCASM("asm/enemy/wormer_snow_ball_b.inc");
+
+void FUN_0807b800(struct Enemy* p) {
+  if (gScore.enemyCount <= 0x270E) {
+    gScore.enemyCount++;
+  }
+  DropEnemyDisk(p, &(p->s).coord);
+  EXIT_BODY(p);
+  CreateIceballParticle4((p->s).coord.x, (p->s).coord.y);
+  SET_ENEMY_ROUTINE(p, ENTITY_EXIT);
+}
 
 void WormerSnowBall_Init(struct Enemy* p);
 void WormerSnowBall_Update(struct Enemy* p);
@@ -10,9 +49,9 @@ void WormerSnowBall_Die(struct Enemy* p);
 
 // clang-format off
 const EnemyRoutine gWormerSnowBallRoutine = {
-    [ENTITY_INIT] =      WormerSnowBall_Init,
-    [ENTITY_UPDATE] =    WormerSnowBall_Update,
-    [ENTITY_DIE] =       WormerSnowBall_Die,
+    [ENTITY_INIT] =      (void*)WormerSnowBall_Init,
+    [ENTITY_UPDATE] =    (void*)WormerSnowBall_Update,
+    [ENTITY_DIE] =       (void*)WormerSnowBall_Die,
     [ENTITY_DISAPPEAR] = (void*)DeleteEnemy,
     [ENTITY_EXIT] =      (EnemyFunc)DeleteEntity,
 };
