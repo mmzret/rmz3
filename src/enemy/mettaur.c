@@ -36,7 +36,12 @@ static bool8 FUN_08088ba8(struct Entity* p) {
   return FALSE;
 }
 
-INCASM("asm/enemy/mettaur.inc");
+INCASM("asm/enemy/mettaur_a.inc");
+
+void nop_08089268(struct Enemy* p) {
+}
+
+INCASM("asm/enemy/mettaur_b.inc");
 
 // --------------------------------------------
 
