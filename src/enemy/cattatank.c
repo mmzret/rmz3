@@ -4,6 +4,9 @@
 #include "global.h"
 #include "score.h"
 #include "stagerun.h"
+#include "element.h"
+
+static const Coords32 sElementCoords[1];
 
 typedef struct {
   COLLISION_OBJECT_HDR;  // 0x00
@@ -26,7 +29,7 @@ const EnemyRoutine gCattatankRoutine = {
 // clang-format on
 
 Cattatank* FUN_08098838(Coords32* c, u8 kind) {
-  Cattatank* p = AllocEntityLast(gEnemyHeaderPtr);
+  Cattatank* p = (Cattatank*)AllocEntityLast(gEnemyHeaderPtr);
   if (p != NULL) {
     INIT_ENEMY_ROUTINE(p, ENEMY_CATTATANK);
     p->coord = *c;
@@ -219,7 +222,7 @@ _08098A04: .4byte 0x0000D503\n\
  .syntax divided\n");
 }
 
-void cattatank_08099e20(Cattatank* p);
+bool8 cattatank_08099e20(Cattatank* p);
 
 bool8 nop_08099090(Cattatank* p);
 bool8 nop_080990d4(Cattatank* p);
@@ -301,7 +304,7 @@ static void Cattatank_Update(Cattatank* p) {
     }
   }
 dispatch1:
-  (sUpdates1[p->mode[1]])(p);
+  (sUpdates1[p->mode[1]])((void*)p);
   cattatank_08099e20(p);
   m = p->mode[1];
   if (m == 6 || m == 7) goto dispatch2;
@@ -310,7 +313,7 @@ dispatch1:
     return;
   }
 dispatch2:
-  (sUpdates2[p->mode[1]])(p);
+  (sUpdates2[p->mode[1]])((void*)p);
 }
 
 NAKED static void Cattatank_Die(Cattatank* p) { INCCODE("asm/wip/Cattatank_Die.inc"); }
@@ -370,7 +373,40 @@ void nop_08099d80(Cattatank* p) {}
 
 bool8 nop_08099d84(Cattatank* _) { return TRUE; }
 
-INCASM("asm/enemy/cattatank_j.inc");
+INCASM("asm/enemy/cattatank_j_a.inc");
+
+bool8 cattatank_08099e20(Cattatank* p) {
+  struct Entity** slot = (struct Entity**)&p->buffer[8];
+  struct Entity* e;
+  u8 attr;
+
+  if (*slot == NULL && ((p->body).status & 1)) {
+    e = ApplyElementEffect(0, (Object*)p, sElementCoords);
+    *slot = e;
+    if (p->mode[1] != 6) {
+      if (e != NULL) {
+        attr = *(u8*)((u8*)p + 0x97) & 0xf0;
+        if (attr == 0x10) {
+          p->buffer[12] = 1;
+          p->mode[1] = 7;
+          p->mode[2] = 0;
+        } else if (attr == 0x30) {
+          p->buffer[12] = 2;
+          p->mode[1] = 9;
+          p->mode[2] = 0;
+        }
+      }
+    } else if (e != NULL) {
+      attr = *(u8*)((u8*)p + 0x97) & 0xf0;
+      if (attr == 0x10) {
+        p->buffer[12] = 1;
+      } else if (attr == 0x30) {
+        p->buffer[12] = 2;
+      }
+    }
+  }
+  return TRUE;
+}
 
 NAKED static void Cattatank_OnCollision(struct Body* body, Coords32* c1, Coords32* c2) {
   asm(".syntax unified\n\
