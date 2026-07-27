@@ -45,7 +45,7 @@ const BossRoutine gOmegaZXRoutine = {
 // clang-format on
 
 static Entity* Unused_CreateOmegaZX(Coords32* c, u8 n) {
-  Entity* p = AllocEntityLast(gBossHeaderPtr);
+  Entity* p = (Entity*)AllocEntityLast(gBossHeaderPtr);
   if (p != NULL) {
     INIT_BOSS_ROUTINE(p, BOSS_OMEGA_ZX);
     p->coord = *c;
@@ -280,8 +280,8 @@ static void OmegaZX_Update(OmegaZX* p) {
     }
   }
 
-  (sUpdates1[p->mode[1]])(p);
-  (sUpdates2[p->mode[1]])(p);
+  (sUpdates1[p->mode[1]])((void*)p);
+  (sUpdates2[p->mode[1]])((void*)p);
 }
 
 static void FUN_08060d60(OmegaZX* p);
@@ -292,7 +292,7 @@ static void OmegaZX_Die(OmegaZX* p) {
       FUN_08060d60,
       FUN_08060e14,
   };
-  (sDeads[p->mode[1]])(p);
+  (sDeads[p->mode[1]])((void*)p);
 }
 
 static void OmegaZX_Disappear(OmegaZX* p) {
@@ -408,7 +408,9 @@ static void FUN_08061068(OmegaZX* p) {
   }
 }
 
-INCASM("asm/boss/omega_zx_b.inc");
+bool8 FUN_080610a8(OmegaZX* p) { return TRUE; }
+
+INCASM("asm/boss/omega_zx_b_a.inc");
 
 static bool8 FUN_08061230(OmegaZX* p) { return TRUE; }
 

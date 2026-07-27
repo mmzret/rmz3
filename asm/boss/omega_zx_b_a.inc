@@ -4,11 +4,6 @@
 	
 	.text
 
-	thumb_func_start FUN_080610a8
-FUN_080610a8: @ 0x080610A8
-	movs r0, #1
-	bx lr
-
 	thumb_func_start Boss22Neutral
 Boss22Neutral: @ 0x080610AC
 	push {r4, r5, r6, r7, lr}
@@ -196,4 +191,3 @@ _08061220: .4byte RNG_0202f388
 _08061224: .4byte 0x000343FD
 _08061228: .4byte 0x00269EC3
 _0806122C: .4byte gOmegaZXMode1
-
