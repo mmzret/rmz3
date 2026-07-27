@@ -26,23 +26,61 @@ struct Enemy* CreateCapsuleCannon(Coords32* c, u8 n) {
   return p;
 }
 
-INCASM("asm/enemy/capsule_cannon.inc");
+INCASM("asm/enemy/capsule_cannon_a.inc");
 
-void FUN_08085a08(struct Enemy* p);
-void FUN_08085a10(struct Enemy* p);
-void FUN_08085a9c(struct Enemy* p);
-void FUN_08085c14(struct Enemy* p);
-void FUN_08085c2c(struct Enemy* p);
-void FUN_08085c34(struct Enemy* p);
+bool8 FUN_08085a08(struct Enemy* p) {
+  return TRUE;
+}
+
+void nop_08085a0c(struct Enemy* p) {
+}
+
+bool8 FUN_08085a10(struct Enemy* p) {
+  return TRUE;
+}
+
+INCASM("asm/enemy/capsule_cannon_b.inc");
+
+bool8 FUN_08085a9c(struct Enemy* p) {
+  return TRUE;
+}
+
+INCASM("asm/enemy/capsule_cannon_c.inc");
+
+bool8 FUN_08085c14(struct Enemy* p) {
+  return TRUE;
+}
+
+INCASM("asm/enemy/capsule_cannon_d.inc");
+
+bool8 FUN_08085c2c(struct Enemy* p) {
+  return TRUE;
+}
+
+void FUN_08085c30(struct Enemy* p) {
+}
+
+bool8 FUN_08085c34(struct Enemy* p) {
+  return TRUE;
+}
+
+INCASM("asm/enemy/capsule_cannon_e.inc");
+
+bool8 FUN_08085a08(struct Enemy* p);
+bool8 FUN_08085a10(struct Enemy* p);
+bool8 FUN_08085a9c(struct Enemy* p);
+bool8 FUN_08085c14(struct Enemy* p);
+bool8 FUN_08085c2c(struct Enemy* p);
+bool8 FUN_08085c34(struct Enemy* p);
 
 // clang-format off
 static const EnemyFunc sUpdates1[6] = {
-    FUN_08085a08,
-    FUN_08085a10,
-    FUN_08085a9c,
-    FUN_08085c14,
-    FUN_08085c2c,
-    FUN_08085c34,
+    (EnemyFunc)FUN_08085a08,
+    (EnemyFunc)FUN_08085a10,
+    (EnemyFunc)FUN_08085a9c,
+    (EnemyFunc)FUN_08085c14,
+    (EnemyFunc)FUN_08085c2c,
+    (EnemyFunc)FUN_08085c34,
 };
 // clang-format on
 
