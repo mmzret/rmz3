@@ -44,7 +44,12 @@ void FUN_0806e590(struct Entity* e, u8 kind1, u8 kind2, u8 kind3) {
 // 0x0806e600
 static void onCollision(struct Body* body UNUSED, Coords32* r1 UNUSED, Coords32* r2 UNUSED) { return; }
 
-INCASM("asm/enemy/lemmingles.inc");
+INCASM("asm/enemy/lemmingles_a.inc");
+
+void nop_0806e96c(struct Enemy* p) {
+}
+
+INCASM("asm/enemy/lemmingles_b.inc");
 
 // --------------------------------------------
 
