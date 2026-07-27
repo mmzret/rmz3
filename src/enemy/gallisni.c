@@ -2,6 +2,13 @@
 #include "enemy.h"
 #include "global.h"
 #include "element.h"
+#include "story.h"
+#include "stagerun.h"
+
+u32 Camera_GetDistance(struct Camera* p, struct Coord* c);
+bool8 gallisni_08087118(struct Enemy* p);
+static const EnemyFunc sUpdates1[8];
+static const EnemyFunc sUpdates2[8];
 
 void FUN_0808772c(struct Enemy* p);
 
@@ -52,7 +59,7 @@ bool8 gallisni_080870bc(struct Enemy* p) {
     } else {
       (p->s).mode[1] = 0;
     }
-    Gallisni_Die(p);
+    Gallisni_Die( (struct Enemy*)p);
     return TRUE;
   }
   return FALSE;
@@ -75,7 +82,44 @@ void gallisni_080871b4(struct Enemy* p) {
   }
 }
 
-INCASM("asm/enemy/gallisni_c.inc");
+INCASM("asm/enemy/gallisni_c_a.inc");
+
+void Gallisni_Update(struct Enemy* p) {
+  if ((p->s).work[0] == 1) {
+    u8 sf = (u8)(gCurStory.s.gameflags[4] & 2);
+    if (sf) {
+      (p->s).flags &= ~DISPLAY;
+      (p->s).flags &= ~FLIPABLE;
+      (p->body).status = 0;
+      (p->body).prevStatus = 0;
+      (p->body).invincibleTime = 0;
+      goto despawn;
+    }
+    if (Camera_GetDistance(&gStageRun.vm.camera, &(p->s).coord) > 0x8000) {
+      (p->s).flags &= ~DISPLAY;
+      (p->s).flags &= ~FLIPABLE;
+      (p->body).status = sf;
+      // do/while needed to match: forces sf into its home register here.
+      do {
+        (p->body).prevStatus = sf;
+      } while (0);
+      (p->body).invincibleTime = sf;
+    despawn:
+      (p->s).flags &= ~COLLIDABLE;
+      SET_ENEMY_ROUTINE(p, ENTITY_DISAPPEAR);
+      return;
+    }
+  }
+  if (gallisni_080870bc( (struct Enemy*)p)) {
+    return;
+  }
+  gallisni_080871b4((struct Enemy*)p);
+  if (gallisni_08087118(p)) {
+    return;
+  }
+  (sUpdates1[(p->s).mode[1]])(p);
+  (sUpdates2[(p->s).mode[1]])(p);
+}
 
 void Gallisni_Die(struct Enemy* p) {
   (sDeads[(p->s).mode[1]])((void*)p);
