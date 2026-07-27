@@ -118,7 +118,17 @@ static void LayerUpdate_SnowyPlains_4(struct StageLayer* l, const struct Stage* 
 // 0x08012BFC
 NAKED static void LayerDraw_SnowyPlains_4(struct StageLayer* l, const struct Stage* _ UNUSED) { INCCODE("asm/todo/LayerDraw_SnowyPlains_4.inc"); }
 
-INCASM("asm/stage_gfx/snowy_plains.inc");
+INCASM("asm/stage_gfx/snowy_plains_a.inc");
+
+void snowyplains_080133b4(struct StageLayer* l, const struct Stage* _ UNUSED) {
+  if (l->phase == 0) {
+    const u16 n = l->bgIdx;
+    BGCNT16(n >> 4) = (BGCNT16(n >> 4) & 0xFFFC) | 3;
+    l->phase++;
+  }
+}
+
+INCASM("asm/stage_gfx/snowy_plains_b.inc");
 
 // ------------------------------------------------------------------------------------------------------------------------------------
 
