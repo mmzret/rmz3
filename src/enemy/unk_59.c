@@ -123,7 +123,12 @@ static void Enemy59_Init(Enemy59* p) {
   Enemy59_Update(p);
 }
 
-INCASM("asm/enemy/unk_59.inc");
+INCASM("asm/enemy/unk_59_a.inc");
+
+void FUN_08091810(struct Enemy* p) {
+}
+
+INCASM("asm/enemy/unk_59_b.inc");
 
 // 0x083697F4
 static const struct SlashedEnemy sSlashedEnemies[4] = {
