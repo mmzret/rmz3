@@ -71,23 +71,35 @@ static void Harpuia_Init(struct Zero* z) {
   Harpuia_Update(z);
 }
 
-INCASM("asm/player/harpuia.inc");
+INCASM("asm/player/harpuia_a.inc");
+
+bool8 FUN_0803532c(struct Zero* z) {
+  return TRUE;
+}
+
+INCASM("asm/player/harpuia_b.inc");
+
+bool8 FUN_080355c0(struct Zero* z) {
+  return TRUE;
+}
+
+INCASM("asm/player/harpuia_c.inc");
 
 // --------------------------------------------
 
-void FUN_0803532c(struct Zero* z);
+bool8 FUN_0803532c(struct Zero* z);
 void FUN_0803537c(struct Zero* z);
 void FUN_080353e4(struct Zero* z);
 void FUN_080354a4(struct Zero* z);
-void FUN_080355c0(struct Zero* z);
+bool8 FUN_080355c0(struct Zero* z);
 
 // clang-format off
 const ZeroFunc sHarpuiaUpdates1[5] = {
-    FUN_0803532c,
+    (ZeroFunc)FUN_0803532c,
     FUN_0803537c,
     FUN_080353e4,
     FUN_080354a4,
-    FUN_080355c0,
+    (ZeroFunc)FUN_080355c0,
 };
 // clang-format on
 
