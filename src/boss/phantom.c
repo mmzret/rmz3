@@ -310,7 +310,12 @@ static void FUN_0805f004(Object* p) {
   }
 }
 
-INCASM("asm/boss/phantom.inc");
+INCASM("asm/boss/phantom_a.inc");
+
+void nop_0805f930(struct Boss* p) {
+}
+
+INCASM("asm/boss/phantom_b.inc");
 
 // --------------------------------------------
 
