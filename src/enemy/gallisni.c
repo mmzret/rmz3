@@ -1,169 +1,8 @@
 #include "collision.h"
 #include "enemy.h"
 #include "global.h"
-#include "stagerun.h"
-#include "camera.h"
-#include "story.h"
 
-void FUN_080874ac(struct Enemy* p);
-
-void FUN_08087434(struct Enemy* p);
-
-void FUN_080873fc(struct Enemy* p);
-
-void FUN_08087380(struct Enemy* p);
-
-void nop_0808737c(struct Enemy* p);
-
-void FUN_080873a0(struct Enemy* p);
-
-void Gallisni_Die(struct Enemy* p);
-
-void Gallisni_Update(struct Enemy* p);
-
-static const EnemyFunc sUpdates1[8];
-static const EnemyFunc sUpdates2[8];
-static const EnemyFunc sDeads[3];
-static const struct Collision sCollisions[5];
-bool8 gallisni_080870bc(struct Enemy* p);
-bool8 gallisni_08087118(struct Enemy* p);
-void gallisni_080871b4(struct Enemy* p);
-
-void CreateGallisni(s32 x, s32 y, u8 a2) {
-  struct Enemy* p = (struct Enemy*)AllocEntityLast(gEnemyHeaderPtr);
-  if (p != NULL) {
-    INIT_ENEMY_ROUTINE(p, ENEMY_GALLISNI);
-    (p->s).work[0] = 1;
-    (p->s).coord.x = x;
-    (p->s).coord.y = y;
-    (p->s).work[2] = a2;
-  }
-}
-
-INCASM("asm/enemy/gallisni_a.inc");
-
-void Gallisni_Update(struct Enemy* p) {
-  if ((p->s).work[0] == 1) {
-    u8 sf = (u8)(gCurStory.s.gameflags[4] & 2);
-    if (sf) {
-      (p->s).flags &= ~DISPLAY;
-      (p->s).flags &= ~FLIPABLE;
-      (p->body).status = 0;
-      (p->body).prevStatus = 0;
-      (p->body).invincibleTime = 0;
-      goto despawn;
-    }
-    if (Camera_GetDistance(&gStageRun.vm.camera, &(p->s).coord) > 0x8000) {
-      (p->s).flags &= ~DISPLAY;
-      (p->s).flags &= ~FLIPABLE;
-      (p->body).status = sf;
-      // do/while needed to match: forces sf into its home register here.
-      do {
-        (p->body).prevStatus = sf;
-      } while (0);
-      (p->body).invincibleTime = sf;
-    despawn:
-      (p->s).flags &= ~COLLIDABLE;
-      SET_ENEMY_ROUTINE(p, ENTITY_DISAPPEAR);
-      return;
-    }
-  }
-  if (gallisni_080870bc(p)) {
-    return;
-  }
-  gallisni_080871b4(p);
-  if (gallisni_08087118(p)) {
-    return;
-  }
-  (sUpdates1[(p->s).mode[1]])((void*)p);
-  (sUpdates2[(p->s).mode[1]])((void*)p);
-}
-
-void Gallisni_Die(struct Enemy* p) {
-  (sDeads[(p->s).mode[1]])((void*)p);
-}
-
-void nop_0808737c(struct Enemy* p) {}
-
-
-void FUN_08087380(struct Enemy* p) {
-  if (((p->body).status & 0x00020001) == 0x00020001) {
-    (p->s).mode[1] = 7;
-    (p->s).mode[2] = 0;
-  }
-}
-
-
-void FUN_080873a0(struct Enemy* p) {
-  struct Entity** slot = (struct Entity**)((u8*)p + 0xb4);
-  if (*slot == NULL || isKilled(*slot)) {
-    *slot = NULL;
-    SetDDP(&p->body, &sCollisions[2]);
-    if (!IsFrozen(&p->s)) {
-      (p->s).mode[1] = 3;
-      (p->s).mode[2] = 0;
-    }
-  }
-  if (((p->body).status & 0x00020001) == 0x00020001) {
-    (p->s).mode[1] = 7;
-    (p->s).mode[2] = 0;
-  }
-}
-
-void FUN_080873fc(struct Enemy* p) {
-  if ((p->s).mode[2] == 0) {
-    SetSpriteAnimation(p, MOTION(0x67, 3));
-    UpdateSpriteAnimation(p);
-    SetDDP(&p->body, &sCollisions[3]);
-    (p->s).mode[2]++;
-  }
-}
-
-void FUN_08087434(struct Enemy* p) {
-  switch ((p->s).mode[2]) {
-    case 0:
-      SetDDP(&p->body, &sCollisions[0]);
-      (p->s).work[2] = 0x80;
-      (p->s).renderPrio = 0xf;
-      SetSpriteAnimation(p, MOTION(0x67, 1));
-      (p->s).mode[2]++;
-      FALLTHROUGH;
-    case 1:
-      (p->s).work[2]--;
-      if ((p->s).work[2] == 0) {
-        (p->s).mode[1] = 2;
-        (p->s).mode[2] = 0;
-      }
-      UpdateSpriteAnimation(p);
-      if ((s8)(p->s).motion.cmdIdx == 8) {
-        SetDDP(&p->body, &sCollisions[1]);
-      }
-      break;
-  }
-}
-
-void FUN_080874ac(struct Enemy* p) {
-  switch ((p->s).mode[2]) {
-    case 0:
-      (p->s).work[2] = 0x18;
-      SetDDP(&p->body, &sCollisions[0]);
-      SetSpriteAnimation(p, MOTION(0x67, 2));
-      (p->s).mode[2]++;
-      FALLTHROUGH;
-    case 1:
-      if (p->buffer[4] != 0) p->buffer[4]--;
-      if ((p->s).work[2] == 0 || --(p->s).work[2] == 0) {
-        if (p->buffer[4] == 0) {
-          (p->s).mode[1] = 1;
-          (p->s).mode[2] = 0;
-        }
-      }
-      UpdateSpriteAnimation(p);
-      break;
-  }
-}
-
-INCASM("asm/enemy/gallisni_b.inc");
+INCASM("asm/enemy/gallisni.inc");
 
 void Gallisni_Init(struct Enemy* p);
 void Gallisni_Update(struct Enemy* p);
@@ -171,9 +10,9 @@ void Gallisni_Die(struct Enemy* p);
 
 // clang-format off
 const EnemyRoutine gGallisniRoutine = {
-    [ENTITY_INIT] =      (void*)Gallisni_Init,
-    [ENTITY_UPDATE] =    (void*)Gallisni_Update,
-    [ENTITY_DIE] =       (void*)Gallisni_Die,
+    [ENTITY_INIT] =      Gallisni_Init,
+    [ENTITY_UPDATE] =    Gallisni_Update,
+    [ENTITY_DIE] =       Gallisni_Die,
     [ENTITY_DISAPPEAR] = (void*)DeleteEnemy,
     [ENTITY_EXIT] =      (EnemyFunc)DeleteEntity,
 };
