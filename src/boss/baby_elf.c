@@ -51,7 +51,12 @@ static void FUN_08045b68(BabyElf* p) {
   }
 }
 
-INCASM("asm/boss/baby_elf.inc");
+INCASM("asm/boss/baby_elf_a.inc");
+
+void nop_08046150(BabyElf* p) {
+}
+
+INCASM("asm/boss/baby_elf_b.inc");
 
 void nop_08046150(BabyElf* p);
 
