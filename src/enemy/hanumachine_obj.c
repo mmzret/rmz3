@@ -1,8 +1,89 @@
 #include "collision.h"
 #include "enemy.h"
 #include "global.h"
+#include "vfx.h"
 
-INCASM("asm/enemy/hanumachine_obj.inc");
+static const struct Collision sCollisions[6];
+static const EnemyFunc sUpdates[8];
+
+void FUN_08086e34(struct Enemy* p);
+
+void HanumachineObj_Die(struct Enemy* p);
+
+void HanumachineObj_Update(struct Enemy* p);
+
+void FUN_080866a4(struct Entity* e, u8 mode, u8 xflip) {
+  struct Enemy* p = (struct Enemy*)AllocEntityLast(gEnemyHeaderPtr);
+  if (p != NULL) {
+    INIT_ENEMY_ROUTINE(p, ENEMY_HANUMACHINE_OBJ);
+    (p->s).unk_28 = e;
+    SET_XFLIP(&p->s, xflip);
+    (p->s).work[0] = mode;
+    (p->s).work[1] = 0;
+  }
+}
+
+INCASM("asm/enemy/hanumachine_obj_a.inc");
+
+void HanumachineObj_Update(struct Enemy* p) {
+  struct Coord c1;
+  struct Coord c2;
+  u16* timer = (u16*)((u8*)p + 0xc0);
+  s32 t;
+  if (*timer == 0) {
+    c1.x = (p->s).coord.x;
+    c1.y = (p->s).coord.y - 0x800;
+    PlaySound(0x2a);
+    CreateSmoke(1, &c1);
+    if (*(u8*)((u8*)p + 0xbd) != 0) {
+      SetDDP(&p->body, &sCollisions[5]);
+    } else {
+      SetDDP(&p->body, &sCollisions[3]);
+    }
+    goto die;
+  }
+  if ((p->s).mode[1] != 7) {
+    if (((p->body).status & 0x00020001) == 0x00020001) {
+      (p->s).mode[1] = 7;
+      (p->s).mode[2] = 0;
+    }
+    if ((p->s).mode[1] != 7) {
+      goto cont;
+    }
+  }
+  FUN_08086e34(p);
+  return;
+
+cont:
+  if ((p->body).status & BODY_STATUS_DEAD) {
+    c2.x = (p->s).coord.x;
+    c2.y = (p->s).coord.y - 0x800;
+    PlaySound(0x2a);
+    CreateSmoke(1, &c2);
+  die:
+    SET_ENEMY_ROUTINE(p, ENTITY_DIE);
+    HanumachineObj_Die(p);
+    return;
+  }
+  (sUpdates[(p->s).mode[1]])((void*)p);
+  t = *timer - 1;
+  *timer = t;
+  if ((u16)t > 0x3b) {
+    return;
+  }
+  if ((t & 3U) <= 1) {
+    PaintEntityWhite(&p->s);
+  } else {
+    UpdateEntityPaletteID(&p->s);
+  }
+}
+
+void HanumachineObj_Die(struct Enemy* p) {
+  (p->s).flags &= ~DISPLAY;
+  SET_ENEMY_ROUTINE(p, ENTITY_EXIT);
+}
+
+INCASM("asm/enemy/hanumachine_obj_b.inc");
 
 void HanumachineObj_Init(struct Enemy* p);
 void HanumachineObj_Update(struct Enemy* p);
@@ -10,9 +91,9 @@ void HanumachineObj_Die(struct Enemy* p);
 
 // clang-format off
 const EnemyRoutine gHanumachineObjRoutine = {
-    [ENTITY_INIT] =      HanumachineObj_Init,
-    [ENTITY_UPDATE] =    HanumachineObj_Update,
-    [ENTITY_DIE] =       HanumachineObj_Die,
+    [ENTITY_INIT] =      (void*)HanumachineObj_Init,
+    [ENTITY_UPDATE] =    (void*)HanumachineObj_Update,
+    [ENTITY_DIE] =       (void*)HanumachineObj_Die,
     [ENTITY_DISAPPEAR] = (void*)DeleteEnemy,
     [ENTITY_EXIT] =      (EnemyFunc)DeleteEntity,
 };
