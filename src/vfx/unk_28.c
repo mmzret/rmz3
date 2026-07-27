@@ -19,7 +19,7 @@ const VFXRoutine gGhost28Routine = {
 // clang-format on
 
 struct Entity* FUN_080b9e68(Coords32* c, u8 n) {
-  struct Entity* p = AllocEntityLast(gVFXHeaderPtr);
+  struct Entity* p = (struct Entity*)AllocEntityLast(gVFXHeaderPtr);
   if (p != NULL) {
     INIT_VFX_ROUTINE(p, 28);
     p->work[0] = n, p->work[1] = 0;
@@ -30,14 +30,14 @@ struct Entity* FUN_080b9e68(Coords32* c, u8 n) {
 }
 
 struct Entity* FUN_080b9ebc(Coords32* c, u8 n, motion_t m, s32 val) {
-  VFXUnkCommon* p = AllocEntityLast(gVFXHeaderPtr);
+  VFXUnkCommon* p = (VFXUnkCommon*)AllocEntityLast(gVFXHeaderPtr);
   if (p != NULL) {
     INIT_VFX_ROUTINE(p, 28);
     p->work[0] = n, p->work[1] = 1;
     (p->coord).x = c->x, (p->coord).y = c->y;
     p->m_74 = m, p->unk_78 = val;
   }
-  return (void*)p;
+  return (struct Entity*)p;
 }
 
 NAKED static void Ghost28_Init(struct VFX* p) {
@@ -178,7 +178,7 @@ static void Ghost28_Update(struct VFX* p) {
     Ghost28_Die(p);
     return;
   }
-  (sUpdates[(p->s).mode[1]])(p);
+  (sUpdates[(p->s).mode[1]])((void*)p);
 }
 
 static void Ghost28_Die(struct VFX* p) {
@@ -188,7 +188,43 @@ static void Ghost28_Die(struct VFX* p) {
 
 static void nop_080ba078(void* _ UNUSED) { return; }
 
-INCASM("asm/vfx/unk_28.inc");
+void FUN_080ba07c(struct VFX* v) {
+  struct Coord c;
+  u32 n;
+
+  if (--(v->s).work[2] == 0) {
+    CreateSmoke(2, &(v->s).coord);
+    RNG_0202f388 = LCG(RNG_0202f388);
+    n = (RNG_0202f388 >> 16) & 3;
+    c.x = (v->s).coord.x;
+    c.y = (v->s).coord.y;
+    FUN_080b9ebc(&c, (v->s).work[0], 0x190C, n);
+    FUN_080b9ebc(&c, (v->s).work[0], 0x190D, n);
+    FUN_080b9ebc(&c, (v->s).work[0], 0x190E, n);
+    PlaySound(SE_ZAKO_EXPLODE);
+    SET_VFX_ROUTINE(v, ENTITY_DIE);
+  } else {
+    switch ((v->s).mode[2]) {
+      case 0:
+        (v->s).work[2] = 0x1e;
+        (v->s).d.y = -0x200;
+        SetMotion(&v->s, MOTION(0x19, 0x0b));
+        (v->s).mode[2]++;
+        // fallthrough
+      case 1:
+        (v->s).d.y += 0x20;
+        if ((v->s).d.y > 0x700) {
+          (v->s).d.y = 0x700;
+        }
+        (v->s).coord.y += (v->s).d.y;
+        (v->s).coord.x += (v->s).d.x;
+        UpdateEntityAnim(&v->s);
+        break;
+    }
+  }
+}
+
+INCASM("asm/vfx/unk_28_a.inc");
 
 static const s32 s32_ARRAY_ARRAY_0836eb4c[3][8] = {
     {0x00000120, -0x00000260, -0x000000B0, -0x000001A0, -0x000000B0, -0x00000260, 0x00000120, -0x000001A0},
