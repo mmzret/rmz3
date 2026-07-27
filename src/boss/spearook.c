@@ -2,7 +2,25 @@
 #include "collision.h"
 #include "global.h"
 
-INCASM("asm/boss/spearook.inc");
+INCASM("asm/boss/spearook_a.inc");
+
+void FUN_08062264(struct Boss* p) {
+}
+
+INCASM("asm/boss/spearook_b.inc");
+
+void nop_0806316c(struct Boss* p) {
+}
+
+void nop_08063170(struct Boss* p) {
+}
+
+INCASM("asm/boss/spearook_c.inc");
+
+void nop_08063510(struct Boss* p) {
+}
+
+INCASM("asm/boss/spearook_d.inc");
 
 void Spearook_Init(struct Boss* p);
 void Spearook_Update(struct Boss* p);
