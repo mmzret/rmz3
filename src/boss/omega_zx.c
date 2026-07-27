@@ -408,7 +408,11 @@ static void FUN_08061068(OmegaZX* p) {
   }
 }
 
-INCASM("asm/boss/omega_zx_b.inc");
+bool8 FUN_080610a8(OmegaZX* p) {
+  return TRUE;
+}
+
+INCASM("asm/boss/omega_zx_b_a.inc");
 
 static bool8 FUN_08061230(OmegaZX* p) { return TRUE; }
 
