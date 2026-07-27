@@ -255,24 +255,24 @@ _0806715C: .4byte 0x00000601\n\
 static bool8 FUN_08067694(struct Enemy* p);
 static bool8 FUN_080676ac(struct Enemy* p);
 static bool8 FUN_080677dc(struct Enemy* p);
-void FUN_08067a60(struct Enemy* p);
-void FUN_08067c48(struct Enemy* p);
-void FUN_08067f18(struct Enemy* p);
-void FUN_08067f6c(struct Enemy* p);
-void FUN_08067f74(struct Enemy* p);
-void FUN_08068014(struct Enemy* p);
+bool8 FUN_08067a60(struct Enemy* p);
+bool8 FUN_08067c48(struct Enemy* p);
+bool8 FUN_08067f18(struct Enemy* p);
+bool8 FUN_08067f6c(struct Enemy* p);
+bool8 FUN_08067f74(struct Enemy* p);
+bool8 FUN_08068014(struct Enemy* p);
 
 // clang-format off
 const EnemyFunc sBatringUpdates1[9] = {
     (EnemyFunc)FUN_08067694,
     (EnemyFunc)FUN_080676ac,
     (EnemyFunc)FUN_080677dc,
-    FUN_08067a60,
-    FUN_08067c48,
-    FUN_08067f18,
-    FUN_08067f6c,
-    FUN_08067f74,
-    FUN_08068014,
+    (EnemyFunc)FUN_08067a60,
+    (EnemyFunc)FUN_08067c48,
+    (EnemyFunc)FUN_08067f18,
+    (EnemyFunc)FUN_08067f6c,
+    (EnemyFunc)FUN_08067f74,
+    (EnemyFunc)FUN_08068014,
 };
 // clang-format on
 
@@ -1032,7 +1032,44 @@ _080677D6:\n\
 
 static bool8 FUN_080677dc(struct Enemy* p) { return TRUE; }
 
-INCASM("asm/enemy/batring.inc");
+INCASM("asm/enemy/batring_a.inc");
+
+bool8 FUN_08067a60(struct Enemy* p) {
+  return TRUE;
+}
+
+INCASM("asm/enemy/batring_b.inc");
+
+bool8 FUN_08067c48(struct Enemy* p) {
+  return TRUE;
+}
+
+INCASM("asm/enemy/batring_c.inc");
+
+bool8 FUN_08067f18(struct Enemy* p) {
+  return TRUE;
+}
+
+INCASM("asm/enemy/batring_d.inc");
+
+bool8 FUN_08067f6c(struct Enemy* p) {
+  return TRUE;
+}
+
+void nop_08067f70(struct Enemy* p) {
+}
+
+bool8 FUN_08067f74(struct Enemy* p) {
+  return TRUE;
+}
+
+INCASM("asm/enemy/batring_e.inc");
+
+bool8 FUN_08068014(struct Enemy* p) {
+  return TRUE;
+}
+
+INCASM("asm/enemy/batring_f.inc");
 
 static const struct Collision sCollisions[14] = {
     [0] = {
