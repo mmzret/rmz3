@@ -45,7 +45,18 @@ void blizzack_080aaae0(Entity* q, u8 val) {
   }
 }
 
-INCASM("asm/projectile/blizzack_32.inc");
+INCASM("asm/projectile/blizzack_32_a.inc");
+
+void nop_080aaecc(Projectile32* p) {
+}
+
+void nop_080aaed0(Projectile32* p) {
+}
+
+void nop_080aaed4(Projectile32* p) {
+}
+
+INCASM("asm/projectile/blizzack_32_b.inc");
 
 // --------------------------------------------
 
