@@ -2,6 +2,8 @@
 #include "enemy.h"
 #include "global.h"
 
+void FUN_08078170(struct Enemy* p);
+
 typedef struct {
   COLLISION_OBJECT_HDR;
   u8 props[16];  // 0xB4
@@ -34,7 +36,17 @@ bool32 FUN_080780c4(TileCannon* p) {
   return FALSE;
 }
 
-INCASM("asm/enemy/tile_cannon.inc");
+INCASM("asm/enemy/tile_cannon_a.inc");
+
+void FUN_08078170(struct Enemy* p) {
+}
+
+INCASM("asm/enemy/tile_cannon_b.inc");
+
+void FUN_0807847c(struct Enemy* p) {
+}
+
+INCASM("asm/enemy/tile_cannon_c.inc");
 
 void FUN_08078480(struct Enemy* p);
 void FUN_0807847c(struct Enemy* p);
