@@ -4,7 +4,12 @@
 #include "collision.h"
 #include "global.h"
 
-INCASM("asm/boss/anubis.inc");
+INCASM("asm/boss/anubis_a.inc");
+
+void nop_080503c8(Anubis* p) {
+}
+
+INCASM("asm/boss/anubis_b.inc");
 
 void Anubis_Init(Anubis* p);
 void Anubis_Update(Anubis* p);
