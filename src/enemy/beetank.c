@@ -2,6 +2,8 @@
 #include "enemy.h"
 #include "global.h"
 
+void nop_0807bea4(struct Enemy* p);
+
 void Beetank_Init(struct Enemy* p);
 void Beetank_Update(struct Enemy* p);
 void Beetank_Die(struct Enemy* p);
@@ -28,21 +30,55 @@ struct Enemy* CreateBeetank(Coords32* c, u8 n) {
 
 // --------------------------------------------
 
-INCASM("asm/enemy/beetank.inc");
+INCASM("asm/enemy/beetank_a.inc");
 
-void nop_0807bc8c(struct Enemy* p);
-void nop_0807bd3c(struct Enemy* p);
-void nop_0807bde4(struct Enemy* p);
-void FUN_0807be14(struct Enemy* p);
-void FUN_0807be1c(struct Enemy* p);
+bool8 nop_0807bc8c(struct Enemy* p) {
+  return TRUE;
+}
+
+INCASM("asm/enemy/beetank_b.inc");
+
+bool8 nop_0807bd3c(struct Enemy* p) {
+  return TRUE;
+}
+
+INCASM("asm/enemy/beetank_c.inc");
+
+bool8 nop_0807bde4(struct Enemy* p) {
+  return TRUE;
+}
+
+INCASM("asm/enemy/beetank_d.inc");
+
+bool8 FUN_0807be14(struct Enemy* p) {
+  return TRUE;
+}
+
+void nop_0807be18(struct Enemy* p) {
+}
+
+bool8 FUN_0807be1c(struct Enemy* p) {
+  return TRUE;
+}
+
+INCASM("asm/enemy/beetank_e.inc");
+
+void nop_0807bea4(struct Enemy* p) {
+}
+
+bool8 nop_0807bc8c(struct Enemy* p);
+bool8 nop_0807bd3c(struct Enemy* p);
+bool8 nop_0807bde4(struct Enemy* p);
+bool8 FUN_0807be14(struct Enemy* p);
+bool8 FUN_0807be1c(struct Enemy* p);
 
 // clang-format off
 static const EnemyFunc sUpdates1[5] = {
-    nop_0807bc8c,
-    nop_0807bd3c,
-    nop_0807bde4,
-    FUN_0807be14,
-    FUN_0807be1c,
+    (EnemyFunc)nop_0807bc8c,
+    (EnemyFunc)nop_0807bd3c,
+    (EnemyFunc)nop_0807bde4,
+    (EnemyFunc)FUN_0807be14,
+    (EnemyFunc)FUN_0807be1c,
 };
 // clang-format on
 
