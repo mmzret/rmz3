@@ -25,10 +25,12 @@ const ProjectileRoutine gProjectile34Routine = {
     [ENTITY_DISAPPEAR] = (void*)DeleteProjectile,
     [ENTITY_EXIT] =      (void*)DeleteEntity,
 };
+
+static void (*const sUpdates[4])(Projectile34*);
 // clang-format on
 
 struct Entity* FUN_080ac818(Coords32* c, s32 val1, s32 val2, struct Entity* e) {
-  Projectile34* p = AllocEntityLast(gProjectileHeaderPtr);
+  Projectile34* p = (Projectile34*)AllocEntityLast(gProjectileHeaderPtr);
   if (p != NULL) {
     INIT_PROJECTILE_ROUTINE(p, 34);
     p->coord = *c;
@@ -36,10 +38,77 @@ struct Entity* FUN_080ac818(Coords32* c, s32 val1, s32 val2, struct Entity* e) {
     p->unk_b8 = val1, p->unk_bc = val2;
     p->unk_28 = (void*)e;
   }
-  return (void*)p;
+  return (struct Entity*)p;
 }
 
-INCASM("asm/projectile/unk_34.inc");
+Projectile34* FUN_080ac880(struct Coord* c, s32 prevX, s32 prevY, struct Entity* e) {
+  Projectile34* p = (Projectile34*)AllocEntityLast(gProjectileHeaderPtr);
+  if (p != NULL) {
+    INIT_PROJECTILE_ROUTINE(p, 34);
+    p->coord = *c;
+    p->work[0] = 1;
+    p->work[1] = 0;
+    p->unk_b8 = prevX;
+    p->unk_bc = prevY;
+    p->unk_28 = e;
+  }
+  return p;
+}
+
+Projectile34* FUN_080ac8e8(struct Coord* c, s32 prevX, s32 prevY, struct Entity* e) {
+  Projectile34* p = (Projectile34*)AllocEntityLast(gProjectileHeaderPtr);
+  if (p != NULL) {
+    INIT_PROJECTILE_ROUTINE(p, 34);
+    p->coord = *c;
+    p->work[0] = 0;
+    p->work[1] = 1;
+    p->unk_b8 = prevX;
+    p->unk_bc = prevY;
+    p->unk_28 = e;
+  }
+  return p;
+}
+
+Projectile34* FUN_080ac950(struct Coord* c, s32 prevX, s32 prevY, struct Entity* e) {
+  Projectile34* p = (Projectile34*)AllocEntityLast(gProjectileHeaderPtr);
+  if (p != NULL) {
+    INIT_PROJECTILE_ROUTINE(p, 34);
+    p->coord = *c;
+    p->work[0] = 1;
+    p->work[1] = 1;
+    p->unk_b8 = prevX;
+    p->unk_bc = prevY;
+    p->unk_28 = e;
+  }
+  return p;
+}
+
+Projectile34* FUN_080ac9b4(struct Coord* c, s32 prevX, s32 prevY, struct Entity* e) {
+  Projectile34* p = (Projectile34*)AllocEntityLast(gProjectileHeaderPtr);
+  if (p != NULL) {
+    INIT_PROJECTILE_ROUTINE(p, 34);
+    p->coord = *c;
+    p->work[0] = 2;
+    p->unk_b8 = prevX;
+    p->unk_bc = prevY;
+    p->unk_28 = e;
+  }
+  return p;
+}
+
+INCASM("asm/projectile/unk_34_a.inc");
+
+void Projectile34_Update(Projectile34* p) {
+  (sUpdates[p->mode[1]])((void*)p);
+}
+
+void Projectile34_Die(Projectile34* p) {
+  p->flags &= ~DISPLAY;
+  EXIT_BODY(p);
+  SET_PROJECTILE_ROUTINE(p, ENTITY_EXIT);
+}
+
+INCASM("asm/projectile/unk_34_b.inc");
 
 // --------------------------------------------
 
