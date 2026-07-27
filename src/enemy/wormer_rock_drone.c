@@ -2,7 +2,19 @@
 #include "enemy.h"
 #include "global.h"
 
-INCASM("asm/enemy/wormer_rock_drone.inc");
+void nop_08076ee0(struct Enemy* p);
+
+INCASM("asm/enemy/wormer_rock_drone_a.inc");
+
+void nop_08076ee0(struct Enemy* p) {
+}
+
+INCASM("asm/enemy/wormer_rock_drone_b.inc");
+
+void FUN_08076fe4(struct Enemy* p) {
+}
+
+INCASM("asm/enemy/wormer_rock_drone_c.inc");
 
 void WormerRockDrone_Init(struct Enemy* p);
 void WormerRockDrone_Update(struct Enemy* p);
