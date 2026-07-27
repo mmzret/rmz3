@@ -81,7 +81,12 @@ void deathtanz_080a09f4(struct Entity* q, s32 x, s32 y, u8 kind, bool8 xflip) {
 // 0x080a0a5c
 static void onCollision(struct Body* body UNUSED, Coords32* r1 UNUSED, Coords32* r2 UNUSED) {}
 
-INCASM("asm/projectile/unk_14.inc");
+INCASM("asm/projectile/unk_14_a.inc");
+
+void nop_080a0b6c(Projectile14* p) {
+}
+
+INCASM("asm/projectile/unk_14_b.inc");
 
 void nop_080a0b6c(Projectile14* p);
 
