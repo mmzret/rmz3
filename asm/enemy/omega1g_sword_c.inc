@@ -1,0 +1,168 @@
+	.include "asm/macros.inc"
+
+	.syntax unified
+	
+	.text
+
+	thumb_func_start FUN_0808bbe8
+FUN_0808bbe8: @ 0x0808BBE8
+	push {r4, r5, r6, r7, lr}
+	mov r7, sb
+	mov r6, r8
+	push {r6, r7}
+	sub sp, #8
+	adds r5, r0, #0
+	ldrb r0, [r5, #0xe]
+	cmp r0, #1
+	beq _0808BC34
+	cmp r0, #1
+	bgt _0808BC04
+	cmp r0, #0
+	beq _0808BC0A
+	b _0808BCD0
+_0808BC04:
+	cmp r0, #2
+	beq _0808BC58
+	b _0808BCD0
+_0808BC0A:
+	ldrb r1, [r5, #0xa]
+	movs r0, #1
+	orrs r0, r1
+	strb r0, [r5, #0xa]
+	movs r1, #0xca
+	lsls r1, r1, #7
+	adds r0, r5, #0
+	bl SetMotion
+	ldr r1, [r5, #0x28]
+	ldr r0, [r1, #0x58]
+	ldr r2, _0808BC54 @ =0xFFFFC000
+	adds r0, r0, r2
+	str r0, [r5, #0x58]
+	ldr r0, [r1, #0x54]
+	str r0, [r5, #0x54]
+	movs r0, #0x3c
+	strb r0, [r5, #0x12]
+	ldrb r0, [r5, #0xe]
+	adds r0, #1
+	strb r0, [r5, #0xe]
+_0808BC34:
+	adds r0, r5, #0
+	bl UpdateEntityAnim
+	ldrb r0, [r5, #0x12]
+	cmp r0, #0
+	beq _0808BC4A
+	subs r0, #1
+	strb r0, [r5, #0x12]
+	lsls r0, r0, #0x18
+	cmp r0, #0
+	bne _0808BCD0
+_0808BC4A:
+	ldrb r0, [r5, #0xe]
+	adds r0, #1
+	strb r0, [r5, #0xe]
+	b _0808BCD0
+	.align 2, 0
+_0808BC54: .4byte 0xFFFFC000
+_0808BC58:
+	ldr r1, _0808BCE0 @ =0x00006501
+	adds r0, r5, #0
+	bl SetMotion
+	movs r0, #0x41
+	bl PlaySound
+	ldr r0, _0808BCE4 @ =RNG_0202f388
+	mov r8, r0
+	mov sb, sp
+	ldr r6, _0808BCE8 @ =0x08368EC4
+	movs r7, #5
+_0808BC70:
+	mov r2, r8
+	ldr r1, [r2]
+	ldr r0, _0808BCEC @ =0x000343FD
+	adds r4, r1, #0
+	muls r4, r0, r4
+	ldr r0, _0808BCF0 @ =0x00269EC3
+	adds r4, r4, r0
+	lsls r4, r4, #1
+	lsrs r0, r4, #1
+	str r0, [r2]
+	lsrs r4, r4, #0x11
+	movs r0, #3
+	ands r4, r0
+	ldr r0, [r5, #0x54]
+	ldr r1, [r6]
+	adds r0, r0, r1
+	str r0, [sp]
+	ldr r0, [r5, #0x58]
+	ldr r1, [r6, #4]
+	adds r0, r0, r1
+	movs r1, #0x80
+	lsls r1, r1, #7
+	adds r0, r0, r1
+	mov r2, sb
+	str r0, [r2, #4]
+	mov r0, sp
+	adds r1, r4, #0
+	ldr r2, _0808BCF4 @ =0x0000650E
+	bl FUN_080c1c94
+	mov r0, sp
+	adds r1, r4, #0
+	ldr r2, _0808BCF8 @ =0x0000650F
+	bl FUN_080c1c94
+	mov r0, sp
+	adds r1, r4, #0
+	ldr r2, _0808BCFC @ =0x00006510
+	bl FUN_080c1c94
+	adds r6, #8
+	subs r7, #1
+	cmp r7, #0
+	bge _0808BC70
+	movs r1, #0
+	movs r0, #2
+	strb r0, [r5, #0xd]
+	strb r1, [r5, #0xe]
+_0808BCD0:
+	add sp, #8
+	pop {r3, r4}
+	mov r8, r3
+	mov sb, r4
+	pop {r4, r5, r6, r7}
+	pop {r0}
+	bx r0
+	.align 2, 0
+_0808BCE0: .4byte 0x00006501
+_0808BCE4: .4byte RNG_0202f388
+_0808BCE8: .4byte 0x08368EC4
+_0808BCEC: .4byte 0x000343FD
+_0808BCF0: .4byte 0x00269EC3
+_0808BCF4: .4byte 0x0000650E
+_0808BCF8: .4byte 0x0000650F
+_0808BCFC: .4byte 0x00006510
+
+	thumb_func_start FUN_0808bd00
+FUN_0808bd00: @ 0x0808BD00
+	push {lr}
+	adds r2, r0, #0
+	ldr r0, [r2, #0x28]
+	ldrb r0, [r0, #0xd]
+	cmp r0, #6
+	bne _0808BD14
+	movs r1, #0
+	movs r0, #3
+	strb r0, [r2, #0xd]
+	strb r1, [r2, #0xe]
+_0808BD14:
+	movs r0, #1
+	pop {r1}
+	bx r1
+	.align 2, 0
+
+	thumb_func_start FUN_0808bd1c
+FUN_0808bd1c:
+	.byte 0x30, 0xB5, 0x04, 0x1C
+	.byte 0xA5, 0x7B, 0x00, 0x2D, 0x02, 0xD0, 0x01, 0x2D, 0x1F, 0xD0, 0x28, 0xE0, 0xE1, 0x7A, 0x10, 0x20
+	.byte 0x08, 0x43, 0xE0, 0x72, 0xA0, 0x6A, 0x00, 0x7F, 0x60, 0x77, 0x12, 0x49, 0x20, 0x1C, 0x8B, 0xF7
+	.byte 0x13, 0xFC, 0xA1, 0x7A, 0xEF, 0x20, 0x08, 0x40, 0xA0, 0x72, 0x20, 0x1C, 0x4C, 0x30, 0x05, 0x70
+	.byte 0x22, 0x1C, 0x4A, 0x32, 0x11, 0x78, 0x11, 0x20, 0x40, 0x42, 0x08, 0x40, 0x10, 0x70, 0x25, 0x66
+	.byte 0xE5, 0x65, 0xA5, 0x74, 0xA0, 0x7B, 0x01, 0x30, 0xA0, 0x73, 0xA0, 0x6A, 0x81, 0x6D, 0x06, 0x4A
+	.byte 0x89, 0x18, 0xA1, 0x65, 0x40, 0x6D, 0x60, 0x65, 0x20, 0x1C, 0x8B, 0xF7, 0x6F, 0xFC, 0x30, 0xBC
+	.byte 0x01, 0xBC, 0x00, 0x47, 0x01, 0x65, 0x00, 0x00, 0x00, 0xC0, 0xFF, 0xFF

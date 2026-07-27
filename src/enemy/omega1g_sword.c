@@ -2,6 +2,8 @@
 #include "enemy.h"
 #include "global.h"
 
+void nop_0808c384(struct Enemy* p);
+
 void OmegaGoldSword_Init(struct Enemy* p);
 void OmegaGoldSword_Update(struct Enemy* p);
 void OmegaGoldSword_Die(struct Enemy* p);
@@ -30,7 +32,34 @@ struct Entity* CreateOmega1gSword(Coords32* c, u8 r1, void* omega1) {
   return p;
 }
 
-INCASM("asm/enemy/omega1g_sword.inc");
+INCASM("asm/enemy/omega1g_sword_a.inc");
+
+bool8 FUN_0808bb84(struct Enemy* p) {
+  return TRUE;
+}
+
+INCASM("asm/enemy/omega1g_sword_b.inc");
+
+bool8 FUN_0808bbe4(struct Enemy* p) {
+  return TRUE;
+}
+
+INCASM("asm/enemy/omega1g_sword_c.inc");
+
+bool8 FUN_0808bd8c(struct Enemy* p) {
+  return TRUE;
+}
+
+INCASM("asm/enemy/omega1g_sword_d.inc");
+
+bool8 FUN_0808c330(struct Enemy* p) {
+  return TRUE;
+}
+
+INCASM("asm/enemy/omega1g_sword_e.inc");
+
+void nop_0808c384(struct Enemy* p) {
+}
 
 // --------------------------------------------
 
