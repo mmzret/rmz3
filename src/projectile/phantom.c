@@ -121,7 +121,7 @@ static void PhantomProjectile_Init(PhantomProjectile* p) {
     FUN_080af2b0,
   };
   // clang-format on
-  (sInitializers[p->work[0]])(p);
+  (sInitializers[p->work[0]])((void*)p);
 }
 
 static void FUN_080af114(PhantomProjectile* p) {
@@ -199,7 +199,7 @@ static void PhantomProjectile_Update(PhantomProjectile* p) {
     FUN_080afb1c,
   };
   // clang-format on
-  (sUpdates[p->work[0]])(p);
+  (sUpdates[p->work[0]])((void*)p);
   UpdateSpriteAnimation(p);
 }
 
@@ -218,7 +218,7 @@ static void FUN_080af32c(PhantomProjectile* p) {
     SET_PROJECTILE_ROUTINE(p, ENTITY_DIE);
     return;
   }
-  (PTR_ARRAY_0836d418[p->mode[1]])(p);
+  (PTR_ARRAY_0836d418[p->mode[1]])((void*)p);
 }
 
 static void (*const PTR_ARRAY_0836d430[2])(PhantomProjectile*);
@@ -267,11 +267,11 @@ static void FUN_080af70c(PhantomProjectile* p) {
   PhantomProjectile_Update(p);
 }
 
-void FUN_080af748(PhantomProjectile* p) { (PTR_ARRAY_0836d438[p->mode[1]])(p); }
+void FUN_080af748(PhantomProjectile* p) { (PTR_ARRAY_0836d438[p->mode[1]])((void*)p); }
 
 INCASM("asm/projectile/phantom_c.inc");
 
-void FUN_080af8b0(PhantomProjectile* p) { (PTR_ARRAY_0836d440[p->mode[1]])(p); }
+void FUN_080af8b0(PhantomProjectile* p) { (PTR_ARRAY_0836d440[p->mode[1]])((void*)p); }
 
 void FUN_080af8e8(PhantomProjectile* p);
 
@@ -285,7 +285,7 @@ INCASM("asm/projectile/phantom_d.inc");
 
 void nop_080af9ac(PhantomProjectile* p) {}
 
-void FUN_080af9b0(PhantomProjectile* p) { (PTR_ARRAY_0836d44c[p->mode[1]])(p); }
+void FUN_080af9b0(PhantomProjectile* p) { (PTR_ARRAY_0836d44c[p->mode[1]])((void*)p); }
 
 void FUN_080af9f4(PhantomProjectile* p);
 
@@ -297,7 +297,58 @@ void FUN_080af9c8(PhantomProjectile* p) {
   FUN_080af9f4(p);
 }
 
-INCASM("asm/projectile/phantom_e.inc");
+INCASM("asm/projectile/phantom_e_a.inc");
+
+void FUN_080afb1c(PhantomProjectile* p) {
+  if ((p->unk_28)->mode[0] > 1) {
+    p->flags &= ~DISPLAY;
+    p->flags &= ~FLIPABLE;
+    EXIT_BODY(p);
+    SET_PROJECTILE_ROUTINE(p, ENTITY_DISAPPEAR);
+  }
+}
+
+INCASM("asm/projectile/phantom_e_b.inc");
+
+PhantomProjectile* FUN_080afbb0(struct Entity* e, u8 n) {
+  PhantomProjectile* p = (PhantomProjectile*)AllocEntityFirst(gProjectileHeaderPtr);
+
+  if (p != NULL) {
+    INIT_PROJECTILE_ROUTINE(p, 40);
+    p->work[0] = n;
+    p->unk_28 = e;
+  }
+  return p;
+}
+
+INCASM("asm/projectile/phantom_e_c.inc");
+
+PhantomProjectile* FUN_080afc9c(struct Entity* e, u8 n) {
+  PhantomProjectile* p = (PhantomProjectile*)AllocEntityLast(gProjectileHeaderPtr);
+
+  if (p != NULL) {
+    INIT_PROJECTILE_ROUTINE(p, 40);
+    p->work[0] = 2;
+    p->work[2] = n;
+    p->unk_28 = e;
+  }
+  return p;
+}
+
+INCASM("asm/projectile/phantom_e_d.inc");
+
+PhantomProjectile* FUN_080afda4(struct Entity* e) {
+  PhantomProjectile* p = (PhantomProjectile*)AllocEntityFirst(gProjectileHeaderPtr);
+
+  if (p != NULL) {
+    INIT_PROJECTILE_ROUTINE(p, 40);
+    p->work[0] = 5;
+    p->unk_28 = e;
+  }
+  return p;
+}
+
+INCASM("asm/projectile/phantom_e_e.inc");
 
 void FUN_080af518(PhantomProjectile* p);
 void FUN_080af5cc(PhantomProjectile* p);
