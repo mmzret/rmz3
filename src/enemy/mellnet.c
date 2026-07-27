@@ -2,7 +2,19 @@
 #include "enemy.h"
 #include "global.h"
 
-INCASM("asm/enemy/mellnet.inc");
+void FUN_0807d720(struct Enemy* p);
+
+INCASM("asm/enemy/mellnet_a.inc");
+
+void FUN_0807d720(struct Enemy* p) {
+}
+
+INCASM("asm/enemy/mellnet_b.inc");
+
+void FUN_0807d990(struct Enemy* p) {
+}
+
+INCASM("asm/enemy/mellnet_c.inc");
 
 void Mellnet_Init(struct Enemy* p);
 void Mellnet_Update(struct Enemy* p);
