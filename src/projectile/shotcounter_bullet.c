@@ -148,7 +148,15 @@ static void ShotcounterBullet_Update(Projectile* p) {
   (sUpdates[p->mode[1]])(p);
 }
 
-INCASM("asm/projectile/shotcounter_bullet.inc");
+INCASM("asm/projectile/shotcounter_bullet_a.inc");
+
+void nop_0809ceac(Projectile* p) {
+}
+
+INCASM("asm/projectile/shotcounter_bullet_b.inc");
+
+void FUN_0809cf98(Projectile* p) {
+}
 
 static const struct Collision sCollisions[2] = {
     {
