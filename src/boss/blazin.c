@@ -8,6 +8,9 @@
 //
 #include "projectile/blazin.h"
 #include "projectile/blazin_tail.h"
+#include "element.h"
+
+const Coords32 gBlazinCoords[5];
 
 typedef struct {
   COLLISION_OBJECT_HDR;  // 0x00
@@ -33,7 +36,7 @@ const BossRoutine gBlazinRoutine = {
 // clang-format on
 
 Blazin* Unused_CreateBlazin(Coords32* c, u8 n) {
-  Blazin* p = AllocEntityLast(gBossHeaderPtr);
+  Blazin* p = (Blazin*)AllocEntityLast(gBossHeaderPtr);
   if (p != NULL) {
     INIT_BOSS_ROUTINE(p, BOSS_BLAZIN);
     p->coord = *c;
@@ -221,7 +224,7 @@ void blazinEX(Blazin* p);
 void blazinMode10(Blazin* p);
 void blazinKnockBackDamage(Blazin* p);
 
-u32 blazin_0803fed8(void* p);
+u32 blazin_0803fed8(struct Boss* p);
 static bool8 FUN_0803ffc0(Blazin* p);
 
 static void Blazin_Update(Blazin* p) {
@@ -267,16 +270,16 @@ static void Blazin_Update(Blazin* p) {
     } else {
       p->mode[3] = 0;
     }
-    Blazin_Die(p);
+    Blazin_Die((Blazin*)p);
   } else {
     BlazinTail* tail = p->tail;
     if (tail != NULL && tail->mode[0] > ENTITY_UPDATE) {
       p->tail = NULL;
-      FUN_0803ffc0(p);
+      FUN_0803ffc0((Blazin*)p);
       p->anim_c8 = 21;
     }
     sUpdates1[p->mode[1]](p);
-    blazin_0803fed8(p);
+    blazin_0803fed8((void*)p);
     sUpdates2[p->mode[1]](p);
   }
 }
@@ -289,7 +292,7 @@ static void Blazin_Die(Blazin* p) {
       blazinDeath0,
       blazinDeath1,
   };
-  (sDeads[p->mode[1]])(p);
+  (sDeads[p->mode[1]])((void*)p);
 }
 
 static void blazinDeath0(Blazin* p) {
@@ -782,7 +785,26 @@ INCASM("asm/boss/blazin_h.inc");
 
 bool8 FUN_0803fd58(Blazin* _) { return TRUE; }
 
-INCASM("asm/boss/blazin_i.inc");
+INCASM("asm/boss/blazin_i_a.inc");
+
+u32 blazin_0803fed8(struct Boss* p) {
+  struct Entity** slot = (struct Entity**)&p->buffer[12];
+
+  if (*slot == NULL && ((p->body).status & 1)) {
+    *slot = ApplyElementEffect(9, (Object*)p, gBlazinCoords);
+    if (*slot != NULL) {
+      if ((*(u8*)((u8*)p + 0x97) & 0xf0) == 0x10) {
+        p->mode[1] = 10;
+        p->mode[2] = 0;
+      } else {
+        *slot = NULL;
+      }
+    }
+  }
+  return TRUE;
+}
+
+INCASM("asm/boss/blazin_i_b.inc");
 
 struct Enemy* FUN_0809c430(struct Entity* e, Coords32* c);
 
