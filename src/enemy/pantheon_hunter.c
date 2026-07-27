@@ -572,7 +572,17 @@ static const EnemyFunc sDeads[3] = {
     (EnemyFunc)FUN_080656cc,
 };
 
-INCASM("asm/enemy/pantheon_hunter.inc");
+INCASM("asm/enemy/pantheon_hunter_a.inc");
+
+void nop_08064ca8(struct Enemy* p) {
+}
+
+INCASM("asm/enemy/pantheon_hunter_b.inc");
+
+void nop_08064e34(struct Enemy* p) {
+}
+
+INCASM("asm/enemy/pantheon_hunter_c.inc");
 
 // 0x080656cc
 static void FUN_080656cc(struct Entity* p) {
