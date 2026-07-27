@@ -54,7 +54,12 @@ static bool8 FUN_0808b5e8(Object* p) {
 
 // --------------------------------------------
 
-INCASM("asm/enemy/omega_zero_rock.inc");
+INCASM("asm/enemy/omega_zero_rock_a.inc");
+
+void nop_0808b704(struct Enemy* p) {
+}
+
+INCASM("asm/enemy/omega_zero_rock_b.inc");
 
 void nop_0808b704(struct Enemy* p);
 
