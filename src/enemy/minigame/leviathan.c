@@ -2,7 +2,19 @@
 #include "enemy.h"
 #include "global.h"
 
-INCASM("asm/enemy/minigame_leviathan.inc");
+void nop_0809a0b4(struct Enemy* p);
+
+INCASM("asm/enemy/minigame_leviathan_a.inc");
+
+void nop_0809a0b4(struct Enemy* p) {
+}
+
+INCASM("asm/enemy/minigame_leviathan_b.inc");
+
+void nop_0809a1ec(struct Enemy* p) {
+}
+
+INCASM("asm/enemy/minigame_leviathan_c.inc");
 
 void LeviathanMinigameEnemy_Init(struct Enemy* p);
 void LeviathanMinigameEnemy_Update(struct Enemy* p);

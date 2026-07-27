@@ -6,9 +6,21 @@ typedef struct {
   COLLISION_OBJECT_HDR;  // 0x00
   u8 buffer[16];         // 0xB4
 } PantheonFist;
+
+void nop_080950cc(PantheonFist* p);
 static_assert(sizeof(PantheonFist) == sizeof(struct Enemy));
 
-INCASM("asm/enemy/pantheon_fist.inc");
+INCASM("asm/enemy/pantheon_fist_a.inc");
+
+void nop_080950cc(PantheonFist* p) {
+}
+
+INCASM("asm/enemy/pantheon_fist_b.inc");
+
+void FUN_080953ac(PantheonFist* p) {
+}
+
+INCASM("asm/enemy/pantheon_fist_c.inc");
 
 void PantheonFist_Init(PantheonFist* p);
 void PantheonFist_Update(PantheonFist* p);
