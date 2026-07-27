@@ -31,7 +31,12 @@ void FUN_080aa5e8(s32 x, s32 y, s32 dx, s32 dy) {
 // 0x080AA638
 static void nop_080aa638(struct Body* body, Coords32* r1 UNUSED, Coords32* r2 UNUSED) {}
 
-INCASM("asm/projectile/glacierle_30.inc");
+INCASM("asm/projectile/glacierle_30_a.inc");
+
+void FUN_080aa710(Projectile* p) {
+}
+
+INCASM("asm/projectile/glacierle_30_b.inc");
 
 // --------------------------------------------
 
