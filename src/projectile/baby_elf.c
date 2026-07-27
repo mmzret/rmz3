@@ -1,6 +1,12 @@
 #include "collision.h"
 #include "global.h"
 #include "projectile.h"
+#include "vfx.h"
+
+static const struct Collision sCollisions[5];
+static const ProjectileFunc sUpdates1[7];
+static const ProjectileFunc sUpdates2[7];
+static const u8 u8_0836b0c8[6];
 
 // Baby Elf's projectile
 
@@ -21,7 +27,7 @@ const ProjectileRoutine gProjectile13Routine = {
 void FUN_0809f8ac(Entity* q) {
   s32 i;
   for (i = 0; i < 4; i++) {
-    Entity* p = AllocEntityFirst(gProjectileHeaderPtr);
+    Entity* p = (Entity*)AllocEntityFirst(gProjectileHeaderPtr);
     if (p != NULL) {
       INIT_PROJECTILE_ROUTINE(p, 13);
       p->work[0] = 5, p->work[2] = i;
@@ -31,7 +37,7 @@ void FUN_0809f8ac(Entity* q) {
 }
 
 void FUN_0809f8fc(s32 x, s32 y, u8 sineidx) {
-  Entity* p = AllocEntityFirst(gProjectileHeaderPtr);
+  Entity* p = (Entity*)AllocEntityFirst(gProjectileHeaderPtr);
   if (p != NULL) {
     INIT_PROJECTILE_ROUTINE(p, 13);
     p->work[0] = 0;
@@ -42,7 +48,7 @@ void FUN_0809f8fc(s32 x, s32 y, u8 sineidx) {
 }
 
 void FUN_0809f970(s32 x, s32 y, u8 work2) {
-  Entity* p = AllocEntityFirst(gProjectileHeaderPtr);
+  Entity* p = (Entity*)AllocEntityFirst(gProjectileHeaderPtr);
   if (p != NULL) {
     INIT_PROJECTILE_ROUTINE(p, 13);
     p->work[0] = 1, p->work[2] = work2;
@@ -52,7 +58,73 @@ void FUN_0809f970(s32 x, s32 y, u8 work2) {
   }
 }
 
-INCASM("asm/projectile/baby_elf.inc");
+void babyelf_0809f9f0(struct Entity* parent, s32 x, s32 y, u8 n) {
+  struct Projectile* p = (struct Projectile*)AllocEntityFirst(gProjectileHeaderPtr);
+
+  if (p != NULL) {
+    INIT_PROJECTILE_ROUTINE(p, 13);
+    p->work[0] = 2;
+    p->coord.x = x;
+    p->coord.y = y;
+    p->work[2] = n;
+    p->unk_28 = parent;
+  }
+}
+
+void FUN_0809fa44(struct Entity* parent, s32 x, s32 y, u8 n) {
+  struct Projectile* p = (struct Projectile*)AllocEntityFirst(gProjectileHeaderPtr);
+
+  if (p != NULL) {
+    INIT_PROJECTILE_ROUTINE(p, 13);
+    p->work[0] = 3;
+    p->work[2] = n;
+    p->unk_coord.x = x;
+    p->unk_coord.y = y;
+    p->coord.x = x;
+    p->coord.y = y;
+    p->unk_28 = parent;
+  }
+}
+
+void FUN_0809fa9c(struct Entity* parent, s32 x, s32 y, u8 n) {
+  struct Projectile* p = (struct Projectile*)AllocEntityFirst(gProjectileHeaderPtr);
+
+  if (p != NULL) {
+    INIT_PROJECTILE_ROUTINE(p, 13);
+    p->work[0] = 4;
+    p->work[2] = n;
+    p->coord.x = x;
+    p->coord.y = y;
+    p->unk_28 = parent;
+  }
+}
+
+void nop_0809faf0(struct Projectile* p) {}
+
+void Projectile13_Init(Projectile* p) {
+  SET_PROJECTILE_ROUTINE(p, ENTITY_UPDATE);
+  p->mode[1] = u8_0836b0c8[p->work[0]];
+  p->flags |= FLIPABLE;
+  p->flags |= DISPLAY;
+  EnableSpriteAnimation_Normal(p);
+  INIT_BODY(p, sCollisions, 1, (void*)nop_0809faf0);
+  Projectile13_Update(p);
+}
+
+void Projectile13_Update(Projectile* p) {
+  (sUpdates1[p->mode[1]])((void*)p);
+  (sUpdates2[p->mode[1]])((void*)p);
+}
+
+void Projectile13_Die(Projectile* p) {
+  EXIT_BODY(p);
+  CreateSmoke(3, &p->coord);
+  SET_PROJECTILE_ROUTINE(p, ENTITY_EXIT);
+}
+
+void nop_0809fbd8(Projectile* p) {}
+
+INCASM("asm/projectile/baby_elf_a.inc");
 
 // --------------------------------------------
 
