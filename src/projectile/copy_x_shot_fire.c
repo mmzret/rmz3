@@ -2,6 +2,9 @@
 #include "global.h"
 #include "projectile.h"
 
+static const ProjectileFunc PTR_ARRAY_0836c01c[6];
+static const ProjectileFunc PTR_ARRAY_0836c034[6];
+
 // CopyX (Fire Shot)
 
 void Projectile26_Init(Projectile* p);
@@ -19,7 +22,7 @@ const ProjectileRoutine gProjectile26Routine = {
 // clang-format on
 
 void FUN_080a88a4(Entity* q, u8 param_2, u8 param_3) {
-  Entity* p = AllocEntityLast(gProjectileHeaderPtr);
+  Entity* p = (Entity*)AllocEntityLast(gProjectileHeaderPtr);
   if (p != NULL) {
     INIT_PROJECTILE_ROUTINE(p, 26);
     p->work[0] = param_2, p->work[1] = param_3;
@@ -28,7 +31,27 @@ void FUN_080a88a4(Entity* q, u8 param_2, u8 param_3) {
   }
 }
 
-INCASM("asm/projectile/copy_x_shot_fire.inc");
+void FUN_080a88fc(struct Entity* e, u8 a1, u8 a2) {
+  struct Projectile* p = (struct Projectile*)AllocEntityFirst(gProjectileHeaderPtr);
+  if (p != NULL) {
+    INIT_PROJECTILE_ROUTINE(p, 26);
+    p->work[0] = a1;
+    p->work[1] = a2;
+    p->unk_28 = e;
+    p->coord = e->coord;
+  }
+}
+
+void Projectile26_Init(Projectile* p) {
+  (PTR_ARRAY_0836c01c[p->work[0]])((void*)p);
+}
+
+void Projectile26_Update(Projectile* p) {
+  (PTR_ARRAY_0836c034[p->work[0]])((void*)p);
+  UpdateEntityAnim((struct Entity*)p);
+}
+
+INCASM("asm/projectile/copy_x_shot_fire_a.inc");
 
 void FUN_080a8a38(Projectile* p);
 void FUN_080a8b50(Projectile* p);
