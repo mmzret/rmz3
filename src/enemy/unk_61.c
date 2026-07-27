@@ -33,7 +33,12 @@ void FUN_080935b4(struct Entity* q, u8 idx, u8 val) {
 // 0x0809362C
 static void onCollision(struct Body* body UNUSED, Coords32* c1 UNUSED, Coords32* c2 UNUSED) {}
 
-INCASM("asm/enemy/unk_61.inc");
+INCASM("asm/enemy/unk_61_a.inc");
+
+void FUN_08093754(struct Enemy* p) {
+}
+
+INCASM("asm/enemy/unk_61_b.inc");
 
 void FUN_08093754(struct Enemy* p);
 
