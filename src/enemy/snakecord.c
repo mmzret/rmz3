@@ -195,7 +195,12 @@ static bool8 FUN_0807415c(struct Enemy* p) {
   return FALSE;
 }
 
-INCASM("asm/enemy/snakecord.inc");
+INCASM("asm/enemy/snakecord_a.inc");
+
+void FUN_08074618(struct Enemy* p) {
+}
+
+INCASM("asm/enemy/snakecord_b.inc");
 
 // --------------------------------------------
 
