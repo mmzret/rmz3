@@ -2,6 +2,8 @@
 #include "global.h"
 #include "projectile.h"
 
+static const ProjectileFunc* const PTR_ARRAY_0836b4e4[4];
+
 void TretistaProjectile_Init(Projectile* p);
 void TretistaProjectile_Update(Projectile* p);
 void TretistaProjectile_Die(Projectile* p);
@@ -17,7 +19,7 @@ const ProjectileRoutine gTretistaProjectileRoutine = {
 // clang-format on
 
 Entity* createTretistaBreathGas(Entity* e, Coords32* c, u8 kind) {
-  Entity* p = AllocEntityLast(gProjectileHeaderPtr);
+  Entity* p = (Entity*)AllocEntityLast(gProjectileHeaderPtr);
   if (p != NULL) {
     INIT_PROJECTILE_ROUTINE(p, 19);
     p->work[0] = 0, p->work[1] = kind;
@@ -27,7 +29,55 @@ Entity* createTretistaBreathGas(Entity* e, Coords32* c, u8 kind) {
   return p;
 }
 
-INCASM("asm/projectile/tretista.inc");
+struct Projectile* tretista_080a369c(struct Entity* e, struct Coord* c, u8 a2) {
+  struct Projectile* p = (struct Projectile*)AllocEntityLast(gProjectileHeaderPtr);
+  if (p != NULL) {
+    INIT_PROJECTILE_ROUTINE(p, 19);
+    p->work[0] = 1;
+    p->work[1] = a2;
+    p->coord = *c;
+    p->unk_28 = e;
+  }
+  return p;
+}
+
+struct Projectile* tretista_080a36f4(struct Entity* e, struct Coord* c, u8 a2) {
+  struct Projectile* p = (struct Projectile*)AllocEntityLast(gProjectileHeaderPtr);
+  if (p != NULL) {
+    INIT_PROJECTILE_ROUTINE(p, 19);
+    p->work[0] = 2;
+    p->work[1] = a2;
+    p->coord = *c;
+    p->unk_28 = e;
+  }
+  return p;
+}
+
+struct Projectile* FUN_080a374c(struct Entity* e, struct Coord* c, u8 a2) {
+  struct Projectile* p = (struct Projectile*)AllocEntityLast(gProjectileHeaderPtr);
+  if (p != NULL) {
+    INIT_PROJECTILE_ROUTINE(p, 19);
+    p->work[0] = 3;
+    p->work[1] = a2;
+    p->coord = *c;
+    p->unk_28 = e;
+  }
+  return p;
+}
+
+INCASM("asm/projectile/tretista_a.inc");
+
+void TretistaProjectile_Update(Projectile* p) {
+  (PTR_ARRAY_0836b4e4[p->work[0]][p->mode[1]])(p);
+}
+
+void TretistaProjectile_Die(Projectile* p) {
+  p->flags &= ~DISPLAY;
+  EXIT_BODY(p);
+  SET_PROJECTILE_ROUTINE(p, ENTITY_EXIT);
+}
+
+INCASM("asm/projectile/tretista_b.inc");
 
 void FUN_080a38e8(Projectile* p);
 void FUN_080a3c58(Projectile* p);
