@@ -41,7 +41,12 @@ static void onCollision(struct Body* body UNUSED, Coords32* r1 UNUSED, Coords32*
   return;
 }
 
-INCASM("asm/solid/glacierle_arm.inc");
+INCASM("asm/solid/glacierle_arm_a.inc");
+
+void nop_080ceb28(struct Solid* p) {
+}
+
+INCASM("asm/solid/glacierle_arm_b.inc");
 
 // --------------------------------------------
 
