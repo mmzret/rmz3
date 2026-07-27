@@ -28,18 +28,43 @@ struct Entity* CreateSwordy(Coords32* c, u8 n) {
 
 // --------------------------------------------
 
-INCASM("asm/enemy/swordy.inc");
+INCASM("asm/enemy/swordy_a.inc");
 
-void FUN_0807c230(struct Enemy* p);
-void FUN_0807c47c(struct Enemy* p);
-void FUN_0807c4ac(struct Enemy* p);
-void FUN_0807c4b4(struct Enemy* p);
+bool8 FUN_0807c230(struct Enemy* p) {
+  return TRUE;
+}
+
+INCASM("asm/enemy/swordy_b.inc");
+
+bool8 FUN_0807c47c(struct Enemy* p) {
+  return TRUE;
+}
+
+INCASM("asm/enemy/swordy_c.inc");
+
+bool8 FUN_0807c4ac(struct Enemy* p) {
+  return TRUE;
+}
+
+void nop_0807c4b0(struct Enemy* p) {
+}
+
+bool8 FUN_0807c4b4(struct Enemy* p) {
+  return TRUE;
+}
+
+INCASM("asm/enemy/swordy_d.inc");
+
+bool8 FUN_0807c230(struct Enemy* p);
+bool8 FUN_0807c47c(struct Enemy* p);
+bool8 FUN_0807c4ac(struct Enemy* p);
+bool8 FUN_0807c4b4(struct Enemy* p);
 
 static const EnemyFunc PTR_ARRAY_08367a38[4] = {
-    FUN_0807c230,
-    FUN_0807c47c,
-    FUN_0807c4ac,
-    FUN_0807c4b4,
+    (EnemyFunc)FUN_0807c230,
+    (EnemyFunc)FUN_0807c47c,
+    (EnemyFunc)FUN_0807c4ac,
+    (EnemyFunc)FUN_0807c4b4,
 };
 
 void FUN_0807c234(struct Enemy* p);
