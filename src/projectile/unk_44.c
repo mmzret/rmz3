@@ -2,8 +2,8 @@
 #include "global.h"
 #include "projectile.h"
 
-static const ProjectileFunc PTR_ARRAY_0836d794[2];
-extern const ProjectileFunc PTR_ARRAY_0836d798[1];
+static const ProjectileFunc PTR_ARRAY_0836d794[1];
+static const ProjectileFunc PTR_ARRAY_0836d798[1];
 
 INCASM("asm/projectile/unk_44_a.inc");
 
@@ -31,9 +31,13 @@ const ProjectileRoutine gProjectile44Routine = {
 void FUN_080b17d8(Projectile* p);
 void FUN_080b17dc(Projectile* p);
 
+// two adjacent 1-entry tables: FUN_080b1764 loads each base from its own
+// literal pool slot, which a single [2] array cannot reproduce
 // clang-format off
-static const ProjectileFunc PTR_ARRAY_0836d794[2] = {
+static const ProjectileFunc PTR_ARRAY_0836d794[1] = {
     FUN_080b17d8,
+};
+static const ProjectileFunc PTR_ARRAY_0836d798[1] = {
     FUN_080b17dc,
 };
 // clang-format on
