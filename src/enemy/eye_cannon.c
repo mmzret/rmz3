@@ -77,7 +77,12 @@ void FUN_080847b8(EyeCannon* p) {
   }
 }
 
-INCASM("asm/enemy/eye_cannon.inc");
+INCASM("asm/enemy/eye_cannon_a.inc");
+
+void FUN_08084930(struct Enemy* p) {
+}
+
+INCASM("asm/enemy/eye_cannon_b.inc");
 
 void FUN_08084934(struct Enemy* p);
 void FUN_08084930(struct Enemy* p);
