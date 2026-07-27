@@ -25,7 +25,12 @@ void CreateHeavyCannonBall(s32 x, s32 y, u8 kind) {
   }
 }
 
-INCASM("asm/enemy/heavy_cannon_ball.inc");
+INCASM("asm/enemy/heavy_cannon_ball_a.inc");
+
+void FUN_0807acd0(struct Enemy* p) {
+}
+
+INCASM("asm/enemy/heavy_cannon_ball_b.inc");
 
 void FUN_0807acd0(struct Enemy* p);
 void FUN_0807acd0(struct Enemy* p);
