@@ -32,7 +32,12 @@ bool8 tryKillOrWormer(struct Boss* p) {
   return FALSE;
 }
 
-INCASM("asm/boss/wormer.inc");
+INCASM("asm/boss/wormer_a.inc");
+
+void nop_08042890(struct Boss* p) {
+}
+
+INCASM("asm/boss/wormer_b.inc");
 
 // --------------------------------------------
 
