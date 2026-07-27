@@ -2,7 +2,17 @@
 #include "collision.h"
 #include "global.h"
 
-INCASM("asm/boss/locomo_if.inc");
+void nop_0805474c(struct Boss* p);
+
+void nop_0805474c(struct Boss* p) {
+}
+
+INCASM("asm/boss/locomo_if_a.inc");
+
+void nop_08054ad8(struct Boss* p) {
+}
+
+INCASM("asm/boss/locomo_if_b.inc");
 
 void LocomoIF_Init(struct Boss* p);
 void LocomoIF_Update(struct Boss* p);
