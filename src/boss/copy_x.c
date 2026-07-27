@@ -28,7 +28,7 @@ const BossRoutine gCopyXRoutine = {
 // --------------------------------------------
 
 static void Unused_CreateCopyX(Coords32* c) {
-  BossCopyX* p = AllocEntityLast(gBossHeaderPtr);
+  BossCopyX* p = (BossCopyX*)AllocEntityLast(gBossHeaderPtr);
   if (p != NULL) {
     INIT_BOSS_ROUTINE(p, BOSS_COPY_X);
     (p->coord).x = c->x, (p->coord).y = c->y;
@@ -460,11 +460,11 @@ static void CopyX_Update(BossCopyX* p) {
     SET_BOSS_ROUTINE(p, ENTITY_DIE);
     p->mode[2] = 1;
     EXIT_BODY(p);
-    CopyX_Die(p);
+    CopyX_Die((BossCopyX*)p);
     return;
   }
 
-  copyx_08057744(p);
+  copyx_08057744((BossCopyX*)p);
   if (p->mode[1] != 33) {
     p->unk_dd = (p->body).hp - 16;
     if (p->unk_dd < 0) {
@@ -510,8 +510,8 @@ static void CopyX_Die(BossCopyX* p) {
       [4] = copyx_0805763c,
   };
   // clang-format on
-  copyx_08057744(p);
-  (sDeads[p->mode[1]])(p);
+  copyx_08057744((BossCopyX*)p);
+  (sDeads[p->mode[1]])((void*)p);
 }
 
 // --------------------------------------------
@@ -908,7 +908,27 @@ static void copyxMode4(BossCopyX* p) {
   }
 }
 
-INCASM("asm/boss/copy_x.inc");
+INCASM("asm/boss/copy_x_a.inc");
+
+void copyx_08056bd0(struct Boss* p) {
+  if (p->mode[2] != 0) {
+    SetSpriteAnimation(p, 0xB303);
+    p->mode[2] = 0;
+    p->work[2] = 0x40;
+  }
+  UpdateEntityAnim((struct Entity*)p);
+  {
+    u8 st = p->motion.state;
+    if (st == 3) {
+      p->mode[1] = st;
+      p->mode[2] = 1;
+      p->mode[3] = 2;
+      p->work[2] = 4;
+    }
+  }
+}
+
+INCASM("asm/boss/copy_x_b.inc");
 
 // 0x08363c18
 static const struct Collision sCollisions[10] = {
