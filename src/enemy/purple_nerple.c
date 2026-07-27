@@ -3,9 +3,16 @@
 #include "global.h"
 #include "element.h"
 
+void FUN_08075d3c(struct Enemy* p);
+
 static const Coords32 sElementCoord;
 
-INCASM("asm/enemy/purple_nerple_a.inc");
+INCASM("asm/enemy/purple_nerple_a_a.inc");
+
+void FUN_08075d3c(struct Enemy* p) {
+}
+
+INCASM("asm/enemy/purple_nerple_a_b.inc");
 
 void FUN_08075e8c(struct Enemy* p) {
   struct Entity** slot;
