@@ -44,7 +44,12 @@ static void paquam_080512f8(PAquaMod* p) {
   (p->coord).y += gSineTable[COORD_TO_PIXEL(p->x)] << 2;
 }
 
-INCASM("asm/boss/pantheon_aqua_mod.inc");
+INCASM("asm/boss/pantheon_aqua_mod_a.inc");
+
+void nop_08051620(struct Boss* p) {
+}
+
+INCASM("asm/boss/pantheon_aqua_mod_b.inc");
 
 void nop_08051620(struct Boss* p);
 
