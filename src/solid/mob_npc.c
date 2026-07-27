@@ -9,7 +9,8 @@ struct MobObject {
   u8 unk_00[8];        // 0xB4
   s16 unk_08;          // 0xBC
   motion_t motion_be;  // 0xBE
-  u8 unk_0c[4];        // 0xC0
+  motion_t m_c0;       // 0xC0
+  motion_t m_c2;       // 0xC2
 };
 static_assert(sizeof(struct MobObject) == sizeof(struct Solid));
 
@@ -32,6 +33,22 @@ const SolidRoutine gMobNPCRoutine = {
     [ENTITY_DISAPPEAR] = (SolidFunc)DeleteSolid,
     [ENTITY_EXIT] =      (SolidFunc)DeleteEntity,
 };
+
+
+
+
+
+
+
+
+void FUN_080da6f0(struct Solid* p);
+void FUN_080da5e8(struct Solid* p);
+void FUN_080da500(struct Solid* p);
+void FUN_080da41c(struct Solid* p);
+void FUN_080da320(struct Solid* p);
+void FUN_080da21c(struct Solid* p);
+void FUN_080da114(struct Solid* p);
+void FUN_080da01c(struct Solid* p);
 // clang-format on
 
 NAKED static void MobNPC_Init(struct Solid* p) {
@@ -375,7 +392,167 @@ static void FUN_080d9734(struct MobObject* p) {
   }
 }
 
-INCASM("asm/solid/mob_npc.inc");
+INCASM("asm/solid/mob_npc_a.inc");
+
+void FUN_080da01c(struct Solid* p) {
+  struct MobObject* m = (struct MobObject*)p;
+  struct Body* b;
+  m->motion_be = sMotions[(p->s).work[0]];
+  m->m_c0 = sMotions[(p->s).work[0]] + 1;
+  m->m_c2 = sMotions[(p->s).work[0]];
+  (p->s).flags |= COLLIDABLE;
+  b = &p->body;
+  InitBody(b, sCollisions, &(p->s).coord, 1);
+  b->parent = (struct Entity*)p;
+  b->fn = NULL;
+  m->unk_00[5] = 1;
+  m->unk_00[4] = 0x30;
+  m->unk_08 = 0x100;
+  (p->s).mode[1] = 1;
+  MobNPC_Update(p);
+}
+
+INCASM("asm/solid/mob_npc_b.inc");
+
+void FUN_080da114(struct Solid* p) {
+  struct MobObject* m = (struct MobObject*)p;
+  struct Body* b;
+  (p->s).flags |= COLLIDABLE;
+  b = &p->body;
+  InitBody(b, &sCollisions[1], &(p->s).coord, 1);
+  b->parent = (struct Entity*)p;
+  b->fn = NULL;
+  m->motion_be = sMotions[(p->s).work[0]];
+  m->m_c0 = sMotions[(p->s).work[0]];
+  m->m_c2 = sMotions[(p->s).work[0]];
+  m->unk_00[5] = 0;
+  m->unk_00[4] = 0;
+  m->unk_08 = 0;
+  (p->s).mode[1] = 0;
+  MobNPC_Update(p);
+}
+
+INCASM("asm/solid/mob_npc_c.inc");
+
+void FUN_080da21c(struct Solid* p) {
+  struct MobObject* m = (struct MobObject*)p;
+  struct Body* b;
+  (p->s).flags |= COLLIDABLE;
+  b = &p->body;
+  InitBody(b, sCollisions, &(p->s).coord, 1);
+  b->parent = (struct Entity*)p;
+  b->fn = NULL;
+  m->motion_be = sMotions[(p->s).work[0]];
+  m->m_c0 = sMotions[(p->s).work[0]];
+  m->m_c2 = sMotions[(p->s).work[0]];
+  m->unk_00[5] = 1;
+  m->unk_00[4] = 0;
+  m->unk_08 = 0;
+  (p->s).mode[1] = 0;
+  MobNPC_Update(p);
+}
+
+INCASM("asm/solid/mob_npc_d.inc");
+
+void FUN_080da320(struct Solid* p) {
+  struct MobObject* m = (struct MobObject*)p;
+  struct Body* b;
+  (p->s).flags |= COLLIDABLE;
+  b = &p->body;
+  InitBody(b, sCollisions, &(p->s).coord, 1);
+  b->parent = (struct Entity*)p;
+  b->fn = NULL;
+  m->motion_be = sMotions[(p->s).work[0]];
+  m->m_c0 = sMotions[(p->s).work[0]];
+  m->m_c2 = sMotions[(p->s).work[0]];
+  m->unk_00[5] = 1;
+  m->unk_00[4] = 0;
+  m->unk_08 = 0;
+  (p->s).mode[1] = 0;
+  MobNPC_Update(p);
+}
+
+INCASM("asm/solid/mob_npc_e.inc");
+
+void FUN_080da41c(struct Solid* p) {
+  struct MobObject* m = (struct MobObject*)p;
+  struct Body* b;
+  (p->s).flags |= COLLIDABLE;
+  b = &p->body;
+  InitBody(b, &sCollisions[1], &(p->s).coord, 1);
+  b->parent = (struct Entity*)p;
+  b->fn = NULL;
+  m->motion_be = sMotions[(p->s).work[0]];
+  m->m_c0 = sMotions[(p->s).work[0]];
+  m->m_c2 = sMotions[(p->s).work[0]];
+  m->unk_00[5] = 0;
+  m->unk_00[4] = 0;
+  m->unk_08 = 0;
+  (p->s).mode[1] = 0;
+  MobNPC_Update(p);
+}
+
+INCASM("asm/solid/mob_npc_f.inc");
+
+void FUN_080da500(struct Solid* p) {
+  struct MobObject* m = (struct MobObject*)p;
+  struct Body* b;
+  m->motion_be = sMotions[(p->s).work[0]];
+  m->m_c0 = sMotions[(p->s).work[0]] + 1;
+  m->m_c2 = sMotions[(p->s).work[0]];
+  (p->s).flags |= COLLIDABLE;
+  b = &p->body;
+  InitBody(b, sCollisions, &(p->s).coord, 1);
+  b->parent = (struct Entity*)p;
+  b->fn = NULL;
+  m->unk_00[5] = 1;
+  m->unk_00[4] = 0x30;
+  m->unk_08 = 0x100;
+  (p->s).mode[1] = 1;
+  MobNPC_Update(p);
+}
+
+INCASM("asm/solid/mob_npc_g.inc");
+
+void FUN_080da5e8(struct Solid* p) {
+  struct MobObject* m = (struct MobObject*)p;
+  struct Body* b;
+  (p->s).flags |= COLLIDABLE;
+  b = &p->body;
+  InitBody(b, sCollisions, &(p->s).coord, 1);
+  b->parent = (struct Entity*)p;
+  b->fn = NULL;
+  m->motion_be = sMotions[(p->s).work[0]];
+  m->m_c0 = sMotions[(p->s).work[0]];
+  m->m_c2 = sMotions[(p->s).work[0]];
+  m->unk_00[5] = 1;
+  m->unk_00[4] = 0;
+  m->unk_08 = 0;
+  (p->s).mode[1] = 0;
+  MobNPC_Update(p);
+}
+
+INCASM("asm/solid/mob_npc_h.inc");
+
+void FUN_080da6f0(struct Solid* p) {
+  struct MobObject* m = (struct MobObject*)p;
+  struct Body* b;
+  (p->s).flags |= COLLIDABLE;
+  b = &p->body;
+  InitBody(b, sCollisions, &(p->s).coord, 1);
+  b->parent = (struct Entity*)p;
+  b->fn = NULL;
+  m->motion_be = sMotions[(p->s).work[0]];
+  m->m_c0 = sMotions[(p->s).work[0]];
+  m->m_c2 = sMotions[(p->s).work[0]];
+  m->unk_00[5] = 1;
+  m->unk_00[4] = 0;
+  m->unk_08 = 0;
+  (p->s).mode[1] = 0;
+  MobNPC_Update(p);
+}
+
+INCASM("asm/solid/mob_npc_i.inc");
 
 void andrew_080d9cd8(struct Solid* p);
 void alouette_080d9eb8(struct Solid* p);
