@@ -70,3 +70,43 @@ static void VFX56_Die(struct Entity* p) {
 // --------------------------------------------
 
 INCASM("asm/vfx/copy_x_reflect_laser.inc");
+
+void FUN_080c182c(struct VFX* vfx) {
+  struct Entity* p = &vfx->s;
+  u32 c = p->work[2];
+  if (c == 0) {
+    UpdateSpriteAnimation(p);
+    c = p->work[3];
+  } else {
+    c--;
+  }
+  p->work[2] = c;
+  (p->coord).x += (p->d).x;
+  (p->coord).y += (p->d).y;
+  (p->d).x -= (p->unk_coord).x;
+  (p->d).y -= (p->unk_coord).y;
+  if (IsSpriteAnimEnd(p)) {
+    SET_VFX_ROUTINE(p, ENTITY_DIE);
+    VFX56_Die(p);
+  }
+}
+
+void FUN_080c188c(struct VFX* vfx) {
+  struct Entity* p = &vfx->s;
+  u32 c = p->work[2];
+  if (c == 0) {
+    UpdateSpriteAnimation(p);
+    c = p->work[3];
+  } else {
+    c--;
+  }
+  p->work[2] = c;
+  (p->coord).x += (p->d).x;
+  (p->coord).y += (p->d).y;
+  (p->d).x -= (p->unk_coord).x;
+  (p->d).y -= (p->unk_coord).y;
+  if (IsSpriteAnimEnd(p)) {
+    SET_VFX_ROUTINE(p, ENTITY_DIE);
+    VFX56_Die(p);
+  }
+}
