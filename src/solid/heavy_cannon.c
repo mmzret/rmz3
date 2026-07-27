@@ -2,6 +2,8 @@
 #include "global.h"
 #include "solid.h"
 
+void nop_080cbea4(struct Solid* p);
+
 static const struct Collision sCollisions[];
 
 void initHeavyCannon(struct Solid* p);
@@ -41,7 +43,12 @@ static bool8 FUN_080cbdc0(Object* p) {
   return FALSE;
 }
 
-INCASM("asm/solid/heavy_cannon.inc");
+INCASM("asm/solid/heavy_cannon_a.inc");
+
+void nop_080cbea4(struct Solid* p) {
+}
+
+INCASM("asm/solid/heavy_cannon_b.inc");
 
 // --------------------------------------------
 
