@@ -27,11 +27,29 @@ struct Entity* createHellBouncer(struct Entity* q, Coords32* c, u8 r2, u8 idx) {
   return p;
 }
 
-INCASM("asm/enemy/hell_bouncer.inc");
+INCASM("asm/enemy/hell_bouncer_a.inc");
 
-void FUN_0807e5f0(struct Enemy* p);
-void FUN_0807ead8(struct Enemy* p);
-void FUN_0807f644(struct Enemy* p);
+bool8 FUN_0807e5f0(struct Enemy* p) {
+  return TRUE;
+}
+
+INCASM("asm/enemy/hell_bouncer_b.inc");
+
+bool8 FUN_0807ead8(struct Enemy* p) {
+  return TRUE;
+}
+
+INCASM("asm/enemy/hell_bouncer_c.inc");
+
+bool8 FUN_0807f644(struct Enemy* p) {
+  return TRUE;
+}
+
+INCASM("asm/enemy/hell_bouncer_d.inc");
+
+bool8 FUN_0807e5f0(struct Enemy* p);
+bool8 FUN_0807ead8(struct Enemy* p);
+bool8 FUN_0807f644(struct Enemy* p);
 
 static const EnemyFunc sUpdates1[3] = {
     (void*)FUN_0807e5f0,
