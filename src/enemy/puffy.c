@@ -30,18 +30,43 @@ struct Entity* CreatePuffy(Coords32* c, u8 kind) {
 
 static const struct Collision sCollisions[];
 
-INCASM("asm/enemy/puffy.inc");
+INCASM("asm/enemy/puffy_a.inc");
 
-void nop_0807c968(struct Enemy* p);
-void nop_0807ca98(struct Enemy* p);
-void nop_0807cac8(struct Enemy* p);
-void nop_0807cad0(struct Enemy* p);
+bool8 nop_0807c968(struct Enemy* p) {
+  return TRUE;
+}
+
+INCASM("asm/enemy/puffy_b.inc");
+
+bool8 nop_0807ca98(struct Enemy* p) {
+  return TRUE;
+}
+
+INCASM("asm/enemy/puffy_c.inc");
+
+bool8 nop_0807cac8(struct Enemy* p) {
+  return TRUE;
+}
+
+void nop_0807cacc(struct Enemy* p) {
+}
+
+bool8 nop_0807cad0(struct Enemy* p) {
+  return TRUE;
+}
+
+INCASM("asm/enemy/puffy_d.inc");
+
+bool8 nop_0807c968(struct Enemy* p);
+bool8 nop_0807ca98(struct Enemy* p);
+bool8 nop_0807cac8(struct Enemy* p);
+bool8 nop_0807cad0(struct Enemy* p);
 
 static const EnemyFunc PTR_ARRAY_08367aec[4] = {
-    nop_0807c968,
-    nop_0807ca98,
-    nop_0807cac8,
-    nop_0807cad0,
+    (EnemyFunc)nop_0807c968,
+    (EnemyFunc)nop_0807ca98,
+    (EnemyFunc)nop_0807cac8,
+    (EnemyFunc)nop_0807cad0,
 };
 
 void FUN_0807c96c(struct Enemy* p);
