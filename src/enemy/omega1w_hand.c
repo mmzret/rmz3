@@ -70,12 +70,12 @@ static void OmegaWhiteHand_Init(Omega1wHand* p) {
 
 // --------------------------------------------
 
-void FUN_0806aa9c(struct Enemy* p);
-void FUN_0806ae90(struct Enemy* p);
+bool8 FUN_0806aa9c(struct Enemy* p);
+bool8 FUN_0806ae90(struct Enemy* p);
 void FUN_0806af24(struct Enemy* p);
-void FUN_0806b094(struct Enemy* p);
-void FUN_0806b120(struct Enemy* p);
-void FUN_0806b8cc(struct Enemy* p);
+bool8 FUN_0806b094(struct Enemy* p);
+bool8 FUN_0806b120(struct Enemy* p);
+bool8 FUN_0806b8cc(struct Enemy* p);
 
 void FUN_0806aaa0(struct Enemy* p);
 void FUN_0806ae94(struct Enemy* p);
@@ -162,7 +162,37 @@ static void OmegaWhiteHand_Die(struct Entity* p) {
 
 // --------------------------------------------
 
-INCASM("asm/enemy/omega1w_hand.inc");
+INCASM("asm/enemy/omega1w_hand_a.inc");
+
+bool8 FUN_0806aa9c(struct Enemy* p) {
+  return TRUE;
+}
+
+INCASM("asm/enemy/omega1w_hand_b.inc");
+
+bool8 FUN_0806ae90(struct Enemy* p) {
+  return TRUE;
+}
+
+INCASM("asm/enemy/omega1w_hand_c.inc");
+
+bool8 FUN_0806b094(struct Enemy* p) {
+  return TRUE;
+}
+
+INCASM("asm/enemy/omega1w_hand_d.inc");
+
+bool8 FUN_0806b120(struct Enemy* p) {
+  return TRUE;
+}
+
+INCASM("asm/enemy/omega1w_hand_e.inc");
+
+bool8 FUN_0806b8cc(struct Enemy* p) {
+  return TRUE;
+}
+
+INCASM("asm/enemy/omega1w_hand_f.inc");
 
 // 0x0806be0c
 static void Omega1wHand_OnCollision(struct Body* body UNUSED, Coords32* r1 UNUSED, Coords32* r2 UNUSED) {}
