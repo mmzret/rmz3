@@ -2,6 +2,8 @@
 #include "enemy.h"
 #include "global.h"
 
+void nop_08080eb8(struct Enemy* p);
+
 void PantheonAquaModObj_Init(struct Enemy* p);
 void PantheonAquaModObj_Update(struct Enemy* p);
 void PantheonAquaModObj_Die(struct Enemy* p);
@@ -140,7 +142,17 @@ void FUN_08080c64(s32 x, s32 y) {
   }
 }
 
-INCASM("asm/enemy/pantheon_aqua_mod_obj.inc");
+INCASM("asm/enemy/pantheon_aqua_mod_obj_a.inc");
+
+void nop_08080eb8(struct Enemy* p) {
+}
+
+INCASM("asm/enemy/pantheon_aqua_mod_obj_b.inc");
+
+void FUN_08080fe8(struct Enemy* p) {
+}
+
+INCASM("asm/enemy/pantheon_aqua_mod_obj_c.inc");
 
 void FUN_08080fe8(struct Enemy* p);
 
