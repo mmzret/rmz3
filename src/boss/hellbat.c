@@ -181,14 +181,14 @@ static bool32 nop_0804b520(struct Boss* p);
 static bool32 nop_0804b56c(struct Boss* p);
 static bool32 nop_0804b5e8(struct Boss* p);
 static bool32 nop_0804b6b4(void* _ UNUSED);
-void FUN_0804b900(struct Boss* p);
-void FUN_0804ba40(struct Boss* p);
-void FUN_0804bcf4(struct Boss* p);
-void FUN_0804bee0(struct Boss* p);
-void FUN_0804c220(struct Boss* p);
-void FUN_0804c554(struct Boss* p);
-void nop_0804c9ec(struct Boss* p);
-void FUN_0804caa0(struct Boss* p);
+bool8 FUN_0804b900(struct Boss* p);
+bool8 FUN_0804ba40(struct Boss* p);
+bool8 FUN_0804bcf4(struct Boss* p);
+bool8 FUN_0804bee0(struct Boss* p);
+bool8 FUN_0804c220(struct Boss* p);
+bool8 FUN_0804c554(struct Boss* p);
+bool8 nop_0804c9ec(struct Boss* p);
+bool8 FUN_0804caa0(struct Boss* p);
 
 static void hellbatMode0(struct Boss* p);
 static void hellbatMode1(struct Boss* p);
@@ -210,14 +210,14 @@ static void Hellbat_Update(struct Boss* p) {
       (BossFunc)nop_0804b56c,
       (BossFunc)nop_0804b5e8,
       (BossFunc)nop_0804b6b4,
-      FUN_0804b900,
-      FUN_0804ba40,
-      FUN_0804bcf4,
-      FUN_0804bee0,
-      FUN_0804c220,
-      FUN_0804c554,
-      nop_0804c9ec,
-      FUN_0804caa0,
+      (BossFunc)FUN_0804b900,
+      (BossFunc)FUN_0804ba40,
+      (BossFunc)FUN_0804bcf4,
+      (BossFunc)FUN_0804bee0,
+      (BossFunc)FUN_0804c220,
+      (BossFunc)FUN_0804c554,
+      (BossFunc)nop_0804c9ec,
+      (BossFunc)FUN_0804caa0,
   };
   // clang-format on
 
@@ -772,7 +772,55 @@ static void hellbatMode2(struct Hellbat* p) {
 
 static bool32 nop_0804b6b4(void* _) { return TRUE; }
 
-INCASM("asm/boss/hellbat.inc");
+INCASM("asm/boss/hellbat_a.inc");
+
+bool8 FUN_0804b900(struct Boss* p) {
+  return TRUE;
+}
+
+INCASM("asm/boss/hellbat_b.inc");
+
+bool8 FUN_0804ba40(struct Boss* p) {
+  return TRUE;
+}
+
+INCASM("asm/boss/hellbat_c.inc");
+
+bool8 FUN_0804bcf4(struct Boss* p) {
+  return TRUE;
+}
+
+INCASM("asm/boss/hellbat_d.inc");
+
+bool8 FUN_0804bee0(struct Boss* p) {
+  return TRUE;
+}
+
+INCASM("asm/boss/hellbat_e.inc");
+
+bool8 FUN_0804c220(struct Boss* p) {
+  return TRUE;
+}
+
+INCASM("asm/boss/hellbat_f.inc");
+
+bool8 FUN_0804c554(struct Boss* p) {
+  return TRUE;
+}
+
+INCASM("asm/boss/hellbat_g.inc");
+
+bool8 nop_0804c9ec(struct Boss* p) {
+  return TRUE;
+}
+
+INCASM("asm/boss/hellbat_h.inc");
+
+bool8 FUN_0804caa0(struct Boss* p) {
+  return TRUE;
+}
+
+INCASM("asm/boss/hellbat_i.inc");
 
 extern const u16 u16_ARRAY_080feedc[6];
 
