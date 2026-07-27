@@ -70,7 +70,12 @@ static void FUN_0807cce0(s32 x, s32 y) {
 // 0x0807cd70
 static void onCollision(struct Body* body UNUSED, Coords32* r1 UNUSED, Coords32* r2 UNUSED) {}
 
-INCASM("asm/enemy/crossbyne.inc");
+INCASM("asm/enemy/crossbyne_a.inc");
+
+void FUN_0807cf5c(struct Enemy* p) {
+}
+
+INCASM("asm/enemy/crossbyne_b.inc");
 
 // --------------------------------------------
 
