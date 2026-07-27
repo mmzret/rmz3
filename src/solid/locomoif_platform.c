@@ -3,6 +3,8 @@
 #include "global.h"
 #include "solid.h"
 
+void nop_080ce58c(struct Solid* p);
+
 // ロコモIF戦で出現する台座
 typedef struct {
   COLLISION_OBJECT_HDR;
@@ -40,7 +42,17 @@ void CreateLocomoIFPlatform(struct Boss* locomoif) {
   }
 }
 
-INCASM("asm/solid/locomoif_platform.inc");
+INCASM("asm/solid/locomoif_platform_a.inc");
+
+void nop_080ce58c(struct Solid* p) {
+}
+
+INCASM("asm/solid/locomoif_platform_b.inc");
+
+void nop_080ce70c(struct Solid* p) {
+}
+
+INCASM("asm/solid/locomoif_platform_c.inc");
 
 // --------------------------------------------
 
