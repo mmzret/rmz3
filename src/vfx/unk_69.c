@@ -139,4 +139,9 @@ static void Ghost69_Die(VFX69* p) {
   SET_VFX_ROUTINE(p, ENTITY_EXIT);
 }
 
-INCASM("asm/vfx/unk_69.inc");
+INCASM("asm/vfx/unk_69_a.inc");
+
+void nop_080c552c(VFX69* p) {
+}
+
+INCASM("asm/vfx/unk_69_b.inc");
