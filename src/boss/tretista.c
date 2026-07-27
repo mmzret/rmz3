@@ -306,7 +306,73 @@ NAKED static void tretista_0804d8e8(Tretista* p) { INCCODE("asm/wip/tretista_080
 
 static bool8 FUN_0804dc8c(Tretista* p) { return TRUE; }
 
-INCASM("asm/boss/tretista.inc");
+INCASM("asm/boss/tretista_a.inc");
+
+bool8 FUN_0804df70(Tretista* p) {
+  return TRUE;
+}
+
+INCASM("asm/boss/tretista_b.inc");
+
+bool8 FUN_0804e01c(Tretista* p) {
+  return TRUE;
+}
+
+INCASM("asm/boss/tretista_c.inc");
+
+bool8 FUN_0804e08c(Tretista* p) {
+  return TRUE;
+}
+
+INCASM("asm/boss/tretista_d.inc");
+
+bool8 FUN_0804e3f0(Tretista* p) {
+  return TRUE;
+}
+
+INCASM("asm/boss/tretista_e.inc");
+
+bool8 FUN_0804e544(Tretista* p) {
+  return TRUE;
+}
+
+INCASM("asm/boss/tretista_f.inc");
+
+bool8 FUN_0804e8f4(Tretista* p) {
+  return TRUE;
+}
+
+INCASM("asm/boss/tretista_g.inc");
+
+bool8 FUN_0804eb38(Tretista* p) {
+  return TRUE;
+}
+
+INCASM("asm/boss/tretista_h.inc");
+
+bool8 FUN_0804f2b4(Tretista* p) {
+  return TRUE;
+}
+
+INCASM("asm/boss/tretista_i.inc");
+
+bool8 FUN_0804f5c0(Tretista* p) {
+  return TRUE;
+}
+
+INCASM("asm/boss/tretista_j.inc");
+
+bool8 FUN_0804f7d8(Tretista* p) {
+  return TRUE;
+}
+
+INCASM("asm/boss/tretista_k.inc");
+
+bool8 FUN_0804fc6c(Tretista* p) {
+  return TRUE;
+}
+
+INCASM("asm/boss/tretista_l.inc");
 
 // 0x083633b0
 static const struct Collision sCollisions[13] = {
