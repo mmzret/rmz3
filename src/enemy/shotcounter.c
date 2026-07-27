@@ -2,6 +2,9 @@
 #include "enemy.h"
 #include "global.h"
 #include "vfx.h"
+#include "element.h"
+
+const Coords32 Coord_08365e84;
 
 bool8 shotcounter_08066da0(struct Enemy* p);
 
@@ -23,13 +26,13 @@ const EnemyRoutine gShotcounterRoutine = {
 
 // Unused
 static struct Entity* CreateShotcounter(Coords32* c, u8 r1) {
-  struct Entity* p = AllocEntityLast(gEnemyHeaderPtr);
+  struct Entity* p = (struct Entity*)AllocEntityLast(gEnemyHeaderPtr);
   if (p != NULL) {
     INIT_ENEMY_ROUTINE(p, ENEMY_SHOTCOUNTER);
     p->coord = *c;
     p->work[0] = r1;
   }
-  return (void*)p;
+  return (struct Entity*)p;
 }
 
 NAKED static void Shotcounter_Init(struct Enemy* p) {
@@ -262,14 +265,14 @@ static void Shotcounter_Update(struct Enemy* p) {
   };
   // clang-format on
 
-  if (((p->body).status & BODY_STATUS_DEAD) && ((p->s).mode[1] != 8 || IsFrozen(p))) {
+  if (((p->body).status & BODY_STATUS_DEAD) && ((p->s).mode[1] != 8 || IsFrozen((void*)p))) {
     SET_ENEMY_ROUTINE(p, ENTITY_DIE);
     Shotcounter_Die(p);
     return;
   }
   (sUpdates1[(p->s).mode[1]])((void*)p);
   shotcounter_08066da0(p);
-  if ((p->s).mode[1] == 8 || (p->s).mode[1] == 5 || (p->s).mode[1] == 7 || !IsFrozen(p)) {
+  if ((p->s).mode[1] == 8 || (p->s).mode[1] == 5 || (p->s).mode[1] == 7 || !IsFrozen((void*)p)) {
     (sUpdates2[(p->s).mode[1]])((void*)p);
   }
 }
@@ -763,7 +766,42 @@ static void FUN_080665e4(void* _) { return; }
 
 static bool8 FUN_080665e8(void* _) { return TRUE; }
 
-INCASM("asm/enemy/shotcounter.inc");
+INCASM("asm/enemy/shotcounter_a.inc");
+
+bool8 shotcounter_08066da0(struct Enemy* p) {
+  struct Entity** slot = (struct Entity**)&p->buffer[12];
+  struct Entity* e;
+  u8 attr;
+
+  if (*slot == NULL && ((p->body).status & 1)) {
+    e = ApplyElementEffect(0, (Object*)p, &Coord_08365e84);
+    *slot = e;
+    if ((p->s).mode[1] != 8) {
+      if (e != NULL) {
+        attr = *(u8*)((u8*)p + 0x97) & 0xf0;
+        if (attr == 0x10) {
+          p->buffer[11] = 1;
+          (p->s).mode[1] = 5;
+          (p->s).mode[2] = 0;
+        } else if (attr == 0x30) {
+          p->buffer[11] = 2;
+          (p->s).mode[1] = 7;
+          (p->s).mode[2] = 0;
+        }
+      }
+    } else if (e != NULL) {
+      attr = *(u8*)((u8*)p + 0x97) & 0xf0;
+      if (attr == 0x10) {
+        p->buffer[11] = 1;
+      } else if (attr == 0x30) {
+        p->buffer[11] = 2;
+      }
+    }
+  }
+  return TRUE;
+}
+
+INCASM("asm/enemy/shotcounter_b.inc");
 
 // 0x08365D64
 static const struct Collision sCollisions[12] = {
