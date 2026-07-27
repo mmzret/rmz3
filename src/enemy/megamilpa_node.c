@@ -32,7 +32,12 @@ MegamilpaNode* CreateMegamilpaNode(u8 idx) {
 
 // --------------------------------------------
 
-INCASM("asm/enemy/megamilpa_node.inc");
+INCASM("asm/enemy/megamilpa_node_a.inc");
+
+void nop_08065928(struct Enemy* p) {
+}
+
+INCASM("asm/enemy/megamilpa_node_b.inc");
 
 void nop_08065928(struct Enemy* p);
 
