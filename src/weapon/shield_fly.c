@@ -25,75 +25,29 @@ void DeleteFlyingShield(Object* p) {
   }
 }
 
-NAKED void MenuExit_ShieldFly(Weapon* p) {
-  asm(".syntax unified\n\
-	push {r4, r5, lr}\n\
-	adds r3, r0, #0\n\
-	adds r4, r3, #0\n\
-	adds r4, #0xb4\n\
-	ldr r1, [r4]\n\
-	adds r5, r1, #0\n\
-	adds r5, #0xb4\n\
-	ldr r2, _08039A68 @ =0x00000232\n\
-	adds r0, r1, r2\n\
-	ldrb r2, [r0]\n\
-	cmp r2, #0\n\
-	beq _08039A6C\n\
-	ldrb r1, [r3, #0xa]\n\
-	movs r0, #0xfe\n\
-	ands r0, r1\n\
-	movs r2, #0\n\
-	b _08039A8A\n\
-	.align 2, 0\n\
-_08039A68: .4byte 0x00000232\n\
-_08039A6C:\n\
-	ldrb r0, [r5, #0xe]\n\
-	ldrb r4, [r4, #0xd]\n\
-	cmp r0, r4\n\
-	bne _08039A84\n\
-	movs r4, #0x9b\n\
-	lsls r4, r4, #1\n\
-	adds r0, r1, r4\n\
-	ldrb r1, [r0]\n\
-	movs r0, #8\n\
-	ands r0, r1\n\
-	cmp r0, #0\n\
-	beq _08039AB8\n\
-_08039A84:\n\
-	ldrb r1, [r3, #0xa]\n\
-	movs r0, #0xfe\n\
-	ands r0, r1\n\
-_08039A8A:\n\
-	movs r1, #0xfd\n\
-	ands r0, r1\n\
-	strb r0, [r3, #0xa]\n\
-	adds r0, r3, #0\n\
-	adds r0, #0x8c\n\
-	str r2, [r0]\n\
-	adds r0, #4\n\
-	str r2, [r0]\n\
-	adds r0, #4\n\
-	strb r2, [r0]\n\
-	ldrb r1, [r3, #0xa]\n\
-	movs r0, #0xfb\n\
-	ands r0, r1\n\
-	strb r0, [r3, #0xa]\n\
-	ldr r1, _08039AC0 @ =gWeaponFnTable\n\
-	ldrb r0, [r3, #9]\n\
-	lsls r0, r0, #2\n\
-	adds r0, r0, r1\n\
-	movs r1, #3\n\
-	str r1, [r3, #0xc]\n\
-	ldr r0, [r0]\n\
-	ldr r0, [r0, #0xc]\n\
-	str r0, [r3, #0x14]\n\
-_08039AB8:\n\
-	pop {r4, r5}\n\
-	pop {r0}\n\
-	bx r0\n\
-	.align 2, 0\n\
-_08039AC0: .4byte gWeaponFnTable\n\
- .syntax divided\n");
+void MenuExit_ShieldFly(Weapon* p) {
+  WeaponCommon* w = (WeaponCommon*)p;
+  struct WeaponCommonProps* b4 = &w->props;
+  struct Zero* z;
+  struct Zero_b4* zb4;
+  z = b4->z;
+  zb4 = &z->unk_b4;
+  if (z->elfMotion != 0) {
+    p->flags &= ~DISPLAY;
+    p->flags &= ~FLIPABLE;
+    EXIT_BODY(p);
+    SET_WEAPON_ROUTINE(p, ENTITY_DISAPPEAR);
+    return;
+  }
+  if ((zb4->status).element == b4->props[1][1]) {
+    if (!(z->unk_136 & (1 << WEAPON_SHIELD))) {
+      return;
+    }
+  }
+  p->flags &= ~DISPLAY;
+  p->flags &= ~FLIPABLE;
+  EXIT_BODY(p);
+  SET_WEAPON_ROUTINE(p, ENTITY_DISAPPEAR);
 }
 
 struct Entity* CreateWeaponShieldFly(struct Zero* z, u8 r1) {
