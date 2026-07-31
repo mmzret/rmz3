@@ -1,3 +1,4 @@
+#include "motion.h"
 #include "global.h"
 #include "vfx.h"
 
@@ -72,7 +73,30 @@ struct Entity* FUN_080c1c94(Coords32* c, u8 n, motion_t param_3) {
   return (void*)p;
 }
 
-INCASM("asm/vfx/unk_58.inc");
+INCASM("asm/vfx/unk_58_a.inc");
+
+void FUN_080c248c(struct VFX* p) {
+  switch ((p->s).mode[2]) {
+    case 0:
+      SetMotion(&p->s, *(motion_t*)&p->buffer[12]);
+      (p->s).work[2] = 0x28;
+      (p->s).mode[2]++;
+      // fallthrough
+    case 1:
+      UpdateEntityAnim(&p->s);
+      if ((p->s).work[2] & 1) {
+        (p->s).flags |= DISPLAY;
+      } else {
+        (p->s).flags &= ~DISPLAY;
+      }
+      if ((p->s).work[2] != 0 && --(p->s).work[2] == 0) {
+        SET_VFX_ROUTINE(p, ENTITY_DIE);
+      }
+      break;
+  }
+}
+
+INCASM("asm/vfx/unk_58_b.inc");
 
 // --------------------------------------------
 

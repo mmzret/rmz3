@@ -1,3 +1,5 @@
+#include "zero.h"
+#include "motion.h"
 #include "global.h"
 #include "story.h"
 #include "vfx.h"
@@ -94,7 +96,27 @@ static void Ghost33_Die(struct Entity* p) { SET_VFX_ROUTINE(p, ENTITY_EXIT); }
 
 // --------------------------------------------
 
-INCASM("asm/vfx/unk_33.inc");
+void FUN_080bba18(struct VFX* p) {
+  if (((p->s).unk_28)->mode[0] > 1) {
+    (p->s).flags &= ~DISPLAY;
+    (p->s).flags &= ~FLIPABLE;
+    SET_VFX_ROUTINE(p, ENTITY_DISAPPEAR);
+  } else {
+    switch ((p->s).mode[2]) {
+      case 0:
+        SetMotion(&p->s, MOTION(0x28, 0x0d));
+        (p->s).mode[2]++;
+        // fallthrough
+      case 1:
+        (p->s).coord.x = (pZero2->s).coord.x;
+        (p->s).coord.y = (pZero2->s).coord.y - 0x1000;
+        UpdateEntityAnim(&p->s);
+        break;
+    }
+  }
+}
+
+INCASM("asm/vfx/unk_33_a.inc");
 
 // --------------------------------------------
 

@@ -1,3 +1,4 @@
+#include "motion.h"
 #include "collision.h"
 #include "enemy.h"
 #include "global.h"
@@ -195,7 +196,35 @@ static bool8 FUN_0807415c(struct Enemy* p) {
   return FALSE;
 }
 
-INCASM("asm/enemy/snakecord.inc");
+INCASM("asm/enemy/snakecord_a.inc");
+
+void FUN_08074d18(struct Enemy* p) {
+  switch ((p->s).mode[2]) {
+    case 0:
+      SetMotion(&p->s, MOTION(0x28, 0x05));
+      (p->s).mode[2]++;
+      // fallthrough
+    case 1:
+      UpdateEntityAnim(&p->s);
+      if ((p->s).motion.state == 4) {
+        (p->s).mode[2]++;
+      }
+      break;
+    case 2:
+      SetMotion(&p->s, MOTION(0x28, 0x06));
+      (p->s).mode[2]++;
+      // fallthrough
+    case 3:
+      UpdateEntityAnim(&p->s);
+      if ((p->s).motion.state == 4) {
+        (p->s).mode[1] = 7;
+        (p->s).mode[2] = 0;
+      }
+      break;
+  }
+}
+
+INCASM("asm/enemy/snakecord_b.inc");
 
 // --------------------------------------------
 

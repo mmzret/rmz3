@@ -1,3 +1,4 @@
+#include "motion.h"
 #include "entity.h"
 #include "global.h"
 #include "mod.h"
@@ -65,4 +66,18 @@ static void Cat_Die(struct Solid* p) { SET_SOLID_ROUTINE(p, ENTITY_EXIT); }
 
 // --------------------------------------------
 
-INCASM("asm/solid/cat.inc");
+INCASM("asm/solid/cat_a.inc");
+
+void FUN_080dd894(struct Solid* p) {
+  UpdateEntityAnim(&p->s);
+  if ((p->s).mode[1] != 0) {
+    (p->s).work[2]--;
+    if ((p->s).work[2] == 0xFF) {
+      SetMotion(&p->s, MOTION(0xd9, 0x00));
+      (p->s).mode[1] = 0;
+    }
+  } else if ((p->s).motion.state == 3) {
+    (p->s).work[2] = (RANDOM(RNG_0202f388) & 0x7F) + 0x40;
+    (p->s).mode[1]++;
+  }
+}

@@ -1,3 +1,5 @@
+#include "story.h"
+#include "motion.h"
 #include "collision.h"
 #include "gfx.h"
 #include "global.h"
@@ -163,7 +165,29 @@ static void FUN_080d0478(struct Solid* p) {
   }
 }
 
-INCASM("asm/solid/unk_20.inc");
+INCASM("asm/solid/unk_20_a.inc");
+
+void FUN_080d0804(struct Solid* p) {
+  switch ((p->s).mode[2]) {
+    case 0:
+      (p->s).mode[2] = 1;
+      // fallthrough
+    case 1:
+      UpdateEntityAnim(&p->s);
+      if ((p->s).motion.state == 3) {
+        SetMotion(&p->s, MOTION(0x7a, 0x00));
+        (p->s).mode[2]++;
+      }
+      break;
+    case 2:
+      UpdateEntityAnim(&p->s);
+      if (((p->s).work[0] & 2) && !FLAG(gCurStory.s.gameflags, FLAG_2)) {
+        (p->s).mode[1] = 0;
+        (p->s).mode[2] = 0;
+      }
+      break;
+  }
+}
 
 // --------------------------------------------
 
