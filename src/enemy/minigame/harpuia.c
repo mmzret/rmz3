@@ -2,7 +2,98 @@
 #include "enemy.h"
 #include "global.h"
 
-INCASM("asm/enemy/minigame_harpuia.inc");
+
+static const EnemyFunc sUpdates1[6];
+static const EnemyFunc sUpdates2[6];
+struct Enemy* FUN_0809af20(struct Entity* e, struct Coord* c, u8 a2) {
+  struct Enemy* p = (struct Enemy*)AllocEntityLast(gEnemyHeaderPtr);
+  if (p != NULL) {
+    INIT_ENEMY_ROUTINE(p, ENEMY_HARPUIA_MG);
+    (p->s).coord = *c;
+    (p->s).work[0] = 0;
+    (p->s).work[1] = a2;
+    (p->s).unk_28 = e;
+  }
+  return p;
+}
+
+struct Enemy* FUN_0809af88(struct Entity* e, struct Coord* c, u8 a2) {
+  struct Enemy* p = (struct Enemy*)AllocEntityLast(gEnemyHeaderPtr);
+  if (p != NULL) {
+    INIT_ENEMY_ROUTINE(p, ENEMY_HARPUIA_MG);
+    (p->s).coord = *c;
+    (p->s).work[0] = 1;
+    (p->s).work[1] = a2;
+    (p->s).unk_28 = e;
+  }
+  return p;
+}
+
+struct Enemy* FUN_0809aff0(struct Entity* e, struct Coord* c, u8 a2, u8 a3) {
+  struct Enemy* p = (struct Enemy*)AllocEntityLast(gEnemyHeaderPtr);
+  if (p != NULL) {
+    INIT_ENEMY_ROUTINE(p, ENEMY_HARPUIA_MG);
+    (p->s).coord = *c;
+    (p->s).work[0] = 2;
+    (p->s).work[1] = a2;
+    p->buffer[0] = a3;
+    (p->s).unk_28 = e;
+  }
+  return p;
+}
+
+struct Enemy* FUN_0809b064(struct Entity* e, struct Coord* c, u8 a2, u8 a3) {
+  struct Enemy* p = (struct Enemy*)AllocEntityLast(gEnemyHeaderPtr);
+  if (p != NULL) {
+    INIT_ENEMY_ROUTINE(p, ENEMY_HARPUIA_MG);
+    (p->s).coord = *c;
+    (p->s).work[0] = 3;
+    (p->s).work[1] = a2;
+    p->buffer[0] = a3;
+    (p->s).unk_28 = e;
+  }
+  return p;
+}
+
+INCASM("asm/enemy/minigame_harpuia_a.inc");
+
+void HarpuiaMinigameEnemy_Update(struct Enemy* p) {
+  (sUpdates1[(p->s).mode[1]])(p);
+  (sUpdates2[(p->s).mode[1]])(p);
+}
+
+void HarpuiaMinigameEnemy_Die(struct Enemy* p) {
+  (p->s).flags &= ~DISPLAY;
+  EXIT_BODY(p);
+  SET_ENEMY_ROUTINE(p, ENTITY_EXIT);
+  (p->s).mode[1] = 0;
+  (p->s).mode[2] = 0;
+  (p->s).mode[3] = 0;
+}
+
+bool8 FUN_0809b350(struct Enemy* p) { return TRUE; }
+
+INCASM("asm/enemy/minigame_harpuia_b.inc");
+
+bool8 FUN_0809b408(struct Enemy* p) { return TRUE; }
+
+void FUN_0809b40c(struct Enemy* p) {}
+
+bool8 FUN_0809b410(struct Enemy* p) { return TRUE; }
+
+void FUN_0809b414(struct Enemy* p) {}
+
+bool8 FUN_0809b418(struct Enemy* p) { return TRUE; }
+
+INCASM("asm/enemy/minigame_harpuia_c.inc");
+
+bool8 FUN_0809b4d8(struct Enemy* p) { return TRUE; }
+
+INCASM("asm/enemy/minigame_harpuia_d.inc");
+
+bool8 FUN_0809b950(struct Enemy* p) { return TRUE; }
+
+INCASM("asm/enemy/minigame_harpuia_e.inc");
 
 void HarpuiaMinigameEnemy_Init(struct Enemy* p);
 void HarpuiaMinigameEnemy_Update(struct Enemy* p);
@@ -20,21 +111,23 @@ const EnemyRoutine gHarpuiaMinigameEnemyRoutine = {
 
 // --------------------------------------------
 
-void FUN_0809b350(struct Enemy* p);
-void FUN_0809b408(struct Enemy* p);
-void FUN_0809b410(struct Enemy* p);
-void FUN_0809b418(struct Enemy* p);
-void FUN_0809b4d8(struct Enemy* p);
-void FUN_0809b950(struct Enemy* p);
+bool8 FUN_0809b350(struct Enemy* p);
+bool8 FUN_0809b408(struct Enemy* p);
+bool8 FUN_0809b410(struct Enemy* p);
+bool8 FUN_0809b418(struct Enemy* p);
+bool8 FUN_0809b4d8(struct Enemy* p);
+bool8 FUN_0809b950(struct Enemy* p);
 
 // clang-format off
+// These all return bool8, which is what the retail code does; EnemyFunc is
+// void-returning, so cast as this repo does for DeleteEntity.
 static const EnemyFunc sUpdates1[6] = {
-    FUN_0809b350,
-    FUN_0809b408,
-    FUN_0809b410,
-    FUN_0809b418,
-    FUN_0809b4d8,
-    FUN_0809b950,
+    (EnemyFunc)FUN_0809b350,
+    (EnemyFunc)FUN_0809b408,
+    (EnemyFunc)FUN_0809b410,
+    (EnemyFunc)FUN_0809b418,
+    (EnemyFunc)FUN_0809b4d8,
+    (EnemyFunc)FUN_0809b950,
 };
 // clang-format on
 

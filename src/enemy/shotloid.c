@@ -1,8 +1,192 @@
 #include "collision.h"
 #include "enemy.h"
 #include "global.h"
+#include "story.h"
+#include "element.h"
 
-INCASM("asm/enemy/shotloid.inc");
+// The element effect this enemy is carrying, at 0xB4 -- the start of
+// the entity buffer.
+#define ELEMENT_EFFECT(p) (*(struct Entity**)&(p)->buffer[0])
+
+
+static const struct Collision sCollisions[3];
+static const EnemyFunc sDeads[3];
+static const Coords32 sElementCoord;
+static const EnemyFunc sUpdates1[9];
+static const EnemyFunc sUpdates2[9];
+struct Enemy* FUN_08093930(s32 x, s32 y, u8 n) {
+  struct Enemy* e = (struct Enemy*)AllocEntityLast(gEnemyHeaderPtr);
+
+  if (e != NULL) {
+    INIT_ENEMY_ROUTINE(e, 62);
+    (e->s).work[0] = 2;
+    (e->s).coord.x = x;
+    (e->s).coord.y = y;
+    e->buffer[9] = n;
+  }
+  return e;
+}
+
+INCASM("asm/enemy/shotloid_a.inc");
+
+bool8 FUN_080939e8(struct Enemy* p, s32 d) {
+  s32 x = (p->s).coord.x;
+  x -= PIXEL(14);
+  if (d > 0) {
+    x += PIXEL(28);
+  }
+  if (FUN_080098a4(x, (p->s).coord.y + PIXEL(10)) != 0) {
+    return TRUE;
+  }
+  return FALSE;
+}
+
+INCASM("asm/enemy/shotloid_b.inc");
+
+bool8 FUN_08093a64(struct Enemy* p, s32 dy) {
+  if (dy > 0) {
+    s32 diff;
+    (p->s).coord.y += dy;
+    diff = FUN_08009f6c((p->s).coord.x, (p->s).coord.y) - (p->s).coord.y;
+    if (diff <= 0x7ff) {
+      (p->s).coord.y = (p->s).coord.y + diff;
+      return TRUE;
+    }
+  }
+  return FALSE;
+}
+
+u32 FUN_08093a98(struct Enemy* p, s32 d) {
+  if (d != 0) {
+    if (d < 0) {
+      if (FUN_080098a4((p->s).coord.x - PIXEL(14), (p->s).coord.y - PIXEL(10)) != 0) {
+        return 1;
+      }
+    } else {
+      if (FUN_080098a4((p->s).coord.x + PIXEL(14), (p->s).coord.y - PIXEL(10)) != 0) {
+        return 2;
+      }
+    }
+    (p->s).coord.x += d;
+  }
+  return 0;
+}
+
+void nop_08093af8(struct Enemy* p) {}
+
+bool8 FUN_08093afc(struct Enemy* p) {
+  if ((p->body).status & BODY_STATUS_DEAD) {
+    SET_ENEMY_ROUTINE(p, ENTITY_DIE);
+    if ((p->body).status & BODY_STATUS_SLASHED) {
+      (p->s).mode[1] = 1;
+    } else if ((p->body).status & BODY_STATUS_RECOILED) {
+      (p->s).mode[1] = 2;
+    } else {
+      (p->s).mode[1] = 0;
+    }
+    return TRUE;
+  }
+  return FALSE;
+}
+
+bool8 FUN_08093b50(struct Enemy* p) {
+  if ((p->s).mode[1] != 7) {
+    s32 v = *(s32*)&p->buffer[0];
+    if (v == 0) {
+      switch ((p->s).mode[3]) {
+        case 0:
+          if (IsFrozen(&p->s)) {
+            (sUpdates1[(p->s).mode[1]])(p);
+            (sUpdates2[(p->s).mode[1]])(p);
+            (p->s).mode[3]++;
+            UpdateEntityAnim(&p->s);
+            return TRUE;
+          }
+          break;
+        case 1:
+          if (IsFrozen(&p->s)) {
+            if (((p->body).status & 0x00020001) == 0x00020001) {
+              (p->s).mode[3] = 0;
+            } else {
+              return TRUE;
+            }
+          } else {
+            (p->s).mode[3] = 0;
+          }
+          break;
+      }
+    }
+  }
+  return FALSE;
+}
+
+void FUN_08093be0(struct Enemy* p) {
+  if (ELEMENT_EFFECT(p) == NULL && ((p->body).status & BODY_STATUS_WHITE)) {
+    if (((p->body).status & BODY_STATUS_RECOILED)) {
+      (p->s).mode[1] = 7;
+      (p->s).mode[2] = 0;
+    } else {
+      ELEMENT_EFFECT(p) = ApplyElementEffect(0, (Object*)p, &sElementCoord);
+      if (ELEMENT_EFFECT(p) != NULL) {
+        (p->s).mode[1] = 0;
+        (p->s).mode[2] = 0;
+      }
+    }
+  }
+}
+
+INCASM("asm/enemy/shotloid_c.inc");
+
+void Shotloid_Update(struct Enemy* p) {
+  if (!FUN_08093afc(p)) {
+    if ((p->s).work[0] == 0) {
+      FUN_08093be0(p);
+      if (FUN_08093b50(p)) {
+        return;
+      }
+    }
+    (sUpdates1[(p->s).mode[1]])(p);
+    (sUpdates2[(p->s).mode[1]])(p);
+  }
+}
+
+void Shotloid_Die(struct Enemy* p) {
+  if ((p->s).work[1] == 0 && IS_METTAUR) {
+    u8 fl = (p->s).flags & ~DISPLAY;
+    (p->s).flags = fl & ~FLIPABLE;
+    EXIT_BODY(p);
+    SET_ENEMY_ROUTINE(p, ENTITY_DISAPPEAR);
+  } else {
+    (sDeads[(p->s).mode[1]])(p);
+  }
+}
+
+void FUN_08093de0(struct Enemy* p) {}
+
+void FUN_08093de4(struct Enemy* p) {
+  if (((p->body).status & 0x00020001) == 0x00020001) {
+    (p->s).mode[1] = 7;
+    (p->s).mode[2] = 0;
+  }
+}
+
+void FUN_08093e04(struct Enemy* p) {
+  struct Entity** slot = (struct Entity**)((u8*)p + 0xb4);
+  if (*slot == NULL || isKilled(*slot)) {
+    *slot = NULL;
+    SetDDP(&p->body, &sCollisions[0]);
+    if (!IsFrozen(&p->s)) {
+      (p->s).mode[1] = 1;
+      (p->s).mode[2] = 0;
+    }
+  }
+  if (((p->body).status & 0x00020001) == 0x00020001) {
+    (p->s).mode[1] = 7;
+    (p->s).mode[2] = 0;
+  }
+}
+
+INCASM("asm/enemy/shotloid_d.inc");
 
 void Shotloid_Init(struct Enemy* p);
 void Shotloid_Update(struct Enemy* p);
