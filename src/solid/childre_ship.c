@@ -5,7 +5,7 @@
 static const struct Collision sCollisions[2];
 static const s32 sSonicWaveXCoords[4];
 
-void ChildreShip_Init(struct Solid* p);
+NON_MATCH void ChildreShip_Init(struct Solid* p);
 void ChildreShip_Update(struct Solid* p);
 static void ChildreShip_Die(void* _);
 
@@ -19,7 +19,71 @@ const SolidRoutine gChildreShipRoutine = {
 };
 // clang-format on
 
-INCASM("asm/solid/childre_ship.inc");
+NON_MATCH void ChildreShip_Init(struct Solid* p) {
+#if MODERN
+  bool8 fl = FLAG(gCurStory.s.gameflags, 5);
+  if (fl != 0) {
+    return;
+  }
+  if ((p->s).work[0] != 0) {
+    if ((p->s).coord.x > (pZero2->s).coord.x) {
+      return;
+    }
+  }
+  {
+    register u8 f0 asm("r1");
+    register s32 d0 asm("r0");
+    f0 = (p->s).flags;
+    d0 = FLIPABLE;
+    d0 |= f0;
+    d0 |= DISPLAY;
+    (p->s).flags = d0;
+  }
+  InitNonAffineMotion(&p->s);
+  SetMotion(&p->s, MOTION(0xB4, 0x00));
+  (p->s).renderPrio = fl;
+  (p->s).flags |= COLLIDABLE;
+  {
+    struct Body* body;
+    body = &p->body;
+    InitBody(body, sCollisions, &(p->s).coord, 0);
+    body->parent = (struct Entity*)p;
+    body->fn = NULL;
+  }
+  (p->s).flags2 &= ~0x10;
+  (p->s).invincibleID = (p->s).uniqueID;
+  LOAD_STATIC_GRAPHIC(0xB4);
+  {
+    u8 w0 = (p->s).work[0];
+    if (w0 == 0) {
+      (p->s).d.x = w0;
+      (p->s).unk_coord.y = 0x2000;
+      (p->s).unk_coord.x = w0;
+    } else {
+      (p->s).d.x = 0x80;
+      (p->s).unk_coord.y = 0x4000;
+      (p->s).unk_coord.x = 3;
+    }
+  }
+  {
+    s32 one;
+    (p->s).work[2] = 0;
+    one = 1;
+    (p->s).work[3] = one;
+    (p->s).d.y = 0x258;
+    {
+      u32 tb = (u32)gSolidFnTable;
+      const SolidRoutine** ta = (const SolidRoutine**)(tb + (p->s).id * 4);
+      *(u32*)&(p->s).mode[0] = one;
+      (p->s).onUpdate = (void*)(**ta)[ENTITY_UPDATE];
+    }
+  }
+#else
+  INCCODE("asm/solid/childre_ship_init.inc");
+#endif
+}
+
+INCASM("asm/solid/childre_ship_a.inc");
 
 static void ChildreShip_Die(void* _) {}
 
