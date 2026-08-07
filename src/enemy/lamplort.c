@@ -2,8 +2,11 @@
 #include "element.h"
 #include "enemy.h"
 #include "global.h"
+
+extern const motion_t Action_ARRAY_080ff004[4];
 #include "motion.h"
 #include "projectile/unk_06.h"
+#include "stagerun.h"
 
 typedef struct {
   COLLISION_OBJECT_HDR;  // 0x00
@@ -19,7 +22,7 @@ static_assert(sizeof(Lamplort) == sizeof(struct Enemy));
 
 static const struct Collision sCollisions[];
 
-static void Lamplort_Init(Lamplort* p);
+NAKED static void Lamplort_Init(Lamplort* p);
 static void Lamplort_Update(Lamplort* p);
 void Lamplort_Die(Lamplort* p);
 void Lamplort_Disappear(Lamplort* p);
@@ -46,7 +49,7 @@ static struct Entity* CreateLamplort(Coords32* c, u8 n) {
 
 // --------------------------------------------
 
-static void Lamplort_OnCollision(struct Body* body, Coords32* c, Coords32* _ UNUSED);
+NAKED static void Lamplort_OnCollision(struct Body* body, Coords32* c, Coords32* _ UNUSED);
 
 NAKED static void Lamplort_Init(Lamplort* p) {
   asm(".syntax unified\n\
@@ -340,11 +343,131 @@ static void FUN_0806c828(Lamplort* p) {
 
 bool8 FUN_0806c8c8(struct Enemy* p) { return TRUE; }
 
-INCASM("asm/enemy/lamplort_b.inc");
+void FUN_0806c8cc(struct Enemy* p) {
+  switch ((p->s).mode[2]) {
+    case 0: {
+      register s32 one asm("r6");
+      u8 v;
+      SetMotion(&p->s, MOTION(0x19, 4));
+      SetDDP(&p->body, &sCollisions[0]);
+      {
+        u32* f = (u32*)((u8*)(p->s).unk_2c + 0xb4);
+        u32 fv = *f;
+        one = 1;
+        *f = fv | one;
+      }
+      (p->s).work[2] = 0;
+      PlaySound(0x11F);
+      if (Camera_GetDistance(&gStageRun.vm.camera, &(p->s).coord) > 0x4000) {
+        (p->s).work[3] = 0;
+      } else {
+        (p->s).work[3] = one;
+      }
+      v = *((u8*)p + 0xbc);
+      {
+        register u8 nf asm("r0");
+        if (v != 0) {
+          register u8 fl asm("r1");
+          fl = (p->s).flags;
+          nf = 0x10;
+          nf |= fl;
+        } else {
+          register u8 fl2 asm("r1");
+          fl2 = (p->s).flags;
+          asm("" : "+r"(fl2));
+          nf = 0xEF;
+          nf &= fl2;
+        }
+        (p->s).flags = nf;
+      }
+      {
+        register s32 x asm("r1");
+        u8* a;
+        s32 sh;
+        u8 ov;
+        s32 m;
+        x = 1;
+        x &= v;
+        ((p->s).spr).xflip = x;
+        a = (u8*)p + 0x4a;
+        sh = x << 4;
+        ov = *a;
+        m = -0x11;
+        m &= ov;
+        m |= sh;
+        *a = m;
+      }
+      (p->s).mode[2]++;
+      FALLTHROUGH;
+    }
+    case 1: {
+      u8 nv;
+      u8 st;
+      if ((p->s).work[3] == 0) {
+        if (Camera_GetDistance(&gStageRun.vm.camera, &(p->s).coord) > 0x4000) {
+          goto skip;
+        }
+        nv = 1;
+      } else {
+        if (Camera_GetDistance(&gStageRun.vm.camera, &(p->s).coord) <= 0x4000) {
+          goto skip;
+        }
+        nv = 0;
+      }
+      (p->s).work[3] = nv;
+    skip:
+      UpdateEntityAnim(&p->s);
+      st = *((u8*)p + 0x73);
+      if (st == 3) {
+        (p->s).mode[1] = st;
+        (p->s).mode[2] = 0;
+      }
+      break;
+    }
+  }
+}
 
 bool8 FUN_0806c9c0(struct Enemy* p) { return TRUE; }
 
-INCASM("asm/enemy/lamplort_c.inc");
+void FUN_0806c9c4(struct Enemy* p) {
+  switch ((p->s).mode[2]) {
+    case 0:
+      SetMotion(&p->s, MOTION(0x19, 0x06));
+      SetDDP(&p->body, &sCollisions[0]);
+      SET_XFLIP(p, *(u8*)((u8*)p + 0xbc));
+      (p->s).work[2] = 0xFF;
+      if (Camera_GetDistance(&gStageRun.vm.camera, &(p->s).coord) > 0x4000) {
+        (p->s).work[3] = 0;
+      } else {
+        (p->s).work[3] = 1;
+      }
+      (p->s).mode[2]++;
+      /* fallthrough */
+    case 1: {
+      u8 w2 = (p->s).work[2];
+      if ((w2 & 0xF) == 0) {
+        PlaySound(0x11F);
+      }
+    }
+      if ((p->s).work[3] == 0) {
+        if (Camera_GetDistance(&gStageRun.vm.camera, &(p->s).coord) <= 0x4000) {
+          (p->s).work[3] = 1;
+        }
+      } else {
+        if (Camera_GetDistance(&gStageRun.vm.camera, &(p->s).coord) > 0x4000) {
+          (p->s).work[3] = 0;
+        }
+      }
+      UpdateEntityAnim(&p->s);
+      if ((p->s).work[2] != 0) {
+        if ((u8)--(p->s).work[2] != 0) {
+          break;
+        }
+      }
+      (p->s).mode[1] = 4, (p->s).mode[2] = 0;
+      break;
+  }
+}
 
 bool8 true_0806cac4(struct Enemy* p) { return TRUE; }
 
@@ -397,9 +520,131 @@ static void FUN_0806cb5c(Lamplort* p) {
 
 bool8 FUN_0806cc00(struct Enemy* p) { return TRUE; }
 
-INCASM("asm/enemy/lamplort_d.inc");
+void lamplort_0806cc04(struct Enemy* p) {
+  s32 m = (p->s).mode[2];
+  switch (m) {
+    case 0: {
+      u8 fv;
+      u32 x1;
+      s32 z3;
+      SetMotion(&p->s, 0x1902);
+      SetDDP(&p->body, &sCollisions[5]);
+      fv = *((u8*)p + 0xbc);
+      if (fv != 0) {
+        (p->s).flags |= 0x10;
+      } else {
+        (p->s).flags &= 0xEF;
+      }
+      x1 = 1 & fv;
+      {
+        bool8* xa = &((p->s).spr).xflip;
+        z3 = 0;
+        *xa = x1;
+      }
+      {
+        register u8* t0 asm("r0");
+        register u8* oa asm("ip");
+        u32 off = 0x4a;
+        asm("" : "+r"(off));
+        off += (u32)p;
+        t0 = (u8*)off;
+        oa = t0;
+        asm("" : "+r"(oa));
+        x1 <<= 4;
+        {
+          s32 ov = *t0;
+          s32 m11 = -0x11;
+          u32 vv;
+          register u8* fa asm("r1");
+          asm("" : "+r"(m11));
+          vv = (m11 & ov) | x1;
+          fa = oa;
+          asm("" : "+r"(fa));
+          *fa = vv;
+        }
+      }
+      (p->s).work[3] = z3;
+      (p->s).work[2] = 8;
+      (p->s).mode[2]++;
+    }
+      /* fallthrough */
+    case 1: {
+      u8 w2 = (p->s).work[2];
+      if (w2 != 0) {
+        s32 t = w2 - 1;
+        (p->s).work[2] = t;
+        if ((t << 24) != 0) {
+          goto umg;
+        }
+      }
+      {
+        s32 raw = (p->s).work[3] + 1;
+        u8 t3;
+        (p->s).work[3] = raw;
+        t3 = raw;
+        if (t3 > 2) {
+          (p->s).mode[2]++;
+        } else {
+          (p->s).work[2] = 8;
+          if (t3 == 2) {
+            SetMotion(&p->s, Action_ARRAY_080ff004[(p->s).work[3]]);
+          }
+          if ((p->s).work[3] == 1) {
+            SetDDP(&p->body, &sCollisions[5]);
+          } else {
+            SetDDP(&p->body, &sCollisions[0]);
+          }
+        }
+      }
+      if ((p->s).work[3] == 1) {
+        u8* bc = (u8*)p + 0xbc;
+        register u32 nv asm("r1");
+        register u32 one2 asm("r2");
+        u8 rv;
+        u32 x2;
+        nv = *bc;
+        one2 = 1;
+        asm("" : "+r"(one2));
+        nv ^= one2;
+        *bc = nv;
+        rv = *bc;
+        if (rv != 0) {
+          register s32 flA asm("r0");
+          register s32 cA asm("r1");
+          flA = (p->s).flags;
+          cA = 0x10;
+          asm("" : "+r"(cA));
+          flA |= cA;
+          (p->s).flags = flA;
+        } else {
+          (p->s).flags &= 0xEF;
+        }
+        x2 = 1 & rv;
+        ((p->s).spr).xflip = x2;
+        {
+          register u8* oa3 asm("r3");
+          s32 ov2;
+          s32 m11b;
+          oa3 = (u8*)&((p->s).spr).oam + 6;
+          x2 <<= 4;
+          ov2 = *oa3;
+          m11b = -0x11;
+          asm("" : "+r"(m11b));
+          *oa3 = (m11b & ov2) | x2;
+        }
+      }
+    umg:
+      UpdateEntityAnim(&p->s);
+      break;
+    }
+    case 2:
+      (p->s).mode[1] = 1;
+      (p->s).mode[2] = 0;
+      break;
+  }
+}
 
-static bool32 true_0806cd48(void* _) { return TRUE; }
+static bool32 true_0806cd48(void* _ UNUSED) { return TRUE; }
 
 static void FUN_0806cd4c(Lamplort* p) {
   if (p->mode[2] == 0) {
@@ -416,11 +661,11 @@ static void FUN_0806cd4c(Lamplort* p) {
   }
 }
 
-static bool32 FUN_0806cda4(void* _) { return TRUE; }
+static bool32 FUN_0806cda4(void* _ UNUSED) { return TRUE; }
 
-static void FUN_0806cda8(void* _) {}
+static void FUN_0806cda8(void* _ UNUSED) {}
 
-static bool32 FUN_0806cdac(void* _) { return TRUE; }
+static bool32 FUN_0806cdac(void* _ UNUSED) { return TRUE; }
 
 static void FUN_0806cdb0(Lamplort* p) {
   if (p->mode[2] == 0) {
