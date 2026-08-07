@@ -1,6 +1,7 @@
 #include "collision.h"
 #include "enemy.h"
 #include "global.h"
+#include "vfx.h"
 #include "stagerun.h"
 
 void OmegaZeroRock_Init(struct Enemy* p);
@@ -19,6 +20,12 @@ const EnemyRoutine gOmegaZeroRockRoutine = {
 
 // --------------------------------------------
 
+
+static const struct Collision sCollisions[2];
+static const u8 sInitModes[2];
+static const motion_t sMotions[3];
+static const EnemyFunc sUpdates1[1];
+static const EnemyFunc sUpdates2[1];
 void CreateOzChargeSaberRock(s32 x, u8 r1) {
   s32 y;
   s32 prev_x = x;
@@ -54,7 +61,56 @@ static bool8 FUN_0808b5e8(Object* p) {
 
 // --------------------------------------------
 
-INCASM("asm/enemy/omega_zero_rock.inc");
+void OmegaZeroRock_Init(struct Enemy* p) {
+  SET_ENEMY_ROUTINE(p, ENTITY_UPDATE);
+  (p->s).mode[1] = sInitModes[(p->s).work[0]];
+  (p->s).flags |= FLIPABLE;
+  (p->s).flags |= DISPLAY;
+  InitNonAffineMotion(&p->s);
+  INIT_BODY(p, sCollisions, 5, onCollision);
+  OmegaZeroRock_Update(p);
+}
+
+void OmegaZeroRock_Update(struct Enemy* p) {
+  if (!FUN_0808b5e8((Object*)p)) {
+    sUpdates1[(p->s).mode[1]](p);
+    sUpdates2[(p->s).mode[1]](p);
+  }
+}
+
+void OmegaZeroRock_Die(struct Enemy* p) {
+  PlaySound(0x41);
+  FUN_080b7ffc((struct Entity*)p, &(p->s).coord, (motion_t*)sMotions, 3);
+  SET_ENEMY_ROUTINE(p, ENTITY_EXIT);
+}
+
+void nop_0808b704(struct Enemy* p) {}
+
+void FUN_0808b708(struct Enemy* p) {
+  switch ((p->s).mode[2]) {
+    case 0:
+      (p->s).d.y = 0;
+      (p->s).work[2] = 0x10;
+      SetMotion(&p->s, 0xed00);
+      (p->s).mode[2]++;
+      // fallthrough
+    case 1:
+      (p->s).d.y += 0x40;
+      if ((p->s).d.y > 0x700) {
+        (p->s).d.y = 0x700;
+      }
+      (p->s).coord.y += (p->s).d.y;
+      if ((p->s).work[2] != 0) {
+        if (--(p->s).work[2] == 0 && (p->s).work[3] <= 1) {
+          CreateOzChargeSaberRock((p->s).unk_coord.x, (p->s).work[3] + 1);
+        }
+      } else if ((u16)FUN_080098a4((p->s).coord.x, (p->s).coord.y) != 0) {
+        SET_ENEMY_ROUTINE(p, ENTITY_DIE);
+      }
+      UpdateEntityAnim(&p->s);
+      break;
+  }
+}
 
 void nop_0808b704(struct Enemy* p);
 
