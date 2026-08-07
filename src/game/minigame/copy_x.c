@@ -1,6 +1,13 @@
 #include "game.h"
 #include "global.h"
+#include "vfx.h"
+#include "text.h"
 #include "minigame.h"
+
+extern const u8 Unicode_HI_SCORE_0810e264[];
+extern const u8 Unicode_SCORE_0810e25c[];
+
+struct Projectile* FUN_080b1934(struct Entity* e, struct Coord* c, u8 a2);
 
 NAKED void initCopyXMinigame(struct GameState* g) {
   asm(".syntax unified\n\
@@ -332,7 +339,197 @@ bool32 copyXMinigame(struct GameState* g) {
   return (sUpdates[s->unk_04])(g);
 }
 
-INCASM("asm/minigame/copy_x.inc");
+bool32 copyx_minigame_080fa560(struct GameState* g) {
+  struct MinigameState* s = &(g->sceneState).mg;
+  u8 b1[8];
+  u8 b2[12];
+  switch (s->unk_06) {
+    case 0:
+      *(u16*)s->unk_00 = 0x3c;
+      s->unk_06++;
+      /* fallthrough */
+    case 1: {
+      s32 raw = *(u16*)s->unk_00 - 1;
+      *(u16*)s->unk_00 = raw;
+      if ((u16)raw != 0) {
+        break;
+      }
+      s->unk_06++;
+      break;
+    }
+    case 2:
+      *(struct VFX**)&s->unk_10 = (struct VFX*)CreateMissionAlert(0);
+      PlaySound(0x1d);
+      s->unk_06++;
+      /* fallthrough */
+    case 3:
+      if (((*(struct VFX**)&s->unk_10)->s).mode[0] > 1) {
+        s->unk_04++;
+        s->unk_06 = 0;
+      }
+      break;
+  }
+  memcpy(b1, Unicode_SCORE_0810e25c, 6);
+  PrintJISString(b1, 0x12, 0);
+  {
+    u32 score = *(u32*)s->unk_1c;
+    PrintMinigameNumber(score, 0x1b, 0);
+    if (score > (u32)s->unk_24) {
+      s->unk_24 = score;
+    }
+  }
+  memcpy(b2, Unicode_HI_SCORE_0810e264, 9);
+  PrintJISString(b2, 0xf, 1);
+  {
+    register u32 hs0 asm("r4");
+    u32 hs;
+    hs0 = s->unk_24;
+    asm volatile("add %0, %1, #0" : "=&l"(hs) : "l"(hs0));
+    PrintMinigameNumber(hs, 0x1b, 1);
+  }
+  return 1;
+}
+
+bool32 copyx_minigame_080fa62c(struct GameState* g) {
+  struct MinigameState* s = &(g->sceneState).mg;
+  u8 b1[8];
+  u8 b2[12];
+  struct Coord c;
+  s32 t;
+  *(s32*)&s->unk_18 += 1;
+  *(s16*)s->unk_00 += 1;
+  t = *(s16*)s->unk_00 % *(s16*)&s->unk_00[2];
+  if (t == 0) {
+    u32 sd;
+    u8 r;
+    s32 n;
+    {
+      u8* base = (u8*)&gGameState;
+      u32 ofs = 0x626c;
+      u32* seedp;
+      asm("" : "+r"(base));
+      asm("" : "+r"(ofs));
+      seedp = (u32*)(base + ofs);
+      sd = *seedp;
+      sd = sd * 0x41C64E6D + 0x3039;
+      sd = sd * 0x41C64E6D + 0x3039;
+      *seedp = sd;
+    }
+    r = (sd >> 16) % 3;
+    c.x = 0x16800;
+    c.y = 0xF000;
+    c.x += 0x5000;
+    c.y -= 0x3000;
+    FUN_080b1934((struct Entity*)s, &c, r);
+    n = *(s32*)&s->unk_20 + 1;
+    *(s32*)&s->unk_20 = n;
+    *(s16*)s->unk_00 = t;
+    if ((u32)n <= 3) {
+      *(s16*)&s->unk_00[2] = 0x78;
+    } else if ((u32)n <= 0xb) {
+      *(s16*)&s->unk_00[2] = 0x70;
+    } else if ((u32)n <= 0x17) {
+      *(s16*)&s->unk_00[2] = 0x68;
+    } else if ((u32)n <= 0x1f) {
+      *(s16*)&s->unk_00[2] = 0x60;
+    } else if ((u32)n <= 0x2f) {
+      *(s16*)&s->unk_00[2] = 0x58;
+    } else {
+      *(s16*)&s->unk_00[2] = 0x46;
+    }
+  }
+  memcpy(b1, Unicode_SCORE_0810e25c, 6);
+  PrintJISString(b1, 0x12, 0);
+  {
+    u32 score = *(u32*)s->unk_1c;
+    PrintMinigameNumber(score, 0x1b, 0);
+    if (score > (u32)s->unk_24) {
+      s->unk_24 = score;
+      if (*(u16*)&s->unk_0e == 0) {
+        *(u16*)&s->unk_0e = 1;
+        PlaySound(0x138);
+      }
+    }
+  }
+  memcpy(b2, Unicode_HI_SCORE_0810e264, 9);
+  PrintJISString(b2, 0xf, 1);
+  {
+    register s32 hs asm("r4");
+    hs = s->unk_24;
+    PrintMinigameNumber(hs, 0x1b, 1);
+  }
+  {
+    u8 z = s->unk_0c;
+    if (z == 0) {
+      s->unk_04 += 1;
+      s->unk_06 = z;
+    }
+  }
+  return 1;
+}
+
+bool32 copyx_minigame_080fa764(struct GameState* g) {
+  struct MinigameState* s = &(g->sceneState).mg;
+  u8 b1[8];
+  u8 b2[12];
+  switch (s->unk_06) {
+    case 0:
+      *(u16*)s->unk_00 = 0x3c;
+      s->unk_06++;
+      /* fallthrough */
+    case 1: {
+      s32 raw = *(u16*)s->unk_00 - 1;
+      *(u16*)s->unk_00 = raw;
+      if ((u16)raw != 0) {
+        break;
+      }
+      goto inc;
+    }
+    case 2:
+      *(struct VFX**)&s->unk_10 = (struct VFX*)CreateMissionAlert(4);
+      FadeOutBGM(0xb3);
+      s->unk_06++;
+      /* fallthrough */
+    case 3:
+      if (((*(struct VFX**)&s->unk_10)->s).mode[0] <= 1) {
+        break;
+      }
+    inc:
+      s->unk_06++;
+      break;
+    case 4:
+      gGameState.frames = 0x40;
+      s->unk_06++;
+      /* fallthrough */
+    case 5:
+      if (gGameState.frames != 0x20) {
+        break;
+      }
+      {
+        s32 z = 0;
+        *(u16*)s->unk_00 = z;
+        s->unk_06 = z;
+        return z;
+      }
+  }
+  memcpy(b1, Unicode_SCORE_0810e25c, 6);
+  PrintJISString(b1, 0x12, 0);
+  {
+    u32 score = *(u32*)s->unk_1c;
+    PrintMinigameNumber(score, 0x1b, 0);
+    if (score > (u32)s->unk_24) {
+      s->unk_24 = score;
+    }
+  }
+  memcpy(b2, Unicode_HI_SCORE_0810e264, 9);
+  PrintJISString(b2, 0xf, 1);
+  {
+    register s32 hs asm("r4");
+    hs = s->unk_24;
+    PrintMinigameNumber(hs, 0x1b, 1);
+  }
+  return 1;
+}
 
 bool32 exitCopyXMinigame(struct GameState* g) {
   struct MinigameState* s = &(g->sceneState).mg;
