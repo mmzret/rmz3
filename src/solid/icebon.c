@@ -4,6 +4,12 @@
 #include "overworld.h"
 #include "physics.h"
 #include "solid.h"
+#include "zero.h"
+
+void createIcebonIce(s32 x, s32 y);
+void icebon_080ca550(struct Entity* e, u8 n);
+void FUN_080b2b40(u8 kind, struct Coord* c, s32 v, u8 n);
+void FUN_080b83d4(struct Entity* e, struct Coord* c, struct Coord* dc, s32 y, motion_t* motions, u8 frame);
 
 static const Coords32 Coord_0836fc80;
 static const struct Rect sSize;
@@ -18,7 +24,7 @@ static_assert(sizeof(IcebonObject) == sizeof(struct Solid));
 static const SolidFunc sIcebonDeathSeq[2];
 const struct Collision sIcebonCollisions[3];
 
-static void Icebon_Init(struct Solid* p);
+NAKED static void Icebon_Init(struct Solid* p);
 static void Icebon_Update(struct Solid* p);
 static void Icebon_Die(struct Solid* p);
 
@@ -32,6 +38,8 @@ const SolidRoutine gIcebonRoutine = {
 };
 // clang-format on
 
+
+static const motion_t motion_t_ARRAY_0836fc92[4];
 void nop_080c9e90(struct Body* _ UNUSED) { return; }
 
 // 0x080c9e94
@@ -178,7 +186,7 @@ static void nop_080ca0b4(void* _ UNUSED);
 
 static void icebon_080ca0e0(Object* p);
 static void icebon_080ca104(Object* p);
-void icebon_080ca154(struct Solid* p);
+NON_MATCH void icebon_080ca154(struct Solid* p);
 
 static void Icebon_Update(struct Solid* p) {
   static const SolidFunc sUpdates1[3] = {
@@ -261,7 +269,128 @@ static void icebon_080ca104(Object* p) {
   }
 }
 
-INCASM("asm/solid/icebon.inc");
+NON_MATCH void icebon_080ca154(struct Solid* p) {
+#if MODERN
+  register s32 m asm("r5");
+  m = (p->s).mode[2];
+  switch (m) {
+    case 0:
+      PlaySound(0x106);
+      SetMotion(&p->s, 0x1000);
+      UpdateEntityAnim(&p->s);
+      (p->s).work[2] = m;
+      (p->s).mode[2]++;
+      // fallthrough
+    case 1: {
+      (p->s).work[2]++;
+      if ((s32)((p->s).work[2] % 0xC << 24) == 0) {
+        s32 spbuf[2];
+        register s32 xv asm("r0");
+        register s32 nc asm("r1");
+        register s32 rl asm("r2");
+        s32 xv2;
+        xv = (p->s).coord.x;
+        *(volatile s32*)&spbuf[0] = xv;
+        nc = -0x400;
+        asm("" : "+r"(nc));
+        xv2 = xv + nc;
+        asm volatile("" : "+r"(xv));
+        *(volatile s32*)&spbuf[0] = xv2;
+        {
+          s32 rv = RANDOM(RNG_0202f388) & 0x7FF;
+          rl = *(volatile s32*)&spbuf[0];
+          createIcebonIce(rv + rl, (p->s).coord.y - 0x1500);
+        }
+      }
+      if ((p->s).work[2] > 0x2B) {
+        if ((p->s).coord.y - 0x3400 > gOverworld.sea) {
+          s32 f = 0;
+          if ((p->s).work[3] == 2) {
+            f = 1;
+          }
+          icebon_080ca550(&p->s, f);
+          (p->s).work[3]++;
+          (p->s).work[3] = (u8)(p->s).work[3] % 3;
+        }
+        (p->s).mode[2]++;
+      }
+      break;
+    }
+    case 2:
+      (p->s).work[2] = 0x1E;
+      (p->s).mode[2]++;
+      // fallthrough
+    case 3: {
+      if ((s32)((p->s).work[2] % 0xC << 24) == 0) {
+        register s32 tx asm("r6");
+        tx = (p->s).coord.x - 0x400;
+        createIcebonIce((RANDOM(RNG_0202f388) & 0x7FF) + tx, (p->s).coord.y - 0x1500);
+      }
+      {
+        s32 t = (u8)--(p->s).work[2];
+        if (t == 0) {
+          (p->s).work[2] = 0xE1;
+          (p->s).mode[1] = 1;
+          (p->s).mode[2] = t;
+        }
+      }
+      break;
+    }
+  }
+#else
+  INCCODE("asm/solid/icebon_a154.inc");
+#endif
+}
+
+INCASM("asm/solid/icebon_a.inc");
+
+void icebonDeath1(struct Solid* p0) {
+  register struct Solid* p asm("r5");
+  register s32 m asm("r4");
+  struct Coord c;
+  p = p0;
+  m = (p->s).mode[2];
+  switch (m) {
+    case 0: {
+      s32 onR;
+      s32 k80;
+      (p->s).flags2 &= 0xF7;
+      onR = 0;
+      if ((pZero2->s).coord.x - (p->s).coord.x > 0) {
+        onR = 1;
+      }
+      SetMotion(&p->s, 0x1001);
+      *(s32*)((u8*)p + 0x8c) = m;
+      *(s32*)((u8*)p + 0x90) = m;
+      *(u8*)((u8*)p + 0x94) = m;
+      (p->s).flags &= 0xFB;
+      c.x = (p->s).coord.x;
+      c.y = (p->s).coord.y;
+      FUN_080b2b40(0, &c, 0x200, onR);
+      k80 = 0x80;
+      asm("" : "+r"(k80));
+      c.x = k80 - (onR << 8);
+      asm volatile("" ::"r"(onR));
+      c.y = m;
+      FUN_080b83d4(&p->s, &(p->s).coord, &c, 0, (motion_t*)&motion_t_ARRAY_0836fc92[3], 0x18);
+      (p->s).work[2] = 0x18;
+      (p->s).d.x = c.x / 3;
+      (p->s).mode[2]++;
+    }
+      /* fallthrough */
+    case 1: {
+      s32 raw;
+      (p->s).coord.x += (p->s).d.x;
+      UpdateEntityAnim(&p->s);
+      raw = (p->s).work[2] - 1;
+      (p->s).work[2] = raw;
+      if ((u8)raw == 0) {
+        icebonDeath0(p);
+      }
+      break;
+    }
+  }
+}
 
 // 0x0836fc38
 const struct Collision sIcebonCollisions[3] = {
