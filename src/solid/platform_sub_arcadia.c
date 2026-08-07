@@ -26,6 +26,9 @@ const SolidRoutine gSubArcadiaPlatformRoutine = {
 // ------------------------------------------------------------------------------------------------------------------------------------
 
 // 0x080cf098
+
+const struct Rect Rect_ARRAY_08370628[6];
+const motion_t sSolid17Motions[3][4];
 NAKED static void onCollision(struct Body* body, Coords32* c1, Coords32* c2) {
   asm(".syntax unified\n\
 	push {r4, lr}\n\
@@ -136,7 +139,146 @@ static void Solid17_Die(struct Entity* p) {
 
 static void nop_080cf208(void* _ UNUSED) {}
 
-INCASM("asm/solid/platform_sub_arcadia.inc");
+void FUN_080cf20c(struct Solid* p) {
+  switch ((p->s).mode[2]) {
+    case 0:
+      SetDDP(&p->body, &sCollisions[1]);
+      SetMotion(&p->s, sSolid17Motions[0][(p->s).work[0]]);
+      (p->s).mode[2]++;
+      // fallthrough
+    case 1:
+      UpdateEntityAnim(&p->s);
+      break;
+  }
+}
+
+void FUN_080cf250(struct Solid* p) {
+  switch ((p->s).mode[2]) {
+    case 0: {
+      const s16* t;
+      {
+        const motion_t* tb0 = sSolid17Motions[1];
+        SetMotion(&p->s, tb0[(p->s).work[0]]);
+      }
+      t = (const s16*)Rect_ARRAY_08370628;
+      (p->s).d.x = t[(p->s).work[0] * 2];
+      {
+        u32 offd = (u32)((p->s).work[0] << 2);
+        asm("" : "+r"(offd));
+        t = (const s16*)((const u8*)t + 2);
+        offd += (u32)t;
+        (p->s).d.y = *(const s16*)offd;
+      }
+      (p->s).mode[2]++;
+    }
+      /* fallthrough */
+    case 1: {
+      u32 msk;
+      msk = 0xFFFF;
+      asm("" : "+r"(msk));
+      if (*(u16*)&(p->s).work[2] == 1) {
+        const motion_t* tb0 = sSolid17Motions[1];
+        u16 mo = tb0[(p->s).work[0]];
+        u16 m2 = *(s8*)((u8*)p + 0x71);
+        u16 m3 = *(s8*)((u8*)p + 0x72);
+        GotoMotion(&p->s, mo, m2, m3);
+      }
+      msk &= *(u16*)&(p->s).work[2];
+      if (msk == 0x100) {
+        const motion_t* tb1 = sSolid17Motions[2];
+        u16 mo;
+        u16 m2;
+        u16 m3;
+        asm("" : "+r"(tb1));
+        mo = tb1[(p->s).work[0]];
+        m2 = *(s8*)((u8*)p + 0x71);
+        m3 = *(s8*)((u8*)p + 0x72);
+        GotoMotion(&p->s, mo, m2, m3);
+      }
+      (p->s).coord.x += (p->s).d.x;
+      (p->s).coord.y += (p->s).d.y;
+      UpdateEntityAnim(&p->s);
+      {
+        const u8* t2 = (const u8*)&Rect_ARRAY_08370628[2];
+        s32 y;
+        {
+          register u32 off asm("r2");
+          register s32 x0 asm("r0");
+          const u8* tb;
+          off = (p->s).work[0] << 3;
+          x0 = (p->s).coord.x + *(const s16*)(off + t2);
+          tb = t2 + 2;
+          off += (u32)tb;
+          y = (p->s).coord.y + *(const s16*)off;
+          if ((FUN_080098a4(x0, y) << 16) != 0) {
+            goto setm;
+          }
+        }
+        {
+          register u32 off2 asm("r2");
+          register s32 x0 asm("r0");
+          const u8* t4;
+          const u8* tb;
+          off2 = (p->s).work[0] << 3;
+          t4 = t2 + 4;
+          x0 = (p->s).coord.x + *(const s16*)(off2 + t4);
+          tb = t2 + 6;
+          off2 += (u32)tb;
+          y = (p->s).coord.y + *(const s16*)off2;
+          if ((FUN_080098a4(x0, y) << 16) != 0) {
+          setm:
+            (p->s).mode[1] = 2;
+            (p->s).mode[2] = 0;
+          }
+        }
+      }
+      break;
+    }
+  }
+}
+
+void FUN_080cf378(struct Solid* p) {
+  switch ((p->s).mode[2]) {
+    case 0:
+      (p->s).mode[2] = 1;
+      FALLTHROUGH;
+    case 1: {
+      s32 m = 0xFFFF;
+      s32 x, y;
+      if (*(u16*)&(p->s).work[2] == 1) {
+        const motion_t* tb = sSolid17Motions[1];
+        motion_t mo = tb[(p->s).work[0]];
+        s8* mp = (s8*)((u8*)p + 0x71);
+        u16 a = (u16)*mp;
+        u16 b;
+        mp += 1;
+        b = (u16)*mp;
+        GotoMotion(&p->s, mo, a, b);
+      }
+      m &= *(u16*)&(p->s).work[2];
+      if (m == 0x100) {
+        const motion_t* tb = sSolid17Motions[2];
+        motion_t mo = tb[(p->s).work[0]];
+        s8* mp = (s8*)((u8*)p + 0x71);
+        u16 a = (u16)*mp;
+        u16 b;
+        mp += 1;
+        b = (u16)*mp;
+        GotoMotion(&p->s, mo, a, b);
+      }
+      x = (p->s).coord.x - (p->s).d.x;
+      (p->s).coord.x = x;
+      y = (p->s).coord.y - (p->s).d.y;
+      (p->s).coord.y = y;
+      if (x == (p->s).unk_coord.x && y == (p->s).unk_coord.y) {
+        (p->s).mode[1] = 0;
+        (p->s).mode[2] = 0;
+      }
+      UpdateEntityAnim(&p->s);
+      break;
+    }
+  }
+}
 
 // --------------------------------------------
 
