@@ -5,6 +5,7 @@
 #include "global.h"
 #include "overworld.h"
 #include "palette_animation.h"
+#include "script.h"
 
 // Omega (1st gold)
 
@@ -93,7 +94,7 @@ static void OmegaGold_Init(Omega1* p) {
 static bool8 FUN_0805b41c(Omega1* p);
 static bool8 FUN_0805b45c(Omega1* p);
 static bool8 FUN_0805b4a4(Omega1* p);
-static bool8 changeGoldOmega1Mode(Omega1* p);
+NON_MATCH static bool8 changeGoldOmega1Mode(Omega1* p);
 static bool8 nop_0805b5dc(Omega1* p);
 static bool8 nop_0805b740(Omega1* p);
 static bool8 nop_0805b7ec(Omega1* p);
@@ -167,7 +168,150 @@ static void OmegaGold_Disappear(Omega1* p) {
 
 // --------------------------------------------
 
-INCASM("asm/boss/omega1g.inc");
+void FUN_0805b270(Omega1* p) {
+  switch (p->mode[2]) {
+    case 0: {
+      register s32 one asm("r5");
+      register struct StageRun* sr asm("r3");
+      register s32 v asm("r2");
+      sr = &gStageRun;
+      v = sr->missionStatus;
+      one = 1;
+      {
+        s32 t = one;
+        t &= v;
+        if (t != 0) {
+          register s32 a asm("r1");
+          register s32 u asm("r0");
+          a = (sr->vm).active;
+          u = one;
+          u &= a;
+          if (u == 0) {
+            s32 w = 0xFFFE;
+            s32 k;
+            w &= v;
+            k = 0x10;
+            w |= k;
+            sr->missionStatus = w;
+          }
+        }
+      }
+      PlaySound(0xE8);
+      RemovePaletteAnimation(0xb);
+      RemovePaletteAnimation(0x66);
+      RemovePaletteAnimation(0x67);
+      RemovePaletteAnimation(0x10f);
+      {
+        u8* a = (u8*)p + 0x8c;
+        register s32 z asm("r1");
+        z = 0;
+        *(s32*)a = z;
+        asm("" : "+r"(a));
+        a += 4;
+        asm("" : "+r"(a));
+        *(s32*)a = z;
+        asm("" : "+r"(a));
+        a += 4;
+        asm("" : "+r"(a));
+        *a = z;
+        {
+          register u8 g asm("r0");
+          register u8 h asm("r2");
+          h = p->flags;
+          asm("" : "+r"(h));
+          g = 0xFB;
+          g &= h;
+          p->flags = g;
+        }
+        {
+          s32* d = (s32*)((u8*)p + 0x5c);
+          d[1] = z;
+          p->d.x = z;
+        }
+      }
+      p->work[2] = 0x5A;
+      p->mode[2]++;
+      FALLTHROUGH;
+    }
+    case 1: {
+      s32 t = *(s32*)((u8*)p + 0xb8);
+      s32 y = p->coord.y;
+      p->coord.y = y + (((t - y) << 3) >> 8);
+      if (p->work[2] == 0) {
+        break;
+      }
+      if ((u8)--p->work[2] == 0) {
+        p->mode[2]++;
+      }
+      break;
+    }
+    case 2: {
+      s32 t = *(s32*)((u8*)p + 0xb8);
+      s32 y = p->coord.y;
+      p->coord.y = y + (((t - y) << 3) >> 8);
+      if ((p->scriptEntity->flags & 0x80) != 0) {
+        p->mode[1] = 1;
+        p->mode[2] = 0;
+      }
+      break;
+    }
+  }
+}
+
+void FUN_0805b358(Omega1* p) {
+  u8 m = p->mode[2];
+  switch (m) {
+    case 0:
+      p->work[2] = 0xB4;
+      p->d.y = m;
+      p->unk_coord.x = p->coord.x;
+      p->mode[2]++;
+      /* fallthrough */
+    case 1: {
+      s32 dy = p->d.y + 8;
+      p->d.y = dy;
+      if (dy > 0x120) {
+        p->d.y = 0x120;
+      }
+      p->coord.y += p->d.y;
+      {
+      register u8 wv asm("r0");
+      register s32 k1 asm("r1");
+      wv = p->work[2];
+      k1 = 1;
+      wv &= k1;
+      if (wv == 0) {
+        p->coord.x = p->unk_coord.x + (((s32)(RANDOM(RNG_0202f388) % 6) - 3) << 8);
+      }
+      }
+      {
+        u8 w = *(volatile u8*)&p->work[2];
+        if (w != 0) {
+          s32 raw = w - 1;
+          p->work[2] = raw;
+          if ((u8)raw != 0) {
+            break;
+          }
+        }
+      }
+      p->mode[2]++;
+      break;
+    }
+    case 2: {
+      register u8 av asm("r1");
+      register s32 two asm("r0");
+      u8 z;
+      av = gStageRun.vm.active;
+      two = 2;
+      z = 0;
+      two |= av;
+      gStageRun.vm.active = two;
+      p->flags &= 0xFE;
+      gOverworld.state[1] = z;
+      break;
+    }
+  }
+}
 
 static bool8 FUN_0805b41c(Omega1* p) { return TRUE; }
 
@@ -394,7 +538,7 @@ static void FUN_0805b7f0(Omega1* p) {
   }
 }
 
-static bool8 nop_0805b874(Omega1* _) { return TRUE; }
+static bool8 nop_0805b874(Omega1* _ UNUSED) { return TRUE; }
 
 static void FUN_0805b878(Omega1* p) {
   switch (p->mode[2]) {
