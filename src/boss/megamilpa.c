@@ -4,6 +4,7 @@
 #include "global.h"
 #include "mod.h"
 #include "stagerun.h"
+#include "script.h"
 
 typedef struct {
   COLLISION_OBJECT_HDR;  // 0x00
@@ -26,7 +27,7 @@ static const u8 sMegamilpa_InitModes[4];
 
 static void Megamilpa_Init(Megamilpa* p);
 static void Megamilpa_Update(Megamilpa* p);
-static void Megamilpa_Die(Megamilpa* p);
+NAKED static void Megamilpa_Die(Megamilpa* p);
 
 // clang-format off
 const BossRoutine gMegamilpaRoutine = {
@@ -561,7 +562,39 @@ void FUN_0803d7a0(Megamilpa* p) {
   }
 }
 
-INCASM("asm/boss/megamilpa.inc");
+INCASM("asm/boss/megamilpa_a.inc");
+
+void FUN_0803dba0(Megamilpa* p) {
+  switch (p->mode[2]) {
+    case 0:
+      PlaySound(0x10D);
+      p->work[2] = 0x20;
+      p->unk_be[0] = RANDOM(RNG_0202f388) & 1;
+      p->mode[2]++;
+      /* fallthrough */
+    case 1: {
+      register u8 t asm("r3");
+      if ((p->work[2] & 3) == 0) {
+        FUN_0803d454(p, 0, 1);
+      }
+      AppendQuake(3, &p->coord);
+      {
+        u8 v = p->work[2];
+        t = v;
+        if (t != 0) {
+          p->work[2] = v - 1;
+          break;
+        }
+      }
+      p->unk_c0 |= 2;
+      p->mode[1] = 5;
+      p->mode[2] = t;
+      break;
+    }
+  }
+}
+
+INCASM("asm/boss/megamilpa_b.inc");
 
 // --------------------------------------------
 
