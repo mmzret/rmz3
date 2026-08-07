@@ -5,6 +5,12 @@
 #include "mod.h"
 #include "story.h"
 #include "vfx.h"
+#include "score.h"
+#include "stagerun.h"
+#include "zero.h"
+
+struct Entity* CreateGrandCannonBomb(struct Coord* c, s32 v, u8 ang);
+void FUN_080b7f70(struct Entity* p, struct Coord* c, const motion_t* m, s32 n);
 
 typedef struct {
   COLLISION_OBJECT_HDR;
@@ -30,7 +36,7 @@ static const Coords32 sElementCoord;
 static const u8 sInitModes[2];
 
 static void GrandCannon_Init(GrandCannon* p);
-static void GrandCannon_Update(GrandCannon* p);
+NON_MATCH static void GrandCannon_Update(GrandCannon* p);
 static void GrandCannon_Die(GrandCannon* p);
 static void GrandCannon_Dissappear(GrandCannon* p);
 
@@ -45,6 +51,9 @@ const EnemyRoutine gGrandCannonRoutine = {
 // clang-format on
 
 // グランドキャノンの砲台の方を生成
+
+void FUN_080b2b40(u8 kind, struct Coord* c, s32 v, u8 n);
+void FUN_080b834c(struct Entity* e, struct Coord* c, struct Coord* dc, s32 y, motion_t* motions, u8 frame);
 static void CreateGrandCannonBattery(GrandCannon* turret) {
   GrandCannon* p = AllocEntityFirst(gEnemyHeaderPtr);
   if (p != NULL) {
@@ -256,7 +265,323 @@ static void grandCannon_080693b4(GrandCannon* p) {
   }
 }
 
-INCASM("asm/enemy/grand_cannon.inc");
+void grandcannonMoveTurret(GrandCannon* p) {
+  register struct Entity* q asm("r4");
+  q = p->unk_28;
+  switch (p->mode[2]) {
+    case 0: {
+      s32 qx;
+      InitRotatableMotion((struct Entity*)p);
+      SetMotion((struct Entity*)p, 0x0703);
+      p->work[2] = 0x78;
+      qx = (q->coord).x;
+      p->coord.x = qx;
+      p->coord.y = (q->coord).y - 0x600;
+      p->unk_coord.x = (pZero2->s).coord.x - qx;
+      p->angle = 0x40;
+      p->mode[2]++;
+    }
+      // fallthrough
+    case 1: {
+      UpdateEntityAnim((struct Entity*)p);
+      if (*(s32*)((u8*)q + 0xb4) != 0) {
+        break;
+      }
+      if (IsFrozen(q)) {
+        break;
+      }
+      {
+        register s32 qx asm("r1");
+        register s32 d2 asm("r2");
+        register s32 acc asm("r1");
+        register u8* cb asm("r4");
+        register s32 ang asm("r2");
+        register s32 zx asm("r0");
+        s32 v;
+        qx = (q->coord).x;
+        p->coord.x = qx;
+        p->coord.y = (q->coord).y - 0x600;
+        zx = (pZero2->s).coord.x;
+        d2 = zx - qx;
+        acc = p->unk_coord.x;
+        d2 = d2 - acc;
+        {
+          s32 t = d2;
+          asm("" : "+r"(t));
+          if (d2 < 0) {
+            t += 15;
+          }
+          d2 = t >> 4;
+        }
+        d2 = acc + d2;
+        p->unk_coord.x = d2;
+        {
+          const s16* st = gSineTable;
+          u8 i;
+          cb = (u8*)p + 0xb8;
+          i = *cb;
+          v = d2 + (st[i] << 3);
+          *cb = i + 4;
+        }
+        if (v > 0) {
+          register s32 c40 asm("r1");
+          if (v <= 0xFFF) {
+            v = 0x1000;
+          } else if (v > 0x7800) {
+            v = 0x7800;
+          }
+          v -= 0x1000;
+          {
+            s32 dq = (v * 40) / 0x6800;
+            c40 = 0x40;
+            ang = c40 - dq;
+          }
+        } else {
+          if (v > -0x1000) {
+            v = -0x1000;
+          } else if (v < -0x7800) {
+            v = -0x7800;
+          }
+          v += 0x1000;
+          ang = (v * 40) / -0x6800 + 0x40;
+        }
+        {
+          register s32 na asm("r0");
+          u8* aa;
+          na = -ang;
+          na -= 0x80;
+          aa = (u8*)p + 0x24;
+          *aa = na;
+          {
+            s32 t2 = (u8)--p->work[2];
+            if (t2 == 0) {
+              if (Camera_GetDistance(&gStageRun.vm.camera, (struct Coord*)(aa + 0x30)) <= 0xFFF) {
+                p->mode[1] = 2;
+                p->mode[2] = t2;
+              }
+            }
+          }
+        }
+      }
+      break;
+    }
+  }
+}
+
+void grandcannonBombShot(GrandCannon* p) {
+  struct Coord c;
+  switch (p->mode[2]) {
+    case 0: {
+      u8 ang;
+      s32 x;
+      s32 y;
+      PlaySound(0x2D);
+      ang = *(u8*)((u8*)p + 0x24) + 0x80;
+      x = p->coord.x;
+      c.x = x;
+      c.x = gSineTable[(u8)(ang + 0x40)] * 28 + x;
+      y = p->coord.y;
+      c.y = y;
+      c.y = gSineTable[ang] * 28 + y;
+      PlaySound(0x2D);
+      CreateGrandCannonBomb(&c, 0x500, ang);
+      p->work[2] = 4;
+      SetMotion((struct Entity*)p, MOTION(0x07, 0x04));
+      p->mode[2]++;
+    }
+    case 1: {
+      s32 d;
+      u8 t;
+      UpdateEntityAnim((struct Entity*)p);
+      d = p->work[2] - 1;
+      p->work[2] = d;
+      t = d;
+      if (t == 0) {
+        p->mode[1] = 1;
+        p->mode[2] = t;
+      }
+      break;
+    }
+  }
+}
+
+void grandcannon_08069608(GrandCannon* p) {
+  if (p->mode[2] == 0) {
+    SetDDP(&p->body, &sCollisions[2]);
+    p->mode[2]++;
+  }
+}
+
+void explodeGrandCannon(GrandCannon* p) {
+  struct Coord c;
+  struct Coord* co;
+  {
+    register u8 f asm("r0");
+    register u8 t asm("r1");
+    register u8 k2 asm("r1");
+    u8* q = (u8*)p + 0x8c;
+    s32 z;
+    asm("" : "+r"(q));
+    z = 0;
+    *(s32*)q = z;
+    asm("" : "+r"(q));
+    q += 4;
+    asm("" : "+r"(q));
+    *(s32*)q = z;
+    asm("" : "+r"(q));
+    q += 4;
+    asm("" : "+r"(q));
+    *q = z;
+    t = p->flags;
+    f = 0xFB;
+    f &= t;
+    asm volatile("" ::"r"(t));
+    k2 = 0xFE;
+    f &= k2;
+    p->flags = f;
+  }
+  c.x = p->coord.x;
+  c.y = p->coord.y - 0x1000;
+  CreateSmoke(1, &c);
+  PlaySound(0x2a);
+  FUN_080b7f70((struct Entity*)p, &c, sMotions, 3);
+  co = &p->coord;
+  TryDropItem(3, co);
+  if (gScore.enemyCount <= 0x270E) {
+    gScore.enemyCount++;
+  }
+  TryDropZakoDisk((struct Entity*)p, co);
+  SET_ENEMY_ROUTINE(p, 4);
+  {
+    register u8 f2 asm("r0");
+    register u8 t2 asm("r1");
+    t2 = p->flags2;
+    f2 = 0xF7;
+    f2 &= t2;
+    asm volatile("" ::"r"(t2));
+    p->flags2 = f2;
+  }
+}
+
+void slashGrandCannon(GrandCannon* p) {
+  switch (p->mode[2]) {
+    case 0: {
+      register s32 f asm("r6");
+      register s32 z4 asm("r4");
+      register s32 xf2 asm("r2");
+      struct Coord c;
+      {
+        register s32 t3 asm("r3");
+        t3 = 0;
+        if ((pZero2->s).coord.x - p->coord.x > 0) {
+          t3 = 1;
+        }
+        f = t3;
+        asm("" : "+r"(f));
+        xf2 = f;
+        asm("" : "+r"(xf2));
+      }
+      {
+        register u8 nf asm("r0");
+        if (f != 0) {
+          register u8 kk asm("r1");
+          kk = p->flags;
+          nf = 0x10;
+          nf |= kk;
+        } else {
+          register u8 fl asm("r1");
+          fl = p->flags;
+          asm("" : "+r"(fl));
+          nf = 0xEF;
+          nf &= fl;
+        }
+        p->flags = nf;
+      }
+      {
+        register s32 x asm("r1");
+        register u8* a asm("r0");
+        register u8* b asm("r3");
+        s32 sh;
+        u8 ov;
+        s32 m;
+        x = xf2;
+        a = (u8*)p + 0x4c;
+        z4 = 0;
+        *a = x;
+        b = (u8*)p + 0x4a;
+        sh = x << 4;
+        ov = *b;
+        m = -0x11;
+        m &= ov;
+        m |= sh;
+        *b = m;
+      }
+      p->coord.x -= f << 8;
+      SetMotion((struct Entity*)p, MOTION(0x07, 1));
+      {
+        u8* a = (u8*)p + 0x8c;
+        *(s32*)a = z4;
+        asm("" : "+r"(a));
+        a += 4;
+        asm("" : "+r"(a));
+        *(s32*)a = z4;
+        asm("" : "+r"(a));
+        a += 4;
+        asm("" : "+r"(a));
+        *a = z4;
+      }
+      {
+        register u8 g asm("r0");
+        register u8 h asm("r1");
+        h = p->flags;
+        asm("" : "+r"(h));
+        g = 0xFB;
+        g &= h;
+        p->flags = g;
+      }
+      c.x = p->coord.x;
+      c.y = p->coord.y;
+      ((void (*)(s32, struct Coord*, s32, s32))FUN_080b2b40)(0, &c, 0x80 << 2, f);
+      {
+        register s32 k60 asm("r1");
+        k60 = 0x60;
+        c.x = k60 - (((f << 1) + f) << 6);
+        c.y = 0x40;
+      }
+      ((void (*)(struct Entity*, struct Coord*, struct Coord*, s32, motion_t*, s32))FUN_080b834c)((struct Entity*)p, &p->coord, &c, 0, (motion_t*)&sMotions[3], 0x18);
+      p->work[2] = 0x18;
+      p->mode[2]++;
+      FALLTHROUGH;
+    }
+    case 1:
+      UpdateEntityAnim((struct Entity*)p);
+      if ((u8)--p->work[2] == 0) {
+        explodeGrandCannon(p);
+      }
+      break;
+  }
+}
+
+void FUN_080697bc(GrandCannon* p) {
+  struct Entity* e = (struct Entity*)p->unk_28;
+  if (e->mode[0] == 4) {
+    register u8* q asm("r0");
+    u8 fl;
+    u32 z;
+    fl = p->flags & 0xFE;
+    z = 0;
+    fl &= 0xFD;
+    p->flags = fl;
+    q = (u8*)p + 0x8c;
+    *(u32*)q = z;
+    asm volatile("add %0, #4" : "+r"(q));
+    *(u32*)q = z;
+    asm volatile("add %0, #4" : "+r"(q));
+    *q = z;
+    p->flags &= 0xFB;
+    SET_ENEMY_ROUTINE(p, 3);
+  }
+}
 
 // --------------------------------------------
 
