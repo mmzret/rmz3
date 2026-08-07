@@ -104,6 +104,55 @@ static void VFX24_Die(struct VFX* vfx) {
   return;
 }
 
-INCASM("asm/vfx/unk_24.inc");
+void FUN_080b9070(struct VFX* vfx) {
+  switch ((vfx->s).mode[2]) {
+    case 0:
+      SetMotion(&vfx->s, 0xd00);
+      (vfx->s).mode[2]++;
+      // fallthrough
+    case 1:
+      UpdateEntityAnim(&vfx->s);
+      if ((vfx->s).motion.state == 3) {
+        SET_VFX_ROUTINE(vfx, ENTITY_DIE);
+      }
+      break;
+  }
+}
+
+void FUN_080b90bc(struct VFX* vfx) {
+  switch ((vfx->s).mode[2]) {
+    case 0:
+      SetMotion(&vfx->s, 0xd09);
+      (vfx->s).mode[2]++;
+      // fallthrough
+    case 1:
+      UpdateEntityAnim(&vfx->s);
+      (vfx->s).coord.x += (vfx->s).d.x;
+      (vfx->s).d.y += 0x80;
+      if ((vfx->s).d.y > 0x700) {
+        (vfx->s).d.y = 0x700;
+      }
+      (vfx->s).coord.y += (vfx->s).d.y;
+      if ((vfx->s).d.y > 0 && FUN_080098a4((vfx->s).coord.x, (vfx->s).coord.y)) {
+        SET_VFX_ROUTINE(vfx, ENTITY_DIE);
+      }
+      break;
+  }
+}
+
+void FUN_080b9134(struct VFX* vfx) {
+  switch ((vfx->s).mode[2]) {
+    case 0:
+      SetMotion(&vfx->s, 0xd01);
+      (vfx->s).mode[2]++;
+      // fallthrough
+    case 1:
+      UpdateEntityAnim(&vfx->s);
+      if ((vfx->s).motion.state == 4) {
+        SET_VFX_ROUTINE(vfx, ENTITY_DIE);
+      }
+      break;
+  }
+}
 
 static const u8 sInitModes[3] = {0, 1, 2};
