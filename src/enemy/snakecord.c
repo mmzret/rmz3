@@ -2,6 +2,9 @@
 #include "enemy.h"
 #include "global.h"
 #include "physics.h"
+#include "vfx.h"
+
+static const struct Collision sCollisions[];
 
 void Snakecord_Init(struct Enemy* p);
 void Snakecord_Update(struct Enemy* p);
@@ -15,6 +18,10 @@ const EnemyRoutine gSnakecordRoutine = {
     [ENTITY_DISAPPEAR] = (void*)DeleteEnemy,
     [ENTITY_EXIT] =      (void*)DeleteEntity,
 };
+
+
+void FUN_0807465c(struct Enemy* p);
+void FUN_080746c0(struct Enemy* p);
 // clang-format on
 
 u32 FUN_08073ea8(struct Entity* p, s32 dx) {
@@ -195,7 +202,51 @@ static bool8 FUN_0807415c(struct Enemy* p) {
   return FALSE;
 }
 
-INCASM("asm/enemy/snakecord.inc");
+INCASM("asm/enemy/snakecord_a.inc");
+
+void FUN_0807465c(struct Enemy* p) {
+  struct VFX* c;
+
+  if ((p->body).status & 0x800) {
+    return;
+  }
+  (p->s).renderPrio = 24;
+  c = (struct VFX*)(p->s).unk_2c;
+  if (c != NULL) {
+    (c->s).flags &= ~DISPLAY;
+    (c->s).flags &= ~FLIPABLE;
+    SET_VFX_ROUTINE(c, ENTITY_DISAPPEAR);
+  }
+  if (PushoutToUp2((p->s).coord.x, (p->s).coord.y) < 0) {
+    (p->s).mode[1] = 11;
+  } else {
+    (p->s).mode[1] = 4;
+  }
+  (p->s).mode[2] = 0;
+}
+
+void FUN_080746c0(struct Enemy* p) {
+  struct Entity** slot = (struct Entity**)&p->buffer[0];
+
+  if (*slot == NULL || isKilled(*slot)) {
+    *slot = NULL;
+    SetDDP(&p->body, &sCollisions[4]);
+    if (IsFrozen(&p->s) == 0) {
+      if (PushoutToUp2((p->s).coord.x, (p->s).coord.y) < 0) {
+        (p->s).mode[1] = 11;
+      } else {
+        (p->s).mode[1] = 4;
+      }
+      (p->s).mode[2] = 0;
+    }
+  }
+  if (((p->body).status & 0x00020001) == 0x00020001) {
+    (p->s).mode[1] = 10;
+    (p->s).mode[2] = 0;
+  }
+}
+
+INCASM("asm/enemy/snakecord_b.inc");
 
 // --------------------------------------------
 

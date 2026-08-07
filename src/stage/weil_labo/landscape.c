@@ -361,6 +361,12 @@ const struct Stage gWeilLaboLandscape = {
   behavior : sScreenBehavior,
 };
 
-INCASM("asm/stage_gfx/weil_labo.inc");
+INCASM("asm/stage_gfx/weil_labo_a.inc");
+
+void FUN_08016080(u32 a) {
+  STAGE.unk_00c = a;
+}
+
+INCASM("asm/stage_gfx/weil_labo_b.inc");
 
 #undef STAGE

@@ -1,8 +1,35 @@
 #include "collision.h"
 #include "enemy.h"
 #include "global.h"
+#include "element.h"
 
-INCASM("asm/enemy/deathlock.inc");
+static const Coords32 sElementCoord;
+
+INCASM("asm/enemy/deathlock_a.inc");
+
+void FUN_0808d4a0(struct Enemy* p) {
+  struct Entity** slot;
+  u32 frozen;
+
+  if ((p->s).work[0] != 8 && (p->s).work[0] != 9) {
+    slot = (struct Entity**)&p->buffer[0];
+    if (*slot == NULL && ((p->body).status & 1)) {
+      frozen = (p->body).status & 0x20000;
+      if (frozen != 0) {
+        (p->s).mode[1] = 6;
+        (p->s).mode[2] = 0;
+      } else {
+        *slot = ApplyElementEffect(0, (Object*)p, &sElementCoord);
+        if (*slot != NULL) {
+          (p->s).mode[1] = 0;
+          (p->s).mode[2] = 0;
+        }
+      }
+    }
+  }
+}
+
+INCASM("asm/enemy/deathlock_b.inc");
 
 void Deathlock_Init(struct Enemy* p);
 void Deathlock_Update(struct Enemy* p);
