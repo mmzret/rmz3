@@ -4,8 +4,6 @@
 	
 	.text
 
-	thumb_func_start Solid53_Die
-Solid53_Die: @ 0x080DFD94
 	push {r4, r5, r6, r7, lr}
 	mov r7, sl
 	mov r6, sb
