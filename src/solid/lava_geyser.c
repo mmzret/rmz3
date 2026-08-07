@@ -3,6 +3,8 @@
 #include "overworld.h"
 #include "solid.h"
 
+void CreateVFX43(s32 x, s32 y);
+
 void CreateLavaGeyserPlatform(struct Solid* s);
 
 static const struct Collision sCollisions[];
@@ -34,7 +36,7 @@ const SolidRoutine gLavaGeyserRoutine = {
 };
 // clang-format on
 
-void CreateLavaGeyser(struct Entity* e, s32 x, s32 y, s32 n) {
+void CreateLavaGeyser(struct Entity* e, s32 x, s32 y, s32 n, s32 n2 UNUSED) {
   s32 i;
   for (i = 0; i < 6; i++) {
     struct Entity* p = AllocEntityLast(gSolidHeaderPtr);
@@ -174,7 +176,284 @@ void FUN_080cc968(LavaGeyser* p) {
   }
 }
 
-INCASM("asm/solid/lava_geyser.inc");
+void FUN_080cca14(LavaGeyser* p0) {
+  register struct Solid* p asm("r4");
+  u8 m;
+  p = (struct Solid*)p0;
+  m = (p->s).mode[2];
+  switch (m) {
+    case 0: {
+      register s32 t asm("r2");
+      register s32 t2 asm("r1");
+      s32 k;
+      register s32 k2 asm("r5");
+      s32 u;
+      PlaySound(0x77);
+      (p->s).unk_coord.x = (p->s).coord.x;
+      (p->s).d.y = m;
+      {
+        u32 w0 = (p->s).work[0];
+        asm volatile("lsr %0, %1, #0x2" : "=l"(k2) : "l"(w0));
+      }
+      k = k2 * 3;
+      u = (k << 11) - 0xC000;
+      (p->s).unk_coord.y = u;
+      t = k2 << 2;
+      t2 = 0x18 - t;
+      asm volatile("add %0, %1, #0" : "=l"(t) : "l"(t2));
+      t *= t2;
+      asm volatile("add %0, %1, #0" : "=l"(t2) : "l"(t));
+      (p->s).unk_coord.y = u / t2;
+      (p->s).mode[2]++;
+    }
+      /* fallthrough */
+    case 1: {
+      s32 base;
+      s32 cy0;
+      s32 cy;
+      s32 dy;
+      register s32 k3 asm("r5");
+      s32 sh;
+      s32 diff;
+      s32 ny;
+      register s32* lp asm("r3");
+      {
+        u32 w0b = (p->s).work[0];
+        asm volatile("lsr %0, %1, #0x2" : "=l"(k3) : "l"(w0b));
+      }
+      {
+        register s32 k200 asm("r0");
+        s32 bv = *(s32*)((u8*)p + 0xc0);
+        k200 = -0x200;
+        asm("" : "+r"(k200));
+        base = bv + k200;
+      }
+      (p->s).coord.x = base + (RANDOM(RNG_0202f388) & 0x3FF);
+      cy0 = (p->s).coord.y;
+      dy = (p->s).d.y;
+      cy = cy0 + dy;
+      (p->s).coord.y = cy;
+      (p->s).d.y = dy + (p->s).unk_coord.y;
+      lp = (s32*)((u8*)p + 0xb8);
+      diff = *lp - cy;
+      sh = (k3 * 3) << 11;
+      if (diff > 0x6000 - sh) {
+        (p->s).coord.x = (p->s).unk_coord.x;
+        ny = *lp - 0x6000;
+        (p->s).coord.y = ny + sh;
+        (p->s).mode[1] = 2;
+        (p->s).mode[2] = 0;
+      }
+      UpdateEntityAnim(&p->s);
+      break;
+    }
+  }
+}
+
+void FUN_080ccae0(LavaGeyser* p) {
+  s32 a;
+  switch (p->mode[2]) {
+    case 0:
+      p->unk_coord.x = p->coord.x;
+      p->work[2] = 0x18;
+      p->mode[2]++;
+      // fallthrough
+    case 1: {
+      a = p->unk_coord.x;
+      {
+        s32 t = a - PIXEL(2);
+        p->coord.x = t + (RANDOM(RNG_0202f388) & 0x1FF);
+      }
+      if (--p->work[2] == 0) {
+        p->coord.x = a;
+        p->mode[1] = 3;
+        p->mode[2] = 0;
+      }
+      UpdateEntityAnim((struct Entity*)p);
+      break;
+    }
+  }
+}
+
+void FUN_080ccb50(LavaGeyser* p) {
+  u8 m = p->mode[2];
+  switch (m) {
+    case 0: {
+      s32 k;
+      s32 k2;
+      s32 c0;
+      register s32 t asm("r2");
+      register s32 t2 asm("r1");
+      s32 u;
+      p->flags2 |= 8;
+      p->size = &sSize;
+      p->physicsAttr = 0x811;
+      SetDDP(&p->body, sCollisions);
+      p->unk_coord.x = p->coord.x;
+      p->d.y = m;
+      k2 = p->work[0] >> 2;
+      c0 = 0xC000;
+      asm("" : "+r"(c0));
+      k = k2 * 3;
+      t = k << 3;
+      u = c0 - (k << 11);
+      p->unk_coord.y = u;
+      t2 = 0x64 - t;
+      asm volatile("add %0, %1, #0" : "=l"(t) : "l"(t2));
+      t *= t2;
+      asm volatile("add %0, %1, #0" : "=l"(t2) : "l"(t));
+      p->unk_coord.y = u / t2;
+      p->mode[2]++;
+    }
+      /* fallthrough */
+    case 1: {
+      s32 base;
+      s32 cy0;
+      s32 cy;
+      s32 dy;
+      s32* lim;
+      base = *(s32*)((u8*)p + 0xc0) - 0x200;
+      p->coord.x = base + (RANDOM(RNG_0202f388) & 0x1FF);
+      cy0 = p->coord.y;
+      dy = p->d.y;
+      cy = cy0 + dy;
+      p->coord.y = cy;
+      p->d.y = dy + p->unk_coord.y;
+      lim = (s32*)((u8*)p + 0xb8);
+      if (cy > *lim) {
+        p->coord.x = p->unk_coord.x;
+        p->coord.y = *lim;
+        p->mode[1] = 0;
+        p->mode[2] = 0;
+      }
+      UpdateEntityAnim((struct Entity*)p);
+      break;
+    }
+  }
+}
+
+void FUN_080ccc1c(LavaGeyser* p) {
+  switch (p->mode[2]) {
+    case 0:
+      p->flags2 |= 8;
+      p->size = &sSize;
+      p->physicsAttr = 0x801;
+      p->coord.x = p->unk_coord.x;
+      SetDDP(&p->body, &sCollisions[1]);
+      CreateLavaGeyser((struct Entity*)p, p->coord.x, p->coord.y, *(s32*)((u8*)p + 0xbc), *(s32*)((u8*)p + 0xb8));
+      SetMotion((struct Entity*)p, MOTION(0x39, 0x00));
+      UpdateEntityAnim((struct Entity*)p);
+      p->work[2] = 0xD8;
+      p->mode[2]++;
+      /* fallthrough */
+    case 1: {
+      s32 t = (u8)--p->work[2];
+      if (t == 0) {
+        p->mode[1] = 3;
+        p->mode[2] = t;
+      }
+      break;
+    }
+  }
+}
+
+void FUN_080ccca4(LavaGeyser* p) {
+  if ((p->unk_28)->mode[0] > 1) {
+    u32 z;
+    u8 t = p->flags;
+    u8 fv = 0xFE;
+    fv &= t;
+    asm volatile("" ::"r"(t));
+    z = 0;
+    fv &= 0xFD;
+    p->flags = fv;
+    (p->body).status = z;
+    (p->body).prevStatus = z;
+    (p->body).invincibleTime = z;
+    p->flags &= ~COLLIDABLE;
+    SET_SOLID_ROUTINE(p, ENTITY_DISAPPEAR);
+    return;
+  }
+  switch (p->mode[2]) {
+    case 0: {
+      u8 w1;
+      u32 k;
+      p->renderPrio = 0x1D;
+      p->flags &= ~DISPLAY;
+      k = 0xD8;
+      p->work[2] = k - (p->work[1] << 4);
+      w1 = p->work[1];
+      if (w1 == 0) {
+        SetMotion((struct Entity*)p, MOTION(0x39, 0x01));
+      } else if (({
+                   u8 m_ = 1;
+                   m_ &= w1;
+                   m_;
+                 }) != 0) {
+        SetMotion((struct Entity*)p, MOTION(0x39, 0x02));
+      } else {
+        SetMotion((struct Entity*)p, MOTION(0x39, 0x03));
+      }
+      p->mode[2]++;
+      FALLTHROUGH;
+    }
+    case 1: {
+      register u8 w2 asm("r0");
+      u32 w2c;
+      if (p->work[3] != 0) {
+        p->work[3]--;
+        if ((u8)p->work[3] != 0) {
+          goto tick;
+        }
+      }
+      p->flags |= DISPLAY;
+    tick:
+      w2 = p->work[2];
+      w2c = w2;
+      asm("" : "+r"(w2c));
+      if (w2c <= 0xF) {
+        if (({
+              u8 m2_ = 2;
+              m2_ &= w2c;
+              m2_;
+            }) != 0) {
+          p->flags |= DISPLAY;
+        } else {
+          u8 t = p->flags;
+          u8 fv = 0xFE;
+          fv &= t;
+          asm volatile("" ::"r"(t));
+          p->flags = fv;
+        }
+      }
+      {
+        u32 v = w2c - 1;
+        u32 z;
+        p->work[2] = v;
+        z = (u8)v;
+        if (z == 0) {
+          PlaySound(0x3F);
+        CreateVFX43(p->coord.x, p->coord.y + 0x800);
+        {
+          u8 t = p->flags;
+          u8 fv = 0xFE;
+          fv &= t;
+          asm volatile("" ::"r"(t));
+          fv &= 0xFD;
+          p->flags = fv;
+        }
+        (p->body).status = z;
+        (p->body).prevStatus = z;
+        (p->body).invincibleTime = z;
+          p->flags &= ~COLLIDABLE;
+          SET_SOLID_ROUTINE(p, ENTITY_DISAPPEAR);
+        }
+      }
+      UpdateEntityAnim((struct Entity*)p);
+      break;
+    }
+  }
+}
 
 // --------------------------------------------
 
