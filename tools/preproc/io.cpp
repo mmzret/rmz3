@@ -1,6 +1,7 @@
 #include "io.h"
 
 #include <cerrno>
+#include <cstdio>
 #include <cstring>
 #include <string>
 
