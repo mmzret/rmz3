@@ -1,11 +1,3 @@
-	.include "asm/macros.inc"
-
-	.syntax unified
-	
-	.text
-
-	thumb_func_start volteelElectricCage
-volteelElectricCage: @ 0x08044CB8
 	push {r4, lr}
 	adds r4, r0, #0
 	ldrb r0, [r4, #0xe]
@@ -197,7 +189,7 @@ _08044E2C:
 	b _08044E66
 	.align 2, 0
 _08044E54: .4byte 0x0000A509
-_08044E58: .4byte sCollisions+(5*24)
+_08044E58: .4byte 0x083623A8
 _08044E5C: .4byte gOverworld
 _08044E60: .4byte 0x0002D024
 _08044E64:
@@ -279,4 +271,3 @@ _08044EF2:
 	.align 2, 0
 _08044EF8: .4byte 0x0002D026
 _08044EFC: .4byte sCollisions+(24*1)
-
