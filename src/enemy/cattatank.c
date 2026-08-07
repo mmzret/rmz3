@@ -2,6 +2,7 @@
 #include "collision.h"
 #include "enemy.h"
 #include "global.h"
+#include "physics.h"
 #include "score.h"
 #include "stagerun.h"
 
@@ -362,13 +363,76 @@ INCASM("asm/enemy/cattatank_h.inc");
 
 bool8 nop_08099ce0(Cattatank* _) { return TRUE; }
 
-INCASM("asm/enemy/cattatank_i.inc");
+static const struct Collision sCollisions[18];
+
+// 0x08099ce4
+void FUN_08099ce4(Cattatank* p) {
+  s32 r;
+  switch (p->mode[2]) {
+    case 0:
+      SetDDP(&p->body, &sCollisions[6]);
+      (p->d).y = 0;
+      (p->d).x = 0;
+      p->mode[2]++;
+      FALLTHROUGH;
+    case 1:
+      (p->d).y += 0x40;
+      if ((p->d).y > 0x700) {
+        (p->d).y = 0x700;
+      }
+      (p->coord).y += (p->d).y;
+      if ((r = PushoutToUp1((p->coord).x - PIXEL(10), (p->coord).y)) != 0 ||
+          (r = PushoutToUp1((p->coord).x + PIXEL(10), (p->coord).y)) != 0) {
+        (p->coord).y += r;
+        (p->d).y = 0;
+      }
+      break;
+  }
+  if (isKilled(*(struct Entity**)&p->buffer[8])) {
+    p->buffer[12] = 0;
+    *(struct Entity**)&p->buffer[8] = NULL;
+    p->mode[1] = 1;
+    p->mode[2] = 0;
+  }
+}
 
 bool8 nop_08099d7c(Cattatank* _) { return TRUE; }
 
 void nop_08099d80(Cattatank* p) {}
 
 bool8 nop_08099d84(Cattatank* _) { return TRUE; }
+
+
+// 0x08099d88
+void FUN_08099d88(Cattatank* p) {
+  s32 r;
+  switch (p->mode[2]) {
+    case 0:
+      SetDDP(&p->body, &sCollisions[6]);
+      (p->d).y = 0;
+      (p->d).x = 0;
+      p->mode[2]++;
+      FALLTHROUGH;
+    case 1:
+      (p->d).y += 0x40;
+      if ((p->d).y > 0x700) {
+        (p->d).y = 0x700;
+      }
+      (p->coord).y += (p->d).y;
+      if ((r = PushoutToUp1((p->coord).x - PIXEL(10), (p->coord).y)) != 0 ||
+          (r = PushoutToUp1((p->coord).x + PIXEL(10), (p->coord).y)) != 0) {
+        (p->coord).y += r;
+        (p->d).y = 0;
+      }
+      break;
+  }
+  if (isKilled(*(struct Entity**)&p->buffer[8])) {
+    p->buffer[12] = 0;
+    *(struct Entity**)&p->buffer[8] = NULL;
+    p->mode[1] = 1;
+    p->mode[2] = 0;
+  }
+}
 
 INCASM("asm/enemy/cattatank_j.inc");
 
