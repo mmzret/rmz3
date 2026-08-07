@@ -3,7 +3,15 @@
 #include "global.h"
 #include "mod.h"
 #include "story.h"
+#include "overworld_terrain.h"
 #include "vfx.h"
+#include "score.h"
+#include "zero.h"
+
+void FUN_080b2b40(u8 kind, struct Coord* c, s32 v, u8 n);
+struct Projectile* CreateLemon(struct Coord* c, s32 r1, u8 r2);
+void CreateProjectile8(s32 x, s32 y);
+void CreateGhost27(struct Coord* c, u8 r1, u8 r2);
 
 typedef struct {
   COLLISION_OBJECT_HDR;
@@ -35,6 +43,9 @@ const EnemyRoutine gGyroCannonRoutine = {
 };
 // clang-format on
 
+
+static const struct SlashedEnemy sSlashedEnemies[4];
+static void (*const sUpdates2[3])(GyroCannon*);
 static Entity* CreateGyroCannon(Entity* q, bool8 isPropeller, u8 r2) {
   Entity* p = AllocEntityLast(gEnemyHeaderPtr);
   if (p != NULL) {
@@ -64,7 +75,7 @@ static void GyroCannon_Init(GyroCannon* p) {
 }
 
 void gyrocannon_0806d32c(GyroCannon* p);
-static void gyrocannon_0806d1b4(GyroCannon* p);
+NAKED static void gyrocannon_0806d1b4(GyroCannon* p);
 
 static void GyroCannon_Update(GyroCannon* p) {
   if (IS_METTAUR) {
@@ -318,7 +329,881 @@ _0806D328: .4byte PTR_ARRAY_0836666c\n\
  .syntax divided\n");
 }
 
-INCASM("asm/enemy/gyro_cannon.inc");
+void gyrocannon_0806d32c(GyroCannon* p) {
+  struct Entity* par = p->unk_28;
+  if ((p->body).status & 0x200) {
+    SET_ENEMY_ROUTINE(p, ENTITY_DIE);
+    GyroCannon_Die(p);
+    return;
+  }
+  if (p->mode[1] == 0) {
+    register u32 f asm("r0");
+    s32 zv;
+    if (par->mode[1] != 8) {
+      SetDDP(&p->body, &sCollisions[2]);
+      if (!IsFrozen(par)) {
+        UpdateEntityAnim((struct Entity*)p);
+      }
+    } else {
+      SetDDP(&p->body, &sCollisions[3]);
+    }
+    p->coord.x = par->coord.x;
+    p->coord.y = par->coord.y;
+    if (par->mode[0] > 1) {
+      u8* pb = (u8*)par + 0xb4;
+      s32 p9 = pb[9];
+      if (p9 == 0) {
+        register s32 flg asm("r1");
+        register s32 cfe asm("r0");
+        asm("" : "+r"(p9));
+        flg = p->flags;
+        cfe = 0xFE;
+        asm("" : "+r"(cfe));
+        f = cfe & flg;
+        zv = p9;
+        goto ta;
+      }
+      p->work[2] = 0x40;
+      p->mode[1]++;
+    }
+    if (IsVoidSpace(par->coord.x, par->coord.y + -0x1800)) {
+      register s32 flg2 asm("r1");
+      register s32 cfe2 asm("r0");
+      flg2 = p->flags;
+      cfe2 = 0xFE;
+      asm("" : "+r"(cfe2));
+      f = cfe2 & flg2;
+      zv = 0;
+      asm("" : "+r"(zv));
+    ta:
+      asm("" : "+r"(f));
+      f &= 0xFD;
+      p->flags = f;
+      (p->body).status = zv;
+      (p->body).prevStatus = zv;
+      (p->body).invincibleTime = zv;
+      p->flags &= 0xFB;
+      SET_ENEMY_ROUTINE(p, ENTITY_DISAPPEAR);
+    }
+  } else {
+    s32 oy;
+    UpdateEntityAnim((struct Entity*)p);
+    oy = p->coord.y;
+    p->coord.y = oy + -0x200;
+    {
+      s32 raw = p->work[2] - 1;
+      p->work[2] = raw;
+      if ((u8)raw == 0xFF) {
+        goto die2;
+      }
+    }
+    if (FUN_080098a4(p->coord.x, oy + -0xE00) != 0) {
+    die2:
+      SET_ENEMY_ROUTINE(p, ENTITY_DIE);
+      GyroCannon_Die(p);
+    }
+  }
+}
+
+void FUN_0806d470(GyroCannon* p) {
+  if (p->mode[2] == 0) {
+    u8* b0 = (u8*)p + 0xb4;
+    u8 v = b0[0xa];
+    u8* b;
+    asm volatile("add %0, %1, #0" : "=&l"(b) : "l"(b0));
+    if (v != 0) {
+      p->mode[1] = 0;
+    } else if (((p->body).status & 0x10000) != 0) {
+      struct Coord c;
+      c.x = p->coord.x;
+      c.y = p->coord.y - 0x1400;
+      FUN_080b2b40(0, &c, 0x200, b[8]);
+      if (p->unk_2c != NULL) {
+        p->mode[1] = 1;
+      } else if ((u16)FUN_080098a4(p->coord.x, p->coord.y + 0xB00) != 0) {
+        p->mode[1] = 2;
+      } else {
+        p->mode[1] = 0;
+      }
+    } else {
+      p->mode[1] = 0;
+    }
+    EXIT_BODY(p);
+    b[9] = 1;
+    p->mode[2]++;
+  }
+  (sUpdates2[p->mode[1]])(p);
+}
+
+void FUN_0806d524(GyroCannon* p) {
+  struct Coord c;
+  c.x = p->coord.x;
+  c.y = p->coord.y - 0x1200;
+  CreateSmoke(2, &c);
+  if (!((bool16 (*)(s32, s32))FUN_080098a4)(c.x, c.y)) {
+    const struct SlashedEnemy* t0;
+    register u8* b4 asm("r6");
+    t0 = sSlashedEnemies;
+    {
+      register u8* b40 asm("r2");
+      register s32 pal asm("r5");
+      register s32 k asm("r3");
+      register s32 kk asm("r0");
+      register u8 fl asm("r1");
+      b40 = (u8*)p + 0xb4;
+      pal = b40[8];
+      fl = p->flags;
+      k = 0x10;
+      kk = k;
+      kk &= fl;
+      asm volatile("add %0, %1, #0" : "=&l"(b4) : "l"(b40));
+      if (kk != 0) {
+        k |= pal;
+      } else {
+        k = pal;
+      }
+      ((struct VFX* (*)())CreateSlashedEnemy)(&c, t0, 0, k);
+    }
+    {
+      register struct Coord* cp asm("r5");
+      const struct SlashedEnemy* t1;
+      register s32 pal2 asm("r2");
+      register s32 k2 asm("r3");
+      register s32 kk2 asm("r0");
+      register u8 fl2 asm("r1");
+      cp = &c;
+      t1 = sSlashedEnemies;
+      pal2 = b4[8];
+      fl2 = p->flags;
+      k2 = 0x10;
+      kk2 = k2;
+      kk2 &= fl2;
+      if (kk2 != 0) {
+        k2 |= pal2;
+      } else {
+        k2 = pal2;
+      }
+      ((struct VFX* (*)())CreateSlashedEnemy)(cp, t1, 0, k2);
+    }
+    {
+      register struct Coord* cp2 asm("r5");
+      const struct SlashedEnemy* t2;
+      register s32 pal3 asm("r2");
+      register s32 k3 asm("r3");
+      register s32 kk3 asm("r0");
+      register u8 fl3 asm("r1");
+      cp2 = &c;
+      t2 = &sSlashedEnemies[1];
+      pal3 = b4[8];
+      fl3 = p->flags;
+      k3 = 0x10;
+      kk3 = k3;
+      kk3 &= fl3;
+      if (kk3 != 0) {
+        k3 |= pal3;
+      } else {
+        k3 = pal3;
+      }
+      ((struct VFX* (*)())CreateSlashedEnemy)(cp2, t2, 0, k3);
+    }
+    {
+      register struct Coord* cp3 asm("r5");
+      const struct SlashedEnemy* t3;
+      register s32 pal4 asm("r2");
+      register s32 k4 asm("r3");
+      register s32 kk4 asm("r0");
+      register u8 fl4 asm("r1");
+      cp3 = &c;
+      t3 = &sSlashedEnemies[1];
+      pal4 = b4[8];
+      fl4 = p->flags;
+      k4 = 0x10;
+      kk4 = k4;
+      kk4 &= fl4;
+      if (kk4 != 0) {
+        k4 |= pal4;
+      } else {
+        k4 = pal4;
+      }
+      ((struct VFX* (*)())CreateSlashedEnemy)(cp3, t3, 0, k4);
+    }
+  }
+  PlaySound(0x2A);
+  SET_ENEMY_ROUTINE(p, ENTITY_EXIT);
+}
+
+void FUN_0806d618(GyroCannon* p) {
+  register GyroCannon* pp asm("r4");
+  register s32 m asm("r5");
+  s32 v;
+  s32 y;
+  pp = p;
+  m = pp->mode[2];
+  if (m == 0) {
+    SetMotion((struct Entity*)p, MOTION(0x17, 0x00));
+    pp->d.y = m;
+    pp->mode[2]++;
+  }
+  v = pp->d.y + 0x40;
+  pp->d.y = v;
+  if (v > 0x700) {
+    pp->d.y = 0x700;
+  }
+  y = pp->coord.y + pp->d.y;
+  pp->coord.y = y;
+  if ((u16)FUN_080098a4(pp->coord.x, y + 0xA00) != 0) {
+    s32 z;
+    pp->coord.y = FUN_08009f6c(pp->coord.x, pp->coord.y) - 0xA00;
+    z = 0;
+    pp->mode[1] = 7;
+    pp->mode[2] = z;
+    {
+      register u8* pr asm("r1");
+      register s32 one asm("r0");
+      pr = (u8*)&pp->props;
+      asm("" : "+r"(pr));
+      one = 1;
+      pr[11] = one;
+    }
+    asm volatile("" ::"r"(pp));
+  }
+}
+
+void FUN_0806d684(GyroCannon* p) {
+  if (p->mode[2] == 0) {
+    register struct Zero** zp asm("r4");
+    register s32 dist asm("r6");
+    s32 dx, dy;
+    SetMotion((struct Entity*)p, MOTION(0x17, 0x00));
+    zp = &pZero2;
+    {
+      register struct Zero* z asm("r2");
+      z = *zp;
+      dx = p->coord.x - (z->s).coord.x;
+      p->d.x = dx;
+      dy = p->coord.y - (z->s).coord.y;
+      dy += -0x1800;
+      p->d.y = dy;
+    }
+    {
+      register s32 a asm("r1");
+      register s32 t1 asm("r6");
+      register s32 b asm("r0");
+      register s32 t2 asm("r1");
+      a = dx >> 8;
+      asm volatile("add %0, %1, #0" : "=&l"(t1) : "l"(a));
+      t1 *= a;
+      b = dy >> 8;
+      asm volatile("add %0, %1, #0" : "=&l"(t2) : "l"(b));
+      t2 *= b;
+      asm volatile("add %0, %1, #0" : "=&l"(b) : "l"(t2));
+      dist = t1 + b;
+    }
+    {
+      register s32 sq asm("r0");
+      sq = ((s32(*)(u32))Sqrt)(dist);
+      sq <<= 16;
+      dist = (s32)(((u32)sq) >> 16);
+    }
+    if (dist == 0) {
+      goto zerodist;
+    }
+    {
+      register s32 nx asm("r4");
+      register s32 ny asm("r0");
+      nx = p->d.x / dist;
+      p->d.x = nx;
+      ny = p->d.y / dist;
+      {
+        register s32 q asm("r1");
+        q = (nx * 2 + nx) * 2;
+        p->d.x = q;
+        q = (ny * 2 + ny) * 2;
+        p->d.y = q;
+      }
+    }
+    goto haddir;
+  zerodist : {
+    register s32 v asm("r0");
+    if (((*zp)->s.flags & 0x10) == 0) {
+      goto negv;
+    }
+    v = 0xC0 * 8;
+    goto stdx;
+  negv:
+    v = -0x600;
+  stdx:
+    p->d.x = v;
+    p->d.y = 0;
+  }
+  haddir:;
+    if (p->d.x <= 0) {
+      goto flipon;
+    }
+    {
+      register s32 zz asm("r2");
+      u8* oa;
+      s32 m11, ov;
+      zz = 0;
+      {
+        register u8 h asm("r1");
+        register u8 g asm("r0");
+        h = p->flags;
+        asm("" : "+r"(h));
+        g = 0xEF;
+        g &= h;
+        p->flags = g;
+      }
+      *((u8*)p + 0x4c) = zz;
+      oa = (u8*)p + 0x4a;
+      ov = *oa;
+      m11 = -0x11;
+      m11 &= ov;
+      *oa = m11;
+      goto flipdone;
+    }
+  flipon : {
+      register s32 one asm("r2");
+      register u8* oa2 asm("r3");
+      s32 sh4, ov2, m112;
+      one = 1;
+      {
+        register u8 fl asm("r1");
+        register s32 fv asm("r0");
+        fl = p->flags;
+        fv = 0x10;
+        fv |= fl;
+        p->flags = fv;
+      }
+      *((u8*)p + 0x4c) = one;
+      oa2 = (u8*)p + 0x4a;
+      one = 0x10;
+      ov2 = *oa2;
+      m112 = -0x11;
+      m112 &= ov2;
+      m112 |= one;
+      *oa2 = m112;
+    }
+  flipdone:
+    {
+      register u8* a2 asm("r1");
+      register s32 v2 asm("r0");
+      a2 = (u8*)p + 0xb4;
+      v2 = 1;
+      a2[0xa] = v2;
+    }
+    SetDDP(&p->body, &sCollisions[4]);
+    p->mode[2]++;
+  }
+  UpdateEntityAnim((struct Entity*)p);
+  {
+    register s32 cx asm("r0");
+    register s32 dxv asm("r3");
+    register s32 cy asm("r1");
+    register s32 dyv asm("r2");
+    cx = p->coord.x;
+    dxv = p->d.x;
+    cx += dxv;
+    p->coord.x = cx;
+    cy = p->coord.y;
+    dyv = p->d.y;
+    cy += dyv;
+    p->coord.y = cy;
+    dyv += 0x40;
+    p->d.y = dyv;
+    cx += dxv;
+    if (((u16)FUN_080098a4(cx, cy) << 16) != 0) {
+      goto die;
+    }
+  }
+  {
+    register s32 bx asm("r0");
+    register s32 by asm("r1");
+    register s32 k2 asm("r2");
+    {
+      register s32 t asm("r1");
+      bx = p->coord.x;
+      t = p->d.x;
+      bx += t;
+    }
+    by = p->coord.y;
+    k2 = -0x1800;
+    by += k2;
+    if (((u16)FUN_080098a4(bx, by) << 16) == 0) {
+      return;
+    }
+  }
+die:
+  SET_ENEMY_ROUTINE(p, ENTITY_DIE);
+  GyroCannon_Die(p);
+}
+
+void FUN_0806d7e0(GyroCannon* p) {
+  s32 onR;
+  if (p->mode[2] == 0) {
+    SetMotion((struct Entity*)p, 0x1700);
+    p->work[2] = 0x78;
+    p->mode[2]++;
+  }
+  onR = 0;
+  if (p->coord.x < (pZero2->s).coord.x) {
+    onR = 1;
+  }
+  if (onR != 0) {
+    p->flags |= 0x10;
+  } else {
+    p->flags &= 0xEF;
+  }
+  {
+    register s32 xfc asm("r1");
+    xfc = onR;
+    asm("" : "+r"(xfc));
+    (p->spr).xflip = xfc;
+  {
+    u8* oa = (u8*)p + 0x4a;
+    s32 sh = xfc << 4;
+    s32 ov = *oa;
+    s32 m11 = -0x11;
+    m11 &= ov;
+    *oa = m11 | sh;
+  }
+  }
+  {
+    s32* bp = (s32*)((u8*)p + 0xb4);
+    p->coord.y = bp[1] + (gSineTable[p->work[3]] << 5);
+  }
+  p->work[3]++;
+  {
+    s32 raw = p->work[2] - 1;
+    p->work[2] = raw;
+    if ((u8)raw == 0xFF) {
+      register u8 nm asm("r0");
+      u32 rv = RANDOM(RNG_0202f388) & 0xF;
+      asm("" : "+r"(rv));
+      if (rv <= 9) {
+        nm = 3;
+        asm("" : "+r"(nm));
+        goto setm;
+      }
+      nm = 5;
+      asm("" : "+r"(nm));
+    setm:
+      p->mode[1] = nm;
+      {
+        register u8 zz asm("r0");
+        zz = 0;
+        p->mode[2] = zz;
+      }
+    }
+  }
+}
+
+void FUN_0806d8b0(GyroCannon* p) {
+  struct Coord c;
+  register struct Entity* q asm("r4");
+  if (p->mode[2] == 0) {
+    register s32 sp asm("r4");
+    SetMotion((struct Entity*)p, MOTION(0x17, 0x03));
+    c.y = p->coord.y + 0x800;
+    if (p->flags & X_FLIP) {
+      c.x = p->coord.x + 0x1000;
+      sp = 0x180;
+      CreateLemon(&c, sp, 0x90);
+      c.y = p->coord.y - 0x500;
+      CreateLemon(&c, sp, 0x70);
+    } else {
+      c.x = p->coord.x - 0x1000;
+      sp = 0x180;
+      CreateLemon(&c, sp, 0xEF);
+      c.y = p->coord.y - 0x500;
+      CreateLemon(&c, sp, 0x10);
+    }
+    PlaySound(0x2C);
+    p->work[2] = 0x30;
+    p->mode[2]++;
+  }
+  q = p->unk_2c;
+  if (q == NULL) {
+    if (((bool16 (*)(s32, s32))FUN_080098a4)(p->coord.x, p->coord.y + 0xA00)) {
+      p->mode[1] = (u8)(u32)q;
+      p->mode[2] = (u8)(u32)q;
+      return;
+    }
+  }
+  {
+    s32 t = p->work[2] - 1;
+    p->work[2] = t;
+    t <<= 24;
+    t = (u32)t >> 24;
+    if (t == 0xFF) {
+      register struct Entity* r asm("r1");
+      r = p->unk_2c;
+      if (r != NULL) {
+        p->mode[1] = 4;
+        p->mode[2] = 0;
+        return;
+      }
+      p->mode[1] = 7;
+      p->mode[2] = (u8)(u32)r;
+    }
+  }
+}
+
+void FUN_0806d998(GyroCannon* p) {
+  if (p->mode[2] == 0) {
+    SetMotion((struct Entity*)p, 0x1700);
+    p->work[2] = 8;
+    p->mode[2]++;
+  }
+  if ((u8)(--p->work[2]) == 0xff) {
+    p->mode[1] = 2;
+    p->mode[2] = 0;
+  }
+}
+
+void FUN_0806d9d4(GyroCannon* p) {
+  if (p->mode[2] == 0) {
+    SetMotion((struct Entity*)p, 0x1704);
+    p->work[2] = 8;
+    p->mode[2]++;
+  }
+  if ((u8)(--p->work[2]) == 0xff) {
+    CreateProjectile8(p->coord.x, p->coord.y + 0xc00);
+    p->mode[1] = 6;
+    p->mode[2] = 0;
+  }
+}
+
+void FUN_0806da20(GyroCannon* p) {
+  if (p->mode[2] == 0) {
+    SetMotion((struct Entity*)p, 0x1705);
+    p->work[2] = 8;
+    p->mode[2]++;
+  }
+  if ((u8)(--p->work[2]) == 0xff) {
+    p->mode[1] = 2;
+    p->mode[2] = 0;
+  }
+}
+
+void FUN_0806da5c(GyroCannon* p) {
+  u8 z;
+  if (p->mode[2] == 0) {
+    SetMotion((struct Entity*)p, MOTION(0x17, 0x00));
+    p->work[2] = 0x78;
+    p->mode[2]++;
+  }
+  {
+    register u8* q asm("r1");
+    q = (u8*)p + 0xb4;
+    asm("" : "+r"(q));
+    z = 0;
+    q[0xb] = 1;
+  }
+  if (FUN_080098a4(p->coord.x, p->coord.y + 0xB00) == 0) {
+    p->mode[1] = z;
+  } else {
+    if ((u8)--p->work[2] != 0xFF) {
+      return;
+    }
+    p->mode[1] = 3;
+  }
+  p->mode[2] = z;
+}
+
+void FUN_0806dab8(GyroCannon* p) {
+  struct Entity** slot;
+  u8 m = p->mode[2];
+  if (m == 0) {
+    SetMotion((struct Entity*)p, MOTION(0x17, 0x00));
+    SetDDP(&p->body, &sCollisions[1]);
+    p->d.y = m;
+    p->mode[2]++;
+  }
+  p->d.y += 0x40;
+  if (p->d.y > 0x700) {
+    p->d.y = 0x700;
+  }
+  p->coord.y += p->d.y;
+  if (FUN_080098a4(p->coord.x, p->coord.y + 0xA00)) {
+    p->coord.y = FUN_08009f6c(p->coord.x, p->coord.y) - 0xA00;
+  }
+  slot = (struct Entity**)((u8*)p + 0xb4);
+  if (isKilled(*slot)) {
+    u32 z = 0;
+    *slot = (struct Entity*)z;
+    SetDDP(&p->body, &sCollisions[0]);
+    if (p->unk_2c != NULL) {
+      p->mode[1] = 9;
+      p->mode[2] = z;
+    } else {
+      p->mode[1] = 0;
+      p->mode[2] = 1;
+    }
+  }
+}
+
+void FUN_0806db58(GyroCannon* p) {
+  UpdateEntityAnim((struct Entity*)p);
+  p->coord.y -= 0x200;
+  {
+    s32* base = (s32*)((u8*)p + 0xb4);
+    if (p->coord.y < base[1]) {
+      p->coord.y = base[1];
+      p->mode[1] = 2;
+      p->mode[2] = 0;
+      p->work[3] = 0x7f;
+    }
+  }
+}
+
+void gyroCannon_0806db8c(GyroCannon* p) {
+  register u32 a3 asm("r3");
+  register struct Coord* c5 asm("r5");
+  register u8* pr8 asm("r8");
+  c5 = &p->coord;
+  {
+    register const struct SlashedEnemy* s6 asm("r6");
+    register s32 pv asm("r2");
+    s6 = &sSlashedEnemies[2];
+    {
+      register u8* pt asm("r0");
+      pt = (u8*)p + 0xb4;
+      pv = pt[8];
+    }
+    {
+      register u8 fl asm("r1");
+      register u32 t0 asm("r0");
+      fl = p->flags;
+      a3 = 0x10;
+      t0 = a3;
+      t0 &= fl;
+      if (t0 != 0) {
+        a3 |= pv;
+      } else {
+        a3 = pv;
+      }
+    }
+    ((struct VFX* (*)())CreateSlashedEnemy)(c5, s6, 0, a3);
+  }
+  {
+    struct Coord* c7;
+    register const struct SlashedEnemy* sip asm("ip");
+    register u8* pr2 asm("r2");
+    register s32 pv6 asm("r6");
+    c7 = &p->coord;
+    asm("" : "+r"(c7));
+    sip = &sSlashedEnemies[2];
+    pr2 = (u8*)p + 0xb4;
+    pv6 = pr2[8];
+    {
+      register u8 fl asm("r1");
+      register u32 t0 asm("r0");
+      fl = p->flags;
+      a3 = 0x10;
+      t0 = a3;
+      t0 &= fl;
+      c5 = c7;
+      pr8 = pr2;
+      if (t0 != 0) {
+        a3 |= pv6;
+      } else {
+        a3 = pv6;
+      }
+    }
+    ((struct VFX* (*)())CreateSlashedEnemy)(c7, sip, 0, a3);
+  }
+  {
+    register struct Coord* c6 asm("r6");
+    const struct SlashedEnemy* s7;
+    u8 p2;
+    c6 = c5;
+    s7 = &sSlashedEnemies[3];
+    {
+      register u8* pl asm("r0");
+      pl = pr8;
+      p2 = pl[8];
+    }
+    {
+      register u8 fl asm("r1");
+      register u32 t0 asm("r0");
+      fl = p->flags;
+      a3 = 0x10;
+      t0 = a3;
+      t0 &= fl;
+      if (t0 != 0) {
+        a3 |= p2;
+      } else {
+        a3 = p2;
+      }
+    }
+    ((struct VFX* (*)())CreateSlashedEnemy)(c6, s7, 0, a3);
+  }
+  {
+    register struct Coord* c6 asm("r6");
+    const struct SlashedEnemy* s7;
+    u8 p2;
+    c6 = c5;
+    s7 = &sSlashedEnemies[3];
+    {
+      register u8* pl asm("r0");
+      pl = pr8;
+      p2 = pl[8];
+    }
+    {
+      register u8 fl asm("r1");
+      register u32 t0 asm("r0");
+      fl = p->flags;
+      a3 = 0x10;
+      t0 = a3;
+      t0 &= fl;
+      if (t0 != 0) {
+        a3 |= p2;
+      } else {
+        a3 = p2;
+      }
+    }
+    ((struct VFX* (*)())CreateSlashedEnemy)(c6, s7, 0, a3);
+  }
+  CreateSmoke(1, c5);
+  if (p->flags & 0x10) {
+    CreateSmoke(2, c5);
+    CreateSmoke(2, c5);
+  } else {
+    CreateSmoke(2, c5);
+    CreateSmoke(2, c5);
+  }
+  {
+    register s32 cf asm("r0");
+    register s32 flv asm("r1");
+    flv = p->flags;
+    cf = 0xFE;
+    asm("" : "+r"(cf));
+    p->flags = cf & flv;
+  }
+  PlaySound(0x2A);
+  {
+    register struct Coord* c1 asm("r1");
+    c1 = c5;
+    TryDropItem(4, c1);
+  }
+  if (gScore.enemyCount <= 0x270E) {
+    gScore.enemyCount++;
+  }
+  TryDropZakoDisk((struct Entity*)p, c5);
+  SET_ENEMY_ROUTINE(p, 4);
+}
+
+void gyroCannon_0806dccc(GyroCannon* p) {
+  if (p->mode[3] == 0) {
+    SetMotion((struct Entity*)p, 0x1707);
+    {
+      struct Coord* ca;
+      u32 xf;
+      u32 one;
+      ca = &p->coord;
+      xf = p->flags >> 4;
+      one = 1;
+      xf &= one;
+      CreateGhost27(ca, xf, one);
+    }
+    {
+      struct Entity* e = p->unk_2c;
+      s32 y = e->coord.y;
+      s32 x = e->coord.x;
+      p->coord.x = x;
+      p->coord.y = y;
+    }
+    p->mode[3]++;
+  }
+  UpdateEntityAnim((struct Entity*)p);
+  {
+    struct Entity* e = p->unk_2c;
+    if (e != NULL) {
+      if (e->mode[0] > 1) {
+        p->unk_2c = NULL;
+      } else {
+        p->coord.y = e->coord.y + -0x200;
+      }
+      if (p->unk_2c != NULL) {
+        return;
+      }
+    }
+  }
+  {
+    struct Coord* c7;
+    register const struct SlashedEnemy* sip asm("ip");
+    register u8* pr2 asm("r2");
+    register u8* pr8 asm("r8");
+    u8 p5;
+    register struct Coord* c6 asm("r6");
+    register u32 a3 asm("r3");
+    c7 = &p->coord;
+    sip = &sSlashedEnemies[2];
+    pr2 = (u8*)p + 0xb4;
+    p5 = pr2[8];
+    {
+      register u8 fl asm("r1");
+      register u32 t0 asm("r0");
+      fl = p->flags;
+      a3 = 0x10;
+      t0 = a3;
+      t0 &= fl;
+      c6 = c7;
+      pr8 = pr2;
+      if (t0 != 0) {
+        a3 |= p5;
+      } else {
+        a3 = p5;
+      }
+    }
+    ((struct VFX* (*)())CreateSlashedEnemy)(c7, sip, 0, a3);
+    {
+      register struct Coord* c5 asm("r5");
+      const struct SlashedEnemy* s7;
+      u8 p2;
+      c5 = c6;
+      s7 = &sSlashedEnemies[3];
+      {
+        register u8* pl asm("r1");
+        pl = pr8;
+        p2 = pl[8];
+      }
+      {
+        register u8 fl asm("r1");
+        register u32 t0 asm("r0");
+        fl = p->flags;
+        a3 = 0x10;
+        t0 = a3;
+        t0 &= fl;
+        if (t0 != 0) {
+          a3 |= p2;
+        } else {
+          a3 = p2;
+        }
+      }
+      ((struct VFX* (*)())CreateSlashedEnemy)(c5, s7, 0, a3);
+    }
+    CreateSmoke(1, c6);
+    if (p->flags & 0x10) {
+      CreateSmoke(2, c6);
+    } else {
+      CreateSmoke(2, c6);
+    }
+    {
+      register struct Coord* c1 asm("r1");
+      c1 = c6;
+      TryDropItem(4, c1);
+    }
+    PlaySound(0x2A);
+    if (gScore.enemyCount <= 0x270E) {
+      gScore.enemyCount++;
+    }
+    TryDropZakoDisk((struct Entity*)p, c6);
+    SET_ENEMY_ROUTINE(p, 4);
+  }
+
+}
 
 NAKED static void FUN_0806ddfc(GyroCannon* p) {
   asm(".syntax unified\n\
@@ -495,7 +1380,7 @@ static void (*const PTR_ARRAY_0836666c[10])(GyroCannon*) = {
 
 void gyroCannon_0806db8c(GyroCannon* p);
 void gyroCannon_0806dccc(GyroCannon* p);
-static void FUN_0806ddfc(GyroCannon* p);
+NAKED static void FUN_0806ddfc(GyroCannon* p);
 
 static void (*const sUpdates2[3])(GyroCannon*) = {
     gyroCannon_0806db8c,
