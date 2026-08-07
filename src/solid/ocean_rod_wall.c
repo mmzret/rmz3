@@ -3,13 +3,16 @@
 #include "overworld_terrain.h"
 #include "solid.h"
 
+void FUN_0800d5a8(struct Coord* c);
+void CreateBubble(s32 x, s32 y, u8 kind);
+
 // Wall that can be destroyed by Charge Recoil Rod in Ocean highway ruins.
 
 static const struct Collision sCollision;
 
 static void Solid53_Init(struct Solid* p);
 static void Solid53_Update(struct Solid* p);
-void Solid53_Die(struct Solid* p);
+NON_MATCH void Solid53_Die(struct Solid* p);
 
 // clang-format off
 const SolidRoutine gOceanRodWallRoutine = {
@@ -52,7 +55,43 @@ static void Solid53_Update(struct Solid* p) {
   }
 }
 
-INCASM("asm/solid/unk_53.inc");
+NON_MATCH void Solid53_Die(struct Solid* p) {
+#if MODERN
+  switch ((p->s).mode[1]) {
+    case 0: {
+      s32 i;
+      FUN_0800d5a8(&(p->s).coord);
+      AppendQuake(4, &(p->s).coord);
+      PlaySound(0xE2);
+      for (i = 0xF; i >= 0; i--) {
+        s32 x = ((RANDOM(RNG_0202f388) & 0x1FFF) - 0x1000) + (p->s).coord.x;
+        s32 y = ((RANDOM(RNG_0202f388) & 0x1FFF) - 0x1000) + (p->s).coord.y;
+        u8 k = RANDOM(RNG_0202f388) & 3;
+        CreateBubble(x, y, k);
+      }
+      (p->s).mode[1]++;
+    }
+      /* fallthrough */
+    case 1: {
+      s32 v;
+      UpdateEntityAnim(&p->s);
+      v = (p->s).d.y;
+      if (v <= 0x6FF) {
+        (p->s).d.y = v + 0x20;
+      }
+      (p->s).coord.y += (p->s).d.y;
+      (p->s).unk_coord.y = (p->s).coord.y;
+      if (CalcFromCamera(&gStageRun.vm.camera, &(p->s).coord) > 0x3000) {
+        (p->s).flags &= ~DISPLAY;
+        SET_SOLID_ROUTINE(p, ENTITY_EXIT);
+      }
+      break;
+    }
+  }
+#else
+  INCCODE("asm/solid/unk_53_die.inc");
+#endif
+}
 
 static const struct Collision sCollision = {
   kind : DRP,
