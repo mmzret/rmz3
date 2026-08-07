@@ -2,10 +2,15 @@
 #include "global.h"
 #include "overworld.h"
 #include "solid.h"
+#include "zero.h"
+
+struct Entity* CreateSmoke(u8 n, struct Coord* c);
+void FUN_080b7f70(struct Entity* e, struct Coord* c, motion_t* motions, u8 len);
+NAKED bool8 FUN_080cf428(struct Solid* p);
 
 // PantheonBase's snowboard
 
-static void Solid18_Init(struct Solid* p);
+NAKED static void Solid18_Init(struct Solid* p);
 void Solid18_Update(struct Solid* p);
 void Solid18_Die(struct Solid* p);
 
@@ -19,6 +24,12 @@ const SolidRoutine gSnowboardRoutine = {
 };
 // clang-format on
 
+
+const struct Collision sSolid18Collisions[2];
+const motion_t sSolid18Motions[3];
+const struct Rect sSolid18Size;
+const SolidFunc sSolid18Updates1[5];
+const SolidFunc sSolid18Updates2[5];
 NAKED bool8 FUN_080cf428(struct Solid* p) {
   asm(".syntax unified\n\
 	push {r4, r5, r6, r7, lr}\n\
@@ -414,7 +425,304 @@ _080CF748: .4byte sSolid18Collisions\n\
  .syntax divided\n");
 }
 
-INCASM("asm/solid/snowboard.inc");
+void Solid18_Update(struct Solid* p) {
+  s32 d = Camera_GetDistance(&gStageRun.vm.camera, &(p->s).coord);
+  if (IsVoidSpace((p->s).coord.x, (p->s).coord.y)) {
+    if (d > 0x4000) goto die;
+  }
+  if (d <= 0x8000) goto alive;
+
+die:
+  {
+    u8 f2 = (p->s).flags2 & ~ENTI_PHYSICS;
+    s32 z = 0;
+    (p->s).flags2 = f2;
+    {
+      u32 f = (p->s).flags & 0xFE;
+      asm("" : "+r"(f));
+      (p->s).flags = f & 0xFD;
+    }
+    (p->body).status = z;
+    (p->body).prevStatus = z;
+    (p->body).invincibleTime = z;
+  }
+  (p->s).flags &= ~COLLIDABLE;
+  SET_SOLID_ROUTINE(p, ENTITY_DISAPPEAR);
+  return;
+
+alive:
+  if ((pZero2->s).coord.y < (p->s).coord.y + -0x100) {
+    (p->s).flags2 |= ENTI_PHYSICS;
+    (p->s).size = &sSolid18Size;
+    (p->s).physicsAttr = 0x8801;
+  } else {
+    (p->s).flags2 &= ~ENTI_PHYSICS;
+  }
+  {
+    s16* t = (s16*)&p->buffer[2];
+    *t = *t + 1;
+    if ((*t = *t % 15) == 0) {
+      if (Camera_GetDistance(&gStageRun.vm.camera, &(p->s).coord) <= 0x3FFF) {
+        u8 m = (p->s).mode[1];
+        if (m == 1 || m == 4) {
+          PlaySound(0x127);
+        } else {
+          PlaySound(0x126);
+        }
+      }
+    }
+  }
+  (sSolid18Updates1[(p->s).mode[1]])(p);
+  (sSolid18Updates2[(p->s).mode[1]])(p);
+}
+
+void Solid18_Die(struct Solid* p) {
+  struct Coord c;
+  {
+    u8 f2 = (p->s).flags2 & ~8;
+    s32 z = 0;
+    (p->s).flags2 = f2;
+    (p->body).status = z;
+    (p->body).prevStatus = z;
+    (p->body).invincibleTime = z;
+  }
+  (p->s).flags &= ~COLLIDABLE;
+  c.x = (p->s).coord.x - PIXEL(16);
+  c.y = (p->s).coord.y - PIXEL(8);
+  CreateSmoke(1, &c);
+  c.x = (p->s).coord.x + PIXEL(16);
+  c.y = (p->s).coord.y;
+  CreateSmoke(1, &c);
+  PlaySound(0x2A);
+  FUN_080b7f70(&p->s, &c, (motion_t*)sSolid18Motions, 3);
+  SET_SOLID_ROUTINE(p, ENTITY_EXIT);
+}
+
+void nop_080cf914(struct Solid* p) {}
+
+void nop_080cf918(struct Solid* p) {}
+
+void FUN_080cf91c(struct Solid* p) {
+  struct Entity* q = (p->s).unk_2c;
+  u8 m = (p->s).mode[2];
+  switch (m) {
+    case 0: {
+      s32 v;
+      s32 v2;
+      SetMotion(&p->s, 0x6D0D);
+      SetDDP(&p->body, sSolid18Collisions);
+      *(s32*)((u8*)p + 0xb8) = (p->s).coord.y;
+      (p->s).d.x = m;
+      (p->s).d.y = m;
+      v = -0x40;
+      (p->s).unk_coord.x = v;
+      v2 = v;
+      if ((p->s).flags & 0x10) {
+        v2 = 0x40;
+      }
+      (p->s).unk_coord.x = v2;
+      (p->s).mode[2]++;
+    }
+      /* fallthrough */
+    case 1: {
+      s32 cx;
+      s32 dx;
+      register s32 cur asm("r0");
+      register s32 lo asm("r1");
+      cx = (p->s).coord.x;
+      dx = (p->s).d.x;
+      (p->s).coord.x = cx + dx;
+      dx += (p->s).unk_coord.x;
+      (p->s).d.x = dx;
+      if ((p->s).work[0] == 0) {
+        if (dx > 0x300) {
+          (p->s).d.x = 0x300;
+        }
+        cur = (p->s).d.x;
+        lo = -0x300;
+        goto clamp;
+      }
+      if (dx > 0x400) {
+        (p->s).d.x = 0x400;
+      }
+      cur = (p->s).d.x;
+      lo = -0x400;
+    clamp:
+      if (cur < lo) {
+        (p->s).d.x = lo;
+      }
+      UpdateEntityAnim(&p->s);
+      if (((u8)FUN_080cf428(p) << 24) != 0) {
+        (p->s).mode[1] = 2;
+        (p->s).mode[2] = 0;
+      }
+      break;
+    }
+  }
+  if (q->mode[0] > 1) {
+    (p->s).unk_2c = NULL;
+    (p->s).mode[1] = 3;
+    (p->s).mode[2] = 0;
+  }
+}
+
+void FUN_080cf9e0(struct Solid* p) {
+  struct Entity* q = (p->s).unk_2c;
+  switch ((p->s).mode[2]) {
+    case 0:
+      (p->s).work[2] = 1;
+      (p->s).unk_coord.x = -(p->s).d.x;
+      (p->s).mode[2]++;
+      FALLTHROUGH;
+    case 1: {
+      s32 t;
+      (p->s).coord.x += (p->s).d.x;
+      FUN_080cf428(p);
+      (p->s).d.x += (p->s).unk_coord.x;
+      t = (p->s).work[2] - 1;
+      (p->s).work[2] = t;
+      if ((t << 24) == 0) {
+        register u8 fl asm("r1");
+        register s32 sh asm("r0");
+        register s32 v asm("r2");
+        register s32 one asm("r3");
+        register s32 z asm("r4");
+        register s32 xf asm("r1");
+        register u8 fv asm("r0");
+        u8* oa;
+        s32 sh4, ov, m11;
+        fl = (p->s).flags;
+        sh = fl >> 4;
+        v = 1;
+        v &= ~sh;
+        if (v != 0) {
+          fv = 0x10;
+          fv |= fl;
+          (p->s).flags = fv;
+        } else {
+          fv = 0xEF;
+          fv &= fl;
+          (p->s).flags = fv;
+        }
+        one = 1;
+        asm volatile("add %0, %1, #0" : "=&l"(xf) : "l"(one));
+        xf &= v;
+        {
+          u8* xp = (u8*)p + 0x4c;
+          asm("" : "+r"(xp));
+          z = 0;
+          *xp = xf;
+        }
+        oa = (u8*)p + 0x4a;
+        sh4 = xf << 4;
+        ov = *oa;
+        m11 = -0x11;
+        m11 &= ov;
+        *oa = m11 | sh4;
+        (p->s).mode[1] = one;
+        (p->s).mode[2] = z;
+      }
+      UpdateEntityAnim(&p->s);
+      break;
+    }
+  }
+  if (q->mode[0] > 1) {
+    s32 z2 = 0;
+    (p->s).unk_2c = (struct Entity*)z2;
+    (p->s).mode[1] = 3;
+    (p->s).mode[2] = z2;
+  }
+}
+
+void FUN_080cfa80(struct Solid* p) {
+  switch ((p->s).mode[2]) {
+    case 0:
+      SetMotion(&p->s, MOTION(0x6D, 0x0D));
+      SetDDP(&p->body, &sSolid18Collisions[1]);
+      (p->s).work[2] = 0x20;
+      (p->s).work[3] = 0;
+      {
+        s32 n = -(p->s).d.x;
+        s32 k;
+        asm volatile("movs %0, #0x20" : "=l"(k));
+        (p->s).unk_coord.x = n / k;
+      }
+      (p->s).mode[2]++;
+      FALLTHROUGH;
+    case 1: {
+      u8 w2 = (p->s).work[2];
+      if (w2 != 0) {
+        (p->s).coord.x += (p->s).d.x;
+        (p->s).d.x += (p->s).unk_coord.x;
+        (p->s).work[2] = w2 - 1;
+      }
+      if (((u8)FUN_080cf428(p) << 24) != 0) {
+        (p->s).d.x = -(p->s).d.x;
+        (p->s).unk_coord.x = -(p->s).unk_coord.x;
+      }
+      if ((p->s).work[2] == 0) {
+        u32 st = (p->body).status;
+        u8 k4 = 4;
+        if ((st & k4) != 0) {
+          struct Zero* z = pZero2;
+          if ((z->s).coord.y < (p->s).coord.y - 8 && (z->s).mode[1] == 0) {
+            (p->s).mode[1] = k4;
+            (p->s).mode[2] = 0;
+          }
+        }
+      }
+      (p->s).work[3] = ((p->body).status >> 2) & 1;
+      UpdateEntityAnim(&p->s);
+      break;
+    }
+  }
+}
+
+NON_MATCH void FUN_080cfb38(struct Solid* p) {
+#if MODERN
+  u8 m = (p->s).mode[2];
+  switch (m) {
+    case 0: {
+      s32 a;
+      SetDDP(&p->body, &sCollisions[9]);
+      SetMotion(&p->s, MOTION(0x6D, 0x0D));
+      *(s32*)((u8*)p + 0xb8) = (p->s).coord.y;
+      (p->s).d.x = m;
+      {
+        s32 k = -0x20;
+        (p->s).unk_coord.x = k;
+        asm volatile("add %0, %1, #0" : "=&l"(a) : "l"(k));
+        asm("" : "+r"(a));
+      }
+      if ((pZero2->s).flags & 0x10) {
+        a = 0x20;
+      }
+      (p->s).unk_coord.x = a;
+      (p->s).mode[2]++;
+    }
+    case 1: {
+      s32 dx;
+      (p->s).coord.x += (p->s).d.x;
+      dx = (p->s).d.x + (p->s).unk_coord.x;
+      (p->s).d.x = dx;
+      if (dx > 0x380) {
+        (p->s).d.x = 0x380;
+      }
+      if ((p->s).d.x < -0x380) {
+        (p->s).d.x = -0x380;
+      }
+      UpdateEntityAnim(&p->s);
+      if (FUN_080cf428(p)) {
+        (p->s).d.x = -(p->s).d.x;
+        (p->s).unk_coord.x = -(p->s).unk_coord.x;
+      }
+      break;
+    }
+  }
+#else
+  INCCODE("asm/solid/snowboard_080cfb38.inc");
+#endif
+}
 
 // --------------------------------------------
 
@@ -436,7 +744,7 @@ void nop_080cf918(struct Solid* p);
 void FUN_080cf91c(struct Solid* p);
 void FUN_080cf9e0(struct Solid* p);
 void FUN_080cfa80(struct Solid* p);
-void FUN_080cfb38(struct Solid* p);
+NON_MATCH void FUN_080cfb38(struct Solid* p);
 
 // clang-format off
 const SolidFunc sSolid18Updates2[5] = {
