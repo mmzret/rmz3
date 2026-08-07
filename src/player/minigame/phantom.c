@@ -77,7 +77,7 @@ void FUN_08034d40(struct Zero* z);
 void phantom_08034dc0(struct Zero* z);
 void FUN_08034e50(struct Zero* z);
 
-static void PhantomMini_Update(Entity* p) {
+static void PhantomMini_Update(struct Entity* p) {
   s32 max_y;
   static const ZeroFunc sUpdates1[4] = {
       (void*)FUN_08034b28,
@@ -107,7 +107,7 @@ static void PhantomMini_Die(struct Entity* p) { SET_PLAYER_ROUTINE(p, ENTITY_EXI
 
 // --------------------------------------------
 
-static void nop_08034b24(void* _) {}
+static void nop_08034b24(void* _ UNUSED) {}
 
 static void FUN_08034b28(struct Entity* p) {
   struct MinigameState* q = (struct MinigameState*)p->unk_28;
@@ -116,7 +116,70 @@ static void FUN_08034b28(struct Entity* p) {
   }
 }
 
-INCASM("asm/player/phantom.inc");
+INCASM("asm/player/phantom_a.inc");
+
+void FUN_08034d40(struct Zero* z) {
+  struct MinigameState* s = (struct MinigameState*)(z->s).unk_28;
+  switch ((z->s).mode[2]) {
+    case 0:
+      (z->s).d.y = 0;
+      (z->s).mode[2]++;
+      /* fallthrough */
+    case 1: {
+      s32 lim;
+      (z->s).d.y += 0x40;
+      if ((z->s).d.y > 0x700) {
+        (z->s).d.y = 0x700;
+      }
+      (z->s).coord.y += (z->s).d.y;
+      lim = FUN_080349a8((struct Entity*)z);
+      if ((z->s).coord.y > lim) {
+        (z->s).coord.y = lim;
+        (z->s).mode[1] = 0;
+        (z->s).mode[2] = 0;
+      }
+      UpdateEntityAnim(&z->s);
+      if (*(u16*)&s->unk_10 & 0x20) {
+        (z->s).coord.x -= 0x200;
+      }
+      if (*(u16*)&s->unk_10 & 0x10) {
+        (z->s).coord.x += 0x200;
+      }
+      break;
+    }
+  }
+}
+
+void phantom_08034dc0(struct Zero* z) {
+  struct MinigameState* s = (struct MinigameState*)(z->s).unk_28;
+  switch ((z->s).mode[2]) {
+    case 0:
+      PlaySound(0xFC);
+      GotoMotion(&z->s, MOTION(0xBC, 0x03), 2, 4);
+      (z->s).d.y = -0x700;
+      (z->s).mode[2]++;
+      /* fallthrough */
+    case 1: {
+      s32 dy = (z->s).d.y + 0x40;
+      (z->s).d.y = dy;
+      (z->s).coord.y += dy;
+      if (!(*(u16*)&s->unk_10 & 1) || dy > 0) {
+        (z->s).mode[1] = 1;
+        (z->s).mode[2] = 0;
+      }
+      UpdateEntityAnim(&z->s);
+      if (*(u16*)&s->unk_10 & 0x20) {
+        (z->s).coord.x -= 0x200;
+      }
+      if (*(u16*)&s->unk_10 & 0x10) {
+        (z->s).coord.x += 0x200;
+      }
+      break;
+    }
+  }
+}
+
+INCASM("asm/player/phantom_b.inc");
 
 // --------------------------------------------
 
