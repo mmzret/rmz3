@@ -2,6 +2,8 @@
 
 #include "global.h"
 #include "vfx.h"
+#include "overworld.h"
+#include "stagerun.h"
 
 static void Bubble_Init(BubbleVFX* p);
 static void Bubble_Update(BubbleVFX* p);
@@ -133,4 +135,108 @@ void FUN_080b3024(BubbleVFX* p) {
   Bubble_Update(p);
 }
 
-INCASM("asm/vfx/bubble.inc");
+void FUN_080b30b4(BubbleVFX* p) {
+  s16 sv;
+  UpdateEntityAnim((struct Entity*)p);
+  p->work[2] += 8;
+  p->coord.y -= p->d.y;
+  sv = gSineTable[p->work[2]];
+  p->coord.x += p->d.x + (sv >> 2);
+  if (Camera_GetDistance(&gStageRun.vm.camera, &p->coord) == 0) {
+    struct Overworld* ow = &gOverworld;
+    s32* seap = &ow->sea;
+    s32 y2 = p->coord.y - p->d.y * 2;
+    if (*seap < y2) {
+      return;
+    }
+    if ((u16)GetMetatileAttr(p->coord.x, p->coord.y) == 0x8000) {
+      return;
+    }
+  }
+  SET_VFX_ROUTINE(p, ENTITY_DIE);
+}
+
+void FUN_080b3144(BubbleVFX* p) {
+  s32 amp;
+  s16 sv;
+  UpdateEntityAnim((struct Entity*)p);
+  p->work[2]++;
+  amp = p->d.x + 8;
+  p->d.x = amp;
+  p->coord.y -= p->d.y;
+  sv = gSineTable[p->work[2]];
+  p->coord.x = p->x_74 + sv * (amp >> 8);
+  if (Camera_GetDistance(&gStageRun.vm.camera, &p->coord) == 0) {
+    struct Overworld* ow = &gOverworld;
+    s32* seap = &ow->sea;
+    s32 y2 = p->coord.y - p->d.y * 2;
+    if (*seap < y2) {
+      return;
+    }
+    if ((u16)GetMetatileAttr(p->coord.x, p->coord.y) == 0x8000) {
+      return;
+    }
+  }
+  SET_VFX_ROUTINE(p, ENTITY_DIE);
+}
+
+void FUN_080b31d8(BubbleVFX* p) {
+  s32 dy;
+  UpdateEntityAnim((struct Entity*)p);
+  p->work[2] += 8;
+  dy = p->d.y - 0x60;
+  p->d.y = dy;
+  if (dy < -0x100) {
+    p->d.y = -0x100;
+  }
+  p->coord.y += p->d.y;
+  p->coord.x += p->d.x + (((u16)gSineTable[p->work[2]] << 16) >> 18);
+  if (Camera_GetDistance(&gStageRun.vm.camera, &p->coord) == 0) {
+    struct Overworld* ow = &gOverworld;
+    s32* sp;
+    s32 t;
+    s32 cy;
+    sp = &ow->sea;
+    asm("" : "+r"(sp));
+    t = p->d.y * 2;
+    cy = p->coord.y;
+    if (*sp < cy - t) {
+      return;
+    }
+    if ((GetMetatileAttr(p->coord.x, cy) << 16) == 0x80000000) {
+      return;
+    }
+  }
+  SET_VFX_ROUTINE(p, 2);
+}
+
+void FUN_080b3278(BubbleVFX* p) {
+  s32 dy;
+  UpdateEntityAnim((struct Entity*)p);
+  p->work[2]++;
+  p->d.x += 8;
+  dy = p->d.y - 0x60;
+  p->d.y = dy;
+  if (dy < -0x100) {
+    p->d.y = -0x100;
+  }
+  p->coord.y += p->d.y;
+  p->coord.x = *(s32*)((u8*)p + 0x74) + gSineTable[p->work[2]] * (p->d.x >> 8);
+  if (Camera_GetDistance(&gStageRun.vm.camera, &p->coord) == 0) {
+    struct Overworld* ow = &gOverworld;
+    s32* sp;
+    s32 t;
+    s32 cy;
+    sp = &ow->sea;
+    asm("" : "+r"(sp));
+    t = p->d.y * 2;
+    cy = p->coord.y;
+    if (*sp < cy - t) {
+      return;
+    }
+    if ((GetMetatileAttr(p->coord.x, cy) << 16) == 0x80000000) {
+      return;
+    }
+  }
+  SET_VFX_ROUTINE(p, 2);
+}
