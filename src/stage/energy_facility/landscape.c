@@ -3,9 +3,16 @@
 #include "palette_animation.h"
 #include "story.h"
 
+struct Solid* CreateStructuralSteel(s32 x, s32 y, u8 r2, u8 r3, u8 n);
+
+struct EFDoorRow {
+  u8 pad[0x68];
+  struct Solid* door;
+};
+
 static void initEFacility(Coords32* _ UNUSED);
 static void FUN_08011dd8(Coords32* _ UNUSED);
-static void FUN_08012148(Coords32* _ UNUSED);
+NAKED static void FUN_08012148(Coords32* _ UNUSED);
 static void FUN_080124ec(Coords32* _ UNUSED);
 
 static const StageFunc sStageRoutine[4] = {
@@ -15,6 +22,9 @@ static const StageFunc sStageRoutine[4] = {
     FUN_080124ec,
 };
 
+
+static const Coords32 Coord_083427b4;
+static const Coords32 Coord_ARRAY_08342784[6];
 static void initEFacility(Coords32* _ UNUSED) {
   gCurStory.s.unk_54 |= (1 << 6);
   gOverworld.work.energyFacility.unk_000[0] = 0;
@@ -590,14 +600,14 @@ static void FUN_080124ec(Coords32* _ UNUSED) {
 
 static void LayerUpdate_2(struct StageLayer* l, const struct Stage* _ UNUSED);
 static void LayerUpdate_3(struct StageLayer* l, const struct Stage* _ UNUSED);
-static void LayerDraw_3(struct StageLayer* l, const struct Stage* _ UNUSED);
+NAKED static void LayerDraw_3(struct StageLayer* l, const struct Stage* _ UNUSED);
 static void LayerUpdate_4(struct StageLayer* l, const struct Stage* _ UNUSED);
 static void LayerDraw_4(struct StageLayer* l, const struct Stage* _ UNUSED);
 static void LayerExit_4(struct StageLayer* l, const struct Stage* _ UNUSED);
 void FUN_080128bc(struct StageLayer* l, const struct Stage* stage);
-void FUN_08012924(struct StageLayer* l, const struct Stage* stage);
+NON_MATCH void FUN_08012924(struct StageLayer* l, const struct Stage* stage);
 void FUN_08012988(struct StageLayer* l, const struct Stage* stage);
-void FUN_08012a00(struct StageLayer* l, const struct Stage* stage);
+NON_MATCH void FUN_08012a00(struct StageLayer* l, const struct Stage* stage);
 
 // clang-format off
 static const StageLayerRoutine sLayerRoutine[7] = {
@@ -869,7 +879,103 @@ static void LayerExit_4(struct StageLayer* l, const struct Stage* _ UNUSED) {
   RemovePaletteAnimation(243);
 }
 
-INCASM("asm/stage_gfx/energy_facility.inc");
+void FUN_080128bc(struct StageLayer* l, const struct Stage* stage) {
+  s16 i;
+  if (l->phase == 0) {
+    s32 z;
+    for (i = 0, z = 0; i <= 5; i++) {
+      *(s32*)&l->work.energyFacility.doors[i] = z;
+    }
+    l->phase++;
+  } else {
+    for (i = 0; i <= 5; i++) {
+      struct EFDoorRow* row = (struct EFDoorRow*)((u8*)(i * 4) + (u32)l);
+      if (row->door == NULL) {
+        row->door = CreateStructuralSteel(0x18A000, 0x17800, i, 0, 0);
+      }
+    }
+  }
+}
+
+NON_MATCH void FUN_08012924(struct StageLayer* l, const struct Stage* stage) {
+#if MODERN
+  s16 i;
+  for (i = 0; i <= 5; i++) {
+    struct Solid* d = l->work.energyFacility.doors[i];
+    if (d != NULL) {
+      u8 f = ~DISPLAY & (d->s).flags;
+      s32 z = 0;
+      f = f & ~FLIPABLE;
+      (d->s).flags = f;
+      (d->body).status = z;
+      (d->body).prevStatus = z;
+      (d->body).invincibleTime = z;
+      (d->s).flags &= ~COLLIDABLE;
+      SET_SOLID_ROUTINE(d, ENTITY_DISAPPEAR);
+      l->work.energyFacility.doors[i] = NULL;
+    }
+  }
+#else
+  INCCODE("asm/stage_gfx/ef_12924.inc");
+#endif
+}
+
+void FUN_08012988(struct StageLayer* l, const struct Stage* stage) {
+  s16 i;
+  if (l->phase == 0) {
+    s32 z;
+    for (i = 0, z = 0; i <= 3; i++) {
+      *(s32*)&l->work.energyFacility.doors[i] = z;
+    }
+    l->phase++;
+  } else {
+    for (i = 0; i <= 3; i++) {
+      struct EFDoorRow* row = (struct EFDoorRow*)((u8*)(i * 4) + (u32)l);
+      if (row->door == NULL) {
+        row->door = CreateStructuralSteel(0x272000, (((i * 3 + 0x13) << 4) + 8) << 8, i >> 1, i & 1, 1);
+      }
+    }
+  }
+}
+
+NON_MATCH void FUN_08012a00(struct StageLayer* l, const struct Stage* stage) {
+#if MODERN
+  s16 i;
+  for (i = 0; i <= 3; i++) {
+    struct Solid* d = l->work.energyFacility.doors[i];
+    if (d != NULL) {
+      u8 f = ~DISPLAY & (d->s).flags;
+      s32 z = 0;
+      f = f & ~FLIPABLE;
+      (d->s).flags = f;
+      (d->body).status = z;
+      (d->body).prevStatus = z;
+      (d->body).invincibleTime = z;
+      (d->s).flags &= ~COLLIDABLE;
+      SET_SOLID_ROUTINE(d, ENTITY_DISAPPEAR);
+      l->work.energyFacility.doors[i] = NULL;
+    }
+  }
+#else
+  INCCODE("asm/stage_gfx/ef_12a00.inc");
+#endif
+}
+
+const struct Coord* FUN_08012a64(struct Coord* c) {
+  struct Coord px;
+  px.x = c->x >> 8;
+  px.y = c->y >> 8;
+  if ((gOverworld.terrain.id & 0x7F) == 0xB) {
+    u8 r = FUN_08012518(&px);
+    if (r != 6 && ((gCurStory.s.unk_54 >> r) & 1)) {
+      if (r == 2 && c->x > 0x87000) {
+        return &Coord_083427b4;
+      }
+      return &Coord_ARRAY_08342784[r];
+    }
+  }
+  return NULL;
+}
 
 // ------------------------------------------------------------------------------------------------------------------------------------
 
