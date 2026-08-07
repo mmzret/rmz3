@@ -1,5 +1,6 @@
 #include "collision.h"
 #include "global.h"
+#include "vfx.h"
 #include "projectile.h"
 #include "story.h"
 
@@ -77,7 +78,79 @@ static void Projectile16_Die(Object* p) {
 
 // --------------------------------------------
 
-INCASM("asm/projectile/unk_16.inc");
+void FUN_080a25f8(Projectile* p) {
+  // `zero` is declared up here and assigned 0 only after the division below, so
+  // agbcc materializes the work[3] zero straight after __divsi3 and holds it in a
+  // register across the d.y/unk_coord.x stores (a case-scoped `= 0` const-folds
+  // away and is rescheduled late). Permuter-found; see git history.
+  s32 zero;
+  if ((p->body).status & BODY_STATUS_DEAD) {
+    EXIT_BODY(p);
+    CreateSmoke(2, &p->coord);
+    SET_PROJECTILE_ROUTINE(p, ENTITY_DIE);
+  } else if ((p->body).status & BODY_STATUS_B2) {
+    EXIT_BODY(p);
+    CreateSmoke(2, &p->coord);
+    PlaySound(0x35);
+    SET_PROJECTILE_ROUTINE(p, ENTITY_DIE);
+  } else if (--p->work[2] == 0) {
+    CreateSmoke(2, &p->coord);
+    SET_PROJECTILE_ROUTINE(p, ENTITY_DIE);
+  } else {
+    switch (p->mode[2]) {
+      case 0: {
+        s32 targetX;
+        SetMotion((struct Entity*)p, 0x3e03);
+        if (!(p->flags & X_FLIP)) {
+          targetX = p->coord.x - 0x6000;
+        } else {
+          targetX = p->coord.x + 0x6000;
+        }
+        p->unk_coord.x = 0x1e;
+        p->d.x = (targetX - p->coord.x) / 0x1e;
+        zero = 0;
+        p->d.y = -0x3c0;
+        p->unk_coord.x = 0x1d;
+        p->work[3] = zero;
+        p->mode[2]++;
+        // fallthrough
+      }
+      case 1:
+        p->d.y += 0x40;
+        p->coord.x += p->d.x;
+        p->coord.y += p->d.y;
+        UpdateEntityAnim((struct Entity*)p);
+        if (FUN_080098a4(p->coord.x, p->coord.y) != 0) {
+          p->mode[1] = 1;
+          p->mode[2] = 0;
+        }
+        break;
+    }
+  }
+}
+
+void FUN_080a2710(Projectile* p) {
+  switch (p->mode[2]) {
+    case 0: {
+      struct Coord c;
+      p->flags &= ~DISPLAY;
+      p->work[2] = 0x14;
+      c.x = p->coord.x;
+      c.y = p->coord.y - 0x800;
+      CreateSmoke(1, &c);
+      PlaySound(0x35);
+      SetDDP(&p->body, &sCollisions[2]);
+      p->mode[2]++;
+      // fallthrough
+    }
+    case 1:
+      if (p->work[2] != 0 && --p->work[2] != 0) {
+        break;
+      }
+      SET_PROJECTILE_ROUTINE(p, ENTITY_DIE);
+      break;
+  }
+}
 
 // --------------------------------------------
 
