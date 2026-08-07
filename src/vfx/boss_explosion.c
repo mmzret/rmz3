@@ -1,5 +1,7 @@
 #include "global.h"
+#include "element.h"
 #include "vfx.h"
+#include "trig.h"
 
 // ボス死亡時の爆発, 爆発時には、火球や漏れ出る光、誘爆のエフェクトなどがあるが、すべてのエフェクトをここで担う
 typedef struct {
@@ -69,7 +71,7 @@ static void BossExplosion_Init(BossExplosion* p) {
   (sInitializers[p->work[0]])(p);
 }
 
-static void FUN_080c7cc0(BossExplosion* p);
+NAKED static void FUN_080c7cc0(BossExplosion* p);
 static void FUN_080c7f78(BossExplosion* p);
 static void FUN_080c7ff0(BossExplosion* p);
 static void updateFireball(BossExplosion* p);
@@ -99,7 +101,187 @@ static void BossExplosion_Die(BossExplosion* p) {
   (sDeinitializers[p->work[0]])(p);
 }
 
-INCASM("asm/vfx/boss_explosion.inc");
+void FUN_080c7a28(BossExplosion* p) {
+  register struct Entity* q asm("r3") = p->unk_28;
+  register s32 m asm("r2");
+  register s32 x asm("r0");
+  s32 z;
+  z = 0;
+  m = 0x10;
+  p->work[2] = m;
+  p->work[3] = z;
+  p->work[1] = z;
+  gElFxManager.delay = 4;
+  {
+    register s32 cx asm("r0");
+    register s32 cy asm("r1");
+    cx = q->coord.x;
+    cy = q->coord.y;
+    p->coord.x = cx;
+    p->coord.y = cy;
+  }
+  m &= q->flags;
+  if (m) {
+    x = p->coord.x;
+    x -= p->d.x;
+  } else {
+    x = p->coord.x;
+    x += p->d.x;
+  }
+  p->coord.x = x;
+  p->coord.y += p->d.y;
+  SET_VFX_ROUTINE(p, ENTITY_UPDATE);
+  BossExplosion_Update((void*)p);
+}
+
+void FUN_080c7a90(BossExplosion* p) {
+  register u32 one4 asm("r4");
+  register s32 z5 asm("r5");
+  InitScalerotMotion1((struct Entity*)p);
+  {
+    register u8 f0 asm("r0");
+    u8 fv0 = p->flags;
+    f0 = fv0;
+    one4 = 1;
+    asm("" : "+r"(one4));
+    z5 = 0;
+    f0 |= one4;
+    {
+      register s32 c2 asm("r1");
+      c2 = 2;
+      f0 |= c2;
+    }
+    p->flags = f0;
+  }
+  asm volatile("" :: "r"(z5));
+  SetMotion((struct Entity*)p, 0xEE00);
+  UpdateEntityAnim((struct Entity*)p);
+  {
+    register u32 one9 asm("r9");
+    u32 xf = RANDOM(RNG_0202f388) & one4;
+    s32 v;
+    if (xf != 0) {
+      register s32 vf asm("r0");
+      register u32 c10 asm("r1");
+      vf = p->flags;
+      c10 = 0x10;
+      vf |= c10;
+      v = vf;
+    } else {
+      register u8 lf2 asm("r1");
+      register s32 vv2 asm("r0");
+      lf2 = p->flags;
+      vv2 = 0xEF;
+      vv2 &= lf2;
+      v = vv2;
+    }
+    p->flags = v;
+    {
+      register u32 t4 asm("r4");
+      t4 = 1;
+      one9 = t4;
+    }
+    {
+      register u32 x1 asm("r1");
+      x1 = one9;
+      x1 &= xf;
+      (p->spr).xflip = x1;
+      {
+        u8* a = (u8*)p + 0x4a;
+        s32 sh = x1 << 4;
+        u8 b = *a;
+        s32 msk = -0x11;
+        msk &= b;
+        msk |= sh;
+        *a = msk;
+      }
+    }
+    {
+      u8* pr = (u8*)p + 0x49;
+      u8 b2 = *pr;
+      s32 m2 = -0xD;
+      m2 &= b2;
+      *pr = m2;
+    }
+    {
+      register u32* rp8 asm("r8");
+      register u32 A3 asm("r5");
+      register u32 C3 asm("r3");
+      u32 sd;
+      register u32 raw1 asm("r1");
+      u32 raw2;
+      u32 raw3;
+      register u32 seed2 asm("r2");
+      register u32 seed3 asm("r6");
+      u32 r1a;
+      u32 w1;
+      u32 ang;
+      rp8 = &RNG_0202f388;
+      sd = *rp8;
+      asm("" : "+r"(sd));
+      A3 = 0x343FD;
+      asm("" : "+r"(A3));
+      raw1 = sd * A3;
+      C3 = 0x269EC3;
+      asm("" : "+r"(C3));
+      raw1 += C3;
+      raw1 <<= 1;
+      seed2 = raw1 >> 1;
+      r1a = (raw1 >> 0x11) & 0x7F;
+      one4 += 0xFF;
+      asm("" : "+r"(one4));
+      {
+        register u32 cc0 asm("r0");
+        cc0 = one4;
+        asm("" : "+r"(cc0));
+        r1a += cc0;
+      }
+      w1 = p->work[1] << 6;
+      raw2 = seed2 * A3;
+      raw2 += C3;
+      raw2 <<= 1;
+      seed3 = raw2 >> 1;
+      ang = (u8)(w1 + ((raw2 >> 0x11) & 0x3F));
+      {
+        u8* w = (u8*)p + 0x50;
+        *(u16*)w = r1a;
+        r1a >>= 1;
+        w += 2;
+        *(u16*)w = r1a;
+        w -= 0x2E;
+        *w = ang;
+      }
+      raw3 = seed3 * A3;
+      raw3 += C3;
+      raw3 <<= 1;
+      {
+        u32 s3v = raw3 >> 1;
+        register u32* rl asm("r2");
+        rl = rp8;
+        *rl = s3v;
+      }
+      p->work[2] = (raw3 >> 0x11) % 0x14;
+      p->work[3] = ang;
+      *(s32*)((u8*)p + 0x64) = 0x80;
+      *(s32*)((u8*)p + 0x68) = 0x10;
+    }
+    {
+      u32 tbl, id;
+      EntityFunc** routine_table;
+      tbl = (u32)gVFXFnTable;
+      id = (p->id) << 2;
+      routine_table = (EntityFunc**)(tbl + id);
+      {
+        register u32 m4 asm("r4");
+        m4 = one9;
+        asm("" : "+r"(m4));
+        *(u32*)(p->mode) = m4;
+      }
+      p->onUpdate = (void*)(*routine_table)[1];
+    }
+  }
+  BossExplosion_Update((BossExplosion*)p);
+}
 
 static void FUN_080c7bc4(BossExplosion* p) {
   EnableSpriteAnimation_Normal(p);
