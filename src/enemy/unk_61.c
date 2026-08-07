@@ -18,6 +18,11 @@ const EnemyRoutine gEnemy61Routine = {
 };
 // clang-format on
 
+
+static const struct Collision sCollisions[7];
+static const u8 sInitModes[4];
+static const EnemyFunc sUpdates1[1];
+static const EnemyFunc sUpdates2[1];
 void FUN_080935b4(struct Entity* q, u8 idx, u8 val) {
   struct Entity* p = AllocEntityLast(gEnemyHeaderPtr);
   if (p != NULL) {
@@ -33,7 +38,44 @@ void FUN_080935b4(struct Entity* q, u8 idx, u8 val) {
 // 0x0809362C
 static void onCollision(struct Body* body UNUSED, Coords32* c1 UNUSED, Coords32* c2 UNUSED) {}
 
-INCASM("asm/enemy/unk_61.inc");
+void Enemy61_Init(struct Enemy* p) {
+  SET_ENEMY_ROUTINE(p, ENTITY_UPDATE);
+  (p->s).mode[1] = sInitModes[(p->s).work[0]];
+  (p->s).flags |= FLIPABLE;
+  (p->s).flags |= DISPLAY;
+  InitNonAffineMotion(&p->s);
+  INIT_BODY(p, sCollisions, 1, (void*)onCollision);
+  *(s32*)&p->buffer[0] = (p->s).work[2] * 0x21C0;
+  Enemy61_Update(p);
+}
+
+void Enemy61_Update(struct Enemy* p) {
+  if (((struct Entity*)(p->s).unk_28)->mode[0] > 1) {
+    SET_ENEMY_ROUTINE(p, ENTITY_DIE);
+  } else {
+    (sUpdates1[(p->s).mode[1]])(p);
+    (sUpdates2[(p->s).mode[1]])(p);
+  }
+}
+
+void Enemy61_Die(struct Enemy* p) {
+  struct Entity* parent = (p->s).unk_28;
+  switch ((p->s).mode[2]) {
+    case 0:
+      EXIT_BODY(p);
+      (p->s).mode[2]++;
+      // fallthrough
+    case 1:
+      if (parent->mode[0] > 2) {
+        SET_ENEMY_ROUTINE(p, ENTITY_EXIT);
+      }
+      break;
+  }
+}
+
+void FUN_08093754(struct Enemy* p) {}
+
+INCASM("asm/enemy/unk_61_a.inc");
 
 void FUN_08093754(struct Enemy* p);
 
