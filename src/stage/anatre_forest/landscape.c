@@ -3,9 +3,11 @@
 #include "palette_animation.h"
 #include "solid.h"
 
+void FUN_080cee14(u8 n, s32 x, s32 y);
+
 static void initAnatreForest(Coords32* _ UNUSED);
 static void FUN_080101f0(Coords32* _ UNUSED);
-static void FUN_08010444(Coords32* _ UNUSED);
+NON_MATCH static void FUN_08010444(Coords32* _ UNUSED);
 static void FUN_080104d4(Coords32* _ UNUSED);
 
 static const StageFunc sStageRoutine[4] = {
@@ -15,6 +17,9 @@ static const StageFunc sStageRoutine[4] = {
     FUN_080104d4,
 };
 
+
+static const struct MetatilePatch1x1 MetatilePatch_08340270;
+static const struct MetatilePatch3x3 MetatilePatch_08340278;
 static void initAnatreForest(Coords32* _ UNUSED) {
   gOverworld.work.anatreForest.leaf = NULL;
   gOverworld.work.anatreForest.unk_004 = 0;
@@ -144,7 +149,7 @@ static void FUN_080104d4(Coords32* _ UNUSED) {
 static void LayerUpdate_2(struct StageLayer* l, const struct Stage* _ UNUSED);
 static void LayerUpdate_3(struct StageLayer* l, const struct Stage* _ UNUSED);
 static void LayerUpdate_4(struct StageLayer* l, const struct Stage* _ UNUSED);
-static void LayerDraw_AnatreForest_4(struct StageLayer* l, const struct Stage* _ UNUSED);
+NAKED static void LayerDraw_AnatreForest_4(struct StageLayer* l, const struct Stage* _ UNUSED);
 static void LayerUpdate_AnatreForest_5(struct StageLayer* l, const struct Stage* _ UNUSED);
 static void LayerExit_AnatreForest_5(struct StageLayer* l, const struct Stage* _ UNUSED);
 void anatre_08010738(struct StageLayer* l, const struct Stage* stage);
@@ -341,7 +346,114 @@ static void LayerExit_AnatreForest_5(struct StageLayer* l, const struct Stage* _
   }
 }
 
-INCASM("asm/stage_gfx/anatre_forest.inc");
+INCASM("asm/stage_gfx/anatre_forest_a.inc");
+
+void FUN_08010be0(struct StageLayer* l UNUSED, const struct Stage* stage UNUSED) {
+  s16 i;
+  gWindowRegBuffer.dispcnt &= ~DISPCNT_WIN1_ON;
+  gWindowRegBuffer.winin[2] |= 0xe;
+  {
+    register struct Solid** arr asm("r6");
+    i = 0;
+    arr = (struct Solid**)&gOverworld.work;
+    asm volatile("" : "+l"(arr));
+    do {
+      s32 iv = i;
+      s32 k;
+      struct Solid* p;
+      asm volatile("add %0, %1, #0" : "=&l"(k) : "l"(iv));
+      k += 0x11;
+      p = arr[k];
+      if (p != NULL) {
+        (p->s).flags &= ~DISPLAY;
+        (p->s).flags &= ~FLIPABLE;
+        EXIT_BODY(p);
+        SET_SOLID_ROUTINE(p, ENTITY_DISAPPEAR);
+      }
+      i++;
+    } while (i <= 3);
+  }
+  {
+    register struct Solid** arr asm("r6");
+    i = 0;
+    arr = (struct Solid**)&gOverworld.work;
+    asm volatile("" : "+l"(arr));
+    do {
+      s32 iv = i;
+      s32 k;
+      struct Solid* p;
+      asm volatile("add %0, %1, #0" : "=&l"(k) : "l"(iv));
+      k += 0x15;
+      p = arr[k];
+      if (p != NULL) {
+        (p->s).flags &= ~DISPLAY;
+        (p->s).flags &= ~FLIPABLE;
+        EXIT_BODY(p);
+        SET_SOLID_ROUTINE(p, ENTITY_DISAPPEAR);
+      }
+      i++;
+    } while (i <= 9);
+  }
+  {
+    register s32 sid asm("r4");
+    sid = SE_UNK_10d;
+    if (isSoundPlaying(sid)) {
+      StopSound(sid);
+    }
+  }
+}
+
+metatile_attr_t FUN_08010cd0(s32 x, s32 y) {
+  if (x <= 0xEFFFF) {
+    if ((u32)(y - 0x14000) <= 0x13FFF) {
+      return gOverworld.terrain.tilemap[(gOverworld.terrain.tilemap[0] * ((y + 0x1E000) >> 12)) + (x >> 12) + 2];
+    }
+  }
+  return 0;
+}
+
+void FUN_08010d20(s32 x, s32 y) {
+  if ((u32)(y - 0x14000) <= 0x13FFF) {
+    struct Overworld* ow = &gOverworld;
+    u8* q = &ow->work.anatreForest.unk_004;
+    bool16 z = 0;
+    *q = 1;
+    PatchMetatileMap(x >> 12, (y + 0x1E000) >> 12, (const u16*)&MetatilePatch_08340270);
+    ow->terrain.tilemap_duty = z;
+  }
+}
+
+s32 FUN_08010d70(s32 x, s32 y) {
+  if (x > 0x1A3FFF && (u32)(y - 0xA000) <= 0x13FFF) {
+    return gOverworld.terrain.tilemap[MAP_OFFSET(gOverworld.terrain.tilemap, x >> 12, y >> 12)] !=
+           gOverworld.terrain.tilemap[MAP_OFFSET(gOverworld.terrain.tilemap, x >> 12, (y + 0x28000) >> 12)];
+  }
+  return 0;
+}
+
+void FUN_08010dd8(s32 x, s32 y) {
+  if (!((bool16 (*)(s32, s32))FUN_08010d70)(x, y)) {
+    return;
+  }
+  if (x > 0x1D0FFF) {
+    if (y > 0x10000) {
+      x = ((x >> 12) - 1) / 3 * 3 + 1;
+      y = ((y >> 12) + 2) / 3 * 3 - 2;
+    } else {
+      x = ((x >> 12) - 1) / 3 * 3 + 1;
+      y = ((y >> 12) + 1) / 3 * 3 - 1;
+    }
+    PatchMetatileMap(x, y, (const u16*)&MetatilePatch_08340278);
+  } else if (x > 0x1B2FFF) {
+    x = ((x >> 12) - 2) / 3 * 3 + 2;
+    y = ((y >> 12) - 1) / 3 * 3 + 1;
+    PatchMetatileMap(x, y, (const u16*)&MetatilePatch_08340278);
+  }
+  if (!isSoundPlaying(SE_UNK_41)) {
+    PlaySound(SE_UNK_41);
+  }
+  FUN_080cee14(0, x << 12, y << 12);
+}
 
 // clang-format off
 static const u8 sChunkMap1[4 + (64 * 7)] = {
