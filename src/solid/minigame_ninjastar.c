@@ -24,6 +24,10 @@ const SolidRoutine gMinigameNinjaStarRoutine = {
 };
 // clang-format on
 
+
+const struct Rect Rect_ARRAY_08371194[2];
+static const SolidFunc sUpdates1[2];
+static const SolidFunc sUpdates2[2];
 void FUN_080d915c(struct MenuState* m, s32 x, s32 y) {
   struct Solid* p = (struct Solid*)AllocEntityLast(gSolidHeaderPtr);
   if (p != NULL) {
@@ -56,7 +60,95 @@ static void MgNinjaStar_Init(struct Solid* p) {
   MgNinjaStar_Update(p);
 }
 
-INCASM("asm/solid/minigame_ninjastar.inc");
+void MgNinjaStar_Update(struct Solid* p) {
+  if ((*(struct Entity**)((u8*)(p->s).unk_28 + 8))->coord.x - (p->s).coord.x > 0xc000) {
+    (p->s).flags &= ~DISPLAY;
+    (p->s).flags &= ~FLIPABLE;
+    EXIT_BODY(p);
+    SET_SOLID_ROUTINE(p, ENTITY_DISAPPEAR);
+  } else {
+    (p->s).coord.x += *(s32*)((u8*)(p->s).unk_28 + 0x14);
+    (p->s).unk_coord.x += *(s32*)((u8*)(p->s).unk_28 + 0x14);
+    (sUpdates1[(p->s).mode[1]])(p);
+    (sUpdates2[(p->s).mode[1]])(p);
+  }
+}
+
+void MgNinjaStar_Die(struct Solid* p) {
+  SET_SOLID_ROUTINE(p, ENTITY_EXIT);
+}
+
+void nop_080d9304(struct Solid* p) {}
+
+void FUN_080d9308(struct Solid* p) {
+  struct Entity* q = (p->s).unk_28;
+  switch ((p->s).mode[2]) {
+    case 0:
+      SetMotion(&p->s, MOTION(0x86, 0));
+      (p->s).mode[2]++;
+      // fallthrough
+    case 1:
+      if ((*(struct Entity**)((u8*)q + 8))->coord.y < (p->s).coord.y - PIXEL(1)) {
+        (p->s).flags2 |= 8;
+        (p->s).size = Rect_ARRAY_08371194;
+        (p->s).physicsAttr = 1;
+      } else {
+        (p->s).flags2 &= ~8;
+      }
+      UpdateEntityAnim(&p->s);
+      break;
+  }
+}
+
+void FUN_080d9368(struct Solid* p) {
+  struct Entity* q = (p->s).unk_28;
+  s32 z = (p->s).mode[2];
+  switch (z) {
+    case 0:
+      (p->s).unk_coord.x = (p->s).coord.x;
+      (p->s).unk_coord.y = (p->s).coord.y;
+      (p->s).d.x = z;
+      (p->s).d.y = *(s16*)((u8*)q + 0x2c);
+      SetMotion(&p->s, MOTION(0x86, 0));
+      SET_XFLIP(&p->s, 1);
+      (p->s).mode[2]++;
+      FALLTHROUGH;
+    case 1: {
+      register s32 cx asm("r3");
+      register s32 cy asm("r2");
+      const s16* tb;
+      s32 a;
+      s32 i;
+      cx = (p->s).unk_coord.x;
+      (p->s).coord.x = cx;
+      asm volatile("" ::: "memory");
+      tb = gSineTable;
+      a = (p->s).d.x;
+      i = a >> 8;
+      cx += tb[(u8)(i + 0x40)] * 48;
+      (p->s).coord.x = cx;
+      cy = (p->s).unk_coord.y;
+      (p->s).coord.y = cy;
+      asm volatile("" ::: "memory");
+      cy += tb[(u8)i] * 8;
+      (p->s).coord.y = cy;
+      if ((p->s).work[2] != 0) {
+        (p->s).d.x = a + (p->s).d.y;
+      } else {
+        (p->s).d.x = a - (p->s).d.y;
+      }
+      if ((*(struct Entity**)((u8*)q + 8))->coord.y < (p->s).coord.y - PIXEL(1)) {
+        (p->s).flags2 |= 8;
+        (p->s).size = &Rect_ARRAY_08371194[1];
+        (p->s).physicsAttr = 1;
+      } else {
+        (p->s).flags2 &= ~8;
+      }
+      UpdateEntityAnim(&p->s);
+      break;
+    }
+  }
+}
 
 // --------------------------------------------
 
