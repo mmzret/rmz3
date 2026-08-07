@@ -68,8 +68,8 @@ static void Solid50_Init(struct Solid* p) {
 
 // --------------------------------------------
 
-void FUN_080df6d8(struct Solid* p);
-void FUN_080df768(struct Solid* p);
+NON_MATCH void FUN_080df6d8(struct Solid* p);
+NON_MATCH void FUN_080df768(struct Solid* p);
 
 static void Solid50_Update(struct Solid* p) {
   static const SolidFunc sUpdates[2] = {
@@ -95,7 +95,138 @@ static void Solid50_Disappear(struct Solid* p) {
 
 // --------------------------------------------
 
-INCASM("asm/solid/structural_steel.inc");
+NON_MATCH void FUN_080df6d8(struct Solid* p) {
+#if MODERN
+  switch ((p->s).mode[2]) {
+    case 0:
+      (p->s).renderPrio = 0x1F;
+      SetMotion(&p->s, MOTION(0xDE, 0x00));
+      (p->s).mode[2]++;
+      /* fallthrough */
+    case 1: {
+      s32 v;
+      s32 m;
+      if ((p->s).work[3] == 0) {
+        struct Overworld* ow = &gOverworld;
+        v = *(s32*)((u8*)ow + 0x2D02C) * 256;
+        v += (p->s).work[2] << 16;
+      } else {
+        struct Overworld* ow = &gOverworld;
+        v = *(s32*)((u8*)ow + 0x2D030) * 256;
+        v -= (p->s).work[2] << 15;
+      }
+      if ((p->s).work[0] != 0) {
+        m = 0x22000;
+      } else {
+        m = 0x61000;
+      }
+      v = v % m;
+      (p->s).coord.x = v + (p->s).unk_coord.x;
+      (p->s).coord.y = (p->s).unk_coord.y;
+      UpdateEntityAnim(&p->s);
+      break;
+    }
+  }
+#else
+  INCCODE("asm/solid/structural_steel_6d8.inc");
+#endif
+}
+
+NON_MATCH void FUN_080df768(struct Solid* p) {
+#if MODERN
+  struct Entity* e = (p->s).unk_28;
+  if (e->mode[0] > 1) {
+    (p->s).flags &= ~DISPLAY;
+    (p->s).flags &= ~FLIPABLE;
+    EXIT_BODY(p);
+    SET_SOLID_ROUTINE(p, ENTITY_DISAPPEAR);
+    return;
+  }
+  switch ((p->s).mode[2]) {
+    case 0:
+      *(u16*)((u8*)p + 0xb4) = 0;
+      *(u16*)((u8*)p + 0xb6) = 0;
+      InitRotatableMotion(&p->s);
+      SetMotion(&p->s, 0xDE01);
+      *(u32*)((u8*)p + 0x40) = (u32)&(p->s).d;
+      (p->s).coord.x = e->coord.x;
+      (p->s).coord.y = e->coord.y;
+      (p->s).mode[2]++;
+      // fallthrough
+    case 1: {
+      s16* pb4;
+      s16* pb6;
+      (p->s).d.x = e->coord.x;
+      (p->s).d.y = e->coord.y;
+      {
+        u32 st = (p->body).status & 4;
+        if (st != 0) {
+          struct Zero* z = pZero2;
+          if (z->s.coord.y < (p->s).coord.y && *((u8*)z + 0x18D) != 0) {
+            register s32 zx1 asm("r1");
+            s32 v;
+            zx1 = z->s.coord.x;
+            v = (((zx1 - e->coord.x) * 3) << 6) / 256;
+            *(s16*)((u8*)p + 0xb4) = v;
+            pb4 = (s16*)((u8*)p + 0xb4);
+            goto joined;
+          }
+        }
+        pb4 = (s16*)((u8*)p + 0xb4);
+        *pb4 = ((*pb4 * 7) << 5) / 256;
+      }
+    joined:
+      {
+        register s32 v4 asm("r1");
+        s32 diff;
+        v4 = *pb4;
+        pb6 = (s16*)((u8*)p + 0xb6);
+        diff = v4 - *pb6;
+        {
+          s32 adj = diff;
+          if (diff < 0) {
+            adj += 0xF;
+            asm volatile("" :: "r"(diff));
+          }
+          *(u16*)pb6 += adj >> 4;
+        }
+      }
+      if ((u32)(*pb6 + 0xF) <= 0x1F) {
+        *pb6 = 0;
+      }
+      (p->s).angle = *(u16*)pb6 >> 8;
+      (p->s).coord.x = e->coord.x;
+      {
+        struct Zero* z2 = pZero2;
+        s32 ex = e->coord.x;
+        s32 lim = ex + -0x2800;
+        s32 zx = z2->s.coord.x;
+        if (zx >= lim && zx <= ex + 0x2800) {
+          s32 num;
+          const s16* stb;
+          s32 hb;
+          s32 q;
+          s32 ey;
+          zx -= ex;
+          num = zx << 8;
+          stb = gSineTable;
+          hb = ((s32)(*(u16*)pb6 << 16)) >> 24;
+          q = num / stb[(u8)(hb + 0x40)];
+          ey = e->coord.y;
+          (p->s).coord.y = ey;
+          (p->s).coord.y = ey + (q * stb[*(volatile u16*)pb6 >> 8]) / 256;
+        } else {
+          (p->s).coord.y = e->coord.y;
+        }
+      }
+      UpdateEntityAnim(&p->s);
+      break;
+    }
+  }
+#else
+  INCCODE("asm/solid/steel_df768.inc");
+#endif
+}
 
 static const struct Collision sCollision = {
   kind : DDP,
