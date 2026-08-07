@@ -181,14 +181,14 @@ static bool32 nop_0804b520(struct Boss* p);
 static bool32 nop_0804b56c(struct Boss* p);
 static bool32 nop_0804b5e8(struct Boss* p);
 static bool32 nop_0804b6b4(void* _ UNUSED);
-void FUN_0804b900(struct Boss* p);
-void FUN_0804ba40(struct Boss* p);
-void FUN_0804bcf4(struct Boss* p);
-void FUN_0804bee0(struct Boss* p);
-void FUN_0804c220(struct Boss* p);
-void FUN_0804c554(struct Boss* p);
-void nop_0804c9ec(struct Boss* p);
-void FUN_0804caa0(struct Boss* p);
+bool8 FUN_0804b900(struct Boss* p);
+bool8 FUN_0804ba40(struct Boss* p);
+bool8 FUN_0804bcf4(struct Boss* p);
+bool8 FUN_0804bee0(struct Boss* p);
+bool8 FUN_0804c220(struct Boss* p);
+bool8 FUN_0804c554(struct Boss* p);
+bool8 nop_0804c9ec(struct Boss* p);
+bool8 FUN_0804caa0(struct Boss* p);
 
 static void hellbatMode0(struct Boss* p);
 static void hellbatMode1(struct Boss* p);
@@ -206,19 +206,19 @@ void hellbatKnockBackDamage(struct Boss* p);
 static void Hellbat_Update(struct Boss* p) {
   // clang-format off
   static const BossFunc sUpdates1[12] = {
-      (BossFunc)nop_0804b520,
-      (BossFunc)nop_0804b56c,
-      (BossFunc)nop_0804b5e8,
-      (BossFunc)nop_0804b6b4,
-      FUN_0804b900,
-      FUN_0804ba40,
-      FUN_0804bcf4,
-      FUN_0804bee0,
-      FUN_0804c220,
-      FUN_0804c554,
-      nop_0804c9ec,
-      FUN_0804caa0,
-  };
+    (BossFunc)nop_0804b520,
+    (BossFunc)nop_0804b56c,
+    (BossFunc)nop_0804b5e8,
+    (BossFunc)nop_0804b6b4,
+    (BossFunc)FUN_0804b900,
+    (BossFunc)FUN_0804ba40,
+    (BossFunc)FUN_0804bcf4,
+    (BossFunc)FUN_0804bee0,
+    (BossFunc)FUN_0804c220,
+    (BossFunc)FUN_0804c554,
+    (BossFunc)nop_0804c9ec,
+    (BossFunc)FUN_0804caa0,
+};
   // clang-format on
 
   // clang-format off
@@ -772,7 +772,73 @@ static void hellbatMode2(struct Hellbat* p) {
 
 static bool32 nop_0804b6b4(void* _) { return TRUE; }
 
-INCASM("asm/boss/hellbat.inc");
+INCASM("asm/boss/hellbat_a.inc");
+
+bool8 FUN_0804b900(struct Boss* p) { return TRUE; }
+
+INCASM("asm/boss/hellbat_b.inc");
+
+bool8 FUN_0804ba40(struct Boss* p) { return TRUE; }
+
+INCASM("asm/boss/hellbat_c.inc");
+
+bool8 FUN_0804bcf4(struct Boss* p) { return TRUE; }
+
+INCASM("asm/boss/hellbat_d.inc");
+
+bool8 FUN_0804bee0(struct Boss* p) { return TRUE; }
+
+INCASM("asm/boss/hellbat_e.inc");
+
+bool8 FUN_0804c220(struct Boss* p) { return TRUE; }
+
+INCASM("asm/boss/hellbat_f.inc");
+
+bool8 FUN_0804c554(struct Boss* p) { return TRUE; }
+
+INCASM("asm/boss/hellbat_g.inc");
+
+bool8 nop_0804c9ec(struct Boss* p) { return TRUE; }
+
+void hellbatDamage(struct Boss* p) {
+  struct Entity** slot;
+  switch (p->mode[2]) {
+    case 0:
+      p->flags |= DISPLAY;
+      PlaySound(0x8a);
+      if (p->flags & Y_FLIP) {
+        p->spr.yflip = 0;
+        p->spr.oam.yflip = 0;
+        p->flags &= ~Y_FLIP;
+        p->coord.y += 0x3900;
+      }
+      p->d.y = 0;
+      p->mode[2]++;
+      FALLTHROUGH;
+    case 1:
+      p->d.y += 0x40;
+      if (p->d.y > 0x700) {
+        p->d.y = 0x700;
+      }
+      if (FUN_080098a4(p->coord.x, p->coord.y + p->d.y) != 0) {
+        p->d.y = 0;
+        p->coord.y = FUN_08009f6c(p->coord.x, p->coord.y) + 0x200;
+      } else {
+        p->coord.y += p->d.y;
+      }
+      break;
+  }
+  slot = (struct Entity**)((u8*)p + 0xc0);
+  if (isKilled(*slot)) {
+    *slot = NULL;
+    p->mode[1] = 5;
+    p->mode[2] = 0;
+  }
+}
+
+bool8 FUN_0804caa0(struct Boss* p) { return TRUE; }
+
+INCASM("asm/boss/hellbat_h.inc");
 
 extern const u16 u16_ARRAY_080feedc[6];
 
