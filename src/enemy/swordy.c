@@ -1,4 +1,5 @@
 #include "collision.h"
+#include "element.h"
 #include "enemy.h"
 #include "global.h"
 
@@ -29,6 +30,27 @@ struct Entity* CreateSwordy(Coords32* c, u8 n) {
 // --------------------------------------------
 
 INCASM("asm/enemy/swordy.inc");
+
+static const Coords32 sElementCoord;
+
+bool32 FUN_0807c530(struct Enemy* p) {
+  struct Entity** slot = (struct Entity**)((u8*)p + 0xBC);
+  struct Entity* e = *slot;
+  if (e == NULL && ((p->body).status & BODY_STATUS_WHITE)) {
+    struct Entity* n = ApplyElementEffect(0, (void*)p, &sElementCoord);
+    *slot = n;
+    if (n != NULL) {
+      u8 b = *((u8*)p + 0x97) & 0xF0;
+      if (b == 0x10) {
+        // e is provably NULL here; stored through it to keep the register
+        (p->s).mode[1] = 1, (p->s).mode[2] = (u32)e;
+      } else if (b == 0x30) {
+        (p->s).mode[1] = 3, (p->s).mode[2] = (u32)e;
+      }
+    }
+  }
+  return TRUE;
+}
 
 void FUN_0807c230(struct Enemy* p);
 void FUN_0807c47c(struct Enemy* p);
