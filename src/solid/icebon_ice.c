@@ -1,7 +1,20 @@
 #include "collision.h"
 #include "global.h"
+#include "physics.h"
 #include "solid.h"
 #include "vfx.h"
+#include "overworld.h"
+#include "zero.h"
+
+void FUN_080b98ac(s32 x, s32 y);
+
+struct IcebonIceObject {
+  struct Entity s;
+  struct Body body;
+  // props (16bytes, offset: 0xB4..)
+  s32 y;
+  u8 unk_04[12];
+};
 
 typedef struct {
   COLLISION_OBJECT_HDR;
@@ -30,6 +43,8 @@ const SolidRoutine gIcebonIceRoutine = {
 };
 // clang-format on
 
+
+static const struct Rect sIcebonIceCubeSize;
 void icebon_080ca550(struct Entity* e, u8 n) {
   struct Entity* p = AllocEntityFirst(gSolidHeaderPtr);
   if (p != NULL) {
@@ -62,10 +77,10 @@ void FUN_080ca76c(IcebonIceCube* p);
 
 void FUN_080ca7d8(IcebonIceCube* p);
 void FUN_080ca880(IcebonIceCube* p);
-void FUN_080ca988(IcebonIceCube* p);
+NON_MATCH void FUN_080ca988(IcebonIceCube* p);
 void FUN_080caafc(IcebonIceCube* p);
 void FUN_080cab58(IcebonIceCube* p);
-void FUN_080cabe8(IcebonIceCube* p);
+NON_MATCH void FUN_080cabe8(IcebonIceCube* p);
 
 static void IcebonIce_Update(IcebonIceCube* p) {
   // clang-format off
@@ -180,7 +195,248 @@ void FUN_080ca7d8(IcebonIceCube* p) {
   }
 }
 
-INCASM("asm/solid/icebon_ice.inc");
+void FUN_080ca880(IcebonIceCube* p) {
+  if ((p->body).hp >= 5) {
+    SetMotion((struct Entity*)p, MOTION(SM017_ICEBON_ICE, 1));
+  } else {
+    SetMotion((struct Entity*)p, MOTION(SM017_ICEBON_ICE, 3));
+  }
+  UpdateEntityAnim((struct Entity*)p);
+
+  {
+    s32 md = p->mode[2];
+    switch (md) {
+      case 0: {
+        p->flags2 |= ENTI_PHYSICS;
+        p->size = (struct Rect*)&sIcebonIceCubeSize;
+        p->physicsAttr = 0x801;
+        SetDDP(&p->body, &sCollisions[1]);
+        p->work[2] = 0x30;
+        p->unk_coord.y = md;
+        p->mode[2]++;
+        FALLTHROUGH;
+      }
+      case 1: {
+        s32 hit;
+        s32 grounded;
+        s32 cy;
+        register s32 vel asm("r0");
+        p->y -= 0x80;
+        grounded = 0;
+        {
+          struct Overworld* ow = &gOverworld;
+          if (p->y < ow->sea) {
+            p->y = ow->sea;
+            grounded = 1;
+          }
+        }
+        hit = PushoutToDown1(p->coord.x, p->y);
+        if (hit > 0) {
+          p->y += hit;
+          grounded = 1;
+        }
+        {
+          s32 st = (p->body).status & 4;
+          cy = p->coord.y;
+          if (st && cy > (pZero2->s).coord.y) {
+          vel = 0x800;
+          } else {
+            vel = 0;
+          }
+        }
+        p->unk_coord.y = vel;
+        if (grounded != 0) {
+          u8 t = --p->work[2];
+          if (t == 0) {
+            p->mode[1] = 2;
+            p->mode[2] = t;
+          }
+        }
+        {
+          s32 dy = p->y + p->unk_coord.y - cy;
+          if (dy < 0) dy += 7;
+          p->coord.y = cy + (dy >> 3);
+        }
+        break;
+      }
+    }
+  }
+}
+
+NON_MATCH void FUN_080ca988(IcebonIceCube* p) {
+#if MODERN
+  switch (p->mode[2]) {
+    case 0:
+      InitScalerotMotion1((struct Entity*)p);
+      if ((p->body).hp > 4) {
+        SetMotion((struct Entity*)p, 0x1101);
+      } else {
+        SetMotion((struct Entity*)p, 0x1103);
+      }
+      p->work[2] = 0xFF;
+      p->work[3] = 0;
+      p->mode[2]++;
+      // fallthrough
+    case 1: {
+      s32* py;
+      u32 st;
+      s32 y;
+      s32 lift;
+      s32 t = p->work[3] + 1;
+      p->work[3] = t;
+      if ((t & 3) == 0) {
+        FUN_080b98ac(p->coord.x + ((s32)(RANDOM(RNG_0202f388) % 0x1800) - 0xE00),
+                     p->coord.y + (RANDOM(RNG_0202f388) & 0xFFF));
+      }
+      UpdateEntityAnim((struct Entity*)p);
+      (p->spr).mag.y = p->work[2];
+      p->work[2] -= 8;
+      py = (s32*)((u8*)p + 0xb4);
+      if (*py < gOverworld.sea) {
+        *py = gOverworld.sea;
+      }
+      st = *(u32*)((u8*)p + 0x8c) & 4;
+      y = p->coord.y;
+      if (st && y > ((pZero2->s).coord.y)) {
+        lift = 0x800;
+      } else {
+        lift = 0;
+      }
+      p->unk_coord.y = lift;
+      p->coord.y = y + ((*py + p->unk_coord.y - y) / 8);
+      {
+        u32 w2 = p->work[2];
+        if (w2 <= 0x9F) {
+          p->flags2 &= 0xF7;
+        }
+        if (w2 <= 8) {
+          p->flags &= 0xFC;
+          (p->body).status = 0;
+          (p->body).prevStatus = 0;
+          (p->body).invincibleTime = 0;
+          p->flags &= 0xFB;
+          SET_SOLID_ROUTINE(p, ENTITY_DIE);
+        }
+      }
+      break;
+    }
+  }
+#else
+  INCCODE("asm/solid/icebon_ca988.inc");
+#endif
+}
+
+void FUN_080caafc(IcebonIceCube* p) {
+  switch (p->mode[2]) {
+    case 0:
+      SetMotion((struct Entity*)p, MOTION(0x11, 0x04));
+      SetDDP(&p->body, &sCollisions[3]);
+      p->work[2] = 0x1E;
+      p->mode[2]++;
+    case 1: {
+      s32 d;
+      u8 t;
+      d = p->work[2] - 1;
+      p->work[2] = d;
+      t = d;
+      if (t == 0) {
+        p->mode[1] = 4;
+        p->mode[2] = t;
+      }
+      p->coord.y -= 0x80;
+      UpdateEntityAnim((struct Entity*)p);
+      break;
+    }
+  }
+}
+
+void FUN_080cab58(IcebonIceCube* p) {
+  switch (p->mode[2]) {
+    case 0:
+      SetDDP(&p->body, &sCollisions[3]);
+      SetMotion((struct Entity*)p, MOTION(0x11, 0x05));
+      p->work[2] = 0x30;
+      p->mode[2]++;
+      /* fallthrough */
+    case 1: {
+      s32 hit;
+      s32 rise;
+      p->coord.y -= 0x80;
+      rise = 0;
+      {
+        struct Overworld* ow = &gOverworld;
+        if (p->coord.y < ow->sea) {
+          p->coord.y = ow->sea;
+          rise = 1;
+        }
+      }
+      hit = PushoutToDown1(p->coord.x, p->coord.y);
+      if (hit > 0) {
+        p->coord.y += hit;
+        rise = 1;
+      }
+      if (rise != 0) {
+        u8 t = --p->work[2];
+        if (t == 0) {
+          p->mode[1] = 5;
+          p->mode[2] = t;
+        }
+      }
+      UpdateEntityAnim((struct Entity*)p);
+      break;
+    }
+  }
+}
+
+NON_MATCH void FUN_080cabe8(IcebonIceCube* p) {
+#if MODERN
+  u8 m2 = p->mode[2];
+  switch (m2) {
+    case 0:
+      InitScalerotMotion1((struct Entity*)p);
+      SetMotion((struct Entity*)p, MOTION(0x11, 0x05));
+      p->work[2] = 0xFF;
+      p->work[3] = m2;
+      p->mode[2]++;
+      /* fallthrough */
+    case 1: {
+      s32 k3;
+      s32 t = p->work[3] + 1;
+      p->work[3] = t;
+      asm("movs %0, #3" : "=l"(k3));
+      if ((t & k3) == 0) {
+        s32 xo = (s32)(RANDOM(RNG_0202f388) % 0x1800) - 0xE00;
+        s32 x = p->coord.x + xo;
+        FUN_080b98ac(x, p->coord.y + (RANDOM(RNG_0202f388) & 0xFFF));
+      }
+      UpdateEntityAnim((struct Entity*)p);
+      (p->spr).mag.x = p->work[2];
+      (p->spr).mag.y = p->work[2];
+      {
+        if ((u8)(p->work[2] -= 8) <= 8) {
+          p->flags &= ~DISPLAY;
+          p->flags &= ~FLIPABLE;
+          (p->body).status = 0;
+          (p->body).prevStatus = 0;
+          (p->body).invincibleTime = 0;
+          p->flags &= ~COLLIDABLE;
+          {
+            const SolidRoutine* const* base = gSolidFnTable;
+            const SolidRoutine* const* rowp;
+            asm("" : "+r"(base));
+            rowp = (const SolidRoutine* const*)(((u32)p->id << 2) + (u32)base);
+            *(u32*)(p->mode) = k3;
+            p->onUpdate = (void*)(**rowp)[ENTITY_DISAPPEAR];
+          }
+        }
+      }
+      break;
+    }
+  }
+#else
+  INCCODE("asm/solid/icebon_cabe8.inc");
+#endif
+}
 
 // --------------------------------------------
 
