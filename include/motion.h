@@ -63,6 +63,7 @@ void InitRotatableMotion(struct Entity* p);
 #define EnableSpriteAnimation_Rotatable(enti) (InitRotatableMotion(((struct Entity*)(enti))))
 
 void InitScalerotMotion1(struct Entity* p);
+void InitScalerotMotion2(struct Entity* p);
 #define EnableSpriteAnimation_Affine(enti) (InitScalerotMotion1(((struct Entity*)(enti))))
 
 void _ForceEntityPalette(struct Entity* p, u8 palID);
