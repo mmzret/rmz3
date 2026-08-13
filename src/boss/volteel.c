@@ -5,6 +5,8 @@
 #include "overworld.h"
 #include "physics.h"
 
+struct Entity* volteel_080bc0b0(struct Entity* e, struct Coord* c, u8 kind);
+
 typedef struct {
   COLLISION_OBJECT_HDR;  // 0x00
   u8 unk_b4;             // 0xB4
@@ -44,7 +46,7 @@ const BossRoutine gVolteelRoutine = {
 // clang-format on
 
 static Volteel* Unused_CreateVolteel(Coords32* c, u8 n) {
-  Volteel* p = AllocEntityLast(gBossHeaderPtr);
+  Volteel* p = (Volteel*)AllocEntityLast(gBossHeaderPtr);
   if (p != NULL) {
     INIT_BOSS_ROUTINE(p, BOSS_VOLTEEL);
     p->coord = *c;
@@ -175,9 +177,9 @@ static void Volteel_Update(Volteel* p) {
     return;
   }
 
-  (sUpdates1[p->mode[1]])(p);
+  (sUpdates1[p->mode[1]])((void*)p);
   volteel_080457c4(p);
-  (sUpdates2[p->mode[1]])(p);
+  (sUpdates2[p->mode[1]])((void*)p);
 }
 
 void volteelDeath0(Volteel* p);
@@ -188,7 +190,7 @@ static void Volteel_Die(Volteel* p) {
       volteelDeath0,
       volteelDeath1,
   };
-  (seq[p->mode[1]])(p);
+  (seq[p->mode[1]])((void*)p);
 }
 
 INCASM("asm/boss/volteel_a.inc");
@@ -258,7 +260,331 @@ INCASM("asm/boss/volteel_h.inc");
 
 bool8 FUN_080450bc(Volteel* p) { return TRUE; }
 
-INCASM("asm/boss/volteel_i.inc");
+void volteelMode9(Volteel* p) {
+  switch (p->mode[2]) {
+    case 0: {
+      s32 m;
+      u32 z7;
+      register u32 z6 asm("r6");
+      {
+        u8 fl = p->flags;
+        u32 f = 1;
+        z7 = 0;
+        asm("" : "+l"(z7));
+        z6 = 0;
+        f |= fl;
+        p->flags = f;
+      }
+      *((u8*)p + 0x24) = z6;
+      m = RANDOM(RNG_0202f388) & 3;
+      if (m == 0) {
+        register u8* oa asm("r2");
+        s32* ql = (s32*)((u8*)p + 0xdc);
+        s32* qh = (s32*)((u8*)p + 0xe0);
+        s32 hv = *qh;
+        s32 lv = *ql;
+        u8* q;
+        p->coord.x = lv + ((hv - lv) >> 1);
+        p->coord.y = *(s32*)((u8*)p + 0xd4);
+        q = (u8*)p + 0xca;
+        *q = m;
+        q -= 0x7d;
+        *q = m;
+        oa = (u8*)p + 0x4a;
+        {
+          s32 ov = *oa;
+          s32 m21 = -0x21;
+          m21 &= ov;
+          *oa = m21;
+        }
+        {
+          u8 fl = p->flags;
+          u32 f = 0xDF;
+          f &= fl;
+          p->flags = f;
+        }
+        *((u8*)p + 0x4c) = m;
+        {
+          s32 ov = *oa;
+          s32 m11 = -0x11;
+          m11 &= ov;
+          *oa = m11;
+        }
+        {
+          u8 fl = p->flags;
+          u32 f = 0xEF;
+          f &= fl;
+          p->flags = f;
+        }
+        SetSpriteAnimation(p, 0xA516);
+        SetDDP(&p->body, &sCollisions[19]);
+      } else if (m == 1) {
+        register s32* ql asm("r2");
+        register u8* oa asm("r2");
+        s32* qh;
+        s32 hv;
+        u8* q;
+        p->coord.x = *(s32*)((u8*)p + 0xe0);
+        qh = (s32*)((u8*)p + 0xd8);
+        ql = (s32*)((u8*)p + 0xd4);
+        hv = *qh;
+        p->coord.y = hv - ((hv - *ql) >> 1);
+        q = (u8*)p + 0xca;
+        *q = m;
+        q -= 0x7d;
+        *q = z6;
+        oa = (u8*)ql - 0x8a;
+        {
+          s32 ov = *oa;
+          s32 m21 = -0x21;
+          m21 &= ov;
+          *oa = m21;
+        }
+        {
+          u8 fl = p->flags;
+          u32 f = 0xDF;
+          f &= fl;
+          p->flags = f;
+        }
+        *((u8*)p + 0x4c) = z6;
+        {
+          s32 ov = *oa;
+          s32 m11 = -0x11;
+          m11 &= ov;
+          *oa = m11;
+        }
+        {
+          u8 fl = p->flags;
+          u32 f = 0xEF;
+          f &= fl;
+          p->flags = f;
+        }
+        SetSpriteAnimation(p, 0xA514);
+        SetDDP(&p->body, &sCollisions[17]);
+      } else if (m == 2) {
+        register u8* oa asm("r2");
+        register u32 k asm("r1");
+        s32* ql = (s32*)((u8*)p + 0xdc);
+        s32* qh = (s32*)((u8*)p + 0xe0);
+        s32 hv = *qh;
+        s32 lv = *ql;
+        u8* q;
+        p->coord.x = lv + ((hv - lv) >> 1);
+        p->coord.y = *(s32*)((u8*)p + 0xd8);
+        q = (u8*)p + 0xca;
+        *q = m;
+        {
+          u8* x = (u8*)p + 0x4d;
+          *x = 1;
+        }
+        oa = (u8*)p + 0x4a;
+        {
+          u32 v = *oa;
+          k = 0x20;
+          v |= k;
+          *oa = v;
+        }
+        p->flags |= k;
+        *((u8*)p + 0x4c) = z6;
+        {
+          s32 ov = *oa;
+          s32 m11 = -0x11;
+          m11 &= ov;
+          *oa = m11;
+        }
+        {
+          u8 fl = p->flags;
+          u32 f = 0xEF;
+          f &= fl;
+          p->flags = f;
+        }
+        SetSpriteAnimation(p, 0xA516);
+        SetDDP(&p->body, &sCollisions[19]);
+      } else {
+        register s32* ql asm("r2");
+        register u8* oa asm("r2");
+        register u32 k asm("r1");
+        s32* qh;
+        s32 hv;
+        u8* q;
+        p->coord.x = *(s32*)((u8*)p + 0xdc);
+        qh = (s32*)((u8*)p + 0xd8);
+        ql = (s32*)((u8*)p + 0xd4);
+        hv = *qh;
+        p->coord.y = hv - ((hv - *ql) >> 1);
+        q = (u8*)p + 0xca;
+        *q = 3;
+        q -= 0x7d;
+        *q = z6;
+        oa = (u8*)ql - 0x8a;
+        {
+          s32 ov = *oa;
+          s32 m21 = -0x21;
+          m21 &= ov;
+          *oa = m21;
+        }
+        {
+          u8 fl = p->flags;
+          u32 f = 0xDF;
+          f &= fl;
+          p->flags = f;
+        }
+        *((u8*)p + 0x4c) = 1;
+        {
+          u32 v = *oa;
+          k = 0x10;
+          v |= k;
+          *oa = v;
+        }
+        p->flags |= k;
+        SetSpriteAnimation(p, 0xA514);
+        SetDDP(&p->body, &sCollisions[17]);
+        asm volatile("" ::"l"(z7));
+      }
+      p->work[3] = m;
+      p->work[2] = 0x20;
+      PlaySound(0x7c);
+      p->mode[2]++;
+      FALLTHROUGH;
+    }
+    case 1:
+      UpdateEntityAnim((struct Entity*)p);
+      if (*((u8*)p + 0x73) == 3) {
+        if (p->work[2] != 0) {
+          if ((u8)--p->work[2] != 0) {
+            break;
+          }
+        }
+        p->mode[2]++;
+      }
+      break;
+    case 2: {
+      s32 m2;
+      struct Coord c;
+      m2 = RANDOM(RNG_0202f388) & 3;
+      if (m2 == *((u8*)p + 0xca)) {
+        register s32 t asm("r1");
+        register s32 u asm("r0");
+        t = m2 + 1;
+        u = t;
+        asm("" : "+l"(u));
+        m2 = u >> 2;
+        m2 = t - (m2 << 2);
+      }
+      p->work[2] = 0x3c;
+      if (m2 == 0) {
+        register s32* yp asm("r0");
+        s32* ql = (s32*)((u8*)p + 0xdc);
+        s32* qh = (s32*)((u8*)p + 0xe0);
+        s32 hv = *qh;
+        s32 lv = *ql;
+        c.x = lv + ((hv - lv) >> 1);
+        yp = (s32*)((u8*)p + 0xd4);
+        c.y = *yp;
+      } else if (m2 == 1) {
+        register s32* xp asm("r0");
+        s32* qh;
+        s32* ql;
+        s32 hv;
+        xp = (s32*)((u8*)p + 0xe0);
+        c.x = *xp;
+        qh = (s32*)((u8*)p + 0xd8);
+        ql = (s32*)((u8*)p + 0xd4);
+        hv = *qh;
+        c.y = hv - ((hv - *ql) >> 1);
+      } else if (m2 == 2) {
+        register s32* yp asm("r0");
+        s32* ql = (s32*)((u8*)p + 0xdc);
+        s32* qh = (s32*)((u8*)p + 0xe0);
+        s32 hv = *qh;
+        s32 lv = *ql;
+        c.x = lv + ((hv - lv) >> 1);
+        yp = (s32*)((u8*)p + 0xd8);
+        c.y = *yp;
+      } else {
+        register s32* xp asm("r0");
+        s32* qh;
+        s32* ql;
+        s32 hv;
+        xp = (s32*)((u8*)p + 0xdc);
+        c.x = *xp;
+        qh = (s32*)((u8*)p + 0xd8);
+        ql = (s32*)((u8*)p + 0xd4);
+        hv = *qh;
+        c.y = hv - ((hv - *ql) >> 1);
+      }
+      volteel_080bc0b0((struct Entity*)p, &c, m2);
+      p->mode[2]++;
+      FALLTHROUGH;
+    }
+    case 3:
+      UpdateEntityAnim((struct Entity*)p);
+      if (p->work[2] != 0) {
+        if ((u8)--p->work[2] != 0) {
+          break;
+        }
+      }
+      p->mode[2]++;
+      break;
+    case 4: {
+      u8 ca = *((u8*)p + 0xca);
+      if (ca == 0) {
+        SetSpriteAnimation(p, 0xA517);
+      } else if (ca == 1) {
+        SetSpriteAnimation(p, 0xA515);
+      } else {
+        SetSpriteAnimation(p, 0xA515);
+      }
+      p->mode[2]++;
+      FALLTHROUGH;
+    }
+    case 5:
+      UpdateEntityAnim((struct Entity*)p);
+      if (*((u8*)p + 0x73) != 3) {
+        break;
+      }
+      SetDDP(&p->body, &sCollisions[0]);
+      {
+        u32 z;
+        u8* oa;
+        u8* x = (u8*)p + 0x4d;
+        z = 0;
+        *x = z;
+        oa = (u8*)p + 0x4a;
+        {
+          s32 ov = *oa;
+          s32 m21 = -0x21;
+          m21 &= ov;
+          *oa = m21;
+        }
+        {
+          u8 fl = p->flags;
+          u32 f = 0xDF;
+          f &= fl;
+          p->flags = f;
+        }
+        *((u8*)p + 0x4c) = z;
+        {
+          s32 ov = *oa;
+          s32 m11 = -0x11;
+          m11 &= ov;
+          *oa = m11;
+        }
+        {
+          u8 fl = p->flags;
+          u32 f = 0xEF;
+          f &= fl;
+          asm("" : "+r"(f));
+          f &= 0xFE;
+          p->flags = f;
+        }
+        p->mode[1] = 5;
+        p->mode[2] = 8;
+        p->mode[3] = z;
+      }
+      break;
+  }
+}
 
 bool8 FUN_08045464(Volteel* p) { return TRUE; }
 
