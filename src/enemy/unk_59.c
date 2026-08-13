@@ -356,43 +356,57 @@ static const EnemyFunc sDeads[4] = {
     (void*)FUN_080923ec,
 };
 
-NON_MATCH static void FUN_080922e0(Enemy59* p) {
-#if MODERN
+static void FUN_080922e0(Enemy59* p) {
   switch (p->mode[2]) {
     case 0: {
-      EnableSpriteAnimation_Normal(p);
+      InitNonAffineMotion((struct Entity*)p);
       SET_XFLIP(p, p->work[3]);
-      SetSpriteAnimation(p, MOTION(SM019_PANTHEON_HUNTER, 3));  // 分身のハズレ枠
+      SetMotion((struct Entity*)p, MOTION(SM019_PANTHEON_HUNTER, 3));  // 分身のハズレ枠
       p->work[2] = 18;
       p->mode[2]++;
       FALLTHROUGH;
     }
     case 1: {
-      UpdateSpriteAnimation(p);
+      UpdateEntityAnim((struct Entity*)p);
       p->work[2]--;
       if ((p->work[2] & 3) == 0) FUN_08091280(p);
       if (p->work[2] == 0) p->mode[2]++;
       break;
     }
-
     case 2: {
       p->work[2] = 0;
       p->mode[2]++;
       FALLTHROUGH;
     }
     case 3: {
-      UpdateSpriteAnimation(p);
+      register struct Coord* c asm("r4");
+      UpdateEntityAnim((struct Entity*)p);
       if (p->work[2] == 0) PlaySound(SE_ZAKO_EXPLODE);
       p->work[2]++;
+      c = &p->coord;
       {
-        register Coords32* c asm("r4") = &p->coord;
-        CreateGhost18(c, 0, (p->flags & X_FLIP) != 0, p->work[3]);
-        {
-          register const struct SlashedEnemy* tmp asm("r6") = &sSlashedEnemies[3];
-          u8 work3 = p->work[3];
-          if (p->flags & X_FLIP) work3 |= p->flags & X_FLIP;
-          CreateSlashedEnemy(c, tmp, 0, work3);
+        register u32 xf asm("r2");
+        register u32 one asm("r0");
+        xf = (u32)p->flags >> 4;
+        one = 1;
+        xf &= one;
+        ((void (*)(struct Coord*, u8, u32, u8))CreateGhost18)(c, 0, xf, p->work[3]);
+      }
+      {
+        register const struct SlashedEnemy* t3 asm("r6");
+        register s32 w3 asm("r2");
+        register s32 fl asm("r1");
+        register s32 k asm("r3");
+        t3 = &sSlashedEnemies[3];
+        w3 = p->work[3];
+        fl = p->flags;
+        k = 0x10;
+        if (k & fl) {
+          k |= w3;
+        } else {
+          k = w3;
         }
+        ((struct VFX* (*)())CreateSlashedEnemy)(c, t3, 0, k);
       }
       SET_ENEMY_ROUTINE(p, ENTITY_EXIT);
       break;
@@ -401,9 +415,6 @@ NON_MATCH static void FUN_080922e0(Enemy59* p) {
       break;
     }
   }
-#else
-  INCCODE("asm/wip/FUN_080922e0.inc");
-#endif
 }
 
 static void FUN_080923ec(Enemy59* p) {
