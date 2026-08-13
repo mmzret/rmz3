@@ -3,6 +3,7 @@
 #include "global.h"
 #include "mod.h"
 #include "overworld.h"
+#include "zero.h"
 
 typedef struct {
   COLLISION_OBJECT_HDR;
@@ -36,7 +37,7 @@ const EnemyRoutine gSharksealXRoutine = {
 
 // 0x08070028
 static struct Entity* Unused_CreateSharksealX(Coords32* c, u8 kind) {
-  struct Entity* p = AllocEntityLast(gEnemyHeaderPtr);
+  struct Entity* p = (struct Entity*)AllocEntityLast(gEnemyHeaderPtr);
   if (p != NULL) {
     INIT_ENEMY_ROUTINE(p, ENEMY_SHARKSEAL_X);
     p->coord = *c, p->work[0] = kind;
@@ -121,7 +122,241 @@ void sharksealxMode2(SharksealX* p) {
 
 bool8 FUN_08070990(SharksealX* p) { return TRUE; }
 
-INCASM("asm/enemy/sharkseal_x_c.inc");
+void sharksealxMode3(SharksealX* p0) {
+  register SharksealX* p asm("r5");
+  p = p0;
+  switch (p->mode[2]) {
+    case 0: {
+      u32 b6;
+      u32 x1;
+      p->d.y = 0;
+      SetMotion((struct Entity*)p, 0x1800);
+      SetDDP(&p->body, &sCollisions[0]);
+      b6 = *((u8*)p + 0xbc);
+      {
+        register u32 flr asm("r0");
+        if (b6 != 0) {
+          u32 va = p->flags;
+          flr = 0x10;
+          flr |= va;
+        } else {
+          u32 vb = p->flags;
+          flr = 0xEF;
+          flr &= vb;
+        }
+        p->flags = flr;
+      }
+      x1 = 1 & b6;
+      (p->spr).xflip = x1;
+      (p->spr).oam.xflip = x1;
+      p->mode[2]++;
+      FALLTHROUGH;
+    }
+    case 1: {
+      s32 dy;
+      s32 tgt;
+      u8* bc;
+      s32 acc;
+      UpdateEntityAnim((struct Entity*)p);
+      if (p->coord.y > (pZero2->s).coord.y + -0x1400) {
+        if (p->d.y < 0) {
+          p->d.y = 0;
+        }
+        dy = p->d.y;
+        tgt = 0x100;
+      } else {
+        if (p->d.y > 0) {
+          p->d.y = 0;
+        }
+        dy = p->d.y;
+        tgt = -0x100;
+      }
+      dy += ((tgt - dy) * 40) >> 8;
+      p->d.y = dy;
+      p->coord.y -= dy;
+      {
+        s32* a0 = (s32*)((u8*)p + 0xbc);
+        s32 d0 = *(u8*)a0;
+        bc = (u8*)a0;
+        asm("" : "+r"(bc));
+        if (d0 == 0) {
+          p->d.x += -0x200;
+          if (p->d.x < -0x200) {
+            p->d.x = -0x200;
+          }
+        } else {
+          p->d.x += 0x200;
+          if (p->d.x > 0x200) {
+            p->d.x = 0x200;
+          }
+        }
+      }
+      p->coord.x += p->d.x;
+      acc = (s32)((u8*)p + 0xb8);
+      *(s32*)acc += p->d.x;
+      forceWaterLanding((SharksealX*)p);
+      if (*bc == 0) {
+        if ((pZero2->s).coord.x > p->coord.x) {
+          p->mode[2]++;
+        }
+      } else {
+        if ((pZero2->s).coord.x < p->coord.x) {
+          p->mode[2]++;
+        }
+      }
+      acc = *(s32*)acc;
+      if (acc < 0) {
+        acc = -acc;
+      }
+      if (acc > 0x12000) {
+        p->mode[1] = 4;
+        p->mode[2] = 0;
+      }
+      break;
+    }
+    case 2:
+      p->work[2] = 0x18;
+      p->mode[2]++;
+      FALLTHROUGH;
+    case 3: {
+      s32 nd;
+      s32 nx;
+      UpdateEntityAnim((struct Entity*)p);
+      {
+        register s32 od asm("r1");
+        register s32 ndp asm("r3");
+        register s32 tmp asm("r0");
+        od = p->d.y;
+        tmp = (-od << 4) >> 8;
+        asm("" : "+r"(tmp));
+        ndp = od + tmp;
+        asm("" : "+r"(ndp));
+        nd = ndp;
+      }
+      p->d.y = nd;
+      nx = p->d.x;
+      nx += (-nx * 0xB) >> 8;
+      p->d.x = nx;
+      p->coord.x += nx;
+      {
+        s32 wy = (pZero2->s).coord.y + -0x1400;
+        asm volatile("" ::"r"(wy));
+      }
+      {
+        register s32 t9 asm("r1");
+        register s32 cy asm("r0");
+        t9 = p->coord.y;
+        cy = t9 - nd;
+        asm volatile("str %0, [%1, #0x58]" :: "r"(cy), "r"(p) : "memory");
+      }
+      forceWaterLanding((SharksealX*)p);
+      {
+        s32 t = p->work[2];
+        if (t != 0) {
+          t--;
+          p->work[2] = t;
+          if ((t << 24) != 0) {
+            break;
+          }
+        }
+      }
+      p->mode[2]++;
+      break;
+    }
+    case 4:
+      SetMotion((struct Entity*)p, 0x1801);
+      SetDDP(&p->body, &sCollisions[2]);
+      p->work[2] = 0xC;
+      p->work[3] = 2;
+      p->mode[2]++;
+      FALLTHROUGH;
+    case 5: {
+      s32 nd2;
+      s32 nx2;
+      u32 z;
+      {
+        register s32 od2 asm("r1");
+        register s32 tmp2 asm("r0");
+        register s32 ndp2 asm("r3");
+        od2 = p->d.y;
+        tmp2 = (-od2 << 4) >> 8;
+        ndp2 = od2 + tmp2;
+        nd2 = ndp2;
+      }
+      p->d.y = nd2;
+      nx2 = p->d.x;
+      nx2 += (-nx2 * 0xB) >> 8;
+      p->d.x = nx2;
+      p->coord.x += nx2;
+      {
+        register s32 wy2 asm("r0");
+        register s32 offs asm("r1");
+        wy2 = (pZero2->s).coord.y;
+        offs = -0x1400;
+        asm volatile("add %0, %0, %1" : "+r"(wy2) : "r"(offs));
+      }
+      {
+        register s32 t9b asm("r1");
+        register s32 cy2 asm("r0");
+        t9b = p->coord.y;
+        cy2 = t9b - nd2;
+        asm volatile("str %0, [%1, #0x58] " :: "r"(cy2), "r"(p) : "memory");
+      }
+      forceWaterLanding((SharksealX*)p);
+      {
+        s32 t2 = p->work[2];
+        if (t2 != 0) {
+          t2--;
+          p->work[2] = t2;
+          if ((t2 << 24) != 0) {
+            goto upd;
+          }
+        }
+      }
+      p->work[2] = 0xC;
+      {
+        s32 t3 = p->work[3];
+        if (t3 == 0) {
+          goto upd;
+        }
+        t3--;
+        p->work[3] = t3;
+        z = (u8)t3;
+      }
+      if (z == 0) {
+        p->mode[2] = z;
+        break;
+      }
+      {
+        u8* bc2 = (u8*)p + 0xbc;
+        u32 b7;
+        u32 x2;
+        *bc2 ^= 1;
+        b7 = *bc2;
+        {
+          register u32 flr2 asm("r0");
+          if (b7 != 0) {
+            flr2 = p->flags | 0x10;
+          } else {
+            register u8 flvb asm("r1");
+            flvb = p->flags;
+            flr2 = 0xEF;
+            flr2 &= flvb;
+          }
+          p->flags = flr2;
+        }
+        x2 = 1 & b7;
+        (p->spr).xflip = x2;
+        (p->spr).oam.xflip = x2;
+      }
+      SetDDP(&p->body, &sCollisions[0]);
+      SetMotion((struct Entity*)p, 0x1806);
+    upd:
+      UpdateEntityAnim((struct Entity*)p);
+      break;
+    }
+  }
+}
 
 bool8 FUN_08070c68(SharksealX* p) { return TRUE; }
 
