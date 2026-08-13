@@ -58,22 +58,60 @@ void LoadAsciiBold(void) {
 }
 
 // 0x080e97a4
-NON_MATCH void ResetCharTiles(void) {
-#if MODERN
-  s32 i;
-  GlyphNode* c;
-  gTextPrinter.freelist = NULL;
-  for (i = 79; i >= 0; i--) {
-    c = &gTextPrinter.glyphBuffer[i];
-    c->tileID = (GLYPH_TILEID + (79 * 2)) - (79 - i) * 2;
-    c->next = gTextPrinter.freelist;
-    gTextPrinter.freelist = c;
+void ResetCharTiles(void) {
+  register s32 i asm("r4");
+  register u8* base asm("r5");
+  register GlyphNode* node asm("r1");
+  register s32 tileID asm("r3");
+  register GlyphNode** fl asm("r2");
+  register u8* g asm("r0");
+  g = (u8*)&gTextPrinter;
+  {
+    register u32 o1 asm("r1");
+    o1 = 0xB2 << 3;
+    fl = (GlyphNode**)(g + o1);
   }
-  gTextPrinter.cache = gTextPrinter.cur = NULL;
-  gTextPrinter.len = 0;
-#else
-  INCCODE("asm/wip/ResetCharTiles.inc");
-#endif
+  {
+    register u32 z1 asm("r1");
+    z1 = 0;
+    *fl = (GlyphNode*)z1;
+  }
+  i = 79;
+  base = g;
+  asm("" : "+l"(base));
+  {
+    register u32 o2 asm("r0");
+    o2 = 0xB0 << 3;
+    node = (GlyphNode*)(base + o2);
+  }
+  tileID = 894;
+  do {
+    node->tileID = tileID;
+    node->next = *fl;
+    *fl = node;
+    node = (GlyphNode*)((u8*)node - 8);
+    tileID -= 2;
+    i--;
+  } while (i >= 0);
+  {
+    register u32 z asm("r0");
+    register u32 o asm("r2");
+    z = 0;
+    o = 0xB1 << 3;
+    {
+      register u8* q asm("r1");
+      q = base + o;
+      *(u32*)q = z;
+    }
+    o += 4;
+    asm("" : "+l"(o));
+    {
+      register u8* q asm("r1");
+      q = base + o;
+      *(u32*)q = z;
+    }
+    *(s16*)(base + 4) = z;
+  }
 }
 
 void LoadJISKana(void) {
