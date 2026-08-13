@@ -32,20 +32,26 @@ struct Entity* CreateExSkillIcon(struct GameState* g, u8 kind) {
   return p;
 }
 
-NON_MATCH static void ExIcon_Init(struct Widget* w) {
-#if MODERN
+static void ExIcon_Init(struct Widget* w) {
   SET_WIDGET_ROUTINE(w, ENTITY_UPDATE);
   (w->s).flags |= DISPLAY;
   (w->s).flags |= FLIPABLE;
   (w->s).spr.xflip = FALSE;
   (w->s).spr.oam.xflip = FALSE;
   (w->s).flags &= ~X_FLIP;
-  (w->s).coord.x = (u32)(KIND & 3) * PIXEL(24) + PIXEL(16) + PIXEL(256);  // ここの += PIXEL(16)+PIXEL(256) のアセンブリが合わない
-  (w->s).coord.y = (u32)(KIND >> 2) * PIXEL(24) + PIXEL(28);
+  {
+    u32 k;
+    s32 t;
+    k = KIND;
+    k &= 3;
+    t = k * PIXEL(24);
+    t += PIXEL(16);
+    asm("" : "+l"(t));
+    t += PIXEL(256);
+    (w->s).coord.x = t;
+  }
+  (w->s).coord.y = (u32)(*(volatile u8*)&KIND >> 2) * PIXEL(24) + PIXEL(28);
   ExIcon_Update(w);
-#else
-  INCCODE("asm/wip/ExIcon_Init.inc");
-#endif
 }
 
 static void ExIcon_Update(struct Widget* w) {
