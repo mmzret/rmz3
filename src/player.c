@@ -2146,11 +2146,10 @@ u8 TryLadderUp(struct Zero* z, const struct Rect* range, bool8 _) {
 }
 
 // 現在ハシゴ状態で、さらに下に梯子を降りれるか
-NON_MATCH u8 TryContinueLadderDown(struct Zero* z, const struct Rect* range, bool8 _) {
-#if MODERN
-  metatile_attr_t attr = GetGroundMetatileAttr((z->s).coord.x, (z->s).coord.y + range->y + (range->h / 2) + 1);
+u8 TryContinueLadderDown(struct Zero* z, const struct Rect* range, bool8 _) {
+  metatile_attr_t attr = GetGroundMetatileAttr((z->s).coord.x, (z->s).coord.y + range->y + (range->h >> 1) + 1);
   if (attr != MT_LADDER_FLOOR) {
-    if (((z->s).mode[1] == ZERO_LADDER) && (((attr & 0xF) - 1) < 0xD)) {
+    if (((z->s).mode[1] == ZERO_LADDER) && ((u16)((attr & 0xF) - 1) < 0xD)) {
       return 3;
     }
 
@@ -2163,51 +2162,57 @@ NON_MATCH u8 TryContinueLadderDown(struct Zero* z, const struct Rect* range, boo
     }
   }
   return 2;
-#else
-  INCCODE("asm/wip/zero_08026ccc.inc");
-#endif
 }
 
 /**
  *  現在idle状態で、梯子下降状態に移行できるか
  * @return 0: fail, 2: success
  */
-NON_MATCH u8 TryLadderDown(struct Zero* z, const struct Rect* range, bool8 _) {
-#if MODERN
+u8 TryLadderDown(struct Zero* z, const struct Rect* range, bool8 _) {
   s32 x;
-  s32 y = (z->s).coord.y + range->y + (range->h / 2) + 1;
-  metatile_attr_t attr = AppendHazardID(z, (z->s).coord.x, y);
-  if ((attr & 0x0F) != 0) {
+  u32 t;
+  s32 y = (z->s).coord.y + range->y + (range->h >> 1) + 1;
+  register u32 attr asm("r0");
+  attr = AppendHazardID(z, (z->s).coord.x, y);
+  attr <<= 16;
+  if ((attr & 0xF0000) != 0) {
     return 0;
   }
 
   attr = GetMetatileAttr((z->s).coord.x, y);
-  if (attr != MT_LADDER_FLOOR) {
+    attr <<= 16;
+  if (attr != ((u32)MT_LADDER_FLOOR << 16)) {
     if ((z->s).flags & X_FLIP) {
       x = (z->s).coord.x + PIXEL(5);
     } else {
       x = (z->s).coord.x - PIXEL(5);
     }
     attr = GetMetatileAttr(x, y);
+    attr <<= 16;
+    asm("" : "+l"(attr));
+    t = attr >> 16;
+    asm volatile("" ::"l"(attr));
 
-    if (attr != MT_LADDER_FLOOR) {
+    if (t != MT_LADDER_FLOOR) {
       if ((z->s).flags & X_FLIP) {
         x = (z->s).coord.x - PIXEL(2);
       } else {
         x = (z->s).coord.x + PIXEL(2);
       }
       attr = GetMetatileAttr(x, y);
+      attr <<= 16;
+      asm("" : "+l"(attr));
+      t = attr >> 16;
+      asm volatile("" ::"l"(attr));
 
-      if (attr != MT_LADDER_FLOOR) {
+      if (t != MT_LADDER_FLOOR) {
         return 0;
       }
     }
     (z->s).coord.x = x;
   }
   return 2;
-#else
-  INCCODE("asm/wip/TryLadderDown.inc");
-#endif
+
 }
 
 void SetDisableArea(Player* p, s32 left, s32 top, s32 right, s32 bottom) {
