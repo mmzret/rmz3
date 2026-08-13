@@ -6,6 +6,10 @@
 #include "script.h"
 #include "sound.h"
 #include "stagerun.h"
+#include "zero.h"
+
+extern const struct Coord Coord_ARRAY_080fef88[5];
+struct Projectile* FUN_080a5f00(struct Entity* e, u8 a1);
 
 typedef struct {
   COLLISION_OBJECT_HDR;    // 0x00
@@ -34,7 +38,7 @@ const BossRoutine gCubitRoutine = {
 // clang-format on
 
 Cubit* Unused_CreateCubit(Coords32* c, u8 n) {
-  Cubit* p = AllocEntityLast(gBossHeaderPtr);
+  Cubit* p = (Cubit*)AllocEntityLast(gBossHeaderPtr);
   if (p != NULL) {
     INIT_BOSS_ROUTINE(p, BOSS_CUBIT);
     p->coord = *c;
@@ -168,7 +172,175 @@ void cubitMode5(Cubit* p) {
 
 bool8 nop_08053460(Cubit* p) { return TRUE; }
 
-INCASM("asm/boss/cubit_f.inc");
+void cubitMode6(Cubit* p) {
+  switch (p->mode[2]) {
+    case 0:
+      if (*((u8*)p + 0xc8) != 0) {
+        SetSpriteAnimation(p, MOTION(0xB0, 0x10));
+        SetDDP(&p->body, &sCollisions[1]);
+        asm volatile("@m0a");
+      } else {
+        SetSpriteAnimation(p, MOTION(0xB0, 0x0D));
+        SetDDP(&p->body, &sCollisions[1]);
+      }
+      p->mode[2]++;
+      FALLTHROUGH;
+    case 1:
+      UpdateEntityAnim((struct Entity*)p);
+      if (p->motion.state != 3) {
+        break;
+      }
+      goto inc;
+    case 2:
+      if (*((u8*)p + 0xc8) != 0) {
+        SetSpriteAnimation(p, MOTION(0xB0, 0x11));
+      } else {
+        SetSpriteAnimation(p, MOTION(0xB0, 0x0E));
+      }
+      SetDDP(&p->body, &sCollisions[0]);
+      p->work[2] = 0x41;
+      p->work[3] = RANDOM(RNG_0202f388) % 5;
+      *(struct Projectile**)((u8*)p + 0xcc) = FUN_080a5f00((struct Entity*)p, p->work[3]);
+      PlaySound(0xCD);
+      p->mode[2]++;
+      FALLTHROUGH;
+    case 3: {
+      s32 ci;
+      UpdateEntityAnim((struct Entity*)p);
+      ci = p->motion.cmdIdx;
+      if (ci == 1 || ci == 3 || ci == 5 || ci == 7 || ci == 8) {
+        if (p->motion.duration == 1) {
+          PlaySound(0xCB);
+        }
+      }
+      goto tick;
+    }
+    case 4: {
+      u32 z;
+      p->flags &= ~DISPLAY;
+      z = 0;
+      SetDDP(&p->body, &sCollisions[0]);
+      p->coord.x = *(s32*)((u8*)p + 0xbc) + Coord_ARRAY_080fef88[p->work[3]].x;
+      p->coord.y = *(s32*)((u8*)p + 0xb8) + Coord_ARRAY_080fef88[p->work[3]].y;
+      p->work[3] = z;
+      p->work[2] = 0x14;
+      p->mode[2]++;
+      FALLTHROUGH;
+    }
+    case 5: {
+      struct Projectile** q;
+      if ((*(struct Projectile**)((u8*)p + 0xcc))->mode[2] > 6 && p->work[3] == 0) {
+        p->work[3] = 1;
+        SetDDP(&p->body, &sCollisions[0]);
+      }
+      q = (struct Projectile**)((u8*)p + 0xcc);
+      if ((*q)->mode[2] <= 9) {
+        break;
+      }
+      goto inc;
+    }
+    case 6: {
+      register u32 fl asm("r0");
+      register u32 one asm("r3");
+      register u32 v asm("r2");
+      {
+        register u32 z2 asm("r6");
+        *(struct Projectile**)((u8*)p + 0xcc) = NULL;
+        fl = p->flags;
+        one = 1;
+        z2 = 0;
+        asm volatile("" ::"l"(z2));
+      }
+      v = one;
+      asm volatile("" : "+l"(v));
+      v |= fl;
+      p->flags = v;
+      if ((pZero2->s).coord.x > p->coord.x) {
+        if ((v & 0x10) == 0) {
+        register u32 vv asm("r0");
+        register u32 v2 asm("r1");
+        u8* xp;
+        register u8* oa asm("r4");
+        s32 m;
+        vv = (v >> 4) ^ one;
+        asm("and %0, %0, %1" : "+l"(vv) : "l"(one));
+        xp = (u8*)p + 0x4c;
+        *xp = vv;
+        v2 = (p->flags >> 4) ^ one;
+        asm("and %0, %0, %1" : "+l"(v2) : "l"(one));
+        oa = (u8*)p + 0x4a;
+        {
+          s32 sh = v2 << 4;
+          s32 ov = *oa;
+          m = -0x11;
+          m &= ov;
+          m |= sh;
+          *oa = m;
+        }
+        if (v2 != 0) {
+          p->flags |= 0x10;
+        } else {
+          p->flags &= 0xEF;
+        }
+        }
+      } else {
+        if ((v & 0x10) != 0) {
+        register u32 vv asm("r0");
+        register u32 v2 asm("r1");
+        u8* xp;
+        register u8* oa asm("r4");
+        s32 m;
+        vv = (v >> 4) ^ one;
+        asm("and %0, %0, %1" : "+l"(vv) : "l"(one));
+        xp = (u8*)p + 0x4c;
+        *xp = vv;
+        v2 = (p->flags >> 4) ^ one;
+        asm("and %0, %0, %1" : "+l"(v2) : "l"(one));
+        oa = (u8*)p + 0x4a;
+        {
+          s32 sh = v2 << 4;
+          s32 ov = *oa;
+          m = -0x11;
+          m &= ov;
+          m |= sh;
+          *oa = m;
+        }
+        if (v2 != 0) {
+          p->flags |= 0x10;
+        } else {
+          p->flags &= 0xEF;
+        }
+        }
+      }
+      *((u8*)p + 0xc8) = 1;
+      SetSpriteAnimation(p, MOTION(0xB0, 0x11));
+      p->work[2] = 0x34;
+      p->mode[2]++;
+      FALLTHROUGH;
+    }
+    case 7:
+      UpdateEntityAnim((struct Entity*)p);
+    tick : {
+      u32 w = p->work[2];
+      if (w != 0) {
+        w--;
+        p->work[2] = w;
+        if ((w << 24) != 0) {
+          break;
+        }
+      }
+    }
+    inc:
+      p->mode[2]++;
+      break;
+    case 8: {
+      u8 z3 = 0;
+      p->mode[1] = 3;
+      p->mode[2] = z3;
+      break;
+    }
+  }
+}
 
 bool8 FUN_08053724(Cubit* p) { return TRUE; }
 
