@@ -184,18 +184,26 @@ static void FUN_080bac14(PAquaVFX* p) {
   p->mode[1] = 3, p->mode[2] = 0, p->mode[3] = 0;
 }
 
-NON_MATCH static void FUN_080bac5c(PAquaVFX* p) {
-#if MODERN
-  EnableSpriteAnimation_Affine(p);
+static void FUN_080bac5c(PAquaVFX* p) {
+  InitScalerotMotion1((struct Entity*)p);
   p->mag_7c = 0x100;
-  (p->spr).mag.x = 0x100;
-  (p->spr).mag.y = p->mag_7c;
+  p->spr.mag.x = 0x100;
+  p->spr.mag.y = p->mag_7c;
   p->angle = 0;
-  SET_VFX_ROUTINE(p, ENTITY_UPDATE);
-  p->mode[1] = 4, p->mode[2] = 0, p->mode[3] = 0;  // なんかここのレジスタ割り当てが合わない, SET_VFX_ROUTINE が間違ってる...?
-#else
-  INCCODE("asm/wip/FUN_080bac5c.inc");
-#endif
+  {
+    u32 tbl, id;
+    EntityFunc** routine_table;
+    EntityFunc* rt;
+    register u32 four asm("r1");
+    tbl = (u32)(gVFXFnTable);
+    id = (p->id) << 2;
+    routine_table = (EntityFunc**)(tbl + id);
+    *(u32*)(p->mode) = ENTITY_UPDATE;
+    rt = *routine_table;
+    four = 4;
+    p->onUpdate = (void*)rt[ENTITY_UPDATE];
+    p->mode[1] = four, p->mode[2] = 0, p->mode[3] = 0;
+  }  // なんかここのレジスタ割り当てが合わない (NON_MATCH の原因)
 }
 
 static void FUN_080baca4(PAquaVFX* p) {
