@@ -1,8 +1,45 @@
 #include "boss.h"
 #include "collision.h"
 #include "global.h"
+#include "stagerun.h"
 
-INCASM("asm/boss/locomo_if.inc");
+void FUN_08054b20(struct Boss* p);
+
+INCASM("asm/boss/locomo_if_a.inc");
+
+void FUN_08054b20(struct Boss* p) {
+  switch (p->mode[2]) {
+    case 0:
+      EnableSpriteAnimation_Rotatable(p);
+      SetSpriteAnimation(p, MOTION(0x54, 0x00));
+      p->mode[2]++;
+      // fallthrough
+    case 1:
+      if (p->scriptEntity->flags & 1) {
+        p->mode[2]++;
+      }
+      UpdateEntityAnim((struct Entity*)p);
+      break;
+    case 2:
+      p->mode[2] = 3;
+      // fallthrough
+    case 3: {
+      u8* q = (u8*)p + 0xbd;
+      register u32 one asm("r0");
+      one = 1;
+      *q = one;
+      one &= gStageRun.vm.active;
+      if (one == 0) {
+        p->mode[1] = one;
+        p->mode[2] = one;
+      }
+      UpdateEntityAnim((struct Entity*)p);
+      break;
+    }
+  }
+}
+
+INCASM("asm/boss/locomo_if_b.inc");
 
 void LocomoIF_Init(struct Boss* p);
 void LocomoIF_Update(struct Boss* p);
