@@ -1,6 +1,14 @@
 #include "collision.h"
 #include "enemy.h"
 #include "global.h"
+#include "physics.h"
+#include "physics.h"
+
+static const s32 s32_ARRAY_08369728[16];
+static const s32 s32_ARRAY_083697b0[6];
+static const s32 s32_ARRAY_083697c8[6];
+static const struct Collision sCollisions[12];
+static const motion_t sMotions2[6];
 
 typedef struct {
   COLLISION_OBJECT_HDR;  // 0x00
@@ -10,7 +18,7 @@ typedef struct {
 static_assert(sizeof(Petatria) == sizeof(struct Enemy));
 
 Petatria* Unused_CreatePetatria(Coords32* c, u8 mode) {
-  Petatria* p = AllocEntityLast(gEnemyHeaderPtr);
+  Petatria* p = (Petatria*)AllocEntityLast(gEnemyHeaderPtr);
   if (p != NULL) {
     INIT_ENEMY_ROUTINE(p, ENEMY_PETATRIA);
     p->coord = *c;
@@ -23,7 +31,7 @@ INCASM("asm/enemy/petatria_a.inc");
 
 static const EnemyFunc sUpdates1[10];
 static const EnemyFunc sUpdates2[10];
-bool8 FUN_08091188(struct Enemy* p);
+bool8 FUN_08091188(Petatria* p);
 void Petatria_Die(Petatria* p);
 
 void Petatria_Update(Petatria* p) {
@@ -33,7 +41,7 @@ void Petatria_Update(Petatria* p) {
     return;
   }
   (sUpdates1[p->mode[1]])((void*)p);
-  FUN_08091188((void*)p);
+  FUN_08091188((Petatria*)p);
   if (IsFrozen(p)) {
     return;
   }
@@ -64,51 +72,356 @@ bool8 FUN_080906ec(Petatria* p) {
   return TRUE;
 }
 
-INCASM("asm/enemy/petatria_d.inc");
+void FUN_0809070c(Petatria* p0) {
+  register Petatria* p asm("r4");
+  p = p0;
+  switch (p->mode[2]) {
+    case 0:
+      SetDDP(&p->body, &sCollisions[2]);
+      p->work[3] = 0;
+      p->unk_coord.y = p->coord.y;
+      SetMotion((struct Entity*)p, 0x7E06);
+      p->mode[2]++;
+      FALLTHROUGH;
+    case 1:
+      if (p->d.y > 0) {
+        p->mode[2] = 2;
+      } else {
+        p->mode[2] = 0x14;
+      }
+      UpdateEntityAnim((struct Entity*)p);
+      FALLTHROUGH;
+    case 2: {
+      register u8* b9 asm("r5");
+      {
+        register u32 st asm("r0");
+        st = p->motion.state;
+        b9 = (u8*)p + 0xb9;
+        if (st == 3) {
+          u32 w3 = p->work[3];
+          if (w3 != 0) {
+            w3 = w3 - 1;
+          } else {
+            (*b9)++;
+            w3 = 5;
+          }
+          p->work[3] = w3;
+          {
+            register const u8* tbs asm("r1");
+            tbs = (const u8*)s32_ARRAY_083697b0;
+            asm("" : "+r"(tbs));
+            p->unk_coord.y -= *(const s32*)((p->work[3] << 2) + (u32)tbs);
+          }
+          {
+            register const u8* tbm asm("r1");
+            tbm = (const u8*)sMotions2;
+            asm("" : "+r"(tbm));
+            SetMotion((struct Entity*)p, *(const motion_t*)((p->work[3] << 1) + (u32)tbm));
+          }
+        }
+      }
+      UpdateEntityAnim((struct Entity*)p);
+      p->coord.y = p->unk_coord.y;
+      if (*b9 > 3) {
+        register s32 z6 asm("r6");
+        register const u8* tb asm("r3");
+        z6 = 0;
+        *b9 = z6;
+        tb = (const u8*)s32_ARRAY_08369728;
+        asm("" : "+r"(tb));
+        if (*(const s32*)(((RANDOM(RNG_0202f388) & 0xF) << 2) + (u32)tb) != 0) {
+          p->mode[1] = 3;
+          p->mode[2] = z6;
+        }
+      }
+      if (p->mode[1] == 3) {
+        break;
+      }
+      {
+        s32 r = PushoutToUp1(p->coord.x, p->coord.y);
+        if (r != 0) {
+          p->coord.y += r;
+          p->mode[2]++;
+        }
+      }
+      {
+        register u32 pb8 asm("r5");
+        pb8 = *((u8*)p + 0xb8);
+        if (pb8 == 1) {
+          {
+            register s32 g1 asm("r1");
+            s32 rv = FUN_0800a22c(p->coord.x, p->coord.y);
+            asm("add %0, %1, #0" : "=r"(g1) : "r"(rv));
+            if (g1 == p->coord.x + (0x80 << 6)) {
+              break;
+            }
+          }
+          p->d.y = -0xCC;
+          p->mode[2] = pb8;
+          break;
+        }
+      }
+      {
+        register s32 g2 asm("r1");
+        s32 rv2 = FUN_0800a31c(p->coord.x, p->coord.y);
+        asm("add  %0, %1, #0" : "=r"(g2) : "r"(rv2));
+        if (g2 == p->coord.x + -0x2000) {
+          break;
+        }
+      }
+      p->d.y = -0xCC;
+      p->mode[2] = 1;
+      break;
+    }
+    case 3: {
+      register u32 mv asm("r1");
+      {
+        register u32 mid asm("r0");
+        mid = p->motionID;
+        mv = mid << 8;
+      }
+      {
+        register u32 st asm("r0");
+        st = p->motion.id;
+        mv |= st;
+      }
+      if (mv + -0x7E06 <= 1 || mv == 0x7E0B) {
+        p->mode[2]++;
+        break;
+      }
+      if (p->motion.state != 3) {
+        UpdateEntityAnim((struct Entity*)p);
+        break;
+      }
+      if (*((u8*)p + 0xb8) == 1) {
+        u32 w3 = p->work[3];
+        if (w3 != 0) {
+          w3 = w3 - 1;
+          p->work[3] = w3;
+        } else {
+          goto five3;
+        }
+      } else {
+        u32 w3b = p->work[3];
+        if (w3b != 0) {
+          w3b = w3b - 1;
+          p->work[3] = w3b;
+        } else {
+        five3:
+          w3b = 5;
+          p->work[3] = w3b;
+        }
+      }
+      {
+        register const u8* tbm0 asm("r0");
+        register u32 i21 asm("r1");
+        tbm0 = (const u8*)sMotions2;
+        i21 = p->work[3];
+        SetMotion((struct Entity*)p, *(const motion_t*)((i21 << 1) + (u32)tbm0));
+      }
+      UpdateEntityAnim((struct Entity*)p);
+      break;
+    }
+    case 4:
+      SetMotion((struct Entity*)p, 0x7E0D);
+      p->mode[2]++;
+      FALLTHROUGH;
+    case 5:
+      UpdateEntityAnim((struct Entity*)p);
+      if (p->motion.state != 3) {
+        break;
+      }
+      if (*((u8*)p + 0xb8) == 1) {
+        p->d.x = -0xCC;
+      } else {
+        p->d.x = 0xCC;
+      }
+      p->mode[1] = 0;
+      p->mode[2] = 0;
+      break;
+    case 20: {
+      register u8* b9 asm("r5");
+      {
+        register u32 st asm("r0");
+        st = p->motion.state;
+        b9 = (u8*)p + 0xb9;
+        if (st == 3) {
+          u32 w3 = p->work[3] + 1;
+          p->work[3] = w3;
+          if ((u8)w3 > 5) {
+            (*b9)++;
+            p->work[3] = 0;
+          }
+          {
+            register const u8* tba asm("r1");
+            tba = (const u8*)s32_ARRAY_083697c8;
+            asm("" : "+r"(tba));
+            p->unk_coord.y += *(const s32*)((p->work[3] << 2) + (u32)tba);
+          }
+          {
+            register const u8* tbm asm("r1");
+            tbm = (const u8*)sMotions2;
+            asm("" : "+r"(tbm));
+            SetMotion((struct Entity*)p, *(const motion_t*)((p->work[3] << 1) + (u32)tbm));
+          }
+        }
+      }
+      UpdateEntityAnim((struct Entity*)p);
+      p->coord.y = p->unk_coord.y;
+      if (*b9 > 3) {
+        register s32 z6 asm("r6");
+        register const u8* tb asm("r3");
+        z6 = 0;
+        *b9 = z6;
+        tb = (const u8*)s32_ARRAY_08369728;
+        asm("" : "+r"(tb));
+        if (*(const s32*)(((RANDOM(RNG_0202f388) & 0xF) << 2) + (u32)tb) != 0) {
+          p->mode[1] = 3;
+          p->mode[2] = z6;
+        }
+      }
+      if (p->mode[1] == 3) {
+        break;
+      }
+      {
+        register s32 r20 asm("r1");
+        s32 rv0 = PushoutToDown1(p->coord.x, p->coord.y + -0x6000);
+        asm("add   %0, %1, #0" : "=r"(r20) : "r"(rv0));
+        if (r20 != 0) {
+          p->d.y = 0xCC;
+          p->mode[2] = 1;
+        }
+      }
+      {
+        register u32 pb8 asm("r5");
+        pb8 = *((u8*)p + 0xb8);
+        if (pb8 == 1) {
+          {
+            register s32 g1 asm("r1");
+            s32 rv = FUN_0800a22c(p->coord.x, p->coord.y + -0x3000);
+            asm("add %0, %1, #0" : "=r"(g1) : "r"(rv));
+            if (g1 == p->coord.x + (0x80 << 6)) {
+              break;
+            }
+          }
+          p->d.y = 0xCC;
+          p->mode[2] = pb8;
+          break;
+        }
+      }
+      {
+        register s32 g2 asm("r1");
+        s32 rv2 = FUN_0800a31c(p->coord.x, p->coord.y + -0x3000);
+        asm("add  %0, %1, #0" : "=r"(g2) : "r"(rv2));
+        if (g2 == p->coord.x + -0x2000) {
+          break;
+        }
+      }
+      p->d.y = 0xCC;
+      p->mode[2] = 1;
+      break;
+    }
+    case 21: {
+      register u32 mv asm("r1");
+      {
+        register u32 mid asm("r0");
+        mid = p->motionID;
+        mv = mid << 8;
+      }
+      {
+        register u32 st asm("r0");
+        st = p->motion.id;
+        mv |= st;
+      }
+      if (mv + -0x7E06 <= 1 || mv == 0x7E0B) {
+        p->mode[2]++;
+        break;
+      }
+      if (p->motion.state != 3) {
+        UpdateEntityAnim((struct Entity*)p);
+        break;
+      }
+      asm volatile("" ::"r"(*((u8*)p + 0xb8)));
+      {
+        u32 w3 = p->work[3] + 1;
+        p->work[3] = w3;
+        if ((u8)w3 > 5) {
+          p->work[3] = 0;
+        }
+      }
+      {
+        register const u8* tbm0 asm("r0");
+        register u32 i21 asm("r1");
+        tbm0 = (const u8*)sMotions2;
+        i21 = p->work[3];
+        SetMotion((struct Entity*)p, *(const motion_t*)((i21 << 1) + (u32)tbm0));
+      }
+      UpdateEntityAnim((struct Entity*)p);
+      break;
+    }
+    case 22:
+      SetMotion((struct Entity*)p, 0x7E0D);
+      p->mode[2]++;
+      FALLTHROUGH;
+    case 23:
+      UpdateEntityAnim((struct Entity*)p);
+      if (p->motion.state != 3) {
+        break;
+      }
+      if (*((u8*)p + 0xb8) == 1) {
+        p->d.x = -0xCC;
+      } else {
+        p->d.x = 0xCC;
+      }
+      p->mode[1] = 0;
+      p->mode[2] = 0;
+      break;
+  }
+}
 
-bool8 FUN_08090b20(struct Enemy* p) { return TRUE; }
+bool8 FUN_08090b20(Petatria* p) { return TRUE; }
 
 INCASM("asm/enemy/petatria_e.inc");
 
-bool8 FUN_08090c60(struct Enemy* p) { return TRUE; }
+bool8 FUN_08090c60(Petatria* p) { return TRUE; }
 
 INCASM("asm/enemy/petatria_f.inc");
 
-bool8 FUN_08090da4(struct Enemy* p) { return TRUE; }
+bool8 FUN_08090da4(Petatria* p) { return TRUE; }
 
 INCASM("asm/enemy/petatria_g.inc");
 
-bool8 FUN_08090edc(struct Enemy* p) { return TRUE; }
+bool8 FUN_08090edc(Petatria* p) { return TRUE; }
 
 INCASM("asm/enemy/petatria_h.inc");
 
-bool8 FUN_08091068(struct Enemy* p) { return TRUE; }
+bool8 FUN_08091068(Petatria* p) { return TRUE; }
 
 INCASM("asm/enemy/petatria_i.inc");
 
-bool8 FUN_08091150(struct Enemy* p) { return TRUE; }
+bool8 FUN_08091150(Petatria* p) { return TRUE; }
 
 void FUN_08091154(Petatria* p) {
   if (p->mode[2] == 0) p->mode[2] = 1;
 }
 
-bool8 FUN_08091168(struct Enemy* p) { return TRUE; }
+bool8 FUN_08091168(Petatria* p) { return TRUE; }
 
-void FUN_0809116c(struct Enemy* p) {}
+void FUN_0809116c(Petatria* p) {}
 
-bool8 FUN_08091170(struct Enemy* p) { return TRUE; }
+bool8 FUN_08091170(Petatria* p) { return TRUE; }
 
 void FUN_08091174(Petatria* p) {
   if (p->mode[2] == 0) p->mode[2] = 1;
 }
 
-bool8 FUN_08091188(struct Enemy* p) { return TRUE; }
+bool8 FUN_08091188(Petatria* p) { return TRUE; }
 
 INCASM("asm/enemy/petatria_j.inc");
 
-void nop_0809127c(struct Enemy* p) {}
+void nop_0809127c(Petatria* p) {}
 
-void Petatria_Init(struct Enemy* p);
+void Petatria_Init(Petatria* p);
 void Petatria_Update(Petatria* p);
 void Petatria_Die(Petatria* p);
 
@@ -137,25 +450,25 @@ static const EnemyFunc sUpdates1[10] = {
 };
 // clang-format on
 
-void FUN_080902c8(struct Enemy* p);
-void FUN_0809070c(struct Enemy* p);
-void FUN_08090b24(struct Enemy* p);
-void FUN_08090c64(struct Enemy* p);
-void FUN_08090da8(struct Enemy* p);
-void FUN_08090ee0(struct Enemy* p);
-void FUN_0809106c(struct Enemy* p);
+void FUN_080902c8(Petatria* p);
+void FUN_0809070c(Petatria* p);
+void FUN_08090b24(Petatria* p);
+void FUN_08090c64(Petatria* p);
+void FUN_08090da8(Petatria* p);
+void FUN_08090ee0(Petatria* p);
+void FUN_0809106c(Petatria* p);
 
 // clang-format off
 static const EnemyFunc sUpdates2[10] = {
-    FUN_080902c8,
-    FUN_0809070c,
-    FUN_08090b24,
-    FUN_08090c64,
-    FUN_08090da8,
-    FUN_08090ee0,
-    FUN_0809106c,
+    (EnemyFunc)FUN_080902c8,
+    (EnemyFunc)FUN_0809070c,
+    (EnemyFunc)FUN_08090b24,
+    (EnemyFunc)FUN_08090c64,
+    (EnemyFunc)FUN_08090da8,
+    (EnemyFunc)FUN_08090ee0,
+    (EnemyFunc)FUN_0809106c,
     (void*)FUN_08091154,
-    FUN_0809116c,
+    (EnemyFunc)FUN_0809116c,
     (void*)FUN_08091174,
 };
 // clang-format on
