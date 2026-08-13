@@ -121,7 +121,7 @@ static void PhantomProjectile_Init(PhantomProjectile* p) {
     FUN_080af2b0,
   };
   // clang-format on
-  (sInitializers[p->work[0]])(p);
+  (sInitializers[p->work[0]])((void*)p);
 }
 
 static void FUN_080af114(PhantomProjectile* p) {
@@ -199,7 +199,7 @@ static void PhantomProjectile_Update(PhantomProjectile* p) {
     FUN_080afb1c,
   };
   // clang-format on
-  (sUpdates[p->work[0]])(p);
+  (sUpdates[p->work[0]])((void*)p);
   UpdateSpriteAnimation(p);
 }
 
@@ -218,7 +218,7 @@ static void FUN_080af32c(PhantomProjectile* p) {
     SET_PROJECTILE_ROUTINE(p, ENTITY_DIE);
     return;
   }
-  (PTR_ARRAY_0836d418[p->mode[1]])(p);
+  (PTR_ARRAY_0836d418[p->mode[1]])((void*)p);
 }
 
 static void (*const PTR_ARRAY_0836d430[2])(PhantomProjectile*);
@@ -267,11 +267,11 @@ static void FUN_080af70c(PhantomProjectile* p) {
   PhantomProjectile_Update(p);
 }
 
-void FUN_080af748(PhantomProjectile* p) { (PTR_ARRAY_0836d438[p->mode[1]])(p); }
+void FUN_080af748(PhantomProjectile* p) { (PTR_ARRAY_0836d438[p->mode[1]])((void*)p); }
 
 INCASM("asm/projectile/phantom_c.inc");
 
-void FUN_080af8b0(PhantomProjectile* p) { (PTR_ARRAY_0836d440[p->mode[1]])(p); }
+void FUN_080af8b0(PhantomProjectile* p) { (PTR_ARRAY_0836d440[p->mode[1]])((void*)p); }
 
 void FUN_080af8e8(PhantomProjectile* p);
 
@@ -285,7 +285,7 @@ INCASM("asm/projectile/phantom_d.inc");
 
 void nop_080af9ac(PhantomProjectile* p) {}
 
-void FUN_080af9b0(PhantomProjectile* p) { (PTR_ARRAY_0836d44c[p->mode[1]])(p); }
+void FUN_080af9b0(PhantomProjectile* p) { (PTR_ARRAY_0836d44c[p->mode[1]])((void*)p); }
 
 void FUN_080af9f4(PhantomProjectile* p);
 
@@ -297,7 +297,87 @@ void FUN_080af9c8(PhantomProjectile* p) {
   FUN_080af9f4(p);
 }
 
-INCASM("asm/projectile/phantom_e.inc");
+INCASM("asm/projectile/phantom_e_a.inc");
+
+bool8 FUN_080afdf0(struct Entity* e, struct Coord* a, struct Coord* b, struct Coord* c) {
+  register s32 dx asm("r5");
+  register s32 t asm("r4");
+  dx = b->x;
+  {
+    register s32 v asm("r3");
+    v = a->x;
+    t = v + dx;
+    a->x = t;
+  }
+  a->y += b->y;
+  {
+    s32 limit = *(s32*)((u8*)e + 0xdc) + -0x4C00;
+    register s32 u asm("r2");
+    u = t + -0x2600;
+    asm("" : "+l"(u));
+    {
+      register s32 d4 asm("r0");
+      d4 = *(s32*)((u8*)e + 0xd4);
+      t = u - d4;
+    }
+    if ((u32)t > (u32)limit) {
+      register s32 m asm("r0");
+      m = t;
+      m *= dx;
+      if (m > 0) {
+        return TRUE;
+      }
+    }
+  }
+  return FALSE;
+}
+
+bool8 FUN_080afe38(struct Entity* e, struct Coord* a, struct Coord* b, struct Coord* c) {
+  register struct Coord* ap asm("r4");
+  register struct Coord* cp asm("r6");
+  register s32 cx asm("r5");
+  register s32 bx asm("r3");
+  register s32 by asm("r1");
+  ap = a;
+  cp = c;
+  cx = cp->x;
+  {
+    register s32 v asm("r0");
+    v = b->x;
+    bx = v + cx;
+    b->x = bx;
+  }
+  by = b->y;
+  {
+    register s32 lim asm("r0");
+    lim = 0x80;
+    lim = -lim;
+    if (by > lim) {
+      by -= 8;
+      b->y = by;
+    }
+  }
+  ap->x += bx;
+  ap->y += by;
+  {
+    register s32 t asm("r1");
+    u32 res;
+    t = bx + 0x3FF;
+    if ((u32)t > 0x7FE) {
+      goto istrue;
+    }
+    res = FALSE;
+    goto out;
+  istrue: {
+    register s32 n asm("r0");
+    n = -cx;
+    cp->x = n;
+  }
+    res = TRUE;
+  out:
+    return res;
+  }
+}
 
 void FUN_080af518(PhantomProjectile* p);
 void FUN_080af5cc(PhantomProjectile* p);
