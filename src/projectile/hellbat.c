@@ -1,6 +1,12 @@
 #include "collision.h"
 #include "global.h"
 #include "projectile.h"
+#include "physics.h"
+#include "physics.h"
+#include "physics.h"
+#include "stagerun.h"
+
+struct VFX* FUN_080bde9c(struct Entity* e, struct Coord* c, u8 a2, u8 a3);
 
 typedef struct {
   COLLISION_OBJECT_HDR;  // 0x00
@@ -42,7 +48,7 @@ const ProjectileRoutine gHellbatProjectileRoutine = {
 typedef void (*HellbatProjectileFunc)(HellbatProjectile*);
 
 HellbatProjectile* createBat(Entity* hellbat, Coords32* c, u8 a2, u8 a3) {
-  HellbatProjectile* p = AllocEntityLast(gProjectileHeaderPtr);
+  HellbatProjectile* p = (HellbatProjectile*)AllocEntityLast(gProjectileHeaderPtr);
   if (p != NULL) {
     INIT_PROJECTILE_ROUTINE(p, 15);
     p->work[0] = 0;
@@ -55,7 +61,7 @@ HellbatProjectile* createBat(Entity* hellbat, Coords32* c, u8 a2, u8 a3) {
 }
 
 HellbatProjectile* createEchoWave(Entity* hellbat, Coords32* c, u8 a2) {
-  HellbatProjectile* p = AllocEntityLast(gProjectileHeaderPtr);
+  HellbatProjectile* p = (HellbatProjectile*)AllocEntityLast(gProjectileHeaderPtr);
   if (p != NULL) {
     INIT_PROJECTILE_ROUTINE(p, 15);
     p->work[0] = 1;
@@ -67,7 +73,7 @@ HellbatProjectile* createEchoWave(Entity* hellbat, Coords32* c, u8 a2) {
 }
 
 HellbatProjectile* FUN_080a14dc(Entity* hellbat, Coords32* c, u8 a2) {
-  HellbatProjectile* p = AllocEntityLast(gProjectileHeaderPtr);
+  HellbatProjectile* p = (HellbatProjectile*)AllocEntityLast(gProjectileHeaderPtr);
   if (p != NULL) {
     INIT_PROJECTILE_ROUTINE(p, 15);
     p->work[0] = 2;
@@ -79,7 +85,7 @@ HellbatProjectile* FUN_080a14dc(Entity* hellbat, Coords32* c, u8 a2) {
 }
 
 HellbatProjectile* FUN_080a1538(Entity* hellbat, Coords32* c, u8 a2) {
-  HellbatProjectile* p = AllocEntityLast(gProjectileHeaderPtr);
+  HellbatProjectile* p = (HellbatProjectile*)AllocEntityLast(gProjectileHeaderPtr);
   if (p != NULL) {
     INIT_PROJECTILE_ROUTINE(p, 15);
     p->work[0] = 3;
@@ -91,7 +97,7 @@ HellbatProjectile* FUN_080a1538(Entity* hellbat, Coords32* c, u8 a2) {
 }
 
 HellbatProjectile* FUN_080a1594(Entity* hellbat, Coords32* c, u8 a2) {
-  HellbatProjectile* p = AllocEntityLast(gProjectileHeaderPtr);
+  HellbatProjectile* p = (HellbatProjectile*)AllocEntityLast(gProjectileHeaderPtr);
   if (p != NULL) {
     INIT_PROJECTILE_ROUTINE(p, 15);
     p->work[0] = 4;
@@ -156,7 +162,349 @@ static void FUN_080a1a10(HellbatProjectile* p) {
   p->mode[2] = 0;
 }
 
-INCASM("asm/projectile/hellbat_c.inc");
+void FUN_080a1a1c(HellbatProjectile* p0) {
+  register HellbatProjectile* p asm("r4");
+  p = p0;
+  {
+    s32* bc = (s32*)((u8*)p + 0xbc);
+    s32 t = *bc;
+    if (t > 0) {
+      *bc = t - 1;
+    }
+  }
+  if ((p->unk_28)->mode[0] > 1) {
+    u8* t = (u8*)p + 0x8c;
+    u32 z = 0;
+    *(u32*)t = z;
+    asm("" : "+r"(t));
+    t += 4;
+    *(u32*)t = z;
+    asm("" : "+r"(t));
+    t += 4;
+    *t = z;
+    p->flags &= 0xFB;
+  }
+  switch (p->mode[2]) {
+    case 0: {
+      u32 b5;
+      p->work[2] = 0;
+      p->work[3] = 0;
+      p->unk_coord.x = 0;
+      b5 = *((u8*)p + 0xb5);
+      if (b5 == 0) {
+        p->d.x = gSineTable[0xCA] * 2;
+        p->d.y = gSineTable[0x0A] * 2;
+        SetMotion((struct Entity*)p, MOTION(0xA9, 0x06));
+        p->flags &= 0xEF;
+        *((u8*)p + 0x4c) = 0;
+        {
+          u8* oa = (u8*)p + 0x4a;
+          s32 ov = *oa;
+          s32 m11 = -0x11;
+          m11 &= ov;
+          *oa = m11;
+        }
+        SetDDP(&p->body, (const struct Collision*)0x836B2DC);
+      } else if (b5 == 1) {
+        p->d.x = gSineTable[0xB6] * 2;
+        p->d.y = gSineTable[0xF6] * 2;
+        SetMotion((struct Entity*)p, MOTION(0xA9, 0x06));
+        p->flags |= 0x10;
+        *((u8*)p + 0x4c) = b5;
+        {
+          register u8* oa asm("r3");
+          register s32 k asm("r2");
+          oa = (u8*)p + 0x4a;
+          k = 0x10;
+          {
+            s32 ov = *oa;
+            s32 m11 = -0x11;
+            m11 &= ov;
+            m11 |= k;
+            *oa = m11;
+          }
+        }
+        SetDDP(&p->body, (const struct Collision*)0x836B2DC);
+      } else if (b5 == 2) {
+        p->d.x = gSineTable[0x4A] * 2;
+        p->d.y = gSineTable[0x8A] * 2;
+        SetMotion((struct Entity*)p, MOTION(0xA9, 0x06));
+        p->flags &= 0xEF;
+        *((u8*)p + 0x4c) = 0;
+        {
+          u8* oa = (u8*)p + 0x4a;
+          s32 ov = *oa;
+          s32 m11 = -0x11;
+          m11 &= ov;
+          *oa = m11;
+        }
+        SetDDP(&p->body, (const struct Collision*)0x836B2DC);
+      } else if (b5 == 3) {
+        u32 one;
+        p->d.x = gSineTable[0x36] * 2;
+        p->d.y = gSineTable[0x76] * 2;
+        SetMotion((struct Entity*)p, MOTION(0xA9, 0x06));
+        one = 1;
+        p->flags |= 0x10;
+        *((u8*)p + 0x4c) = one;
+        {
+          register u8* oa asm("r3");
+          register s32 k asm("r2");
+          oa = (u8*)p + 0x4a;
+          k = 0x10;
+          {
+            s32 ov = *oa;
+            s32 m11 = -0x11;
+            m11 &= ov;
+            m11 |= k;
+            *oa = m11;
+          }
+        }
+        SetDDP(&p->body, (const struct Collision*)0x836B2DC);
+      } else if (b5 == 4) {
+        u32 one;
+        p->d.x = gSineTable[0x8A] * 2;
+        p->d.y = gSineTable[0xCA] * 2;
+        SetMotion((struct Entity*)p, MOTION(0xA9, 0x0A));
+        one = 1;
+        p->flags |= 0x10;
+        *((u8*)p + 0x4c) = one;
+        {
+          register u8* oa asm("r3");
+          register s32 k asm("r2");
+          oa = (u8*)p + 0x4a;
+          k = 0x10;
+          {
+            s32 ov = *oa;
+            s32 m11 = -0x11;
+            m11 &= ov;
+            m11 |= k;
+            *oa = m11;
+          }
+        }
+        SetDDP(&p->body, (const struct Collision*)0x836B2F4);
+      } else if (b5 == 5) {
+        p->d.x = gSineTable[0x76] * 2;
+        p->d.y = gSineTable[0xB6] * 2;
+        SetMotion((struct Entity*)p, MOTION(0xA9, 0x0A));
+        p->flags &= 0xEF;
+        *((u8*)p + 0x4c) = 0;
+        {
+          u8* oa = (u8*)p + 0x4a;
+          s32 ov = *oa;
+          s32 m11 = -0x11;
+          m11 &= ov;
+          *oa = m11;
+        }
+        SetDDP(&p->body, (const struct Collision*)0x836B2F4);
+      }
+      p->mode[2]++;
+      FALLTHROUGH;
+    }
+    case 1: {
+      s32 sv[4];
+      s32 vx;
+      u32 hit = 0;
+      s32 nx;
+      s32 ny;
+      register s32 vx5 asm("r5");
+      u32 b7;
+      {
+        s32 c0 = p->coord.x;
+        vx5 = p->d.x;
+        nx = c0 + vx5;
+        p->coord.x = nx;
+      }
+      {
+        s32 c1 = p->coord.y;
+        s32 vy3 = p->d.y;
+        ny = c1 + vy3;
+        p->coord.y = ny;
+        b7 = *((u8*)p + 0xb5);
+        if ((s32)b7 <= 3) {
+          if (vy3 < 0) {
+            sv[0] = 0;
+            {
+              u8* sr = (u8*)&gStageRun + 232;
+              asm("" : "+r"(sr));
+              if (ny < *(s32*)(sr + 0x3c) + -0x5000) {
+                sv[0] = 1;
+              }
+            }
+            sv[1] = PushoutToLeft1(p->coord.x, p->coord.y);
+            sv[2] = PushoutToRight1(p->coord.x, p->coord.y);
+            if (sv[1] != 0 && (vx = p->d.x) > 0) {
+              p->coord.x += sv[1];
+              p->d.x = -vx;
+              hit = 1;
+            } else if (sv[2] != 0 && (vx = p->d.x) < 0) {
+              p->coord.x += sv[2];
+              p->d.x = -vx;
+              hit = 1;
+            } else if (sv[0] != 0) {
+              p->coord.y += sv[0];
+              p->d.y = -p->d.y;
+              hit = 1;
+            }
+          } else {
+            sv[0] = PushoutToUp1(nx, ny);
+            sv[1] = PushoutToLeft1(p->coord.x, p->coord.y);
+            sv[2] = PushoutToRight1(p->coord.x, p->coord.y);
+            if (sv[1] != 0 && (vx = p->d.x) > 0) {
+              p->coord.x += sv[1];
+              p->d.x = -vx;
+              hit = 1;
+            } else if (sv[2] != 0 && (vx = p->d.x) < 0) {
+              p->coord.x += sv[2];
+              p->d.x = -vx;
+              hit = 1;
+            } else if (sv[0] != 0) {
+              p->coord.y += sv[0];
+              p->d.y = -p->d.y;
+              hit = 1;
+            }
+          }
+        } else {
+          if (vx5 > 0) {
+            sv[0] = PushoutToUp1(nx, ny);
+            sv[1] = 0;
+            {
+              u8* sr = (u8*)&gStageRun + 232;
+              asm("" : "+r"(sr));
+              if (p->coord.y < *(s32*)(sr + 0x3c) + -0x5000) {
+                sv[1] = 1;
+              }
+            }
+            sv[2] = PushoutToLeft1(p->coord.x, p->coord.y);
+            if (sv[1] != 0 && (vx = p->d.y) < 0) {
+              p->coord.y += sv[1];
+              p->d.y = -vx;
+              hit = 1;
+            } else if (sv[2] != 0 && (vx = p->d.y) > 0) {
+              p->coord.y += sv[2];
+              p->d.y = -vx;
+              hit = 1;
+            } else if (sv[0] != 0) {
+              p->coord.x += sv[0];
+              p->d.x = -p->d.x;
+              hit = 1;
+            }
+          } else {
+            sv[0] = PushoutToUp1(nx, ny);
+            sv[1] = 0;
+            {
+              u8* sr = (u8*)&gStageRun + 232;
+              asm("" : "+r"(sr));
+              if (p->coord.y < *(s32*)(sr + 0x3c) + -0x5000) {
+                sv[1] = 1;
+              }
+            }
+            sv[2] = PushoutToRight1(p->coord.x, p->coord.y);
+            if (sv[1] != 0 && (vx = p->d.y) < 0) {
+              p->coord.y += sv[1];
+              p->d.y = -vx;
+              hit = 1;
+            } else if (sv[2] != 0 && (vx = p->d.y) > 0) {
+              p->coord.y += sv[2];
+              p->d.y = -vx;
+              hit = 1;
+            } else if (sv[0] != 0) {
+              p->coord.x += sv[0];
+              p->d.x = -p->d.x;
+              hit = 1;
+            }
+          }
+        }
+      }
+      if (hit == 1) {
+        p->work[2]++;
+        {
+          register u32 nv asm("r1");
+          u32 fl2;
+          fl2 = p->flags;
+          nv = (fl2 >> 4) ^ 1;
+          nv &= 1;
+          if (nv != 0) {
+            u32 res = 0x10;
+            res |= fl2;
+            p->flags = res;
+          } else {
+            u32 res2 = 0xEF;
+            res2 &= fl2;
+            p->flags = res2;
+          }
+          *((u8*)p + 0x4c) = nv;
+          {
+            register u8* oa asm("r3");
+            u32 sh4;
+            s32 ov;
+            s32 m11;
+            oa = (u8*)p + 0x4a;
+            sh4 = nv << 4;
+            ov = *oa;
+            m11 = -0x11;
+            m11 &= ov;
+            m11 |= sh4;
+            *oa = m11;
+          }
+        }
+      }
+      if (p->work[2] > 1) {
+        u8* t;
+        u32 z;
+        p->unk_coord.x = 0xFF;
+        t = (u8*)p + 0x8c;
+        z = 0;
+        *(u32*)t = z;
+        asm("" : "+r"(t));
+        t += 4;
+        *(u32*)t = z;
+        asm("" : "+r"(t));
+        t += 4;
+        *t = z;
+        p->flags &= 0xFB;
+        p->mode[2]++;
+      }
+      {
+        register u32 w3n asm("r1");
+        u32 msk;
+        w3n = p->work[3] + 1;
+        p->work[3] = w3n;
+        w3n <<= 24;
+        msk = 0xE0 << 19;
+        msk &= w3n;
+        if (msk == 0) {
+          FUN_080bde9c((struct Entity*)p, &p->coord, b7, (p->flags >> 4) & 1);
+        }
+      }
+      UpdateEntityAnim((struct Entity*)p);
+      break;
+    }
+    case 2:
+      UpdateEntityAnim((struct Entity*)p);
+      {
+        s32 v0 = p->unk_coord.x;
+        u8* t = (u8*)p + 0x50;
+        *(u16*)t = v0;
+        {
+          s32 v1 = *(volatile s32*)&p->unk_coord.x;
+          t += 2;
+          asm("" : "+r"(t));
+          *(u16*)t = v1;
+        }
+      }
+      {
+        s32 v = p->unk_coord.x;
+        if (v > 0) {
+          p->unk_coord.x = v - 0x20;
+        }
+      }
+      if (p->unk_coord.x <= 0x20) {
+        SET_PROJECTILE_ROUTINE(p, ENTITY_DIE);
+      }
+      break;
+  }
+}
 
 static void FUN_080a1f10(HellbatProjectile* p) {
   p->mode[1] = 1;
