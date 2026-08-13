@@ -2,6 +2,12 @@
 #include "enemy.h"
 #include "global.h"
 #include "physics.h"
+#include "element.h"
+#include "zero.h"
+
+struct Entity* FUN_080bb830(struct Entity* e);
+static const struct Collision sCollisions[];
+static const Coords32 sElementCoords[2];
 
 void Snakecord_Init(struct Enemy* p);
 void Snakecord_Update(struct Enemy* p);
@@ -15,6 +21,8 @@ const EnemyRoutine gSnakecordRoutine = {
     [ENTITY_DISAPPEAR] = (void*)DeleteEnemy,
     [ENTITY_EXIT] =      (void*)DeleteEntity,
 };
+
+void FUN_08074f34(struct Enemy* p);
 // clang-format on
 
 u32 FUN_08073ea8(struct Entity* p, s32 dx) {
@@ -195,7 +203,94 @@ static bool8 FUN_0807415c(struct Enemy* p) {
   return FALSE;
 }
 
-INCASM("asm/enemy/snakecord.inc");
+INCASM("asm/enemy/snakecord_a.inc");
+
+void FUN_080742ec(struct Enemy* p) {
+  struct Entity** slot;
+  struct Entity* e;
+  const struct Coord* c;
+  u8* t;
+  u32 st;
+  if ((p->s).work[0] != 0) {
+    return;
+  }
+  if ((p->s).mode[1] == 1) {
+    return;
+  }
+  t = (u8*)&p->buffer[0];
+  e = *(struct Entity**)t;
+  slot = (struct Entity**)t;
+  asm("" : "+l"(slot));
+  if (e != NULL) {
+    return;
+  }
+  st = (p->body).status;
+  if (!(st & 1)) {
+    return;
+  }
+  st &= 0x20000;
+  if (st != 0) {
+    (p->s).mode[1] = 0xA;
+    (p->s).mode[2] = 0;
+    return;
+  }
+  if ((*((u8*)p + 0x97) & 0xF0) == 0x20) {
+    c = &sElementCoords[1];
+    asm("" : "+l"(c));
+  } else {
+    c = &sElementCoords[0];
+    asm("" : "+l"(c));
+  }
+  *slot = ApplyElementEffect(0, (struct CollisionObject*)p, c);
+  asm("" : "+l"(slot));
+  if (*slot != NULL) {
+    (p->s).mode[1] = 0;
+    (p->s).mode[2] = 0;
+  }
+}
+
+INCASM("asm/enemy/snakecord_b.inc");
+
+void FUN_08074f34(struct Enemy* p) {
+  register s32 m asm("r5");
+  m = (p->s).mode[2];
+  switch (m) {
+    case 0:
+      (p->s).renderPrio = 0xF;
+      SetDDP(&p->body, &sCollisions[8]);
+      SetMotion(&p->s, MOTION(0x28, 0x0B));
+      (p->s).unk_2c = FUN_080bb830(&p->s);
+      (p->s).work[2] = m;
+      (p->s).mode[2]++;
+      /* fallthrough */
+    case 1: {
+      register struct Zero* z asm("r3");
+      s32 zx;
+      if ((p->s).work[2] == 0) {
+        (p->s).work[2] = 0x18;
+        PlaySound(0x3B);
+      }
+      (p->s).work[2]--;
+      z = pZero2;
+      zx = (z->s).coord.x;
+      (p->s).coord.x = zx + 0x800;
+      {
+        s32 t;
+        u32 f = (p->s).flags & X_FLIP;
+        t = zx + 0x7F0;
+        if (f) {
+          t = zx - 0x800;
+        }
+        (p->s).coord.x = t;
+      }
+      (p->s).coord.y = (z->s).coord.y - 0x800;
+      UpdateEntityAnim(&p->s);
+      break;
+    }
+  }
+}
+
+INCASM("asm/enemy/snakecord_c.inc");
 
 // --------------------------------------------
 
