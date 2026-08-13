@@ -6,6 +6,8 @@
 #include "script.h"
 #include "sound.h"
 #include "stagerun.h"
+#include "element.h"
+#include "zero.h"
 
 typedef struct {
   COLLISION_OBJECT_HDR;    // 0x00
@@ -34,7 +36,7 @@ const BossRoutine gCubitRoutine = {
 // clang-format on
 
 Cubit* Unused_CreateCubit(Coords32* c, u8 n) {
-  Cubit* p = AllocEntityLast(gBossHeaderPtr);
+  Cubit* p = (Cubit*)AllocEntityLast(gBossHeaderPtr);
   if (p != NULL) {
     INIT_BOSS_ROUTINE(p, BOSS_CUBIT);
     p->coord = *c;
@@ -128,7 +130,411 @@ INCASM("asm/boss/cubit_d.inc");
 
 bool8 FUN_08052f08(Cubit* p) { return TRUE; }
 
-INCASM("asm/boss/cubit_e.inc");
+void cubitMode4(Cubit* p0) {
+  register Cubit* p asm("r6");
+  p = p0;
+  switch (p->mode[2]) {
+    case 0: {
+      register u8* c asm("r3");
+      register s32* t4 asm("r4");
+      c = (u8*)p + 0xca;
+      *c = 1;
+      {
+        s32* t = (s32*)((u8*)p + 0xd8);
+        s32 cx = p->coord.x;
+        s32 mid = *t;
+        t4 = t;
+        asm("" : "+r"(t4));
+        if (cx > mid) {
+          t += 2;
+          asm("" : "+r"(t));
+          if (cx > mid + (*t >> 1)) {
+            *c = 2;
+          }
+        } else {
+          if (cx < mid - (*(s32*)((u8*)p + 0xe0) >> 1)) {
+            *c = 0;
+          }
+        }
+      }
+      {
+        s32 tx = *t4;
+        s32 cy = p->coord.y;
+        s32 ty = cy + -0x3200;
+        p->work[2] = 0x18;
+        p->d.x = (tx - p->coord.x) / 0x18;
+        {
+          s32 k5 = 0xA2 << 7;
+          asm("" : "+r"(k5));
+          p->d.y = -((k5 - (ty - cy)) / 0x18);
+        }
+        p->work[2] = 0x17;
+      }
+      SetMotion((struct Entity*)p, MOTION(0xB0, 0x15));
+      p->mode[2]++;
+      FALLTHROUGH;
+    }
+    case 1:
+      UpdateEntityAnim((struct Entity*)p);
+      if (p->motion.state != 3) {
+        break;
+      }
+      p->mode[2]++;
+      break;
+    case 2: {
+      u32 z;
+      {
+        u8* c8 = (u8*)p + 0xc8;
+        z = 0;
+        *c8 = 1;
+      }
+      SetMotion((struct Entity*)p, MOTION(0xB0, 0x16));
+      SetDDP(&p->body, &sCollisions[1]);
+      p->work[3] = z;
+      p->mode[2]++;
+      FALLTHROUGH;
+    }
+    case 3: {
+      s32 vy = p->d.y + 0x48;
+      p->d.y = vy;
+      {
+        s32 cx = p->coord.x;
+        cx += p->d.x;
+        p->coord.x = cx;
+      }
+      {
+        s32 cy = p->coord.y;
+        p->coord.y = cy + vy;
+      }
+      if (p->work[3] == 0) {
+        if (vy > 0) {
+          p->work[3] = 1;
+          SetMotion((struct Entity*)p, MOTION(0xB0, 0x17));
+        }
+      }
+      UpdateEntityAnim((struct Entity*)p);
+      {
+        u32 w = p->work[2];
+        if (w != 0) {
+          w--;
+          p->work[2] = w;
+          if ((w << 24) != 0) {
+            break;
+          }
+        }
+      }
+      p->mode[2]++;
+      break;
+    }
+    case 4: {
+      s32 tx = 0;
+      s32 fy;
+      u32 z;
+      {
+        u32 k = *((u8*)p + 0xca);
+        if (k == 0) {
+          tx = *(s32*)((u8*)p + 0xdc);
+        } else if (k == 1) {
+          if ((pZero2->s).coord.x > *(s32*)((u8*)p + 0xd8)) {
+            tx = *(s32*)((u8*)p + 0xdc);
+          } else {
+            tx = *(s32*)((u8*)p + 0xd4);
+          }
+        } else if (k == 2) {
+          tx = *(s32*)((u8*)p + 0xd4);
+        }
+      }
+      fy = FUN_08009f6c(p->coord.x, p->coord.y);
+      z = 0;
+      p->work[2] = 0x28;
+      InitScalerotMotion1((struct Entity*)p);
+      ResetDynamicMotion((struct Entity*)p);
+      SetMotion((struct Entity*)p, MOTION(0xB0, 0x18));
+      p->unk_coord.x = z;
+      p->unk_coord.y = 0x52;
+      {
+        u8* t = (u8*)p + 0x24;
+        *t = z;
+        t += 0x2c;
+        {
+          u16 k1 = 0x80 << 1;
+          *(u16*)t = k1;
+          t += 2;
+          asm("" : "+r"(t));
+          *(u16*)t = k1;
+        }
+      }
+      p->d.x = (tx - p->coord.x) / p->work[2];
+      {
+        s32 w = p->work[2];
+        s32 h = (w + 1) >> 1;
+        s32 T = h * w;
+        s32 num = ((T << 3) + T) << 3;
+        fy -= p->coord.y;
+        num -= fy;
+        p->d.y = -(num / w);
+      }
+      p->work[2]--;
+      p->mode[2]++;
+      FALLTHROUGH;
+    }
+    case 5:
+      UpdateEntityAnim((struct Entity*)p);
+      if (p->motion.state != 3) {
+        break;
+      }
+      p->mode[2]++;
+      break;
+    case 6: {
+      if (p->d.x > 0) {
+        *((u8*)p + 0x4c) = 1;
+        {
+          register u8* oa asm("r2");
+          register u32 k asm("r1");
+          oa = (u8*)p + 0x4a;
+          {
+            u32 ov = *oa;
+            asm("" : "+r"(ov));
+            k = 0x10;
+            ov |= k;
+            *oa = ov;
+          }
+          k |= p->flags;
+          p->flags = k;
+        }
+      } else {
+        u8* a4c = (u8*)p + 0x4c;
+        u32 z = 0;
+        *a4c = z;
+        {
+          u8* oa = (u8*)p + 0x4a;
+          s32 ov = *oa;
+          s32 m11 = z - 0x11;
+          m11 &= ov;
+          *oa = m11;
+        }
+        p->flags &= 0xEF;
+      }
+      PlaySound(0xCA);
+      SetMotion((struct Entity*)p, MOTION(0xB0, 0x19));
+      SetDDP(&p->body, (const struct Collision*)0x8363A20);
+      p->coord.y += -0x2800;
+      gElFxManager.delay = 4;
+      p->mode[2]++;
+      FALLTHROUGH;
+    }
+    case 7: {
+      {
+        s32 vy = p->d.y + 0x48;
+        p->d.y = vy;
+        {
+          s32 cx = p->coord.x;
+          cx += p->d.x;
+          p->coord.x = cx;
+        }
+        {
+          s32 cy = p->coord.y;
+          p->coord.y = cy + vy;
+        }
+      }
+      {
+        register u8* stp asm("r5");
+        u32 st7 = p->motion.state;
+        stp = (u8*)p + 0x70;
+        if (st7 == 3) {
+        if (((p->motionID << 8) | *stp) == MOTION(0xB0, 0x19)) {
+          u32 xf = ((p->flags >> 4) ^ 1) & 1;
+          u32 xf2;
+          (p->spr).xflip = xf;
+          xf2 = ((p->flags >> 4) ^ 1) & 1;
+          {
+            register u8* oa asm("r4");
+            u32 sh4;
+            s32 ov;
+            s32 m11;
+            oa = (u8*)p + 0x4a;
+            sh4 = xf2 << 4;
+            ov = *oa;
+            m11 = -0x11;
+            m11 &= ov;
+            m11 |= sh4;
+            *oa = m11;
+          }
+          if (xf2 != 0) {
+            p->flags |= 0x10;
+          } else {
+            p->flags &= 0xEF;
+          }
+          {
+            register s32 t asm("r1");
+            register u32 m asm("r0");
+            {
+              register s32 v0 asm("r0");
+              v0 = p->unk_coord.x;
+              t = v0 >> 4;
+            }
+            m = 0xFF;
+            t &= m;
+            if (t <= 0x7F) {
+              m = 0xFE;
+            }
+            p->unk_coord.x = m - t;
+            p->unk_coord.x = *(volatile s32*)&p->unk_coord.x << 4;
+          }
+          SetMotion((struct Entity*)p, MOTION(0xB0, 0x1F));
+        } else {
+          u32 xf = ((p->flags >> 4) ^ 1) & 1;
+          u32 xf2;
+          (p->spr).xflip = xf;
+          xf2 = ((p->flags >> 4) ^ 1) & 1;
+          {
+            register u8* oa asm("r4");
+            u32 sh4;
+            s32 ov;
+            s32 m11;
+            oa = (u8*)p + 0x4a;
+            sh4 = xf2 << 4;
+            ov = *oa;
+            m11 = -0x11;
+            m11 &= ov;
+            m11 |= sh4;
+            *oa = m11;
+          }
+          if (xf2 != 0) {
+            p->flags |= 0x10;
+          } else {
+            p->flags &= 0xEF;
+          }
+          {
+            register s32 t asm("r1");
+            register u32 m asm("r0");
+            {
+              register s32 v0 asm("r0");
+              v0 = p->unk_coord.x;
+              t = v0 >> 4;
+            }
+            m = 0xFF;
+            t &= m;
+            if (t <= 0x7F) {
+              m = 0xFE;
+            }
+            p->unk_coord.x = m - t;
+            p->unk_coord.x = *(volatile s32*)&p->unk_coord.x << 4;
+          }
+          SetMotion((struct Entity*)p, MOTION(0xB0, 0x19));
+        }
+        }
+      UpdateEntityAnim((struct Entity*)p);
+      {
+        register s32 v asm("r0");
+        if (p->d.x > 0) {
+          if (((p->motionID << 8) | *stp) == MOTION(0xB0, 0x19)) {
+            {
+              register s32 ax asm("r0");
+              register s32 ay asm("r1");
+              ax = p->unk_coord.x;
+              ay = p->unk_coord.y;
+              v = ax - ay;
+            }
+            asm("" : "+r"(v));
+          } else {
+            {
+              register s32 ax asm("r0");
+              register s32 ay asm("r1");
+              ax = p->unk_coord.x;
+              ay = p->unk_coord.y;
+              v = ax + ay;
+            }
+          }
+        } else {
+          if (((p->motionID << 8) | *stp) == MOTION(0xB0, 0x19)) {
+            {
+              register s32 ax asm("r0");
+              register s32 ay asm("r1");
+              ax = p->unk_coord.x;
+              ay = p->unk_coord.y;
+              v = ax - ay;
+            }
+          } else {
+            {
+              register s32 ax asm("r0");
+              register s32 ay asm("r1");
+              ax = p->unk_coord.x;
+              ay = p->unk_coord.y;
+              v = ax + ay;
+            }
+          }
+        }
+        p->unk_coord.x = v;
+      }
+      }
+      p->angle = *(volatile s32*)&p->unk_coord.x >> 4;
+      {
+        u32 w = p->work[2];
+        if (w != 0) {
+          w--;
+          p->work[2] = w;
+          if ((w << 24) != 0) {
+            break;
+          }
+        }
+      }
+      p->mode[2]++;
+      break;
+    }
+    case 8: {
+      u32 z;
+      {
+        u8* c8 = (u8*)p + 0xc8;
+        z = 0;
+        *c8 = z;
+      }
+      gElFxManager.delay = 4;
+      {
+        u8* t = (u8*)p + 0x24;
+        *t = z;
+        t += 0x2c;
+        {
+          u16 k1 = 0x80 << 1;
+          *(u16*)t = k1;
+          t += 2;
+          asm("" : "+r"(t));
+          *(u16*)t = k1;
+        }
+      }
+      SetMotion((struct Entity*)p, MOTION(0xB0, 0x1A));
+      SetDDP(&p->body, &sCollisions[1]);
+      p->coord.y = FUN_08009f6c(p->coord.x, p->coord.y + -0x3C00);
+      p->mode[2]++;
+      FALLTHROUGH;
+    }
+    case 9:
+      UpdateEntityAnim((struct Entity*)p);
+      if (p->motion.state != 3) {
+        break;
+      }
+      p->mode[2]++;
+      break;
+    case 10:
+      InitNonAffineMotion((struct Entity*)p);
+      ResetDynamicMotion((struct Entity*)p);
+      SetMotion((struct Entity*)p, MOTION(0xB0, 0x1B));
+      SetDDP(&p->body, &sCollisions[1]);
+      p->mode[2]++;
+      FALLTHROUGH;
+    case 11: {
+      u32 st;
+      UpdateEntityAnim((struct Entity*)p);
+      st = p->motion.state;
+      if (st != 3) {
+        break;
+      }
+      p->mode[1] = st;
+      p->mode[2] = 0;
+      break;
+    }
+  }
+}
 
 bool8 FUN_080533bc(Cubit* p) { return TRUE; }
 
