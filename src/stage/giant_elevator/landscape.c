@@ -157,7 +157,430 @@ static const StageLayerRoutine sLayerRoutine[9] = {
 };
 // clang-format on
 
-INCASM("asm/stage_gfx/giant_elevator.inc");
+INCASM("asm/stage_gfx/giant_elevator_a.inc");
+
+void gelevator_080142b4(struct StageLayer* l, const struct Stage* stage) {
+  u32 b;
+  {
+    register u32 t asm("r0");
+    t = l->bgIdx;
+    t <<= 16;
+    b = t >> 16;
+  }
+  switch (l->phase) {
+    case 0: {
+      register u32 r5v asm("r5");
+      register u32 r6v asm("r6");
+      s32 z;
+      r5v = (u32)((u8*)&gVideoRegBuffer + 4) + (b >> 4) * 2;
+      {
+        register u32 v asm("r0");
+        register u32 sb asm("r1");
+        register u32 k asm("r3");
+        v = l->prio;
+        sb = l->screenBase;
+        v |= sb;
+        k = 0x8044;
+        asm("" : "+l"(k));
+        sb = k;
+        asm("" : "+l"(sb));
+        *(u16*)r5v = v | sb;
+      }
+      {
+        register u32 t asm("r0");
+        t = (u8)b;
+        asm("" : "+l"(t));
+        r6v = (u32)gBgMapOffsets;
+        asm("" : "+l"(r6v));
+        z = 0;
+        ((void (*)(u32, const u32*, u32, u32, u32))LoadBgMap)(t, (const u32*)r6v, 0x60, 0, z);
+      }
+      {
+        register u32 w asm("r0");
+        register u32 m asm("r1");
+        m = *(u16*)r5v;
+        w = 0xf8 << 5;
+        w &= m;
+        w <<= 3;
+        r5v = 0x06000800;
+        asm("" : "+l"(r5v));
+        loadBgMap_08004248((u16*)((u8*)w + r5v), (const u32*)r6v, 0x5f, 0, z);
+      }
+      {
+        register u8* g asm("r1");
+        register u32 o2 asm("r2");
+        register u32 o3 asm("r3");
+        g = (u8*)&gOverworld;
+        r6v = 0x2D034;
+        { register s32* dd asm("r0"); dd = (s32*)(g + r6v); *dd = z; }
+        o2 = 0x2D038;
+        { register s32* dd asm("r0"); dd = (s32*)(g + o2); *dd = z; }
+        o3 = 0x2D03C;
+        { register s32* dd asm("r0"); dd = (s32*)(g + o3); *dd = z; }
+        r5v = 0x2D044;
+        { register s32* dd asm("r0"); dd = (s32*)(g + r5v); *dd = z; }
+        r6v += 0x14;
+        { register s32* dd asm("r0"); dd = (s32*)(g + r6v); *dd = z; }
+        o2 += 0x18;
+        { register s32* dd asm("r0"); dd = (s32*)(g + o2); *dd = z; }
+        o3 += 0x18;
+        { register s32* dd asm("r0"); dd = (s32*)(g + o3); *dd = z; }
+        r5v -= 0x14;
+        { register s32* dd asm("r0"); dd = (s32*)(g + r5v); *dd = z; }
+        r6v -= 8;
+        { register s32* dd asm("r0"); dd = (s32*)(g + r6v); *dd = z; }
+        {
+          register u32 o5 asm("r0");
+          o5 = 0x2D04C;
+          g = g + o5;
+          *(s32*)g = z;
+        }
+      }
+      l->unk_10 = 0x80;
+      l->unk_12 = z;
+      l->phase++;
+      FALLTHROUGH;
+    }
+    case 1: {
+      u8* owg = (u8*)&gOverworld;
+      asm("" : "+l"(owg));
+      if (*(owg + 0x2D024) <= 2) {
+        goto tail;
+      }
+    }
+      PlaySound(0x141);
+      AppendQuake(4, (struct Coord*)((u8*)&gStageRun + 288));
+      l->phase++;
+      FALLTHROUGH;
+    case 2:
+    case 4:
+    case 6:
+    case 8: {
+      register u8* g asm("r2");
+      g = (u8*)&gOverworld;
+      {
+        register u32 o asm("r3");
+        register s32 v asm("r1");
+        register s32 lim asm("r0");
+        o = 0x2D038;
+        v = *(s32*)(g + o);
+        lim = 0x80 << 9;
+        if (v <= lim) {
+          goto tail;
+        }
+      }
+      {
+        register u32 o asm("r5");
+        register u8* q asm("r0");
+        register u32 v asm("r1");
+        o = 0x2D024;
+        q = g + o;
+        v = *q + 1;
+        *q = v;
+      }
+      goto inc;
+    }
+    case 3:
+    case 5:
+    case 7: {
+      register u8* g asm("r0");
+      register s32 v asm("r0");
+      {
+        register u8* gg asm("r0");
+        register u32 o asm("r6");
+        register u8* d asm("r2");
+        register s32 k asm("r1");
+        gg = (u8*)&gOverworld;
+        o = 0x2D038;
+        asm("" : "+l"(o));
+        d = gg + o;
+        k = 0x80 << 9;
+        *(s32*)d = k;
+        {
+          register u32 o2 asm("r1");
+          o2 = 0x2D024;
+          asm("" : "+l"(o2));
+          gg = gg + o2;
+        }
+        {
+          register u32 fl asm("r1");
+          register u32 m asm("r0");
+          fl = *gg;
+          m = 1;
+          m &= fl;
+          if (m == 0) {
+            goto tail;
+          }
+        }
+      }
+      if (l->phase == 3) {
+        StopSound(0x141);
+        PlaySound(0xa1 << 1);
+        v = 0x80 << 2;
+      } else {
+        StopSound(0xa1 << 1);
+        PlaySound(0x141);
+        v = 0x80;
+      }
+      l->unk_10 = v;
+      {
+        register u8* gg asm("r0");
+        register u32 o asm("r2");
+        register s32 k asm("r1");
+        gg = (u8*)&gOverworld;
+        o = 0x2D038;
+        asm("" : "+l"(o));
+        gg = gg + o;
+        k = 0xFFFF0000;
+        *(s32*)gg = k;
+      }
+      inc:
+      l->phase++;
+      goto tail;
+    }
+    case 9: {
+      register u32 t asm("r0");
+      t = l->unk_12;
+      if (t <= 0x3f) {
+        l->unk_12 = t + 1;
+        goto common;
+      }
+      {
+        register u8* g asm("r4");
+        register s32* q asm("r6");
+        register s32 big asm("r5");
+        register s32 d asm("r1");
+        g = (u8*)&gOverworld;
+        {
+          register u32 o asm("r3");
+          o = 0x2D03C;
+          asm("" : "+l"(o));
+          q = (s32*)(g + o);
+        }
+        {
+          register s32 v asm("r0");
+          v = *q;
+          big = 0xf0 << 9;
+          v = big - v;
+          d = v >> 5;
+        }
+        {
+          register s32* r asm("r2");
+          register u32 o asm("r0");
+          o = 0x2D030;
+          r = (s32*)(g + o);
+          if (d < *r) {
+            *r = d;
+          }
+        }
+        if (d != 0) {
+          goto common;
+        }
+        ShiftMetatile(0xf7, 0x64, (void*)0x083458B4);
+        *q = big;
+        StopSound(0x141);
+        StopSound(0xa1 << 1);
+        PlaySound(0x143);
+        PlaySound(0xa2 << 1);
+        AppendQuake(2, (struct Coord*)((u8*)&gStageRun + 288));
+        {
+          register u8* c asm("r1");
+          register u32 o asm("r2");
+          register s32 v asm("r0");
+          o = 0x2D024;
+          asm("" : "+l"(o));
+          c = g + o;
+          v = *c + 1;
+          *c = v;
+        }
+        l->phase++;
+      }
+    }
+    common : {
+      register u8* g asm("r3");
+      register s32* q asm("r4");
+      register const s16* tb asm("r6");
+      u32 i;
+      s32 acc;
+      s32 r5v;
+      s32 sum;
+      g = (u8*)&gOverworld;
+      {
+        register u32 oq asm("r5");
+        oq = 0x2D03C;
+        asm("" : "+l"(oq));
+        q = (s32*)(g + oq);
+      }
+      tb = gSineTable;
+      i = *(u8*)((u8*)l + 0x12);
+      acc = *(const s16*)((i * 2) + (u32)tb);
+      r5v = *(s32*)(g + 0x2D030);
+      {
+        s32 am = acc;
+        am *= r5v;
+        am >>= 8;
+        sum = *q + am;
+        *q = sum;
+      }
+      q = (s32*)(g + 0x2D038);
+      i += 0x40;
+      {
+        s32 v2 = *(const s16*)(((u8)i * 2) + (u32)tb);
+        s32 w = v2;
+        w *= r5v;
+        w >>= 8;
+        *q = *q + w;
+      }
+      g = g + 0x2D034;
+      {
+        s32 v = ((s32)l->viewportLeftTopPixel.x << 8) - 0xE6800;
+        v >>= 2;
+        *(s32*)g = sum + v;
+      }
+    }
+      goto tail;
+    case 10: {
+      register u8* g asm("r1");
+      register s32* d asm("r2");
+      register s32* q asm("r1");
+      register s32 v asm("r0");
+      g = (u8*)&gOverworld;
+      {
+        register u32 o asm("r3");
+        o = 0x2D034;
+        d = (s32*)(g + o);
+      }
+      {
+        register u32 o asm("r5");
+        o = 0x2D03C;
+        q = (s32*)(g + o);
+      }
+      v = ((s32)l->viewportLeftTopPixel.x << 8) - 0xE6800;
+      v >>= 2;
+      *d = *q + v;
+    }
+      goto tail;
+  }
+tail : {
+  register u32 ph asm("r4");
+  ph = l->phase;
+  if (ph <= 8) {
+    register u8* g asm("r2");
+    register s32 raw asm("r1");
+    g = (u8*)&gOverworld;
+    {
+      register s32* d asm("r3");
+      register s32 v asm("r0");
+      d = (s32*)(g + 0x2D034);
+      raw = ((s32)l->viewportLeftTopPixel.x << 8) - 0xE6800;
+      v = raw >> 2;
+      *d = v;
+    }
+    {
+      register s32* d asm("r3");
+      register u32 o asm("r6");
+      register s32 v asm("r0");
+      o = 0x2D044;
+      d = (s32*)(g + o);
+      v = raw << 1;
+      v += raw;
+      v >>= 4;
+      *d = v;
+    }
+    {
+      register u32 o asm("r0");
+      o = 0x2D050;
+      g = g + o;
+      raw >>= 3;
+      *(s32*)g = raw;
+    }
+  }
+  {
+    u32 pt = ph - 2;
+    if ((u8)pt > 6) {
+      goto done;
+    }
+    asm volatile("" :: "l"(ph));
+  }
+  }
+  {
+    register u8* g asm("r5");
+    register s32* r asm("r2");
+    register s32 t3 asm("r3");
+    register s32 q4 asm("r4");
+    register u32 w6 asm("r6");
+    g = (u8*)&gOverworld;
+    {
+      register u32 o asm("r1");
+      o = 0x2D030;
+      r = (s32*)(g + o);
+    }
+    {
+      register u32 w asm("r1");
+      register s32 v asm("r0");
+      w = l->unk_10;
+      v = w << 1;
+      q4 = v + w;
+      t3 = q4 << 1;
+      v = *r;
+      w6 = w;
+      if (v < t3) {
+        *r = v + 6;
+      }
+    }
+    if (*r > t3) {
+      *r = *r - 6;
+    }
+    {
+      register u32 o asm("r3");
+      register s32* d asm("r0");
+      o = 0x2D038;
+      d = (s32*)(g + o);
+      *d = *d + *r;
+    }
+    {
+      register u32 o asm("r0");
+      register s32 lim asm("r1");
+      o = 0x2D040;
+      r = (s32*)(g + o);
+      lim = w6 << 2;
+      if (*r < lim) {
+        *r = *r + 4;
+      }
+      if (*r > lim) {
+        *r = *r - 4;
+      }
+    }
+    {
+      register u32 o asm("r1");
+      register s32* d asm("r0");
+      o = 0x2D048;
+      d = (s32*)(g + o);
+      *d = *d + *r;
+    }
+    {
+      register u32 o asm("r3");
+      o = 0x2D04C;
+      r = (s32*)(g + o);
+    }
+    if (*r < q4) {
+      *r = *r + 3;
+    }
+    if (*r > q4) {
+      *r = *r - 3;
+    }
+    {
+      register u32 o asm("r6");
+      register s32* d asm("r0");
+      o = 0x2D054;
+      d = (s32*)(g + o);
+      *d = *d + *r;
+    }
+  }
+done:;
+}
+
+INCASM("asm/stage_gfx/giant_elevator_b.inc");
 
 static const MetatileShift sMetatileShift2;
 
