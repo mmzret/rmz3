@@ -1,8 +1,83 @@
 #include "collision.h"
 #include "enemy.h"
 #include "global.h"
+#include "text.h"
+#include "minigame.h"
 
-INCASM("asm/enemy/minigame_leviathan.inc");
+extern const u8 StrCOMBO[];
+extern const u8 StrMISS[];
+extern const u8 StrPlusSEC[];
+extern const u8 StrSEC[];
+
+INCASM("asm/enemy/minigame_leviathan_a.inc");
+
+void FUN_0809aa10(struct Sprite* spr, struct DrawPivot* pivot) {
+  struct Entity* e = (struct Entity*)spr->sprites;
+  s32 x = (e->coord.x - pivot->lefttop.x) >> 8;
+  s32 y = (e->coord.y - pivot->lefttop.y) >> 8;
+  x -= 0x10;
+  x /= 8;
+  if (x < 0) {
+    x = 0;
+  } else if (x + 4 > 0x1E) {
+    x = 0x1A;
+  }
+  y += 0x10;
+  y /= 8;
+  if (y <= 0) {
+    y = 1;
+  } else if (y > 0x11) {
+    y = 0x11;
+  }
+  PrintJISString((const char_t*)StrMISS, x, y);
+  PrintJISString((const char_t*)StrSEC, x + 2, ++y);
+  {
+    s32 a0 = e->d.x;
+    u16 a1 = (u16)x;
+    y = (s32)((u32)y << 16);
+    y = (s32)((u32)y >> 16);
+    PrintMinigameNumber(a0, a1, y);
+    asm volatile("" ::"l"(y));
+  }
+}
+
+void FUN_0809aa90(struct Sprite* spr, struct DrawPivot* pivot) {
+  struct Entity* e = (struct Entity*)spr->sprites;
+  s32 x = (e->coord.x - pivot->lefttop.x) >> 8;
+  s32 y = (e->coord.y - pivot->lefttop.y) >> 8;
+  x -= 0x10;
+  x /= 8;
+  {
+    u8 lim = e->work[3];
+    if (x - lim + 1 < 0) {
+      x = lim - 1;
+    } else if (x + 7 > 0x1E) {
+      x = 0x17;
+    }
+  }
+  y += 0x10;
+  y /= 8;
+  if (y <= 0) {
+    y = 1;
+  } else if (y > 0x11) {
+    y = 0x11;
+  }
+  if (e->unk_coord.y > 1) {
+    PrintMinigameNumber(e->unk_coord.y, (u16)x, (u16)y);
+    PrintJISString((const char_t*)StrCOMBO, x + 2, y);
+  }
+  PrintJISString((const char_t*)StrPlusSEC, x, ++y);
+  {
+    s32 a0 = e->d.x;
+    u16 a1 = (u16)(x + 1);
+    y = (s32)((u32)y << 16);
+    y = (s32)((u32)y >> 16);
+    PrintMinigameNumber(a0, a1, y);
+    asm volatile("" ::"l"(y));
+  }
+}
+
+INCASM("asm/enemy/minigame_leviathan_b.inc");
 
 void LeviathanMinigameEnemy_Init(struct Enemy* p);
 void LeviathanMinigameEnemy_Update(struct Enemy* p);
@@ -10,9 +85,9 @@ void LeviathanMinigameEnemy_Die(struct Enemy* p);
 
 // clang-format off
 const EnemyRoutine gLeviathanMinigameEnemyRoutine = {
-    [ENTITY_INIT] =      LeviathanMinigameEnemy_Init,
-    [ENTITY_UPDATE] =    LeviathanMinigameEnemy_Update,
-    [ENTITY_DIE] =       LeviathanMinigameEnemy_Die,
+    [ENTITY_INIT] =      (void*)LeviathanMinigameEnemy_Init,
+    [ENTITY_UPDATE] =    (void*)LeviathanMinigameEnemy_Update,
+    [ENTITY_DIE] =       (void*)LeviathanMinigameEnemy_Die,
     [ENTITY_DISAPPEAR] = (void*)DeleteEnemy,
     [ENTITY_EXIT] =      (EnemyFunc)DeleteEntity,
 };
