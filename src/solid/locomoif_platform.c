@@ -3,6 +3,8 @@
 #include "global.h"
 #include "solid.h"
 
+void FUN_080ce538(struct Solid* p);
+
 // ロコモIF戦で出現する台座
 typedef struct {
   COLLISION_OBJECT_HDR;
@@ -13,9 +15,9 @@ static_assert(sizeof(LocomoIFPlatform) == sizeof(struct Solid));
 
 // ------------------------------------------------------------------------------------------------------------------------------------
 
-void LocomoIFPlatform_Init(struct Solid* p);
-void LocomoIFPlatform_Update(struct Solid* p);
-void LocomoIFPlatform_Die(struct Solid* p);
+void LocomoIFPlatform_Init(LocomoIFPlatform* p);
+void LocomoIFPlatform_Update(LocomoIFPlatform* p);
+void LocomoIFPlatform_Die(LocomoIFPlatform* p);
 
 // clang-format off
 const SolidRoutine gLocomoIFPlatformRoutine = {
@@ -30,7 +32,7 @@ const SolidRoutine gLocomoIFPlatformRoutine = {
 void CreateLocomoIFPlatform(struct Boss* locomoif) {
   s32 i;
   for (i = 0; i < 2; i++) {
-    LocomoIFPlatform* p = AllocEntityLast(gSolidHeaderPtr);
+    LocomoIFPlatform* p = (LocomoIFPlatform*)AllocEntityLast(gSolidHeaderPtr);
     if (p != NULL) {
       INIT_SOLID_ROUTINE(p, SOLID_LOCOMOIF_PLATFORM);
       p->work[0] = 0;
@@ -40,31 +42,66 @@ void CreateLocomoIFPlatform(struct Boss* locomoif) {
   }
 }
 
-INCASM("asm/solid/locomoif_platform.inc");
+INCASM("asm/solid/locomoif_platform_a.inc");
+
+void FUN_080ce80c(LocomoIFPlatform* p) {
+  struct Entity* owner = p->unk_28;
+  switch (p->mode[2]) {
+    case 0:
+      p->work[2] = 0x40;
+      p->mode[2]++;
+      // fallthrough
+    case 1: {
+      s32 t;
+      u32 zero;
+      u16* q;
+      s32 dx;
+      u32 hv;
+      dx = p->d.x - 4;
+      p->d.x = dx;
+      q = &p->unk_b4;
+      hv = *q + dx;
+      zero = 0;
+      asm("" : "+l"(zero));
+      *q = hv;
+      FUN_080ce538((struct Solid*)p);
+      UpdateEntityAnim((struct Entity*)p);
+      t = p->work[2] - 1;
+      p->work[2] = t;
+      if ((t << 24) == 0) {
+        StopSound(0x10B);
+        *(u8*)((u8*)owner + 0xbd) = zero;
+        p->mode[1] = zero;
+        p->mode[2] = zero;
+      }
+      break;
+    }
+  }
+}
 
 // --------------------------------------------
 
-void nop_080ce70c(struct Solid* p);
+void nop_080ce70c(LocomoIFPlatform* p);
 
 const SolidFunc sLocomoIFPlatformUpdates1[4] = {
-    nop_080ce70c,
-    nop_080ce70c,
-    nop_080ce70c,
-    nop_080ce70c,
+    (SolidFunc)nop_080ce70c,
+    (SolidFunc)nop_080ce70c,
+    (SolidFunc)nop_080ce70c,
+    (SolidFunc)nop_080ce70c,
 };
 
 // --------------------------------------------
 
-void FUN_080ce710(struct Solid* p);
-void FUN_080ce7a4(struct Solid* p);
-void FUN_080ce760(struct Solid* p);
-void FUN_080ce80c(struct Solid* p);
+void FUN_080ce710(LocomoIFPlatform* p);
+void FUN_080ce7a4(LocomoIFPlatform* p);
+void FUN_080ce760(LocomoIFPlatform* p);
+void FUN_080ce80c(LocomoIFPlatform* p);
 
 const SolidFunc sLocomoIFPlatformUpdates2[4] = {
-    FUN_080ce710,
-    FUN_080ce7a4,
-    FUN_080ce760,
-    FUN_080ce80c,
+    (SolidFunc)FUN_080ce710,
+    (SolidFunc)FUN_080ce7a4,
+    (SolidFunc)FUN_080ce760,
+    (SolidFunc)FUN_080ce80c,
 };
 
 // --------------------------------------------
