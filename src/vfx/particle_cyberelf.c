@@ -585,40 +585,29 @@ static void FUN_080c019c(struct CyberelfParticle* p) {
   (p->s).unk_coord.x = 0, (p->s).unk_coord.y = 1;
 }
 
-NAKED static void FUN_080c021c(struct CyberelfParticle* p) {
-  asm(".syntax unified\n\
-	push {r4, lr}\n\
-	adds r3, r0, #0\n\
-	adds r3, #0x74\n\
-	ldrb r1, [r3]\n\
-	ldr r2, _080C0254 @ =gSineTable\n\
-	lsls r1, r1, #0x1a\n\
-	lsrs r1, r1, #0x17\n\
-	adds r1, r1, r2\n\
-	movs r4, #0\n\
-	ldrsh r2, [r1, r4]\n\
-	lsls r2, r2, #1\n\
-	ldr r1, [r0, #0x78]\n\
-	adds r1, r1, r2\n\
-	str r1, [r0, #0x54]\n\
-	ldrb r1, [r3]\n\
-	adds r2, r1, #1\n\
-	adds r0, r2, #0\n\
-	cmp r2, #0\n\
-	bge _080C0246\n\
-	adds r0, r1, #0\n\
-	adds r0, #0x40\n\
-_080C0246:\n\
-	asrs r0, r0, #6\n\
-	lsls r0, r0, #6\n\
-	subs r0, r2, r0\n\
-	strb r0, [r3]\n\
-	pop {r4}\n\
-	pop {r0}\n\
-	bx r0\n\
-	.align 2, 0\n\
-_080C0254: .4byte gSineTable\n\
- .syntax divided\n");
+static void FUN_080c021c(struct CyberelfParticle* p) {
+  u8* rp = &p->rng;
+  {
+    u32 idx = *rp << 2;
+    (p->s).coord.x = p->x + (SIN(idx) << 1);
+  }
+  {
+    register s32 v asm("r1");
+    register s32 q asm("r2");
+    s32 t;
+    v = *rp;
+    asm("" : "+l"(v));
+    q = v + 1;
+    t = q;
+    if (q < 0) {
+      t = v + 0x40;
+    }
+    {
+      register s32 res asm("r0");
+      res = q - ((t >> 6) << 6);
+      *rp = res;
+    }
+  }
 }
 
 static void nop_080c0258(void* _) {}
