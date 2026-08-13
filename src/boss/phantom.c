@@ -4,6 +4,9 @@
 #include "overworld.h"
 #include "zero.h"
 
+u8 FUN_08060838(struct Boss* p);
+static const BossFunc PTR_ARRAY_08365568[2];
+
 struct BossPhantom {
   COLLISION_OBJECT_HDR;  // 0x00
   u8 unk_b4[20];         // 0xB4
@@ -251,11 +254,11 @@ static void Phantom_Update(struct BossPhantom* p) {
     if (p->unk_d0 != NULL) p->unk_d0 = NULL;
     SET_BOSS_ROUTINE(p, ENTITY_DIE);
     p->mode[1] = 0;
-    Phantom_Die((void*)p);
+    Phantom_Die((struct Boss*)p);
     return;
   }
   sUpdates[p->work[0]]((void*)p);
-  phantom_080607e4((void*)p);
+  phantom_080607e4((struct Entity*)p);
 }
 
 static const EntityFunc _sUpdates[7];
@@ -274,14 +277,14 @@ static void FUN_0805efbc(Object* p) {
   FUN_080607a0((void*)p, 0);
   RANDOM(RNG_0202f388);
   p->work[2] = 1;
-  FUN_0805f004(p);
+  FUN_0805f004((Object*)p);
 }
 
-void FUN_080607f0(void*);
+void FUN_080607f0(struct Boss* p0);
 
 static void FUN_0805f004(Object* p) {
   s32 i;
-  FUN_080607f0(p);
+  FUN_080607f0((struct Boss*)p);
   i = p->work[2] - 1;
   p->work[2] = i;
   if (i) {
@@ -310,7 +313,88 @@ static void FUN_0805f004(Object* p) {
   }
 }
 
-INCASM("asm/boss/phantom.inc");
+INCASM("asm/boss/phantom_a.inc");
+
+void FUN_080607f0(struct Boss* p0) {
+  register struct Boss* p asm("r5");
+  register u32 one asm("r4");
+  p = p0;
+  {
+    register u32 v asm("r1");
+    u32 r = ((s32(*)(struct Boss*))FUN_08060838)(p);
+    one = 1;
+    v = one;
+    v &= r;
+    {
+      register u8* q asm("r0");
+      q = (u8*)p + 0x4c;
+      *q = v;
+    }
+  }
+  {
+    u32 r = ((s32(*)(struct Boss*))FUN_08060838)(p);
+    register u8* oa asm("r3");
+    oa = (u8*)p + 0x4a;
+    one &= r;
+    {
+      register u32 sh asm("r2");
+      s32 m;
+      s32 ov0;
+      s32 ov;
+      sh = one << 4;
+      ov = *oa;
+      m = -0x11;
+      m &= ov;
+      m |= sh;
+      *oa = m;
+    }
+  }
+  if (one != 0) {
+    u32 f = p->flags;
+    u32 k = 0x10;
+    f |= k;
+    p->flags = f;
+  } else {
+    u32 f = p->flags;
+    u32 v = 0xEF;
+    v &= f;
+    p->flags = v;
+  }
+}
+
+INCASM("asm/boss/phantom_b.inc");
+
+void FUN_08060a48(struct Boss* p0, s8 n0) {
+  register struct Boss* p asm("r6");
+  u8 n;
+  struct Coord c[3];
+  struct Entity* q;
+  s32 i;
+  u32 d;
+  p = p0;
+  n = n0;
+  q = p->unk_2c;
+  c[0] = q->coord;
+  c[1] = q->d;
+  c[2] = q->unk_coord;
+  i = 0;
+  if (q->mode[2] > 1) {
+    i = 1;
+  }
+  do {
+    if (((bool8(*)(struct Boss*, struct Coord*, struct Coord*, struct Coord*))PTR_ARRAY_08365568[i])(p, &c[0], &c[1], &c[2])) {
+      s32 t = 0;
+      if (i == 0) {
+        t = 1;
+      }
+      i = t;
+    }
+    d = ((u32)n << 24) + 0xFF000000;
+    n = d >> 24;
+  } while (d != 0);
+  *(s32*)((u8*)p + 0xbc) = c[0].x;
+  *(s32*)((u8*)p + 0xc0) = c[0].y;
+}
 
 // --------------------------------------------
 
