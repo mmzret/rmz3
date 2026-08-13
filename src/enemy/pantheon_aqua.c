@@ -17,10 +17,14 @@ const EnemyRoutine gPantheonAquaRoutine = {
     [ENTITY_DISAPPEAR] = (void*)DeleteEnemy,
     [ENTITY_EXIT] =      (void*)DeleteEntity,
 };
+
+
+void FUN_08072ffc(struct Enemy* p);
+void FUN_08072fb0(struct Enemy* p);
 // clang-format on
 
 struct Entity* CreatePantheonAqua(Coords32* c, u8 kind) {
-  struct Entity* p = AllocEntityLast(gEnemyHeaderPtr);
+  struct Entity* p = (struct Entity*)AllocEntityLast(gEnemyHeaderPtr);
   if (p != NULL) {
     INIT_ENEMY_ROUTINE(p, ENEMY_P_AQUA);
     p->coord = *c;
@@ -73,7 +77,7 @@ alive:
     }
   }
 dispatch:
-  (PTR_ARRAY_08366bd0[(p->s).mode[1]])(p);
+  (PTR_ARRAY_08366bd0[(p->s).mode[1]])((void*)p);
   FUN_080731c4(p);
   m = (p->s).mode[1];
   if (m == 4) goto water;
@@ -103,7 +107,7 @@ water:
       (p->s).mode[2] = 0;
     }
     p->buffer[4] = 0;
-    (PTR_ARRAY_08366bf0[(p->s).mode[1]])(p);
+    (PTR_ARRAY_08366bf0[(p->s).mode[1]])((void*)p);
   }
 }
 
@@ -155,7 +159,52 @@ INCASM("asm/enemy/pantheon_aqua_h.inc");
 
 s32 FUN_08073368(struct Enemy* p) { return TRUE; }
 
-INCASM("asm/enemy/pantheon_aqua_i.inc");
+INCASM("asm/enemy/pantheon_aqua_i_a.inc");
+
+u32 FUN_08073610(struct Enemy* p0) {
+  register struct Enemy* p asm("r3");
+  register s32 sea asm("r2");
+  register s32 t asm("r1");
+  register s32 k asm("r4");
+  p = p0;
+  {
+    register u8* ow asm("r1");
+    register u32 o asm("r2");
+    ow = (u8*)&gOverworld;
+    o = 0x2C00C;
+    asm("" : "+l"(o));
+    ow += o;
+    sea = *(s32*)ow;
+  }
+  {
+    register struct Camera* cam asm("r1");
+    cam = &gStageRun.vm.camera;
+    asm("" : "+l"(cam));
+    t = cam->viewport.y;
+    k = 0x4FFF;
+    asm("" : "+l"(k));
+    t += k;
+  }
+  if (sea < t) {
+    t = (p->s).coord.y;
+    k = -0x2600;
+    asm("" : "+l"(k));
+    t += k;
+    if (sea <= t) {
+      return;
+    }
+    k = 0x98 << 6;
+    asm("" : "+l"(k));
+    t = sea + k;
+  } else {
+    register s32 k2 asm("r2");
+    t = (p->s).coord.y;
+    k2 = 0x80 << 2;
+    asm("" : "+l"(k2));
+    t += k2;
+  }
+  (p->s).coord.y = t;
+}
 
 bool8 nop_080726a8(struct Enemy* p);
 bool8 FUN_08072800(struct Enemy* p);
