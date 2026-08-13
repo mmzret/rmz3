@@ -2,6 +2,7 @@
 #include "entity.h"
 #include "global.h"
 #include "zero.h"
+#include "score.h"
 
 struct Zero;
 
@@ -31,7 +32,7 @@ const ElfRoutine gElf1Routine = {
 // --------------------------------------------
 
 struct Entity* CreateElf1(struct Zero* player, u8 breed, u8 availability, u8 _) {
-  struct CyberElf1* p = AllocEntityLast(gElfHeaderPtr);
+  struct CyberElf1* p = (struct CyberElf1*)AllocEntityLast(gElfHeaderPtr);
   if (p != NULL) {
     INIT_ELF_ROUTINE(p, 1);
     p->player = player;
@@ -61,10 +62,33 @@ static void Elf1_Init(struct CyberElf1* p) {
   p->unk_b8 = 0;
   p->unk_b9 = 32;
   SET_ELF_ROUTINE(p, ENTITY_UPDATE);
-  Elf1_Update(p);
+  Elf1_Update((struct CyberElf1*)p);
 }
 
-INCASM("asm/cyberelf/unk_1.inc");
+INCASM("asm/cyberelf/unk_1_a.inc");
+
+void Elf1_Die(struct CyberElf1* p) {
+  struct Zero* z = p->player;
+  u16* use;
+  gPause = FALSE;
+  {
+    u8* flag;
+    u8 idx;
+    u8** g = &gElfAvailability;
+    use = (u16*)((u8*)z + 0xb4);
+    idx = *((u8*)z + 0x121);
+    flag = *g + idx;
+    *flag |= 2;
+  }
+  use[2]++;
+  if (*(u8*)((u8*)gScore.total + 0x4c) <= 0x62) {
+    *(u8*)((u8*)gScore.total + 0x4c) += 1;
+  }
+  p->flags &= ~DISPLAY;
+  SET_ELF_ROUTINE(p, ENTITY_EXIT);
+}
+
+INCASM("asm/cyberelf/unk_1_b.inc");
 
 void FUN_080e2310(CyberElf* p);
 void FUN_080e234c(CyberElf* p);
