@@ -4,6 +4,12 @@
 #include "mod.h"
 #include "story.h"
 #include "zero.h"
+#include "vfx.h"
+#include "score.h"
+
+struct VFX* CreateGhost17_1(struct Entity* p);
+void CreateGhost17_2(struct Entity* p, struct Coord* c);
+struct Entity* FUN_080b2b40(u8 kind, struct Coord* c, s32 r2, u8 r3);
 
 typedef struct {
   COLLISION_OBJECT_HDR;
@@ -68,7 +74,162 @@ static void PantheonGuardian_Init(PantheonGuardian* p) {
   PantheonGuardian_Update(p);
 }
 
-INCASM("asm/enemy/pantheon_guardian.inc");
+INCASM("asm/enemy/pantheon_guardian_a.inc");
+
+void PantheonGuardian_Die(PantheonGuardian* p) {
+  struct Coord c;
+  if (gCurStory.s.gameflags[4] & 0x40) {
+    p->flags &= ~DISPLAY;
+    p->flags &= ~FLIPABLE;
+    EXIT_BODY(p);
+    SET_ENEMY_ROUTINE(p, ENTITY_DISAPPEAR);
+    return;
+  }
+  switch (p->mode[1]) {
+    case 0: {
+      s32 kc;
+      SetMotion((struct Entity*)p, MOTION(0x14, 0x04));
+      {
+        u8* a0 = (u8*)p + 0xb8;
+        u32 d0 = *a0;
+        u8* b8 = a0;
+        asm("" : "+r"(b8));
+        if (d0 != 0) {
+          SET_XFLIP(p, 0);
+        } else {
+          SET_XFLIP(p, 1);
+        }
+        {
+          u32 s = (p->body).status;
+          kc = 0x200;
+          if ((s & kc) != 0 && *((u8*)p + 0xb9) == 0 && (s & 0x10000) != 0 &&
+              FUN_080098a4(p->coord.x, p->coord.y + 0x40) != 0) {
+            c.x = p->coord.x;
+            c.y = p->coord.y + -0x1400;
+            if (*b8 != 0) {
+              FUN_080b2b40(0, &c, kc, 0);
+            } else {
+              FUN_080b2b40(0, &c, kc, 1);
+            }
+            p->mode[1]++;
+          } else {
+            p->mode[1] = 0xA;
+          }
+        }
+      }
+      EXIT_BODY(p);
+      FALLTHROUGH;
+    }
+    case 1:
+    case 10:
+      UpdateEntityAnim((struct Entity*)p);
+      if (*((u8*)p + 0x73) != 3) {
+        break;
+      }
+      goto bump;
+    case 2:
+      InitRotatableMotion((struct Entity*)p);
+      SetMotion((struct Entity*)p, MOTION(0x14, 0x06));
+      if (*((u8*)p + 0xb8) != 0) {
+        SET_XFLIP(p, 0);
+      } else {
+        SET_XFLIP(p, 1);
+      }
+      CreateGhost17_1((struct Entity*)p);
+      p->work[2] = 0;
+      p->work[3] = 1;
+      p->mode[1]++;
+      FALLTHROUGH;
+    case 3: {
+      s32 d, d2, nx;
+      UpdateEntityAnim((struct Entity*)p);
+      {
+        register s32 off asm("r6");
+        u32 w2 = p->work[2];
+        u32 nw3 = (w2 >> 5) + p->work[3];
+        s32 s1;
+        p->work[3] = nw3;
+        s1 = gSineTable[(u8)(w2 + nw3)];
+        asm volatile("" ::: "memory");
+        d = s1 - gSineTable[p->work[2]];
+        p->coord.y -= d * 10;
+        if (*((u8*)p + 0xb8) != 0) {
+          u32 a;
+          register u32 n2 asm("r2");
+          *((u8*)p + 0x24) = w2;
+          a = p->work[2];
+          n2 = a + p->work[3];
+          d2 = gSineTable[(u8)(n2 + 0x40)] - gSineTable[(u8)(a + 0x40)];
+          nx = p->coord.x - d2 * 10;
+          p->coord.x = nx;
+          p->work[2] = n2;
+          n2 = (u8)n2;
+          if (n2 <= 0x3F) {
+            break;
+          }
+          off = 0xA00;
+        } else {
+          u32 a;
+          register u32 n2 asm("r2");
+          *((u8*)p + 0x24) = w2;
+          a = p->work[2];
+          n2 = a + p->work[3];
+          d2 = gSineTable[(u8)(n2 + 0x40)] - gSineTable[(u8)(a + 0x40)];
+          nx = p->coord.x + d2 * 10;
+          p->coord.x = nx;
+          p->work[2] = n2;
+          n2 = (u8)n2;
+          if (n2 <= 0x3F) {
+            break;
+          }
+          off = -0xA00;
+        }
+        c.x = nx + off;
+        asm volatile("" ::"r"(off));
+        c.y = p->coord.y;
+      }
+      CreateSmoke(1, &c);
+      PlaySound(0x2A);
+    bump:
+      p->mode[1]++;
+      break;
+    }
+    case 11:
+      c.x = p->coord.x;
+      {
+        s32 t0 = p->coord.y;
+        register s32 ka asm("r1");
+        ka = -0xA00;
+        asm("" : "+r"(ka));
+        c.y = t0 + ka;
+      }
+      CreateSmoke(1, &c);
+      {
+        s32 t = c.y;
+        register s32 kb asm("r5");
+        kb = -0xC00;
+        asm("" : "+r"(kb));
+        c.y = t + kb;
+      }
+      CreateSmoke(2, &c);
+      PlaySound(0x2A);
+      CreateGhost17_2((struct Entity*)p, &c);
+      FALLTHROUGH;
+    case 4: {
+      struct Coord* cp = &p->coord;
+      TryDropItem(4, cp);
+      if (gScore.enemyCount <= 0x270E) {
+        gScore.enemyCount++;
+      }
+      DropEnemyDisk(p, cp);
+      p->flags &= ~DISPLAY;
+      SET_ENEMY_ROUTINE(p, ENTITY_EXIT);
+      break;
+    }
+  }
+}
+
+INCASM("asm/enemy/pantheon_guardian_b.inc");
 
 void FUN_08063da0(PantheonGuardian* p);
 void doNothing_08063e10(PantheonGuardian* p);
