@@ -2,7 +2,32 @@
 #include "enemy.h"
 #include "global.h"
 
-INCASM("asm/enemy/shelluno.inc");
+INCASM("asm/enemy/shelluno_a.inc");
+
+void FUN_0807a3ec(struct Body* body, struct Coord* c) {
+  register const struct Collision* col asm("r4");
+  u8 t;
+  col = (body->enemy)->processing;
+  t = col->atkType;
+  if (t == 3 || t == 14 || t == 15) {
+    Object* parent = (Object*)body->parent;
+    if ((parent->body).status & BODY_STATUS_DEAD) {
+      if (parent->coord.x < c->x) {
+        ((struct Enemy*)parent)->buffer[6] = 0xFF;
+      } else {
+        ((struct Enemy*)parent)->buffer[6] = 0xFE;
+      }
+    }
+  }
+  if ((*(u32*)((u8*)col + 4) & 0x200FF) == 0x20002) {
+    Object* parent = (Object*)body->parent;
+    if (parent->mode[1] != 5 && ((struct Enemy*)parent)->buffer[5] != 0) {
+      SET_ENEMY_ROUTINE((struct Enemy*)parent, ENTITY_DIE);
+    }
+  }
+}
+
+INCASM("asm/enemy/shelluno_b.inc");
 
 void Shelluno_Init(struct Enemy* p);
 void Shelluno_Update(struct Enemy* p);
@@ -10,9 +35,9 @@ void Shelluno_Die(struct Enemy* p);
 
 // clang-format off
 const EnemyRoutine gShellunoRoutine = {
-    [ENTITY_INIT] =      Shelluno_Init,
-    [ENTITY_UPDATE] =    Shelluno_Update,
-    [ENTITY_DIE] =       Shelluno_Die,
+    [ENTITY_INIT] =      (void*)Shelluno_Init,
+    [ENTITY_UPDATE] =    (void*)Shelluno_Update,
+    [ENTITY_DIE] =       (void*)Shelluno_Die,
     [ENTITY_DISAPPEAR] = (void*)DeleteEnemy,
     [ENTITY_EXIT] =      (EnemyFunc)DeleteEntity,
 };
