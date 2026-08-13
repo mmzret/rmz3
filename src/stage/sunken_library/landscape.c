@@ -190,7 +190,20 @@ static void FUN_08013908(struct StageLayer* l UNUSED, const struct Stage* _ UNUS
 
 #undef STAGE
 
-INCASM("asm/stage_gfx/sunken_library.inc");
+INCASM("asm/stage_gfx/sunken_library_a.inc");
+
+#define TILESETS(id, ofs) ((ColorGraphic*)(*((u32*)(0x087044b0 + (id * 4))) + (0x087044b0 + (id * 4)) + (ofs * 20)))
+
+void FUN_08013a98(struct StageLayer* l, const struct Stage* stage) {
+  u16 b = l->bgIdx;
+  s32 vy = l->viewportLeftTopPixel.y - ((gOverworld.sea) >> 8) + 5;
+  BGnHOFS(b >> 4) = l->viewportLeftTopPixel.x;
+  BGnVOFS(b >> 4) = vy;
+  RequestGraphicTransfer(&(TILESETS(18, 78)[(u16)l->unk_10 >> 2]).g, (void*)0x4000);
+  LoadPalette(&(TILESETS(18, 78)[(u16)l->unk_10 >> 2]).pal, 0);
+}
+
+INCASM("asm/stage_gfx/sunken_library_b.inc");
 
 // ------------------------------------------------------------------------------------------------------------------------------------
 
