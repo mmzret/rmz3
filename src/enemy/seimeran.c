@@ -3,6 +3,9 @@
 #include "enemy.h"
 #include "global.h"
 
+static const u8 sCollisionIdxs[16];
+static const struct Collision sCollisions[15];
+
 // Entity.work[0]
 #define SEIMERAN_ROOT 0
 #define SEIMERAN_CLONE 1
@@ -34,7 +37,7 @@ const EnemyRoutine gSeimeranRoutine = {
 
 // 0x0808f27c
 static struct Entity* CreateClone(struct Entity* q, s32 x, s32 y, u8 idx) {
-  struct Entity* p = AllocEntityFirst(gEnemyHeaderPtr);
+  struct Entity* p = (struct Entity*)AllocEntityFirst(gEnemyHeaderPtr);
   if (p != NULL) {
     INIT_ENEMY_ROUTINE(p, ENEMY_SEIMERAN);
     p->work[0] = SEIMERAN_CLONE;
@@ -48,7 +51,7 @@ static struct Entity* CreateClone(struct Entity* q, s32 x, s32 y, u8 idx) {
 
 // 0x0808f2e4
 static void FUN_0808f2e4(s32 x, s32 y, u8 idx) {
-  struct Entity* p = AllocEntityFirst(gEnemyHeaderPtr);
+  struct Entity* p = (struct Entity*)AllocEntityFirst(gEnemyHeaderPtr);
   if (p != NULL) {
     INIT_ENEMY_ROUTINE(p, ENEMY_SEIMERAN);
     p->work[0] = SEIMERAN_SEED;
@@ -69,7 +72,7 @@ static bool8 FUN_0808f348(Seimeran* p) {
     } else {
       p->mode[1] = 0;
     }
-    Seimeran_Die((void*)p);
+    Seimeran_Die((struct Enemy*)p);
     return TRUE;
   }
   return FALSE;
@@ -118,7 +121,7 @@ static bool8 FUN_0808f3a8(Seimeran* p) {
   if ((p->work[0] != SEIMERAN_SEED) && (p->props).elfx == NULL) {
     switch (p->mode[3]) {
       case 0: {
-        if (IsFrozen(p)) {
+        if (IsFrozen((void*)p)) {
           (sUpdates1[p->mode[1]])((void*)p);
           (sUpdates2[p->mode[1]])((void*)p);
           p->mode[3]++;
@@ -128,7 +131,7 @@ static bool8 FUN_0808f3a8(Seimeran* p) {
         break;
       }
       case 1: {
-        if (IsFrozen(p)) return TRUE;
+        if (IsFrozen((void*)p)) return TRUE;
         p->mode[3] = 0;
         break;
       }
@@ -151,7 +154,37 @@ static void FUN_0808f424(Seimeran* p) {
 
 // --------------------------------------------
 
-INCASM("asm/enemy/seimeran.inc");
+INCASM("asm/enemy/seimeran_a.inc");
+
+void FUN_0808f72c(struct Enemy* p) {
+  struct Entity** slot = (struct Entity**)&p->buffer[0];
+  if (*slot == NULL || isKilled(*slot)) {
+    u8* c;
+    u8* t;
+    u8 v;
+    *slot = NULL;
+    t = (u8*)p + 0xc0;
+    v = *t;
+    c = t;
+    asm("" : "+l"(c));
+    if (v == 0xC) {
+      SetDDP(&p->body, &sCollisions[11]);
+    } else {
+      SetDDP(&p->body, &sCollisions[sCollisionIdxs[*c]]);
+    }
+    if (!IsFrozen(&p->s)) {
+      if (*c == 0xC) {
+        (p->s).mode[1] = 2;
+        (p->s).mode[2] = 0;
+      } else {
+        (p->s).mode[1] = 1;
+        (p->s).mode[2] = 3;
+      }
+    }
+  }
+}
+
+INCASM("asm/enemy/seimeran_b.inc");
 
 // --------------------------------------------
 
