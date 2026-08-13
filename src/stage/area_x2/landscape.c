@@ -179,25 +179,30 @@ static void LayerUpdate_2(struct StageLayer* l, const struct Stage* _ UNUSED) {
 
 // 0x08011820
 // レジスタの割り当てがうまくいかないだけ
-NON_MATCH static void LayerDraw_AreaX2_2(struct StageLayer* l, const struct Stage* stage) {
-#if MODERN
-  u16 eva;
+static void LayerDraw_AreaX2_2(struct StageLayer* l, const struct Stage* stage) {
+  register u16 eva asm("r3");
+  u32 t;
   struct Overworld* ow = &gOverworld;
-  u32 n = (ow->work.areaX2.unk_002 & 0xFF);
+  register u32 n asm("r3");
+  n = (ow->work.areaX2.unk_002 & 0xFF);
   if (n < 64) {
     eva = 0;
-  } else if (n < 128) {
-    eva = (n - 64) >> 2;
+    goto have;
+  }
+  if (n < 128) {
+    t = (n - 64) << 14;
+    asm volatile("" ::"l"(n));
   } else if (n < 192) {
     eva = 16;
+    goto have;
   } else {
-    eva = 16 - ((s32)(n - 192) >> 2);
+    t = (u32)(16 - ((s32)(n - 192) >> 2)) << 16;
+    asm volatile("" ::"l"(n));
   }
+  eva = t >> 16;
+have:
   gBlendRegBuffer.bldalpha = (eva & 0x1F) | ((16 - eva) << 8);
   DrawGeneralStageLayer(l, stage);
-#else
-  INCCODE("asm/wip/LayerDraw_2_AreaX2.inc")
-#endif
 }
 
 static void LayerExit_2(struct StageLayer* l UNUSED, const struct Stage* _ UNUSED) {
