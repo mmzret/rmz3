@@ -10,10 +10,10 @@ static void nop_0800f9bc(Coords32* _ UNUSED);
 static void exitTwilightDesert(Coords32* _ UNUSED);
 
 static const StageFunc sStageRoutine[4] = {
-    initTwilightDesert,
-    FUN_0800f8dc,
-    nop_0800f9bc,
-    exitTwilightDesert,
+    (StageFunc)initTwilightDesert,
+    (StageFunc)FUN_0800f8dc,
+    (StageFunc)nop_0800f9bc,
+    (StageFunc)exitTwilightDesert,
 };
 
 static void initTwilightDesert(Coords32* _ UNUSED) {
@@ -64,7 +64,339 @@ static void LayerUpdate_TwilightDesert_2(struct StageLayer* l, const struct Stag
   }
 }
 
-INCASM("asm/stage_gfx/twilight_desert.inc");
+INCASM("asm/stage_gfx/twilight_desert_a.inc");
+
+void desert_0800fb88(struct StageLayer* l, const struct Stage* stage) {
+  switch (l->phase) {
+    case 0: {
+      u8* ow = (u8*)&gOverworld;
+      u32 z;
+      *(ow + 0x2D028) = (z = 0);
+      *(ow + 0x2D029) = z;
+      *(ow + 0x2D02A) = z;
+      gBlendRegBuffer.bldalpha = 0x80 << 5;
+      l->unk_10 = z;
+      l->phase = 2;
+      break;
+    }
+    case 1: {
+      u32 z1;
+      LoadChunk(0x24, 3, 0x26);
+      {
+        u8* owb = (u8*)&gOverworld;
+        asm("" : "+l"(owb));
+        *(owb + 0x2D02A) = (z1 = 0);
+      }
+      l->unk_10 = z1;
+      l->unk_12 = z1;
+      FALLTHROUGH;
+    }
+    case 2: {
+      u8* ow2 = (u8*)&gOverworld;
+      u32 s = *(ow2 + 0x2D028);
+      u32 m;
+      if (s == 1) {
+        u32 ph = l->phase;
+        m = 3;
+        if (ph == 1) {
+          m = 7;
+        }
+      } else if (s == 2) {
+        u32 ph2 = l->phase;
+        m = 0xE;
+        if (ph2 == 1) {
+          m = 0x12;
+        }
+      } else {
+        if (s != 3) {
+          goto d2_else;
+        }
+        {
+          u32 ph3 = l->phase;
+          m = 0x19;
+          if (ph3 == 1) {
+            m = 0x1D;
+          }
+        }
+      }
+      l->phase = m;
+      break;
+    d2_else:
+      {
+        u32 z2 = 0;
+        l->phase = 2;
+        *(ow2 + 0x2D029) = z2;
+      }
+      break;
+    }
+    case 3:
+    case 5:
+    case 9:
+    case 11:
+    case 14:
+    case 16:
+    case 20:
+    case 22:
+    case 25:
+    case 27:
+    case 31:
+    case 33: {
+      u32 v = l->unk_12 + 1;
+      u32 kv;
+      void* bp;
+      l->unk_12 = v;
+      asm volatile("" :: "l"(v));
+      bp = &gBlendRegBuffer;
+      kv = 0x1F;
+      kv &= v;
+      *(u16*)((u8*)bp + 2) = kv | (0x80 << 5);
+      if ((u16)v == 0x10) {
+        l->phase++;
+      }
+      break;
+    }
+    case 4:
+    case 6:
+    case 10:
+    case 12:
+    case 15:
+    case 17:
+    case 21:
+    case 23:
+    case 26:
+    case 28:
+    case 32:
+    case 34: {
+      u32 v2 = l->unk_12 - 1;
+      u32 kv2;
+      void* bp2;
+      l->unk_12 = v2;
+      asm volatile("" :: "l"(v2));
+      bp2 = &gBlendRegBuffer;
+      kv2 = 0x1F;
+      kv2 &= v2;
+      *(u16*)((u8*)bp2 + 2) = kv2 | (0x80 << 5);
+      if ((u16)v2 == 0) {
+        l->phase++;
+      }
+      break;
+    }
+    case 7: {
+      u16* sr;
+      u32 v3;
+      LoadChunk(0x24, 3, (l->unk_10 >> 2) + 0x43);
+      v3 = l->unk_10 + 1;
+      l->unk_10 = v3;
+      {
+        u8* gb = (u8*)&gStageRun;
+        asm("" : "+l"(gb));
+        sr = (u16*)(gb + 0x15E);
+      }
+      {
+        u32 hv = 0x8003;
+        asm("" : "+l"(hv));
+        *sr = hv;
+      }
+      if ((u16)v3 == 0x14) {
+        u8* owc = (u8*)&gOverworld;
+        asm("" : "+l"(owc));
+        *(owc + 0x2D02A) = 1;
+        *sr = 0;
+        l->phase++;
+      }
+      break;
+    }
+    case 8: {
+      u8* ow8 = (u8*)&gOverworld;
+      asm("" : "+l"(ow8));
+      if (*(ow8 + 0x2D028) != 1) {
+        l->phase++;
+      } else {
+        {
+          register u8* pz1 asm("r1");
+          pz1 = ow8 + 0x2D029;
+          asm volatile("@z1");
+          *pz1 = 0;
+        }
+      }
+      break;
+    }
+    case 13: {
+      u16* sr2;
+      u32 v4;
+      u32 w;
+      v4 = l->unk_10 - 1;
+      l->unk_10 = v4;
+      {
+        u8* gb2 = (u8*)&gStageRun;
+        asm("" : "+l"(gb2));
+        sr2 = (u16*)(gb2 + 0x15E);
+      }
+      {
+        u32 hv2 = 0x8003;
+        asm("" : "+l"(hv2));
+        *sr2 = hv2;
+      }
+      LoadChunk(0x24, 3, ((u16)v4 >> 2) + 0x43);
+      w = l->unk_10;
+      if (w == 0) {
+        *sr2 = w;
+        l->phase = 1;
+      }
+      break;
+    }
+    case 18: {
+      u16* sr3;
+      u32 v5;
+      LoadChunk(0x24, 3, (l->unk_10 >> 2) + 0x48);
+      v5 = l->unk_10 + 1;
+      l->unk_10 = v5;
+      {
+        u8* gb3 = (u8*)&gStageRun;
+        asm("" : "+l"(gb3));
+        sr3 = (u16*)(gb3 + 0x15E);
+      }
+      {
+        u32 hv3 = 0x8003;
+        asm("" : "+l"(hv3));
+        *sr3 = hv3;
+      }
+      if ((u16)v5 == 0x10) {
+        u8* owd = (u8*)&gOverworld;
+        asm("" : "+l"(owd));
+        *(owd + 0x2D02A) = 2;
+        *sr3 = 0;
+        l->phase++;
+      }
+      break;
+    }
+    case 19: {
+      u8* ow9 = (u8*)&gOverworld;
+      asm("" : "+l"(ow9));
+      if (*(ow9 + 0x2D028) != 2) {
+        l->phase++;
+      } else {
+        {
+          register u8* pz2 asm("r1");
+          pz2 = ow9 + 0x2D029;
+          asm volatile("@z2");
+          *pz2 = 0;
+        }
+      }
+      break;
+    }
+    case 24: {
+      u16* sr4;
+      u32 v6;
+      u32 w2;
+      v6 = l->unk_10 - 1;
+      l->unk_10 = v6;
+      {
+        u8* gb4 = (u8*)&gStageRun;
+        asm("" : "+l"(gb4));
+        sr4 = (u16*)(gb4 + 0x15E);
+      }
+      {
+        u32 hv4 = 0x8003;
+        asm("" : "+l"(hv4));
+        *sr4 = hv4;
+      }
+      LoadChunk(0x24, 3, ((u16)v6 >> 2) + 0x48);
+      w2 = l->unk_10;
+      if (w2 == 0) {
+        *sr4 = w2;
+        l->phase = 1;
+      }
+      break;
+    }
+    case 29: {
+      u8* ow3;
+      u32 v7;
+      u32 v16;
+      {
+        u8* owe = (u8*)&gOverworld;
+        asm("" : "+l"(owe));
+        ow3 = owe + 0x2D02A;
+      }
+      *ow3 = 3;
+      v7 = l->unk_10 + 1;
+      l->unk_10 = v7;
+      {
+        void* bp7;
+        u32 kv7;
+        bp7 = &gBlendRegBuffer;
+        kv7 = 0x1F;
+        kv7 &= v7;
+        *(u16*)((u8*)bp7 + 2) = kv7 | ((0x10 - v7) << 8);
+      }
+      v16 = (u16)v7;
+      if (v16 == 0x10) {
+        *ow3 = 4;
+        LoadChunk(0x24, 3, 0x4C);
+        gBlendRegBuffer.bldalpha = v16;
+        l->phase++;
+      }
+      break;
+    }
+    case 30:
+      if (!isSoundPlaying(0xC6)) {
+        PlaySound(0xC6);
+      }
+      SetStageNoiseVolume(0xC6);
+      {
+        u8* owa = (u8*)&gOverworld;
+        asm("" : "+l"(owa));
+        if (*(owa + 0x2D028) != 3) {
+          l->phase++;
+        } else {
+          {
+            register u8* pz3 asm("r1");
+            pz3 = owa + 0x2D029;
+            asm volatile("@z3");
+            *pz3 = 0;
+          }
+        }
+      }
+      break;
+    case 35:
+      if (!isSoundPlaying(0xC6)) {
+        PlaySound(0xC6);
+      }
+      SetStageNoiseVolume(0xC6);
+      LoadChunk(0x24, 3, 0x26);
+      l->phase++;
+      FALLTHROUGH;
+    case 36: {
+      u32 v8;
+      if (!isSoundPlaying(0xC6)) {
+        PlaySound(0xC6);
+      }
+      SetStageNoiseVolume(0xC6);
+      {
+        u8* owf = (u8*)&gOverworld;
+        asm("" : "+l"(owf));
+        *(owf + 0x2D02A) = 3;
+      }
+      v8 = l->unk_10 - 1;
+      l->unk_10 = v8;
+      {
+        void* bp8;
+        u32 kv8;
+        bp8 = &gBlendRegBuffer;
+        kv8 = 0x1F;
+        kv8 &= v8;
+        *(u16*)((u8*)bp8 + 2) = kv8 | ((0x10 - v8) << 8);
+      }
+      if ((u16)v8 == 0) {
+        StopSound(0xC6);
+        l->phase = 1;
+      }
+      break;
+    }
+  }
+}
+
+INCASM("asm/stage_gfx/twilight_desert_b.inc");
 
 static void LayerExit_TwilightDesert_4(struct StageLayer* l, const struct Stage* stage) {
   gBlendRegBuffer.bldclt = 0;
