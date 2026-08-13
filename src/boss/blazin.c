@@ -9,6 +9,9 @@
 #include "projectile/blazin.h"
 #include "projectile/blazin_tail.h"
 
+bool8 blazin_0803ffdc(struct Boss* p, u8 i);
+const struct Collision gBlazinCollisions[15];
+
 typedef struct {
   COLLISION_OBJECT_HDR;  // 0x00
   u8 unk_b4[16];         // 0xB4
@@ -33,7 +36,7 @@ const BossRoutine gBlazinRoutine = {
 // clang-format on
 
 Blazin* Unused_CreateBlazin(Coords32* c, u8 n) {
-  Blazin* p = AllocEntityLast(gBossHeaderPtr);
+  Blazin* p = (Blazin*)AllocEntityLast(gBossHeaderPtr);
   if (p != NULL) {
     INIT_BOSS_ROUTINE(p, BOSS_BLAZIN);
     p->coord = *c;
@@ -267,16 +270,16 @@ static void Blazin_Update(Blazin* p) {
     } else {
       p->mode[3] = 0;
     }
-    Blazin_Die(p);
+    Blazin_Die((Blazin*)p);
   } else {
     BlazinTail* tail = p->tail;
     if (tail != NULL && tail->mode[0] > ENTITY_UPDATE) {
       p->tail = NULL;
-      FUN_0803ffc0(p);
+      FUN_0803ffc0((Blazin*)p);
       p->anim_c8 = 21;
     }
     sUpdates1[p->mode[1]](p);
-    blazin_0803fed8(p);
+    blazin_0803fed8((void*)p);
     sUpdates2[p->mode[1]](p);
   }
 }
@@ -289,7 +292,7 @@ static void Blazin_Die(Blazin* p) {
       blazinDeath0,
       blazinDeath1,
   };
-  (sDeads[p->mode[1]])(p);
+  (sDeads[p->mode[1]])((void*)p);
 }
 
 static void blazinDeath0(Blazin* p) {
@@ -764,7 +767,190 @@ INCASM("asm/boss/blazin_e.inc");
 
 bool8 nop_0803f710(Blazin* _) { return TRUE; }
 
-INCASM("asm/boss/blazin_f.inc");
+void blazinMode7(Blazin* p0) {
+  register Blazin* p asm("r6");
+  p = p0;
+  switch (p->mode[2]) {
+    case 0: {
+      struct Projectile** slot = (struct Projectile**)((u8*)p + 0xc4);
+      if (*slot != NULL) {
+        p->mode[2]++;
+        break;
+      }
+      p->mode[2] = 10;
+      break;
+    }
+    case 1: {
+      struct Projectile* t = *(struct Projectile**)((u8*)p + 0xc4);
+      if (t == NULL) {
+        p->mode[1] = 3;
+        p->mode[2] = (s32)t;
+        break;
+      }
+      SetMotion((struct Entity*)p, (motion_t)((*(u16*)((u8*)p + 0xc8) + 0x12) | 0xA200));
+      SetDDP(&p->body, &gBlazinCollisions[1]);
+      p->work[3] = 3;
+      p->mode[2]++;
+      FALLTHROUGH;
+    }
+    case 2: {
+      struct Projectile* t = *(struct Projectile**)((u8*)p + 0xc4);
+      if (t == NULL) {
+        p->mode[1] = 3;
+        p->mode[2] = (s32)t;
+        break;
+      }
+      UpdateEntityAnim((struct Entity*)p);
+      if (*((u8*)p + 0x73) != 3) {
+        break;
+      }
+      p->mode[2]++;
+      break;
+    }
+    case 3: {
+      struct Projectile* t = *(struct Projectile**)((u8*)p + 0xc4);
+      if (t == NULL) {
+        p->mode[1] = 3;
+        p->mode[2] = (s32)t;
+        break;
+      }
+      SetMotion((struct Entity*)p, (motion_t)((*(u16*)((u8*)p + 0xc8) + 0x13) | 0xA200));
+      SetDDP(&p->body, &gBlazinCollisions[9]);
+      p->mode[2]++;
+      FALLTHROUGH;
+    }
+    case 4: {
+      struct Projectile* t = *(struct Projectile**)((u8*)p + 0xc4);
+      if (t == NULL) {
+        p->mode[1] = 3;
+        p->mode[2] = (s32)t;
+        break;
+      }
+      UpdateEntityAnim((struct Entity*)p);
+      if (*((u8*)p + 0x73) != 3) {
+        break;
+      }
+      {
+        s32 i;
+        for (i = 0; i < p->work[3]; i++) {
+          blazin_0803ffdc((struct Boss*)p, (u8)i);
+        }
+      }
+      PlaySound(0x6f);
+      p->work[2] = 2;
+      p->mode[2]++;
+      break;
+    }
+    case 5: {
+      struct Projectile* t = *(struct Projectile**)((u8*)p + 0xc4);
+      if (t == NULL) {
+        p->mode[1] = 3;
+        p->mode[2] = (s32)t;
+        break;
+      }
+      {
+        s32 w = p->work[2];
+        if (w != 0) {
+          w--;
+          p->work[2] = w;
+          if ((u8)w != 0) {
+            break;
+          }
+        }
+      }
+      p->mode[2]++;
+      break;
+    }
+    case 6: {
+      struct Projectile* t = *(struct Projectile**)((u8*)p + 0xc4);
+      if (t == NULL) {
+        p->mode[1] = 3;
+        p->mode[2] = (s32)t;
+        break;
+      }
+      SetMotion((struct Entity*)p, (motion_t)((*(u16*)((u8*)p + 0xc8) + 0x14) | 0xA200));
+      p->mode[2]++;
+      FALLTHROUGH;
+    }
+    case 7: {
+      register s32 st asm("r1");
+      struct Projectile* t = *(struct Projectile**)((u8*)p + 0xc4);
+      if (t == NULL) {
+        p->mode[1] = 3;
+        p->mode[2] = (s32)t;
+        break;
+      }
+      UpdateEntityAnim((struct Entity*)p);
+      st = *((u8*)p + 0x73);
+      if (st != 3) {
+        break;
+      }
+      p->mode[1] = st;
+      p->mode[2] = 0;
+      break;
+    }
+    case 8:
+    case 9:
+      break;
+    case 10:
+      SetMotion((struct Entity*)p, (motion_t)((*(u16*)((u8*)p + 0xc8) + 0x12) | 0xA200));
+      PlaySound(0x73);
+      SetDDP(&p->body, &gBlazinCollisions[1]);
+      p->mode[2]++;
+      FALLTHROUGH;
+    case 11:
+      UpdateEntityAnim((struct Entity*)p);
+      if (*((u8*)p + 0x73) != 3) {
+        break;
+      }
+      p->mode[2]++;
+      break;
+    case 12:
+      SetMotion((struct Entity*)p, (motion_t)((*(u16*)((u8*)p + 0xc8) + 0x13) | 0xA200));
+      *((u8*)p + 0xd0) = 1;
+      SetDDP(&p->body, &gBlazinCollisions[9]);
+      p->mode[2]++;
+      FALLTHROUGH;
+    case 13:
+      UpdateEntityAnim((struct Entity*)p);
+      if (*((u8*)p + 0x73) != 3) {
+        break;
+      }
+      p->work[2] = 8;
+      p->mode[2]++;
+      break;
+    case 14: {
+      register s32 z4 asm("r4");
+      register u32 zr asm("r1");
+      u8* d0;
+      struct Projectile** slot;
+      {
+        s32 w = p->work[2];
+        if (w != 0) {
+          w--;
+          p->work[2] = w;
+          if ((u8)w != 0) {
+            break;
+          }
+        }
+      }
+      d0 = (u8*)p + 0xd0;
+      z4 = 0;
+      *d0 = z4;
+      slot = (struct Projectile**)((u8*)p + 0xc4);
+      *slot = (struct Projectile*)z4;
+      *slot = (struct Projectile*)createBlazinTail((void*)p, 2);
+      {
+        u16* c8 = (u16*)((u8*)p + 0xc8);
+        zr = 0;
+        *c8 = z4;
+      }
+      p->mode[1] = 3;
+      p->mode[2] = zr;
+      break;
+    }
+  }
+}
 
 bool8 FUN_0803f9a8(Blazin* _) { return TRUE; }
 
