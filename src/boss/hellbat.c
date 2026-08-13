@@ -4,6 +4,9 @@
 #include "overworld.h"
 #include "zero.h"
 
+struct Projectile* FUN_080a1538(struct Entity* e, struct Coord* c, u8 a2);
+struct VFX* createHellbatElectricBeam(struct Entity* e, struct Coord* c, u8 a2, u8 a3);
+
 struct Hellbat {
   COLLISION_OBJECT_HDR;  // 0x00
   u8 unk_b4[32];         // 0xB4
@@ -32,7 +35,7 @@ const BossRoutine gHellbatRoutine = {
 // clang-format on
 
 struct Entity* CreateHellbat(Coords32* c, u8 n) {
-  struct Entity* p = AllocEntityLast(gBossHeaderPtr);
+  struct Entity* p = (struct Entity*)AllocEntityLast(gBossHeaderPtr);
   if (p != NULL) {
     INIT_BOSS_ROUTINE(p, BOSS_HELLBAT);
     p->coord = *c;
@@ -252,9 +255,9 @@ static void Hellbat_Update(struct Boss* p) {
     }
   }
 
-  (sUpdates1[p->mode[1]])(p);
+  (sUpdates1[p->mode[1]])((void*)p);
   hellbat_0804cbe4(p);
-  (sUpdates2[p->mode[1]])(p);
+  (sUpdates2[p->mode[1]])((void*)p);
 }
 
 // --------------------------------------------
@@ -267,7 +270,7 @@ static void Hellbat_Die(struct Boss* p) {
       hellbatDeath0,
       hellbatDeath1,
   };
-  (sDeads[p->mode[1]])(p);
+  (sDeads[p->mode[1]])((void*)p);
 }
 
 // --------------------------------------------
@@ -772,7 +775,395 @@ static void hellbatMode2(struct Hellbat* p) {
 
 static bool32 nop_0804b6b4(void* _) { return TRUE; }
 
-INCASM("asm/boss/hellbat.inc");
+INCASM("asm/boss/hellbat_a.inc");
+
+void hellbatEX(struct Boss* p0) {
+  register struct Boss* p asm("r5");
+  s32 arr[3];
+  struct Coord c;
+  p = p0;
+  switch (p->mode[2]) {
+    case 0:
+      SetMotion((struct Entity*)p, MOTION(0xA8, 0x0F));
+      SetDDP(&p->body, (const struct Collision*)0x8363148);
+      p->d.x = p->coord.x;
+      p->work[2] = 0x14;
+      p->mode[2]++;
+      FALLTHROUGH;
+    case 1: {
+      u32 w;
+      UpdateEntityAnim((struct Entity*)p);
+      if (p->motion.state != 3) {
+        break;
+      }
+      {
+        u32 wt = p->work[2];
+        u32 m = wt & 1;
+        w = wt;
+        asm("" : "+r"(w));
+        if (m != 0) {
+          p->flags |= 1;
+        } else {
+          p->flags &= 0xFE;
+        }
+      }
+      if ((w << 24) != 0) {
+        u32 t = w - 1;
+        p->work[2] = t;
+        if ((t << 24) != 0) {
+          break;
+        }
+      }
+      SetDDP(&p->body, sCollisions);
+      PlaySound(0x84);
+      p->work[2] = 0xA;
+      p->mode[2]++;
+      break;
+    }
+    case 2:
+      UpdateEntityAnim((struct Entity*)p);
+      if (p->work[2] & 1) {
+        p->flags |= 1;
+      } else {
+        p->flags &= 0xFE;
+      }
+      UpdateEntityAnim((struct Entity*)p);
+      {
+        u32 w = p->work[2];
+        if (w != 0) {
+          w--;
+          p->work[2] = w;
+          if ((w << 24) != 0) {
+            break;
+          }
+        }
+      }
+      p->work[2] = 0;
+      p->mode[2]++;
+      break;
+    case 3: {
+      u32 w = p->work[2];
+      asm("" : "+r"(w));
+      if (w & 1) {
+        p->coord.x = p->d.x + ((w >> 2) << 8);
+      } else {
+        p->coord.x = p->d.x - (((u8)w >> 2) << 8);
+      }
+      UpdateEntityAnim((struct Entity*)p);
+      {
+        u32 t = p->work[2];
+        if (t <= 0x27) {
+          t++;
+          p->work[2] = t;
+          if ((u8)t <= 0x27) {
+            break;
+          }
+        }
+      }
+      p->work[2] = 0x30;
+      p->mode[2]++;
+      break;
+    }
+    case 4:
+      SetMotion((struct Entity*)p, MOTION(0xA8, 0x03));
+      PlaySound(0x88);
+      p->coord.y = *(s32*)((u8*)p + 0xd4) + -0x8E00;
+      p->work[3] = 0;
+      p->work[2] = 0x14;
+      {
+        register u8* c4d asm("r1");
+        c4d = (u8*)p + 0x4d;
+        *c4d = 1;
+      }
+      {
+        register u8* oa asm("r2");
+        register u32 k asm("r1");
+        oa = (u8*)p + 0x4a;
+        {
+          u32 ov = *oa;
+          asm("" : "+r"(ov));
+          k = 0x20;
+          ov |= k;
+          *oa = ov;
+        }
+        k |= p->flags;
+        k &= 0xFE;
+        p->flags = k;
+      }
+      p->mode[2]++;
+      FALLTHROUGH;
+    case 5: {
+      u32 w;
+      UpdateEntityAnim((struct Entity*)p);
+      w = p->work[2];
+      if (w != 0) {
+        w--;
+        p->work[2] = w;
+        if ((w << 24) != 0) {
+          break;
+        }
+      }
+      p->work[2] = 0x30;
+      p->mode[2]++;
+      break;
+    }
+    case 6: {
+      p->flags |= 1;
+      UpdateEntityAnim((struct Entity*)p);
+      {
+        s32 bx = *(s32*)((u8*)p + 0xd0);
+        arr[0] = bx + (0xE0 << 7);
+        arr[1] = bx + (0xB0 << 8);
+        arr[2] = bx + (0xF0 << 8);
+      }
+      p->work[3]++;
+      p->coord.x = arr[(u8)(p->work[3] % 3)];
+      {
+        u32 w = p->work[2];
+        if (w != 0) {
+          w--;
+          p->work[2] = w;
+          if ((w << 24) != 0) {
+            break;
+          }
+        }
+      }
+      p->work[3] = 3;
+      p->mode[2]++;
+      break;
+    }
+    case 7: {
+      s32* t0;
+      s32* dp;
+      register s32 zx4 asm("r4");
+      s32 d0;
+      s32 d1;
+      s32 d2;
+      s32 i;
+      s32 x;
+      t0 = (s32*)((u8*)p + 0xd0);
+      {
+        s32 t = (pZero2->s).coord.x + -0x7000;
+        zx4 = *t0;
+        d0 = zx4 - t;
+        dp = t0;
+        if (d0 <= 0) {
+          d0 = t - zx4;
+        }
+      }
+      arr[0] = d0;
+      {
+        s32 t = (pZero2->s).coord.x + -0xB000;
+        d1 = zx4 - t;
+        if (d1 <= 0) {
+          d1 = t - zx4;
+        }
+      }
+      arr[1] = d1;
+      {
+        s32 t = (pZero2->s).coord.x + -0xF000;
+        d2 = zx4 - t;
+        if (d2 <= 0) {
+          d2 = t - zx4;
+        }
+      }
+      arr[2] = d2;
+      if (d0 > d1) {
+        if (d0 > d2) {
+          goto pick0;
+        }
+        i = 2;
+        if (d1 > d2) {
+          i = 1;
+          goto have;
+        }
+      } else {
+        i = 2;
+        if (d1 > d2) {
+          i = 1;
+        }
+      }
+      if (i == 0) {
+      pick0:
+        x = *dp + (0xE0 << 7);
+      } else {
+      have:
+        if (i == 1) {
+          x = *dp + (0xB0 << 8);
+        } else {
+          x = *dp + (0xF0 << 8);
+        }
+      }
+      p->unk_coord.x = x;
+      p->coord.x = *(volatile s32*)&p->unk_coord.x;
+      p->work[2] = 0x1E;
+      createHellbatElectricBeam((struct Entity*)p, &p->coord, 0, 0);
+      SetDDP(&p->body, (const struct Collision*)0x83631A8);
+      p->mode[2]++;
+      {
+        u32 w = p->work[2];
+        if (w != 0) {
+          w--;
+          p->work[2] = w;
+          if ((w << 24) != 0) {
+            break;
+          }
+        }
+      }
+      p->mode[2]++;
+      break;
+    }
+    case 9: {
+      c.x = p->coord.x;
+      c.y = p->coord.y + (0xB8 << 6);
+      FUN_080a1538((struct Entity*)p, &c, 0);
+      PlaySound(0x89);
+      {
+        u32 w = p->work[3];
+        if (w != 0) {
+          w--;
+          p->work[3] = w;
+          if ((w << 24) != 0) {
+            p->mode[2]++;
+            break;
+          }
+        }
+      }
+      p->mode[2] = 0x14;
+      break;
+    }
+    case 10:
+      SetDDP(&p->body, sCollisions);
+      p->work[2] = 0x18;
+      p->mode[2]++;
+      FALLTHROUGH;
+    case 11: {
+      UpdateEntityAnim((struct Entity*)p);
+      {
+        s32 bx = *(s32*)((u8*)p + 0xd0);
+        arr[0] = bx + (0xE0 << 7);
+        arr[1] = bx + (0xB0 << 8);
+        arr[2] = bx + (0xF0 << 8);
+      }
+      p->coord.x = arr[(u8)(p->work[2] % 3)];
+      {
+        u32 w = p->work[2];
+        if (w != 0) {
+          w--;
+          p->work[2] = w;
+          if ((w << 24) != 0) {
+            break;
+          }
+        }
+      }
+      p->mode[2] = 7;
+      break;
+    }
+    case 20:
+      p->flags |= 1;
+      p->work[2] = 0x14;
+      p->mode[2]++;
+      FALLTHROUGH;
+    case 21:
+      UpdateEntityAnim((struct Entity*)p);
+      {
+        u32 w = p->work[2];
+        if (w != 0) {
+          w--;
+          p->work[2] = w;
+          if ((w << 24) != 0) {
+            break;
+          }
+        }
+      }
+      p->mode[2]++;
+      break;
+    case 22: {
+      u32 z;
+      p->flags |= 1;
+      z = 0;
+      SetMotion((struct Entity*)p, MOTION(0xA8, 0x01));
+      SetDDP(&p->body, sCollisions);
+      p->unk_coord.x = p->coord.x;
+      p->unk_coord.y = p->coord.y + (0x80 << 6);
+      p->work[2] = z;
+      p->mode[2]++;
+      FALLTHROUGH;
+    }
+    case 23: {
+      u32 w;
+      {
+        s32 d = p->unk_coord.y;
+        s32 cy = p->coord.y;
+        d -= cy;
+        p->coord.y = cy + ((d << 5) >> 8);
+      }
+      UpdateEntityAnim((struct Entity*)p);
+      w = p->work[2];
+      asm("" : "+r"(w));
+      if (w & 1) {
+        p->coord.x = p->unk_coord.x + ((w >> 2) << 8);
+      } else {
+        p->coord.x = p->unk_coord.x - (((u8)w >> 2) << 8);
+      }
+      {
+        u32 t = p->work[2];
+        if (t <= 0x1D) {
+          t++;
+          p->work[2] = t;
+          if ((u8)t <= 0x1D) {
+            break;
+          }
+        }
+      }
+      p->flags &= 0xFE;
+      p->work[2] = 8;
+      p->mode[2]++;
+      break;
+    }
+    case 8:
+    case 24: {
+      u32 w = p->work[2];
+      if (w != 0) {
+        w--;
+        p->work[2] = w;
+        if ((w << 24) != 0) {
+          break;
+        }
+      }
+      p->mode[2]++;
+      break;
+    }
+    case 25: {
+      register u32 z asm("r2");
+      {
+        u8* c4d = (u8*)p + 0x4d;
+        z = 0;
+        *c4d = z;
+      }
+      {
+        register u8* oa asm("r3");
+        s32 ov;
+        s32 m21;
+        oa = (u8*)p + 0x4a;
+        ov = *oa;
+        m21 = -0x21;
+        m21 &= ov;
+        *oa = m21;
+      }
+      p->flags &= 0xDF;
+      {
+        u32 five = 5;
+        p->mode[1] = five;
+        p->mode[2] = five;
+      }
+      p->mode[3] = z;
+      break;
+    }
+  }
+}
+
+INCASM("asm/boss/hellbat_b.inc");
 
 extern const u16 u16_ARRAY_080feedc[6];
 
@@ -793,7 +1184,7 @@ u16 FUN_0804cccc(void* _, u32 a, bool32 rankAS) {
   }
 }
 
-// プレイヤーとヘルバットが 80px 以上離れているなら TRUE を返す
+// プレイヤー�ヘル�ット� 80px 以上離れ��る�ら TRUE を返�
 bool32 isHellbatFarAway(struct Boss* p) {
   s32 zx = (pZero2->s).coord.x;
   s32 hellbat_x = p->coord.x;
