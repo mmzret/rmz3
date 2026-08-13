@@ -1,6 +1,12 @@
 #include "collision.h"
 #include "global.h"
 #include "solid.h"
+#include "text_window.h"
+#include "strings.h"
+#include "story.h"
+#include "stagerun.h"
+#include "text.h"
+#include "text_window.h"
 
 // レジスタンスベースのモブキャラ
 
@@ -375,7 +381,215 @@ static void FUN_080d9734(struct MobObject* p) {
   }
 }
 
-INCASM("asm/solid/mob_npc.inc");
+INCASM("asm/solid/mob_npc_a.inc");
+
+void FUN_080d98e8(struct Solid* p) {
+  u16* mp;
+  UpdateEntityAnim(&p->s);
+  if (*(u16*)((u8*)p + 0xba) == 0x241 && ({ u8* tw_ = (u8*)&gTextWindow + 8; *(s16*)(tw_ + 0x16); }) == 9) {
+    {
+      u32 dv1 = gStageDiskManager.disk[0x1A];
+      u32 dt1 = 4;
+      dt1 |= dv1;
+      gStageDiskManager.disk[0x1A] = dt1;
+    }
+    {
+      u8* tp = (u8*)&gTextPrinter;
+      *(const char_t**)(tp + 0x594) = STRING(0x38B);
+    }
+    PrintTextWindow(0x80 << 1, 0x5A);
+  }
+  {
+    register u16* a0 asm("r0");
+    register u32 m0 asm("r2");
+    register u32 k0 asm("r1");
+    a0 = (u16*)((u8*)p + 0xba);
+    m0 = *a0;
+    k0 = 0x2CF;
+    mp = a0;
+    asm("" : "+r"(mp));
+    if (m0 == k0 && ({ u8* tw_ = (u8*)&gTextWindow + 8; *(s16*)(tw_ + 0x16); }) == 9) {
+      {
+      u32 dv2 = gStageDiskManager.disk[0x1A];
+      u32 dt2 = 4;
+      dt2 |= dv2;
+      gStageDiskManager.disk[0x1A] = dt2;
+    }
+      {
+        u8* tp2 = (u8*)&gTextPrinter;
+        *(const char_t**)(tp2 + 0x594) = STRING(0x38B);
+      }
+      PrintTextWindow(0x80 << 1, 0x5A);
+    }
+  }
+  if (*mp == 0x247 && ({ u8* tw_ = (u8*)&gTextWindow + 8; *(s16*)(tw_ + 0x16); }) == 9) {
+    {
+      u32 dv3 = gStageDiskManager.disk[0x1C];
+      u32 dt3 = 8;
+      dt3 |= dv3;
+      gStageDiskManager.disk[0x1C] = dt3;
+    }
+    {
+      u8* tp3 = (u8*)&gTextPrinter;
+      *(const char_t**)(tp3 + 0x594) = STRING(0x394);
+    }
+    PrintTextWindow(0x80 << 1, 0x5A);
+  }
+  if (*mp == 0x24E && ({ u8* tw_ = (u8*)&gTextWindow + 8; *(s16*)(tw_ + 0x16); }) == 9) {
+    {
+      u32 dv4 = gStageDiskManager.disk[0x2A];
+      u32 dt4 = 1;
+      dt4 |= dv4;
+      gStageDiskManager.disk[0x2A] = dt4;
+    }
+    {
+      u8* tp4 = (u8*)&gTextPrinter;
+      *(const char_t**)(tp4 + 0x594) = STRING(0x3C9);
+    }
+    PrintTextWindow(0x80 << 1, 0x5A);
+  }
+  if (*mp == 0x253 && ({ u8* tw_ = (u8*)&gTextWindow + 8; *(s16*)(tw_ + 0x16); }) == 9) {
+    {
+      u32 dv5 = gStageDiskManager.disk[0x2B];
+      u32 dt5 = 4;
+      dt5 |= dv5;
+      gStageDiskManager.disk[0x2B] = dt5;
+    }
+    {
+      u8* tp5 = (u8*)&gTextPrinter;
+      *(const char_t**)(tp5 + 0x594) = STRING(0x3CF);
+    }
+    PrintTextWindow(0x80 << 1, 0x5A);
+  }
+  if (*mp == 0x25A) {
+    {
+      u32 dv6 = gStageDiskManager.disk[0x29];
+      u32 dt6 = 4;
+      dt6 |= dv6;
+      gStageDiskManager.disk[0x29] = dt6;
+    }
+    {
+      u8* tp6 = (u8*)&gTextPrinter;
+      *(const char_t**)(tp6 + 0x594) = STRING(0x3C7);
+    }
+    PrintTextWindow(0x80 << 1, 0x5A);
+  }
+  if (*mp == 0x25D) {
+    {
+      u32 dv7 = gStageDiskManager.disk[0xA];
+      u32 dt7 = 8;
+      dt7 |= dv7;
+      gStageDiskManager.disk[0xA] = dt7;
+    }
+    {
+      u8* tp7 = (u8*)&gTextPrinter;
+      *(const char_t**)(tp7 + 0x594) = STRING(0x34C);
+    }
+    PrintTextWindow(0x80 << 1, 0x5A);
+  }
+  if (*mp == 0x271 && ({ u8* tw_ = (u8*)&gTextWindow + 8; *(s16*)(tw_ + 0x16); }) == 9) {
+    {
+      u32 dv8 = gStageDiskManager.disk[0x2B];
+      u32 dt8 = 1;
+      dt8 |= dv8;
+      gStageDiskManager.disk[0x2B] = dt8;
+    }
+    {
+      u8* tp8 = (u8*)&gTextPrinter;
+      *(const char_t**)(tp8 + 0x594) = STRING(0x3CD);
+    }
+    PrintTextWindow(0x80 << 1, 0x5A);
+  }
+  if (*mp == (0xA1 << 2)) {
+    {
+      u32 dv9 = gStageDiskManager.disk[0x2B];
+      u32 dt9 = 2;
+      dt9 |= dv9;
+      gStageDiskManager.disk[0x2B] = dt9;
+    }
+    {
+      u8* tp9 = (u8*)&gTextPrinter;
+      *(const char_t**)(tp9 + 0x594) = STRING(0x3CE);
+    }
+    PrintTextWindow(0x80 << 1, 0x5A);
+  }
+  if (*mp == 0x2A6) {
+    {
+      u32 dv10 = gStageDiskManager.disk[0xE];
+      u32 dt10 = 2;
+      dt10 |= dv10;
+      gStageDiskManager.disk[0xE] = dt10;
+    }
+    {
+      u8* tp10 = (u8*)&gTextPrinter;
+      *(const char_t**)(tp10 + 0x594) = STRING(0x35A);
+    }
+    PrintTextWindow(0x80 << 1, 0x5A);
+  }
+  {
+    u32 m2 = *mp;
+    if (m2 == (0xB2 << 2)) {
+      gECrystalGainAmount += 0x20;
+    }
+    if (m2 == (0xB0 << 2)) {
+      gECrystalGainAmount += 0x34;
+    }
+    if (m2 == 0x2C2) {
+      gECrystalGainAmount += 0x20;
+    }
+    if (m2 == (0xB1 << 2)) {
+      gECrystalGainAmount += 0x34;
+    }
+    if (m2 == 0x2C6) {
+      gECrystalGainAmount += 0x28;
+    }
+    if (m2 == (0xAF << 2)) {
+      gECrystalGainAmount += 0x20;
+    }
+    if (m2 == 0x2BE) {
+      gECrystalGainAmount += 0x34;
+    }
+    if (m2 == 0x2BA) {
+      gECrystalGainAmount += 0x64;
+    }
+  }
+  if (*mp == 0x2CA) {
+    gECrystalGainAmount += 0x34;
+  }
+  if (*mp == 0x2B6 && ({ u8* tw_ = (u8*)&gTextWindow + 8; *(s16*)(tw_ + 0x16); }) == 9) {
+    gECrystalGainAmount += 0xC8;
+    {
+      u8* cs = (u8*)&gCurStory;
+      (*(cs + 0x24))++;
+    }
+  }
+  if (*mp == (0xAD << 2)) {
+    gECrystalGainAmount += 0x34;
+  }
+  if (*mp == 0x2B1 && ({ u8* tw_ = (u8*)&gTextWindow + 8; *(s16*)(tw_ + 0x16); }) == 9) {
+    {
+      u32 dv11 = gStageDiskManager.disk[5];
+      u32 dt11 = 4;
+      dt11 |= dv11;
+      gStageDiskManager.disk[5] = dt11;
+    }
+    {
+      u8* tp11 = (u8*)&gTextPrinter;
+      *(const char_t**)(tp11 + 0x594) = STRING(0x337);
+    }
+    PrintTextWindow(0x80 << 1, 0x5A);
+  }
+  if (*mp == (0xAE << 2)) {
+    gECrystalGainAmount += 0x50;
+  }
+  {
+    u8 z = 0;
+    (p->s).mode[1] = z;
+    (p->s).mode[2] = z;
+  }
+}
+
+INCASM("asm/solid/mob_npc_b.inc");
 
 void andrew_080d9cd8(struct Solid* p);
 void alouette_080d9eb8(struct Solid* p);
