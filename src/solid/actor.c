@@ -7,6 +7,11 @@
 #include "vfx/after_image.h"
 #include "zero.h"
 
+const Coords32 Coord_08370e08;
+struct Entity* CreateVFX39(struct Coord* c, u8 r1, u8 r2);
+static const struct Collision sCollisions_08370B58[11];
+static const struct Collision sCollisions_08370C68[16];
+
 /*
   Actor:
   Solid.id が 21 の Entity は 基本的にスクリプト(GameCommand*)によって生成される、スクリプトの登場人物のようなもの
@@ -19,16 +24,16 @@ void Actor_Die(struct Solid* p);
 
 // clang-format off
 const SolidRoutine gScriptActorRoutine = {
-    [ENTITY_INIT] =      Actor_Init,
-    [ENTITY_UPDATE] =    Actor_Update,
-    [ENTITY_DIE] =       Actor_Die,
+    [ENTITY_INIT] =      (void*)Actor_Init,
+    [ENTITY_UPDATE] =    (void*)Actor_Update,
+    [ENTITY_DIE] =       (void*)Actor_Die,
     [ENTITY_DISAPPEAR] = (void*)DeleteSolid,
     [ENTITY_EXIT] =      (SolidFunc)DeleteEntity,
 };
 // clang-format on
 
 struct Solid* CreateScriptActor(struct Solid* e, u8 kind) {
-  struct Solid* p = AllocEntityLast(gSolidHeaderPtr);
+  struct Solid* p = (struct Solid*)AllocEntityLast(gSolidHeaderPtr);
   if (p != NULL) {
     INIT_SOLID_ROUTINE(p, SOLID_SCRIPT_ACTOR);
     (p->s).work[0] = kind;
@@ -128,7 +133,7 @@ static void Actor_Init(struct Solid* p) {
       [65] = initStaticActor,
   };
   // clang-format on
-  (sInitializers[(p->s).work[0]])(p);
+  (sInitializers[(p->s).work[0]])((void*)p);
   return;
 }
 
@@ -272,7 +277,7 @@ void Actor_Update(struct Solid* p) {
       [65] = Actor65_Update,
   };
   // clang-format on
-  (sUpdates[(p->s).work[0]])(p);
+  (sUpdates[(p->s).work[0]])((void*)p);
   return;
 }
 
@@ -351,7 +356,7 @@ void Actor_Die(struct Solid* p) {
       [65] = deleteActor,
   };
   // clang-format on
-  (sDeinitalizer[(p->s).work[0]])(p);
+  (sDeinitalizer[(p->s).work[0]])((void*)p);
 }
 
 // --------------------------------------------
@@ -366,9 +371,9 @@ u16 FUN_080d0934(struct Entity* p, motion_t m, u8 r2) {
     case 1: {
       UpdateSpriteAnimation(p);
       if (p->work[2] & 1) {
-        PaintEntityWhite(p);
+        PaintEntityWhite((struct Entity*)p);
       } else {
-        UpdateEntityPaletteID(p);
+        UpdateEntityPaletteID((struct Entity*)p);
       }
       p->work[2]--;
       if (p->work[2] == 0) {
@@ -387,7 +392,7 @@ u16 FUN_080d0934(struct Entity* p, motion_t m, u8 r2) {
     }
     case 3: {
       UpdateSpriteAnimation(p);
-      PaintEntityWhite(p);
+      PaintEntityWhite((struct Entity*)p);
       (p->spr).mag.x = p->work[2] * -4 + 0x120;
       (p->spr).mag.y = p->work[2] * 4 + 0xe0;
       if (--p->work[2] != 0) {
@@ -399,7 +404,7 @@ u16 FUN_080d0934(struct Entity* p, motion_t m, u8 r2) {
     }
     case 4: {
       UpdateSpriteAnimation(p);
-      PaintEntityWhite(p);
+      PaintEntityWhite((struct Entity*)p);
       (p->spr).mag.x = p->work[2] * 0x40 + 0x20;
       (p->spr).mag.y = p->work[2] * -0x20 + 0x160;
       if (--p->work[2] != 0) {
@@ -412,7 +417,7 @@ u16 FUN_080d0934(struct Entity* p, motion_t m, u8 r2) {
     }
     case 5: {
       UpdateSpriteAnimation(p);
-      PaintEntityWhite(p);
+      PaintEntityWhite((struct Entity*)p);
       (p->spr).mag.x = 0x20;
       (p->d).y -= 0x40;
       (p->coord).y += (p->d).y * 2;
@@ -440,7 +445,7 @@ NON_MATCH u16 FUN_080d0aa0(struct Entity* p, motion_t m, u8 r2) {
       SetSpriteAnimation(p, m);
       (p->spr).mag.x = 0x20;
       (p->spr).mag.y = 0x200;
-      PaintEntityWhite(p);
+      PaintEntityWhite((struct Entity*)p);
       (p->unk_coord).y = FUN_08009f6c((p->coord).x, (p->coord).y);
       (p->coord).y = gStageRun.vm.camera.viewport.y - PIXEL(96);
       p->mode[3]++;
@@ -490,9 +495,9 @@ NON_MATCH u16 FUN_080d0aa0(struct Entity* p, motion_t m, u8 r2) {
     case 5: {
       UpdateSpriteAnimation(p);
       if (p->work[2] & 1) {
-        UpdateEntityPaletteID(p);
+        UpdateEntityPaletteID((struct Entity*)p);
       } else {
-        PaintEntityWhite(p);
+        PaintEntityWhite((struct Entity*)p);
       }
       if (--p->work[2] == 0) {
         p->mode[3] = 0;
@@ -1195,7 +1200,1347 @@ _080D1744: .4byte gSolidFnTable\n\
  .syntax divided\n");
 }
 
-INCASM("asm/solid/actor.inc");
+INCASM("asm/solid/actor_a.inc");
+
+void ActorFefnir12_Update(struct Solid* p) {
+  struct Coord c;
+  switch ((p->s).mode[1]) {
+    case 0: {
+      register s32 z5 asm("r5");
+      register struct Body* b asm("r4");
+      {
+        register u16* gt asm("r0");
+        register s32 t2 asm("r2");
+        register s32 v1 asm("r1");
+        gt = wDynamicGraphicTilenums;
+        asm("" : "+r"(gt));
+        t2 = 0xA1 << 1;
+        gt = (u16*)((u8*)gt + t2);
+        v1 = 0x34D;
+        *gt = v1;
+        {
+          register u16* pt asm("r0");
+          pt = wDynamicMotionPalIDs;
+          asm("" : "+r"(pt));
+          pt = (u16*)((u8*)pt + t2);
+          v1 = 9;
+          *pt = v1;
+        }
+      }
+      SetMotion(&p->s, MOTION(0xA1, 0x14));
+      {
+        register s32 one asm("r2");
+        register s32 h asm("r1");
+        register s32 g asm("r0");
+        one = 1;
+        h = (p->s).flags;
+        asm("" : "+r"(h));
+        g = 0x10;
+        g |= h;
+        (p->s).flags = g;
+        {
+          register u8* xp asm("r0");
+          xp = (u8*)p + 0x4c;
+          z5 = 0;
+          *xp = one;
+        }
+      }
+      {
+        register u8* oa asm("r3");
+        register s32 k16 asm("r2");
+        register s32 ov asm("r1");
+        register s32 m11 asm("r0");
+        oa = (u8*)p + 0x4a;
+        k16 = 0x10;
+        ov = *oa;
+        m11 = -0x11;
+        m11 &= ov;
+        m11 |= k16;
+        *oa = m11;
+      }
+      {
+        register s32 h2 asm("r1");
+        register s32 g2 asm("r0");
+        h2 = (p->s).flags;
+        asm("" : "+r"(h2));
+        g2 = 4;
+        g2 |= h2;
+        (p->s).flags = g2;
+      }
+      b = &p->body;
+      ((void (*)(struct Body*, const struct Collision*, struct Coord*, s32))InitBody)(b, &sCollisions_08370B58[1], &(p->s).coord, 9);
+      b->parent = (struct Entity*)p;
+      b->fn = (BodyFunc)z5;
+      *((u8*)p + 0x94) = 0x5a;
+      PlaySound(0xF4);
+      {
+        register struct Camera* cam asm("r0");
+        cam = &gStageRun.vm.camera;
+        (p->s).coord.x = cam->viewport.x + 0x87FF;
+      }
+      (p->s).work[2] = 0x14;
+      (p->s).mode[1]++;
+      FALLTHROUGH;
+    }
+    case 1: {
+      UpdateEntityAnim(&p->s);
+      (p->s).coord.x += -0x300;
+      {
+        s32 t9 = (p->s).work[2] - 1;
+        (p->s).work[2] = t9;
+        if ((t9 << 24) != 0) {
+          break;
+        }
+      }
+      (p->s).work[2] = 8;
+      SetMotion(&p->s, MOTION(0xA1, 0x00));
+      (p->s).mode[1]++;
+      break;
+    }
+    case 2: {
+      UpdateEntityAnim(&p->s);
+      {
+        s32 c2 = (p->s).coord.x;
+        (p->s).coord.x = c2 + -0x200;
+        if (((p->s).work[2] & 3) == 0) {
+          c.x = c2 + -0xE00;
+          c.y = (p->s).coord.y;
+          CreateSmoke(3, &c);
+          c.x = (p->s).coord.x + (0x80 << 4);
+          CreateSmoke(3, &c);
+        }
+      }
+      {
+        s32 t9 = (p->s).work[2] - 1;
+        (p->s).work[2] = t9;
+        if ((t9 << 24) != 0) {
+          break;
+        }
+      }
+      SetMotion(&p->s, MOTION(0xA1, 0x1B));
+      (p->s).d.x = 0x80 << 2;
+      (p->s).work[2] = 0x20;
+      (p->s).mode[1]++;
+      break;
+    }
+    case 3: {
+      UpdateEntityAnim(&p->s);
+      {
+        s32 v = (p->s).d.x;
+        s32 nv = (v * 15) >> 4;
+        s32 nc;
+        (p->s).d.x = nv;
+        nc = (p->s).coord.x - nv;
+        (p->s).coord.x = nc;
+        if (((p->s).work[2] & 7) == 0) {
+          c.x = nc + -0xC00;
+          c.y = (p->s).coord.y;
+          CreateSmoke(3, &c);
+          c.x = (p->s).coord.x + (0x80 << 4);
+          CreateSmoke(3, &c);
+        }
+      }
+      {
+        s32 t9 = (p->s).work[2] - 1;
+        (p->s).work[2] = t9;
+        if ((t9 << 24) != 0) {
+          break;
+        }
+      }
+      (p->s).mode[1]++;
+      break;
+    }
+    case 4:
+      UpdateEntityAnim(&p->s);
+      if (((p->s).scriptEntity->flags & 1) == 0) {
+        break;
+      }
+      SetMotion(&p->s, MOTION(0xA1, 0x1C));
+      (p->s).work[2] = 0x3C;
+      (p->s).mode[1]++;
+      break;
+    case 5: {
+      UpdateEntityAnim(&p->s);
+      {
+        s32 t9 = (p->s).work[2] - 1;
+        (p->s).work[2] = t9;
+        if ((t9 << 24) != 0) {
+          break;
+        }
+      }
+      SetMotion(&p->s, MOTION(0xA1, 0x09));
+      {
+        register s32 k2 asm("r6");
+        register u16* pt5 asm("r5");
+        register u32 idx asm("r4");
+        {
+          register u16* gb asm("r0");
+          u16* gt5;
+          gb = wStaticGraphicTilenums;
+          asm("" : "+r"(gb));
+          gt5 = (u16*)((u8*)gb + 0x42);
+          k2 = 0x80 << 2;
+          *gt5 = k2;
+        }
+        pt5 = wStaticMotionPalIDs;
+        asm("" : "+r"(pt5));
+        pt5 = (u16*)((u8*)pt5 + 0x42);
+        *pt5 = 4;
+        idx = 0xA5 << 2;
+        {
+          register const u8* bg asm("r1");
+          const struct Graphic* g;
+          bg = (const u8*)gStaticMotionGraphics;
+          asm("" : "+r"(bg));
+          g = (const struct Graphic*)(idx + (u32)bg);
+          LoadGraphic((void*)g, (void*)(((k2 - (*(u16*)((u8*)g + 6) >> 6)) << 5) + (0x80 << 9)));
+        }
+        {
+          register const u8* b12 asm("r0");
+          b12 = (const u8*)gStaticMotionGraphics + 12;
+          asm("" : "+r"(b12));
+          idx += (u32)b12;
+          {
+            register s32 a1 asm("r1");
+            a1 = ((*pt5 - ((const struct Palette*)idx)->dst) << 5) + k2;
+            LoadPalette((const struct Palette*)idx, a1);
+            asm volatile("" ::"r"(idx));
+          }
+        }
+      }
+      (p->s).mode[1]++;
+      break;
+    }
+    case 6:
+    case 8:
+    case 10:
+      UpdateEntityAnim(&p->s);
+      if (((p->s).scriptEntity->flags & 2) == 0) {
+        break;
+      }
+      SetMotion(&p->s, MOTION(0xA1, 0x0B));
+      CreateScriptActor(p, 0xD);
+      PlaySound(0xF5);
+      AppendQuake(2, &(p->s).coord);
+      (p->s).mode[1]++;
+      break;
+    case 7:
+    case 9:
+    case 11:
+      UpdateEntityAnim(&p->s);
+      if (*((u8*)p + 0x73) != 3) {
+        break;
+      }
+      (p->s).mode[1]++;
+      break;
+    case 12:
+      UpdateEntityAnim(&p->s);
+      SetMotion(&p->s, MOTION(0xA1, 0x00));
+      (p->s).mode[1] = 0xE;
+      break;
+    case 14:
+      UpdateEntityAnim(&p->s);
+      if (((p->body).status & 1) == 0) {
+        break;
+      }
+      SetMotion(&p->s, MOTION(0xA1, 0x14));
+      PlaySound(0xF4);
+      PlaySound(0x52);
+      (p->s).work[2] = 8;
+      (p->s).mode[1]++;
+      FALLTHROUGH;
+    case 15: {
+      UpdateEntityAnim(&p->s);
+      {
+        s32 c2 = (p->s).coord.x;
+        (p->s).coord.x = c2 + -0x200;
+        if (((p->s).work[2] & 3) == 0) {
+          c.x = c2 + -0xE00;
+          c.y = (p->s).coord.y;
+          CreateSmoke(3, &c);
+          c.x = (p->s).coord.x + (0x80 << 4);
+          CreateSmoke(3, &c);
+        }
+      }
+      {
+        s32 t9 = (p->s).work[2] - 1;
+        (p->s).work[2] = t9;
+        if ((t9 << 24) != 0) {
+          break;
+        }
+      }
+      SetMotion(&p->s, MOTION(0xA1, 0x1B));
+      (p->s).d.x = 0x80 << 3;
+      (p->s).work[2] = 0x18;
+      (p->s).mode[1]++;
+      break;
+    }
+    case 16: {
+      UpdateEntityAnim(&p->s);
+      {
+        s32 v = (p->s).d.x;
+        s32 nv = (v * 7) >> 3;
+        s32 nc;
+        (p->s).d.x = nv;
+        nc = (p->s).coord.x - nv;
+        (p->s).coord.x = nc;
+        if (((p->s).work[2] & 7) == 0) {
+          c.x = nc + -0xC00;
+          c.y = (p->s).coord.y;
+          CreateSmoke(3, &c);
+          c.x = (p->s).coord.x + (0x80 << 4);
+          CreateSmoke(3, &c);
+        }
+      }
+      {
+        s32 t9 = (p->s).work[2] - 1;
+        (p->s).work[2] = t9;
+        if ((t9 << 24) != 0) {
+          break;
+        }
+      }
+      (p->s).mode[1]++;
+      break;
+    }
+    case 17:
+      UpdateEntityAnim(&p->s);
+      if (((p->s).scriptEntity->flags & 4) == 0) {
+        break;
+      }
+      SetMotion(&p->s, MOTION(0xA1, 0x1C));
+      (p->s).mode[1]++;
+      break;
+    case 18:
+      UpdateEntityAnim(&p->s);
+      if (*((u8*)p + 0x73) != 3) {
+        break;
+      }
+      SetMotion(&p->s, MOTION(0xA1, 0x00));
+      (p->s).mode[1]++;
+      break;
+    case 19: {
+      register s32 t asm("r0");
+      t = FUN_080d0934(&p->s, MOTION(0xA1, 0x00), 1) << 16;
+      if (t == 0) {
+        break;
+      }
+    }
+      (p->s).mode[1]++;
+      break;
+    case 13:
+    case 20:
+      break;
+  }
+}
+
+INCASM("asm/solid/actor_b.inc");
+
+void initActor21(struct Solid* p) {
+  register u32 z asm("r4");
+  register struct WramWindowRegister* w asm("r2");
+  w = &gWindowRegBuffer;
+  {
+    register u16 d asm("r3");
+    register u32 k asm("r4");
+    register u32 v asm("r1");
+    d = w->dispcnt;
+    k = DISPCNT_WIN1_ON;
+    asm("" : "+l"(k));
+    v = k;
+    asm("" : "+l"(v));
+    z = 0;
+    v |= d;
+    w->dispcnt = v;
+  }
+  {
+    u8 t = w->winin[2];
+    u32 v = 0xFE;
+    v |= t;
+    w->winin[2] = v;
+  }
+  {
+    register u32 one asm("r3");
+    one = ENTITY_UPDATE;
+    asm("" : "+l"(one));
+    w->winin[1] = z;
+    (p->s).work[2] = z;
+    {
+      u32 tbl, id;
+      EntityFunc** routine_table;
+      tbl = (u32)(gSolidFnTable);
+      id = ((p->s).id) << 2;
+      routine_table = (EntityFunc**)(tbl + id);
+      *(u32*)((p->s).mode) = one;
+      (p->s).onUpdate = (void*)(*routine_table)[ENTITY_UPDATE];
+    }
+  }
+  Actor_Update(p);
+}
+
+INCASM("asm/solid/actor_c.inc");
+
+void ActorOmegaZero40_Update(struct Solid* p0) {
+  register struct Solid* p asm("r6");
+  p = p0;
+  switch ((p->s).mode[1]) {
+    case 0:
+      (p->s).coord.y = FUN_08009f6c((p->s).coord.x, (p->s).coord.y);
+      LoadZeroPalette(NULL, 8);
+      (p->s).tileNum = 0x80 << 2;
+      (p->s).palID = 4;
+      SetMotion(&p->s, MOTION(0x3F, 0x05));
+      (p->s).mode[1]++;
+      FALLTHROUGH;
+    case 1: {
+      UpdateEntityAnim(&p->s);
+      if (((p->s).scriptEntity->flags & 1) == 0) {
+        break;
+      }
+      (p->s).unk_coord.x = (p->s).coord.x;
+      (p->s).unk_coord.y = (p->s).coord.y + -0xC00;
+      PlaySound(0x8D << 1);
+      (p->s).unk_28 = CreateVFX39(&(p->s).unk_coord, 3, 0);
+      {
+        u8* t7 = (u8*)(p->s).unk_28 + 0x7c;
+        u32 z = 0;
+        *t7 = z;
+        *((u8*)(p->s).unk_28 + 0x74) = z;
+        *((u8*)(p->s).unk_28 + 0x75) = z;
+        *((u8*)(p->s).unk_28 + 0x76) = z;
+        *(u32*)((u8*)(p->s).unk_28 + 0x78) = z;
+        (p->s).work[2] = z;
+        (p->s).work[3] = z;
+      }
+      (p->s).mode[1]++;
+      break;
+    }
+    case 2: {
+      UpdateEntityAnim(&p->s);
+      (p->s).work[3]++;
+      {
+        struct Entity* q = (p->s).unk_28;
+        s32 sv = gSineTable[(p->s).work[2] >> 1];
+        *(s32*)((u8*)q + 0x78) = sv * 24;
+      }
+      {
+        struct Entity* q2 = *(struct Entity* volatile*)&(p->s).unk_28;
+        u32 b = ((p->s).work[3] & 1) << 11;
+        *(s32*)((u8*)q2 + 0x78) += b;
+      }
+      if (((p->s).scriptEntity->flags & 1) != 0) {
+        u32 w2 = (p->s).work[2];
+        if ((s8)(p->s).work[2] < 0) {
+          break;
+        }
+        (p->s).work[2] = w2 + 3;
+        break;
+      }
+      {
+        u32 w2 = (p->s).work[2];
+        if (w2 > 3) {
+          (p->s).work[2] = w2 - 3;
+          break;
+        }
+      }
+      *((u8*)(p->s).unk_28 + 0x77) = 1;
+      (p->s).mode[1]++;
+      break;
+    }
+    case 3: {
+      UpdateEntityAnim(&p->s);
+      if (((p->s).scriptEntity->flags & 2) == 0) {
+        break;
+      }
+      (p->s).unk_coord.x = (p->s).coord.x;
+      (p->s).unk_coord.y = (p->s).coord.y + -0xC00;
+      {
+        u32 z;
+        struct Body* body;
+        (p->s).flags |= 4;
+        z = 0;
+        body = &p->body;
+        InitBody(body, &sCollisions_08370C68[1], &(p->s).coord, 1);
+        body->parent = (struct Entity*)p;
+        body->fn = (void*)z;
+        PlaySound(0x8D << 1);
+        (p->s).unk_28 = CreateVFX39(&(p->s).unk_coord, 3, 0);
+        {
+          u8* t7 = (u8*)(p->s).unk_28 + 0x7c;
+          *t7 = z;
+        }
+        *((u8*)(p->s).unk_28 + 0x74) = z;
+        *((u8*)(p->s).unk_28 + 0x75) = z;
+        *((u8*)(p->s).unk_28 + 0x76) = z;
+        *(u32*)((u8*)(p->s).unk_28 + 0x78) = z;
+        (p->s).work[2] = z;
+        (p->s).work[3] = z;
+      }
+      (p->s).mode[1]++;
+      break;
+    }
+    case 4: {
+      UpdateEntityAnim(&p->s);
+      (p->s).work[3]++;
+      {
+        u32 w2 = (p->s).work[2];
+        if (w2 <= 0x3F) {
+          (p->s).work[2] = w2 + 0x10;
+        }
+      }
+      {
+        u32 w3 = (p->s).work[3];
+        register u32 k1 asm("r3");
+        u32 m;
+        k1 = 1;
+        m = k1;
+        asm("" : "+r"(m));
+        m &= w3;
+        if (m != 0) {
+          if (w3 > 3) {
+            if ((RANDOM(RNG_0202f388) & k1) != 0) {
+              goto zero4;
+            }
+          }
+          {
+            struct Entity* q = (p->s).unk_28;
+            s32 sv;
+            asm("" : "+r"(q));
+            sv = gSineTable[(p->s).work[2]];
+            *(s32*)((u8*)q + 0x78) = sv << 6;
+          }
+        } else {
+        zero4:
+          *(s32*)((u8*)(p->s).unk_28 + 0x78) = 0;
+        }
+      }
+      if ((p->s).work[3] <= 0x40) {
+        break;
+      }
+      {
+        u8* t7 = (u8*)*(struct Entity* volatile*)&(p->s).unk_28 + 0x77;
+        u32 z = 0;
+        u32 one = 1;
+        *t7 = one;
+        {
+          u8* t = (u8*)p + 0x8c;
+          *(u32*)t = z;
+        asm("" : "+r"(t));
+        t += 4;
+        *(u32*)t = z;
+          asm("" : "+r"(t));
+          t += 4;
+          *t = z;
+        }
+      }
+      (p->s).flags &= 0xFB;
+      (p->s).mode[1]++;
+      break;
+    }
+    case 5:
+      UpdateEntityAnim(&p->s);
+      if (((p->s).scriptEntity->flags & 4) == 0) {
+        break;
+      }
+      (p->s).mode[1]++;
+      break;
+    case 6:
+      SetMotion(&p->s, MOTION(0x35, 0x01));
+      (p->s).mode[1]++;
+      FALLTHROUGH;
+    case 7:
+      UpdateEntityAnim(&p->s);
+      if (*((u8*)p + 0x73) != 3) {
+        break;
+      }
+      (p->s).mode[1]++;
+      break;
+    case 8:
+      SetMotion(&p->s, 0);
+      (p->s).work[2] = 3;
+      (p->s).mode[1]++;
+      FALLTHROUGH;
+    case 9: {
+      u32 t;
+      UpdateEntityAnim(&p->s);
+      t = (p->s).work[2] - 1;
+      (p->s).work[2] = t;
+      if ((t << 24) != 0) {
+        break;
+      }
+      (p->s).mode[1]++;
+      break;
+    }
+    case 10: {
+      u32 z;
+      struct Body* body;
+      SetMotion(&p->s, 0xCC << 6);
+      (p->s).flags |= 4;
+      z = 0;
+      body = &p->body;
+      InitBody(body, &sCollisions_08370C68[2], &(p->s).coord, 1);
+      body->parent = (struct Entity*)p;
+      body->fn = (void*)z;
+      (p->s).work[2] = z;
+      (p->s).mode[1]++;
+      FALLTHROUGH;
+    }
+    case 11: {
+      UpdateEntityAnim(&p->s);
+      if (MOTION_VALUE(p) != 0) {
+        if (*((u8*)p + 0x73) == 3) {
+          SetMotion(&p->s, 0);
+        }
+      }
+      if ((*(u32*)((u8*)p + 0x8c) & 1) != 0) {
+        u32 t = (p->s).work[2] + 1;
+        (p->s).work[2] = t;
+        if ((t & 1) != 0) {
+          SetMotion(&p->s, 0xC4 << 6);
+        } else {
+          SetMotion(&p->s, 0xC8 << 6);
+        }
+        PlaySound(0x13B);
+      }
+      if (((p->s).scriptEntity->flags & 8) == 0) {
+        break;
+      }
+      (p->s).unk_coord.x = (p->s).coord.x;
+      (p->s).unk_coord.y = (p->s).coord.y + -0xC00;
+      {
+        u32 z;
+        struct Body* body;
+        (p->s).flags |= 4;
+        z = 0;
+        body = &p->body;
+        InitBody(body, &sCollisions_08370C68[1], &(p->s).coord, 1);
+        body->parent = (struct Entity*)p;
+        body->fn = (void*)z;
+        PlaySound(0x8D << 1);
+        (p->s).unk_28 = CreateVFX39(&(p->s).unk_coord, 3, 0);
+        {
+          u8* t7 = (u8*)(p->s).unk_28 + 0x7c;
+          *t7 = z;
+        }
+        *((u8*)(p->s).unk_28 + 0x74) = z;
+        *((u8*)(p->s).unk_28 + 0x75) = z;
+        *((u8*)(p->s).unk_28 + 0x76) = z;
+        *(u32*)((u8*)(p->s).unk_28 + 0x78) = z;
+        (p->s).work[2] = z;
+        (p->s).work[3] = z;
+      }
+      (p->s).mode[1]++;
+      break;
+    }
+    case 12: {
+      UpdateEntityAnim(&p->s);
+      if (MOTION_VALUE(p) != 0) {
+        if (*((u8*)p + 0x73) == 3) {
+          SetMotion(&p->s, 0);
+        }
+      }
+      (p->s).work[3]++;
+      {
+        u32 w2 = (p->s).work[2];
+        if (w2 <= 0x3F) {
+          (p->s).work[2] = w2 + 0x10;
+        }
+      }
+      {
+        u32 w3 = (p->s).work[3];
+        register u32 k1 asm("r3");
+        u32 m;
+        k1 = 1;
+        m = k1;
+        asm("" : "+r"(m));
+        m &= w3;
+        if (m != 0) {
+          if (w3 > 3) {
+            if ((RANDOM(RNG_0202f388) & k1) != 0) {
+              goto zero12;
+            }
+          }
+          {
+            struct Entity* q = (p->s).unk_28;
+            s32 sv;
+            asm("" : "+r"(q));
+            sv = gSineTable[(p->s).work[2]];
+            *(s32*)((u8*)q + 0x78) = sv << 6;
+          }
+        } else {
+        zero12:
+          *(s32*)((u8*)(p->s).unk_28 + 0x78) = 0;
+        }
+      }
+      if ((p->s).work[3] <= 0x40) {
+        break;
+      }
+      {
+        register u8* t7 asm("r1");
+        register u32 z2 asm("r2");
+        u32 z;
+        u32 one12;
+        t7 = (u8*)*(struct Entity* volatile*)&(p->s).unk_28 + 0x77;
+        asm volatile("mov %0, #0" : "=r"(z2));
+        asm volatile("" ::"r"(z2));
+        z = 0;
+        one12 = 1;
+        *t7 = one12;
+        if (((p->s).scriptEntity->flags & 0x10) == 0) {
+          struct Body* body;
+          u32 res = (p->s).flags;
+          res |= 4;
+          (p->s).flags = res;
+          body = &p->body;
+          InitBody(body, &sCollisions_08370C68[2], &(p->s).coord, 1);
+          body->parent = (struct Entity*)p;
+          body->fn = (void*)z;
+          (p->s).mode[1] = 0xB;
+        } else {
+          struct Body* body;
+          u32 res = (p->s).flags;
+          res |= 4;
+          (p->s).flags = res;
+          body = &p->body;
+          InitBody(body, &sCollisions_08370C68[3], &(p->s).coord, 1);
+          body->parent = (struct Entity*)p;
+          body->fn = (void*)z;
+          SetMotion(&p->s, 0xD4 << 6);
+          (p->s).mode[1]++;
+        }
+      }
+      break;
+    }
+    case 13:
+      UpdateEntityAnim(&p->s);
+      if (*((u8*)p + 0x73) != 4) {
+        break;
+      }
+      SetMotion(&p->s, MOTION(0x3F, 0x05));
+      (p->s).mode[1]++;
+      break;
+    case 14: {
+      u32 one;
+      u32 v14;
+      UpdateEntityAnim(&p->s);
+      v14 = *(u32*)((u8*)p + 0x8c);
+      one = 1;
+      asm("" : "+r"(one));
+      if ((v14 & one) == 0) {
+        break;
+      }
+      SetMotion(&p->s, 0xC8 << 6);
+      {
+        register u8* sr3 asm("r3");
+        register u32 ms asm("r2");
+        u32 m14;
+        sr3 = (u8*)&gStageRun;
+        ms = *(u16*)(sr3 + 8);
+        m14 = one;
+        asm("" : "+r"(m14));
+        m14 &= ms;
+        if (m14 != 0) {
+          u32 fb = *(sr3 + 0x12);
+          u32 m15 = one;
+          asm("" : "+r"(m15));
+          m15 &= fb;
+          if (m15 == 0) {
+            u32 nm = 0xFFFE;
+            nm &= ms;
+            nm |= 0x10;
+            *(u16*)(sr3 + 8) = nm;
+          }
+        }
+      }
+      (p->s).unk_2c = CreateBossExplosion((struct Entity*)p, (struct Coord*)&Coord_08370e08);
+      (p->s).mode[1]++;
+      break;
+    }
+    case 15:
+      UpdateEntityAnim(&p->s);
+      if (((p->s).unk_2c)->mode[0] <= 1) {
+        break;
+      }
+      {
+        u8* sr = (u8*)&gStageRun;
+        asm("" : "+r"(sr));
+        {
+          u32 fl = *(sr + 0x12);
+          u32 res = 2;
+          res |= fl;
+          *(sr + 0x12) = res;
+        }
+      }
+      (p->s).mode[1]++;
+      break;
+  }
+}
+
+INCASM("asm/solid/actor_d.inc");
+
+void ActorLastHarpuia_Update(struct Solid* p) {
+  switch ((p->s).mode[1]) {
+    case 0: {
+      register s32 off asm("r2");
+      {
+        register u16* q asm("r0");
+        register s32 v asm("r1");
+        q = wDynamicGraphicTilenums;
+        off = 0xbe << 1;
+        q = (u16*)((u8*)q + off);
+        v = 0xf0;
+        v <<= 2;
+        *q = v;
+      }
+      {
+        register u16* q asm("r0");
+        register s32 v asm("r1");
+        q = wDynamicMotionPalIDs;
+        q = (u16*)((u8*)q + off);
+        v = 9;
+        *q = v;
+      }
+      (p->s).mode[1]++;
+      FALLTHROUGH;
+    }
+    case 1:
+      if (((u16)FUN_080d0aa0(&p->s, MOTION(0xBE, 0x03), 1) << 16) == 0) {
+        break;
+      }
+      SetMotion(&p->s, MOTION(0xBE, 0x14));
+      (p->s).d.x = 0;
+      goto bump;
+    case 2:
+      UpdateEntityAnim(&p->s);
+      if ((p->s).d.x <= 0x3FF) {
+        (p->s).d.x += 0x40;
+      }
+      (p->s).coord.x += (p->s).d.x;
+      if (*((u8*)p + 0x73) != 3) {
+        break;
+      }
+      SetMotion(&p->s, MOTION(0xBE, 0x15));
+      goto bump;
+    case 3:
+      UpdateEntityAnim(&p->s);
+      if ((p->s).d.x <= 0x3FF) {
+        (p->s).d.x += 0x40;
+      }
+      (p->s).coord.x += (p->s).d.x;
+      if (*((u8*)p + 0x73) != 3) {
+        break;
+      }
+      goto bump;
+    case 4:
+      UpdateEntityAnim(&p->s);
+      if ((p->s).d.x <= 0x3FF) {
+        (p->s).d.x += 0x40;
+      }
+      (p->s).coord.x += (p->s).d.x;
+      if ((p->s).coord.x <= 0xB1800) {
+        break;
+      }
+      SetMotion(&p->s, MOTION(0xBE, 0x16));
+      PlaySound(0xF9);
+      (p->s).work[2] = 0;
+      goto bump;
+    case 5: {
+      s32 t;
+      u32 z5;
+      UpdateEntityAnim(&p->s);
+      t = (p->s).work[2] + 1;
+      z5 = 0;
+      (p->s).work[2] = t;
+      if ((u8)t == 6) {
+        struct Body* body;
+        (p->s).flags |= COLLIDABLE;
+        body = &p->body;
+        InitBody(body, &sCollisions_08370C68[4], &(p->s).coord, 1);
+        body->parent = (struct Entity*)p;
+        body->fn = (void*)z5;
+      }
+      if (*((u8*)p + 0x73) != 3) {
+        break;
+      }
+      SetMotion(&p->s, MOTION(0xBE, 0x17));
+      PlaySound(0xF9);
+      (p->s).work[2] = z5;
+      asm volatile("");
+      goto bump;
+    }
+    case 6: {
+      s32 t;
+      u32 z6;
+      UpdateEntityAnim(&p->s);
+      t = (p->s).work[2] + 1;
+      z6 = 0;
+      (p->s).work[2] = t;
+      if ((u8)t == 0xA) {
+        struct Body* body;
+        (p->s).flags |= COLLIDABLE;
+        body = &p->body;
+        InitBody(body, &sCollisions_08370C68[5], &(p->s).coord, 1);
+        body->parent = (struct Entity*)p;
+        body->fn = (void*)z6;
+      }
+      if (*((u8*)p + 0x73) != 3) {
+        break;
+      }
+      SetMotion(&p->s, MOTION(0xBE, 0x18));
+      PlaySound(0xF9);
+      (p->s).work[2] = z6;
+      goto bump;
+    }
+    case 7: {
+      s32 t;
+      u32 z7;
+      UpdateEntityAnim(&p->s);
+      t = (p->s).work[2] + 1;
+      z7 = 0;
+      (p->s).work[2] = t;
+      if ((u8)t == 0xA) {
+        struct Body* body;
+        (p->s).flags |= COLLIDABLE;
+        body = &p->body;
+        InitBody(body, &sCollisions_08370C68[6], &(p->s).coord, 1);
+        body->parent = (struct Entity*)p;
+        body->fn = (void*)z7;
+      }
+      if (*((u8*)p + 0x73) != 3) {
+        break;
+      }
+      {
+        struct Body* body;
+        (p->s).flags |= COLLIDABLE;
+        body = &p->body;
+        InitBody(body, &sCollisions_08370C68[7], &(p->s).coord, 1);
+        body->parent = (struct Entity*)p;
+        body->fn = (void*)z7;
+      }
+      goto bump;
+    }
+    case 8:
+      UpdateEntityAnim(&p->s);
+      if ((*(u32*)((u8*)p + 0x8c) & 1) == 0) {
+        break;
+      }
+      SetMotion(&p->s, MOTION(0xBE, 0x0C));
+      PlaySound(0xF8);
+      (p->s).d.x = 0x300;
+      (p->s).d.y = -0x400;
+      goto bump;
+    case 9: {
+      UpdateEntityAnim(&p->s);
+      (p->s).coord.x -= (p->s).d.x;
+      (p->s).coord.y += (p->s).d.y;
+      (p->s).d.y += 0x20;
+      if ((p->s).d.y >= -0x100) {
+        (p->s).d.x = (((p->s).d.x << 4) - (p->s).d.x) >> 4;
+      }
+      if ((p->s).d.y < 0) {
+        break;
+      }
+      SetMotion(&p->s, MOTION(0xBE, 0x0D));
+      {
+        u32 z9 = 0;
+        (p->s).d.y = z9;
+        (p->s).unk_coord.y = (p->s).coord.y;
+        (p->s).work[2] = z9;
+      }
+    bump:
+      (p->s).mode[1]++;
+      break;
+    }
+    case 10: {
+      s32 d0, nd;
+      UpdateEntityAnim(&p->s);
+      d0 = (p->s).d.x;
+      nd = ((d0 << 3) - d0) >> 3;
+      (p->s).d.x = nd;
+      (p->s).coord.x -= nd;
+      {
+        s32 w = (p->s).work[2] + 1;
+        (p->s).work[2] = w;
+        (p->s).coord.y = (p->s).unk_coord.y + (gSineTable[(u8)(w * 2)] << 2);
+      }
+      break;
+    }
+  }
+}
+
+INCASM("asm/solid/actor_e.inc");
+
+void FUN_080d6504(struct Solid* p) {
+  struct Entity* q = *(struct Entity**)((u8*)p + 0x28);
+  switch ((p->s).mode[1]) {
+    case 0: {
+      u16* tn = wStaticGraphicTilenums;
+      register u32 z asm("r5");
+      register u32 v asm("r0");
+      z = 0;
+      v = 0x23A;
+      tn[SM009_OMEGA_HAND] = v;
+      wStaticMotionPalIDs[SM009_OMEGA_HAND] = 5;
+      LOAD_STATIC_GRAPHIC(SM009_OMEGA_HAND);
+      InitNonAffineMotion(&p->s);
+      SetMotion(&p->s, MOTION(SM009_OMEGA_HAND, 1));
+      *((u8*)p + 0x25) = 0x1C;
+      (p->s).work[2] = z;
+      (p->s).mode[1]++;
+      FALLTHROUGH;
+    }
+    case 1: {
+      UpdateEntityAnim(&p->s);
+      (p->s).work[2]++;
+      (p->s).coord.x = q->coord.x + 0x1500;
+      {
+        s32 sv = gSineTable[(p->s).work[2]] + -0x3800;
+        (p->s).coord.y = q->coord.y + sv;
+      }
+      {
+        u8 qm = q->mode[2];
+        if (qm == 1 || qm == 4) {
+          (p->s).mode[1]++;
+        }
+      }
+      break;
+    }
+    case 2:
+    case 6: {
+      u32 z2;
+      if (q->mode[2] == 4) {
+        PlaySound(0x52);
+      }
+      InitRotatableMotion(&p->s);
+      SetMotion(&p->s, MOTION(SM009_OMEGA_HAND, 2));
+      *((u8*)p + 0x24) = 0x28;
+      z2 = 0;
+      (p->s).flags &= 0xEF;
+      *((u8*)p + 0x4c) = z2;
+      {
+        u8* oa = (u8*)p + 0x4a;
+        s32 ov = *oa;
+        s32 m11 = -0x11;
+        m11 &= ov;
+        *oa = m11;
+      }
+      (p->s).work[2] = 6;
+      (p->s).mode[1]++;
+      FALLTHROUGH;
+    }
+    case 3:
+    case 7: {
+      s32 cx, cy;
+      UpdateEntityAnim(&p->s);
+      cx = q->coord.x;
+      (p->s).coord.x = cx + 0x500;
+      cy = q->coord.y;
+      (p->s).coord.y = cy + -0x4800;
+      if (q->mode[2] == 4) {
+        if ((p->s).work[2] == 0) {
+          break;
+        }
+        (p->s).work[2]--;
+        if ((((p->s).work[2] / 3) & 1) != 0) {
+          (p->s).coord.x = cx + 0x300;
+          (p->s).coord.y = cy + -0x4A00;
+        }
+        break;
+      }
+      {
+        s32 w = (p->s).work[2] - 1;
+        (p->s).work[2] = w;
+        if ((u8)w != 0) {
+          break;
+        }
+      }
+      (p->s).mode[1]++;
+      break;
+    }
+    case 4:
+      PlaySound(0x52);
+      InitRotatableMotion(&p->s);
+      SetMotion(&p->s, MOTION(SM009_OMEGA_HAND, 1));
+      *((u8*)p + 0x24) = 0x58;
+      (p->s).work[2] = 0xC;
+      (p->s).mode[1]++;
+      FALLTHROUGH;
+    case 5: {
+      s32 cx, cy;
+      UpdateEntityAnim(&p->s);
+      cx = q->coord.x;
+      (p->s).coord.x = cx + 0x100;
+      cy = q->coord.y;
+      (p->s).coord.y = cy + -0x5800;
+      if ((p->s).work[2] != 0) {
+        (p->s).work[2]--;
+        if ((((p->s).work[2] / 3) & 1) != 0) {
+          (p->s).coord.x = cx + -0x100;
+          (p->s).coord.y = cy + -0x5A00;
+        }
+      }
+      if (q->mode[2] == 2) {
+        (p->s).mode[1]++;
+      }
+      break;
+    }
+    case 8: {
+      u32 one;
+      PlaySound(0x52);
+      InitRotatableMotion(&p->s);
+      SetMotion(&p->s, MOTION(SM009_OMEGA_HAND, 0));
+      *((u8*)p + 0x24) = 0x20;
+      one = 1;
+      (p->s).flags |= 0x10;
+      {
+        u8* x4c = (u8*)p + 0x4c;
+        register u32 z3 asm("r3");
+        z3 = 0;
+        *x4c = one;
+        {
+          register u8* oa asm("r4");
+          register s32 k asm("r2");
+          oa = (u8*)p + 0x4a;
+          k = 0x10;
+          {
+            s32 ov = *oa;
+            s32 m11 = -0x11;
+            m11 &= ov;
+            m11 |= k;
+            *oa = m11;
+          }
+        }
+        (p->s).work[2] = z3;
+      }
+      (p->s).mode[1]++;
+      FALLTHROUGH;
+    }
+    case 9: {
+      s32 cx, cy;
+      UpdateEntityAnim(&p->s);
+      cx = q->coord.x;
+      (p->s).coord.x = cx + 0x2900;
+      cy = q->coord.y;
+      (p->s).coord.y = cy + -0x3C00;
+      (p->s).work[2]++;
+      if ((((p->s).work[2] / 3) & 1) != 0) {
+        (p->s).coord.x = cx + 0x2800;
+        (p->s).coord.y = cy + -0x3D00;
+      }
+      if (q->mode[2] == 3) {
+        (p->s).mode[1]++;
+      }
+      break;
+    }
+    case 10: {
+      u32 z4;
+      u32 one4;
+      PlaySound(0x52);
+      InitNonAffineMotion(&p->s);
+      SetMotion(&p->s, MOTION(SM009_OMEGA_HAND, 1));
+      z4 = 0;
+      (p->s).flags &= 0xEF;
+      one4 = 1;
+      *((u8*)p + 0x4c) = z4;
+      {
+        u8* oa = (u8*)p + 0x4a;
+        s32 ov = *oa;
+        s32 m11 = -0x11;
+        m11 &= ov;
+        *oa = m11;
+      }
+      UpdateEntityAnim(&p->s);
+      (p->s).mode[1] = one4;
+      break;
+    }
+  }
+}
+
+void FUN_080d6814(struct Solid* p) {
+  struct Entity* q = *(struct Entity**)((u8*)p + 0x28);
+  switch ((p->s).mode[1]) {
+    case 0: {
+      u16* tn = wStaticGraphicTilenums;
+      register u32 z asm("r4");
+      register u32 v asm("r0");
+      z = 0;
+      v = 0x23A;
+      tn[SM009_OMEGA_HAND] = v;
+      wStaticMotionPalIDs[SM009_OMEGA_HAND] = 5;
+      InitNonAffineMotion(&p->s);
+      SetMotion(&p->s, MOTION(SM009_OMEGA_HAND, 0));
+      *((u8*)p + 0x49) |= 0xC;
+      (p->s).work[2] = z;
+      (p->s).mode[1]++;
+      FALLTHROUGH;
+    }
+    case 1: {
+      UpdateEntityAnim(&p->s);
+      (p->s).coord.x = q->coord.x + -0x1300;
+      {
+        s32 sv = gSineTable[(p->s).work[2]] + -0x3A00;
+        (p->s).coord.y = q->coord.y + sv;
+      }
+      {
+        u8 qm = q->mode[2];
+        if (qm == 1 || qm == 4) {
+          (p->s).mode[1]++;
+        }
+      }
+      break;
+    }
+    case 2:
+    case 6: {
+      u32 z2;
+      InitRotatableMotion(&p->s);
+      SetMotion(&p->s, MOTION(SM009_OMEGA_HAND, 0));
+      *((u8*)p + 0x24) = 0x30;
+      z2 = 0;
+      (p->s).flags &= 0xEF;
+      *((u8*)p + 0x4c) = z2;
+      {
+        u8* oa = (u8*)p + 0x4a;
+        s32 ov = *oa;
+        s32 m11 = -0x11;
+        m11 &= ov;
+        *oa = m11;
+      }
+      (p->s).work[2] = 6;
+      (p->s).mode[1]++;
+      FALLTHROUGH;
+    }
+    case 3:
+    case 7: {
+      s32 cx, cy;
+      UpdateEntityAnim(&p->s);
+      cx = q->coord.x;
+      (p->s).coord.x = cx + -0x2300;
+      cy = q->coord.y + -0x4A00;
+      asm("" : "+r"(cy));
+      (p->s).coord.y = cy;
+      if (q->mode[2] == 4) {
+        if ((p->s).work[2] == 0) {
+          break;
+        }
+        (p->s).work[2]--;
+        if ((((p->s).work[2] / 3) & 1) != 0) {
+          (p->s).coord.x = cx + -0x2100;
+          (p->s).coord.y = cy + -0x200;
+        }
+        break;
+      }
+      {
+        s32 w = (p->s).work[2] - 1;
+        (p->s).work[2] = w;
+        if ((u8)w != 0) {
+          break;
+        }
+      }
+      (p->s).mode[1]++;
+      break;
+    }
+    case 4: {
+      u32 one;
+      InitRotatableMotion(&p->s);
+      SetMotion(&p->s, MOTION(SM009_OMEGA_HAND, 1));
+      *((u8*)p + 0x24) = 0x58;
+      one = 1;
+      (p->s).flags |= 0x10;
+      *((u8*)p + 0x4c) = one;
+      {
+        register u8* oa asm("r3");
+        register s32 k asm("r2");
+        oa = (u8*)p + 0x4a;
+        k = 0x10;
+        {
+          s32 ov = *oa;
+          s32 m11 = -0x11;
+          m11 &= ov;
+          m11 |= k;
+          *oa = m11;
+        }
+      }
+      {
+        u8* g = (u8*)p + 0x49;
+        s32 ov = *g;
+        s32 m13 = -0xD;
+        m13 &= ov;
+        m13 |= 8;
+        *g = m13;
+      }
+      *((u8*)p + 0x25) = 0x1D;
+      (p->s).work[2] = 0xC;
+      (p->s).mode[1]++;
+      FALLTHROUGH;
+    }
+    case 5: {
+      s32 cx, cy;
+      UpdateEntityAnim(&p->s);
+      cx = q->coord.x;
+      (p->s).coord.x = cx + -0x700;
+      cy = q->coord.y + -0x5A00;
+      asm("" : "+r"(cy));
+      (p->s).coord.y = cy;
+      if ((p->s).work[2] != 0) {
+        (p->s).work[2]--;
+        if ((((p->s).work[2] / 3) & 1) != 0) {
+          (p->s).coord.x = cx + -0x500;
+          (p->s).coord.y = cy + -0x200;
+        }
+      }
+      if (q->mode[2] == 2) {
+        (p->s).mode[1]++;
+      }
+      break;
+    }
+    case 8: {
+      u32 z3;
+      InitRotatableMotion(&p->s);
+      SetMotion(&p->s, MOTION(SM009_OMEGA_HAND, 0));
+      *((u8*)p + 0x24) = 0x20;
+      z3 = 0;
+      (p->s).flags &= 0xEF;
+      *((u8*)p + 0x4c) = z3;
+      {
+        u8* oa = (u8*)p + 0x4a;
+        s32 ov = *oa;
+        s32 m11 = -0x11;
+        m11 &= ov;
+        *oa = m11;
+        oa -= 1;
+        *oa |= 0xC;
+      }
+      (p->s).work[2] = z3;
+      (p->s).mode[1]++;
+      FALLTHROUGH;
+    }
+    case 9: {
+      s32 cx, cy;
+      UpdateEntityAnim(&p->s);
+      cx = q->coord.x;
+      (p->s).coord.x = cx + -0x1B00;
+      cy = q->coord.y + -0x4400;
+      asm("" : "+r"(cy));
+      (p->s).coord.y = cy;
+      (p->s).work[2]++;
+      if ((((p->s).work[2] / 3) & 1) != 0) {
+        (p->s).coord.x = cx + -0x1A00;
+        (p->s).coord.y = cy + -0x100;
+      }
+      if (q->mode[2] == 3) {
+        (p->s).mode[1]++;
+      }
+      break;
+    }
+    case 10:
+      InitNonAffineMotion(&p->s);
+      SetMotion(&p->s, MOTION(SM009_OMEGA_HAND, 0));
+      UpdateEntityAnim(&p->s);
+      (p->s).mode[1] = 0;
+      break;
+  }
+}
+
+INCASM("asm/solid/actor_f.inc");
 
 // ------------------------------------------------------------------------------------------------------------------------------------
 
