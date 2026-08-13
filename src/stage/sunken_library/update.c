@@ -582,36 +582,32 @@ _0801F6BE:\n\
 s16 SunkenLib_FreeUpdate(struct StageRun* p) { return SunkenLib_MissionUpdate(p); }
 
 // 0x0801f6dc
-NAKED Coords32* getSunkenLibRoomCoord(u8 idx) {
-  asm(".syntax unified\n\
-	push {lr}\n\
-	lsls r0, r0, #0x18\n\
-	lsrs r1, r0, #0x18\n\
-	cmp r1, #7\n\
-	bls _0801F6FC\n\
-	ldr r0, _0801F6F4 @ =gSunkenLibDiskRoomIdxs\n\
-	adds r0, r1, r0\n\
-	ldrb r0, [r0]\n\
-	lsls r0, r0, #3\n\
-	ldr r1, _0801F6F8 @ =sSunkenLibRoom\n\
-	b _0801F706\n\
-	.align 2, 0\n\
-_0801F6F4: .4byte gSunkenLibDiskRoomIdxs\n\
-_0801F6F8: .4byte sSunkenLibRoom\n\
-_0801F6FC:\n\
-	ldr r0, _0801F70C @ =gSunkenLibDiskRoomIdxs\n\
-	adds r0, r1, r0\n\
-	ldrb r0, [r0]\n\
-	lsls r0, r0, #3\n\
-	ldr r1, _0801F710 @ =sSunkenLibRoom\n\
-_0801F706:\n\
-	adds r0, r0, r1\n\
-	pop {r1}\n\
-	bx r1\n\
-	.align 2, 0\n\
-_0801F70C: .4byte gSunkenLibDiskRoomIdxs\n\
-_0801F710: .4byte sSunkenLibRoom\n\
- .syntax divided\n");
+Coords32* getSunkenLibRoomCoord(u8 idx0) {
+  register u8 idx asm("r1");
+  idx = idx0;
+  if (idx <= 7) {
+    register u8* t asm("r0");
+    const Coords32* b;
+    u32 k;
+    t = (u8*)0x0202FFF4;
+    asm("" : "+l"(t));
+    asm("add %0, %1, %0" : "+l"(t) : "l"(idx));
+    k = *t << 3;
+    b = sSunkenLibRoom;
+    asm volatile("@a");
+    return (Coords32*)((u8*)b + k);
+  }
+  {
+    register u8* t asm("r0");
+    const Coords32* b;
+    u32 k;
+    t = (u8*)0x0202FFF4;
+    asm("" : "+l"(t));
+    asm("add %0, %1, %0" : "+l"(t) : "l"(idx));
+    k = *t << 3;
+    b = sSunkenLibRoom;
+    return (Coords32*)((u8*)b + k);
+  }
 }
 
 extern const Coords32 Coord_ARRAY_0834cea4[8];
