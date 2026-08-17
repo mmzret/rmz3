@@ -2,6 +2,8 @@
 #include "global.h"
 #include "projectile.h"
 
+static const struct Collision sCollisions[10];
+
 typedef struct {
   COLLISION_OBJECT_HDR;
   u8 unk_b4[8];  // 0xB4
@@ -25,7 +27,7 @@ const ProjectileRoutine gProjectile14Routine = {
 // clang-format on
 
 void FUN_080a0888(s32 x, s32 y, u8 kind, bool8 xflip) {
-  struct Entity* p = AllocEntityFirst(gProjectileHeaderPtr);
+  struct Entity* p = (struct Entity*)AllocEntityFirst(gProjectileHeaderPtr);
   if (p != NULL) {
     INIT_PROJECTILE_ROUTINE(p, 14);
     p->work[0] = 4;
@@ -35,7 +37,7 @@ void FUN_080a0888(s32 x, s32 y, u8 kind, bool8 xflip) {
 }
 
 void FUN_080a08e0(struct Entity* q, s32 x, s32 y, bool8 xflip) {
-  struct Entity* p = AllocEntityFirst(gProjectileHeaderPtr);
+  struct Entity* p = (struct Entity*)AllocEntityFirst(gProjectileHeaderPtr);
   if (p != NULL) {
     INIT_PROJECTILE_ROUTINE(p, 14);
     p->work[0] = 0;
@@ -46,7 +48,7 @@ void FUN_080a08e0(struct Entity* q, s32 x, s32 y, bool8 xflip) {
 }
 
 void deathtanz_080a0934(struct Entity* q, s32 x, s32 y, bool8 xflip, bool8 r4) {
-  Projectile14* p = AllocEntityFirst(gProjectileHeaderPtr);
+  Projectile14* p = (Projectile14*)AllocEntityFirst(gProjectileHeaderPtr);
   if (p != NULL) {
     INIT_PROJECTILE_ROUTINE(p, 14);
     p->work[0] = 1;
@@ -57,7 +59,7 @@ void deathtanz_080a0934(struct Entity* q, s32 x, s32 y, bool8 xflip, bool8 r4) {
 }
 
 void deathtanz_080a09a0(struct Entity* q, s32 x, s32 y, bool8 xflip) {
-  struct Entity* p = AllocEntityFirst(gProjectileHeaderPtr);
+  struct Entity* p = (struct Entity*)AllocEntityFirst(gProjectileHeaderPtr);
   if (p != NULL) {
     INIT_PROJECTILE_ROUTINE(p, 14);
     p->work[0] = 2;
@@ -68,7 +70,7 @@ void deathtanz_080a09a0(struct Entity* q, s32 x, s32 y, bool8 xflip) {
 }
 
 void deathtanz_080a09f4(struct Entity* q, s32 x, s32 y, u8 kind, bool8 xflip) {
-  struct Entity* p = AllocEntityFirst(gProjectileHeaderPtr);
+  struct Entity* p = (struct Entity*)AllocEntityFirst(gProjectileHeaderPtr);
   if (p != NULL) {
     INIT_PROJECTILE_ROUTINE(p, 14);
     p->work[0] = 3;
@@ -81,7 +83,133 @@ void deathtanz_080a09f4(struct Entity* q, s32 x, s32 y, u8 kind, bool8 xflip) {
 // 0x080a0a5c
 static void onCollision(struct Body* body UNUSED, Coords32* r1 UNUSED, Coords32* r2 UNUSED) {}
 
-INCASM("asm/projectile/unk_14.inc");
+INCASM("asm/projectile/unk_14_a.inc");
+
+void FUN_080a0dc0(Projectile14* p) {
+  struct Entity* q = p->unk_28;
+  s32 lim, k, z, lim4;
+
+  switch (p->mode[2]) {
+    case 0:
+      p->unk_coord.y = p->coord.y;
+      SetDDP(&p->body, sCollisions);
+      p->d.x = 0x80;
+      SetSpriteAnimation(p, 0x3701);
+      p->mode[2]++;
+      /* fallthrough */
+    case 1:
+      if (p->work[2] != 0) {
+        p->coord.x += p->d.x;
+        if (p->coord.x > *(s32*)((u8*)p + 0xb4) + 0x6800) {
+          goto bump1;
+        }
+        break;
+      bump1:
+        goto bump;
+      } else {
+        p->coord.x -= p->d.x;
+        if (p->coord.x < *(s32*)((u8*)p + 0xb4) - 0x6800) {
+          goto bump2;
+        }
+        break;
+      bump2:
+        goto bump;
+      }
+    case 2:
+      p->coord.y -= p->d.x;
+      lim = *(s32*)((u8*)p + 0xb8) - 0x9000;
+      if (p->coord.y >= lim) {
+        break;
+      }
+      p->coord.y = lim;
+      goto bump;
+    case 3:
+      p->work[2] ^= 1;
+      p->mode[2]++;
+      /* fallthrough */
+    case 4:
+      if (p->work[2] != 0) {
+        register s32 nx asm("r2");
+        register s32 kk asm("r0");
+        nx = p->coord.x;
+        nx += p->d.x;
+        p->coord.x = nx;
+        kk = *((u8*)p + 0xbc);
+        kk <<= 11;
+        kk -= 0x800;
+        lim4 = (q->coord).x;
+        lim4 -= kk;
+        if (nx <= lim4) {
+          break;
+        }
+      } else {
+        register s32 nx asm("r2");
+        register s32 kk asm("r0");
+        nx = p->coord.x;
+        nx -= p->d.x;
+        p->coord.x = nx;
+        kk = *((u8*)p + 0xbc);
+        kk <<= 11;
+        kk -= 0x800;
+        lim4 = (q->coord).x;
+        lim4 += kk;
+        if (nx >= lim4) {
+          break;
+        }
+      }
+      p->coord.x = lim4;
+    bump:
+      p->mode[2]++;
+      break;
+    case 5: {
+      register s32 ny asm("r2");
+      register s32 kv asm("r1");
+      s32 lim5;
+      ny = p->coord.y;
+      ny += p->d.x;
+      p->coord.y = ny;
+      kv = *((u8*)p + 0xbc);
+      k = kv * 3 << 11;
+      k += 0x1000;
+      lim5 = p->unk_coord.y;
+      lim5 -= k;
+      if (ny > lim5) {
+        p->mode[2]++;
+        *((u8*)q + 0xbe) = 1;
+      }
+      break;
+    }
+    case 6:
+      p->work[2] = 2;
+      p->mode[2]++;
+      /* fallthrough */
+    case 7:
+      lim = p->work[2] - 1;
+      p->work[2] = lim;
+      z = (u8)lim;
+      if (z != 0) {
+        break;
+      }
+      p->flags &= ~DISPLAY;
+      p->flags &= ~FLIPABLE;
+      (p->body).status = z;
+      (p->body).prevStatus = z;
+      (p->body).invincibleTime = z;
+      p->flags &= ~COLLIDABLE;
+      SET_PROJECTILE_ROUTINE(p, ENTITY_DISAPPEAR);
+      return;
+  }
+  UpdateEntityAnim((struct Entity*)p);
+  p->d.x += 0x30;
+  if (p->d.x > 0xA00) {
+    p->d.x = 0xA00;
+  }
+  if (q->mode[0] > 1) {
+    SET_PROJECTILE_ROUTINE(p, ENTITY_DIE);
+  }
+}
+
+INCASM("asm/projectile/unk_14_b.inc");
 
 void nop_080a0b6c(Projectile14* p);
 
