@@ -4,6 +4,9 @@
 #include "global.h"
 #include "score.h"
 #include "stagerun.h"
+#include "zero.h"
+
+static const struct Collision sCollisions[18];
 
 typedef struct {
   COLLISION_OBJECT_HDR;  // 0x00
@@ -26,7 +29,7 @@ const EnemyRoutine gCattatankRoutine = {
 // clang-format on
 
 Cattatank* FUN_08098838(Coords32* c, u8 kind) {
-  Cattatank* p = AllocEntityLast(gEnemyHeaderPtr);
+  Cattatank* p = (Cattatank*)AllocEntityLast(gEnemyHeaderPtr);
   if (p != NULL) {
     INIT_ENEMY_ROUTINE(p, ENEMY_CATTATANK);
     p->coord = *c;
@@ -301,7 +304,7 @@ static void Cattatank_Update(Cattatank* p) {
     }
   }
 dispatch1:
-  (sUpdates1[p->mode[1]])(p);
+  (sUpdates1[p->mode[1]])((void*)p);
   cattatank_08099e20(p);
   m = p->mode[1];
   if (m == 6 || m == 7) goto dispatch2;
@@ -310,7 +313,7 @@ dispatch1:
     return;
   }
 dispatch2:
-  (sUpdates2[p->mode[1]])(p);
+  (sUpdates2[p->mode[1]])((void*)p);
 }
 
 NAKED static void Cattatank_Die(Cattatank* p) { INCCODE("asm/wip/Cattatank_Die.inc"); }
@@ -350,7 +353,113 @@ INCASM("asm/enemy/cattatank_e.inc");
 
 bool8 nop_0809973c(Cattatank* _) { return TRUE; }
 
-INCASM("asm/enemy/cattatank_f.inc");
+void FUN_08099740(Cattatank* p) {
+  register struct Body* bp0 asm("r0");
+  register const struct Collision* dp1 asm("r1");
+  switch (p->mode[2]) {
+    case 0:
+      SetMotion((struct Entity*)p, 0xD507);
+      SetDDP(&p->body, &sCollisions[1]);
+      p->work[2] = 0x1E;
+      p->mode[2]++;
+      // fallthrough
+    case 1:
+      UpdateEntityAnim((struct Entity*)p);
+      goto tick;
+    case 2:
+      SetMotion((struct Entity*)p, 0xD508);
+      SetDDP(&p->body, &sCollisions[4]);
+      p->work[2] = 0x32;
+      p->work[3] = 0;
+      p->mode[2]++;
+      // fallthrough
+    case 3:
+      if (((p->body).status & 4) && !((p->body).prevStatus & 4)) {
+        PlaySound(0x52);
+      }
+      UpdateEntityAnim((struct Entity*)p);
+      {
+        s32 cv = *(s8*)((u8*)p + 0x71);
+        s8* ci = (s8*)((u8*)p + 0x71);
+        if (cv == 4 && p->work[3] == 0) {
+          p->work[3]++;
+          SetDDP(&p->body, &sCollisions[7]);
+        }
+        if (*ci == 5 && p->work[3] == 1) {
+          p->work[3]++;
+          SetDDP(&p->body, &sCollisions[10]);
+        }
+        if (*ci == 6 && p->work[3] == 2) {
+          p->work[3]++;
+          bp0 = &p->body;
+          dp1 = &sCollisions[13];
+          goto shared_setddp;
+        }
+      }
+      goto mchk;
+    case 4:
+      SetMotion((struct Entity*)p, 0xD509);
+      SetDDP(&p->body, &sCollisions[10]);
+      p->work[2] = 8;
+      p->work[3] = 0;
+      p->mode[2]++;
+      // fallthrough
+    case 5:
+      if (((p->body).status & 4) && !((p->body).prevStatus & 4)) {
+        PlaySound(0x52);
+      }
+      UpdateEntityAnim((struct Entity*)p);
+      {
+        s32 cv = *(s8*)((u8*)p + 0x71);
+        s8* ci = (s8*)((u8*)p + 0x71);
+        if (cv == 1 && p->work[3] == 0) {
+          p->work[3]++;
+          SetDDP(&p->body, &sCollisions[7]);
+        }
+        if (*ci == 2 && p->work[3] == 1) {
+          p->work[3]++;
+          bp0 = &p->body;
+          dp1 = &sCollisions[4];
+        shared_setddp:
+          SetDDP(bp0, dp1);
+        }
+      }
+    mchk:
+      if (p->motion.state != 3) {
+        break;
+      }
+    tick:
+      {
+        s32 t = p->work[2] - 1;
+        p->work[2] = t;
+        if ((u32)(t << 24) == 0) {
+          p->mode[2]++;
+        }
+      }
+      break;
+    case 6: {
+      s32 zx = pZero2->s.coord.x;
+      s32 px = p->coord.x;
+      s32 d = zx - px;
+      if (d > 0) {
+        if (d <= 0x39FF) {
+          goto near;
+        }
+        goto far;
+      } else if (px - zx > 0x39FF) {
+        goto far;
+      }
+    near:
+      p->mode[1] = 3;
+      p->mode[2] = 0;
+      break;
+    far:
+      p->mode[1] = 2;
+      p->mode[2] = 0;
+      break;
+    }
+  }
+}
 
 bool8 nop_08099950(Cattatank* _) { return TRUE; }
 
