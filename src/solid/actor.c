@@ -6,6 +6,7 @@
 #include "vfx.h"
 #include "vfx/after_image.h"
 #include "zero.h"
+#include "physics.h"
 
 /*
   Actor:
@@ -19,16 +20,16 @@ void Actor_Die(struct Solid* p);
 
 // clang-format off
 const SolidRoutine gScriptActorRoutine = {
-    [ENTITY_INIT] =      Actor_Init,
-    [ENTITY_UPDATE] =    Actor_Update,
-    [ENTITY_DIE] =       Actor_Die,
+    [ENTITY_INIT] =      (void*)Actor_Init,
+    [ENTITY_UPDATE] =    (void*)Actor_Update,
+    [ENTITY_DIE] =       (void*)Actor_Die,
     [ENTITY_DISAPPEAR] = (void*)DeleteSolid,
     [ENTITY_EXIT] =      (SolidFunc)DeleteEntity,
 };
 // clang-format on
 
 struct Solid* CreateScriptActor(struct Solid* e, u8 kind) {
-  struct Solid* p = AllocEntityLast(gSolidHeaderPtr);
+  struct Solid* p = (struct Solid*)AllocEntityLast(gSolidHeaderPtr);
   if (p != NULL) {
     INIT_SOLID_ROUTINE(p, SOLID_SCRIPT_ACTOR);
     (p->s).work[0] = kind;
@@ -128,7 +129,7 @@ static void Actor_Init(struct Solid* p) {
       [65] = initStaticActor,
   };
   // clang-format on
-  (sInitializers[(p->s).work[0]])(p);
+  (sInitializers[(p->s).work[0]])((void*)p);
   return;
 }
 
@@ -272,7 +273,7 @@ void Actor_Update(struct Solid* p) {
       [65] = Actor65_Update,
   };
   // clang-format on
-  (sUpdates[(p->s).work[0]])(p);
+  (sUpdates[(p->s).work[0]])((void*)p);
   return;
 }
 
@@ -351,7 +352,7 @@ void Actor_Die(struct Solid* p) {
       [65] = deleteActor,
   };
   // clang-format on
-  (sDeinitalizer[(p->s).work[0]])(p);
+  (sDeinitalizer[(p->s).work[0]])((void*)p);
 }
 
 // --------------------------------------------
@@ -366,9 +367,9 @@ u16 FUN_080d0934(struct Entity* p, motion_t m, u8 r2) {
     case 1: {
       UpdateSpriteAnimation(p);
       if (p->work[2] & 1) {
-        PaintEntityWhite(p);
+        PaintEntityWhite((struct Entity*)p);
       } else {
-        UpdateEntityPaletteID(p);
+        UpdateEntityPaletteID((struct Entity*)p);
       }
       p->work[2]--;
       if (p->work[2] == 0) {
@@ -387,7 +388,7 @@ u16 FUN_080d0934(struct Entity* p, motion_t m, u8 r2) {
     }
     case 3: {
       UpdateSpriteAnimation(p);
-      PaintEntityWhite(p);
+      PaintEntityWhite((struct Entity*)p);
       (p->spr).mag.x = p->work[2] * -4 + 0x120;
       (p->spr).mag.y = p->work[2] * 4 + 0xe0;
       if (--p->work[2] != 0) {
@@ -399,7 +400,7 @@ u16 FUN_080d0934(struct Entity* p, motion_t m, u8 r2) {
     }
     case 4: {
       UpdateSpriteAnimation(p);
-      PaintEntityWhite(p);
+      PaintEntityWhite((struct Entity*)p);
       (p->spr).mag.x = p->work[2] * 0x40 + 0x20;
       (p->spr).mag.y = p->work[2] * -0x20 + 0x160;
       if (--p->work[2] != 0) {
@@ -412,7 +413,7 @@ u16 FUN_080d0934(struct Entity* p, motion_t m, u8 r2) {
     }
     case 5: {
       UpdateSpriteAnimation(p);
-      PaintEntityWhite(p);
+      PaintEntityWhite((struct Entity*)p);
       (p->spr).mag.x = 0x20;
       (p->d).y -= 0x40;
       (p->coord).y += (p->d).y * 2;
@@ -440,7 +441,7 @@ NON_MATCH u16 FUN_080d0aa0(struct Entity* p, motion_t m, u8 r2) {
       SetSpriteAnimation(p, m);
       (p->spr).mag.x = 0x20;
       (p->spr).mag.y = 0x200;
-      PaintEntityWhite(p);
+      PaintEntityWhite((struct Entity*)p);
       (p->unk_coord).y = FUN_08009f6c((p->coord).x, (p->coord).y);
       (p->coord).y = gStageRun.vm.camera.viewport.y - PIXEL(96);
       p->mode[3]++;
@@ -490,9 +491,9 @@ NON_MATCH u16 FUN_080d0aa0(struct Entity* p, motion_t m, u8 r2) {
     case 5: {
       UpdateSpriteAnimation(p);
       if (p->work[2] & 1) {
-        UpdateEntityPaletteID(p);
+        UpdateEntityPaletteID((struct Entity*)p);
       } else {
-        PaintEntityWhite(p);
+        PaintEntityWhite((struct Entity*)p);
       }
       if (--p->work[2] == 0) {
         p->mode[3] = 0;
@@ -1195,7 +1196,133 @@ _080D1744: .4byte gSolidFnTable\n\
  .syntax divided\n");
 }
 
-INCASM("asm/solid/actor.inc");
+INCASM("asm/solid/actor_a.inc");
+
+void Actor18_Update(struct Solid* p) {
+  s32 y, uy;
+  register u32 t asm("r0");
+
+  switch ((p->s).mode[1]) {
+    case 0:
+      wDynamicGraphicTilenums[0xbe] = 0x3C0;
+      wDynamicMotionPalIDs[0xbe] = 9;
+      (p->s).mode[1]++;
+      /* fallthrough */
+    case 1:
+      t = ((s32 (*)(struct Entity*, motion_t, u8))FUN_080d0aa0)(&p->s, MOTION(0xBE, 0x00), 1);
+      goto shift_test;
+    case 2:
+      UpdateEntityAnim(&p->s);
+      if (((p->s).scriptEntity->flags & 1) == 0) {
+        break;
+      }
+      SetMotion(&p->s, MOTION(0xBE, 0x01));
+      (p->s).work[2] = 8;
+      goto bump;
+    case 3:
+      UpdateEntityAnim(&p->s);
+      if ((--(p->s).work[2] << 24) == 0) {
+        PlaySound(0x101);
+      }
+      if ((p->s).motion.state != 3) {
+        break;
+      }
+      SetMotion(&p->s, MOTION(0xBE, 0x02));
+      asm volatile("" ::"i"(3));
+      goto bump;
+    case 4:
+      UpdateEntityAnim(&p->s);
+      if ((p->s).motion.state != 3) {
+        break;
+      }
+      SetMotion(&p->s, MOTION(0xBE, 0x03));
+      (p->s).work[2] = 0x40;
+      (p->s).unk_coord.y = (p->s).coord.y;
+      goto bump;
+    case 5:
+      UpdateEntityAnim(&p->s);
+      {
+        register s32 v asm("r1");
+        register s32 w asm("r2");
+        v = (p->s).unk_coord.y - gSineTable[(p->s).work[2]];
+        (p->s).unk_coord.y = v;
+        w = (p->s).coord.y;
+        v = (((w << 3) - w) + v) >> 3;
+        (p->s).coord.y = v;
+        (p->s).work[2]--;
+        if ((u8)(p->s).work[2] != 0) {
+          break;
+        }
+        (p->s).work[2] = 0;
+        (p->s).d.y = v;
+      }
+      goto bump;
+    case 6:
+      UpdateEntityAnim(&p->s);
+      (p->s).work[2]++;
+      {
+        register s32 va asm("r1");
+        register s32 vb asm("r2");
+        register s32 sv asm("r0");
+        sv = gSineTable[(p->s).work[2]] << 2;
+        va = (p->s).d.y + sv;
+        (p->s).unk_coord.y = va;
+        vb = (p->s).coord.y;
+        vb = (((vb << 3) - vb) + va) >> 3;
+        (p->s).coord.y = vb;
+        if (((p->s).scriptEntity->flags & 2) == 0) {
+          break;
+        }
+        (p->s).work[2] = 0x40;
+        (p->s).unk_coord.y = vb;
+      }
+      goto bump;
+    case 7:
+      UpdateEntityAnim(&p->s);
+      {
+        register s32 va asm("r2");
+        register s32 vb asm("r1");
+        va = (p->s).unk_coord.y + 0x100;
+        va += gSineTable[(p->s).work[2]];
+        (p->s).unk_coord.y = va;
+        y = (p->s).coord.y;
+        vb = (((y << 3) - y) + va) >> 3;
+        (p->s).coord.y = vb;
+      }
+      if (PushoutToUp2((p->s).coord.x, (p->s).coord.y) == 0) {
+        break;
+      }
+      (p->s).coord.y = FUN_08009f6c((p->s).coord.x, (p->s).coord.y);
+      SetMotion(&p->s, MOTION(0xBE, 0x0E));
+      goto bump;
+    case 8:
+      UpdateEntityAnim(&p->s);
+      if ((p->s).motion.state != 3) {
+        break;
+      }
+      {
+        u32 f = (p->s).scriptEntity->flags;
+        t = 4;
+        t &= f;
+      }
+      goto test;
+    case 9:
+      t = ((s32 (*)(struct Entity*, motion_t, u8))FUN_080d0934)(&p->s, MOTION(0xBE, 0x0E), 1);
+    shift_test:
+      t <<= 16;
+    test:
+      if (t == 0) {
+        break;
+      }
+    bump:
+      (p->s).mode[1]++;
+      break;
+    case 10:
+      break;
+  }
+}
+
+INCASM("asm/solid/actor_b.inc");
 
 // ------------------------------------------------------------------------------------------------------------------------------------
 
