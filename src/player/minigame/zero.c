@@ -70,7 +70,7 @@ static void ZeroMini_Init(struct Zero* z) {
 // --------------------------------------------
 
 static bool32 nop_0803658c(void* _ UNUSED);
-void FUN_080365d8(struct Zero* z);
+bool8 FUN_080365d8(struct Zero* z);
 void FUN_08036848(struct Zero* z);
 void FUN_08036904(struct Zero* z);
 static bool32 FUN_08036b94(void* _ UNUSED);
@@ -106,11 +106,11 @@ static void ZeroMini_Update(struct Zero* z) {
 
   struct MinigameState* s = (struct MinigameState*)(z->s).unk_28;
   if (s->unk_04 != 2) {
-    (sUpdates1[(z->s).mode[1]])(z);
-    (sUpdates2[(z->s).mode[1]])(z);
+    (sUpdates1[(z->s).mode[1]])((void*)z);
+    (sUpdates2[(z->s).mode[1]])((void*)z);
   } else if (s->unk_0c == 0) {
-    (sUpdates1[(z->s).mode[1]])(z);
-    (sUpdates2[(z->s).mode[1]])(z);
+    (sUpdates1[(z->s).mode[1]])((void*)z);
+    (sUpdates2[(z->s).mode[1]])((void*)z);
   }
 
   if ((z->body).status & BODY_STATUS_WHITE) {
@@ -166,7 +166,159 @@ static void zeroMini_08036590(struct Zero* z) {
 
 // --------------------------------------------
 
-INCASM("asm/player/zero_minigame.inc");
+bool8 FUN_080365d8(struct Zero* z) {
+  if (*(s16*)((u8*)(z->s).unk_28 + 4) == 1) {
+    if (gJoypad[0].pressed & B_BUTTON) {
+      register u32 h asm("r1");
+      h = gJoypad[0].input;
+      if (h & DPAD_UP) {
+        register u32 c1 asm("r4");
+        u8* a1;
+        c1 = 0x287;
+        asm("" : "+l"(c1));
+        a1 = (u8*)z + c1;
+        asm volatile("" ::"l"(c1));
+        *a1 = 2;
+      } else {
+        u32 m = DPAD_DOWN;
+        u32 t;
+        m &= h;
+        m <<= 16;
+        t = m >> 16;
+        asm volatile("" ::"l"(m));
+        if (t != 0) {
+          register u32 c2 asm("r5");
+          u8* a2;
+          c2 = 0x287;
+          asm("" : "+l"(c2));
+          a2 = (u8*)z + c2;
+          asm volatile("" ::"l"(c2));
+          *a2 = 4;
+        } else {
+          register u32 c3 asm("r4");
+          u8* a3;
+          c3 = 0x287;
+          asm("" : "+l"(c3));
+          a3 = (u8*)z + c3;
+          asm volatile("" ::"l"(c3));
+          *a3 = t;
+        }
+      }
+      (z->s).mode[1] = 3;
+      (z->s).mode[2] = 0;
+    }
+    {
+      register u32 o7d asm("r5");
+      register u8* f7d asm("r4");
+      register u8* sa asm("r1");
+      s32 sv;
+      o7d = 0x27D;
+      f7d = (u8*)z + o7d;
+      if (*f7d == 1) {
+        register u32 h2 asm("r2");
+        u32 m2;
+        u32 t2;
+        h2 = gJoypad[0].input;
+        m2 = B_BUTTON;
+        m2 &= h2;
+        m2 <<= 16;
+        t2 = m2 >> 16;
+        asm volatile("" ::"l"(m2));
+        if (t2 != 0) {
+          goto ret;
+        }
+        o7d -= 1;
+        {
+          u8* af = (u8*)z + o7d;
+          asm volatile("" ::"l"(o7d));
+          *af = t2;
+        }
+        *f7d = t2;
+        if (h2 & DPAD_UP) {
+          register u32 c4 asm("r0");
+          c4 = 0x287;
+          asm("" : "+l"(c4));
+          sa = (u8*)z + c4;
+          sv = 7;
+          goto sharedstore;
+        } else if (h2 & DPAD_DOWN) {
+          register u32 c5 asm("r2");
+          c5 = 0x287;
+          asm("" : "+l"(c5));
+          sa = (u8*)z + c5;
+          sv = 8;
+          goto sharedstore;
+        } else {
+          register u32 c6 asm("r4");
+          c6 = 0x287;
+          asm("" : "+l"(c6));
+          sa = (u8*)z + c6;
+          sv = 6;
+          goto sharedstore;
+        }
+      } else {
+        register u32 o7c asm("r5");
+        u8* f7c;
+        o7c = 0x27C;
+        asm("" : "+l"(o7c));
+        f7c = (u8*)z + o7c;
+        asm volatile("" ::"l"(o7c));
+        if (*f7c > 0xA) {
+          register u32 h3 asm("r2");
+          u32 m3;
+          u32 t3;
+          h3 = gJoypad[0].input;
+          m3 = B_BUTTON;
+          m3 &= h3;
+          t3 = (u16)m3;
+          if (t3 != 0) {
+            goto ret;
+          }
+          *f7c = t3;
+          *f7d = t3;
+          if (h3 & DPAD_UP) {
+            register u32 c7 asm("r0");
+            c7 = 0x287;
+            asm("" : "+l"(c7));
+            sa = (u8*)z + c7;
+            sv = 2;
+          sharedstore:
+            *sa = sv;
+          } else {
+            u32 md = DPAD_DOWN;
+            u32 td;
+            md &= h3;
+            md <<= 16;
+            td = md >> 16;
+            asm volatile("" ::"l"(md));
+            if (td != 0) {
+              register u32 c8 asm("r2");
+              c8 = 0x287;
+              asm("" : "+l"(c8));
+              sa = (u8*)z + c8;
+              sv = 4;
+              goto sharedstore;
+            } else {
+              register u32 c9 asm("r4");
+              u8* a9;
+              c9 = 0x287;
+              asm("" : "+l"(c9));
+              a9 = (u8*)z + c9;
+              asm volatile("" ::"l"(c9));
+              *a9 = td;
+            }
+          }
+          (z->s).mode[1] = 3;
+          (z->s).mode[2] = 0;
+        }
+      }
+    }
+  }
+ret:
+  return TRUE;
+}
+
+INCASM("asm/player/zero_minigame_a.inc");
 
 // 0x08036b94
 static bool32 FUN_08036b94(void* _) { return TRUE; }
