@@ -1,6 +1,8 @@
 #include "collision.h"
 #include "global.h"
 #include "solid.h"
+#include "story.h"
+#include "stagerun.h"
 
 // レジスタンスベースのモブキャラ
 
@@ -375,7 +377,34 @@ static void FUN_080d9734(struct MobObject* p) {
   }
 }
 
-INCASM("asm/solid/mob_npc.inc");
+INCASM("asm/solid/mob_npc_a.inc");
+
+TextID menart_080da18c(struct Solid* p) {
+  if (FLAG(gCurStory.s.gameflags, 16)) {
+    if (gCurStory.s.counts[6] <= 2) {
+      gCurStory.s.counts[6] = 3;
+      return 0x257;
+    }
+    return 0x258;
+  }
+  if (FLAG(gCurStory.s.gameflags, 11)) {
+    if (gCurStory.s.counts[6] <= 1) {
+      gCurStory.s.counts[6] = 2;
+      return 0x255;
+    }
+    return 0x256;
+  }
+  if (gCurStory.s.counts[6] == 0) {
+    gCurStory.s.counts[6] = 1;
+    return 0x252;
+  }
+  if (((gStageDiskManager.disk[0x2b] & 0xF) >> 2 & 1) != 0) {
+    return 0x254;
+  }
+  return 0x253;
+}
+
+INCASM("asm/solid/mob_npc_b.inc");
 
 void andrew_080d9cd8(struct Solid* p);
 void alouette_080d9eb8(struct Solid* p);
