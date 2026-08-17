@@ -1,6 +1,11 @@
 #include "global.h"
 #include "overworld.h"
 
+const struct MetatilePatch MetatilePatch_08343f50;
+const struct MetatilePatch MetatilePatch_08343f58;
+const struct MetatilePatch MetatilePatch_08343f60;
+const struct MetatilePatch MetatilePatch_08343f68;
+
 extern const MetatileShift gSnowyPlainMetatileShift1;
 extern const MetatileShift gSnowyPlainMetatileShift2;
 
@@ -118,7 +123,39 @@ static void LayerUpdate_SnowyPlains_4(struct StageLayer* l, const struct Stage* 
 // 0x08012BFC
 NAKED static void LayerDraw_SnowyPlains_4(struct StageLayer* l, const struct Stage* _ UNUSED) { INCCODE("asm/todo/LayerDraw_SnowyPlains_4.inc"); }
 
-INCASM("asm/stage_gfx/snowy_plains.inc");
+INCASM("asm/stage_gfx/snowy_plains_a.inc");
+
+void FUN_080133e8(struct Coord* c) {
+  register const u16* q asm("r4");
+  s32 x = (c->x - 0x800) >> 12;
+  s32 y = (c->y + 0x800) >> 12;
+  if (x == 0x18B) {
+    q = (const u16*)&MetatilePatch_08343f58;
+    asm("" : "+r"(q) : "r"(x));
+    goto tail;
+  }
+  if (({ asm("" : "+l"(x)); x; }) == 0x193) {
+    q = (const u16*)&MetatilePatch_08343f58;
+    asm("" : "+r"(q) : "r"(y));
+    goto tail;
+  }
+  if (({ asm("" : "+l"(x)); x; }) == 0x1AB) {
+    q = (const u16*)&MetatilePatch_08343f60;
+    goto tail;
+  }
+  if (({ asm("" : "+l"(x)); x; }) != 0x1B9) {
+    goto other;
+  }
+  q = (const u16*)&MetatilePatch_08343f68;
+tail:
+  PatchMetatileMap(x, y, q);
+  PatchMetatileMap(x, y + 1, q);
+  return;
+other:
+  q = (const u16*)&MetatilePatch_08343f50;
+  PatchMetatileMap(x, y, q);
+  PatchMetatileMap(x, y + 1, q);
+}
 
 // ------------------------------------------------------------------------------------------------------------------------------------
 
