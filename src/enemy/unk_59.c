@@ -40,7 +40,7 @@ void FUN_08091280(Enemy59* p) {
 }
 
 void FUN_0809130c(Entity* e, u8 idx) {
-  Entity* p = AllocEntityLast(gEnemyHeaderPtr);
+  Entity* p = (Entity*)AllocEntityLast(gEnemyHeaderPtr);
   if (p != NULL) {
     INIT_ENEMY_ROUTINE(p, ENEMY_59);
     (p->coord).x = (e->coord).x, (p->coord).y = (e->coord).y;
@@ -66,7 +66,7 @@ void FUN_0809130c(Entity* e, u8 idx) {
 
 // 0x080913C0
 void FUN_080913c0(Enemy59* q, u8 kind) {
-  Enemy59* p = AllocEntityLast(gEnemyHeaderPtr);
+  Enemy59* p = (Enemy59*)AllocEntityLast(gEnemyHeaderPtr);
   if (p != NULL) {
     INIT_ENEMY_ROUTINE(p, ENEMY_59);
     (p->coord).x = (q->coord).x;
@@ -81,7 +81,7 @@ void FUN_080913c0(Enemy59* q, u8 kind) {
  * @note 0x0809142C
  */
 void FUN_0809142c(Entity* q, u8 kind) {
-  Enemy59* p = AllocEntityLast(gEnemyHeaderPtr);
+  Enemy59* p = (Enemy59*)AllocEntityLast(gEnemyHeaderPtr);
   if (p != NULL) {
     INIT_ENEMY_ROUTINE(p, ENEMY_59);
     (p->coord).x = (q->coord).x;
@@ -123,7 +123,155 @@ static void Enemy59_Init(Enemy59* p) {
   Enemy59_Update(p);
 }
 
-INCASM("asm/enemy/unk_59.inc");
+INCASM("asm/enemy/unk_59_a.inc");
+
+void FUN_080918ec(Enemy59* p) {
+  s32 m = p->mode[2];
+  s32 t;
+  switch (m) {
+    case 0: {
+      s32 f = 0;
+      if (p->unk_coord.x - p->coord.x > 0) {
+        f = 1;
+      }
+      SetDDP(&p->body, &sCollisions[2]);
+      p->d.x = (f << 9) - 0x100;
+      p->work[2] = m;
+      p->mode[2]++;
+    }
+      /* fallthrough */
+    case 1: {
+      s32 x;
+      s32 tx;
+      s32 d;
+      {
+        register s32 raw asm("r0");
+        raw = p->work[2];
+        t = raw;
+        asm volatile("" ::"l"(raw));
+      }
+      if (t == 0) {
+        p->flags |= DISPLAY;
+      } else {
+        p->flags &= ~DISPLAY;
+      }
+      p->work[2] = t + 1;
+      if ((u8)(t + 1) == 4) {
+        p->work[2] = 0;
+      }
+      x = p->coord.x + p->d.x;
+      p->coord.x = x;
+      {
+        s32 txr = p->unk_coord.x;
+        d = txr - x;
+        tx = txr;
+      }
+      if (d >= 0) {
+        if (d <= 0xFF) {
+          goto store2;
+        }
+        break;
+      } else {
+        if (x - tx > 0xFF) {
+          break;
+        }
+      }
+    store2:
+      p->coord.x = tx;
+      p->mode[1] = 0;
+      p->mode[2] = 0;
+      break;
+    }
+  }
+}
+
+void FUN_08091980(Enemy59* p) {
+  register u8 fv asm("r0");
+  u8 one;
+  switch (p->mode[2]) {
+    case 0:
+      SetDDP(&p->body, &sCollisions[2]);
+      p->work[2] = 0x1B;
+      p->mode[2]++;
+      FALLTHROUGH;
+    case 1:
+      p->work[2]--;
+      if ((u8)p->work[2] != 0) {
+        break;
+      }
+      p->mode[2]++;
+      break;
+    case 2:
+      p->work[2] = 0xF;
+      p->mode[2]++;
+      FALLTHROUGH;
+    case 3:
+      p->work[2]--;
+      if ((u8)(p->work[2] % 3) == 2) {
+        goto clr;
+      }
+      fv = p->flags | DISPLAY;
+      goto store;
+    case 4:
+      p->work[2] = 0xF;
+      p->mode[2]++;
+      FALLTHROUGH;
+    case 5:
+      p->work[2]--;
+      one = 1;
+      if ((one & p->work[2]) != 0) {
+        fv = p->flags | one;
+      } else {
+      clr : {
+        u8 t = p->flags;
+        fv = 0xFE;
+        fv &= t;
+        asm volatile("" ::"r"(t));
+      }
+      }
+    store:
+      p->flags = fv;
+      if (p->work[2] != 0) {
+        break;
+      }
+      p->mode[2]++;
+      break;
+    case 6:
+      p->work[2] = 0xF;
+      p->mode[2]++;
+      FALLTHROUGH;
+    case 7: {
+      u8 w;
+      p->work[2]--;
+      if ((u8)(p->work[2] % 3) == 2) {
+        fv = p->flags | DISPLAY;
+      } else {
+        u8 t = p->flags;
+        fv = 0xFE;
+        fv &= t;
+        asm volatile("" ::"r"(t));
+      }
+      p->flags = fv;
+      w = p->work[2];
+      if (w == 0) {
+        u8 t2 = p->flags;
+        u8 g = 0xFE;
+        g &= t2;
+        asm volatile("" ::"r"(t2));
+        g &= 0xFD;
+        p->flags = g;
+        (p->body).status = w;
+        (p->body).prevStatus = w;
+        (p->body).invincibleTime = w;
+        p->flags &= ~COLLIDABLE;
+        SET_ENEMY_ROUTINE(p, ENTITY_DISAPPEAR);
+      }
+      break;
+    }
+  }
+}
+
+INCASM("asm/enemy/unk_59_b.inc");
 
 // 0x083697F4
 static const struct SlashedEnemy sSlashedEnemies[4] = {
@@ -299,53 +447,53 @@ static const struct Collision sCollisions[14] = {
 
 // --------------------------------------------
 
-void FUN_08091810(struct Enemy* p);
+void FUN_08091810(Enemy59* p);
 
 // clang-format off
 static const EnemyFunc sUpdates1[10] = {
-    FUN_08091810,
-    FUN_08091810,
-    FUN_08091810,
-    FUN_08091810,
-    FUN_08091810,
-    FUN_08091810,
-    FUN_08091810,
-    FUN_08091810,
-    FUN_08091810,
-    FUN_08091810,
+    (EnemyFunc)FUN_08091810,
+    (EnemyFunc)FUN_08091810,
+    (EnemyFunc)FUN_08091810,
+    (EnemyFunc)FUN_08091810,
+    (EnemyFunc)FUN_08091810,
+    (EnemyFunc)FUN_08091810,
+    (EnemyFunc)FUN_08091810,
+    (EnemyFunc)FUN_08091810,
+    (EnemyFunc)FUN_08091810,
+    (EnemyFunc)FUN_08091810,
 };
 // clang-format on
 
-void FUN_08091814(struct Enemy* p);
-void FUN_080918ec(struct Enemy* p);
-void FUN_08091980(struct Enemy* p);
-void FUN_08091ab0(struct Enemy* p);
-void FUN_08091b60(struct Enemy* p);
-void FUN_08091c54(struct Enemy* p);
-void FUN_08091d0c(struct Enemy* p);
-void FUN_08091da4(struct Enemy* p);
-void FUN_08091e58(struct Enemy* p);
-void FUN_08091f00(struct Enemy* p);
+void FUN_08091814(Enemy59* p);
+void FUN_080918ec(Enemy59* p);
+void FUN_08091980(Enemy59* p);
+void FUN_08091ab0(Enemy59* p);
+void FUN_08091b60(Enemy59* p);
+void FUN_08091c54(Enemy59* p);
+void FUN_08091d0c(Enemy59* p);
+void FUN_08091da4(Enemy59* p);
+void FUN_08091e58(Enemy59* p);
+void FUN_08091f00(Enemy59* p);
 
 // clang-format off
 static const EnemyFunc sUpdates2[10] = {
-    FUN_08091814,
-    FUN_080918ec,
-    FUN_08091980,
-    FUN_08091ab0,
-    FUN_08091b60,
-    FUN_08091c54,
-    FUN_08091d0c,
-    FUN_08091da4,
-    FUN_08091e58,
-    FUN_08091f00,
+    (EnemyFunc)FUN_08091814,
+    (EnemyFunc)FUN_080918ec,
+    (EnemyFunc)FUN_08091980,
+    (EnemyFunc)FUN_08091ab0,
+    (EnemyFunc)FUN_08091b60,
+    (EnemyFunc)FUN_08091c54,
+    (EnemyFunc)FUN_08091d0c,
+    (EnemyFunc)FUN_08091da4,
+    (EnemyFunc)FUN_08091e58,
+    (EnemyFunc)FUN_08091f00,
 };
 // clang-format on
 
 // --------------------------------------------
 
-void FUN_08091fa8(struct Enemy* p);
-void FUN_080921c8(struct Enemy* p);
+void FUN_08091fa8(Enemy59* p);
+void FUN_080921c8(Enemy59* p);
 static void FUN_080922e0(Enemy59* p);
 static void FUN_080923ec(Enemy59* p);
 
