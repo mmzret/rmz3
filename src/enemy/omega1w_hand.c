@@ -28,7 +28,7 @@ const EnemyRoutine gOmegaWhiteHandRoutine = {
 // clang-format on
 
 struct Entity* CreateOmega1wHand(Coords32* c, bool8 isLeftHand, struct Entity* omega) {
-  struct Entity* p = AllocEntityLast(gEnemyHeaderPtr);
+  struct Entity* p = (struct Entity*)AllocEntityLast(gEnemyHeaderPtr);
   if (p != NULL) {
     INIT_ENEMY_ROUTINE(p, ENEMY_OMEGA1W_HAND);
     p->coord = *c;
@@ -65,7 +65,7 @@ static void OmegaWhiteHand_Init(Omega1wHand* p) {
   p->flags2 |= WHITE_PAINTABLE;
   p->invincibleID = (p->unk_28)->uniqueID;  // オメガが白くなったら、手も白くするで
 
-  OmegaWhiteHand_Update(p);
+  OmegaWhiteHand_Update((Omega1wHand*)p);
 }
 
 // --------------------------------------------
@@ -162,7 +162,252 @@ static void OmegaWhiteHand_Die(struct Entity* p) {
 
 // --------------------------------------------
 
-INCASM("asm/enemy/omega1w_hand.inc");
+INCASM("asm/enemy/omega1w_hand_a.inc");
+
+void FUN_0806aaa0(struct Enemy* p) {
+  struct Entity* q;
+  s32 z, nx, ny;
+  s32* pb;
+  u32 w2, one, num;
+
+  switch ((p->s).mode[2]) {
+    case 0:
+      (p->s).mode[2]++;
+      /* fallthrough */
+    case 1:
+      if ((*(s32*)((u8*)(p->s).unk_28 + 0xd4) & 1) == 0) {
+        break;
+      }
+      goto bump;
+    case 2:
+      (p->s).flags |= DISPLAY;
+      z = 0;
+      {
+        register struct Entity* q1 asm("r1");
+        q1 = (p->s).unk_28;
+        (p->s).coord.y = (q1->coord).y - 0x1800;
+        (p->s).coord.x = (q1->coord).x;
+        (p->s).coord.x = *(s32*)((u8*)p + 0xb4) + (q1->coord).x;
+      }
+      SetMotion(&p->s, MOTION(0x09, 0x00));
+      {
+        u8* d = (u8*)p + 0x5c;
+        *(s32*)(d + 4) = z;
+      }
+      (p->s).d.x = z;
+      (p->s).unk_coord.y = FUN_08009f6c((p->s).coord.x, (p->s).coord.y - 0x400);
+      (p->s).coord.y = (p->s).unk_coord.y - 0x1800;
+      (p->s).unk_coord.x = (p->s).coord.x;
+      (p->s).d.x = 0x2000;
+      if ((p->s).mode[3] == 1) {
+        (p->s).work[2] = 0x80;
+        (p->s).work[3] = z;
+        (p->s).flags &= 0xEF;
+        (p->s).spr.xflip = z;
+        {
+          u8* oa = (u8*)p + 0x4a;
+          s32 ov = *oa;
+          s32 m11 = -0x11;
+          m11 &= ov;
+          *oa = m11;
+        }
+        (p->s).mode[2] += 2;
+      } else {
+        (p->s).work[2] = 0x3C;
+        (p->s).work[3] = RANDOM(RNG_0202f388) % 20;
+        (p->s).flags &= 0xEF;
+        (p->s).spr.xflip = z;
+        {
+          u8* oa = (u8*)p + 0x4a;
+          s32 ov = *oa;
+          s32 m11 = -0x11;
+          m11 &= ov;
+          *oa = m11;
+        }
+        (p->s).work[3] = z;
+        (p->s).mode[2]++;
+      }
+      /* fallthrough */
+    case 3:
+      UpdateEntityAnim(&p->s);
+      (p->s).work[3]++;
+      num = (p->s).work[3];
+      w2 = (p->s).work[2];
+      if ((u8)((u32)num % w2) == 0) {
+        (p->s).work[2] = w2 - 10;
+        (p->s).coord.x += ((s32)(RANDOM(RNG_0202f388) % 6) - 3) << 8;
+      }
+      if ((p->s).work[2] == 0) {
+        (p->s).work[2] = 0x80;
+        (p->s).work[3] = 0;
+        goto bump;
+      }
+      break;
+    case 4:
+      {
+      register u32 v2 asm("r3");
+      v2 = (p->s).work[2];
+      asm("" : "+l"(v2));
+      one = 1;
+      asm("" : "+l"(one));
+      if (v2 & one) {
+        register s32* pb2 asm("r0");
+        pb2 = (s32*)((u8*)p + 0xb4);
+        q = (p->s).unk_28;
+        nx = *pb2 + (q->coord).x + ((v2 >> 3) << 8);
+      } else {
+        register s32* pb2 asm("r0");
+        pb2 = (s32*)((u8*)p + 0xb4);
+        q = (p->s).unk_28;
+        nx = *pb2 + (q->coord).x - (((v2 << 24) >> 27) << 8);
+      }
+      (p->s).coord.x = nx;
+      ny = *(s32*)((u8*)p + 0xb8) + (q->coord).y;
+      (p->s).coord.y += ((ny - (p->s).coord.y) << 3) >> 8;
+      asm volatile("" ::"l"(v2));
+      }
+      UpdateEntityAnim(&p->s);
+      if ((p->s).work[2] != 0) {
+        if ((u8)--(p->s).work[2] != 0) {
+          break;
+        }
+      }
+    bump:
+      (p->s).mode[2]++;
+      break;
+    case 5: {
+      s32 z2;
+      (p->s).flags |= DISPLAY;
+      z2 = 0;
+      (p->s).mode[1] = 2;
+      (p->s).mode[2] = z2;
+      break;
+    }
+  }
+}
+
+void FUN_0806ac98(struct Enemy* p) {
+  struct Entity* q;
+  s32 z, nx, ny;
+  s32* pb;
+  u32 w2, one, num;
+
+  switch ((p->s).mode[2]) {
+    case 0:
+      (p->s).mode[2]++;
+      /* fallthrough */
+    case 1:
+      if ((*(s32*)((u8*)(p->s).unk_28 + 0xd4) & 1) == 0) {
+        break;
+      }
+      goto bump;
+    case 2:
+      (p->s).flags |= DISPLAY;
+      z = 0;
+      {
+        register struct Entity* q1 asm("r1");
+        q1 = (p->s).unk_28;
+        (p->s).coord.y = (q1->coord).y - 0x1800;
+        (p->s).coord.x = (q1->coord).x;
+        (p->s).coord.x = *(s32*)((u8*)p + 0xb4) + (q1->coord).x;
+      }
+      SetMotion(&p->s, MOTION(0x09, 0x01));
+      {
+        u8* d = (u8*)p + 0x5c;
+        *(s32*)(d + 4) = z;
+      }
+      (p->s).d.x = z;
+      (p->s).unk_coord.y = FUN_08009f6c((p->s).coord.x, (p->s).coord.y - 0x1000);
+      (p->s).coord.y = (p->s).unk_coord.y - 0x1800;
+      (p->s).unk_coord.x = (p->s).coord.x;
+      (p->s).d.x = 0x2000;
+      if ((p->s).mode[3] == 1) {
+        (p->s).work[2] = 0x80;
+        (p->s).work[3] = z;
+        (p->s).flags &= 0xEF;
+        (p->s).spr.xflip = z;
+        {
+          u8* oa = (u8*)p + 0x4a;
+          s32 ov = *oa;
+          s32 m11 = -0x11;
+          m11 &= ov;
+          *oa = m11;
+        }
+        (p->s).mode[2] += 2;
+      } else {
+        (p->s).work[2] = 0x3C;
+        (p->s).work[3] = RANDOM(RNG_0202f388) % 20;
+        (p->s).flags &= 0xEF;
+        (p->s).spr.xflip = z;
+        {
+          u8* oa = (u8*)p + 0x4a;
+          s32 ov = *oa;
+          s32 m11 = -0x11;
+          m11 &= ov;
+          *oa = m11;
+        }
+        (p->s).mode[2]++;
+      }
+      /* fallthrough */
+    case 3:
+      UpdateEntityAnim(&p->s);
+      (p->s).work[3]++;
+      num = (p->s).work[3];
+      w2 = (p->s).work[2];
+      if ((u8)((u32)num % w2) == 0) {
+        (p->s).work[2] = w2 - 10;
+        (p->s).coord.x += ((s32)(RANDOM(RNG_0202f388) & 7) - 4) << 8;
+      }
+      if ((p->s).work[2] == 0) {
+        (p->s).work[2] = 0x80;
+        (p->s).work[3] = 0;
+        goto bump;
+      }
+      break;
+    case 4:
+      {
+      register u32 v2 asm("r3");
+      v2 = (p->s).work[2];
+      asm("" : "+l"(v2));
+      one = 1;
+      asm("" : "+l"(one));
+      if (v2 & one) {
+        register s32* pb2 asm("r0");
+        pb2 = (s32*)((u8*)p + 0xb4);
+        q = (p->s).unk_28;
+        nx = *pb2 + (q->coord).x + ((v2 >> 3) << 8);
+      } else {
+        register s32* pb2 asm("r0");
+        pb2 = (s32*)((u8*)p + 0xb4);
+        q = (p->s).unk_28;
+        nx = *pb2 + (q->coord).x - (((v2 << 24) >> 27) << 8);
+      }
+      (p->s).coord.x = nx;
+      ny = *(s32*)((u8*)p + 0xb8) + (q->coord).y;
+      (p->s).coord.y += ((ny - (p->s).coord.y) << 3) >> 8;
+      asm volatile("" ::"l"(v2));
+      }
+      UpdateEntityAnim(&p->s);
+      if ((p->s).work[2] != 0) {
+        if ((u8)--(p->s).work[2] != 0) {
+          break;
+        }
+      }
+    bump:
+      (p->s).mode[2]++;
+      break;
+    case 5: {
+      s32 z2;
+      (p->s).flags |= DISPLAY;
+      z2 = 0;
+      (p->s).mode[1] = 2;
+      (p->s).mode[2] = z2;
+      break;
+    }
+  }
+}
+
+INCASM("asm/enemy/omega1w_hand_b.inc");
 
 // 0x0806be0c
 static void Omega1wHand_OnCollision(struct Body* body UNUSED, Coords32* r1 UNUSED, Coords32* r2 UNUSED) {}
