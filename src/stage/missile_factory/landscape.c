@@ -3,6 +3,10 @@
 #include "palette_animation.h"
 #include "story.h"
 
+static const MetatileShift sMetatileShifts1[4];
+static const MetatileShift sMetatileShifts2[4];
+static const MetatileShift sMetatileShifts3[4];
+
 #define HEIGHT 14
 #define WIDTH 32
 
@@ -14,10 +18,10 @@ static void FUN_0800e6f8(Coords32* _ UNUSED);
 static void exitMissileFactory(Coords32* _ UNUSED);
 
 static const StageFunc sStageRoutine[4] = {
-    initMissileFactory,
-    FUN_0800e460,
-    FUN_0800e6f8,
-    exitMissileFactory,
+    (StageFunc)initMissileFactory,
+    (StageFunc)FUN_0800e460,
+    (StageFunc)FUN_0800e6f8,
+    (StageFunc)exitMissileFactory,
 };
 
 static void initMissileFactory(Coords32* _ UNUSED) {
@@ -304,7 +308,137 @@ static void LayerUpdate_4(struct StageLayer* l, const struct Stage* _ UNUSED) {
   l->unk_10 += 0x10;
 }
 
-INCASM("asm/stage_gfx/missile_factory.inc");
+INCASM("asm/stage_gfx/missile_factory_a.inc");
+
+void missileFactory_0800f2ec(struct StageLayer* l, const struct Stage* stage UNUSED) {
+  struct Coord c;
+  switch (l->phase) {
+    case 0: {
+      register u8* ow asm("r4") = (u8*)&gOverworld;
+      register u32 k2 asm("r2");
+      k2 = 0x2D024;
+      if (*(ow + k2) > 2) {
+        u16 z;
+        register u8* st asm("r1");
+        StartPaletteAnimation(0xD0, 0);
+        st = ow + 0x2D025;
+        z = 0;
+        *st = 8;
+        PlaySound(0x121);
+        l->unk_10 = z;
+        asm volatile("");
+        l->phase++;
+      }
+      break;
+    }
+    case 1: {
+      s32 t;
+      StepPaletteAnimation(0xD0);
+      t = l->unk_10 + 1;
+      l->unk_10 = t;
+      if ((u16)t > 0xB) {
+        l->unk_10 = 6;
+      }
+      ShiftMetatile(0xF0, 0x65, &sMetatileShifts2[(u16)(*(volatile u16*)&l->unk_10 / 3)]);
+      ShiftMetatile(0xEB, 0x65, &sMetatileShifts3[(u16)(*(volatile u16*)&l->unk_10 / 3)]);
+      {
+        u8* ow = (u8*)&gOverworld;
+        if (*(ow + 0x2D025) == 0) {
+          RemovePaletteAnimation(0xD0);
+          StartPaletteAnimation(0xD5, 0);
+          l->phase = 6;
+        }
+      }
+      break;
+    }
+    case 6:
+      StepPaletteAnimation(0xD5);
+      l->phase = 2;
+      break;
+    case 2:
+      RemovePaletteAnimation(0xD5);
+      {
+        u8* ow = (u8*)&gOverworld;
+        register u32 k2 asm("r2");
+        k2 = 0x2D025;
+        if (*(ow + k2) != 0) {
+          StartPaletteAnimation(0xCF, 0);
+          l->unk_10 = 0;
+          asm volatile("");
+          l->phase++;
+        }
+      }
+      break;
+    case 3: {
+      u8* ow;
+      u8* st;
+      s32 x4;
+      StepPaletteAnimation(0xCF);
+      if (((l->unk_10 % 9) << 16) == 0) {
+        PlaySound(0x120);
+      }
+      l->unk_10++;
+      ow = (u8*)&gOverworld;
+      st = ow + 0x2D025;
+      x4 = (*st * 3 + 0x10) * 15;
+      ShiftMetatile(x4, 0x65, &sMetatileShifts1[((u16)(l->unk_10 / 3) % 3) + 1]);
+      if (l->unk_10 > 0x19) {
+        c.x = l->viewportLeftTopPixel.x << 8;
+        c.y = l->viewportLeftTopPixel.y << 8;
+        RemovePaletteAnimation(0xCF);
+        {
+          s32 v4 = *st + 4;
+          *(ow + 0x2D024) = v4;
+        }
+        AppendQuake(0x10, &c);
+        l->unk_10 = 6;
+        asm volatile("");
+        l->phase++;
+      }
+      break;
+    }
+    case 4: {
+      s32 t = l->unk_10;
+      u16 tu;
+      t -= 1;
+      l->unk_10 = t;
+      tu = t;
+      if (tu == 0) {
+        PlaySound(0x121);
+        StartPaletteAnimation(0xD0, 0);
+        l->unk_10 = tu;
+        asm volatile("");
+        l->phase++;
+      }
+      break;
+    }
+    case 5: {
+      s32 t;
+      u8* ow;
+      u8* st;
+      s32 x4;
+      StepPaletteAnimation(0xD0);
+      t = l->unk_10 + 1;
+      l->unk_10 = t;
+      if ((u16)t > 0xB) {
+        l->unk_10 = 6;
+      }
+      ow = (u8*)&gOverworld;
+      st = ow + 0x2D025;
+      x4 = (*st * 3 + 0x10) * 15;
+      ShiftMetatile(x4, 0x65, &sMetatileShifts2[(u16)(l->unk_10 / 3)]);
+      if (*st == 0) {
+        RemovePaletteAnimation(0xD0);
+        StartPaletteAnimation(0xD5, 0);
+        *(ow + 0x2D024) = 4;
+        l->phase++;
+      }
+      break;
+    }
+  }
+}
+
+INCASM("asm/stage_gfx/missile_factory_b.inc");
 
 // clang-format off
 static const u8 sChunkMap1[4 + (32 * 14)] = {
