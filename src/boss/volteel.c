@@ -44,7 +44,7 @@ const BossRoutine gVolteelRoutine = {
 // clang-format on
 
 static Volteel* Unused_CreateVolteel(Coords32* c, u8 n) {
-  Volteel* p = AllocEntityLast(gBossHeaderPtr);
+  Volteel* p = (Volteel*)AllocEntityLast(gBossHeaderPtr);
   if (p != NULL) {
     INIT_BOSS_ROUTINE(p, BOSS_VOLTEEL);
     p->coord = *c;
@@ -175,9 +175,9 @@ static void Volteel_Update(Volteel* p) {
     return;
   }
 
-  (sUpdates1[p->mode[1]])(p);
+  (sUpdates1[p->mode[1]])((void*)p);
   volteel_080457c4(p);
-  (sUpdates2[p->mode[1]])(p);
+  (sUpdates2[p->mode[1]])((void*)p);
 }
 
 void volteelDeath0(Volteel* p);
@@ -188,7 +188,7 @@ static void Volteel_Die(Volteel* p) {
       volteelDeath0,
       volteelDeath1,
   };
-  (seq[p->mode[1]])(p);
+  (seq[p->mode[1]])((void*)p);
 }
 
 INCASM("asm/boss/volteel_a.inc");
@@ -250,7 +250,154 @@ INCASM("asm/boss/volteel_f.inc");
 
 bool8 FUN_08044cb4(Volteel* p) { return TRUE; }
 
-INCASM("asm/boss/volteel_g.inc");
+void volteelElectricCage(Volteel* p) {
+  switch (p->mode[2]) {
+    case 0:
+      if (!(p->flags & 0x10)) {
+        s32 r0v = FUN_08009f6c(p->coord.x + 0x3600, p->coord.y + -0x800);
+        s32 r;
+        asm volatile("add %0, %1, #0" : "=&l"(r) : "l"(r0v));
+        if (r != p->coord.y) {
+          p->mode[2]++;
+        } else {
+          p->mode[2] = 0xA;
+        }
+      } else {
+        s32 r0v = FUN_08009f6c(p->coord.x + -0x3600, p->coord.y + -0x800);
+        s32 r;
+        asm volatile("add %0, %1, #0" : "=&l"(r) : "l"(r0v));
+        if (r != p->coord.y) {
+          p->mode[2]++;
+        } else {
+          p->mode[2] = 0xA;
+        }
+      }
+      break;
+    case 1:
+      SetSpriteAnimation(p, 0xA507);
+      p->mode[2]++;
+      FALLTHROUGH;
+    case 2:
+      UpdateEntityAnim((struct Entity*)p);
+      if (p->motion.state == 3) {
+        u32 m10;
+        u32 f2 = p->flags;
+        u32 tt;
+        m10 = 0x10;
+        asm("" : "+r"(m10));
+        tt = 0x10;
+        tt &= f2;
+        if (tt == 0) {
+          u8* xa = (u8*)p + 0x4c;
+          u8 ov;
+          u8 fv;
+          *xa = 1;
+          xa -= 2;
+          ov = *xa;
+          ov |= m10;
+          *xa = ov;
+          fv = p->flags;
+          fv |= m10;
+          p->flags = fv;
+        } else {
+          u8* xa = (u8*)p + 0x4c;
+          s32 z = 0;
+          asm("" : "+r"(z));
+          *xa = z;
+          {
+            u8* oa = (u8*)p + 0x4a;
+            s32 ov2 = *oa;
+            s32 m11;
+            asm("" : "+r"(z));
+            m11 = z - 0x11;
+            m11 &= ov2;
+            *oa = m11;
+          }
+          p->flags &= ~0x10;
+        }
+        p->mode[2] = 0xA;
+      }
+      break;
+    case 10:
+      p->work[2] = 0x46;
+      SetSpriteAnimation(p, 0xA508);
+      SetDDP(&p->body, &sCollisions[1]);
+      p->work[3] = 0x12;
+      p->mode[2]++;
+      FALLTHROUGH;
+    case 11: {
+      s32 t;
+      UpdateEntityAnim((struct Entity*)p);
+      if (p->motion.state != 3) {
+        break;
+      }
+      t = p->work[3];
+      if (t != 0) {
+        t--;
+        p->work[3] = t;
+        if ((t << 24) != 0) {
+          break;
+        }
+      }
+      p->mode[2]++;
+      break;
+    }
+    case 12: {
+      u8* ow;
+      s32 k;
+      SetSpriteAnimation(p, 0xA509);
+      SetDDP(&p->body, &sCollisions[5]);
+      ow = (u8*)&gOverworld;
+      if ((*(u16*)(ow + 0x1D0) & 0x7F) == 0xD) {
+        k = 0x2D024;
+        asm volatile("");
+      } else {
+        k = 0x2D026;
+      }
+      *(ow + k) = 1;
+      PlaySound(0x7D);
+      p->mode[2]++;
+      FALLTHROUGH;
+    }
+    case 13: {
+      s32 t;
+      UpdateEntityAnim((struct Entity*)p);
+      t = p->work[2];
+      if (t != 0) {
+        t--;
+        p->work[2] = t;
+        if ((t << 24) != 0) {
+          break;
+        }
+      }
+      p->mode[2]++;
+      break;
+    }
+    case 14: {
+      u8* ow;
+      s32 k;
+      SetSpriteAnimation(p, 0xA50A);
+      ow = (u8*)&gOverworld;
+      if ((*(u16*)(ow + 0x1D0) & 0x7F) == 0xD) {
+        k = 0x2D024;
+        asm volatile("");
+      } else {
+        k = 0x2D026;
+      }
+      *(ow + k) = 0;
+      SetDDP(&p->body, &sCollisions[1]);
+      p->mode[2]++;
+      FALLTHROUGH;
+    }
+    case 15:
+      UpdateEntityAnim((struct Entity*)p);
+      if (p->motion.state == 3) {
+        p->mode[1] = 3;
+        p->mode[2] = 0;
+      }
+      break;
+  }
+}
 
 bool8 FUN_08044f00(Volteel* p) { return TRUE; }
 
