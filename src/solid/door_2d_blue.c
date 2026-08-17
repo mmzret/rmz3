@@ -3,6 +3,7 @@
 #include "global.h"
 #include "overworld.h"
 #include "solid.h"
+#include "physics.h"
 
 // 2Dドア(青色)
 
@@ -14,9 +15,9 @@ static void Door2DBlue_Die(struct Solid* p);
 
 // clang-format off
 const SolidRoutine gDoor2DBlueRoutine = {
-    [ENTITY_INIT] =      Door2DBlue_Init,
-    [ENTITY_UPDATE] =    Door2DBlue_Update,
-    [ENTITY_DIE] =       Door2DBlue_Die,
+    [ENTITY_INIT] =      (void*)Door2DBlue_Init,
+    [ENTITY_UPDATE] =    (void*)Door2DBlue_Update,
+    [ENTITY_DIE] =       (void*)Door2DBlue_Die,
     [ENTITY_DISAPPEAR] = (void*)DeleteSolid,
     [ENTITY_EXIT] =      (SolidFunc)DeleteEntity,
 };
@@ -27,7 +28,7 @@ NON_MATCH static void Door2DBlue_Init(struct Solid* p) {
   EnableSpriteAnimation_Normal(p);
   if ((p->s).work[1] == 0) {
     // Otherside
-    struct Entity* q = AllocEntityLast(gSolidHeaderPtr);
+    struct Entity* q = (struct Entity*)AllocEntityLast(gSolidHeaderPtr);
     if (q == NULL) {
       return;
     }
@@ -81,7 +82,7 @@ static void Door2DBlue_Update(struct Solid* p) {
     }
     return;
   }
-  (sUpdates[(p->s).mode[1]])(p);
+  (sUpdates[(p->s).mode[1]])((void*)p);
 }
 
 static void Door2DBlue_Die(struct Solid* p) {
@@ -196,7 +197,114 @@ static void FUN_080caf7c(struct Solid* p) {
   }
 }
 
-INCASM("asm/solid/unk_02.inc");
+void FUN_080cafd0(struct Solid* p) {
+  switch ((p->s).mode[2]) {
+    case 0: {
+      (p->body).status = 0;
+      (p->body).prevStatus = 0;
+      (p->body).invincibleTime = 0;
+      (p->s).flags &= 0xFB;
+      (p->s).flags2 &= 0xF7;
+      SetMotion(&p->s, 0x1202);
+      PlaySound(0x9E);
+      {
+        s32* tp = (s32*)((u8*)p + 0xbc);
+        struct Entity* volatile* pb = (struct Entity**)((u8*)p + 0xb4);
+        tp[0] = (*pb)->coord.x + 0x3800;
+        tp[1] = (*pb)->coord.y;
+      }
+      (p->s).work[2] = 0x40;
+      (p->s).mode[2]++;
+      break;
+    }
+    case 1: {
+      u32 g = (u8)((p->s).work[0] & 2);
+      if (g == 0) {
+        gCollisionManager.sweep = g;
+      }
+      (p->s).mode[2]++;
+    }
+      // fallthrough
+    case 2: {
+      struct Entity* volatile* pb = (struct Entity**)((u8*)p + 0xb4);
+      (*pb)->spr.xflip = 1;
+      *((u8*)(*pb) + 0x4a) |= 0x10;
+      (*pb)->flags |= 0x10;
+      UpdateEntityAnim(&p->s);
+      {
+        s32 t = (p->s).work[2] - 1;
+        (p->s).work[2] = t;
+        if ((t << 24) != 0) {
+          break;
+        }
+      }
+      (p->s).work[2] = 0x38;
+      (p->s).mode[2]++;
+      break;
+    }
+    case 3: {
+      UpdateEntityAnim(&p->s);
+      (*(struct Entity**)((u8*)p + 0xb4))->coord.x += 0x100;
+      if ((p->s).work[2] == 0x1C) {
+        u8* cam = (u8*)&gStageRun + 0xE8;
+        *(s32**)(cam + 0x48) = (s32*)((u8*)p + 0xbc);
+      }
+      {
+        s32 t = (p->s).work[2] - 1;
+        (p->s).work[2] = t;
+        if ((t << 24) != 0) {
+          break;
+        }
+      }
+      PlaySound(0x9F);
+      SetMotion(&p->s, 0x1203);
+      (p->s).work[2] = 0x20;
+      (p->s).mode[2]++;
+      break;
+    }
+    case 4: {
+      struct Entity* volatile* pb;
+      UpdateEntityAnim(&p->s);
+      {
+        s32 t = (p->s).work[2] - 1;
+        (p->s).work[2] = t;
+        if ((t << 24) != 0) {
+          break;
+        }
+      }
+      pb = (struct Entity**)((u8*)p + 0xb4);
+      {
+        struct Entity* e = *pb;
+        if (GetGroundMetatileAttr(e->coord.x, e->coord.y)) {
+          struct Entity* e2 = *pb;
+          s32 ny = FUN_0800a05c(e2->coord.x, e2->coord.y);
+          (*pb)->coord.y = ny;
+        }
+      }
+      {
+        u8* g = (u8*)&gStageRun;
+        struct Entity* z3;
+        u16 h = *(u16*)(g + 0x14);
+        s32 v = 0xFFFE;
+        s32 zz;
+        v &= h;
+        asm("mov %0, #0" : "=l"(zz));
+        *(u16*)(g + 0x14) = v;
+        {
+          u8* cam = g + 0xE8;
+          z3 = *pb;
+          *(s32**)(cam + 0x48) = (s32*)&z3->coord;
+        }
+        *((u8*)z3 + 0x119) = zz;
+        (p->s).mode[1] = 3;
+        (p->s).mode[2] = zz;
+      }
+      break;
+    }
+  }
+}
+
+INCASM("asm/solid/unk_02_a.inc");
 
 // --------------------------------------------
 
